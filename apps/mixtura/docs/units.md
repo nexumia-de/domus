@@ -206,6 +206,24 @@ unit at any time.
 - Where the user's entered unit equals the display unit, the entered text
   is shown unchanged.
 
+# Implementation notes
+
+Gaps the implementation ([engine amounts](engine-amounts.md)) closed:
+
+- A decimal comma followed by exactly three digits after a non-zero
+  integer (`1,000 ml`) is rejected as ambiguous; `0,125 oz` is accepted.
+- Zero (`0 ml`) is accepted; a spelling like `2dashes` is rejected
+  because words need a space.
+- Plural `s` is accepted on any symbol of three or more letters (`tsps`).
+- "top 90 ml" is not read by the amount parser; the spec model carries a
+  `top` line and a volume separately.
+- Mass ounces: shown as `oz av` in the US and imperial systems with the
+  ounce rounding (quarters, eighths below 1/2); in metric they become
+  grams. Grams are never converted to ounces.
+- Rounding is half up; the refinement for values that round to zero goes
+  one step finer at a time (1/8, 1/16, 1/32 oz; 0.5, 0.1, 0.01 ml).
+- Each unit shown below its step uses fixed decimals: `3.0 ml`, `5.0 g`.
+
 [^nist]: NIST Special Publication 811 and Handbook 44, US customary and imperial volume definitions. Not opened: the host was blocked. Values agree with converter pages and a search summary; the gallon definitions (231 in³, 4.54609 l) are standard.
 
 [^difford]: Difford's Guide, "Measures and measuring", https://www.diffordsguide.com/encyclopedia/1177/cocktails/measures-and-measuring. Read as a search-result summary: spoon 5 ml (1/6 oz), about 41 drops per ml, 12 drops to a dash, 4 dashes about 1.25 ml, teaspoon 1/6 oz or 4.93 ml. The page itself was not opened.

@@ -1,0 +1,229 @@
+{
+  "id": "format-metric",
+  "description": "Display system metric: ounces become whole ml, ml and cl are kept, convention units are kept",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "1.5 oz_us metric",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "44 ml"
+      }
+    },
+    {
+      "name": "0.75 oz_us metric",
+      "input": {
+        "value": 0.75,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "22 ml"
+      }
+    },
+    {
+      "name": "2 oz_us metric",
+      "input": {
+        "value": 2,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "59 ml"
+      }
+    },
+    {
+      "name": "1.5 oz_imp metric",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_imp"
+      },
+      "expected": {
+        "text": "43 ml"
+      }
+    },
+    {
+      "name": "45 ml metric",
+      "input": {
+        "value": 45,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "45 ml"
+      }
+    },
+    {
+      "name": "4.5 cl metric",
+      "input": {
+        "value": 4.5,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "4.5 cl"
+      }
+    },
+    {
+      "name": "2.345 cl metric",
+      "input": {
+        "value": 2.345,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "2.3 cl"
+      }
+    },
+    {
+      "name": "12.4 g metric",
+      "input": {
+        "value": 12.4,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "12 g"
+      }
+    },
+    {
+      "name": "5 g metric",
+      "input": {
+        "value": 5,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "5.0 g"
+      }
+    },
+    {
+      "name": "1 oz_mass metric",
+      "input": {
+        "value": 1,
+        "unit": "oz_mass"
+      },
+      "expected": {
+        "text": "28 g"
+      }
+    },
+    {
+      "name": "2 dash metric",
+      "input": {
+        "value": 2,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "2 dashes"
+      }
+    },
+    {
+      "name": "1 dash metric",
+      "input": {
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "1 dash"
+      }
+    },
+    {
+      "name": "3 drop metric",
+      "input": {
+        "value": 3,
+        "unit": "drop"
+      },
+      "expected": {
+        "text": "3 drops"
+      }
+    },
+    {
+      "name": "1 splash metric",
+      "input": {
+        "value": 1,
+        "unit": "splash"
+      },
+      "expected": {
+        "text": "1 splash"
+      }
+    },
+    {
+      "name": "2 splash metric",
+      "input": {
+        "value": 2,
+        "unit": "splash"
+      },
+      "expected": {
+        "text": "2 splashes"
+      }
+    },
+    {
+      "name": "1 barspoon metric",
+      "input": {
+        "value": 1,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "1 bar spoon"
+      }
+    },
+    {
+      "name": "2 barspoon metric",
+      "input": {
+        "value": 2,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "2 bar spoons"
+      }
+    },
+    {
+      "name": "1.5 barspoon metric",
+      "input": {
+        "value": 1.5,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "1½ bar spoons"
+      }
+    },
+    {
+      "name": "2 tsp metric",
+      "input": {
+        "value": 2,
+        "unit": "tsp"
+      },
+      "expected": {
+        "text": "2 tsp"
+      }
+    },
+    {
+      "name": "1.2 tbsp metric",
+      "input": {
+        "value": 1.2,
+        "unit": "tbsp"
+      },
+      "expected": {
+        "text": "1¼ tbsp"
+      }
+    },
+    {
+      "name": "1 top metric",
+      "input": {
+        "value": 1,
+        "unit": "top"
+      },
+      "expected": {
+        "text": "1 top"
+      }
+    },
+    {
+      "name": "0 ml metric",
+      "input": {
+        "value": 0,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "0 ml"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding; decision units-and-display, point 2"
+}

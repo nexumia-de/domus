@@ -1,0 +1,99 @@
+{
+  "id": "parse-options",
+  "description": "The ounce setting and the solid-ingredient rule: what a plain oz means",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "1 oz {\"ounce\": \"imperial\"}",
+      "input": {
+        "text": "1 oz",
+        "options": {
+          "ounce": "imperial"
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_imp"
+      }
+    },
+    {
+      "name": "1 oz {\"solid\": true}",
+      "input": {
+        "text": "1 oz",
+        "options": {
+          "solid": true
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_mass"
+      }
+    },
+    {
+      "name": "1 fl oz {\"ounce\": \"imperial\"}",
+      "input": {
+        "text": "1 fl oz",
+        "options": {
+          "ounce": "imperial"
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1 ml {\"solid\": true}",
+      "input": {
+        "text": "1 ml",
+        "options": {
+          "solid": true
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "1 oz {\"solid\": true, \"ounce\": \"imperial\"}",
+      "input": {
+        "text": "1 oz",
+        "options": {
+          "solid": true,
+          "ounce": "imperial"
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_mass"
+      }
+    },
+    {
+      "name": "1 oz {\"ounce\": \"us\"}",
+      "input": {
+        "text": "1 oz",
+        "options": {
+          "ounce": "us"
+        }
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1 oz {}",
+      "input": {
+        "text": "1 oz",
+        "options": {}
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_us"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#exact-conversions (default for oz), #conventions (counts and weights)"
+}

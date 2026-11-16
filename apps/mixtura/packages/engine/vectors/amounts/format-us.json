@@ -1,0 +1,141 @@
+{
+  "id": "format-us",
+  "description": "Display system US: millilitres become US fluid ounces in quarters, mixed numbers with glyphs",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "45 ml us",
+      "input": {
+        "value": 45,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1½ oz"
+      }
+    },
+    {
+      "name": "30 ml us",
+      "input": {
+        "value": 30,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1 oz"
+      }
+    },
+    {
+      "name": "22.5 ml us",
+      "input": {
+        "value": 22.5,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "¾ oz"
+      }
+    },
+    {
+      "name": "10 ml us",
+      "input": {
+        "value": 10,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "⅜ oz"
+      }
+    },
+    {
+      "name": "100 ml us",
+      "input": {
+        "value": 100,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "3½ oz"
+      }
+    },
+    {
+      "name": "4.5 cl us",
+      "input": {
+        "value": 4.5,
+        "unit": "cl",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1½ oz"
+      }
+    },
+    {
+      "name": "1.5 oz_us us",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1½ oz"
+      }
+    },
+    {
+      "name": "1 oz_imp us",
+      "input": {
+        "value": 1,
+        "unit": "oz_imp",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1 oz"
+      }
+    },
+    {
+      "name": "1.5 oz_mass us",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_mass",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1½ oz av"
+      }
+    },
+    {
+      "name": "5 g us",
+      "input": {
+        "value": 5,
+        "unit": "g",
+        "system": "us"
+      },
+      "expected": {
+        "text": "5.0 g"
+      }
+    },
+    {
+      "name": "2 tsp us",
+      "input": {
+        "value": 2,
+        "unit": "tsp",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2 tsp"
+      }
+    },
+    {
+      "name": "2 dash us",
+      "input": {
+        "value": 2,
+        "unit": "dash",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2 dashes"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding"
+}

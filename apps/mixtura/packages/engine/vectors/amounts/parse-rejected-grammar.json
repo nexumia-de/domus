@@ -1,0 +1,90 @@
+{
+  "id": "parse-rejected-grammar",
+  "description": "Every rejected example of the grammar table in docs/units.md, with the error code",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "(empty)",
+      "input": {
+        "text": ""
+      },
+      "expected": {
+        "error": "empty"
+      }
+    },
+    {
+      "name": "oz",
+      "input": {
+        "text": "oz"
+      },
+      "expected": {
+        "error": "no_number"
+      }
+    },
+    {
+      "name": "1/0 oz",
+      "input": {
+        "text": "1/0 oz"
+      },
+      "expected": {
+        "error": "zero_denominator"
+      }
+    },
+    {
+      "name": "-1 oz",
+      "input": {
+        "text": "-1 oz"
+      },
+      "expected": {
+        "error": "negative"
+      }
+    },
+    {
+      "name": "1-2 oz",
+      "input": {
+        "text": "1-2 oz"
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "name": "1 pinch",
+      "input": {
+        "text": "1 pinch"
+      },
+      "expected": {
+        "error": "unknown_unit"
+      }
+    },
+    {
+      "name": "1,000.5 ml",
+      "input": {
+        "text": "1,000.5 ml"
+      },
+      "expected": {
+        "error": "separators"
+      }
+    },
+    {
+      "name": "1e2 ml",
+      "input": {
+        "text": "1e2 ml"
+      },
+      "expected": {
+        "error": "exponent"
+      }
+    },
+    {
+      "name": "45",
+      "input": {
+        "text": "45"
+      },
+      "expected": {
+        "error": "no_unit"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#parsing-grammar, table Rejected"
+}

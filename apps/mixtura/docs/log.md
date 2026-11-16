@@ -6,6 +6,7 @@
 - **Seed data study** (#6): [seed data](seed-data.md) with counts from Bar Assistant commit `5a504d4`, licence, mapping, gaps, problems and attribution text; hosts in [development](development.md).
 - **Balance** (#4): [balance](balance.md) with formulas, dilution model as data (`packages/engine/data/dilution.json`), computed ranges, evidence table, vector format and schema, four balance vectors and one prepared-ingredient vector in `packages/engine/vectors/` with a shape test; numbers in [how bartenders work](bartender-practice.md) corrected where the model disagrees; blocked hosts recorded in [development](development.md#network-hosts).
 - **Units** (#5): [units](units.md) with conversion table, conventions, grammar and display rules, [decision](decisions/units-and-display.md), `packages/engine/data/units.json` with schema and a test that table and document agree.
+- **Amounts** (#8): `packages/engine/src/amounts/` with parse, convert, scale and format, vectors in `packages/engine/vectors/amounts/`, [engine amounts](engine-amounts.md); gaps closed are listed in [units](units.md#implementation-notes).
 
 ## 2026-11-16
 

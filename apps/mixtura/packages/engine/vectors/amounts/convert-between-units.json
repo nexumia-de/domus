@@ -1,0 +1,239 @@
+{
+  "id": "convert-between-units",
+  "description": "Conversion between units of one kind, back and forth; mixed kinds and fill are errors",
+  "kind": "convert",
+  "cases": [
+    {
+      "name": "1 oz_us to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 1,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "value": 29.5735295625,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "30 ml to oz_us",
+      "input": {
+        "op": "convert",
+        "to": "oz_us",
+        "value": 30,
+        "unit": "ml"
+      },
+      "expected": {
+        "value": 1.01442068105529,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1 oz_us to oz_imp",
+      "input": {
+        "op": "convert",
+        "to": "oz_imp",
+        "value": 1,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "value": 1.040842730786236,
+        "unit": "oz_imp"
+      }
+    },
+    {
+      "name": "1 oz_imp to oz_us",
+      "input": {
+        "op": "convert",
+        "to": "oz_us",
+        "value": 1,
+        "unit": "oz_imp"
+      },
+      "expected": {
+        "value": 0.9607599404038839,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "4.5 cl to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 4.5,
+        "unit": "cl"
+      },
+      "expected": {
+        "value": 45.0,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "45 ml to cl",
+      "input": {
+        "op": "convert",
+        "to": "cl",
+        "value": 45,
+        "unit": "ml"
+      },
+      "expected": {
+        "value": 4.5,
+        "unit": "cl"
+      }
+    },
+    {
+      "name": "5 ml to tsp",
+      "input": {
+        "op": "convert",
+        "to": "tsp",
+        "value": 5,
+        "unit": "ml"
+      },
+      "expected": {
+        "value": 1.0,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "1 tsp to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 1,
+        "unit": "tsp"
+      },
+      "expected": {
+        "value": 5.0,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "1 tbsp to tsp",
+      "input": {
+        "op": "convert",
+        "to": "tsp",
+        "value": 1,
+        "unit": "tbsp"
+      },
+      "expected": {
+        "value": 3.0,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "1 dash to drop",
+      "input": {
+        "op": "convert",
+        "to": "drop",
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "value": 18.4,
+        "unit": "drop"
+      }
+    },
+    {
+      "name": "2 splash to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 2,
+        "unit": "splash"
+      },
+      "expected": {
+        "value": 10.0,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "28.349523125 g to oz_mass",
+      "input": {
+        "op": "convert",
+        "to": "oz_mass",
+        "value": 28.349523125,
+        "unit": "g"
+      },
+      "expected": {
+        "value": 1.0,
+        "unit": "oz_mass"
+      }
+    },
+    {
+      "name": "1 oz_mass to g",
+      "input": {
+        "op": "convert",
+        "to": "g",
+        "value": 1,
+        "unit": "oz_mass"
+      },
+      "expected": {
+        "value": 28.349523125,
+        "unit": "g"
+      }
+    },
+    {
+      "name": "2 barspoon to tsp",
+      "input": {
+        "op": "convert",
+        "to": "tsp",
+        "value": 2,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "value": 2.0,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "ml to g",
+      "input": {
+        "op": "convert",
+        "to": "g",
+        "value": 1,
+        "unit": "ml"
+      },
+      "expected": {
+        "error": "incompatible_units"
+      }
+    },
+    {
+      "name": "g to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 1,
+        "unit": "g"
+      },
+      "expected": {
+        "error": "incompatible_units"
+      }
+    },
+    {
+      "name": "ml to top",
+      "input": {
+        "op": "convert",
+        "to": "top",
+        "value": 1,
+        "unit": "ml"
+      },
+      "expected": {
+        "error": "incompatible_units"
+      }
+    },
+    {
+      "name": "top to ml",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "value": 1,
+        "unit": "top"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#conversion-table"
+}

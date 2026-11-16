@@ -1,0 +1,117 @@
+{
+  "id": "parse-rejected-variants",
+  "description": "Further rejected input: ambiguous separators, spacing, ranges in words, glyph ranges",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "   ",
+      "input": {
+        "text": "   "
+      },
+      "expected": {
+        "error": "empty"
+      }
+    },
+    {
+      "name": "2dashes",
+      "input": {
+        "text": "2dashes"
+      },
+      "expected": {
+        "error": "space_required"
+      }
+    },
+    {
+      "name": "1,000 ml",
+      "input": {
+        "text": "1,000 ml"
+      },
+      "expected": {
+        "error": "ambiguous_separator"
+      }
+    },
+    {
+      "name": "1 to 2 oz",
+      "input": {
+        "text": "1 to 2 oz"
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "name": "1.5.5 ml",
+      "input": {
+        "text": "1.5.5 ml"
+      },
+      "expected": {
+        "error": "separators"
+      }
+    },
+    {
+      "name": "½-1 oz",
+      "input": {
+        "text": "½-1 oz"
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "name": "-½ oz",
+      "input": {
+        "text": "-½ oz"
+      },
+      "expected": {
+        "error": "negative"
+      }
+    },
+    {
+      "name": ".5 oz",
+      "input": {
+        "text": ".5 oz"
+      },
+      "expected": {
+        "error": "no_number"
+      }
+    },
+    {
+      "name": "abc",
+      "input": {
+        "text": "abc"
+      },
+      "expected": {
+        "error": "no_number"
+      }
+    },
+    {
+      "name": "1 ½",
+      "input": {
+        "text": "1 ½"
+      },
+      "expected": {
+        "error": "no_unit"
+      }
+    },
+    {
+      "name": "1 oz oz",
+      "input": {
+        "text": "1 oz oz"
+      },
+      "expected": {
+        "error": "unknown_unit"
+      }
+    },
+    {
+      "name": "1 – 2 oz",
+      "input": {
+        "text": "1 – 2 oz"
+      },
+      "expected": {
+        "error": "range"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#parsing-grammar rules; the error codes are the engine's"
+}

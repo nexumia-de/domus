@@ -1,0 +1,179 @@
+{
+  "id": "parse-accepted-grammar",
+  "description": "Every accepted example of the grammar table in docs/units.md",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "1 1/2 oz",
+      "input": {
+        "text": "1 1/2 oz"
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1.5oz",
+      "input": {
+        "text": "1.5oz"
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "45 ml",
+      "input": {
+        "text": "45 ml"
+      },
+      "expected": {
+        "value": 45,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "45ml",
+      "input": {
+        "text": "45ml"
+      },
+      "expected": {
+        "value": 45,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "4,5 cl",
+      "input": {
+        "text": "4,5 cl"
+      },
+      "expected": {
+        "value": 4.5,
+        "unit": "cl"
+      }
+    },
+    {
+      "name": "2 dashes",
+      "input": {
+        "text": "2 dashes"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "dash"
+      }
+    },
+    {
+      "name": "1 dash",
+      "input": {
+        "text": "1 dash"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "dash"
+      }
+    },
+    {
+      "name": "1 bar spoon",
+      "input": {
+        "text": "1 bar spoon"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "barspoon"
+      }
+    },
+    {
+      "name": "½ oz",
+      "input": {
+        "text": "½ oz"
+      },
+      "expected": {
+        "value": 0.5,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1½ oz",
+      "input": {
+        "text": "1½ oz"
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "3/4 oz",
+      "input": {
+        "text": "3/4 oz"
+      },
+      "expected": {
+        "value": 0.75,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "¾oz",
+      "input": {
+        "text": "¾oz"
+      },
+      "expected": {
+        "value": 0.75,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "2 tsp",
+      "input": {
+        "text": "2 tsp"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "3 drops",
+      "input": {
+        "text": "3 drops"
+      },
+      "expected": {
+        "value": 3,
+        "unit": "drop"
+      }
+    },
+    {
+      "name": "1 Splash",
+      "input": {
+        "text": "1 Splash"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "splash"
+      }
+    },
+    {
+      "name": " 30 mL",
+      "input": {
+        "text": " 30 mL"
+      },
+      "expected": {
+        "value": 30,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "5 g",
+      "input": {
+        "text": "5 g"
+      },
+      "expected": {
+        "value": 5,
+        "unit": "g"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#parsing-grammar, table Accepted"
+}

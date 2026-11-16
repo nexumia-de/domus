@@ -1,0 +1,144 @@
+{
+  "id": "convert-overrides",
+  "description": "Convention overrides apply only to overridable units with a positive value",
+  "kind": "convert",
+  "cases": [
+    {
+      "name": "dash 2 with dash 0.31",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "dash": 0.31
+        },
+        "value": 2,
+        "unit": "dash"
+      },
+      "expected": {
+        "base": 0.62,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "tsp 2 with tsp 4.929",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "tsp": 4.929
+        },
+        "value": 2,
+        "unit": "tsp"
+      },
+      "expected": {
+        "base": 9.858,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "drop 10 with drop 0.1",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "drop": 0.1
+        },
+        "value": 10,
+        "unit": "drop"
+      },
+      "expected": {
+        "base": 1.0,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "ml ignores an override",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "ml": 2
+        },
+        "value": 3,
+        "unit": "ml"
+      },
+      "expected": {
+        "base": 3,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "oz_us ignores an override",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "oz_us": 30
+        },
+        "value": 1,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "base": 29.5735295625,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "override of zero is ignored",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "dash": 0
+        },
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "base": 0.92,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "negative override is ignored",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "dash": -1
+        },
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "base": 0.92,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "top has no volume",
+      "input": {
+        "op": "base",
+        "overrides": {
+          "top": 5
+        },
+        "value": 1,
+        "unit": "top"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "override applies to a conversion",
+      "input": {
+        "op": "convert",
+        "to": "ml",
+        "overrides": {
+          "splash": 3
+        },
+        "value": 2,
+        "unit": "splash"
+      },
+      "expected": {
+        "value": 6,
+        "unit": "ml"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#conventions (overrides are settings)"
+}
