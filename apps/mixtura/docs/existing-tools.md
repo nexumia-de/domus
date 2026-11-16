@@ -48,12 +48,12 @@ in search results is marked _unverified_.
 
 # Software
 
-| Tool | Licence | Platform | What goes beyond recipes |
-| --- | --- | --- | --- |
-| Bar Assistant with its web client Salt Rim | MIT[^ba][^saltrim] | Self-hosted server, web client as PWA[^badocs] | See below |
-| Drinkable | MIT[^drinkable] | Android (F-Droid), iOS, web, offline | "What can I make" and "missing one ingredient", own recipes; about 150 drinks |
-| Indexotica | AGPL-3.0[^indexotica] | Web | Rum classes with substitution lists; acid, sugar and saline calculators; own recipe set |
-| Open Drinks | MIT[^opendrinks] | Web | Nothing; recipes by pull request |
+| Tool                                       | Licence               | Platform                                       | What goes beyond recipes                                                                |
+| ------------------------------------------ | --------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Bar Assistant with its web client Salt Rim | MIT[^ba][^saltrim]    | Self-hosted server, web client as PWA[^badocs] | See below                                                                               |
+| Drinkable                                  | MIT[^drinkable]       | Android (F-Droid), iOS, web, offline           | "What can I make" and "missing one ingredient", own recipes; about 150 drinks           |
+| Indexotica                                 | AGPL-3.0[^indexotica] | Web                                            | Rum classes with substitution lists; acid, sugar and saline calculators; own recipe set |
+| Open Drinks                                | MIT[^opendrinks]      | Web                                            | Nothing; recipes by pull request                                                        |
 
 Libations (recipe viewer), CocktailBerry (software for a dispensing
 machine) and the Android app Drinks (last updated 2016) add nothing for
@@ -87,12 +87,12 @@ for non-alcoholic drinks beyond the ABV filter.
 
 # Data
 
-| Source | Licence | Use for Mixtura |
-| --- | --- | --- |
-| Bar Assistant data, 500+ recipes with ingredients | MIT[^badata] | Seed data, with attribution |
-| TheCocktailDB | No open licence; a public release needs a paid key; the full listing is premium only[^tcdbapi][^tcdbterms] | None |
-| FlavorDB | CC BY-NC-SA 3.0, download per molecule only[^flavordb] | None; non-commercial terms do not fit an AGPL app |
-| IBA recipes | IBA's copyright; community scrapes with licences _unverified_ | None as data; the drinks themselves are common knowledge |
+| Source                                            | Licence                                                                                                    | Use for Mixtura                                          |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Bar Assistant data, 500+ recipes with ingredients | MIT[^badata]                                                                                               | Seed data, with attribution                              |
+| TheCocktailDB                                     | No open licence; a public release needs a paid key; the full listing is premium only[^tcdbapi][^tcdbterms] | None                                                     |
+| FlavorDB                                          | CC BY-NC-SA 3.0, download per molecule only[^flavordb]                                                     | None; non-commercial terms do not fit an AGPL app        |
+| IBA recipes                                       | IBA's copyright; community scrapes with licences _unverified_                                              | None as data; the drinks themselves are common knowledge |
 
 No openly licensed flavour pairing data was found. Pairings in Mixtura
 have to be curated, each with its source.

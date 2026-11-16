@@ -1,0 +1,16 @@
+{
+  "name": "@mixtura/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Mixtura's pure engine: templates, balance numbers and specs, derived from what the user entered",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

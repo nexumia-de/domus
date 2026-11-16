@@ -1,0 +1,16 @@
+{
+  "name": "@mixtura/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Mixtura's web app (PWA): Drink Builder",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@mixtura/engine": "0.0.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

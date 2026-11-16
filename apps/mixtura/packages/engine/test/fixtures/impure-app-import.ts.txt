@@ -1,0 +1,3 @@
+import { appTitle } from '@mixtura/app';
+
+export const title = (): string => appTitle();

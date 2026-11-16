@@ -25,4 +25,5 @@ links. Change history is in [log.md](log.md).
 
 # Development
 
-- [Development](development.md) - Hosts the research needed and which ones stay unreachable.
+- [Development](development.md) - Setup, commands, layout, the engine's purity rule, the CI job `check` and the hosts the research needed.
+- [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.
