@@ -24,9 +24,12 @@ sources:
 # How bartenders work
 
 > Written from recalled knowledge of the named books, not from the
-> books at hand. Every number here is a rule of thumb and must be
-> checked against its source before it becomes a rule or test vector in
-> the engine.
+> books at hand. The balance numbers were checked on 2026-11-17 as far
+> as reachable: no number is verified against a primary source (the book
+> texts and the host of Arnold's blog were not reachable). What was seen
+> only as search-result summaries, what is computed and what stays an
+> assumption is in the table of [balance](balance.md#evidence). Template
+> ratios and the rest of this document are still unchecked.
 
 # Templates instead of recipes
 
@@ -49,11 +52,20 @@ Experts keep roles, ratios and the technique they imply, not recipes.
 Computable from a spec when each ingredient carries ABV, sugar and acid[^arnold]:
 
 - ABV before dilution: sum of volume × ABV over the sum of volumes.
-- Dilution: stirring adds roughly 20–25 % of the volume, shaking 25–30 %;
-  it depends on ice, time, sugar and starting ABV.
-- Typical results: stirred drinks about 28–32 % ABV, shaken sours
-  14–18 %, highballs 8–12 %; sours about 8–12 g sugar per 100 ml and
-  0.8–1.2 % acid.
+- Dilution: water as a fraction of the pre-dilution volume. Secondary
+  sources (Death & Co, Difford's Guide) give stirring 15–20 % and
+  shaking 20–25 %; the engine's adjustable defaults are 20 % and 25 %,
+  ranges 15–25 % and 20–30 %; the earlier "20–25 % and 25–30 %" was not
+  supported. Arnold's own equations (dilution against starting ABV)
+  are not yet read; see [balance](balance.md#dilution-model).
+- Typical results, computed from the nominal template specs with those
+  fractions and assumed ingredient values (not quoted from a source):
+  stirred Martini about 26–28 % ABV, Old-Fashioned about 32–35 %
+  (so "28–32 %" fits neither as one range); shaken Daiquiri about
+  18–19 % (the earlier "14–18 %" is not supported), Sidecar 24–26 %;
+  highballs 9–12 % depending on the mixer volume. Sours about 10–11 g
+  sugar per 100 ml and about 1 % acid; the earlier "8–12 g and
+  0.8–1.2 %" has no source either.
 - Volume, sugar-to-acid ratio, units of alcohol and calories follow from
   the same sums.
 

@@ -1,0 +1,48 @@
+{
+  "id": "balance-stirred-old-fashioned",
+  "description": "Stirred Old-Fashioned: whiskey, 1 tsp granulated sugar as solid grams, 2 dashes bitters, stir fraction 0.20",
+  "inputs": {
+    "kind": "balance",
+    "method": "stir",
+    "dilution_fraction": 0.2,
+    "lines": [
+      {
+        "name": "whiskey",
+        "ml": 60,
+        "abv_pct": 40,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      {
+        "name": "granulated sugar",
+        "ml": 0,
+        "abv_pct": 0,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0,
+        "sugar_g": 4.2
+      },
+      {
+        "name": "aromatic bitters",
+        "ml": 1.8,
+        "abv_pct": 45,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    ]
+  },
+  "expected": {
+    "volume_before_ml": 61.8,
+    "ethanol_ml": 24.81,
+    "abv_before_pct": 40.145631,
+    "volume_after_ml": 74.16,
+    "abv_after_pct": 33.454693,
+    "sugar_g": 4.2,
+    "sugar_g_per_100ml": 5.66343,
+    "acid_g": 0,
+    "acid_pct": 0,
+    "sugar_acid_ratio": null,
+    "uk_units": 2.481
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#worked-examples; ingredient properties and the dilution fraction are assumptions (see the document)"
+}

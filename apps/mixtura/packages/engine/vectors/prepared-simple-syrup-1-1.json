@@ -1,0 +1,18 @@
+{
+  "id": "prepared-simple-syrup-1-1",
+  "description": "Prepared ingredient: 1:1 simple syrup by mass, 100 g sugar and 100 g water, solution density 1.2296 g/ml",
+  "inputs": {
+    "kind": "prepared_by_mass",
+    "sugar_g": 100,
+    "water_g": 100,
+    "density_g_per_ml": 1.2296
+  },
+  "expected": {
+    "volume_ml": 162.654522,
+    "sugar_g_per_100ml": 61.48,
+    "abv_pct": 0,
+    "acid_pct": 0
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#worked-examples; the density is an assumption (see the document)"
+}

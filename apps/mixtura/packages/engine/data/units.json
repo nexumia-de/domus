@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "units": [
+    {
+      "id": "ml",
+      "symbols": ["ml"],
+      "kind": "volume",
+      "value": 1,
+      "status": "exact",
+      "evidence": "derived",
+      "overridable": false
+    },
+    {
+      "id": "cl",
+      "symbols": ["cl"],
+      "kind": "volume",
+      "value": 10,
+      "status": "exact",
+      "evidence": "derived",
+      "overridable": false
+    },
+    {
+      "id": "oz_us",
+      "symbols": ["oz", "fl oz", "fl. oz."],
+      "kind": "volume",
+      "value": 29.5735295625,
+      "status": "exact",
+      "evidence": "secondary",
+      "overridable": false
+    },
+    {
+      "id": "oz_imp",
+      "symbols": ["imp oz", "imperial oz"],
+      "kind": "volume",
+      "value": 28.4130625,
+      "status": "exact",
+      "evidence": "secondary",
+      "overridable": false
+    },
+    {
+      "id": "tsp",
+      "symbols": ["tsp", "teaspoon", "teaspoons"],
+      "kind": "volume",
+      "value": 5,
+      "status": "convention",
+      "evidence": "secondary",
+      "overridable": true
+    },
+    {
+      "id": "tbsp",
+      "symbols": ["tbsp", "tablespoon", "tablespoons"],
+      "kind": "volume",
+      "value": 15,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": true
+    },
+    {
+      "id": "barspoon",
+      "symbols": ["bsp", "bar spoon", "barspoon", "bar spoons", "barspoons"],
+      "kind": "volume",
+      "value": 5,
+      "status": "convention",
+      "evidence": "secondary",
+      "overridable": true
+    },
+    {
+      "id": "dash",
+      "symbols": ["dash", "dashes"],
+      "kind": "volume",
+      "value": 0.92,
+      "status": "convention",
+      "evidence": "secondary",
+      "overridable": true
+    },
+    {
+      "id": "drop",
+      "symbols": ["drop", "drops"],
+      "kind": "volume",
+      "value": 0.05,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": true
+    },
+    {
+      "id": "splash",
+      "symbols": ["splash", "splashes"],
+      "kind": "volume",
+      "value": 5,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": true
+    },
+    {
+      "id": "top",
+      "symbols": ["top", "top up", "top with"],
+      "kind": "fill",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "g",
+      "symbols": ["g"],
+      "kind": "mass",
+      "value": 1,
+      "status": "exact",
+      "evidence": "derived",
+      "overridable": false
+    },
+    {
+      "id": "oz_mass",
+      "symbols": ["oz av", "avoirdupois oz"],
+      "kind": "mass",
+      "value": 28.349523125,
+      "status": "exact",
+      "evidence": "derived",
+      "overridable": false
+    }
+  ]
+}

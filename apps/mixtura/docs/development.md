@@ -71,3 +71,20 @@ apps.gnome.org
 `bar-assistant.github.io` only redirects to `docs.barassistant.app`.
 `foodb.ca` answers automated requests with 403 itself, so FooDB's
 licence stays unverified.
+
+Needed to verify the numbers of [balance](balance.md) and [units](units.md),
+blocked on 2026-11-17 (`curl` to each gave a proxy tunnel failure, and
+Wikipedia also failed to resolve):
+
+```
+cookingissues.com
+www.cookingissues.com
+www.diffordsguide.com
+cocktail-society.com
+fashioned.deathandcompany.com
+www.nhs.uk
+www.nist.gov
+en.wikipedia.org
+archive.org
+books.google.com
+```

@@ -1,0 +1,40 @@
+{
+  "id": "balance-stirred-martini",
+  "description": "Stirred Martini, 2:1 gin to dry vermouth, stir fraction 0.20",
+  "inputs": {
+    "kind": "balance",
+    "method": "stir",
+    "dilution_fraction": 0.2,
+    "lines": [
+      {
+        "name": "gin",
+        "ml": 60,
+        "abv_pct": 40,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      {
+        "name": "dry vermouth",
+        "ml": 30,
+        "abv_pct": 16,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    ]
+  },
+  "expected": {
+    "volume_before_ml": 90,
+    "ethanol_ml": 28.8,
+    "abv_before_pct": 32,
+    "volume_after_ml": 108,
+    "abv_after_pct": 26.666667,
+    "sugar_g": 0,
+    "sugar_g_per_100ml": 0,
+    "acid_g": 0,
+    "acid_pct": 0,
+    "sugar_acid_ratio": null,
+    "uk_units": 2.88
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#worked-examples; ingredient properties and the dilution fraction are assumptions (see the document)"
+}

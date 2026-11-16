@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-17
+
+- **Balance** (#4): [balance](balance.md) with formulas, dilution model as data (`packages/engine/data/dilution.json`), computed ranges, evidence table, vector format and schema, four balance vectors and one prepared-ingredient vector in `packages/engine/vectors/` with a shape test; numbers in [how bartenders work](bartender-practice.md) corrected where the model disagrees; blocked hosts recorded in [development](development.md#network-hosts).
+- **Units** (#5): [units](units.md) with conversion table, conventions, grammar and display rules, [decision](decisions/units-and-display.md), `packages/engine/data/units.json` with schema and a test that table and document agree.
+
 ## 2026-11-16
 
 - **Tooling and CI** (#2): npm workspaces `packages/engine` and `packages/app`, strict TypeScript, ESLint with the engine's purity rule and a lint test, Prettier, vitest, esbuild, `npm run check`, CI job `check`, Dependabot; see [development](development.md) and [dependencies](dependencies.md).
