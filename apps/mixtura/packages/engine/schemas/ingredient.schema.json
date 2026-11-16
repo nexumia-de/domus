@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:ingredient",
+  "title": "Ingredient",
+  "description": "A node of the ingredient tree (category, type or product), or a prepared ingredient.",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "name": { "type": "string", "minLength": 1 },
+    "level": { "enum": ["category", "type", "product"] },
+    "parentId": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "role": { "$ref": "urn:mixtura:common#/$defs/role" },
+    "abv": { "$ref": "urn:mixtura:common#/$defs/abvPercent" },
+    "sugar": { "$ref": "urn:mixtura:common#/$defs/sugarGPer100Ml" },
+    "acid": { "$ref": "urn:mixtura:common#/$defs/acidPercent" },
+    "shelfLifeDays": { "type": "integer", "minimum": 0 },
+    "substitutionClass": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "cost": {
+      "description": "Price paid for a quantity.",
+      "type": "object",
+      "properties": {
+        "price": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "quantity": { "$ref": "urn:mixtura:common#/$defs/quantity" }
+      },
+      "required": ["price", "currency", "quantity"],
+      "additionalProperties": false
+    },
+    "prepared": {
+      "$ref": "urn:mixtura:prepared-ingredient"
+    },
+    "assumed": {
+      "description": "Properties of this record that are assumptions, unverified.",
+      "type": "array",
+      "items": { "enum": ["role", "abv", "sugar", "acid", "shelfLifeDays", "substitutionClass"] },
+      "uniqueItems": true
+    },
+    "source": { "$ref": "urn:mixtura:common#/$defs/source" },
+    "notes": { "type": "string" }
+  },
+  "required": ["id", "name", "level"],
+  "if": { "properties": { "prepared": true }, "required": ["prepared"] },
+  "then": {
+    "properties": {
+      "abv": false,
+      "sugar": false,
+      "acid": false
+    }
+  },
+  "additionalProperties": false
+}

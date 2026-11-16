@@ -1,0 +1,7 @@
+{
+  "id": "u-5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
+  "name": "Example",
+  "slots": [{ "id": "spirit", "role": "base", "minParts": 1, "maxParts": 1 }],
+  "method": "shake",
+  "usual": { "abv": { "min": 10, "max": 20 } }
+}

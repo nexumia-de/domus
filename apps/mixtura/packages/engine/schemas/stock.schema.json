@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:stock",
+  "title": "Stock",
+  "description": "Whether an ingredient is at hand; one record per ingredient.",
+  "type": "object",
+  "properties": {
+    "ingredientId": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "present": { "type": "boolean" },
+    "openedOn": { "$ref": "urn:mixtura:common#/$defs/date" },
+    "bestBefore": { "$ref": "urn:mixtura:common#/$defs/date" },
+    "note": { "type": "string" }
+  },
+  "required": ["ingredientId", "present"],
+  "additionalProperties": false
+}

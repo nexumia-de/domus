@@ -1,0 +1,9 @@
+{
+  "id": "u-4b3a2c1d-0e9f-4a8b-b7c6-d5e4f3a2b1c0",
+  "lineageId": "u-4b3a2c1d-0e9f-4a8b-b7c6-d5e4f3a2b1c0",
+  "version": 1,
+  "parentId": "old-fashioned",
+  "name": "Example riff",
+  "lines": [{ "ingredientId": "rye-whiskey", "amount": 2, "unit": "oz" }],
+  "status": "draft"
+}

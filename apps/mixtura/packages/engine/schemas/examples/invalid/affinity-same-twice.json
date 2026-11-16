@@ -1,0 +1,7 @@
+{
+  "id": "u-2a1b0c9d-8e7f-4605-a4b3-c2d1e0f9a8b7",
+  "ingredients": ["gin", "gin"],
+  "strength": 2,
+  "kind": "classic",
+  "source": { "name": "Example", "licence": "user" }
+}

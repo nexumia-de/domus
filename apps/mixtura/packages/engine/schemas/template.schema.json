@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:template",
+  "title": "Template",
+  "description": "A drink family as slots with a role and a ratio range, a method and usual ranges after dilution.",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "name": { "type": "string", "minLength": 1 },
+    "parentId": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "$ref": "urn:mixtura:common#/$defs/id" },
+          "role": { "$ref": "urn:mixtura:common#/$defs/role" },
+          "minParts": { "type": "number", "exclusiveMinimum": 0 },
+          "maxParts": { "type": "number", "exclusiveMinimum": 0 },
+          "optional": { "type": "boolean" },
+          "note": { "type": "string" }
+        },
+        "required": ["id", "role", "minParts", "maxParts"],
+        "additionalProperties": false
+      }
+    },
+    "method": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "glass": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "usual": {
+      "description": "Usual ranges of the finished, diluted drink.",
+      "type": "object",
+      "properties": {
+        "abv": { "$ref": "urn:mixtura:common#/$defs/range" },
+        "sugar": { "$ref": "urn:mixtura:common#/$defs/range" },
+        "acid": { "$ref": "urn:mixtura:common#/$defs/range" }
+      },
+      "additionalProperties": false
+    },
+    "source": { "$ref": "urn:mixtura:common#/$defs/source" },
+    "notes": { "type": "string" }
+  },
+  "required": ["id", "name", "slots", "method"],
+  "dependentRequired": { "usual": ["source"] },
+  "additionalProperties": false
+}

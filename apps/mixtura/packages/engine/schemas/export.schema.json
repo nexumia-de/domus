@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:export",
+  "title": "Export file",
+  "description": "Everything the user entered, as one file; format version 1.",
+  "type": "object",
+  "properties": {
+    "app": { "const": "mixtura" },
+    "formatVersion": { "const": 1 },
+    "exportedAt": { "$ref": "urn:mixtura:common#/$defs/timestamp" },
+    "seedVersion": { "type": "string", "minLength": 1 },
+    "ingredients": { "type": "array", "items": { "$ref": "urn:mixtura:ingredient" } },
+    "templates": { "type": "array", "items": { "$ref": "urn:mixtura:template" } },
+    "specs": { "type": "array", "items": { "$ref": "urn:mixtura:spec" } },
+    "stock": { "type": "array", "items": { "$ref": "urn:mixtura:stock" } },
+    "affinities": { "type": "array", "items": { "$ref": "urn:mixtura:affinity" } }
+  },
+  "required": [
+    "app",
+    "formatVersion",
+    "exportedAt",
+    "ingredients",
+    "templates",
+    "specs",
+    "stock",
+    "affinities"
+  ],
+  "additionalProperties": false
+}

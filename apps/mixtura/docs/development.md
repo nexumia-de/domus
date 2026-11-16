@@ -69,6 +69,16 @@ apps.gnome.org
 ```
 
 `bar-assistant.github.io` only redirects to `docs.barassistant.app`.
+For the seed data ([seed data](seed-data.md#network-hosts)), reachable
+through the session proxy on 2026-11-17 (`git clone` of
+`bar-assistant/data` and raw file download; the web page and API of
+`github.com` answered 403 for curl):
+
+```
+github.com
+raw.githubusercontent.com
+```
+
 `foodb.ca` answers automated requests with 403 itself, so FooDB's
 licence stays unverified.
 

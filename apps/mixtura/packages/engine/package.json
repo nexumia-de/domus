@@ -12,5 +12,8 @@
     "build": "node build.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p ."
+  },
+  "devDependencies": {
+    "ajv": "8.17.1"
   }
 }

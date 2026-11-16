@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:prepared-ingredient",
+  "title": "Prepared ingredient",
+  "description": "Marks an ingredient as the result of a spec; its ABV, sugar and acid are computed from the spec's lines.",
+  "type": "object",
+  "properties": {
+    "specId": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "yield": { "$ref": "urn:mixtura:common#/$defs/quantity" }
+  },
+  "required": ["specId", "yield"],
+  "additionalProperties": false
+}
