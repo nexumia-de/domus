@@ -158,6 +158,27 @@ expect(
   (await page.locator('[data-region="reason"]').innerText()) === 'Add a name',
   'the reason is shown under Save',
 );
+// Focus Not Obscured (WCAG 2.2 SC 2.4.11, issue #100): the focused field is
+// never under the sticky Save bar, also when the bar grows under it (the
+// reason line changes while the user types).
+const clearOfBar = () =>
+  page.evaluate(() => {
+    const field = document.activeElement.getBoundingClientRect();
+    const bar = document.querySelector('.actionbar').getBoundingClientRect();
+    return field.bottom <= bar.top + 1 && field.top < bar.top;
+  });
+await page.locator('textarea#notes').focus();
+await page.locator('.pane.detail .pane-scroll').evaluate((el) => (el.scrollTop = el.scrollHeight));
+expect(await clearOfBar(), 'the focused Notes field is clear of the Save bar');
+await page
+  .locator('[data-region="reason"]')
+  .evaluate(
+    (el) =>
+      (el.textContent = 'A reason that is long enough to wrap onto several lines. '.repeat(4)),
+  );
+await page.waitForTimeout(300);
+expect(await clearOfBar(), 'the focused Notes field stays clear when the reason line grows');
+await page.locator('[data-region="reason"]').evaluate((el) => (el.textContent = 'Add a name'));
 await page.locator('input#name').fill('Test Daiquiri');
 await cards().nth(0).locator('.line-ingredient').click();
 await page.locator('[data-focus="pick-search"]').fill('light rum');

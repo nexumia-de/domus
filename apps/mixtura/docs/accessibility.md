@@ -49,15 +49,25 @@ The slow-device options of `e2e/browser.mjs` apply to this script too (about 3 m
 - **Placeholders in dark mode** were 3.64:1 (the browser's grey); one rule
   in `styles/base.css` sets them to `--text-muted`.
 
-## Open
+- **Text at 200 %** ([#99](https://github.com/nexumia-de/mixtura/issues/99)):
+  the navigation labels (fixed pill and minimum width, so four labels were
+  wider than the bar), the app bar title, the servings stepper row, the
+  action-bar buttons and long words in rows and notes made the page scroll
+  sideways or cut text with an ellipsis. Labels, titles, row titles and
+  buttons now wrap (`overflow-wrap: anywhere`, `min-width: 0`), the stepper
+  row wraps. `e2e/reflow.mjs` walks 17 routes (including versions and
+  family) at 360 px with text at 200 %, and at 320 px with text at 100 % and
+  200 %, and fails on sideways scrolling (`scrollWidth > clientWidth`) or
+  clipped titles, labels and row titles.
+- **Save reason line over the focused field** ([#100](https://github.com/nexumia-de/mixtura/issues/100)):
+  the reason under Save appears and goes while the user types, which shrank
+  the scroll area under the focused Notes field. `shell/keep-focus-visible.ts`
+  scrolls the focused element back into view when the scroll area shrinks,
+  and the area has `scroll-padding-block`; `e2e/editor.mjs` asserts the
+  focused field is clear of the bar, also when the reason line grows.
 
-- [#99](https://github.com/nexumia-de/mixtura/issues/99): text at 200 %
-  (navigation labels, cut titles, servings stepper).
-- [#100](https://github.com/nexumia-de/mixtura/issues/100): the Save
-  reason line covers the focused Notes field in the editor at 1200x800.
-
-Both are in the known list at the top of `a11y.mjs`: printed as
-`known (#n)`, not failed on; delete the entry with its fix.
+Nothing is open: the known-findings list of `a11y.mjs` is empty (it prints
+`known (#n)` and does not fail for an entry; delete the entry with its fix).
 
 ## Dark mode and the breakpoint
 

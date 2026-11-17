@@ -2,6 +2,7 @@ import { h } from '../dom';
 import { icon } from '../dom';
 import { strings } from '../strings';
 import { type ScreenView } from '../screen';
+import { keepFocusVisible } from './keep-focus-visible';
 
 function appbar(title: string, onBack?: () => void, action?: Node): HTMLElement {
   return h(
@@ -28,11 +29,13 @@ function appbar(title: string, onBack?: () => void, action?: Node): HTMLElement 
 /** The pane or panes of a screen view: one detail pane, plus a list pane for two-pane screens. */
 export function panes(view: ScreenView, pushed: boolean, onBack: () => void): HTMLElement {
   const back = pushed ? onBack : undefined;
+  const scroll = h('div', { class: 'pane-scroll' }, view.body);
+  keepFocusVisible(scroll);
   const detail = h(
     'section',
     { class: `pane ${view.list ? 'detail' : 'solo detail'}`, 'aria-label': view.title },
     appbar(view.title, back, view.headerAction),
-    h('div', { class: 'pane-scroll' }, view.body),
+    scroll,
     view.actions && h('div', { class: 'actionbar' }, view.actions),
   );
   if (!view.list) return h('main', { class: 'panes' }, detail);

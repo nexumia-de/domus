@@ -176,6 +176,7 @@
 .tag--row {
   flex: none;
   max-width: 45%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }

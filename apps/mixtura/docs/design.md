@@ -237,7 +237,14 @@ and before every pull request that changes a screen. Every item is
 checked at 360 × 720 and at 1200 × 800, in light and in dark.
 
 - [ ] No horizontal scrolling at 360 px and at 320 px; no clipped or
-      overlapping text; long names truncate with an ellipsis or wrap.
+      overlapping text; titles, labels and names wrap, they are not
+      truncated with an ellipsis.
+- [ ] Text scaling and reflow (WCAG 1.4.4, 1.4.10): with the root font size
+      at 200 % the screen still reflows at 360 px and at 320 px without
+      sideways scrolling; sizes around text are `rem` or `min-height`
+      (never a fixed height), flex and grid children have `min-width: 0`,
+      long words break (`overflow-wrap: anywhere`), the bottom bar's labels
+      wrap. `e2e/reflow.mjs` checks every route.
 - [ ] Every tappable element is at least 44 × 44 px with 8 px between
       neighbours.
 - [ ] The most used actions are in the bottom bar; destructive ones are

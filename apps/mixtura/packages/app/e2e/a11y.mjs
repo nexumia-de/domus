@@ -94,10 +94,7 @@ const quiet = (page) =>
  * another change is working on. Each is printed, not failed on; delete the
  * entry with the fix.
  */
-const known = [
-  { issue: 100, match: /^editor-error 1200x800 .*"notes" is covered by P\.save-reason/ },
-  { issue: 99, match: /^text size .*/ },
-];
+const known = [];
 const problems = [];
 const report = (where, list) => {
   for (const text of list) {

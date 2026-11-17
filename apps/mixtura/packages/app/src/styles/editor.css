@@ -19,7 +19,7 @@
   flex: 1 1 0;
   min-width: 0;
   padding-inline: var(--sp-2);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   text-decoration: none;
 }
 
@@ -75,9 +75,7 @@
 }
 
 .line-ingredient-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   min-width: 0;
 }
 

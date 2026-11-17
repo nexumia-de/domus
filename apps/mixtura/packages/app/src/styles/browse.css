@@ -509,6 +509,7 @@ button.chip {
 .servings {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--sp-1);
   margin-bottom: var(--sp-2);
 }

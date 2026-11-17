@@ -192,7 +192,10 @@ A shell without own modules has no third-party modules to list.
   `file://`; the service worker is then not needed, and whether WebKitGTK
   supports service workers on a custom scheme is **unverified**. The
   build must run from any base path, not only `/mixtura/`
-  ([follow-up](decisions/packaging.md#follow-up-issues)).
+  ([follow-up](decisions/packaging.md#follow-up-issues)); done in #92:
+  relative URLs only, hash routes, a refused or missing service worker
+  and a missing storage API are ignored, tested at three base paths and
+  without service worker (`e2e/subpath.mjs`, `e2e/no-sw.mjs`).
 - No network permission: the app makes no request the user did not start
   ([decision](decisions/pwa-own-data.md)). Export and import go through
   the file chooser portal, which a download link inside WebKitGTK may not
@@ -244,17 +247,17 @@ Undo ([export format](export-format.md)). Consequences:
 
 ## Testing: CI versus device
 
-| Check                                                                                       | CI                                              | Only on a device                                    |
-| ------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------- |
-| Web build runs at another base path and offline                                             | Playwright, like `packages/app/e2e/subpath.mjs` |                                                     |
-| APK builds, is signed in a tag run, checksum matches                                        | GitHub runner with Android SDK                  |                                                     |
-| APK installs, starts, works offline on an emulator                                          | Possible with an emulator action (not tried)    | Real phone for touch and keyboard                   |
-| Export download and import chooser in WebView or WebKitGTK                                  | Partly (emulator)                               | Final check                                         |
-| `desktop-file-validate`, `appstreamcli validate`, `reuse lint` for a Flatpak                | Yes                                             |                                                     |
-| Flatpak launches headless                                                                   | `flatpak run` under Xvfb/Wayland in CI          |                                                     |
-| Install flow of Epiphany or Chrome web apps, icon, window size, on-screen keyboard on Phosh | No                                              | Yes                                                 |
-| Data after uninstall or clearing storage                                                    | No                                              | Yes                                                 |
-| Digital Asset Links verification of a TWA                                                   | File reachable: yes                             | `adb shell pm get-app-links` on a device[^applinks] |
+| Check                                                                                       | CI                                             | Only on a device                                    |
+| ------------------------------------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------- |
+| Web build runs at another base path and offline                                             | Playwright: `e2e/subpath.mjs`, `e2e/no-sw.mjs` |                                                     |
+| APK builds, is signed in a tag run, checksum matches                                        | GitHub runner with Android SDK                 |                                                     |
+| APK installs, starts, works offline on an emulator                                          | Possible with an emulator action (not tried)   | Real phone for touch and keyboard                   |
+| Export download and import chooser in WebView or WebKitGTK                                  | Partly (emulator)                              | Final check                                         |
+| `desktop-file-validate`, `appstreamcli validate`, `reuse lint` for a Flatpak                | Yes                                            |                                                     |
+| Flatpak launches headless                                                                   | `flatpak run` under Xvfb/Wayland in CI         |                                                     |
+| Install flow of Epiphany or Chrome web apps, icon, window size, on-screen keyboard on Phosh | No                                             | Yes                                                 |
+| Data after uninstall or clearing storage                                                    | No                                             | Yes                                                 |
+| Digital Asset Links verification of a TWA                                                   | File reachable: yes                            | `adb shell pm get-app-links` on a device[^applinks] |
 
 ## Test plan on device
 

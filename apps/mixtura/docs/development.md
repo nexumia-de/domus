@@ -145,9 +145,13 @@ pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 `.github/workflows/pages.yml` (job `build`, then `deploy`) publishes
 `packages/app/dist` to GitHub Pages on pushes to `main` and manual start; it
 is not a required check. The app uses only relative URLs, so the same build
-works at `/` and under `/mixtura/`; `npm run e2e` serves it under
-`/mixtura/` (`e2e/subpath.mjs`) and the build test rejects root-absolute
-URLs. Owner steps: [install](install.md#what-the-owner-must-switch-on).
+works at `/`, under `/mixtura/` and under a deep path, and when the page
+is opened as `index.html`; `npm run e2e` serves it under `/`, `/mixtura/`
+and `/apps/drinks/v1/` (`e2e/subpath.mjs`) and the build test rejects
+root-absolute URLs. Where a native wrapper has no service worker or no
+storage API (a custom scheme, a WebView), the app registers nothing, ignores
+a refused registration and reports persistence as unsupported;
+`e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store. Owner steps: [install](install.md#what-the-owner-must-switch-on).
 
 ## Network hosts
 

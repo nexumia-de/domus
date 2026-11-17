@@ -8,7 +8,9 @@
   gap: var(--sp-2);
   min-height: var(--target);
   min-width: var(--target);
-  padding: 0 var(--sp-4);
+  padding: var(--sp-1) var(--sp-4);
+  text-align: center;
+  overflow-wrap: anywhere;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -202,9 +204,7 @@
 
 .row-title {
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .row-sub {

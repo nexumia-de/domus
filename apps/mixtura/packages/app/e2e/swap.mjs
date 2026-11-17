@@ -407,6 +407,11 @@ await settle();
 expect((await hash()).includes(',1:'), 'a role-less line can be swapped');
 await sheet().getByRole('button', { name: 'Done' }).click();
 await open('#/drinks/banana-daiquiri?swap=');
+// The lines are drawn after the heading; on a slow device the lookup below would run too early.
+await page
+  .locator('button.line-hit', { hasText: /Crushed Ice/i })
+  .first()
+  .waitFor();
 const iceIndex = await page.evaluate(() => {
   const rows = [...document.querySelectorAll('button.line-hit')];
   return rows.findIndex((r) => /Crushed Ice/i.test(r.textContent));

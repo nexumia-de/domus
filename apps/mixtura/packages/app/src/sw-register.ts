@@ -12,24 +12,35 @@ export function registerServiceWorker(store: Store<AppState>): () => void {
 
   const offer = (worker: ServiceWorker | null): void => {
     // Without a controller this is the first install, not an update.
-    if (!worker || !navigator.serviceWorker.controller) return;
+    if (!worker || !navigator.serviceWorker?.controller) return;
     waiting = worker;
     store.set({ update: 'available' });
   };
 
-  if ('serviceWorker' in navigator && window.isSecureContext) {
-    void navigator.serviceWorker.register('sw.js').then((registration) => {
-      offer(registration.waiting);
-      registration.addEventListener('updatefound', () => {
-        const installing = registration.installing;
-        installing?.addEventListener('statechange', () => {
-          if (installing.state === 'installed') offer(installing);
-        });
+  // Native wrappers (a custom scheme, a WebView without the API) may have no
+  // service worker, or refuse the registration: the app then runs from the
+  // network or the wrapper's files, without offline caching of its own.
+  const container = typeof navigator === 'undefined' ? undefined : navigator.serviceWorker;
+  if (container && window.isSecureContext) {
+    try {
+      container
+        .register('sw.js')
+        .then((registration) => {
+          offer(registration.waiting);
+          registration.addEventListener('updatefound', () => {
+            const installing = registration.installing;
+            installing?.addEventListener('statechange', () => {
+              if (installing.state === 'installed') offer(installing);
+            });
+          });
+        })
+        .catch(() => undefined);
+      container.addEventListener('controllerchange', () => {
+        if (chosen) location.reload();
       });
-    });
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (chosen) location.reload();
-    });
+    } catch {
+      // Registration threw at once: same as unsupported.
+    }
   }
 
   return () => {
