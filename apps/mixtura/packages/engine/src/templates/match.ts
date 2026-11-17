@@ -3,11 +3,11 @@
 // distance, then offset, then template id.
 import type { IngredientTreeOf } from '../ingredients/tree';
 import type { BaseIngredient } from '../ingredients/types';
-import { assignSlots } from './slots';
+import { fillSlots } from './slots';
 import type {
   Candidate,
+  LineMeasure,
   MatchDomain,
-  MatchOptions,
   MatchResult,
   MatchSpec,
   RatioStatus,
@@ -24,10 +24,10 @@ function evaluate<R extends string>(
   tree: RoledTree<R>,
   template: Template<R>,
   spec: MatchSpec<R>,
-  options: MatchOptions,
+  measure: LineMeasure<R>,
   referenceRole: R,
 ): Omit<Candidate<R>, 'rank'> {
-  const assignment = assignSlots(tree, template, spec.lines, options);
+  const assignment = fillSlots(tree, template, spec.lines, measure);
   const refIndex = template.slots.findIndex((s) => s.role === referenceRole);
   const ref = template.slots[refIndex];
   const refMl = assignment.fills[refIndex]?.ml;
@@ -100,14 +100,14 @@ function offered<T extends { id: string; parentId?: string }>(
 
 /**
  * Matches a spec to templates by roles and ratios and ranks every candidate.
- * Ratios are parts against the slot of the domain's reference role;
+ * Lines are measured with `measure`; ratios are parts against the slot of the domain's reference role;
  * variants of the class `wanted` are offered in place of their parents.
  */
 export function matchTemplates<R extends string, T extends Template<R>>(
   tree: RoledTree<R>,
   templates: readonly T[],
   spec: MatchSpec<R>,
-  options: MatchOptions,
+  measure: LineMeasure<R>,
   domain: MatchDomain<R, T>,
   wanted: string | undefined,
 ): MatchResult<R> {
@@ -121,12 +121,12 @@ export function matchTemplates<R extends string, T extends Template<R>>(
     }
     return {
       chosen: { templateId: own.id, basis: 'explicit', known: true },
-      candidates: rank([evaluate(tree, own, spec, options, domain.referenceRole)]),
+      candidates: rank([evaluate(tree, own, spec, measure, domain.referenceRole)]),
     };
   }
   const candidates = rank(
     offered(templates, (t) => domain.variantClass(t), wanted).map((t) =>
-      evaluate(tree, t, spec, options, domain.referenceRole),
+      evaluate(tree, t, spec, measure, domain.referenceRole),
     ),
   );
   const best = candidates[0];

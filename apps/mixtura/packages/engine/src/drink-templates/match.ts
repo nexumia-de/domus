@@ -1,10 +1,12 @@
 // Matching and variants for drinks: the general matching
 // (templates/match.ts, templates/variants.ts) with the base slot as the
-// reference, and the alcohol class of a drink choosing its variants.
+// reference, lines measured by volume, and the alcohol class of a drink
+// choosing its variants.
 import type { IngredientTree, Role } from '../drink-ingredients/types';
 import type { Id } from '../ingredients/types';
 import { matchTemplates } from '../templates/match';
 import type { TemplateEvidence } from '../templates/types';
+import { volumeMeasure } from '../templates/volume';
 import {
   findVariants,
   type OpenSlot as GeneralOpenSlot,
@@ -37,7 +39,14 @@ export function matchSpec(
   spec: MatchSpec,
   options: MatchOptions = {},
 ): MatchResult {
-  return matchTemplates(tree, templates, spec, options, DRINK, options.alcohol);
+  return matchTemplates(
+    tree,
+    templates,
+    spec,
+    volumeMeasure(options, tree),
+    DRINK,
+    options.alcohol,
+  );
 }
 
 /** A slot of the variant that no carried-over line fills: the user chooses an ingredient for it. */
@@ -84,7 +93,7 @@ export function variantSuggestions(
 ): VariantsResult {
   const { alcohol: _ignored, ...matching } = options;
   void _ignored;
-  const found = findVariants(tree, templates, spec, matching, DRINK);
+  const found = findVariants(tree, templates, spec, volumeMeasure(matching, tree), DRINK);
   const suggestions = found.variants.map(
     ({ template: v, replacedLines, keptLines, openSlots }): VariantSuggestion => ({
       templateId: v.id,

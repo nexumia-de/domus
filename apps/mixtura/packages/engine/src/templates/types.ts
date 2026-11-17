@@ -58,6 +58,14 @@ export interface MatchOptions {
   unitOverrides?: UnitOverrides;
 }
 
+/**
+ * How a line is measured for slot ratios: a number in the domain's measure
+ * (today ml), or why it has none. Slot sums are in that measure.
+ */
+export type LineMeasure<R extends string = string> = (
+  line: MatchLine<R>,
+) => { value: number } | { reason: UnmeasuredReason };
+
 /** What matching needs to know of a domain. */
 export interface MatchDomain<R extends string, T extends Template<R>> {
   /** The role of the reference slot that ratios are counted against (drinks: `base`). */

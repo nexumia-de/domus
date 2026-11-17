@@ -7,7 +7,7 @@ import type { IngredientTreeOf } from '../ingredients/tree';
 import type { BaseIngredient, Id } from '../ingredients/types';
 import { matchTemplates } from './match';
 import { lineRole } from './slots';
-import type { MatchDomain, MatchOptions, MatchSpec, Template } from './types';
+import type { LineMeasure, MatchDomain, MatchSpec, Template } from './types';
 
 /** A slot of the variant that no carried-over line fills: the user chooses an ingredient for it. */
 export interface OpenSlot<R extends string = string> {
@@ -54,10 +54,10 @@ export function findVariants<R extends string, T extends Template<R>>(
   tree: IngredientTreeOf<BaseIngredient & { role?: R }>,
   templates: readonly T[],
   spec: MatchSpec<R>,
-  options: MatchOptions,
+  measure: LineMeasure<R>,
   domain: VariantDomain<R, T>,
 ): VariantsFound<R, T> {
-  const chosen = matchTemplates(tree, templates, spec, options, domain, undefined).chosen;
+  const chosen = matchTemplates(tree, templates, spec, measure, domain, undefined).chosen;
   if (!chosen || !chosen.known) return { variants: [], reason: 'no-template' };
   const root = templates.find((t) => t.id === chosen.templateId);
   if (!root) return { variants: [], reason: 'no-template' };

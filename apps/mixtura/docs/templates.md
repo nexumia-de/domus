@@ -28,12 +28,13 @@ Code: `packages/engine/src/templates/`, one job per file; data:
 `packages/engine/data/templates/*.json`, one file per template, validated
 against `schemas/template.schema.json`.
 
-| File          | Job                                                                                         |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| `types.ts`    | general `Template`, `MatchSpec`, `Candidate`, `MatchResult`, generic in the role id         |
-| `slots.ts`    | `assignSlots`: lines to slots by role; unassigned lines, empty slots; `lineMl`              |
-| `match.ts`    | `matchTemplates`: ratios against the reference role, distance, ranking, the chosen template |
-| `variants.ts` | `findVariants`: the variants of the matched template, by a variant class of the domain      |
+| File          | Job                                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| `types.ts`    | general `Template`, `MatchSpec`, `Candidate`, `MatchResult`, generic in the role id                           |
+| `slots.ts`    | `fillSlots`: lines to slots by role with the caller's measure; unassigned lines, empty slots; `lineRole`      |
+| `volume.ts`   | `lineMl` (the volume measure) and `assignSlots` with it                                                       |
+| `match.ts`    | `matchTemplates`: ratios of measured slots against the reference role, distance, ranking, the chosen template |
+| `variants.ts` | `findVariants`: the variants of the matched template, by a variant class of the domain                        |
 
 The drink side lives in `packages/engine/src/drink-templates/` (exported
 through `src/drink.ts`):
