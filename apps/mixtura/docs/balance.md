@@ -259,6 +259,7 @@ mixture arithmetic.
 | `lines.ts`    | spec lines to ml and g (counted lines by the ingredient's `unitVolumes`), properties from the tree or from a prepared ingredient's spec |
 | `sums.ts`     | totals of volume, ethanol, sugar and acid                                                                                               |
 | `mixture.ts`  | the mixing formulas (before dilution), in ml and g; also used by prepared ingredients                                                   |
+| `prepared.ts` | `computePrepared`: ABV, sugar, acid and volume of a prepared ingredient, passing the mixing formulas to the general resolver            |
 | `figures.ts`  | ABV, sugar, acid before and after dilution, sugar-to-acid ratio, UK units                                                               |
 
 **Figures.** A figure is `{ known: true, value }` or `{ known: false,

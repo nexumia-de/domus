@@ -22,7 +22,6 @@ export type * from './amounts/index';
 export {
   ancestors,
   buildTree,
-  computePrepared,
   descendants,
   distance,
   getIngredient,

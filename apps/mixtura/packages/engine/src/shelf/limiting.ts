@@ -4,29 +4,24 @@
 // nothing here; a part without a value never makes a number up.
 import type { IngredientTree } from '../ingredients/tree';
 import { resolveProperty } from '../ingredients/properties';
-import type { SpecLookup } from '../ingredients/prepared';
+import { resolvePrepared, type PreparedFold, type SpecLookup } from '../ingredients/prepared';
 import type { Id } from '../ingredients/types';
 
 export type LimitingShelfLife = { known: true; days: number; limitingId: Id } | { known: false };
 
-function collect(
-  tree: IngredientTree,
-  specs: SpecLookup,
-  id: Id,
-  stack: readonly Id[],
-  out: { days: number; id: Id }[],
-): void {
-  if (stack.includes(id)) return;
-  const own = resolveProperty(tree, id, 'shelfLifeDays');
-  if (own.value !== undefined) out.push({ days: own.value, id });
-  const item = tree.byId.get(id);
-  const spec = item?.prepared ? specs.get(item.prepared.specId) : undefined;
-  if (!spec) return;
-  for (const line of spec.lines) {
-    if (tree.byId.get(line.ingredientId)?.prepared) {
-      collect(tree, specs, line.ingredientId, [...stack, id], out);
-    }
-  }
+type Candidate = { days: number; id: Id };
+
+function own(tree: IngredientTree, id: Id): Candidate[] {
+  const v = resolveProperty(tree, id, 'shelfLifeDays').value;
+  return v === undefined ? [] : [{ days: v, id }];
+}
+
+/** Own value first, then the prepared lines in order; raw lines and failed lines say nothing. */
+function shelfFold(tree: IngredientTree): PreparedFold<Candidate[]> {
+  return {
+    raw: () => [],
+    prepared: (id, _spec, parts) => [...own(tree, id), ...parts.flatMap((p) => p ?? [])],
+  };
 }
 
 /**
@@ -42,9 +37,8 @@ export function limitingShelfLife(
   specs: SpecLookup,
   id: Id,
 ): LimitingShelfLife {
-  const found: { days: number; id: Id }[] = [];
-  collect(tree, specs, id, [], found);
-  let best: { days: number; id: Id } | undefined;
+  const found = resolvePrepared(tree, specs, id, shelfFold(tree)).value ?? own(tree, id);
+  let best: Candidate | undefined;
   for (const c of found) if (!best || c.days < best.days) best = c;
   return best ? { known: true, days: best.days, limitingId: best.id } : { known: false };
 }

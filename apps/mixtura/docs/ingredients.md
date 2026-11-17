@@ -25,7 +25,7 @@ assumption of [balance](balance.md); no drink data is claimed.
 | `types.ts`           | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
 | `tree.ts`            | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
 | `properties.ts`      | `resolveProperty`, `resolveAll`, `resolveCost`                        |
-| `prepared.ts`        | `computePrepared`: ABV, sugar, acid, volume of a prepared ingredient  |
+| `prepared.ts`        | the walk over a prepared ingredient's spec: nesting, cycles, errors   |
 | `substitution.ts`    | `sameClass`, `substitutesFor`                                         |
 | `swap-candidates.ts` | `swapCandidates`: the groups offered when a line is swapped           |
 
@@ -78,6 +78,12 @@ guessed. Exceptions that follow the data model:
   are not read from its ancestors either; the reason says so.
 
 ## Prepared ingredients
+
+The walk over a prepared ingredient (nesting, cycles, unknown ids) is
+the general `resolvePrepared` in `ingredients/prepared.ts`, internal to
+the engine; it folds a value given by the caller. `computePrepared`
+(`balance/prepared.ts`, drink-specific) passes the mixing formulas, and
+`limitingShelfLife` passes shelf lives.
 
 `computePrepared(tree, specs, id)` mixes the lines of the spec named by
 `prepared.specId` with the formulas of [balance](balance.md#formulas):

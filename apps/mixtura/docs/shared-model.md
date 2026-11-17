@@ -42,8 +42,9 @@ the [shared model decision](decisions/shared-model.md) (needs decision).
 | `amounts/` (parse, convert, scale, format, rounding, unit table)   | `model.ts`                     | general, with bar units in it   | unit table `data/units.json`; `UnitId` is a closed union                          |
 | `ingredients/tree.ts`, `properties.ts` (tree, levels, inheritance) | `model.ts`                     | general, with drink properties  | `ancestors`, `descendants`, `isA`, `resolveProperty`, `resolveAll`, `resolveCost` |
 | `ingredients/substitution.ts`, `swap-candidates.ts`                | `model.ts`                     | general                         | substitution classes, `swapCandidates` groups by class, role and tree             |
-| `ingredients/prepared.ts` (prepared components)                    | `model.ts`                     | mixed                           | nesting, cycles and yield are general; the result is ABV, sugar and acid          |
-| `balance/mixture.ts` (step 1)                                      | types only, through `drink.ts` | drink-specific                  | the mixing formulas of [balance](balance.md); still used by `prepared.ts`         |
+| `ingredients/prepared.ts` (prepared components)                    | types through `model.ts`       | general (step 2)                | `resolvePrepared` walks nesting and cycles with a caller's fold; internal         |
+| `balance/prepared.ts` (step 2)                                     | `drink.ts`                     | drink-specific                  | `computePrepared`: ABV, sugar and acid by the mixing formulas                     |
+| `balance/mixture.ts` (step 1)                                      | types only, through `drink.ts` | drink-specific                  | the mixing formulas of [balance](balance.md); used by `balance/prepared.ts`       |
 | `ingredients/unit-volumes.ts`                                      | not exported                   | general, volume only            | ml per counted unit                                                               |
 | `templates/slots.ts`, `match.ts` (roles, slots, matching)          | `model.ts`                     | general, volume only            | ratios are computed from ml                                                       |
 | `templates/variants.ts`                                            | `model.ts`                     | general mechanism, drink key    | variants keyed by alcohol class                                                   |
@@ -88,9 +89,12 @@ rules (found with `grep "from '../"` over `src/`, tests excluded):
    `'base' | 'modifier' | 'sweet' | 'sour' | 'bitter' | 'accent' |
 'texture' | 'lengthener'`, used by `templates/types.ts`,
    `templates/slots.ts` and `templates/variants.ts`.
-3. **Balance formulas used by `ingredients/`.** The mixing formulas
-   (ethanol, sugar and acid by volume) are `balance/mixture.ts` since
-   step 1; `ingredients/prepared.ts` still imports them. `computePrepared` (exported by `model.ts`) returns
+3. **Balance formulas used by `ingredients/`.** Resolved in steps 1
+   and 2: the mixing formulas are `balance/mixture.ts`, and
+   `computePrepared` is `balance/prepared.ts` (exported through
+   `drink.ts`) on top of the general resolver `resolvePrepared`. The
+   general `PreparedLine` still has `ml` and `sugarG`, and
+   `PreparedSpec` `addedWaterMl` and `yieldMl` (volume only). `computePrepared` (exported by `model.ts`) returns
    `abv`, `sugar`, `acid` and `volumeMl`; its lines are in ml and g of
    solid sugar.
 4. **Template range check in the templates folder.** Resolved in
@@ -157,7 +161,7 @@ the drink shapes in Mixtura).
    to `balance/`; `templates/range.ts` and `templates/data.ts` to a drink
    folder (for example `drink-templates/`); `templates/index.ts` then
    exports only general functions. No behaviour change.
-2. **Split prepared components.** A general resolver in
+2. **Split prepared components** (done). A general resolver in
    `ingredients/prepared.ts` (nesting, cycles, unknown specs, yield) that
    takes a property function; drink `computePrepared` in `balance/`
    passes the mixing formulas. `computePrepared` keeps its name,

@@ -4,7 +4,8 @@
 import { toGrams, toMl, isEstimatedUnit, UNITS } from '../amounts/index';
 import type { UnitId, UnitOverrides } from '../amounts/index';
 import type { MixPart } from './mixture';
-import { computePrepared, type SpecLookup } from '../ingredients/prepared';
+import type { SpecLookup } from '../ingredients/prepared';
+import { computePrepared } from './prepared';
 import { resolveProperty } from '../ingredients/properties';
 import type { IngredientTree } from '../ingredients/tree';
 import { countedVolume } from '../ingredients/unit-volumes';
