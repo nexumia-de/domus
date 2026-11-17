@@ -172,3 +172,20 @@ balance is computed. Check boxes: "{name}, in stock". Balance track: "{figure}
 {value} {unit}, usual range {lo} to {hi} {unit}: {position}". Toasts and
 banners have `role="status"`; sheets have `role="dialog"` and an
 `aria-label`; the current navigation item has `aria-current="page"`.
+
+# Browse and spec, as built (#18, #19)
+
+Search drinks · Name, ingredient or tag · Search templates · Filters, {n}
+active · Remove filter {label} · Show {n} Drink(s) · {name} template · Base:
+{name} · No template · {n} % ABV · No ABV figure · {n} of {total} drinks ·
+Show more drinks · Select a drink to read its spec. · Select a template to
+read its slots and ranges. · Loading drinks · Strength ranges: Under 14 % ABV
+· 14 to 22 % ABV · 22 to 30 % ABV · 30 % ABV and over. Templates: Slots ·
+Usual ranges after dilution · Drinks that follow it · Show in Drinks ·
+Variant of {name} · This template is not here. Spec: Ingredients · Notes ·
+Method · Glass · Garnish · optional · or {ingredient} · Top · {name} template
+(suggested) · This drink fits none of the templates. That is a normal state.
+Balance: No figure: {ingredients} have no acid value · No figure after
+dilution: the drink has no method the model knows · ABV before dilution ·
+Sugar to acid · Units of alcohol · How the figures are computed. Texts of
+the panel are scanned by a test for the words listed under "Never used".

@@ -1,10 +1,11 @@
-// Drinks destination: placeholder until #18 builds the list.
+// Drinks destination: the list with search and filters (#18). The spec
+// screen is in screens/spec; both show this list in the first pane.
 
 import { h } from '../../dom';
 import { type Route } from '../../router';
 import { type Screen } from '../../screen';
 import { strings } from '../../strings';
-import { status } from '../status';
+import { drinksPane, selectDrink } from './pane';
 
 const is = (route: Route, ...path: string[]): boolean =>
   route.path.length === path.length && path.every((segment, i) => route.path[i] === segment);
@@ -15,9 +16,10 @@ export const screens: Screen[] = [
     destination: 'drinks',
     pushed: false,
     match: (route) => is(route, 'drinks'),
-    view: () => ({
+    view: (context) => ({
       title: strings.titles.drinks,
-      body: status(strings.empty.drinks, { label: strings.buttons.newDrink, href: '#/drinks/new' }),
+      body: selectDrink(),
+      list: drinksPane(context, 'list'),
     }),
   },
   {

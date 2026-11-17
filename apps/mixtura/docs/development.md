@@ -96,13 +96,23 @@ built app from a local static server in a fresh Chromium profile at both
 sizes and checks the four destinations, back navigation, touch targets, no
 horizontal overflow, the theme, a reload and a deep link with the network
 off, no request outside the origin, and the update flow with a second
-"build". `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)). `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
+"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)). `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
 `docs/screenshots/` at scale 2. Playwright (pinned, see
 [dependencies](dependencies.md)) uses its own browser; where that is not
 installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its
 binary (the cloud image has headless shell build 1243:
 `/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell`).
 CI runs it as the job `e2e` after `npx playwright install --with-deps chromium`.
+
+**List numbers** (`node e2e/browse.mjs 360 720`, headless Chromium on the
+cloud host; the 360 run throttles the CPU 4x as a rough phone stand-in, so
+read them as order of magnitude): 60 rows in the page after about 0.6 s from
+navigation start (1200 run: 0.13 s) including the 470 kB seed and the model;
+scrolling through all 635 rows 0.4 s (0.3 s); typing "gin" to 177 results
+0.34 s including the 200 ms debounce (0.26 s); a cold start on a strength
+filter, which computes the balance of all 635 drinks, rows after 0.28 s (0.09 s;
+served from the service worker cache). The engine computes all 635 balances in
+about 13 ms on the host.
 
 ## The engine is pure
 

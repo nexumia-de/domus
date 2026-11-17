@@ -40,11 +40,11 @@ const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${hei
 const docShot = (name) =>
   docs ? page.screenshot({ path: join(DOCS, `${name}-${width}x${height}.png`) }) : undefined;
 const dest = (name) => page.locator('nav.nav').getByRole('link', { name, exact: true });
-const title = () => page.locator('.pane h1').last().innerText();
+const title = () => page.locator('.pane h1:visible').last().innerText();
 /** Waits for the title: history changes arrive asynchronously. */
 const titleIs = (name) =>
   page
-    .locator('.pane h1', { hasText: new RegExp(`^${name}$`) })
+    .locator('.pane h1:visible', { hasText: new RegExp(`^${name}$`) })
     .last()
     .waitFor({ timeout: 5000 });
 const noOverflow = async (where) => {

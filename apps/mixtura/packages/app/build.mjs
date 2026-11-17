@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { copyFileSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { build, transform } from 'esbuild';
+import { assembleSeed } from './seed-assemble.mjs';
 
 const out = process.env.MIXTURA_OUT ?? 'dist';
 const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
@@ -28,7 +29,7 @@ await build({
   define: { APP_VERSION: JSON.stringify(version) },
 });
 
-const styles = ['tokens', 'base', 'shell', 'components', 'app'];
+const styles = ['tokens', 'base', 'shell', 'components', 'browse', 'app'];
 const css = styles
   .map((name) => readFileSync(join('src', 'styles', `${name}.css`), 'utf8'))
   .join('\n');
@@ -37,13 +38,14 @@ writeFileSync(join(out, 'app.css'), (await transform(css, { loader: 'css', minif
 const copied = [
   'index.html',
   'manifest.webmanifest',
-  'seed/seed.json',
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',
 ];
 for (const file of copied) copyFileSync(join('src', file), join(out, file));
+writeFileSync(join(out, 'seed', 'seed.json'), JSON.stringify(assembleSeed()));
+copied.push('seed/seed.json');
 
 // The cache is named after the files' content: a changed build replaces it.
 const files = [...copied, 'main.js', 'app.css'];

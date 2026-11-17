@@ -13,6 +13,7 @@ import { statusBanner, updateBanner } from './banner';
 import { nav } from './nav';
 import { toast } from './toast';
 import { panes } from './panes';
+import { captureScroll, restoreScroll } from './scroll';
 
 export interface Shell {
   screens: readonly Screen[];
@@ -38,7 +39,13 @@ export function render(root: HTMLElement, shell: Shell): void {
   const dest = destinationOf(state.route);
   const onBack = (): void => back(store, rootOf(dest ?? 'drinks'));
 
-  const focused = document.activeElement?.getAttribute('data-focus');
+  const active = document.activeElement;
+  const focused = active?.getAttribute('data-focus');
+  const caret =
+    active instanceof HTMLInputElement
+      ? { start: active.selectionStart, end: active.selectionEnd }
+      : null;
+  const scroll = captureScroll(root);
   const app = h(
     'div',
     { class: 'app-root' },
@@ -54,5 +61,10 @@ export function render(root: HTMLElement, shell: Shell): void {
   );
   root.replaceChildren(app);
   document.title = `${view.title} - Drink Builder`;
-  if (focused) root.querySelector<HTMLElement>(`[data-focus="${focused}"]`)?.focus();
+  restoreScroll(root, state.route, scroll, view.list !== undefined);
+  const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;
+  again?.focus({ preventScroll: true });
+  if (again instanceof HTMLInputElement && caret?.start != null && caret.end != null) {
+    again.setSelectionRange(caret.start, caret.end);
+  }
 }

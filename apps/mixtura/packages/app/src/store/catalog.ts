@@ -5,7 +5,7 @@
 // is reported, never merged (docs/data-model.md#ids).
 
 import type { Repo } from './repo';
-import type { Seed } from './seed';
+import type { Attribution, Seed, Vocabulary } from './seed';
 import type { Affinity, Ingredient, Spec, Template } from './types';
 
 export interface Entry<T> {
@@ -41,6 +41,9 @@ export interface CatalogView<T> {
 
 export interface Catalog {
   seedVersion: string;
+  /** Names of methods and glasses, and where the seed data comes from. */
+  vocabulary: Vocabulary;
+  attribution?: Attribution;
   ingredients: CatalogView<Ingredient>;
   templates: CatalogView<Template>;
   specs: CatalogView<Spec>;
@@ -75,6 +78,8 @@ function view<T extends { id: string }>(
 export function createCatalog(seed: Seed, user: UserRepos | null): Catalog {
   return {
     seedVersion: seed.seedVersion,
+    vocabulary: seed.vocabulary,
+    attribution: seed.attribution,
     ingredients: view(seed.ingredients, user?.ingredients),
     templates: view(seed.templates, user?.templates),
     specs: view(seed.specs, user?.specs),

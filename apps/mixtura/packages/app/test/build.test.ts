@@ -86,7 +86,8 @@ test('the cache name changes when a file changes and not otherwise', () => {
 
 test('no external URL appears in the built output', () => {
   const namespace = 'http://www.w3.org/2000/svg';
-  for (const file of listFiles(out).filter((f) => !f.endsWith('.png'))) {
+  // The seed data names its source in `source.url` fields: data shown in About, never requested.
+  for (const file of listFiles(out).filter((f) => !f.endsWith('.png') && f !== 'seed/seed.json')) {
     // JSON Schema identifiers (`$schema`, vocabularies, Ajv's own meta-schema id)
     // are names in the validator, never requested; e2e checks that no request
     // leaves the origin.

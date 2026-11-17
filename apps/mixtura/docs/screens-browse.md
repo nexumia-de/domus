@@ -217,3 +217,59 @@ separate screen: the spec screen in a mode, URL
   Save is Save as My Version. _Error and offline_: as the spec screen.
 - **Data.** Nothing is stored until Save or Riff; the swap is URL
   state. All figures derived.
+
+# As built (#18, #19)
+
+What the first build does and where it differs from the text above;
+the real seed data (296 ingredients, 635 drinks, 107 of them with a
+template) forced some of it.
+
+- **Seed honesty.** Acid is unknown for every seed drink, so the acid
+  block and the sugar-to-acid line show "No figure" and name the
+  ingredients without a value; 528 drinks match no template, so "No
+  template" is a normal state: the values are shown, no band, no position
+  word, the note "This drink fits none of the templates. That is a normal
+  state." Nineteen drinks have no method the model knows (none, layer, muddle, and others):
+  no figures after dilution, the ABV before dilution is still shown. Every
+  range carries the line "Ranges come from a model and are not yet checked
+  against a source." while its evidence is not `verified`, and Details names
+  the basis (assumption) and the dilution used. A top without a volume is
+  excluded and said so; estimated convention units are named.
+- **Template of a drink** is the stored `templateId`; for a drink without
+  one the engine's `matchSpec` is asked on the spec screen only (it
+  suggests none for any seed drink; a suggestion would be tagged
+  "(suggested)"). List rows and the template filter use the stored id only.
+- **Drinks list.** Rows show name, template (or "No template") and ABV after
+  dilution (whole percent, "No ABV figure" for 36 drinks), sorted by name; the
+  newest version of each lineage; retired drinks are hidden. No Makeable tag
+  (#33), no sort menu, no status filter (every seed drink is a draft), no
+  arrow-key selection and no `n` shortcut yet: follow-up issue. `/` focuses
+  search. Rows are drawn 60 at a time (the next 60 when the "Show more drinks"
+  button comes within 600 px of the view); the count shown is remembered per
+  list address so Back restores the scroll position (also after a reload,
+  session storage). Balance is computed per row when the row is drawn, and for
+  all drinks only when a strength filter or the filters sheet asks.
+- **Search** is case- and accent-insensitive over name, ingredient names
+  (substitutes too) and tags; every word must be found as a substring.
+  Typing is debounced by 200 ms and rewrites the current history entry.
+- **Filters** (one value per group, tap again to clear): Template, Method,
+  Base (the families of the base-role ingredients, matched with `isA`) and
+  Strength. Strength bands are ranges of ABV after dilution chosen
+  between the usual ranges of the six templates and are an assumption:
+  under 14, 14 to 22, 22 to 30, 30 and over (`screens/browse/strength.ts`);
+  drinks without an ABV figure are in no band and the sheet says how many.
+  The sheet is a dialog over the list pane; on a phone opening it adds one
+  history entry (Back closes it and keeps the filters set inside it), on
+  desktop it replaces the entry (Escape closes it).
+- **Templates.** The overview is rows (not cards): roots by name, variants
+  indented, role line, method, number of drinks. The detail shows slots,
+  method, glass, the usual ranges as bands with their basis, and the drinks
+  that follow it; its bottom bar is **Show in Drinks**
+  (`#/drinks?template=<id>`). No New Drink button until #25.
+- **Spec.** Lines, role tags with their word, fixed rows (method, glass,
+  garnish; absent ones omitted), balance panel, notes, source line. Amounts
+  follow the display setting and the engine's rounding (22.5 ml shows as
+  23 ml). The bottom bar (Try a Swap, Riff, Edit), the overflow menu and the
+  servings stepper are not shown until #20, #27, #25 and #52 build them;
+  there is no dead control. On a phone the panel is below the lines; from
+  640 px of detail width the two sit side by side.

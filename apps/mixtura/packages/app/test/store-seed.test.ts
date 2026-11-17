@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { emptySeed, loadSeed, parseSeed, StoreError } from '../src/store';
+import { assembleSeed } from '../seed-assemble.mjs';
+import { loadSeed, parseSeed, StoreError } from '../src/store';
 import { validateEntity } from '../src/store/validate';
 import { seed } from './helpers';
 
@@ -10,10 +11,20 @@ test('the fixture seed validates against the schemas', () => {
   expect(seed.specs.length).toBe(2);
 });
 
-test('the bundled seed file has the expected shape', async () => {
-  const { readFileSync } = await import('node:fs');
-  const file = JSON.parse(readFileSync(new URL('../src/seed/seed.json', import.meta.url), 'utf8'));
-  expect(parseSeed(file).seedVersion).toBe(emptySeed.seedVersion);
+test('the assembled seed (what the build ships) has the expected shape and validates', () => {
+  const real = parseSeed(JSON.parse(JSON.stringify(assembleSeed())));
+  expect(real.seedVersion).toMatch(/^bar-assistant-[0-9a-f]{7}$/);
+  expect(real.ingredients).toHaveLength(296);
+  expect(real.specs).toHaveLength(635);
+  expect(real.specs.filter((s) => s.templateId)).toHaveLength(107);
+  expect(real.templates.map((t) => t.id).sort()).toEqual(
+    ['daiquiri', 'flip', 'highball', 'martini', 'old-fashioned', 'sidecar'].sort(),
+  );
+  expect(real.vocabulary.methods.length).toBeGreaterThan(3);
+  expect(real.attribution?.notice).toContain('Bar Assistant');
+  for (const i of real.ingredients) validateEntity('ingredient', i);
+  for (const t of real.templates) validateEntity('template', t);
+  for (const s of real.specs) validateEntity('spec', s);
 });
 
 test.each([

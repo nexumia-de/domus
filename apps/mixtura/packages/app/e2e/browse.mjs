@@ -1,0 +1,420 @@
+// Browsing in a real browser: the drinks list with search and filters, the
+// templates, the spec screen from the list and from a template, Back, a
+// spec with and without a template, a reload with the network off, and the
+// numbers for the list (render, search, filters) at the seed size.
+// Screenshots go to dist/walk/; with --docs also to docs/screenshots/ at
+// scale 2 as app-*.png (the mock-ups' own files are not replaced).
+//
+//   node e2e/browse.mjs [width height] [--docs]
+/* global document, innerWidth, location, window, history, requestAnimationFrame, MutationObserver -- in functions the page runs */
+import { mkdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { launch } from './browser.mjs';
+import { expect, serve } from './serve.mjs';
+
+const args = process.argv.slice(2);
+const docs = args.includes('--docs');
+const [width = 1200, height = 800] = args.filter((a) => /^\d+$/.test(a)).map(Number);
+const phone = width < 840;
+const OUT = resolve('dist', 'walk');
+const DOCS = resolve('..', '..', 'docs', 'screenshots');
+mkdirSync(OUT, { recursive: true });
+
+const site = await serve();
+const browser = await launch();
+const context = await browser.newContext({
+  viewport: { width, height },
+  deviceScaleFactor: docs ? 2 : 1,
+});
+const page = await context.newPage();
+page.on('pageerror', (error) => {
+  throw error;
+});
+const external = [];
+page.on('request', (request) => {
+  if (!request.url().startsWith(site.url) && !request.url().startsWith('data:')) {
+    external.push(request.url());
+  }
+});
+// A phone's processor is several times slower than this machine's: the
+// phone run measures with a 4x throttle.
+if (phone) {
+  const client = await context.newCDPSession(page);
+  await client.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+}
+// Marks the moment the first rows are in the page.
+await page.addInitScript(() => {
+  new MutationObserver((_, observer) => {
+    if (document.querySelector('.list-rows li')) {
+      window.__firstRows = performance.now();
+      observer.disconnect();
+    }
+  }).observe(document, { childList: true, subtree: true });
+});
+
+const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${height}.png`) });
+const docShot = (name) =>
+  docs ? page.screenshot({ path: join(DOCS, `app-${name}-${width}x${height}.png`) }) : undefined;
+const rows = () => page.locator('.pane.list .list-rows li');
+const count = async () => /^(\d+)/.exec(await page.locator('.list-count').innerText())?.[1] ?? '?';
+const total = async () => /(\d+) drinks$/.exec(await page.locator('.list-count').innerText())?.[1];
+const titleIs = (name) =>
+  page
+    .locator('.pane h1:visible', { hasText: new RegExp(`^${name}$`) })
+    .last()
+    .waitFor({ timeout: 5000 });
+const hash = () => page.evaluate(() => location.hash);
+const waitCount = (n) =>
+  page.waitForFunction(
+    (want) => {
+      const text = document.querySelector('.list-count')?.textContent ?? '';
+      return (/^(?:(\d+) of )?(\d+) drinks$/.exec(text)?.[1] ?? /^(\d+)/.exec(text)?.[1]) === want;
+    },
+    String(n),
+    { timeout: 5000 },
+  );
+const noOverflow = async (where) => {
+  const wide = await page.evaluate(() => {
+    if (document.documentElement.scrollWidth > innerWidth) return 'page';
+    for (const pane of document.querySelectorAll('.pane-scroll')) {
+      if (pane.scrollWidth > pane.clientWidth + 1) return 'pane';
+    }
+    return '';
+  });
+  expect(wide === '', `no horizontal scrolling ${where} ${wide}`);
+};
+/** Every visible control is at least 44 x 44 px; list rows at least 56 px high. */
+const targets = async (where) => {
+  const small = await page.evaluate(() => {
+    const bad = [];
+    for (const el of document.querySelectorAll('a, button, input, summary, [role="button"]')) {
+      const box = el.getBoundingClientRect();
+      if (box.width === 0 || box.height === 0) continue;
+      if (el.closest('[hidden]')) continue;
+      const needed = el.classList.contains('row') ? 56 : 44;
+      if (box.height < needed - 0.5 || box.width < 44 - 0.5) {
+        bad.push(`${el.tagName} ${el.textContent.trim().slice(0, 20)} ${box.width}x${box.height}`);
+      }
+    }
+    return bad;
+  });
+  expect(small.length === 0, `touch targets at least 44 px ${where} ${small}`);
+};
+
+// ---- Drinks list: first paint, numbers ----
+await page.goto(`${site.url}#/drinks`, { waitUntil: 'load' });
+await rows().first().waitFor();
+const firstRows = await page.evaluate(() => Math.round(window.__firstRows));
+console.log(`NUMBERS ${width}x${height}${phone ? ' (4x CPU throttle)' : ''}`);
+console.log(
+  `  first ${await rows().count()} rows in the page: ${firstRows} ms after navigation start`,
+);
+expect((await rows().count()) === 60, 'the first chunk is 60 rows');
+expect((await total()) === '635', 'the list counts 635 drinks');
+await noOverflow('on the drinks list');
+await targets('on the drinks list');
+expect(
+  (await page.locator('input[name="q"]').evaluate((el) => document.activeElement === el)) === false,
+  'the search field is not focused on open',
+);
+await docShot('drinks-list');
+await shot('browse-list');
+
+// All 635 rows by scrolling.
+const scrollAll = await page.evaluate(async () => {
+  const pane = document.querySelector('.pane.list .pane-scroll');
+  const t0 = performance.now();
+  for (
+    let i = 0;
+    i < 60 && document.querySelectorAll('.pane.list .list-rows li').length < 635;
+    i++
+  ) {
+    pane.scrollTop = pane.scrollHeight;
+    await new Promise((done) => requestAnimationFrame(() => setTimeout(done, 0)));
+  }
+  return {
+    ms: Math.round(performance.now() - t0),
+    rows: document.querySelectorAll('.pane.list .list-rows li').length,
+  };
+});
+console.log(`  scrolling through all rows: ${scrollAll.rows} rows after ${scrollAll.ms} ms`);
+expect(scrollAll.rows === 635, 'scrolling loads all 635 rows');
+await page.evaluate(() => {
+  document.querySelector('.pane.list .pane-scroll').scrollTop = 0;
+});
+
+// ---- Search ----
+const input = page.locator('input[name="q"]');
+const inHash = (text) =>
+  page.waitForFunction((t) => decodeURIComponent(location.hash).includes(t), text, {
+    timeout: 5000,
+  });
+await input.click();
+let t0 = Date.now();
+await page.keyboard.type('gin', { delay: 20 });
+await inHash('q=gin');
+const ginCount = Number(await count());
+console.log(
+  `  typing "gin" until the list shows ${ginCount} hits: ${Date.now() - t0} ms (typing 60 ms and the 200 ms debounce included)`,
+);
+expect(ginCount > 50 && ginCount < 635, `search "gin" narrows the list to ${ginCount}`);
+expect(
+  (await input.evaluate((el) => document.activeElement === el)) === true,
+  'the search field keeps focus while typing',
+);
+expect((await input.inputValue()) === 'gin', 'the typed text is kept across the redraw');
+const names = await rows().locator('.row-title').allInnerTexts();
+expect(
+  names.some((n) => /gin/i.test(n)),
+  'a drink is found by name',
+);
+expect((await page.evaluate(() => history.length)) < 10, 'typing adds no history entries');
+
+await input.fill('');
+await input.pressSequentially('CREME');
+await inHash('q=CREME');
+const cremeCount = Number(await count());
+expect(
+  cremeCount > 0,
+  `an accent-free, upper-case search finds ingredients (${cremeCount} drinks)`,
+);
+await input.fill('');
+await input.pressSequentially('Zzzz');
+await inHash('q=Zzzz');
+await page.getByText('No drink matches the search and filters.').waitFor();
+expect(true, 'no hit shows the empty state');
+await shot('browse-nohit');
+await page.getByRole('button', { name: 'Clear Filters' }).click();
+await waitCount(635);
+expect((await hash()) === '#/drinks', 'Clear Filters empties the address');
+expect((await input.inputValue()) === '', 'and the field');
+
+// ---- Filters ----
+await page.getByRole('button', { name: 'Filters', exact: true }).click();
+const sheet = page.getByRole('dialog', { name: 'Filters' });
+await sheet.waitFor();
+expect((await hash()).includes('sheet=filters'), 'the sheet is part of the address');
+await page.getByRole('button', { name: /^Martini \(\d+\)/ }).click();
+await inHash('template=martini');
+expect((await count()) === '57', 'the Martini template filter shows its 57 drinks');
+await page.getByRole('button', { name: /^Gin \(\d+\)/ }).click();
+await inHash('base=gin');
+const martiniGin = Number(await count());
+expect(martiniGin > 0 && martiniGin < 57, `combined filters narrow the result (${martiniGin})`);
+await page.getByRole('button', { name: '30 % ABV and over' }).click();
+t0 = Date.now();
+await inHash('strength=ge30');
+const strong = Number(await count());
+console.log(`  strength filter after two others: ${strong} hits in ${Date.now() - t0} ms`);
+expect(strong < martiniGin, `the strength band narrows further (${strong})`);
+await docShot('filters');
+await shot('browse-filters');
+await noOverflow('with the filters sheet');
+await targets('in the filters sheet');
+await page.getByRole('button', { name: `Show ${strong} Drinks` }).click();
+await page.getByRole('dialog').waitFor({ state: 'detached' });
+expect(
+  (await hash()) === '#/drinks?template=martini&base=gin&strength=ge30',
+  `closing the sheet keeps the filters in the address (${await hash()})`,
+);
+expect(
+  (await page.getByRole('button', { name: 'Filters, 3 active' }).count()) === 1,
+  'the Filters button counts the active filters',
+);
+const chips = await page.locator('.pane.list .chips button').allInnerTexts();
+expect(
+  chips.join('|') === 'Martini template|Base: Gin|30 % ABV and over',
+  `active filters are chips: ${chips.join('|')}`,
+);
+await docShot('drinks-filtered');
+await page.getByRole('button', { name: 'Remove filter Base: Gin' }).click();
+await inHash('template=martini&strength=ge30');
+expect(true, 'a chip removes its filter with one tap');
+
+// Back from the sheet keeps what was set inside it (phone: the sheet is an entry).
+await page.getByRole('button', { name: 'Filters, 2 active' }).click();
+await sheet.waitFor();
+await page.getByRole('button', { name: /^Shake \(\d+\)/ }).click();
+await inHash('method=shake');
+if (phone) {
+  await page.goBack();
+  await page.getByRole('dialog').waitFor({ state: 'detached' });
+  expect((await hash()).includes('method=shake'), 'Back closes the sheet and keeps its filters');
+} else {
+  await page.keyboard.press('Escape');
+  await page.getByRole('dialog').waitFor({ state: 'detached' });
+  expect((await hash()).includes('method=shake'), 'Escape closes the sheet and keeps its filters');
+}
+await page.getByRole('button', { name: /^Filters, \d+ active/ }).click();
+await sheet.waitFor();
+await page.getByRole('button', { name: 'Clear Filters' }).click();
+await waitCount(635);
+await page.getByRole('button', { name: 'Show 635 Drinks' }).click();
+expect((await hash()) === '#/drinks', 'Clear Filters in the sheet empties the address');
+
+// ---- Open a spec from the list, Back, scroll kept ----
+await page.evaluate(() => {
+  document.querySelector('.pane.list .pane-scroll').scrollTop = 900;
+});
+await page.waitForTimeout(100);
+const before = await page.evaluate(
+  () => document.querySelector('.pane.list .pane-scroll').scrollTop,
+);
+await rows().nth(20).locator('a').click();
+await page.locator('.spec').waitFor();
+const opened = (await hash()).startsWith('#/drinks/');
+expect(opened, `a row opens its spec (${await hash()})`);
+await page.locator('.balance').waitFor();
+await noOverflow('on a spec');
+await targets('on a spec');
+await page.getByRole('button', { name: 'Back' }).last().click();
+await page.locator('.pane.list .list-rows li').first().waitFor();
+await page.waitForTimeout(150);
+expect((await hash()) === '#/drinks', 'Back returns to the list');
+const after = await page.evaluate(
+  () => document.querySelector('.pane.list .pane-scroll').scrollTop,
+);
+expect(Math.abs(after - before) < 4, `Back restores the list position (${before} -> ${after})`);
+
+// ---- A spec with a template ----
+await page.goto(`${site.url}#/drinks/daiquiri`);
+await page.locator('.balance').waitFor();
+expect(
+  (await page.locator('.pane h1:visible').last().innerText()) === 'Daiquiri',
+  'the spec is titled by its drink',
+);
+const body = await page.locator('.spec').innerText();
+for (const want of [
+  'Daiquiri template',
+  'Balance After Shaking',
+  'Within',
+  'Usual range 17.6\u201319.0 %',
+  'No figure',
+  'no acid value',
+  'Volume after dilution 131 ml',
+  'Ranges come from a model and are not yet checked against a source.',
+  'Method',
+  'Shake',
+]) {
+  expect(body.includes(want), `the Daiquiri spec says "${want}"`);
+}
+expect(
+  !/\b(good|bad|wrong|balanced|perfect)\b/i.test(await page.locator('.balance').innerText()),
+  'no verdict word',
+);
+const track = await page.locator('.balance .track').first().getAttribute('aria-label');
+expect(/within the usual range/.test(track), `the track has a text alternative: ${track}`);
+await noOverflow('on the Daiquiri spec');
+await docShot('spec');
+await shot('browse-spec');
+await page.locator('.balance').scrollIntoViewIfNeeded();
+if (phone) {
+  const reachable = await page.evaluate(() => {
+    const pane = document.querySelector('.pane.detail .pane-scroll');
+    pane.scrollTop = pane.scrollHeight;
+    const details = document.querySelector('.balance .disclosure summary').getBoundingClientRect();
+    const box = pane.getBoundingClientRect();
+    return details.bottom <= box.bottom + 1;
+  });
+  expect(reachable, 'the whole balance panel is reachable by vertical scroll');
+  await docShot('spec-balance');
+}
+await page.locator('.disclosure summary').click();
+await page.getByText('How the figures are computed').waitFor();
+expect(true, 'Details opens the notes of the formulas');
+await shot('browse-spec-details');
+
+// ---- A spec without a template ----
+await page.goto(`${site.url}#/drinks?q=2 to 2`);
+await page.locator('.list-rows li').first().waitFor();
+await rows().filter({ hasText: '2 to 2' }).first().locator('a').click();
+await page.locator('.balance').waitFor();
+const noTemplate = await page.locator('.spec').innerText();
+expect(noTemplate.includes('No template'), 'a drink without a template says so');
+expect(noTemplate.includes('No usual range for this drink'), 'and shows no range comparison');
+expect(
+  !noTemplate.includes('Within') && !noTemplate.includes('Above'),
+  'no position word without a range',
+);
+expect((await page.locator('.balance .band').count()) === 0, 'no band without a range');
+await docShot('spec-no-template');
+await noOverflow('on a spec without a template');
+
+// ---- Templates ----
+await page.goto(`${site.url}#/templates`);
+await page.locator('.list-rows li').first().waitFor();
+const templateRows = await page.locator('.pane.list .list-rows li').allInnerTexts();
+expect(templateRows.length === 6, 'six templates (five roots and one variant)');
+expect(
+  templateRows[0].startsWith('Daiquiri') && templateRows[1].startsWith('Sidecar'),
+  'variants sit under their parent',
+);
+expect(
+  templateRows[0].includes('Base, Sour, Sweet') && templateRows[0].includes('24 drinks'),
+  'a row has roles and the number of drinks',
+);
+await docShot('templates');
+await noOverflow('on the templates');
+await targets('on the templates');
+await page.locator('.pane.list').getByText('Daiquiri', { exact: true }).click();
+await titleIs('Daiquiri');
+await page.locator('.slots').waitFor();
+expect(
+  (await page.locator('.spec').innerText()).includes('Usual range 17.6\u201319.0 %'),
+  'the template shows its usual ranges',
+);
+await docShot('template-detail');
+await noOverflow('on a template');
+await targets('on a template');
+await page.locator('.spec .list-rows li a').nth(2).click();
+await page.locator('.balance').waitFor();
+expect((await hash()).startsWith('#/drinks/'), 'a drink of a template opens its spec');
+await page.getByRole('button', { name: 'Back' }).last().click();
+await page.locator('.slots').waitFor();
+expect((await hash()) === '#/templates/daiquiri', 'Back returns to the template');
+await page.getByRole('link', { name: 'Show in Drinks' }).click();
+await page.locator('.list-count').waitFor();
+await waitCount(24);
+expect(
+  (await hash()) === '#/drinks?template=daiquiri',
+  'Show in Drinks filters the list to the template',
+);
+await page.goto(`${site.url}#/templates/flip`);
+await page.locator('.spec .list-rows li').first().waitFor();
+expect(
+  (await page.locator('.spec .list-rows li').count()) === 1,
+  'the Flip template lists its one drink',
+);
+await page.goto(`${site.url}#/templates/nowhere`);
+await page.getByRole('heading', { name: 'This template is not here' }).waitFor();
+expect(true, 'an unknown template is a status page');
+await page.goto(`${site.url}#/drinks/nowhere`);
+await page.getByRole('heading', { name: 'This drink is not here' }).waitFor();
+expect(true, 'an unknown drink is a status page');
+
+// ---- Cold start with a strength filter: all 635 balances are computed ----
+await page.goto(`${site.url}#/drinks?strength=14-22`);
+await page.reload({ waitUntil: 'load' });
+await rows().first().waitFor();
+console.log(
+  `  cold start on a strength filter (balance of all 635 drinks): rows in the page after ${await page.evaluate(() => Math.round(window.__firstRows))} ms, ${await count()} hits`,
+);
+
+// ---- Offline reload on a spec URL ----
+await page.goto(`${site.url}#/drinks/daiquiri`);
+await page.locator('.balance').waitFor();
+await page.evaluate(() => navigator.serviceWorker.ready);
+await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+await context.setOffline(true);
+await page.reload({ waitUntil: 'load' });
+await page.locator('.balance').waitFor();
+expect(
+  (await page.locator('.pane h1:visible').last().innerText()) === 'Daiquiri',
+  'a spec URL reloads with the network off',
+);
+expect((await page.locator('.spec').innerText()).includes('Within'), 'with its figures');
+await context.setOffline(false);
+
+expect(external.length === 0, `no request left the origin ${external}`);
+await browser.close();
+await site.close();

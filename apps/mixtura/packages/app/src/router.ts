@@ -38,3 +38,17 @@ export function normaliseHash(hash: string): string {
   const route = parseHash(hash);
   return route.path.length === 0 ? DEFAULT_HASH : route.hash;
 }
+
+/**
+ * Back from an open sheet (`?sheet=…`) lands on the entry below it, which
+ * has the filters from before the sheet. The filters changed inside the sheet
+ * are kept: the route is then the sheet's route without `sheet`; null when
+ * this move is not a sheet closing.
+ */
+export function closedSheet(previous: Route, next: Route): Route | null {
+  if (!previous.query.has('sheet') || next.query.has('sheet')) return null;
+  if (previous.path.join('/') !== next.path.join('/')) return null;
+  const query = new URLSearchParams(previous.query);
+  query.delete('sheet');
+  return parseHash(formatHash(previous.path, query));
+}

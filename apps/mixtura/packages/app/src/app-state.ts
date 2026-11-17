@@ -64,6 +64,8 @@ export interface AppState {
   importBackup: boolean;
   importFlow: ImportFlow;
   toast: Toast | null;
+  /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
+  browseRev: number;
   /** Last route of each destination, so switching back restores its stack. */
   lastRoute: Partial<Record<DestId, string>>;
 }
@@ -82,6 +84,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importBackup: false,
     importFlow: { kind: 'idle' },
     toast: null,
+    browseRev: 0,
     lastRoute: {},
   };
 }

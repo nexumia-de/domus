@@ -26,7 +26,7 @@ export interface ScreenView {
    * Two panes (Drinks, Templates, Stock): the list pane is shown beside
    * the body from 840 px; on a phone `phone` says which one is visible.
    */
-  list?: { title: string; body: Node; phone: 'list' | 'detail' };
+  list?: { title: string; body: Node; phone: 'list' | 'detail'; action?: Node };
 }
 
 export interface Screen {

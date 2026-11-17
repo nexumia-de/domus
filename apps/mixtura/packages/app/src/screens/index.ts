@@ -5,7 +5,8 @@
 import { type Screen } from '../screen';
 import { screens as drinks } from './drinks';
 import { screens as settings } from './settings';
+import { screens as spec } from './spec';
 import { screens as stock } from './stock';
 import { screens as templates } from './templates';
 
-export const screens: readonly Screen[] = [...drinks, ...templates, ...stock, ...settings];
+export const screens: readonly Screen[] = [...drinks, ...spec, ...templates, ...stock, ...settings];

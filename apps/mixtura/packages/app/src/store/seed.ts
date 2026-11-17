@@ -5,10 +5,28 @@
 //   { "seedVersion": "<version or commit>",
 //     "ingredients": [Ingredient], "templates": [Template],
 //     "specs": [Spec], "affinities": [Affinity],
-//     "replacedBy": { "<dropped id>": "<new id>" }   (optional) }
+//     "replacedBy": { "<dropped id>": "<new id>" },  (optional)
+//     "vocabulary": { "methods": [{id,name}], "glasses": [{id,name}] },  (optional)
+//     "attribution": { "notice": "...", ... } }  (optional)
 
 import { StoreError } from './errors';
 import type { Affinity, Ingredient, Spec, Template } from './types';
+
+/** Names of methods and glasses (the ids a spec uses). */
+export interface Vocabulary {
+  methods: { id: string; name: string }[];
+  glasses: { id: string; name: string }[];
+}
+
+/** Where the seed data comes from; `notice` is the text About shows. */
+export interface Attribution {
+  source: string;
+  repository: string;
+  commit: string;
+  licence: string;
+  holder: string;
+  notice: string;
+}
 
 export interface Seed {
   seedVersion: string;
@@ -17,6 +35,8 @@ export interface Seed {
   specs: Spec[];
   affinities: Affinity[];
   replacedBy: Record<string, string>;
+  vocabulary: Vocabulary;
+  attribution?: Attribution;
 }
 
 export const SEED_URL = 'seed/seed.json';
@@ -28,6 +48,7 @@ export const emptySeed: Seed = {
   specs: [],
   affinities: [],
   replacedBy: {},
+  vocabulary: { methods: [], glasses: [] },
 };
 
 const COLLECTIONS = ['ingredients', 'templates', 'specs', 'affinities'] as const;
@@ -58,6 +79,21 @@ export function parseSeed(data: unknown): Seed {
   if (replaced !== undefined) {
     if (!replaced || typeof replaced !== 'object') return bad('replacedBy is not an object');
     seed.replacedBy = replaced as Record<string, string>;
+  }
+  const vocabulary = record['vocabulary'];
+  if (vocabulary !== undefined) {
+    const v = vocabulary as Partial<Vocabulary> | null;
+    if (!v || !Array.isArray(v.methods) || !Array.isArray(v.glasses)) {
+      bad('vocabulary needs the lists methods and glasses');
+    }
+    seed.vocabulary = vocabulary as Vocabulary;
+  }
+  const attribution = record['attribution'];
+  if (attribution !== undefined) {
+    if (!attribution || typeof (attribution as Attribution).notice !== 'string') {
+      bad('attribution needs a notice');
+    }
+    seed.attribution = attribution as Attribution;
   }
   return seed;
 }

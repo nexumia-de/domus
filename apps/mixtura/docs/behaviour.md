@@ -114,20 +114,20 @@ by the tests of the repository.
   static hosting needs no rewrite rules (Q5). The URL is the shareable
   address of the screen and restores it on open.
 
-| Screen          | URL                                                      |
-| --------------- | -------------------------------------------------------- |
-| Drinks list     | `#/drinks?q=…&template=…&makeable=1&alcohol=none`        |
-| Spec            | `#/drinks/<spec id>` (opens the newest version)          |
-| A named version | `#/drinks/<spec id>/v/<n>`                               |
-| Swap mode       | `#/drinks/<spec id>?swap=<slot>:<ingredient>:<amount>,…` |
-| Spec editor     | `#/drinks/<spec id>/edit`, new drink `#/drinks/new`      |
-| Versions        | `#/drinks/<spec id>/versions`, diff `…/versions?a=2&b=3` |
-| Family          | `#/drinks/<spec id>/family`                              |
-| Templates       | `#/templates`, detail `#/templates/<template id>`        |
-| Stock           | `#/stock`, search `#/stock?q=…`                          |
-| Buy Next        | `#/stock/buy-next`                                       |
-| Settings        | `#/settings`, export and import `#/settings/data`        |
-| About           | `#/about`                                                |
+| Screen          | URL                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Drinks list     | `#/drinks?q=…&template=…&method=…&base=…&strength=…&makeable=1&alcohol=none`                                           |
+| Spec            | `#/drinks/<spec id>` (opens the newest version; may carry the list's `q` and filters so the list pane stays as it was) |
+| A named version | `#/drinks/<spec id>/v/<n>`                                                                                             |
+| Swap mode       | `#/drinks/<spec id>?swap=<slot>:<ingredient>:<amount>,…`                                                               |
+| Spec editor     | `#/drinks/<spec id>/edit`, new drink `#/drinks/new`                                                                    |
+| Versions        | `#/drinks/<spec id>/versions`, diff `…/versions?a=2&b=3`                                                               |
+| Family          | `#/drinks/<spec id>/family`                                                                                            |
+| Templates       | `#/templates`, detail `#/templates/<template id>`                                                                      |
+| Stock           | `#/stock`, search `#/stock?q=…`                                                                                        |
+| Buy Next        | `#/stock/buy-next`                                                                                                     |
+| Settings        | `#/settings`, export and import `#/settings/data`                                                                      |
+| About           | `#/about`                                                                                                              |
 
 The addressed id is a spec's `lineageId`, so a link keeps working when a
 new version is saved. A swap in the URL is applied on open and is not

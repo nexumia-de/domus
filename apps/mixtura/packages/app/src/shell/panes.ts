@@ -3,7 +3,7 @@ import { icon } from '../dom';
 import { strings } from '../strings';
 import { type ScreenView } from '../screen';
 
-function appbar(title: string, onBack?: () => void): HTMLElement {
+function appbar(title: string, onBack?: () => void, action?: Node): HTMLElement {
   return h(
     'header',
     { class: 'appbar' },
@@ -21,6 +21,7 @@ function appbar(title: string, onBack?: () => void): HTMLElement {
         icon([['path', { d: 'M15 5l-7 7 7 7' }]]),
       ),
     h('h1', {}, title),
+    action,
   );
 }
 
@@ -38,7 +39,7 @@ export function panes(view: ScreenView, pushed: boolean, onBack: () => void): HT
   const list = h(
     'section',
     { class: 'pane list', 'aria-label': view.list.title },
-    appbar(view.list.title),
+    appbar(view.list.title, undefined, view.list.action),
     h('div', { class: 'pane-scroll' }, view.list.body),
   );
   return h('main', { class: 'panes', 'data-phone': view.list.phone }, list, detail);

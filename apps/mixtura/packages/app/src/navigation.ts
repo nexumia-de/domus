@@ -5,7 +5,7 @@
 
 import { type AppState } from './app-state';
 import { destinationOf } from './destinations';
-import { DEFAULT_HASH, normaliseHash, parseHash } from './router';
+import { closedSheet, DEFAULT_HASH, normaliseHash, parseHash } from './router';
 import { type Store } from './state';
 
 interface Entry {
@@ -34,6 +34,14 @@ export function go(store: Store<AppState>, hash: string): void {
   show(store, target);
 }
 
+/** Changes the current entry's address without adding one (search, filters). */
+export function replace(store: Store<AppState>, hash: string): void {
+  const target = normaliseHash(hash);
+  if (target === store.get().route.hash) return;
+  history.replaceState({ i: index() } satisfies Entry, '', target);
+  show(store, target);
+}
+
 /** Back one entry, or to `fallback` when the app was opened on this screen. */
 export function back(store: Store<AppState>, fallback: string): void {
   if (index() > 0) history.back();
@@ -49,7 +57,12 @@ export function startNavigation(store: Store<AppState>): void {
   history.replaceState({ i: index() } satisfies Entry, '', start);
   show(store, start);
 
-  window.addEventListener('popstate', () => show(store, normaliseHash(location.hash)));
+  window.addEventListener('popstate', () => {
+    const next = parseHash(normaliseHash(location.hash));
+    const kept = closedSheet(store.get().route, next);
+    if (kept) history.replaceState({ i: index() } satisfies Entry, '', kept.hash);
+    show(store, (kept ?? next).hash);
+  });
   window.addEventListener('hashchange', () => {
     // A hash typed into the address bar: keep the app's own entries consistent.
     const hash = normaliseHash(location.hash);

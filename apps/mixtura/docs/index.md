@@ -46,7 +46,7 @@ links. Change history is in [log.md](log.md).
 # Behaviour and design
 
 - [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.
-- [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode.
+- [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the section "As built" says what #18 and #19 do with the real seed data.
 - [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family.
 - [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About.
 - [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.

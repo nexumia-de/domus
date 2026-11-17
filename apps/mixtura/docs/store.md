@@ -77,8 +77,11 @@ a usable store the catalog is the seed alone.
 
 Seed file: `seed/seed.json` (copied to the build, precached by the
 service worker), shape in `store/seed.ts`: `seedVersion`, the four lists,
-optional `replacedBy`. The file now committed is an empty placeholder;
-issue #13 fills it. Tests use `test/fixtures/seed-fixture.json` (five
+optional `replacedBy`, `vocabulary` (names of methods and glasses) and
+`attribution`. The file is not committed: `build.mjs` assembles it from the
+engine package (`packages/app/seed-assemble.mjs`: seed ingredients and specs,
+vocabulary, the six root templates; `seedVersion` is `bar-assistant-<7 characters
+of the commit>`), about 470 kB, precached by the service worker. Tests use `test/fixtures/seed-fixture.json` (five
 ingredients, two specs, all valid against the schemas).
 
 ## Writing
