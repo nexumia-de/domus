@@ -15,6 +15,7 @@ links. Change history is in [log.md](log.md).
 # Research
 
 - [Existing tools and data](existing-tools.md) - Survey of FOSS cooking software and data sets with licences, and the gap Culina fills.
+- [Evaluation of nutrition values and food tracking](nutrition-evaluation.md) - Whether nutrition figures, an adviser and a food diary fit Culina; existing tools, open data, evidence, and the recommendation: neutral per-portion figures, recipes handed to an existing tracker, no diary, no backend.
 - [How chefs work](chef-practice.md) - Ratios, components, seasoning, pairing, cooking from stock, operations; what a tool should do and the data model that follows.
 
 # Decisions
