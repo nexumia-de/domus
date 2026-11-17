@@ -1,7 +1,7 @@
 // Serves the built app (dist/) on localhost for the walk, under `prefix`
 // (default the root; '/mixtura/' mimics GitHub Pages). `overrides`
 // maps a path (below the prefix) to a replacement body, to publish a "new build" while the
-// page is open.
+// page is open. `cacheControl` is the header of every response (GitHub Pages: 'max-age=600').
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
@@ -16,13 +16,13 @@ const TYPES = {
   '.webmanifest': 'application/manifest+json',
 };
 
-export const serve = async (dir = resolve('dist'), prefix = '/') => {
+export const serve = async (dir = resolve('dist'), prefix = '/', cacheControl = 'no-cache') => {
   const overrides = new Map();
   const server = createServer(async (request, response) => {
     const full = normalize(new URL(request.url, 'http://localhost').pathname);
     if (!full.startsWith(prefix)) return response.writeHead(404).end();
     const path = `/${full.slice(prefix.length)}`;
-    const headers = { 'Cache-Control': 'no-cache' };
+    const headers = { 'Cache-Control': cacheControl };
     if (overrides.has(path)) {
       response.writeHead(200, { ...headers, 'Content-Type': TYPES[extname(path)] ?? 'text/plain' });
       return response.end(overrides.get(path));

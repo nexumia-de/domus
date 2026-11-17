@@ -83,8 +83,14 @@ answers every GET from the cache (cache first, `index.html` for
 navigations), never from the network. A new build installs in the
 background and waits; the page shows the banner "Update available"; only
 the Update button sends `skip-waiting`, and the page reloads when the new
-worker takes over. The old cache is deleted on activation. Serve `sw.js`
-with `Cache-Control: no-cache` so browsers see a new build at once.
+worker takes over. The old cache is deleted on activation. The install
+fetches every file with `cache: 'reload'` (`new Request(file, { cache:
+'reload' })`), so a host that serves the fixed names with `max-age` (GitHub
+Pages: 600 s) cannot hand the new worker an old file to store under the
+new cache name; `e2e/update.mjs` publishes a changed `main.js` under
+`max-age=600` and checks the new cache holds it (it fails without the
+option). Serve `sw.js` and `index.html` with `Cache-Control: no-cache` if
+the host allows headers, so browsers see a new build at once.
 
 **Theme.** `data-theme` on `<html>` overrides the system setting;
 `theme-init.js` (from `src/theme-init.ts`, a blocking script in `<head>`,
