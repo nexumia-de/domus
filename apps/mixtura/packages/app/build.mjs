@@ -7,6 +7,7 @@ import { copyFileSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync 
 import { join } from 'node:path';
 import { build, transform } from 'esbuild';
 import { assembleSeed } from './seed-assemble.mjs';
+import './compile-schemas.mjs'; // writes the validators main.js bundles
 
 const out = process.env.MIXTURA_OUT ?? 'dist';
 const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
@@ -34,6 +35,13 @@ await build({
   ...common,
   entryPoints: ['src/stock/rank-worker.ts'],
   outfile: join(out, 'rank-worker.js'),
+});
+
+// The theme bootstrap runs from <head> before first paint (index.html has no inline script).
+await build({
+  ...common,
+  entryPoints: ['src/theme-init.ts'],
+  outfile: join(out, 'theme-init.js'),
 });
 
 const styles = [
@@ -67,7 +75,7 @@ writeFileSync(join(out, 'seed', 'seed.json'), JSON.stringify(assembleSeed()));
 copied.push('seed/seed.json');
 
 // The cache is named after the files' content: a changed build replaces it.
-const files = [...copied, 'main.js', 'rank-worker.js', 'app.css'];
+const files = [...copied, 'main.js', 'rank-worker.js', 'theme-init.js', 'app.css'];
 const hash = createHash('sha256');
 for (const file of files) hash.update(file).update(readFileSync(join(out, file)));
 await build({

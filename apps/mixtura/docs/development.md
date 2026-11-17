@@ -86,9 +86,9 @@ the Update button sends `skip-waiting`, and the page reloads when the new
 worker takes over. The old cache is deleted on activation. Serve `sw.js`
 with `Cache-Control: no-cache` so browsers see a new build at once.
 
-**Theme.** `data-theme` on `<html>` overrides the system setting; a small
-inline script in `index.html` sets it before first paint from the
-copy of the preferences in `localStorage` (`mixtura.prefs-copy`); the
+**Theme.** `data-theme` on `<html>` overrides the system setting;
+`theme-init.js` (from `src/theme-init.ts`, a blocking script in `<head>`,
+precached) sets it before first paint from the copy of the preferences in `localStorage` (`mixtura.prefs-copy`); the
 local store ([store](store.md)) owns them.
 
 **End-to-end test.** `npm run e2e` (`packages/app/e2e/walk.mjs`) loads the
@@ -153,6 +153,43 @@ storage API (a custom scheme, a WebView), the app registers nothing, ignores
 a refused registration and reports persistence as unsupported;
 `e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store. Owner steps: [install](install.md#what-the-owner-must-switch-on).
 
+## Content Security Policy
+
+`index.html` carries a meta policy (read at the source: MDN's CSP guide in
+`mdn/content`, Ajv's `docs/standalone.md` in `ajv-validator/ajv`):
+
+```
+default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'
+```
+
+No `unsafe-inline`, no `unsafe-eval`, no external host. What each part is
+for: `script-src 'self'` covers `main.js`, `theme-init.js` and the ranking
+worker's script (`worker-src 'self'`); `style-src 'self'` is why the page
+has no inline style: `dom.ts` applies a `style` prop through the style
+object (CSSOM, not governed by the policy) instead of a style attribute;
+`connect-src 'self'` is the seed file; `manifest-src 'self'`; `img-src
+'self'` (icons; no `data:` is used); `form-action 'none'`. The export
+download is a `blob:` link and needs no entry. A meta policy cannot carry
+`frame-ancestors`, `sandbox` or a report endpoint; if the host later allows
+headers, send the same policy as a header with `frame-ancestors 'none'`.
+
+The schemas are compiled at build time: `compile-schemas.mjs` turns every
+`packages/engine/schemas/*.schema.json` into plain validator functions with
+Ajv standalone (same options as before: `allErrors`, `strict`; generic
+over the files, so a new schema or field needs no change) and writes
+`src/store/schema-validators.generated.mjs` (git-ignored; `build`, `pretest`
+and `pretypecheck` run it). The bundle contains no `new Function` and no
+Ajv compiler, only Ajv's two tiny run-time helpers (`equal`, `ucs2length`).
+`ajv` is a development dependency (this script and the tests).
+
+Checks: `test/build.test.ts` (no `new Function(`/`eval(` in the scripts, no
+inline script, style or handler in `index.html`, the policy's directives,
+the theme script blocking in `<head>`), `test/import-crafted.test.ts`
+(`__proto__` and `constructor` keys in an import file), `e2e/csp.mjs`
+(14 routes online and offline with the service worker and the ranking
+worker running; any `securitypolicyviolation` event or policy message in
+the console fails; an injected inline script must be blocked).
+
 ## Network hosts
 
 The Pages workflow runs on GitHub's runners and needs only GitHub itself
@@ -160,7 +197,12 @@ The Pages workflow runs on GitHub's runners and needs only GitHub itself
 `npm ci`, which GitHub-hosted runners reach). The install guide was checked
 against `raw.githubusercontent.com/mdn/content` because `developer.mozilla.org`,
 `support.google.com`, `web.dev`, `help.gnome.org` and `support.mozilla.org`
-answered 403 through the session proxy on 2026-11-17.
+answered 403 through the session proxy on 2026-11-17. For the policy work
+(#107) `curl -sS -m 15 https://<host>/` gave no answer (status 000) for
+`developer.mozilla.org`, `web.dev` and `ajv.js.org` on 2026-11-17; the pages
+were read from `mdn/content` (`files/en-us/web/http/guides/csp/index.md`)
+and `ajv-validator/ajv` (`docs/standalone.md`) through
+`raw.githubusercontent.com`.
 
 Needed to check the facts in [existing tools and data](existing-tools.md);
 reachable on 2026-11-16:

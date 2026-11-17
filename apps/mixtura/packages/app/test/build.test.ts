@@ -122,3 +122,31 @@ test('no root-absolute URL in the entry, manifest, worker files or script: the a
   expect(read('main.js')).not.toMatch(/register\(["']\//);
   expect(read('app.css')).not.toMatch(/url\(["']?\/(?!\/)/);
 });
+
+test('strict policy: no dynamic code in the scripts, no inline script or style in the page', () => {
+  for (const file of ['main.js', 'rank-worker.js', 'theme-init.js', 'sw.js']) {
+    const code = read(file);
+    expect(code, file).not.toMatch(/new Function\(|\beval\(|Function\(["'`]/);
+  }
+  const html = read('index.html');
+  const inline = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].filter(
+    ([, attributes, body]) => !/\bsrc=/.test(attributes ?? '') || (body ?? '').trim() !== '',
+  );
+  expect(inline).toEqual([]);
+  expect(html).not.toMatch(/<style\b|\sstyle=|\son[a-z]+=/);
+  const policy = /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(html)?.[1] ?? '';
+  expect(policy).toContain("default-src 'self'");
+  expect(policy).toContain("script-src 'self'");
+  expect(policy).toContain("object-src 'none'");
+  expect(policy).toContain("base-uri 'none'");
+  expect(policy).not.toMatch(/unsafe-|https?:|\*/);
+});
+
+test('the theme bootstrap is an external file that runs before the page is drawn', () => {
+  const html = read('index.html');
+  const head = html.slice(0, html.indexOf('</head>'));
+  expect(head).toMatch(/<script src="theme-init\.js"><\/script>/);
+  expect(head).not.toMatch(/<script[^>]*\b(defer|async|type="module")/);
+  expect(listFiles(out)).toContain('theme-init.js');
+  expect(read('sw.js')).toContain('"theme-init.js"');
+});

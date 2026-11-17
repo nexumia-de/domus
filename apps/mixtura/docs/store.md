@@ -93,8 +93,9 @@ ingredients, two specs, all valid against the schemas).
 Repositories (`repo-entities.ts`): `get`, `list`, `listBy(index, key)`,
 `put`, `delete`; specs add `versionsOf(lineageId)` for versions (#26); `store/versions.ts` writes them (`appendVersion`, `setStatus`, `restoreVersion`).
 Every `put` validates against the JSON Schemas of
-`packages/engine/schemas/` (Ajv, bundled; the schemas are imported from
-the engine folder, which is not edited) and checks that the ids of a
+`packages/engine/schemas/` (validators compiled at build time by Ajv standalone, `compile-schemas.mjs`,
+[policy](development.md#content-security-policy); the engine folder is
+only read) and checks that the ids of a
 user entity are user ids. A refusal is a `StoreError` of kind `invalid`
 with one line per problem; nothing is written. Settings and `meta` are
 not entities and use a hand-written parser with defaults.

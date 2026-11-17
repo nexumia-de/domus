@@ -81,6 +81,10 @@ for (const prefix of PREFIXES) {
     cached.includes(`${site.url}rank-worker.js`),
     `the ranking worker script is precached under ${prefix}`,
   );
+  expect(
+    cached.includes(`${site.url}theme-init.js`),
+    `the theme script is precached under ${prefix}`,
+  );
   await page.goto(`${site.url}#/stock`);
   await page.locator('.stock-tree').waitFor();
   await page.locator('input[name="q"]').fill('gin');

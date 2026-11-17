@@ -12,6 +12,21 @@ function append(parent: Node, children: Child[]): void {
   }
 }
 
+/**
+ * Applies `property: value; ...` through the style object, not as a style
+ * attribute: the page's Content-Security-Policy has no 'unsafe-inline' for styles.
+ */
+function setStyle(element: HTMLElement, declarations: string): void {
+  for (const declaration of declarations.split(';')) {
+    const colon = declaration.indexOf(':');
+    if (colon < 0) continue;
+    element.style.setProperty(
+      declaration.slice(0, colon).trim(),
+      declaration.slice(colon + 1).trim(),
+    );
+  }
+}
+
 /** Builds an element. `class` sets the class list, `onclick` and the like add listeners. */
 export function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -23,6 +38,7 @@ export function h<K extends keyof HTMLElementTagNameMap>(
     if (value === undefined || value === false) continue;
     if (typeof value === 'function') element.addEventListener(name.slice(2), value);
     else if (name === 'class') element.className = String(value);
+    else if (name === 'style') setStyle(element, String(value));
     else element.setAttribute(name, value === true ? '' : String(value));
   }
   append(element, children);
