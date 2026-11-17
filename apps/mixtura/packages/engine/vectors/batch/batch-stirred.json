@@ -1,0 +1,70 @@
+{
+  "id": "batch-stirred",
+  "description": "Stirred martini batch for 8 servings: stir fraction 0.20; shelf life synthetic, vermouth 90 days limits",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 90
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 8,
+      "water_ml": 144,
+      "total_volume_ml": 864,
+      "pour_per_serving_ml": 108,
+      "rounded_lines": {
+        "gin": [480, "ml", 0],
+        "dry-vermouth": [240, "ml", 0]
+      },
+      "rounded_water_ml": 144,
+      "rounded_total_ml": 864,
+      "drink": {
+        "abv_after_pct": 26.666667,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 26.666667,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    }
+  ],
+  "shelf_life": {
+    "days": 90,
+    "limiting_id": "dry-vermouth"
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

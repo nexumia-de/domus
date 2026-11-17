@@ -1,0 +1,81 @@
+{
+  "id": "balance-unknown-ingredient",
+  "description": "A line refers to an ingredient that is not in the tree: every concentration figure names it as unknown; the volume of the line is still counted",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "mystery-liqueur",
+        "amount": 20,
+        "unit": "ml"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 80,
+      "ethanol_ml": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "abv_before_pct": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "sugar_g": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "acid_g": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "sugar_before_g_per_100ml": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "acid_before_pct": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "volume_after_ml": 100,
+      "water_ml": 20,
+      "abv_after_pct": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "sugar_g_per_100ml": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "acid_pct": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "sugar_acid_ratio": {
+        "unknown": ["mystery-liqueur"]
+      },
+      "uk_units": {
+        "unknown": ["mystery-liqueur"]
+      }
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "shake",
+        "bound": "default",
+        "fraction": 0.25,
+        "basis": "sourced",
+        "evidence": "secondary"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

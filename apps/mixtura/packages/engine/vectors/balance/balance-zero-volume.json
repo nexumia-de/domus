@@ -1,0 +1,66 @@
+{
+  "id": "balance-zero-volume",
+  "description": "Only solid sugar, volume 0: concentrations are unknown with no ingredient to blame, totals are known",
+  "ingredients": [
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "sugar",
+        "amount": 4,
+        "unit": "g"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 0,
+      "ethanol_ml": 0,
+      "abv_before_pct": {
+        "unknown": []
+      },
+      "sugar_g": 4,
+      "acid_g": 0,
+      "sugar_before_g_per_100ml": {
+        "unknown": []
+      },
+      "acid_before_pct": {
+        "unknown": []
+      },
+      "volume_after_ml": 0,
+      "water_ml": 0,
+      "abv_after_pct": {
+        "unknown": []
+      },
+      "sugar_g_per_100ml": {
+        "unknown": []
+      },
+      "acid_pct": {
+        "unknown": []
+      },
+      "sugar_acid_ratio": null,
+      "uk_units": 0
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "stir",
+        "bound": "default",
+        "fraction": 0.2,
+        "basis": "sourced",
+        "evidence": "secondary"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

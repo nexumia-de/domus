@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Balance
-description: Formulas for ABV, sugar, acid, volume and units of alcohol before and after dilution, the adjustable dilution model, usual ranges per root template with what is verified, the vector file format and the first worked examples.
+description: Formulas, engine module and pre-diluted batching for ABV, sugar, acid, volume and units of alcohol before and after dilution, the adjustable dilution model, usual ranges per root template with what is verified, the vector file format and the first worked examples.
 tags: [balance, dilution, formulas, vectors, engine]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -179,8 +179,11 @@ in juices beyond the single figures above.
 # Vector file format
 
 Files in `packages/engine/vectors/`, one worked example each, validated
-against `vectors/vector.schema.json` by `test/vectors.test.ts` (no
-engine code reads them yet). Fields:
+against `vectors/vector.schema.json` by `test/vectors.test.ts` and run
+against the engine by `test/balance.test.ts` (an adapter turns each line
+into an ingredient and a spec line). The vectors of the
+[engine section](#engine) in `vectors/balance/` use a richer format,
+described there. Fields:
 
 - `id`: kebab-case, equal to the file name without `.json`.
 - `description`: what the example is.
@@ -192,6 +195,133 @@ engine code reads them yet). Fields:
 - `expected`: named numbers (`null` where undefined).
 - `tolerance`: absolute, applied to every expected number.
 - `source`: where the calculation is and how well the inputs are known.
+
+# Engine
+
+Code: `packages/engine/src/balance/`, one job per file. Entry point
+`computeBalance(tree, spec, options)`; it reads the formulas above, the
+amounts module for every unit and `ingredients/mixture.ts` for the
+mixture arithmetic.
+
+| File          | Job                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------- |
+| `types.ts`    | `Figure`, `BalanceSpec`, `DilutionTable`, `BalanceFigures`, error codes               |
+| `dilution.ts` | `DILUTION` (read from `data/dilution.json`), `chooseDilution(method, options)`        |
+| `lines.ts`    | spec lines to ml and g, properties from the tree or from a prepared ingredient's spec |
+| `sums.ts`     | totals of volume, ethanol, sugar and acid                                             |
+| `figures.ts`  | ABV, sugar, acid before and after dilution, sugar-to-acid ratio, UK units             |
+
+**Figures.** A figure is `{ known: true, value }` or `{ known: false,
+missingIds, reason }`. A property that no ancestor of a line's ingredient
+defines makes the figures that need it unknown and names the ingredient;
+the other figures are still computed (volume and, say, ABV when only acid
+is missing). A line whose ingredient is not in the tree counts its
+volume and is named as missing for every concentration. Nothing is
+defaulted. The result carries numbers and flags, no verdict words;
+comparing a figure with a template's range belongs to templates.
+
+**Dilution.** The method comes from the spec. `chooseDilution` takes the
+fraction from the table (`options.dilution.table`, default
+`data/dilution.json`), at `bound` `low`, `default` (default) or `high`, or
+an explicit `options.dilution.fraction` (a spec's own dilution). The
+output says what was used: method, bound, fraction, `evidence` (the
+table's marker, or `override`) and `basis`: `sourced` for `derived` and
+`secondary` rows (secondary still means search-result summaries only, see
+[Evidence](#evidence)), `assumption` for assumption rows, `override` for
+an explicit fraction. A missing method, or a method id not in the table,
+returns the figures before dilution only with `dilutionUnavailable` set
+to `no-method` or `unknown-method`; no fraction is invented.
+
+**Ambiguities the implementation had to settle** (each now a rule):
+
+- Mass units (`g`, `oz_mass`) count as solid sugar: `grams * sugar / 100`
+  g of sugar and volume 0. A mass line adds nothing else; acid or ethanol
+  in a solid is not modelled.
+- A `top` line counts as its `topMl` volume when given. The Spec schema
+  has no such field yet, so `BalanceLine` carries it; without it the line
+  is excluded and listed in `excluded` (`top-without-volume`). The range
+  "0 ml to the glass volume" of [units](units.md#non-volumetric-amounts-in-balance)
+  is not computed because the glass volume is not in the data yet.
+- Convention volumes (dash, drop, splash, tsp, tbsp, bar spoon) count
+  with their table volume (overridable through `unitOverrides`);
+  `estimated` is true and `estimatedIds` names the lines.
+- A line's `amountMax` and `optional` are not read: the figures use
+  `amount`, and an optional line counts.
+- The sugar-to-acid ratio has `value: null` (known, undefined by
+  definition) when the acid total is 0, as in the vectors.
+- With zero volume the totals are known but every concentration is
+  unknown with no ingredient to blame (reason: no volume).
+- Water of dilution is `V0 * f`; `after.waterMl` reports it.
+
+**Vectors** in `packages/engine/vectors/balance/`, schema
+`balance-vector.schema.json`: a small ingredient tree, optional prepared
+`specs`, a `spec` (method and lines with unit ids), optional `options`
+(`unit_overrides`, `dilution` with `fraction`, `bound`, `table`) and
+`expected.figures` (number, `null` or `{ unknown: [ids] }`) plus
+`expected.flags`. Expected values were computed with hand-written
+formulas, not by the engine. Tolerance is 0.0001 absolute: the vectors
+store six decimals, and 0.0001 is far below the effect of any assumption
+in the inputs while still failing a wrong formula. The files cover
+lines in dash, bar spoon, g, cl and oz; a `top` line with and without
+volume; a prepared ingredient; an unknown property; an unknown
+ingredient; every method of `dilution.json`; a fraction override, a table
+override and both bounds; no method and an unknown method; zero volume;
+and a drink without alcohol.
+
+# Batching
+
+Code: `packages/engine/src/batch/`. A pre-diluted batch is N servings of a
+spec mixed ahead with the water the method would have added to each
+serving, so that a pour equals the finished drink. It uses the dilution
+of [Engine](#engine), so it is exactly as (un)verified as that table.
+
+| File            | Job                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------- |
+| `scale.ts`      | `scaleLines(lines, servings, { targetUnit })`: amounts module `scale` and `convert`   |
+| `prediluted.ts` | `prediluted(tree, spec, servings, options)`: water, volumes, yield, rounding, figures |
+| `shelf.ts`      | `shelfLife(tree, ids)`: minimum of `shelfLifeDays` with the limiting ingredient id    |
+
+**Formulas.** One serving has `V0` ml before and `V = V0 (1 + f)` after
+dilution. For N servings: every line times N (unit kept; a target unit
+converts lines of the same kind only), water `N · V0 · f` ml, total
+volume `N · V`, pour per serving `V` ml, yield N servings. Ethanol, sugar
+and acid are conserved, so the batch has the figures of one served drink
+exactly (the invariant, tested over every balance vector for 1, 3 and 10
+servings, unknown figures included). `top` lines are not batched (they
+are poured at the glass); they are listed in `servedSeparately` and the
+batch is compared with the spec without them. A spec with no method (or
+an unknown one) has no dilution, so the result is the error `no-dilution`;
+servings must be a number above 0 (`invalid-servings`).
+
+**Rounding.** Each scaled amount is rounded by the display rules of
+[units](units.md) (`formatAmountDetailed`, metric unless `system` says
+otherwise), the water to whole ml. Every line reports `exact`,
+`rounded`, the `step` and `roundingError` (rounded minus exact, in ml or
+g); the water reports the same. `made` holds the figures of the batch
+built from the rounded amounts, so they can be compared with `perDrink`;
+`roundedTotalMl` and `roundedYieldServings` follow from them. Scaling by
+N and then 1/N returns the original amounts to 1e-9: scaling does not
+round, only the report does. How far `made` may drift is a property of
+the step (a dash is a whole number, 0.5 ml below 5 ml), so each batch
+vector states its own `made_tolerance`.
+
+**Shelf life.** The minimum of the parts' `shelfLifeDays` (inherited as
+usual; a prepared ingredient counts with its own stored value, not that
+of its parts) and the id of the ingredient that sets it; on a tie the
+first in spec order. A part without a value makes the shelf life unknown
+and the result names those ids; nothing is defaulted, and the numbers in
+the batch vectors are synthetic. Fresh citrus therefore limits a batch
+only if the data gives it a short life.
+
+**Vectors** in `packages/engine/vectors/batch/`, schema
+`batch-vector.schema.json`: the balance vector format with `cases` (one
+per number of servings: water, total, pour, rounded lines with their
+error, rounded water and total, the figures of the drink and of the made
+batch), `shelf_life`, `made_tolerance`; error vectors list
+`error_servings` and the `error_code`. They cover 1 to 10 servings of a
+shaken spec, a stirred batch, a target unit, a prepared ingredient, a
+`top` line, a limiting shelf life, a tie, an unknown shelf life, invalid
+servings and a missing method.
 
 # Worked examples
 

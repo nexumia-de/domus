@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixtura batch vector",
+  "description": "A spec over a small ingredient tree and what the batch module must produce for several numbers of servings (cases), or the error code it must return (error_servings). `drink` holds the figures of one served drink, which the exact batch must equal; `made` holds the figures of the batch built from rounded amounts, compared within made_tolerance (the rounding step decides how far it may be). Other numbers use tolerance (absolute).",
+  "type": "object",
+  "required": ["id", "description", "ingredients", "spec", "tolerance", "source"],
+  "oneOf": [
+    {
+      "required": ["cases"]
+    },
+    {
+      "required": ["error_servings", "error_code"]
+    }
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "specs": {
+      "type": "object"
+    },
+    "spec": {
+      "type": "object",
+      "required": ["lines"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["ingredientId", "amount", "unit"],
+            "additionalProperties": false,
+            "properties": {
+              "ingredientId": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number",
+                "minimum": 0
+              },
+              "unit": {
+                "type": "string"
+              },
+              "topMl": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target_unit": {
+          "type": "string"
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "servings",
+          "water_ml",
+          "total_volume_ml",
+          "pour_per_serving_ml",
+          "rounded_lines",
+          "rounded_water_ml",
+          "rounded_total_ml",
+          "drink",
+          "made"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "servings": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "water_ml": {
+            "type": "number"
+          },
+          "total_volume_ml": {
+            "type": "number"
+          },
+          "pour_per_serving_ml": {
+            "type": "number"
+          },
+          "rounded_lines": {
+            "description": "ingredient id to [rounded value, unit, rounding error in ml or g]",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 3,
+              "items": {
+                "type": ["number", "string"]
+              }
+            }
+          },
+          "rounded_water_ml": {
+            "type": "number"
+          },
+          "rounded_total_ml": {
+            "type": "number"
+          },
+          "drink": {
+            "type": "object",
+            "required": ["abv_after_pct", "sugar_g_per_100ml", "acid_pct"],
+            "additionalProperties": false,
+            "properties": {
+              "abv_after_pct": {
+                "type": "number"
+              },
+              "sugar_g_per_100ml": {
+                "type": "number"
+              },
+              "acid_pct": {
+                "type": "number"
+              }
+            }
+          },
+          "made": {
+            "type": "object",
+            "required": ["abv_after_pct", "sugar_g_per_100ml", "acid_pct"],
+            "additionalProperties": false,
+            "properties": {
+              "abv_after_pct": {
+                "type": "number"
+              },
+              "sugar_g_per_100ml": {
+                "type": "number"
+              },
+              "acid_pct": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "shelf_life": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["days", "limiting_id"],
+          "additionalProperties": false,
+          "properties": {
+            "days": {
+              "type": "number"
+            },
+            "limiting_id": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["unknown"],
+          "additionalProperties": false,
+          "properties": {
+            "unknown": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "error_servings": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "error_code": {
+      "enum": ["invalid-servings", "no-dilution"]
+    },
+    "made_tolerance": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "tolerance": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "source": {
+      "type": "string"
+    }
+  }
+}

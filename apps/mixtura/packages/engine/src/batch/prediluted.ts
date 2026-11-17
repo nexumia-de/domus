@@ -1,0 +1,124 @@
+// A pre-diluted batch: the spec scaled to N servings plus the water the
+// method would have added to each, so that a pour from the batch equals the
+// finished drink. Quantities are rounded by the display rules and the
+// rounding error is reported with figures for the batch as made.
+import { formatAmountDetailed, toBase } from '../amounts/index';
+import type { Amount, DisplaySystem } from '../amounts/index';
+import {
+  computeBalance,
+  type BalanceFigures,
+  type BalanceOptions,
+  type BalanceSpec,
+} from '../balance/index';
+import type { IngredientTree } from '../ingredients/tree';
+import { scaleLines, type ScaleOptions } from './scale';
+import { shelfLife } from './shelf';
+import type { Batch, BatchError, BatchLine, BatchResult } from './types';
+
+export interface BatchOptions extends BalanceOptions, ScaleOptions {
+  /** Display system for the rounded amounts; default metric. */
+  system?: DisplaySystem;
+}
+
+const balanceErrors = (errors: { ids: string[]; message: string }[]): BatchError[] =>
+  errors.map((e) => ({ code: 'balance-error', ids: e.ids, message: e.message }));
+
+function base(amount: Amount, options: BatchOptions): number {
+  const b = toBase(amount, options.unitOverrides);
+  return b.ok ? b.value.value : NaN;
+}
+
+export function prediluted(
+  tree: IngredientTree,
+  spec: BalanceSpec,
+  servings: number,
+  options: BatchOptions = {},
+): BatchResult {
+  const batched = spec.lines.filter((l) => !(l.unit === 'top'));
+  const servedSeparately = spec.lines.filter((l) => l.unit === 'top');
+  const scaled = scaleLines(batched, servings, options);
+  if (!scaled.ok) return scaled;
+
+  const drink = computeBalance(tree, { method: spec.method, lines: batched }, options);
+  if (!drink.ok) return { ok: false, errors: balanceErrors(drink.errors) };
+  const perDrink = drink.value;
+  if (!perDrink.dilution || !perDrink.after) {
+    return {
+      ok: false,
+      errors: [
+        {
+          code: 'no-dilution',
+          ids: [],
+          message: `no dilution for method "${spec.method ?? ''}": a batch needs one`,
+        },
+      ],
+    };
+  }
+  const fraction = perDrink.dilution.fraction;
+  const dilution = { ...options.dilution, fraction };
+  const run = (lines: typeof batched, f: number) =>
+    computeBalance(tree, { lines }, { ...options, dilution: { ...dilution, fraction: f } });
+
+  const exact = run(scaled.value, fraction);
+  if (!exact.ok) return { ok: false, errors: balanceErrors(exact.errors) };
+
+  const lines: BatchLine[] = [];
+  for (const line of scaled.value) {
+    const amount: Amount = { value: line.amount, unit: line.unit as Amount['unit'] };
+    const f = formatAmountDetailed(amount, {
+      system: options.system,
+      overrides: options.unitOverrides,
+    });
+    if (!f.ok) {
+      return {
+        ok: false,
+        errors: [{ code: 'invalid-line', ids: [line.ingredientId], message: f.error.message }],
+      };
+    }
+    lines.push({
+      ingredientId: line.ingredientId,
+      exact: amount,
+      rounded: f.value.shown,
+      step: f.value.step,
+      roundingError: base(f.value.shown, options) - base(amount, options),
+    });
+  }
+  const roundedLines = lines.map((l, i) => ({
+    ...(scaled.value[i] as (typeof batched)[number]),
+    amount: l.rounded.value,
+    unit: l.rounded.unit,
+  }));
+  const roundedBefore = run(roundedLines, 0);
+  if (!roundedBefore.ok) return { ok: false, errors: balanceErrors(roundedBefore.errors) };
+  const exactWaterMl = (exact.value.after as { waterMl: number }).waterMl;
+  const waterShown = formatAmountDetailed({ value: exactWaterMl, unit: 'ml' });
+  const roundedWaterMl = waterShown.ok ? waterShown.value.shown.value : exactWaterMl;
+  const v0 = roundedBefore.value.before.volumeMl;
+  const made = run(roundedLines, v0 > 0 ? roundedWaterMl / v0 : 0);
+  if (!made.ok) return { ok: false, errors: balanceErrors(made.errors) };
+
+  const pour = perDrink.after.volumeMl;
+  const roundedTotalMl = v0 + roundedWaterMl;
+  const value: Batch = {
+    servings,
+    lines,
+    water: {
+      exactMl: exactWaterMl,
+      roundedMl: roundedWaterMl,
+      roundingErrorMl: roundedWaterMl - exactWaterMl,
+    },
+    pourPerServingMl: pour,
+    totalVolumeMl: (exact.value.after as { volumeMl: number }).volumeMl,
+    roundedTotalMl,
+    roundedYieldServings: pour > 0 ? roundedTotalMl / pour : 0,
+    servedSeparately,
+    perDrink: perDrink as BalanceFigures,
+    exact: exact.value,
+    made: made.value,
+    shelfLife: shelfLife(
+      tree,
+      batched.map((l) => l.ingredientId),
+    ),
+  };
+  return { ok: true, value };
+}
