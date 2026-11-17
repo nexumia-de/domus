@@ -16,7 +16,7 @@ sources:
   - id: ci-general
     title: 'Dave Arnold, Cocktail Science in General, parts 1 and 2, Cooking Issues, 2010-09-02 and 2010-09-08 (https://cookingissues.com/2010/09/02/cocktail-science-in-general-part-1-of-2/, https://cookingissues.com/2010/09/08/cocktail-science-in-generalpart-2-of-2/); read in full on 2026-11-17'
   - id: mcdonald
-    title: 'Mike McDonald, Between the Sheets, 2020-05-06 (https://mikemcdonald.co/blog/2020/05/06/between-the-sheets/); seen only as a search-result summary, host blocked'
+    title: 'Mike McDonald, Between the Sheets, 2020-05-06 (https://mikemcdonald.co/blog/2020/05/06/between-the-sheets/); read in full on 2026-11-17 (#116); a reader's post, not the book'
   - id: deathco
     title: 'Death & Co, Shaken or Stirred (https://fashioned.deathandcompany.com/pages/shaken-or-stirred); search-result summary only'
   - id: difford
@@ -204,6 +204,43 @@ missing. Implementing coefficients whose sign, constant and meaning are
 undecided would put an invented number into the data, so the engine
 stays on the constant fractions, shown as a range.
 
+**Third pass (#116, 2026-11-17, `mikemcdonald.co` now reachable).** Read
+at the source: Mike McDonald, _Between the Sheets_, 2020-05-06
+(`https://mikemcdonald.co/blog/2020/05/06/between-the-sheets/`)[^mcdonald].
+Quotes: the book gives "formulas for dilution (pg 123)", "Liquid
+Intelligence claims that a shaken cocktail should have 50-60% dilution
+(pg 125)", and "After playing around with the equation, I believe Dave
+forgot the `-` sign in the shaken cocktail dilution equation (pg 123),
+which should instead be: `-1.567 * ABV^2 + 1.742 * ABV + 0.0203`. That
+results in 50-60% dilution for the ranges of ABV we're likely to see".
+So the constant is **0.0203** there (not 0.203), the sign claim is one
+reader's correction of a printed equation (the printed form is not
+quoted), and the post says nothing about the stirred equation. It also
+says the sheet predicted "90+%" for an IBA Between the Sheets while his own
+calculation gave about 58 % and a better recipe 42 %.
+
+Cross-check with the stated numbers: with ABV as a fraction the corrected
+shaken curve gives 0.306 at 0.20, 0.402 at 0.30, 0.466 at 0.40 and peaks
+at 0.50 near ABV 0.556 (working: `-1.567 x 0.04 + 1.742 x 0.2 + 0.0203`
+and so on). It never reaches 50 to 60 % for the ABV a drink has before
+dilution (the IBA Between the Sheets is about 30 %), so the post's own
+sentence "results in 50-60% ... for the ranges of ABV we're likely to
+see" fails the cross-check; with `c = 0.203` the curve gives 0.49 to 0.58
+for 0.20 to 0.40 and would fit it. The constant (0.0203 or 0.203) is
+therefore **in doubt even at this one reading**. Neither what "dilution"
+is a fraction of nor whether ABV enters as fraction or percent is stated;
+no validity range, no worked example and no erratum were found.
+
+Not readable: the book. Google Books lists it as `view_no_pages`, and
+search inside (`books.google.com`) answers a captcha (429) to scripted
+requests; `www.google.com` gives only the metadata feed. No second
+independent reading of either equation was reachable (the stirred
+equation exists only as the garbled summary above; `web.archive.org`
+resets the connection). **Decision: not implemented**, `dilution.json`
+and the engine are unchanged. The rule for later stays: both equations
+at the book or at two independent readings that agree, the definition
+and a cross-check against Arnold's own figures.
+
 **Per method, what is supported:**
 
 | Method  | Supported now                                                                | Missing                                   |
@@ -214,8 +251,10 @@ stays on the constant fractions, shown as a range.
 | `blend` | nothing                                                                      | any measurement; stays an assumption      |
 
 Needed to finish #48: the text of _Liquid Intelligence_ pages 123 to
-126 (a library copy or a publisher excerpt), or the `mikemcdonald.co`
-post and the page of the second blog; and a decision whether the
+126 (a library copy, photos or a publisher excerpt; Google Books search
+inside is closed to scripts); the `mikemcdonald.co` post is read and
+settles nothing (constant in doubt, definition missing, no stirred
+equation); and a decision whether the
 ABV-dependent form replaces `f` per method. Once the definition is
 known the change is data only: coefficients and validity range in
 `dilution.json` per method, `chooseDilution` evaluating them, vectors
@@ -528,7 +567,8 @@ sugar `= 100·100/162.655 = 61.48` g/100 ml.
 
 Pages or posts that would turn assumptions into verified numbers:
 
-1. Dave Arnold, _Liquid Intelligence_, chapter on dilution, around pages
+1. (Third pass 2026-11-17: only McDonald's post could be read, see
+   [#48 findings](#48-findings).) Dave Arnold, _Liquid Intelligence_, chapter on dilution, around pages
    123 to 126: the equations for shaken and stirred dilution against
    starting ABV, and what "dilution" is defined as in the "50–60 %" figure.
 2. _Cocktail Codex_, the chapters on stirred and shaken drinks and the
