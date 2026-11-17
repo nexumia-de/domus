@@ -6,9 +6,11 @@
 import { h } from '../dom';
 import type { BatchVM } from '../screens/spec/batch-vm';
 import { strings } from '../strings';
+import { batchControls, type BatchActions } from './batch-controls';
 import * as glyph from './glyphs';
 
-export function batchSheet(vm: BatchVM, close: () => void): HTMLElement {
+export function batchSheet(vm: BatchVM, actions: BatchActions): HTMLElement {
+  const close = actions.close;
   const body: (HTMLElement | false)[] = vm.failure
     ? [h('p', { class: 'note' }, vm.failure)]
     : [
@@ -78,6 +80,7 @@ export function batchSheet(vm: BatchVM, close: () => void): HTMLElement {
     h(
       'div',
       { class: 'sheet-scroll' },
+      batchControls(vm.control, actions),
       ...body,
       ...vm.notes.map((text) => h('p', { class: 'note' }, text)),
     ),

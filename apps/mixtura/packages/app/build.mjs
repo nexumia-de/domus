@@ -42,6 +42,7 @@ const styles = [
   'shell',
   'components',
   'browse',
+  'menu',
   'stock',
   'swap',
   'editor',

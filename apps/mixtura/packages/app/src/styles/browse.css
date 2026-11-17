@@ -575,3 +575,14 @@ button.chip {
   overflow-wrap: anywhere;
   color: var(--accent);
 }
+
+/* The batch sheet's field and Set button. */
+.batch-field-row .input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
+.batch-controls .field {
+  margin-top: var(--sp-3);
+}

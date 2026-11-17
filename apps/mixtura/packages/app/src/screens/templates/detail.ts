@@ -121,15 +121,23 @@ export function templateBody(model: BrowseModel, template: Template): HTMLElemen
   );
 }
 
-/** The bottom bar: the drinks list filtered to this template. */
-export function templateActions(template: Template): HTMLElement {
-  return h(
-    'a',
-    {
-      class: 'btn btn--primary',
-      href: `#/drinks?template=${encodeURIComponent(template.id)}`,
-    },
-    glyph.chevron(),
-    strings.templates.showInDrinks,
+/** The bottom bar: the drinks list filtered to this template, and a new drink that starts from it. */
+export function templateActions(template: Template): Node {
+  const id = encodeURIComponent(template.id);
+  const bar = document.createDocumentFragment();
+  bar.append(
+    h(
+      'a',
+      { class: 'btn btn--tonal', href: `#/drinks/new?template=${id}` },
+      glyph.plus(),
+      strings.buttons.newDrink,
+    ),
+    h(
+      'a',
+      { class: 'btn btn--primary', href: `#/drinks?template=${id}` },
+      glyph.chevron(),
+      strings.templates.showInDrinks,
+    ),
   );
+  return bar;
 }

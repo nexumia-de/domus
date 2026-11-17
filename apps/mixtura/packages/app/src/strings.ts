@@ -66,6 +66,9 @@ export const strings = {
     yesNo: { yes: 'Yes', no: 'No' },
     buyNextHint:
       'Which drinks Buy Next counts when it ranks what to buy. Drinks you stopped making are left out unless you ask for them.',
+    shortcuts: 'Keyboard shortcuts',
+    shortcutsHint:
+      'Single keys on the Drinks list: / searches, n starts a new drink, arrow keys move between drinks. Turn them off if they get in the way of assistive technology.',
     appearance: 'Appearance',
     themeValues: { system: 'Follow System', light: 'Light', dark: 'Dark' },
     about: 'About',
@@ -170,6 +173,12 @@ export const strings = {
     clearFilters: 'Clear Filters',
     showDrinks: (n: number) => `Show ${n} ${n === 1 ? 'Drink' : 'Drinks'}`,
     removeFilter: (label: string) => `Remove filter ${label}`,
+    sort: {
+      button: (word: string) => `Sort, ${word}`,
+      menu: 'Sort drinks by',
+      words: { name: 'Name', changed: 'Recently changed', template: 'Template' },
+      sortedBy: (word: string) => `Sorted by ${word}`,
+    },
     groups: {
       makeable: 'Availability',
       template: 'Template',
@@ -479,7 +488,22 @@ export const strings = {
   },
   batch: {
     title: (n: number) => `Batch of ${n === 1 ? '1 drink' : `${n} drinks`}`,
+    titleVolume: (volume: string) => `Batch of ${volume}`,
     close: 'Close the batch',
+    mode: 'Make a batch for',
+    byDrinks: 'Drinks',
+    byVolume: 'Volume',
+    drinksField: 'Number of drinks',
+    drinksHint: (max: number) => `A whole number from 1 to ${max}.`,
+    drinksInvalid: (max: number) => `Enter a whole number of drinks from 1 to ${max}.`,
+    volumeField: 'Target volume',
+    volumeHint: 'Milliliters, or add a unit: 1 l, 32 oz. The batch is as many servings as fit.',
+    volumeInvalid: 'Enter a volume above 0 and up to 100 l, for example 1 l, 750 or 32 oz.',
+    set: 'Set',
+    servingsFor: 'Servings',
+    servingsOf: (n: number, pour: string) => `${n} of ${pour}`,
+    tooSmall: (pour: string) =>
+      `That is less than one serving. One drink is ${pour}; enter at least that.`,
     lines: 'Mix',
     water: 'Water to add',
     total: 'Total volume',

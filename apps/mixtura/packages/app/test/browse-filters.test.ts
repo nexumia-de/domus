@@ -12,7 +12,7 @@ import {
 import { familyOf, newestVersions } from '../src/screens/browse/model';
 import { normalise } from '../src/screens/browse/normalise';
 import { STRENGTH_BANDS, bandOf, inBand } from '../src/screens/browse/strength';
-import { hashWith } from '../src/screens/drinks/url';
+import { hashWith, specHash } from '../src/screens/drinks/url';
 import { parseHash } from '../src/router';
 import { fixtureModel, seedModel } from './browse-fixture';
 
@@ -172,4 +172,20 @@ test('the seed: counts, accent-free search and filters over 639 drinks', () => {
   expect(both.length).toBeGreaterThan(0);
   expect(both.length).toBeLessThan(gin.length);
   expect(seed.withoutAbv()).toBe(36);
+});
+
+test('the status filter shows drinks with that status; retired ones only under it', () => {
+  expect(names({ q: '', status: 'retired' })).toEqual(['Retired One']);
+  expect(names({ q: '', status: 'draft' })).not.toContain('Retired One');
+  expect(names({ q: '', status: 'on-menu' })).toEqual([]);
+  expect(names({ q: '' })).not.toContain('Retired One');
+});
+
+test('sort stays in the address when the filters change and rides along to a drink', () => {
+  const route = parseHash('#/drinks?q=gin&sort=changed&sheet=filters');
+  const next = hashWith(route, { q: '', template: 'daiquiri' });
+  expect(parseHash(next).query.get('sort')).toBe('changed');
+  expect(parseHash(next).query.get('template')).toBe('daiquiri');
+  expect(specHash('a', { q: '' }, 'template')).toBe('#/drinks/a?sort=template');
+  expect(specHash('a', { q: '' })).toBe('#/drinks/a');
 });

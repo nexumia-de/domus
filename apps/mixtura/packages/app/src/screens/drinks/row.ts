@@ -15,6 +15,8 @@ export function drinkRow(
   selected: boolean,
   availability?: Availability,
   alcohol?: DrinkAlcohol,
+  /** The row is the list's one tab stop; the arrow keys move it (shortcuts.ts). */
+  tabStop = true,
 ): HTMLElement {
   const { spec } = drink;
   const template = spec.templateId ? model.templateById.get(spec.templateId) : undefined;
@@ -31,7 +33,12 @@ export function drinkRow(
     {},
     h(
       'a',
-      { class: 'row', href, 'aria-current': selected ? 'true' : undefined },
+      {
+        class: 'row',
+        href,
+        'aria-current': selected ? 'true' : undefined,
+        tabindex: tabStop ? undefined : '-1',
+      },
       h(
         'span',
         { class: 'row-main' },

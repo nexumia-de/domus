@@ -11,6 +11,7 @@ import { type Store } from '../state';
 import { notFound } from './not-found';
 import { statusBanner, updateBanner } from './banner';
 import { nav } from './nav';
+import { trapFocus } from './focus-trap';
 import { inertBehindModal } from './modal';
 import { toast } from './toast';
 import { panes } from './panes';
@@ -63,6 +64,7 @@ export function render(root: HTMLElement, shell: Shell): void {
   );
   root.replaceChildren(app);
   inertBehindModal(app);
+  trapFocus(app);
   document.title = `${view.title} - Drink Builder`;
   restoreScroll(root, state.route, scroll, view.list !== undefined);
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;

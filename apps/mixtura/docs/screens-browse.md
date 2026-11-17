@@ -89,7 +89,8 @@ part [#33](https://github.com/nexumia-de/mixtura/issues/33). Destination
   On desktop the selected drink's spec is the detail pane.
 - **Actions.** Tap a row: spec. New Drink: editor with no template.
   Filters: [filters sheet](#filters). Search clears with one tap.
-  Keyboard: `/` focuses search; arrow keys move the selection.
+  Keyboard: `/` focuses search, `n` starts a new drink; arrow keys move
+  between the rows ([as built](#as-built-75)).
 - **States.** _Empty, no drinks at all_: cannot occur with seed data; if
   it does, "No drinks yet" with New Drink. _No hit_: "No drink matches
   the search and filters." with Clear Filters (the chips stay visible).
@@ -242,9 +243,7 @@ template) forced some of it.
   "(suggested)"). List rows and the template filter use the stored id only.
 - **Drinks list.** Rows show name, template (or "No template") and ABV after
   dilution (whole percent, "No ABV figure" for 36 drinks), sorted by name; the
-  newest version of each lineage; retired drinks are hidden. Makeable tag and filter: see [stock screens](screens-stock-settings.md#as-built-30-33); no sort menu, no status filter (every seed drink is a draft), no
-  arrow-key selection and no `n` shortcut yet: follow-up issue. `/` focuses
-  search. Rows are drawn 60 at a time (the next 60 when the "Show more drinks"
+  newest version of each lineage; retired drinks are hidden. Makeable tag and filter: see [stock screens](screens-stock-settings.md#as-built-30-33); sort menu, status filter, arrow keys and `n`: [#75](#as-built-75). Rows are drawn 60 at a time (the next 60 when the "Show more drinks"
   button comes within 600 px of the view); the count shown is remembered per
   list address so Back restores the scroll position (also after a reload,
   session storage). Balance is computed per row when the row is drawn, and for
@@ -264,8 +263,9 @@ template) forced some of it.
 - **Templates.** The overview is rows (not cards): roots by name, variants
   indented, role line, method, number of drinks. The detail shows slots,
   method, glass, the usual ranges as bands with their basis, and the drinks
-  that follow it; its bottom bar is **Show in Drinks**
-  (`#/drinks?template=<id>`). No New Drink button until #25.
+  that follow it; its bottom bar is **New Drink**
+  (`#/drinks/new?template=<id>`, the editor starts with the template's slots, [#75](#as-built-75)) and **Show in Drinks**
+  (`#/drinks?template=<id>`).
 - **Spec.** Lines, role tags with their word, fixed rows (method, glass,
   garnish; absent ones omitted), balance panel, notes, source line. Amounts
   follow the display setting and the engine's rounding (22.5 ml shows as
@@ -434,3 +434,53 @@ stock: {prepared ingredient}`, `Substitute: Sugar for Simple Syrup` (a listed
   `screens/spec/stock-strings.ts`, the view is `components/stock-panel.ts`.
 - **Tests.** `test/stock-panel-vm.test.ts`, `e2e/spec-stock.mjs` (screenshots
   `spec-stock-*` at both sizes).
+
+# As built (#75)
+
+Browse follow-ups of [#18](https://github.com/nexumia-de/mixtura/issues/18),
+after the WAI-ARIA Authoring Practices.
+
+- **Sort menu.** A menu button (icon of two arrows) beside Filters opens a
+  menu of three choices, one marked (`menuitemradio`, check mark and bold):
+  **Name** (default), **Recently changed** (newest `updatedAt`, else
+  `createdAt`; built-in drinks carry no date and come last, by name) and
+  **Template** (template name, drinks without a template last, ties by
+  name). The choice is the `sort` parameter of the address (`sort=changed`,
+  `sort=template`; Name has none), kept when filters change and carried to
+  the spec address, so the list beside a drink keeps its order. A
+  non-default order is said in a line under the count ("Sorted by Recently
+  changed"), the button's name says it too. Order is
+  `screens/browse/sort.ts`; the button is `components/menu-button.ts`. The
+  menu is drawn in place: Enter, Space, click or Arrow Down open it (focus on
+  the marked choice; Arrow Up opens it at the last), Arrow Up and Down wrap,
+  Home and End jump, Escape closes and returns to the button, Tab closes
+  and moves on, a tap outside closes, choosing closes and keeps focus on the
+  button. Items are 44 px high. Its open state is not in the address, so a
+  redraw closes it.
+- **Status filter.** Already built with #18 (the Status group of the
+  filters sheet, the chip "Status: ...", retired drinks only under it);
+  the earlier note that it was missing was wrong. Unit-tested now.
+- **Arrow keys.** The rows are links with one tab stop (roving tabindex): the
+  open drink, else the first row. Arrow Down and Up move focus between the
+  rows, from the search field Arrow Down enters the list, Arrow Up from
+  the first row returns to the field, Arrow Down from the last drawn row
+  reaches "Show more drinks", Home and End jump to the first and last drawn
+  row, Enter opens the drink. Moving does not open a drink: on desktop that
+  would push a history entry and redraw the spec on every key press, and
+  the open drink is marked with `aria-current` as before. The list is not
+  a `listbox`, because its rows are links.
+- **`n`** starts a new drink (`#/drinks/new`) and `/` focuses search, both
+  only while the drinks list is on screen. They are off while a text
+  field, select or editable element has focus, with Ctrl, Cmd or Alt held,
+  over a dialog, after another handler took the key, and when turned off in
+  Settings (Keyboard shortcuts, Yes by default; kept in `localStorage` of
+  this browser, not in the data store). That setting is the mechanism
+  WCAG 2.1.4 (Character Key Shortcuts) asks for.
+- **Filters sheet.** Tab and Shift+Tab stay inside any open modal dialog
+  (`shell/focus-trap.ts`, for the filters sheet and the batch, swap and
+  picker sheets alike); everything behind is `inert` as before. When the
+  filters sheet closes, by Escape, Back, the close button, the backdrop or
+  Show N Drinks, focus returns to the Filters button.
+- **Template detail.** The bottom bar has **New Drink** beside Show in
+  Drinks: the editor opens with the template's slots, method and glass
+  (the editor reads `?template=`).

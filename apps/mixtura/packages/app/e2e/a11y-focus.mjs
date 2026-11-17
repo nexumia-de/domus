@@ -110,7 +110,9 @@ export const focusWalk = async (page) => {
     if (state.covered) out.push(`focused ${who} is covered by ${state.coveredBy}`);
     if (state.positive) out.push(`positive tabindex on ${who}`);
     if (previous && state.index < previous.index) path.push(`order jump at ${who}`);
-    if (previous && state.index === previous.index) out.push(`focus stuck on ${who}`);
+    // A dialog with one control keeps focus on it: Tab is trapped there by design, Escape leaves.
+    const sole = inDialog && expected <= 1;
+    if (previous && state.index === previous.index && !sole) out.push(`focus stuck on ${who}`);
     previous = state;
   }
   // Forward order follows the document, except where the walk wrapped around.

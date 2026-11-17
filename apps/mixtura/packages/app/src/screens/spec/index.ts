@@ -5,13 +5,14 @@
 // those actions (#20, #27, #25): until then only built actions are shown.
 // Try a Swap (#20) is the same screen with a swap in the address.
 
+import type { BatchActions } from '../../components/batch-controls';
 import { batchSheet } from '../../components/batch-sheet';
 import { balancePanel } from '../../components/balance-panel';
 import { servingsStepper, type StepperActions } from '../../components/servings-stepper';
 import { stockPanel, stockTag, type StockPanelActions } from '../../components/stock-panel';
 import { specLines, specMeta, type LineActions } from '../../components/spec-lines';
 import { h } from '../../dom';
-import { back, go, replace } from '../../navigation';
+import { go, replace } from '../../navigation';
 import { type Route } from '../../router';
 import { type Screen, type ScreenContext, type ScreenView } from '../../screen';
 import { strings } from '../../strings';
@@ -23,6 +24,8 @@ import { openTopField, parseTopVolume, setTopMl, viewFor } from './session';
 import { sheetLineOf, swapActions, type SwapActions } from './swap-actions';
 import { swapOf } from './swap-state';
 import { swapStrings } from './swap-strings';
+import { batchActions } from './batch-actions';
+import { volumeOf } from './batch-target';
 import { servingsOf, specAddress } from './servings';
 import { versionStrings as vs } from '../versions/strings';
 import { specVM, type SpecVM, type TagVM } from './view-model';
@@ -47,7 +50,7 @@ function tag(vm: TagVM): HTMLElement {
 
 function body(
   vm: SpecVM,
-  actions: LineActions & StepperActions & { closeBatch(): void },
+  actions: LineActions & StepperActions & { batch: BatchActions },
   swap: SwapActions,
   lineUnit: string,
   stock: { vm: StockPanelVM | undefined; actions: StockPanelActions },
@@ -120,7 +123,7 @@ function body(
         h('a', { class: 'line-link', href: '#/about' }, strings.spec.sourceLink),
       ),
     vm.swap && compactBar(vm.swap.compact),
-    vm.batch && batchSheet(vm.batch, actions.closeBatch),
+    vm.batch && batchSheet(vm.batch, actions.batch),
     vm.swap?.sheet && swapSheet(vm.swap.sheet, lineUnit, swap),
   );
 }
@@ -173,18 +176,16 @@ export const screens: Screen[] = [
       const { route } = context;
       const servings = servingsOf(route.query);
       const sheetOpen = route.query.get('sheet') === 'batch';
+      const volumeMl = volumeOf(route.query);
       const swapState = swapOf(route.query);
       const sheetLine = swapState ? sheetLineOf(route.query) : null;
       const swap = swapActions(store, route, id, drink.spec.lines, sheetLine);
-      const actions: LineActions & StepperActions & { closeBatch(): void } = {
+      const actions: LineActions & StepperActions & { batch: BatchActions } = {
         ...(swapState && { openLine: swap.openLine }),
-        setServings: (n) => replace(store, specAddress(route, n, sheetOpen ? 'batch' : null)),
+        setServings: (n) =>
+          replace(store, specAddress(route, n, sheetOpen ? 'batch' : null, volumeMl)),
         openBatch: () => (wide() ? replace : go)(store, specAddress(route, servings, 'batch')),
-        closeBatch() {
-          const without = specAddress(route, servings, null);
-          if (wide()) replace(store, without);
-          else back(store, without);
-        },
+        batch: batchActions(store, route, servings, wide()),
         editTop: (index) => store.set({ specView: openTopField(store.get().specView, id, index) }),
         setTop(index, text) {
           const volume = parseTopVolume(text);
@@ -200,6 +201,7 @@ export const screens: Screen[] = [
         view,
         servings,
         batch: sheetOpen,
+        ...(volumeMl !== undefined && { volumeMl }),
         swap: swapState,
         sheetLine,
       });

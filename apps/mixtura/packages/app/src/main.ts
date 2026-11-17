@@ -4,6 +4,7 @@ import { watchKeyboardInset } from './keyboard-inset';
 import { startNavigation } from './navigation';
 import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
+import { loadShortcuts } from './shortcuts-pref';
 import { render, type Shell } from './shell/render';
 import { createStore } from './state';
 import { registerServiceWorker } from './sw-register';
@@ -13,6 +14,7 @@ if (root) {
   const prefs = loadPrefs();
   const store = createStore(initialState(location.hash, prefs));
   applyTheme(prefs.theme);
+  store.set({ shortcuts: loadShortcuts() });
 
   const connection = connect(store);
   const shell: Shell = {

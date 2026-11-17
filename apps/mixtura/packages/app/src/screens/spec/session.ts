@@ -4,7 +4,7 @@
 // stored: it is gone on reload or when another drink is opened
 // (docs/screens-specs.md#what-if-volume-of-a-top).
 
-import { parseAmount, toBase } from '@mixtura/engine';
+import { parseVolume, type Volume } from './volume-text';
 
 export interface SpecView {
   /** The drink this state belongs to; another drink starts from the defaults. */
@@ -79,20 +79,9 @@ export function setTopMl(
 /** Largest volume accepted for a top, in ml. */
 export const MAX_TOP_ML = 2000;
 
-export type TopVolume = { ok: true; ml: number } | { ok: false };
+export type TopVolume = Volume;
 
-/**
- * Reads what the user typed as a volume in ml: a plain number means ml,
- * a unit is converted (`3 oz`); decimal comma accepted. Zero, negative,
- * non-volume units and more than 2000 ml are refused.
- */
+/** Reads a top's volume: as {@link parseVolume}, up to 2000 ml. */
 export function parseTopVolume(text: string): TopVolume {
-  const typed = text.trim().replace(',', '.');
-  const withUnit = /^[\d.\s/]+$/.test(typed) ? `${typed} ml` : typed;
-  const amount = parseAmount(withUnit);
-  if (!amount.ok) return { ok: false };
-  const base = toBase(amount.value);
-  if (!base.ok || base.value.kind !== 'volume') return { ok: false };
-  const ml = base.value.value;
-  return ml > 0 && ml <= MAX_TOP_ML ? { ok: true, ml } : { ok: false };
+  return parseVolume(text, MAX_TOP_ML);
 }
