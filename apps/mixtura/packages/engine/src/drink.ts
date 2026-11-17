@@ -28,3 +28,6 @@ export type * from './alcohol/index';
 
 export { INHERITED, resolveAll, resolveProperty } from './drink-ingredients/index';
 export type * from './drink-ingredients/index';
+
+export { diffSpecs } from './drink-specs/index';
+export type * from './drink-specs/index';

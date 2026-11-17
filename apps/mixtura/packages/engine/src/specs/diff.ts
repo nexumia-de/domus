@@ -1,24 +1,32 @@
+// Compares two versions of a spec. Which spec fields are compared, and which
+// line fields count as the amount beside amount and unit, is the domain's
+// list (drinks: drink-specs/diff.ts).
 import type {
-  DiffLine,
-  DiffOptions,
-  DiffSpec,
-  FieldDiff,
-  LineDiff,
+  DiffDomain,
+  DiffOptionsOf,
+  FieldDiffOf,
+  LineDiffOf,
   LineField,
-  SpecField,
+  SpecDiffOf,
+  VersionLine,
+  VersionSpec,
 } from './types';
 
 const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
 
 /** Which parts of a matched pair of lines differ. */
-function fieldsOf(before: DiffLine, after: DiffLine): LineField[] {
+function fieldsOf<L extends VersionLine>(
+  before: L,
+  after: L,
+  amountKeys: readonly (keyof L)[],
+): LineField[] {
   const out: LineField[] = [];
   if (before.ingredientId !== after.ingredientId) out.push('ingredient');
   if (
     before.amount !== after.amount ||
     before.amountMax !== after.amountMax ||
     before.unit !== after.unit ||
-    before.topMl !== after.topMl
+    amountKeys.some((k) => before[k] !== after[k])
   )
     out.push('amount');
   if (before.role !== after.role) out.push('role');
@@ -29,47 +37,30 @@ function fieldsOf(before: DiffLine, after: DiffLine): LineField[] {
 }
 
 /** The first unmatched older line that `accept` takes, marked as used. */
-function take(
-  before: readonly DiffLine[],
-  used: Set<number>,
-  accept: (line: DiffLine) => boolean,
-): number {
+function take<L>(before: readonly L[], used: Set<number>, accept: (line: L) => boolean): number {
   const at = before.findIndex((line, i) => !used.has(i) && accept(line));
   if (at >= 0) used.add(at);
   return at;
 }
 
-const FIELDS: [SpecField, (s: DiffSpec) => string | undefined][] = [
-  ['name', (s) => s.name],
-  ['template', (s) => s.templateId],
-  ['method', (s) => s.method],
-  ['glass', (s) => s.glass],
-  ['garnish', (s) => s.garnish?.trim()],
-  ['notes', (s) => s.notes?.trim()],
-];
-
 /**
- * Compares two versions of a drink: lines added, removed and changed (another
- * ingredient, amount, role, optional flag, note or substitutes), then name,
- * template, method, glass, garnish and notes. Lines are matched, not
- * compared by position: first identical lines, then lines of the same
- * ingredient, then lines in the same role, so a different order is no
- * difference and a replaced ingredient reads as one changed line.
- *
- * @param before The older spec.
- * @param after The newer spec.
- * @param options `roleOf` gives the role of a line (explicit or the ingredient's).
- * @returns The differences; `empty` is true when there are none.
+ * Compares two versions: lines added, removed and changed (another
+ * ingredient, amount, role, optional flag, note or substitutes), then the
+ * domain's spec fields. Lines are matched, not compared by position: first
+ * identical lines, then lines of the same ingredient, then lines in the same
+ * role, so a different order is no difference and a replaced ingredient
+ * reads as one changed line.
  */
-export function diffSpecs(
-  before: DiffSpec,
-  after: DiffSpec,
-  options: DiffOptions = {},
-): { lines: LineDiff[]; fields: FieldDiff[]; empty: boolean } {
-  const roleOf = (line: DiffLine): string | undefined => options.roleOf?.(line) ?? line.role;
+export function diffVersions<L extends VersionLine, S extends VersionSpec<L>, F extends string>(
+  before: S,
+  after: S,
+  options: DiffOptionsOf<L>,
+  domain: DiffDomain<L, S, F>,
+): SpecDiffOf<L, F> {
+  const roleOf = (line: L): string | undefined => options.roleOf?.(line) ?? line.role;
   const used = new Set<number>();
   const pairs = new Map<number, number>();
-  const passes: ((a: DiffLine) => (b: DiffLine) => boolean)[] = [
+  const passes: ((a: L) => (b: L) => boolean)[] = [
     (a) => (b) => same(a, b),
     (a) => (b) => a.ingredientId === b.ingredientId,
     (a) => (b) => {
@@ -84,22 +75,22 @@ export function diffSpecs(
       if (at >= 0) pairs.set(i, at);
     });
   }
-  const lines: LineDiff[] = [];
+  const lines: LineDiffOf<L>[] = [];
   after.lines.forEach((line, i) => {
     const at = pairs.get(i);
     if (at === undefined) {
       lines.push({ kind: 'added', after: line, fields: [] });
       return;
     }
-    const old = before.lines[at] as DiffLine;
-    const fields = fieldsOf(old, line);
+    const old = before.lines[at] as L;
+    const fields = fieldsOf(old, line, domain.amountKeys);
     if (fields.length > 0) lines.push({ kind: 'changed', before: old, after: line, fields });
   });
   before.lines.forEach((line, i) => {
     if (!used.has(i)) lines.push({ kind: 'removed', before: line, fields: [] });
   });
-  const fields: FieldDiff[] = [];
-  for (const [field, read] of FIELDS) {
+  const fields: FieldDiffOf<F>[] = [];
+  for (const [field, read] of domain.fields) {
     const a = read(before) || undefined;
     const b = read(after) || undefined;
     if (a !== b) {

@@ -46,7 +46,7 @@ export {
 } from './stock/index';
 export type * from './stock/index';
 
-export { buildFamily, diffSpecs, findFamilyCycles, summariseRiff } from './specs/index';
+export { buildFamily, findFamilyCycles, summariseRiff } from './specs/index';
 export type * from './specs/index';
 
 export {
