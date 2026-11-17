@@ -134,28 +134,29 @@ the totals of ethanol, sugar and acid are conserved.
 A drink family: slots with a role and a ratio range, a method, usual
 ranges of the finished drink.
 
-| Field              | Stored or derived | Required | Meaning                                                                            |
-| ------------------ | ----------------- | -------- | ---------------------------------------------------------------------------------- |
-| `id`               | stored            | yes      | Id.                                                                                |
-| `name`             | stored            | yes      | Display name.                                                                      |
-| `parentId`         | stored            | no       | Template this one is a variant of (a sour whose sweet part is a liqueur).          |
-| `slots`            | stored            | yes      | At least one slot.                                                                 |
-| `slots[].id`       | stored            | yes      | Id of the slot, unique within the template.                                        |
-| `slots[].role`     | stored            | yes      | Role the filling ingredient has.                                                   |
-| `slots[].minParts` | stored            | yes      | Lower end of the ratio in parts, above 0.                                          |
-| `slots[].maxParts` | stored            | yes      | Upper end, not below `minParts` (engine check).                                    |
-| `slots[].optional` | stored            | no       | `true` if the slot may stay empty; absent means required.                          |
-| `slots[].note`     | stored            | no       | Free text.                                                                         |
-| `slotEvidence`     | stored            | no       | `verified`, `secondary`, `derived` or `assumption`: how well the ratios are known. |
-| `method`           | stored            | yes      | Method id (for example shake or stir); dilution per method is in balance.          |
-| `glass`            | stored            | no       | Glass id.                                                                          |
-| `usual`            | stored            | no       | Usual ranges after dilution; needs `source`.                                       |
-| `usual.abv`        | stored            | no       | Range (`min`, `max`) in percent.                                                   |
-| `usual.sugar`      | stored            | no       | Range in g per 100 ml.                                                             |
-| `usual.acid`       | stored            | no       | Range in percent.                                                                  |
-| `usual.evidence`   | stored            | no       | Same values as `slotEvidence`, for the three ranges.                               |
-| `source`           | stored            | no       | Source of the ranges.                                                              |
-| `notes`            | stored            | no       | Free text.                                                                         |
+| Field              | Stored or derived | Required | Meaning                                                                                                                                                          |
+| ------------------ | ----------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`               | stored            | yes      | Id.                                                                                                                                                              |
+| `name`             | stored            | yes      | Display name.                                                                                                                                                    |
+| `parentId`         | stored            | no       | Template this one is a variant of (a sour whose sweet part is a liqueur).                                                                                        |
+| `alcohol`          | stored            | no       | `none` or `low`: the template is a variant for drinks of that computed alcohol class and needs `parentId`; `matchSpec` offers it only when asked for that class. |
+| `slots`            | stored            | yes      | At least one slot.                                                                                                                                               |
+| `slots[].id`       | stored            | yes      | Id of the slot, unique within the template.                                                                                                                      |
+| `slots[].role`     | stored            | yes      | Role the filling ingredient has.                                                                                                                                 |
+| `slots[].minParts` | stored            | yes      | Lower end of the ratio in parts, above 0.                                                                                                                        |
+| `slots[].maxParts` | stored            | yes      | Upper end, not below `minParts` (engine check).                                                                                                                  |
+| `slots[].optional` | stored            | no       | `true` if the slot may stay empty; absent means required.                                                                                                        |
+| `slots[].note`     | stored            | no       | Free text.                                                                                                                                                       |
+| `slotEvidence`     | stored            | no       | `verified`, `secondary`, `derived` or `assumption`: how well the ratios are known.                                                                               |
+| `method`           | stored            | yes      | Method id (for example shake or stir); dilution per method is in balance.                                                                                        |
+| `glass`            | stored            | no       | Glass id.                                                                                                                                                        |
+| `usual`            | stored            | no       | Usual ranges after dilution; needs `source`.                                                                                                                     |
+| `usual.abv`        | stored            | no       | Range (`min`, `max`) in percent.                                                                                                                                 |
+| `usual.sugar`      | stored            | no       | Range in g per 100 ml.                                                                                                                                           |
+| `usual.acid`       | stored            | no       | Range in percent.                                                                                                                                                |
+| `usual.evidence`   | stored            | no       | Same values as `slotEvidence`, for the three ranges.                                                                                                             |
+| `source`           | stored            | no       | Source of the ranges.                                                                                                                                            |
+| `notes`            | stored            | no       | Free text.                                                                                                                                                       |
 
 Ratios are in parts, not in a unit, so a template works in ounces and in
 millilitres. The first slot with role `base` is the reference: its volume

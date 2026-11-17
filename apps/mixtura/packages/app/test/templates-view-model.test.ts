@@ -11,10 +11,14 @@ test('the overview lists root templates by name with their variants under them',
   const rows = templateRows(seed, '');
   expect(rows.map((r) => `${r.variant ? '  ' : ''}${r.name}`)).toEqual([
     'Daiquiri',
+    '  Non-alcoholic sour',
     '  Sidecar',
     'Flip',
+    '  Non-alcoholic foamed drink',
     'Highball',
+    '  Non-alcoholic highball or spritz',
     'Martini',
+    '  Low-ABV stirred drink',
     'Old-Fashioned',
   ]);
 });

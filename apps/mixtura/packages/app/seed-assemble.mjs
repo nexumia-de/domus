@@ -1,26 +1,34 @@
 // Assembles the seed file the app loads (seed/seed.json) from the engine
-// package: the seed ingredients and specs, the vocabulary, and the six root
-// templates. Used by build.mjs and by the tests; the result is read-only
+// package: the converted Bar Assistant ingredients and specs, Mixtura's own
+// additions (data/mixtura/, kept apart so the converter output stays
+// reproducible), the vocabulary, the six root templates and the variants for
+// the alcohol classes. Used by build.mjs and by the tests; the result is read-only
 // data (docs/seed-data.md, docs/store.md).
 import { readFileSync } from 'node:fs';
-import { ROOT_TEMPLATES } from '@mixtura/engine';
+import { ROOT_TEMPLATES, VARIANT_TEMPLATES } from '@mixtura/engine';
 
 const engineData = new URL('../engine/data/seed/', import.meta.url);
-const read = (name) => JSON.parse(readFileSync(new URL(name, engineData), 'utf8'));
+const own = new URL('../engine/data/mixtura/', import.meta.url);
+const read = (name, base = engineData) => JSON.parse(readFileSync(new URL(name, base), 'utf8'));
 
 /** The seed object in the shape of `store/seed.ts`. */
 export function assembleSeed() {
   const ingredients = read('ingredients.json');
   const specs = read('specs.json');
   const vocabulary = read('vocabulary.json');
+  const mixturaIngredients = read('ingredients.json', own);
+  const mixturaSpecs = read('specs.json', own);
   const { attribution } = ingredients;
   return {
-    seedVersion: `bar-assistant-${attribution.commit.slice(0, 7)}`,
-    attribution,
+    seedVersion: `bar-assistant-${attribution.commit.slice(0, 7)}+mixtura-1`,
+    attribution: {
+      ...attribution,
+      notice: `${attribution.notice} ${mixturaIngredients.attribution.notice}`,
+    },
     vocabulary: { methods: vocabulary.methods, glasses: vocabulary.glasses },
-    ingredients: ingredients.ingredients,
-    templates: ROOT_TEMPLATES,
-    specs: specs.specs,
+    ingredients: [...ingredients.ingredients, ...mixturaIngredients.ingredients],
+    templates: [...ROOT_TEMPLATES, ...VARIANT_TEMPLATES],
+    specs: [...specs.specs, ...mixturaSpecs.specs],
     affinities: [],
   };
 }

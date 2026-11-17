@@ -1,0 +1,25 @@
+{
+  "id": "match-low-stirred",
+  "kind": "match",
+  "description": "Sherry 60 (line role base), dry vermouth 30 with class low: low-stirred.",
+  "lines": [
+    {
+      "ingredientId": "sherry",
+      "amount": 60,
+      "unit": "ml",
+      "role": "base"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": "low-stirred",
+    "distance": 0,
+    "notCandidates": ["martini"]
+  },
+  "alcohol": "low",
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

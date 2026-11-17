@@ -74,12 +74,26 @@ function rank(list: Omit<Candidate, 'rank'>[]): Candidate[] {
 }
 
 /**
+ * The templates a spec is tried against. Variants (`alcohol` set) are offered only for their class, and
+ * then they replace their parent: same slots, so both would tie on every spec and the id would decide.
+ */
+function offered(templates: readonly Template[], alcohol: MatchOptions['alcohol']): Template[] {
+  return templates.filter((t) =>
+    t.alcohol !== undefined
+      ? t.alcohol === alcohol
+      : !templates.some(
+          (v) => v.parentId === t.id && v.alcohol !== undefined && v.alcohol === alcohol,
+        ),
+  );
+}
+
+/**
  * Matches a spec to templates by roles and ratios and ranks every candidate.
  *
  * @param tree - A validated tree that gives each ingredient its role.
  * @param templates - Templates to try; slot ratios are in parts against the base slot.
  * @param spec - Lines (amounts in units of the unit table) and an optional explicit template id.
- * @param options - Unit overrides.
+ * @param options - Unit overrides; `alcohol` (class of the drink) offers the variants of that class in place of their parents.
  * @returns Candidates best first with distance and ratios; `chosen` is the best that fits (absent if none), or the explicit id, which is never replaced.
  */
 export function matchSpec(
@@ -101,7 +115,9 @@ export function matchSpec(
       candidates: rank([evaluate(tree, own, spec, options)]),
     };
   }
-  const candidates = rank(templates.map((t) => evaluate(tree, t, spec, options)));
+  const candidates = rank(
+    offered(templates, options.alcohol).map((t) => evaluate(tree, t, spec, options)),
+  );
   const best = candidates[0];
   if (!best || !best.fits) return { candidates };
   const next = candidates[1];

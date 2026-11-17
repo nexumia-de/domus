@@ -81,7 +81,8 @@ Daiquiri; both are the sour family.
 
 # Matching
 
-`matchSpec(tree, templates, spec, options)`. A spec line is
+`matchSpec(tree, templates, spec, options)`; `options.alcohol` offers the
+variants of that class ([variants](#variants-by-alcohol-class)). A spec line is
 `{ ingredientId, amount, amountMax?, unit, role?, topMl? }`; a range line
 counts at its middle.
 
@@ -125,6 +126,66 @@ template is analysed and it is `chosen` with basis `explicit`
 The Highball and the Flip are the cases where one role decides: a
 carbonated mixer (`lengthener`) makes a Highball, an egg (`texture`) a
 Flip; without the egg, spirit and syrup fit no template.
+
+# Variants by alcohol class
+
+Four templates in `packages/engine/data/template-variants/` (export
+`VARIANT_TEMPLATES`) are variants of a root template for a drink with
+little or no ethanol. They are ordinary Template records with two
+additions: `parentId` names the root and `alcohol` (`none` or `low`) names
+the class ([data model](data-model.md#template)). The class is computed
+from the ABV after dilution by `classifyAlcohol`
+([non-alcoholic](non-alcoholic.md#as-built-36)); it is never stored on a
+drink.
+
+| Variant       | Parent   | Class | Differs from the parent                                                                      |
+| ------------- | -------- | ----- | -------------------------------------------------------------------------------------------- |
+| `na-sour`     | Daiquiri | none  | name and note only: tea, tisane or a distillate as `base`, verjus or acid solution as `sour` |
+| `na-highball` | Highball | none  | an optional `bitter` slot, 0.25 - 2 parts (chosen): the spritz with a non-alcoholic aperitif |
+| `na-foamed`   | Flip     | none  | aquafaba as `texture`                                                                        |
+| `low-stirred` | Martini  | low   | `modifier` optional, `bitter` optional with band 0.03 - 2 (chosen)                           |
+
+**Why variants, and why selected by class.** A match uses roles and
+ratios, and ethanol is neither: a tea in the `base` slot of a sour fits the
+Daiquiri exactly. A variant with the same slots would tie with its parent
+on every spec, and the id order would decide, which is arbitrary. So
+`matchSpec(tree, templates, spec, { alcohol })` takes the class of the drink
+and rule: a template with `alcohol` is a candidate only for its own class;
+a template without it is left out when a variant of it exists for that
+class; all others stay. Without `options.alcohol` (or with `standard` or
+`unknown`) every variant is left out and the result is exactly the result
+for the root templates; a vector checks that for each spec of the
+vectors. An explicit `templateId` is never replaced.
+
+**Decisions with reasons** (the proposals of
+[non-alcoholic](non-alcoholic.md#proposed-templates-and-variants)):
+
+1. Non-alcoholic sour, highball, foamed drink and low-ABV stirred drink are
+   variants of a root, because their slots are those of the root and only
+   the class of the base differs.
+2. The spritz and the shrub drink are not templates of their own. A
+   spritz is the highball with an aperitif, hence the optional `bitter`
+   slot of `na-highball`; a shrub drink is the highball with the shrub as
+   `base` (set the line role): a template with the same roles would tie
+   with `na-highball`. The reference slot of a template is its first `base`
+   slot, so a template without one would leave every ratio unmeasured.
+3. `na-highball` and the others are offered for `none` only, `low-stirred`
+   for `low` only. A drink whose ABV is unknown (an unmeasured ferment, a
+   distillate without a label ABV) is `unknown` and matches the root
+   templates, as before. Its figure is not guessed.
+4. Old-Fashioned, Martini and Sidecar made without ethanol have no variant:
+   they match their root (a vector: tea, syrup and non-alcoholic bitters is
+   an Old-Fashioned).
+
+**Evidence.** Every slot ratio is `assumption` ([evidence](#evidence));
+`na-sour`, `na-highball` and `na-foamed` carry sugar and acid ranges
+computed from the nominal spec of the parent with the base replaced volume
+for volume (so they equal the parent's: 10.4 - 11.2 g, 0.99 - 1.07 %; 0 and
+0; 5.9 - 6.4 g and 0) and marked `assumption`; a test recomputes them. None
+has an ABV range: the ABV of a drink without ethanol is classified, not
+range-checked, and the check then reports `unknown` with the reason "no
+range". `low-stirred` has no `usual`: no source and no class value for
+fortified wine ABV was read.
 
 # Range check
 
@@ -174,7 +235,12 @@ bands above:
 - `range-*`: every template; within, below, above, unknown (unknown
   figure, no dilution, template without range); both ends inclusive.
 
+The variants and the class rule have their own vectors in
+`vectors/non-alcoholic/` (see [engine](engine.md#vectors)): the same spec
+with and without a class, with class unknown or standard, the spritz
+with and without the class, the Old-Fashioned that stays.
+
 # Not in this module
 
-Non-alcoholic and low-ABV templates, template editing, and the copy that
+Template editing, and the copy that
 shows these results (see [screens](screens-browse.md)).

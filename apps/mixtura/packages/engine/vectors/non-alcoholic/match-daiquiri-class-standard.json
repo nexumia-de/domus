@@ -1,0 +1,28 @@
+{
+  "id": "match-daiquiri-class-standard",
+  "kind": "match",
+  "description": "Rum, lime, syrup with class standard: the Daiquiri.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": "daiquiri",
+    "notCandidates": ["na-sour"]
+  },
+  "alcohol": "standard",
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

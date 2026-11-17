@@ -1,0 +1,28 @@
+{
+  "id": "classify-low-sherry-tonic-like",
+  "kind": "classify-spec",
+  "description": "60 ml sherry (17 %) built with 150 ml soda: ethanol 10.2 ml; volume 210 x 1.1 = 231 ml; ABV 4.4156 %: low by default, standard under the strict preset (above 1.2 %).",
+  "method": "build",
+  "lines": [
+    {
+      "ingredientId": "sherry",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "club-soda",
+      "amount": 150,
+      "unit": "ml"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.5,
+    "withoutBound": "below",
+    "lowPct": 10
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 4.4156
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

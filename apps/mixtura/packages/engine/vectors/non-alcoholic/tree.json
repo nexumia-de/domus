@@ -1,0 +1,108 @@
+{
+  "description": "Ingredients of the non-alcoholic vectors. Only the properties a vector needs; values are the data files' (Mixtura classes: docs/non-alcoholic.md) or the seed's (Angostura 44.7, sherry 17, dry vermouth 18), club soda 0.",
+  "ingredients": [
+    {
+      "id": "tea",
+      "name": "Brewed tea",
+      "level": "product",
+      "role": "base",
+      "abv": 0,
+      "sugar": 0
+    },
+    {
+      "id": "na-spirit",
+      "name": "Non-alcoholic distillate",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "na-aperitif",
+      "name": "Non-alcoholic aperitif",
+      "level": "product",
+      "role": "bitter"
+    },
+    {
+      "id": "na-bitters",
+      "name": "Non-alcoholic bitters",
+      "level": "product",
+      "role": "bitter"
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "role": "sour",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "simple-syrup",
+      "name": "Simple syrup",
+      "level": "product",
+      "role": "sweet",
+      "abv": 0,
+      "sugar": 60
+    },
+    {
+      "id": "club-soda",
+      "name": "Club soda",
+      "level": "product",
+      "role": "lengthener",
+      "abv": 0,
+      "sugar": 0
+    },
+    {
+      "id": "aquafaba",
+      "name": "Aquafaba",
+      "level": "product",
+      "role": "texture",
+      "abv": 0,
+      "sugar": 0
+    },
+    {
+      "id": "kombucha",
+      "name": "Kombucha",
+      "level": "product",
+      "role": "lengthener"
+    },
+    {
+      "id": "angostura",
+      "name": "Angostura aromatic bitters",
+      "level": "product",
+      "role": "bitter",
+      "abv": 44.7,
+      "sugar": 0.3
+    },
+    {
+      "id": "sherry",
+      "name": "Sherry",
+      "level": "product",
+      "role": "modifier",
+      "abv": 17,
+      "sugar": 3
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "role": "modifier",
+      "abv": 18,
+      "sugar": 3
+    },
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "role": "base",
+      "abv": 40,
+      "sugar": 0
+    },
+    {
+      "id": "sparkling-wine",
+      "name": "Sparkling wine",
+      "level": "product",
+      "role": "lengthener"
+    }
+  ]
+}

@@ -24,6 +24,8 @@ export interface Template {
   id: Id;
   name: string;
   parentId?: Id;
+  /** Variant for drinks of this alcohol class; needs `parentId` (docs/templates.md#variants-by-alcohol-class). */
+  alcohol?: 'none' | 'low';
   slots: TemplateSlot[];
   slotEvidence?: TemplateEvidence;
   method: Id;
@@ -55,6 +57,8 @@ export interface MatchSpec {
 
 export interface MatchOptions {
   unitOverrides?: UnitOverrides;
+  /** The drink's alcohol class from `classifyAlcohol`; absent leaves every variant out (docs/templates.md#variants-by-alcohol-class). */
+  alcohol?: 'none' | 'low' | 'standard' | 'unknown';
 }
 
 export type UnassignedReason = 'unknown-ingredient' | 'unknown-role' | 'no-slot-for-role';

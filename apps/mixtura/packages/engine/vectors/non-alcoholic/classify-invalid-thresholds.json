@@ -1,0 +1,23 @@
+{
+  "id": "classify-invalid-thresholds",
+  "kind": "classify-spec",
+  "description": "A low line below the without line is invalid: unknown, reason invalid-thresholds.",
+  "method": "build",
+  "lines": [
+    {
+      "ingredientId": "tea",
+      "amount": 60,
+      "unit": "ml"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 1,
+    "withoutBound": "below",
+    "lowPct": 0.5
+  },
+  "expected": {
+    "class": "unknown",
+    "reason": "invalid-thresholds"
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

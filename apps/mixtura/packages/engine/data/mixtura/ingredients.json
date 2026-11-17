@@ -1,0 +1,418 @@
+{
+  "attribution": {
+    "source": "Mixtura",
+    "holder": "Mixtura contributors",
+    "licence": "AGPL-3.0-or-later",
+    "notice": "Non-alcoholic ingredient classes and nominal example drinks: written for Drink Builder from docs/non-alcoholic.md, AGPL-3.0-or-later. Every ABV, sugar, acid and shelf-life value carries its evidence status; values without a source stay absent."
+  },
+  "evidence": {
+    "acid-solution": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "abv": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "sugar": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "black-tea-brewed": {
+      "substitutionClass": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "ferment": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "hibiscus-brewed": {
+      "substitutionClass": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "non-alcoholic-aperitif": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "non-alcoholic-spirit": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "red-verjus": {
+      "substitutionClass": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "rooibos-brewed": {
+      "substitutionClass": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "shrub-vinegar": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "abv": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "tea-tisane": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "abv": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "sugar": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "texture-agent": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "abv": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "acid": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "verjus": {
+      "role": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "abv": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    "white-verjus": {
+      "substitutionClass": {
+        "status": "assumption, unverified",
+        "source": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    }
+  },
+  "ingredients": [
+    {
+      "id": "acid-solution",
+      "name": "Acid solution",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "sour",
+      "abv": 0,
+      "sugar": 0,
+      "assumed": ["abv", "role", "sugar"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Citric, malic or tartaric acid in water; the strength is the maker's choice, so no acid is given: enter it on your own ingredient."
+    },
+    {
+      "id": "bitters-non-alcoholic",
+      "name": "Bitters, non-alcoholic",
+      "level": "type",
+      "parentId": "bitters",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Glycerin- or water-based bitters; strength is read from the label, no ABV is given here. Alcohol-based bitters are the existing products under Bitters (Angostura 44.7 %, Peychaud's 35 %)."
+    },
+    {
+      "id": "black-tea-brewed",
+      "name": "Black tea, brewed",
+      "level": "product",
+      "parentId": "tea-tisane",
+      "substitutionClass": "sc-tea-base",
+      "assumed": ["substitutionClass"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "citric-acid-solution",
+      "name": "Citric acid solution",
+      "level": "product",
+      "parentId": "acid-solution",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "ferment",
+      "name": "Ferment (kombucha, water kefir, tepache)",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "lengthener",
+      "assumed": ["role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Contains ethanol and no typical ABV can be given: kombucha 0 to 3.62 % observed in 684 samples, below 0.016 % under NCHFP's controlled recipe. The data holds the value the user measured or the label states; an unmeasured ferment has an unknown ABV, not 0. Acid is a pH (kombucha 2.5 to 3.8), not a percentage. Ethanol can rise during storage."
+    },
+    {
+      "id": "glycerin",
+      "name": "Glycerin",
+      "level": "product",
+      "parentId": "texture-agent",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Sweetness and viscosity: no source read, none given."
+    },
+    {
+      "id": "gum-syrup",
+      "name": "Gum syrup",
+      "level": "product",
+      "parentId": "texture-agent",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Sugar depends on the recipe: none given."
+    },
+    {
+      "id": "hibiscus-brewed",
+      "name": "Hibiscus tisane, brewed",
+      "level": "product",
+      "parentId": "tea-tisane",
+      "substitutionClass": "sc-hibiscus-brewed",
+      "assumed": ["substitutionClass"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "kombucha",
+      "name": "Kombucha",
+      "level": "product",
+      "parentId": "ferment",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "malic-acid-solution",
+      "name": "Malic acid solution",
+      "level": "product",
+      "parentId": "acid-solution",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "non-alcoholic-aperitif",
+      "name": "Non-alcoholic aperitif",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "bitter",
+      "assumed": ["role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Strength is read from the label; no ABV is given here."
+    },
+    {
+      "id": "non-alcoholic-ingredients",
+      "name": "Non-alcoholic ingredients",
+      "level": "category",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "non-alcoholic-spirit",
+      "name": "Non-alcoholic distillate",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "base",
+      "assumed": ["role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Strength differs by product and is read from the label; no ABV is given here, so a drink with it has an unknown ABV until a product with its label ABV is entered."
+    },
+    {
+      "id": "red-verjus",
+      "name": "Red verjus",
+      "level": "product",
+      "parentId": "verjus",
+      "substitutionClass": "sc-verjus",
+      "assumed": ["substitutionClass"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "rooibos-brewed",
+      "name": "Rooibos, brewed",
+      "level": "product",
+      "parentId": "tea-tisane",
+      "substitutionClass": "sc-tea-base",
+      "assumed": ["substitutionClass"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "shrub-vinegar",
+      "name": "Shrub or drinking vinegar",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "sour",
+      "abv": 0,
+      "assumed": ["abv", "role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Acid and sugar differ by recipe; none is given. A shrub that is also the sweet part can take the line role sweet."
+    },
+    {
+      "id": "tartaric-acid-solution",
+      "name": "Tartaric acid solution",
+      "level": "product",
+      "parentId": "acid-solution",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "tea-tisane",
+      "name": "Tea and tisane (brewed)",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "base",
+      "abv": 0,
+      "sugar": 0,
+      "assumed": ["abv", "role", "sugar"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Unfermented and unsweetened. Also used as a lengthener (set the line role)."
+    },
+    {
+      "id": "tepache",
+      "name": "Tepache",
+      "level": "product",
+      "parentId": "ferment",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "texture-agent",
+      "name": "Texture agent",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "texture",
+      "abv": 0,
+      "acid": 0,
+      "assumed": ["abv", "acid", "role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "verjus",
+      "name": "Verjus",
+      "level": "type",
+      "parentId": "non-alcoholic-ingredients",
+      "role": "sour",
+      "abv": 0,
+      "assumed": ["abv", "role"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      },
+      "notes": "Acid and sugar are not given: no source was read."
+    },
+    {
+      "id": "water-kefir",
+      "name": "Water kefir",
+      "level": "product",
+      "parentId": "ferment",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    },
+    {
+      "id": "white-verjus",
+      "name": "White verjus",
+      "level": "product",
+      "parentId": "verjus",
+      "substitutionClass": "sc-verjus",
+      "assumed": ["substitutionClass"],
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "docs/non-alcoholic.md, Ingredient class table for the data model"
+      }
+    }
+  ]
+}

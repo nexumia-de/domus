@@ -468,6 +468,112 @@ Justified by the claims above, not by a source that says they work:
 Whether these are variants of existing templates or new templates is
 for the owner.
 
+# As built (#36)
+
+Engine and data for the research above; the filters and screens are
+issue #37. Nothing here is a source: each value keeps the evidence status of
+the class table.
+
+**Ingredient classes.** `packages/engine/data/mixtura/ingredients.json`
+(23 nodes under the category `non-alcoholic-ingredients`, plus
+`bitters-non-alcoholic` under the seed's Bitters), kept apart from the
+converted Bar Assistant output so that `npm run seed` stays reproducible;
+source name `Mixtura`, licence AGPL-3.0-or-later. Beside the records the
+file holds `evidence`: for every role, ABV, sugar, acid, shelf-life and
+class value its status and the table it comes from; the property is also
+listed in the record's `assumed`. A test fails for a value without an entry
+and for an entry without a value.
+
+| Node (type)                                | Role                 | ABV    | Sugar | Acid | Shelf life | Evidence                            |
+| ------------------------------------------ | -------------------- | ------ | ----- | ---- | ---------- | ----------------------------------- |
+| `non-alcoholic-spirit`                     | `base`               | absent | -     | -    | -          | `assumption`: label value           |
+| `non-alcoholic-aperitif`                   | `bitter`             | absent | -     | -    | -          | `assumption`: label value           |
+| `tea-tisane` (3 products)                  | `base`               | 0      | 0     | -    | -          | `assumption, unverified`            |
+| `verjus` (2 products)                      | `sour`               | 0      | -     | -    | -          | `assumption, unverified`            |
+| `shrub-vinegar`                            | `sour`               | 0      | -     | -    | -          | `assumption, unverified`            |
+| `ferment` (kombucha, water kefir, tepache) | `lengthener`         | absent | -     | -    | -          | `assumption`; ABV unknown by design |
+| `acid-solution` (3 products)               | `sour`               | 0      | 0     | -    | -          | `assumption`                        |
+| `bitters-non-alcoholic`                    | `bitter` (inherited) | absent | -     | -    | -          | label value                         |
+| `texture-agent` (glycerin, gum syrup)      | `texture`            | 0      | -     | 0    | -          | `assumption, unverified`            |
+
+A dash is a value the table gives as `null`: the property is absent and the
+engine reports it `unknown`. No shelf life was added (the table has none),
+and no acid except 0 for texture agents. A ferment has no ABV: a drink with
+kombucha is `unknown`, not 0. Substitution classes (`sc-tea-base`,
+`sc-hibiscus-brewed`, `sc-verjus`) are assumptions, listed as such. Not
+added because the seed has them: `saline-solution` (ABV 0 from Bar
+Assistant), aquafaba, simple and rich syrups, juices, Angostura (44.7 %) and
+Peychaud's (35 %) as alcohol-based bitters, sherry, vermouth and amari with
+their label ABV. No product of a brand (Seedlip, Lyre's, ...) is added: no
+label was read.
+
+**Thresholds and the class.** `packages/engine/data/alcohol-thresholds.json`
+holds the presets with their evidence and the defaults;
+`classifyAlcohol(figures, tree, thresholds?)` ([engine](engine.md#alcohol-class))
+sorts the ABV after dilution into `none`, `low`, `standard` or `unknown`.
+
+| Setting                               | Preset id and value                           | Status                   |
+| ------------------------------------- | --------------------------------------------- | ------------------------ |
+| Without alcohol (calculated), default | `below-0.5`: below 0.5 %                      | `read`, needs decision   |
+| Without alcohol, stricter             | `up-to-0.05`: up to 0.05 %; `none`: exactly 0 | `read`                   |
+| Low ABV, UK line                      | `up-to-1.2`: up to 1.2 %                      | `read`                   |
+| Low ABV, bar sense (default)          | `up-to-10`: up to 10 %                        | `assumption, unverified` |
+
+A drink is `unknown`, with a `reason` and the ingredient `ids`, when
+the method gives no figure after dilution (`no-dilution`), an ingredient's
+ABV is unknown (`unknown-abv`), a line balance did not count (a `top`
+without volume, a counted line) names an ingredient whose ABV is not known
+to be 0 (`excluded-line`), or the thresholds are invalid. The result is about
+the calculated number, never a legal term (see [What the app may
+claim](#legal-terms)). **Bitters** are the reason to compute: 60 ml tea
+stirred with 2 dashes of Angostura is 1.11 % ABV (low, also under the strict
+presets), one dash in a 150 ml highball 0.25 % (none by default, low under
+the 0.05 % preset); vectors `classify-bitters-*` hold the arithmetic.
+
+**Seed drinks.** Counted by the engine on the 635 drinks of the Bar
+Assistant seed with all lines, after dilution:
+
+| Preset                             | none | low | standard | unknown |
+| ---------------------------------- | ---- | --- | -------- | ------- |
+| Default (below 0.5 %, up to 10 %)  | 9    | 73  | 515      | 38      |
+| Strict (up to 0.05 %, up to 1.2 %) | 9    | 2   | 586      | 38      |
+| Exactly 0 (and up to 10 %)         | 9    | 73  | 515      | 38      |
+
+The 38 unknown: 19 `no-dilution` (muddle 13, layer 3, no method 3), 17
+`unknown-abv` (creme de banane 6, gentian liqueur 3, sparkling wine 3,
+bitters 2, and one each rum, bouquet bitters, chamomile liqueur: ingredient
+nodes with no ABV in the source) and 2 `excluded-line` (a top of prosecco
+and a top of champagne without a volume). The 9 without alcohol are
+`cucumber-gimlet`, `mango-mule`, `neruda`, `painkiller-the-mothership`,
+`pinch-hitter`, `see-you-on-wednesday`, `shirley-temple`,
+`temperance-grapefruit-collins` and `vitamin-parade`, all 0 %. The seed's
+`non-alc-hurricane` has 3 dashes of Angostura and computes to 1.57 %
+(low), so "non-alc" in a name does not survive the calculation. None of the
+9 matches a variant: they have no line with role `base` (juice, syrup and
+soda only), and every variant needs its required `base` slot filled. Counts are in `docs/seed-data.md`.
+
+**Nominal examples.** Four drinks in
+`packages/engine/data/mixtura/specs.json`, one per variant, built from the
+variant's nominal ratios and labelled "(example)", tagged `nominal-example`
+and noted as not a classic and not a tested recipe; the issue asked for at
+least eight, the work brief asks for a small number of clearly labelled
+examples, which decides. Under the
+default thresholds: `nominal-na-sour` (tea 60, lime 22.5, syrup 22.5, shake),
+`nominal-na-highball` (rooibos 60, soda 150, build) and `nominal-na-foamed`
+(tea 60, syrup 15, aquafaba 45, shake) are `none` and chosen as their variants;
+`nominal-low-stirred` (sherry 60 as base, dry vermouth 30, stir) is 14.44 %,
+so `standard` under the default 10 % and only `low` if the owner sets the
+line to 15 % or more: the variant `low-stirred` is for drinks that are `low`
+by the setting in force (a vector holds both). No example uses a
+non-alcoholic distillate or aperitif: their ABV is unknown, so the example
+would be `unknown`.
+
+**Deviations from the issue.** No per-drink `alcohol` tag is stored (the
+class is computed, as the issue says; the app shows it in #37); four
+examples instead of eight; no new third-party data, so nothing was added to
+[dependencies](dependencies.md) beyond a note and the About text carries
+one more sentence for Mixtura's own data.
+
 # Open questions for the owner
 
 1. Thresholds of the two filters, above (`needs decision`).

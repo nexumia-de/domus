@@ -1,0 +1,28 @@
+{
+  "id": "classify-bitters-one-dash-highball-zero",
+  "kind": "classify-spec",
+  "description": "The same highball under the exactly-0 preset: low.",
+  "method": "build",
+  "lines": [
+    {
+      "ingredientId": "club-soda",
+      "amount": 150,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1,
+      "unit": "dash"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0,
+    "withoutBound": "upTo",
+    "lowPct": 10
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 0.2477
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

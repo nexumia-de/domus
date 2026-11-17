@@ -7,11 +7,13 @@ import * as model from '../src/model';
 
 const PUBLIC = [
   'ancestors',
+  'ALCOHOL_THRESHOLDS',
   'assignSlots',
   'buildStockIndex',
   'buildTree',
   'checkRange',
   'chooseDilution',
+  'classifyAlcohol',
   'computeBalance',
   'computePrepared',
   'convert',
@@ -49,6 +51,7 @@ const PUBLIC = [
   'toGrams',
   'toMl',
   'UNITS',
+  'VARIANT_TEMPLATES',
   'unitValue',
   'unlockRanking',
 ];

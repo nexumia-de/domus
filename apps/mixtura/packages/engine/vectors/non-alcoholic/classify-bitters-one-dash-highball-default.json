@@ -1,0 +1,28 @@
+{
+  "id": "classify-bitters-one-dash-highball-default",
+  "kind": "classify-spec",
+  "description": "150 ml soda with 1 dash of Angostura built: ethanol 0.92 x 0.447 = 0.41124 ml; volume (150 + 0.92) x 1.1 = 166.012 ml; ABV 0.2477 %: below 0.5 %, so none by default.",
+  "method": "build",
+  "lines": [
+    {
+      "ingredientId": "club-soda",
+      "amount": 150,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1,
+      "unit": "dash"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.5,
+    "withoutBound": "below",
+    "lowPct": 10
+  },
+  "expected": {
+    "class": "none",
+    "abvPct": 0.2477
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

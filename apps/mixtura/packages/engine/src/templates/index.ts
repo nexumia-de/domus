@@ -1,4 +1,4 @@
-export { ROOT_TEMPLATES } from './data';
+export { ROOT_TEMPLATES, VARIANT_TEMPLATES } from './data';
 export { assignSlots, lineMl, lineRole } from './slots';
 export { matchSpec } from './match';
 export { checkRange } from './range';

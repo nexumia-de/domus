@@ -16,7 +16,7 @@ links. Change history is in [log.md](log.md).
 
 - [Existing tools and data](existing-tools.md) - Survey of FOSS cocktail software and data sources with licences, what Bar Assistant already does and the gap Mixtura fills.
 - [How bartenders work](bartender-practice.md) - Templates and ratios, balance as numbers, how drinks are developed, pairing, non-alcoholic drinks, operations; what a tool should do and the data model that follows.
-- [Non-alcoholic and low-ABV drinks](non-alcoholic.md) - What ethanol does and what replaces it, ingredient classes with data-model properties, template carry-over, low-ABV bases, shelf life and food safety, legal terms in the EU, Germany, UK and US checked against primary texts, proposed filter thresholds; every number with its evidence status.
+- [Non-alcoholic and low-ABV drinks](non-alcoholic.md) - What ethanol does and what replaces it, ingredient classes with data-model properties, template carry-over, low-ABV bases, shelf life and food safety, legal terms in the EU, Germany, UK and US checked against primary texts, proposed filter thresholds, and as built: classes, thresholds, the alcohol class and the seed counts; every number with its evidence status.
 
 # Specifications
 
@@ -39,7 +39,7 @@ links. Change history is in [log.md](log.md).
 # Reference
 
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
-- [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds and the 20 checked classics.
+- [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds, the 20 checked classics and Mixtura's own additions.
 
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.

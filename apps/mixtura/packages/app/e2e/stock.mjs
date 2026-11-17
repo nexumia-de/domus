@@ -241,7 +241,7 @@ await page.goto(`${site.url}#/drinks?makeable=yes`);
 await page.locator('.list-count').waitFor();
 const makeable0 = await filteredCount();
 const total = await listCount();
-expect(total === 635, 'the list counts 635 drinks');
+expect(total === 639, 'the list counts 639 drinks');
 console.log(`  makeable now with nine bottles: ${makeable0}`);
 await page.locator('.chips button', { hasText: 'Makeable now' }).waitFor();
 expect(true, 'the filter is a chip named in words');

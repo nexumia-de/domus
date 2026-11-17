@@ -110,7 +110,7 @@ console.log(
   `  first ${await rows().count()} rows in the page: ${firstRows} ms after navigation start`,
 );
 expect((await rows().count()) === 60, 'the first chunk is 60 rows');
-expect((await total()) === '635', 'the list counts 635 drinks');
+expect((await total()) === '639', 'the list counts 639 drinks');
 await noOverflow('on the drinks list');
 await targets('on the drinks list');
 expect(
@@ -120,13 +120,13 @@ expect(
 await docShot('drinks-list');
 await shot('browse-list');
 
-// All 635 rows by scrolling.
+// All 639 rows by scrolling.
 const scrollAll = await page.evaluate(async () => {
   const pane = document.querySelector('.pane.list .pane-scroll');
   const t0 = performance.now();
   for (
     let i = 0;
-    i < 60 && document.querySelectorAll('.pane.list .list-rows li').length < 635;
+    i < 60 && document.querySelectorAll('.pane.list .list-rows li').length < 639;
     i++
   ) {
     pane.scrollTop = pane.scrollHeight;
@@ -138,7 +138,7 @@ const scrollAll = await page.evaluate(async () => {
   };
 });
 console.log(`  scrolling through all rows: ${scrollAll.rows} rows after ${scrollAll.ms} ms`);
-expect(scrollAll.rows === 635, 'scrolling loads all 635 rows');
+expect(scrollAll.rows === 639, 'scrolling loads all 639 rows');
 await page.evaluate(() => {
   document.querySelector('.pane.list .pane-scroll').scrollTop = 0;
 });
@@ -157,7 +157,7 @@ const ginCount = Number(await count());
 console.log(
   `  typing "gin" until the list shows ${ginCount} hits: ${Date.now() - t0} ms (typing 60 ms and the 200 ms debounce included)`,
 );
-expect(ginCount > 50 && ginCount < 635, `search "gin" narrows the list to ${ginCount}`);
+expect(ginCount > 50 && ginCount < 639, `search "gin" narrows the list to ${ginCount}`);
 expect(
   (await input.evaluate((el) => document.activeElement === el)) === true,
   'the search field keeps focus while typing',
@@ -185,7 +185,7 @@ await page.getByText('No drink matches the search and filters.').waitFor();
 expect(true, 'no hit shows the empty state');
 await shot('browse-nohit');
 await page.getByRole('button', { name: 'Clear Filters' }).click();
-await waitCount(635);
+await waitCount(639);
 expect((await hash()) === '#/drinks', 'Clear Filters empties the address');
 expect((await input.inputValue()) === '', 'and the field');
 
@@ -248,8 +248,8 @@ if (phone) {
 await page.getByRole('button', { name: /^Filters, \d+ active/ }).click();
 await sheet.waitFor();
 await page.getByRole('button', { name: 'Clear Filters' }).click();
-await waitCount(635);
-await page.getByRole('button', { name: 'Show 635 Drinks' }).click();
+await waitCount(639);
+await page.getByRole('button', { name: 'Show 639 Drinks' }).click();
 expect((await hash()) === '#/drinks', 'Clear Filters in the sheet empties the address');
 
 // ---- Open a spec from the list, Back, scroll kept ----
@@ -350,9 +350,14 @@ await noOverflow('on a spec without a template');
 await page.goto(`${site.url}#/templates`);
 await page.locator('.list-rows li').first().waitFor();
 const templateRows = await page.locator('.pane.list .list-rows li').allInnerTexts();
-expect(templateRows.length === 6, 'six templates (five roots and one variant)');
 expect(
-  templateRows[0].startsWith('Daiquiri') && templateRows[1].startsWith('Sidecar'),
+  templateRows.length === 10,
+  'ten templates (five roots, Sidecar and four alcohol-class variants)',
+);
+expect(
+  templateRows[0].startsWith('Daiquiri') &&
+    templateRows[1].startsWith('Non-alcoholic sour') &&
+    templateRows[2].startsWith('Sidecar'),
   'variants sit under their parent',
 );
 expect(
@@ -398,12 +403,12 @@ await page.goto(`${site.url}#/drinks/nowhere`);
 await page.getByRole('heading', { name: 'This drink is not here' }).waitFor();
 expect(true, 'an unknown drink is a status page');
 
-// ---- Cold start with a strength filter: all 635 balances are computed ----
+// ---- Cold start with a strength filter: all 639 balances are computed ----
 await page.goto(`${site.url}#/drinks?strength=14-22`);
 await page.reload({ waitUntil: 'load' });
 await rows().first().waitFor();
 console.log(
-  `  cold start on a strength filter (balance of all 635 drinks): rows in the page after ${await page.evaluate(() => Math.round(window.__firstRows))} ms, ${await count()} hits`,
+  `  cold start on a strength filter (balance of all 639 drinks): rows in the page after ${await page.evaluate(() => Math.round(window.__firstRows))} ms, ${await count()} hits`,
 );
 
 // ---- Offline reload on a spec URL ----

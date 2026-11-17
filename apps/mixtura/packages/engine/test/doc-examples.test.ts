@@ -13,6 +13,7 @@ test('there is one example per function group', () => {
     'templates',
     'balance',
     'range',
+    'alcohol',
     'batch',
   ]);
 });

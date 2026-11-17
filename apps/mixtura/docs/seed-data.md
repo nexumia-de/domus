@@ -466,6 +466,21 @@ template (Manhattan, Screwdriver: 3 parts of mixer against a band of 4
 to 6) that is the result of the assumed bands, not of the data, and is
 recorded as such in the vector.
 
+## Mixtura's own additions
+
+Not converter output, so `npm run seed` neither reads nor overwrites them:
+`packages/engine/data/mixtura/ingredients.json` (23 ingredient nodes with an
+`evidence` map per value, [non-alcoholic](non-alcoholic.md#as-built-36)) and
+`specs.json` (4 nominal example drinks), attribution source `Mixtura`,
+licence AGPL-3.0-or-later; the variant templates are in
+`data/template-variants/`. The app's `seed-assemble.mjs` merges them after
+the converted data (ingredients 296 + 23 = 319, specs 635 + 4 = 639,
+templates 6 + 4 = 10) and appends Mixtura's notice to the Bar Assistant notice
+that About shows; the seed version becomes `bar-assistant-5a504d4+mixtura-1`.
+Tests: `non-alcoholic-data.test.ts` (schemas, evidence of every value, merge
+without id clash, examples). Alcohol classes of the 635 converted drinks:
+[counts](non-alcoholic.md#as-built-36).
+
 ## Network hosts
 
 Recorded in [development](development.md#network-hosts) as well.

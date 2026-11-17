@@ -1,0 +1,28 @@
+{
+  "id": "classify-nominal-low-stirred-wide-line",
+  "kind": "classify-spec",
+  "description": "The same drink with the low line set to 15 %: low. The line is data.",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "sherry",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.5,
+    "withoutBound": "below",
+    "lowPct": 15
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 14.4444
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

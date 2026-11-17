@@ -29,6 +29,10 @@
       "description": "How well the slot ratios are known: verified (a source was read), secondary (seen in a summary), derived (computed from other numbers) or assumption.",
       "enum": ["verified", "secondary", "derived", "assumption"]
     },
+    "alcohol": {
+      "description": "Makes this template a variant for drinks of that alcohol class (computed from the ABV after dilution, never stored on a drink). matchSpec offers a variant only when it is asked for that class and then it replaces its parent.",
+      "enum": ["none", "low"]
+    },
     "method": { "$ref": "urn:mixtura:common#/$defs/id" },
     "glass": { "$ref": "urn:mixtura:common#/$defs/id" },
     "usual": {
@@ -49,6 +53,6 @@
     "notes": { "type": "string" }
   },
   "required": ["id", "name", "slots", "method"],
-  "dependentRequired": { "usual": ["source"] },
+  "dependentRequired": { "usual": ["source"], "alcohol": ["parentId"] },
   "additionalProperties": false
 }

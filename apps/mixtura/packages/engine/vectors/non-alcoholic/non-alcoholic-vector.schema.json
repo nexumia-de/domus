@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vector for the alcohol class and the variant templates (docs/non-alcoholic.md)",
+  "type": "object",
+  "required": ["id", "kind", "description", "source"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "kind": { "enum": ["classify-spec", "classify-figures", "match"] },
+    "description": { "type": "string", "pattern": "." },
+    "source": { "type": "string", "pattern": "." },
+    "method": { "type": "string" },
+    "alcohol": { "enum": ["none", "low", "standard", "unknown"] },
+    "lines": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "thresholds": { "type": "object" },
+    "cases": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "expected": { "type": "object" }
+  }
+}

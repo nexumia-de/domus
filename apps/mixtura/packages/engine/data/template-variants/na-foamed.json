@@ -1,0 +1,47 @@
+{
+  "id": "na-foamed",
+  "name": "Non-alcoholic foamed drink",
+  "parentId": "flip",
+  "alcohol": "none",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "tea, tisane or a non-alcoholic distillate"
+    },
+    {
+      "id": "sweet",
+      "role": "sweet",
+      "minParts": 0.25,
+      "maxParts": 1
+    },
+    {
+      "id": "foam",
+      "role": "texture",
+      "minParts": 0.75,
+      "maxParts": 3,
+      "note": "aquafaba in place of the egg"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "sugar": {
+      "min": 5.9,
+      "max": 6.4
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/non-alcoholic.md, Proposed templates and variants; slots and ratios are those of the parent template, ranges are computed from its nominal spec with the base replaced volume for volume by a drink without ethanol",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no source says that these ratios or ranges fit a drink without ethanol; see docs/templates.md#variants-by-alcohol-class."
+  },
+  "notes": "Flip with aquafaba in the texture slot. No ABV range. Sugar equals the Flip's because the nominal spec swaps egg for aquafaba volume for volume (aquafaba sugar 0 is the seed's value, shelf life unverified)."
+}

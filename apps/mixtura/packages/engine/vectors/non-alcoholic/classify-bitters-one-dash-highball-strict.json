@@ -1,0 +1,28 @@
+{
+  "id": "classify-bitters-one-dash-highball-strict",
+  "kind": "classify-spec",
+  "description": "The same highball under the strict preset (up to 0.05 %): the dash pushes it above, so low.",
+  "method": "build",
+  "lines": [
+    {
+      "ingredientId": "club-soda",
+      "amount": 150,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1,
+      "unit": "dash"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.05,
+    "withoutBound": "upTo",
+    "lowPct": 1.2
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 0.2477
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

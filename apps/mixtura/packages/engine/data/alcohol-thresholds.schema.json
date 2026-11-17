@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixtura alcohol class thresholds",
+  "description": "Thresholds that sort a computed ABV after dilution into none, low and standard (docs/non-alcoholic.md, Terms and thresholds for the filters).",
+  "type": "object",
+  "required": ["version", "default", "presets"],
+  "additionalProperties": false,
+  "$defs": {
+    "evidence": { "enum": ["read", "secondary", "derived", "assumption, unverified"] },
+    "withoutPreset": {
+      "type": "object",
+      "required": ["id", "maxPct", "bound", "evidence", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "maxPct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "bound": { "enum": ["below", "upTo"] },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "basis": { "type": "string", "minLength": 1 }
+      }
+    },
+    "lowPreset": {
+      "type": "object",
+      "required": ["id", "maxPct", "evidence", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "maxPct": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "basis": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "properties": {
+    "version": { "const": 1 },
+    "default": {
+      "type": "object",
+      "required": ["without", "low"],
+      "additionalProperties": false,
+      "properties": {
+        "without": { "type": "string" },
+        "low": { "type": "string" }
+      }
+    },
+    "presets": {
+      "type": "object",
+      "required": ["without", "low"],
+      "additionalProperties": false,
+      "properties": {
+        "without": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/withoutPreset" } },
+        "low": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/lowPreset" } }
+      }
+    }
+  }
+}

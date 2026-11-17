@@ -1,0 +1,28 @@
+{
+  "id": "classify-bitters-two-dashes-strict",
+  "kind": "classify-spec",
+  "description": "The same drink under the strict preset (up to 0.05 %): low as well.",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "tea",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 2,
+      "unit": "dash"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.05,
+    "withoutBound": "upTo",
+    "lowPct": 1.2
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 1.1083
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

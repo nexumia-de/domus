@@ -35,6 +35,7 @@ test('every vector folder has a test in the list', () => {
     'batch',
     'classics',
     'ingredients',
+    'non-alcoholic',
     'stock',
     'templates',
   ]);

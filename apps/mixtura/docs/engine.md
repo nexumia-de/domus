@@ -118,18 +118,21 @@ others return result objects as documented in their module files
 
 ## Drink-specific (`src/drink.ts`)
 
-| Name             | Signature                                                                                                                                                | Job                                                                                                                                                                                                           |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DILUTION`       | `DilutionTable`                                                                                                                                          | The dilution table of data/dilution.json: water added per method as a fraction of the pre-dilution volume (low, default, high) with its evidence.                                                             |
-| `ROOT_TEMPLATES` | `readonly Template[]`                                                                                                                                    | The six root templates (Old-Fashioned, Martini, Daiquiri, Sidecar, Highball, Flip) as data, with slots in parts and usual ranges in percent and g per 100 ml; all ratios are assumptions (docs/templates.md). |
-| `checkRange`     | `(template: Template, after: RangeInput \| undefined): RangeCheck[]`                                                                                     | Compares figures after dilution with a template's usual ranges.                                                                                                                                               |
-| `chooseDilution` | `(method: string \| undefined, options?: DilutionOptions): DilutionChoice`                                                                               | The dilution fraction for a method, or why there is none.                                                                                                                                                     |
-| `computeBalance` | `(tree: IngredientTree, spec: BalanceSpec, options?: BalanceOptions): BalanceResult`                                                                     | Computes the figures of a spec: volume, ABV, sugar, acid and ratios before and after dilution (docs/balance.md).                                                                                              |
-| `prediluted`     | `(tree: IngredientTree, spec: BalanceSpec, servings: number, options?: BatchOptions): BatchResult`                                                       | Builds a pre-diluted batch of a spec with the dilution water added.                                                                                                                                           |
-| `roundCount`     | `(value: number): { value: number; step: number }`                                                                                                       | Rounds a scaled count up to whole units, never below 1 (0 stays 0); used by batches and by the servings stepper.                                                                                              |
-| `scaleLine`      | `(line: BalanceLine, factor: number, options?: ScaleOptions): { ok: true; value: BalanceLine; } \| { ok: false; error: BatchError; }`                    | Scales one line.                                                                                                                                                                                              |
-| `scaleLines`     | `(lines: readonly BalanceLine[], servings: number, options?: ScaleOptions): { ok: true; value: BalanceLine[]; } \| { ok: false; errors: BatchError[]; }` | Scales all lines to a number of servings.                                                                                                                                                                     |
-| `shelfLife`      | `(tree: IngredientTree, ids: readonly string[]): ShelfLife`                                                                                              | The shelf life of a batch: the shortest of its parts.                                                                                                                                                         |
+| Name                 | Signature                                                                                                                                                | Job                                                                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ALCOHOL_THRESHOLDS` | `AlcoholThresholds`                                                                                                                                      | The default lines of `data/alcohol-thresholds.json`: ABV after dilution below 0.5 % is `none`, up to 10 % is `low` (percent).                                                                                 |
+| `DILUTION`           | `DilutionTable`                                                                                                                                          | The dilution table of data/dilution.json: water added per method as a fraction of the pre-dilution volume (low, default, high) with its evidence.                                                             |
+| `VARIANT_TEMPLATES`  | `readonly Template[]`                                                                                                                                    | Variants of root templates for the alcohol classes none and low; offered by `matchSpec` only when asked for that class. All ratios are assumptions.                                                           |
+| `ROOT_TEMPLATES`     | `readonly Template[]`                                                                                                                                    | The six root templates (Old-Fashioned, Martini, Daiquiri, Sidecar, Highball, Flip) as data, with slots in parts and usual ranges in percent and g per 100 ml; all ratios are assumptions (docs/templates.md). |
+| `checkRange`         | `(template: Template, after: RangeInput \| undefined): RangeCheck[]`                                                                                     | Compares figures after dilution with a template's usual ranges.                                                                                                                                               |
+| `chooseDilution`     | `(method: string \| undefined, options?: DilutionOptions): DilutionChoice`                                                                               | The dilution fraction for a method, or why there is none.                                                                                                                                                     |
+| `classifyAlcohol`    | `(figures: BalanceFigures, tree: IngredientTree, thresholds?: AlcoholThresholds): AlcoholClassResult`                                                    | Sorts the calculated ABV after dilution into `none`, `low`, `standard` or `unknown` (with the reason and ids) against thresholds passed in as data.                                                           |
+| `computeBalance`     | `(tree: IngredientTree, spec: BalanceSpec, options?: BalanceOptions): BalanceResult`                                                                     | Computes the figures of a spec: volume, ABV, sugar, acid and ratios before and after dilution (docs/balance.md).                                                                                              |
+| `prediluted`         | `(tree: IngredientTree, spec: BalanceSpec, servings: number, options?: BatchOptions): BatchResult`                                                       | Builds a pre-diluted batch of a spec with the dilution water added.                                                                                                                                           |
+| `roundCount`         | `(value: number): { value: number; step: number }`                                                                                                       | Rounds a scaled count up to whole units, never below 1 (0 stays 0); used by batches and by the servings stepper.                                                                                              |
+| `scaleLine`          | `(line: BalanceLine, factor: number, options?: ScaleOptions): { ok: true; value: BalanceLine; } \| { ok: false; error: BatchError; }`                    | Scales one line.                                                                                                                                                                                              |
+| `scaleLines`         | `(lines: readonly BalanceLine[], servings: number, options?: ScaleOptions): { ok: true; value: BalanceLine[]; } \| { ok: false; errors: BatchError[]; }` | Scales all lines to a number of servings.                                                                                                                                                                     |
+| `shelfLife`          | `(tree: IngredientTree, ids: readonly string[]): ShelfLife`                                                                                              | The shelf life of a batch: the shortest of its parts.                                                                                                                                                         |
 
 ## Counted lines and lines not counted
 
@@ -313,6 +316,49 @@ const result = {
 // }
 ```
 
+## Alcohol class
+
+`classifyAlcohol(figures, tree, thresholds?)` reads `figures.after.abvPct`
+of a balance result and the thresholds from data (`ALCOHOL_THRESHOLDS`
+by default: below 0.5 % `none`, up to 10 % `low`, above `standard`;
+`withoutBound: 'upTo'` includes the line, so 0 means exactly 0). The class
+is `unknown`, with `reason` and `ids`, when there are no figures after
+dilution, an ABV is unknown, a line balance did not count may hold
+ethanol, or the thresholds are invalid. Pass the class to
+`matchSpec(..., { alcohol })` to get the variant templates
+([templates](templates.md#variants-by-alcohol-class)). The presets and
+their evidence are in `data/alcohol-thresholds.json`
+([non-alcoholic](non-alcoholic.md#as-built-36)).
+
+```ts example alcohol
+import { buildTree, classifyAlcohol, computeBalance } from '@mixtura/engine';
+
+const built = buildTree([
+  { id: 'tea', name: 'Tea', level: 'product', abv: 0 },
+  { id: 'bitters', name: 'Bitters', level: 'product', abv: 44.7 },
+]);
+if (!built.ok) throw new Error('invalid tree');
+const balance = computeBalance(built.tree, {
+  method: 'stir',
+  lines: [
+    { ingredientId: 'tea', amount: 60, unit: 'ml' },
+    { ingredientId: 'bitters', amount: 2, unit: 'dash' },
+  ],
+});
+if (!balance.ok) throw new Error('no figures');
+const strict = { withoutPct: 0.05, withoutBound: 'upTo' as const, lowPct: 1.2 };
+const result = {
+  default: classifyAlcohol(balance.value, built.tree).class,
+  strict: classifyAlcohol(balance.value, built.tree, strict).class,
+  abvPct: Math.round((classifyAlcohol(balance.value, built.tree).abvPct ?? 0) * 100) / 100,
+};
+// result = {
+//   "default": "low",
+//   "strict": "low",
+//   "abvPct": 1.11
+// }
+```
+
 ## Batch
 
 ```ts example batch
@@ -362,16 +408,17 @@ Every rule and formula has a JSON vector in `packages/engine/vectors/`,
 run by vitest through the public entry only (`test/public-api.test.ts`
 scans the vector tests for deep imports):
 
-| Folder                 | Rule                                      | Schema                                      | Test                                 |
-| ---------------------- | ----------------------------------------- | ------------------------------------------- | ------------------------------------ |
-| `vectors/` (5 files)   | First balance and syrup vectors           | `vector.schema.json`                        | `vectors.test.ts`, `balance.test.ts` |
-| `vectors/amounts/`     | Parse, convert, scale, format             | `amounts/amounts.schema.json`               | `amounts.test.ts`                    |
-| `vectors/balance/`     | Balance figures, dilution, unknowns       | `balance/balance-vector.schema.json`        | `balance.test.ts`                    |
-| `vectors/ingredients/` | Tree, inheritance, prepared, substitution | `ingredients/ingredient-vector.schema.json` | `ingredients-vectors.test.ts`        |
-| `vectors/batch/`       | Scaling, pre-diluted batches, shelf life  | `batch/batch-vector.schema.json`            | `batch.test.ts`                      |
-| `vectors/templates/`   | Matching and the range check              | `templates/templates-vector.schema.json`    | `templates.test.ts`                  |
-| `vectors/classics/`    | 20 checked drinks, template and figures   | `classics/classics-vector.schema.json`      | `classics.test.ts`                   |
-| `vectors/stock/`       | Makeable, missing one, unlock ranking     | `stock/stock-vector.schema.json`            | `stock-vectors.test.ts`              |
+| Folder                   | Rule                                                 | Schema                                           | Test                                 |
+| ------------------------ | ---------------------------------------------------- | ------------------------------------------------ | ------------------------------------ |
+| `vectors/` (5 files)     | First balance and syrup vectors                      | `vector.schema.json`                             | `vectors.test.ts`, `balance.test.ts` |
+| `vectors/amounts/`       | Parse, convert, scale, format                        | `amounts/amounts.schema.json`                    | `amounts.test.ts`                    |
+| `vectors/balance/`       | Balance figures, dilution, unknowns                  | `balance/balance-vector.schema.json`             | `balance.test.ts`                    |
+| `vectors/ingredients/`   | Tree, inheritance, prepared, substitution            | `ingredients/ingredient-vector.schema.json`      | `ingredients-vectors.test.ts`        |
+| `vectors/batch/`         | Scaling, pre-diluted batches, shelf life             | `batch/batch-vector.schema.json`                 | `batch.test.ts`                      |
+| `vectors/templates/`     | Matching and the range check                         | `templates/templates-vector.schema.json`         | `templates.test.ts`                  |
+| `vectors/classics/`      | 20 checked drinks, template and figures              | `classics/classics-vector.schema.json`           | `classics.test.ts`                   |
+| `vectors/non-alcoholic/` | Alcohol class, variant templates offered for a class | `non-alcoholic/non-alcoholic-vector.schema.json` | `non-alcoholic-vectors.test.ts`      |
+| `vectors/stock/`         | Makeable, missing one, unlock ranking                | `stock/stock-vector.schema.json`                 | `stock-vectors.test.ts`              |
 
 A vector file has an `id` equal to its file name, the inputs, the expected
 values worked out by hand with their `tolerance`, and a `source` that says
