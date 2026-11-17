@@ -11,8 +11,9 @@ generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 Versions are pinned exactly in `package.json`; the lockfile pins the
 rest. Licences read from each package's `package.json` in
 `node_modules`. Mixtura itself is AGPL-3.0-or-later ([LICENSE](../LICENSE)).
-Nothing third-party is bundled into the engine or the app yet; all
-dependencies are development only and MIT or Apache-2.0, compatible with it.
+Nothing third-party is bundled into the engine; the app bundles `ajv`
+(see below). All other dependencies are development only and MIT or
+Apache-2.0, compatible with it.
 
 ## Development only
 
@@ -28,12 +29,26 @@ dependencies are development only and MIT or Apache-2.0, compatible with it.
 | `prettier`          | 3.9.10  | MIT        | Formatting                                                                  |
 | `@types/node`       | 22.20.5 | MIT        | Types for tests and build scripts                                           |
 | `ajv`               | 8.17.1  | MIT        | Validates the JSON Schemas' examples in tests                               |
+| `fake-indexeddb`    | 6.2.8   | Apache-2.0 | In-memory IndexedDB for the store tests (app, tests only, no dependencies)  |
 | `playwright`        | 1.65.0  | Apache-2.0 | End-to-end walk of the built app, icon rendering (same version as QuestArc) |
 
 `ajv` (engine, tests only, not shipped) brings `fast-deep-equal` 3.1.3
 (MIT), `fast-uri` 3.1.9 (BSD-3-Clause), `json-schema-traverse` 1.0.0 (MIT)
 and `require-from-string` 2.0.2 (MIT); all read from their `package.json`
 and licence files in `node_modules` and compatible with AGPL-3.0-or-later.
+
+## Shipped in the app
+
+| Package | Version | Licence | Use                                                                                                  |
+| ------- | ------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `ajv`   | 8.17.1  | MIT     | Validates every store write against the JSON Schemas ([store](store.md)); about 120 kB of the bundle |
+
+`ajv` brings `fast-deep-equal`, `fast-uri` (BSD-3-Clause),
+`json-schema-traverse` and `require-from-string`, licences as above. The
+JSON Schemas name URLs as identifiers; they are never requested.
+Considered instead: compiling validators at build time (more build
+machinery for the same checks) and hand-written validators (would drift
+from the schemas).
 
 ## GitHub Actions
 

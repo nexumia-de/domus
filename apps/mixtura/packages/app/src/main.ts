@@ -1,6 +1,7 @@
 import { initialState } from './app-state';
+import { connect } from './data';
 import { startNavigation } from './navigation';
-import { applyTheme, loadPrefs, savePrefs } from './prefs';
+import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
 import { render, type Shell } from './shell/render';
 import { createStore } from './state';
@@ -12,14 +13,20 @@ if (root) {
   const store = createStore(initialState(location.hash, prefs));
   applyTheme(prefs.theme);
 
-  const shell: Shell = { screens, store, applyUpdate: () => undefined };
+  const connection = connect(store);
+  const shell: Shell = {
+    screens,
+    store,
+    data: connection.data,
+    applyUpdate: () => undefined,
+    retryData: connection.retry,
+  };
   const draw = (): void => render(root, shell);
 
   // Redraw from state, once per burst of changes.
   let scheduled = false;
   store.subscribe((state, previous) => {
     if (state.theme !== previous.theme) applyTheme(state.theme);
-    if (state.theme !== previous.theme || state.units !== previous.units) savePrefs(state);
     if (scheduled) return;
     scheduled = true;
     queueMicrotask(() => {

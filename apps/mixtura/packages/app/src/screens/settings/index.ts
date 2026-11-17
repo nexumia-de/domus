@@ -49,6 +49,18 @@ function settings({ state, store }: ScreenContext): HTMLElement {
       choice<Theme>('theme', s.appearance, s.themeValues, state.theme, (theme) =>
         store.set({ theme }),
       ),
+      h(
+        'div',
+        { class: 'field' },
+        h('span', { class: 'label' }, s.storage),
+        h(
+          'span',
+          { class: 'hint', id: 'persistence' },
+          state.storage.kind === 'error'
+            ? s.storageUnavailable
+            : s.storageValues[state.persistence],
+        ),
+      ),
     ),
     h(
       'div',

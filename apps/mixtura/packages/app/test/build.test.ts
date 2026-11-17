@@ -87,7 +87,14 @@ test('the cache name changes when a file changes and not otherwise', () => {
 test('no external URL appears in the built output', () => {
   const namespace = 'http://www.w3.org/2000/svg';
   for (const file of listFiles(out).filter((f) => !f.endsWith('.png'))) {
-    const urls = (read(file).match(/https?:\/\/[^\s"'<>)]+/g) ?? []).filter((u) => u !== namespace);
+    // JSON Schema identifiers (`$schema`, vocabularies, Ajv's own meta-schema id)
+    // are names in the validator, never requested; e2e checks that no request
+    // leaves the origin.
+    const identifier =
+      /^https?:\/\/(json-schema\.org\/|raw\.githubusercontent\.com\/ajv-validator\/)/;
+    const urls = (read(file).match(/https?:\/\/[^\s"'<>)]+/g) ?? []).filter(
+      (u) => u !== namespace && !identifier.test(u),
+    );
     expect(urls, file).toEqual([]);
   }
 });

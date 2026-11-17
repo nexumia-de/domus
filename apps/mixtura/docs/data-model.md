@@ -23,9 +23,8 @@ round, and when a "required" cell differs from the schema.
 
 Principle: **derive, don't store** ([AGENTS.md](../AGENTS.md)). Only what
 the user entered, and seed data, is stored; the last section lists what
-is computed every time. The storage layout (IndexedDB) is a later
-decision ([PWA decision](decisions/pwa-own-data.md)); the model here is
-independent of it.
+is computed every time. The storage layout (IndexedDB) is in [store](store.md); the model here
+is independent of it.
 
 No bartending number is defined in this document. Where a figure needs
 a source (usual ranges, dilution, yields) the field has no default; the
@@ -294,6 +293,14 @@ both versions; a file is never partly imported, and no field is dropped
 silently. `export.schema.json` always describes the current version only
 (`formatVersion` is a constant there); older versions live in the
 migration code and its vectors.
+
+## Storage
+
+On the device the entities live in IndexedDB, schema version 2: stores
+`specs` (one record per version, indexed by `lineageId`),
+`ingredients` (prepared ones included), `templates`, `affinities`,
+`stock` (keyed by `ingredientId`), `settings` and `meta`. Seed data is
+not stored there. Stores, indexes, migrations: [store](store.md).
 
 ## Schemas and examples
 

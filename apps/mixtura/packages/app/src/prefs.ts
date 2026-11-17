@@ -1,11 +1,14 @@
-// Device preferences (theme, units). Interim home: localStorage, because
-// the theme must be known before first paint; the local store of the app
-// takes them over with the data issues. Every access is guarded: storage
-// can be blocked, then the defaults apply and nothing is kept.
+// A copy of the device preferences (theme, units) in localStorage, only so
+// the theme is known before first paint and the first draw is right. The
+// local store (store/) owns them; data.ts writes this copy whenever they
+// change and replaces the state with the store's values once it is open.
+// Every access is guarded: storage can be blocked, then the defaults apply.
 
 import { type AppState, type Theme, type Units } from './app-state';
 
-const KEY = 'mixtura.prefs';
+const KEY = 'mixtura.prefs-copy';
+/** Where the shell kept them before the store existed; migration 2 reads it once. */
+export const LEGACY_KEY = 'mixtura.prefs';
 const THEMES: readonly Theme[] = ['system', 'light', 'dark'];
 const UNITS: readonly Units[] = ['metric', 'us', 'imperial'];
 
@@ -28,7 +31,7 @@ export function parsePrefs(text: string | null): Prefs {
 
 export function loadPrefs(): Prefs {
   try {
-    return parsePrefs(localStorage.getItem(KEY));
+    return parsePrefs(localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY));
   } catch {
     return defaultPrefs;
   }

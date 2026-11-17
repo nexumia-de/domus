@@ -6,11 +6,14 @@ import { type DestId } from './destinations';
 import { type Route } from './router';
 import { type AppState } from './app-state';
 import { type Store } from './state';
+import { type AppData } from './data';
 
 export interface ScreenContext {
   route: Route;
   state: AppState;
   store: Store<AppState>;
+  /** The catalog (seed plus own data) and the local store, once open. */
+  data: AppData;
 }
 
 export interface ScreenView {

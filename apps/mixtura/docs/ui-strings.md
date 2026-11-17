@@ -101,6 +101,7 @@ score, grade, warning, error (for a figure).
 | Not found (deep link)    | This drink is not here                   | The link points to a drink that was deleted or never existed.     | Open Drinks |
 | Store cannot be opened   | Your data cannot be saved here           | {reason}. You can browse the drinks, but changes are not kept.    | Try Again   |
 | Seed data failed to load | Data could not be loaded                 | The built-in data did not load. Nothing you entered is affected.  | Try Again   |
+| Setting not saved        | Not saved                                | {reason}. The setting was not changed.                            |             |
 | Save failed              | Not saved                                | {reason}. What you entered is still here.                         | Try Again   |
 | Amount not understood    | (under the field)                        | Not understood: {text}. Try 45 ml, 1½ oz or 2 dashes.             |             |
 | Name or line missing     | (under Save Version)                     | Add a name and one ingredient.                                    |             |
@@ -112,6 +113,13 @@ score, grade, warning, error (for a figure).
 | External link offline    | (accessible name)                        | {name}, needs a connection                                        |             |
 
 No screen shows a special offline state: the app is local.
+
+Reasons filling {reason} of "Your data cannot be saved here": This
+browser blocks local storage here (no IndexedDB) · Another window still
+uses an older version; close it · Your data was saved by a newer version
+of the app · Your data could not be upgraded and was left as it was ·
+The device storage is full. Shown as a banner with Try Again above the
+read-only app ([store](store.md#failure)).
 
 # Update
 
@@ -128,13 +136,14 @@ drinks · Swap dropped · Imported {counts} · Exported {counts}
 
 # Settings
 
-| Row              | Values                       | Description                                                    |
-| ---------------- | ---------------------------- | -------------------------------------------------------------- |
-| Amounts shown in | Metric · US · Imperial       | Entry accepts any unit; this changes only what is shown.       |
-| Appearance       | Follow System · Light · Dark |                                                                |
-| Data             | Export and Import            | {n} changes since the last export.                             |
-| About            | Version, sources, notes      |                                                                |
-| Backup reminder  | (banner)                     | You have {n} changes since your last export. Export Everything |
+| Row              | Values                                                                                                                                                                                                                                                                                                | Description                                                    |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Amounts shown in | Metric · US · Imperial                                                                                                                                                                                                                                                                                | Entry accepts any unit; this changes only what is shown.       |
+| Appearance       | Follow System · Light · Dark                                                                                                                                                                                                                                                                          |                                                                |
+| Data             | Export and Import                                                                                                                                                                                                                                                                                     | {n} changes since the last export.                             |
+| About            | Version, sources, notes                                                                                                                                                                                                                                                                               |                                                                |
+| Storage          | Checking · Not requested yet. Asked after you first save something. · Kept: the browser will not clear your data on its own. · Not guaranteed: the browser may clear your data when space is short. · This browser cannot promise to keep your data. · Not available while your data cannot be saved. | Answer to the persistent-storage request                       |
+| Backup reminder  | (banner)                                                                                                                                                                                                                                                                                              | You have {n} changes since your last export. Export Everything |
 
 # Accessible names
 

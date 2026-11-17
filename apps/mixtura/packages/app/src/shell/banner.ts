@@ -16,3 +16,41 @@ export function updateBanner(state: AppState, onUpdate: () => void): HTMLElement
     ),
   );
 }
+
+const reasons: Record<string, string> = {
+  unavailable: strings.storage.reasons.unavailable,
+  blocked: strings.storage.reasons.blocked,
+  'too-new': strings.storage.reasons.tooNew,
+  migration: strings.storage.reasons.migration,
+  quota: strings.storage.reasons.quota,
+};
+
+function line(title: string, text: string, onRetry?: () => void): HTMLElement {
+  return h(
+    'div',
+    { class: 'banner', role: 'status' },
+    h('span', {}, h('strong', {}, `${title} `), text),
+    onRetry &&
+      h(
+        'button',
+        { class: 'btn btn--tonal', type: 'button', 'data-focus': 'retry', onclick: onRetry },
+        strings.storage.retry,
+      ),
+  );
+}
+
+/**
+ * The line about the local data, in order of importance: the store cannot
+ * be used (the app is read-only), the built-in data did not load, a setting
+ * was not saved. Null when all is well.
+ */
+export function statusBanner(state: AppState, onRetry: () => void): HTMLElement | null {
+  const s = strings.storage;
+  if (state.storage.kind === 'error') {
+    const reason = reasons[state.storage.error] ?? state.storage.reason;
+    return line(s.title, s.text(reason), onRetry);
+  }
+  if (state.seed.kind === 'failed') return line(s.seedTitle, s.seedText, onRetry);
+  if (state.saveError) return line(s.notSaved, s.notSavedText(state.saveError));
+  return null;
+}

@@ -11,6 +11,7 @@ const out = process.env.MIXTURA_OUT ?? 'dist';
 const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
 rmSync(out, { recursive: true, force: true });
 mkdirSync(join(out, 'icons'), { recursive: true });
+mkdirSync(join(out, 'seed'), { recursive: true });
 
 const common = {
   bundle: true,
@@ -36,6 +37,7 @@ writeFileSync(join(out, 'app.css'), (await transform(css, { loader: 'css', minif
 const copied = [
   'index.html',
   'manifest.webmanifest',
+  'seed/seed.json',
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',

@@ -8,6 +8,7 @@ import { extname, join, normalize, resolve } from 'node:path';
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
+  '.json': 'application/json',
   '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.svg': 'image/svg+xml',
