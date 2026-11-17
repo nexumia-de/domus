@@ -52,8 +52,12 @@ await waitRows();
 const sortButton = page.getByRole('button', { name: 'Sort, Name' });
 expect((await sortButton.getAttribute('aria-haspopup')) === 'menu', 'the sort button has a menu');
 expect((await sortButton.getAttribute('aria-expanded')) === 'false', 'the menu starts closed');
-const box = await sortButton.boundingBox();
-expect(box !== null && box.width >= 44 && box.height >= 44, 'the sort button is 44 px');
+// A late redraw (the catalog, the stock) replaces the button: measure it where it stands.
+await page.waitForFunction(() => {
+  const r = document.querySelector('[data-focus="sort"]')?.getBoundingClientRect();
+  return r !== undefined && r.width >= 44 && r.height >= 44;
+});
+expect(true, 'the sort button is 44 px');
 const byName = await rowNames();
 await sortButton.click();
 const menu = page.getByRole('menu', { name: 'Sort drinks by' });
@@ -191,7 +195,10 @@ await page.keyboard.press('n');
 await page.waitForFunction(() => location.hash === '#/drinks/new');
 expect(true, 'n starts a new drink');
 await page.keyboard.press('n');
-expect((await hash()) === '#/drinks/new', 'n does nothing where the list is not shown');
+expect(
+  (await hash()) === '#/drinks/new',
+  `n does nothing where the list is not shown ${await hash()}`,
+);
 
 // Off over a dialog (a fresh page: the editor left a draft behind).
 await page.goto('about:blank');
@@ -266,14 +273,18 @@ await page.waitForFunction(() => document.activeElement?.getAttribute('data-focu
 expect(true, 'Escape returns focus to the Filters button');
 
 // ---- Template detail: New Drink starts from the template ----
-await page.goto(`${site.url}#/templates/martini`, { waitUntil: 'load' });
+// A blank New Drink was open first: it must not be shown where a template was chosen.
+await page.goto(`${site.url}#/drinks/new`, { waitUntil: 'load' });
+await page.getByRole('button', { name: 'Add Ingredient' }).waitFor();
+expect((await page.getByText('Empty line from the template').count()) === 0, 'a blank new drink');
+await page.evaluate(() => {
+  location.hash = '#/templates/martini';
+});
 await page.getByRole('link', { name: 'New Drink' }).click();
 await page.waitForFunction(() => location.hash === '#/drinks/new?template=martini');
-await page.locator('.pane h1:visible', { hasText: 'New Drink' }).last().waitFor();
-expect(
-  (await page.locator('.pane.detail').innerText()).includes('Base'),
-  'New Drink from a template opens the editor with its slots',
-);
+// The editor says "New Drink" while it still loads: wait for the slots themselves.
+await page.getByText('Empty line from the template').first().waitFor();
+expect(true, 'New Drink from a template opens the editor with its slots');
 await page.goto(`${site.url}#/drinks`, { waitUntil: 'load' });
 await waitRows();
 
