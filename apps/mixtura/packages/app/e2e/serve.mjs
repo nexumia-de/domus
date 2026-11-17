@@ -1,5 +1,6 @@
-// Serves the built app (dist/) on localhost for the walk. `overrides`
-// maps a path to a replacement body, to publish a "new build" while the
+// Serves the built app (dist/) on localhost for the walk, under `prefix`
+// (default the root; '/mixtura/' mimics GitHub Pages). `overrides`
+// maps a path (below the prefix) to a replacement body, to publish a "new build" while the
 // page is open.
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -14,10 +15,12 @@ const TYPES = {
   '.webmanifest': 'application/manifest+json',
 };
 
-export const serve = async (dir = resolve('dist')) => {
+export const serve = async (dir = resolve('dist'), prefix = '/') => {
   const overrides = new Map();
   const server = createServer(async (request, response) => {
-    const path = normalize(new URL(request.url, 'http://localhost').pathname);
+    const full = normalize(new URL(request.url, 'http://localhost').pathname);
+    if (!full.startsWith(prefix)) return response.writeHead(404).end();
+    const path = `/${full.slice(prefix.length)}`;
     const headers = { 'Cache-Control': 'no-cache' };
     if (overrides.has(path)) {
       response.writeHead(200, { ...headers, 'Content-Type': TYPES[extname(path)] ?? 'text/plain' });
@@ -34,7 +37,7 @@ export const serve = async (dir = resolve('dist')) => {
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   return {
-    url: `http://localhost:${server.address().port}/`,
+    url: `http://localhost:${server.address().port}${prefix}`,
     overrides,
     close: () => new Promise((done) => server.close(done)),
   };

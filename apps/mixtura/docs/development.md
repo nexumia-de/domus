@@ -3,7 +3,7 @@ type: Guide
 title: Development
 description: Setup, commands, layout and the engine's purity rule for Mixtura, the CI job name, and the network hosts the research needed.
 tags: [development, tooling, ci, network]
-generated: { by: claude-code/2.1.326, at: 2026-11-16 }
+generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 ---
 
 # Development
@@ -116,7 +116,21 @@ required status check name for the branch-protection ruleset. A second
 job `e2e` runs the browser walk; it is not required until issue #21 settles it. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
+`.github/workflows/pages.yml` (job `build`, then `deploy`) publishes
+`packages/app/dist` to GitHub Pages on pushes to `main` and manual start; it
+is not a required check. The app uses only relative URLs, so the same build
+works at `/` and under `/mixtura/`; `npm run e2e` serves it under
+`/mixtura/` (`e2e/subpath.mjs`) and the build test rejects root-absolute
+URLs. Owner steps: [install](install.md#what-the-owner-must-switch-on).
+
 ## Network hosts
+
+The Pages workflow runs on GitHub's runners and needs only GitHub itself
+(`github.com`, `api.github.com`, the Pages service and the npm registry for
+`npm ci`, which GitHub-hosted runners reach). The install guide was checked
+against `raw.githubusercontent.com/mdn/content` because `developer.mozilla.org`,
+`support.google.com`, `web.dev`, `help.gnome.org` and `support.mozilla.org`
+answered 403 through the session proxy on 2026-11-17.
 
 Needed to check the facts in [existing tools and data](existing-tools.md);
 reachable on 2026-11-16:

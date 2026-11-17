@@ -49,4 +49,5 @@ links. Change history is in [log.md](log.md).
 # Development
 
 - [Development](development.md) - Setup, commands, layout, the app shell and how to add a screen, service worker and update flow, e2e test, the engine's purity rule, the CI jobs and the hosts the research needed.
+- [Install](install.md) - Public address, how to install on Android, Linux desktop and a Phosh phone (browser support from MDN, device steps marked as unchecked), updates, offline use, where the data lives, removal, and the owner's steps to switch on GitHub Pages.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

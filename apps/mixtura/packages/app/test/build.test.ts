@@ -91,3 +91,26 @@ test('no external URL appears in the built output', () => {
     expect(urls, file).toEqual([]);
   }
 });
+
+test('no root-absolute URL in the entry, manifest, worker files or script: the app works under a sub-path', () => {
+  const absolute = /(?:href|src)="\/(?!\/)/;
+  expect(read('index.html')).not.toMatch(absolute);
+  const manifest = JSON.parse(read('manifest.webmanifest')) as {
+    start_url: string;
+    scope: string;
+    id: string;
+    icons: { src: string }[];
+  };
+  for (const url of [
+    manifest.start_url,
+    manifest.scope,
+    manifest.id,
+    ...manifest.icons.map((i) => i.src),
+  ]) {
+    expect(url.startsWith('/'), url).toBe(false);
+  }
+  const list = JSON.parse(/\["\.\/"[^\]]*\]/.exec(read('sw.js'))?.[0] ?? '[]') as string[];
+  for (const file of list) expect(file.startsWith('/'), file).toBe(false);
+  expect(read('main.js')).not.toMatch(/register\(["']\//);
+  expect(read('app.css')).not.toMatch(/url\(["']?\/(?!\/)/);
+});
