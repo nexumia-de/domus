@@ -12,6 +12,7 @@ import {
 } from '@mixtura/engine';
 import { strings } from '../../strings';
 import type { SpecLine } from '../browse/types';
+import { servingsFor, pourMl, type BatchTarget } from './batch-target';
 import { listNames } from './format';
 
 export interface BatchLineVM {
@@ -21,8 +22,18 @@ export interface BatchLineVM {
   note?: string;
 }
 
+/** What the sheet's field shows and where the other mode starts. */
+export interface BatchControl {
+  mode: 'drinks' | 'volume';
+  /** The field's text: the number of drinks, or the target volume as shown. */
+  fieldValue: string;
+  /** The volume to start from when the user switches to a volume: today's drinks times one pour. */
+  startMl?: number;
+}
+
 export interface BatchVM {
   title: string;
+  control: BatchControl;
   lines: BatchLineVM[];
   rows: { label: string; value: string; note?: string }[];
   notes: string[];
@@ -39,16 +50,47 @@ export function batchVM(
   tree: IngredientTree,
   method: string | undefined,
   lines: readonly SpecLine[],
-  servings: number,
+  target: BatchTarget,
   system: DisplaySystem,
   nameOf: (id: string) => string | undefined,
 ): BatchVM {
-  const title = strings.batch.title(servings);
+  const pour = pourMl(tree, method, lines);
+  const volume = target.kind === 'volume';
+  const title = volume
+    ? strings.batch.titleVolume(text(target.ml, 'ml', system))
+    : strings.batch.title(target.servings);
+  const startMl =
+    pour === undefined || volume
+      ? undefined
+      : Math.max(10, Math.round((target.servings * pour) / 10) * 10);
+  const control: BatchControl = {
+    mode: target.kind,
+    fieldValue: volume ? text(target.ml, 'ml', system) : String(target.servings),
+    ...(startMl !== undefined && { startMl }),
+  };
+  // Half a millilitre of slack: the sheet shows the pour rounded, and entering that must work.
+  if (volume && pour !== undefined && target.ml + 0.5 < pour) {
+    return {
+      title,
+      control,
+      lines: [],
+      rows: [],
+      notes: [],
+      failure: strings.batch.tooSmall(text(pour, 'ml', system)),
+    };
+  }
+  // A volume with no pour known (no method) is passed on as one serving: the engine names the reason.
+  const servings = volume
+    ? pour === undefined
+      ? 1
+      : servingsFor(target.ml, pour)
+    : target.servings;
   const result = prediluted(tree, { method, lines }, servings, { system });
   if (!result.ok) {
     const first = result.errors[0];
     return {
       title,
+      control,
       lines: [],
       rows: [],
       notes: [],
@@ -76,6 +118,17 @@ export function batchVM(
 
   const shelf = batch.shelfLife;
   const rows: BatchVM['rows'] = [
+    ...(volume
+      ? [
+          {
+            label: strings.batch.servingsFor,
+            value: strings.batch.servingsOf(
+              Math.round(servings * 10) / 10,
+              text(batch.pourPerServingMl, 'ml', system),
+            ),
+          },
+        ]
+      : []),
     { label: strings.batch.water, value: text(batch.water.roundedMl, 'ml', system) },
     { label: strings.batch.total, value: text(batch.roundedTotalMl, 'ml', system) },
     { label: strings.batch.pour, value: text(batch.pourPerServingMl, 'ml', system) },
@@ -119,5 +172,5 @@ export function batchVM(
       strings.batch.notCounted(listNames(batch.perDrink.excluded.map((e) => name(e.ingredientId)))),
     );
   }
-  return { title, lines: lineVMs, rows, notes };
+  return { title, control, lines: lineVMs, rows, notes };
 }

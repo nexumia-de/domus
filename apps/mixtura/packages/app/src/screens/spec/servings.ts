@@ -6,23 +6,35 @@ import { roundCount, scaleLine, UNITS } from '@mixtura/engine';
 import type { Route } from '../../router';
 import { formatHash } from '../../router';
 import type { SpecLine } from '../browse/types';
+import { MAX_BATCH_DRINKS, volumeParam } from './batch-target';
 
 export const MIN_SERVINGS = 1;
+/** The stepper's last step; the batch sheet takes more (`MAX_BATCH_DRINKS`). */
 export const MAX_SERVINGS = 12;
 
-/** The number of drinks in the address, 1 to 12; anything else is 1. */
+/** The number of drinks in the address, 1 to 200; anything else is 1. */
 export function servingsOf(query: URLSearchParams): number {
   const n = Number(query.get('servings'));
-  return Number.isInteger(n) && n >= MIN_SERVINGS && n <= MAX_SERVINGS ? n : MIN_SERVINGS;
+  return Number.isInteger(n) && n >= MIN_SERVINGS && n <= MAX_BATCH_DRINKS ? n : MIN_SERVINGS;
 }
 
-/** The address of this screen with `servings` and the batch sheet set; 1 serving leaves the parameter out. */
-export function specAddress(route: Route, servings: number, sheet: string | null): string {
+/**
+ * The address of this screen with `servings`, the sheet and, for a batch
+ * made for a volume, `volume` (ml) set; 1 serving leaves the parameter out.
+ */
+export function specAddress(
+  route: Route,
+  servings: number,
+  sheet: string | null,
+  volumeMl?: number,
+): string {
   const query = new URLSearchParams(route.query);
   query.delete('servings');
   query.delete('sheet');
+  query.delete('volume');
   if (servings !== MIN_SERVINGS) query.set('servings', String(servings));
   if (sheet) query.set('sheet', sheet);
+  if (sheet && volumeMl !== undefined) query.set('volume', volumeParam(volumeMl));
   return formatHash(route.path, query);
 }
 

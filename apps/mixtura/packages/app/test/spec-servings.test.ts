@@ -12,7 +12,9 @@ describe('servings in the address', () => {
   test('1 to 12 whole drinks, anything else is 1', () => {
     expect(servingsOf(q('servings=3'))).toBe(3);
     expect(servingsOf(q('servings=12'))).toBe(12);
-    for (const bad of ['', 'servings=0', 'servings=13', 'servings=2.5', 'servings=x'])
+    expect(servingsOf(q('servings=40'))).toBe(40);
+    expect(servingsOf(q('servings=200'))).toBe(200);
+    for (const bad of ['', 'servings=0', 'servings=201', 'servings=2.5', 'servings=x'])
       expect(servingsOf(q(bad))).toBe(1);
   });
   test('the address keeps other parameters and drops servings=1', () => {
@@ -63,7 +65,14 @@ describe('the batch sheet', () => {
   const model = seedModel();
   const batch = (id: string, servings: number, system: 'metric' | 'us' = 'metric') => {
     const spec = model.byLineage.get(id)!.spec;
-    return batchVM(model.tree, spec.method, spec.lines, servings, system, model.ingredientName);
+    return batchVM(
+      model.tree,
+      spec.method,
+      spec.lines,
+      { kind: 'drinks', servings },
+      system,
+      model.ingredientName,
+    );
   };
 
   test('water, total, pour, yield and the dilution used', () => {
@@ -98,7 +107,14 @@ describe('the batch sheet', () => {
 
   test('a drink without a method known to the model has no batch and says why', () => {
     const spec = { ...model.byLineage.get('daiquiri')!.spec, method: undefined };
-    const vm = batchVM(model.tree, spec.method, spec.lines, 2, 'metric', model.ingredientName);
+    const vm = batchVM(
+      model.tree,
+      spec.method,
+      spec.lines,
+      { kind: 'drinks', servings: 2 },
+      'metric',
+      model.ingredientName,
+    );
     expect(vm.failure).toMatch(/needs a method/);
   });
 
