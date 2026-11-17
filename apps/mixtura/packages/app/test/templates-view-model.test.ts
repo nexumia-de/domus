@@ -50,7 +50,7 @@ test('the detail has slots, ranges as bands and the basis of the ranges', () => 
   expect(vm.ranges.map((r) => r.text)).toEqual([
     'Usual range 17.6–19.0 %',
     'Usual range 10.4–11.2 g/100 ml',
-    'Usual range 0.99–1.07 %',
+    'Usual range 0.75–0.82 %',
   ]);
   expect(vm.ranges[0]?.track.bandLeft).toBeCloseTo(33.3, 1);
   expect(vm.basis[0]).toContain('assumption, unverified');

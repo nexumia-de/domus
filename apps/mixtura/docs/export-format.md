@@ -15,13 +15,36 @@ sources:
 
 # Export and import
 
-Built by issue #28 in `packages/app/src/store/exchange/` (pure parts and
-the transaction), `store/backup.ts` (counter) and
-`packages/app/src/screens/settings/data.ts` (screen, URL
-`#/settings/data`). The format itself is in the
+Built by issue #28; the pure rules were moved into the engine by #65
+(`packages/engine/src/exchange/`, [engine](engine.md#export-and-import)).
+The transaction, backup and Undo are in `packages/app/src/store/exchange/`,
+the counter in `store/backup.ts`, and the screen in
+`packages/app/src/screens/settings/data.ts` (URL `#/settings/data`).
+The format itself is in the
 [data model](data-model.md#export-file); the screen's behaviour in
 [screens](screens-stock-settings.md#export-and-import); texts in
 [UI strings](ui-strings.md).
+
+## Where the rules live
+
+| Job                                                                                   | Where                                                                    |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Shape of the file, building the object, file name, counts                             | engine `exchange/types.ts`, `build.ts`                                   |
+| Reading a file: size, forbidden keys, version, migration, ids, repeats, riff loops    | engine `exchange/parse.ts`, `migrate.ts`, `ids.ts`                       |
+| The merge and replace plan                                                            | engine `exchange/merge.ts` (order of `updatedAt`: `instant.ts`)          |
+| JSON Schema check (Ajv)                                                               | app `store/validate.ts`, handed to the engine as `schemaProblems`        |
+| Reading and writing IndexedDB, one transaction, import backup, Undo, the clock, files | app `store/exchange/` (`snapshot.ts`, `index.ts`), `exchange-actions.ts` |
+| Change counter and reminder                                                           | app `store/backup.ts`, `store/exchange/reminder.ts`                      |
+
+The schema check is the one dependency the engine must not have: Ajv is
+bundled by the app only and would be about 120 kB in a bundle that has no
+dependency ([dependencies](dependencies.md)). So `parseExportFile` takes the
+check as an argument (`SchemaCheck`), and the app's thin wrapper
+(`store/exchange/parse.ts`) passes `exportProblems`. The tests of the
+engine pass Ajv from the development dependencies for the real check and a
+stub for the rules that do not depend on it (vectors). The schemas stay in
+`packages/engine/schemas/` and are the same files for both. The store
+re-exports the engine names, so the screens' imports did not change.
 
 ## Export
 
@@ -44,7 +67,7 @@ the plain download works everywhere.
 
 ## Import
 
-`parseExportFile(text, size)` reads a file the user chose. It is untrusted
+`parseExportFile(text, size)` (engine rule, app wrapper) reads a file the user chose. It is untrusted
 input and is checked completely before anything is written:
 
 1. Size at most 10 MB (`MAX_FILE_BYTES`), checked against the reported
@@ -54,7 +77,7 @@ input and is checked completely before anything is written:
 3. `app` is `mixtura` ("not a Mixtura export" otherwise).
 4. `formatVersion` is a whole number from 1. Above the app's version:
    refused with both numbers ("It is format 3; this app reads up to 1.").
-   Below: migrated by the pure functions of `exchange/migrate.ts`
+   Below: migrated by the pure functions of the engine's `exchange/migrate.ts`
    ([migration rule](data-model.md#export-file)); the list is empty while
    version 1 is the only one.
 5. The current JSON Schema `export.schema.json` with all entity schemas
@@ -121,9 +144,14 @@ rather than only in memory.
 
 ## Tests
 
-- `test/exchange-format.test.ts`: file shape, stability, file name,
-  refusals (damaged, other app, newer, invalid, too large, forbidden keys,
-  id rule, duplicates), migration mechanism, reminder rule.
+- Engine `test/exchange.test.ts` (with Ajv): file shape, stability, file
+  name, refusals (damaged, other app, newer, invalid, too large, forbidden
+  keys, id rule, duplicates), migration mechanism.
+- Engine `test/exchange-vectors.test.ts` over `vectors/exchange/` (schema
+  check stubbed): every merge and replace case of the plan and every
+  refusal that does not depend on the schema.
+- `test/exchange-format.test.ts` (app): the wrapper uses the real schema
+  check; reminder rule.
 - `test/exchange-store.test.ts`: round trip into a fresh database, merge and
   replace rules, version-slot rule, Undo, a failing import changing
   nothing, change counter.
@@ -133,6 +161,6 @@ rather than only in memory.
 
 ## Open
 
-The schema of the export file is imported from `packages/engine/schemas/`;
-reading and merging could move into the engine when the kitchen app needs
-the same. Tracked in a follow-up issue.
+The pure rules are in the engine, so the kitchen app can reuse them; what
+it still needs is its own `APP_TAG` and record kinds, a decision for when
+that app starts.

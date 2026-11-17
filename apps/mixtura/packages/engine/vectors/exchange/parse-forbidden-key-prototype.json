@@ -1,0 +1,11 @@
+{
+  "id": "parse-forbidden-key-prototype",
+  "kind": "parse",
+  "title": "The key prototype is refused anywhere in the file",
+  "document": "{\"app\":\"mixtura\",\"formatVersion\":1,\"x\":{\"prototype\":{\"polluted\":true}}}",
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "unreadable"
+  }
+}

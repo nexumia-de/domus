@@ -149,7 +149,7 @@ describe('the seed drinks as the app shows them', () => {
     });
     expect(acid.missing).toMatch(/^No figure: .* no acid value$/);
     expect(acid.missing).toContain('Light Rum');
-    expect(acid.footer).toBe('Assumed range 0.99–1.07 %');
+    expect(acid.footer).toBe('Assumed range 0.75–0.82 %');
     expect(acid.track?.markLeft).toBeUndefined();
     expect(view('daiquiri').balance.more[1]).toMatchObject({
       label: 'Sugar to acid',

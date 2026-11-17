@@ -1,0 +1,37 @@
+{
+  "id": "plan-replace-key-order-is-identical",
+  "kind": "plan",
+  "title": "Records equal up to key order count as identical",
+  "mode": "replace",
+  "current": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x",
+        "tags": ["a"],
+        "extra": {
+          "p": 1,
+          "q": 2
+        }
+      }
+    ]
+  },
+  "incoming": {
+    "ingredients": [
+      {
+        "extra": {
+          "q": 2,
+          "p": 1
+        },
+        "tags": ["a"],
+        "name": "x",
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "ingredients": 1
+    }
+  }
+}

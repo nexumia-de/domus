@@ -101,7 +101,7 @@ not entities and use a hand-written parser with defaults.
 
 Every committed write or delete also adds to the backup change counter
 (`store/backup.ts`); export and import are in
-[export and import](export-format.md) (`exchange` on the store).
+[export and import](export-format.md) (`exchange` on the store; the pure rules of the file and the merge plan are in the engine, [engine](engine.md#export-and-import)).
 
 ## References
 

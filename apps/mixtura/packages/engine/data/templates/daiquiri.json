@@ -35,14 +35,14 @@
       "max": 11.2
     },
     "acid": {
-      "min": 0.99,
-      "max": 1.07
+      "min": 0.75,
+      "max": 0.82
     },
     "evidence": "assumption"
   },
   "source": {
     "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+    "note": "Assumption, unverified: no primary source was read for the slot ratios, the nominal spec or the dilution; only the juice acid that enters the acid range (lime 4.58, lemon 4.80 g per 100 ml, Penniston et al. 2008) was read; see docs/templates.md#evidence."
   }
 }

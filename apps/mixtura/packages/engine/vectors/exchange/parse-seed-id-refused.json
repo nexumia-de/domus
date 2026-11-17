@@ -1,0 +1,26 @@
+{
+  "id": "parse-seed-id-refused",
+  "kind": "parse",
+  "title": "A user record with a seed id is refused",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [
+      {
+        "id": "lemon-juice",
+        "name": "x"
+      }
+    ],
+    "templates": [],
+    "specs": [],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "invalid",
+    "problem": "/ingredients/0/id is not a user id"
+  }
+}

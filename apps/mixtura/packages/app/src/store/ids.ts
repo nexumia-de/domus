@@ -1,9 +1,8 @@
-// User ids: `u-` plus a lower-case UUID (docs/data-model.md#ids). Seed ids
-// are slugs and never have this form, so a user entity cannot shadow a seed
-// entity.
+// User ids: the check is the engine's (docs/data-model.md#ids); making a new
+// one needs randomness and stays here.
 
-const USER_ID = /^u-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+import { isUserId } from '@mixtura/engine';
 
-export const isUserId = (id: string): boolean => USER_ID.test(id);
+export { isUserId };
 
 export const newUserId = (): string => `u-${crypto.randomUUID()}`;

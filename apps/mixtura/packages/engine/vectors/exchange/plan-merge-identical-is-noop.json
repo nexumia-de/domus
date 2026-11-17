@@ -1,0 +1,44 @@
+{
+  "id": "plan-merge-identical-is-noop",
+  "kind": "plan",
+  "title": "Merging data that is already in changes nothing",
+  "mode": "merge",
+  "current": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x"
+      }
+    ],
+    "specs": [
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "incoming": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x"
+      }
+    ],
+    "specs": [
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "ingredients": 1,
+      "specs": 1
+    }
+  }
+}

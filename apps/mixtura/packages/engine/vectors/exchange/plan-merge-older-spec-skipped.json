@@ -1,0 +1,33 @@
+{
+  "id": "plan-merge-older-spec-skipped",
+  "kind": "plan",
+  "title": "Merge never replaces a spec with an older copy",
+  "mode": "merge",
+  "current": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "updatedAt": "2026-06-01T00:00:00Z"
+      }
+    ]
+  },
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "specs": 1
+    }
+  }
+}

@@ -40,7 +40,13 @@ export type * from './ingredients/index';
 export { assignSlots, lineMl, lineRole, matchSpec, variantSuggestions } from './templates/index';
 export type * from './templates/index';
 
-export { buildStockIndex, makeableSpecs, missingOne, unlockRanking } from './stock/index';
+export {
+  buildStockIndex,
+  makeableSpecs,
+  missingOne,
+  pairRanking,
+  unlockRanking,
+} from './stock/index';
 export type * from './stock/index';
 
 export { buildFamily, diffSpecs, findFamilyCycles, summariseRiff } from './specs/index';
@@ -55,3 +61,5 @@ export {
   USE_SOON_DAYS,
 } from './shelf/index';
 export type * from './shelf/index';
+
+export * from './exchange/index';

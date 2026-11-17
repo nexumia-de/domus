@@ -113,3 +113,29 @@ test('the curated classics values all say where they come from', () => {
     expect(e.source !== undefined || e.basis === 'assumption', id).toBe(true);
   }
 });
+
+test('a curated acid value lies inside the range of its sources', () => {
+  for (const [id, e] of Object.entries(
+    curated.classics as Record<string, { acid?: number; acidRange?: { min: number; max: number } }>,
+  )) {
+    if (!e.acidRange) continue;
+    const acid = e.acid ?? Number.NaN;
+    expect(Number.isFinite(acid), id).toBe(true);
+    expect(e.acidRange.min, id).toBeLessThanOrEqual(acid);
+    expect(acid, id).toBeLessThanOrEqual(e.acidRange.max);
+  }
+});
+
+test('juice acid values read from a source are not assumptions', () => {
+  const c = curated.classics as Record<string, { source?: string; basis?: string }>;
+  for (const id of [
+    'lemon-juice',
+    'lime-juice',
+    'orange-juice',
+    'grapefruit-juice',
+    'pineapple-juice',
+  ]) {
+    expect(c[id]?.source, id).toBeDefined();
+    expect(c[id]?.basis, id).toBeUndefined();
+  }
+});

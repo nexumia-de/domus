@@ -5,7 +5,7 @@
   "type": "object",
   "properties": {
     "id": { "type": "string" },
-    "kind": { "enum": ["makeable", "unlock"] },
+    "kind": { "enum": ["makeable", "unlock", "pairs"] },
     "description": { "type": "string" },
     "ingredients": { "type": "array", "minItems": 1, "items": { "type": "object" } },
     "specs": {
@@ -43,6 +43,7 @@
             "type": "object",
             "properties": {
               "mode": { "enum": ["strict", "with-substitutes"] },
+              "limit": { "type": "integer", "minimum": 1 },
               "excludeStatuses": {
                 "type": "array",
                 "items": { "enum": ["draft", "on-menu", "retired"] }

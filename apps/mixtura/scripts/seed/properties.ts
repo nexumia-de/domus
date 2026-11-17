@@ -1,6 +1,7 @@
 // ABV and sugar of an ingredient from the source (docs/seed-data.md,
-// Mapping). Acid is never derived: the source has one unit-less value and
-// the curated file has none that was read from a source.
+// Mapping). Acid is never derived: the source has one unit-less value, and
+// the sourced juice acid of the curated file is not written into seed
+// records, whose single `source` would then misattribute it.
 export interface Props {
   abv?: number;
   sugar?: number;

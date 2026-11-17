@@ -16,6 +16,9 @@ sources:
     url: data-model.md#template
   - id: codex
     title: 'Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (2018); not at hand, the six templates are known only through the practice document'
+  - id: penniston
+    title: 'Penniston KL et al.: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products, J Endourol 22(3):567-570 (2008), PMC2637791, Table 1'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/
 ---
 
 # Templates
@@ -43,19 +46,35 @@ Every template carries `slotEvidence: assumption` and
 `usual.evidence: assumption`, and its `source` says so; a range check
 returns that status with every range.
 
-| Number                                     | Where it comes from                                                                                                                 | Status     |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| Usual ranges (ABV, sugar, acid)            | the table in [balance](balance.md#usual-ranges-per-template), computed from nominal specs; a test compares the files with the table | assumption |
-| Highball ABV 9.1 – 12.1 %                  | the same section: 120 to 180 ml of mixer                                                                                            | assumption |
-| Highball mixer 4 – 6 parts                 | practice document: 4 to 6 oz of mixer against 2 oz of spirit                                                                        | assumption |
-| Nominal slot ratios (2 : 1, 2 : ¾ : ¾ ...) | practice document                                                                                                                   | assumption |
-| Band around a nominal ratio: ÷ 2 to × 2    | **chosen here** so that the classic riffs fit; rounded to two decimals; not from any source                                         | assumption |
-| Martini optional bitter slot, 0.5 – 2      | **chosen here** so that Boulevardier fits (Negroni family); the documents give no figure                                            | assumption |
+| Number                                                          | Where it comes from                                                                                                                 | Status                       |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Usual ranges (ABV, sugar, acid)                                 | the table in [balance](balance.md#usual-ranges-per-template), computed from nominal specs; a test compares the files with the table | assumption                   |
+| Lime 4.58, lemon 4.80 g acid per 100 ml in the sour acid ranges | Penniston et al. 2008, Table 1, read[^penniston]; the range around them stays computed from assumed volumes and dilution            | input read, range assumption |
+| Highball ABV 9.1 – 12.1 %                                       | the same section: 120 to 180 ml of mixer                                                                                            | assumption                   |
+| Highball mixer 4 – 6 parts                                      | practice document: 4 to 6 oz of mixer against 2 oz of spirit                                                                        | assumption                   |
+| Nominal slot ratios (2 : 1, 2 : ¾ : ¾ ...)                      | practice document                                                                                                                   | assumption                   |
+| Band around a nominal ratio: ÷ 2 to × 2                         | **chosen here** so that the classic riffs fit; rounded to two decimals; not from any source                                         | assumption                   |
+| Martini optional bitter slot, 0.5 – 2                           | **chosen here** so that Boulevardier fits (Negroni family); the documents give no figure                                            | assumption                   |
 
 Bands are data, not code: changing a band is editing a JSON file. Owner
 task: read the Codex chapters on the six templates and replace the
 bands by the authors' own ratios; every template that then agrees with a
 source gets `verified` for that part.
+
+**Search of 2026-11-17 (#70).** No page that gives the Codex root ratios
+could be read: every host found (publisher, book shops, recipe and
+magazine sites, archive.org, Google Books) is blocked from the session
+([development](development.md#network-hosts)); search-result summaries
+name the six roots and their structure (core, balance, seasoning) but no
+ratio, and summaries are not used for numbers. The bands are therefore
+unchanged and so are the counts: **107 of 635** seed specs match a
+template (Martini 57, Daiquiri 24, Sidecar 14, Old-Fashioned 8, Highball
+3, Flip 1). The two known misfits stay as data results of the assumed
+bands: the Manhattan (two dashes of aromatic bitters land in the
+Martini's optional bitter-liqueur slot, 0.5 – 2 parts) and the
+Screwdriver (3 parts of juice against the Highball's 4 – 6). Fixing them
+needs a source for an aromatic-bitters band in the Martini family and for
+juice-lengthened highballs; no number is chosen here to make them fit.
 
 # Ratios
 
@@ -180,7 +199,7 @@ vectors. An explicit `templateId` is never replaced.
 **Evidence.** Every slot ratio is `assumption` ([evidence](#evidence));
 `na-sour`, `na-highball` and `na-foamed` carry sugar and acid ranges
 computed from the nominal spec of the parent with the base replaced volume
-for volume (so they equal the parent's: 10.4 - 11.2 g, 0.99 - 1.07 %; 0 and
+for volume (so they equal the parent's: 10.4 - 11.2 g, 0.75 - 0.82 %; 0 and
 0; 5.9 - 6.4 g and 0) and marked `assumption`; a test recomputes them. None
 has an ABV range: the ABV of a drink without ethanol is classified, not
 range-checked, and the check then reports `unknown` with the reason "no

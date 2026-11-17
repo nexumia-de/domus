@@ -1,7 +1,7 @@
 {
   "id": "range-daiquiri",
   "kind": "range",
-  "description": "Daiquiri 17.6 - 19.0 %, 10.4 - 11.2 g, 0.99 - 1.07 %: within, below, above.",
+  "description": "Daiquiri 17.6 - 19.0 %, 10.4 - 11.2 g, 0.75 - 0.82 %: within, below, above.",
   "template": "daiquiri",
   "after": {
     "abvPct": 18,
@@ -19,7 +19,7 @@
     },
     "acid": {
       "status": "above",
-      "range": [0.99, 1.07]
+      "range": [0.75, 0.82]
     }
   },
   "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"

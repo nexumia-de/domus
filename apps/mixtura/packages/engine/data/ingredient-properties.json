@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "Mixtura-owned ingredient data for the seed (docs/seed-data.md). roles: role rules by tree node, applied by scripts/seed/roles.ts, null marks a node left unclassified. classics: property values added only when the checked classics are computed (packages/engine/vectors/classics), not written into the seed. Every entry names a source or has basis assumption.",
+  "description": "Mixtura-owned ingredient data for the seed (docs/seed-data.md). roles: role rules by tree node, applied by scripts/seed/roles.ts, null marks a node left unclassified. classics: property values added only when the checked classics are computed (packages/engine/vectors/classics), not written into the seed. Every entry names a source or has basis assumption; acidRange, where present, keeps the spread of the sources read, acid is the value used.",
   "roles": {
     "activated-charcoal": {
       "role": null,
@@ -280,14 +280,14 @@
   },
   "classics": {
     "lemon-juice": {
-      "acid": 6,
-      "basis": "assumption",
-      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Same value as docs/balance.md. A search summary (not the page) of a study of citrus juices gave 48.5 to 60.3 g/l citric acid for lemon juice, 4.9 to 6.0 g per 100 ml, which agrees; it was not read."
+      "acid": 4.8,
+      "source": "Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products. J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791 (https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/), Table 1; single measured values cited as facts, the table is not copied",
+      "note": "Citric acid by ion chromatography, not titratable acidity: other acids are not counted, so the figure is a lower bound of the titratable acidity; citric acid is the acid the paper describes as concentrated in citrus fruits. Lemon juice, fresh from fruit: 48.0 g/l (SD 3.82, n = 2) = 4.80 g per 100 ml. The same table gives 34.1 and 39.2 g/l for two lemon juice concentrates; those are not fresh juice and are not used. Replaces the assumed 6."
     },
     "lime-juice": {
-      "acid": 6,
-      "basis": "assumption",
-      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Same value as docs/balance.md; a search summary of another page gave lime juice lower than lemon (about 4.7 g per 100 ml); not read."
+      "acid": 4.58,
+      "source": "Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products. J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791 (https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/), Table 1; single measured values cited as facts, the table is not copied",
+      "note": "Citric acid by ion chromatography, not titratable acidity: other acids are not counted, so the figure is a lower bound of the titratable acidity; citric acid is the acid the paper describes as concentrated in citrus fruits. Lime juice, fresh from fruit: 45.8 g/l (SD 6.86, n = 2) = 4.58 g per 100 ml; the paper finds no difference from lemon juice (P = 0.35). A lime juice concentrate is 35.4 g/l, not used. Replaces the assumed 6."
     },
     "spirits": {
       "acid": 0,
@@ -333,6 +333,29 @@
       "acid": 0,
       "basis": "assumption",
       "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Egg white taken as acid free."
+    },
+    "orange-juice": {
+      "acid": 0.91,
+      "acidRange": {
+        "min": 0.91,
+        "max": 1.69
+      },
+      "source": "Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products. J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791 (https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/), Table 1; single measured values cited as facts, the table is not copied",
+      "note": "Citric acid by ion chromatography, not titratable acidity: other acids are not counted, so the figure is a lower bound of the titratable acidity; citric acid is the acid the paper describes as concentrated in citrus fruits. Orange juice, fresh from fruit: 9.10 g/l (SD 1.98, n = 2) = 0.91 g per 100 ml, the value used (bar practice squeezes fresh juice). Two ready-to-consume juices are 16.9 and 16.7 g/l; the paper finds fresh juice lower (P = 0.003). Range 0.91 to 1.69 keeps both."
+    },
+    "grapefruit-juice": {
+      "acid": 2.5,
+      "source": "Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products. J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791 (https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/), Table 1; single measured values cited as facts, the table is not copied",
+      "note": "Citric acid by ion chromatography, not titratable acidity: other acids are not counted, so the figure is a lower bound of the titratable acidity; citric acid is the acid the paper describes as concentrated in citrus fruits. Grapefruit juice, ready-to-consume (one product, n = 1): 25.0 g/l = 2.50 g per 100 ml. The source has no fresh grapefruit juice; the value is that of a packaged juice."
+    },
+    "pineapple-juice": {
+      "acid": 0.57,
+      "acidRange": {
+        "min": 0.52,
+        "max": 0.57
+      },
+      "source": "Yusufali Z, Follett P, Wall M, et al.: Physiochemical and Sensory Properties of a Turmeric, Ginger, and Pineapple Functional Beverage with Effects of Pulp Content. Foods 13(5):718 (2024), doi:10.3390/foods13050718, PMC10931241, Table 2 (CC BY 4.0); and Sun X, Follett PA, Wall MM, et al.: Physical, Chemical, and Sensory Properties of a Turmeric-Fortified Pineapple Juice Beverage. Foods 12(12):2323 (2023), doi:10.3390/foods12122323, PMC10297280, Table 1 (CC BY 4.0)",
+      "note": "Titratable acidity in % as the papers report it, measured with a digital acidity meter (ATAGO GMK-835F); the papers do not say in the read text which acid it is expressed as. Yusufali 2024: juice of a fresh pineapple, 0.57 ± 0.01 % (high and low pulp), the value used. Sun 2023: pasteurised pineapple puree juice, 0.52 ± 0.02 %. Range 0.52 to 0.57 keeps both."
     }
   }
 }

@@ -1,0 +1,20 @@
+{
+  "id": "parse-minimal-ok",
+  "kind": "parse",
+  "title": "An empty but complete file is accepted",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": true,
+    "migratedFrom": null
+  }
+}

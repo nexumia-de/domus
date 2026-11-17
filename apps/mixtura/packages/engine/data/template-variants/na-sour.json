@@ -34,8 +34,8 @@
       "max": 11.2
     },
     "acid": {
-      "min": 0.99,
-      "max": 1.07
+      "min": 0.75,
+      "max": 0.82
     },
     "evidence": "assumption"
   },

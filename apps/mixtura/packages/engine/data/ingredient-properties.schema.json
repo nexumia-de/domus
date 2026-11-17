@@ -59,6 +59,16 @@
             "minimum": 0,
             "maximum": 100
           },
+          "acidRange": {
+            "description": "Spread of the acid values in the sources read (g per 100 ml); acid is the value used and lies inside it.",
+            "type": "object",
+            "properties": {
+              "min": { "type": "number", "minimum": 0, "maximum": 100 },
+              "max": { "type": "number", "minimum": 0, "maximum": 100 }
+            },
+            "required": ["min", "max"],
+            "additionalProperties": false
+          },
           "source": {
             "type": "string",
             "minLength": 1

@@ -1,0 +1,11 @@
+{
+  "id": "parse-array",
+  "kind": "parse",
+  "title": "An array is not a Mixtura file",
+  "document": "[]",
+  "bytes": 2,
+  "expected": {
+    "ok": false,
+    "failure": "not-mixtura"
+  }
+}

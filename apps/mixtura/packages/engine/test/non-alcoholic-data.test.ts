@@ -182,7 +182,7 @@ describe('template variants', () => {
   test('sugar and acid ranges are the nominal spec computed with f_high and f_low', () => {
     const t = buildTree([
       { id: 'tea', name: 'Tea', level: 'product', role: 'base', abv: 0, sugar: 0, acid: 0 },
-      { id: 'lime', name: 'Lime', level: 'product', role: 'sour', abv: 0, sugar: 1.5, acid: 6 },
+      { id: 'lime', name: 'Lime', level: 'product', role: 'sour', abv: 0, sugar: 1.5, acid: 4.58 },
       {
         id: 'syrup',
         name: 'Syrup',

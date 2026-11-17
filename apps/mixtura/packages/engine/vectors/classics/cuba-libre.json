@@ -20,7 +20,7 @@
       "unit": "ml"
     }
   ],
-  "source": "Lines of the seed spec cuba-libre (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "source": "Lines of the seed spec cuba-libre (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values of data/ingredient-properties.json (juice acid read from a source, the rest assumptions)",
   "properties": {
     "light-rum": {
       "role": "base",
@@ -37,7 +37,7 @@
       "role": "sour",
       "abv": 0,
       "sugar": 1.7,
-      "acid": 6
+      "acid": 4.58
     }
   },
   "expected": {

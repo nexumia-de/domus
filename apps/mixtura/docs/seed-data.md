@@ -8,6 +8,15 @@ sources:
   - id: badata
     title: 'Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f (2026-09-13)'
     url: https://github.com/bar-assistant/data
+  - id: penniston
+    title: 'Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products, J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791, Table 1'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/
+  - id: yusufali
+    title: 'Yusufali Z, Follett P, Wall M, et al.: Physiochemical and Sensory Properties of a Turmeric, Ginger, and Pineapple Functional Beverage with Effects of Pulp Content, Foods 13(5):718 (2024), doi:10.3390/foods13050718, PMC10931241, Table 2, CC BY 4.0'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10931241/
+  - id: sun
+    title: 'Sun X, Follett PA, Wall MM, et al.: Physical, Chemical, and Sensory Properties of a Turmeric-Fortified Pineapple Juice Beverage, Foods 12(12):2323 (2023), doi:10.3390/foods12122323, PMC10297280, Table 1, CC BY 4.0'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10297280/
 ---
 
 # Seed data
@@ -416,7 +425,7 @@ Per template: Martini 57, Daiquiri 24, Sidecar 14, Old-Fashioned 8,
 Highball 3, Flip 1 (`bluebird-eggnog`: the egg is a counted line without a
 volume, so its slot is filled and its ratio unmeasured); 528 fit none. The numbers are what the data gives; nothing was
 tuned. For information only: if the assumed acid values of the classics
-were applied to all of the seed, 308 of 548 specs would have all three
+were applied to all of the seed (then still lemon and lime at an assumed 6 % and no other juice), 308 of 548 specs would have all three
 figures; with them as assumptions that number says little about the
 data. Many specs fit no template because the bands are assumptions
 (for example the Manhattan: the Martini template's bitter slot is a
@@ -488,19 +497,42 @@ figures after dilution. The figures were calculated by a separate
 script outside the engine from the formulas of [balance](balance.md) and
 the matching rules of [templates](templates.md) (checked by hand for the
 Daiquiri: 105 ml, 18.286 % ABV, 10.67 g sugar per 100 ml with sugar of the
-rum and lime counted, 1.029 % acid) and the engine must agree within
+rum and lime counted, 0.785 % acid with lime at 4.58 g per 100 ml; 1.029 % with the former assumed 6) and the engine must agree within
 0.0001. A second test requires that the seed plus the curated classics
 values still give the properties written in each vector.
 
-| Template      | Drinks                                                                                                                            |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Old-Fashioned | Old Fashioned                                                                                                                     |
-| Martini       | Martini, Negroni (bitter slot used), Boulevardier; Manhattan fits none and is kept to show it                                     |
-| Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                      |
-| Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets                                                                                |
-| Highball      | Whisky Highball (the `top` line read as 120 ml: assumption)                                                                       |
-| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because the seed's egg line is a counted line without a volume  |
-| none          | Cuba Libre, Moscow Mule, Screwdriver, Cosmopolitan: acid unknown (cola, ginger beer, orange juice, cranberry juice have no value) |
+| Template      | Drinks                                                                                                                                              |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Old-Fashioned | Old Fashioned                                                                                                                                       |
+| Martini       | Martini, Negroni (bitter slot used), Boulevardier; Manhattan fits none and is kept to show it                                                       |
+| Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                                        |
+| Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets                                                                                                  |
+| Highball      | Whisky Highball (the `top` line read as 120 ml: assumption)                                                                                         |
+| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because the seed's egg line is a counted line without a volume                    |
+| none          | Cuba Libre, Moscow Mule, Cosmopolitan: acid unknown (cola, ginger beer, cranberry juice have no value); Screwdriver: acid known (orange juice read) |
+
+**Juice acid in the curated file** (since 2026-11-17, #70): read from
+sources, the rest of the `classics` values stay assumptions. Values in g
+per 100 ml; where sources differ `acidRange` keeps both and `acid` is
+the value used (a test keeps it inside the range):
+
+| Ingredient       | `acid` | Range       | Read                                                                                                     |
+| ---------------- | ------ | ----------- | -------------------------------------------------------------------------------------------------------- |
+| lemon-juice      | 4.80   |             | fresh, 48.0 g/l citric acid (SD 3.82, n = 2)[^penniston]                                                 |
+| lime-juice       | 4.58   |             | fresh, 45.8 g/l citric acid (SD 6.86, n = 2)[^penniston]                                                 |
+| orange-juice     | 0.91   | 0.91 – 1.69 | fresh 9.10 g/l (n = 2); two ready-to-consume juices 16.9 and 16.7 g/l[^penniston]                        |
+| grapefruit-juice | 2.50   |             | one ready-to-consume juice, 25.0 g/l; no fresh juice in the source[^penniston]                           |
+| pineapple-juice  | 0.57   | 0.52 – 0.57 | titratable acidity, fresh juice 0.57 %[^yusufali]; pasteurised puree juice 0.52 %[^sun], acid not stated |
+
+Penniston measured citric acid by ion chromatography, not titratable
+acidity, so the citrus values leave out other acids and are a lower
+bound of what the engine's acid figure means; they replace the assumed
+6 % for lemon and lime (−20 % and −24 %). Only single values are cited,
+no table is copied; the two pineapple papers are CC BY 4.0. The values
+reach the checked classics only: seed records carry one `source` (Bar
+Assistant), so writing a value from another source into them would
+misattribute it, and the seed keeps no acid (100 % of lines unknown)
+until an ingredient can carry a per-value source.
 
 Why these: well known, in the dataset with units the amounts module
 accepts, and between them every template, the optional slot, a `top`

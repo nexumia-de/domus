@@ -1,0 +1,34 @@
+{
+  "id": "plan-merge-keeps-all-versions",
+  "kind": "plan",
+  "title": "Merge adds a new version of a lineage next to the existing one",
+  "mode": "merge",
+  "current": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ]
+  },
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 2,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "expected": {
+    "added": {
+      "specs": 1
+    },
+    "writes": {
+      "specs": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"]
+    }
+  }
+}

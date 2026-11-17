@@ -17,6 +17,9 @@ sources:
     title: 'NHS: Calculating alcohol units (https://www.nhs.uk/live-well/alcohol-advice/calculating-alcohol-units/) and NHS trust pages; search-result summaries only'
   - id: codex
     title: 'Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (2018); not at hand'
+  - id: penniston
+    title: 'Penniston KL, Nakada SY, Holmes RP, Assimos DG: Quantitative assessment of citric acid in lemon juice, lime juice, and commercially-available fruit juice products, J Endourol 22(3):567-570 (2008), doi:10.1089/end.2007.0304, PMC2637791, Table 1; read on 2026-11-17, single values cited as facts'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2637791/
 ---
 
 # Balance
@@ -134,6 +137,12 @@ What the sources say, as far as it was seen:
   differently. The equations are **not used** because they could not be
   read; a model that depends on ABV, sugar and time replaces the
   constant fraction once the book is at hand (open issue, below)[^arnold-book].
+  Searched again on 2026-11-17 (#48): no reachable page quotes the
+  equations. `cookingissues.com` does not resolve from the session and
+  every other page found (search results, book shops, recipe sites) is
+  behind a blocked host ([development](development.md#network-hosts));
+  Europe PMC full-text search finds no paper that cites them. The
+  constant fractions stay; `dilution.json` and the engine are unchanged.
 - `build` (a drink poured over ice, with a mixer): no source; the
   figure is a placeholder. `blend`: one calculator page lists 100–150 ml
   of water for a blended drink; as a fraction of a roughly 100 ml base
@@ -153,21 +162,28 @@ were read. Ingredient properties used: spirit 40 % vol; dry vermouth
 16 %; aromatic bitters 45 % and 1.8 ml (2 dashes); lime and lemon juice
 6 % acid, 1.5 g sugar per 100 ml; 1:1 syrup 61.48 g/100 ml; triple sec
 40 % and 25 g sugar per 100 ml; whole egg 45 ml, no ABV, no sugar; solid
-sugar 4.2 g per teaspoon. All assumption, unverified.
+sugar 4.2 g per teaspoon. All assumption, unverified, except the juice
+acid: lime 4.58 and lemon 4.80 g per 100 ml, read from Penniston et al.
+(2008), Table 1, fresh juice, citric acid by ion chromatography[^penniston]
+(it was an assumed 6 % before 2026-11-17, which gave 0.99 – 1.07 % for
+both sours). The acid range therefore rests on one read input and the
+assumed dilution and nominal volumes; its evidence stays `assumption`.
 
 | Template      | Nominal spec (ml)                      | Method | ABV after, % | Sugar, g/100 ml | Acid, %     |
 | ------------- | -------------------------------------- | ------ | ------------ | --------------- | ----------- |
 | Old-Fashioned | 60 whiskey, 4.2 g sugar, 1.8 bitters   | stir   | 32.1 – 34.9  | 5.4 – 5.9       | 0           |
 | Martini       | 60 gin, 30 dry vermouth                | stir   | 25.6 – 27.8  | 0               | 0           |
-| Daiquiri      | 60 rum, 22.5 lime, 22.5 syrup          | shake  | 17.6 – 19.0  | 10.4 – 11.2     | 0.99 – 1.07 |
-| Sidecar       | 60 cognac, 22.5 lemon, 22.5 triple sec | shake  | 24.2 – 26.2  | 4.4 – 4.7       | 0.99 – 1.07 |
+| Daiquiri      | 60 rum, 22.5 lime, 22.5 syrup          | shake  | 17.6 – 19.0  | 10.4 – 11.2     | 0.75 – 0.82 |
+| Sidecar       | 60 cognac, 22.5 lemon, 22.5 triple sec | shake  | 24.2 – 26.2  | 4.4 – 4.7       | 0.79 – 0.86 |
 | Highball      | 60 spirit, 150 soda                    | build  | 9.9 – 10.9   | 0               | 0           |
 | Flip          | 60 brandy, 15 syrup, 45 egg            | shake  | 15.4 – 16.7  | 5.9 – 6.4       | 0           |
 
 (First value `f_high`, second `f_low`.) Highball with 120 to 180 ml of
 mixer spans 9.1 to 12.1 %. The practice document's "sours 0.8–1.2 % acid
-and 8–12 g sugar per 100 ml" is consistent with the Daiquiri row but is
-itself unsourced; no source for acid or sugar ranges was found.
+and 8–12 g sugar per 100 ml" is itself unsourced; with the read juice
+acid the computed sour rows (0.75 – 0.86 %) sit below its acid figure.
+Neither is a verdict: no source for acid or sugar ranges of a drink was
+found.
 
 ## How precise a range is shown
 
@@ -414,24 +430,25 @@ sugar `= 100·100/162.655 = 61.48` g/100 ml.
 
 "Seen" means a search-result summary of the page, not the page.
 
-| Number or claim                                                                        | Where                          | Status                                                             |
-| -------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
-| Stir adds 15–20 % (practice doc said 20–25 %)                                          | Death & Co page, seen          | secondary                                                          |
-| Shake adds 20–25 % (practice doc said 25–30 %)                                         | Death & Co page, seen          | secondary                                                          |
-| Stir about 20 %                                                                        | Difford's Guide, seen          | secondary                                                          |
-| 25–35 % shake, 15–20 % stir on other pages                                             | low-quality pages              | not used                                                           |
-| Dilution depends on ABV and components, no single ideal                                | Arnold blog, seen              | secondary                                                          |
-| Same final temperature gives same dilution                                             | Arnold, via a book summary     | secondary                                                          |
-| Shake 12–15 s; stir over two minutes to match                                          | Arnold blog, seen              | secondary                                                          |
-| Book equations, "50–60 % dilution (p. 125)"                                            | reader summaries that disagree | unresolved, not used                                               |
-| Defaults 0.20 stir, 0.25 shake                                                         | chosen mid-range               | assumption                                                         |
-| `build` 0.10, `blend` 1.0                                                              | placeholders                   | assumption                                                         |
-| UK unit is 10 ml ethanol, 8 g                                                          | NHS and NHS trust pages, seen  | secondary                                                          |
-| Ethanol density 0.789 g/ml                                                             | well known                     | assumption                                                         |
-| Syrup density 1.2296 g/ml                                                              | recalled from tables           | assumption                                                         |
-| Juice acid 6 %, sugar 1.5 g/100 ml; triple sec 25 g/100 ml; spirit 40 %; vermouth 16 % | none read                      | assumption                                                         |
-| Six root templates and their ratios                                                    | Cocktail Codex, not at hand    | assumption                                                         |
-| Stirred 28–32 %, shaken sours 14–18 %, highball 8–12 % (practice doc)                  | computed here instead          | replaced, see [practice](bartender-practice.md#balance-as-numbers) |
+| Number or claim                                                              | Where                          | Status                                                             |
+| ---------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
+| Stir adds 15–20 % (practice doc said 20–25 %)                                | Death & Co page, seen          | secondary                                                          |
+| Shake adds 20–25 % (practice doc said 25–30 %)                               | Death & Co page, seen          | secondary                                                          |
+| Stir about 20 %                                                              | Difford's Guide, seen          | secondary                                                          |
+| 25–35 % shake, 15–20 % stir on other pages                                   | low-quality pages              | not used                                                           |
+| Dilution depends on ABV and components, no single ideal                      | Arnold blog, seen              | secondary                                                          |
+| Same final temperature gives same dilution                                   | Arnold, via a book summary     | secondary                                                          |
+| Shake 12–15 s; stir over two minutes to match                                | Arnold blog, seen              | secondary                                                          |
+| Book equations, "50–60 % dilution (p. 125)"                                  | reader summaries that disagree | unresolved, not used                                               |
+| Defaults 0.20 stir, 0.25 shake                                               | chosen mid-range               | assumption                                                         |
+| `build` 0.10, `blend` 1.0                                                    | placeholders                   | assumption                                                         |
+| UK unit is 10 ml ethanol, 8 g                                                | NHS and NHS trust pages, seen  | secondary                                                          |
+| Ethanol density 0.789 g/ml                                                   | well known                     | assumption                                                         |
+| Syrup density 1.2296 g/ml                                                    | recalled from tables           | assumption                                                         |
+| Lime juice acid 4.58, lemon 4.80 g/100 ml (citric acid, fresh juice)         | Penniston 2008, Table 1, read  | secondary                                                          |
+| Juice sugar 1.5 g/100 ml; triple sec 25 g/100 ml; spirit 40 %; vermouth 16 % | none read                      | assumption                                                         |
+| Six root templates and their ratios                                          | Cocktail Codex, not at hand    | assumption                                                         |
+| Stirred 28–32 %, shaken sours 14–18 %, highball 8–12 % (practice doc)        | computed here instead          | replaced, see [practice](bartender-practice.md#balance-as-numbers) |
 
 ## Owner tasks (sources needed)
 
@@ -445,6 +462,8 @@ Pages or posts that would turn assumptions into verified numbers:
 3. Arnold's Cooking Issues posts "Cocktail Science V: Ideal Dilution
    Through %ABV Blind Testing" and the two cocktail-science posts above,
    read in full.
-4. Ingredient data: a table of juice acid and sugar and the density of
-   sucrose solutions (for example a food chemistry reference).
+4. Ingredient data: juice sugar and the density of sucrose solutions
+   (for example a food chemistry reference); juice acid was read on
+   2026-11-17 (orange, grapefruit and pineapple too, see
+   [seed data](seed-data.md#checked-classics)).
 5. Allow the blocked hosts so the above can be read by an agent.

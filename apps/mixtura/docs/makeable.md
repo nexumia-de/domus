@@ -1,8 +1,8 @@
 ---
 type: Specification
 title: What the stock allows
-description: Which specs the stock makes makeable (exact, hierarchy, prepared, substitutes), the specs missing one ingredient, and the unlock ranking of ingredients not in stock; rules, result shapes, tie-breaks, performance numbers and the vectors that pin them.
-tags: [stock, makeable, unlock, substitution, prepared, engine]
+description: Which specs the stock makes makeable (exact, hierarchy, prepared, substitutes), the specs missing one ingredient, and the unlock ranking of ingredients and of pairs of ingredients not in stock; rules, result shapes, tie-breaks, performance numbers and the vectors that pin them.
+tags: [stock, makeable, unlock, pairs, substitution, prepared, engine]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
   - id: data-model
@@ -36,6 +36,8 @@ a vector.
 | `makeable.ts`    | `makeableSpecs`, `missingOne`                                      |
 | `fixers.ts`      | Which single ingredient would satisfy a line (used by the ranking) |
 | `unlock.ts`      | `unlockRanking`                                                    |
+| `pair-fixers.ts` | Which sets of ingredients would satisfy a line together            |
+| `pairs.ts`       | `pairRanking`                                                      |
 
 ## Inputs
 
@@ -202,8 +204,71 @@ a later "plan" view. Specs blocked by unknown ingredients are in `unknown`
 and never unlocked. `unlock-single-winner`, `unlock-unknown-ingredient`.
 
 **Filter.** `excludeStatuses` as above; the app decides whether drafts count
-(`unlock-retired-and-draft`). Pairs of bottles are out of scope (issue
-#78).
+(`unlock-retired-and-draft`). Pairs of bottles are in the next section.
+
+## Pairs
+
+`pairRanking(index, stock, options)` answers "which two bottles to buy
+next". It returns `{ mode, total, ranking }`. Options are those of
+`unlockRanking` and `limit` (default 20): `ranking` holds the best `limit`
+pairs, `total` counts every qualifying pair.
+
+**What a pair is.** Two different ingredients not in stock, each a `product`
+or a `type` as in the single ranking, such that adding both makes the
+specs in `unlocks` makeable in the chosen mode. A pair is listed when each
+member adds something to the other: `count` is larger than both single
+counts. A pair of two bottles that never help each other is therefore not
+listed (buy the best single first); the best two independent bottles are
+listed, with an empty `together`.
+
+**Fields of a pair:** `first` and `second` (ids, `first` before `second`),
+`firstKind`, `secondKind`, `unlocks` (all specs the pair makes makeable,
+sorted), `count`, `byFirst` and `bySecond` (what that ingredient makes
+makeable alone: the same set the single ranking gives it), `together` (the
+specs only the pair makes makeable), `templates`, `stockDistance`,
+`alsoByFirst`, `alsoBySecond`. `byFirst` and `bySecond` may overlap (a spec
+either one completes); `count` = |`byFirst` ∪ `bySecond`| + |`together`|.
+Specs the stock already makes makeable are in none of them.
+
+**Rule and method.** Only specs that are not makeable matter, and a spec
+can only gain from a pair if its open lines can be satisfied by two
+ingredients. Per such spec the engine takes the pool of ingredients that
+could take part (`pair-fixers.ts`: the family and substitutes of each open
+line, and the parts of incomplete prepared ingredients among them,
+recursively), finds the singles that finish it alone (the same set as in the
+single ranking) and the pairs that finish it only together: it chooses the
+open line with the smallest pool, takes `a` from that pool and `b` from the
+pool of the whole spec, and checks every open line against the set `{a, b}`
+(`lineFixedBy`, which mirrors the rules of `satisfies.ts`, including a
+prepared ingredient whose missing parts are covered by `a` and `b` together).
+The pairs of all other candidates are then scored from bitsets of the
+per-ingredient unlocks, so the specs they unlock alone cost one bit
+operation per 32 specs, not a recomputation. The result is exactly "add both,
+recompute, count"; the tests compare it with that brute force.
+
+**Complexity.** With S the specs that are not makeable, P the largest pool
+of a spec, L its open lines: the spec pass is O(S·P²·L) in the worst case and
+in practice far less, because the first member comes from the smallest pool
+and most specs have one or two open lines. The scoring is O(C²·S/32) for C
+candidates (ingredients that unlock something alone or belong to a
+together-pair). Memory is O(C·S/32 + pairs that finish a spec together).
+
+**Twins.** A descendant that has the same single unlocks and the same
+partners with the same together-specs as its nearest ancestor among the
+candidates is not ranked: it is in the ancestor's `alsoByFirst` or
+`alsoBySecond`, as `alsoBy` of the single ranking.
+`pairs-twins-and-limit`.
+
+**Order.** Each key decides only when the earlier ones tie: `count`, more
+first; `templates`, more first; `stockDistance`, the sum of the two tree
+distances to the nearest ingredient in stock, smaller first, no stock counts
+as farthest; `first` id, then `second` id (a total order, so the result does
+not depend on the order of the inputs). `pairs-together-only`,
+`pairs-tie-templates`, `pairs-tie-distance`.
+
+Vectors: `pairs-together-only`, `pairs-split` (what each member unlocks
+alone, and what only the two do), `pairs-prepared`,
+`pairs-substitute-modes`, `pairs-retired-and-nothing-left`.
 
 ## Performance
 
@@ -218,6 +283,12 @@ the tests assert generous limits of 0.5 to 6 s). The seed has 635 specs and
 | `makeableSpecs`, first call (fills the index) | 8     | 44                          |
 | `makeableSpecs`, stock changed, index warm    | 4-7   | 6                           |
 | `unlockRanking`, stock changed, index warm    | 18-30 | 28-32                       |
+| `pairRanking`, stock changed, index warm      | 9-43  | 21-25                       |
+
+`pairRanking` on the seed: 9 to 17 ms strict and 16 to 43 ms with
+substitutes for stocks of about a tenth of the ingredients, 25 to 38 ms
+strict and 45 to 75 ms with substitutes for the empty stock (the worst case:
+every spec is open); the target was well under 200 ms.
 
 A stock change recomputes both in well under a frame budget even on a phone
 a few times slower; no stored index is needed. The index is derived and
@@ -269,12 +340,18 @@ expected result as a subset), run by `test/stock-vectors.test.ts`: 13
 makeable files (every rule above in both modes where it matters, empty and
 absent stock, ordering, missing one) and 11 unlock files (single winner, each
 tie rule, type versus product, both modes, prepared, filter, empty stock,
-everything makeable, unknown). Every unlock run is also checked against the
-brute force. `test/stock-random.test.ts` runs 40 seeded random worlds
+everything makeable, unknown) and 8 pairs files (kind `pairs`, options may
+include `limit`). Every unlock run is also checked against the
+brute force; every pairs run is checked against the brute force of adding
+both ingredients, for every pair of candidates. `test/stock-random.test.ts` runs 40 seeded random worlds
 (`test/helpers/stock-world.ts`; the generator lives in the tests, the engine
 has no randomness): the status agrees with an independently written naive
 evaluator in both modes, so the engine never claims a drink makeable with a
 required line unsatisfied, and the ranking equals the brute force.
+`test/stock-pairs.test.ts` runs the same 40 worlds for the pair ranking in
+both modes: every listed pair and a seeded sample of all pairs of
+candidates equal the brute force, twins included, the result does not depend
+on input order and `limit` is a prefix of the full ranking.
 `test/stock-seed.test.ts` checks invariants on the real seed: empty stock
 makes nothing makeable, every ingredient in stock makes every spec without
 unknown ingredients makeable, strict is a subset of with-substitutes,

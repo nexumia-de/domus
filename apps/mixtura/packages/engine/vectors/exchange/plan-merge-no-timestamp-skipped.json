@@ -1,0 +1,32 @@
+{
+  "id": "plan-merge-no-timestamp-skipped",
+  "kind": "plan",
+  "title": "Without an updatedAt on both sides the existing spec stays",
+  "mode": "merge",
+  "current": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ]
+  },
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "updatedAt": "2026-06-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "specs": 1
+    }
+  }
+}

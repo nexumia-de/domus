@@ -25,7 +25,7 @@
       "unit": "ml"
     }
   ],
-  "source": "Lines of the seed spec between-the-sheets (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "source": "Lines of the seed spec between-the-sheets (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values of data/ingredient-properties.json (juice acid read from a source, the rest assumptions)",
   "properties": {
     "light-rum": {
       "role": "base",
@@ -49,7 +49,7 @@
       "role": "sour",
       "abv": 0,
       "sugar": 2.5,
-      "acid": 6
+      "acid": 4.8
     }
   },
   "expected": {
@@ -57,7 +57,7 @@
     "volumeAfterMl": 137.5,
     "abvPct": 26.181818,
     "sugarPer100Ml": 5.905455,
-    "acidPct": 0.872727
+    "acidPct": 0.698182
   },
   "tolerance": 0.0001
 }

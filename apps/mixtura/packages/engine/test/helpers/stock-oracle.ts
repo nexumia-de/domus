@@ -8,6 +8,7 @@ import {
   type Id,
   type Ingredient,
   type IngredientTree,
+  type PairResult,
   type SpecStatus,
   type StockEntry,
   type StockMode,
@@ -94,4 +95,71 @@ export function candidatesOf(
 ): Id[] {
   const have = new Set(stock.filter((s) => s.present).map((s) => s.ingredientId));
   return ingredients.map((i) => i.id).filter((id) => !have.has(id));
+}
+
+/** Brute force for a pair: what each ingredient unlocks alone, and what the two unlock together. */
+export function brutePair(
+  tree: IngredientTree,
+  specs: readonly StockSpec[],
+  stock: readonly StockEntry[],
+  a: Id,
+  b: Id,
+  mode: StockMode,
+  excludeStatuses?: readonly SpecStatus[],
+): { byA: Id[]; byB: Id[]; both: Id[]; together: Id[] } {
+  const before = makeableIds(tree, specs, stock, mode, excludeStatuses);
+  const byA = bruteUnlock(tree, specs, stock, a, mode, excludeStatuses);
+  const byB = bruteUnlock(tree, specs, stock, b, mode, excludeStatuses);
+  const after = makeableIds(tree, specs, [...stock, ...present(a, b)], mode, excludeStatuses);
+  const both = [...after].filter((id) => !before.has(id)).sort();
+  const alone = new Set([...byA, ...byB]);
+  return { byA, byB, both, together: both.filter((id) => !alone.has(id)) };
+}
+
+/**
+ * Checks a pair ranking against `brutePair`: every listed pair equals the
+ * brute force, and a pair that is not listed (neither itself nor through a
+ * folded twin) is one where a member adds nothing to the other.
+ * `pairs` limits which pairs of `candidates` are tried.
+ */
+export function pairMismatches(
+  tree: IngredientTree,
+  specs: readonly StockSpec[],
+  stock: readonly StockEntry[],
+  result: PairResult,
+  pairs: readonly (readonly [Id, Id])[],
+  excludeStatuses?: readonly SpecStatus[],
+): string[] {
+  const out: string[] = [];
+  const rep = new Map<Id, Id>();
+  for (const e of result.ranking) {
+    for (const t of e.alsoByFirst) rep.set(t, e.first);
+    for (const t of e.alsoBySecond) rep.set(t, e.second);
+  }
+  const listed = new Map(result.ranking.map((e) => [`${e.first}|${e.second}`, e]));
+  for (const e of result.ranking) {
+    const b = brutePair(tree, specs, stock, e.first, e.second, result.mode, excludeStatuses);
+    const same =
+      JSON.stringify([e.byFirst, e.bySecond, e.unlocks, e.together]) ===
+      JSON.stringify([b.byA, b.byB, b.both, b.together]);
+    if (!same || e.count !== b.both.length) out.push(`listed ${e.first}+${e.second} differs`);
+    for (const t of [...e.alsoByFirst]) {
+      const bt = brutePair(tree, specs, stock, t, e.second, result.mode, excludeStatuses);
+      if (JSON.stringify(bt.both) !== JSON.stringify(b.both)) out.push(`twin ${t} differs`);
+    }
+  }
+  for (const [x, y] of pairs) {
+    const b = brutePair(tree, specs, stock, x, y, result.mode, excludeStatuses);
+    const qualifies = b.both.length > b.byA.length && b.both.length > b.byB.length;
+    const [p, q] = [rep.get(x) ?? x, rep.get(y) ?? y].sort();
+    const entry = listed.get(`${p}|${q}`);
+    if (entry) {
+      if (!qualifies || entry.count !== b.both.length) out.push(`${x}+${y} listed wrongly`);
+    } else if (qualifies && result.ranking.length < result.total) {
+      // outside the limit: only the ordering would matter, not checked here
+    } else if (qualifies) {
+      out.push(`${x}+${y} qualifies but is missing`);
+    }
+  }
+  return out;
 }

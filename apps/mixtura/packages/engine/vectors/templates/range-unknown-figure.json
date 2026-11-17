@@ -8,7 +8,7 @@
     "sugarPer100Ml": {
       "unknown": ["mystery-syrup"]
     },
-    "acidPct": 1.0
+    "acidPct": 0.8
   },
   "expected": {
     "abv": {
@@ -22,7 +22,7 @@
     },
     "acid": {
       "status": "within",
-      "range": [0.99, 1.07]
+      "range": [0.75, 0.82]
     }
   },
   "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"

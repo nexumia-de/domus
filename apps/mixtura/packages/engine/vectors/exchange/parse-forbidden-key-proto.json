@@ -1,0 +1,11 @@
+{
+  "id": "parse-forbidden-key-proto",
+  "kind": "parse",
+  "title": "The key __proto__ is refused anywhere in the file",
+  "document": "{\"app\":\"mixtura\",\"formatVersion\":1,\"x\":{\"__proto__\":{\"polluted\":true}}}",
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "unreadable"
+  }
+}

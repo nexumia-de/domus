@@ -200,6 +200,43 @@ archive.org
 books.google.com
 ```
 
+For the template bands and juice acid (#70) and Arnold's dilution
+equations (#48), blocked on 2026-11-17 (`curl -sS -m 15 -o /dev/null
+https://<host>/` gave `CONNECT tunnel failed, response 403`; `WebFetch`
+of `cookingissues.com` did not resolve):
+
+```
+cookingissues.com
+www.cookingissues.com
+www.liquidintelligence.com
+fdc.nal.usda.gov
+api.nal.usda.gov
+www.mdpi.com
+aj.tubitak.gov.tr
+vinepair.com
+www.themixer.com
+punchdrink.com
+www.seriouseats.com
+www.diffordsguide.com
+bookshop.org
+www.penguinrandomhouse.com
+www.google.com
+scholar.google.com
+www.jstor.org
+```
+
+`www.sciencedirect.com` answers 403 itself. Reachable on the same day
+and used for the juice acid values (the PMC pages answered a captcha to
+scripted requests, Europe PMC's REST API served the open-access full
+text):
+
+```
+pubmed.ncbi.nlm.nih.gov
+pmc.ncbi.nlm.nih.gov
+eutils.ncbi.nlm.nih.gov
+www.ebi.ac.uk
+```
+
 Needed for [non-alcoholic](non-alcoholic.md), reachable on 2026-11-17
 (PubMed, PMC and E-utilities; the page of each paper):
 

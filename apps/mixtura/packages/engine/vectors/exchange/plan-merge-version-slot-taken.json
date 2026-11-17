@@ -1,0 +1,31 @@
+{
+  "id": "plan-merge-version-slot-taken",
+  "kind": "plan",
+  "title": "A file spec with another id on an occupied version slot is skipped",
+  "mode": "merge",
+  "current": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ]
+  },
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "specs": 1
+    }
+  }
+}

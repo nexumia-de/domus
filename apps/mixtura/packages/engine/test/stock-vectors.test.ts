@@ -8,6 +8,7 @@ import {
   buildTree,
   makeableSpecs,
   missingOne,
+  pairRanking,
   unlockRanking,
   type Ingredient,
   type StockEntry,
@@ -15,7 +16,7 @@ import {
   type StockSpec,
 } from '../src/index';
 import { validate } from './helpers/json-schema';
-import { bruteUnlock, candidatesOf, naiveMakeable } from './helpers/stock-oracle';
+import { bruteUnlock, candidatesOf, naiveMakeable, pairMismatches } from './helpers/stock-oracle';
 
 const dir = fileURLToPath(new URL('../vectors/stock/', import.meta.url));
 const read = (name: string) => JSON.parse(readFileSync(`${dir}${name}`, 'utf8'));
@@ -24,13 +25,13 @@ const files = readdirSync(dir).filter((f) => f.endsWith('.json') && !f.includes(
 
 interface Run {
   stock: StockEntry[];
-  options: StockOptions;
+  options: StockOptions & { limit?: number };
   order?: string[];
   expected: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 interface Vector {
   id: string;
-  kind: 'makeable' | 'unlock';
+  kind: 'makeable' | 'unlock' | 'pairs';
   ingredients: Ingredient[];
   specs: StockSpec[];
   runs: Run[];
@@ -38,7 +39,7 @@ interface Vector {
 
 test('there are vectors for both kinds and every file has its id as name', () => {
   const vectors = files.map((f) => read(f) as Vector);
-  expect(new Set(vectors.map((v) => v.kind))).toEqual(new Set(['makeable', 'unlock']));
+  expect(new Set(vectors.map((v) => v.kind))).toEqual(new Set(['makeable', 'unlock', 'pairs']));
   for (const [i, f] of files.entries()) expect((vectors[i] as Vector).id + '.json').toBe(f);
 });
 
@@ -66,6 +67,18 @@ describe.each(files)('%s', (file) => {
       }
       if (run.order) expect(report.specs.map((s) => s.specId)).toEqual(run.order);
       if (one) expect(missingOne(index, report)).toEqual(one);
+      return;
+    }
+    if (v.kind === 'pairs') {
+      const result = pairRanking(index, run.stock, run.options);
+      expect(result).toMatchObject(run.expected);
+      // Every pair of candidates equals adding both and recomputing.
+      const cands = candidatesOf(v.ingredients, run.stock);
+      const pairs = cands.flatMap((a, i) => cands.slice(i + 1).map((b) => [a, b] as const));
+      const full = pairRanking(index, run.stock, { ...run.options, limit: 1e9 });
+      expect(
+        pairMismatches(tree, v.specs, run.stock, full, pairs, run.options.excludeStatuses),
+      ).toEqual([]);
       return;
     }
     const result = unlockRanking(index, run.stock, run.options);

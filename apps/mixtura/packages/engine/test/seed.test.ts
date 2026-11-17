@@ -164,7 +164,7 @@ describe('missing properties', () => {
     },
   );
 
-  test('acid is unknown on every line: no value was read from a source', () => {
+  test('acid is unknown on every line: the seed carries no acid; sourced juice values stay in the curated file', () => {
     expect(share('acid')).toBe(100);
   });
 });

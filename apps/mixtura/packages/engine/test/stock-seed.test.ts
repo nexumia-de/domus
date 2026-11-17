@@ -6,12 +6,13 @@ import {
   buildTree,
   makeableSpecs,
   missingOne,
+  pairRanking,
   unlockRanking,
   type StockEntry,
   type StockMode,
   type StockSpec,
 } from '../src/index';
-import { bruteUnlock, candidatesOf } from './helpers/stock-oracle';
+import { bruteUnlock, candidatesOf, pairMismatches } from './helpers/stock-oracle';
 import { rng, world } from './helpers/stock-world';
 import { seed, seedTree } from './seed-data';
 
@@ -92,6 +93,28 @@ describe('invariants on the seed', () => {
   });
 });
 
+describe.each(modes)('pair ranking on the seed, %s', (mode) => {
+  const stock = sampleStock(3);
+  const result = pairRanking(index, stock, { mode, limit: 15 });
+
+  test('is ordered, every pair adds to both members, and the top equals the brute force', () => {
+    expect(result.total).toBeGreaterThan(0);
+    expect(result.ranking.length).toBe(15);
+    const counts = result.ranking.map((p) => p.count);
+    expect(counts).toEqual([...counts].sort((a, b) => b - a));
+    for (const p of result.ranking) {
+      expect(p.count).toBeGreaterThan(p.byFirst.length);
+      expect(p.count).toBeGreaterThan(p.bySecond.length);
+      expect(p.first < p.second).toBe(true);
+    }
+    // The best pair is at least as good as the two best single candidates together.
+    const [a, b] = unlockRanking(index, stock, { mode }).ranking;
+    const union = new Set([...(a?.unlocks ?? []), ...(b?.unlocks ?? [])]);
+    expect(result.ranking[0]?.count).toBeGreaterThanOrEqual(union.size);
+    expect(pairMismatches(tree, specs, stock, result, [])).toEqual([]);
+  });
+});
+
 describe('time budget', () => {
   // The limits are generous (a slow CI machine, a phone); measured numbers are in docs/makeable.md.
   const ms = (run: () => void): number => {
@@ -115,6 +138,18 @@ describe('time budget', () => {
     ).toBeLessThan(1000);
   });
 
+  test('seed: the pair ranking stays well under 200 ms', () => {
+    const fresh = buildStockIndex(tree, specs);
+    for (const mode of modes) {
+      for (const n of [0, 21, 22, 23]) {
+        const stock = n === 0 ? [] : sampleStock(n);
+        const t = ms(() => pairRanking(fresh, stock, { mode }));
+        process.stderr.write(`pairRanking ${mode} stock ${n}: ${t.toFixed(1)} ms\n`);
+        expect(t).toBeLessThan(2000);
+      }
+    }
+  });
+
   test('2000 specs and 500 ingredients', () => {
     const w = world(99, { categories: 60, specs: 2000, stocks: 1 });
     expect(w.ingredients.length).toBeGreaterThan(400);
@@ -124,5 +159,8 @@ describe('time budget', () => {
     const stock = w.stocks[0] as StockEntry[];
     expect(ms(() => makeableSpecs(big, stock, { mode: 'with-substitutes' }))).toBeLessThan(3000);
     expect(ms(() => unlockRanking(big, stock, { mode: 'with-substitutes' }))).toBeLessThan(6000);
+    const t = ms(() => pairRanking(big, stock, { mode: 'with-substitutes' }));
+    process.stderr.write(`pairRanking 2000 specs: ${t.toFixed(1)} ms\n`);
+    expect(t).toBeLessThan(12000);
   });
 });

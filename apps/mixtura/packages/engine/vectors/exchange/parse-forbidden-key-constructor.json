@@ -1,0 +1,11 @@
+{
+  "id": "parse-forbidden-key-constructor",
+  "kind": "parse",
+  "title": "The key constructor is refused anywhere in the file",
+  "document": "{\"app\":\"mixtura\",\"formatVersion\":1,\"x\":{\"constructor\":{\"polluted\":true}}}",
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "unreadable"
+  }
+}

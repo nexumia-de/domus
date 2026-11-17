@@ -43,6 +43,7 @@ const PUBLIC = [
   'makeableSpecs',
   'matchSpec',
   'missingOne',
+  'pairRanking',
   'parseAmount',
   'prediluted',
   'resolveAll',
@@ -67,6 +68,19 @@ const PUBLIC = [
   'VARIANT_TEMPLATES',
   'unitValue',
   'unlockRanking',
+  'buildExport',
+  'countsOf',
+  'exportFileName',
+  'formatMigrations',
+  'FORMAT_VERSION',
+  'isNoOp',
+  'isUserId',
+  'KINDS',
+  'MAX_FILE_BYTES',
+  'migrateFile',
+  'parseExportFile',
+  'planImport',
+  'totalCount',
 ];
 
 test('the entry point exports exactly the pinned names', () => {

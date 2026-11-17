@@ -1,0 +1,14 @@
+{
+  "id": "parse-too-large-by-text",
+  "kind": "parse",
+  "title": "The text length counts too, whatever the host reports",
+  "document": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "bytes": 1,
+  "expected": {
+    "ok": false,
+    "failure": "too-large"
+  },
+  "options": {
+    "limit": 10
+  }
+}
