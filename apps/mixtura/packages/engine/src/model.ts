@@ -42,3 +42,6 @@ export type * from './templates/index';
 
 export { buildStockIndex, makeableSpecs, missingOne, unlockRanking } from './stock/index';
 export type * from './stock/index';
+
+export { buildFamily, diffSpecs, findFamilyCycles, summariseRiff } from './specs/index';
+export type * from './specs/index';

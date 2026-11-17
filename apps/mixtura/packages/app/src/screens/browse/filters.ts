@@ -20,16 +20,20 @@ export interface Filters {
   makeable?: string;
   /** `none` or `low`: the alcohol class of the engine under the thresholds of Settings. */
   alcohol?: string;
+  /** `draft`, `on-menu` or `retired`: the status the user set; retired drinks show only under this filter. */
+  status?: string;
 }
 
 export const FILTER_KEYS = [
   'makeable',
+  'status',
   'alcohol',
   'template',
   'method',
   'base',
   'strength',
 ] as const;
+export const STATUS_VALUES = ['draft', 'on-menu', 'retired'] as const;
 export const ALCOHOL_VALUES = ['none', 'low'] as const;
 export const MAKEABLE_VALUES = ['yes', 'substitute', 'one'] as const;
 
@@ -96,6 +100,7 @@ export function matchesFilters(
     if (!(ALCOHOL_VALUES as readonly string[]).includes(filters.alcohol)) return false;
     if (alcoholOf(model, drink, thresholds).class !== filters.alcohol) return false;
   }
+  if (filters.status && spec.status !== filters.status) return false;
   if (filters.makeable) {
     const wanted = KIND[filters.makeable as keyof typeof KIND];
     if (!wanted || availability?.get(spec.id)?.kind !== wanted) return false;
@@ -112,10 +117,14 @@ export function matchesFilters(
   return true;
 }
 
+/** The drinks a list starts from: retired ones are in it only when the status filter asks for them. */
+export const poolOf = (model: BrowseModel, filters: Filters): readonly Drink[] =>
+  filters.status === 'retired' ? model.allDrinks : model.drinks;
+
 export function applyFilters(
   model: BrowseModel,
   filters: Filters,
-  from: readonly Drink[] = model.drinks,
+  from: readonly Drink[] = poolOf(model, filters),
   availability?: AvailabilityMap,
   thresholds: AlcoholThresholds = ALCOHOL_THRESHOLDS,
 ): Drink[] {
@@ -135,6 +144,7 @@ export function chipsOf(
     template: (name: string) => string;
     makeable: (value: string) => string;
     alcohol: (value: string) => string;
+    status?: (value: string) => string;
     base: (name: string) => string;
   },
 ): Chip[] {
@@ -144,6 +154,7 @@ export function chipsOf(
     const label = {
       makeable: () => words.makeable(value),
       alcohol: () => words.alcohol(value),
+      status: () => words.status?.(value) ?? value,
       template: () => words.template(model.templateById.get(value)?.name ?? value),
       method: () => model.vocabulary.methods.find((m) => m.id === value)?.name ?? value,
       base: () => words.base(model.ingredientName(value) ?? value),

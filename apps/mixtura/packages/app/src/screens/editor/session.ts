@@ -52,6 +52,10 @@ export interface Session {
   /** The `data-focus` value to focus after the next draw. */
   focus: string | null;
   showErrors: boolean;
+  /** The note sheet of Save Version is open; its text so far. */
+  saveSheet: { note: string } | null;
+  /** The note of the save being made, kept for Try Again. */
+  saveNote: string;
   saving: boolean;
   error: string | null;
   /** The error is a failed save, so Try Again makes sense. */
@@ -141,6 +145,8 @@ export function sessionFor(
     form: null,
     focus: null,
     showErrors: false,
+    saveSheet: null,
+    saveNote: '',
     saving: false,
     error: null,
     errorRetry: false,
@@ -168,7 +174,9 @@ export function sessionFor(
 
 /** The user left the editor: a draft that comes back is announced as kept. */
 export function markKept(): void {
-  if (current && dirty(current)) current.restored = true;
+  if (!current) return;
+  current.saveSheet = null;
+  if (dirty(current)) current.restored = true;
 }
 
 /** Forgets the session (saved, or its drink was deleted). */

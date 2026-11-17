@@ -9,6 +9,7 @@ import { applyHint } from '../../components/amount-input';
 import { compactBar } from '../../components/compact-balance';
 import { ingredientFormSheet, type FormSheetVM } from '../../components/ingredient-form-sheet';
 import { ingredientPicker } from '../../components/ingredient-picker';
+import { saveSheet } from '../../components/save-sheet';
 import { lineRow, type LineRowActions } from '../../components/line-row';
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
@@ -54,7 +55,7 @@ import {
 } from './sheet-actions';
 import { editorStrings as t } from './strings';
 import { editorVM, type EditorVM } from './view-model';
-import { discard, deleteDrink, save } from './commit';
+import { closeSaveSheet, discard, deleteDrink, save } from './commit';
 import type { Role } from '../browse/types';
 
 export interface Page {
@@ -199,6 +200,19 @@ function pickerSheet(ctx: Ctx): HTMLElement | null {
   });
 }
 
+function versionSheet(ctx: Ctx): HTMLElement | null {
+  const state = ctx.session.saveSheet;
+  const target = ctx.session.draft.target;
+  if (!state || target.kind !== 'edit') return null;
+  return saveSheet(target.version + 1, state.note, ctx.session.saving, {
+    note: (text) => {
+      if (ctx.session.saveSheet) ctx.session.saveSheet = { note: text };
+    },
+    save: () => void save(ctx, true),
+    close: () => closeSaveSheet(ctx),
+  });
+}
+
 export function editorPage(ctx: Ctx): Page {
   const { session } = ctx;
   const draft = () => session.draft;
@@ -321,6 +335,7 @@ export function editorPage(ctx: Ctx): Page {
     compact,
     pickerSheet(ctx),
     formSheet(ctx),
+    versionSheet(ctx),
   );
 
   // Refresh what follows typing in place.

@@ -91,6 +91,36 @@ export function draftFromSpec(
   };
 }
 
+/**
+ * The draft of a riff on `spec` (any drink, built-in or the user's own): a new
+ * drink with its lines, named "<name> riff", a draft, that names `spec` as
+ * its parent. `lines` replaces the lines when the riff starts from a swap.
+ */
+export function riffDraft(
+  spec: SpecData,
+  lines: readonly SpecLine[] = spec.lines,
+  suffix = 'riff',
+): Draft {
+  const keep: Draft['keep'] = {
+    ...(spec.tags && { tags: spec.tags }),
+    ...(spec.source && { source: spec.source }),
+  };
+  return {
+    target: { kind: 'copy', fromId: spec.id, fromName: spec.name, riff: true },
+    name: `${spec.name} ${suffix}`,
+    templateId: spec.templateId ?? '',
+    lines: lines.map((line, i) => lineOf(`k${i + 1}`, line)),
+    method: spec.method ?? '',
+    glass: spec.glass ?? '',
+    garnish: spec.garnish ?? '',
+    notes: spec.notes ?? '',
+    status: 'draft',
+    prepared: noPrepared,
+    keep,
+    nextKey: lines.length + 1,
+  };
+}
+
 /** What identifies the draft's content; line keys and counters do not count. */
 export function fingerprint(draft: Draft): string {
   return JSON.stringify({

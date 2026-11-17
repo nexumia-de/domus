@@ -26,8 +26,11 @@ export interface DraftLine {
 export type Target =
   | { kind: 'new' }
   | { kind: 'edit'; id: string; lineageId: string; version: number }
-  /** A user's copy of a built-in drink; `fromId` is the built-in spec it names as its parent. */
-  | { kind: 'copy'; fromId: string; fromName: string };
+  /**
+   * A new drink made from another: the user's copy of a built-in drink (Edit)
+   * or a riff on any drink (`riff`); `fromId` is the spec it names as its parent.
+   */
+  | { kind: 'copy'; fromId: string; fromName: string; riff?: boolean };
 
 export interface DraftPrepared {
   on: boolean;

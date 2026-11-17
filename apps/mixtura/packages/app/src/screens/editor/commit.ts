@@ -5,19 +5,56 @@
 
 import { back, replace } from '../../navigation';
 import { showToast } from '../../toasts';
-import { newUserId, StoreError, systemClock, type Ingredient, type Spec } from '../../store';
+import {
+  asDiffSpec,
+  newUserId,
+  StoreError,
+  systemClock,
+  type Ingredient,
+  type Spec,
+} from '../../store';
 import { refreshBrowse } from '../browse/load';
-import { checkDraft } from './check';
-import { replaceInPlace, saveDraft } from './save';
+import { diffSpecs, type DiffSpec } from '@mixtura/engine';
+import { draftToSpec, idsFor } from './build-spec';
+import { checkDraft, type DraftCheck } from './check';
+import { newestOfLineage } from './newest';
+import { riffNote, saveDraft, versionSaver } from './save';
 import { editorStrings as t } from './strings';
-import { bump, changed, dropSession, draftKeyOf, type Ctx } from './session';
+import { bump, changed, dirty, dropSession, draftKeyOf, type Ctx } from './session';
 
 const reasonOf = (error: unknown): string =>
   error instanceof StoreError ? error.message : (error as Error).message;
 
 const specAddress = (lineage: string): string => `#/drinks/${encodeURIComponent(lineage)}`;
 
-export async function save(ctx: Ctx): Promise<void> {
+/** Whether saving would change what the drink is (lines, method, glass, ...), as opposed to its status alone. */
+function contentChanged(ctx: Ctx, check: DraftCheck): boolean {
+  const target = ctx.session.draft.target;
+  if (target.kind !== 'edit') return true;
+  const prior = newestOfLineage(ctx.model, target.lineageId)?.spec;
+  if (!prior) return true;
+  const draft = ctx.session.draft;
+  const next = draftToSpec(
+    draft,
+    check,
+    idsFor(draft, () => 'x'),
+    'x',
+  );
+  return !diffSpecs(prior as DiffSpec, asDiffSpec(next)).empty;
+}
+
+export function closeSaveSheet(ctx: Ctx): void {
+  ctx.session.saveSheet = null;
+  ctx.session.focus = 'save';
+  bump(ctx.store);
+}
+
+/**
+ * Save. A changed drink of the user's own first asks for one optional line of
+ * note in a sheet (`confirmed` is the sheet's Save); a first save, a riff and
+ * a change of status alone do not ask. Nothing changed: nothing is written.
+ */
+export async function save(ctx: Ctx, confirmed = false): Promise<void> {
   const { session, store, data } = ctx;
   if (session.saving) return;
   const check = checkDraft(ctx.model, session.draft, ctx.imperial);
@@ -32,23 +69,50 @@ export async function save(ctx: Ctx): Promise<void> {
     bump(store);
     return;
   }
+  const target = session.draft.target;
+  if (target.kind === 'edit') {
+    if (!dirty(session)) {
+      showToast(store, t.nothingToSave);
+      return;
+    }
+    if (!confirmed && contentChanged(ctx, check)) {
+      session.saveSheet = { note: session.saveNote };
+      session.focus = 'save-note';
+      bump(store);
+      return;
+    }
+  }
+  if (confirmed) session.saveNote = session.saveSheet?.note ?? session.saveNote;
+  session.saveSheet = null;
+  const parent = target.kind === 'copy' ? ctx.model.specById.get(target.fromId) : undefined;
+  const note = target.kind === 'edit' ? session.saveNote : riffNote(parent);
   session.saving = true;
   session.error = null;
   session.errorRetry = false;
   bump(store);
   try {
+    const at = systemClock();
     const saved = await saveDraft(session.draft, check, {
       local,
-      saver: replaceInPlace(local.specs),
-      now: systemClock,
+      saver: versionSaver(local, { ...(note && { note }), at, newId: newUserId }),
+      now: () => at,
       newId: newUserId,
     });
     await local.drafts.delete(draftKeyOf(session.key)).catch(() => undefined);
     dropSession(session);
     await refreshBrowse(store, data.catalog());
-    showToast(store, t.saved(saved.name));
+    showToast(
+      store,
+      saved.outcome === 'version'
+        ? t.savedVersion(saved.name, saved.version)
+        : saved.outcome === 'status'
+          ? t.statusSaved(saved.name, t.statusValues[saved.status].toLowerCase())
+          : saved.outcome === 'nothing'
+            ? t.nothingToSave
+            : t.saved(saved.name),
+    );
     const address = saved.status === 'retired' ? '#/drinks' : specAddress(saved.lineageId);
-    if (session.draft.target.kind === 'edit') back(store, address);
+    if (target.kind === 'edit') back(store, address);
     else replace(store, address);
     bump(store);
   } catch (error) {

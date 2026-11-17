@@ -52,7 +52,7 @@ links. Change history is in [log.md](log.md).
 
 - [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.
 - [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the sections "As built" say what #18, #19, #20 and the alcohol filters of #37 do with the real seed data.
-- [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family; "As built (#25)" says what the editor does.
+- [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family; "As built" sections say what #25, #26 and #27 do.
 - [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About; the section "As built" says what #30 and #33 do.
 - [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.
 - [UI strings](ui-strings.md) - Every fixed text of the app, including empty, error and offline states.

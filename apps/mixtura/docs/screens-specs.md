@@ -83,12 +83,12 @@ What differs from the text above, and why:
 - **Bottom bar: Discard and Save**, not Cancel and Save Version. The back
   button is Cancel (it keeps the draft, no confirm). **Discard** returns to
   the saved drink at once and offers Undo for the session. The button reads
-  **Save** until #26 gives it versions; there is no save sheet yet.
+  **Save**; the sheet it opens is titled Save Version
+  ([as built #26](#as-built-26)).
 - **One save function.** Everything goes through `saveDraft` and a
-  `SpecSaver` (`save.ts`); here the saver replaces the stored spec in place.
-  #26 swaps in a saver that appends a version. Note for #26: an ingredient's
-  `prepared.specId` is a spec **id**, so a saver that creates a new id must
-  rewrite it (the engine looks the spec up by that id).
+  `SpecSaver` (`save.ts`). #25 replaced the stored spec in place; since #26
+  the saver appends a version and rewrites `prepared.specId`
+  ([as built #26](#as-built-26)).
 - **Edit on a built-in drink** opens the user's own copy (not stored until
   Save): new user ids, version 1, `parentId` the built-in spec's id (what #27
   shows as the family), the built-in `source` kept. The built-in drink is never
@@ -147,10 +147,10 @@ id>` or `draft/new`, written 300 ms after the last change and when the page
   sheets stay above it; nothing is focused when the screen opens except
   after Add Ingredient, which opens the picker with its search focused.
 
-Not built, kept for follow-up: Add Substitute in the line menu (existing
-substitutes are kept unchanged), a check mark for ingredients in stock in the
-picker, a prepared ingredient's storage text, and the Save sheet and
-versions (#26).
+Not built, kept for follow-up ([#89](https://github.com/nexumia-de/mixtura/issues/89)):
+Add Substitute in the line menu (existing substitutes are kept unchanged), a
+check mark for ingredients in stock in the picker, a prepared ingredient's
+storage text. The Save sheet and versions are built in #26.
 
 # Ingredient picker
 
@@ -201,20 +201,19 @@ two extra fields.
 
 # Save version and notes
 
-Built by [#26](https://github.com/nexumia-de/mixtura/issues/26). A small
-sheet over the editor and over swap mode.
+Built by [#26](https://github.com/nexumia-de/mixtura/issues/26); see
+[as built](#as-built-26). A small sheet over the editor.
 
 - **Purpose.** Record why a version exists in one line.
-- **Content.** A **Note** text field ("What changed and why", not
-  required), a choice of **Save as a new version** (default) or **Replace
-  version 3** (only offered for a draft), status.
-- **Actions.** **Save** (bottom bar), Cancel. The new version gets
-  `version` + 1 in the same lineage and `parentId` of the previous one;
-  older versions stay readable.
-- **States.** _First save_: no sheet, version 1. _Error, offline_: as
-  the editor.
-- **Data.** Stored: the new spec record with the note. Derived: the
-  newest version of the lineage.
+- **Content.** A **Note** field ("What changed and why", one line, not
+  required), **Save Version** and **Save Without Note** (as near as the
+  other), close. The sheet says which version number this becomes.
+- **Actions.** Escape or the backdrop closes it and saves nothing.
+- **States.** _First save, a riff, a change of status alone_: no sheet.
+  _Nothing changed_: no write, the toast "Nothing has changed, so nothing was
+  saved." _Error, offline_: as the editor.
+- **Data.** Stored: a new spec record with `version` + 1, `parentId` the
+  previous version, `note`. Derived: the newest version of the lineage.
 
 # Servings and batch
 
@@ -311,50 +310,119 @@ Versions screen is offered only for the user's own drinks; Edit copies
 it into the user's drinks as version 1 ([#77](https://github.com/nexumia-de/mixtura/issues/77)).
 
 Built by [#26](https://github.com/nexumia-de/mixtura/issues/26). URL
-`#/drinks/<id>/versions`, pushed from the spec's overflow menu.
+`#/drinks/<id>/versions`, pushed from the **Versions (n)** button under the
+spec's lines.
 
 - **Purpose.** See how a drink developed and compare any two versions.
 - **Content.** A list, newest first: version number, date, status, the
-  note, and the three balance figures as plain numbers with their
-  position words. Choosing two (check boxes, at most two) enables
-  **Compare** in the bottom bar. The **diff** shows line by line:
-  added, removed, changed (amount before and after in the display unit),
-  with the words Added, Removed, Changed (a symbol and a text, never
-  colour alone), then method, glass, garnish and note changes, then the
-  balance figures of both versions side by side.
-- **Actions.** Tap a version: that version's spec screen
-  (`…/v/<n>`, read-only, with **Restore as New Version**, which copies
-  it forward and keeps the history). Compare. Delete a version (overflow
-  per row, with Undo; the newest version cannot be deleted while it is
-  the only one).
-- **States.** _Only one version_: "This is the first version." with
-  Edit. _Identical versions_: "No differences." _Error, offline_: as the
-  editor.
+  note, a short summary against the version before ("1 change") and the
+  three balance figures as plain numbers with their position words, then the
+  status log with dates. Choosing two (check boxes, at most two) enables
+  **Compare** in the bottom bar. The **diff** shows line by line: added,
+  removed, changed (amount before and after in the display unit, another
+  ingredient named on both sides), with the words Added, Removed, Changed
+  and a shape (`+`, `−`, `~`), then name, template, method, glass, garnish
+  and notes changes, then the balance panel of the newer version with Try a
+  Swap's "Was ... now ... (+1.4 points)" on every figure.
+- **Actions.** Tap a version: that version's spec (`#/drinks/<id>/v/<n>`,
+  read-only, own figures, with **Restore as New Version**, which copies it
+  forward as the next version with the note "Restored from vN" and keeps the
+  history; on the newest version the button is Edit).
+- **States.** _Only one version_: "This is the first version." _Identical
+  versions_: "No differences." _Error, offline_: as the editor.
 - **Data.** Stored: the versions. Derived: the diff and the figures.
+
+## As built (#26)
+
+Code: engine `packages/engine/src/specs/` (`diffSpecs`), store
+`store/versions.ts` (`appendVersion`, `setStatus`, `restoreVersion`), the
+editor's `save.ts` (`versionSaver`), `commit.ts` and `components/save-sheet.ts`,
+`screens/versions/` (`diff-vm`, `list-vm`, `list-view`, `diff-view`,
+`version-view`, `restore`, `strings`), the status filter in `browse/filters.ts`.
+Screenshots: [list](screenshots/versions-list-360x720.png),
+[diff](screenshots/versions-diff-360x720.png),
+[one version](screenshots/versions-version-360x720.png),
+[save sheet](screenshots/versions-save-sheet-360x720.png),
+[status filter](screenshots/versions-status-filter-360x720.png) and the same at 1200 x 800.
+
+What differs from the issue and the text above, and why:
+
+- **Versions are records in the specs store**, one per version with its own
+  id, as the [data model](data-model.md#spec) already said; there is no
+  `spec-versions` store (the same decision as in [store](store.md)), so there
+  is no schema migration: existing specs already are version 1.
+  `note` and `statusLog` are new optional fields.
+- **Diff in the engine, figures in the app.** `diffSpecs` is pure and has
+  vectors in `vectors/specs/`; the change of the figures reuses the app's
+  `swapDelta` and `balanceVM`, so Try a Swap and the diff read alike.
+- **Matching.** Lines are matched (identical, then same ingredient, then same
+  role), so a different order is no difference and a replaced ingredient in
+  the same role is one changed line.
+- **Save.** Saving a changed drink opens the note sheet; a first save does
+  not. A save with nothing changed writes nothing. The sheet is not a history
+  entry (Back leaves the editor and keeps the draft). There is no "Replace
+  version" and no deleting a single version: versions are only added.
+- **Status** is set in the editor's Status field. A change of status alone
+  sets it on the newest record and appends `{status, at}` to its `statusLog`;
+  it is not a new version. A save that changes the content carries the status
+  and the log forward. The drinks list gains a **Status** filter
+  (`?status=draft|on-menu|retired`); retired drinks are hidden unless the
+  filter asks for them, and stay out of "makeable". Part of
+  [#75](https://github.com/nexumia-de/mixtura/issues/75); the rest of it stays open.
+- **Routes** are `#/drinks/<id>/versions` (`?pick=1,3` the chosen versions,
+  `?a=1&b=3` the diff) and `#/drinks/<id>/v/<n>`, not `/history`.
+- **`prepared.specId`** is rewritten to the new id on every save and restore,
+  for every prepared ingredient made from any version of the lineage.
+- **Backup counter.** Each written record counts, so a version save is one
+  change (plus one per prepared ingredient rewritten) and a status change one.
 
 # Riff and family
 
 Built by [#27](https://github.com/nexumia-de/mixtura/issues/27). Riff is
-the action Riff on the spec screen and in swap mode; the family view is
-`#/drinks/<id>/family`, pushed from the spec's overflow menu.
+the action **Riff** on the spec screen, **Save as Riff** in swap mode and in
+the family view; the family view is `#/drinks/<id>/family`, from the
+**Family** button under the spec's lines.
 
 - **Purpose.** Make a variation of any drink while keeping the link to
   the parent, and see a drink's relatives.
-- **Content (riff).** Tapping Riff asks for a name in a small sheet
-  (suggested "{name} riff"), then opens the editor with a copy of the
-  spec as version 1 of a new lineage, `parentId` the source spec, tag
-  "Riff of {name}" on the spec screen. A seed drink can be riffed like
-  any other.
-- **Content (family).** A tree: the parent chain upward (up to the
-  seed), the drink itself in the middle (marked "This drink"), the
-  riffs below it, each row as in the drinks list (name, template,
-  ABV, makeable) plus the **difference to the parent**: the changed
-  lines in one line of text ("Lime juice to Lemon juice; Syrup 22.5
-  to 15 ml"). Rows are sorted by creation.
-- **Actions.** Tap a row: its spec. Compare with parent: the diff of
-  [versions](#versions-and-diff) across lineages. Bottom bar: Riff.
+- **Content (riff).** Riff opens the editor (`#/drinks/<id>/riff`) with a copy
+  of the spec, named "{name} riff", status Draft, as a new lineage whose
+  first version has `parentId` the source spec and the note "Riff on {name}
+  v{n}". The spec screen shows the tag "Riff of {name}". A built-in drink can
+  be riffed like any other and is never written. With a swap in the address
+  (`riff?swap=...`) the riff starts from the swapped lines.
+- **Content (family).** The parent chain upward (up to the built-in
+  drink), the drink ("This drink"), its riffs below, then the other riffs of
+  its parent. Each entry has name, template and ABV, and, when it has a
+  parent, one line with what differs from the parent version it was made
+  from ("One change: Simple Syrup, 22.5 ml to 15 ml") and the figures moved
+  ("ABV +1.4 points, Sugar −2.9 g/100 ml"), and its first note.
+- **Actions.** Tap an entry: that drink. Bottom bar: Riff.
 - **States.** _No parent, no riffs_: "No related drinks yet." with Riff.
-  _Parent deleted_: the row reads "Parent not available" and the chain
-  stops there. _Error, offline_: as the editor.
-- **Data.** Stored: `parentId` and `lineageId` on specs. Derived: the
-  tree, the difference line and all figures.
+  _No riffs_: "No riffs yet." _Parent not in the data_: "Parent not
+  available", the riff keeps its note. _Loop_ (imported data only): a banner
+  names the drinks and the chain stops. _Error, offline_: as the editor.
+- **Data.** Stored: `parentId` of the first version, `lineageId`. Derived:
+  the tree, the difference lines and all figures.
+
+## As built (#27)
+
+Code: engine `specs/family.ts` (`buildFamily`, `findFamilyCycles`) and
+`specs/riff-change.ts` (`summariseRiff`), `screens/family/`,
+`riffDraft` in `editor/draft.ts`, the riff route in `editor/index.ts`.
+Screenshots: [family](screenshots/versions-family-360x720.png),
+[chain](screenshots/versions-family-chain-360x720.png),
+[spec with Riff](screenshots/versions-spec-links-360x720.png) and the same at 1200 x 800.
+
+- **The parent link** is the first version's `parentId`, a spec id (so it
+  names the parent's version); a later version's `parentId` is the version
+  before it, as the data model says. The family is per lineage.
+- **Built-in riffs.** The seed already links some drinks to a parent, so a
+  built-in drink's family lists those as its riffs and siblings.
+- **A different name is not a change** of a riff (every riff has one).
+- **No riff sheet for the name**: the name is the editor's first field.
+- **Deleting** a drink with riffs is refused by the `referenced` rule
+  already built (message names the riffs); an imported riff whose parent is
+  absent shows "Parent not available". Import refuses a file in which drinks
+  are riffs of each other, naming them (`cycleProblems` in `exchange/parse.ts`);
+  the editor cannot create a loop.

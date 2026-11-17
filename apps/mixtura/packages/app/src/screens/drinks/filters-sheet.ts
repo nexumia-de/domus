@@ -10,6 +10,7 @@ import type { Derived } from '../../stock/derived';
 import { strings } from '../../strings';
 import {
   activeFilters,
+  STATUS_VALUES,
   withFilter,
   withoutFilters,
   type FilterKey,
@@ -58,6 +59,18 @@ function groups(
       ],
       disabled: empty,
       hint: empty ? words.markStockFirst : undefined,
+    },
+    {
+      key: 'status',
+      title: strings.browse.groups.status,
+      choices: STATUS_VALUES.map((id) => ({
+        id,
+        label: withCount(
+          strings.spec.status[id],
+          model.allDrinks.filter((d) => d.spec.status === id).length,
+        ),
+      })),
+      hint: strings.browse.statusHint,
     },
     {
       key: 'alcohol',

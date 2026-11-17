@@ -121,7 +121,9 @@ export function editorVM(
     title:
       target.kind === 'new'
         ? t.titleNew
-        : t.titleEdit(target.kind === 'copy' ? target.fromName : draft.name || t.titleNew),
+        : target.kind === 'copy' && target.riff
+          ? t.titleRiff(target.fromName)
+          : t.titleEdit(target.kind === 'copy' ? target.fromName : draft.name || t.titleNew),
     templates: model.templates.map((tpl) => ({ id: tpl.id, name: tpl.name })),
     lines: draft.lines.map((line, i) =>
       lineRow(
@@ -157,7 +159,9 @@ export function editorVM(
       ...(prepared?.shelfError && { shelfError: prepared.shelfError }),
     },
   };
-  if (target.kind === 'copy') vm.copyNote = t.copyOf(target.fromName);
+  if (target.kind === 'copy') {
+    vm.copyNote = target.riff ? t.riffOf(target.fromName) : t.copyOf(target.fromName);
+  }
   if (draft.templateId === '' && basis === 'suggested' && template) {
     vm.suggestion = { id: template.id, name: template.name };
   }

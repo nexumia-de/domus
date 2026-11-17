@@ -21,7 +21,7 @@ import {
   updateLine,
   withTemplate,
 } from '../src/screens/editor/draft';
-import { replaceInPlace, saveDraft } from '../src/screens/editor/save';
+import { saveDraft, versionSaver } from '../src/screens/editor/save';
 import { parseDraft } from '../src/screens/editor/session';
 import { editorVM } from '../src/screens/editor/view-model';
 import type { Draft } from '../src/screens/editor/types';
@@ -293,7 +293,10 @@ describe('saving', () => {
     let n = 0;
     const saved = await saveDraft(draft, check, {
       local,
-      saver: replaceInPlace(local.specs),
+      saver: versionSaver(local, {
+        at: '2026-11-17T10:00:00Z',
+        newId: () => 'u-00000000-0000-4000-8000-0000000000aa',
+      }),
       now: () => '2026-11-17T10:00:00Z',
       newId: () => `u-00000000-0000-4000-8000-00000000000${++n}`,
     });
@@ -305,12 +308,12 @@ describe('saving', () => {
     local.close();
   });
 
-  test('an edit replaces the stored spec in place and keeps what the editor has no field for', async () => {
+  test('an edit appends version 2 and keeps what the editor has no field for', async () => {
     const m = model();
     const local = await openFresh();
     const first = await saveDraft(filled(m), checkDraft(m, filled(m), false), {
       local,
-      saver: replaceInPlace(local.specs),
+      saver: versionSaver(local, { at: '2026-11-17T10:00:00Z', newId: () => 'never' }),
       now: () => '2026-11-17T10:00:00Z',
       newId: () => 'u-00000000-0000-4000-8000-000000000001',
     });
@@ -319,18 +322,26 @@ describe('saving', () => {
     const m2 = model(fixtureIngredients, [{ ...stored, tags: ['sour'] }]);
     let draft = draftFromSpec({ ...stored, tags: ['sour'] }, 'user', undefined);
     draft = { ...draft, name: 'Renamed', garnish: 'Lime wheel' };
-    await saveDraft(draft, checkDraft(m2, draft, false), {
+    const second = await saveDraft(draft, checkDraft(m2, draft, false), {
       local,
-      saver: replaceInPlace(local.specs),
+      saver: versionSaver(local, {
+        note: 'More lime',
+        at: '2026-11-17T11:00:00Z',
+        newId: () => 'u-00000000-0000-4000-8000-000000000002',
+      }),
       now: () => '2026-11-17T11:00:00Z',
       newId: () => 'never',
     });
-    const all = await local.specs.list();
-    expect(all).toHaveLength(1);
-    expect(all[0]).toMatchObject({
+    expect(second.outcome).toBe('version');
+    const all = await local.specs.versionsOf(first.lineageId);
+    expect(all.map((v) => v.version)).toEqual([1, 2]);
+    expect(all[0]).toMatchObject({ name: 'Test', tags: ['sour'] });
+    expect(all[1]).toMatchObject({
       name: 'Renamed',
       garnish: 'Lime wheel',
       tags: ['sour'],
+      note: 'More lime',
+      parentId: first.specId,
       createdAt: '2026-11-17T10:00:00Z',
       updatedAt: '2026-11-17T11:00:00Z',
     });
@@ -348,7 +359,10 @@ describe('saving', () => {
     expect(draft.target).toMatchObject({ kind: 'copy', fromId: 'daiquiri' });
     const saved = await saveDraft(draft, checkDraft(m, draft, false), {
       local,
-      saver: replaceInPlace(local.specs),
+      saver: versionSaver(local, {
+        at: '2026-11-17T10:00:00Z',
+        newId: () => 'u-00000000-0000-4000-8000-0000000000aa',
+      }),
       now: () => '2026-11-17T10:00:00Z',
       newId: () => 'u-00000000-0000-4000-8000-000000000009',
     });
@@ -383,7 +397,10 @@ describe('saving', () => {
     let n = 0;
     const saved = await saveDraft(d, checkDraft(m, d, false), {
       local,
-      saver: replaceInPlace(local.specs),
+      saver: versionSaver(local, {
+        at: '2026-11-17T10:00:00Z',
+        newId: () => 'u-00000000-0000-4000-8000-0000000000aa',
+      }),
       now: () => '2026-11-17T10:00:00Z',
       newId: () => `u-00000000-0000-4000-8000-00000000001${++n}`,
     });

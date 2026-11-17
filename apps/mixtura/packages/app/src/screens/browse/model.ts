@@ -5,11 +5,14 @@
 
 import {
   ancestors,
+  buildFamily,
   buildTree,
   computeBalance,
   getIngredient,
   lineRole,
   type BalanceResult,
+  type Family,
+  type FamilySpec,
   type IngredientTree,
   type PreparedSpec,
 } from '@mixtura/engine';
@@ -53,6 +56,12 @@ export interface BrowseModel {
   userTemplateIds: ReadonlySet<string>;
   /** The newest version of each lineage, retired ones left out, sorted by name. */
   drinks: readonly Drink[];
+  /** The same with the retired ones, for the status filter. */
+  allDrinks: readonly Drink[];
+  /** Parents and riffs of a drink (engine `buildFamily`); the parent of a built-in drink is outside. */
+  family(lineageId: string): Family;
+  /** Every version of one drink, oldest first; empty for an unknown id. */
+  versionsOf(lineageId: string): readonly SpecData[];
   /** Every spec by its id (versions, prepared ingredients' specs). */
   specById: ReadonlyMap<string, SpecData>;
   /** The specs of prepared ingredients as the engine reads them, by spec id. */
@@ -85,14 +94,19 @@ export type ModelResult = { ok: true; model: BrowseModel } | { ok: false; reason
 const byName = (a: { name: string }, b: { name: string }): number =>
   a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 
-/** The newest version of each lineage that is not retired. */
-export function newestVersions<T extends { spec: SpecData }>(all: readonly T[]): T[] {
+/** The newest version of each lineage, retired ones included. */
+export function newestOfEach<T extends { spec: SpecData }>(all: readonly T[]): T[] {
   const newest = new Map<string, T>();
   for (const entry of all) {
     const known = newest.get(entry.spec.lineageId);
     if (!known || entry.spec.version > known.spec.version) newest.set(entry.spec.lineageId, entry);
   }
-  return [...newest.values()].filter((e) => e.spec.status !== 'retired');
+  return [...newest.values()];
+}
+
+/** The newest version of each lineage that is not retired. */
+export function newestVersions<T extends { spec: SpecData }>(all: readonly T[]): T[] {
+  return newestOfEach(all).filter((e) => e.spec.status !== 'retired');
 }
 
 /** The family a base ingredient belongs to: its ancestor just below the root category. */
@@ -125,7 +139,21 @@ export function buildModel(input: ModelInput): ModelResult {
     }),
   );
   const preparedSpecs = preparedLookup(tree, input.ingredients, specById);
-  const everyDrink: Drink[] = newestVersions(
+  const byLineageId = new Map<string, SpecData[]>();
+  for (const { value } of input.specs) {
+    const list = byLineageId.get(value.lineageId) ?? [];
+    list.push(value);
+    byLineageId.set(value.lineageId, list);
+  }
+  for (const list of byLineageId.values()) list.sort((a, b) => a.version - b.version);
+  const familySpecs: FamilySpec[] = input.specs.map(({ value }) => ({
+    id: value.id,
+    lineageId: value.lineageId,
+    version: value.version,
+    ...(value.parentId !== undefined && { parentId: value.parentId }),
+    ...(value.createdAt !== undefined && { createdAt: value.createdAt }),
+  }));
+  const everyDrink: Drink[] = newestOfEach(
     input.specs.map((s) => ({ spec: s.value, origin: s.origin })),
   )
     .map(({ spec, origin }) => {
@@ -143,7 +171,8 @@ export function buildModel(input: ModelInput): ModelResult {
     })
     .sort((a, b) => byName(a.spec, b.spec));
   // The recipe of a prepared ingredient opens by its address but is not a drink in the list.
-  const drinks = everyDrink.filter((d) => !preparedLineages.has(d.spec.lineageId));
+  const allDrinks = everyDrink.filter((d) => !preparedLineages.has(d.spec.lineageId));
+  const drinks = allDrinks.filter((d) => d.spec.status !== 'retired');
 
   const balances = new Map<string, BalanceResult>();
   const bases = new Map<string, readonly string[]>();
@@ -162,6 +191,9 @@ export function buildModel(input: ModelInput): ModelResult {
       input.templates.filter((t) => t.origin === 'user').map((t) => t.value.id),
     ),
     drinks,
+    allDrinks,
+    family: (lineageId) => buildFamily(familySpecs, lineageId),
+    versionsOf: (lineageId) => byLineageId.get(lineageId) ?? [],
     specById,
     byLineage: new Map(everyDrink.map((d) => [d.spec.lineageId, d])),
     preparedSpecs,

@@ -173,7 +173,10 @@ One version of a drink. Versions of one drink share `lineageId`; each
 version is its own record, so older ones stay readable. `version` counts
 from 1 inside a lineage. `parentId` is the spec this one was made from:
 for the first version of a riff, the spec it riffs on; for a later
-version, the previous version.
+version, the previous version. A version is never written again after it
+is saved; only the newest record's `status` and `statusLog` change when the
+user sets a status. `prepared.specId` of a prepared ingredient points at the
+newest version and is rewritten when one is saved or restored.
 
 | Field                                | Stored or derived | Required | Meaning                                                                                                                   |
 | ------------------------------------ | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -202,6 +205,10 @@ version, the previous version.
 | `notes`                              | stored            | no       | Free text.                                                                                                                |
 | `tags`                               | stored            | no       | Short keywords, unique.                                                                                                   |
 | `status`                             | stored            | yes      | `draft`, `on-menu` or `retired`.                                                                                          |
+| `note`                               | stored            | no       | One line the user wrote when saving this version: what changed and why.                                                   |
+| `statusLog`                          | stored            | no       | Every change of status, oldest first; a change of status is not a new version.                                            |
+| `statusLog[].status`                 | stored            | yes      | `draft`, `on-menu` or `retired`.                                                                                          |
+| `statusLog[].at`                     | stored            | yes      | Instant of the change, supplied by the host.                                                                              |
 | `source`                             | stored            | no       | Where a seed spec comes from, see Shared types.                                                                           |
 | `createdAt`                          | stored            | no       | Instant, supplied by the host.                                                                                            |
 | `updatedAt`                          | stored            | no       | Instant, supplied by the host.                                                                                            |

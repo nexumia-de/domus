@@ -17,6 +17,7 @@ import {
   applyFilters,
   chipsOf,
   parseFilters,
+  poolOf,
   withFilter,
   type Filters,
 } from '../browse/filters';
@@ -80,6 +81,10 @@ function chipRow(context: ScreenContext, model: BrowseModel, filters: Filters): 
           ? strings.browse.availability.one
           : strings.browse.availability.yes,
     alcohol: (value) => strings.browse.alcohol.classWords[value] ?? value,
+    status: (value) =>
+      strings.browse.statusChip(
+        strings.spec.status[value as keyof typeof strings.spec.status] ?? value,
+      ),
     base: strings.browse.baseChip,
   });
   if (chips.length === 0) return null;
@@ -125,19 +130,17 @@ export function drinksListPane(
   const stock = stockState(context);
   const derived = stock.kind === 'ready' ? deriveStock(model, stock.records) : undefined;
   const thresholds = thresholdsFor(context.state.alcoholWithout, context.state.alcoholLow);
-  const hits = applyFilters(model, filters, model.drinks, derived?.states, thresholds);
+  const pool = poolOf(model, filters);
+  const hits = applyFilters(model, filters, pool, derived?.states, thresholds);
   // Drinks that match everything but the alcohol filter, and whose class is unknown.
   const unclassified =
     filters.alcohol === undefined
       ? []
       : unknownGroups(
           model,
-          applyFilters(
-            model,
-            { ...filters, alcohol: undefined },
-            model.drinks,
-            derived?.states,
-          ).filter((d) => alcoholOf(model, d, thresholds).class === 'unknown'),
+          applyFilters(model, { ...filters, alcohol: undefined }, pool, derived?.states).filter(
+            (d) => alcoholOf(model, d, thresholds).class === 'unknown',
+          ),
           thresholds,
         );
   const unclassifiedCount = unclassified.reduce((n, g) => n + g.drinks.length, 0);

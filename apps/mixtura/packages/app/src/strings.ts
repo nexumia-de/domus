@@ -171,7 +171,10 @@ export const strings = {
       base: 'Base',
       strength: 'Strength',
       alcohol: 'Alcohol',
+      status: 'Status',
     },
+    statusChip: (word: string) => `Status: ${word}`,
+    statusHint: 'Retired drinks are hidden unless you choose Retired.',
     availability: {
       yes: 'Makeable now',
       substitute: 'With a substitute',

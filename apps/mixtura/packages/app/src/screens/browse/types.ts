@@ -35,4 +35,7 @@ export interface SpecData {
   source?: { name: string; licence: string; url?: string; note?: string };
   createdAt?: string;
   updatedAt?: string;
+  /** The user's one line when this version was saved. */
+  note?: string;
+  statusLog?: { status: SpecData['status']; at: string }[];
 }

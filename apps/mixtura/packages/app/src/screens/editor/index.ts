@@ -7,16 +7,17 @@ import { type Route } from '../../router';
 import { replace } from '../../navigation';
 import { type Screen, type ScreenContext, type ScreenView } from '../../screen';
 import { strings } from '../../strings';
-import { isUserId } from '../../store';
 import { browseState } from '../browse/load';
 import type { BrowseModel } from '../browse/model';
 import type { Ingredient, SpecData } from '../browse/types';
 import { drinksPane, failedStatus, loadingStatus } from '../drinks/pane';
 import { storedText } from './amount-entry';
-import { blankDraft, draftFromSpec, withTemplate } from './draft';
+import { blankDraft, draftFromSpec, riffDraft, withTemplate } from './draft';
+import { newestOfLineage } from './newest';
 import { editorPage } from './page';
 import { bump, flushDraft, markKept, sessionFor, type Ctx } from './session';
 import { sheetAddress } from './sheet-actions';
+import { applySwap, swapOf } from '../spec/swap-state';
 import { editorStrings as t } from './strings';
 import type { Draft } from './types';
 
@@ -24,19 +25,9 @@ const isNew = (route: Route): boolean =>
   route.path.length === 2 && route.path[0] === 'drinks' && route.path[1] === 'new';
 const isEdit = (route: Route): boolean =>
   route.path.length === 3 && route.path[0] === 'drinks' && route.path[2] === 'edit';
-const isEditor = (route: Route): boolean => isNew(route) || isEdit(route);
-
-/** The newest version of a drink, retired ones included, and where it comes from. */
-export function newestOfLineage(
-  model: BrowseModel,
-  lineageId: string,
-): { spec: SpecData; origin: 'seed' | 'user' } | undefined {
-  let best: SpecData | undefined;
-  for (const spec of model.specById.values()) {
-    if (spec.lineageId === lineageId && (!best || spec.version > best.version)) best = spec;
-  }
-  return best && { spec: best, origin: isUserId(best.id) ? 'user' : 'seed' };
-}
+const isRiff = (route: Route): boolean =>
+  route.path.length === 3 && route.path[0] === 'drinks' && route.path[2] === 'riff';
+const isEditor = (route: Route): boolean => isNew(route) || isEdit(route) || isRiff(route);
 
 function preparedOf(model: BrowseModel, spec: SpecData): Parameters<typeof draftFromSpec>[2] {
   for (const id of model.tree.ids) {
@@ -97,16 +88,27 @@ function view(context: ScreenContext): ScreenView {
   }
   const { model } = state;
   const { route, store, data } = context;
+  const riff = isRiff(route);
   const id = isNew(route) ? 'new' : (route.path[1] ?? '');
   const found = id === 'new' ? undefined : newestOfLineage(model, id);
   if (id !== 'new' && !found) return notFound(context);
+  // A riff from a swap is its own session: the swap is part of its address.
+  const swap = riff ? swapOf(route.query) : null;
+  const key = riff ? `riff/${id}${swap ? `?${route.query.get('swap')}` : ''}` : id;
   const base = (): Draft =>
-    found
-      ? draftFromSpec(found.spec, found.origin, preparedOf(model, found.spec))
-      : newDraft(model, route);
+    found && riff
+      ? riffDraft(found.spec, swap ? applySwap(found.spec.lines, swap) : found.spec.lines)
+      : found
+        ? draftFromSpec(found.spec, found.origin, preparedOf(model, found.spec))
+        : newDraft(model, route);
   const local = data.local();
-  const session = sessionFor(id, base, local, () => bump(store));
-  const title = id === 'new' ? t.titleNew : t.titleEdit(session.base.name);
+  const session = sessionFor(key, base, local, () => bump(store));
+  const title =
+    id === 'new'
+      ? t.titleNew
+      : riff
+        ? t.titleRiff(found?.spec.name ?? '')
+        : t.titleEdit(session.base.name);
   if (session.status === 'loading') {
     return { title, body: loadingStatus(), list: drinksPane(context, 'detail') };
   }
@@ -162,4 +164,5 @@ function view(context: ScreenContext): ScreenView {
 export const screens: Screen[] = [
   { id: 'editor-new', destination: 'drinks', pushed: true, match: isNew, view },
   { id: 'editor-edit', destination: 'drinks', pushed: true, match: isEdit, view },
+  { id: 'editor-riff', destination: 'drinks', pushed: true, match: isRiff, view },
 ];

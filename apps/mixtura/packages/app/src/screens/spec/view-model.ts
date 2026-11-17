@@ -20,6 +20,7 @@ import { amountText } from './format';
 import { batchVM, type BatchVM } from './batch-vm';
 import { scaledLine } from './servings';
 import { initialSpecView, type SpecView } from './session';
+import { versionStrings as vs } from '../versions/strings';
 import { swapDelta } from './swap-delta';
 import { sheetVM, type SwapSheetVM } from './swap-sheet-vm';
 import { applySwap, changedCount, type Swap } from './swap-state';
@@ -75,9 +76,17 @@ export interface TagVM {
   strong?: boolean;
 }
 
+/** Where a drink's history and family are: links under the lines. */
+export interface RelatedVM {
+  versions?: { text: string; href: string };
+  family: { text: string; href: string };
+}
+
 export interface SpecVM {
   name: string;
   tags: TagVM[];
+  /** Absent in the editor and for a draft that has no stable id. */
+  related?: RelatedVM;
   lines: LineVM[];
   meta: { label: string; value: string }[];
   balance: BalanceVM;
@@ -253,6 +262,18 @@ export function specVM(
     );
   }
 
+  const address = `#/drinks/${encodeURIComponent(spec.lineageId)}`;
+  const family = options.origin && !options.fresh ? model.family(spec.lineageId) : undefined;
+  if (family) {
+    const parent = family.ancestors.at(-1);
+    const parentName = parent === undefined ? undefined : model.byLineage.get(parent)?.spec.name;
+    if (parentName !== undefined && parent !== undefined) {
+      tags.push({ text: vs.riffOf(parentName), href: `#/drinks/${encodeURIComponent(parent)}` });
+    } else if (family.missingParent !== undefined && family.ancestors.length === 0) {
+      tags.push({ text: vs.parentGone });
+    }
+  }
+
   const meta: SpecVM['meta'] = [];
   if (spec.method) {
     const name = model.vocabulary.methods.find((m) => m.id === spec.method)?.name ?? spec.method;
@@ -333,6 +354,17 @@ export function specVM(
       compact: compactItems(balance),
       ...(swappedTemplate?.change && { templateChange: swappedTemplate.change }),
       ...(sheet && { sheet }),
+    };
+  }
+  if (family) {
+    vm.related = {
+      ...(options.origin === 'user' && {
+        versions: {
+          text: vs.versionsLink(model.versionsOf(spec.lineageId).length),
+          href: `${address}/versions`,
+        },
+      }),
+      family: { text: vs.familyLink(family.children.length), href: `${address}/family` },
     };
   }
   if (!template) {

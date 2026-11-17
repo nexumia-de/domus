@@ -22,8 +22,8 @@ only. Screens are in [behaviour](behaviour.md).
 | Bottom navigation | Drinks · Templates · Stock · Settings                                                                   |
 | Stock views       | Stock · Buy Next                                                                                        |
 | Spec action bar   | Try a Swap · Riff · Edit                                                                                |
-| Swap action bar   | Reset (Riff and Save when #27 and #25 are built)                                                        |
-| Editor action bar | Discard · Save (Cancel is the back button; Save Version with #26)                                       |
+| Swap action bar   | Reset · Save as Riff                                                                                    |
+| Editor action bar | Discard · Save (Cancel is the back button); the sheet: Save Version · Save Without Note                 |
 | Overflow, spec    | Versions · Family · Export spec · Retire · Delete                                                       |
 | Overflow, list    | Sort by name · Sort by recently changed · Sort by template                                              |
 | Titles            | Not Found · Drinks · Templates · Stock · Settings · About · Edit {name} · New Drink · Versions · Family |

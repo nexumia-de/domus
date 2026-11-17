@@ -38,6 +38,7 @@ const styles = [
   'stock',
   'swap',
   'editor',
+  'versions',
   'app',
 ];
 const css = styles

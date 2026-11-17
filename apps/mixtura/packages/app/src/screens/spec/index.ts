@@ -18,12 +18,12 @@ import { browseState } from '../browse/load';
 import { drinksPane, failedStatus, loadingStatus } from '../drinks/pane';
 import { swapSheet } from '../../components/swap-sheet';
 import { compactBar } from '../../components/compact-balance';
-import * as glyph from '../../components/glyphs';
 import { openTopField, parseTopVolume, setTopMl, viewFor } from './session';
 import { sheetLineOf, swapActions, type SwapActions } from './swap-actions';
 import { swapOf } from './swap-state';
 import { swapStrings } from './swap-strings';
 import { servingsOf, specAddress } from './servings';
+import { versionStrings as vs } from '../versions/strings';
 import { specVM, type SpecVM, type TagVM } from './view-model';
 
 function tag(vm: TagVM): HTMLElement {
@@ -77,6 +77,19 @@ function body(
         h('h2', {}, strings.spec.notes),
         h('p', { class: 'spec-notes' }, vm.notes),
       ),
+    vm.related &&
+      !vm.swap &&
+      h(
+        'nav',
+        { class: 'related', 'aria-label': vs.title },
+        vm.related.versions &&
+          h(
+            'a',
+            { class: 'btn btn--tonal', href: vm.related.versions.href },
+            vm.related.versions.text,
+          ),
+        h('a', { class: 'btn btn--tonal', href: vm.related.family.href }, vm.related.family.text),
+      ),
     vm.source &&
       h(
         'p',
@@ -103,6 +116,10 @@ function notFound(context: ScreenContext): ScreenView {
     list: drinksPane(context, 'detail'),
   };
 }
+
+/** The riff editor of a drink; a swap in the address makes the riff start from the swapped lines. */
+const riffAddress = (id: string, swap: string | null): string =>
+  `#/drinks/${encodeURIComponent(id)}/riff${swap ? `?swap=${encodeURIComponent(swap)}` : ''}`;
 
 const wide = (): boolean => window.matchMedia('(min-width: 840px)').matches;
 let sheetWasOpen = false;
@@ -183,16 +200,30 @@ export const screens: Screen[] = [
         body: page,
         actions: swapState
           ? h(
-              'button',
-              {
-                type: 'button',
-                class: 'btn btn--tonal',
-                disabled: (vm.swap?.count ?? 0) === 0,
-                'aria-label': swapStrings.resetAria,
-                'data-focus': 'swap-reset',
-                onclick: swap.resetAll,
-              },
-              swapStrings.reset,
+              'div',
+              { class: 'bar-buttons' },
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'btn btn--tonal',
+                  disabled: (vm.swap?.count ?? 0) === 0,
+                  'aria-label': swapStrings.resetAria,
+                  'data-focus': 'swap-reset',
+                  onclick: swap.resetAll,
+                },
+                swapStrings.reset,
+              ),
+              h(
+                'a',
+                {
+                  class: 'btn btn--primary',
+                  href: riffAddress(id, route.query.get('swap')),
+                  'aria-label': vs.saveAsRiffAria,
+                  'data-focus': 'riff-from-swap',
+                },
+                vs.saveAsRiff,
+              ),
             )
           : h(
               'div',
@@ -205,8 +236,17 @@ export const screens: Screen[] = [
                   'data-focus': 'edit',
                   'aria-label': strings.spec.editAria(vm.name),
                 },
-                glyph.edit(),
                 strings.spec.edit,
+              ),
+              h(
+                'a',
+                {
+                  class: 'btn',
+                  href: riffAddress(id, null),
+                  'aria-label': vs.riffAria(vm.name),
+                  'data-focus': 'riff',
+                },
+                vs.riff,
               ),
               h(
                 'button',

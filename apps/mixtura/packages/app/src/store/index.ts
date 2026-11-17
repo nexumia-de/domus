@@ -28,6 +28,7 @@ export type { Persistence, PersistState } from './persist';
 export type { Repo } from './repo';
 export * from './seed';
 export { ingredientReferrers, specReferrers } from './references';
+export { appendVersion, asDiffSpec, restoreVersion, setStatus, statusLogAfter } from './versions';
 export type * from './types';
 
 export interface LocalStore {

@@ -3,6 +3,7 @@
 // older formats, the current JSON Schema, and the id rule for user ids. The
 // result is complete or a named refusal; nothing here touches the database.
 
+import { findFamilyCycles } from '@mixtura/engine';
 import { isUserId } from '../ids';
 import { exportProblems } from '../validate';
 import { APP_TAG, FORMAT_VERSION, MAX_FILE_BYTES, type ExportFile } from './format';
@@ -86,6 +87,22 @@ export function duplicateProblems(file: ExportFile): string[] {
   return problems;
 }
 
+/** Riffs that are their own ancestors: refused, naming the drinks (the app itself never makes one). */
+export function cycleProblems(file: ExportFile): string[] {
+  const specs = file.specs.map((s) => ({
+    id: s.id,
+    lineageId: s.lineageId,
+    version: s.version,
+    ...(typeof s.parentId === 'string' && { parentId: s.parentId }),
+  }));
+  const name = (lineageId: string): string =>
+    String(file.specs.find((s) => s.lineageId === lineageId)?.name ?? lineageId);
+  return findFamilyCycles(specs).map(
+    (loop) =>
+      `/specs: these drinks are riffs of each other in a loop: ${loop.map(name).join(', ')}`,
+  );
+}
+
 export interface ParseOptions {
   limit?: number;
   migrations?: readonly FormatMigration[];
@@ -135,7 +152,7 @@ export function parseExportFile(
   const problems = exportProblems(file);
   if (problems.length > 0) return fail({ kind: 'invalid', problems });
   const typed = file as unknown as ExportFile;
-  const more = [...idProblems(typed), ...duplicateProblems(typed)];
+  const more = [...idProblems(typed), ...duplicateProblems(typed), ...cycleProblems(typed)];
   if (more.length > 0) return fail({ kind: 'invalid', problems: more.slice(0, 20) });
   return { ok: true, file: typed, migratedFrom };
 }

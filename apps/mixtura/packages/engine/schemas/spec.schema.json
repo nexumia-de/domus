@@ -56,6 +56,23 @@
     "notes": { "type": "string" },
     "tags": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "status": { "enum": ["draft", "on-menu", "retired"] },
+    "note": {
+      "description": "One line the user wrote when saving this version: what changed and why.",
+      "type": "string"
+    },
+    "statusLog": {
+      "description": "Every change of status, oldest first; a change of status is not a new version.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["draft", "on-menu", "retired"] },
+          "at": { "$ref": "urn:mixtura:common#/$defs/timestamp" }
+        },
+        "required": ["status", "at"],
+        "additionalProperties": false
+      }
+    },
     "source": { "$ref": "urn:mixtura:common#/$defs/source" },
     "createdAt": { "$ref": "urn:mixtura:common#/$defs/timestamp" },
     "updatedAt": { "$ref": "urn:mixtura:common#/$defs/timestamp" }

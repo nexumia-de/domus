@@ -134,9 +134,16 @@ const addLine = async (search, amount, pickText) => {
   await page.keyboard.type(amount);
 };
 const saveButton = () => page.locator('[data-action="save"]');
-const save = async () => {
+/** Save; a changed drink first asks for a note in a sheet, which this answers (skipped without one). */
+const save = async (note) => {
   await saveButton().click();
-  await page.locator('.spec').waitFor({ timeout: 5000 });
+  const sheet = page.locator('.save-sheet');
+  await sheet.or(page.locator('.spec')).first().waitFor({ timeout: 5000 });
+  if (await sheet.isVisible()) {
+    if (note) await page.locator('#save-note').fill(note);
+    await page.locator(note ? '[data-action="save-confirm"]' : '[data-action="save-skip"]').click();
+    await page.locator('.spec').waitFor({ timeout: 5000 });
+  }
 };
 
 // ---- A new drink from a template ----

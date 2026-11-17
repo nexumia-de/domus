@@ -91,7 +91,7 @@ ingredients, two specs, all valid against the schemas).
 ## Writing
 
 Repositories (`repo-entities.ts`): `get`, `list`, `listBy(index, key)`,
-`put`, `delete`; specs add `versionsOf(lineageId)` for versions (#26).
+`put`, `delete`; specs add `versionsOf(lineageId)` for versions (#26); `store/versions.ts` writes them (`appendVersion`, `setStatus`, `restoreVersion`).
 Every `put` validates against the JSON Schemas of
 `packages/engine/schemas/` (Ajv, bundled; the schemas are imported from
 the engine folder, which is not edited) and checks that the ids of a
