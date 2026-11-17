@@ -1,5 +1,5 @@
 // The one error type of the store. `kind` says what the app does about it:
-// the first three put the app in read-only mode with a banner, the others
+// `unavailable`, `blocked`, `stale` and `too-new` put the app in read-only mode with a banner, the others
 // refuse one write.
 
 export type StoreErrorKind =
@@ -7,6 +7,8 @@ export type StoreErrorKind =
   | 'unavailable'
   /** An upgrade waits for another tab that still has the old version open. */
   | 'blocked'
+  /** Another window upgraded the database; this window's connection is closed and it must reload. */
+  | 'stale'
   /** The stored schema version is newer than this app knows. */
   | 'too-new'
   /** The device has no room left. */

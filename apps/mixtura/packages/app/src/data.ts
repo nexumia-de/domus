@@ -8,6 +8,7 @@ import { type AppState } from './app-state';
 import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
 import { type Store } from './state';
+import { strings } from './strings';
 import {
   createCatalog,
   emptySeed,
@@ -52,6 +53,8 @@ export function connect(app: Store<AppState>): Connection {
   // Set while the state is changed from the store's values or a rollback,
   // so that change is not written back.
   let quiet = false;
+  // Counts opens, so a late event of a replaced connection is ignored.
+  let attempts = 0;
   const patch = (change: Partial<AppState>): void => {
     quiet = true;
     app.set(change);
@@ -98,8 +101,19 @@ export function connect(app: Store<AppState>): Connection {
       patch({ seed: { kind: 'failed', reason: toStoreError(error).message } });
     }
 
+    const attempt = ++attempts;
     try {
       const opened = await openLocalStore({
+        // Another window upgraded the database and this connection is closed:
+        // read-only, with a banner that offers a reload (docs/store.md).
+        onVersionChange: () => {
+          if (attempt !== attempts) return;
+          local = null;
+          catalog = createCatalog(seed, null);
+          patch({
+            storage: { kind: 'error', error: 'stale', reason: strings.storage.reasons.stale },
+          });
+        },
         legacyPrefs: readLegacyPrefs,
         onPersist: (persistence) => patch({ persistence }),
         onBackup: (backup) => {

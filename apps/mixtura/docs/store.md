@@ -136,15 +136,16 @@ Storage: not requested yet, kept, not guaranteed, or not supported
 
 `StoreError.kind` and what the app does:
 
-| Kind          | Cause                                           | App                                                        |
-| ------------- | ----------------------------------------------- | ---------------------------------------------------------- |
-| `unavailable` | No IndexedDB, private window, blocked site data | Read-only with seed data, banner, Try Again                |
-| `blocked`     | Upgrade waits for a tab on the old version      | Same; Try Again after closing the other window             |
-| `too-new`     | Stored version above the app's                  | Same; the data is not touched                              |
-| `migration`   | A migration threw                               | Same; rolled back                                          |
-| `quota`       | Device storage full                             | The write fails; a setting is reverted, banner "Not saved" |
-| `invalid`     | Schema or id rule broken                        | The write is refused                                       |
-| `seed`        | Built-in data did not load or is malformed      | Banner "Data could not be loaded"; user data is unaffected |
+| Kind          | Cause                                                                                | App                                                                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `unavailable` | No IndexedDB, private window, blocked site data                                      | Read-only with seed data, banner, Try Again                                                                                                                     |
+| `blocked`     | Upgrade waits for a tab on the old version                                           | Same; Try Again after closing the other window                                                                                                                  |
+| `stale`       | Another window upgraded the database (`onversionchange`; this connection was closed) | Same, but the banner says "Another window updated the app or its data" and offers Reload, not Try Again; `e2e/two-tabs.mjs`, `test/store-versionchange.test.ts` |
+| `too-new`     | Stored version above the app's                                                       | Same; the data is not touched                                                                                                                                   |
+| `migration`   | A migration threw                                                                    | Same; rolled back                                                                                                                                               |
+| `quota`       | Device storage full                                                                  | The write fails; a setting is reverted, banner "Not saved"                                                                                                      |
+| `invalid`     | Schema or id rule broken                                                             | The write is refused                                                                                                                                            |
+| `seed`        | Built-in data did not load or is malformed                                           | Banner "Data could not be loaded"; user data is unaffected                                                                                                      |
 
 The texts are in [UI strings](ui-strings.md#errors-and-offline). The
 behaviour document asks for a full-screen status; the build shows the
