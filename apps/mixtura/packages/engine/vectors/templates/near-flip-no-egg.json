@@ -1,0 +1,33 @@
+{
+  "id": "near-flip-no-egg",
+  "kind": "match",
+  "description": "Near miss: spirit and syrup without egg. Flip misses the texture slot, Daiquiri the sour slot: both distance 1; Flip's syrup sits nearer the middle of its band, so Flip ranks first. Nothing fits.",
+  "lines": [
+    {
+      "ingredientId": "brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["flip"],
+    "candidates": {
+      "flip": {
+        "fits": false,
+        "distance": 1,
+        "emptyRequired": ["egg"]
+      },
+      "daiquiri": {
+        "fits": false,
+        "distance": 1,
+        "emptyRequired": ["acid"]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

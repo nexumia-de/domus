@@ -1,0 +1,35 @@
+{
+  "id": "match-highball-classic",
+  "kind": "match",
+  "description": "Classic: 60 ml whiskey, 150 ml soda, 5 parts. The carbonated mixer (role lengthener) decides.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 150,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

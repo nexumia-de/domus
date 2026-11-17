@@ -1,0 +1,47 @@
+{
+  "id": "match-sidecar-classic",
+  "kind": "match",
+  "description": "Classic: 60 ml cognac, 22.5 ml lemon, 22.5 ml triple sec. Martini also reads the liqueur as its modifier but leaves the lemon without a slot.",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0
+      },
+      "martini": {
+        "fits": false,
+        "distance": 1,
+        "unassigned": [
+          {
+            "index": 1,
+            "reason": "no-slot-for-role"
+          }
+        ]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

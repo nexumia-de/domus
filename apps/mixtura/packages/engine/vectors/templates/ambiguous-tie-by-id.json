@@ -1,0 +1,77 @@
+{
+  "id": "ambiguous-tie-by-id",
+  "kind": "match",
+  "description": "Two templates with identical slots both fit at distance 0 and offset 0: the id order decides and the result says so.",
+  "templates": [
+    {
+      "id": "tie-b",
+      "name": "tie-b",
+      "slots": [
+        {
+          "id": "spirit",
+          "role": "base",
+          "minParts": 2,
+          "maxParts": 2
+        },
+        {
+          "id": "mixer",
+          "role": "lengthener",
+          "minParts": 3,
+          "maxParts": 5
+        }
+      ],
+      "method": "build"
+    },
+    {
+      "id": "tie-a",
+      "name": "tie-a",
+      "slots": [
+        {
+          "id": "spirit",
+          "role": "base",
+          "minParts": 2,
+          "maxParts": 2
+        },
+        {
+          "id": "mixer",
+          "role": "lengthener",
+          "minParts": 3,
+          "maxParts": 5
+        }
+      ],
+      "method": "build"
+    }
+  ],
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "tie-a",
+      "basis": "suggested",
+      "known": true,
+      "tieBrokenById": true
+    },
+    "order": ["tie-a", "tie-b"],
+    "candidates": {
+      "tie-a": {
+        "fits": true,
+        "distance": 0
+      },
+      "tie-b": {
+        "fits": true,
+        "distance": 0
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

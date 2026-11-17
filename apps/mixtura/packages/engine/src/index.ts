@@ -6,3 +6,4 @@ export function engineName(): string {
 export * from './ingredients/index';
 export * from './balance/index';
 export * from './batch/index';
+export * from './templates/index';

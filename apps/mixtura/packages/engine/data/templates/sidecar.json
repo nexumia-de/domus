@@ -1,0 +1,49 @@
+{
+  "id": "sidecar",
+  "name": "Sidecar",
+  "parentId": "daiquiri",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2
+    },
+    {
+      "id": "acid",
+      "role": "sour",
+      "minParts": 0.38,
+      "maxParts": 1.5,
+      "note": "3/4 oz citrus juice"
+    },
+    {
+      "id": "liqueur",
+      "role": "modifier",
+      "minParts": 0.38,
+      "maxParts": 1.5,
+      "note": "3/4 oz liqueur in the place of the syrup"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "abv": {
+      "min": 24.2,
+      "max": 26.2
+    },
+    "sugar": {
+      "min": 4.4,
+      "max": 4.7
+    },
+    "acid": {
+      "min": 0.99,
+      "max": 1.07
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+  }
+}

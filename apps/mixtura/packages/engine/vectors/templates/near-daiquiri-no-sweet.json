@@ -1,0 +1,33 @@
+{
+  "id": "near-daiquiri-no-sweet",
+  "kind": "match",
+  "description": "Near miss: rum and lime only. Daiquiri and Sidecar both miss one slot with the same distance and offset; the id order puts daiquiri first. Nothing fits, so no template is chosen.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["daiquiri", "sidecar"],
+    "candidates": {
+      "daiquiri": {
+        "fits": false,
+        "distance": 1,
+        "emptyRequired": ["sweet"]
+      },
+      "sidecar": {
+        "fits": false,
+        "distance": 1,
+        "emptyRequired": ["liqueur"]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,40 @@
+{
+  "id": "match-sidecar-margarita",
+  "kind": "match",
+  "description": "Riff: 50 ml tequila, 25 ml lime, 25 ml triple sec, 1 part each. With a liqueur as the sweet part this is the Sidecar, the child of the sour template (parentId daiquiri).",
+  "lines": [
+    {
+      "ingredientId": "tequila",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 25,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 25,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

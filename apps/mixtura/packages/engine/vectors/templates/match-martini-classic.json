@@ -1,0 +1,47 @@
+{
+  "id": "match-martini-classic",
+  "kind": "match",
+  "description": "Classic: 60 ml gin, 30 ml dry vermouth, modifier 1 part.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "martini",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["martini"],
+    "candidates": {
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within",
+          "bittersweet": "empty"
+        }
+      },
+      "daiquiri": {
+        "fits": false,
+        "distance": 3,
+        "emptyRequired": ["acid", "sweet"],
+        "unassigned": [
+          {
+            "index": 1,
+            "reason": "no-slot-for-role"
+          }
+        ]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

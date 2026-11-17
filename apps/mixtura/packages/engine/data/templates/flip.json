@@ -1,0 +1,49 @@
+{
+  "id": "flip",
+  "name": "Flip",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "spirit or fortified wine"
+    },
+    {
+      "id": "sugar",
+      "role": "sweet",
+      "minParts": 0.25,
+      "maxParts": 1,
+      "note": "1/2 oz syrup"
+    },
+    {
+      "id": "egg",
+      "role": "texture",
+      "minParts": 0.75,
+      "maxParts": 3,
+      "note": "whole egg, 45 ml"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "abv": {
+      "min": 15.4,
+      "max": 16.7
+    },
+    "sugar": {
+      "min": 5.9,
+      "max": 6.4
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+  }
+}

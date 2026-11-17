@@ -25,6 +25,10 @@
         "additionalProperties": false
       }
     },
+    "slotEvidence": {
+      "description": "How well the slot ratios are known: verified (a source was read), secondary (seen in a summary), derived (computed from other numbers) or assumption.",
+      "enum": ["verified", "secondary", "derived", "assumption"]
+    },
     "method": { "$ref": "urn:mixtura:common#/$defs/id" },
     "glass": { "$ref": "urn:mixtura:common#/$defs/id" },
     "usual": {
@@ -33,7 +37,11 @@
       "properties": {
         "abv": { "$ref": "urn:mixtura:common#/$defs/range" },
         "sugar": { "$ref": "urn:mixtura:common#/$defs/range" },
-        "acid": { "$ref": "urn:mixtura:common#/$defs/range" }
+        "acid": { "$ref": "urn:mixtura:common#/$defs/range" },
+        "evidence": {
+          "description": "How well the three ranges are known; same values as slotEvidence.",
+          "enum": ["verified", "secondary", "derived", "assumption"]
+        }
       },
       "additionalProperties": false
     },

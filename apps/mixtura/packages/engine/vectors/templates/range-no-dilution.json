@@ -1,0 +1,22 @@
+{
+  "id": "range-no-dilution",
+  "kind": "range",
+  "description": "Without figures after dilution (no method) every figure is unknown; the ranges are still returned.",
+  "template": "martini",
+  "after": null,
+  "expected": {
+    "abv": {
+      "status": "unknown",
+      "range": [25.6, 27.8]
+    },
+    "sugar": {
+      "status": "unknown",
+      "range": [0, 0]
+    },
+    "acid": {
+      "status": "unknown",
+      "range": [0, 0]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

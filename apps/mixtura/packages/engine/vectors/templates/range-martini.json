@@ -1,0 +1,26 @@
+{
+  "id": "range-martini",
+  "kind": "range",
+  "description": "Martini 25.6 - 27.8 %: both ends are within (inclusive); sugar above 0.",
+  "template": "martini",
+  "after": {
+    "abvPct": 27.8,
+    "sugarPer100Ml": 0.5,
+    "acidPct": 0
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [25.6, 27.8]
+    },
+    "sugar": {
+      "status": "above",
+      "range": [0, 0]
+    },
+    "acid": {
+      "status": "within",
+      "range": [0, 0]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

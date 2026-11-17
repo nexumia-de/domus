@@ -1,0 +1,30 @@
+{
+  "id": "near-martini-dry",
+  "kind": "match",
+  "description": "Near miss: 60 ml gin and 10 ml vermouth is 0.333 parts, below 0.5: distance (0.5 - 0.3333) / 0.5.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 10,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["martini"],
+    "candidates": {
+      "martini": {
+        "fits": false,
+        "distance": 0.333333,
+        "ratios": {
+          "fortified": "below"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

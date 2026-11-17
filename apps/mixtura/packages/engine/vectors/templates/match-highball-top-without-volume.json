@@ -1,0 +1,34 @@
+{
+  "id": "match-highball-top-without-volume",
+  "kind": "match",
+  "description": "Riff: gin and tonic with a `top` line and no volume. The role fits; the ratio is unmeasured, and the result says so.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "tonic",
+      "amount": 1,
+      "unit": "top"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "unmeasured"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

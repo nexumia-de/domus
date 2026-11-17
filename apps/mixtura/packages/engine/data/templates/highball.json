@@ -1,0 +1,41 @@
+{
+  "id": "highball",
+  "name": "Highball",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2
+    },
+    {
+      "id": "mixer",
+      "role": "lengthener",
+      "minParts": 4,
+      "maxParts": 6,
+      "note": "4 to 6 oz carbonated mixer"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "build",
+  "usual": {
+    "abv": {
+      "min": 9.1,
+      "max": 12.1
+    },
+    "sugar": {
+      "min": 0,
+      "max": 0
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "old-fashioned",
+  "name": "Old-Fashioned",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "2 oz spirit"
+    },
+    {
+      "id": "sugar",
+      "role": "sweet",
+      "minParts": 0.08,
+      "maxParts": 0.33,
+      "note": "about 1 tsp (5 ml) of syrup or sugar; solid sugar in grams is not measured against the ratio"
+    },
+    {
+      "id": "bitters",
+      "role": "bitter",
+      "minParts": 0.03,
+      "maxParts": 0.12,
+      "note": "2 dashes (1.8 ml)"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "stir",
+  "usual": {
+    "abv": {
+      "min": 32.1,
+      "max": 34.9
+    },
+    "sugar": {
+      "min": 5.4,
+      "max": 5.9
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+  }
+}

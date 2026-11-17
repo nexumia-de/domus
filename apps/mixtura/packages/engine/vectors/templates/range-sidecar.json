@@ -1,0 +1,26 @@
+{
+  "id": "range-sidecar",
+  "kind": "range",
+  "description": "Sidecar 24.2 - 26.2 %, 4.4 - 4.7 g, 0.99 - 1.07 %.",
+  "template": "sidecar",
+  "after": {
+    "abvPct": 26.2,
+    "sugarPer100Ml": 4.5,
+    "acidPct": 0.9
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [24.2, 26.2]
+    },
+    "sugar": {
+      "status": "within",
+      "range": [4.4, 4.7]
+    },
+    "acid": {
+      "status": "below",
+      "range": [0.99, 1.07]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

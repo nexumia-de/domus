@@ -1,0 +1,30 @@
+{
+  "id": "match-daiquiri-tommys-margarita",
+  "kind": "match",
+  "description": "Riff: tequila, lime, agave syrup (the sweet is a syrup, so the sour template).",
+  "lines": [
+    {
+      "ingredientId": "tequila",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "agave-syrup",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

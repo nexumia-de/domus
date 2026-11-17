@@ -1,0 +1,130 @@
+{
+  "description": "Ingredients shared by the template vectors; roles only, no figures are claimed.",
+  "ingredients": [
+    {
+      "id": "whiskey",
+      "name": "Whiskey",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "bourbon",
+      "name": "Bourbon",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "cognac",
+      "name": "Cognac",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "brandy",
+      "name": "Brandy",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "tequila",
+      "name": "Tequila",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "role": "modifier"
+    },
+    {
+      "id": "sweet-vermouth",
+      "name": "Sweet vermouth",
+      "level": "product",
+      "role": "modifier"
+    },
+    {
+      "id": "triple-sec",
+      "name": "Triple sec",
+      "level": "product",
+      "role": "modifier"
+    },
+    {
+      "id": "campari",
+      "name": "Campari",
+      "level": "product",
+      "role": "bitter"
+    },
+    {
+      "id": "angostura",
+      "name": "Angostura",
+      "level": "product",
+      "role": "bitter"
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "role": "sour"
+    },
+    {
+      "id": "lemon-juice",
+      "name": "Lemon juice",
+      "level": "product",
+      "role": "sour"
+    },
+    {
+      "id": "simple-syrup",
+      "name": "Simple syrup",
+      "level": "product",
+      "role": "sweet"
+    },
+    {
+      "id": "agave-syrup",
+      "name": "Agave syrup",
+      "level": "product",
+      "role": "sweet"
+    },
+    {
+      "id": "sugar",
+      "name": "Sugar",
+      "level": "product",
+      "role": "sweet"
+    },
+    {
+      "id": "egg",
+      "name": "Egg",
+      "level": "product",
+      "role": "texture"
+    },
+    {
+      "id": "soda",
+      "name": "Soda",
+      "level": "product",
+      "role": "lengthener"
+    },
+    {
+      "id": "tonic",
+      "name": "Tonic",
+      "level": "product",
+      "role": "lengthener"
+    },
+    {
+      "id": "mystery-bottle",
+      "name": "Mystery bottle",
+      "level": "product"
+    }
+  ]
+}

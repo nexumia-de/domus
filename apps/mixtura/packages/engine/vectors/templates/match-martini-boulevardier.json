@@ -1,0 +1,40 @@
+{
+  "id": "match-martini-boulevardier",
+  "kind": "match",
+  "description": "Riff: 45 ml bourbon, 30 ml Campari, 30 ml sweet vermouth, both 1.333 parts; the bitter liqueur takes the optional slot.",
+  "lines": [
+    {
+      "ingredientId": "bourbon",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "campari",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "martini",
+      "basis": "suggested",
+      "known": true
+    },
+    "candidates": {
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within",
+          "bittersweet": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

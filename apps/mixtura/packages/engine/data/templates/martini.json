@@ -1,0 +1,49 @@
+{
+  "id": "martini",
+  "name": "Martini",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2
+    },
+    {
+      "id": "fortified",
+      "role": "modifier",
+      "minParts": 0.5,
+      "maxParts": 2,
+      "note": "1 oz fortified wine or liqueur"
+    },
+    {
+      "id": "bittersweet",
+      "role": "bitter",
+      "minParts": 0.5,
+      "maxParts": 2,
+      "optional": true,
+      "note": "Negroni family reading (Boulevardier): an optional bitter liqueur; no nominal figure exists in the documents"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "stir",
+  "usual": {
+    "abv": {
+      "min": 25.6,
+      "max": 27.8
+    },
+    "sugar": {
+      "min": 0,
+      "max": 0
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+  }
+}

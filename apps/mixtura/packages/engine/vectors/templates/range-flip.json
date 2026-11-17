@@ -1,0 +1,26 @@
+{
+  "id": "range-flip",
+  "kind": "range",
+  "description": "Flip 15.4 - 16.7 %, 5.9 - 6.4 g, 0 %.",
+  "template": "flip",
+  "after": {
+    "abvPct": 16,
+    "sugarPer100Ml": 5,
+    "acidPct": 0
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [15.4, 16.7]
+    },
+    "sugar": {
+      "status": "below",
+      "range": [5.9, 6.4]
+    },
+    "acid": {
+      "status": "within",
+      "range": [0, 0]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}
