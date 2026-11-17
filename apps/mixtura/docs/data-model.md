@@ -233,6 +233,8 @@ Stock has no quantity: an ingredient is at hand or not, and what the stock
 allows ([makeable](makeable.md)) is decided on that alone. `bestBefore` is
 information for the app; the engine has no clock and does not read it.
 
+**Marking a node.** A record for a type or category means "some of it": it satisfies a line that names it or any ancestor, not a line that names a product below it ([makeable](makeable.md#rules)). A record for a product satisfies that product and its ancestors. The Stock screen writes `present: true` on a mark and `present: false` on a second tap ([stock screen](screens-stock-settings.md#as-built-30-33)).
+
 ## Affinity
 
 Two ingredients that go together, as inspiration. A source is required;

@@ -4,6 +4,7 @@
 // only place they live.
 
 import { isA } from '@mixtura/engine';
+import type { Availability } from '../../stock/derived';
 import type { BrowseModel, Drink } from './model';
 import { normalise } from './normalise';
 import { bandOf, inBand } from './strength';
@@ -14,9 +15,16 @@ export interface Filters {
   method?: string;
   base?: string;
   strength?: string;
+  /** `yes`, `substitute` or `one`: what the stock allows (docs/screens-stock-settings.md#as-built). */
+  makeable?: string;
 }
 
-export const FILTER_KEYS = ['template', 'method', 'base', 'strength'] as const;
+export const FILTER_KEYS = ['makeable', 'template', 'method', 'base', 'strength'] as const;
+export const MAKEABLE_VALUES = ['yes', 'substitute', 'one'] as const;
+
+/** What the stock allows for each drink, by spec id; absent while nothing is in stock. */
+export type AvailabilityMap = ReadonlyMap<string, Availability>;
+const KIND = { yes: 'makeable', substitute: 'substitute', one: 'one' } as const;
 export type FilterKey = (typeof FILTER_KEYS)[number];
 
 export function parseFilters(query: URLSearchParams): Filters {
@@ -64,9 +72,18 @@ export function matchesSearch(drink: Drink, q: string): boolean {
   return words.every((word) => drink.search.includes(word));
 }
 
-export function matchesFilters(model: BrowseModel, drink: Drink, filters: Filters): boolean {
+export function matchesFilters(
+  model: BrowseModel,
+  drink: Drink,
+  filters: Filters,
+  availability?: AvailabilityMap,
+): boolean {
   const { spec } = drink;
   if (filters.q && !matchesSearch(drink, filters.q)) return false;
+  if (filters.makeable) {
+    const wanted = KIND[filters.makeable as keyof typeof KIND];
+    if (!wanted || availability?.get(spec.id)?.kind !== wanted) return false;
+  }
   if (filters.template && spec.templateId !== filters.template) return false;
   if (filters.method && spec.method !== filters.method) return false;
   const base = filters.base;
@@ -83,8 +100,9 @@ export function applyFilters(
   model: BrowseModel,
   filters: Filters,
   from: readonly Drink[] = model.drinks,
+  availability?: AvailabilityMap,
 ): Drink[] {
-  return from.filter((drink) => matchesFilters(model, drink, filters));
+  return from.filter((drink) => matchesFilters(model, drink, filters, availability));
 }
 
 export interface Chip {
@@ -98,6 +116,7 @@ export function chipsOf(
   filters: Filters,
   words: {
     template: (name: string) => string;
+    makeable: (value: string) => string;
     base: (name: string) => string;
   },
 ): Chip[] {
@@ -105,6 +124,7 @@ export function chipsOf(
   for (const key of activeFilters(filters)) {
     const value = filters[key] as string;
     const label = {
+      makeable: () => words.makeable(value),
       template: () => words.template(model.templateById.get(value)?.name ?? value),
       method: () => model.vocabulary.methods.find((m) => m.id === value)?.name ?? value,
       base: () => words.base(model.ingredientName(value) ?? value),

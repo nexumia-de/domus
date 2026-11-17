@@ -67,6 +67,8 @@ export interface AppState {
   toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
+  /** Counts changes the stock screens draw from (stock records loaded or written, tree expanded); a change redraws. */
+  stockRev: number;
   /** Temporary state of the spec screen (what-if volumes); never stored. */
   specView: SpecView;
   /** Last route of each destination, so switching back restores its stack. */
@@ -88,6 +90,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importFlow: { kind: 'idle' },
     toast: null,
     browseRev: 0,
+    stockRev: 0,
     specView: initialSpecView,
     lastRoute: {},
   };

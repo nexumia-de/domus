@@ -116,7 +116,7 @@ by the tests of the repository.
 
 | Screen          | URL                                                                                                                    |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Drinks list     | `#/drinks?q=…&template=…&method=…&base=…&strength=…&makeable=1&alcohol=none`                                           |
+| Drinks list     | `#/drinks?q=…&template=…&method=…&base=…&strength=…&makeable=yes                                                       | substitute | one&alcohol=none` |
 | Spec            | `#/drinks/<spec id>` (opens the newest version; may carry the list's `q` and filters so the list pane stays as it was) |
 | A named version | `#/drinks/<spec id>/v/<n>`                                                                                             |
 | Swap mode       | `#/drinks/<spec id>?swap=<slot>:<ingredient>:<amount>,…`                                                               |
@@ -124,8 +124,8 @@ by the tests of the repository.
 | Versions        | `#/drinks/<spec id>/versions`, diff `…/versions?a=2&b=3`                                                               |
 | Family          | `#/drinks/<spec id>/family`                                                                                            |
 | Templates       | `#/templates`, detail `#/templates/<template id>`                                                                      |
-| Stock           | `#/stock`, search `#/stock?q=…`                                                                                        |
-| Buy Next        | `#/stock/buy-next`                                                                                                     |
+| Stock           | `#/stock`, search and show `#/stock?q=…&show=in`                                                                       |
+| Buy Next        | `#/stock/buy-next`, `?strict=1` without substitutes, `?open=<ingredient id>` for the unlocked drinks                   |
 | Settings        | `#/settings`, export and import `#/settings/data`                                                                      |
 | About           | `#/about`                                                                                                              |
 

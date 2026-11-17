@@ -5,6 +5,7 @@
 
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
+import type { Derived } from '../../stock/derived';
 import { strings } from '../../strings';
 import {
   activeFilters,
@@ -30,7 +31,8 @@ interface Choice {
 
 function groups(
   model: BrowseModel,
-): { key: FilterKey; title: string; choices: Choice[]; hint?: string }[] {
+  stock: Derived | undefined,
+): { key: FilterKey; title: string; choices: Choice[]; hint?: string; disabled?: boolean }[] {
   const counts = model.templateCounts();
   const withCount = (name: string, count: number): string => `${name} (${count})`;
   const templates = [...model.templates]
@@ -39,7 +41,21 @@ function groups(
   const options = (list: readonly Option[]): Choice[] =>
     list.map((o) => ({ id: o.id, label: withCount(o.name, o.count) }));
   const withoutAbv = model.withoutAbv();
+  const words = strings.browse.availability;
+  const empty = !stock || stock.states.size === 0;
+  const n = stock?.counts;
   return [
+    {
+      key: 'makeable',
+      title: strings.browse.groups.makeable,
+      choices: [
+        { id: 'yes', label: withCount(words.yes, n?.makeable ?? 0) },
+        { id: 'substitute', label: withCount(words.substitute, n?.substitute ?? 0) },
+        { id: 'one', label: withCount(words.one, n?.one ?? 0) },
+      ],
+      disabled: empty,
+      hint: empty ? words.markStockFirst : undefined,
+    },
     { key: 'template', title: strings.browse.groups.template, choices: templates },
     { key: 'method', title: strings.browse.groups.method, choices: options(model.methodOptions()) },
     { key: 'base', title: strings.browse.groups.base, choices: options(model.baseOptions()) },
@@ -57,10 +73,16 @@ function groups(
   ];
 }
 
-function chip(label: string, on: boolean, toggle: () => void): HTMLElement {
+function chip(label: string, on: boolean, toggle: () => void, disabled = false): HTMLElement {
   return h(
     'button',
-    { class: 'chip', type: 'button', 'aria-pressed': on ? 'true' : 'false', onclick: toggle },
+    {
+      class: 'chip',
+      type: 'button',
+      'aria-pressed': on ? 'true' : 'false',
+      disabled,
+      onclick: toggle,
+    },
     on && glyph.check(),
     label,
   );
@@ -70,10 +92,11 @@ export function filtersSheet(
   model: BrowseModel,
   filters: Filters,
   count: number,
+  stock: Derived | undefined,
   actions: SheetActions,
 ): HTMLElement {
   const active = activeFilters(filters).length > 0;
-  const groupEls = groups(model).map((group) =>
+  const groupEls = groups(model, stock).map((group) =>
     h(
       'section',
       { class: 'sheet-group', 'aria-label': group.title },
@@ -82,10 +105,15 @@ export function filtersSheet(
         'div',
         { class: 'chips' },
         ...group.choices.map((choice) =>
-          chip(choice.label, filters[group.key] === choice.id, () => {
-            const on = filters[group.key] === choice.id;
-            actions.apply(withFilter(filters, group.key, on ? undefined : choice.id));
-          }),
+          chip(
+            choice.label,
+            filters[group.key] === choice.id,
+            () => {
+              const on = filters[group.key] === choice.id;
+              actions.apply(withFilter(filters, group.key, on ? undefined : choice.id));
+            },
+            group.disabled === true && filters[group.key] !== choice.id,
+          ),
         ),
       ),
       group.hint && h('p', { class: 'note' }, group.hint),

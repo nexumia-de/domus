@@ -3,7 +3,9 @@
 // (docs/export-format.md). Every action ends in a state change the screen
 // draws; nothing is written before the user chose Merge or Replace.
 
-import { type AppState, type Toast } from './app-state';
+import { type AppState } from './app-state';
+import { invalidateStock } from './stock/state';
+import { showToast } from './toast';
 import { strings } from './strings';
 import {
   countsOf,
@@ -41,7 +43,7 @@ export interface ExchangeHost {
   download(name: string, text: string): void;
 }
 
-export const TOAST_MS = 8000;
+export { TOAST_MS } from './toast';
 
 export function formatCounts(counts: Counts): string {
   const parts = KINDS.filter((k) => counts[k] > 0).map((k) => {
@@ -75,17 +77,7 @@ export function saveAsFile(name: string, text: string): void {
 
 export function createExchangeActions(host: ExchangeHost): ExchangeActions {
   const { app } = host;
-  let toastId = 0;
-  let timer: ReturnType<typeof setTimeout> | undefined;
-
-  const toast = (text: string, undo?: () => void): void => {
-    clearTimeout(timer);
-    const next: Toast = { id: ++toastId, text, ...(undo && { undo }) };
-    app.set({ toast: next });
-    timer = setTimeout(() => {
-      if (app.get().toast?.id === next.id) app.set({ toast: null });
-    }, TOAST_MS);
-  };
+  const toast = (text: string, undo?: () => void): void => showToast(app, text, undo);
   const fail = (error: unknown): void => {
     app.set({ importFlow: { kind: 'idle' } });
     toast(`${strings.data.notSaved}. ${toStoreError(error).message}`);
@@ -162,6 +154,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
       app.set({ importFlow: { kind: 'busy' } });
       try {
         const plan = await local.exchange.importData(flow.file, mode);
+        invalidateStock(app);
         app.set({ importFlow: { kind: 'idle' } });
         toast(strings.data.imported(formatCounts(importedCounts(plan))), () => void this.undo());
         await refresh();
@@ -175,6 +168,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
       if (!local) return;
       try {
         await local.exchange.undoImport();
+        invalidateStock(app);
         toast(strings.data.undone);
         await refresh();
       } catch (error) {

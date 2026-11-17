@@ -243,8 +243,7 @@ template) forced some of it.
   "(suggested)"). List rows and the template filter use the stored id only.
 - **Drinks list.** Rows show name, template (or "No template") and ABV after
   dilution (whole percent, "No ABV figure" for 36 drinks), sorted by name; the
-  newest version of each lineage; retired drinks are hidden. No Makeable tag
-  (#33), no sort menu, no status filter (every seed drink is a draft), no
+  newest version of each lineage; retired drinks are hidden. Makeable tag and filter: see [stock screens](screens-stock-settings.md#as-built-30-33); no sort menu, no status filter (every seed drink is a draft), no
   arrow-key selection and no `n` shortcut yet: follow-up issue. `/` focuses
   search. Rows are drawn 60 at a time (the next 60 when the "Show more drinks"
   button comes within 600 px of the view); the count shown is remembered per

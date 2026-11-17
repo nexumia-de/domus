@@ -45,6 +45,7 @@ export function render(root: HTMLElement, shell: Shell): void {
     active instanceof HTMLInputElement
       ? { start: active.selectionStart, end: active.selectionEnd }
       : null;
+  active?.dispatchEvent(new Event('search-cancel'));
   const scroll = captureScroll(root);
   const app = h(
     'div',
@@ -64,6 +65,17 @@ export function render(root: HTMLElement, shell: Shell): void {
   restoreScroll(root, state.route, scroll, view.list !== undefined);
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;
   again?.focus({ preventScroll: true });
+  // Text typed but not yet in the address (the search is debounced) survives a redraw that
+  // brings back the value this field last handed over, such as a finished write.
+  if (
+    again instanceof HTMLInputElement &&
+    active instanceof HTMLInputElement &&
+    (active.dataset['sent'] ?? active.defaultValue) === again.value &&
+    active.value !== again.value
+  ) {
+    again.value = active.value;
+    again.dispatchEvent(new Event('input'));
+  }
   if (again instanceof HTMLInputElement && caret?.start != null && caret.end != null) {
     again.setSelectionRange(caret.start, caret.end);
   }

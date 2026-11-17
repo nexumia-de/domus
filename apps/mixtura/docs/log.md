@@ -2,6 +2,7 @@
 
 ## 2026-11-17
 
+- **Stock screen, Makeable filter, Buy Next** (#30, #33): `screens/stock/`, `stock/`, Makeable tag and filter on the drinks list, Availability group in the filters sheet; [as built](screens-stock-settings.md#as-built-30-33); `e2e/stock.mjs`. A redraw no longer loses text typed in a search field. Follow-ups: Makeable tag and stock panel on the spec screen, Create for unknown ingredients, ranking in a worker, remembered mode and draft/retired settings.
 - **Servings and batch** (#52): servings stepper (`?servings=n`) scaling amounts with the engine's rules, batch sheet (`?sheet=batch`) from `prediluted`; the engine exports `roundCount` (counted amounts round up) and the amounts formatter takes `precision: 'batch'`; [screens: own specs](screens-specs.md#servings-and-batch).
 
 - **Not counted lines and what-if volume** (#74): the balance panel lists every `excluded` line with its reason, a top without a volume offers Add Volume as a temporary what-if (`AppState.specView`, `screens/spec/session.ts`), spec lines carry `topMl`; [screens: own specs](screens-specs.md#what-if-volume-of-a-top).

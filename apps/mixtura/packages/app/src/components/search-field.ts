@@ -13,6 +13,8 @@ export function searchField(options: {
   hint: string;
   clearLabel: string;
   onChange: (value: string) => void;
+  /** Enter in the field, with the text as typed (quick entry on the Stock screen). */
+  onEnter?: (value: string) => void;
 }): HTMLElement {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const input = h('input', {
@@ -26,11 +28,24 @@ export function searchField(options: {
     autocapitalize: 'off',
     spellcheck: 'false',
     'data-focus': 'search',
+    onkeydown: (event) => {
+      if ((event as KeyboardEvent).key !== 'Enter' || !options.onEnter) return;
+      event.preventDefault();
+      clearTimeout(timer);
+      options.onEnter(input.value.trim());
+    },
     oninput: () => {
       clearTimeout(timer);
-      timer = setTimeout(() => options.onChange(input.value.trim()), DEBOUNCE_MS);
+      timer = setTimeout(() => {
+        // What this field has handed to the address; a redraw keeps newer typing (shell/render.ts).
+        input.dataset['sent'] = input.value.trim();
+        options.onChange(input.value.trim());
+      }, DEBOUNCE_MS);
     },
   });
+  // A redraw replaces this field; its pending hand-over must not fire later with stale text
+  // (shell/render.ts cancels it and restarts it on the new field).
+  input.addEventListener('search-cancel', () => clearTimeout(timer));
   const clear = h(
     'button',
     {

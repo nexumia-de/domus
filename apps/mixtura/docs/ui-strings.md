@@ -83,23 +83,23 @@ score, grade, warning, error (for a figure).
 
 # Empty states
 
-| Screen                  | Text                                                                     | Button        |
-| ----------------------- | ------------------------------------------------------------------------ | ------------- |
-| Drinks, no hit          | No drink matches the search and filters.                                 | Clear Filters |
-| Drinks, none            | No drinks yet.                                                           | New Drink     |
-| Makeable, empty stock   | Nothing in stock yet. Mark what you have to see what you can make.       | Open Stock    |
-| Templates, no hit       | No template matches.                                                     | Clear Search  |
-| Template without drinks | No drinks follow this template yet.                                      | New Drink     |
-| Stock, empty            | Nothing in stock yet. Add what you have to see what you can make.        |               |
-| Stock, no hit           | No ingredient matches.                                                   | Create {text} |
-| Buy Next, nothing       | Everything in your drinks is makeable or needs more than one ingredient. |               |
-| Buy Next, all makeable  | You can make every drink.                                                |               |
-| Buy Next, empty stock   | Based on an empty stock; mark what you have for a closer answer.         |               |
-| Versions, one           | This is the first version.                                               | Edit          |
-| Versions, identical     | No differences.                                                          |               |
-| Family, none            | No related drinks yet.                                                   | Riff          |
-| Export, nothing         | Nothing to export yet. Seed data is not part of the file.                |               |
-| Ingredient picker       | No ingredient matches.                                                   | Create {text} |
+| Screen                  | Text                                                                                                                   | Button        |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
+| Drinks, no hit          | No drink matches the search and filters.                                                                               | Clear Filters |
+| Drinks, none            | No drinks yet.                                                                                                         | New Drink     |
+| Makeable, empty stock   | Nothing in stock yet. Mark what you have to see what you can make.                                                     | Open Stock    |
+| Templates, no hit       | No template matches.                                                                                                   | Clear Search  |
+| Template without drinks | No drinks follow this template yet.                                                                                    | New Drink     |
+| Stock, empty            | Nothing in stock yet. Add what you have to see what you can make.                                                      |               |
+| Stock, no hit           | No ingredient matches.                                                                                                 | Create {text} |
+| Buy Next, nothing       | Everything in your drinks is makeable or needs more than one ingredient.                                               |               |
+| Buy Next, all makeable  | You can make every drink.                                                                                              |               |
+| Buy Next, empty stock   | Based on an empty stock: only drinks made from one ingredient can be unlocked. Mark what you have for a closer answer. |               |
+| Versions, one           | This is the first version.                                                                                             | Edit          |
+| Versions, identical     | No differences.                                                                                                        |               |
+| Family, none            | No related drinks yet.                                                                                                 | Riff          |
+| Export, nothing         | Nothing to export yet. Seed data is not part of the file.                                                              |               |
+| Ingredient picker       | No ingredient matches.                                                                                                 | Create {text} |
 
 # Errors and offline
 

@@ -9,6 +9,8 @@ import { h } from '../../dom';
 import { back, go, replace } from '../../navigation';
 import { type ScreenContext } from '../../screen';
 import { listKey } from '../../shell/scroll';
+import { deriveStock } from '../../stock/derived';
+import { stockState } from '../../stock/state';
 import { strings } from '../../strings';
 import {
   activeFilters,
@@ -69,6 +71,12 @@ function filtersButton(context: ScreenContext, filters: Filters): HTMLElement {
 function chipRow(context: ScreenContext, model: BrowseModel, filters: Filters): HTMLElement | null {
   const chips = chipsOf(model, filters, {
     template: strings.browse.templateChip,
+    makeable: (value) =>
+      value === 'substitute'
+        ? strings.browse.availability.substitute
+        : value === 'one'
+          ? strings.browse.availability.one
+          : strings.browse.availability.yes,
     base: strings.browse.baseChip,
   });
   if (chips.length === 0) return null;
@@ -111,28 +119,43 @@ export function drinksListPane(
 ): { title: string; body: Node; action: Node } {
   installShortcut();
   const filters = parseFilters(context.route.query);
-  const hits = applyFilters(model, filters);
+  const stock = stockState(context);
+  const derived = stock.kind === 'ready' ? deriveStock(model, stock.records) : undefined;
+  const hits = applyFilters(model, filters, model.drinks, derived?.states);
   const key = listKey(context.route);
   const sheetOpen = context.route.query.get('sheet') === 'filters';
 
+  const waitingForStock = filters.makeable !== undefined && stock.kind === 'loading';
+  const noStock =
+    filters.makeable !== undefined && derived !== undefined && derived.states.size === 0;
   const rows =
     model.drinks.length === 0
       ? [status(strings.browse.noData)]
-      : hits.length === 0
-        ? [
-            status(strings.browse.noHit, {
-              label: strings.browse.clearFilters,
-              onclick: () => replace(context.store, hashWith(context.route, { q: '' })),
-            }),
-          ]
-        : incrementalRows(hits, key, (drink) =>
-            drinkRow(
-              model,
-              drink,
-              specHash(drink.spec.lineageId, filters),
-              drink.spec.lineageId === selected,
-            ),
-          );
+      : waitingForStock
+        ? [status(strings.browse.loading)]
+        : noStock
+          ? [
+              status(strings.empty.makeableEmpty, {
+                label: strings.browse.availability.openStock,
+                href: '#/stock',
+              }),
+            ]
+          : hits.length === 0
+            ? [
+                status(strings.browse.noHit, {
+                  label: strings.browse.clearFilters,
+                  onclick: () => replace(context.store, hashWith(context.route, { q: '' })),
+                }),
+              ]
+            : incrementalRows(hits, key, (drink) =>
+                drinkRow(
+                  model,
+                  drink,
+                  specHash(drink.spec.lineageId, filters),
+                  drink.spec.lineageId === selected,
+                  derived?.states.get(drink.spec.id),
+                ),
+              );
 
   const body = h(
     'div',
@@ -157,7 +180,7 @@ export function drinksListPane(
     ),
     ...rows,
     sheetOpen &&
-      filtersSheet(model, filters, hits.length, {
+      filtersSheet(model, filters, hits.length, derived, {
         apply: (next) => replace(context.store, hashWith(context.route, next)),
         close: () => closeSheet(context, filters),
       }),

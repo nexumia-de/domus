@@ -138,7 +138,7 @@ test('chips name the active filters, and an id the data lacks shows as it is', (
   const chips = chipsOf(
     model,
     { q: '', template: 'daiquiri', method: 'stir', base: 'gin', strength: 'lt14' },
-    { template: (n) => `${n} template`, base: (n) => `Base: ${n}` },
+    { template: (n) => `${n} template`, makeable: (v) => v, base: (n) => `Base: ${n}` },
   );
   expect(chips.map((c) => c.label)).toEqual([
     'Daiquiri template',
@@ -147,7 +147,11 @@ test('chips name the active filters, and an id the data lacks shows as it is', (
     'Under 14 % ABV',
   ]);
   expect(
-    chipsOf(model, { q: '', template: 'gone' }, { template: (n) => n, base: (n) => n })[0]?.label,
+    chipsOf(
+      model,
+      { q: '', template: 'gone' },
+      { template: (n) => n, makeable: (v) => v, base: (n) => n },
+    )[0]?.label,
   ).toBe('gone');
 });
 
