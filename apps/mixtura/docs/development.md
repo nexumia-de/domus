@@ -229,6 +229,23 @@ scholar.google.com
 www.jstor.org
 ```
 
+Later on 2026-11-17 (#48 pass) `cookingissues.com` (without `www.`),
+`books.google.com` (book page only; search inside redirects to the
+blocked `www.google.com`) and `archive.org` answered 200 and the
+Cooking Issues posts were read. Still blocked for the _Liquid
+Intelligence_ equations (`CONNECT tunnel failed, response 403` or no
+resolution):
+
+```
+mikemcdonald.co
+www.synergyconsultants.com
+mixology.school
+cdn.bookey.app
+alltools.dev
+www.popsci.com
+web.archive.org
+```
+
 `www.sciencedirect.com` answers 403 itself. Reachable on the same day
 and used for the juice acid values (the PMC pages answered a captcha to
 scripted requests, Europe PMC's REST API served the open-access full

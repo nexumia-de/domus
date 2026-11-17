@@ -9,6 +9,14 @@ sources:
     title: 'Dave Arnold, Cooking Issues posts on cocktail dilution (https://www.cookingissues.com/index.html%3Fp%3D4585.html, https://cookingissues.com/2010/09/08/cocktail-science-in-generalpart-2-of-2/, https://www.cookingissues.com/index.html%3Fp%3D1527.html); read only as search-result summaries'
   - id: arnold-book
     title: 'Dave Arnold: Liquid Intelligence (2014); not at hand, quoted only through summaries'
+  - id: ci-blind
+    title: 'Nastassia Lopez and Dave Arnold, Cocktail Science V: Ideal Dilution Through %ABV Blind Testing, Cooking Issues, 2009-10-29 (https://cookingissues.com/2009/10/29/cocktail-science-v-ideal-dilution-through-%ef%bf%bdv-blind-testing3/); read in full on 2026-11-17'
+  - id: ci-shaking
+    title: 'Dave Arnold, Tales of the Cocktail: Science of Shaking II, Cooking Issues, 2009-07-24 (https://cookingissues.com/2009/07/24/tales-of-the-cocktail-science-of-shaking-ii/); read in full on 2026-11-17, charts not readable as text'
+  - id: ci-general
+    title: 'Dave Arnold, Cocktail Science in General, parts 1 and 2, Cooking Issues, 2010-09-02 and 2010-09-08 (https://cookingissues.com/2010/09/02/cocktail-science-in-general-part-1-of-2/, https://cookingissues.com/2010/09/08/cocktail-science-in-generalpart-2-of-2/); read in full on 2026-11-17'
+  - id: mcdonald
+    title: 'Mike McDonald, Between the Sheets, 2020-05-06 (https://mikemcdonald.co/blog/2020/05/06/between-the-sheets/); seen only as a search-result summary, host blocked'
   - id: deathco
     title: 'Death & Co, Shaken or Stirred (https://fashioned.deathandcompany.com/pages/shaken-or-stirred); search-result summary only'
   - id: difford
@@ -137,12 +145,10 @@ What the sources say, as far as it was seen:
   differently. The equations are **not used** because they could not be
   read; a model that depends on ABV, sugar and time replaces the
   constant fraction once the book is at hand (open issue, below)[^arnold-book].
-  Searched again on 2026-11-17 (#48): no reachable page quotes the
-  equations. `cookingissues.com` does not resolve from the session and
-  every other page found (search results, book shops, recipe sites) is
-  behind a blocked host ([development](development.md#network-hosts));
-  Europe PMC full-text search finds no paper that cites them. The
-  constant fractions stay; `dilution.json` and the engine are unchanged.
+  Searched again on 2026-11-17 (#48), see [#48 findings](#48-findings):
+  the Cooking Issues posts are now read in full, the equations are
+  still not readable at a citable source. The constant fractions stay;
+  `dilution.json` and the engine are unchanged.
 - `build` (a drink poured over ice, with a mixer): no source; the
   figure is a placeholder. `blend`: one calculator page lists 100–150 ml
   of water for a blended drink; as a fraction of a roughly 100 ml base
@@ -150,6 +156,70 @@ What the sources say, as far as it was seen:
 
 Not modelled in version 1: dependence on ice size, time, sugar and
 starting ABV; carbonated mixers' loss of gas; ice added to the glass.
+
+# #48 findings
+
+Question: replace the constant fraction by _Liquid Intelligence_'s
+dilution as a quadratic function of the pre-dilution ABV, separate for
+shaken and stirred drinks. Result: **not implemented, the equations
+could not be confirmed.** What was and was not established on
+2026-11-17:
+
+**Read at the source** (`cookingissues.com` answered this time)[^ci-general][^ci-shaking][^ci-blind]:
+
+- The blog posts contain **no equation**. Part 2 only points to the
+  blind-test post and says there is "no single ideal dilution", one range
+  for shaken and one for stirred, and more components make it more
+  complicated[^ci-general]. The equations are in the book only.
+- Measured shaken dilution of straight spirit: 100 ml of liquor,
+  refractometer reading 38 % ABV, shaken 12 to 40 s with Kold-Draft or
+  small ice, lost only 1 to 1.5 % ABV between 20 and 40 s; the post's own
+  comparison: 100 ml of 40 % plus 70 ml water is 23.5 % by calculation and
+  21 % was measured, plus 90 ml water 21 % by calculation and 19.5 to
+  20 % measured[^ci-shaking]. The refractometer read about 2 points low
+  and drinks lost weight in handling, so these are indications. Ice
+  type and shaking style did not change dilution at equal temperature.
+- Blind test with six bartenders, Sidecar mix 30.8 % ABV and Pegu mix
+  35 % ABV before dilution, final ABV 15 to 31 %, tasted at about 0 C: **no
+  consensus**; Sidecar favourites 15, 21 and 24 to 25 % final ABV[^ci-blind].
+  As water fractions of the pre-dilution volume, `f = ABV0 / ABV - 1`
+  (arithmetic here): 25 % is 0.232, 24 % is 0.283, 21 % is 0.467, 15 % is
+  1.053. The post gives no preferred value, so it supports "a range",
+  not a curve.
+
+**Seen only in summaries, unverified.** One reader's blog[^mcdonald] (search summary; the host is blocked) says the
+printed shaken equation on page 123 lacks a minus sign and proposes
+`dilution = -1.567·ABV² + 1.742·ABV + c` with `c` printed as 0.0203 in
+that summary (and recalled as 0.203, not verified); a second blog's
+stirred equation arrived garbled (`-1.21·ABV² + 1.26·ABV + 0.145`, last
+term unclear). Neither the variable definition (fraction or percent,
+dilution relative to which volume), the validity range, nor the sign is
+confirmed. A sanity check made here: with `c = 0.203` the shaken curve
+gives 0.49 to 0.63 for ABV 0.20 to 0.30 (the book's "50 to 60 %" as
+quoted by summaries); with `c = 0.0203` it gives 0.31 to 0.45. Both are
+far above the 0.20 to 0.30 of Death & Co and Difford's, so the book's
+"dilution" is probably defined differently (for example relative to the
+non-ice liquid, or as ice melted per volume), which is exactly what is
+missing. Implementing coefficients whose sign, constant and meaning are
+undecided would put an invented number into the data, so the engine
+stays on the constant fractions, shown as a range.
+
+**Per method, what is supported:**
+
+| Method  | Supported now                                                                | Missing                                   |
+| ------- | ---------------------------------------------------------------------------- | ----------------------------------------- |
+| `stir`  | range 0.15 to 0.25 (Death & Co, Difford's; secondary)                        | book equation, validity range, definition |
+| `shake` | range 0.20 to 0.30 (secondary); straight-spirit measurement above as a check | book equation, validity range, definition |
+| `build` | nothing                                                                      | any measurement; stays an assumption      |
+| `blend` | nothing                                                                      | any measurement; stays an assumption      |
+
+Needed to finish #48: the text of _Liquid Intelligence_ pages 123 to
+126 (a library copy or a publisher excerpt), or the `mikemcdonald.co`
+post and the page of the second blog; and a decision whether the
+ABV-dependent form replaces `f` per method. Once the definition is
+known the change is data only: coefficients and validity range in
+`dilution.json` per method, `chooseDilution` evaluating them, vectors
+by hand.
 
 # Usual ranges per template
 
@@ -430,25 +500,27 @@ sugar `= 100·100/162.655 = 61.48` g/100 ml.
 
 "Seen" means a search-result summary of the page, not the page.
 
-| Number or claim                                                              | Where                          | Status                                                             |
-| ---------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
-| Stir adds 15–20 % (practice doc said 20–25 %)                                | Death & Co page, seen          | secondary                                                          |
-| Shake adds 20–25 % (practice doc said 25–30 %)                               | Death & Co page, seen          | secondary                                                          |
-| Stir about 20 %                                                              | Difford's Guide, seen          | secondary                                                          |
-| 25–35 % shake, 15–20 % stir on other pages                                   | low-quality pages              | not used                                                           |
-| Dilution depends on ABV and components, no single ideal                      | Arnold blog, seen              | secondary                                                          |
-| Same final temperature gives same dilution                                   | Arnold, via a book summary     | secondary                                                          |
-| Shake 12–15 s; stir over two minutes to match                                | Arnold blog, seen              | secondary                                                          |
-| Book equations, "50–60 % dilution (p. 125)"                                  | reader summaries that disagree | unresolved, not used                                               |
-| Defaults 0.20 stir, 0.25 shake                                               | chosen mid-range               | assumption                                                         |
-| `build` 0.10, `blend` 1.0                                                    | placeholders                   | assumption                                                         |
-| UK unit is 10 ml ethanol, 8 g                                                | NHS and NHS trust pages, seen  | secondary                                                          |
-| Ethanol density 0.789 g/ml                                                   | well known                     | assumption                                                         |
-| Syrup density 1.2296 g/ml                                                    | recalled from tables           | assumption                                                         |
-| Lime juice acid 4.58, lemon 4.80 g/100 ml (citric acid, fresh juice)         | Penniston 2008, Table 1, read  | secondary                                                          |
-| Juice sugar 1.5 g/100 ml; triple sec 25 g/100 ml; spirit 40 %; vermouth 16 % | none read                      | assumption                                                         |
-| Six root templates and their ratios                                          | Cocktail Codex, not at hand    | assumption                                                         |
-| Stirred 28–32 %, shaken sours 14–18 %, highball 8–12 % (practice doc)        | computed here instead          | replaced, see [practice](bartender-practice.md#balance-as-numbers) |
+| Number or claim                                                              | Where                                    | Status                                                             |
+| ---------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| Stir adds 15–20 % (practice doc said 20–25 %)                                | Death & Co page, seen                    | secondary                                                          |
+| Shake adds 20–25 % (practice doc said 25–30 %)                               | Death & Co page, seen                    | secondary                                                          |
+| Stir about 20 %                                                              | Difford's Guide, seen                    | secondary                                                          |
+| 25–35 % shake, 15–20 % stir on other pages                                   | low-quality pages                        | not used                                                           |
+| Dilution depends on ABV and components, no single ideal                      | Arnold blog, seen                        | secondary                                                          |
+| Same final temperature gives same dilution                                   | Arnold, via a book summary               | secondary                                                          |
+| Shake 12–15 s; stir over two minutes to match                                | Arnold blog, seen                        | secondary                                                          |
+| Book equations, "50–60 % dilution (p. 125)"                                  | reader summaries that disagree           | unresolved, not used, see [#48 findings](#48-findings)             |
+| Shaken straight spirit: 21 % and 19.5–20 % ABV measured after 70/90 ml water | Cooking Issues, Shaking II, read         | secondary, indication only                                         |
+| Blind test: no consensus on final ABV (Sidecar 30.8 %, Pegu 35 %)            | Cooking Issues, Cocktail Science V, read | secondary                                                          |
+| Defaults 0.20 stir, 0.25 shake                                               | chosen mid-range                         | assumption                                                         |
+| `build` 0.10, `blend` 1.0                                                    | placeholders                             | assumption                                                         |
+| UK unit is 10 ml ethanol, 8 g                                                | NHS and NHS trust pages, seen            | secondary                                                          |
+| Ethanol density 0.789 g/ml                                                   | well known                               | assumption                                                         |
+| Syrup density 1.2296 g/ml                                                    | recalled from tables                     | assumption                                                         |
+| Lime juice acid 4.58, lemon 4.80 g/100 ml (citric acid, fresh juice)         | Penniston 2008, Table 1, read            | secondary                                                          |
+| Juice sugar 1.5 g/100 ml; triple sec 25 g/100 ml; spirit 40 %; vermouth 16 % | none read                                | assumption                                                         |
+| Six root templates and their ratios                                          | Cocktail Codex, not at hand              | assumption                                                         |
+| Stirred 28–32 %, shaken sours 14–18 %, highball 8–12 % (practice doc)        | computed here instead                    | replaced, see [practice](bartender-practice.md#balance-as-numbers) |
 
 ## Owner tasks (sources needed)
 
@@ -459,9 +531,8 @@ Pages or posts that would turn assumptions into verified numbers:
    starting ABV, and what "dilution" is defined as in the "50–60 %" figure.
 2. _Cocktail Codex_, the chapters on stirred and shaken drinks and the
    six root templates: the ratios and any dilution percentages.
-3. Arnold's Cooking Issues posts "Cocktail Science V: Ideal Dilution
-   Through %ABV Blind Testing" and the two cocktail-science posts above,
-   read in full.
+3. (Done 2026-11-17: the Cooking Issues posts were read in full; they
+   hold no equations, see [#48 findings](#48-findings).)
 4. Ingredient data: juice sugar and the density of sucrose solutions
    (for example a food chemistry reference); juice acid was read on
    2026-11-17 (orange, grapefruit and pineapple too, see
