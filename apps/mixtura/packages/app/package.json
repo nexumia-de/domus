@@ -11,6 +11,7 @@
   "scripts": {
     "build": "node build.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "e2e": "node e2e/walk.mjs 360 720 && node e2e/walk.mjs 1200 800"
   }
 }

@@ -1,0 +1,63 @@
+/* Design tokens from docs/design.md (copied from docs/mockups/mockup.css, which implements them). */
+:root {
+  --bg: #faf8f5;
+  --surface: #ffffff;
+  --surface-2: #f3efe9;
+  --text: #1f1b16;
+  --text-muted: #5c544a;
+  --border: #8c8478;
+  --divider: #e2dcd2;
+  --accent: #9a4a12;
+  --on-accent: #ffffff;
+  --accent-soft: #f6e7da;
+  --focus: #1f1b16;
+  --shadow: 0 1px 2px rgb(0 0 0 / 12%), 0 4px 12px rgb(0 0 0 / 10%);
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --target: 44px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #16130f;
+    --surface: #211d18;
+    --surface-2: #2a251f;
+    --text: #f2ede6;
+    --text-muted: #b5aba0;
+    --border: #8a8175;
+    --divider: #3a342c;
+    --accent: #f0a468;
+    --on-accent: #1f1206;
+    --accent-soft: #3a2616;
+    --focus: #f2ede6;
+    --shadow: 0 1px 2px rgb(0 0 0 / 50%), 0 4px 12px rgb(0 0 0 / 40%);
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #16130f;
+  --surface: #211d18;
+  --surface-2: #2a251f;
+  --text: #f2ede6;
+  --text-muted: #b5aba0;
+  --border: #8a8175;
+  --divider: #3a342c;
+  --accent: #f0a468;
+  --on-accent: #1f1206;
+  --accent-soft: #3a2616;
+  --focus: #f2ede6;
+  --shadow: 0 1px 2px rgb(0 0 0 / 50%), 0 4px 12px rgb(0 0 0 / 40%);
+}

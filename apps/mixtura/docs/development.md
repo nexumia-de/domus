@@ -26,16 +26,76 @@ npm ci
 | `npm run lint`         | ESLint (flat config, typescript-eslint, purity rule for the engine)                  |
 | `npm run typecheck`    | `tsc --noEmit` in both packages                                                      |
 | `npm test`             | vitest in both packages                                                              |
-| `npm run build`        | `packages/engine/dist/engine.mjs` and `packages/app/dist/` (`index.html`, `main.js`) |
+| `npm run build`        | `packages/engine/dist/engine.mjs` and `packages/app/dist/` (the app, see below)      |
+| `npm run e2e`          | builds, then walks the built app in Chromium at 360 x 720 and 1200 x 800             |
 
 ## Layout
 
 - `packages/engine` (`@mixtura/engine`): the pure engine. `src/index.ts`,
   `vectors/` for the test vectors of every rule and formula, `test/`.
 - `packages/app` (`@mixtura/app`): the web app, built with esbuild, no UI
-  framework; imports the engine. A placeholder page for now.
+  framework. The shell and its source layout are in [App shell](#app-shell).
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.
 - Every dependency is pinned exactly; see [dependencies](dependencies.md).
+
+## App shell
+
+The shell (#17) is plain TypeScript building DOM; no framework. Source in
+`packages/app/src/`:
+
+| File or folder                              | Job                                                                                    |
+| ------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change       |
+| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update) |
+| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)              |
+| `destinations.ts`                           | The four destinations with labels and icons                                            |
+| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them      |
+| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`             |
+| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, theme and unit preferences                 |
+| `sw.ts`, `sw-register.ts`                   | Service worker; registration and the update flow                                       |
+| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                   |
+
+**Adding a screen (#18 to #20).** Make `screens/<name>/index.ts` that
+exports `screens: Screen[]` (`match(route)` and `view(context)` returning
+`{ title, body, actions?, list? }`), and add one line to
+`screens/index.ts`. The shell never changes: `list` makes it a two-pane
+screen from 840 px, `actions` replaces the bottom navigation with an
+action bar on a pushed screen. Screens read `context.state` and write
+with `context.store.set`; every change redraws the whole app, and a focused
+element with a `data-focus` attribute keeps focus across the redraw.
+
+**Running it.** `npm run build`, then serve `packages/app/dist/` over
+localhost (a service worker needs `localhost` or HTTPS), for example
+`npx --yes serve packages/app/dist` or `python3 -m http.server -d packages/app/dist 8080`
+(not a dependency of the repository). `file://` shows the app without a
+service worker.
+
+**Service worker and updates.** `build.mjs` hashes all built files into the
+cache name `mixtura-<16 hex>`; `sw.js` precaches them at install and
+answers every GET from the cache (cache first, `index.html` for
+navigations), never from the network. A new build installs in the
+background and waits; the page shows the banner "Update available"; only
+the Update button sends `skip-waiting`, and the page reloads when the new
+worker takes over. The old cache is deleted on activation. Serve `sw.js`
+with `Cache-Control: no-cache` so browsers see a new build at once.
+
+**Theme.** `data-theme` on `<html>` overrides the system setting; a small
+inline script in `index.html` sets it before first paint from the
+preferences in `localStorage` (`mixtura.prefs`, interim until the local
+store exists).
+
+**End-to-end test.** `npm run e2e` (`packages/app/e2e/walk.mjs`) loads the
+built app from a local static server in a fresh Chromium profile at both
+sizes and checks the four destinations, back navigation, touch targets, no
+horizontal overflow, the theme, a reload and a deep link with the network
+off, no request outside the origin, and the update flow with a second
+"build". `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
+`docs/screenshots/` at scale 2. Playwright (pinned, see
+[dependencies](dependencies.md)) uses its own browser; where that is not
+installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its
+binary (the cloud image has headless shell build 1243:
+`/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell`).
+CI runs it as the job `e2e` after `npx playwright install --with-deps chromium`.
 
 ## The engine is pure
 
@@ -52,7 +112,8 @@ so the rule cannot be removed silently
 
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
 requests and pushes to `main`. The job is named `check`; this is the
-required status check name for the branch-protection ruleset. Actions are
+required status check name for the branch-protection ruleset. A second
+job `e2e` runs the browser walk; it is not required until issue #21 settles it. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
 ## Network hosts

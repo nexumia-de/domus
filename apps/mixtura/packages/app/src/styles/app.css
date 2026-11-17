@@ -1,0 +1,68 @@
+/* App frame, safe areas, status page, reduced motion. */
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+}
+
+.app-root > .app {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+
+.nav {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.actionbar {
+  padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom));
+}
+
+.row .row-chev {
+  color: var(--text-muted);
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4);
+}
+
+.status h2 {
+  margin: 0;
+  font-size: var(--fs-lg);
+}
+
+.status p {
+  margin: 0;
+  max-width: 36ch;
+  color: var(--text-muted);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.card--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card--flush > .row:last-child {
+  border-bottom: 0;
+}

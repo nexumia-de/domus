@@ -17,16 +17,16 @@ only. Screens are in [behaviour](behaviour.md).
 
 # Navigation and bars
 
-| Where             | String                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------------- |
-| Bottom navigation | Drinks · Templates · Stock · Settings                                                       |
-| Stock views       | Stock · Buy Next                                                                            |
-| Spec action bar   | Try a Swap · Riff · Edit                                                                    |
-| Swap action bar   | Reset · Riff · Save                                                                         |
-| Editor action bar | Cancel · Save Version                                                                       |
-| Overflow, spec    | Versions · Family · Export spec · Retire · Delete                                           |
-| Overflow, list    | Sort by name · Sort by recently changed · Sort by template                                  |
-| Titles            | Drinks · Templates · Stock · Settings · About · Edit {name} · New Drink · Versions · Family |
+| Where             | String                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| Bottom navigation | Drinks · Templates · Stock · Settings                                                                   |
+| Stock views       | Stock · Buy Next                                                                                        |
+| Spec action bar   | Try a Swap · Riff · Edit                                                                                |
+| Swap action bar   | Reset · Riff · Save                                                                                     |
+| Editor action bar | Cancel · Save Version                                                                                   |
+| Overflow, spec    | Versions · Family · Export spec · Retire · Delete                                                       |
+| Overflow, list    | Sort by name · Sort by recently changed · Sort by template                                              |
+| Titles            | Not Found · Drinks · Templates · Stock · Settings · About · Edit {name} · New Drink · Versions · Family |
 
 # Buttons
 
@@ -107,10 +107,17 @@ score, grade, warning, error (for a figure).
 | Import, wrong file       | The file is not a Mixtura export.        | Nothing was imported.                                             |             |
 | Import, newer format     | The file is from a newer version         | It is format {n}; this app reads up to {m}. Nothing was imported. |             |
 | Import, damaged          | The file cannot be read                  | {reason}. Nothing was imported.                                   |             |
+| Not found (any route)    | This page is not here                    | The link points to something that was deleted or never existed.   | Open Drinks |
 | Offline (About)          | Updates are checked when you are online. |                                                                   |             |
 | External link offline    | (accessible name)                        | {name}, needs a connection                                        |             |
 
 No screen shows a special offline state: the app is local.
+
+# Update
+
+Banner at the top of the app, `role="status"`, not blocking: **Update
+available** with the button **Update**. The app reloads only after the
+tap ([development](development.md#app-shell)).
 
 # Toasts (each with Undo)
 

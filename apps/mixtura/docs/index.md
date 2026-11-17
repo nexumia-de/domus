@@ -47,5 +47,5 @@ links. Change history is in [log.md](log.md).
 
 # Development
 
-- [Development](development.md) - Setup, commands, layout, the engine's purity rule, the CI job `check` and the hosts the research needed.
+- [Development](development.md) - Setup, commands, layout, the app shell and how to add a screen, service worker and update flow, e2e test, the engine's purity rule, the CI jobs and the hosts the research needed.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.
