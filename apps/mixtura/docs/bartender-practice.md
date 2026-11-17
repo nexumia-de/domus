@@ -104,7 +104,21 @@ preservation, and dilutes differently[^bainbridge]. What replaces it:
 
 The templates carry over: a sour with tea or a non-alcoholic spirit as
 base, a highball, a spritz. Low-ABV drinks use fortified wine or sherry
-as the base. Such mixes spoil sooner, so shelf life must be shown.
+as the base.
+
+**Checked in [non-alcoholic and low-ABV drinks](non-alcoholic.md)**; the
+list above stays practice only, none of it was verified. What that check
+found wrong or missing here:
+
+- Ferments are not alcohol-free: kombucha from British Columbia retail
+  and producers measured 0 to 3.62 % ABV (mean 0.77 %)[^jang-na].
+- "Bitters in small doses" are not ethanol-free: two dashes of a 44.7 %
+  bitters come to about 0.7 % ABV in a 120 ml drink by calculation.
+- "Such mixes spoil sooner, so shelf life must be shown" has no source;
+  no authority gives a number of days for these ingredients, so the data
+  leaves shelf life unknown unless the user enters one.
+- The terms differ by country (0.05 %, 0.5 %, 1.2 %); the app states
+  only the computed ABV.
 
 # Operations
 
@@ -158,3 +172,5 @@ substitution and balance feedback.
 - **Affinity**: two ingredients, strength, kind and source.
 - Derived and never stored: balance figures, cost, makeable, unlock
   ranking.
+
+[^jang-na]: Jang et al., J Food Prot 84:1878-1883 (2021), PMID 34143179.

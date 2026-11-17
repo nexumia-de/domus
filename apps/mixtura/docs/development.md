@@ -174,3 +174,40 @@ en.wikipedia.org
 archive.org
 books.google.com
 ```
+
+Needed for [non-alcoholic](non-alcoholic.md), reachable on 2026-11-17
+(PubMed, PMC and E-utilities; the page of each paper):
+
+```
+pubmed.ncbi.nlm.nih.gov
+pmc.ncbi.nlm.nih.gov
+eutils.ncbi.nlm.nih.gov
+www.who.int
+www.europarl.europa.eu
+```
+
+Blocked on 2026-11-17 (`curl` tunnel failure, and the fetch tool could not
+resolve them); each would have settled an open point there (legal texts
+of the EU, Germany, UK and US, food-safety limits, product data):
+
+```
+eur-lex.europa.eu
+www.gesetze-im-internet.de
+www.legislation.gov.uk
+www.gov.uk
+www.ecfr.gov
+www.govinfo.gov
+www.fda.gov
+www.ttb.gov
+www.law.cornell.edu
+www.food.gov.uk
+nchfp.uga.edu
+www.fsis.usda.gov
+extension.psu.edu
+www.efsa.europa.eu
+www.bfr.bund.de
+www.verbraucherzentrale.de
+www.reading.ac.uk
+www.cdc.gov
+europepmc.org
+```

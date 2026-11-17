@@ -16,6 +16,7 @@ links. Change history is in [log.md](log.md).
 
 - [Existing tools and data](existing-tools.md) - Survey of FOSS cocktail software and data sources with licences, what Bar Assistant already does and the gap Mixtura fills.
 - [How bartenders work](bartender-practice.md) - Templates and ratios, balance as numbers, how drinks are developed, pairing, non-alcoholic drinks, operations; what a tool should do and the data model that follows.
+- [Non-alcoholic and low-ABV drinks](non-alcoholic.md) - What ethanol does and what replaces it, ingredient classes with data-model properties, template carry-over, low-ABV bases, shelf life and food safety, legal terms in the EU, Germany, UK and US, proposed filter thresholds; every number with its evidence status.
 
 # Specifications
 
