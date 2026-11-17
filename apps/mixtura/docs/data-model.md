@@ -123,6 +123,12 @@ ingredient like to any other, by `ingredientId`. A prepared ingredient
 must not (directly or through others) be part of its own spec; the engine
 checks it.
 
+Clarified with the engine ([ingredients](ingredients.md)): the computed
+ABV, sugar and acid are never inherited from an ancestor of a prepared
+ingredient; if a spec asks for it, `prepared.yield` is the volume of the
+result (solid sugar dissolves into less than the sum of its parts), and
+the totals of ethanol, sugar and acid are conserved.
+
 ## Template
 
 A drink family: slots with a role and a ratio range, a method, usual

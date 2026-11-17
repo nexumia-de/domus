@@ -1,0 +1,90 @@
+{
+  "id": "prepared-syrup-1-1",
+  "kind": "prepared",
+  "description": "Syrup 1:1 by mass: 100 g solid sugar (volume 0, sugar_g) and 100 ml water. The yield of one run is 162.654522 ml (200 g / 1.2296 g/ml; the density is an assumption from docs/balance.md, unverified). Totals are conserved, the volume is the yield: sugar = 100 * 100 g / 162.654522 ml = 61.48 g per 100 ml, ABV 0, acid 0. Without the yield the additive volume would be 100 ml and the sugar 100 g per 100 ml, which is why the yield is an input.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "syrup-1-1",
+      "name": "syrup-1-1",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "syrup-1-1",
+        "yield": {
+          "amount": 162.654522,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "syrup-1-1": {
+      "lines": [
+        {
+          "ingredientId": "sugar",
+          "ml": 0,
+          "sugarG": 100
+        },
+        {
+          "ingredientId": "water",
+          "ml": 100
+        }
+      ],
+      "yieldMl": 162.654522
+    }
+  },
+  "query": "syrup-1-1",
+  "expected": {
+    "volume_ml": 162.654522,
+    "sugar_g_per_100ml": 61.48,
+    "abv_pct": 0,
+    "acid_pct": 0
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; the density is an assumption, unverified"
+}

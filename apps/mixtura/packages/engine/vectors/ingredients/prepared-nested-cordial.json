@@ -1,0 +1,116 @@
+{
+  "id": "prepared-nested-cordial",
+  "kind": "prepared",
+  "description": "A cordial made of 60 ml of syrup-1-1 (a prepared ingredient, sugar 61.48 g/100 ml from its own spec: 100 g sugar, yield 162.654522 ml), 30 ml lime juice (1.5 g sugar and 6 % acid per 100 ml, assumptions from docs/balance.md) and 10 ml water; no yield, V = 100 ml. S = 60 * 0.6148 + 30 * 0.015 = 36.888 + 0.45 = 37.338 g; sugar = 37.338 g per 100 ml; C = 30 * 0.06 = 1.8 g; acid = 1.8 %; ABV 0.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "syrup-1-1",
+      "name": "syrup-1-1",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "syrup-1-1",
+        "yield": {
+          "amount": 162.654522,
+          "unit": "ml"
+        }
+      }
+    },
+    {
+      "id": "cordial",
+      "name": "cordial",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "cordial",
+        "yield": {
+          "amount": 100,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "syrup-1-1": {
+      "lines": [
+        {
+          "ingredientId": "sugar",
+          "ml": 0,
+          "sugarG": 100
+        },
+        {
+          "ingredientId": "water",
+          "ml": 100
+        }
+      ],
+      "yieldMl": 162.654522
+    },
+    "cordial": {
+      "lines": [
+        {
+          "ingredientId": "syrup-1-1",
+          "ml": 60
+        },
+        {
+          "ingredientId": "lime-juice",
+          "ml": 30
+        }
+      ],
+      "addedWaterMl": 10
+    }
+  },
+  "query": "cordial",
+  "expected": {
+    "volume_ml": 100,
+    "sugar_g_per_100ml": 37.338,
+    "abv_pct": 0,
+    "acid_pct": 1.8
+  },
+  "tolerance": 0.001,
+  "source": "docs/balance.md#formulas; properties of lime juice are assumptions, unverified"
+}

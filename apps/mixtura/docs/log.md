@@ -2,6 +2,7 @@
 
 ## 2026-11-17
 
+- **Ingredients** (#9): [ingredients](ingredients.md) and `packages/engine/src/ingredients/` with tree validation, inheritance with sources, prepared ingredients computed from their spec (nested, cycles rejected), substitution classes, and 13 vectors in `packages/engine/vectors/ingredients/`; clarifications in [data model](data-model.md).
 - **Data model** (#3): [data model](data-model.md) with ingredient, template, spec, prepared ingredient, stock, affinity, id scheme, export format and units of measure; JSON Schemas in `packages/engine/schemas/` with examples, validated by Ajv, and a test that compares document and schemas.
 - **Seed data study** (#6): [seed data](seed-data.md) with counts from Bar Assistant commit `5a504d4`, licence, mapping, gaps, problems and attribution text; hosts in [development](development.md).
 - **Balance** (#4): [balance](balance.md) with formulas, dilution model as data (`packages/engine/data/dilution.json`), computed ranges, evidence table, vector format and schema, four balance vectors and one prepared-ingredient vector in `packages/engine/vectors/` with a shape test; numbers in [how bartenders work](bartender-practice.md) corrected where the model disagrees; blocked hosts recorded in [development](development.md#network-hosts).

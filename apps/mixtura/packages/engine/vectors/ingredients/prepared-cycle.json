@@ -1,0 +1,114 @@
+{
+  "id": "prepared-cycle",
+  "kind": "prepared",
+  "description": "cordial-a uses cordial-b and cordial-b uses cordial-a: the error names the ids around the cycle, starting at the queried ingredient.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "cordial-a",
+      "name": "cordial-a",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "spec-a",
+        "yield": {
+          "amount": 100,
+          "unit": "ml"
+        }
+      }
+    },
+    {
+      "id": "cordial-b",
+      "name": "cordial-b",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "spec-b",
+        "yield": {
+          "amount": 100,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "spec-a": {
+      "lines": [
+        {
+          "ingredientId": "cordial-b",
+          "ml": 50
+        },
+        {
+          "ingredientId": "water",
+          "ml": 50
+        }
+      ]
+    },
+    "spec-b": {
+      "lines": [
+        {
+          "ingredientId": "cordial-a",
+          "ml": 50
+        },
+        {
+          "ingredientId": "water",
+          "ml": 50
+        }
+      ]
+    }
+  },
+  "query": "cordial-a",
+  "expected": {
+    "errors": [
+      {
+        "code": "prepared-cycle",
+        "ids": ["cordial-a", "cordial-b", "cordial-a"]
+      }
+    ]
+  },
+  "source": "docs/data-model.md#prepared-ingredient (no prepared ingredient inside its own spec)"
+}

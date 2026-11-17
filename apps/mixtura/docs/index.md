@@ -20,6 +20,7 @@ links. Change history is in [log.md](log.md).
 # Specifications
 
 - [Balance](balance.md) - Formulas, adjustable dilution model, computed usual ranges per root template, vector file format, worked examples and the evidence table (nothing verified yet; owner tasks listed).
+- [Ingredients](ingredients.md) - The ingredient module of the engine: tree validation, property inheritance with sources, prepared ingredients computed from their spec, substitution classes, and the vectors that pin them.
 - [Units](units.md) - Every unit with exact value or convention, behaviour in balance, parsing grammar, display and rounding; table also in `packages/engine/data/units.json`.
 - [Engine amounts module](engine-amounts.md) - Parse, convert, scale and format amounts: files, error codes, options and the vector files.
 

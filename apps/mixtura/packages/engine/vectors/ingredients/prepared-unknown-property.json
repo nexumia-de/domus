@@ -1,0 +1,99 @@
+{
+  "id": "prepared-unknown-property",
+  "kind": "prepared",
+  "description": "A line whose ingredient has no sugar anywhere above it: sugar is undefined with a reason naming the id, never a guess. ABV and acid are still computed: 50 ml gin 40 % and 50 ml of mystery-liqueur (ABV 20, acid 0), V = 100 ml, ABV = 100 * (20 + 10) / 100 = 30 %. The line with ml 0 needs no properties.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "mystery-liqueur",
+      "name": "Mystery liqueur",
+      "level": "product",
+      "abv": 20,
+      "acid": 0
+    },
+    {
+      "id": "mix",
+      "name": "mix",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "mix",
+        "yield": {
+          "amount": 100,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "mix": {
+      "lines": [
+        {
+          "ingredientId": "gin",
+          "ml": 50
+        },
+        {
+          "ingredientId": "mystery-liqueur",
+          "ml": 50
+        },
+        {
+          "ingredientId": "lime-juice",
+          "ml": 0
+        }
+      ]
+    }
+  },
+  "query": "mix",
+  "expected": {
+    "volume_ml": 100,
+    "abv_pct": 30,
+    "acid_pct": 0,
+    "sugar_missing": "sugar unknown for: mystery-liqueur"
+  },
+  "tolerance": 0.0001,
+  "source": "docs/data-model.md#ingredient (a property no ancestor has stays unknown)"
+}
