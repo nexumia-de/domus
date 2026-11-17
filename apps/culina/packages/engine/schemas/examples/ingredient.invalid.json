@@ -1,0 +1,5 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+  "name": "Onion",
+  "yields": [{ "state": "frozen", "percent": 90, "source": "user" }]
+}

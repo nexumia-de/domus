@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/stock.schema.json",
+  "title": "Stock item",
+  "description": "What the user has: an amount of an ingredient or component in a state. Days left and makeable dishes are derived.",
+  "type": "object",
+  "required": ["id", "ref", "amount", "state"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "ref": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref" },
+    "amount": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/amount"
+    },
+    "state": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
+    },
+    "preparedOn": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    },
+    "useBy": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    },
+    "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
+  }
+}
