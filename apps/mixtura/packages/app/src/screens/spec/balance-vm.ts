@@ -8,6 +8,7 @@ import {
   checkRange,
   type BalanceFigures,
   type BalanceResult,
+  type Excluded,
   type Figure,
   type RangeCheck,
   type RangeFigure,
@@ -28,6 +29,9 @@ export interface FigureVM {
   known: boolean;
   /** Position against the usual range; `unknown` also covers "no range". */
   status: FigureStatus;
+  /** True while the range's evidence is not better than an assumption: the band is drawn as "assumed range" and no position word is shown. */
+  assumed: boolean;
+  /** Absent for an assumed range: the word would claim more than the range supports. */
   positionShort?: string;
   /** Accessible name of the track. */
   label: string;
@@ -43,6 +47,8 @@ export interface BalanceVM {
   volume?: string;
   more: { label: string; value: string; missing?: string }[];
   notes: string[];
+  /** Lines whose volume is not in the figures, one text each; empty when every line is counted. */
+  notCounted: string[];
   /** The line about unverified ranges, present while any shown range is. */
   unverified?: string;
   /** Texts of the Details disclosure. */
@@ -56,6 +62,11 @@ const FIGURES: { key: RangeFigure; unit: string; decimals: number; property: str
   { key: 'sugar', unit: 'g/100 ml', decimals: 1, property: 'sugar' },
   { key: 'acid', unit: '%', decimals: 2, property: 'acid' },
 ];
+
+/** Position words need a range whose evidence is better than an assumption (docs/balance.md#how-precise-a-range-is-shown). */
+export function rangeIsAssumed(evidence: RangeCheck['evidence']): boolean {
+  return evidence === undefined || evidence === 'assumption' || evidence === 'unstated';
+}
 
 const lower = (text: string): string => text.charAt(0).toLowerCase() + text.slice(1);
 
@@ -81,8 +92,11 @@ function figureVM(
     known && check && check.status !== 'unknown' ? check.status : 'unknown';
   const valueText =
     value !== undefined ? `${fixed(value, spec.decimals)} ${spec.unit}` : strings.balance.noFigure;
+  const assumed = rangeIsAssumed(check?.evidence);
   let label = `${name}: ${strings.balance.noFigure}`;
-  if (value !== undefined && range && status !== 'unknown') {
+  if (value !== undefined && range && assumed) {
+    label = strings.balance.trackAssumed(name, fixed(value, spec.decimals), spec.unit, lo, hi);
+  } else if (value !== undefined && range && status !== 'unknown') {
     label = strings.balance.trackLabel(
       name,
       fixed(value, spec.decimals),
@@ -92,7 +106,7 @@ function figureVM(
       lower(strings.balance.positionFull[status]),
     );
   } else if (value !== undefined) label = `${name} ${valueText}. ${footerNone}`;
-  else if (range) label = strings.balance.trackNoValue(name, lo, hi, spec.unit);
+  else if (range) label = strings.balance.trackNoValue(name, lo, hi, spec.unit, assumed);
   const vm: FigureVM = {
     key: spec.key,
     name,
@@ -100,10 +114,13 @@ function figureVM(
     valueText,
     known,
     status,
+    assumed: range !== undefined && assumed,
     label,
-    footer: range ? strings.balance.footer(lo, hi, spec.unit) : footerNone,
+    footer: range
+      ? (assumed ? strings.balance.footerAssumed : strings.balance.footer)(lo, hi, spec.unit)
+      : footerNone,
   };
-  if (status !== 'unknown') vm.positionShort = strings.balance.position[status];
+  if (status !== 'unknown' && !assumed) vm.positionShort = strings.balance.position[status];
   if (range) vm.track = trackGeometry(range, value);
   if (figure && !figure.known) {
     vm.missing = figure.missingIds.length
@@ -118,6 +135,7 @@ export function balanceVM(
   method: string | undefined,
   template: Template | undefined,
   nameOf: (id: string) => string | undefined,
+  describeExcluded: (entry: Excluded) => string = (e) => nameOf(e.ingredientId) ?? e.ingredientId,
 ): BalanceVM {
   const gerund = method
     ? (strings.balance.gerunds as Record<string, string | undefined>)[method]
@@ -129,6 +147,7 @@ export function balanceVM(
       figures: [],
       more: [],
       notes: [],
+      notCounted: [],
       details: [],
       failure: `${strings.balance.noFigure}: ${result.errors[0]?.message ?? ''}`.trim(),
     };
@@ -153,16 +172,7 @@ export function balanceVM(
   const notes: string[] = [];
   if (value.estimatedIds.length)
     notes.push(strings.balance.estimatedNote(names(value.estimatedIds, nameOf)));
-  if (value.excluded.length) {
-    notes.push(
-      strings.balance.excludedNote(
-        names(
-          value.excluded.map((e) => e.ingredientId),
-          nameOf,
-        ),
-      ),
-    );
-  }
+  const notCounted = value.excluded.map(describeExcluded);
 
   const more: BalanceVM['more'] = [];
   const before = value.before.abvPct;
@@ -229,6 +239,7 @@ export function balanceVM(
     volume: after ? strings.balance.volume(after.volumeMl) : undefined,
     more,
     notes,
+    notCounted,
     unverified,
     details,
   };

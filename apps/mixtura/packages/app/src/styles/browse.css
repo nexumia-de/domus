@@ -219,6 +219,14 @@
   border-right: 2px solid var(--accent);
 }
 
+.band--assumed {
+  background: transparent;
+  border-left-style: dashed;
+  border-right-style: dashed;
+  border-top: 1px dashed var(--accent);
+  border-bottom: 1px dashed var(--accent);
+}
+
 .mark {
   position: absolute;
   top: 2px;
@@ -459,4 +467,67 @@ button.chip {
 
 .source-line .line-link {
   min-width: var(--target);
+}
+
+/* Volume of a top line: what-if, not saved */
+.line-volume {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp-2);
+}
+
+.line-volume--open {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.line-volume-row {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.btn--text {
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent);
+  padding: 0 var(--sp-2);
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+.not-counted ul {
+  margin: 0 0 var(--sp-2);
+  padding-left: var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+/* ---- Servings stepper and batch sheet ---- */
+
+.servings {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+}
+
+.servings-value {
+  min-width: 5.5em;
+  text-align: center;
+  font-weight: 700;
+}
+
+.servings-batch {
+  margin-left: auto;
+}
+
+.sheet-backdrop--fixed {
+  position: fixed;
+  z-index: 20;
+}
+
+.batch-rows dd .note {
+  display: block;
 }

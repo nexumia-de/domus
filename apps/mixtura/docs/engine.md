@@ -125,6 +125,7 @@ others return result objects as documented in their module files
 | `chooseDilution` | `(method: string \| undefined, options?: DilutionOptions): DilutionChoice`                                                                               | The dilution fraction for a method, or why there is none.                                                                                                                                                     |
 | `computeBalance` | `(tree: IngredientTree, spec: BalanceSpec, options?: BalanceOptions): BalanceResult`                                                                     | Computes the figures of a spec: volume, ABV, sugar, acid and ratios before and after dilution (docs/balance.md).                                                                                              |
 | `prediluted`     | `(tree: IngredientTree, spec: BalanceSpec, servings: number, options?: BatchOptions): BatchResult`                                                       | Builds a pre-diluted batch of a spec with the dilution water added.                                                                                                                                           |
+| `roundCount`     | `(value: number): { value: number; step: number }`                                                                                                       | Rounds a scaled count up to whole units, never below 1 (0 stays 0); used by batches and by the servings stepper.                                                                                              |
 | `scaleLine`      | `(line: BalanceLine, factor: number, options?: ScaleOptions): { ok: true; value: BalanceLine; } \| { ok: false; error: BatchError; }`                    | Scales one line.                                                                                                                                                                                              |
 | `scaleLines`     | `(lines: readonly BalanceLine[], servings: number, options?: ScaleOptions): { ok: true; value: BalanceLine[]; } \| { ok: false; errors: BatchError[]; }` | Scales all lines to a number of servings.                                                                                                                                                                     |
 | `shelfLife`      | `(tree: IngredientTree, ids: readonly string[]): ShelfLife`                                                                                              | The shelf life of a batch: the shortest of its parts.                                                                                                                                                         |
@@ -197,7 +198,7 @@ const result = {
 //     "unit": "oz_us"
 //   },
 //   "ml": 44.36,
-//   "shown": "44 ml"
+//   "shown": "45 ml"
 // }
 ```
 

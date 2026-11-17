@@ -169,6 +169,39 @@ mixer spans 9.1 to 12.1 %. The practice document's "sours 0.8–1.2 % acid
 and 8–12 g sugar per 100 ml" is consistent with the Daiquiri row but is
 itself unsourced; no source for acid or sugar ranges was found.
 
+## How precise a range is shown
+
+The band is narrow because it holds only one source of spread: the
+dilution table (`f_high` to `f_low`) applied to **one nominal spec** with
+assumed ingredient properties. It does not contain the spread between
+authors, between brands (a rum is 40 %, 37.5 % or 43 %), between juices
+or between ratios, none of which was read. A band of 17.6 to 19.0 %
+therefore says less than it looks like, and a "Within" next to it would
+claim a precision nobody has.
+
+Two ways to present this honestly were considered:
+
+1. Widen the bands in the data to what the assumptions support. Rejected:
+   the width could only come from new numbers (spread of brands, authors,
+   ratios) that no source supports; choosing a width would be inventing
+   a number, and a wider band still carries the same evidence status.
+2. Keep the data, change the presentation by evidence. **Chosen.** The
+   range check returns the evidence of the range
+   ([templates](templates.md#range-check)); the screens read it:
+   - evidence `verified`, `secondary` or `derived`: the figure, the band,
+     the position word (Within, Below, Above) and "Usual range lo-hi";
+   - evidence `assumption` or not stated: the figure and the band drawn
+     dashed, labelled "Assumed range lo-hi", **no position word**, and a
+     diamond that is always filled (hollow would say "outside"). The
+     accessible name says "assumed range ..., not checked against a
+     source".
+
+   The rule lives in `rangeIsAssumed` (`screens/spec/balance-vm.ts`) and
+   is tested with a template whose evidence is changed to each value.
+   When a range is verified, only its `evidence` changes in the data and
+   the screens show position words again; no code changes. No verdict
+   word is used in either form.
+
 # What is not captured
 
 Aroma, bitterness (bitters count only as volume and ABV), carbonation and

@@ -37,6 +37,7 @@ const PUBLIC = [
   'resolveCost',
   'resolveProperty',
   'ROOT_TEMPLATES',
+  'roundCount',
   'sameClass',
   'scale',
   'scaleLine',

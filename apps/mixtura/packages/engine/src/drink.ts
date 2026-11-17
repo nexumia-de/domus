@@ -6,5 +6,5 @@ export type * from './balance/index';
 
 export { checkRange, ROOT_TEMPLATES } from './templates/index';
 
-export { prediluted, scaleLine, scaleLines, shelfLife } from './batch/index';
+export { prediluted, roundCount, scaleLine, scaleLines, shelfLife } from './batch/index';
 export type * from './batch/index';

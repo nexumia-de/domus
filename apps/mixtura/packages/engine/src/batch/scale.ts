@@ -84,3 +84,16 @@ export function scaleLines(
   }
   return errors.length > 0 ? { ok: false, errors } : { ok: true, value };
 }
+
+/**
+ * A counted amount that is scaled (several servings, a batch) is rounded up
+ * to a whole number of units, never below 1: a garnish or an egg cannot be
+ * prepared in fractions, and having too few is the worse error
+ * (docs/balance.md, Batching).
+ *
+ * @param value - The exact scaled count, 0 or more.
+ * @returns The whole number of units (0 stays 0) and the rounding step 1.
+ */
+export function roundCount(value: number): { value: number; step: number } {
+  return { value: value > 0 ? Math.max(1, Math.ceil(value - 1e-9)) : 0, step: 1 };
+}

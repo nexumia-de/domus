@@ -1,9 +1,9 @@
 // Amount to display text. Stored values are never changed: this converts
 // and rounds for the screen only (decision: units and display).
 import { convert } from './convert';
-import { decimalsOf, decimalText, mixedText } from './number-text';
+import { decimalsOf, decimalText, mixedText, trimmedText } from './number-text';
 import { parseAmount } from './parse';
-import { roundForDisplay, roundingFor } from './rounding';
+import { onPourGrid, roundForDisplay, roundingFor } from './rounding';
 import { fail, ok } from './types';
 import type { Amount, DisplaySystem, Result, UnitId, UnitOverrides } from './types';
 
@@ -12,6 +12,11 @@ export type FormatOptions = {
   overrides?: UnitOverrides;
   /** The text the user typed; shown unchanged if it still says this amount in the display unit. */
   entered?: string;
+  /**
+   * `batch`: whole millilitres and no exact pour amounts, the precision whose error batches
+   * measure (`roundingError`); default `pour`: bar pours (docs/units.md#display-and-rounding).
+   */
+  precision?: 'pour' | 'batch';
 };
 
 export type Formatted = {
@@ -21,6 +26,8 @@ export type Formatted = {
   /** The rounding step used, in the display unit. */
   step: number;
 };
+
+const EXACT_GRID_STEP: Partial<Record<UnitId, number>> = { ml: 0.01, cl: 0.01, g: 0.01 };
 
 const OUNCE: Record<DisplaySystem, UnitId> = { metric: 'ml', us: 'oz_us', imperial: 'oz_imp' };
 
@@ -94,7 +101,13 @@ export function formatAmountDetailed(
   } else if (!Number.isFinite(value) || value < 0) {
     return fail('invalid_value', 'An amount must be a finite number of zero or more.');
   }
-  const { value: rounded, step } = roundForDisplay(unit, value);
+  // An amount that was not converted and sits on the unit's finest grid is shown
+  // exactly (22.5 ml stays 22.5 ml); only converted or off-grid values round.
+  const batch = options.precision === 'batch';
+  const exact = !batch && unit === amount.unit && onPourGrid(unit, value);
+  const { value: rounded, step } = exact
+    ? { value, step: EXACT_GRID_STEP[unit] ?? 1 }
+    : roundForDisplay(unit, value, batch);
   const shown: Amount = { value: rounded, unit };
   if (options.entered !== undefined) {
     const parsed = parseAmount(options.entered);
@@ -105,9 +118,11 @@ export function formatAmountDetailed(
   const number =
     rounded === 0
       ? '0'
-      : roundingFor(unit, value).fractional
+      : roundingFor(unit, value, batch).fractional
         ? mixedText(rounded)
-        : decimalText(rounded, decimalsOf(step));
+        : (unit === 'ml' && !batch) || exact
+          ? trimmedText(rounded, decimalsOf(step))
+          : decimalText(rounded, decimalsOf(step));
   return ok({ text: `${number} ${unitText(unit, rounded)}`, shown, step });
 }
 

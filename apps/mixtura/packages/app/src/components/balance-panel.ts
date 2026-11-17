@@ -18,12 +18,12 @@ function track(figure: FigureVM): HTMLElement | null {
     'div',
     { class: 'track', role: 'img', 'aria-label': figure.label, title: figure.label },
     h('span', {
-      class: 'band',
+      class: figure.assumed ? 'band band--assumed' : 'band',
       style: `left: ${geometry.bandLeft.toFixed(1)}%; width: ${geometry.bandWidth.toFixed(1)}%`,
     }),
     geometry.markLeft !== undefined &&
       h('span', {
-        class: geometry.within ? 'mark' : 'mark mark--out',
+        class: geometry.within || figure.assumed ? 'mark' : 'mark mark--out',
         style: `left: ${geometry.markLeft.toFixed(1)}%`,
       }),
   );
@@ -31,7 +31,7 @@ function track(figure: FigureVM): HTMLElement | null {
 
 function metric(figure: FigureVM): HTMLElement {
   const position =
-    figure.status !== 'unknown'
+    figure.status !== 'unknown' && figure.positionShort
       ? h(
           'span',
           { class: 'metric-state', title: strings.balance.positionFull[figure.status] },
@@ -87,6 +87,17 @@ export function balancePanel(vm: BalanceVM): HTMLElement {
         ),
       ]),
     ),
+    vm.notCounted.length > 0 &&
+      h(
+        'div',
+        { class: 'not-counted', 'data-not-counted': '' },
+        h('p', { class: 'note' }, strings.balance.notCountedLead),
+        h(
+          'ul',
+          { 'aria-label': strings.balance.notCounted },
+          ...vm.notCounted.map((text) => h('li', {}, text)),
+        ),
+      ),
     ...vm.notes.map((text) => h('p', { class: 'note' }, text)),
     vm.unverified && h('p', { class: 'note', 'data-unverified': '' }, vm.unverified),
     h(

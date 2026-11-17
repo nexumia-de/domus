@@ -127,7 +127,7 @@ describe('round trip: format then parse returns the amount within the rounding s
 test('metric and US display of one amount leave the stored amount unchanged', () => {
   const stored: Amount = { value: 1.5, unit: 'oz_us' };
   const before = JSON.stringify(stored);
-  expect(formatAmount(stored, { system: 'metric' })).toEqual({ ok: true, value: '44 ml' });
+  expect(formatAmount(stored, { system: 'metric' })).toEqual({ ok: true, value: '45 ml' });
   expect(formatAmount(stored, { system: 'us' })).toEqual({ ok: true, value: '1½ oz' });
   expect(JSON.stringify(stored)).toBe(before);
 });

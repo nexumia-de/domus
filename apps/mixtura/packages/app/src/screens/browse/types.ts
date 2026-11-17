@@ -10,6 +10,8 @@ export interface SpecLine {
   amount: number;
   amountMax?: number;
   unit: string;
+  /** Volume of a `top` line in ml, only with `unit: top` (docs/data-model.md). */
+  topMl?: number;
   role?: Role;
   optional?: boolean;
   note?: string;

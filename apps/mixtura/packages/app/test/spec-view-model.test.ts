@@ -7,6 +7,8 @@ import { trackGeometry } from '../src/components/track';
 import { buildModel } from '../src/screens/browse/model';
 import type { Ingredient, SpecData, Template } from '../src/screens/browse/types';
 import { amountText, listNames } from '../src/screens/spec/format';
+import { initialSpecView } from '../src/screens/spec/session';
+import { balanceVM } from '../src/screens/spec/balance-vm';
 import { specVM, type SpecVM } from '../src/screens/spec/view-model';
 import { seedModel } from './browse-fixture';
 
@@ -38,6 +40,7 @@ function texts(vm: SpecVM): string {
       f.missing ?? '',
     ]),
     b.volume ?? '',
+    ...b.notCounted,
     ...b.more.flatMap((m) => [m.label, m.value, m.missing ?? '']),
     ...b.notes,
     b.unverified ?? '',
@@ -122,12 +125,14 @@ describe('the seed drinks as the app shows them', () => {
     expect(abv).toMatchObject({
       key: 'abv',
       status: 'within',
-      positionShort: 'Within',
-      footer: 'Usual range 17.6–19.0 %',
+      assumed: true,
+      footer: 'Assumed range 17.6–19.0 %',
     });
+    // The range is an assumption: no position word, no claim of "within".
+    expect(abv.positionShort).toBeUndefined();
     expect(abv.track?.within).toBe(true);
     expect(abv.label).toMatch(
-      /^ABV 18\.\d %, usual range 17\.6 to 19\.0 %: within the usual range$/,
+      /^ABV 18\.\d %, assumed range 17\.6 to 19\.0 %, not checked against a source$/,
     );
     expect(vm.balance.title).toBe('Balance After Shaking');
     expect(vm.balance.unverified).toMatch(/not yet checked/);
@@ -144,7 +149,7 @@ describe('the seed drinks as the app shows them', () => {
     });
     expect(acid.missing).toMatch(/^No figure: .* no acid value$/);
     expect(acid.missing).toContain('Light Rum');
-    expect(acid.footer).toBe('Usual range 0.99–1.07 %');
+    expect(acid.footer).toBe('Assumed range 0.99–1.07 %');
     expect(acid.track?.markLeft).toBeUndefined();
     expect(view('daiquiri').balance.more[1]).toMatchObject({
       label: 'Sugar to acid',
@@ -201,7 +206,7 @@ describe('the seed drinks as the app shows them', () => {
     const top = model.drinks.find((d) => d.spec.lines.some((l) => l.unit === 'top'))!;
     const topVM = specVM(model, top.spec, 'metric');
     expect(topVM.lines.some((l) => l.amount === 'Top')).toBe(true);
-    expect(topVM.balance.notes.join(' ')).toMatch(/Excludes a top without a volume/);
+    expect(topVM.balance.notCounted.join(' ')).toMatch(/Top .*: no volume given/);
   });
 
   test('an ingredient that is not in the data keeps its id and is named as such', () => {
@@ -225,10 +230,109 @@ describe('the seed drinks as the app shows them', () => {
   });
 });
 
+describe('position words need evidence better than an assumption', () => {
+  const model = seedModel();
+  const daiquiri = model.templateById.get('daiquiri')!;
+  const spec = model.byLineage.get('daiquiri')!.spec;
+  const panel = (evidence: 'verified' | 'secondary' | 'derived' | 'assumption' | undefined) => {
+    const template = { ...daiquiri, usual: { ...daiquiri.usual!, evidence } };
+    return balanceVM(model.balanceOf(spec), spec.method, template, model.ingredientName);
+  };
+
+  test.each(['verified', 'secondary', 'derived'] as const)(
+    '%s: position word and "Usual range"',
+    (e) => {
+      const abv = panel(e).figures[0]!;
+      expect(abv).toMatchObject({ assumed: false, positionShort: 'Within' });
+      expect(abv.footer).toBe('Usual range 17.6–19.0 %');
+      expect(abv.label).toMatch(/within the usual range$/);
+    },
+  );
+
+  test.each(['assumption', undefined] as const)('%s: assumed range, no position word', (e) => {
+    for (const f of panel(e).figures.filter((x) => x.track)) {
+      expect(f.assumed).toBe(true);
+      expect(f.positionShort).toBeUndefined();
+      expect(f.footer).toMatch(/^Assumed range /);
+      expect(f.label).toMatch(/assumed range/);
+    }
+  });
+
+  test('no seed drink shows a position word while every template range is an assumption', () => {
+    for (const drink of model.drinks) {
+      const vm = specVM(model, drink.spec, 'metric', { origin: drink.origin });
+      for (const f of vm.balance.figures) expect(f.positionShort).toBeUndefined();
+    }
+  });
+});
+
+describe('lines not counted in the figures and the what-if volume of a top', () => {
+  const model = seedModel();
+  const top = model.drinks.find(
+    (d) =>
+      d.spec.lines.some((l) => l.unit === 'top') && !d.spec.lines.some((l) => l.unit === 'whole'),
+  )!;
+  const topIndex = top.spec.lines.findIndex((l) => l.unit === 'top');
+  const withEgg = model.byLineage.get('apple-amaretto-sour')!;
+
+  test('a top without a volume is listed with its reason and offers Add Volume', () => {
+    const vm = specVM(model, top.spec, 'metric', { origin: 'seed' });
+    expect(vm.balance.notCounted.length).toBeGreaterThan(0);
+    expect(vm.lines[topIndex]?.top).toEqual({ state: 'none', editing: false });
+  });
+
+  test('a counted line without a known volume is listed and shown as entered', () => {
+    const vm = specVM(model, withEgg.spec, 'metric', { origin: 'seed' });
+    expect(vm.lines.at(-1)?.amount).toBe('1 whole');
+    expect(vm.balance.notCounted).toEqual(['1 whole Egg White: no volume known per unit']);
+  });
+
+  test('every line counted: nothing is listed', () => {
+    const vm = specVM(model, model.byLineage.get('daiquiri')!.spec, 'metric');
+    expect(vm.balance.notCounted).toEqual([]);
+  });
+
+  test('a what-if volume is counted in the figures, the spec is not changed', () => {
+    const before = JSON.stringify(top.spec);
+    const plain = specVM(model, top.spec, 'metric');
+    const view = { ...initialSpecView, lineage: top.spec.lineageId, topMl: { [topIndex]: 90 } };
+    const what = specVM(model, top.spec, 'metric', { view });
+    expect(what.lines[topIndex]?.amount).toBe('Top, 90 ml');
+    expect(what.lines[topIndex]?.top).toMatchObject({ state: 'what-if', fieldValue: '90 ml' });
+    expect(what.balance.notCounted.length).toBe(plain.balance.notCounted.length - 1);
+    expect(what.balance.volume).not.toBe(plain.balance.volume);
+    expect(JSON.stringify(top.spec)).toBe(before);
+  });
+
+  test('a stored topMl is shown and counted, with no what-if controls', () => {
+    const spec = {
+      ...top.spec,
+      lines: top.spec.lines.map((l) => (l.unit === 'top' ? { ...l, topMl: 60 } : l)),
+    };
+    const vm = specVM(model, spec, 'metric');
+    expect(vm.lines[topIndex]).toMatchObject({ amount: 'Top, 60 ml', top: { state: 'stored' } });
+  });
+});
+
+describe('seed and user drinks', () => {
+  const model = seedModel();
+  const spec = model.byLineage.get('daiquiri')!.spec;
+  test('a built-in drink shows where it comes from, not a version and a status', () => {
+    const tags = specVM(model, spec, 'metric', { origin: 'seed' }).tags.map((t) => t.text);
+    expect(tags).toContain('Built-in');
+    expect(tags.join('|')).not.toMatch(/Version|Draft/);
+  });
+  test('a user drink shows its version and status', () => {
+    const tags = specVM(model, spec, 'metric', { origin: 'user' }).tags.map((t) => t.text);
+    expect(tags).toEqual(expect.arrayContaining(['Version 1', 'Draft']));
+    expect(tags).not.toContain('Built-in');
+  });
+});
+
 describe('amount text and helpers', () => {
   test('ranges, unit systems and the top line', () => {
     expect(amountText({ amount: 45, amountMax: 60, unit: 'ml' }, 'metric')).toBe('45–60 ml');
-    expect(amountText({ amount: 1.5, unit: 'oz_us' }, 'metric')).toBe('44 ml');
+    expect(amountText({ amount: 1.5, unit: 'oz_us' }, 'metric')).toBe('45 ml');
     expect(amountText({ amount: 1.5, unit: 'oz_us' }, 'us')).toBe('1½ oz');
     expect(amountText({ amount: 2, unit: 'dash' }, 'metric')).toBe('2 dashes');
     expect(amountText({ amount: 1, unit: 'top' }, 'metric')).toBe('Top');

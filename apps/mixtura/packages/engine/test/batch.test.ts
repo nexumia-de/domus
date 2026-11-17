@@ -7,6 +7,7 @@ import {
   buildTree,
   computeBalance,
   prediluted,
+  roundCount,
   scaleLine,
   scaleLines,
   shelfLife,
@@ -222,4 +223,12 @@ test('shelf life of no parts is unknown, not infinite', () => {
   const t = tree([{ id: 'x', name: 'X', level: 'product' }]);
   expect(shelfLife(t, [])).toEqual({ known: false, missingIds: [] });
   expect(shelfLife(t, ['x'])).toEqual({ known: false, missingIds: ['x'] });
+});
+
+test('roundCount rounds a scaled count up to whole units, never below 1', () => {
+  expect(roundCount(2.5)).toEqual({ value: 3, step: 1 });
+  expect(roundCount(3)).toEqual({ value: 3, step: 1 });
+  expect(roundCount(3.0000000001)).toEqual({ value: 3, step: 1 });
+  expect(roundCount(0.25)).toEqual({ value: 1, step: 1 });
+  expect(roundCount(0)).toEqual({ value: 0, step: 1 });
 });

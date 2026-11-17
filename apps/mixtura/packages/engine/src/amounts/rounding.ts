@@ -11,10 +11,12 @@ export type Rounding = {
   fractional?: boolean;
 };
 
-export function roundingFor(unit: UnitId, value: number): Rounding {
+export function roundingFor(unit: UnitId, value: number, batch = false): Rounding {
   switch (unit) {
     case 'ml':
-      return { steps: value >= 5 ? [1] : [0.5, 0.1, 0.01] };
+      // Bar pours: 2.5 ml steps up to 100 ml, 5 ml above, 0.5 ml below 5 ml (docs/units.md#display-and-rounding).
+      if (batch) return { steps: value >= 5 ? [1] : [0.5, 0.1, 0.01] };
+      return { steps: value >= 100 ? [5] : value >= 5 ? [2.5] : [0.5, 0.1, 0.01] };
     case 'cl':
       return { steps: [0.1, 0.01, 0.001] };
     case 'oz_us':
@@ -58,8 +60,12 @@ function toStep(value: number, step: number): number {
 }
 
 /** The rounded value and the step that was used. */
-export function roundForDisplay(unit: UnitId, value: number): { value: number; step: number } {
-  const rule = roundingFor(unit, value);
+export function roundForDisplay(
+  unit: UnitId,
+  value: number,
+  batch = false,
+): { value: number; step: number } {
+  const rule = roundingFor(unit, value, batch);
   const last = rule.steps[rule.steps.length - 1] as number;
   if (value <= 0) return { value: 0, step: rule.steps[0] as number };
   if (rule.atLeastOne) return { value: Math.max(1, toStep(value, 1)), step: 1 };
@@ -68,4 +74,15 @@ export function roundForDisplay(unit: UnitId, value: number): { value: number; s
     if (rounded > 0) return { value: rounded, step };
   }
   return { value: last, step: last };
+}
+
+/** Pour grid per unit: a stored amount on it is shown exactly (docs/units.md#display-and-rounding). */
+const EXACT_GRID: Partial<Record<UnitId, number>> = { ml: 0.5, cl: 0.05, g: 0.5 };
+
+/** True when a stored value lies on the unit's pour grid (7.5 ml, 22.5 ml, 4.25 cl). */
+export function onPourGrid(unit: UnitId, value: number): boolean {
+  const step = EXACT_GRID[unit];
+  if (step === undefined || !(value > 0)) return false;
+  const k = value / step;
+  return Math.abs(k - Math.round(k)) < 1e-7;
 }

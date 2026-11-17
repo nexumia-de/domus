@@ -40,6 +40,25 @@ storing millilitres would lose what the user typed (`3/4 oz` becomes
    metric, ml is exact to enter on a phone, and oz entry is always
    accepted. Owner to confirm or choose US ounces as default.
 
+## Display precision (amended 2026-11-17)
+
+The first rounding rule (whole ml from 5 ml) showed 22.5 ml, three
+quarters of an ounce, as "23 ml", and a user's exact `22.5` as another
+number. Bar pours are in steps of 2.5 ml. The rule now:
+
+- An **unconverted** ml, cl or g amount on the pour grid (0.5 ml, 0.05 cl,
+  0.5 g) is shown exactly; nothing that was stored is shown as a
+  different number unless it was converted between systems.
+- A **converted** value rounds to 2.5 ml (5 to under 100 ml), 5 ml (from
+  100 ml) or 0.5 ml (below 5 ml): 22.5, 30, 45, 60 ml for 3/4, 1, 1½, 2 oz.
+- US display keeps ¼ and ⅛ oz fractions.
+
+Why: 2.5 ml is the smallest step bar tools and recipes use; finer steps
+would show false precision for converted values, coarser ones (whole
+ml) lose the exact quarter-ounce values. The grid is an assumption (no
+source read); it is one table in `rounding.ts` and a vector file. Full
+rule: [units](../units.md#display-and-rounding).
+
 ## Consequences
 
 - Specs from either system round-trip without loss; a "1 1/2 oz" stays

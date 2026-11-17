@@ -38,7 +38,7 @@ Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). URL
 - **Amount field.** Accepts the grammar of
   [units](units.md#parsing-grammar) (`3/4 oz`, `1½`, `45ml`, `2 dashes`,
   `a splash`); the unit picker is optional when the text carries the
-  unit. Under the field: "= 22 ml" (what was understood), or the
+  unit. Under the field: "= 22.5 ml" (what was understood), or the
   reason it was not understood. A range ("1-2 dashes") is accepted
   (`amountMax`). The entered text is kept and shown as entered
   ([display rules](units.md#display-and-rounding)).
@@ -61,7 +61,7 @@ Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). URL
   _Offline_: unchanged.
 - **Data.** Stored: the spec (all fields of the
   [data model](data-model.md#spec)) and the draft. Derived: balance
-  preview, "= 22 ml" text, role suggestions from the ingredient.
+  preview, "= 22.5 ml" text, role suggestions from the ingredient.
 
 # Ingredient picker
 
@@ -127,7 +127,95 @@ sheet over the editor and over swap mode.
 - **Data.** Stored: the new spec record with the note. Derived: the
   newest version of the lineage.
 
+# Servings and batch
+
+Built by [#52](https://github.com/nexumia-de/mixtura/issues/52) on the
+spec screen (`#/drinks/<id>`). Nothing here is stored: the batch is derived
+from the spec every time, the number of drinks is in the address.
+
+```
+Ingredients                       Batch of 4 drinks            [x]
+[-]  4 drinks  [+]     [Batch]    Mix
+ 240 ml  Light Rum                 240 ml  Light Rum
+  90 ml  Lime juice                 90 ml  Lime juice
+  90 ml  Simple Syrup               90 ml  Simple Syrup
+                                  Water to add      105 ml
+                                  Total volume      525 ml
+                                  Pour per serving  131 ml
+                                  Yield             4 servings
+                                  Shelf life        Unknown
+                                                    No shelf life stored for ...
+                                  Water is the dilution of shaking: 25 % of
+                                  the mix (basis). One drink is poured from
+                                  the batch as it is.
+```
+
+- **Stepper.** 1 to 12 drinks in the ingredients card ("1 drink", "4
+  drinks"; buttons "One fewer drink", "One more drink", 44 px). The number
+  is `?servings=n` of the address (1 leaves it out), so a reload and Back
+  keep it. Every amount, ranges and substitutes included, is multiplied by
+  n in its **stored unit** and then shown by the display rules
+  ([units](units.md#display-and-rounding)): 3 × 22.5 ml is 67.5 ml. A
+  counted amount is rounded **up** to whole units, never below 1 (engine
+  `roundCount`, the batch rule); one drink keeps `1½ whole` as entered.
+  The figures of the balance panel stay those of one drink and the panel
+  says so ("The figures are for one drink.") from 2 drinks. Sums use
+  unrounded values.
+- **Batch sheet.** The **Batch** button opens a sheet (`?sheet=batch`; a
+  history entry on a phone, so Back closes it, a replace on a wide screen)
+  with the engine's `prediluted` for the chosen drinks: the amounts to
+  mix, **Water to add** (whole ml), **Total volume**, **Pour per
+  serving**, **Yield** and **Shelf life**. Shelf life is **Unknown**
+  unless every ingredient has `shelfLifeDays` in the user's data (the seed
+  has none), and then names the ingredient that sets it; the missing ones
+  are named. The sheet states the dilution basis: the method, the water
+  fraction and its evidence ("assumption, unverified" while it is one).
+- **Lines.** A `top` is not batched: "Poured at the glass, not in the
+  batch: Club soda." A counted line without a known volume is in the mix
+  (so the bar knows how many to prepare) but marked "not in the totals"
+  (`roundingError` is `null`) and listed under "Not in the totals". A
+  rounding of 0.5 ml or more is said per line ("rounded by +1.0 ml").
+- **States.** A drink with no method the model knows has no batch: "A
+  batch needs a method the model knows. This drink has none." Not found,
+  error and offline as the spec screen.
+- **Not built.** A batch for a **target volume** instead of a number of
+  drinks (issue 52 names it) and the swap mode (#20) are follow-up work.
+
+# What-if volume of a top
+
+Built by [#74](https://github.com/nexumia-de/mixtura/issues/74) on the
+spec screen; the editor for the user's own specs (#25) stores the same
+value as `lines[].topMl`.
+
+- **Purpose.** A `top` line (club soda, tonic) has no volume, so the
+  figures leave it out and say so. The user can try a volume and see the
+  figures with it.
+- **Content.** A `top` line without a volume shows **Add Volume**. The
+  field takes ml or a unit ("90", "3 oz", decimal comma accepted; above 0
+  and up to 2000 ml; a non-volume text is refused with the reason). Set
+  counts the volume: the line reads "Top, 90 ml", the note "What-if, not
+  saved" and **Change** and **Clear** appear; the balance panel, the
+  volume line and the not-counted list follow. A line with a stored
+  `topMl` (a user's spec) shows "Top, 90 ml" and no what-if controls.
+- **Temporary.** The what-if volume is screen state: not stored, not
+  exported, gone on reload or when another drink is opened. A seed drink
+  stays read-only.
+- **Not counted in the figures.** Every entry of `excluded` is listed in
+  the balance panel under "The figures above leave out these lines:" as
+  `{amount as entered} {ingredient}: {reason}`, for example "Top Club
+  soda: no volume given" and "6 sprigs Mint: no volume known per unit".
+  `excluded` empty means every line is counted and nothing is listed.
+  Counted units show as entered (`1 whole`, `6 sprigs`).
+- **Later.** Entering `unitVolumes` per ingredient is optional future
+  work (issue #74, last task); it belongs with the ingredient editor.
+
 # Versions and diff
+
+Versions and status (Draft, On menu, Retired) belong to the user's own
+specs. A built-in (seed) drink has neither on screen: its spec screen
+shows the tag **Built-in** instead of "Version 1" and "Draft", and the
+Versions screen is offered only for the user's own drinks; Edit copies
+it into the user's drinks as version 1 ([#77](https://github.com/nexumia-de/mixtura/issues/77)).
 
 Built by [#26](https://github.com/nexumia-de/mixtura/issues/26). URL
 `#/drinks/<id>/versions`, pushed from the spec's overflow menu.

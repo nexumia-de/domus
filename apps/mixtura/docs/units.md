@@ -247,16 +247,34 @@ Stored amounts are never changed by display. A setting "show amounts in:
 metric / US / imperial" converts only for display; entry accepts any
 unit at any time.
 
-| Display unit              | Rule                                                                                                      |
-| ------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `oz_us`, `oz_imp`         | nearest 1/4 oz from 1/2 oz up; nearest 1/8 oz below 1/2 oz; shown as a mixed number with glyphs (`1½ oz`) |
-| `ml`                      | whole ml from 5 ml up; nearest 0.5 ml below 5 ml                                                          |
-| `cl`                      | one decimal                                                                                               |
-| `tsp`, `barspoon`, `tbsp` | nearest 1/4                                                                                               |
-| `dash`, `drop`, `splash`  | whole numbers; an amount below 1 is shown as 1                                                            |
-| `g`                       | whole g from 10 g up; one decimal below                                                                   |
-| counted units             | nearest 1/2 as a mixed number, refined by 1/4 and 1/8 so it never shows as 0                              |
+| Display unit              | Rule                                                                                                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `oz_us`, `oz_imp`         | nearest 1/4 oz from 1/2 oz up; nearest 1/8 oz below 1/2 oz; shown as a mixed number with glyphs (`1½ oz`)       |
+| `ml`                      | converted values: nearest 2.5 ml from 5 ml to under 100 ml, nearest 5 ml from 100 ml; nearest 0.5 ml below 5 ml |
+| `cl`                      | one decimal for converted values                                                                                |
+| `ml`, `cl`, `g` as stored | an amount on the pour grid (0.5 ml, 0.05 cl, 0.5 g) is shown exactly: `7.5 ml`, `22.5 ml`, `4.25 cl`            |
+| `tsp`, `barspoon`, `tbsp` | nearest 1/4                                                                                                     |
+| `dash`, `drop`, `splash`  | whole numbers; an amount below 1 is shown as 1                                                                  |
+| `g`                       | converted or off-grid values: whole g from 10 g up; one decimal below                                           |
+| counted units             | nearest 1/2 as a mixed number, refined by 1/4 and 1/8 so it never shows as 0                                    |
 
+- **Pour rule (metric).** Bartenders pour in steps of 2.5 ml (three
+  quarters of an ounce is 22.5 ml, half an ounce 15 ml,
+  a quarter 7.5 ml); a display that shows 22.5 ml as 23 ml is wrong for
+  bar work. So: (1) an amount that is **not converted** (stored in ml,
+  cl or g and shown in the same unit) and lies on the pour grid is shown
+  exactly, never rounded: 7.5, 15, 22.5, 45, 157.5 ml stay as they are,
+  also after scaling; (2) a **converted** value (ounces to ml) rounds to
+  2.5 ml up to 100 ml, to 5 ml from 100 ml, 0.5 ml below 5 ml, so 3/4 oz
+  is 22.5 ml, 1 oz is 30 ml, 1½ oz is 45 ml, 2 oz is 60 ml; (3) an
+  unconverted amount off the grid (22.3 ml) rounds by (2). The grid
+  steps are the practice of bar tools (jiggers in 2.5 ml or ¼ oz
+  steps), chosen here from the practice document, **assumption, not from a
+  source**: [bartender practice](bartender-practice.md). US and imperial
+  display keep the usual fractions of an ounce (¼, ½, ¾; ⅛ below ½ oz;
+  22.5 ml shows as ¾ oz, 7.5 ml as ¼ oz). Batches (`precision: 'batch'`)
+  keep whole millilitres because their `roundingError` measures that
+  precision.
 - A converted value that rounds to zero is shown with one more step of
   precision, never as 0.
 - Scaled and batch amounts round for display only; sums use unrounded

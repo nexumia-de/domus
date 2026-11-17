@@ -35,3 +35,8 @@ export function mixedText(value: number): string {
   const fraction = `${k / g}/${32 / g}`;
   return whole > 0 ? `${whole} ${fraction}` : fraction;
 }
+
+/** Fixed decimals with trailing zeros removed (22.50 -> 22.5, 30.0 -> 30). */
+export function trimmedText(value: number, decimals: number): string {
+  return String(Number(value.toFixed(decimals)));
+}

@@ -287,8 +287,9 @@ const body = await page.locator('.spec').innerText();
 for (const want of [
   'Daiquiri template',
   'Balance After Shaking',
-  'Within',
-  'Usual range 17.6\u201319.0 %',
+  'Built-in',
+  'Assumed range 17.6\u201319.0 %',
+  '22.5 ml',
   'No figure',
   'no acid value',
   'Volume after dilution 131 ml',
@@ -303,7 +304,12 @@ expect(
   'no verdict word',
 );
 const track = await page.locator('.balance .track').first().getAttribute('aria-label');
-expect(/within the usual range/.test(track), `the track has a text alternative: ${track}`);
+expect(/assumed range 17\.6 to 19\.0 %/.test(track), `the track has a text alternative: ${track}`);
+expect(
+  !/\b(Within|Below|Above)\b/.test(await page.locator('.balance').innerText()),
+  'no position word while the range is an assumption',
+);
+expect(!/Version 1|Draft/.test(body), 'a built-in drink shows no version or status');
 await noOverflow('on the Daiquiri spec');
 await docShot('spec');
 await shot('browse-spec');
@@ -401,6 +407,102 @@ console.log(
 );
 
 // ---- Offline reload on a spec URL ----
+// ---- Servings stepper and batch sheet (#52) ----
+await page.goto(`${site.url}#/drinks/daiquiri`);
+await page.locator('.balance').waitFor();
+const amounts = () => page.locator('.spec .line-amount').allInnerTexts();
+expect((await amounts()).join('|') === '60 ml|22.5 ml|22.5 ml', 'one drink: the amounts as stored');
+const stepUp = page.getByRole('button', { name: 'One more drink' });
+for (let i = 0; i < 3; i += 1) await stepUp.click();
+await page.getByText('4 drinks', { exact: true }).waitFor();
+expect((await amounts()).join('|') === '240 ml|90 ml|90 ml', `4 drinks: ${await amounts()}`);
+expect((await hash()).includes('servings=4'), 'the number of drinks is in the address');
+expect(
+  (await page.locator('.spec').innerText()).includes('The figures are for one drink.'),
+  'the figures say they are for one drink',
+);
+await noOverflow('on the spec with 4 drinks');
+await targets('on the stepper');
+await page.getByRole('button', { name: 'Open the batch' }).click();
+await page.locator('[data-sheet]').waitFor();
+const batchText = await page.locator('[data-sheet]').innerText();
+for (const want of [
+  'Batch of 4 drinks',
+  'Water to add',
+  'Total volume',
+  'Pour per serving',
+  '131 ml',
+  'Yield',
+  '4 servings',
+  'Shelf life',
+  'Unknown',
+  'Water is the dilution of shaking',
+]) {
+  expect(batchText.includes(want), `the batch sheet says "${want}"`);
+}
+await noOverflow('with the batch sheet open');
+await docShot('spec-batch');
+await page.getByRole('button', { name: 'Close the batch' }).click();
+await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+expect(!(await hash()).includes('sheet='), 'closing the sheet leaves the address of the drink');
+await page.reload({ waitUntil: 'load' });
+await page.locator('.balance').waitFor();
+expect((await amounts())[0] === '240 ml', 'the number of drinks survives a reload');
+if (phone) {
+  await page.getByRole('button', { name: 'Open the batch' }).click();
+  await page.locator('[data-sheet]').waitFor();
+  await page.goBack();
+  await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+  expect((await hash()).includes('servings=4'), 'Back closes the sheet and keeps the drinks');
+}
+await docShot('spec-servings');
+
+// ---- Lines not counted, what-if volume of a top (#74) ----
+await page.goto(`${site.url}#/drinks/mojito`);
+await page.locator('.balance').waitFor();
+const notCounted = page.locator('[data-not-counted]');
+const listed = await notCounted.innerText();
+expect(
+  /Top Club soda: no volume given/.test(listed) &&
+    /6 sprigs Mint: no volume known per unit/.test(listed),
+  `the lines not counted are listed with the reason: ${listed}`,
+);
+const volumeBefore = await page.locator('.metric-volume').innerText();
+await page.getByRole('button', { name: 'Add Volume' }).click();
+const volumeField = page.getByLabel('Volume of the top');
+await volumeField.waitFor();
+await volumeField.fill('abc');
+await page.getByRole('button', { name: 'Set', exact: true }).click();
+expect(
+  (await page.locator('.line-volume [role=alert]').innerText()).includes('Enter a volume'),
+  'a text that is no volume is refused with a reason',
+);
+await volumeField.fill('90');
+await page.getByRole('button', { name: 'Set', exact: true }).click();
+await page.locator('.line-amount', { hasText: 'Top, 90 ml' }).waitFor();
+const volumeAfter = await page.locator('.metric-volume').innerText();
+expect(
+  volumeAfter !== volumeBefore,
+  `the what-if volume changes the figures: ${volumeBefore} -> ${volumeAfter}`,
+);
+expect(
+  !/Club soda/.test(await notCounted.innerText()) && /Mint/.test(await notCounted.innerText()),
+  'the top leaves the not-counted list, the mint stays',
+);
+expect(
+  (await page.locator('.spec').innerText()).includes('What-if, not saved'),
+  'and says it is not saved',
+);
+await noOverflow('on the what-if spec');
+await docShot('spec-not-counted');
+await page.reload({ waitUntil: 'load' });
+await page.locator('.balance').waitFor();
+expect(
+  /no volume given/.test(await page.locator('[data-not-counted]').innerText()),
+  'a what-if volume is gone after a reload',
+);
+await targets('on the spec with a top');
+
 await page.goto(`${site.url}#/drinks/daiquiri`);
 await page.locator('.balance').waitFor();
 await page.evaluate(() => navigator.serviceWorker.ready);
@@ -412,7 +514,7 @@ expect(
   (await page.locator('.pane h1:visible').last().innerText()) === 'Daiquiri',
   'a spec URL reloads with the network off',
 );
-expect((await page.locator('.spec').innerText()).includes('Within'), 'with its figures');
+expect((await page.locator('.spec').innerText()).includes('Assumed range'), 'with its figures');
 await context.setOffline(false);
 
 expect(external.length === 0, `no request left the origin ${external}`);

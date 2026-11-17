@@ -12,7 +12,7 @@ import {
 } from '../balance/index';
 import type { IngredientTree } from '../ingredients/tree';
 import { countedVolume } from '../ingredients/unit-volumes';
-import { scaleLines, type ScaleOptions } from './scale';
+import { roundCount, scaleLines, type ScaleOptions } from './scale';
 import { shelfLife } from './shelf';
 import type { Batch, BatchError, BatchLine, BatchResult } from './types';
 
@@ -33,15 +33,6 @@ function base(tree: IngredientTree, id: string, amount: Amount, options: BatchOp
   }
   const b = toBase(amount, options.unitOverrides);
   return b.ok ? b.value.value : NaN;
-}
-
-/**
- * A counted amount in a batch is rounded up to a whole number of units: a
- * garnish or an egg cannot be prepared in fractions, and having too few is
- * the worse error (docs/balance.md, Batching).
- */
-function roundCount(value: number): { value: number; step: number } {
-  return { value: value > 0 ? Math.max(1, Math.ceil(value - 1e-9)) : 0, step: 1 };
 }
 
 /**
@@ -100,6 +91,7 @@ export function prediluted(
       const f = formatAmountDetailed(amount, {
         system: options.system,
         overrides: options.unitOverrides,
+        precision: 'batch',
       });
       if (!f.ok) {
         return {
@@ -129,7 +121,10 @@ export function prediluted(
   const roundedBefore = run(roundedLines, 0);
   if (!roundedBefore.ok) return { ok: false, errors: balanceErrors(roundedBefore.errors) };
   const exactWaterMl = (exact.value.after as { waterMl: number }).waterMl;
-  const waterShown = formatAmountDetailed({ value: exactWaterMl, unit: 'ml' });
+  const waterShown = formatAmountDetailed(
+    { value: exactWaterMl, unit: 'ml' },
+    { precision: 'batch' },
+  );
   const roundedWaterMl = waterShown.ok ? waterShown.value.shown.value : exactWaterMl;
   const v0 = roundedBefore.value.before.volumeMl;
   const made = run(roundedLines, v0 > 0 ? roundedWaterMl / v0 : 0);

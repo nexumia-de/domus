@@ -148,7 +148,7 @@ URL `#/drinks/<id>`, pushed on Drinks. Mock-up: [html](mockups/spec.html),
   a swap, an edit or a riff.
 - **Content, top to bottom.** Top bar: back, name, overflow (Versions,
   Family, Export spec, Retire, Delete). Tags: template (tappable to the
-  template), version, status, Makeable or "Missing X". **Ingredients**
+  template), version and status (a built-in drink shows the tag "Built-in" instead: versions and status belong to the user's own specs), Makeable or "Missing X". **Ingredients**
   card: the lines in order, amount in the display unit
   ([units](units.md#display-and-rounding)) right-aligned in a fixed
   column, ingredient name, role tag; optional lines marked "optional";
@@ -156,7 +156,9 @@ URL `#/drinks/<id>`, pushed on Drinks. Mock-up: [html](mockups/spec.html),
   muted text; a servings stepper (1 to 12 drinks, [#52](https://github.com/nexumia-de/mixtura/issues/52))
   that scales the amounts for display; below the lines: method, glass,
   garnish. **Balance panel** ([drawn as in design](design.md#drawing-balance)):
-  ABV, sugar, acid, each value against the template's usual range,
+  ABV, sugar, acid, each value against the template's usual range (an
+  assumed range is drawn dashed as "Assumed range" without a position
+  word, [rule](balance.md#how-precise-a-range-is-shown)),
   then "Volume after dilution", a Details link to the notes of the
   formulas, and the unverified-range line. Notes card (free text, with
   the version note of this version). Source line for seed drinks ("From
@@ -269,7 +271,14 @@ template) forced some of it.
 - **Spec.** Lines, role tags with their word, fixed rows (method, glass,
   garnish; absent ones omitted), balance panel, notes, source line. Amounts
   follow the display setting and the engine's rounding (22.5 ml shows as
-  23 ml). The bottom bar (Try a Swap, Riff, Edit), the overflow menu and the
-  servings stepper are not shown until #20, #27, #25 and #52 build them;
+  22.5 ml, [units](units.md#display-and-rounding)). A built-in drink shows
+  "Built-in" instead of version and status, and every range is shown as
+  "Assumed range" without a position word while its evidence is an
+  assumption (#77). A top without a volume has Add Volume (a what-if,
+  not saved, [#74](screens-specs.md#what-if-volume-of-a-top)); lines
+  the figures leave out are listed in the balance panel. The servings stepper and the batch sheet are built
+  ([#52](screens-specs.md#servings-and-batch)). The bottom bar (Try a
+  Swap, Riff, Edit) and the overflow menu are not shown until #20, #27
+  and #25 build them;
   there is no dead control. On a phone the panel is below the lines; from
   640 px of detail width the two sit side by side.

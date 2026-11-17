@@ -39,40 +39,47 @@ Import Backup · Discard Draft · Details · Open Source Link.
 
 # Balance
 
-| Situation                      | Short (beside the value)                                           | Full (accessible name, tooltip)                   |
-| ------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------- |
-| Value inside the range         | Within                                                             | Within the usual range                            |
-| Value under the range          | Below                                                              | Below the usual range                             |
-| Value over the range           | Above                                                              | Above the usual range                             |
-| Footer                         | Usual range {lo}–{hi} {unit}                                       | Usual range {lo} to {hi} {unit}                   |
-| Footer in swap mode            | adds · was {value} {unit}                                          |                                                   |
-| No template or no range        | No usual range for this drink                                      |                                                   |
-| A template without a range     | No usual range for this template                                   |                                                   |
-| Figure cannot be computed      | No figure                                                          | No figure: {ingredient} has no {property}         |
-| Volume line                    | Volume after dilution {n} ml                                       |                                                   |
-| Panel title                    | Balance After {method}                                             | for example Balance After Shaking, After Stirring |
-| Unverified ranges (while true) | Ranges come from a model and are not yet checked against a source. |                                                   |
-| Compact bar                    | ABV {v} {position} · Sugar {v} {position} · Acid {v} {position}    |                                                   |
+| Situation                      | Short (beside the value)                                           | Full (accessible name, tooltip)                                                    |
+| ------------------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Value inside the range         | Within (only when the range's evidence is better than assumption)  | Within the usual range                                                             |
+| Value under the range          | Below                                                              | Below the usual range                                                              |
+| Value over the range           | Above                                                              | Above the usual range                                                              |
+| Footer, assumed range          | Assumed range {lo}–{hi} {unit}                                     | {Name} {v} {unit}, assumed range {lo} to {hi} {unit}, not checked against a source |
+| Footer                         | Usual range {lo}–{hi} {unit}                                       | Usual range {lo} to {hi} {unit}                                                    |
+| Footer in swap mode            | adds · was {value} {unit}                                          |                                                                                    |
+| No template or no range        | No usual range for this drink                                      |                                                                                    |
+| A template without a range     | No usual range for this template                                   |                                                                                    |
+| Figure cannot be computed      | No figure                                                          | No figure: {ingredient} has no {property}                                          |
+| Volume line                    | Volume after dilution {n} ml                                       |                                                                                    |
+| Panel title                    | Balance After {method}                                             | for example Balance After Shaking, After Stirring                                  |
+| Unverified ranges (while true) | Ranges come from a model and are not yet checked against a source. |                                                                                    |
+| Compact bar                    | ABV {v} {position} · Sugar {v} {position} · Acid {v} {position}    |                                                                                    |
 
 Never used: good, bad, wrong, balanced, too sweet, too sour, perfect,
 score, grade, warning, error (for a figure).
 
 # Banners, tags, labels
 
-| String                                                                                           | Where                           |
-| ------------------------------------------------------------------------------------------------ | ------------------------------- |
-| Trying a swap. Nothing is saved.                                                                 | Swap banner                     |
-| Trying a swap. Change a line to see the numbers.                                                 | Swap banner before a change     |
-| Changed, was {amount}                                                                            | Changed line                    |
-| Draft kept                                                                                       | Editor tag                      |
-| Makeable · Missing {name} · Missing {n}                                                          | Drinks and spec tags            |
-| Riff of {name} · Version {n} · Draft · On menu · Retired                                         | Spec tags                       |
-| Base · Modifier · Sweet · Sour · Bitter · Accent · Texture · Lengthener                          | Role tags                       |
-| optional                                                                                         | Optional line                   |
-| In {n} drinks · Opened {date} · Best before {date} · Past best before {date} · Out · Not tracked | Stock rows                      |
-| Prepared · User                                                                                  | Ingredient tags                 |
-| Unknown ingredient                                                                               | A line whose ingredient is gone |
-| Not in the current data                                                                          | Same, second line               |
+| String                                                                                                                                                                                                                                                                                                                                   | Where                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Trying a swap. Nothing is saved.                                                                                                                                                                                                                                                                                                         | Swap banner                                                 |
+| Trying a swap. Change a line to see the numbers.                                                                                                                                                                                                                                                                                         | Swap banner before a change                                 |
+| Changed, was {amount}                                                                                                                                                                                                                                                                                                                    | Changed line                                                |
+| Draft kept                                                                                                                                                                                                                                                                                                                               | Editor tag                                                  |
+| Makeable · Missing {name} · Missing {n}                                                                                                                                                                                                                                                                                                  | Drinks and spec tags                                        |
+| Riff of {name} · Version {n} · Draft · On menu · Retired                                                                                                                                                                                                                                                                                 | Spec tags of the user's own drinks                          |
+| One fewer drink · One more drink · {n} drinks · Batch · Open the batch · The figures are for one drink.                                                                                                                                                                                                                                  | Servings stepper                                            |
+| Batch of {n} drinks · Mix · Water to add · Total volume · Pour per serving · Yield · {n} servings · Shelf life · Unknown · {n} days, set by {name} · No shelf life stored for {names}                                                                                                                                                    | Batch sheet                                                 |
+| Water is the dilution of {method}: {n} % of the mix ({basis}). One drink is poured from the batch as it is. · Poured at the glass, not in the batch: {names}. · Not in the totals (no volume known): {names}. · not in the totals · rounded by {amount} · A batch needs a method the model knows. This drink has none. · Close the batch | Batch sheet notes                                           |
+| Add Volume · Change · Clear · Set · Cancel · What-if, not saved · Top, {volume}                                                                                                                                                                                                                                                          | Top line what-if volume                                     |
+| The figures above leave out these lines: · {amount} {name}: no volume given · no volume known per unit                                                                                                                                                                                                                                   | Not counted in the figures                                  |
+| Built-in                                                                                                                                                                                                                                                                                                                                 | Spec tag of a built-in drink, instead of version and status |
+| Base · Modifier · Sweet · Sour · Bitter · Accent · Texture · Lengthener                                                                                                                                                                                                                                                                  | Role tags                                                   |
+| optional                                                                                                                                                                                                                                                                                                                                 | Optional line                                               |
+| In {n} drinks · Opened {date} · Best before {date} · Past best before {date} · Out · Not tracked                                                                                                                                                                                                                                         | Stock rows                                                  |
+| Prepared · User                                                                                                                                                                                                                                                                                                                          | Ingredient tags                                             |
+| Unknown ingredient                                                                                                                                                                                                                                                                                                                       | A line whose ingredient is gone                             |
+| Not in the current data                                                                                                                                                                                                                                                                                                                  | Same, second line                                           |
 
 # Empty states
 

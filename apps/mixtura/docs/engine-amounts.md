@@ -29,6 +29,8 @@ and never throw for user input.
 | `number-text.ts` | decimals and mixed numbers with glyphs                                               |
 | `format.ts`      | `formatAmount`, `formatAmountDetailed`, `displayUnit` for `metric`, `us`, `imperial` |
 
+Format options: `system` (`metric`, `us`, `imperial`), `overrides`, `entered` (the user's text, kept if it still says the amount) and `precision`: `pour` (default, [pour rule](units.md#display-and-rounding)) or `batch` (whole millilitres, no exact pour amounts; the precision whose error batches report as `roundingError`).
+
 Behaviour worth knowing:
 
 - `top` has no volume: `toBase` returns `not_measurable`. A "top 90 ml"

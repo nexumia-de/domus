@@ -142,6 +142,12 @@ returns three entries in the order abv, sugar, acid:
 | `sourceName`           | the template's source                                                                                                        |
 | `reason`, `missingIds` | why the status is `unknown`: no range, no figures after dilution, an unknown figure and the ingredients that made it unknown |
 
+Screens use `evidence` to decide how a result is worded: position words
+(Within, Below, Above) only when it is `verified`, `secondary` or
+`derived`; for `assumption` or `unstated` the range is shown as "Assumed
+range" without a position word ([balance](balance.md#how-precise-a-range-is-shown)).
+`status` stays computed either way.
+
 The output has no field that judges the drink, and a test scans code,
 data, vectors, this document and every result for such words. A figure
 outside its range is worded "outside the usual range of this template"

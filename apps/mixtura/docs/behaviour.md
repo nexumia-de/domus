@@ -181,7 +181,7 @@ Everything else the user did is already saved when it happens.
   states value, range and position.
 - **Numbers are entered as bartenders write them**: `1 1/2 oz`, `1½`,
   `45ml`, `2 dashes`, `3/4 oz` ([units grammar](units.md#parsing-grammar)).
-  The field shows what was understood ("= 22 ml") and keeps the entered
+  The field shows what was understood ("= 22.5 ml") and keeps the entered
   text; an unreadable amount is marked in text under the field, the
   line is not lost.
 - **Language** is English; amounts follow the unit setting and ingredient

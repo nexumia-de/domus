@@ -4,6 +4,7 @@
 
 import { type DestId } from './destinations';
 import { parseHash, type Route } from './router';
+import { initialSpecView, type SpecView } from './screens/spec/session';
 import {
   type Backup,
   type ExportFile,
@@ -66,6 +67,8 @@ export interface AppState {
   toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
+  /** Temporary state of the spec screen (what-if volumes); never stored. */
+  specView: SpecView;
   /** Last route of each destination, so switching back restores its stack. */
   lastRoute: Partial<Record<DestId, string>>;
 }
@@ -85,6 +88,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importFlow: { kind: 'idle' },
     toast: null,
     browseRev: 0,
+    specView: initialSpecView,
     lastRoute: {},
   };
 }

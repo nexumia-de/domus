@@ -181,6 +181,14 @@ usual range for this drink" and no band. A figure that cannot be
 computed (an ingredient lacks ABV, sugar or acid) shows "No figure" and
 names the ingredient; it is never shown as 0.
 
+**Assumed ranges.** While the evidence of a range is `assumption` (or not
+stated) the block shows the value, the band dashed, the footer "Assumed
+range 17.6–19.0 %" and **no position word**; the diamond is always filled
+and the accessible name says "assumed range ..., not checked against a
+source". Position word, "Usual range" and the hollow diamond come back
+with evidence `derived`, `secondary` or `verified`
+([why](balance.md#how-precise-a-range-is-shown)).
+
 While the template ranges are not yet verified against a source
 ([balance](balance.md#evidence)), the panel carries the line "Ranges
 come from a model and are not yet checked against a source." This line

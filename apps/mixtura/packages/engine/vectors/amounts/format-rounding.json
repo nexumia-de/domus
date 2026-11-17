@@ -139,7 +139,7 @@
         "unit": "oz_us"
       },
       "expected": {
-        "text": "3.0 ml"
+        "text": "3 ml"
       }
     },
     {
@@ -159,7 +159,7 @@
         "unit": "ml"
       },
       "expected": {
-        "text": "5.0 ml"
+        "text": "5 ml"
       }
     },
     {
@@ -179,7 +179,7 @@
         "unit": "ml"
       },
       "expected": {
-        "text": "6 ml"
+        "text": "5.5 ml"
       }
     },
     {
