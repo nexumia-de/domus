@@ -31,10 +31,16 @@ against `schemas/template.schema.json`.
 | File       | Job                                                                            |
 | ---------- | ------------------------------------------------------------------------------ |
 | `types.ts` | `Template`, `MatchSpec`, `Candidate`, `MatchResult`, `RangeCheck`              |
-| `data.ts`  | `ROOT_TEMPLATES`, the six files in the order of the practice document          |
 | `slots.ts` | `assignSlots`: lines to slots by role; unassigned lines, empty slots; `lineMl` |
 | `match.ts` | `matchSpec`: ratios, distance, ranking, the chosen template                    |
-| `range.ts` | `checkRange`: figures after dilution against the usual range                   |
+
+The drink side lives in `packages/engine/src/drink-templates/` (exported
+through `src/drink.ts`):
+
+| File       | Job                                                                   |
+| ---------- | --------------------------------------------------------------------- |
+| `data.ts`  | `ROOT_TEMPLATES`, the six files in the order of the practice document |
+| `range.ts` | `checkRange`: figures after dilution against the usual range          |
 
 # Evidence
 

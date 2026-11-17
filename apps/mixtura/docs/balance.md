@@ -249,7 +249,7 @@ described there. Fields:
 
 Code: `packages/engine/src/balance/`, one job per file. Entry point
 `computeBalance(tree, spec, options)`; it reads the formulas above, the
-amounts module for every unit and `ingredients/mixture.ts` for the
+amounts module for every unit and `balance/mixture.ts` for the
 mixture arithmetic.
 
 | File          | Job                                                                                                                                     |
@@ -258,6 +258,7 @@ mixture arithmetic.
 | `dilution.ts` | `DILUTION` (read from `data/dilution.json`), `chooseDilution(method, options)`                                                          |
 | `lines.ts`    | spec lines to ml and g (counted lines by the ingredient's `unitVolumes`), properties from the tree or from a prepared ingredient's spec |
 | `sums.ts`     | totals of volume, ethanol, sugar and acid                                                                                               |
+| `mixture.ts`  | the mixing formulas (before dilution), in ml and g; also used by prepared ingredients                                                   |
 | `figures.ts`  | ABV, sugar, acid before and after dilution, sugar-to-acid ratio, UK units                                                               |
 
 **Figures.** A figure is `{ known: true, value }` or `{ known: false,

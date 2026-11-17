@@ -4,7 +4,8 @@
 export { chooseDilution, computeBalance, DILUTION } from './balance/index';
 export type * from './balance/index';
 
-export { checkRange, ROOT_TEMPLATES, VARIANT_TEMPLATES } from './templates/index';
+export { checkRange, ROOT_TEMPLATES, VARIANT_TEMPLATES } from './drink-templates/index';
+export type * from './drink-templates/index';
 
 export { prediluted, roundCount, scaleLine, scaleLines, shelfLife } from './batch/index';
 export type * from './batch/index';

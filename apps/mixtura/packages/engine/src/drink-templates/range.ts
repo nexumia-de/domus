@@ -2,7 +2,7 @@
 // template. The result is within, below, above or unknown, with the range and
 // how well it is known; it never says more than that.
 import type { Figure } from '../balance/types';
-import type { RangeCheck, RangeFigure, Template } from './types';
+import type { RangeCheck, RangeFigure, Template } from '../templates/types';
 
 /** The figures after dilution that ranges are about (a subset of AfterFigures). */
 export interface RangeInput {

@@ -25,7 +25,6 @@ assumption of [balance](balance.md); no drink data is claimed.
 | `types.ts`           | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
 | `tree.ts`            | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
 | `properties.ts`      | `resolveProperty`, `resolveAll`, `resolveCost`                        |
-| `mixture.ts`         | the mixing formulas of balance (before dilution), in ml and g         |
 | `prepared.ts`        | `computePrepared`: ABV, sugar, acid, volume of a prepared ingredient  |
 | `substitution.ts`    | `sameClass`, `substitutesFor`                                         |
 | `swap-candidates.ts` | `swapCandidates`: the groups offered when a line is swapped           |

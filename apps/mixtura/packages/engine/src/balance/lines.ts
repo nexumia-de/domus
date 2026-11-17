@@ -3,7 +3,7 @@
 // ingredient tree or, for a prepared ingredient, from its spec.
 import { toGrams, toMl, isEstimatedUnit, UNITS } from '../amounts/index';
 import type { UnitId, UnitOverrides } from '../amounts/index';
-import type { MixPart } from '../ingredients/mixture';
+import type { MixPart } from './mixture';
 import { computePrepared, type SpecLookup } from '../ingredients/prepared';
 import { resolveProperty } from '../ingredients/properties';
 import type { IngredientTree } from '../ingredients/tree';

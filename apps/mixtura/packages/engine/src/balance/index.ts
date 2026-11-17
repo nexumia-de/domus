@@ -67,3 +67,4 @@ export function computeBalance(
 
 export { DILUTION, chooseDilution } from './dilution';
 export type * from './types';
+export type * from './mixture';

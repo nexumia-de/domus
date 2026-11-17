@@ -1,7 +1,7 @@
 // Properties of a prepared ingredient, computed from the lines of its spec
 // with the formulas of docs/balance.md (see mixture.ts). Nested prepared
 // ingredients resolve recursively; a cycle is an error naming the ids.
-import { mix, type Computed, type MixPart } from './mixture';
+import { mix, type Computed, type MixPart } from '../balance/mixture';
 import { resolveProperty } from './properties';
 import type { IngredientTree } from './tree';
 import type { Id } from './types';

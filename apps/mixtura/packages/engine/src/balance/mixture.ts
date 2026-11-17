@@ -5,7 +5,7 @@
 //   sugar = 100 * S / V0; acid = 100 * C / V0.
 // Volumes are additive. Amounts are already in millilitres (and grams
 // for solid sugar); unit conversion is not this module's job.
-import type { Id } from './types';
+import type { Id } from '../ingredients/types';
 
 export interface MixPart {
   id: Id;

@@ -37,23 +37,23 @@ the [shared model decision](decisions/shared-model.md) (needs decision).
 
 # Modules
 
-| Module (`packages/engine/src/`)                                    | Exported through                                   | Kind                            | Notes                                                                             |
-| ------------------------------------------------------------------ | -------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------- |
-| `amounts/` (parse, convert, scale, format, rounding, unit table)   | `model.ts`                                         | general, with bar units in it   | unit table `data/units.json`; `UnitId` is a closed union                          |
-| `ingredients/tree.ts`, `properties.ts` (tree, levels, inheritance) | `model.ts`                                         | general, with drink properties  | `ancestors`, `descendants`, `isA`, `resolveProperty`, `resolveAll`, `resolveCost` |
-| `ingredients/substitution.ts`, `swap-candidates.ts`                | `model.ts`                                         | general                         | substitution classes, `swapCandidates` groups by class, role and tree             |
-| `ingredients/prepared.ts` (prepared components)                    | `model.ts`                                         | mixed                           | nesting, cycles and yield are general; the result is ABV, sugar and acid          |
-| `ingredients/mixture.ts`                                           | not exported; used by `prepared.ts` and `balance/` | drink-specific                  | the mixing formulas of [balance](balance.md)                                      |
-| `ingredients/unit-volumes.ts`                                      | not exported                                       | general, volume only            | ml per counted unit                                                               |
-| `templates/slots.ts`, `match.ts` (roles, slots, matching)          | `model.ts`                                         | general, volume only            | ratios are computed from ml                                                       |
-| `templates/variants.ts`                                            | `model.ts`                                         | general mechanism, drink key    | variants keyed by alcohol class                                                   |
-| `templates/range.ts`, `templates/data.ts`                          | `drink.ts`                                         | drink-specific                  | usual ABV, sugar, acid ranges; the six root and four variant templates            |
-| `specs/` (versions: diff, family, riff summary)                    | `model.ts`                                         | general, with drink fields      | diff names `method`, `glass`, `garnish`, `topMl`                                  |
-| `stock/` (makeable, missing one, unlock ranking)                   | `model.ts`                                         | general                         | imports only `ingredients/`; stock is present or not                              |
-| `shelf/` (dates, expiry, limiting shelf life)                      | `model.ts`                                         | general                         | whole-day calendar arithmetic, `fresh`, `use-soon`, `past`                        |
-| `balance/` (dilution, figures, lines, sums)                        | `drink.ts`                                         | drink-specific                  | dilution model `data/dilution.json`                                               |
-| `batch/` (scale lines, pre-diluted batch, batch shelf life)        | `drink.ts`                                         | drink-specific, scaling general | `scaleLine` and `scaleLines` take balance lines                                   |
-| `alcohol/` (classes, thresholds, presets)                          | `drink.ts`                                         | drink-specific                  | `data/alcohol-thresholds.json`                                                    |
+| Module (`packages/engine/src/`)                                    | Exported through               | Kind                            | Notes                                                                             |
+| ------------------------------------------------------------------ | ------------------------------ | ------------------------------- | --------------------------------------------------------------------------------- |
+| `amounts/` (parse, convert, scale, format, rounding, unit table)   | `model.ts`                     | general, with bar units in it   | unit table `data/units.json`; `UnitId` is a closed union                          |
+| `ingredients/tree.ts`, `properties.ts` (tree, levels, inheritance) | `model.ts`                     | general, with drink properties  | `ancestors`, `descendants`, `isA`, `resolveProperty`, `resolveAll`, `resolveCost` |
+| `ingredients/substitution.ts`, `swap-candidates.ts`                | `model.ts`                     | general                         | substitution classes, `swapCandidates` groups by class, role and tree             |
+| `ingredients/prepared.ts` (prepared components)                    | `model.ts`                     | mixed                           | nesting, cycles and yield are general; the result is ABV, sugar and acid          |
+| `balance/mixture.ts` (step 1)                                      | types only, through `drink.ts` | drink-specific                  | the mixing formulas of [balance](balance.md); still used by `prepared.ts`         |
+| `ingredients/unit-volumes.ts`                                      | not exported                   | general, volume only            | ml per counted unit                                                               |
+| `templates/slots.ts`, `match.ts` (roles, slots, matching)          | `model.ts`                     | general, volume only            | ratios are computed from ml                                                       |
+| `templates/variants.ts`                                            | `model.ts`                     | general mechanism, drink key    | variants keyed by alcohol class                                                   |
+| `drink-templates/range.ts`, `data.ts` (step 1)                     | `drink.ts`                     | drink-specific                  | usual ABV, sugar, acid ranges; the six root and four variant templates            |
+| `specs/` (versions: diff, family, riff summary)                    | `model.ts`                     | general, with drink fields      | diff names `method`, `glass`, `garnish`, `topMl`                                  |
+| `stock/` (makeable, missing one, unlock ranking)                   | `model.ts`                     | general                         | imports only `ingredients/`; stock is present or not                              |
+| `shelf/` (dates, expiry, limiting shelf life)                      | `model.ts`                     | general                         | whole-day calendar arithmetic, `fresh`, `use-soon`, `past`                        |
+| `balance/` (dilution, figures, lines, sums)                        | `drink.ts`                     | drink-specific                  | dilution model `data/dilution.json`                                               |
+| `batch/` (scale lines, pre-diluted batch, batch shelf life)        | `drink.ts`                     | drink-specific, scaling general | `scaleLine` and `scaleLines` take balance lines                                   |
+| `alcohol/` (classes, thresholds, presets)                          | `drink.ts`                     | drink-specific                  | `data/alcohol-thresholds.json`                                                    |
 
 - **Export exchange**: since issue 65 the pure parts are the engine
   module `exchange/` (`build.ts`, `merge.ts`, `migrate.ts`, `parse.ts`),
@@ -88,18 +88,14 @@ rules (found with `grep "from '../"` over `src/`, tests excluded):
    `'base' | 'modifier' | 'sweet' | 'sour' | 'bitter' | 'accent' |
 'texture' | 'lengthener'`, used by `templates/types.ts`,
    `templates/slots.ts` and `templates/variants.ts`.
-3. **Balance formulas inside `ingredients/`.** `ingredients/mixture.ts`
-   (ethanol, sugar and acid by volume) is imported by
-   `ingredients/prepared.ts` and by `balance/figures.ts` and
-   `balance/sums.ts`. `computePrepared` (exported by `model.ts`) returns
+3. **Balance formulas used by `ingredients/`.** The mixing formulas
+   (ethanol, sugar and acid by volume) are `balance/mixture.ts` since
+   step 1; `ingredients/prepared.ts` still imports them. `computePrepared` (exported by `model.ts`) returns
    `abv`, `sugar`, `acid` and `volumeMl`; its lines are in ml and g of
    solid sugar.
-4. **Template range check in the templates folder.**
-   `templates/range.ts` imports `Figure` from `balance/types.ts`;
-   `templates/data.ts` imports the drink templates from `data/templates/`
-   and `data/template-variants/`. Both are exported through `drink.ts`,
-   but `templates/index.ts` exports them together with the general
-   functions, so the folder cannot move as it is.
+4. **Template range check in the templates folder.** Resolved in
+   step 1: `range.ts` and `data.ts` are in `drink-templates/`, and
+   `templates/index.ts` exports only general functions.
 5. **Drink fields in the template types.** `templates/types.ts`:
    `Template.alcohol`, `Template.usual` (`abv`, `sugar`, `acid`),
    `Template.glass`, `MatchOptions.alcohol`, `RangeFigure`, `RangeCheck`.
@@ -157,7 +153,7 @@ every step, and every vector passes unchanged. Drink-specific names keep
 their current types by re-export (`Role`, `Ingredient`, `Template` stay
 the drink shapes in Mixtura).
 
-1. **Move the drink files out of general folders.** `ingredients/mixture.ts`
+1. **Move the drink files out of general folders** (done). `ingredients/mixture.ts`
    to `balance/`; `templates/range.ts` and `templates/data.ts` to a drink
    folder (for example `drink-templates/`); `templates/index.ts` then
    exports only general functions. No behaviour change.
