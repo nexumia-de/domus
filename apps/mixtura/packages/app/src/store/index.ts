@@ -13,6 +13,8 @@ import {
   templatesRepo,
   type SpecsRepo,
 } from './repo-entities';
+import { draftsRepo, type DraftsRepo } from './repo-drafts';
+import { withReferenceChecks } from './references';
 import { keyValueRepo, settingsRepo, type SettingsRepo } from './repo-settings';
 import type { Repo } from './repo';
 import type { Affinity, Backup, Ingredient, Stock, Template } from './types';
@@ -25,6 +27,7 @@ export * from './ids';
 export type { Persistence, PersistState } from './persist';
 export type { Repo } from './repo';
 export * from './seed';
+export { ingredientReferrers, specReferrers } from './references';
 export type * from './types';
 
 export interface LocalStore {
@@ -34,6 +37,8 @@ export interface LocalStore {
   affinities: Repo<Affinity>;
   stock: Repo<Stock>;
   settings: SettingsRepo;
+  /** Unsaved editor state; not entities, not exported. */
+  drafts: DraftsRepo;
   persistence: Persistence;
   backup: BackupTracker;
   exchange: Exchange;
@@ -64,13 +69,20 @@ export async function openLocalStore(options: StoreOptions = {}): Promise<LocalS
     void persistence.requestOnce().then((state) => options.onPersist?.(state));
   };
   const context = { db, afterWrite };
-  return {
+  const affinities = affinitiesRepo(context);
+  const guarded = withReferenceChecks({
     ingredients: ingredientsRepo(context),
-    templates: templatesRepo(context),
     specs: specsRepo(context),
-    affinities: affinitiesRepo(context),
+    affinities,
+  });
+  return {
+    ingredients: guarded.ingredients,
+    templates: templatesRepo(context),
+    specs: guarded.specs,
+    affinities,
     stock: stockRepo(context),
     settings: settingsRepo(db),
+    drafts: draftsRepo(db),
     persistence,
     backup,
     exchange: createExchange(db, backup, clock),

@@ -13,6 +13,7 @@ export interface Spec {
   name: string;
   status: 'draft' | 'on-menu' | 'retired';
   templateId?: string;
+  parentId?: string;
   [field: string]: unknown;
 }
 

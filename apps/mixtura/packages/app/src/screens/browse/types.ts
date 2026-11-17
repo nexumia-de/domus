@@ -33,4 +33,6 @@ export interface SpecData {
   tags?: string[];
   status: 'draft' | 'on-menu' | 'retired';
   source?: { name: string; licence: string; url?: string; note?: string };
+  createdAt?: string;
+  updatedAt?: string;
 }

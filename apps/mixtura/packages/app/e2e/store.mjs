@@ -93,7 +93,7 @@ const dump = (page, stores) =>
     'the unit setting survives a reload',
   );
   const data = await dump(page, ['settings']);
-  expect(data.version === 2, 'a new database is at the current version');
+  expect(data.version === 3, 'a new database is at the current version');
   const byKey = Object.fromEntries(data.settings.map((r) => [r.key, r.value]));
   expect(byKey.theme === 'dark' && byKey.units === 'us', 'the settings are records of the store');
   expect(
@@ -160,7 +160,7 @@ const dump = (page, stores) =>
   await page.waitForFunction(() => localStorage.getItem('mixtura.prefs') === null);
   expect(true, 'the interim localStorage key is removed after the migration');
   const data = await dump(page, ['specs', 'stock', 'settings']);
-  expect(data.version === 2, 'the database was upgraded to version 2');
+  expect(data.version === 3, 'the database was upgraded to the current version (3)');
   expect(
     data.specs.length === 1 && data.specs[0].name === 'Kept through the upgrade',
     'the spec survived the upgrade',

@@ -23,7 +23,7 @@ only. Screens are in [behaviour](behaviour.md).
 | Stock views       | Stock · Buy Next                                                                                        |
 | Spec action bar   | Try a Swap · Riff · Edit                                                                                |
 | Swap action bar   | Reset (Riff and Save when #27 and #25 are built)                                                        |
-| Editor action bar | Cancel · Save Version                                                                                   |
+| Editor action bar | Discard · Save (Cancel is the back button; Save Version with #26)                                       |
 | Overflow, spec    | Versions · Family · Export spec · Retire · Delete                                                       |
 | Overflow, list    | Sort by name · Sort by recently changed · Sort by template                                              |
 | Titles            | Not Found · Drinks · Templates · Stock · Settings · About · Edit {name} · New Drink · Versions · Family |
@@ -199,6 +199,26 @@ Balance: No figure: {ingredients} have no acid value · No figure after
 dilution: the drink has no method the model knows · ABV before dilution ·
 Sugar to acid · Units of alcohol · How the figures are computed. Texts of
 the panel are scanned by a test for the words listed under "Never used".
+
+# Editor, as built (#25)
+
+All in `packages/app/src/screens/editor/strings.ts`. Names, labels and
+errors: Name, Template ("None (the app suggests one)"), Ingredients, Add
+Ingredient, Method, Glass, Garnish, Notes, Status; line fields "Amount",
+"Unit", "Volume in ml (optional)"; line menu Move Up, Move Down, Optional, Add
+Note, Role, Remove; "= 22.5 ml", "= about 0.9 ml", "= 1 whole (counted, no
+volume of its own)"; "Not understood: {text}. {reason} Try 45 ml, 3/4 oz,
+1½ oz, 2 dashes or 1 whole."; "Choose an ingredient for this line."; Save
+reasons "Add a name", "Add one ingredient with an amount", "Fix the lines marked
+above"; tag "Draft kept"; notice "Your unsaved changes were restored." with
+Discard Draft; toasts "Removed {name}", "Draft discarded", "Saved {name}",
+"Deleted {name}"; picker Choose ingredient, Search ingredients, Recently
+used, Create “{text}”, tags Prepared and User; form New Ingredient, Edit
+Ingredient, Belongs under, Role, "ABV in %", "Sugar in g per 100 ml", "Acid in
+%", Save Ingredient, Delete Ingredient; prepared "Make this a prepared
+ingredient", Yield, "Shelf life in days", "Computed from the lines", "Used in N
+drinks"; refusals "{name} is still used by {names}. Remove it there first, then
+delete it."
 
 # Alcohol filters, as built (#37)
 

@@ -38,7 +38,8 @@ test('the four destinations keep their order and own their routes', () => {
 test('every URL of the shell resolves to one screen, unknown ones to none', () => {
   const ids = (hash: string) => resolve(parseHash(hash), screens)?.id ?? null;
   expect(ids('#/drinks')).toBe('drinks');
-  expect(ids('#/drinks/new')).toBe('drinks-new');
+  expect(ids('#/drinks/new')).toBe('editor-new');
+  expect(ids('#/drinks/some-id/edit')).toBe('editor-edit');
   expect(ids('#/templates')).toBe('templates');
   expect(ids('#/stock')).toBe('stock');
   expect(ids('#/stock/buy-next')).toBe('buy-next');

@@ -142,7 +142,7 @@ to the list, never an empty screen.
 | Screen and its parameters, filters, query, swap | URL                                                     | Restored from the URL                                                              |
 | Scroll position of a list                       | session storage, per URL                                | Restored                                                                           |
 | Open sheet                                      | URL entry `&sheet=filters`                              | Reopens                                                                            |
-| Editor draft                                    | local store, key `draft/<spec id>`                      | Banner "Draft kept" and the fields restored; Discard draft is in the overflow menu |
+| Editor draft                                    | local store, key `draft/<address id>` (`draft/new`)     | Banner "Draft kept" and the fields restored; Discard draft is in the overflow menu |
 | Stock, specs, versions, user settings           | local store ([PWA decision](decisions/pwa-own-data.md)) | Unchanged                                                                          |
 | Unit system, theme                              | local store (settings)                                  | Applied before first paint (theme) to avoid a flash                                |
 | Balance, makeable, ranking, scaled amounts      | not stored, derived                                     | Computed again from the data                                                       |

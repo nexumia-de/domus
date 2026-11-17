@@ -62,7 +62,7 @@ schema refers to it.
   valid. Seed entities are read-only: to change one, the user makes a new
   user ingredient with the seed one as `parentId`.
 - **Deleted or missing targets.** A store refuses to delete a user entity
-  that others reference. If a reference still points to nothing (a seed
+  that others reference (built in `store/references.ts`, [store](store.md#references)). If a reference still points to nothing (a seed
   entity dropped in a later seed version, an import without its parts),
   nothing is deleted or repaired silently: the engine reports the line as
   unresolved and everything derived from it is marked incomplete. A seed

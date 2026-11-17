@@ -356,6 +356,7 @@ export const strings = {
     notFoundTitle: 'This drink is not here',
     notFoundText: 'The link points to a drink that was deleted or never existed.',
     trySwap: 'Try a Swap',
+    editAria: (name: string) => `Edit ${name}`,
     riff: 'Riff',
     edit: 'Edit',
     soon: 'Not built yet',

@@ -6,7 +6,7 @@
 /* global document, indexedDB -- in functions the page runs */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const args = process.argv.slice(2);
@@ -41,6 +41,7 @@ const newPage = async () => {
     acceptDownloads: true,
   });
   const page = await context.newPage();
+  await throttle(page, args);
   page.on('pageerror', (error) => {
     throw error;
   });
@@ -107,6 +108,8 @@ let exported;
 {
   const page = await newPage();
   await openData(page);
+  // The message appears once the store has counted the user's records.
+  await page.locator('#nothing-to-export').waitFor();
   expect(
     (await page.locator('#nothing-to-export').count()) === 1 &&
       (await page.getByRole('button', { name: 'Export Everything' }).isDisabled()),
@@ -283,14 +286,10 @@ const file = join(OUT, `export-${width}.json`);
   await page.getByRole('button', { name: 'Dismiss' }).click();
   await page.getByTestId('backup-reminder').waitFor({ state: 'detached' });
   await page.reload();
-  await page.getByRole('link', { name: /^Data/ }).waitFor();
+  // The row is drawn before the store has answered; wait for the count itself, then look.
+  await page.getByRole('link', { name: /^Data.*12 changes since the last export\./s }).waitFor();
   expect((await page.getByTestId('backup-reminder').count()) === 0, 'dismissed stays away');
-  expect(
-    (await page.getByRole('link', { name: /^Data/ }).innerText()).includes(
-      '12 changes since the last export.',
-    ),
-    'the Data row shows the count',
-  );
+  expect(true, 'the Data row shows the count');
   await shot(page, 'settings-data-row');
   await page.context().close();
 }

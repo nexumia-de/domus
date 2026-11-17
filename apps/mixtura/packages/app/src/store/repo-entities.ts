@@ -24,6 +24,8 @@ export const stockRepo = (context: RepoContext): Repo<Stock> =>
 export interface SpecsRepo extends Repo<Spec> {
   /** Every version of one drink, oldest first. */
   versionsOf(lineageId: string): Promise<Spec[]>;
+  /** Deletes every version of one drink, unless something still uses them (store/references.ts). */
+  deleteLineage(lineageId: string): Promise<void>;
 }
 
 export function specsRepo(context: RepoContext): SpecsRepo {
@@ -37,6 +39,10 @@ export function specsRepo(context: RepoContext): SpecsRepo {
     async versionsOf(lineageId) {
       const all = await repo.listBy('lineageId', lineageId);
       return all.sort((a, b) => a.version - b.version);
+    },
+    async deleteLineage(lineageId) {
+      for (const version of await repo.listBy('lineageId', lineageId))
+        await repo.delete(version.id);
     },
   };
 }

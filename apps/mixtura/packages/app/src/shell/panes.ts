@@ -31,7 +31,7 @@ export function panes(view: ScreenView, pushed: boolean, onBack: () => void): HT
   const detail = h(
     'section',
     { class: `pane ${view.list ? 'detail' : 'solo detail'}`, 'aria-label': view.title },
-    appbar(view.title, back),
+    appbar(view.title, back, view.headerAction),
     h('div', { class: 'pane-scroll' }, view.body),
     view.actions && h('div', { class: 'actionbar' }, view.actions),
   );

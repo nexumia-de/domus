@@ -13,11 +13,20 @@ export type StoreErrorKind =
   | 'quota'
   /** The value does not validate against its JSON Schema or breaks a store rule. */
   | 'invalid'
+  /** The entity is still referenced by others; `referrers` names them. */
+  | 'referenced'
   /** A migration threw; the upgrade was rolled back and the old data is untouched. */
   | 'migration'
   /** The bundled seed data did not load or has the wrong shape. */
   | 'seed'
   | 'failed';
+
+/** One thing that still uses an entity a user tried to delete. */
+export interface Referrer {
+  kind: 'drink' | 'ingredient' | 'prepared' | 'riff' | 'affinity';
+  id: string;
+  name: string;
+}
 
 export class StoreError extends Error {
   constructor(
@@ -25,6 +34,8 @@ export class StoreError extends Error {
     message: string,
     /** Schema problems for `invalid`, one line each. */
     readonly details: readonly string[] = [],
+    /** What still uses the entity, for `referenced`. */
+    readonly referrers: readonly Referrer[] = [],
   ) {
     super(message);
     this.name = 'StoreError';

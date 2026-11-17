@@ -63,6 +63,95 @@ Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). URL
   [data model](data-model.md#spec)) and the draft. Derived: balance
   preview, "= 22.5 ml" text, role suggestions from the ingredient.
 
+## As built (#25)
+
+Code: `packages/app/src/screens/editor/` (pure modules `amount-entry`,
+`draft`, `check`, `build-spec`, `ingredient-form`, `picker-vm`,
+`view-model`, `save`; the session and its actions `session`, `actions`,
+`sheet-actions`, `commit`; the page `page`, `page-fields`, `index`) and the
+components `line-row`, `amount-input`, `reorder`, `ingredient-picker`,
+`ingredient-form-sheet`. Screenshots: [new drink](screenshots/editor-daiquiri-360x720.png),
+[error](screenshots/editor-error-360x720.png),
+[restored draft](screenshots/editor-restored-360x720.png),
+[ingredient form](screenshots/editor-ingredient-form-360x720.png),
+[prepared](screenshots/editor-prepared-360x720.png),
+[copy of a built-in drink](screenshots/editor-copy-360x720.png) and the same
+at 1200 x 800.
+
+What differs from the text above, and why:
+
+- **Bottom bar: Discard and Save**, not Cancel and Save Version. The back
+  button is Cancel (it keeps the draft, no confirm). **Discard** returns to
+  the saved drink at once and offers Undo for the session. The button reads
+  **Save** until #26 gives it versions; there is no save sheet yet.
+- **One save function.** Everything goes through `saveDraft` and a
+  `SpecSaver` (`save.ts`); here the saver replaces the stored spec in place.
+  #26 swaps in a saver that appends a version. Note for #26: an ingredient's
+  `prepared.specId` is a spec **id**, so a saver that creates a new id must
+  rewrite it (the engine looks the spec up by that id).
+- **Edit on a built-in drink** opens the user's own copy (not stored until
+  Save): new user ids, version 1, `parentId` the built-in spec's id (what #27
+  shows as the family), the built-in `source` kept. The built-in drink is never
+  written. The spec screen has an **Edit** button.
+- **Amount field.** The text keeps what was typed; the unit selector is the
+  fallback for a bare number and follows a unit typed in the text. A stored
+  line that was not touched keeps its stored number and unit exactly (a
+  line stored as 22.5 ml is never rewritten through a display unit). A
+  range (`1-2 dashes`) gives `amountMax`. The "= 22.5 ml" line says "about"
+  for convention units (dashes) and "counted, no volume of its own" for
+  counted units. A `top` line has a volume field (`topMl`) instead of an amount.
+  Errors appear after the field is left, in words, with the grammar.
+- **Template.** Choosing one adds empty lines with the roles no line has yet
+  and fills an empty method and glass from the template; typed lines are
+  never changed. Without a choice the engine's suggestion is offered live
+  ("Use Daiquiri"); ignoring it changes nothing.
+- **Role per line** defaults from the ingredient; the line menu has Role
+  (from the ingredient or one of the eight).
+- **Reorder** by a drag handle (44 px, pointer events, touch included), by the
+  arrow keys on the handle and by Move Up and Move Down in the line menu.
+- **Draft.** Kept in the local store (store `drafts`, key `draft/<address
+id>` or `draft/new`, written 300 ms after the last change and when the page
+  is hidden), restored on return with the notice "Your unsaved changes were
+  restored" and **Discard Draft**. A draft is not an entity: not exported, not
+  counted for the backup reminder. The "Draft kept" tag shows while the draft
+  differs from the saved drink.
+- **Sheets** (`?sheet=pick`, `?sheet=ingredient`) are history entries on a
+  phone and a replace on a wide screen, like the batch sheet. The ingredient
+  form replaces the picker (one entry), so Back from the form returns to the
+  editor.
+- **Picker.** Search over seed and user ingredients (the swap sheet's search,
+  shared in `spec/ingredient-search.ts`), rows with path and the tags
+  Prepared and User, Enter picks the first row, browse by category with a
+  chevron, recently used (from the user's drinks), a Create row. A user
+  ingredient has an Edit button.
+- **Ingredient form.** Name, where it belongs (categories and types, a
+  select), role, ABV, sugar, acid; empty is stored as absent; numbers are
+  checked (ABV and acid 0 to 100, sugar 0 or more, decimal comma accepted);
+  names that exist are refused. Level is `product`. Edit shows how many
+  drinks use it and **Delete Ingredient**.
+- **Prepared ingredient.** The toggle on the editor adds Yield (a volume;
+  a mass yield is refused), Shelf life in days, where it belongs and its role,
+  and the computed ABV, sugar and acid from the engine (`computePrepared`,
+  worked out live; the figures match the engine's vector
+  `prepared-syrup-1-1`). Saving writes the spec first and the ingredient
+  record second (no shared transaction across stores). Every drink that uses
+  it is computed from the spec each time (the browse model now passes the
+  prepared specs to the balance), so editing it updates them all. The recipe
+  of a prepared ingredient is not listed as a drink; it opens from the line
+  link "Prepared: ..." on the spec screen.
+- **Deletes** (**Delete Drink** at the end of the editor, **Delete Ingredient**
+  in the form) act at once with Undo, and are **refused** when something
+  uses them, in a calm message naming the users ("Limed Syrup is still used by
+  Syrup Test. Remove it there first, then delete it.").
+- **Keyboard.** The editor has room for `--kb-inset` below its last field and the
+  sheets stay above it; nothing is focused when the screen opens except
+  after Add Ingredient, which opens the picker with its search focused.
+
+Not built, kept for follow-up: Add Substitute in the line menu (existing
+substitutes are kept unchanged), a check mark for ingredients in stock in the
+picker, a prepared ingredient's storage text, and the Save sheet and
+versions (#26).
+
 # Ingredient picker
 
 Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). A sheet

@@ -59,9 +59,15 @@ function importLegacyPrefs({ tx, legacyPrefs }: MigrationContext): void {
   settings.put({ key: 'units', value: prefs.units });
 }
 
+/** Version 3: editor drafts (docs/store.md). */
+function createDrafts({ db }: MigrationContext): void {
+  db.createObjectStore('drafts', { keyPath: 'key' });
+}
+
 export const migrations: readonly Migration[] = [
   { version: 1, describe: 'Create the object stores', up: createStores },
   { version: 2, describe: 'Move the shell preferences into settings', up: importLegacyPrefs },
+  { version: 3, describe: 'Add the store for editor drafts', up: createDrafts },
 ];
 
 /** Runs every migration above `oldVersion` up to `newVersion`, in order. */

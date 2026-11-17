@@ -93,6 +93,16 @@ export interface SpecVM {
   source?: string;
 }
 
+/** The three figures as the compact bar shows them. */
+export function compactItems(balance: BalanceVM): CompactItem[] {
+  return balance.figures.map((f) => ({
+    name: f.name,
+    value: f.valueText,
+    ...(f.positionShort && { positionShort: f.positionShort }),
+    ...(f.deltaShort && { deltaShort: f.deltaShort }),
+  }));
+}
+
 function lineVM(
   model: BrowseModel,
   line: SpecLine,
@@ -192,6 +202,8 @@ export interface SpecOptions {
   sheetLine?: number | null;
   /** Where the spec lives: built-in drinks show their origin, not a version and a status. */
   origin?: 'seed' | 'user';
+  /** Compute the figures now instead of from the model's cache: the spec is a draft that has no stable id. */
+  fresh?: boolean;
 }
 
 export function specVM(
@@ -264,8 +276,12 @@ export function specVM(
     return `${amount}${name}: ${strings.balance.notCountedReason[entry.reason]}`;
   };
   const figuresOf = (lines: readonly SpecLine[]): BalanceResult =>
-    computeBalance(model.tree, { method: spec.method, lines: [...lines] });
-  const result = withWhatIf ? figuresOf(effective.lines) : model.balanceOf(spec);
+    computeBalance(
+      model.tree,
+      { method: spec.method, lines: [...lines] },
+      { specs: model.preparedSpecs },
+    );
+  const result = withWhatIf || options.fresh ? figuresOf(effective.lines) : model.balanceOf(spec);
   const savedResult = swap
     ? savedLines.some((line, i) => line !== spec.lines[i])
       ? figuresOf(savedLines)
@@ -314,12 +330,7 @@ export function specVM(
             ? swapStrings.banner
             : swapStrings.bannerCount(count),
       count,
-      compact: balance.figures.map((f) => ({
-        name: f.name,
-        value: f.valueText,
-        ...(f.positionShort && { positionShort: f.positionShort }),
-        ...(f.deltaShort && { deltaShort: f.deltaShort }),
-      })),
+      compact: compactItems(balance),
       ...(swappedTemplate?.change && { templateChange: swappedTemplate.change }),
       ...(sheet && { sheet }),
     };

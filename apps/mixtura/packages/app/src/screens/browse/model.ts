@@ -11,8 +11,10 @@ import {
   lineRole,
   type BalanceResult,
   type IngredientTree,
+  type PreparedSpec,
 } from '@mixtura/engine';
 import { normalise } from './normalise';
+import { preparedLookup } from './prepared';
 import type { Ingredient, SpecData, Template } from './types';
 
 export interface Vocabulary {
@@ -53,6 +55,10 @@ export interface BrowseModel {
   drinks: readonly Drink[];
   /** Every spec by its id (versions, prepared ingredients' specs). */
   specById: ReadonlyMap<string, SpecData>;
+  /** The specs of prepared ingredients as the engine reads them, by spec id. */
+  preparedSpecs: ReadonlyMap<string, PreparedSpec>;
+  /** Whether a spec is the recipe of a prepared ingredient (it is not listed as a drink). */
+  isPreparedSpec(spec: SpecData): boolean;
   byLineage: ReadonlyMap<string, Drink>;
   vocabulary: Vocabulary;
   attribution?: { notice: string };
@@ -112,7 +118,14 @@ export function buildModel(input: ModelInput): ModelResult {
   const ingredientName = (id: string): string | undefined => getIngredient(tree, id)?.name;
 
   const specById = new Map(input.specs.map((s) => [s.value.id, s.value]));
-  const drinks: Drink[] = newestVersions(
+  const preparedLineages = new Set(
+    input.ingredients.flatMap((i) => {
+      const spec = i.prepared ? specById.get(i.prepared.specId) : undefined;
+      return spec ? [spec.lineageId] : [];
+    }),
+  );
+  const preparedSpecs = preparedLookup(tree, input.ingredients, specById);
+  const everyDrink: Drink[] = newestVersions(
     input.specs.map((s) => ({ spec: s.value, origin: s.origin })),
   )
     .map(({ spec, origin }) => {
@@ -129,6 +142,8 @@ export function buildModel(input: ModelInput): ModelResult {
       return { spec, origin, search: normalise(words.join(' | ')) };
     })
     .sort((a, b) => byName(a.spec, b.spec));
+  // The recipe of a prepared ingredient opens by its address but is not a drink in the list.
+  const drinks = everyDrink.filter((d) => !preparedLineages.has(d.spec.lineageId));
 
   const balances = new Map<string, BalanceResult>();
   const bases = new Map<string, readonly string[]>();
@@ -148,7 +163,9 @@ export function buildModel(input: ModelInput): ModelResult {
     ),
     drinks,
     specById,
-    byLineage: new Map(drinks.map((d) => [d.spec.lineageId, d])),
+    byLineage: new Map(everyDrink.map((d) => [d.spec.lineageId, d])),
+    preparedSpecs,
+    isPreparedSpec: (spec) => preparedLineages.has(spec.lineageId),
     vocabulary: input.vocabulary,
     attribution: input.attribution,
     seedVersion: input.seedVersion,
@@ -156,7 +173,11 @@ export function buildModel(input: ModelInput): ModelResult {
     balanceOf(spec) {
       let result = balances.get(spec.id);
       if (!result) {
-        result = computeBalance(tree, { method: spec.method, lines: spec.lines });
+        result = computeBalance(
+          tree,
+          { method: spec.method, lines: spec.lines },
+          { specs: preparedSpecs },
+        );
         balances.set(spec.id, result);
       }
       return result;

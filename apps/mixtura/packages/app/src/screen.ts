@@ -20,6 +20,8 @@ export interface ScreenView {
   title: string;
   /** Scrolling content of the detail pane. */
   body: Node;
+  /** A small element at the right of the detail pane's header (the editor's draft tag). */
+  headerAction?: Node;
   /** Bottom action bar of a pushed screen; replaces the navigation on a phone. */
   actions?: Node;
   /**

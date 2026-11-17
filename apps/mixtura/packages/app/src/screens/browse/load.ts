@@ -3,7 +3,9 @@
 // answers "loading" at first and the finished load bumps `browseRev`, which
 // redraws. A later write path (the editor) calls `invalidateBrowse`.
 
+import { type AppState } from '../../app-state';
 import { type ScreenContext } from '../../screen';
+import { type Store } from '../../state';
 import { type Catalog } from '../../store';
 import { buildModel, type BrowseModel } from './model';
 import type { Ingredient, SpecData, Template } from './types';
@@ -34,6 +36,27 @@ async function load(catalog: Catalog): Promise<BrowseState> {
   return built.ok
     ? { kind: 'ready', model: built.model }
     : { kind: 'failed', reason: built.reason };
+}
+
+/**
+ * Reads the catalog again after the user's own data changed (the editor
+ * saved a drink or an ingredient). The model drawn so far stays on screen
+ * until the new one is ready, so no screen flashes "Loading".
+ */
+export function refreshBrowse(store: Store<AppState>, catalog: Catalog): Promise<void> {
+  const old = cache?.state;
+  const entry: { catalog: Catalog; state: BrowseState } = {
+    catalog,
+    state: old?.kind === 'ready' ? old : { kind: 'loading' },
+  };
+  cache = entry;
+  const finish = (loaded: BrowseState): void => {
+    entry.state = loaded;
+    if (cache === entry) store.set({ browseRev: store.get().browseRev + 1 });
+  };
+  return load(catalog).then(finish, (error: unknown) =>
+    finish({ kind: 'failed', reason: (error as Error).message }),
+  );
 }
 
 export function browseState({ state, store, data }: ScreenContext): BrowseState {

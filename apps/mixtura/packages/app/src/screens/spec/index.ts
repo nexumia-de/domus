@@ -18,6 +18,7 @@ import { browseState } from '../browse/load';
 import { drinksPane, failedStatus, loadingStatus } from '../drinks/pane';
 import { swapSheet } from '../../components/swap-sheet';
 import { compactBar } from '../../components/compact-balance';
+import * as glyph from '../../components/glyphs';
 import { openTopField, parseTopVolume, setTopMl, viewFor } from './session';
 import { sheetLineOf, swapActions, type SwapActions } from './swap-actions';
 import { swapOf } from './swap-state';
@@ -194,15 +195,30 @@ export const screens: Screen[] = [
               swapStrings.reset,
             )
           : h(
-              'button',
-              {
-                type: 'button',
-                class: 'btn btn--primary',
-                'aria-label': swapStrings.tryAria,
-                'data-focus': 'try-swap',
-                onclick: swap.start,
-              },
-              strings.spec.trySwap,
+              'div',
+              { class: 'bar-buttons' },
+              h(
+                'a',
+                {
+                  class: 'btn',
+                  href: `#/drinks/${encodeURIComponent(id)}/edit`,
+                  'data-focus': 'edit',
+                  'aria-label': strings.spec.editAria(vm.name),
+                },
+                glyph.edit(),
+                strings.spec.edit,
+              ),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'btn btn--primary',
+                  'aria-label': swapStrings.tryAria,
+                  'data-focus': 'try-swap',
+                  onclick: swap.start,
+                },
+                strings.spec.trySwap,
+              ),
             ),
         list: drinksPane(context, 'detail', id),
       };

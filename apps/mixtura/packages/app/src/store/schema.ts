@@ -5,7 +5,7 @@
 export const DB_NAME = 'mixtura';
 
 /** Raise with every change of `stores`, and add a migration for it. */
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export interface IndexDef {
   name: string;
@@ -46,4 +46,6 @@ export const stores: readonly StoreDef[] = [
   { name: 'stock', keyPath: 'ingredientId', indexes: [] },
   { name: 'settings', keyPath: 'key', indexes: [] },
   { name: 'meta', keyPath: 'key', indexes: [] },
+  // Unsaved editor state, one record per editor address (`draft/<id>`); never exported.
+  { name: 'drafts', keyPath: 'key', indexes: [] },
 ];

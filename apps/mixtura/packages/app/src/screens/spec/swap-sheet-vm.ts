@@ -3,7 +3,6 @@
 // the search over all ingredients (docs/screens-browse.md#swap-mode). Pure.
 
 import {
-  ancestors,
   convert,
   getIngredient,
   lineRole,
@@ -12,10 +11,10 @@ import {
   type SwapGroupKind,
   type UnitId,
 } from '@mixtura/engine';
-import { normalise } from '../browse/normalise';
 import type { BrowseModel } from '../browse/model';
 import type { SpecLine } from '../browse/types';
 import { amountText } from './format';
+import { pathOf, searchIngredients } from './ingredient-search';
 import { type SpecView } from './session';
 import { amountOfLine, parseSwapAmount, type Swap } from './swap-state';
 import { swapStrings } from './swap-strings';
@@ -65,11 +64,6 @@ export interface SwapSheetVM {
   search: { query: string; results: OfferVM[]; none: boolean };
 }
 
-function pathOf(model: BrowseModel, id: string): string {
-  const chain = (ancestors(model.tree, id) ?? []).slice().reverse();
-  return chain.map((a) => model.ingredientName(a) ?? a).join(' › ');
-}
-
 export function sheetVM(
   model: BrowseModel,
   saved: readonly SpecLine[],
@@ -114,24 +108,10 @@ export function sheetVM(
     };
   });
 
-  const query = normalise(view.swapQuery);
-  const words = query.split(' ').filter(Boolean);
-  const results: OfferVM[] = [];
-  if (words.length > 0) {
-    const matches = model.tree.ids
-      .filter((id) => {
-        const text = normalise(nameOf(id));
-        return words.every((w) => text.includes(w));
-      })
-      .sort((a, b) => {
-        const rank = (id: string): number =>
-          normalise(nameOf(id)).startsWith(words[0] ?? '') ? 0 : 1;
-        return (
-          rank(a) - rank(b) || nameOf(a).localeCompare(nameOf(b), 'en', { sensitivity: 'base' })
-        );
-      });
-    results.push(...matches.slice(0, SEARCH_SHOWN).map(offer));
-  }
+  const searching = view.swapQuery.trim() !== '';
+  const results: OfferVM[] = searchIngredients(model, view.swapQuery)
+    .slice(0, SEARCH_SHOWN)
+    .map(offer);
 
   const vm: SwapSheetVM = {
     index,
@@ -140,7 +120,7 @@ export function sheetVM(
     changed: swap.lines[index] !== undefined,
     groups,
     noOffers: groups.length === 0,
-    search: { query: view.swapQuery, results, none: words.length > 0 && results.length === 0 },
+    search: { query: view.swapQuery, results, none: searching && results.length === 0 },
   };
   if (line.ingredientId !== original.ingredientId) {
     vm.saved = { id: original.ingredientId, name: nameOf(original.ingredientId) };

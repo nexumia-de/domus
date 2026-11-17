@@ -20,7 +20,7 @@ sources:
 ([data model](data-model.md)). Seed data is shipped with the app and
 never written into the database. Built by issue #24.
 
-## Object stores (schema version 2)
+## Object stores (schema version 3)
 
 Defined as data in `store/schema.ts`; a test compares a freshly migrated
 database with that table.
@@ -34,14 +34,17 @@ database with that table.
 | `stock`       | `ingredientId` | none                                                                                    | Stock records                                                                                                   |
 | `settings`    | `key`          | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup` |
 | `meta`        | `key`          | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                          |
+| `drafts`      | `key`          | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                              |
 
 Differences from the wording of issue #24: there is no `spec-versions`
 store (the data model keeps each version as its own record in `specs`,
 linked by `lineageId`) and no `prepared` store (a prepared ingredient is
 an ingredient with `prepared` set). `templates` and `affinities` are
 added because the export file has them. Editor drafts
-(`draft/<spec id>`, [behaviour](behaviour.md#state-and-reload)) get their
-store with the editor issue, as a new migration.
+(`draft/<id>`, [behaviour](behaviour.md#state-and-reload)) have the store
+`drafts` since version 3 (issue #25, `store/repo-drafts.ts`): a record is
+`{ key, value: { version: 1, draft } }`, a write is not an entity write and
+does not touch the backup counter.
 
 ## Schema versions and migrations
 
@@ -54,6 +57,7 @@ edited after release.
 | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | 1       | Creates the stores above, empty.                                                                                                  |
 | 2       | Copies the shell's interim `localStorage` preferences (`mixtura.prefs`) into `settings` once; no old value means nothing written. |
+| 3       | Creates `drafts`, empty.                                                                                                          |
 
 After opening, `data.ts` removes the old key. A copy of theme and units
 stays in `localStorage` (`mixtura.prefs-copy`, `prefs.ts`) only so the
@@ -99,8 +103,24 @@ Every committed write or delete also adds to the backup change counter
 (`store/backup.ts`); export and import are in
 [export and import](export-format.md) (`exchange` on the store).
 
-Not built yet: refusing to delete a user entity that others reference
-([data model](data-model.md#ids), issue #61).
+## References
+
+`store/references.ts` wraps the delete calls of `ingredients` and `specs`
+(issue #61). A user entity that others reference is not deleted: the call
+throws a `StoreError` of kind `referenced` whose `details` and `referrers`
+(`{ kind, id, name }`) name what uses it, and nothing changes (and nothing is
+counted). The references:
+
+- an ingredient is used by drinks (a line or a substitute, any version; named
+  by the newest version's name), by ingredients that have it as `parentId` and
+  by affinities;
+- a spec is used by a prepared ingredient (`prepared.specId`) and by riffs
+  (a spec of another lineage whose `parentId` is one of its versions);
+- `specs.deleteLineage(id)` deletes every version of one drink after the same
+  check, which is how the app deletes a drink.
+
+The order for a prepared ingredient is its record first, then its spec. Seed
+entities are never deleted and never referrers. Tests: `test/store-references.test.ts`.
 
 ## Persistent storage
 
@@ -140,7 +160,8 @@ Export and import: [export and import](export-format.md#tests).
 - `test/store-migrations.test.ts`: version 1 database with data upgraded,
   legacy preferences moved once, failing migration rolled back, newer
   database refused, no IndexedDB, blocked upgrade.
-- `test/store-persist.test.ts`, `test/store-seed.test.ts`.
+- `test/store-persist.test.ts`, `test/store-seed.test.ts`,
+  `test/store-references.test.ts` (references and drafts).
 - `e2e/store.mjs` in a real browser: settings survive a reload, a
   hand-built version 1 database with a spec and stock record is migrated
   and keeps them, no IndexedDB and a too-new database show the banner.

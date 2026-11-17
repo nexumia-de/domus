@@ -30,3 +30,12 @@ export const below = make([['path', { d: 'M12 5v14M6 13l6 6 6-6' }]]);
 export const above = make([['path', { d: 'M12 19V5M6 11l6-6 6 6' }]]);
 /** No figure: a dash. */
 export const none = make([['path', { d: 'M7 12h10' }]]);
+/** Three dots, vertical: the line menu. */
+export const more = make([
+  ['circle', { cx: '12', cy: '5', r: '1.5', fill: 'currentColor' }],
+  ['circle', { cx: '12', cy: '12', r: '1.5', fill: 'currentColor' }],
+  ['circle', { cx: '12', cy: '19', r: '1.5', fill: 'currentColor' }],
+]);
+/** Two rows of dots: the drag handle. */
+export const grip = make([['path', { d: 'M8 7h8M8 12h8M8 17h8' }]]);
+export const back = make([['path', { d: 'M15 5l-7 7 7 7' }]]);

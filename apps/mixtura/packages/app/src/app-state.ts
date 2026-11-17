@@ -73,6 +73,8 @@ export interface AppState {
   browseRev: number;
   /** Counts changes the stock screens draw from (stock records loaded or written, tree expanded); a change redraws. */
   stockRev: number;
+  /** Counts changes of the editor's structure (a line added, a sheet opened, a draft restored); a change redraws. */
+  editorRev: number;
   /** Temporary state of the spec screen (what-if volumes); never stored. */
   specView: SpecView;
   /** Last route of each destination, so switching back restores its stack. */
@@ -97,6 +99,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     toast: null,
     browseRev: 0,
     stockRev: 0,
+    editorRev: 0,
     specView: initialSpecView,
     lastRoute: {},
   };

@@ -1,7 +1,6 @@
 // Drinks destination: the list with search and filters (#18). The spec
 // screen is in screens/spec; both show this list in the first pane.
 
-import { h } from '../../dom';
 import { type Route } from '../../router';
 import { type Screen } from '../../screen';
 import { strings } from '../../strings';
@@ -20,16 +19,6 @@ export const screens: Screen[] = [
       title: strings.titles.drinks,
       body: selectDrink(),
       list: drinksPane(context, 'list'),
-    }),
-  },
-  {
-    id: 'drinks-new',
-    destination: 'drinks',
-    pushed: true,
-    match: (route) => is(route, 'drinks', 'new'),
-    view: () => ({
-      title: strings.titles.newDrink,
-      body: h('div', { class: 'status' }, h('p', {}, strings.placeholder)),
     }),
   },
 ];

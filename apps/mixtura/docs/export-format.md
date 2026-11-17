@@ -25,6 +25,8 @@ the transaction), `store/backup.ts` (counter) and
 
 ## Export
 
+Editor drafts (store `drafts`) are not part of the file: they are unsaved work, not data.
+
 One JSON file: `app`, `formatVersion`, `exportedAt`, `seedVersion` (the
 built-in data the references were made against) and the five lists of
 user data. Settings, the persistence answer and seed data are not in it.

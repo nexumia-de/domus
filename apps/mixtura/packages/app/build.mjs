@@ -29,7 +29,17 @@ await build({
   define: { APP_VERSION: JSON.stringify(version) },
 });
 
-const styles = ['tokens', 'base', 'shell', 'components', 'browse', 'stock', 'swap', 'app'];
+const styles = [
+  'tokens',
+  'base',
+  'shell',
+  'components',
+  'browse',
+  'stock',
+  'swap',
+  'editor',
+  'app',
+];
 const css = styles
   .map((name) => readFileSync(join('src', 'styles', `${name}.css`), 'utf8'))
   .join('\n');
