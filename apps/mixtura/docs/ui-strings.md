@@ -128,7 +128,7 @@ Reasons filling {reason} of "Your data cannot be saved here": This
 browser blocks local storage here (no IndexedDB) · Another window still
 uses an older version; close it · Your data was saved by a newer version
 of the app · Your data could not be upgraded and was left as it was ·
-The device storage is full. Shown as a banner with Try Again above the
+The device storage is full · Another window updated the app or its data (button Reload instead of Try Again). Shown as a banner with Try Again above the
 read-only app ([store](store.md#failure)).
 
 # Update

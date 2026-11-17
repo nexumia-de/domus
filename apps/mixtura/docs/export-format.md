@@ -36,8 +36,9 @@ The format itself is in the
 | Reading and writing IndexedDB, one transaction, import backup, Undo, the clock, files | app `store/exchange/` (`snapshot.ts`, `index.ts`), `exchange-actions.ts` |
 | Change counter and reminder                                                           | app `store/backup.ts`, `store/exchange/reminder.ts`                      |
 
-The schema check is the one dependency the engine must not have: Ajv is
-bundled by the app only and would be about 120 kB in a bundle that has no
+The schema check is the one dependency the engine must not have: Ajv's
+compiler is a development tool of the app (it generates the validators at
+build time) and would be about 120 kB in a bundle that has no
 dependency ([dependencies](dependencies.md)). So `parseExportFile` takes the
 check as an argument (`SchemaCheck`), and the app's thin wrapper
 (`store/exchange/parse.ts`) passes `exportProblems`. The tests of the

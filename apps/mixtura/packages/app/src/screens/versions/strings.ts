@@ -13,7 +13,7 @@ export const versionStrings = {
   riff: 'Riff',
   riffAria: (name: string) => `Riff on ${name}: a new drink that starts as a copy`,
   saveAsRiff: 'Save as Riff',
-  saveAsRiffAria: 'Make a new drink from the swapped lines, a riff on this one',
+  saveAsRiffAria: 'Save as Riff: make a new drink from the swapped lines, a riff on this one',
 
   // The versions list
   title: 'Versions',

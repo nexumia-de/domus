@@ -1,6 +1,7 @@
 /* global document, getComputedStyle, innerWidth, location, MutationObserver -- in functions the page runs */
 // Accessibility pass in a real browser (docs/accessibility.md): every screen
 // at the given size in light and dark, then reduced motion and 200 % zoom.
+// The test injects a style rule for the 200 % zoom, so this context bypasses the page policy (e2e/csp.mjs covers it).
 // Hand-written checks, no library: accessible names from the browser's
 // own accessibility tree, focus visibility and order by pressing Tab,
 // contrast computed from the rendered colours.
@@ -106,7 +107,11 @@ const report = (where, list) => {
 };
 
 const newPage = async (options) => {
-  const context = await browser.newContext({ viewport: { width, height }, ...options });
+  const context = await browser.newContext({
+    viewport: { width, height },
+    bypassCSP: true,
+    ...options,
+  });
   const page = await context.newPage();
   page.on('pageerror', (error) => {
     throw error;

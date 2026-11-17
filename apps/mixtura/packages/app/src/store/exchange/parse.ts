@@ -1,5 +1,5 @@
 // Reading an export file is the engine's rule (parseExportFile); the schema
-// check needs Ajv, which only the app bundles, so the app passes it in.
+// check is the app's (validators compiled at build time), so the app passes it in.
 
 import {
   parseExportFile as parseWith,

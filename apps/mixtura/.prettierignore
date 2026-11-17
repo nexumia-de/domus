@@ -2,3 +2,4 @@ dist/
 package-lock.json
 packages/engine/data/seed/
 scripts/seed/fixture/expected/
+packages/app/src/store/schema-validators.generated.mjs

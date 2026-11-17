@@ -143,6 +143,11 @@ app reminds you calmly after 30 days with changes and no export.
 
 The workflow `.github/workflows/pages.yml` builds `packages/app` and
 deploys `packages/app/dist` on every push to `main` and on manual start.
+The workflow has `contents: read` only; the `build` job adds `pages: read`
+(`configure-pages` reads the Pages settings) and only the `deploy` job has
+`pages: write` and `id-token: write`. A build provenance attestation was
+considered and left out: it needs `attestations: write` and `id-token: write`
+in the build job, which this change removes.
 Pages cannot be enabled by a workflow, so the first run fails at
 `configure-pages` until these steps are done (only the workflow `Pages`
 fails, never the required check `check`):

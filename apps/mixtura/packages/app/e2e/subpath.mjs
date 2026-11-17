@@ -49,6 +49,24 @@ for (const prefix of PREFIXES) {
     expect(response.ok(), `icon ${icon.src} loads under ${prefix}`);
   }
 
+  for (const shot of manifest.screenshots) {
+    const response = await context.request.get(resolved(shot.src));
+    expect(response.ok(), `screenshot ${shot.src} loads under ${prefix}`);
+  }
+  for (const shortcut of manifest.shortcuts) {
+    const target = resolved(shortcut.url);
+    expect(
+      target.startsWith(site.url) && new URL(target).hash.startsWith('#/'),
+      `shortcut ${shortcut.name} stays inside ${prefix}`,
+    );
+  }
+  // Not precached (a deliberate choice): the page's service worker passes them to the network.
+  const viaWorker = await page.evaluate(
+    async (url) => (await fetch(url)).ok,
+    resolved(manifest.screenshots[0].src),
+  );
+  expect(viaWorker, `a screenshot is fetched through the service worker under ${prefix}`);
+
   const cached = await page.evaluate(async () => {
     const [name] = await caches.keys();
     return (await (await caches.open(name)).keys()).map((r) => r.url);
@@ -80,6 +98,10 @@ for (const prefix of PREFIXES) {
   expect(
     cached.includes(`${site.url}rank-worker.js`),
     `the ranking worker script is precached under ${prefix}`,
+  );
+  expect(
+    cached.includes(`${site.url}theme-init.js`),
+    `the theme script is precached under ${prefix}`,
   );
   await page.goto(`${site.url}#/stock`);
   await page.locator('.stock-tree').waitFor();

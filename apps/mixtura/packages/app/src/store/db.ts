@@ -12,6 +12,12 @@ export interface OpenOptions {
   migrations?: readonly Migration[];
   /** Raw interim preferences for migration 2; read inside the upgrade. */
   legacyPrefs?: () => string | null;
+  /**
+   * Called after another tab upgraded or deleted the database and this
+   * connection was closed so it could proceed: the store is unusable from
+   * then on, and the app asks for a reload.
+   */
+  onVersionChange?: () => void;
 }
 
 export function request<T>(source: IDBRequest<T>): Promise<T> {
@@ -100,7 +106,10 @@ export async function openDatabase(options: OpenOptions = {}): Promise<IDBDataba
     opening.onsuccess = () => {
       const db = opening.result;
       // A newer tab may upgrade: let it, and stop using this connection.
-      db.onversionchange = () => db.close();
+      db.onversionchange = () => {
+        db.close();
+        options.onVersionChange?.();
+      };
       if (settled) db.close();
       else {
         settled = true;
