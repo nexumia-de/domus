@@ -2,6 +2,7 @@
 
 ## 2026-11-17
 
+- **Creation**: [deployment](deployment.md): not deployed yet (no app); planned at `culina.nexumia.de` on Cloudflare Workers static assets with Mixtura's setup, shared deploy code first; `culina.nexumia.de` has no DNS record yet.
 - **Creation**: [data model](data-model.md) (issue #4): entities ingredient, ratio template, component, dish, version, stock item, affinity and the export envelope with fields, ids, units, stored versus derived, general versus kitchen-specific parts (by reference to Mixtura's shared model inventory), Cooklang compatibility and nine open questions with proposals. JSON Schemas (draft 2020-12) in `packages/engine/schemas/` with valid and invalid examples, validated by an Ajv test that also checks the document's tables against the schemas. Ajv 8.17.1 added as a dev dependency (MIT). Hosts tested for this research are in [development](development.md).
 - **Tooling** (issue #3): npm workspaces `packages/engine` and `packages/app` with placeholders, strict TypeScript, ESLint with the engine purity and deep-import rules, Prettier, vitest, `npm run check`, CI job `check`, Dependabot; versions identical to Mixtura's lockfile; see [development](development.md) and [dependencies](dependencies.md).
 - **Creation**: [ratios checked against sources](ratios.md) (issue #5): 17 numbers, 10 confirmed, 6 corrected, 1 unverified; most checks rest on search excerpts because the hosts are blocked. [How chefs work](chef-practice.md) corrected to match.
