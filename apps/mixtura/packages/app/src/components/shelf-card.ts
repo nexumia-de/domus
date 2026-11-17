@@ -52,6 +52,7 @@ export function shelfCard(vm: ShelfVM | undefined, actions: ShelfActions): HTMLE
           { class: 'shelf-batch', 'data-batch-state': vm.batch.status },
           h('p', { class: 'shelf-dates num' }, ...dateParts(vm.batch.dates)),
           h('p', { class: 'shelf-state' }, shape(vm.batch.status), h('span', {}, vm.batch.text)),
+          vm.batch.others > 0 && h('p', { class: 'note' }, t.otherBatches(vm.batch.others)),
         )
       : h('p', { class: 'note' }, t.noBatch),
     actions.madeToday

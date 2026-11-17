@@ -38,6 +38,8 @@ import { variantCard } from '../../components/variant-card';
 import { variantVMs } from './variant-vm';
 import { alcoholOf, thresholdsFor } from '../browse/alcohol';
 import { stockStrings } from './stock-strings';
+import { madeBatch, usedUpNewest } from '../../stock/batches';
+import type { Stock } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { showToast } from '../../toasts';
 
@@ -221,30 +223,30 @@ export const screens: Screen[] = [
       };
       const shelfVm =
         records && !swapState ? shelfVM(state.model, drink.spec, records, today()) : undefined;
-      const record = (change: { present: boolean; openedOn?: string }): void => {
-        if (!shelfVm || !records) return;
-        const base = withPresent(records, shelfVm.ingredientId, change.present);
-        const { openedOn: _old, ...rest } = base;
-        void _old;
-        const next = {
-          ...rest,
-          ...(change.openedOn !== undefined && { openedOn: change.openedOn }),
-        };
+      const record = (next: Stock | null, text: string): void => {
+        if (!shelfVm) return;
+        if (!next) return void showToast(store, shelfStrings.alreadyRecorded);
         const undo = changeStock(context, [{ id: shelfVm.ingredientId, next }]);
-        showToast(
-          store,
-          change.openedOn !== undefined
-            ? shelfStrings.recorded(shelfVm.name, change.openedOn)
-            : shelfStrings.usedUpToast(shelfVm.name),
-          () => changeStock(context, undo),
-        );
+        showToast(store, text, () => changeStock(context, undo));
       };
+      const made = (date: string): void =>
+        record(
+          shelfVm
+            ? madeBatch(records?.get(shelfVm.ingredientId), shelfVm.ingredientId, date)
+            : null,
+          shelfVm ? shelfStrings.recorded(shelfVm.name, date) : '',
+        );
       const shelfActions: ShelfActions =
         stockNow.kind === 'ready' && stockNow.writable
           ? {
-              madeToday: () => record({ present: true, openedOn: today() }),
-              madeOn: (date) => record({ present: true, openedOn: date }),
-              usedUp: () => record({ present: false }),
+              madeToday: () => made(today()),
+              madeOn: made,
+              usedUp: () =>
+                shelfVm &&
+                record(
+                  usedUpNewest(records?.get(shelfVm.ingredientId), shelfVm.ingredientId),
+                  shelfStrings.usedUpToast(shelfVm.name),
+                ),
             }
           : {};
       const page = body(

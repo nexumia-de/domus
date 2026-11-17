@@ -195,14 +195,44 @@ expect(
   (await page.locator('.shelf-dates').innerText()) === 'Made on 2026-12-01 · use by 2026-12-11',
   'a date entered by the user',
 );
+expect(
+  (await page.locator('.shelf-card').innerText()).includes('1 more batch at hand'),
+  'the earlier batch is kept and the card says so',
+);
+let kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+expect(
+  kept.openedOn === '2026-12-01' && JSON.stringify(kept.moreBatches) === '["2026-11-17"]',
+  `the newest is openedOn, the earlier one moreBatches ${JSON.stringify(kept)}`,
+);
 await page.locator('[data-action="used-up"]').click();
-await page.locator('.shelf-card[data-shelf="none"]').waitFor();
+await page.locator('.shelf-card [data-batch-state="past"]').waitFor();
+expect(
+  (await page.locator('.shelf-dates').innerText()) === 'Made on 2026-11-17 · use by 2026-11-27',
+  'Used up uses up the batch the card shows and the card shows the next one',
+);
 await page.getByRole('button', { name: 'Undo' }).click();
-await page.locator('.shelf-card [data-batch-state]').waitFor();
+await page.locator('.shelf-card [data-batch-state="fresh"]').waitFor();
 expect(
   (await page.locator('.shelf-dates').innerText()) === 'Made on 2026-12-01 · use by 2026-12-11',
   'Undo brings the batch back',
 );
+await page.locator('[data-action="used-up"]').click();
+await page.locator('.shelf-card [data-batch-state="past"]').waitFor();
+await page.locator('[data-action="used-up"]').click();
+await page.locator('.shelf-card[data-shelf="none"]').waitFor();
+kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+expect(
+  kept.present === false && kept.openedOn === undefined && kept.moreBatches === undefined,
+  'the last batch used up leaves no date behind',
+);
+// A later "I made this" starts again, with no stale date.
+await page.locator('[data-action="made-today"]').click();
+await page.locator('.shelf-card [data-batch-state]').waitFor();
+kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+expect(kept.moreBatches === undefined, 'no old date comes back');
+await page.locator('[data-action="made-today"]').click();
+await page.getByText('A batch made on that day is already recorded.').waitFor();
+expect(true, 'the same day twice is said, not recorded twice');
 
 // ---- Variants ----
 await open('#/drinks/daiquiri');
