@@ -11,6 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order; Mixtura's engine exists; engine code waits for the shared-model decision.
+- [Deployment](deployment.md) - Not deployed yet; planned at culina.nexumia.de on Cloudflare Workers static assets like Mixtura, and the owner steps then needed.
 
 # Research
 
