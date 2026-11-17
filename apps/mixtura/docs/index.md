@@ -39,7 +39,7 @@ links. Change history is in [log.md](log.md).
 - [Stored unit versus display unit](decisions/units-and-display.md) - Amounts stored as entered, computed in ml and g, display system a setting; default metric proposed, needs owner decision.
 - [Counted units, open amounts and the glass volume](decisions/counted-units.md) - Counted units are units without a table volume; volume only as data (`unitVolumes`, `topMl`), otherwise a line is listed as not counted; no glass volume; batches round counts up.
 - [Packaging for Android and Linux](decisions/packaging.md) - Proposal, needs decision: Capacitor APK on GitHub Releases after a device test, web apps on Linux first, Flatpak shell only if needed, no TWA.
-- [Hosting](decisions/hosting.md) - Accepted: Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages; real headers, correct caching, a preview per pull request.
+- [Hosting](decisions/hosting.md) - Proposed on the owner's direction: Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages; real headers, correct caching, a preview per pull request.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
 - [Where the shared model lives](decisions/shared-model.md) - Proposal, needs decision: a new repository with an npm package consumed by git tag and built by `prepare`; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
 

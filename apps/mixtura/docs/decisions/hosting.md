@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Hosting on Cloudflare Workers static assets
-description: Accepted by the owner on 2026-11-17. The app is hosted on Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages, for real headers, correct caching, a preview per pull request and one pattern with the owner's other web app.
+description: Proposed on the owner's direction of 2026-11-17 (host like LocalGameGalaxy), accepted when the owner merges it. The app is hosted on Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages, for real headers, correct caching, a preview per pull request and one pattern with the owner's other web app.
 tags: [decision, hosting, cloudflare, pwa, headers]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -12,7 +12,8 @@ sources:
 
 # Hosting on Cloudflare Workers static assets
 
-**Status: accepted** by the owner on 2026-11-17, in the session.
+**Status: proposed.** The owner gave the direction on 2026-11-17 (host on
+Cloudflare as LocalGameGalaxy does); merging this change accepts it.
 
 ## Context
 
