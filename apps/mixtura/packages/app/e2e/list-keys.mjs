@@ -200,6 +200,21 @@ expect(
   `n does nothing where the list is not shown ${await hash()}`,
 );
 
+// A search typed just before the user leaves the list lands after the 200 ms debounce:
+// it must not throw them back to the list.
+await page.goto(`${site.url}#/drinks`, { waitUntil: 'load' });
+await waitRows();
+await page.getByRole('searchbox').focus();
+await page.keyboard.type('gin');
+await page.evaluate(() => document.activeElement?.blur());
+await page.keyboard.press('n');
+await page.waitForFunction(() => location.hash === '#/drinks/new');
+await page.waitForTimeout(800);
+expect(
+  (await hash()) === '#/drinks/new',
+  `a late search does not leave the new drink ${await hash()}`,
+);
+
 // Off over a dialog (a fresh page: the editor left a draft behind).
 await page.goto('about:blank');
 await page.goto(`${site.url}#/drinks?sheet=filters`, { waitUntil: 'load' });

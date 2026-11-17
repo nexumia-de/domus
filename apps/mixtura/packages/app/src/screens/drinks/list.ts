@@ -27,6 +27,7 @@ import { alcoholOf, thresholdsFor, unknownGroups } from '../browse/alcohol';
 import type { BrowseModel } from '../browse/model';
 import { parseSort, sortDrinks, SORT_IDS, sortParams, type SortId } from '../browse/sort';
 import { status } from '../status';
+import { whileHere } from '../still-here';
 import { filtersSheet } from './filters-sheet';
 import { unknownDetails } from './alcohol-unknown';
 import { drinkRow } from './row';
@@ -206,7 +207,12 @@ export function drinksListPane(
         label: strings.browse.searchLabel,
         hint: strings.browse.searchHint,
         clearLabel: strings.browse.clearSearch,
-        onChange: (q) => replace(context.store, hashWith(context.route, { ...filters, q })),
+        // Lands 200 ms after the last key: only while this screen is still the address,
+        // and against the address as it is by then.
+        onChange: (q) =>
+          whileHere(context, (now) =>
+            replace(context.store, hashWith(now, { ...parseFilters(now.query), q })),
+          ),
       }),
       sortMenu(context, sort),
       filtersButton(context, filters),
