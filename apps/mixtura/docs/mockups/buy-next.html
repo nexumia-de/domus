@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buy Next - Mixtura mock-up</title>
+    <link rel="stylesheet" href="mockup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <nav class="nav" aria-label="Main">
+        <a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 4h14l-7 9zM12 13v7M8 20h8" /></svg></span
+          >Drinks</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="7" height="7" />
+              <rect x="13" y="4" width="7" height="7" />
+              <rect x="4" y="13" width="7" height="7" />
+              <rect x="13" y="13" width="7" height="7" /></svg></span
+          >Templates</a
+        ><a href="#" aria-current="page"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8" /></svg></span
+          >Stock</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"
+              /></svg></span
+          >Settings</a
+        >
+      </nav>
+      <main class="panes" data-phone="detail">
+        <section class="pane solo detail" aria-label="Buy next">
+          <header class="appbar"><h1>Stock</h1></header>
+          <div class="pane-scroll" style="gap: var(--sp-3)">
+            <div class="segmented" role="tablist" aria-label="Stock views">
+              <a href="#">Stock</a><a href="#" aria-current="true">Buy Next</a>
+            </div>
+            <div class="toggle-row">
+              <span>Count drinks that need only a substitute from the same class</span
+              ><span class="check"
+                ><span
+                  class="on"
+                  role="checkbox"
+                  aria-checked="true"
+                  aria-label="Include substitutes"
+                  ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12l5 5 9-10" /></svg></span
+              ></span>
+            </div>
+            <p class="note" style="margin: 0">
+              Ranked by drinks that become makeable with this one addition, given what is in stock.
+            </p>
+            <div
+              style="
+                border: 1px solid var(--divider);
+                border-radius: var(--radius);
+                overflow: hidden;
+                background: var(--surface);
+              "
+            >
+              <ul class="rows">
+                <li>
+                  <div
+                    class="row"
+                    style="
+                      align-items: flex-start;
+                      padding-top: var(--sp-3);
+                      padding-bottom: var(--sp-3);
+                    "
+                  >
+                    <span class="rank">1</span
+                    ><span class="row-main"
+                      ><span class="row-title">Triple sec</span
+                      ><span class="row-sub"><strong>Unlocks 5 drinks</strong></span
+                      ><span class="row-sub"
+                        >Margarita, Sidecar, Cosmopolitan, and 2 more</span
+                      ></span
+                    ><a class="btn" href="#"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12l5 5 9-10" /></svg
+                      >Have It</a
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div
+                    class="row"
+                    style="
+                      align-items: flex-start;
+                      padding-top: var(--sp-3);
+                      padding-bottom: var(--sp-3);
+                    "
+                  >
+                    <span class="rank">2</span
+                    ><span class="row-main"
+                      ><span class="row-title">Campari</span
+                      ><span class="row-sub"><strong>Unlocks 3 drinks</strong></span
+                      ><span class="row-sub">Negroni, Boulevardier, Americano</span></span
+                    ><a class="btn" href="#"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12l5 5 9-10" /></svg
+                      >Have It</a
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div
+                    class="row"
+                    style="
+                      align-items: flex-start;
+                      padding-top: var(--sp-3);
+                      padding-bottom: var(--sp-3);
+                    "
+                  >
+                    <span class="rank">3</span
+                    ><span class="row-main"
+                      ><span class="row-title">Cognac</span
+                      ><span class="row-sub"><strong>Unlocks 2 drinks</strong></span
+                      ><span class="row-sub">Sidecar, Vieux Carré</span></span
+                    ><a class="btn" href="#"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12l5 5 9-10" /></svg
+                      >Have It</a
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div
+                    class="row"
+                    style="
+                      align-items: flex-start;
+                      padding-top: var(--sp-3);
+                      padding-bottom: var(--sp-3);
+                    "
+                  >
+                    <span class="rank">4</span
+                    ><span class="row-main"
+                      ><span class="row-title">Orgeat</span
+                      ><span class="row-sub"><strong>Unlocks 2 drinks</strong></span
+                      ><span class="row-sub">Mai Tai, Japanese cocktail</span></span
+                    ><a class="btn" href="#"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12l5 5 9-10" /></svg
+                      >Have It</a
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="toast" role="status">
+            <span>Added Lime juice to stock</span
+            ><a class="btn" href="#"
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 7L4 12l5 5M4 12h10a6 6 0 010 8" /></svg
+              >Undo</a
+            >
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

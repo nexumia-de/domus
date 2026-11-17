@@ -1,0 +1,219 @@
+---
+type: Specification
+title: Screens - browse and read
+description: Templates overview, template detail, drinks list, filters, spec screen with balance panel and swap mode of Mixtura, each with purpose, content, actions, empty, error and offline states and what is stored versus derived.
+tags: [behaviour, screens, browse, spec, swap]
+generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+sources:
+  - id: mockups
+    title: 'docs/mockups/drinks-list.html, filters.html, spec.html, swap.html'
+---
+
+# Screens: browse and read
+
+Part of [behaviour](behaviour.md); look, tokens and copy rules in
+[design](design.md); texts in [UI strings](ui-strings.md). Every entry
+lists: **Purpose**, **Content**, **Actions**, **States** (empty, error,
+offline) and **Data** (stored versus derived,
+[data model](data-model.md#stored-versus-derived)). Offline is stated
+each time; it is always the same: the app is local, so the screen
+works unchanged.
+
+# Templates overview
+
+Built by [#18](https://github.com/nexumia-de/mixtura/issues/18).
+Destination **Templates**, URL `#/templates`.
+
+- **Purpose.** Show the drink families and what each requires, as the
+  bartender's mental map: six root templates and their variants.
+- **Content.** A list grouped by root template (Old-Fashioned, Martini,
+  Daiquiri, Sidecar, Highball, Flip), variants indented under their
+  parent (`parentId`). Row: name, the slots as a role line ("Base, Sour,
+  Sweet"), method, number of drinks that follow it, and a tag "User" for
+  the user's own templates.
+- **Actions.** Tap a row: template detail. Search field at the top
+  filters by name. No create or edit in the first versions (user
+  templates are goal 4 work and outside these screens; the data model
+  allows them).
+- **States.** _Empty_: cannot occur (seed templates are part of the app);
+  if the seed failed to load: "Templates could not be loaded", Try Again.
+  _Search without hit_: "No template matches" with Clear Search.
+  _Error_: store unreadable, see [general failure](behaviour.md#failure-and-offline-in-general).
+  _Offline_: unchanged.
+- **Data.** Templates stored (seed, read-only; the user's own in the
+  local store). Count of drinks per template derived.
+
+# Template detail
+
+Built by [#18](https://github.com/nexumia-de/mixtura/issues/18).
+URL `#/templates/<id>`; pushed on Templates.
+
+- **Purpose.** Read what a template is: slots with ratio ranges, method,
+  usual ranges, and the drinks that follow it.
+- **Content.** Title; slots as a table (role, parts as a range, optional
+  marked "optional"); method and glass; the **usual ranges** (ABV, sugar,
+  acid after dilution) drawn as bands with the numbers and the source
+  line; notes; the list of drinks that follow the template (same rows
+  as the drinks list).
+- **Actions.** Back; tap a drink row: spec. Bottom bar: **New Drink**
+  (opens the editor with this template, [editor](screens-specs.md#spec-editor)).
+  Overflow: "How the ranges are computed" (opens
+  [balance](balance.md#usual-ranges-per-template) text in About's
+  notes).
+- **States.** _Template without a verified range_: shows "No usual
+  range for this template" instead of the bands (the data model allows
+  `usual` to be absent). _No drinks follow it_: "No drinks follow this
+  template yet." with the New Drink button. _Not found_ (deep link):
+  status page. _Offline_: unchanged.
+- **Data.** Template stored; the drinks that follow it derived from
+  `templateId`; the ranges are stored with their source.
+
+# Drinks list
+
+Built by [#18](https://github.com/nexumia-de/mixtura/issues/18); makeable
+part [#33](https://github.com/nexumia-de/mixtura/issues/33). Destination
+**Drinks**, URL `#/drinks`. Mock-up: [html](mockups/drinks-list.html),
+[360](screenshots/drinks-list-360x720.png),
+[1200](screenshots/drinks-list-1200x800.png).
+
+- **Purpose.** Find a drink in a second and see whether it can be made.
+- **Content.** Title and New Drink (plus) in the top bar; a search field
+  (name, ingredient, tag; as typed, results update on each key) and a
+  Filters button with the count of active filters; active filters as
+  chips below (each removable with one tap); the list. Row: name,
+  template and ABV after dilution on the second line, and at the end a
+  tag: **Makeable** with a check, or "Missing X" (one missing
+  ingredient named; "Missing 3" when more). Sorted by name; the sort
+  can be changed in the overflow menu (Name, Recently changed,
+  Template). Retired drinks are hidden unless the status filter says so.
+  On desktop the selected drink's spec is the detail pane.
+- **Actions.** Tap a row: spec. New Drink: editor with no template.
+  Filters: [filters sheet](#filters). Search clears with one tap.
+  Keyboard: `/` focuses search; arrow keys move the selection.
+- **States.** _Empty, no drinks at all_: cannot occur with seed data; if
+  it does, "No drinks yet" with New Drink. _No hit_: "No drink matches
+  the search and filters." with Clear Filters (the chips stay visible).
+  _Makeable filter with an empty stock_: "Nothing in stock yet. Mark what
+  you have to see what you can make." with a button to Stock.
+  _Error_: store unreadable, see
+  [general failure](behaviour.md#failure-and-offline-in-general).
+  _Offline_: unchanged.
+- **Data.** Specs stored (seed read-only, user's own writable). Shown
+  ABV, makeable and missing ingredient derived (engine,
+  [data model](data-model.md#stored-versus-derived)), never stored. The
+  list shows the newest version of each lineage (derived).
+
+# Filters
+
+Built by [#18](https://github.com/nexumia-de/mixtura/issues/18)
+(template, status, search), [#33](https://github.com/nexumia-de/mixtura/issues/33)
+(availability), [#37](https://github.com/nexumia-de/mixtura/issues/37)
+(alcohol). A sheet over the drinks list on a phone, a popover from the
+Filters button on desktop. Mock-up: [html](mockups/filters.html),
+[360](screenshots/filters-360x720.png),
+[1200](screenshots/filters-1200x800.png).
+
+- **Purpose.** Narrow the list; the filters are the same ones the
+  bartender thinks in.
+- **Content.** Groups of chips, wrapping, one tap each (check mark and
+  bold when on): **Availability** (Makeable now, Missing one, Any),
+  **Alcohol** (Any, With alcohol, Low alcohol, Non-alcoholic; the
+  thresholds are set by the research in
+  [#35](https://github.com/nexumia-de/mixtura/issues/35) and shown on
+  the chip's description once known), **Template** (the root templates
+  and their variants), **Status** (Draft, On menu, Retired). Sticky
+  bottom bar: Clear Filters and **Show N Drinks** (the count updates
+  live).
+- **Actions.** Toggle chips; Show N Drinks closes the sheet; back or
+  Escape closes it with the filters kept; the filters live in the URL.
+- **States.** _Empty_: no filter on, the button reads Show N Drinks with
+  the full count. _Zero hits_: the button reads "Show 0 Drinks" and is
+  disabled, the sheet suggests Clear Filters. Availability chips are
+  disabled with "Mark stock first" while the stock is empty. Alcohol
+  chips are hidden until #37 is built. _Error_: none of its own.
+  _Offline_: unchanged.
+- **Data.** Nothing stored (the active filters are URL state). Counts
+  derived.
+
+# Spec
+
+Built by [#19](https://github.com/nexumia-de/mixtura/issues/19);
+servings and batch [#52](https://github.com/nexumia-de/mixtura/issues/52).
+URL `#/drinks/<id>`, pushed on Drinks. Mock-up: [html](mockups/spec.html),
+[360](screenshots/spec-360x720.png),
+[1200](screenshots/spec-1200x800.png).
+
+- **Purpose.** Read a drink as a bartender reads a spec: lines, method,
+  and whether the numbers sit in the usual range; the starting point for
+  a swap, an edit or a riff.
+- **Content, top to bottom.** Top bar: back, name, overflow (Versions,
+  Family, Export spec, Retire, Delete). Tags: template (tappable to the
+  template), version, status, Makeable or "Missing X". **Ingredients**
+  card: the lines in order, amount in the display unit
+  ([units](units.md#display-and-rounding)) right-aligned in a fixed
+  column, ingredient name, role tag; optional lines marked "optional";
+  line notes below the name; substitutes as "or Lemon juice" lines in
+  muted text; a servings stepper (1 to 12 drinks, [#52](https://github.com/nexumia-de/mixtura/issues/52))
+  that scales the amounts for display; below the lines: method, glass,
+  garnish. **Balance panel** ([drawn as in design](design.md#drawing-balance)):
+  ABV, sugar, acid, each value against the template's usual range,
+  then "Volume after dilution", a Details link to the notes of the
+  formulas, and the unverified-range line. Notes card (free text, with
+  the version note of this version). Source line for seed drinks ("From
+  Bar Assistant, MIT") linking to About.
+  On desktop the ingredients and the balance panel sit side by side.
+  On a phone the balance panel starts below the ingredients, so the
+  tag row and the meta list stay compact.
+- **Actions.** Bottom bar: **Try a Swap**, **Riff**, **Edit**. Stepper.
+  Overflow: Versions, Family, Export spec (a JSON file of this spec),
+  Retire, Delete (both act at once with Undo). A line is not tappable
+  outside swap mode. Seed specs are read-only: Edit on a seed spec
+  makes a copy that becomes the user's version 1 with the seed as its
+  parent (the toast says "Copied to your drinks").
+- **States.** _Empty_: a spec has at least one line, so none. _No
+  template_: the balance panel shows values and "No usual range for this
+  drink". _Figure missing_: "No figure" with the ingredient named, other
+  figures still shown. _Not found_ (deep link, deleted spec):
+  status page "This drink is not here" with a button to Drinks. _Error_:
+  store unreadable, [general](behaviour.md#failure-and-offline-in-general).
+  _Offline_: unchanged.
+- **Data.** Spec stored (name, lines with amount and unit as entered,
+  method, glass, garnish, notes, status, version). **Derived and never
+  stored**: balance figures, position against the range, volume,
+  makeable, scaled amounts, display-unit amounts, newest version.
+
+# Swap mode
+
+Built by [#20](https://github.com/nexumia-de/mixtura/issues/20). Not a
+separate screen: the spec screen in a mode, URL
+`#/drinks/<id>?swap=…`. Mock-up: [html](mockups/swap.html),
+[360](screenshots/swap-360x720.png),
+[1200](screenshots/swap-1200x800.png).
+
+- **Purpose.** Change a slot's ingredient or amount without saving and
+  watch the numbers; the bartender's "what if".
+- **Content.** The spec screen with a banner "Trying a swap. Nothing is
+  saved." and a Reset button. Changed lines are marked by a bar at the
+  left and the words "Changed, was 22.5 ml" (not by colour alone). The
+  balance panel shows each figure with a dotted tick for the saved value
+  and "was 18.3 %" in the footer. A compact balance bar above the bottom
+  bar keeps the three figures with their position words visible while
+  the lines are edited (on a phone the panel is below the fold while the
+  lines are on screen). A "Swap a Line" card lists suggestions: the same
+  role's substitution class ("Lime juice to Lemon juice") and amount
+  changes.
+- **Actions.** Tap a line: a small sheet with an amount field and the
+  unit (same grammar as the editor) and an ingredient picker limited to
+  the substitution class first, then Show All; changing either updates
+  the figures at once. Bottom bar: **Reset** (back to saved, instant),
+  **Riff** (save the changed spec as a new drink linked to this one,
+  asks for a name), **Save** (a new version of this drink, with the
+  note field of [save](screens-specs.md#save-version-and-notes)). Back
+  leaves swap mode and drops the swap with an Undo toast. A swap is
+  shareable as a link.
+- **States.** _Nothing changed yet_: the banner reads "Trying a swap.
+  Change a line to see the numbers." _A substitute without
+  properties_: that figure shows "No figure" naming it. _Seed spec_:
+  Save is Save as My Version. _Error and offline_: as the spec screen.
+- **Data.** Nothing is stored until Save or Riff; the swap is URL
+  state. All figures derived.

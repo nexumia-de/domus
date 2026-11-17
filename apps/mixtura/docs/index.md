@@ -36,6 +36,15 @@ links. Change history is in [log.md](log.md).
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
 - [Seed data](seed-data.md) - Bar Assistant's dataset: format, measured counts, licence, field mapping to the data model, gaps and how they are filled, problems, attribution text.
 
+# Behaviour and design
+
+- [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.
+- [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode.
+- [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family.
+- [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About.
+- [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.
+- [UI strings](ui-strings.md) - Every fixed text of the app, including empty, error and offline states.
+
 # Development
 
 - [Development](development.md) - Setup, commands, layout, the engine's purity rule, the CI job `check` and the hosts the research needed.

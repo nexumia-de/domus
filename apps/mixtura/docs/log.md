@@ -2,6 +2,7 @@
 
 ## 2026-11-17
 
+- **Behaviour and design** (#16): [behaviour](behaviour.md), three screen files ([browse](screens-browse.md), [own specs](screens-specs.md), [stock and settings](screens-stock-settings.md)), [design](design.md) with tokens, computed contrast, proposed accent and review checklist, [UI strings](ui-strings.md); static mock-ups in `docs/mockups/` and screenshots at 360 x 720 and 1200 x 800 in `docs/screenshots/`. Open owner questions Q1 to Q5 in [design](design.md#open-questions). Issue #52 opened for the servings and batch screen.
 - **Ingredients** (#9): [ingredients](ingredients.md) and `packages/engine/src/ingredients/` with tree validation, inheritance with sources, prepared ingredients computed from their spec (nested, cycles rejected), substitution classes, and 13 vectors in `packages/engine/vectors/ingredients/`; clarifications in [data model](data-model.md).
 - **Data model** (#3): [data model](data-model.md) with ingredient, template, spec, prepared ingredient, stock, affinity, id scheme, export format and units of measure; JSON Schemas in `packages/engine/schemas/` with examples, validated by Ajv, and a test that compares document and schemas.
 - **Seed data study** (#6): [seed data](seed-data.md) with counts from Bar Assistant commit `5a504d4`, licence, mapping, gaps, problems and attribution text; hosts in [development](development.md).
