@@ -13,7 +13,7 @@
       "role": "modifier",
       "minParts": 0.25,
       "maxParts": 2,
-      "note": "1 oz fortified wine or liqueur; down to 0.25 parts for a dry Martini (IBA 60 ml gin : 10 ml vermouth is 0.33)"
+      "note": "1 oz fortified wine or liqueur; down to 0.25 parts for a dry Martini (IBA Dry Martini 60 ml gin : 10 ml vermouth is 0.33, read at iba-world.com)"
     },
     {
       "id": "fortified-2",
@@ -29,7 +29,7 @@
       "minParts": 0.02,
       "maxParts": 2,
       "optional": true,
-      "note": "a bitter liqueur (Negroni family, Boulevardier: no nominal figure exists in the documents) or dashes of aromatic bitters (IBA Manhattan: 1 dash to 50 ml whiskey and 20 ml vermouth is 0.037 parts)"
+      "note": "a bitter liqueur (Negroni family, Boulevardier: no nominal figure exists in the documents) or dashes of aromatic bitters (IBA Manhattan: 1 dash to 50 ml whiskey and 20 ml vermouth is 0.037 parts, read at iba-world.com)"
     }
   ],
   "slotEvidence": "assumption",
@@ -52,6 +52,6 @@
   "source": {
     "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified for the nominal slot ratios; the lower edges of the fortified slot (0.25) and the bitter slot (0.02) were set from the IBA Manhattan and Dry Martini specifications as reproduced on Wikipedia (secondary); see docs/templates.md#evidence."
+    "note": "Assumption, unverified for the nominal slot ratios; the lower edges of the fortified slot (0.25) and the bitter slot (0.02) were set below the IBA Manhattan and Dry Martini specifications, read at iba-world.com on 2026-11-17 (primary for the observed values; the edges are chosen round numbers); see docs/templates.md#evidence."
   }
 }

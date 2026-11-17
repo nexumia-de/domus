@@ -466,3 +466,21 @@ check ([name check](name-check.md#not-checked)). `crates.io` answered 403
 and `search.nixos.org` 401. Tool documentation was read from the tools'
 source repositories instead; `f-droid.org/docs/Inclusion_Policy/` came
 through the fetch tool as a summary.
+
+Third pass (#116, 2026-11-17), after the owner allowed `iba-world.com`,
+`www.iba-world.com`, `mikemcdonald.co` and `www.google.com`. Tested with
+`curl -sS -m 15 -o /dev/null -w '%{http_code}' https://<host>/`:
+
+| Host                | Result                                                                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iba-world.com`     | 200; the specification pages `/iba-cocktail/<slug>/` and the lists `/cocktails/all-cocktails/page/<n>/` were read (102 cocktails)                                                     |
+| `www.iba-world.com` | 301 to `iba-world.com`                                                                                                                                                                |
+| `mikemcdonald.co`   | 200; `/blog/2020/05/06/between-the-sheets/` read                                                                                                                                      |
+| `www.google.com`    | 200; only the Atom feed `/books/feeds/volumes?q=...` (metadata and `viewability`) is useful; every searched book is `view_no_pages`                                                   |
+| `books.google.com`  | 200 for the book page; search inside (`/books?id=...&q=...`) answers 429 with a captcha page ("unusual traffic") to scripted requests, so no snippet or page number can be read       |
+| `web.archive.org`   | curl error 35 (connection reset), not usable                                                                                                                                          |
+| `cookingissues.com` | 200 (earlier pass); `www.cookingissues.com`, `cocktailcalc.com`, `cocktailgeni.us`, `mixology.school`, `sobrief.com`, `thecalcu.com` answer 000 or do not resolve (tested 2026-11-17) |
+
+`WebFetch` resolves only hosts the session allows (`cocktailtower.pages.dev`
+and `forums.egullet.org` did not resolve); `WebSearch` returned only
+summaries.

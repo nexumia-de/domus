@@ -36,6 +36,6 @@
   "source": {
     "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified for the nominal slot ratios; the lower edge of the mixer slot (2) follows the 1944 description of the Screwdriver as half vodka and half orange juice and the IBA Screwdriver 1 : 2, as quoted on Wikipedia (secondary); see docs/templates.md#evidence."
+    "note": "Assumption, unverified for the nominal slot ratios; the lower edge of the mixer slot (2) follows the 1944 description of the Screwdriver as half vodka and half orange juice and the IBA Screwdriver 1 : 2, as quoted on Wikipedia (secondary; the IBA site no longer lists the Screwdriver); see docs/templates.md#evidence."
   }
 }
