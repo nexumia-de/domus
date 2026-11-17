@@ -51,6 +51,18 @@ worker.addEventListener('message', (event) => {
   if (event.data === 'skip-waiting') void worker.skipWaiting();
 });
 
+// A host may redirect a precached address (Cloudflare Workers static assets:
+// /index.html to /). A navigation must not be answered with a redirected
+// response (the browser refuses it), so the copy is rebuilt without the flag.
+const plain = (response: Response) =>
+  response.redirected
+    ? new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      })
+    : response;
+
 worker.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
@@ -58,7 +70,7 @@ worker.addEventListener('fetch', (event) => {
       const hit =
         (await cache.match(event.request, { ignoreSearch: true })) ??
         (event.request.mode === 'navigate' ? await cache.match('index.html') : undefined);
-      if (hit) return hit;
+      if (hit) return plain(hit);
       // The manifest's install-dialog screenshots are not precached (build.mjs):
       // they come from the network when online, and are simply missing offline.
       if (new URL(event.request.url).pathname.includes('/screenshots/')) {

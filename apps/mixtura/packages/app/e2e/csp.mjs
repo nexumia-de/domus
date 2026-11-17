@@ -55,6 +55,19 @@ const csp = async () => {
   return /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(html)?.[1] ?? '';
 };
 const policy = await csp();
+// The header form (dist/_headers, which the test server applies like
+// Cloudflare): the same policy plus frame-ancestors, on the page and the scripts.
+for (const path of ['', 'sw.js', 'rank-worker.js']) {
+  const headers = (await page.request.get(`${site.url}${path}`)).headers();
+  expect(
+    headers['content-security-policy'] === `${policy}; frame-ancestors 'none'`,
+    `/${path} carries the policy as a header: the meta policy plus frame-ancestors`,
+  );
+}
+expect(
+  (await page.request.get(`${site.url}sw.js`)).headers()['cache-control'] === 'no-cache',
+  'sw.js is served with no-cache',
+);
 expect(
   /script-src 'self'/.test(policy) && !/unsafe-/.test(policy) && /object-src 'none'/.test(policy),
   'the page carries a policy without unsafe-inline and unsafe-eval',

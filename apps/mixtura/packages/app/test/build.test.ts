@@ -64,9 +64,10 @@ test('the service worker precaches every built file under a content-hash cache n
   const sw = read('sw.js');
   const cache = /mixtura-[0-9a-f]{16}/.exec(sw)?.[0];
   expect(cache).toBeTruthy();
-  // The install-dialog screenshots are deliberately not precached (docs/development.md).
+  // The install-dialog screenshots are deliberately not precached (docs/development.md);
+  // `_headers` is for the host, not part of the app.
   const precached = listFiles(out).filter(
-    (file) => file !== 'sw.js' && !file.startsWith('screenshots'),
+    (file) => file !== 'sw.js' && file !== '_headers' && !file.startsWith('screenshots'),
   );
   for (const file of precached) expect(sw).toContain(`"${file}"`);
   expect(sw).toContain('"./"');
@@ -174,6 +175,37 @@ test('strict policy: no dynamic code in the scripts, no inline script or style i
   expect(policy).toContain("object-src 'none'");
   expect(policy).toContain("base-uri 'none'");
   expect(policy).not.toMatch(/unsafe-|https?:|\*/);
+});
+
+test('the _headers file carries the page policy as a header, from the same source', () => {
+  const html = read('index.html');
+  const meta = /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(html)?.[1] ?? '';
+  expect(html).not.toContain('{{');
+  const header = /^ {2}Content-Security-Policy: (.+)$/m.exec(read('_headers'))?.[1] ?? '';
+  expect(header).toBe(`${meta}; frame-ancestors 'none'`);
+  expect(meta).not.toContain('frame-ancestors');
+});
+
+test('_headers: the other security headers, no-cache for the entry files, no immutable', () => {
+  const headers = read('_headers');
+  for (const line of [
+    'X-Content-Type-Options: nosniff',
+    'Referrer-Policy: no-referrer',
+    'Cross-Origin-Opener-Policy: same-origin',
+  ])
+    expect(headers).toContain(`  ${line}`);
+  expect(headers).toMatch(/^ {2}Permissions-Policy: .*camera=\(\)/m);
+  for (const path of ['/', '/index.html', '/sw.js', '/manifest.webmanifest'])
+    expect(headers).toContain(`\n${path}\n  Cache-Control: no-cache\n`);
+  // Fixed file names: no file may be cached without asking the server.
+  expect(headers).not.toMatch(/immutable|max-age/);
+  // Cloudflare's limits: 100 rules, 2,000 characters a line.
+  expect(headers.split('\n').every((line) => line.length <= 2000)).toBe(true);
+  expect(
+    headers.split('\n').filter((line) => /^\S/.test(line) && !line.startsWith('#')).length,
+  ).toBeLessThanOrEqual(100);
+  expect(listFiles(out)).toContain('_headers');
+  expect(read('sw.js')).not.toContain('_headers');
 });
 
 test('the theme bootstrap is an external file that runs before the page is drawn', () => {

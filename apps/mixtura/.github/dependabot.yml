@@ -22,3 +22,8 @@ updates:
     groups:
       actions:
         patterns: ['*']
+  # The wrangler version the deploy job uses (tools/wrangler/package.json).
+  - package-ecosystem: npm
+    directory: /tools/wrangler
+    schedule:
+      interval: weekly

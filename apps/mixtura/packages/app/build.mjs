@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { copyFileSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { build, transform } from 'esbuild';
+import { headersFile, metaPolicy } from './headers.mjs';
 import { assembleSeed } from './seed-assemble.mjs';
 import './compile-schemas.mjs'; // writes the validators main.js bundles
 
@@ -73,6 +74,13 @@ const copied = [
   'icons/icon-monochrome-512.png',
 ];
 for (const file of copied) copyFileSync(join('src', file), join(out, file));
+// The page's policy comes from headers.mjs, like the `_headers` file below.
+const page = readFileSync(join('src', 'index.html'), 'utf8');
+if (!page.includes('{{CSP}}')) throw new Error('src/index.html lost its {{CSP}} placeholder');
+writeFileSync(join(out, 'index.html'), page.replace('{{CSP}}', metaPolicy));
+// Headers for hosts that read this file (Cloudflare Workers static assets);
+// not precached, not part of the app (a request for it is a 404 there).
+writeFileSync(join(out, '_headers'), headersFile());
 // Install-dialog screenshots (manifest `screenshots`): the recorded-data
 // screenshots of docs/screenshots, not precached (docs/development.md).
 mkdirSync(join(out, 'screenshots'), { recursive: true });

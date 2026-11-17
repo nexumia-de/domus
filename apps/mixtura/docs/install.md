@@ -1,7 +1,7 @@
 ---
 type: Guide
 title: Install
-description: How to open and install Mixtura (Drink Builder) on Android, Linux desktop and a Phosh phone, how updates arrive, offline use, where the data lives and how to remove it, plus what the owner must switch on for GitHub Pages.
+description: How to open and install Mixtura (Drink Builder) on Android, Linux desktop and a Phosh phone, how updates arrive, offline use, where the data lives and how to remove it, the move to mixtura.nexumia.de, plus what the owner must switch on for GitHub Pages.
 tags: [install, pwa, pages, android, linux, owner]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -20,10 +20,14 @@ sources:
 
 # Install
 
-Address: <https://nexumia-de.github.io/mixtura/>. Mixtura is a web app
-that works offline after the first visit and can be installed
-([decision](decisions/pwa-own-data.md)). There is no account, no server and
-no store; the page is static files on GitHub Pages.
+Address today: <https://nexumia-de.github.io/mixtura/>. After the move to
+Cloudflare ([hosting](decisions/hosting.md), steps in
+[deployment](deployment.md#owner-steps-once)) the address is
+<https://mixtura.nexumia.de/>; this page names the new address in the
+places that change, and switches over once the owner confirms it works.
+Mixtura is a web app that works offline after the first visit and can be
+installed ([decision](decisions/pwa-own-data.md)). There is no account, no
+server and no store; the page is static files, on GitHub Pages today.
 
 Statements marked **to be checked on a device** are not verified: the
 author could read only the MDN pages in the sources, which do not name
@@ -119,6 +123,11 @@ consequences:[^mdn-storage]
   that are visited regularly.
 - The storage belongs to the whole origin `nexumia-de.github.io`, not to
   `/mixtura/` alone; other sites of the same account share its quota.
+- **The data belongs to the address.** `https://mixtura.nexumia.de` is a
+  different origin: it starts empty, and an app installed from the old
+  address keeps the old data. When you move, use Export Everything on the old
+  address and Import File on the new one (below), then install again from the
+  new address and remove the old app.
 - An app installed from another browser has its own, separate data.
 
 Make a backup with Export Everything (Settings, Data): one file with all
@@ -140,6 +149,10 @@ app reminds you calmly after 30 days with changes and no export.
   browser settings (see above).
 
 ## What the owner must switch on
+
+This section is for GitHub Pages, the present host. The Cloudflare steps
+(token, secrets, custom domain `mixtura.nexumia.de`, then removing Pages) are in
+[deployment](deployment.md#owner-steps-once).
 
 The workflow `.github/workflows/pages.yml` builds `packages/app` and
 deploys `packages/app/dist` on every push to `main` and on manual start.

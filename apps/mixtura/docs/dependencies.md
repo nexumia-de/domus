@@ -38,6 +38,23 @@ Apache-2.0, compatible with it.
 and `require-from-string` 2.0.2 (MIT); all read from their `package.json`
 and licence files in `node_modules` and compatible with AGPL-3.0-or-later.
 
+## Deploy time only
+
+Not in `package.json` and not installed in the workspace: the deploy job
+installs it from `tools/wrangler/package.json` (the one place its version is
+pinned; Dependabot updates it).
+
+| Package    | Version | Licence           | Use                                                                                                                                             |
+| ---------- | ------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `wrangler` | 4.158.0 | MIT OR Apache-2.0 | Deploys `packages/app/dist` to Cloudflare Workers static assets (`wrangler.jsonc`, [deployment](deployment.md)); nothing of it ships in the app |
+
+Licence read from `package.json` of the published 4.158.0 package
+(`"license": "MIT OR Apache-2.0"`); the package has no licence file, the texts
+are `LICENSE-MIT` and `LICENSE-APACHE` in the root of `cloudflare/workers-sdk`
+(read on `main`). It is a tool that runs in CI and ships no code into the
+app, so it does not touch the app's AGPL-3.0-or-later licence. Its own
+dependencies (`workerd`, `miniflare`, `esbuild` and others) were not listed.
+
 ## Shipped in the app
 
 | Package                           | Version | Licence | Use                                                                                                                                                                                                            |
@@ -53,12 +70,15 @@ schemas).
 
 ## GitHub Actions
 
-| Action               | Version | Use                      |
-| -------------------- | ------- | ------------------------ |
-| `actions/checkout`   | v7.0.1  | Checkout in CI           |
-| `actions/setup-node` | v7.1.0  | Node and npm cache in CI |
+| Action                       | Version | Use                                                      |
+| ---------------------------- | ------- | -------------------------------------------------------- |
+| `actions/checkout`           | v7.0.1  | Checkout in CI                                           |
+| `actions/setup-node`         | v7.1.0  | Node and npm cache in CI                                 |
+| `actions/upload-artifact`    | v7.0.2  | Hands the build of `check` to the deploy job             |
+| `actions/download-artifact`  | v8.0.2  | The deploy job takes that build                          |
+| `cloudflare/wrangler-action` | v4.1.3  | Runs wrangler for the deploy job (licence not read here) |
 
-Both are pinned to a commit SHA in `.github/workflows/ci.yml`.
+All are pinned to a commit SHA in `.github/workflows/ci.yml`.
 
 ## Data
 

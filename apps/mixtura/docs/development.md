@@ -89,8 +89,12 @@ fetches every file with `cache: 'reload'` (`new Request(file, { cache:
 Pages: 600 s) cannot hand the new worker an old file to store under the
 new cache name; `e2e/update.mjs` publishes a changed `main.js` under
 `max-age=600` and checks the new cache holds it (it fails without the
-option). Serve `sw.js` and `index.html` with `Cache-Control: no-cache` if
-the host allows headers, so browsers see a new build at once.
+option). Cloudflare serves `sw.js`, `index.html` and the manifest with
+`Cache-Control: no-cache` (`dist/_headers`, [deployment](deployment.md#caching-what-each-file-gets-and-why));
+other hosts should do the same if they allow headers, so browsers see a
+new build at once. Cloudflare also redirects `/index.html` to `/`; the worker
+rebuilds the redirected copy it holds (`plain` in `sw.ts`) so a navigation to
+`/index.html` still works (`e2e/index-redirect.mjs`).
 
 **Theme.** `data-theme` on `<html>` overrides the system setting;
 `theme-init.js` (from `src/theme-init.ts`, a blocking script in `<head>`,
@@ -159,6 +163,11 @@ storage API (a custom scheme, a WebView), the app registers nothing, ignores
 a refused registration and reports persistence as unsupported;
 `e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store. Owner steps: [install](install.md#what-the-owner-must-switch-on).
 
+The job `deploy-cloudflare` (same file) deploys the build artifact of the run to
+Cloudflare Workers static assets after `check` passed and skips with a notice
+while the secrets are missing; see [deployment](deployment.md). `pages.yml`
+stays until the owner confirms the Cloudflare address.
+
 ## Web app manifest
 
 `src/manifest.webmanifest` (copied by `build.mjs`) has `id`, `scope`,
@@ -196,8 +205,15 @@ object (CSSOM, not governed by the policy) instead of a style attribute;
 `connect-src 'self'` is the seed file; `manifest-src 'self'`; `img-src
 'self'` (icons; no `data:` is used); `form-action 'none'`. The export
 download is a `blob:` link and needs no entry. A meta policy cannot carry
-`frame-ancestors`, `sandbox` or a report endpoint; if the host later allows
-headers, send the same policy as a header with `frame-ancestors 'none'`.
+`frame-ancestors`, `sandbox` or a report endpoint. On Cloudflare the same
+policy is also sent as a header with `frame-ancestors 'none'`
+(`dist/_headers`, [deployment](deployment.md#headers-dist_headers)). Both come from one
+source, `packages/app/headers.mjs`: `build.mjs` replaces the placeholder
+`{{CSP}}` of `src/index.html` and writes `_headers`; the build test fails if the
+two differ apart from `frame-ancestors`, and `e2e/csp.mjs` checks the header on
+the page and both workers (`e2e/serve.mjs` applies `dist/_headers` unless
+it is given a `cacheControl`). The meta tag stays so the app is protected on
+any host. To change the policy, edit `headers.mjs` only.
 
 The schemas are compiled at build time: `compile-schemas.mjs` turns every
 `packages/engine/schemas/*.schema.json` into plain validator functions with
@@ -217,6 +233,17 @@ worker running; any `securitypolicyviolation` event or policy message in
 the console fails; an injected inline script must be blocked).
 
 ## Network hosts
+
+The deployment ([deployment](deployment.md)) was written from
+`developers.cloudflare.com` (the `.md` form of each page, answered 200 through
+the session proxy on 2026-11-17), `registry.npmjs.org` (wrangler 4.158.0, the
+local `wrangler dev` and `--dry-run`), `raw.githubusercontent.com` (the
+action's `action.yml` and README, the licence texts of `cloudflare/workers-sdk`)
+and `github.com` release downloads (actionlint). At run time the deploy job
+needs `api.cloudflare.com` (wrangler), `registry.npmjs.org` (the action installs
+wrangler) and the `workers.dev` and `nexumia.de` addresses of the smoke check;
+the job runs on GitHub's runners. **Unverified from this session:**
+`api.cloudflare.com`, which was not called.
 
 The Pages workflow runs on GitHub's runners and needs only GitHub itself
 (`github.com`, `api.github.com`, the Pages service and the npm registry for
