@@ -35,6 +35,7 @@ import {
 } from './tree-model';
 import { stockTree } from './tree-view';
 import { views } from './views';
+import { whileHere } from '../still-here';
 
 const expanded = new Set<string>();
 let createWasOpen = false;
@@ -124,7 +125,8 @@ export function stockView(context: ScreenContext): ScreenView {
     label: strings.stock.searchLabel,
     hint: strings.stock.searchHint,
     clearLabel: strings.stock.clearSearch,
-    onChange: (next) => setQuery(next),
+    // Lands 200 ms after the last key: only while Stock is still the screen.
+    onChange: (next) => void whileHere(context, () => setQuery(next)),
     onEnter: (text) => {
       const hit = text ? firstMatch(roots, text) : undefined;
       if (!hit || hit.synthetic) return;
