@@ -8,11 +8,13 @@ import { parseHash, type Route } from './router';
 import { initialSpecView, type SpecView } from './screens/spec/session';
 import {
   type Backup,
+  type BuyNextMode,
   type ExportFile,
   type ParseFailure,
   type PersistState,
   type Plan,
   type StoreErrorKind,
+  type YesNo,
 } from './store';
 
 export type Theme = 'system' | 'light' | 'dark';
@@ -52,6 +54,11 @@ export interface AppState {
   /** Threshold presets of the alcohol filters, kept in Settings (ids of the engine's `ALCOHOL_PRESETS`). */
   alcoholWithout: string;
   alcoholLow: string;
+  /** Buy Next counts drinks that need a substitute, or only exact ones; the address can override it. */
+  buyNextMode: BuyNextMode;
+  /** Buy Next ranks drafts and retired drinks (Settings). */
+  buyNextDrafts: YesNo;
+  buyNextRetired: YesNo;
   /** A new service worker is waiting; the banner offers the update. */
   update: 'none' | 'available';
   storage: StorageStatus;
@@ -71,6 +78,8 @@ export interface AppState {
   toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
+  /** Counts rankings that arrived from the ranking worker (stock/rank-async.ts); a change redraws. */
+  rankRev: number;
   /** Counts changes the stock screens draw from (stock records loaded or written, tree expanded); a change redraws. */
   stockRev: number;
   /** Counts changes of the editor's structure (a line added, a sheet opened, a draft restored); a change redraws. */
@@ -87,6 +96,9 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     ...prefs,
     alcoholWithout: ALCOHOL_PRESETS.default.without,
     alcoholLow: ALCOHOL_PRESETS.default.low,
+    buyNextMode: 'with-substitutes',
+    buyNextDrafts: 'yes',
+    buyNextRetired: 'no',
     update: 'none',
     storage: { kind: 'opening' },
     seed: { kind: 'loading' },
@@ -98,6 +110,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importFlow: { kind: 'idle' },
     toast: null,
     browseRev: 0,
+    rankRev: 0,
     stockRev: 0,
     editorRev: 0,
     specView: initialSpecView,

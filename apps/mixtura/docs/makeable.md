@@ -223,6 +223,44 @@ A stock change recomputes both in well under a frame budget even on a phone
 a few times slower; no stored index is needed. The index is derived and
 never persisted.
 
+## Ranking off the main thread (#84)
+
+The unlock ranking is the one heavy computation of the app on a phone. It
+ran on the main thread, once per stock change and only while Buy Next is
+open. Measured with `node e2e/rank-perf.mjs 4` (CPU slowed 4 times, 360x720,
+gin and light rum in stock, eight taps on "Have it" in a row, three runs per
+build, headless Chromium on the cloud host):
+
+| Case, 4x throttle                          | On the main thread | In a worker   |
+| ------------------------------------------ | ------------------ | ------------- |
+| Tap on "Have it" to the next frame, median | 79 to 101 ms       | 65 to 80 ms   |
+| Longest task during the taps               | 99 to 115 ms       | 51 to 58 ms   |
+| Cold load of Buy Next, longest task        | 117 to 147 ms      | none to 72 ms |
+| Cold load of Buy Next, first candidates    | 351 to 415 ms      | 253 to 373 ms |
+
+The remaining 50 ms is drawing the page (the redraw of the whole app costs
+about 45 ms at 4x with the ranking already known). Chosen: a worker. The
+cheaper remedies were weighed first: ranking only while Buy Next is open and
+memoising per stock set and mode were already in place and do not shorten a
+single computation (55 to 98 ms at 4x, the cold first one the longest);
+yielding before the redraw splits one task into two but adds a second
+redraw and delays the answer by the whole computation; a worker takes it
+off the thread that draws, costs one structured copy of the tree and specs
+per browse model (they are sent once, not per stock change) and gives the
+same numbers (a test compares them).
+
+How it works: `rank-worker.ts` is a second script built next to `main.js`
+(`build.mjs`), requested as `rank-worker.js` relative to the page, so it
+works at `/` and under `/mixtura/`; it is in the service worker's precache
+list and `e2e/subpath.mjs` checks that it is precached and fetched and that
+Buy Next ranks offline with it. The worker holds the index of the latest
+model and answers one ranking per request; nothing is stored in it. The
+page keeps results per model, records object and mode like before and
+draws the previous result of that mode while a new one is on its way (a
+first ranking shows the loading line); the answer bumps `rankRev`, which
+redraws. If a worker cannot be created or fails, the engine runs on the main
+thread. Derived data stays derived: nothing about the ranking is persisted.
+
 ## Vectors
 
 `packages/engine/vectors/stock/` (format `stock-vector.schema.json`: a small

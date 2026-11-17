@@ -2,6 +2,7 @@
 
 import { ALCOHOL_PRESETS, type AlcoholPreset } from '@mixtura/engine';
 import { type Theme, type Units } from '../../app-state';
+import { type YesNo } from '../../store';
 import { h, icon } from '../../dom';
 import { type Screen, type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
@@ -75,6 +76,27 @@ function alcoholSettings({ state, store }: ScreenContext): HTMLElement[] {
   ];
 }
 
+function buyNextSettings({ state, store }: ScreenContext): HTMLElement[] {
+  const s = strings.settings;
+  return [
+    choice<YesNo>(
+      'buy-next-drafts',
+      s.buyNextDrafts,
+      s.yesNo,
+      state.buyNextDrafts,
+      (buyNextDrafts) => store.set({ buyNextDrafts }),
+    ),
+    choice<YesNo>(
+      'buy-next-retired',
+      s.buyNextRetired,
+      s.yesNo,
+      state.buyNextRetired,
+      (buyNextRetired) => store.set({ buyNextRetired }),
+    ),
+    h('span', { class: 'hint' }, s.buyNextHint),
+  ];
+}
+
 function navRow(href: string, title: string, sub: string): HTMLElement {
   return h(
     'a',
@@ -102,6 +124,7 @@ function settings(context: ScreenContext): HTMLElement {
       choice<Units>('units', s.units, s.unitValues, state.units, (units) => store.set({ units })),
       h('span', { class: 'hint' }, s.unitsHint),
       ...alcoholSettings(context),
+      ...buyNextSettings(context),
       choice<Theme>('theme', s.appearance, s.themeValues, state.theme, (theme) =>
         store.set({ theme }),
       ),

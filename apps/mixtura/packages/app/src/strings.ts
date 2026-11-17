@@ -60,6 +60,12 @@ export const strings = {
     presetLow: (pct: number) => `Up to ${pct} %`,
     alcoholBasis: (without: string, low: string) =>
       `Basis of the chosen lines: ${without}; ${low}.`,
+    buyNext: 'Buy Next',
+    buyNextDrafts: 'Rank drafts',
+    buyNextRetired: 'Rank retired drinks',
+    yesNo: { yes: 'Yes', no: 'No' },
+    buyNextHint:
+      'Which drinks Buy Next counts when it ranks what to buy. Drinks you stopped making are left out unless you ask for them.',
     appearance: 'Appearance',
     themeValues: { system: 'Follow System', light: 'Light', dark: 'Dark' },
     about: 'About',
@@ -184,6 +190,7 @@ export const strings = {
       tagMakeable: 'Makeable',
       tagSubstitute: 'With substitute',
       tagMissing: (name: string) => `Missing ${name}`,
+      tagMissingMany: (n: number) => `Missing ${n}`,
       openStock: 'Open Stock',
     },
     strengthHint:

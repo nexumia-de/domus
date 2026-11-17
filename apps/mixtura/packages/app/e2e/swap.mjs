@@ -9,7 +9,7 @@
 /* global document, indexedDB, innerWidth, location, history, getComputedStyle, requestAnimationFrame -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const args = process.argv.slice(2);
@@ -27,6 +27,7 @@ const context = await browser.newContext({
   deviceScaleFactor: docs ? 2 : 1,
 });
 const page = await context.newPage();
+await throttle(page, process.argv.slice(2));
 page.on('pageerror', (error) => {
   throw error;
 });
@@ -243,7 +244,10 @@ const redraw = await page.evaluate(async () => {
 console.log(
   `NUMBERS ${width}x${height}: a swap step, recompute and redraw: ${redraw} ms (worst of 10)`,
 );
-expect(redraw < 50, 'a swap step recomputes and redraws in under 50 ms');
+// The budget is for the plain run: --slow-frames delays the very frame the
+// measurement waits for, so a throttled run only prints the number.
+const slowRun = args.some((a) => a.startsWith('--throttle=') || a.startsWith('--slow-frames='));
+expect(slowRun || redraw < 50, 'a swap step recomputes and redraws in under 50 ms');
 await shot('sheet-amount');
 await sheet().getByRole('button', { name: 'Reset Line' }).click();
 await settle();

@@ -33,3 +33,8 @@ svg.i {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}

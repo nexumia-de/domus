@@ -52,6 +52,9 @@ export interface Backup {
 }
 
 /** Device settings; they are not part of the export file. */
+export type BuyNextMode = 'with-substitutes' | 'strict';
+export type YesNo = 'yes' | 'no';
+
 export interface Settings {
   theme: Theme;
   units: Units;
@@ -59,6 +62,11 @@ export interface Settings {
   alcoholWithout: string;
   /** Id of the low-ABV threshold preset. */
   alcoholLow: string;
+  /** Buy Next: count drinks that need a substitute (`with-substitutes`) or only exact ones (`strict`). */
+  buyNextMode: BuyNextMode;
+  /** Buy Next ranks drafts and retired drinks: `yes` or `no`. */
+  buyNextDrafts: YesNo;
+  buyNextRetired: YesNo;
   backup: Backup;
 }
 

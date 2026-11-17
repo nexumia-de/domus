@@ -7,7 +7,7 @@
 /* global document, indexedDB, window -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const [width = 1200, height = 800] = process.argv
@@ -23,6 +23,7 @@ const browser = await launch();
 const newPage = async (init) => {
   const context = await browser.newContext({ viewport: { width, height } });
   const page = await context.newPage();
+  await throttle(page, process.argv.slice(2));
   page.on('pageerror', (error) => {
     throw error;
   });

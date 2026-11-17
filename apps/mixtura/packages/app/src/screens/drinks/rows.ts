@@ -32,7 +32,16 @@ export function incrementalRows<T>(
   );
   const next = (): void => {
     const to = Math.min(items.length, count + CHUNK);
+    // The rows come in above the button: keyboard focus on the button moves on to the
+    // first new row instead of being left behind below sixty rows.
+    const hadFocus = document.activeElement === more;
+    const firstNew = list.children.length;
     add(count, to);
+    if (hadFocus) {
+      list.children[firstNew]
+        ?.querySelector<HTMLElement>('a, button')
+        ?.focus({ preventScroll: false });
+    }
     count = to;
     shown.set(key, count);
     if (count >= items.length) more.remove();

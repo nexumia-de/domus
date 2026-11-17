@@ -6,18 +6,23 @@
 import { ALCOHOL_PRESETS } from '@mixtura/engine';
 import { committed, request } from './db';
 import { toStoreError } from './errors';
-import type { Backup, Settings, Theme, Units } from './types';
+import type { Backup, BuyNextMode, Settings, Theme, Units, YesNo } from './types';
 
 export const defaultSettings: Settings = {
   theme: 'system',
   units: 'metric',
   alcoholWithout: ALCOHOL_PRESETS.default.without,
   alcoholLow: ALCOHOL_PRESETS.default.low,
+  buyNextMode: 'with-substitutes',
+  buyNextDrafts: 'yes',
+  buyNextRetired: 'no',
   backup: { changesSinceExport: 0 },
 };
 
 const THEMES: readonly Theme[] = ['system', 'light', 'dark'];
 const UNITS: readonly Units[] = ['metric', 'us', 'imperial'];
+const BUY_NEXT_MODES: readonly BuyNextMode[] = ['with-substitutes', 'strict'];
+const YES_NO: readonly YesNo[] = ['yes', 'no'];
 
 export function parseBackup(value: unknown): Backup {
   const v = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
@@ -45,6 +50,12 @@ export function parseSettings(records: { key: string; value: unknown }[]): Setti
     alcoholLow:
       ALCOHOL_PRESETS.low.find((p) => p.id === byKey.get('alcoholLow'))?.id ??
       defaultSettings.alcoholLow,
+    buyNextMode:
+      BUY_NEXT_MODES.find((m) => m === byKey.get('buyNextMode')) ?? defaultSettings.buyNextMode,
+    buyNextDrafts:
+      YES_NO.find((v) => v === byKey.get('buyNextDrafts')) ?? defaultSettings.buyNextDrafts,
+    buyNextRetired:
+      YES_NO.find((v) => v === byKey.get('buyNextRetired')) ?? defaultSettings.buyNextRetired,
     backup: parseBackup(byKey.get('backup')),
   };
 }

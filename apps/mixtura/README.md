@@ -8,7 +8,8 @@ you what your bottles allow and which one bottle would unlock the most.
 Status: early. The app shell is published at
 <https://nexumia-de.github.io/mixtura/>; how to install it is in
 [docs/install.md](docs/install.md). The plan is in
-[docs/roadmap.md](docs/roadmap.md), the reasons in
+[docs/roadmap.md](docs/roadmap.md), the screens in
+[docs/screenshots.md](docs/screenshots.md), the reasons in
 [docs/existing-tools.md](docs/existing-tools.md) and
 [docs/bartender-practice.md](docs/bartender-practice.md).
 

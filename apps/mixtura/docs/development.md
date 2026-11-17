@@ -78,7 +78,7 @@ localhost (a service worker needs `localhost` or HTTPS), for example
 service worker.
 
 **Service worker and updates.** `build.mjs` hashes all built files into the
-cache name `mixtura-<16 hex>`; `sw.js` precaches them at install and
+cache name `mixtura-<16 hex>`; `sw.js` precaches them (among them `rank-worker.js`, the Buy Next ranking worker) at install and
 answers every GET from the cache (cache first, `index.html` for
 navigations), never from the network. A new build installs in the
 background and waits; the page shows the banner "Update available"; only
@@ -102,7 +102,16 @@ off, no request outside the origin, and the update flow with a second
 installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its
 binary (the cloud image has headless shell build 1243:
 `/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell`).
-CI runs it as the job `e2e` after `npx playwright install --with-deps chromium`.
+`e2e/a11y.mjs` is the [accessibility pass](accessibility.md); `e2e/breakpoint.mjs` walks dark mode at 839 and 840 px; `e2e/dark.mjs` takes the dark screenshots ([overview](screenshots.md)). CI runs it as the job `e2e` after `npx playwright install --with-deps chromium`.
+
+**Slow-device pass.** Every script takes `--throttle=N` and
+`--slow-frames=MS`; `npm run e2e:slow -w @mixtura/app` runs all of them at
+both sizes with `--throttle=4 --slow-frames=100` (about 5 minutes; CI job
+`e2e-slow`). It found no race when it was added (2026-11-17). Timing
+budgets (the swap redraw under 50 ms) are only printed in that run, because
+`--slow-frames` delays the frame they wait for. A failure there is a race
+to fix at its cause with a wait for a specific condition: no retry, sleep or
+skip.
 
 **List numbers** (`node e2e/browse.mjs 360 720`, headless Chromium on the
 cloud host; the 360 run throttles the CPU 4x as a rough phone stand-in, so
@@ -130,7 +139,7 @@ so the rule cannot be removed silently
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
 requests and pushes to `main`. The job is named `check`; this is the
 required status check name for the branch-protection ruleset. A second
-job `e2e` runs the browser walk; it is not required until issue #21 settles it. Actions are
+job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below. Neither is required yet. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
 `.github/workflows/pages.yml` (job `build`, then `deploy`) publishes

@@ -11,6 +11,7 @@ import { type Store } from '../state';
 import { notFound } from './not-found';
 import { statusBanner, updateBanner } from './banner';
 import { nav } from './nav';
+import { inertBehindModal } from './modal';
 import { toast } from './toast';
 import { panes } from './panes';
 import { captureScroll, restoreScroll } from './scroll';
@@ -61,6 +62,7 @@ export function render(root: HTMLElement, shell: Shell): void {
     toast(state, () => store.set({ toast: null })),
   );
   root.replaceChildren(app);
+  inertBehindModal(app);
   document.title = `${view.title} - Drink Builder`;
   restoreScroll(root, state.route, scroll, view.list !== undefined);
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;

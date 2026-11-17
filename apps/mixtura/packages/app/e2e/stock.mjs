@@ -6,10 +6,10 @@
 // with --docs also to docs/screenshots/ at scale 2 as app-stock-*.png.
 //
 //   node e2e/stock.mjs [width height] [--docs]
-/* global document, location, window, requestAnimationFrame -- in functions the page runs */
+/* global document, indexedDB, location, window, requestAnimationFrame -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const args = process.argv.slice(2);
@@ -40,6 +40,7 @@ if (phone) {
   const client = await context.newCDPSession(page);
   await client.send('Emulation.setCPUThrottlingRate', { rate: 4 });
 }
+await throttle(page, args);
 
 const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${height}.png`) });
 const docShot = async (name) => {
@@ -254,6 +255,12 @@ await page.locator('.list-rows li').first().waitFor();
 const oneTag = await page.locator('.list-rows .tag').first().innerText();
 expect(/^Missing /.test(oneTag), `a missing-one row names what is missing: ${oneTag}`);
 await docShot('drinks-missing-one');
+await page.goto(`${site.url}#/drinks`);
+await page.locator('.list-rows li').first().waitFor();
+const several = await page.locator('.list-rows .tag', { hasText: /^Missing \d+$/ }).count();
+expect(several > 0, `drinks missing several ingredients say how many (${several} rows)`);
+await page.goto(`${site.url}#/drinks?makeable=one`);
+await page.locator('.list-rows li').first().waitFor();
 await shot('drinks-missing-one');
 
 // The filters sheet counts and keeps the filter in the address.
@@ -357,6 +364,86 @@ expect(
   after - before === looseUnlocks,
   `with substitutes: makeable plus substitute rose by ${looseUnlocks} (${before} to ${after})`,
 );
+
+// ---- Remembered mode and the Buy Next settings ----
+const openFresh = async (address) => {
+  await page.goto('about:blank');
+  await page.goto(`${site.url}${address}`);
+};
+const hash = () => page.evaluate(() => location.hash);
+/** Waits until a setting is in the database: the write follows the tap. */
+const settingStored = (key, value) =>
+  page.waitForFunction(
+    ([k, v]) =>
+      new Promise((done) => {
+        const open = indexedDB.open('mixtura');
+        open.onsuccess = () => {
+          const get = open.result.transaction('settings').objectStore('settings').get(k);
+          get.onsuccess = () => {
+            open.result.close();
+            done(get.result?.value === v);
+          };
+        };
+        open.onerror = () => done(false);
+      }),
+    [key, value],
+  );
+const modeChecked = () => page.locator('.buy-mode').getAttribute('aria-checked');
+await openFresh('#/stock/buy-next');
+await page.locator('.buy-item').first().waitFor();
+expect((await modeChecked()) === 'true', 'Buy Next starts with substitutes counted');
+await page.locator('.buy-mode').click();
+await page.waitForFunction(
+  () => document.querySelector('.buy-mode')?.getAttribute('aria-checked') === 'false',
+);
+await settingStored('buyNextMode', 'strict');
+expect(!(await hash()).includes('strict'), 'switching the mode leaves no mode in the address');
+await openFresh('#/stock/buy-next');
+await page.locator('.buy-item').first().waitFor();
+expect((await modeChecked()) === 'false', 'the mode is remembered after a reload');
+await openFresh('#/stock/buy-next?strict=0');
+await page.locator('.buy-item').first().waitFor();
+expect(
+  (await modeChecked()) === 'true',
+  'an address that names a mode wins over the remembered one',
+);
+await openFresh('#/stock/buy-next');
+await page.locator('.buy-item').first().waitFor();
+await page.locator('.buy-mode').click();
+await page.waitForFunction(
+  () => document.querySelector('.buy-mode')?.getAttribute('aria-checked') === 'true',
+);
+await settingStored('buyNextMode', 'with-substitutes');
+await openFresh('#/settings');
+const pressed = (name) => page.locator(`[data-focus="${name}"]`).getAttribute('aria-pressed');
+expect(
+  (await pressed('buy-next-drafts-yes')) === 'true' &&
+    (await pressed('buy-next-retired-no')) === 'true',
+  'Settings: drafts are ranked and retired drinks are not, by default',
+);
+await page.locator('[data-focus="buy-next-retired-yes"]').click();
+await page.locator('[data-focus="buy-next-drafts-no"]').click();
+await settingStored('buyNextRetired', 'yes');
+await settingStored('buyNextDrafts', 'no');
+await openFresh('#/settings');
+// The settings arrive when the database has opened.
+await page.waitForFunction(
+  () => document.querySelector('[data-focus="buy-next-drafts-no"]')?.ariaPressed === 'true',
+);
+expect(
+  (await pressed('buy-next-drafts-no')) === 'true' &&
+    (await pressed('buy-next-retired-yes')) === 'true',
+  'the Buy Next settings are remembered after a reload',
+);
+await page.locator('[data-focus="buy-next-retired-no"]').click();
+await page.locator('[data-focus="buy-next-drafts-yes"]').click();
+await settingStored('buyNextRetired', 'no');
+await settingStored('buyNextDrafts', 'yes');
+await openFresh('#/stock/buy-next');
+await page.locator('.buy-item').first().waitFor();
+expect(true, 'Buy Next ranks with the settings changed and changed back');
+await noOverflow('on Settings');
+await targets('on Settings');
 
 // ---- Numbers ----
 await page.goto(`${site.url}#/stock/buy-next`);

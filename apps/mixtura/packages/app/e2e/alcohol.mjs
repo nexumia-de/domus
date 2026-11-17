@@ -9,7 +9,7 @@
 /* global document, location, window -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const args = process.argv.slice(2);
@@ -26,6 +26,7 @@ const context = await browser.newContext({
   deviceScaleFactor: docs ? 2 : 1,
 });
 const page = await context.newPage();
+await throttle(page, process.argv.slice(2));
 page.on('pageerror', (error) => {
   throw error;
 });

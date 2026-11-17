@@ -2,12 +2,14 @@
 // (docs/screens-stock-settings.md#buy-next). The mode and the open
 // candidate live in the address; the ranking is the engine's, derived.
 
+import type { SpecStatus } from '@mixtura/engine';
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
 import { replace } from '../../navigation';
 import { formatHash } from '../../router';
 import { type ScreenContext, type ScreenView } from '../../screen';
-import { deriveStock, hasStock, rankStock } from '../../stock/derived';
+import { deriveStock, hasStock } from '../../stock/derived';
+import { rankedStock } from '../../stock/rank-async';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { listKey } from '../../shell/scroll';
 import { strings } from '../../strings';
@@ -21,9 +23,9 @@ import { views } from './views';
 
 const PREVIEW = 3;
 
-function hashFor(strict: boolean, open: string | null): string {
+function hashFor(strict: boolean | null, open: string | null): string {
   const query = new URLSearchParams();
-  if (strict) query.set('strict', '1');
+  if (strict !== null) query.set('strict', strict ? '1' : '0');
   if (open) query.set('open', open);
   return formatHash(['stock', 'buy-next'], query);
 }
@@ -38,15 +40,36 @@ export function buyNextView(context: ScreenContext): ScreenView {
   }
   const { model } = browse;
   const { records, writable } = state;
-  const strict = context.route.query.get('strict') === '1';
+  // The address decides when it names a mode; otherwise the remembered one.
+  const named = context.route.query.get('strict');
+  const strict = named === null ? context.state.buyNextMode === 'strict' : named === '1';
+  const excludeStatuses: SpecStatus[] = [
+    ...(context.state.buyNextDrafts === 'no' ? (['draft'] as const) : []),
+    ...(context.state.buyNextRetired === 'no' ? (['retired'] as const) : []),
+  ];
   const open = context.route.query.get('open');
   const stocked = hasStock(model, records);
-  const ranking = candidatesOf(
+  // The ranking comes from a worker; the previous one is drawn until the new one is in.
+  const ranked = rankedStock(
     model,
-    rankStock(model, records, strict ? 'strict' : 'with-substitutes'),
+    records,
+    strict ? 'strict' : 'with-substitutes',
+    excludeStatuses,
+    () => context.store.set({ rankRev: context.store.get().rankRev + 1 }),
   );
-  const setView = (nextStrict: boolean, nextOpen: string | null): void =>
-    replace(context.store, hashFor(nextStrict, nextOpen));
+  const shown = ranked.result ?? ranked.previous;
+  if (!shown)
+    return { title, body: h('div', { class: 'stack' }, views('buy-next'), loadingStatus()) };
+  const ranking = candidatesOf(model, shown);
+  // Switching the mode is remembered and the address then names none; opening a row keeps
+  // what the address said.
+  const setView = (nextStrict: boolean, nextOpen: string | null): void => {
+    const switched = nextStrict !== strict;
+    if (switched) {
+      context.store.set({ buyNextMode: nextStrict ? 'strict' : 'with-substitutes' });
+    }
+    replace(context.store, hashFor(!switched && named !== null ? strict : null, nextOpen));
+  };
 
   const haveIt = (c: Candidate): void => {
     const undo = changeStock(context, [{ id: c.id, next: withPresent(records, c.id, true) }]);

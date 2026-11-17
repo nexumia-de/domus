@@ -59,6 +59,8 @@ links. Change history is in [log.md](log.md).
 
 # Development
 
+- [Accessibility pass](accessibility.md) - The browser checks on every screen at both sizes in light and dark (names, focus, order, headings, landmarks, fields, targets, contrast, reduced motion, 200 % zoom), what they found and fixed, the open findings.
+- [Screenshots](screenshots.md) - The current screens at 360x720 and 1200x800 in light and dark, how to regenerate them, and the mock-up pictures kept apart.
 - [Development](development.md) - Setup, commands, layout, the app shell and how to add a screen, service worker and update flow, e2e test, the engine's purity rule, the CI jobs and the hosts the research needed.
 - [Install](install.md) - Public address, how to install on Android, Linux desktop and a Phosh phone (browser support from MDN, device steps marked as unchecked), updates, offline use, where the data lives, removal, and the owner's steps to switch on GitHub Pages.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

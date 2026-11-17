@@ -67,6 +67,34 @@ await page.getByRole('heading', { name: 'Settings', exact: true }).waitFor();
 expect(true, 'a deep link works offline under /mixtura/');
 expect(fromNetwork.length === 0, `offline: all responses from the service worker ${fromNetwork}`);
 expect((await page.evaluate(() => location.pathname)) === '/mixtura/', 'path stays /mixtura/');
+
+// The ranking worker is one more precached file: Buy Next ranks offline
+// under the sub-path with it, in the offline state of this script.
+expect(
+  cached.includes(`${site.url}rank-worker.js`),
+  'the ranking worker script is precached under /mixtura/',
+);
+await page.goto(`${site.url}#/stock`);
+await page.locator('.stock-tree').waitFor();
+await page.locator('input[name="q"]').fill('gin');
+await page.waitForFunction(() => location.hash.includes('q=gin'));
+await page.locator('.stock-row').first().waitFor();
+await page.locator('input[name="q"]').press('Enter');
+await page.goto('about:blank');
+await page.goto(`${site.url}#/stock/buy-next`);
+await page.locator('.buy-item').first().waitFor();
+expect(
+  await page.evaluate(() =>
+    performance
+      .getEntriesByType('resource')
+      .some((e) => e.name.endsWith('/mixtura/rank-worker.js')),
+  ),
+  'Buy Next fetched the worker script from /mixtura/ through the service worker',
+);
+expect(
+  (await page.locator('.buy-item').count()) > 0,
+  'offline: the ranking is drawn from the worker',
+);
 await context.setOffline(false);
 
 expect(outside.length === 0, `no request left /mixtura/ on ${origin}: ${outside}`);

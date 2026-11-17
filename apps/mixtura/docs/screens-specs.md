@@ -19,8 +19,8 @@ each entry as in [browse and read](screens-browse.md). Goal 4.
 
 Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). URL
 `#/drinks/<id>/edit`, new drink `#/drinks/new`; pushed. Mock-up:
-[html](mockups/editor.html), [360](screenshots/editor-360x720.png),
-[1200](screenshots/editor-1200x800.png).
+[html](mockups/editor.html), [360](screenshots/mockups/editor-360x720.png),
+[1200](screenshots/mockups/editor-1200x800.png).
 
 - **Purpose.** Write or change a spec quickly with units as typed, and
   see the balance while typing.

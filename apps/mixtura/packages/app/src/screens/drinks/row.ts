@@ -56,6 +56,8 @@ function availabilityTag(model: BrowseModel, a: Availability): HTMLElement {
     'span',
     { class: 'tag tag--row' },
     glyph.none(),
-    words.tagMissing(model.ingredientName(a.missing) ?? a.missing),
+    a.kind === 'several'
+      ? words.tagMissingMany(a.count)
+      : words.tagMissing(model.ingredientName(a.missing) ?? a.missing),
   );
 }

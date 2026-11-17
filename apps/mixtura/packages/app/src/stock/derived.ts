@@ -12,6 +12,7 @@ import {
   missingOne,
   unlockRanking,
   type StockIndex,
+  type SpecStatus,
   type StockMode,
   type UnlockResult,
 } from '@mixtura/engine';
@@ -19,10 +20,14 @@ import type { BrowseModel } from '../screens/browse/model';
 import type { StockRecords } from './state';
 
 export type Availability =
-  { kind: 'makeable' } | { kind: 'substitute' } | { kind: 'one'; missing: string };
+  | { kind: 'makeable' }
+  | { kind: 'substitute' }
+  | { kind: 'one'; missing: string }
+  /** Two or more ingredients missing: only the tag "Missing 3" shows it, no filter and no count. */
+  | { kind: 'several'; count: number };
 
 export interface Derived {
-  /** By spec id; empty while nothing is in stock. Only the three states are listed. */
+  /** By spec id; empty while nothing is in stock. The three states and "several missing" are listed. */
   states: ReadonlyMap<string, Availability>;
   /** Drinks of the list in each state. */
   counts: { makeable: number; substitute: number; one: number };
@@ -31,11 +36,16 @@ export interface Derived {
 interface PerModel {
   index: StockIndex;
   derived: WeakMap<StockRecords, Derived>;
-  rankings: WeakMap<StockRecords, Partial<Record<StockMode, UnlockResult>>>;
+  rankings: WeakMap<StockRecords, Record<string, UnlockResult>>;
 }
 
 const models = new WeakMap<BrowseModel, PerModel>();
 const drinkCountsByModel = new WeakMap<BrowseModel, ReadonlyMap<string, number>>();
+
+/** The stock index of a model: its tree and specs (also what the ranking worker is sent). */
+export function indexOf(model: BrowseModel): StockIndex {
+  return perModel(model).index;
+}
 
 function perModel(model: BrowseModel): PerModel {
   let found = models.get(model);
@@ -87,6 +97,9 @@ export function deriveStock(model: BrowseModel, records: StockRecords): Derived 
       } else {
         const missing = one.get(id);
         if (missing !== undefined) states.set(id, { kind: 'one', missing });
+        else if (result.status === 'missing' && result.missing.length > 1) {
+          states.set(id, { kind: 'several', count: result.missing.length });
+        }
       }
     }
     for (const drink of model.drinks) {
@@ -94,7 +107,7 @@ export function deriveStock(model: BrowseModel, records: StockRecords): Derived 
       if (!state) continue;
       if (state.kind === 'makeable') counts.makeable += 1;
       else if (state.kind === 'substitute') counts.substitute += 1;
-      else counts.one += 1;
+      else if (state.kind === 'one') counts.one += 1;
     }
   }
   const derived: Derived = { states, counts };
@@ -107,6 +120,7 @@ export function rankStock(
   model: BrowseModel,
   records: StockRecords,
   mode: StockMode,
+  excludeStatuses: readonly SpecStatus[] = ['retired'],
 ): UnlockResult {
   const mine = perModel(model);
   let byMode = mine.rankings.get(records);
@@ -114,9 +128,14 @@ export function rankStock(
     byMode = {};
     mine.rankings.set(records, byMode);
   }
-  byMode[mode] ??= unlockRanking(mine.index, entriesOf(records), { mode });
-  return byMode[mode];
+  const key = rankKey(mode, excludeStatuses);
+  byMode[key] ??= unlockRanking(mine.index, entriesOf(records), { mode, excludeStatuses });
+  return byMode[key];
 }
+
+/** What a ranking depends on besides the stock: the mode and the statuses left out. */
+export const rankKey = (mode: StockMode, excludeStatuses: readonly SpecStatus[]): string =>
+  `${mode}|${[...excludeStatuses].sort().join(',')}`;
 
 /**
  * For each ingredient the number of drinks of the list that name it or

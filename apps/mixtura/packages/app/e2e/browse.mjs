@@ -9,7 +9,7 @@
 /* global document, innerWidth, location, window, history, requestAnimationFrame, MutationObserver -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { launch } from './browser.mjs';
+import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
 const args = process.argv.slice(2);
@@ -42,6 +42,7 @@ if (phone) {
   const client = await context.newCDPSession(page);
   await client.send('Emulation.setCPUThrottlingRate', { rate: 4 });
 }
+await throttle(page, args);
 // Marks the moment the first rows are in the page.
 await page.addInitScript(() => {
   new MutationObserver((_, observer) => {

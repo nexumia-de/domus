@@ -29,6 +29,13 @@ await build({
   define: { APP_VERSION: JSON.stringify(version) },
 });
 
+// The ranking worker (stock/rank-worker.ts) is its own script next to the page.
+await build({
+  ...common,
+  entryPoints: ['src/stock/rank-worker.ts'],
+  outfile: join(out, 'rank-worker.js'),
+});
+
 const styles = [
   'tokens',
   'base',
@@ -60,7 +67,7 @@ writeFileSync(join(out, 'seed', 'seed.json'), JSON.stringify(assembleSeed()));
 copied.push('seed/seed.json');
 
 // The cache is named after the files' content: a changed build replaces it.
-const files = [...copied, 'main.js', 'app.css'];
+const files = [...copied, 'main.js', 'rank-worker.js', 'app.css'];
 const hash = createHash('sha256');
 for (const file of files) hash.update(file).update(readFileSync(join(out, file)));
 await build({

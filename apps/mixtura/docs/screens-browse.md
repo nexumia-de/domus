@@ -73,8 +73,8 @@ URL `#/templates/<id>`; pushed on Templates.
 Built by [#18](https://github.com/nexumia-de/mixtura/issues/18); makeable
 part [#33](https://github.com/nexumia-de/mixtura/issues/33). Destination
 **Drinks**, URL `#/drinks`. Mock-up: [html](mockups/drinks-list.html),
-[360](screenshots/drinks-list-360x720.png),
-[1200](screenshots/drinks-list-1200x800.png).
+[360](screenshots/mockups/drinks-list-360x720.png),
+[1200](screenshots/mockups/drinks-list-1200x800.png).
 
 - **Purpose.** Find a drink in a second and see whether it can be made.
 - **Content.** Title and New Drink (plus) in the top bar; a search field
@@ -110,8 +110,8 @@ Built by [#18](https://github.com/nexumia-de/mixtura/issues/18)
 (availability), [#37](https://github.com/nexumia-de/mixtura/issues/37)
 (alcohol). A sheet over the drinks list on a phone, a popover from the
 Filters button on desktop. Mock-up: [html](mockups/filters.html),
-[360](screenshots/filters-360x720.png),
-[1200](screenshots/filters-1200x800.png).
+[360](screenshots/mockups/filters-360x720.png),
+[1200](screenshots/mockups/filters-1200x800.png).
 
 - **Purpose.** Narrow the list; the filters are the same ones the
   bartender thinks in.
@@ -138,8 +138,8 @@ Filters button on desktop. Mock-up: [html](mockups/filters.html),
 Built by [#19](https://github.com/nexumia-de/mixtura/issues/19);
 servings and batch [#52](https://github.com/nexumia-de/mixtura/issues/52).
 URL `#/drinks/<id>`, pushed on Drinks. Mock-up: [html](mockups/spec.html),
-[360](screenshots/spec-360x720.png),
-[1200](screenshots/spec-1200x800.png).
+[360](screenshots/mockups/spec-360x720.png),
+[1200](screenshots/mockups/spec-1200x800.png).
 
 - **Purpose.** Read a drink as a bartender reads a spec: lines, method,
   and whether the numbers sit in the usual range; the starting point for
@@ -187,8 +187,8 @@ URL `#/drinks/<id>`, pushed on Drinks. Mock-up: [html](mockups/spec.html),
 Built by [#20](https://github.com/nexumia-de/mixtura/issues/20). Not a
 separate screen: the spec screen in a mode, URL
 `#/drinks/<id>?swap=…`. Mock-up: [html](mockups/swap.html),
-[360](screenshots/swap-360x720.png),
-[1200](screenshots/swap-1200x800.png).
+[360](screenshots/mockups/swap-360x720.png),
+[1200](screenshots/mockups/swap-1200x800.png).
 
 - **Purpose.** Change a slot's ingredient or amount without saving and
   watch the numbers; the bartender's "what if".

@@ -4,6 +4,7 @@ import { applyFilters } from '../src/screens/browse/filters';
 import { candidatesOf } from '../src/screens/stock/buy-next-model';
 import { deriveStock, drinkCounts, hasStock, rankStock } from '../src/stock/derived';
 import type { StockRecords } from '../src/stock/state';
+import { rankedStock } from '../src/stock/rank-async';
 import { fixtureModel } from './browse-fixture';
 
 const model = fixtureModel();
@@ -14,7 +15,7 @@ const states = (r: StockRecords): Record<string, string> =>
   Object.fromEntries(
     [...deriveStock(model, r).states].map(([id, a]) => [
       name(id),
-      a.kind === 'one' ? `one:${a.missing}` : a.kind,
+      a.kind === 'one' ? `one:${a.missing}` : a.kind === 'several' ? `several:${a.count}` : a.kind,
     ]),
   );
 
@@ -33,6 +34,8 @@ test('makeable, missing one with its name, and a stocked type that does not sati
     // 'gin' (a type) does not satisfy a line that names London Dry Gin
     'Gimlet (less syrup)': 'one:london-gin',
     Martini: 'one:vermouth',
+    // two or more missing: the list only says how many
+    'Crème Brûlée Flip': 'several:2',
   });
 });
 
@@ -80,4 +83,30 @@ test('drinks per ingredient include the ancestors of the lines', () => {
   expect(counts.get('gin')).toBe(3); // Gimlet (via London Dry Gin), Martini, Gin and Soda
   expect(counts.get('spirits')).toBe(6);
   expect(counts.get('lime')).toBe(3);
+});
+
+test('without a worker the ranking is computed at once and equals the synchronous one', () => {
+  const r = rec('rum', 'simple');
+  let called = 0;
+  const ranked = rankedStock(model, r, 'strict', ['retired'], () => (called += 1));
+  expect(ranked.result).toBe(rankStock(model, r, 'strict'));
+  expect(ranked.previous).toBe(ranked.result);
+  expect(called).toBe(0);
+});
+
+test('the statuses left out change the ranking and are kept apart', () => {
+  const r = rec('rum', 'simple');
+  const without = rankStock(model, r, 'strict', ['retired']);
+  const all = rankStock(model, r, 'strict', []);
+  expect(rankStock(model, r, 'strict', ['retired'])).toBe(without);
+  expect(rankStock(model, r, 'strict', [])).toBe(all);
+  expect(all).not.toBe(without);
+});
+
+test('"several missing" is no filter state and no count', () => {
+  const r = rec('rum', 'simple', 'gin', 'soda');
+  const { states: all, counts } = deriveStock(model, r);
+  const several = [...all.values()].filter((a) => a.kind === 'several');
+  expect(several.length).toBeGreaterThan(0);
+  expect(counts.one).toBe([...all.values()].filter((a) => a.kind === 'one').length);
 });
