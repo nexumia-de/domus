@@ -191,7 +191,9 @@ so the required checks do not change; the new job is not required.
 2. **Secrets.** In the repository (Settings, Secrets and variables, Actions) or
    the organisation, add `CLOUDFLARE_API_TOKEN` (the token) and
    `CLOUDFLARE_ACCOUNT_ID` (Find account and zone IDs in the Cloudflare docs).
-   Re-run `deploy-cloudflare` or push to `main`.
+   As organisation secrets with access for the selected repositories they
+   also serve Culina later ([Culina deployment](https://github.com/nexumia-de/culina/blob/main/docs/deployment.md)).
+   Re-run `deploy-cloudflare` of the last CI run on `main` or push to `main`.
 3. **First deploy.** The first push to `main` after step 2 creates the worker
    `mixtura` and its `workers.dev` address
    `mixtura.<account subdomain>.workers.dev`[^cf-workersdev]. The smoke check
@@ -207,6 +209,20 @@ so the required checks do not change; the new job is not required.
 6. **Remove Pages** once the new address works: delete `.github/workflows/pages.yml`
    in a pull request, switch Pages off in the repository settings (Source
    to None), and change the present address in [install](install.md) to the new one.
+
+## State on 2026-11-17
+
+Checked from an agent session before the owner steps:
+
+- `nexumia.de` resolved to Cloudflare addresses (`104.21.33.74`,
+  `172.67.159.253`), so the zone is on Cloudflare and step 4 needs no
+  nameserver change. Not checked in the dashboard.
+- `mixtura.nexumia.de` and `culina.nexumia.de` had no DNS record: no CNAME
+  stands in the way of the Custom Domain, and neither address answers yet.
+- The secrets were not set; `deploy-cloudflare` skips. Steps 1 to 6 are open.
+- Agent sessions cannot reach `mixtura.nexumia.de` (the session proxy refused
+  the connection). To let an agent check the address after step 4, allow the
+  host `mixtura.nexumia.de` in the session environment.
 
 ## Verified and not verified
 
