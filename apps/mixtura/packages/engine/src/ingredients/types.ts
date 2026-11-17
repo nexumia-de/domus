@@ -36,6 +36,16 @@ export interface PreparedIngredient {
 export type InheritedProperty =
   'role' | 'abv' | 'sugar' | 'acid' | 'shelfLifeDays' | 'substitutionClass';
 
+/** What one counted unit of an ingredient holds, as data with its evidence (docs/units.md#counted-units). */
+export interface UnitVolume {
+  /** Volume in ml of one unit (one whole egg, one slice). */
+  ml: number;
+  /** `assumption` means no source was read. */
+  evidence: 'derived' | 'secondary' | 'assumption';
+  /** Where the number comes from; free text. */
+  source?: string;
+}
+
 export interface Ingredient {
   id: Id;
   name: string;
@@ -48,6 +58,8 @@ export interface Ingredient {
   shelfLifeDays?: number;
   substitutionClass?: SubstitutionClass;
   cost?: Cost;
+  /** Volume of one counted unit by unit id (`whole`, `slice`, ...); never inherited. */
+  unitVolumes?: Record<string, UnitVolume>;
   prepared?: PreparedIngredient;
   assumed?: InheritedProperty[];
   source?: Source;
@@ -68,6 +80,7 @@ export const INGREDIENT_FIELDS = [
   'shelfLifeDays',
   'substitutionClass',
   'cost',
+  'unitVolumes',
   'prepared',
   'assumed',
   'source',

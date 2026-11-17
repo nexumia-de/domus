@@ -169,6 +169,8 @@ export function buildSeed(
     }
     const b = result.value;
     if (!b.after) count(balance, 'no dilution (no or unknown method)');
+    if (b.excluded.length > 0) count(balance, 'specs with a line not counted in the figures');
+    for (const e of b.excluded) count(balance, `lines not counted: ${e.reason}`);
     const f = b.after ?? b.before;
     for (const k of ['abvPct', 'sugarPer100Ml', 'acidPct'] as const) {
       if ((f as unknown as Record<string, { known: boolean }>)[k]?.known)

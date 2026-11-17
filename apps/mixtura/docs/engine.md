@@ -78,38 +78,38 @@ others return result objects as documented in their module files
 
 ## General model (`src/model.ts`)
 
-| Name                   | Signature                                                                                                         | Job                                                                                                      |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `INHERITED`            | `readonly InheritedProperty[]`                                                                                    | The names of the properties a child inherits from its ancestors.                                         |
-| `UNITS`                | `readonly UnitRow[]`                                                                                              | The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit. |
-| `ancestors`            | `(tree: IngredientTree, id: string): string[] \| undefined`                                                       | The ancestors of an ingredient.                                                                          |
-| `assignSlots`          | `(tree: IngredientTree, template: Template, lines: readonly MatchLine[], options?: MatchOptions): SlotAssignment` | Assigns spec lines to the slots of a template by role.                                                   |
-| `buildTree`            | `(list: readonly Ingredient[]): TreeResult`                                                                       | Validates the list and builds the ingredient tree.                                                       |
-| `computePrepared`      | `(tree: IngredientTree, specs: SpecLookup, id: string): PreparedResult`                                           | Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.                             |
-| `convert`              | `(amount: Amount, to: UnitId, overrides?: UnitOverrides): Result<Amount>`                                         | Converts between two units of the same kind (volume to volume, mass to mass).                            |
-| `descendants`          | `(tree: IngredientTree, id: string): string[] \| undefined`                                                       | The descendants of an ingredient.                                                                        |
-| `displayUnit`          | `(unit: UnitId, system: DisplaySystem): UnitId`                                                                   | The unit an amount is shown in: its own if it belongs to the system or is a convention.                  |
-| `distance`             | `(tree: IngredientTree, a: string, b: string): number \| undefined`                                               | The distance of two ingredients in the tree.                                                             |
-| `formatAmount`         | `(amount: Amount, options?: FormatOptions): Result<string>`                                                       | Formats an amount for display (rounded for reading, never stored).                                       |
-| `formatAmountDetailed` | `(amount: Amount, options?: FormatOptions): Result<Formatted>`                                                    | Like `formatAmount`, with the shown amount and the rounding step.                                        |
-| `fromBase`             | `(base: number, unit: UnitId, overrides?: UnitOverrides): Result<Amount>`                                         | An amount of the base unit (ml or g) expressed in `unit`.                                                |
-| `getIngredient`        | `(tree: IngredientTree, id: string): Ingredient \| undefined`                                                     | An ingredient by id.                                                                                     |
-| `isA`                  | `(tree: IngredientTree, child: string, ancestor: string): boolean`                                                | Whether one ingredient is the other or below it.                                                         |
-| `isEstimatedUnit`      | `(id: UnitId): boolean`                                                                                           | True when balance must flag the figure as estimated: a convention volume.                                |
-| `lineMl`               | `(line: MatchLine, options?: MatchOptions): { ml: number; } \| { reason: UnmeasuredReason; }`                     | The volume of a line.                                                                                    |
-| `lineRole`             | `(tree: IngredientTree, line: MatchLine): { role: Role; } \| { reason: UnassignedReason; }`                       | The role a line has: its own, else the ingredient's resolved role.                                       |
-| `matchSpec`            | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): MatchResult`    | Matches a spec to templates by roles and ratios and ranks every candidate.                               |
-| `parseAmount`          | `(text: string, options?: ParseOptions): Result<Amount>`                                                          | Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.                        |
-| `resolveAll`           | `(tree: IngredientTree, id: string): ResolvedProperties`                                                          | All inherited properties of one ingredient with their sources.                                           |
-| `resolveCost`          | `(tree: IngredientTree, id: string): Resolved<Cost>`                                                              | The price record of the ingredient itself: cost is never inherited.                                      |
-| `resolveProperty`      | `(tree: IngredientTree, id: string, property: P): Resolved<NonNullable<Ingredient[P]>>`                           | Reads a property from the ingredient or its nearest ancestor that has it.                                |
-| `sameClass`            | `(tree: IngredientTree, a: string, b: string): boolean`                                                           | Whether two ingredients can stand in for each other by class.                                            |
-| `scale`                | `(amount: Amount, factor: number): Result<Amount>`                                                                | Multiplies an amount; the unit stays.                                                                    |
-| `substitutesFor`       | `(tree: IngredientTree, id: string): Substitutes`                                                                 | Ingredients of the same class and role as `id`, nearest first.                                           |
-| `toBase`               | `(amount: Amount, overrides?: UnitOverrides): Result<{ value: number; kind: "mass" \| "volume"; }>`               | The amount in the base unit of its kind: ml for volume, g for mass.                                      |
-| `toGrams`              | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                     | The mass of an amount.                                                                                   |
-| `toMl`                 | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                     | The volume of an amount.                                                                                 |
-| `unitValue`            | `(id: UnitId, overrides?: UnitOverrides): number \| null`                                                         | The size of one unit.                                                                                    |
+| Name                   | Signature                                                                                                            | Job                                                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `INHERITED`            | `readonly InheritedProperty[]`                                                                                       | The names of the properties a child inherits from its ancestors.                                         |
+| `UNITS`                | `readonly UnitRow[]`                                                                                                 | The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit. |
+| `ancestors`            | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The ancestors of an ingredient.                                                                          |
+| `assignSlots`          | `(tree: IngredientTree, template: Template, lines: readonly MatchLine[], options?: MatchOptions): SlotAssignment`    | Assigns spec lines to the slots of a template by role.                                                   |
+| `buildTree`            | `(list: readonly Ingredient[]): TreeResult`                                                                          | Validates the list and builds the ingredient tree.                                                       |
+| `computePrepared`      | `(tree: IngredientTree, specs: SpecLookup, id: string): PreparedResult`                                              | Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.                             |
+| `convert`              | `(amount: Amount, to: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | Converts between two units of the same kind (volume to volume, mass to mass).                            |
+| `descendants`          | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The descendants of an ingredient.                                                                        |
+| `displayUnit`          | `(unit: UnitId, system: DisplaySystem): UnitId`                                                                      | The unit an amount is shown in: its own if it belongs to the system or is a convention.                  |
+| `distance`             | `(tree: IngredientTree, a: string, b: string): number \| undefined`                                                  | The distance of two ingredients in the tree.                                                             |
+| `formatAmount`         | `(amount: Amount, options?: FormatOptions): Result<string>`                                                          | Formats an amount for display (rounded for reading, never stored).                                       |
+| `formatAmountDetailed` | `(amount: Amount, options?: FormatOptions): Result<Formatted>`                                                       | Like `formatAmount`, with the shown amount and the rounding step.                                        |
+| `fromBase`             | `(base: number, unit: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | An amount of the base unit (ml or g) expressed in `unit`.                                                |
+| `getIngredient`        | `(tree: IngredientTree, id: string): Ingredient \| undefined`                                                        | An ingredient by id.                                                                                     |
+| `isA`                  | `(tree: IngredientTree, child: string, ancestor: string): boolean`                                                   | Whether one ingredient is the other or below it.                                                         |
+| `isEstimatedUnit`      | `(id: UnitId): boolean`                                                                                              | True when balance must flag the figure as estimated: a convention volume.                                |
+| `lineMl`               | `(line: MatchLine, options?: MatchOptions, tree?: IngredientTree): { ml: number; } \| { reason: UnmeasuredReason; }` | The volume of a line.                                                                                    |
+| `lineRole`             | `(tree: IngredientTree, line: MatchLine): { role: Role; } \| { reason: UnassignedReason; }`                          | The role a line has: its own, else the ingredient's resolved role.                                       |
+| `matchSpec`            | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): MatchResult`       | Matches a spec to templates by roles and ratios and ranks every candidate.                               |
+| `parseAmount`          | `(text: string, options?: ParseOptions): Result<Amount>`                                                             | Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.                        |
+| `resolveAll`           | `(tree: IngredientTree, id: string): ResolvedProperties`                                                             | All inherited properties of one ingredient with their sources.                                           |
+| `resolveCost`          | `(tree: IngredientTree, id: string): Resolved<Cost>`                                                                 | The price record of the ingredient itself: cost is never inherited.                                      |
+| `resolveProperty`      | `(tree: IngredientTree, id: string, property: P): Resolved<NonNullable<Ingredient[P]>>`                              | Reads a property from the ingredient or its nearest ancestor that has it.                                |
+| `sameClass`            | `(tree: IngredientTree, a: string, b: string): boolean`                                                              | Whether two ingredients can stand in for each other by class.                                            |
+| `scale`                | `(amount: Amount, factor: number): Result<Amount>`                                                                   | Multiplies an amount; the unit stays.                                                                    |
+| `substitutesFor`       | `(tree: IngredientTree, id: string): Substitutes`                                                                    | Ingredients of the same class and role as `id`, nearest first.                                           |
+| `toBase`               | `(amount: Amount, overrides?: UnitOverrides): Result<{ value: number; kind: "mass" \| "volume"; }>`                  | The amount in the base unit of its kind: ml for volume, g for mass.                                      |
+| `toGrams`              | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The mass of an amount.                                                                                   |
+| `toMl`                 | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The volume of an amount.                                                                                 |
+| `unitValue`            | `(id: UnitId, overrides?: UnitOverrides): number \| null`                                                            | The size of one unit.                                                                                    |
 
 ## Drink-specific (`src/drink.ts`)
 
@@ -124,6 +124,24 @@ others return result objects as documented in their module files
 | `scaleLine`      | `(line: BalanceLine, factor: number, options?: ScaleOptions): { ok: true; value: BalanceLine; } \| { ok: false; error: BatchError; }`                    | Scales one line.                                                                                                                                                                                              |
 | `scaleLines`     | `(lines: readonly BalanceLine[], servings: number, options?: ScaleOptions): { ok: true; value: BalanceLine[]; } \| { ok: false; errors: BatchError[]; }` | Scales all lines to a number of servings.                                                                                                                                                                     |
 | `shelfLife`      | `(tree: IngredientTree, ids: readonly string[]): ShelfLife`                                                                                              | The shelf life of a batch: the shortest of its parts.                                                                                                                                                         |
+
+## Counted lines and lines not counted
+
+No new exported name; fields and result values the app can read:
+
+- Spec line `topMl` (ml, only with `unit: top`) and ingredient
+  `unitVolumes` (`{ [unitId]: { ml, evidence, source? } }`) are stored
+  fields ([data model](data-model.md)); `BalanceLine`, `MatchLine` and
+  `lineMl(line, options, tree)` read them.
+- `computeBalance(...).value.excluded` lists every line the figures do not
+  count: `{ ingredientId, reason: 'top-without-volume' | 'counted-without-volume', unit }`.
+  An app shows each as "not counted in the figures" and, when the list is
+  not empty, says that the figures exclude it. `estimated` and
+  `estimatedIds` also name a counted line that has a volume.
+- `prediluted(...).value.lines[].roundingError` is `null` for a counted
+  line whose volume is not known; counted amounts round up to whole units.
+- Counted unit ids are the units of kind `count` in `UNITS`
+  ([units](units.md#counted-units)).
 
 # Examples
 

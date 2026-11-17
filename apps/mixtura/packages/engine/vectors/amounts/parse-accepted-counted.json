@@ -1,0 +1,349 @@
+{
+  "id": "parse-accepted-counted",
+  "description": "Counted units from units.json: singular, plural and the irregular leaves and pinches; a space before the word is required",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "1 whole",
+      "input": {
+        "text": "1 whole"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "2 Whole",
+      "input": {
+        "text": "2 Whole"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "1 slice",
+      "input": {
+        "text": "1 slice"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "slice"
+      }
+    },
+    {
+      "name": "2 slices",
+      "input": {
+        "text": "2 slices"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "slice"
+      }
+    },
+    {
+      "name": "1 leaf",
+      "input": {
+        "text": "1 leaf"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "leaf"
+      }
+    },
+    {
+      "name": "8 leaves",
+      "input": {
+        "text": "8 leaves"
+      },
+      "expected": {
+        "value": 8,
+        "unit": "leaf"
+      }
+    },
+    {
+      "name": "1 sprig",
+      "input": {
+        "text": "1 sprig"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "sprig"
+      }
+    },
+    {
+      "name": "2 sprigs",
+      "input": {
+        "text": "2 sprigs"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "sprig"
+      }
+    },
+    {
+      "name": "1 wedge",
+      "input": {
+        "text": "1 wedge"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "wedge"
+      }
+    },
+    {
+      "name": "2 wedges",
+      "input": {
+        "text": "2 wedges"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "wedge"
+      }
+    },
+    {
+      "name": "1 piece",
+      "input": {
+        "text": "1 piece"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "piece"
+      }
+    },
+    {
+      "name": "3 pieces",
+      "input": {
+        "text": "3 pieces"
+      },
+      "expected": {
+        "value": 3,
+        "unit": "piece"
+      }
+    },
+    {
+      "name": "1 pinch",
+      "input": {
+        "text": "1 pinch"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "pinch"
+      }
+    },
+    {
+      "name": "2 pinches",
+      "input": {
+        "text": "2 pinches"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "pinch"
+      }
+    },
+    {
+      "name": "1 cube",
+      "input": {
+        "text": "1 cube"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "cube"
+      }
+    },
+    {
+      "name": "2 cubes",
+      "input": {
+        "text": "2 cubes"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "cube"
+      }
+    },
+    {
+      "name": "1 peel",
+      "input": {
+        "text": "1 peel"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "peel"
+      }
+    },
+    {
+      "name": "2 peels",
+      "input": {
+        "text": "2 peels"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "peel"
+      }
+    },
+    {
+      "name": "1 stalk",
+      "input": {
+        "text": "1 stalk"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "stalk"
+      }
+    },
+    {
+      "name": "2 stalks",
+      "input": {
+        "text": "2 stalks"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "stalk"
+      }
+    },
+    {
+      "name": "1 scoop",
+      "input": {
+        "text": "1 scoop"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "scoop"
+      }
+    },
+    {
+      "name": "2 scoops",
+      "input": {
+        "text": "2 scoops"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "scoop"
+      }
+    },
+    {
+      "name": "1 chunk",
+      "input": {
+        "text": "1 chunk"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "chunk"
+      }
+    },
+    {
+      "name": "2 chunks",
+      "input": {
+        "text": "2 chunks"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "chunk"
+      }
+    },
+    {
+      "name": "1 yolk",
+      "input": {
+        "text": "1 yolk"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "yolk"
+      }
+    },
+    {
+      "name": "2 yolks",
+      "input": {
+        "text": "2 yolks"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "yolk"
+      }
+    },
+    {
+      "name": "1 stick",
+      "input": {
+        "text": "1 stick"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "stick"
+      }
+    },
+    {
+      "name": "2 sticks",
+      "input": {
+        "text": "2 sticks"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "stick"
+      }
+    },
+    {
+      "name": "1 bean",
+      "input": {
+        "text": "1 bean"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "bean"
+      }
+    },
+    {
+      "name": "3 beans",
+      "input": {
+        "text": "3 beans"
+      },
+      "expected": {
+        "value": 3,
+        "unit": "bean"
+      }
+    },
+    {
+      "name": "1 capsule",
+      "input": {
+        "text": "1 capsule"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "capsule"
+      }
+    },
+    {
+      "name": "2 capsules",
+      "input": {
+        "text": "2 capsules"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "capsule"
+      }
+    },
+    {
+      "name": "1\u00bd whole",
+      "input": {
+        "text": "1\u00bd whole"
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "\u00bd slice",
+      "input": {
+        "text": "\u00bd slice"
+      },
+      "expected": {
+        "value": 0.5,
+        "unit": "slice"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#counted-units and the parsing grammar"
+}

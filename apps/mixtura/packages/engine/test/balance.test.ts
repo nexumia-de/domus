@@ -49,6 +49,7 @@ describe.each(cases)('$id', (c) => {
     if (f.estimated !== undefined) expect(v.estimated).toBe(f.estimated);
     if (f.estimated_ids) expect([...v.estimatedIds].sort()).toEqual([...f.estimated_ids].sort());
     if (f.excluded_ids) expect(v.excluded.map((e) => e.ingredientId)).toEqual(f.excluded_ids);
+    if (f.excluded_reasons) expect(v.excluded.map((e) => e.reason)).toEqual(f.excluded_reasons);
     if (f.dilution) expect(v.dilution).toMatchObject(f.dilution);
   });
 

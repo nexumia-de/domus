@@ -203,13 +203,13 @@ Code: `packages/engine/src/balance/`, one job per file. Entry point
 amounts module for every unit and `ingredients/mixture.ts` for the
 mixture arithmetic.
 
-| File          | Job                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------- |
-| `types.ts`    | `Figure`, `BalanceSpec`, `DilutionTable`, `BalanceFigures`, error codes               |
-| `dilution.ts` | `DILUTION` (read from `data/dilution.json`), `chooseDilution(method, options)`        |
-| `lines.ts`    | spec lines to ml and g, properties from the tree or from a prepared ingredient's spec |
-| `sums.ts`     | totals of volume, ethanol, sugar and acid                                             |
-| `figures.ts`  | ABV, sugar, acid before and after dilution, sugar-to-acid ratio, UK units             |
+| File          | Job                                                                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `types.ts`    | `Figure`, `BalanceSpec`, `DilutionTable`, `BalanceFigures`, error codes                                                                 |
+| `dilution.ts` | `DILUTION` (read from `data/dilution.json`), `chooseDilution(method, options)`                                                          |
+| `lines.ts`    | spec lines to ml and g (counted lines by the ingredient's `unitVolumes`), properties from the tree or from a prepared ingredient's spec |
+| `sums.ts`     | totals of volume, ethanol, sugar and acid                                                                                               |
+| `figures.ts`  | ABV, sugar, acid before and after dilution, sugar-to-acid ratio, UK units                                                               |
 
 **Figures.** A figure is `{ known: true, value }` or `{ known: false,
 missingIds, reason }`. A property that no ancestor of a line's ingredient
@@ -237,11 +237,23 @@ to `no-method` or `unknown-method`; no fraction is invented.
 - Mass units (`g`, `oz_mass`) count as solid sugar: `grams * sugar / 100`
   g of sugar and volume 0. A mass line adds nothing else; acid or ethanol
   in a solid is not modelled.
-- A `top` line counts as its `topMl` volume when given. The Spec schema
-  has no such field yet, so `BalanceLine` carries it; without it the line
-  is excluded and listed in `excluded` (`top-without-volume`). The range
-  "0 ml to the glass volume" of [units](units.md#non-volumetric-amounts-in-balance)
-  is not computed because the glass volume is not in the data yet.
+- A `top` line counts as its `topMl` volume when given. `topMl` is the
+  stored field `lines[].topMl` of the Spec schema ([data model](data-model.md#spec),
+  only valid with `unit: top`); `BalanceLine` reads the same name. Without it
+  the line is excluded and listed in `excluded` (`top-without-volume`). No
+  range "0 ml to the glass volume" is computed: a glass has no volume in
+  the data ([decision](decisions/counted-units.md)).
+- <a id="counted-lines-and-open-amounts"></a>A **counted line** (`whole`,
+  `slice`, `leaf`, ...; [units](units.md#counted-units)) counts as amount
+  times the volume one unit of its ingredient holds, from the ingredient's
+  own `unitVolumes[unit].ml` (not inherited, never guessed); `estimated`
+  is true and `estimatedIds` names the line. Without such data the line is
+  excluded and listed in `excluded` with reason `counted-without-volume`,
+  its ingredient id and its unit. `excluded` is the engine's answer to
+  "not counted in the figures": a screen shows every entry as such and
+  says that the figures exclude it (`excluded` empty means every line is
+  in the figures). A spec whose only unknown is a counted garnish still
+  has every figure; the garnish is the one excluded line.
 - Convention volumes (dash, drop, splash, tsp, tbsp, bar spoon) count
   with their table volume (overridable through `unitOverrides`);
   `estimated` is true and `estimatedIds` names the lines.
@@ -263,7 +275,9 @@ formulas, not by the engine. Tolerance is 0.0001 absolute: the vectors
 store six decimals, and 0.0001 is far below the effect of any assumption
 in the inputs while still failing a wrong formula. The files cover
 lines in dash, bar spoon, g, cl and oz; a `top` line with and without
-volume; a prepared ingredient; an unknown property; an unknown
+volume; a counted line with and without a volume per unit (also a
+volume given for another unit only, and not inherited) and a counted
+garnish as the only unknown line; a prepared ingredient; an unknown property; an unknown
 ingredient; every method of `dilution.json`; a fraction override, a table
 override and both bounds; no method and an unknown method; zero volume;
 and a drink without alcohol.
@@ -291,13 +305,23 @@ servings, unknown figures included). `top` lines are not batched (they
 are poured at the glass); they are listed in `servedSeparately` and the
 batch is compared with the spec without them. A spec with no method (or
 an unknown one) has no dilution, so the result is the error `no-dilution`;
-servings must be a number above 0 (`invalid-servings`).
+servings must be a number above 0 (`invalid-servings`). A counted line is
+batched like any other: scaled exactly, and, when its volume is known,
+part of the batch volume; without a known volume it is in `lines` (so the
+bar knows how many to prepare) but not in any figure, and the batch's
+`exact`, `perDrink` and `made` all list it in `excluded`.
 
 **Rounding.** Each scaled amount is rounded by the display rules of
 [units](units.md) (`formatAmountDetailed`, metric unless `system` says
 otherwise), the water to whole ml. Every line reports `exact`,
 `rounded`, the `step` and `roundingError` (rounded minus exact, in ml or
-g); the water reports the same. `made` holds the figures of the batch
+g; `null` for a counted line whose volume is not known); the water
+reports the same. A **counted amount** is the exception to the display
+rules: it is rounded **up** to a whole number of units, never below 1,
+step 1 (an egg or a garnish cannot be prepared in fractions, and too few
+is the worse error; [units](units.md#counted-units)). Half an egg for 5
+servings is 2.5 exact and 3 rounded; with 45 ml per whole that is 22.5 ml
+more in the batch, which `made` shows. `made` holds the figures of the batch
 built from the rounded amounts, so they can be compared with `perDrink`;
 `roundedTotalMl` and `roundedYieldServings` follow from them. Scaling by
 N and then 1/N returns the original amounts to 1e-9: scaling does not

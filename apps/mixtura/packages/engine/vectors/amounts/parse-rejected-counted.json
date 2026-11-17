@@ -1,0 +1,45 @@
+{
+  "id": "parse-rejected-counted",
+  "description": "Counted words need a space, and a range or a bare number is still rejected",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "2slices",
+      "input": {
+        "text": "2slices"
+      },
+      "expected": {
+        "error": "space_required"
+      }
+    },
+    {
+      "name": "1-2 leaves",
+      "input": {
+        "text": "1-2 leaves"
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "name": "whole",
+      "input": {
+        "text": "whole"
+      },
+      "expected": {
+        "error": "no_number"
+      }
+    },
+    {
+      "name": "-1 whole",
+      "input": {
+        "text": "-1 whole"
+      },
+      "expected": {
+        "error": "negative"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#parsing-grammar"
+}

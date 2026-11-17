@@ -26,6 +26,21 @@
       "required": ["price", "currency", "quantity"],
       "additionalProperties": false
     },
+    "unitVolumes": {
+      "description": "Volume of one counted unit of this ingredient (whole, slice, leaf, ...) by unit id, with its evidence. Not inherited. Without an entry a counted line has no volume and balance does not count it.",
+      "type": "object",
+      "propertyNames": { "$ref": "urn:mixtura:common#/$defs/unitId" },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "ml": { "type": "number", "exclusiveMinimum": 0 },
+          "evidence": { "enum": ["derived", "secondary", "assumption"] },
+          "source": { "type": "string" }
+        },
+        "required": ["ml", "evidence"],
+        "additionalProperties": false
+      }
+    },
     "prepared": {
       "$ref": "urn:mixtura:prepared-ingredient"
     },

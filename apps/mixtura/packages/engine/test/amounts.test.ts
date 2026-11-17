@@ -103,6 +103,7 @@ describe('round trip: format then parse returns the amount within the rounding s
   const accepted = [
     ...read('parse-accepted-grammar.json').cases,
     ...read('parse-accepted-variants.json').cases,
+    ...read('parse-accepted-counted.json').cases,
   ];
   test.each(accepted.map((c: Case) => [c.name, c] as const))('%s', (_n, c) => {
     const first = parseAmount(c.input.text as string);

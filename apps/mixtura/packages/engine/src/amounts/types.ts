@@ -14,9 +14,29 @@ export type UnitId =
   | 'splash'
   | 'top'
   | 'g'
-  | 'oz_mass';
+  | 'oz_mass'
+  | CountUnitId;
 
-export type UnitKind = 'volume' | 'mass' | 'fill';
+/** Counted units: an amount of things, with no volume of their own (docs/units.md#counted-units). */
+export type CountUnitId =
+  | 'whole'
+  | 'slice'
+  | 'leaf'
+  | 'sprig'
+  | 'wedge'
+  | 'piece'
+  | 'pinch'
+  | 'cube'
+  | 'peel'
+  | 'stalk'
+  | 'scoop'
+  | 'chunk'
+  | 'yolk'
+  | 'stick'
+  | 'bean'
+  | 'capsule';
+
+export type UnitKind = 'volume' | 'mass' | 'fill' | 'count';
 
 /** What the user entered: an exact value and a unit id. Never rewritten by display. */
 export type Amount = { value: number; unit: UnitId };

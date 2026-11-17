@@ -117,6 +117,150 @@
       "status": "exact",
       "evidence": "derived",
       "overridable": false
+    },
+    {
+      "id": "whole",
+      "symbols": ["whole", "wholes"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "slice",
+      "symbols": ["slice", "slices"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "leaf",
+      "symbols": ["leaf", "leaves"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "sprig",
+      "symbols": ["sprig", "sprigs"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "wedge",
+      "symbols": ["wedge", "wedges"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "piece",
+      "symbols": ["piece", "pieces"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "pinch",
+      "symbols": ["pinch", "pinches"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "cube",
+      "symbols": ["cube", "cubes"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "peel",
+      "symbols": ["peel", "peels"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "stalk",
+      "symbols": ["stalk", "stalks"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "scoop",
+      "symbols": ["scoop", "scoops"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "chunk",
+      "symbols": ["chunk", "chunks"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "yolk",
+      "symbols": ["yolk", "yolks"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "stick",
+      "symbols": ["stick", "sticks"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "bean",
+      "symbols": ["bean", "beans"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
+    },
+    {
+      "id": "capsule",
+      "symbols": ["capsule", "capsules"],
+      "kind": "count",
+      "value": null,
+      "status": "convention",
+      "evidence": "assumption",
+      "overridable": false
     }
   ]
 }

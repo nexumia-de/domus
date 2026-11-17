@@ -4,6 +4,7 @@ import { toMl, type UnitId } from '../amounts/index';
 import { UNITS } from '../amounts/index';
 import { resolveProperty } from '../ingredients/properties';
 import type { IngredientTree } from '../ingredients/tree';
+import { countedVolume } from '../ingredients/unit-volumes';
 import type { Role } from '../ingredients/types';
 import type {
   MatchLine,
@@ -39,11 +40,13 @@ export function lineRole(
  *
  * @param line - A spec line (amount in its unit, `topMl` in ml).
  * @param options - Unit overrides.
- * @returns Volume in ml, or why it has none (mass, `top` without volume, invalid amount).
+ * @param tree - A tree whose ingredients may carry `unitVolumes`; without it a counted line has no volume.
+ * @returns Volume in ml, or why it has none (mass, `top` without volume, counted without volume, invalid amount).
  */
 export function lineMl(
   line: MatchLine,
   options: MatchOptions = {},
+  tree?: IngredientTree,
 ): { ml: number } | { reason: UnmeasuredReason } {
   const kind = unitKind.get(line.unit);
   if (kind === 'mass') return { reason: 'mass' };
@@ -51,6 +54,11 @@ export function lineMl(
     return line.topMl !== undefined && Number.isFinite(line.topMl) && line.topMl >= 0
       ? { ml: line.topMl }
       : { reason: 'top-without-volume' };
+  }
+  if (kind === 'count') {
+    const amount = line.amountMax === undefined ? line.amount : (line.amount + line.amountMax) / 2;
+    const cv = tree ? countedVolume(tree, line.ingredientId, line.unit, amount) : undefined;
+    return cv ? { ml: cv.ml } : { reason: 'counted-without-volume' };
   }
   const amount = line.amountMax === undefined ? line.amount : (line.amount + line.amountMax) / 2;
   const r = toMl({ value: amount, unit: line.unit as UnitId }, options.unitOverrides);
@@ -96,7 +104,7 @@ export function assignSlots(
   for (const f of fills) {
     let ml = 0;
     for (const i of f.lineIndexes) {
-      const v = lineMl(lines[i] as MatchLine, options);
+      const v = lineMl(lines[i] as MatchLine, options, tree);
       if ('reason' in v) {
         f.unmeasured = v.reason;
         ml = Number.NaN;

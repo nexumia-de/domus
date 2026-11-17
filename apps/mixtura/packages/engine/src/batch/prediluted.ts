@@ -2,7 +2,7 @@
 // method would have added to each, so that a pour from the batch equals the
 // finished drink. Quantities are rounded by the display rules and the
 // rounding error is reported with figures for the batch as made.
-import { formatAmountDetailed, toBase } from '../amounts/index';
+import { formatAmountDetailed, toBase, UNITS } from '../amounts/index';
 import type { Amount, DisplaySystem } from '../amounts/index';
 import {
   computeBalance,
@@ -11,6 +11,7 @@ import {
   type BalanceSpec,
 } from '../balance/index';
 import type { IngredientTree } from '../ingredients/tree';
+import { countedVolume } from '../ingredients/unit-volumes';
 import { scaleLines, type ScaleOptions } from './scale';
 import { shelfLife } from './shelf';
 import type { Batch, BatchError, BatchLine, BatchResult } from './types';
@@ -23,9 +24,24 @@ export interface BatchOptions extends BalanceOptions, ScaleOptions {
 const balanceErrors = (errors: { ids: string[]; message: string }[]): BatchError[] =>
   errors.map((e) => ({ code: 'balance-error', ids: e.ids, message: e.message }));
 
-function base(amount: Amount, options: BatchOptions): number {
+const COUNTED = new Set<string>(UNITS.filter((u) => u.kind === 'count').map((u) => u.id));
+
+/** Volume (ml) or mass (g) of a line's amount; NaN when it has none as data (counted line without a unit volume). */
+function base(tree: IngredientTree, id: string, amount: Amount, options: BatchOptions): number {
+  if (COUNTED.has(amount.unit)) {
+    return countedVolume(tree, id, amount.unit, amount.value)?.ml ?? Number.NaN;
+  }
   const b = toBase(amount, options.unitOverrides);
   return b.ok ? b.value.value : NaN;
+}
+
+/**
+ * A counted amount in a batch is rounded up to a whole number of units: a
+ * garnish or an egg cannot be prepared in fractions, and having too few is
+ * the worse error (docs/balance.md, Batching).
+ */
+function roundCount(value: number): { value: number; step: number } {
+  return { value: value > 0 ? Math.max(1, Math.ceil(value - 1e-9)) : 0, step: 1 };
 }
 
 /**
@@ -74,22 +90,35 @@ export function prediluted(
   const lines: BatchLine[] = [];
   for (const line of scaled.value) {
     const amount: Amount = { value: line.amount, unit: line.unit as Amount['unit'] };
-    const f = formatAmountDetailed(amount, {
-      system: options.system,
-      overrides: options.unitOverrides,
-    });
-    if (!f.ok) {
-      return {
-        ok: false,
-        errors: [{ code: 'invalid-line', ids: [line.ingredientId], message: f.error.message }],
-      };
+    let shown: Amount;
+    let step: number;
+    if (COUNTED.has(amount.unit)) {
+      const r = roundCount(amount.value);
+      shown = { value: r.value, unit: amount.unit };
+      step = r.step;
+    } else {
+      const f = formatAmountDetailed(amount, {
+        system: options.system,
+        overrides: options.unitOverrides,
+      });
+      if (!f.ok) {
+        return {
+          ok: false,
+          errors: [{ code: 'invalid-line', ids: [line.ingredientId], message: f.error.message }],
+        };
+      }
+      shown = f.value.shown;
+      step = f.value.step;
     }
+    const error =
+      base(tree, line.ingredientId, shown, options) -
+      base(tree, line.ingredientId, amount, options);
     lines.push({
       ingredientId: line.ingredientId,
       exact: amount,
-      rounded: f.value.shown,
-      step: f.value.step,
-      roundingError: base(f.value.shown, options) - base(amount, options),
+      rounded: shown,
+      step,
+      roundingError: Number.isNaN(error) ? null : error,
     });
   }
   const roundedLines = lines.map((l, i) => ({

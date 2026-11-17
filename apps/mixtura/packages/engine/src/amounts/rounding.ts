@@ -27,6 +27,24 @@ export function roundingFor(unit: UnitId, value: number): Rounding {
       return { steps: [1 / 4, 1 / 8, 1 / 16, 1 / 32], fractional: true };
     case 'g':
       return { steps: value >= 10 ? [1] : [0.1, 0.01] };
+    case 'whole':
+    case 'slice':
+    case 'leaf':
+    case 'sprig':
+    case 'wedge':
+    case 'piece':
+    case 'pinch':
+    case 'cube':
+    case 'peel':
+    case 'stalk':
+    case 'scoop':
+    case 'chunk':
+    case 'yolk':
+    case 'stick':
+    case 'bean':
+    case 'capsule':
+      // A count is shown to the nearest half, never as 0 (docs/units.md#counted-units).
+      return { steps: [1 / 2, 1 / 4, 1 / 8], fractional: true };
     default:
       return { steps: [1], atLeastOne: true };
   }

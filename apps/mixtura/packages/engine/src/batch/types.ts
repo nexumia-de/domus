@@ -18,8 +18,8 @@ export interface BatchLine {
   rounded: Amount;
   /** Rounding step in the unit of `rounded`. */
   step: number;
-  /** rounded minus exact in ml (volume units) or g (mass units). */
-  roundingError: number;
+  /** rounded minus exact in ml (volume units, counted units with a known volume) or g (mass units); null for a counted unit without a known volume. */
+  roundingError: number | null;
 }
 
 export type ShelfLife =

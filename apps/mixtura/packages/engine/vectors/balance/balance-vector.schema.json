@@ -94,6 +94,10 @@
             "estimated": { "type": "boolean" },
             "estimated_ids": { "type": "array", "items": { "type": "string" } },
             "excluded_ids": { "type": "array", "items": { "type": "string" } },
+            "excluded_reasons": {
+              "type": "array",
+              "items": { "enum": ["top-without-volume", "counted-without-volume"] }
+            },
             "dilution": {
               "type": "object",
               "required": ["method", "bound", "fraction", "basis", "evidence"],

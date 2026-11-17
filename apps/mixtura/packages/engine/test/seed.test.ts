@@ -3,7 +3,7 @@
 // properties below the thresholds recorded in the document.
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
-import { matchSpec, resolveProperty, ROOT_TEMPLATES } from '../src/index';
+import { computeBalance, matchSpec, resolveProperty, ROOT_TEMPLATES, UNITS } from '../src/index';
 import { makeAjv } from './schema-helpers';
 import { curated, engineRoot, read, seed, seedDir, seedTree } from './seed-data';
 
@@ -113,6 +113,30 @@ describe('schemas and references', () => {
       const r = matchSpec(tree, ROOT_TEMPLATES, { lines });
       expect(r.chosen?.templateId, s.id).toBe(s.templateId);
     }
+  });
+});
+
+describe('counted lines', () => {
+  const table = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
+
+  test('the seed holds counted lines, each with a counted unit of the table', () => {
+    const counted = specs.flatMap((s) => s.lines.filter((l) => table.get(l.unit) === 'count'));
+    expect(counted.length).toBeGreaterThan(100);
+  });
+
+  test('no per-unit volume is in the seed: none was read from a source', () => {
+    for (const i of seed.ingredients.ingredients) expect(i).not.toHaveProperty('unitVolumes');
+  });
+
+  test('balance lists every counted line as not counted and still gives figures', () => {
+    const s = specs.find((x) => x.lines.some((l) => table.get(l.unit) === 'count' && !l.optional));
+    expect(s).toBeDefined();
+    const r = computeBalance(tree, { method: s?.method, lines: s?.lines ?? [] });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const reasons = new Set(r.value.excluded.map((e) => e.reason));
+    expect(reasons.has('counted-without-volume')).toBe(true);
+    expect(r.value.before.volumeMl).toBeGreaterThan(0);
   });
 });
 

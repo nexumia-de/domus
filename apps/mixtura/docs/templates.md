@@ -95,8 +95,10 @@ counts at its middle.
    is unassigned (`no-slot-for-role`). The result lists, per slot, its
    lines, the unassigned lines and the empty required and optional slots.
 3. **Volumes**: volume units to ml with the [amounts](engine-amounts.md)
-   module. A mass (sugar in grams) or a `top` line without `topMl` has no
-   volume: its slot is filled (role coverage counts) but its ratio is
+   module; a counted line (`whole`, `slice`, ...) by the ingredient's
+   `unitVolumes` ([units](units.md#counted-units)). A mass (sugar in
+   grams), a `top` line without `topMl` or a counted line without a known
+   volume (`counted-without-volume`) has no volume: its slot is filled (role coverage counts) but its ratio is
    `unmeasured` and adds nothing to the distance. The result says so.
 4. **Ratio status** per filled slot: `reference`, `within`, `below`,
    `above` against its band, `unmeasured`, or `empty`.

@@ -43,6 +43,22 @@ const WORDS: Partial<Record<UnitId, [string, string]>> = {
   dash: ['dash', 'dashes'],
   drop: ['drop', 'drops'],
   splash: ['splash', 'splashes'],
+  whole: ['whole', 'whole'],
+  leaf: ['leaf', 'leaves'],
+  pinch: ['pinch', 'pinches'],
+  peel: ['peel', 'peels'],
+  slice: ['slice', 'slices'],
+  sprig: ['sprig', 'sprigs'],
+  wedge: ['wedge', 'wedges'],
+  piece: ['piece', 'pieces'],
+  cube: ['cube', 'cubes'],
+  stalk: ['stalk', 'stalks'],
+  scoop: ['scoop', 'scoops'],
+  chunk: ['chunk', 'chunks'],
+  yolk: ['yolk', 'yolks'],
+  stick: ['stick', 'sticks'],
+  bean: ['bean', 'beans'],
+  capsule: ['capsule', 'capsules'],
 };
 
 const SYMBOL: Partial<Record<UnitId, string>> = {
@@ -53,7 +69,7 @@ const SYMBOL: Partial<Record<UnitId, string>> = {
 
 function unitText(unit: UnitId, value: number): string {
   const words = WORDS[unit];
-  if (words) return value === 1 ? words[0] : words[1];
+  if (words) return value <= 1 ? words[0] : words[1];
   return SYMBOL[unit] ?? unit;
 }
 

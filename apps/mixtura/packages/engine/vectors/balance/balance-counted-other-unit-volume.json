@@ -1,0 +1,72 @@
+{
+  "id": "balance-counted-other-unit-volume",
+  "description": "Volumes are per unit id: a volume given for whole does not count a line in slices, and is not inherited from a parent ingredient",
+  "ingredients": [
+    {
+      "id": "brandy",
+      "name": "Brandy",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "fruit",
+      "name": "Fruit",
+      "level": "category",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0,
+      "unitVolumes": {
+        "slice": {
+          "ml": 10,
+          "evidence": "assumption"
+        }
+      }
+    },
+    {
+      "id": "lemon",
+      "name": "Lemon",
+      "level": "product",
+      "parentId": "fruit",
+      "unitVolumes": {
+        "whole": {
+          "ml": 40,
+          "evidence": "assumption"
+        }
+      }
+    }
+  ],
+  "spec": {
+    "method": "none",
+    "lines": [
+      {
+        "ingredientId": "brandy",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "lemon",
+        "amount": 2,
+        "unit": "slice"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 60,
+      "ethanol_ml": 24,
+      "abv_before_pct": 40,
+      "volume_after_ml": 60,
+      "water_ml": 0,
+      "abv_after_pct": 40
+    },
+    "flags": {
+      "diluted": true,
+      "excluded_ids": ["lemon"],
+      "excluded_reasons": ["counted-without-volume"]
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#counted-lines-and-open-amounts; expected values computed by hand-written formulas, not by the engine; ingredient properties, the volume of one unit and dilution fractions are synthetic assumptions, not drink data"
+}

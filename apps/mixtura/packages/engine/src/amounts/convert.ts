@@ -16,20 +16,20 @@ function usable(amount: Amount): Result<number> {
  *
  * @param amount - Value in the unit of `amount.unit`.
  * @param overrides - Replacement ml per unit for overridable convention units.
- * @returns Value in ml (kind `volume`) or g (kind `mass`); an error for a fill unit such as `top`.
+ * @returns Value in ml (kind `volume`) or g (kind `mass`); an error for a fill unit such as `top` or a counted unit such as `whole`.
  */
 export function toBase(
   amount: Amount,
   overrides?: UnitOverrides,
-): Result<{ value: number; kind: Exclude<UnitKind, 'fill'> }> {
+): Result<{ value: number; kind: Exclude<UnitKind, 'fill' | 'count'> }> {
   const v = usable(amount);
   if (!v.ok) return v;
   const row = unitRow(amount.unit);
   const per = unitValue(amount.unit, overrides);
-  if (row.kind === 'fill' || per === null) {
+  if (per === null) {
     return fail('not_measurable', `"${amount.unit}" has no volume of its own.`);
   }
-  return ok({ value: v.value * per, kind: row.kind });
+  return ok({ value: v.value * per, kind: row.kind as 'volume' | 'mass' });
 }
 
 /**
@@ -73,7 +73,7 @@ export function fromBase(base: number, unit: UnitId, overrides?: UnitOverrides):
     return fail('invalid_value', 'An amount must be a finite number of zero or more.');
   }
   const per = unitValue(unit, overrides);
-  if (unitRow(unit).kind === 'fill' || per === null) {
+  if (per === null) {
     return fail('not_measurable', `"${unit}" has no volume of its own.`);
   }
   return ok({ value: base / per, unit });

@@ -32,6 +32,7 @@ links. Change history is in [log.md](log.md).
 - [App name](decisions/app-name.md) - Code name Mixtura, visible name Drink Builder.
 - [Two apps, one engine](decisions/two-apps-one-engine.md) - Bar and kitchen are separate apps; shared code moves out when the second app needs it; the bar app comes first.
 - [Stored unit versus display unit](decisions/units-and-display.md) - Amounts stored as entered, computed in ml and g, display system a setting; default metric proposed, needs owner decision.
+- [Counted units, open amounts and the glass volume](decisions/counted-units.md) - Counted units are units without a table volume; volume only as data (`unitVolumes`, `topMl`), otherwise a line is listed as not counted; no glass volume; batches round counts up.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
 
 # Reference

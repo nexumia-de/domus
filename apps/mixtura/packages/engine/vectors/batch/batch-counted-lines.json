@@ -1,0 +1,130 @@
+{
+  "id": "batch-counted-lines",
+  "description": "Shaken brandy, half an egg (one whole is 45 ml, a synthetic assumption) and one lime wedge without a known volume, 2, 3 and 6 servings: a counted amount is scaled exactly and rounded up to whole units, the egg's rounding error is in ml, the wedge has none (null) and is not in the figures",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "egg",
+      "name": "Egg",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0,
+      "unitVolumes": {
+        "whole": {
+          "ml": 45,
+          "evidence": "assumption"
+        }
+      }
+    },
+    {
+      "id": "lime-wedge",
+      "name": "Lime",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "egg",
+        "amount": 0.5,
+        "unit": "whole"
+      },
+      {
+        "ingredientId": "lime-wedge",
+        "amount": 1,
+        "unit": "wedge"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 2,
+      "water_ml": 41.25,
+      "total_volume_ml": 206.25,
+      "pour_per_serving_ml": 103.125,
+      "rounded_lines": {
+        "rum": [120, "ml", 0],
+        "egg": [1, "whole", 0.0],
+        "lime-wedge": [2, "wedge", null]
+      },
+      "rounded_water_ml": 41,
+      "rounded_total_ml": 206,
+      "drink": {
+        "abv_after_pct": 23.272727,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 23.300971,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    },
+    {
+      "servings": 3,
+      "water_ml": 61.875,
+      "total_volume_ml": 309.375,
+      "pour_per_serving_ml": 103.125,
+      "rounded_lines": {
+        "rum": [180, "ml", 0],
+        "egg": [2, "whole", 22.5],
+        "lime-wedge": [3, "wedge", null]
+      },
+      "rounded_water_ml": 62,
+      "rounded_total_ml": 332,
+      "drink": {
+        "abv_after_pct": 23.272727,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 21.686747,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    },
+    {
+      "servings": 6,
+      "water_ml": 123.75,
+      "total_volume_ml": 618.75,
+      "pour_per_serving_ml": 103.125,
+      "rounded_lines": {
+        "rum": [360, "ml", 0],
+        "egg": [3, "whole", 0.0],
+        "lime-wedge": [6, "wedge", null]
+      },
+      "rounded_water_ml": 124,
+      "rounded_total_ml": 619,
+      "drink": {
+        "abv_after_pct": 23.272727,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 23.263328,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    }
+  ],
+  "made_tolerance": 2,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, the volume of one whole egg and dilution fractions are synthetic assumptions, not drink data"
+}

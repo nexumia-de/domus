@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Units
-description: Exact definition of every unit Mixtura accepts (oz, ml, cl, tsp, bar spoon, dash, drop, splash, top, g), which are exact and which conventions, how they behave in balance, the parsing grammar and the display rules.
+description: Exact definition of every unit Mixtura accepts (oz, ml, cl, tsp, bar spoon, dash, drop, splash, top, g and the counted units whole, slice, leaf, ...), which are exact and which conventions, how they behave in balance, the parsing grammar and the display rules.
 tags: [units, parsing, display, engine]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -44,6 +44,22 @@ millilitre values: [balance](balance.md).
 | `top`      | fill   | none            | convention | assumption | no          |
 | `g`        | mass   | 1               | exact      | derived    | no          |
 | `oz_mass`  | mass   | 28.349523125    | exact      | derived    | no          |
+| `whole`    | count  | none            | convention | assumption | no          |
+| `slice`    | count  | none            | convention | assumption | no          |
+| `leaf`     | count  | none            | convention | assumption | no          |
+| `sprig`    | count  | none            | convention | assumption | no          |
+| `wedge`    | count  | none            | convention | assumption | no          |
+| `piece`    | count  | none            | convention | assumption | no          |
+| `pinch`    | count  | none            | convention | assumption | no          |
+| `cube`     | count  | none            | convention | assumption | no          |
+| `peel`     | count  | none            | convention | assumption | no          |
+| `stalk`    | count  | none            | convention | assumption | no          |
+| `scoop`    | count  | none            | convention | assumption | no          |
+| `chunk`    | count  | none            | convention | assumption | no          |
+| `yolk`     | count  | none            | convention | assumption | no          |
+| `stick`    | count  | none            | convention | assumption | no          |
+| `bean`     | count  | none            | convention | assumption | no          |
+| `capsule`  | count  | none            | convention | assumption | no          |
 
 <!-- units-table:end -->
 
@@ -101,6 +117,7 @@ an override re-computes balance).
   and 0.05 to 0.1 ml in a third source; no value is established.
 - `splash`: 5 ml. Assumption, no source found. Estimated in balance.
 - `top`: not a volume; see next section.
+- Counted units (`whole`, `slice`, `leaf`, ...): not a volume either; see [Counted units](#counted-units).
 
 Counts and weights: `g` and `oz_mass` serve solids such as sugar. In a
 line whose ingredient is a solid, `oz` means the mass ounce `oz_mass`;
@@ -108,18 +125,56 @@ in every other line it is the fluid ounce.
 
 # Non-volumetric amounts in balance
 
-| Amount                                        | In balance                                                                                      |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `dash`, `drop`, `splash`, `tsp`, `barspoon`   | counted with their table volume; the figure is flagged "estimated" if any such line is present  |
-| `top` with an entered volume ("top 90 ml")    | counted as that volume (volume required by the grammar when the user wants it counted)          |
-| `top` without a volume                        | excluded; the figures are flagged "excludes top" and show a range from 0 ml to the glass volume |
-| "to taste", garnish, rinse, aroma (no amount) | excluded and not flagged; they carry no stored amount                                           |
+| Amount                                        | In balance                                                                                                                      |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `dash`, `drop`, `splash`, `tsp`, `barspoon`   | counted with their table volume; the figure is flagged "estimated" if any such line is present                                  |
+| `top` with a stored volume (`topMl`)          | counted as that volume (`lines[].topMl` of the spec)                                                                            |
+| `top` without a volume                        | excluded and listed in `excluded` (`top-without-volume`); the figures exclude it and say so; no range is computed               |
+| counted unit with a known volume per unit     | counted as amount times the ingredient's `unitVolumes` entry; flagged "estimated" (the volume is data with its evidence)        |
+| counted unit without a known volume           | excluded and listed in `excluded` (`counted-without-volume`) with its ingredient id and unit; the figures exclude it and say so |
+| "to taste", garnish, rinse, aroma (no amount) | excluded and not flagged; they carry no stored amount                                                                           |
 
 Reasoning: a derived number must never be a guess presented as a
 measurement. Convention units are small and bounded, so they are counted
 and marked estimated; a `top` can be 30 to 150 ml and would dominate the
 result, so it is excluded unless the user states a volume, and the result
-then says it excludes it. Excluding silently is not allowed.
+then says it excludes it. Excluding silently is not allowed. A glass has no
+volume in the data, so no range "0 ml to the glass volume" is computed
+([decision](decisions/counted-units.md)); the figures of such a spec are
+those of the lines that are counted, and `excluded` is how a screen says
+"not counted in the figures".
+
+# Counted units
+
+A counted unit is an amount of things: `whole` (an egg, a lemon), `slice`,
+`leaf` (`leaves`), `sprig`, `wedge`, `piece`, `pinch`, `cube`, `peel`,
+`stalk`, `scoop`, `chunk`, `yolk`, `stick`, `bean`, `capsule`. The table
+gives them no value: a slice of lime and a slice of orange differ, and
+nothing in this repository is a source for either. A counted line is
+stored and shown exactly as entered (`1 whole`, `8 leaves`).
+
+- **Volume as data.** An ingredient may say what one counted unit holds:
+  `unitVolumes: { whole: { ml: 45, evidence: "assumption" } }` (see the
+  [data model](data-model.md#ingredient)). The entry is per ingredient and
+  per unit id, never inherited from a parent and never applied to another
+  unit. `evidence` is `derived`, `secondary` or `assumption`; a number
+  without a source read is `assumption`. The engine never invents one: the
+  seed has none, because none was read from a source.
+- **In balance.** With an entry the line counts as amount times `ml` and
+  the figures are flagged estimated; without one the line is excluded and
+  listed (table above). Only ml is read; a per-unit mass is not modelled.
+- **Display.** A counted amount is shown to the nearest half, as a mixed
+  number (`1½ whole`, `½ slice`), refined by an eighth so it never shows
+  as 0; singular up to and including 1, plural above; the same in every
+  display system.
+- **Scaling and batching.** Scaling multiplies the stored value exactly
+  (`0.5 whole` times 5 is `2.5 whole`). A batch rounds a counted amount
+  **up** to a whole number of units (never below 1): an egg or a garnish
+  cannot be prepared in fractions and too few is the worse error. The
+  line reports the exact amount, the rounded amount, step 1 and the
+  rounding error in ml when the volume is known, `null` when it is not.
+- **Parts.** `part` (a ratio to the other lines) is not a counted unit and
+  stays unaccepted; a ratio needs a reference volume, not a unit.
 
 # Parsing grammar
 
@@ -168,6 +223,9 @@ Accepted (each becomes a vector):
 | `1 Splash`    | 1 `splash`   |
 | ` 30 mL`      | 30 `ml`      |
 | `5 g`         | 5 `g`        |
+| `2 slices`    | 2 `slice`    |
+| `8 leaves`    | 8 `leaf`     |
+| `1 whole`     | 1 `whole`    |
 
 Rejected:
 
@@ -178,7 +236,7 @@ Rejected:
 | `1/0 oz`     | denominator zero        |
 | `-1 oz`      | negative                |
 | `1-2 oz`     | range                   |
-| `1 pinch`    | unknown unit            |
+| `1 handful`  | unknown unit            |
 | `1,000.5 ml` | more than one separator |
 | `1e2 ml`     | exponent                |
 | `45`         | no unit                 |
@@ -197,6 +255,7 @@ unit at any time.
 | `tsp`, `barspoon`, `tbsp` | nearest 1/4                                                                                               |
 | `dash`, `drop`, `splash`  | whole numbers; an amount below 1 is shown as 1                                                            |
 | `g`                       | whole g from 10 g up; one decimal below                                                                   |
+| counted units             | nearest 1/2 as a mixed number, refined by 1/4 and 1/8 so it never shows as 0                              |
 
 - A converted value that rounds to zero is shown with one more step of
   precision, never as 0.
@@ -216,7 +275,7 @@ Gaps the implementation ([engine amounts](engine-amounts.md)) closed:
   because words need a space.
 - Plural `s` is accepted on any symbol of three or more letters (`tsps`).
 - "top 90 ml" is not read by the amount parser; the spec model carries a
-  `top` line and a volume separately.
+  `top` line and its volume separately as `topMl` on the line.
 - Mass ounces: shown as `oz av` in the US and imperial systems with the
   ounce rounding (quarters, eighths below 1/2); in metric they become
   grams. Grams are never converted to ounces.

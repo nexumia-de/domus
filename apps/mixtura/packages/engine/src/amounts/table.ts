@@ -28,7 +28,7 @@ export function unitRow(id: UnitId): UnitRow {
  *
  * @param id - Unit id.
  * @param overrides - Replacement ml per unit for overridable convention units.
- * @returns ml (volume unit) or g (mass unit) per one unit; null for a fill unit such as `top`.
+ * @returns ml (volume unit) or g (mass unit) per one unit; null for a fill unit such as `top` or a counted unit such as `slice`.
  */
 export function unitValue(id: UnitId, overrides?: UnitOverrides): number | null {
   const row = unitRow(id);

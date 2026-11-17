@@ -49,9 +49,9 @@
       }
     },
     {
-      "name": "1 pinch",
+      "name": "1 handful",
       "input": {
-        "text": "1 pinch"
+        "text": "1 handful"
       },
       "expected": {
         "error": "unknown_unit"

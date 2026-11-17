@@ -25,6 +25,7 @@ export interface Flags {
   estimated?: boolean;
   estimated_ids?: string[];
   excluded_ids?: string[];
+  excluded_reasons?: string[];
   dilution?: Record<string, unknown>;
 }
 

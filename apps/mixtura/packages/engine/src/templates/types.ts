@@ -58,7 +58,8 @@ export interface MatchOptions {
 }
 
 export type UnassignedReason = 'unknown-ingredient' | 'unknown-role' | 'no-slot-for-role';
-export type UnmeasuredReason = 'mass' | 'top-without-volume' | 'invalid-amount';
+export type UnmeasuredReason =
+  'mass' | 'top-without-volume' | 'counted-without-volume' | 'invalid-amount';
 
 export interface Unassigned {
   index: number;

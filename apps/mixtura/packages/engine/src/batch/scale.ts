@@ -18,7 +18,7 @@ const kinds = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
  * @param line - A balance line.
  * @param factor - Unitless multiplier above 0.
  * @param options - Rounding of the scaled amount.
- * @returns The line in the same unit (`topMl` in ml scales with it), or an error.
+ * @returns The line in the same unit (`topMl` in ml scales with it; a counted amount is scaled exactly, rounding is the batch's), or an error.
  */
 export function scaleLine(
   line: BalanceLine,
@@ -35,7 +35,12 @@ export function scaleLine(
   if (!s.ok) return bad(s.error.message);
   amount = s.value;
   const target = options.targetUnit;
-  if (target && kinds.get(target) === kinds.get(line.unit) && kinds.get(target) !== 'fill') {
+  if (
+    target &&
+    kinds.get(target) === kinds.get(line.unit) &&
+    kinds.get(target) !== 'fill' &&
+    kinds.get(target) !== 'count'
+  ) {
     const c = convert(amount, target, options.unitOverrides);
     if (!c.ok) return bad(c.error.message);
     amount = c.value;

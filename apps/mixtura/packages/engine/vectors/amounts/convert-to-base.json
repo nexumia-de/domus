@@ -1,6 +1,6 @@
 {
   "id": "convert-to-base",
-  "description": "Every row of the conversion table to ml or g, and the fill and mass errors",
+  "description": "Every row of the conversion table to ml or g, and the fill and mass errors; counted units have no volume of their own (not_measurable)",
   "kind": "convert",
   "cases": [
     {
@@ -271,6 +271,182 @@
       },
       "expected": {
         "base": 59.147059125
+      }
+    },
+    {
+      "name": "1 whole",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "whole"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 slice",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "slice"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 leaf",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "leaf"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 sprig",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "sprig"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 wedge",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "wedge"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 piece",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "piece"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 pinch",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "pinch"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 cube",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "cube"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 peel",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "peel"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 stalk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "stalk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 scoop",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "scoop"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 chunk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "chunk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 yolk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "yolk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 stick",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "stick"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 bean",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "bean"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 capsule",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "capsule"
+      },
+      "expected": {
+        "error": "not_measurable"
       }
     }
   ],

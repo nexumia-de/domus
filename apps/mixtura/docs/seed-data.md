@@ -283,14 +283,25 @@ the engine's own `parseAmount` for units and `matchSpec` for templates
 ### Rules and deviations from the mapping above
 
 - **Units.** A recipe with a line the amounts module rejects is kept out
-  (owner decision), not just the line. 115 of 663 recipes, 35 distinct reasons,
-  most frequent `whole` 29, `leaves` 23, `slice`/`slices` 20,
-  `sprig`/`sprigs` 16, `part`/`parts` 9, `wedge`/`wedges` 6, `pinch` 4, `amount
-range not above the amount` 4 (`amount_max` not larger than `amount`),
-  `amount of 0` 2; the full list per recipe is in the report. `topup` becomes `top`; `oz` becomes the US
-  fluid ounce (`oz_us`) and, for `sugar`, the mass ounce. The source's
-  `top` amount (1 or 120) has no known unit, so the seed has no `topMl`
-  and a top line is left out of balance figures.
+  (owner decision), not just the line. Counted units are accepted since
+  issue #69 ([units](units.md#counted-units)): `whole`, `leaves`, `slice(s)`,
+  `sprig(s)`, `wedge(s)`, `pinch`, `cube`, `peel`, `stalk(s)`, `scoop(s)`,
+  `chunks`, `yolk`, `stick`, `beans`, `capsule`, `piece`; such a line is
+  stored as entered (`leaves` becomes the unit `leaf`). Still rejected,
+  **28 of 663 recipes, 13 distinct reasons**: `part`/`parts` 9 (a ratio
+  to the other lines, not a unit), `amount range not above the amount` 4
+  (`amount_max` not larger than `amount`), `cup` 3 (a volume nobody gave
+  a source for), `amount of 0` 2, `bottle` 2 and `shot` 2 (sizes vary),
+  and once each `strong`, `float`, `hand-whipped`, `rinse`, `inch` and
+  `1` (not quantities); the full list per recipe is in the report.
+  `topup` becomes `top`; `oz` becomes the US fluid ounce (`oz_us`) and,
+  for `sugar`, the mass ounce. The source's `top` amount (1 or 120) has no
+  known unit, so the seed has no `topMl` and a top line is listed as not
+  counted in the figures. The seed has **no per-unit volume**
+  (`unitVolumes`): none was read from a source, so every counted line is
+  listed as not counted; 87 specs have a counted line, 105 counted lines
+  of 2,803 (optional lines left out) are not counted, 54 `top` lines in
+  55 specs likewise (130 specs have at least one line not counted).
 - **Levels.** Root with children `category`, other inner node `type`,
   leaf `product`. The engine needs a child's level below its parent's and
   has three levels, but the source tree is up to five deep. Eight inner
@@ -346,21 +357,21 @@ range not above the amount` 4 (`amount_max` not larger than `amount`),
 
 From the pinned commit (counts by the converter, which also prints them):
 
-| Count                                             | Value                             |
-| ------------------------------------------------- | --------------------------------- |
-| Ingredients converted                             | 296 of 296                        |
-| Specs converted, skipped                          | 548, 115 (of 663)                 |
-| Ingredients with a resolved role                  | 283 (13 unclassified)             |
-| Lines (without optional) missing role, abv, sugar | 0.4 %, 0.7 %, 0 % of 2,364        |
-| Lines missing acid                                | 100 %                             |
-| Specs with ABV, sugar and acid all known          | 0 of 548                          |
-| Specs with ABV known after dilution               | 526 (7 have no or unknown method) |
-| Specs with sugar known after dilution             | 541                               |
-| Specs with a template                             | 106 of 548                        |
+| Count                                             | Value                              |
+| ------------------------------------------------- | ---------------------------------- |
+| Ingredients converted                             | 296 of 296                         |
+| Specs converted, skipped                          | 635, 28 (of 663)                   |
+| Ingredients with a resolved role                  | 283 (13 unclassified)              |
+| Lines (without optional) missing role, abv, sugar | 0.4 %, 0.6 %, 0 % of 2,803         |
+| Lines missing acid                                | 100 %                              |
+| Specs with ABV, sugar and acid all known          | 0 of 635                           |
+| Specs with ABV known after dilution               | 617 (19 have no or unknown method) |
+| Specs with sugar known after dilution             | 635                                |
+| Specs with a template                             | 107 of 635                         |
 
 Per template: Martini 57, Daiquiri 24, Sidecar 14, Old-Fashioned 8,
-Highball 3, Flip 0 (every flip counts its egg in whole units and is kept
-out); 442 fit none. The numbers are what the data gives; nothing was
+Highball 3, Flip 1 (`bluebird-eggnog`: the egg is a counted line without a
+volume, so its slot is filled and its ratio unmeasured); 528 fit none. The numbers are what the data gives; nothing was
 tuned. For information only: if the assumed acid values of the classics
 were applied to all of the seed, 308 of 548 specs would have all three
 figures; with them as assumptions that number says little about the
@@ -377,7 +388,7 @@ by the engine package as `@mixtura/engine/seed/<file>`:
 | File                        | Content                                                       | Size   |
 | --------------------------- | ------------------------------------------------------------- | ------ |
 | `ingredients.json`          | `{ attribution, ingredients: Ingredient[] }`, sorted by id    | 86 kB  |
-| `specs.json`                | `{ attribution, specs: Spec[] }`, sorted by id                | 329 kB |
+| `specs.json`                | `{ attribution, specs: Spec[] }`, sorted by id                | 384 kB |
 | `vocabulary.json`           | `{ attribution, glasses: {id,name}[], methods: {id,name}[] }` | 1 kB   |
 | `LICENSE-bar-assistant.txt` | The source's licence text, for the licence page               | 1 kB   |
 
@@ -386,7 +397,7 @@ Every file but the licence has `attribution`: `source`, `repository`,
 have sorted keys, the big arrays one record per line. Ingredients follow
 the [data model](data-model.md#ingredient), specs the
 [spec](data-model.md#spec) with `status: draft` and `version: 1`.
-Roughly 415 kB uncompressed, small enough to load whole; no split further.
+Roughly 471 kB uncompressed, small enough to load whole; no split further.
 
 ### Regenerating
 
@@ -420,10 +431,10 @@ node scripts/seed/run.mjs scripts/seed/fixture/source --out scripts/seed/fixture
 The test `seed.test.ts` fails when more than this share of the lines of
 all specs (optional lines left out) names an ingredient whose resolved
 property is unknown. They are regression guards set above the measured
-values, not quality targets. Acid is excluded: it is unknown on every line
+values (role 0.4 %, abv 0.6 %, sugar 0 %), not quality targets. Acid is excluded: it is unknown on every line
 by design.
 
-Threshold role: 2 %, Threshold abv: 3 %, Threshold sugar: 1 %.
+Threshold role: 1 %, Threshold abv: 1 %, Threshold sugar: 0.5 %.
 
 ### Checked classics
 
@@ -445,7 +456,7 @@ values still give the properties written in each vector.
 | Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                      |
 | Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets                                                                                |
 | Highball      | Whisky Highball (the `top` line read as 120 ml: assumption)                                                                       |
-| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because no converted spec reaches it                            |
+| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because the seed's egg line is a counted line without a volume  |
 | none          | Cuba Libre, Moscow Mule, Screwdriver, Cosmopolitan: acid unknown (cola, ginger beer, orange juice, cranberry juice have no value) |
 
 Why these: well known, in the dataset with units the amounts module

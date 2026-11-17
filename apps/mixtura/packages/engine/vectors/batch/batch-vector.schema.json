@@ -106,13 +106,13 @@
             "type": "number"
           },
           "rounded_lines": {
-            "description": "ingredient id to [rounded value, unit, rounding error in ml or g]",
+            "description": "ingredient id to [rounded value, unit, rounding error in ml or g; null when a counted unit has no known volume]",
             "type": "object",
             "additionalProperties": {
               "type": "array",
               "minItems": 3,
               "items": {
-                "type": ["number", "string"]
+                "type": ["number", "string", "null"]
               }
             }
           },

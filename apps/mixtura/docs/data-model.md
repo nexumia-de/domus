@@ -76,29 +76,30 @@ A node of a tree with the levels `category`, `type`, `product`, joined by
 (category above type above product); there are no cycles; both are
 checked by the engine, not by the schema.
 
-| Field               | Stored or derived | Required | Meaning                                                                                                                                 |
-| ------------------- | ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                | stored            | yes      | Id, see above.                                                                                                                          |
-| `name`              | stored            | yes      | Display name.                                                                                                                           |
-| `level`             | stored            | yes      | `category`, `type` or `product`.                                                                                                        |
-| `parentId`          | stored            | no       | Id of the parent ingredient.                                                                                                            |
-| `role`              | stored            | no       | `base`, `modifier`, `sweet`, `sour`, `bitter`, `accent`, `texture` or `lengthener`. Inherited.                                          |
-| `abv`               | stored            | no       | ABV in percent. Inherited. Absent on a prepared ingredient.                                                                             |
-| `sugar`             | stored            | no       | Sugar in g per 100 ml. Inherited. Absent on a prepared ingredient.                                                                      |
-| `acid`              | stored            | no       | Acid in percent. Inherited. Absent on a prepared ingredient.                                                                            |
-| `shelfLifeDays`     | stored            | no       | Whole days. Inherited.                                                                                                                  |
-| `substitutionClass` | stored            | no       | Id of a class of ingredients that can stand in for each other by default. Inherited.                                                    |
-| `cost`              | stored            | no       | Price paid for a quantity: `price`, `currency` (ISO 4217 code), `quantity` (amount and unit). Not inherited.                            |
-| `cost.price`        | stored            | yes      | Price, 0 or more.                                                                                                                       |
-| `cost.currency`     | stored            | yes      | ISO 4217 code, three capital letters.                                                                                                   |
-| `cost.quantity`     | stored            | yes      | Quantity the price is for (amount and unit).                                                                                            |
-| `prepared`          | stored            | no       | Present if the ingredient is made from a spec, see below.                                                                               |
-| `prepared.specId`   | stored            | yes      | The spec that makes it (its newest version is used).                                                                                    |
-| `prepared.yield`    | stored            | yes      | Quantity one run of the spec yields (amount and unit).                                                                                  |
-| `assumed`           | stored            | no       | Names of properties of this record that are assumptions, unverified. Shown to the user, never hidden.                                   |
-| `source`            | stored            | no       | Where the figures come from, see Shared types.                                                                                          |
-| `notes`             | stored            | no       | Free text.                                                                                                                              |
-| `abvResolved`       | derived           | -        | `abv` after inheritance, or computed for a prepared ingredient. Likewise `sugar`, `acid`, `role`, `shelfLifeDays`, `substitutionClass`. |
+| Field               | Stored or derived | Required | Meaning                                                                                                                                                                                                                                                                   |
+| ------------------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                | stored            | yes      | Id, see above.                                                                                                                                                                                                                                                            |
+| `name`              | stored            | yes      | Display name.                                                                                                                                                                                                                                                             |
+| `level`             | stored            | yes      | `category`, `type` or `product`.                                                                                                                                                                                                                                          |
+| `parentId`          | stored            | no       | Id of the parent ingredient.                                                                                                                                                                                                                                              |
+| `role`              | stored            | no       | `base`, `modifier`, `sweet`, `sour`, `bitter`, `accent`, `texture` or `lengthener`. Inherited.                                                                                                                                                                            |
+| `abv`               | stored            | no       | ABV in percent. Inherited. Absent on a prepared ingredient.                                                                                                                                                                                                               |
+| `sugar`             | stored            | no       | Sugar in g per 100 ml. Inherited. Absent on a prepared ingredient.                                                                                                                                                                                                        |
+| `acid`              | stored            | no       | Acid in percent. Inherited. Absent on a prepared ingredient.                                                                                                                                                                                                              |
+| `shelfLifeDays`     | stored            | no       | Whole days. Inherited.                                                                                                                                                                                                                                                    |
+| `substitutionClass` | stored            | no       | Id of a class of ingredients that can stand in for each other by default. Inherited.                                                                                                                                                                                      |
+| `cost`              | stored            | no       | Price paid for a quantity: `price`, `currency` (ISO 4217 code), `quantity` (amount and unit). Not inherited.                                                                                                                                                              |
+| `cost.price`        | stored            | yes      | Price, 0 or more.                                                                                                                                                                                                                                                         |
+| `cost.currency`     | stored            | yes      | ISO 4217 code, three capital letters.                                                                                                                                                                                                                                     |
+| `cost.quantity`     | stored            | yes      | Quantity the price is for (amount and unit).                                                                                                                                                                                                                              |
+| `unitVolumes`       | stored            | no       | Volume of one counted unit of this ingredient by unit id (`whole`, `slice`, `leaf`, ...): `{ ml, evidence, source? }`. `ml` above 0, `evidence` is `derived`, `secondary` or `assumption`. Not inherited; the engine never invents one ([units](units.md#counted-units)). |
+| `prepared`          | stored            | no       | Present if the ingredient is made from a spec, see below.                                                                                                                                                                                                                 |
+| `prepared.specId`   | stored            | yes      | The spec that makes it (its newest version is used).                                                                                                                                                                                                                      |
+| `prepared.yield`    | stored            | yes      | Quantity one run of the spec yields (amount and unit).                                                                                                                                                                                                                    |
+| `assumed`           | stored            | no       | Names of properties of this record that are assumptions, unverified. Shown to the user, never hidden.                                                                                                                                                                     |
+| `source`            | stored            | no       | Where the figures come from, see Shared types.                                                                                                                                                                                                                            |
+| `notes`             | stored            | no       | Free text.                                                                                                                                                                                                                                                                |
+| `abvResolved`       | derived           | -        | `abv` after inheritance, or computed for a prepared ingredient. Likewise `sugar`, `acid`, `role`, `shelfLifeDays`, `substitutionClass`.                                                                                                                                   |
 
 **Inheritance.** `role`, `abv`, `sugar`, `acid`, `shelfLifeDays` and
 `substitutionClass` are read from the nearest ancestor (the ingredient
@@ -171,37 +172,38 @@ from 1 inside a lineage. `parentId` is the spec this one was made from:
 for the first version of a riff, the spec it riffs on; for a later
 version, the previous version.
 
-| Field                                | Stored or derived | Required | Meaning                                                                    |
-| ------------------------------------ | ----------------- | -------- | -------------------------------------------------------------------------- |
-| `id`                                 | stored            | yes      | Id of this version.                                                        |
-| `lineageId`                          | stored            | yes      | Id shared by all versions of one drink; the first version uses its own id. |
-| `version`                            | stored            | yes      | Integer from 1.                                                            |
-| `parentId`                           | stored            | no       | Spec this version was made from.                                           |
-| `name`                               | stored            | yes      | Display name.                                                              |
-| `templateId`                         | stored            | no       | Template the drink follows.                                                |
-| `lines`                              | stored            | yes      | At least one line, in order.                                               |
-| `lines[].ingredientId`               | stored            | yes      | Ingredient or prepared ingredient.                                         |
-| `lines[].amount`                     | stored            | yes      | Amount above 0 in `unit`.                                                  |
-| `lines[].amountMax`                  | stored            | no       | Upper end if the line is a range.                                          |
-| `lines[].unit`                       | stored            | yes      | Unit id, see units.                                                        |
-| `lines[].role`                       | stored            | no       | Role in this drink; absent means the ingredient's resolved role.           |
-| `lines[].optional`                   | stored            | no       | `true` if the drink works without it.                                      |
-| `lines[].note`                       | stored            | no       | Free text, for example "preferably …".                                     |
-| `lines[].substitutes`                | stored            | no       | Ingredients that can stand in for this line.                               |
-| `lines[].substitutes[].ingredientId` | stored            | yes      | The substitute.                                                            |
-| `lines[].substitutes[].amount`       | stored            | no       | Own amount if it differs; then `unit` is required.                         |
-| `lines[].substitutes[].unit`         | stored            | no       | Unit of that amount.                                                       |
-| `method`                             | stored            | no       | Method id.                                                                 |
-| `glass`                              | stored            | no       | Glass id.                                                                  |
-| `garnish`                            | stored            | no       | Free text.                                                                 |
-| `notes`                              | stored            | no       | Free text.                                                                 |
-| `tags`                               | stored            | no       | Short keywords, unique.                                                    |
-| `status`                             | stored            | yes      | `draft`, `on-menu` or `retired`.                                           |
-| `source`                             | stored            | no       | Where a seed spec comes from, see Shared types.                            |
-| `createdAt`                          | stored            | no       | Instant, supplied by the host.                                             |
-| `updatedAt`                          | stored            | no       | Instant, supplied by the host.                                             |
-| `balance`                            | derived           | -        | ABV, sugar, acid, volume and ratios after dilution; see balance.           |
-| `cost`                               | derived           | -        | Sum of amounts times cost of the lines' ingredients.                       |
+| Field                                | Stored or derived | Required | Meaning                                                                                                                   |
+| ------------------------------------ | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `id`                                 | stored            | yes      | Id of this version.                                                                                                       |
+| `lineageId`                          | stored            | yes      | Id shared by all versions of one drink; the first version uses its own id.                                                |
+| `version`                            | stored            | yes      | Integer from 1.                                                                                                           |
+| `parentId`                           | stored            | no       | Spec this version was made from.                                                                                          |
+| `name`                               | stored            | yes      | Display name.                                                                                                             |
+| `templateId`                         | stored            | no       | Template the drink follows.                                                                                               |
+| `lines`                              | stored            | yes      | At least one line, in order.                                                                                              |
+| `lines[].ingredientId`               | stored            | yes      | Ingredient or prepared ingredient.                                                                                        |
+| `lines[].amount`                     | stored            | yes      | Amount above 0 in `unit`.                                                                                                 |
+| `lines[].amountMax`                  | stored            | no       | Upper end if the line is a range.                                                                                         |
+| `lines[].unit`                       | stored            | yes      | Unit id, see units; a counted unit (`whole`, `slice`, `leaf`, ...) or `top` is an amount without a volume of its own.     |
+| `lines[].topMl`                      | stored            | no       | Volume in ml of a line whose `unit` is `top`; balance counts the line only when it is given. Only valid with `unit: top`. |
+| `lines[].role`                       | stored            | no       | Role in this drink; absent means the ingredient's resolved role.                                                          |
+| `lines[].optional`                   | stored            | no       | `true` if the drink works without it.                                                                                     |
+| `lines[].note`                       | stored            | no       | Free text, for example "preferably …".                                                                                    |
+| `lines[].substitutes`                | stored            | no       | Ingredients that can stand in for this line.                                                                              |
+| `lines[].substitutes[].ingredientId` | stored            | yes      | The substitute.                                                                                                           |
+| `lines[].substitutes[].amount`       | stored            | no       | Own amount if it differs; then `unit` is required.                                                                        |
+| `lines[].substitutes[].unit`         | stored            | no       | Unit of that amount.                                                                                                      |
+| `method`                             | stored            | no       | Method id.                                                                                                                |
+| `glass`                              | stored            | no       | Glass id.                                                                                                                 |
+| `garnish`                            | stored            | no       | Free text.                                                                                                                |
+| `notes`                              | stored            | no       | Free text.                                                                                                                |
+| `tags`                               | stored            | no       | Short keywords, unique.                                                                                                   |
+| `status`                             | stored            | yes      | `draft`, `on-menu` or `retired`.                                                                                          |
+| `source`                             | stored            | no       | Where a seed spec comes from, see Shared types.                                                                           |
+| `createdAt`                          | stored            | no       | Instant, supplied by the host.                                                                                            |
+| `updatedAt`                          | stored            | no       | Instant, supplied by the host.                                                                                            |
+| `balance`                            | derived           | -        | ABV, sugar, acid, volume and ratios after dilution; see balance.                                                          |
+| `cost`                               | derived           | -        | Sum of amounts times cost of the lines' ingredients.                                                                      |
 
 A spec whose lines resolve to ingredients with known properties gets
 balance figures; a spec that is the recipe of a prepared ingredient is an
@@ -295,6 +297,9 @@ silently. `export.schema.json` always describes the current version only
 migration code and its vectors.
 
 **Version history.** Version 1 is the first format; no migration exists yet.
+The optional fields `lines[].topMl` and `unitVolumes` and the counted unit
+ids (`whole`, `slice`, ...) were added to version 1 without a bump: an older
+file has none of them and stays valid.
 Reading, limits and merge rules: [export format](export-format.md).
 
 ## Storage

@@ -7,6 +7,7 @@ import type { MixPart } from '../ingredients/mixture';
 import { computePrepared, type SpecLookup } from '../ingredients/prepared';
 import { resolveProperty } from '../ingredients/properties';
 import type { IngredientTree } from '../ingredients/tree';
+import { countedVolume } from '../ingredients/unit-volumes';
 import type { Id } from '../ingredients/types';
 import type { BalanceError, BalanceLine, Excluded } from './types';
 
@@ -49,6 +50,8 @@ function push(list: Id[], id: Id) {
 /**
  * Mass units count as solid sugar: g * sugar / 100 grams of sugar, volume 0.
  * A `top` line counts as its `topMl`; without it the line is excluded.
+ * A counted line counts as amount times the ingredient's `unitVolumes` entry
+ * (flagged estimated); without one it is excluded.
  */
 export function resolveLines(
   tree: IngredientTree,
@@ -84,7 +87,7 @@ export function resolveLines(
     let sugarG: number | undefined;
     if (unit.kind === 'fill') {
       if (line.topMl === undefined) {
-        out.excluded.push({ ingredientId: id, reason: 'top-without-volume' });
+        out.excluded.push({ ingredientId: id, reason: 'top-without-volume', unit: line.unit });
         continue;
       }
       if (!Number.isFinite(line.topMl) || line.topMl < 0) {
@@ -92,6 +95,14 @@ export function resolveLines(
         continue;
       }
       ml = line.topMl;
+    } else if (unit.kind === 'count') {
+      const cv = countedVolume(tree, id, line.unit, line.amount);
+      if (!cv) {
+        out.excluded.push({ ingredientId: id, reason: 'counted-without-volume', unit: line.unit });
+        continue;
+      }
+      ml = cv.ml;
+      if (ml > 0) push(out.estimatedIds, id);
     } else if (unit.kind === 'volume') {
       const r = toMl({ value: line.amount, unit: unit.id }, overrides);
       if (!r.ok) {

@@ -13,8 +13,9 @@ export interface BalanceLine {
   /** Unit id from units.json. */
   unit: string;
   /**
-   * Volume in ml of a `top` line ("top 90 ml"). The spec schema has no such
-   * field yet; without it a `top` line is excluded and the figures say so.
+   * Volume in ml of a `top` line ("top 90 ml"), stored on the spec line
+   * (`lines[].topMl` of the spec schema); without it a `top` line is
+   * excluded and the figures say so.
    */
   topMl?: number;
 }
@@ -56,9 +57,12 @@ export interface DilutionUsed {
   evidence: DilutionEvidence | 'override';
 }
 
+/** A line the figures do not count; the figures exclude its volume and say so. */
 export interface Excluded {
   ingredientId: Id;
-  reason: 'top-without-volume';
+  reason: 'top-without-volume' | 'counted-without-volume';
+  /** The line's unit id. */
+  unit?: string;
 }
 
 export interface BeforeFigures {
@@ -84,9 +88,13 @@ export interface BalanceFigures {
   dilution?: DilutionUsed;
   /** Why there are no figures after dilution; absent when there are. */
   dilutionUnavailable?: 'no-method' | 'unknown-method';
-  /** True if a convention unit (dash, tsp, ...) was counted with its table volume. */
+  /**
+   * True if a convention unit (dash, tsp, ...) was counted with its table volume,
+   * or a counted line with the per-unit volume of its ingredient's data.
+   */
   estimated: boolean;
   estimatedIds: Id[];
+  /** Lines whose volume is not in the figures (`top` without `topMl`, counted line without a known unit volume); empty when every line is counted. */
   excluded: Excluded[];
   before: BeforeFigures;
   after?: AfterFigures;

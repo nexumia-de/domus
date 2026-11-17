@@ -70,7 +70,8 @@ describe.each(files)('%s', (file) => {
         const [value, unit, err] = c.rounded_lines[line.ingredientId];
         expect(line.rounded.unit).toBe(unit);
         close(line.rounded.value, value);
-        close(line.roundingError, err);
+        if (err === null) expect(line.roundingError).toBeNull();
+        else close(line.roundingError as number, err);
       }
       expect(b.lines.length).toBe(Object.keys(c.rounded_lines).length);
     });
@@ -163,7 +164,8 @@ describe('properties over every balance vector', () => {
       // The reported rounding errors add up to the change of the batch volume.
       const volumeLines = b.lines.every((l) => l.exact.unit !== 'g' && l.exact.unit !== 'oz_mass');
       if (volumeLines) {
-        const sum = b.lines.reduce((s, l) => s + l.roundingError, 0) + b.water.roundingErrorMl;
+        const sum =
+          b.lines.reduce((s, l) => s + (l.roundingError ?? 0), 0) + b.water.roundingErrorMl;
         expect(Math.abs((b.made.after?.volumeMl ?? NaN) - b.totalVolumeMl - sum)).toBeLessThan(
           1e-9,
         );

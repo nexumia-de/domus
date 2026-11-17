@@ -42,7 +42,15 @@ describe('fixture', () => {
   test('skipped recipes, reparented nodes and omitted zeros are reported', () => {
     expect(result.report.skipped).toEqual([
       { id: 'fixture-cup', reasons: ['unit "cup"', 'amount of 0'] },
+      { id: 'fixture-parts', reasons: ['unit "parts"'] },
     ]);
+  });
+
+  test('counted units are kept, and the figures say which lines they do not count', () => {
+    const flip = result.specs.find((s) => s.id === 'fixture-flip');
+    expect(flip?.lines.map((l) => l.unit)).toEqual(['ml', 'whole', 'leaf', 'pinch']);
+    expect(result.report.balance['lines not counted: counted-without-volume']).toBe(3);
+    expect(result.report.balance['specs with a line not counted in the figures']).toBe(1);
     expect(result.report.reparented).toEqual([{ id: 'bourbon', was: 'whiskey', now: 'spirits' }]);
     expect(result.report.abvOmitted).toContain('unfilled-spirit');
     expect(result.report.unclassified).toEqual({ tea: 'tea is marked unclassified' });

@@ -22,6 +22,11 @@
           "amountMax": { "$ref": "urn:mixtura:common#/$defs/amount" },
           "unit": { "$ref": "urn:mixtura:common#/$defs/unitId" },
           "role": { "$ref": "urn:mixtura:common#/$defs/role" },
+          "topMl": {
+            "description": "Volume in ml of a line whose unit is top (\"top with 90 ml\"); balance counts it only when given.",
+            "type": "number",
+            "minimum": 0
+          },
           "optional": { "type": "boolean" },
           "note": { "type": "string" },
           "substitutes": {
@@ -40,6 +45,8 @@
           }
         },
         "required": ["ingredientId", "amount", "unit"],
+        "if": { "properties": { "topMl": true }, "required": ["topMl"] },
+        "then": { "properties": { "unit": { "const": "top" } } },
         "additionalProperties": false
       }
     },

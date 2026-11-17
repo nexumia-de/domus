@@ -119,6 +119,54 @@
         "value": 2,
         "unit": "top"
       }
+    },
+    {
+      "name": "1 whole x 3",
+      "input": {
+        "value": 1,
+        "unit": "whole",
+        "factor": 3
+      },
+      "expected": {
+        "value": 3,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "0.5 whole x 3",
+      "input": {
+        "value": 0.5,
+        "unit": "whole",
+        "factor": 3
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "8 leaf x 0.25",
+      "input": {
+        "value": 8,
+        "unit": "leaf",
+        "factor": 0.25
+      },
+      "expected": {
+        "value": 2,
+        "unit": "leaf"
+      }
+    },
+    {
+      "name": "1 pinch x 2.5",
+      "input": {
+        "value": 1,
+        "unit": "pinch",
+        "factor": 2.5
+      },
+      "expected": {
+        "value": 2.5,
+        "unit": "pinch"
+      }
     }
   ],
   "tolerance": 1e-9,
