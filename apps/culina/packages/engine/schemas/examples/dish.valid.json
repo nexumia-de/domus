@@ -1,0 +1,24 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+  "name": "Roast carrots with yoghurt sauce",
+  "portions": 2,
+  "slots": [
+    {
+      "role": "main",
+      "ref": { "kind": "ingredient", "id": "carrot" },
+      "amount": { "value": 600, "unit": "g" }
+    },
+    {
+      "role": "sauce",
+      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" }
+    },
+    { "role": "crunch", "ref": { "kind": "ingredient", "id": "hazelnut" }, "optional": true }
+  ],
+  "version": {
+    "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+    "parent": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+    "date": "2026-11-17",
+    "change": "Added hazelnuts",
+    "reason": "Plate was soft all over"
+  }
+}

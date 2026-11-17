@@ -23,6 +23,8 @@ links. Change history is in [log.md](log.md).
 
 - [Test vector format](vectors.md) - JSON shape of the engine's worked examples for ratio checks, baker's percentages, scaling by weight and salt, with five vectors computed by hand.
 
+- [Data model](data-model.md) - Every stored entity with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`.
+
 # Decisions
 
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Notebook.

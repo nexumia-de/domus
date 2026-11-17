@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/template.schema.json",
+  "title": "Ratio template",
+  "description": "A named formula by mass: parts per role, with optional usual ranges. A derivative has parentId and changes instead of parts.",
+  "type": "object",
+  "required": ["id", "name", "source"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "name": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/name"
+    },
+    "source": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+    },
+    "parentId": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
+    "anchor": {
+      "description": "The role whose parts equal 100 percent in baker's terms. Absent: no percentages.",
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+    },
+    "parts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["role", "parts"],
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+          },
+          "parts": { "type": "number", "exclusiveMinimum": 0 },
+          "range": {
+            "description": "Usual range in the same parts as parts; min not above max is checked by the engine.",
+            "type": "object",
+            "required": ["min", "max"],
+            "additionalProperties": false,
+            "properties": {
+              "min": { "type": "number", "minimum": 0 },
+              "max": { "type": "number", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["op", "role", "parts"],
+            "additionalProperties": false,
+            "properties": {
+              "op": { "const": "add" },
+              "role": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+              },
+              "parts": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["op", "role"],
+            "additionalProperties": false,
+            "properties": {
+              "op": { "const": "remove" },
+              "role": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["op", "role", "ingredientClass"],
+            "additionalProperties": false,
+            "properties": {
+              "op": { "const": "swap" },
+              "role": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+              },
+              "ingredientClass": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
+  },
+  "oneOf": [
+    {
+      "required": ["parts"],
+      "not": { "anyOf": [{ "required": ["parentId"] }, { "required": ["changes"] }] }
+    },
+    { "required": ["parentId", "changes"], "not": { "required": ["parts"] } }
+  ]
+}

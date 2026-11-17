@@ -1,0 +1,7 @@
+{
+  "id": "pie-dough",
+  "name": "Pie dough",
+  "source": "ratios.md",
+  "parentId": "dough",
+  "parts": [{ "role": "flour", "parts": 3 }]
+}

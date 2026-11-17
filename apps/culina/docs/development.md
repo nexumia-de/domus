@@ -211,3 +211,14 @@ fddb.info
 search.f-droid.org
 de.wikipedia.org
 ```
+
+For the [data model](data-model.md), tested 2026-11-17 with
+`curl -sS -m 15 -o /dev/null https://<host>/`: reachable are
+`json-schema.org`, `www.legislation.gov.uk`,
+`raw.githubusercontent.com` (301) and `www.kingarthurbaking.com` (406 for
+curl, readable with the fetch tool). Blocked (no DNS or tunnel 403) and
+needed to read more: `schema.org`, `developers.google.com` (Recipe
+structured data), `openrecipeformat.readthedocs.io` (ORF field
+reference), `opentextbc.ca` and `workforce.libretexts.org` (yield
+testing, as purchased and edible portion), `ajv.js.org`,
+`www.theperfectloaf.com`, `www.thefreshloaf.com`, `busbysbakery.com`.

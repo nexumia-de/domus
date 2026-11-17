@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/dish.schema.json",
+  "title": "Dish",
+  "description": "Role slots filled by components or ingredients. One stored record is one version.",
+  "type": "object",
+  "required": ["id", "name", "slots", "version"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "name": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/name"
+    },
+    "portions": { "type": "integer", "minimum": 1 },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["role", "ref"],
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+          },
+          "ref": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref"
+          },
+          "amount": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/amount"
+          },
+          "optional": { "type": "boolean" }
+        }
+      }
+    },
+    "version": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/version"
+    },
+    "tastings": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/tastings"
+    },
+    "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
+  }
+}

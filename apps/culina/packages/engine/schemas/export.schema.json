@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/export.schema.json",
+  "title": "Culina export file",
+  "description": "Versioned envelope of everything the user entered. Read formatVersion first; refuse a higher one.",
+  "type": "object",
+  "required": ["format", "formatVersion"],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": true
+  },
+  "properties": {
+    "format": {
+      "const": "culina-export"
+    },
+    "formatVersion": {
+      "const": 1
+    },
+    "seedVersion": {
+      "description": "Version of the seed data the exported ids refer to.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "exportedAt": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/instant"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "$ref": "ingredient.schema.json"
+      }
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "$ref": "template.schema.json"
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "component.schema.json"
+      }
+    },
+    "dishes": {
+      "type": "array",
+      "items": {
+        "$ref": "dish.schema.json"
+      }
+    },
+    "stock": {
+      "type": "array",
+      "items": {
+        "$ref": "stock.schema.json"
+      }
+    },
+    "affinities": {
+      "type": "array",
+      "items": {
+        "$ref": "affinity.schema.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "carrot-hazelnut",
+  "a": "carrot",
+  "b": "hazelnut",
+  "strength": 2,
+  "context": { "technique": "roasting" },
+  "source": "user",
+  "confidence": "low"
+}
