@@ -16,8 +16,10 @@ sources:
     url: data-model.md#template
   - id: codex
     title: 'Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (2018); not at hand, the six templates are known only through the practice document'
+  - id: iba
+    title: 'IBA, official specifications, one page per cocktail (https://iba-world.com/iba-cocktail/<slug>/, list https://iba-world.com/cocktails/all-cocktails/), read on 2026-11-17 (#116): 102 cocktails; amounts as printed in the table of the section IBA specifications read. Primary for what the IBA prints; the site no longer lists Screwdriver, Tom Collins, Jack Rose, Gimlet'
   - id: wiki-iba
-    title: 'Wikipedia infoboxes of Manhattan, Martini, Screwdriver, Whiskey sour, Tom Collins, Negroni, Moscow mule (https://en.wikipedia.org/wiki/Manhattan_(cocktail) and the others, wikitext read on 2026-11-17): they reproduce the IBA official specifications; the IBA site itself (iba-world.com) is blocked, so these are secondary'
+    title: 'Wikipedia infoboxes of Manhattan, Martini, Screwdriver, Whiskey sour, Tom Collins, Negroni, Moscow mule (https://en.wikipedia.org/wiki/Manhattan_(cocktail) and the others, wikitext read on 2026-11-17): they reproduce an older IBA list; kept only for the Screwdriver and the Tom Collins, which the IBA site no longer has, and found to differ for Whiskey Sour and Tom Collins (see IBA specifications read); secondary'
   - id: wiki-embury
     title: 'Wikipedia, The Fine Art of Mixing Drinks (https://en.wikipedia.org/wiki/The_Fine_Art_of_Mixing_Drinks), read on 2026-11-17: Embury 1948, two types (aromatic, sour), sour ratio 1 sweet : 2 sour : 8 base, base 75 % or more of the volume, six basic drinks; the book itself is not readable (archive.org lending copy, download host blocked)'
   - id: wiki-screwdriver
@@ -54,26 +56,31 @@ through `src/drink.ts`):
 
 # Evidence
 
-**No number in the six templates is verified.** _Cocktail Codex_ was not
-at hand and the hosts of the primary sources are blocked
+**No nominal ratio in the six templates is verified.** _Cocktail Codex_
+was not at hand and its pages could not be read
 ([development](development.md#network-hosts)); the templates are known
 only through the [practice document](bartender-practice.md#templates-instead-of-recipes).
+Since #116 the IBA specifications are read at the primary source
+([below](#iba-specifications-read)); they agree with the sourced band
+edges for the Martini and Manhattan, which keep their evidence status
+`assumption` because an edge is a chosen round number below an observed
+value, not an author's ratio.
 Every template carries `slotEvidence: assumption` and
 `usual.evidence: assumption`, and its `source` says so; a range check
 returns that status with every range.
 
-| Number                                                          | Where it comes from                                                                                                                                                                                                                                                                                                                                                                        | Status                           |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
-| Usual ranges (ABV, sugar, acid)                                 | the table in [balance](balance.md#usual-ranges-per-template), computed from nominal specs; a test compares the files with the table                                                                                                                                                                                                                                                        | assumption                       |
-| Lime 4.58, lemon 4.80 g acid per 100 ml in the sour acid ranges | Penniston et al. 2008, Table 1, read[^penniston]; the range around them stays computed from assumed volumes and dilution                                                                                                                                                                                                                                                                   | input read, range assumption     |
-| Highball ABV 9.1 – 12.1 %                                       | the same section: 120 to 180 ml of mixer                                                                                                                                                                                                                                                                                                                                                   | assumption                       |
-| Highball mixer 2 – 6 parts                                      | lower edge 2: 1944 Screwdriver 1 : 1 (Newsweek, quoted on Wikipedia)[^wiki-screwdriver], IBA Screwdriver 1 : 2 is 4 parts[^wiki-iba]; upper edge 6 and nominal 4 – 6: practice document, 4 to 6 oz of mixer against 2 oz of spirit                                                                                                                                                         | assumption                       |
-| Nominal slot ratios (2 : 1, 2 : ¾ : ¾ ...)                      | practice document                                                                                                                                                                                                                                                                                                                                                                          | assumption                       |
-| Martini modifier slot, 0.25 – 2                                 | lower edge: IBA Dry Martini 60 ml gin, 10 ml vermouth is 0.33 parts[^wiki-iba], Embury's Martini 7 : 1 is 0.29 (search summary of a page, unverified); 0.25 is a round number below both (assumption); upper edge 2 as before                                                                                                                                                              | secondary lower edge, assumption |
-| Martini second modifier slot, 0.25 – 2 (optional)               | structure: Manhattan with equal parts sweet and dry vermouth[^wiki-iba]; band as the first modifier slot                                                                                                                                                                                                                                                                                   | assumption                       |
-| Daiquiri sweet and Sidecar liqueur slots, 0.25 – 1.5            | lower edge 0.25 = Embury's 1 part sweet to 8 parts base (2 x 1 / 8)[^wiki-embury]; sour 0.5 (2 x 2 / 8) was already inside 0.38 – 1.5; upper edge unchanged                                                                                                                                                                                                                                | secondary lower edge             |
-| Band around a nominal ratio: ÷ 2 to × 2                         | **chosen here** so that the classic riffs fit; rounded to two decimals; not from any source                                                                                                                                                                                                                                                                                                | assumption                       |
-| Martini bitter slot, 0.02 – 2 (optional)                        | upper edge 2: **chosen here** so that Boulevardier fits (Negroni family). Lower edge 0.02 so that dashes of aromatic bitters fit: IBA Manhattan 50 ml whiskey, 20 ml vermouth, 1 dash (0.92 ml, [units](units.md)) is 0.037 parts[^wiki-iba]; Embury names bitters among the modifying agents of the aromatic type[^wiki-embury]; the edge 0.02 is a round number below 0.037 (assumption) | assumption                       |
+| Number                                                          | Where it comes from                                                                                                                                                                                                                                                                                                                                                                                           | Status                           |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Usual ranges (ABV, sugar, acid)                                 | the table in [balance](balance.md#usual-ranges-per-template), computed from nominal specs; a test compares the files with the table                                                                                                                                                                                                                                                                           | assumption                       |
+| Lime 4.58, lemon 4.80 g acid per 100 ml in the sour acid ranges | Penniston et al. 2008, Table 1, read[^penniston]; the range around them stays computed from assumed volumes and dilution                                                                                                                                                                                                                                                                                      | input read, range assumption     |
+| Highball ABV 9.1 – 12.1 %                                       | the same section: 120 to 180 ml of mixer                                                                                                                                                                                                                                                                                                                                                                      | assumption                       |
+| Highball mixer 2 – 6 parts                                      | lower edge 2: 1944 Screwdriver 1 : 1 (Newsweek, quoted on Wikipedia)[^wiki-screwdriver], IBA Screwdriver 1 : 2 is 4 parts[^wiki-iba] (the IBA site no longer lists the Screwdriver, so only the Wikipedia reading remains); upper edge 6 and nominal 4 – 6: practice document, 4 to 6 oz of mixer against 2 oz of spirit                                                                                      | assumption                       |
+| Nominal slot ratios (2 : 1, 2 : ¾ : ¾ ...)                      | practice document                                                                                                                                                                                                                                                                                                                                                                                             | assumption                       |
+| Martini modifier slot, 0.25 – 2                                 | lower edge: IBA Dry Martini 60 ml gin, 10 ml vermouth is 0.33 parts[^iba] (read at iba-world.com), Embury's Martini 7 : 1 is 0.29 (search summary of a page, unverified); 0.25 is a round number below both (assumption); upper edge 2 as before                                                                                                                                                              | secondary lower edge, assumption |
+| Martini second modifier slot, 0.25 – 2 (optional)               | structure: Manhattan with equal parts sweet and dry vermouth (named on Wikipedia[^wiki-iba]; the IBA Manhattan page prints no such variant); band as the first modifier slot                                                                                                                                                                                                                                  | assumption                       |
+| Daiquiri sweet and Sidecar liqueur slots, 0.25 – 1.5            | lower edge 0.25 = Embury's 1 part sweet to 8 parts base (2 x 1 / 8)[^wiki-embury]; sour 0.5 (2 x 2 / 8) was already inside 0.38 – 1.5; upper edge unchanged                                                                                                                                                                                                                                                   | secondary lower edge             |
+| Band around a nominal ratio: ÷ 2 to × 2                         | **chosen here** so that the classic riffs fit; rounded to two decimals; not from any source                                                                                                                                                                                                                                                                                                                   | assumption                       |
+| Martini bitter slot, 0.02 – 2 (optional)                        | upper edge 2: **chosen here** so that Boulevardier fits (Negroni family). Lower edge 0.02 so that dashes of aromatic bitters fit: IBA Manhattan 50 ml whiskey, 20 ml vermouth, 1 dash (0.92 ml, [units](units.md)) is 0.037 parts[^iba] (read at iba-world.com); Embury names bitters among the modifying agents of the aromatic type[^wiki-embury]; the edge 0.02 is a round number below 0.037 (assumption) | assumption                       |
 
 Bands are data, not code: changing a band is editing a JSON file. Owner
 task: read the Codex chapters on the six templates and replace the
@@ -99,7 +106,13 @@ reachable and quotes what is needed, as a secondary source:
   10 cl orange juice (4 parts); Tom Collins 60 ml gin, 25 ml lemon juice,
   15 ml syrup, 50 ml soda; Moscow Mule 45 ml vodka, 10 ml lime juice, 120 ml
   ginger beer; Whiskey Sour 3 : 2 : 1 (4.5 cl, 3 cl, 1.5 cl); Negroni
-  equal parts.
+  equal parts. **Checked at iba-world.com on 2026-11-17**[^iba]: Manhattan,
+  Dry Martini, Moscow Mule and Negroni agree; **Whiskey Sour differs**
+  (45 ml bourbon, 25 ml lemon juice, 20 ml sugar syrup, not 3 : 2 : 1);
+  the **Tom Collins is not on the list** and the John Collins that is
+  there reads 45 : 30 : 15 : 60, not 60 : 25 : 15 : 50; the **Screwdriver
+  is not on the list**. No number in a template file or vector used the
+  differing figures, so no data changed.
 - The Screwdriver is described in a Newsweek of 21 February 1944 as "a
   half-orange-juice and half-vodka drink"[^wiki-screwdriver]: 1 : 1 is 2
   parts, so a Screwdriver of 2 : 3 (the seed's) is a classic proportion.
@@ -116,6 +129,70 @@ names the sourced edge): Martini modifier slot 0.5 to 0.25, Martini bitter
 slot 0.5 to 0.02, a second optional modifier slot in the Martini, Daiquiri
 sweet and Sidecar liqueur slots 0.38 to 0.25, Highball mixer 4 to 2. The
 usual ranges are unchanged (they describe the nominal spec, not the band).
+
+## IBA specifications read
+
+Read at `https://iba-world.com/iba-cocktail/<slug>/` on 2026-11-17
+(#116)[^iba]; amounts as printed, the slug in the first column (add it to
+that URL). "Parts" is `2 × slot / base` as in [Ratios](#ratios). The IBA
+page of a drink lists no variants, only ingredients, method and garnish.
+
+| Slug                 | Amounts as printed                                                                  | Parts (slots as the templates see them)            |
+| -------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `dry-martini`        | 60 ml gin, 10 ml dry vermouth                                                       | modifier 0.333                                     |
+| `manhattan`          | 50 ml rye whiskey, 20 ml sweet red vermouth, 1 dash Angostura                       | modifier 0.8, bitters 0.037 (dash 0.92 ml)         |
+| `negroni`            | 30 ml gin, 30 ml Campari, 30 ml sweet red vermouth                                  | bitter 2, modifier 2                               |
+| `boulevardier`       | 45 ml bourbon or rye, 30 ml Campari, 30 ml sweet red vermouth                       | bitter 1.333, modifier 1.333                       |
+| `old-fashioned`      | 45 ml bourbon or rye, 1 sugar cube, few dashes Angostura, few dashes plain water    | sugar cube and dashes have no volume on the page   |
+| `daiquiri`           | 60 ml white Cuban rum, 20 ml lime juice, 2 bar spoons superfine sugar               | sour 0.667; sweet is dry sugar, not a syrup volume |
+| `margarita`          | 50 ml tequila 100 % agave, 20 ml triple sec, 15 ml lime juice                       | modifier 0.8, sour 0.6                             |
+| `tommys-margarita`   | 60 ml tequila 100 % agave, 30 ml lime juice, 30 ml agave nectar                     | sour 1, sweet 1                                    |
+| `sidecar`            | 50 ml cognac, 20 ml triple sec, 20 ml lemon juice                                   | modifier 0.8, sour 0.8                             |
+| `whiskey-sour`       | 45 ml bourbon, 25 ml lemon juice, 20 ml sugar syrup, few drops egg white (optional) | sour 1.111, sweet 0.889                            |
+| `white-lady`         | 40 ml gin, 30 ml triple sec, 20 ml lemon juice                                      | modifier 1.5, sour 1                               |
+| `between-the-sheets` | 30 ml white rum, 30 ml cognac, 30 ml triple sec, 20 ml lemon juice                  | two bases, modifier 2, sour 1.333                  |
+| `cosmopolitan`       | 40 ml vodka citron, 15 ml Cointreau, 15 ml lime juice, 30 ml cranberry juice        | modifier 0.75, sour 0.75, juice 1.5                |
+| `john-collins`       | 45 ml gin, 30 ml lemon juice, 15 ml simple syrup, 60 ml soda water                  | sour 1.333, sweet 0.667, lengthener 2.667          |
+| `gin-fizz`           | 45 ml gin, 30 ml lemon juice, 10 ml simple syrup, splash soda water                 | sour 1.333, sweet 0.444, lengthener unmeasured     |
+| `moscow-mule`        | 45 ml vodka, 120 ml ginger beer, 10 ml lime juice                                   | lengthener 5.333, sour 0.444                       |
+| `cuba-libre`         | 50 ml white rum, 120 ml cola, 10 ml lime juice                                      | lengthener 4.8, sour 0.4                           |
+| `dark-n-stormy`      | 60 ml Gosling’s rum, 100 ml ginger beer                                             | lengthener 3.333                                   |
+| `french-75`          | 30 ml gin, 15 ml lemon juice, 15 ml sugar syrup, 60 ml champagne                    | sour 1, sweet 1, lengthener 4                      |
+| `mojito`             | 45 ml white Cuban rum, 20 ml lime juice, 6 mint sprigs, 2 tsp sugar, soda water     | sour 0.889; soda unmeasured                        |
+| `spritz`             | 90 ml prosecco, 60 ml Aperol, splash soda water                                     | no base role                                       |
+| `americano`          | 30 ml Campari, 30 ml sweet red vermouth, splash soda water                          | no base role                                       |
+
+Not on the IBA list any more (404 on the slug): Screwdriver, Tom Collins
+(the John Collins is listed), Jack Rose, Gimlet, Martini (only Dry
+Martini), Brandy Flip (a Porto Flip is listed), a Whisky Highball.
+
+**Classics vectors against the IBA.** The vectors in
+`vectors/classics/` take their lines from the seed specs (their `source`
+says Bar Assistant), not from the IBA, so no citation was replaced. Same
+amounts as the IBA: `between-the-sheets`, `boulevardier`, `cosmopolitan`,
+`cuba-libre`, `negroni`, `sidecar`, `whiskey-sour`. Different amounts
+(seed first, IBA second): `daiquiri` 60 : 22.5 : 22.5 against 60 : 20 : 2
+bar spoons sugar; `manhattan` 60 : 30 : 2 dashes against 50 : 20 : 1;
+`margarita` 60 : 22.5 : 22.5 against 50 : 20 : 15; `martini` 60 : 30
+against the Dry Martini 60 : 10; `moscow-mule` 60 : 22.5 : 120 against
+45 : 10 : 120; `old-fashioned` 60 and a bar spoon of syrup against 45 and a
+sugar cube; `tommys-margarita` 60 : 30 : 15 against 60 : 30 : 30;
+`white-lady` 45 : 30 : 22.5 against 40 : 30 : 20; no IBA page for
+`screwdriver`, `gimlet`, `jack-rose`, `brandy-flip`, `whisky-highball`.
+The vectors pin the engine's arithmetic for the stated lines, not the IBA
+recipe, so they stay; the evidence-bearing vectors are the
+`match-*-iba` ones, and their lines agree with the IBA page (the
+Screwdriver one cannot be checked, see the table above).
+
+## Books (Google Books search inside, tried 2026-11-17)
+
+_The Fine Art of Mixing Drinks_ (Embury), _Cocktail Codex_ and _The Joy
+of Mixology_ (Regan) all have `viewability` `view_no_pages` in the Google
+Books feed, and search inside answers a captcha (HTTP 429) to scripted
+requests ([development](development.md#network-hosts)). No snippet and
+no page number could be read, so Embury's 1 : 2 : 8 with a base of at
+least 75 %, the Codex root recipes and Regan's families **stay as they
+were**: secondary (Embury via Wikipedia) or unread (Codex, Regan).
 
 ## Seed measurement
 
@@ -162,17 +239,56 @@ roles the six templates do not have), not ratio bands.
 
 A new root template changes the pinned "six roots" (tests, the classics
 coverage, the screens' wording) and needs a source for its bands; none
-of the following has a source for a band yet, so they are proposals with
-measured demand, not data:
+of the following has an author's ratio for a band yet (the Collins family
+has IBA data points, see below), so they are proposals with measured
+demand, not data:
 
-| Family                                                | Structure                                  | Specs it would take                                                            | Source needed                                                                              |
-| ----------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Collins and Fizz, Mule (sour + soda)                  | base, sour, sweet, lengthener              | 18 (measured with a trial template, bands 0.38 - 1.5, 0.25 - 1.5, 1 - 4 parts) | IBA Tom Collins 60 : 25 : 15 : 50 is 0.83 : 0.5 : 1.67 parts[^wiki-iba]; more specs needed |
-| Sours with a second sweetener or bitters              | Daiquiri or Sidecar with optional slots    | about 60 (groups above)                                                        | Codex Daiquiri and Sidecar chapters, Embury "special flavouring agents"                    |
-| Spritz (aperitif + wine + soda)                       | no base role: bitter, lengthener, modifier | 11 (`bitter+lengthener`, `lengthener+modifier`)                                | IBA Spritz or Americano specification                                                      |
-| Stirred with two modifiers and a sweetener            | base, bitter, modifier, sweet (stir)       | 9                                                                              | Codex Martini and Old-Fashioned chapters                                                   |
-| Tiki and multi-spirit sours                           | several base lines, juice, syrup, liqueur  | 16 + 7                                                                         | Wondrich, Beachbum Berry (not read)                                                        |
-| Flips and egg drinks, hot drinks, Champagne cocktails | texture or sparkling wine, hot method      | few in the seed                                                                | Regan, Codex Flip chapter; no method for hot drinks                                        |
+| Family                                                | Structure                                  | Specs it would take                                                            | Source needed                                                                             |
+| ----------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Collins and Fizz, Mule (sour + soda)                  | base, sour, sweet, lengthener              | 18 (measured with a trial template, bands 0.38 - 1.5, 0.25 - 1.5, 1 - 4 parts) | IBA John Collins, Gin Fizz, Moscow Mule, Cuba Libre, French 75 read[^iba]; proposal below |
+| Sours with a second sweetener or bitters              | Daiquiri or Sidecar with optional slots    | about 60 (groups above)                                                        | Codex Daiquiri and Sidecar chapters, Embury "special flavouring agents"                   |
+| Spritz (aperitif + wine + soda)                       | no base role: bitter, lengthener, modifier | 11 (`bitter+lengthener`, `lengthener+modifier`)                                | IBA Spritz or Americano specification                                                     |
+| Stirred with two modifiers and a sweetener            | base, bitter, modifier, sweet (stir)       | 9                                                                              | Codex Martini and Old-Fashioned chapters                                                  |
+| Tiki and multi-spirit sours                           | several base lines, juice, syrup, liqueur  | 16 + 7                                                                         | Wondrich, Beachbum Berry (not read)                                                       |
+| Flips and egg drinks, hot drinks, Champagne cocktails | texture or sparkling wine, hot method      | few in the seed                                                                | Regan, Codex Flip chapter; no method for hot drinks                                       |
+
+### Collins family as a seventh root (#114)
+
+Does the family now have a sourced band? **Partly.** The IBA
+specifications read on 2026-11-17[^iba] give four to five measured
+members, so every edge below is an observed value of a primary source,
+but no author states a ratio for the family (Codex and Embury could not
+be read), and the width of a band is still a choice. Parts as in
+[Ratios](#ratios), base 2:
+
+| Member (IBA) | Sour (juice) | Sweet (syrup) | Lengthener (soda, ginger beer, cola, sparkling wine) |
+| ------------ | ------------ | ------------- | ---------------------------------------------------- |
+| John Collins | 1.333        | 0.667         | 2.667                                                |
+| Gin Fizz     | 1.333        | 0.444         | splash, no amount                                    |
+| Moscow Mule  | 0.444        | none          | 5.333 (ginger beer carries the sugar)                |
+| Cuba Libre   | 0.4          | none          | 4.8 (cola carries the sugar)                         |
+| French 75    | 1            | 1             | 4                                                    |
+| Mojito       | 0.889        | sugar 2 tsp   | soda unmeasured                                      |
+
+Proposed slots (not data; the template is its own issue because it
+changes the six-roots pins):
+
+| Slot       | Role         | Parts                 | Edge from                                                                                                                        | Status                          |
+| ---------- | ------------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| base       | `base`       | 2                     | reference                                                                                                                        |                                 |
+| sour       | `sour`       | 0.4 - 1.5             | lower: Cuba Libre 0.4 (rounded down, Mule 0.444); upper: John Collins and Gin Fizz 1.333, rounded up to the band of the Daiquiri | observed edges, rounding chosen |
+| sweet      | `sweet`      | 0.25 - 1.5 (optional) | optional because Mule and Cuba Libre have no syrup; 0.444 to 1 observed, band as the Daiquiri sweet slot                         | observed values, edges chosen   |
+| lengthener | `lengthener` | 2.5 - 6               | lower: John Collins 2.667 rounded down; upper: Mule 5.333 rounded up (the Highball keeps 2 - 6 and its slots differ by the sour) | observed edges, rounding chosen |
+
+`slotEvidence` would be `secondary` for the edges (a primary page read,
+but no author's ratio and the rounding is chosen), the nominal ratio
+John Collins (2 : 1.33 : 0.67 : 2.67) stays `assumption` for the
+family. Method `shake` for Fizz, `build` for Collins, Mule and Cuba
+Libre, so the method is not part of the match. The Highball root
+(base and lengthener only) is a subset of this family when the sour slot
+is empty, so the tie rule must prefer the Highball when no sour line
+exists; the seed would move about 18 specs, to be re-measured with the
+real file.
 
 The trial template for the first row was removed again: it is not in the
 data. Where the sources are read, a family is added as one JSON file in

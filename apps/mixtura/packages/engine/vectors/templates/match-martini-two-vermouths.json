@@ -1,7 +1,7 @@
 {
   "id": "match-martini-two-vermouths",
   "kind": "match",
-  "description": "Manhattan with equal parts sweet and dry vermouth (the IBA lists it as a Manhattan variant): 50 ml whiskey, 10 ml sweet and 10 ml dry vermouth, 1 dash bitters. Working: each vermouth goes to its own slot (first empty slot of role modifier), 2 x 10 / 50 = 0.4 parts each, inside 0.25 to 2; bitters 0.0368 parts, inside; distance 0. Before the second slot both vermouths summed to 0.8 in one slot.",
+  "description": "Manhattan with equal parts sweet and dry vermouth (a variant named on Wikipedia, not printed on the IBA Manhattan page): 50 ml whiskey, 10 ml sweet and 10 ml dry vermouth, 1 dash bitters. Working: each vermouth goes to its own slot (first empty slot of role modifier), 2 x 10 / 50 = 0.4 parts each, inside 0.25 to 2; bitters 0.0368 parts, inside; distance 0. Before the second slot both vermouths summed to 0.8 in one slot.",
   "lines": [
     {
       "ingredientId": "whiskey",
