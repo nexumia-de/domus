@@ -1,0 +1,41 @@
+{
+  "id": "match-martini-manhattan-iba",
+  "kind": "match",
+  "description": "IBA Manhattan 50 ml whiskey, 20 ml sweet vermouth, 1 dash aromatic bitters (a dash is 0.92 ml in units.json). Working: modifier 2 x 20 / 50 = 0.8 parts, inside 0.25 to 2; bitters 2 x 0.92 / 50 = 0.0368 parts, inside 0.02 to 2; distance 0.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 20,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1,
+      "unit": "dash"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "martini",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["martini"],
+    "candidates": {
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within",
+          "bittersweet": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates; the band edge is sourced as stated in docs/templates.md#evidence"
+}

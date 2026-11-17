@@ -1,7 +1,7 @@
 {
   "id": "manhattan",
   "name": "Manhattan",
-  "why": "Stirred whiskey and vermouth with aromatic bitters: fits no template, because the Martini template reads bitters as a bitter liqueur (0.5 to 2 parts)",
+  "why": "Stirred whiskey and vermouth with aromatic bitters: fits the Martini template since the bitter slot reads 0.02 to 2 parts (two dashes are 0.061 parts)",
   "method": "stir",
   "lines": [
     {
@@ -42,7 +42,7 @@
     }
   },
   "expected": {
-    "templateId": null,
+    "templateId": "martini",
     "volumeAfterMl": 110.208,
     "abvPct": 27.423127,
     "sugarPer100Ml": 4.088197,

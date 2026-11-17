@@ -246,6 +246,29 @@ www.popsci.com
 web.archive.org
 ```
 
+For the template bands (#70, second pass on 2026-11-17) `en.wikipedia.org`
+(`/w/index.php?action=raw&title=...` and `/w/api.php`, rate-limited with 429
+under bursts) answered and gave the IBA specifications and the Embury
+and Screwdriver passages as secondary sources. Blocked, with
+`CONNECT tunnel failed, response 403`: the IBA site and the cocktail
+sites below; the archive.org download host (`ia*.archive.org`) is blocked
+too, so the lending copy of Embury's book cannot be read, and Google
+Books search inside a book redirects to the blocked `www.google.com`.
+
+```
+iba-world.com
+www.iba-world.com
+punchdrink.com
+liquor.com
+imbibemagazine.com
+www.thespruceeats.com
+www.deathandcompany.com
+fashioned.deathandcompany.com
+cocktailcodex.com
+www.hachettebookgroup.com
+www.tenspeed.com
+```
+
 `www.sciencedirect.com` answers 403 itself. Reachable on the same day
 and used for the juice acid values (the PMC pages answered a captcha to
 scripted requests, Europe PMC's REST API served the open-access full

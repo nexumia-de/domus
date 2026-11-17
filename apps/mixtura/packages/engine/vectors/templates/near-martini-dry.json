@@ -1,7 +1,7 @@
 {
   "id": "near-martini-dry",
   "kind": "match",
-  "description": "Near miss: 60 ml gin and 10 ml vermouth is 0.333 parts, below 0.5: distance (0.5 - 0.3333) / 0.5.",
+  "description": "Near miss: 60 ml gin and 6 ml vermouth is 0.2 parts, below 0.25: distance (0.25 - 0.2) / 0.25 = 0.2.",
   "lines": [
     {
       "ingredientId": "gin",
@@ -10,7 +10,7 @@
     },
     {
       "ingredientId": "dry-vermouth",
-      "amount": 10,
+      "amount": 6,
       "unit": "ml"
     }
   ],
@@ -19,7 +19,7 @@
     "candidates": {
       "martini": {
         "fits": false,
-        "distance": 0.333333,
+        "distance": 0.2,
         "ratios": {
           "fortified": "below"
         }

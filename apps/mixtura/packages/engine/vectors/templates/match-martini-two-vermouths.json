@@ -1,0 +1,47 @@
+{
+  "id": "match-martini-two-vermouths",
+  "kind": "match",
+  "description": "Manhattan with equal parts sweet and dry vermouth (the IBA lists it as a Manhattan variant): 50 ml whiskey, 10 ml sweet and 10 ml dry vermouth, 1 dash bitters. Working: each vermouth goes to its own slot (first empty slot of role modifier), 2 x 10 / 50 = 0.4 parts each, inside 0.25 to 2; bitters 0.0368 parts, inside; distance 0. Before the second slot both vermouths summed to 0.8 in one slot.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 10,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 10,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1,
+      "unit": "dash"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "martini",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["martini"],
+    "candidates": {
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within",
+          "fortified-2": "within",
+          "bittersweet": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates; the band edge is sourced as stated in docs/templates.md#evidence"
+}

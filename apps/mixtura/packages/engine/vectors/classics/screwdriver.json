@@ -1,7 +1,7 @@
 {
   "id": "screwdriver",
   "name": "Screwdriver",
-  "why": "Spirit and orange juice: 3 parts of mixer is below the Highball band of 4 to 6, so no template; acid of orange juice from a source (fresh juice, 0.91 g per 100 ml)",
+  "why": "Spirit and orange juice: 3 parts of mixer is inside the Highball band of 2 to 6 since #70; acid of orange juice from a source (fresh juice, 0.91 g per 100 ml)",
   "method": "build",
   "lines": [
     {
@@ -31,7 +31,7 @@
     }
   },
   "expected": {
-    "templateId": null,
+    "templateId": "highball",
     "volumeAfterMl": 165.0,
     "abvPct": 14.545455,
     "sugarPer100Ml": 4.581818,
