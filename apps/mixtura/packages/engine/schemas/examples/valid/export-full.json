@@ -92,7 +92,8 @@
     {
       "ingredientId": "u-3f1c2a52-8d1e-4c55-9b6a-0c1e5f7a2b10",
       "present": true,
-      "openedOn": "2026-11-01"
+      "openedOn": "2026-11-01",
+      "moreBatches": ["2026-10-20"]
     },
     { "ingredientId": "lime-juice", "present": false }
   ],

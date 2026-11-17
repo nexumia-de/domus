@@ -269,3 +269,14 @@ Riff as {Variant Name}", "Replaces {names} with a base of your choice: {note}.",
 The figures are worked out again once you have chosen.", in the editor "Started
 as {name}: the base is open for you to choose. The balance shows once it is
 filled."
+
+# Batches on the Stock screen, as built (#101)
+
+| Where         | Text                                                                                                                                                                                                                        |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Card          | Batches Near Their Date · Made by you, with the shelf life you entered. Check these before you use them. · and {n} more batch(es) at hand                                                                                   |
+| Tree row      | {n} batch(es) · Batches (button; accessible name "Batches of {name}")                                                                                                                                                       |
+| Sheet         | Batches of {name} · Close · Batches at hand · Add a batch · Made on · Add Batch · Made Today · Used up ("The batch made on {date} is used up") · No batch at hand. Add the day you made one to see how long it keeps.       |
+| Sheet, errors | Choose the day it was made. · A batch cannot be made in the future. · A batch made on {date} is already recorded.                                                                                                           |
+| Toasts        | Added a batch of {name} made on {date} · {name}: the batch made on {date} is marked as used up                                                                                                                              |
+| States        | The words of the batch card ([shelf life](non-alcoholic.md#shelf-life-with-entered-dates)): Within its shelf life, {n} days left · Use soon: {n} days left · Past the date you set by {n} days. Check it before you use it. |

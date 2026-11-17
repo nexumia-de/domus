@@ -6,8 +6,7 @@
 // ingredient, marks it in stock at once and offers Undo for both.
 
 import { ingredientFormSheet } from '../../components/ingredient-form-sheet';
-import { back, go, replace } from '../../navigation';
-import { formatHash } from '../../router';
+import { replace } from '../../navigation';
 import { type ScreenContext } from '../../screen';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { newUserId, StoreError } from '../../store';
@@ -23,6 +22,7 @@ import {
   type IngredientForm,
 } from '../editor/ingredient-form';
 import { editorStrings as t } from '../editor/strings';
+import { closeSheet, openSheet, sheetIs, stockAddress } from './sheet-address';
 
 interface State {
   form: IngredientForm;
@@ -34,22 +34,10 @@ interface State {
 
 let state: State | null = null;
 
-const wide = (): boolean => window.matchMedia('(min-width: 840px)').matches;
 const redraw = (context: ScreenContext): void =>
   context.store.set({ stockRev: context.store.get().stockRev + 1 });
 
-/** The Stock address with the sheet `sheet` (or none) and the other parameters kept. */
-export function stockAddress(context: ScreenContext, sheet: string | null, keepQ = true): string {
-  const query = new URLSearchParams(context.route.query);
-  query.delete('sheet');
-  query.delete('ing');
-  if (!keepQ) query.delete('q');
-  if (sheet) query.set('sheet', sheet);
-  return formatHash(['stock'], query);
-}
-
-export const createOpen = (context: ScreenContext): boolean =>
-  context.route.query.get('sheet') === 'ingredient';
+export const createOpen = (context: ScreenContext): boolean => sheetIs(context, 'ingredient');
 
 export function openCreate(context: ScreenContext, name: string): void {
   state = {
@@ -59,16 +47,12 @@ export function openCreate(context: ScreenContext, name: string): void {
     error: null,
     saving: false,
   };
-  const address = stockAddress(context, 'ingredient');
-  if (wide()) replace(context.store, address);
-  else go(context.store, address);
+  openSheet(context, stockAddress(context, 'ingredient'));
 }
 
 export function closeCreate(context: ScreenContext): void {
   state = null;
-  const address = stockAddress(context, null);
-  if (wide()) replace(context.store, address);
-  else back(context.store, address);
+  closeSheet(context);
 }
 
 async function save(context: ScreenContext, model: BrowseModel): Promise<void> {
@@ -97,7 +81,7 @@ async function save(context: ScreenContext, model: BrowseModel): Promise<void> {
   const undo = changeStock(context, [
     { id: record.id, next: withPresent(records.records, record.id, true) },
   ]);
-  replace(context.store, stockAddress(context, null, false));
+  replace(context.store, stockAddress(context, null, { keepQ: false }));
   showToast(context.store, strings.stock.created(record.name), () => {
     changeStock(context, undo);
     void local.ingredients

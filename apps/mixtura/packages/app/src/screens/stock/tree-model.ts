@@ -4,6 +4,7 @@
 
 import type { IngredientTree, Level } from '@mixtura/engine';
 import { normalise } from '../browse/normalise';
+import { batchDates } from '../../stock/batches';
 import type { StockRecords } from '../../stock/state';
 
 export const OTHER_ID = '__other';
@@ -21,6 +22,10 @@ export interface StockNode {
   tracked: boolean;
   /** Drinks that name this ingredient or something below it. */
   drinks: number;
+  /** A prepared ingredient: its batches can be recorded. */
+  prepared: boolean;
+  /** Batches at hand (made-on dates), 0 for anything but a prepared ingredient at hand. */
+  batches: number;
   /** The synthetic group of top-level ingredients without children; it cannot be marked. */
   synthetic: boolean;
 }
@@ -52,6 +57,8 @@ export function buildStockTree(
       present,
       tracked: record !== undefined,
       drinks: drinks.get(id) ?? 0,
+      prepared: ingredient?.prepared !== undefined,
+      batches: ingredient?.prepared ? batchDates(record).length : 0,
       synthetic: false,
     };
   };
@@ -69,6 +76,8 @@ export function buildStockTree(
       present: false,
       tracked: false,
       drinks: 0,
+      prepared: false,
+      batches: 0,
       synthetic: true,
     });
   }

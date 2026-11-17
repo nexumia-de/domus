@@ -6,12 +6,14 @@
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
 import { strings } from '../../strings';
+import { batchStrings } from './batch-strings';
 import { treeKeys } from './tree-keys';
 import type { Row, StockNode } from './tree-model';
 
 export interface TreeActions {
   toggle(node: StockNode): void;
   expand(node: StockNode): void;
+  batches(node: StockNode): void;
   writable: boolean;
 }
 
@@ -23,6 +25,7 @@ function stateWord(node: StockNode): string {
 function subLine(node: StockNode, group: boolean): string {
   const parts: string[] = [];
   if (node.children.length === 0) parts.push(stateWord(node));
+  if (node.batches > 0) parts.push(batchStrings.count(node.batches));
   else if (!group) {
     // The group's own count is at the end of its row.
     if (node.level !== 'group') parts.push(strings.stock.levels[node.level]);
@@ -48,6 +51,21 @@ function expander(node: StockNode, open: boolean, actions: TreeActions): HTMLEle
       onclick: () => actions.expand(node),
     },
     glyph.chevron(),
+  );
+}
+
+function batchButton(node: StockNode, actions: TreeActions): HTMLElement {
+  return h(
+    'button',
+    {
+      class: 'btn btn--text stock-batches-button',
+      type: 'button',
+      'data-batches': node.id,
+      'data-focus': `batches:${node.id}`,
+      'aria-label': batchStrings.buttonAria(node.name),
+      onclick: () => actions.batches(node),
+    },
+    batchStrings.button,
   );
 }
 
@@ -120,6 +138,7 @@ function rowOf(row: Row, actions: TreeActions): HTMLElement {
       'div',
       { class: `row stock-row${group ? ' stock-row--group' : ''}`, style },
       checkbox,
+      node.prepared && node.children.length === 0 ? batchButton(node, actions) : null,
       row.expanded === null ? null : expander(node, open, actions),
     ),
   );

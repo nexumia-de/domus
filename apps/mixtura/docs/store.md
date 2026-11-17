@@ -36,6 +36,8 @@ database with that table.
 | `meta`        | `key`          | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                          |
 | `drafts`      | `key`          | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                              |
 
+A stock record may carry `moreBatches` (the made-on dates of further batches of a prepared ingredient, [#101](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)): the store is keyed by `ingredientId` and holds whole records, so the schema version stays 3 and no migration is needed; the schema check on every put refuses a repeated or malformed date.
+
 Differences from the wording of issue #24: there is no `spec-versions`
 store (the data model keeps each version as its own record in `specs`,
 linked by `lineageId`) and no `prepared` store (a prepared ingredient is

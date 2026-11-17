@@ -605,9 +605,11 @@ the app passes today's date from the device (`src/today.ts`).
   already, and the use-by date is derived every time (made on plus the shelf
   life) and never stored. The engine's makeable does not read the date: a
   batch past its date is still "in stock" for the stock rules; the app says
-  so in words. One batch per prepared ingredient is kept: "I made this"
-  replaces the date. Several batches with their own dates are not kept; see
-  the follow-up issue.
+  so in words. "I made this" on the spec screen
+  replaces the date of the newest batch. Several batches with their own dates
+  are kept from #101 on: the further dates are `moreBatches` on the same
+  stock record, shown and changed on the Stock screen
+  ([as built](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)).
 - **What the app says** (batch card on the spec screen of the prepared
   ingredient's recipe): "Made on 2026-11-17 · use by 2026-11-27", then one of
   "Within its shelf life, 13 days left", "Use soon: 2 days left" (the use-by
