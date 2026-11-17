@@ -484,3 +484,9 @@ after the WAI-ARIA Authoring Practices.
 - **Template detail.** The bottom bar has **New Drink** beside Show in
   Drinks: the editor opens with the template's slots, method and glass
   (the editor reads `?template=`).
+  A new drink has one draft per starting point (`new` and
+  `new?template=<id>`): a blank draft the user began is not shown where a
+  template was chosen, it stays under its own key and comes back, announced
+  as kept, at New Drink; an untouched start leaves nothing behind. (Before,
+  one `new` draft was reused, so New Drink on a template could open an empty
+  editor.)

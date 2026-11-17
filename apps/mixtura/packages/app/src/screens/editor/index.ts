@@ -16,7 +16,7 @@ import { blankDraft, draftFromSpec, riffDraft, variantDraft, withTemplate } from
 import { suggestionFor } from '../spec/variant-vm';
 import { newestOfLineage } from './newest';
 import { editorPage } from './page';
-import { bump, flushDraft, markKept, sessionFor, type Ctx } from './session';
+import { bump, flushDraft, markKept, newDrinkKey, sessionFor, type Ctx } from './session';
 import { sheetAddress } from './sheet-actions';
 import { presentIds, stockState } from '../../stock/state';
 import { applySwap, swapOf } from '../spec/swap-state';
@@ -99,9 +99,13 @@ function view(context: ScreenContext): ScreenView {
   const swap = riff ? swapOf(route.query) : null;
   const variantId = riff && !swap ? route.query.get('variant') : null;
   const variant = found && variantId ? suggestionFor(model, found.spec, variantId) : undefined;
+  const template =
+    id === 'new' ? model.templateById.get(route.query.get('template') ?? '') : undefined;
   const key = riff
     ? `riff/${id}${swap ? `?${route.query.get('swap')}` : ''}${variant ? `?variant=${variantId}` : ''}`
-    : id;
+    : id === 'new'
+      ? newDrinkKey(template?.id)
+      : id;
   const base = (): Draft =>
     found && riff && variant
       ? variantDraft(found.spec, variant.suggestion, variant.template)

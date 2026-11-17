@@ -230,9 +230,12 @@ export function drinksListPane(
   if (sheetOpen && !sheetWasOpen) {
     requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
   }
-  // Closing the sheet returns focus to the button that opened it (the dialog pattern).
+  // Closing the sheet returns focus to the button that opened it (the dialog pattern). Without
+  // scrolling: on a slow device this runs a frame late, after the user has scrolled on.
   if (!sheetOpen && sheetWasOpen) {
-    requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-focus="filters"]')?.focus());
+    requestAnimationFrame(() =>
+      body.querySelector<HTMLElement>('[data-focus="filters"]')?.focus({ preventScroll: true }),
+    );
   }
   sheetWasOpen = sheetOpen;
 

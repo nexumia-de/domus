@@ -132,6 +132,16 @@ export function parseDraft(value: unknown): Draft | null {
     : draft;
 }
 
+/**
+ * The session key of a new drink: one per starting point. `new` is the blank
+ * start, `new?template=<id>` one from a template, so a draft begun blank is
+ * never shown where the user chose a template (it stays under its own key and
+ * comes back, announced as kept, at New Drink), and an untouched session
+ * leaves nothing behind.
+ */
+export const newDrinkKey = (templateId?: string): string =>
+  templateId === undefined ? 'new' : `new?template=${templateId}`;
+
 /** The session of an address; a new one reads its stored draft first. */
 export function sessionFor(
   key: string,
