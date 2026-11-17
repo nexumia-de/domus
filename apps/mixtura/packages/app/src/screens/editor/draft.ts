@@ -4,12 +4,13 @@
 
 import type { Role, SpecData, SpecLine, Template } from '../browse/types';
 import { storedText } from './amount-entry';
-import type { Draft, DraftLine, DraftPrepared, Target } from './types';
+import type { Draft, DraftLine, DraftPrepared, DraftSubstitute, Target } from './types';
 
 export const noPrepared: DraftPrepared = {
   on: false,
   yieldText: '',
   shelfText: '',
+  storageText: '',
   parentId: '',
   role: '',
   ingredientId: '',
@@ -32,6 +33,19 @@ export function blankDraft(target: Target = { kind: 'new' }): Draft {
   };
 }
 
+function substituteOf(sub: NonNullable<SpecLine['substitutes']>[number]): DraftSubstitute {
+  const has = sub.amount !== undefined && sub.unit !== undefined;
+  const text = has ? storedText({ amount: sub.amount as number, unit: sub.unit as string }) : '';
+  return {
+    ingredientId: sub.ingredientId,
+    amountText: text,
+    ...(has && {
+      original: { amount: sub.amount as number, unit: sub.unit as string },
+      originalText: text,
+    }),
+  };
+}
+
 function lineOf(key: string, line: SpecLine): DraftLine {
   const text = storedText(line);
   return {
@@ -43,6 +57,8 @@ function lineOf(key: string, line: SpecLine): DraftLine {
     optional: line.optional === true,
     note: line.note ?? '',
     topText: line.topMl !== undefined ? String(line.topMl) : '',
+    ...(line.substitutes &&
+      line.substitutes.length > 0 && { substitutes: line.substitutes.map(substituteOf) }),
     original: line,
     originalText: text,
   };
@@ -60,6 +76,7 @@ export function draftFromSpec(
         ingredientId: string;
         yieldText: string;
         shelfText: string;
+        storageText: string;
         parentId: string;
         role: '' | Role;
       }
@@ -121,6 +138,30 @@ export function riffDraft(
   };
 }
 
+/**
+ * The draft of a riff that starts as a variant of the drink's template: the
+ * lines the variant keeps carried over, an empty line with its role for each
+ * slot the variant leaves open (the base), the variant as the template. The
+ * drink's method and glass stay; nothing is said about how it will taste.
+ */
+export function variantDraft(
+  spec: SpecData,
+  suggestion: { keptLines: readonly number[]; openSlots: readonly { role: Role }[] },
+  template: { id: string; name: string },
+): Draft {
+  let draft = riffDraft(
+    spec,
+    suggestion.keptLines.map((i) => spec.lines[i] as SpecLine),
+  );
+  for (const slot of suggestion.openSlots) draft = emptyLine(draft, slot.role).draft;
+  const target = draft.target.kind === 'copy' ? draft.target : { kind: 'new' as const };
+  return {
+    ...draft,
+    templateId: template.id,
+    target: target.kind === 'copy' ? { ...target, variantName: template.name } : target,
+  };
+}
+
 /** What identifies the draft's content; line keys and counters do not count. */
 export function fingerprint(draft: Draft): string {
   return JSON.stringify({
@@ -131,6 +172,12 @@ export function fingerprint(draft: Draft): string {
       key: '',
       original: undefined,
       originalText: undefined,
+      ...(line.substitutes && {
+        substitutes: line.substitutes.map((s) => ({
+          ingredientId: s.ingredientId,
+          amountText: s.amountText,
+        })),
+      }),
     })),
   });
 }

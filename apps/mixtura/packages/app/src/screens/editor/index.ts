@@ -12,11 +12,13 @@ import type { BrowseModel } from '../browse/model';
 import type { Ingredient, SpecData } from '../browse/types';
 import { drinksPane, failedStatus, loadingStatus } from '../drinks/pane';
 import { storedText } from './amount-entry';
-import { blankDraft, draftFromSpec, riffDraft, withTemplate } from './draft';
+import { blankDraft, draftFromSpec, riffDraft, variantDraft, withTemplate } from './draft';
+import { suggestionFor } from '../spec/variant-vm';
 import { newestOfLineage } from './newest';
 import { editorPage } from './page';
 import { bump, flushDraft, markKept, sessionFor, type Ctx } from './session';
 import { sheetAddress } from './sheet-actions';
+import { presentIds, stockState } from '../../stock/state';
 import { applySwap, swapOf } from '../spec/swap-state';
 import { editorStrings as t } from './strings';
 import type { Draft } from './types';
@@ -37,6 +39,7 @@ function preparedOf(model: BrowseModel, spec: SpecData): Parameters<typeof draft
       ingredientId: item.id,
       yieldText: storedText({ amount: item.prepared.yield.amount, unit: item.prepared.yield.unit }),
       shelfText: item.shelfLifeDays === undefined ? '' : String(item.shelfLifeDays),
+      storageText: item.storage ?? '',
       parentId: item.parentId ?? '',
       role: item.role ?? '',
     };
@@ -94,13 +97,19 @@ function view(context: ScreenContext): ScreenView {
   if (id !== 'new' && !found) return notFound(context);
   // A riff from a swap is its own session: the swap is part of its address.
   const swap = riff ? swapOf(route.query) : null;
-  const key = riff ? `riff/${id}${swap ? `?${route.query.get('swap')}` : ''}` : id;
+  const variantId = riff && !swap ? route.query.get('variant') : null;
+  const variant = found && variantId ? suggestionFor(model, found.spec, variantId) : undefined;
+  const key = riff
+    ? `riff/${id}${swap ? `?${route.query.get('swap')}` : ''}${variant ? `?variant=${variantId}` : ''}`
+    : id;
   const base = (): Draft =>
-    found && riff
-      ? riffDraft(found.spec, swap ? applySwap(found.spec.lines, swap) : found.spec.lines)
-      : found
-        ? draftFromSpec(found.spec, found.origin, preparedOf(model, found.spec))
-        : newDraft(model, route);
+    found && riff && variant
+      ? variantDraft(found.spec, variant.suggestion, variant.template)
+      : found && riff
+        ? riffDraft(found.spec, swap ? applySwap(found.spec.lines, swap) : found.spec.lines)
+        : found
+          ? draftFromSpec(found.spec, found.origin, preparedOf(model, found.spec))
+          : newDraft(model, route);
   const local = data.local();
   const session = sessionFor(key, base, local, () => bump(store));
   const title =
@@ -112,6 +121,8 @@ function view(context: ScreenContext): ScreenView {
   if (session.status === 'loading') {
     return { title, body: loadingStatus(), list: drinksPane(context, 'detail') };
   }
+  const stockNow = stockState(context);
+  const stockIds = new Set(stockNow.kind === 'ready' ? presentIds(stockNow.records) : []);
   const ctx: Ctx = {
     store,
     data,
@@ -121,6 +132,7 @@ function view(context: ScreenContext): ScreenView {
     units: context.state.units,
     imperial: context.state.units === 'imperial',
     writable: local !== null,
+    stock: stockIds,
   };
   const page = editorPage(ctx);
   // A sheet address with nothing open (a reload, a shared link) opens nothing: clear it once.

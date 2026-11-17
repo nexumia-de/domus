@@ -22,6 +22,9 @@ export interface LineRowActions extends AmountActions {
   note(key: string, text: string): void;
   role(key: string, role: string): void;
   remove(key: string): void;
+  addSubstitute(key: string): void;
+  substituteAmount(key: string, index: number, text: string): void;
+  removeSubstitute(key: string, index: number): void;
 }
 
 const ROLES = Object.keys(strings.spec.roles) as (keyof typeof strings.spec.roles)[];
@@ -52,6 +55,7 @@ function menuPanel(
       'aria-pressed': line.optional ? 'true' : 'false',
       class: line.optional ? 'btn btn--tonal is-on' : 'btn',
     }),
+    button(t.addSubstitute, `addsub-${vm.key}`, () => actions.addSubstitute(vm.key)),
     !vm.noteOpen && button(t.addNote, `addnote-${vm.key}`, () => actions.openNote(vm.key)),
     h(
       'label',
@@ -78,6 +82,45 @@ function menuPanel(
       class: 'btn btn--danger',
     }),
   );
+}
+
+function substituteRows(vm: LineRowVM, actions: LineRowActions): DocumentFragment {
+  const fragment = document.createDocumentFragment();
+  for (const s of vm.substitutes) {
+    fragment.appendChild(
+      h(
+        'div',
+        { class: 'sub-row', 'data-substitute': String(s.index) },
+        h('span', { class: 'sub-name' }, t.substitute.or(s.name)),
+        h('input', {
+          type: 'text',
+          class: 'input sub-amount',
+          name: 'substitute-amount',
+          'aria-label': t.substitute.amount(s.name),
+          placeholder: t.substitute.amountPlaceholder,
+          autocomplete: 'off',
+          autocapitalize: 'off',
+          spellcheck: 'false',
+          value: s.amountText,
+          oninput: (event) =>
+            actions.substituteAmount(vm.key, s.index, (event.target as HTMLInputElement).value),
+          onchange: () => actions.left(vm.key),
+        }),
+        h(
+          'button',
+          {
+            type: 'button',
+            class: 'btn btn--text',
+            'aria-label': t.substitute.removeAria(s.name),
+            'data-action': 'remove-substitute',
+            onclick: () => actions.removeSubstitute(vm.key, s.index),
+          },
+          t.substitute.remove,
+        ),
+      ),
+    );
+  }
+  return fragment;
 }
 
 export function lineRow(
@@ -166,6 +209,7 @@ export function lineRow(
         oninput: (event) => actions.note(vm.key, (event.target as HTMLInputElement).value),
       }),
   );
+  card.insertBefore(substituteRows(vm, actions), hint.nextSibling);
   if (vm.menuOpen) card.appendChild(menuPanel(vm, line, name, actions));
   enableReorder(handle, card, {
     drop: (to) => actions.moveTo(vm.key, to),

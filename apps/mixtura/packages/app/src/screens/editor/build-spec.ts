@@ -57,6 +57,7 @@ export function draftToIngredient(
   delete base.parentId;
   delete base.role;
   delete base.shelfLifeDays;
+  delete base.storage;
   return {
     ...base,
     id,
@@ -65,6 +66,7 @@ export function draftToIngredient(
     ...(p.parentId !== '' && { parentId: p.parentId }),
     ...(p.role !== '' && { role: p.role }),
     ...(found?.shelfDays !== undefined && { shelfLifeDays: found.shelfDays }),
+    ...(found?.storage !== undefined && { storage: found.storage }),
     prepared: {
       specId,
       yield: { amount: found?.yield?.amount ?? 0, unit: found?.yield?.unit ?? 'ml' },

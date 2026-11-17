@@ -1,0 +1,25 @@
+// Fixed texts of the stock panel on the spec screen (#82). Neutral words; a
+// state is always a word and a shape, never a colour alone.
+export const stockStrings = {
+  title: 'What you have',
+  tagMakeable: 'Makeable',
+  tagSubstitute: 'With substitute',
+  tagMissing: (names: string) => `Missing ${names}`,
+  tagMissingMany: (n: number) => `Missing ${n} ingredients`,
+  tagUnknown: 'Has an ingredient not in your data',
+  none: 'Nothing is marked in stock yet. Mark what you have to see what this drink needs.',
+  openStock: 'Open Stock',
+  have: (by: string, asked?: string) => (asked ? `Have: ${by} (${asked})` : `Have: ${by}`),
+  prepared: (name: string) => `Made from your stock: ${name}`,
+  substitute: (by: string, forName: string) => `Substitute: ${by} for ${forName}`,
+  missing: (name: string) => `Missing: ${name}`,
+  missingParts: (names: string) => `Missing parts: ${names}`,
+  optionalMissing: (name: string) => `Not in stock: ${name} (optional)`,
+  unknown: (id: string) => `Not in your data: ${id}`,
+  mark: (name: string) => `Mark ${name} as in stock`,
+  markShort: 'Mark in stock',
+  marked: (name: string) => `${name} marked as in stock`,
+  buyNext: 'Buy Next',
+  buyNextAria: (name: string) => `Open ${name} in Buy Next`,
+  readOnly: 'Stock cannot be changed because the data could not be opened.',
+};

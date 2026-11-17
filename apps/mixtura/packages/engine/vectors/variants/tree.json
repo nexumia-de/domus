@@ -1,0 +1,102 @@
+{
+  "description": "Ingredients of the variant vectors; only the role matters here (properties are the seed's or zero).",
+  "ingredients": [
+    {
+      "id": "light-rum",
+      "name": "Light rum",
+      "level": "product",
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "cognac",
+      "name": "Cognac",
+      "level": "product",
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "bourbon",
+      "name": "Bourbon",
+      "level": "product",
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "role": "sour",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "simple-syrup",
+      "name": "Simple syrup",
+      "level": "product",
+      "role": "sweet",
+      "abv": 0,
+      "sugar": 60,
+      "acid": 0
+    },
+    {
+      "id": "club-soda",
+      "name": "Club soda",
+      "level": "product",
+      "role": "lengthener",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "egg-white",
+      "name": "Egg white",
+      "level": "product",
+      "role": "texture",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "role": "modifier",
+      "abv": 18,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "triple-sec",
+      "name": "Triple sec",
+      "level": "product",
+      "role": "modifier",
+      "abv": 30,
+      "sugar": 25,
+      "acid": 0
+    },
+    {
+      "id": "angostura",
+      "name": "Angostura",
+      "level": "product",
+      "role": "bitter",
+      "abv": 44.7
+    }
+  ]
+}

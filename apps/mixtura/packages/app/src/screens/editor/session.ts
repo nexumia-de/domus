@@ -16,6 +16,8 @@ import type { Draft, DraftLine } from './types';
 
 export interface PickerState {
   lineKey: string;
+  /** The pick adds a substitute to the line instead of setting its ingredient. */
+  substitute?: boolean;
   query: string;
   /** The category being browsed; null for the top level. */
   path: string | null;
@@ -26,6 +28,8 @@ export interface PickerState {
 export interface FormState {
   /** The line the new ingredient goes to; null when none. */
   lineKey: string | null;
+  /** The new ingredient becomes a substitute of that line. */
+  substitute?: boolean;
   form: IngredientForm;
   /** Errors are shown after Save was pressed or a field was left. */
   submitted: boolean;
@@ -75,6 +79,8 @@ export interface Ctx {
   imperial: boolean;
   /** The local store is open: a save can be written. */
   writable: boolean;
+  /** Ids of ingredients the stock says are at hand (for the picker's check mark). */
+  stock: ReadonlySet<string>;
 }
 
 const DRAFT_VERSION = 1;
@@ -118,7 +124,12 @@ export function parseDraft(value: unknown): Draft | null {
     typeof d.prepared === 'object' &&
     d.prepared !== null &&
     typeof d.nextKey === 'number';
-  return ok ? (d as Draft) : null;
+  if (!ok) return null;
+  const draft = d as Draft;
+  // Drafts kept before the storage field existed.
+  return draft.prepared.storageText === undefined
+    ? { ...draft, prepared: { ...draft.prepared, storageText: '' } }
+    : draft;
 }
 
 /** The session of an address; a new one reads its stored draft first. */
@@ -189,13 +200,29 @@ export const dirty = (session: Session): boolean => isDirty(session.draft, sessi
 
 function writeNow(session: Session, local: LocalStore | null): void {
   clearTimeout(session.timer);
-  if (!local) return;
+  // While a save runs the draft is held as `keepBeforeSave` left it: a late write
+  // must not land after the save has deleted it.
+  if (!local || session.saving) return;
   const key = draftKeyOf(session.key);
   const work = dirty(session)
     ? local.drafts.put(key, { version: DRAFT_VERSION, draft: session.draft })
     : local.drafts.delete(key);
   // A draft that cannot be kept must not break typing; the next change tries again.
   work.catch(() => undefined);
+}
+
+/**
+ * Before a save writes anything, the draft is made durable (awaited), so a
+ * save that is cut off at any point leaves the edit in the store. The save
+ * deletes it only after the version has committed.
+ */
+export async function keepBeforeSave(session: Session, local: LocalStore): Promise<void> {
+  clearTimeout(session.timer);
+  if (!dirty(session)) return;
+  // A draft that cannot be kept does not stop the save itself.
+  await local.drafts
+    .put(draftKeyOf(session.key), { version: DRAFT_VERSION, draft: session.draft })
+    .catch(() => undefined);
 }
 
 /** Keeps the draft in the store a moment after the last change. */

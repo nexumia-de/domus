@@ -210,6 +210,24 @@ export function preparedSection(ctx: Ctx, vm: EditorVM): HTMLElement {
           vm.prepared.shelfError,
         ),
         field(
+          'storage',
+          t.prepared.storage,
+          h('input', {
+            type: 'text',
+            class: 'input',
+            id: 'storage',
+            name: 'storage',
+            'data-focus': 'storage',
+            placeholder: t.prepared.storagePlaceholder,
+            autocomplete: 'off',
+            value: p.storageText,
+            'aria-describedby': 'storage-help',
+            oninput: (event) =>
+              setPrepared(ctx, { storageText: (event.target as HTMLInputElement).value }),
+          }),
+        ),
+        h('span', { class: 'hint', id: 'storage-help' }, t.prepared.storageHelp),
+        field(
           'pparent',
           t.prepared.parent,
           select('pparent', p.parentId, parents, t.prepared.noParent, (v) =>

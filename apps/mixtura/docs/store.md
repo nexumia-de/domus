@@ -150,7 +150,15 @@ behaviour document asks for a full-screen status; the build shows the
 same title, text and Try Again as a banner above the working app,
 because read-only browsing needs the app itself.
 
-## Tests
+### Drafts
+
+A draft is written 300 ms after the last change, when the page is hidden,
+and, since the save-interrupt fix, awaited before a save writes its version;
+the save deletes it only after the version (and a prepared ingredient's
+record) has committed. The stores cannot share one transaction here, so the
+order is what keeps the edit: see [as built #25](screens-specs.md#as-built-25).
+
+# Tests
 
 Export and import: [export and import](export-format.md#tests).
 

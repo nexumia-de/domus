@@ -33,7 +33,13 @@ function row(r: PickRow, actions: PickerActions, browsing: boolean): HTMLElement
       h(
         'span',
         { class: 'offer-text' },
-        h('span', { class: 'offer-name' }, r.name),
+        h(
+          'span',
+          { class: 'offer-name' },
+          r.inStock && h('span', { class: 'offer-stock', title: t.picker.inStock }, glyph.check()),
+          r.inStock && h('span', { class: 'visually-hidden' }, `${t.picker.inStock}: `),
+          r.name,
+        ),
         r.path && h('span', { class: 'offer-path' }, r.path),
       ),
       (r.prepared || r.user) &&
@@ -157,7 +163,7 @@ export function ingredientPicker(vm: PickerVM, actions: PickerActions): HTMLElem
     {
       class: 'sheet swap-sheet picker-sheet',
       role: 'dialog',
-      'aria-label': t.picker.title,
+      'aria-label': vm.title ?? t.picker.title,
       'aria-modal': 'true',
       tabindex: '-1',
       'data-sheet': 'pick',
@@ -165,7 +171,7 @@ export function ingredientPicker(vm: PickerVM, actions: PickerActions): HTMLElem
     h(
       'div',
       { class: 'sheet-head' },
-      h('h2', {}, t.picker.title),
+      h('h2', {}, vm.title ?? t.picker.title),
       h(
         'button',
         {

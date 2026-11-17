@@ -20,7 +20,7 @@ import { checkDraft, type DraftCheck } from './check';
 import { newestOfLineage } from './newest';
 import { riffNote, saveDraft, versionSaver } from './save';
 import { editorStrings as t } from './strings';
-import { bump, changed, dirty, dropSession, draftKeyOf, type Ctx } from './session';
+import { bump, changed, dirty, dropSession, draftKeyOf, keepBeforeSave, type Ctx } from './session';
 
 const reasonOf = (error: unknown): string =>
   error instanceof StoreError ? error.message : (error as Error).message;
@@ -91,6 +91,7 @@ export async function save(ctx: Ctx, confirmed = false): Promise<void> {
   session.errorRetry = false;
   bump(store);
   try {
+    await keepBeforeSave(session, local);
     const at = systemClock();
     const saved = await saveDraft(session.draft, check, {
       local,

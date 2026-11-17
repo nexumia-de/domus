@@ -20,11 +20,15 @@ export interface PickRow {
   hasChildren: boolean;
   /** A user ingredient that is not a prepared one can be edited in the form. */
   editable: boolean;
+  /** The stock has a record that says it is at hand. */
+  inStock: boolean;
 }
 
 export interface PickerVM {
   query: string;
   focus: boolean;
+  /** The sheet's title when it is not the default (a substitute for a line). */
+  title?: string;
   mode: 'search' | 'browse' | 'start';
   /** The heading of the list. */
   heading: string;
@@ -41,7 +45,7 @@ export interface PickerVM {
 export const RECENT = 8;
 export const RESULTS = 30;
 
-function row(model: BrowseModel, id: string): PickRow {
+function row(model: BrowseModel, id: string, stock: ReadonlySet<string>): PickRow {
   const item = model.tree.byId.get(id) as Ingredient;
   const user = isUserId(id);
   return {
@@ -52,6 +56,7 @@ function row(model: BrowseModel, id: string): PickRow {
     user,
     hasChildren: (model.tree.children.get(id)?.length ?? 0) > 0,
     editable: user && item.prepared === undefined,
+    inStock: stock.has(id),
   };
 }
 
@@ -76,6 +81,8 @@ export function pickerVM(
   model: BrowseModel,
   state: PickerState,
   heading: { search: string; browse: string; start: string },
+  /** Ids of the ingredients the stock says are at hand. */
+  stock: ReadonlySet<string> = new Set(),
 ): PickerVM {
   const query = state.query;
   const text = query.trim();
@@ -87,7 +94,7 @@ export function pickerVM(
       ...base,
       mode: 'search',
       heading: heading.search,
-      rows: found.slice(0, RESULTS).map((id) => row(model, id)),
+      rows: found.slice(0, RESULTS).map((id) => row(model, id, stock)),
       ...(!exact && { create: text }),
       none: found.length === 0,
     };
@@ -104,7 +111,7 @@ export function pickerVM(
       ...base,
       mode: 'browse',
       heading: `${heading.browse}: ${pathOf(model, state.path) ? `${pathOf(model, state.path)} › ` : ''}${node.name}`,
-      rows: [row(model, state.path), ...kids.map((id) => row(model, id))],
+      rows: [row(model, state.path, stock), ...kids.map((id) => row(model, id, stock))],
       up: {
         id: parent ?? null,
         name: parent ? (model.ingredientName(parent) ?? parent) : heading.start,
@@ -123,8 +130,8 @@ export function pickerVM(
     ...base,
     mode: 'start',
     heading: heading.start,
-    rows: roots.map((id) => row(model, id)),
-    recent: recentIds(model).map((id) => row(model, id)),
+    rows: roots.map((id) => row(model, id, stock)),
+    recent: recentIds(model).map((id) => row(model, id, stock)),
     none: false,
   };
 }

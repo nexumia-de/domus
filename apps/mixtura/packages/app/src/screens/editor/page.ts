@@ -19,9 +19,11 @@ import {
   moveBy,
   openNote,
   remove,
+  removeSubstitute,
   setAmount,
   setNote,
   setRole,
+  setSubstituteAmount,
   setTemplate,
   setTop,
   setUnit,
@@ -86,6 +88,9 @@ function lineActions(ctx: Ctx): LineRowActions {
     note: (k, text) => setNote(ctx, k, text),
     role: (k, role) => setRole(ctx, k, role as '' | Role),
     remove: (k) => remove(ctx, k),
+    addSubstitute: (k) => openPicker(ctx, k, true),
+    substituteAmount: (k, i, text) => setSubstituteAmount(ctx, k, i, text),
+    removeSubstitute: (k, i) => removeSubstitute(ctx, k, i),
   };
 }
 
@@ -184,16 +189,26 @@ function formSheet(ctx: Ctx): HTMLElement | null {
 function pickerSheet(ctx: Ctx): HTMLElement | null {
   const state = ctx.session.picker;
   if (!state) return null;
-  const vm = pickerVM(ctx.model, state, {
-    search: t.picker.top,
-    browse: t.picker.browse,
-    start: t.picker.top,
-  });
+  const vm = pickerVM(
+    ctx.model,
+    state,
+    {
+      search: t.picker.top,
+      browse: t.picker.browse,
+      start: t.picker.top,
+    },
+    ctx.stock,
+  );
+  if (state.substitute) {
+    const asked = ctx.session.draft.lines.find((l) => l.key === state.lineKey);
+    const name = asked ? ctx.model.ingredientName(asked.ingredientId) : undefined;
+    vm.title = t.substitute.pickHeading(name ?? t.emptySlot);
+  }
   ctx.session.picker = { ...state, focus: false };
   return ingredientPicker(vm, {
     close: () => closeSheet(ctx),
     search: (q) => setQuery(ctx, q),
-    choose: (id) => pick(ctx, state.lineKey, id),
+    choose: (id) => pick(ctx, state.lineKey, id, state.substitute === true),
     open: (id) => browseTo(ctx, id),
     edit: (id) => startEdit(ctx, id),
     create: (name) => startCreate(ctx, name),

@@ -583,6 +583,72 @@ examples instead of eight; no new third-party data, so nothing was added to
 [dependencies](dependencies.md) beyond a note and the About text carries
 one more sentence for Mixtura's own data.
 
+# As built (#37)
+
+Shelf life with dates the user enters, and variant suggestions. The filters
+are in [As built (#36)](#as-built-36) and
+[screens](screens-browse.md#as-built-37-alcohol-filters).
+
+## Shelf life with entered dates
+
+The document above gives no shelf life as a fact and the app never proposes
+one: a prepared ingredient has an optional **shelf life in days, the user's own
+value** (`shelfLifeDays`) and an optional **storage text in the user's words**
+(`storage`). The date arithmetic is the engine's (`expiry`,
+`limitingShelfLife`, [engine](engine.md#shelf)); the engine has no clock, so
+the app passes today's date from the device (`src/today.ts`).
+
+- **Where the batch date lives.** In the stock record of the prepared
+  ingredient: `openedOn` is the day the current batch was made and `present`
+  says it is at hand ([data model](data-model.md#stock)). No new store, no
+  migration, no format bump: the field is in the schema and in the export
+  already, and the use-by date is derived every time (made on plus the shelf
+  life) and never stored. The engine's makeable does not read the date: a
+  batch past its date is still "in stock" for the stock rules; the app says
+  so in words. One batch per prepared ingredient is kept: "I made this"
+  replaces the date. Several batches with their own dates are not kept; see
+  the follow-up issue.
+- **What the app says** (batch card on the spec screen of the prepared
+  ingredient's recipe): "Made on 2026-11-17 · use by 2026-11-27", then one of
+  "Within its shelf life, 13 days left", "Use soon: 2 days left" (the use-by
+  date is within `USE_SOON_DAYS` = 2 days, today included; the window is an
+  assumption, unverified, no source gives one, and a parameter of `expiry`),
+  or "Past the date you set by 8 days. Check it before you use it." A check
+  or a dash goes with the words; nothing is red or an alarm; no verdict about
+  the drink or the user. Without a shelf life: "No shelf life entered".
+- **Nested preparation.** The shortest of the user's own values on the
+  prepared ingredient and on the prepared ingredients inside it counts, and
+  the card names the ingredient that sets it ("Shelf life: 14 days, set by
+  Syrup"). Raw parts carry no shelf life in the data and say nothing.
+- **Vectors** `packages/engine/vectors/shelf/`: every state, the boundary
+  days (3, 2, 0 days left, the day after), a window of 0 and of 5 days,
+  shelf life 0, calendar edges (month end, leap day, year end), unknown
+  (no shelf life, a date that is not real, a fraction of a day), nested
+  limiting (own longer, own none, a tie, a cycle).
+
+## Variant suggestions
+
+On a drink that follows a template with a variant, the spec screen offers
+"Start a Riff as Non-Alcoholic Sour" (or the low-ABV variant). It opens the
+editor as a riff on the drink with the variant as its template, the lines of
+role `base` left out, every other line carried over unchanged and an empty
+base line to fill; the drink's method and glass stay. The card states what is
+replaced and carried over and that the taste and the balance change; it never
+claims the result tastes the same. The variants are the four of
+[As built (#36)](#as-built-36), so their slots and ratios are assumptions and
+the card says so. A variant of the class the drink already has is not
+offered; Old-Fashioned and Sidecar have none and show no card. Vectors
+`packages/engine/vectors/variants/` (sour, highball, stirred, flip, two base
+lines, no variant, already a variant, no template).
+
+**Deviations from the issue.** The suggestion opens the editor (a riff), not a
+swap session, because a swap only exchanges single lines and the variant
+removes the base and adds a slot; no balance figures are shown for a
+suggestion, because without a chosen base there is no figure and the nominal
+examples are labelled as such; the batch is a field of the stock record, not
+a `batches` store; the list of batches near their date on the Stock screen
+is not built (follow-up issue).
+
 # Open questions for the owner
 
 1. Thresholds of the two filters, above (`needs decision`).

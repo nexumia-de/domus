@@ -10,6 +10,7 @@ import type { BalanceVM, CompactItem } from '../spec/balance-vm';
 import { compactItems, specVM, templateOf } from '../spec/view-model';
 import type { DraftCheck, LineCheck } from './check';
 import { editorStrings as t } from './strings';
+import { variantStrings } from '../spec/variant-strings';
 import type { Draft, DraftLine } from './types';
 
 export interface LineRowVM {
@@ -28,6 +29,7 @@ export interface LineRowVM {
   slot: boolean;
   noteOpen: boolean;
   menuOpen: boolean;
+  substitutes: { index: number; name: string; amountText: string }[];
 }
 
 export interface PreparedVM {
@@ -87,6 +89,11 @@ export function lineRow(
     slot: line.ingredientId === '' && line.role !== undefined,
     noteOpen: noteOpen || line.note !== '',
     menuOpen,
+    substitutes: (line.substitutes ?? []).map((s, index) => ({
+      index,
+      name: model.ingredientName(s.ingredientId) ?? s.ingredientId,
+      amountText: s.amountText,
+    })),
   };
 }
 
@@ -160,7 +167,11 @@ export function editorVM(
     },
   };
   if (target.kind === 'copy') {
-    vm.copyNote = target.riff ? t.riffOf(target.fromName) : t.copyOf(target.fromName);
+    vm.copyNote = target.riff
+      ? target.variantName
+        ? `${t.riffOf(target.fromName)} ${variantStrings.editorNote(target.variantName)}`
+        : t.riffOf(target.fromName)
+      : t.copyOf(target.fromName);
   }
   if (draft.templateId === '' && basis === 'suggested' && template) {
     vm.suggestion = { id: template.id, name: template.name };

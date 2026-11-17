@@ -206,7 +206,7 @@ All in `packages/app/src/screens/editor/strings.ts`. Names, labels and
 errors: Name, Template ("None (the app suggests one)"), Ingredients, Add
 Ingredient, Method, Glass, Garnish, Notes, Status; line fields "Amount",
 "Unit", "Volume in ml (optional)"; line menu Move Up, Move Down, Optional, Add
-Note, Role, Remove; "= 22.5 ml", "= about 0.9 ml", "= 1 whole (counted, no
+Note, Add Substitute, Role, Remove; substitute rows "or {name}" with an amount field "amount, optional" and Remove, toasts "{name} added as a substitute", "Removed substitute {name}", "{name} is already a substitute here", picker title "Substitute for {name}", the picker's "In stock"; prepared "How to keep it" ("e.g. in the fridge, closed"); "= 22.5 ml", "= about 0.9 ml", "= 1 whole (counted, no
 volume of its own)"; "Not understood: {text}. {reason} Try 45 ml, 3/4 oz,
 1½ oz, 2 dashes or 1 whole."; "Choose an ingredient for this line."; Save
 reasons "Add a name", "Add one ingredient with an amount", "Fix the lines marked
@@ -244,3 +244,28 @@ and {n} more** (the products below that type that unlock exactly the same
 drinks, so they are not ranked on their own; it used to read
 "Any brand does the same", which did not say what was meant) · Have It ·
 Show the drinks {name} unlocks · Show more ingredients.
+
+# Stock panel on the spec screen, as built (#82)
+
+Fixed texts in `screens/spec/stock-strings.ts`: "What you have"; tags
+"Makeable", "With substitute", "Missing {name}", "Missing {n} ingredients";
+rows "Have: {name}", "Made from your stock: {name}", "Substitute: {a} for {b}",
+"Missing: {name}", "Not in stock: {name} (optional)"; buttons "Mark in stock"
+(accessible name "Mark {name} as in stock") and "Buy Next"; toast "{name}
+marked as in stock" with Undo.
+
+# Batch card and variants, as built (#37)
+
+Fixed texts in `screens/spec/shelf-strings.ts` and `variant-strings.ts`. Batch
+card: "Your batch", "Shelf life: {n} days" (", set by {name}"), "No shelf life
+entered. You can add your own in Edit.", "Keep: {text}", "No batch recorded.
+Mark when you made it to see how long it keeps.", "Made on {date} · use by
+{date}", "Within its shelf life, {n} days left", "Use soon: {n} days left",
+"Past the date you set by {n} days. Check it before you use it.", buttons "I
+made this", "Used up", "Made on another day", "Set Date"; toasts "{name} marked
+as made on {date}", "{name} marked as used up". Variants: "Variants", "Start a
+Riff as {Variant Name}", "Replaces {names} with a base of your choice: {note}.",
+"Carries over {names}.", "A different drink: the taste and the balance change.
+The figures are worked out again once you have chosen.", in the editor "Started
+as {name}: the base is open for you to choose. The balance shows once it is
+filled."

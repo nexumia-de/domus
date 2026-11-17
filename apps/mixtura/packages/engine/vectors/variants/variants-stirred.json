@@ -1,0 +1,36 @@
+{
+  "id": "variants-stirred",
+  "kind": "variants",
+  "description": "Gin 60 and dry vermouth 30 follows the Martini (2 : 1). Its variant is low-stirred (class low): gin replaced, vermouth carried over; the modifier and bitter slots of the variant are optional.",
+  "source": "docs/templates.md#variants-by-alcohol-class and data/template-variants/*.json; the lines to replace and keep follow from the roles in tree.json (role base is replaced, every other line is carried over); open slots are the variant's slots whose role no carried line has, optional ones left out except the base; slot ratios and notes are the variant data's, assumptions",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "templateId": "martini",
+    "suggestions": [
+      {
+        "templateId": "low-stirred",
+        "alcohol": "low",
+        "replacedLines": [0],
+        "keptLines": [1],
+        "openSlots": [
+          {
+            "slotId": "base",
+            "role": "base",
+            "note": "fortified or aromatised wine at its label ABV; set the line role to base"
+          }
+        ]
+      }
+    ]
+  }
+}

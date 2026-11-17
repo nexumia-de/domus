@@ -89,6 +89,7 @@ checked by the engine, not by the schema.
 | `sugar`             | stored            | no       | Sugar in g per 100 ml. Inherited. Absent on a prepared ingredient.                                                                                                                                                                                                        |
 | `acid`              | stored            | no       | Acid in percent. Inherited. Absent on a prepared ingredient.                                                                                                                                                                                                              |
 | `shelfLifeDays`     | stored            | no       | Whole days. Inherited.                                                                                                                                                                                                                                                    |
+| `storage`           | stored            | no       | How to keep it, in the user's words ("in the fridge, closed"). Free text, not inherited, never read by the engine.                                                                                                                                                        |
 | `substitutionClass` | stored            | no       | Id of a class of ingredients that can stand in for each other by default. Inherited.                                                                                                                                                                                      |
 | `cost`              | stored            | no       | Price paid for a quantity: `price`, `currency` (ISO 4217 code), `quantity` (amount and unit). Not inherited.                                                                                                                                                              |
 | `cost.price`        | stored            | yes      | Price, 0 or more.                                                                                                                                                                                                                                                         |
@@ -231,13 +232,13 @@ ordinary spec.
 One record per ingredient the user keeps track of; no record means "not
 tracked", `present: false` means "known to be out".
 
-| Field          | Stored or derived | Required | Meaning                                     |
-| -------------- | ----------------- | -------- | ------------------------------------------- |
-| `ingredientId` | stored            | yes      | The ingredient; also the key of the record. |
-| `present`      | stored            | yes      | At hand or not.                             |
-| `openedOn`     | stored            | no       | Date the bottle or batch was opened.        |
-| `bestBefore`   | stored            | no       | Date after which it should not be used.     |
-| `note`         | stored            | no       | Free text.                                  |
+| Field          | Stored or derived | Required | Meaning                                                                                                                                                           |
+| -------------- | ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ingredientId` | stored            | yes      | The ingredient; also the key of the record.                                                                                                                       |
+| `present`      | stored            | yes      | At hand or not.                                                                                                                                                   |
+| `openedOn`     | stored            | no       | Date the bottle or batch was opened; for a prepared ingredient the day its current batch was made ([shelf life](non-alcoholic.md#shelf-life-with-entered-dates)). |
+| `bestBefore`   | stored            | no       | Date after which it should not be used.                                                                                                                           |
+| `note`         | stored            | no       | Free text.                                                                                                                                                        |
 
 Stock has no quantity: an ingredient is at hand or not, and what the stock
 allows ([makeable](makeable.md)) is decided on that alone. `bestBefore` is

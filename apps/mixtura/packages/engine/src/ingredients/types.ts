@@ -56,6 +56,8 @@ export interface Ingredient {
   sugar?: number;
   acid?: number;
   shelfLifeDays?: number;
+  /** How to keep it, in the user's words (a prepared ingredient: "in the fridge, closed"); free text, never read by the engine. */
+  storage?: string;
   substitutionClass?: SubstitutionClass;
   cost?: Cost;
   /** Volume of one counted unit by unit id (`whole`, `slice`, ...); never inherited. */
@@ -78,6 +80,7 @@ export const INGREDIENT_FIELDS = [
   'sugar',
   'acid',
   'shelfLifeDays',
+  'storage',
   'substitutionClass',
   'cost',
   'unitVolumes',

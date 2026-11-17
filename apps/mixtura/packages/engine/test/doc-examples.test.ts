@@ -15,6 +15,8 @@ test('there is one example per function group', () => {
     'range',
     'alcohol',
     'batch',
+    'shelf',
+    'variants',
   ]);
 });
 

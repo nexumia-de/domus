@@ -18,7 +18,7 @@ export interface LineCheck {
   /** `empty`: nothing typed, left out on save; `ok`: a valid line; `error`: marked. */
   status: 'empty' | 'ok' | 'error';
   /** Which field the error belongs to. */
-  field?: 'ingredient' | 'amount' | 'volume';
+  field?: 'ingredient' | 'amount' | 'volume' | 'substitute';
   error?: string;
   /** What was understood, "= 22.5 ml". */
   hint?: string;
@@ -32,6 +32,7 @@ export interface PreparedCheck {
   yieldError?: string;
   shelfDays?: number;
   shelfError?: string;
+  storage?: string;
   /** Why the prepared ingredient cannot be saved, beside the field errors. */
   blocker?: string;
   /** ABV, sugar and acid per 100 ml, or why there is no figure. */
@@ -58,6 +59,32 @@ function ounceOf(line: DraftLine, imperial: boolean): 'us' | 'imperial' {
   return imperial ? 'imperial' : 'us';
 }
 
+/** The substitutes of a line as stored, or the first that is not understood. */
+function checkSubstitutes(
+  model: BrowseModel,
+  line: DraftLine,
+  imperial: boolean,
+): { subs?: NonNullable<SpecLine['substitutes']> } | { error: string } {
+  const subs: NonNullable<SpecLine['substitutes']> = [];
+  for (const s of line.substitutes ?? []) {
+    const name = model.ingredientName(s.ingredientId) ?? s.ingredientId;
+    if (!getIngredient(model.tree, s.ingredientId)) {
+      return { error: t.substitute.unknown(name) };
+    }
+    if (s.amountText.trim() === '') {
+      subs.push({ ingredientId: s.ingredientId });
+    } else if (s.original && s.originalText === s.amountText) {
+      subs.push({ ingredientId: s.ingredientId, amount: s.original.amount, unit: s.original.unit });
+    } else {
+      const read = readAmount(s.amountText, '', imperial ? 'imperial' : 'us');
+      if (!read.ok) return { error: t.substitute.notUnderstood(name, read.message) };
+      if (read.amountMax !== undefined) return { error: t.substitute.oneAmount(name) };
+      subs.push({ ingredientId: s.ingredientId, amount: read.amount, unit: read.unit });
+    }
+  }
+  return subs.length > 0 ? { subs } : {};
+}
+
 export function checkLine(model: BrowseModel, line: DraftLine, imperial: boolean): LineCheck {
   const key = line.key;
   const typed = line.amountText.trim() !== '' || line.topText.trim() !== '';
@@ -68,11 +95,13 @@ export function checkLine(model: BrowseModel, line: DraftLine, imperial: boolean
   if (!getIngredient(model.tree, line.ingredientId)) {
     return { key, status: 'error', field: 'ingredient', error: t.unknownIngredient };
   }
+  const subs = checkSubstitutes(model, line, imperial);
+  if ('error' in subs) return { key, status: 'error', field: 'substitute', error: subs.error };
   const extras = {
     ...(line.role && { role: line.role }),
     ...(line.optional && { optional: true as const }),
     ...(line.note.trim() !== '' && { note: line.note.trim() }),
-    ...(line.original?.substitutes && { substitutes: line.original.substitutes }),
+    ...(subs.subs && { substitutes: subs.subs }),
   };
   if (line.unit === 'top') {
     let topMl: number | undefined;
@@ -213,6 +242,7 @@ function checkPrepared(
     if (Number.isInteger(days) && days >= 0) out.shelfDays = days;
     else out.shelfError = t.prepared.shelfInvalid;
   }
+  if (p.storageText.trim() !== '') out.storage = p.storageText.trim();
   if (p.ingredientId !== '' && lines.some((l) => l.ingredientId === p.ingredientId)) {
     out.blocker = t.prepared.self;
   }

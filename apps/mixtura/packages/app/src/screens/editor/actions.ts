@@ -121,6 +121,54 @@ export function toggleMenu(ctx: Ctx, key: string): void {
   changed(ctx, true);
 }
 
+/** Typing in the optional own amount of a substitute. */
+export function setSubstituteAmount(ctx: Ctx, key: string, index: number, text: string): void {
+  change(
+    ctx,
+    key,
+    (line) => ({
+      ...line,
+      substitutes: (line.substitutes ?? []).map((s, i) =>
+        i === index ? { ...s, amountText: text } : s,
+      ),
+    }),
+    false,
+  );
+}
+
+/** Removes a substitute at once; the toast offers Undo. */
+export function removeSubstitute(ctx: Ctx, key: string, index: number): void {
+  const line = ctx.session.draft.lines.find((l) => l.key === key);
+  const sub = line?.substitutes?.[index];
+  if (!line || !sub) return;
+  const without = (line.substitutes ?? []).filter((_, i) => i !== index);
+  change(
+    ctx,
+    key,
+    (l) => {
+      const next: DraftLine = { ...l };
+      if (without.length > 0) next.substitutes = without;
+      else delete next.substitutes;
+      return next;
+    },
+    true,
+  );
+  ctx.session.focus = `menu-${key}`;
+  const name = ctx.model.ingredientName(sub.ingredientId) ?? sub.ingredientId;
+  showToast(ctx.store, t.substitute.removed(name), () => {
+    change(
+      ctx,
+      key,
+      (l) => {
+        const list = [...(l.substitutes ?? [])];
+        list.splice(Math.min(index, list.length), 0, sub);
+        return { ...l, substitutes: list };
+      },
+      true,
+    );
+  });
+}
+
 /** Moves a line to a position (drag, arrow keys) or by one (the menu). */
 export function move(ctx: Ctx, key: string, to: number): void {
   const before = ctx.session.draft;

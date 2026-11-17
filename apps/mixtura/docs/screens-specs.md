@@ -114,7 +114,13 @@ id>` or `draft/new`, written 300 ms after the last change and when the page
   is hidden), restored on return with the notice "Your unsaved changes were
   restored" and **Discard Draft**. A draft is not an entity: not exported, not
   counted for the backup reminder. The "Draft kept" tag shows while the draft
-  differs from the saved drink.
+  differs from the saved drink. **Save order**: Save first writes the draft
+  (awaited), then the version (and for a prepared ingredient its record), and
+  deletes the draft last; while a save runs no late debounce write touches
+  the draft. A save cut off anywhere (reload, a killed app) therefore leaves
+  the saved version or the draft, offered with the restore notice; a draft
+  left by a save that did commit is offered once more and Discard Draft
+  removes it. Test: `e2e/save-interrupt.mjs`.
 - **Sheets** (`?sheet=pick`, `?sheet=ingredient`) are history entries on a
   phone and a replace on a wide screen, like the batch sheet. The ingredient
   form replaces the picker (one entry), so Back from the form returns to the
@@ -147,10 +153,35 @@ id>` or `draft/new`, written 300 ms after the last change and when the page
   sheets stay above it; nothing is focused when the screen opens except
   after Add Ingredient, which opens the picker with its search focused.
 
-Not built, kept for follow-up ([#89](https://github.com/nexumia-de/mixtura/issues/89)):
-Add Substitute in the line menu (existing substitutes are kept unchanged), a
-check mark for ingredients in stock in the picker, a prepared ingredient's
-storage text. The Save sheet and versions are built in #26.
+Built after as [#89](https://github.com/nexumia-de/mixtura/issues/89): see
+[as built #89](#as-built-89). The Save sheet and versions are built in #26.
+
+## As built (#89)
+
+- **Add Substitute** in the line menu opens the ingredient picker titled
+  "Substitute for {name}" (Create works as for a line). The chosen
+  ingredient is listed under the line as "or {name}" with an optional own
+  amount field (the amount grammar; a number needs a unit, a range is
+  refused, empty means no amount) and **Remove** (acts at once, Undo in the
+  toast). The same ingredient twice, or the line's own ingredient, is
+  refused in a toast. A substitute whose amount is not understood marks the
+  line and keeps Save disabled with the reason in words. Substitutes already
+  stored are read into the draft and written back unchanged while untouched
+  (number and unit exactly as stored). They are what the engine reads as
+  `listed-substitute` ([what the stock allows](makeable.md)); the stock panel
+  on the spec screen shows "Substitute: Bourbon Whiskey for Light Rum".
+- **Picker.** A row of an ingredient with a stock record that says it is at
+  hand shows a check before its name and the words "In stock" for screen
+  readers; derived from the stock records, nothing is stored.
+- **Prepared ingredient.** Next to the shelf life in days a free text
+  **How to keep it** (`storage` on the ingredient record, optional, not
+  inherited, never read by the engine; the app proposes no text and no time).
+  The ingredient schema gained the optional field without a format bump, as
+  for `note` and `statusLog` in #26.
+- **Code.** `screens/editor/` (`check.ts` substitutes, `actions.ts`,
+  `sheet-actions.ts`), `components/line-row.ts`, `components/ingredient-picker.ts`;
+  tests `test/editor-substitutes.test.ts`, `e2e/substitutes.mjs` (screenshots
+  `substitutes-*`).
 
 # Ingredient picker
 
@@ -185,7 +216,7 @@ two extra fields.
 - **Purpose.** Write down a syrup, infusion or batch once and use it in
   other specs with computed properties.
 - **Content.** The editor, plus **Yield** (an amount and unit) and
-  **Shelf life** (days and storage, a number the user enters) and the
+  **Shelf life** (days, a number the user enters, and a storage text in the user's words) and the
   computed properties (ABV, sugar, acid per 100 ml) as read-only figures
   with their source ("computed from the lines"). Entered by mass or
   volume ([balance](balance.md#prepared-ingredients-by-mass)).

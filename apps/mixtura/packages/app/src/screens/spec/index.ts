@@ -8,6 +8,7 @@
 import { batchSheet } from '../../components/batch-sheet';
 import { balancePanel } from '../../components/balance-panel';
 import { servingsStepper, type StepperActions } from '../../components/servings-stepper';
+import { stockPanel, stockTag, type StockPanelActions } from '../../components/stock-panel';
 import { specLines, specMeta, type LineActions } from '../../components/spec-lines';
 import { h } from '../../dom';
 import { back, go, replace } from '../../navigation';
@@ -25,6 +26,17 @@ import { swapStrings } from './swap-strings';
 import { servingsOf, specAddress } from './servings';
 import { versionStrings as vs } from '../versions/strings';
 import { specVM, type SpecVM, type TagVM } from './view-model';
+import { stockPanelVM, type StockPanelVM } from './stock-panel-vm';
+import { shelfCard, type ShelfActions } from '../../components/shelf-card';
+import { shelfVM, type ShelfVM } from './shelf-vm';
+import { shelfStrings } from './shelf-strings';
+import { today } from '../../today';
+import { variantCard } from '../../components/variant-card';
+import { variantVMs } from './variant-vm';
+import { alcoholOf, thresholdsFor } from '../browse/alcohol';
+import { stockStrings } from './stock-strings';
+import { changeStock, stockState, withPresent } from '../../stock/state';
+import { showToast } from '../../toasts';
 
 function tag(vm: TagVM): HTMLElement {
   const classes = `tag${vm.strong ? ' tag--strong' : ''}${vm.href ? ' tag--link' : ''}`;
@@ -38,23 +50,33 @@ function body(
   actions: LineActions & StepperActions & { closeBatch(): void },
   swap: SwapActions,
   lineUnit: string,
+  stock: { vm: StockPanelVM | undefined; actions: StockPanelActions },
+  shelf: { vm: ShelfVM | undefined; actions: ShelfActions },
+  variants: ReturnType<typeof variantVMs> | undefined,
 ): HTMLElement {
   return h(
     'div',
     { class: vm.swap ? 'spec spec--swap' : 'spec' },
     vm.swap &&
       h('div', { class: 'banner swap-banner', role: 'status' }, h('span', {}, vm.swap.banner)),
-    h('div', { class: 'tags' }, ...vm.tags.map(tag)),
+    h('div', { class: 'tags' }, ...vm.tags.map(tag), stockTag(stock.vm)),
     h(
       'div',
       { class: 'two-col' },
       h(
-        'section',
-        { class: 'card', 'aria-labelledby': 'ingredients-title' },
-        h('h2', { id: 'ingredients-title' }, strings.spec.ingredients),
-        servingsStepper(vm.servings, actions),
-        specLines(vm.lines, actions),
-        specMeta(vm.meta),
+        'div',
+        { class: 'stack' },
+        h(
+          'section',
+          { class: 'card', 'aria-labelledby': 'ingredients-title' },
+          h('h2', { id: 'ingredients-title' }, strings.spec.ingredients),
+          servingsStepper(vm.servings, actions),
+          specLines(vm.lines, actions),
+          specMeta(vm.meta),
+        ),
+        !vm.swap && shelfCard(shelf.vm, shelf.actions),
+        !vm.swap && variantCard(variants),
+        !vm.swap && stockPanel(stock.vm, stock.actions),
       ),
       h(
         'div',
@@ -182,7 +204,69 @@ export const screens: Screen[] = [
         sheetLine,
       });
       const lineUnit = sheetLine === null ? 'ml' : (drink.spec.lines[sheetLine]?.unit ?? 'ml');
-      const page = body(vm, actions, swap, lineUnit);
+      const stockNow = stockState(context);
+      const records = stockNow.kind === 'ready' ? stockNow.records : null;
+      const stockActions: StockPanelActions = {
+        ...(stockNow.kind === 'ready' &&
+          stockNow.writable && {
+            mark(ingredientId, name) {
+              const undo = changeStock(context, [
+                { id: ingredientId, next: withPresent(records ?? new Map(), ingredientId, true) },
+              ]);
+              showToast(store, stockStrings.marked(name), () => changeStock(context, undo));
+            },
+          }),
+      };
+      const shelfVm =
+        records && !swapState ? shelfVM(state.model, drink.spec, records, today()) : undefined;
+      const record = (change: { present: boolean; openedOn?: string }): void => {
+        if (!shelfVm || !records) return;
+        const base = withPresent(records, shelfVm.ingredientId, change.present);
+        const { openedOn: _old, ...rest } = base;
+        void _old;
+        const next = {
+          ...rest,
+          ...(change.openedOn !== undefined && { openedOn: change.openedOn }),
+        };
+        const undo = changeStock(context, [{ id: shelfVm.ingredientId, next }]);
+        showToast(
+          store,
+          change.openedOn !== undefined
+            ? shelfStrings.recorded(shelfVm.name, change.openedOn)
+            : shelfStrings.usedUpToast(shelfVm.name),
+          () => changeStock(context, undo),
+        );
+      };
+      const shelfActions: ShelfActions =
+        stockNow.kind === 'ready' && stockNow.writable
+          ? {
+              madeToday: () => record({ present: true, openedOn: today() }),
+              madeOn: (date) => record({ present: true, openedOn: date }),
+              usedUp: () => record({ present: false }),
+            }
+          : {};
+      const page = body(
+        vm,
+        actions,
+        swap,
+        lineUnit,
+        {
+          vm: records && !swapState ? stockPanelVM(state.model, drink.spec, records) : undefined,
+          actions: stockActions,
+        },
+        { vm: shelfVm, actions: shelfActions },
+        swapState
+          ? undefined
+          : variantVMs(
+              state.model,
+              drink.spec,
+              alcoholOf(
+                state.model,
+                drink,
+                thresholdsFor(context.state.alcoholWithout, context.state.alcoholLow),
+              ).class,
+            ),
+      );
       if (sheetOpen && !sheetWasOpen) {
         requestAnimationFrame(() =>
           (page as HTMLElement).querySelector<HTMLElement>('[data-sheet]')?.focus(),

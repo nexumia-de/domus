@@ -39,6 +39,7 @@ const styles = [
   'swap',
   'editor',
   'versions',
+  'spec-extras',
   'app',
 ];
 const css = styles

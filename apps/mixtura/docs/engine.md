@@ -78,47 +78,54 @@ others return result objects as documented in their module files
 
 ## General model (`src/model.ts`)
 
-| Name                   | Signature                                                                                                            | Job                                                                                                                     |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `INHERITED`            | `readonly InheritedProperty[]`                                                                                       | The names of the properties a child inherits from its ancestors.                                                        |
-| `UNITS`                | `readonly UnitRow[]`                                                                                                 | The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit.                |
-| `ancestors`            | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The ancestors of an ingredient.                                                                                         |
-| `assignSlots`          | `(tree: IngredientTree, template: Template, lines: readonly MatchLine[], options?: MatchOptions): SlotAssignment`    | Assigns spec lines to the slots of a template by role.                                                                  |
-| `buildFamily`          | `(specs: readonly FamilySpec[], lineageId: string): Family`                                                          | The family of a drink: ancestors, riffs and siblings as lineage ids (docs/screens-specs.md#riff-and-family).            |
-| `buildStockIndex`      | `(tree: IngredientTree, specs: readonly StockSpec[]): StockIndex`                                                    | Builds the stock index of a tree and specs: what does not depend on the stock, kept for reuse.                          |
-| `buildTree`            | `(list: readonly Ingredient[]): TreeResult`                                                                          | Validates the list and builds the ingredient tree.                                                                      |
-| `computePrepared`      | `(tree: IngredientTree, specs: SpecLookup, id: string): PreparedResult`                                              | Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.                                            |
-| `convert`              | `(amount: Amount, to: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | Converts between two units of the same kind (volume to volume, mass to mass).                                           |
-| `descendants`          | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The descendants of an ingredient.                                                                                       |
-| `diffSpecs`            | `(before: DiffSpec, after: DiffSpec, options?: DiffOptions): SpecDiff`                                               | Compares two versions of a drink: lines added, removed and changed, then name, template, method, glass, garnish, notes. |
-| `displayUnit`          | `(unit: UnitId, system: DisplaySystem): UnitId`                                                                      | The unit an amount is shown in: its own if it belongs to the system or is a convention.                                 |
-| `distance`             | `(tree: IngredientTree, a: string, b: string): number \| undefined`                                                  | The distance of two ingredients in the tree.                                                                            |
-| `findFamilyCycles`     | `(specs: readonly FamilySpec[]): string[][]`                                                                         | Finds every loop of riffs in imported data, one list of lineage ids per loop.                                           |
-| `formatAmount`         | `(amount: Amount, options?: FormatOptions): Result<string>`                                                          | Formats an amount for display (rounded for reading, never stored).                                                      |
-| `formatAmountDetailed` | `(amount: Amount, options?: FormatOptions): Result<Formatted>`                                                       | Like `formatAmount`, with the shown amount and the rounding step.                                                       |
-| `fromBase`             | `(base: number, unit: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | An amount of the base unit (ml or g) expressed in `unit`.                                                               |
-| `getIngredient`        | `(tree: IngredientTree, id: string): Ingredient \| undefined`                                                        | An ingredient by id.                                                                                                    |
-| `isA`                  | `(tree: IngredientTree, child: string, ancestor: string): boolean`                                                   | Whether one ingredient is the other or below it.                                                                        |
-| `isEstimatedUnit`      | `(id: UnitId): boolean`                                                                                              | True when balance must flag the figure as estimated: a convention volume.                                               |
-| `lineMl`               | `(line: MatchLine, options?: MatchOptions, tree?: IngredientTree): { ml: number; } \| { reason: UnmeasuredReason; }` | The volume of a line.                                                                                                   |
-| `lineRole`             | `(tree: IngredientTree, line: MatchLine): { role: Role; } \| { reason: UnassignedReason; }`                          | The role a line has: its own, else the ingredient's resolved role.                                                      |
-| `makeableSpecs`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): MakeableReport`                          | Which specs the stock allows, per line how it is satisfied or why not (docs/makeable.md).                               |
-| `matchSpec`            | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): MatchResult`       | Matches a spec to templates by roles and ratios and ranks every candidate.                                              |
-| `missingOne`           | `(index: StockIndex, report: MakeableReport): MissingOne[]`                                                          | Specs that miss exactly one ingredient, with its substitutes.                                                           |
-| `parseAmount`          | `(text: string, options?: ParseOptions): Result<Amount>`                                                             | Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.                                       |
-| `resolveAll`           | `(tree: IngredientTree, id: string): ResolvedProperties`                                                             | All inherited properties of one ingredient with their sources.                                                          |
-| `resolveCost`          | `(tree: IngredientTree, id: string): Resolved<Cost>`                                                                 | The price record of the ingredient itself: cost is never inherited.                                                     |
-| `resolveProperty`      | `(tree: IngredientTree, id: string, property: P): Resolved<NonNullable<Ingredient[P]>>`                              | Reads a property from the ingredient or its nearest ancestor that has it.                                               |
-| `sameClass`            | `(tree: IngredientTree, a: string, b: string): boolean`                                                              | Whether two ingredients can stand in for each other by class.                                                           |
-| `scale`                | `(amount: Amount, factor: number): Result<Amount>`                                                                   | Multiplies an amount; the unit stays.                                                                                   |
-| `substitutesFor`       | `(tree: IngredientTree, id: string): Substitutes`                                                                    | Ingredients of the same class and role as `id`, nearest first.                                                          |
-| `summariseRiff`        | `(diff: SpecDiff): RiffChange`                                                                                       | Turns the difference between a riff and its parent into a counted list of changes.                                      |
-| `swapCandidates`       | `(tree: IngredientTree, id: string, options?: SwapOptions): SwapCandidates`                                          | Swap candidates for a line in groups (class, role, near), nearest first.                                                |
-| `toBase`               | `(amount: Amount, overrides?: UnitOverrides): Result<{ value: number; kind: "mass" \| "volume"; }>`                  | The amount in the base unit of its kind: ml for volume, g for mass.                                                     |
-| `toGrams`              | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The mass of an amount.                                                                                                  |
-| `toMl`                 | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The volume of an amount.                                                                                                |
-| `unitValue`            | `(id: UnitId, overrides?: UnitOverrides): number \| null`                                                            | The size of one unit.                                                                                                   |
-| `unlockRanking`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): UnlockResult`                            | Ranks the ingredients not in stock by the specs each would make makeable on its own.                                    |
+| Name                   | Signature                                                                                                            | Job                                                                                                                                                                       |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INHERITED`            | `readonly InheritedProperty[]`                                                                                       | The names of the properties a child inherits from its ancestors.                                                                                                          |
+| `UNITS`                | `readonly UnitRow[]`                                                                                                 | The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit.                                                                  |
+| `ancestors`            | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The ancestors of an ingredient.                                                                                                                                           |
+| `assignSlots`          | `(tree: IngredientTree, template: Template, lines: readonly MatchLine[], options?: MatchOptions): SlotAssignment`    | Assigns spec lines to the slots of a template by role.                                                                                                                    |
+| `buildFamily`          | `(specs: readonly FamilySpec[], lineageId: string): Family`                                                          | The family of a drink: ancestors, riffs and siblings as lineage ids (docs/screens-specs.md#riff-and-family).                                                              |
+| `buildStockIndex`      | `(tree: IngredientTree, specs: readonly StockSpec[]): StockIndex`                                                    | Builds the stock index of a tree and specs: what does not depend on the stock, kept for reuse.                                                                            |
+| `buildTree`            | `(list: readonly Ingredient[]): TreeResult`                                                                          | Validates the list and builds the ingredient tree.                                                                                                                        |
+| `computePrepared`      | `(tree: IngredientTree, specs: SpecLookup, id: string): PreparedResult`                                              | Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.                                                                                              |
+| `convert`              | `(amount: Amount, to: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | Converts between two units of the same kind (volume to volume, mass to mass).                                                                                             |
+| `descendants`          | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The descendants of an ingredient.                                                                                                                                         |
+| `diffSpecs`            | `(before: DiffSpec, after: DiffSpec, options?: DiffOptions): SpecDiff`                                               | Compares two versions of a drink: lines added, removed and changed, then name, template, method, glass, garnish, notes.                                                   |
+| `displayUnit`          | `(unit: UnitId, system: DisplaySystem): UnitId`                                                                      | The unit an amount is shown in: its own if it belongs to the system or is a convention.                                                                                   |
+| `distance`             | `(tree: IngredientTree, a: string, b: string): number \| undefined`                                                  | The distance of two ingredients in the tree.                                                                                                                              |
+| `findFamilyCycles`     | `(specs: readonly FamilySpec[]): string[][]`                                                                         | Finds every loop of riffs in imported data, one list of lineage ids per loop.                                                                                             |
+| `formatAmount`         | `(amount: Amount, options?: FormatOptions): Result<string>`                                                          | Formats an amount for display (rounded for reading, never stored).                                                                                                        |
+| `formatAmountDetailed` | `(amount: Amount, options?: FormatOptions): Result<Formatted>`                                                       | Like `formatAmount`, with the shown amount and the rounding step.                                                                                                         |
+| `fromBase`             | `(base: number, unit: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | An amount of the base unit (ml or g) expressed in `unit`.                                                                                                                 |
+| `getIngredient`        | `(tree: IngredientTree, id: string): Ingredient \| undefined`                                                        | An ingredient by id.                                                                                                                                                      |
+| `isA`                  | `(tree: IngredientTree, child: string, ancestor: string): boolean`                                                   | Whether one ingredient is the other or below it.                                                                                                                          |
+| `isEstimatedUnit`      | `(id: UnitId): boolean`                                                                                              | True when balance must flag the figure as estimated: a convention volume.                                                                                                 |
+| `lineMl`               | `(line: MatchLine, options?: MatchOptions, tree?: IngredientTree): { ml: number; } \| { reason: UnmeasuredReason; }` | The volume of a line.                                                                                                                                                     |
+| `lineRole`             | `(tree: IngredientTree, line: MatchLine): { role: Role; } \| { reason: UnassignedReason; }`                          | The role a line has: its own, else the ingredient's resolved role.                                                                                                        |
+| `makeableSpecs`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): MakeableReport`                          | Which specs the stock allows, per line how it is satisfied or why not (docs/makeable.md).                                                                                 |
+| `matchSpec`            | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): MatchResult`       | Matches a spec to templates by roles and ratios and ranks every candidate.                                                                                                |
+| `missingOne`           | `(index: StockIndex, report: MakeableReport): MissingOne[]`                                                          | Specs that miss exactly one ingredient, with its substitutes.                                                                                                             |
+| `parseAmount`          | `(text: string, options?: ParseOptions): Result<Amount>`                                                             | Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.                                                                                         |
+| `resolveAll`           | `(tree: IngredientTree, id: string): ResolvedProperties`                                                             | All inherited properties of one ingredient with their sources.                                                                                                            |
+| `resolveCost`          | `(tree: IngredientTree, id: string): Resolved<Cost>`                                                                 | The price record of the ingredient itself: cost is never inherited.                                                                                                       |
+| `resolveProperty`      | `(tree: IngredientTree, id: string, property: P): Resolved<NonNullable<Ingredient[P]>>`                              | Reads a property from the ingredient or its nearest ancestor that has it.                                                                                                 |
+| `sameClass`            | `(tree: IngredientTree, a: string, b: string): boolean`                                                              | Whether two ingredients can stand in for each other by class.                                                                                                             |
+| `scale`                | `(amount: Amount, factor: number): Result<Amount>`                                                                   | Multiplies an amount; the unit stays.                                                                                                                                     |
+| `substitutesFor`       | `(tree: IngredientTree, id: string): Substitutes`                                                                    | Ingredients of the same class and role as `id`, nearest first.                                                                                                            |
+| `summariseRiff`        | `(diff: SpecDiff): RiffChange`                                                                                       | Turns the difference between a riff and its parent into a counted list of changes.                                                                                        |
+| `swapCandidates`       | `(tree: IngredientTree, id: string, options?: SwapOptions): SwapCandidates`                                          | Swap candidates for a line in groups (class, role, near), nearest first.                                                                                                  |
+| `toBase`               | `(amount: Amount, overrides?: UnitOverrides): Result<{ value: number; kind: "mass" \| "volume"; }>`                  | The amount in the base unit of its kind: ml for volume, g for mass.                                                                                                       |
+| `toGrams`              | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The mass of an amount.                                                                                                                                                    |
+| `toMl`                 | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The volume of an amount.                                                                                                                                                  |
+| `unitValue`            | `(id: UnitId, overrides?: UnitOverrides): number \| null`                                                            | The size of one unit.                                                                                                                                                     |
+| `unlockRanking`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): UnlockResult`                            | Ranks the ingredients not in stock by the specs each would make makeable on its own.                                                                                      |
+| `addDays`              | `(text: string, days: number): string \| undefined`                                                                  | The calendar date `days` after a `YYYY-MM-DD` date; undefined for an invalid date or a non-integer count.                                                                 |
+| `dayNumber`            | `(text: string): number \| undefined`                                                                                | Days since 1970-01-01 of a real `YYYY-MM-DD` date, else undefined.                                                                                                        |
+| `daysBetween`          | `(from: string, to: string): number \| undefined`                                                                    | Whole days from one date to another (negative when `to` is earlier).                                                                                                      |
+| `expiry`               | `(input: ExpiryInput): Expiry`                                                                                       | Where a made batch stands against the user's shelf life: `fresh`, `use-soon`, `past` or `unknown`, with the use-by date and the days left; dates and today are arguments. |
+| `limitingShelfLife`    | `(tree: IngredientTree, specs: SpecLookup, id: string): LimitingShelfLife`                                           | The shortest shelf life among a prepared ingredient and the prepared ingredients inside it, with the ingredient that sets it.                                             |
+| `variantSuggestions`   | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): VariantsResult`    | The non-alcoholic or low-ABV variants of the template a spec follows: lines replaced and carried over, slots left to fill; empty with a reason.                           |
+| `USE_SOON_DAYS`        | `2`                                                                                                                  | The window of `use-soon` in days; an assumption, unverified.                                                                                                              |
 
 ## Drink-specific (`src/drink.ts`)
 
@@ -181,6 +188,32 @@ fit without conversion.
   tests assert limits of 0.5 to 6 s. No inverted index is needed: the
   ranking intersects, per open spec, the ingredients that would satisfy its
   open lines instead of recomputing every spec per candidate.
+
+## Shelf
+
+Part of the general model (`src/shelf/`, [non-alcoholic](non-alcoholic.md#shelf-life-with-entered-dates)).
+Dates are `YYYY-MM-DD` strings; the engine has no clock, so today and the
+day a batch was made are arguments. The shelf life is the user's own value
+(`shelfLifeDays` on a prepared ingredient): no number is proposed. `expiry`
+says `fresh`, `use-soon` (the use-by date is within `soonDays`, default
+`USE_SOON_DAYS` = 2, today included) or `past` (from the day after the
+use-by date), with the use-by date (made on plus the shelf life) and the days
+left (negative once past); invalid dates or a shelf life that is not whole
+days give `unknown` with the reason. `limitingShelfLife` takes the shortest
+of the user's own values on a prepared ingredient and on the prepared
+ingredients inside it (raw parts carry none and say nothing).
+
+## Variant suggestions
+
+`variantSuggestions` (`src/templates/variants.ts`) finds the template a spec
+follows (an explicit id or the engine's match), then the variants of that
+template (`alcohol` `none` or `low`, [templates](templates.md#variants-by-alcohol-class)).
+For each: the lines with role `base` (replaced), the other lines (carried
+over unchanged) and the slots left to fill (the base slot and the variant's
+required slots no carried line fills), with the template's own notes, the
+evidence of its slots and its source. Empty with a reason: `no-template`,
+`is-variant` (the spec names a variant already), `no-variant` (the template
+has none: Old-Fashioned and Sidecar). Nothing is said about taste or balance.
 
 # Examples
 
@@ -408,6 +441,56 @@ const result = {
 // }
 ```
 
+## Shelf
+
+```ts example shelf
+import { expiry } from '@mixtura/engine';
+
+const days = (today: string) => {
+  const e = expiry({ madeOn: '2026-11-01', today, shelfLifeDays: 14 });
+  return `${e.status} ${e.daysLeft}`;
+};
+const result = [days('2026-11-05'), days('2026-11-14'), days('2026-11-16')];
+// result = [
+//   "fresh 10",
+//   "use-soon 1",
+//   "past -1"
+// ]
+```
+
+## Variants
+
+```ts example variants
+import { buildTree, ROOT_TEMPLATES, variantSuggestions, VARIANT_TEMPLATES } from '@mixtura/engine';
+
+const built = buildTree([
+  { id: 'rum', name: 'Rum', level: 'product', role: 'base', abv: 40 },
+  { id: 'lime', name: 'Lime juice', level: 'product', role: 'sour', abv: 0 },
+  { id: 'syrup', name: 'Syrup', level: 'product', role: 'sweet', abv: 0 },
+]);
+if (!built.ok) throw new Error('invalid tree');
+const out = variantSuggestions(built.tree, [...ROOT_TEMPLATES, ...VARIANT_TEMPLATES], {
+  lines: [
+    { ingredientId: 'rum', amount: 60, unit: 'ml' },
+    { ingredientId: 'lime', amount: 22.5, unit: 'ml' },
+    { ingredientId: 'syrup', amount: 22.5, unit: 'ml' },
+  ],
+});
+const result = out.suggestions.map((s) => [s.templateId, s.replacedLines, s.keptLines]);
+// result = [
+//   [
+//     "na-sour",
+//     [
+//       0
+//     ],
+//     [
+//       1,
+//       2
+//     ]
+//   ]
+// ]
+```
+
 # Vectors
 
 Every rule and formula has a JSON vector in `packages/engine/vectors/`,
@@ -424,6 +507,8 @@ scans the vector tests for deep imports):
 | `vectors/templates/`     | Matching and the range check                         | `templates/templates-vector.schema.json`         | `templates.test.ts`                  |
 | `vectors/classics/`      | 20 checked drinks, template and figures              | `classics/classics-vector.schema.json`           | `classics.test.ts`                   |
 | `vectors/non-alcoholic/` | Alcohol class, variant templates offered for a class | `non-alcoholic/non-alcoholic-vector.schema.json` | `non-alcoholic-vectors.test.ts`      |
+| `vectors/shelf/`         | Expiry of a made batch, limiting shelf life          | `shelf/shelf-vector.schema.json`                 | `shelf-vectors.test.ts`              |
+| `vectors/variants/`      | Variant suggestions per template                     | `variants/variants-vector.schema.json`           | `shelf-vectors.test.ts`              |
 | `vectors/stock/`         | Makeable, missing one, unlock ranking                | `stock/stock-vector.schema.json`                 | `stock-vectors.test.ts`              |
 | `vectors/specs/`         | Version diff, family, riff loops, riff changes       | none (shape checked by the test)                 | `specs-vectors.test.ts`              |
 

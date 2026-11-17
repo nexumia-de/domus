@@ -407,3 +407,30 @@ unverified` in `alcohol-thresholds.json`, and Settings shows the basis of
   the group in `filters-sheet.ts`, Settings in `screens/settings/index.ts`;
   tests `alcohol-filter.test.ts`, `store-repos.test.ts`, e2e
   `e2e/alcohol.mjs`. Screenshots `app-alcohol-*` in `docs/screenshots/`.
+
+# As built (#82, stock panel on the spec screen)
+
+Closes the follow-up of [#30 and #33](screens-stock-settings.md#as-built-30-33).
+
+- **Tag.** Next to the template and version tags: **Makeable**, **With
+  substitute**, **Missing {name}** (**Missing N ingredients** for more than
+  one) or "Has an ingredient not in your data". A check, a swap or a dash
+  goes with the word. No tag while nothing is in stock, and none in swap mode.
+- **Panel "What you have"** (a card under the ingredients; on a wide screen in
+  the left column): one row per line. `Have: Light Rum` (exact or a stocked
+  descendant, with the asked name in brackets when it differs), `Made from your
+stock: {prepared ingredient}`, `Substitute: Sugar for Simple Syrup` (a listed
+  or class substitute), `Missing: Simple Syrup`, `Not in stock: X (optional)`.
+  With nothing in stock the panel says so and links to Stock.
+- **A missing line** with exactly one ingredient to get offers **Mark in
+  stock** (writes `present: true` through the same queue as the Stock screen;
+  the toast has Undo) and **Buy Next** (`#/stock/buy-next?open=<id>`). A line
+  missing several parts of a prepared ingredient names them and offers
+  neither button.
+- **Derived.** `screens/spec/stock-panel-vm.ts` runs the engine's
+  `makeableSpecs` in the mode with substitutes, retired drinks included, once
+  per stock records object and browse model, and reads each line's
+  `LineResult` (`rule`, `by`, `missing`). Nothing is stored. Texts are in
+  `screens/spec/stock-strings.ts`, the view is `components/stock-panel.ts`.
+- **Tests.** `test/stock-panel-vm.test.ts`, `e2e/spec-stock.mjs` (screenshots
+  `spec-stock-*` at both sizes).
