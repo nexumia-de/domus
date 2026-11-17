@@ -1,8 +1,8 @@
 // Shelf life of a batch: the minimum of its parts' shelf lives, with the
 // ingredient that sets it. Numbers come from the data (`shelfLifeDays`,
 // inherited); a part without one makes the whole unknown, never a default.
-import { resolveProperty } from '../ingredients/properties';
-import type { IngredientTree } from '../ingredients/tree';
+import { resolveProperty } from '../drink-ingredients/properties';
+import type { IngredientTree } from '../drink-ingredients/types';
 import type { Id } from '../ingredients/types';
 import type { ShelfLife } from './types';
 

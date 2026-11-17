@@ -3,8 +3,9 @@
 // starting points. Which lines of the drink would be replaced, which carried
 // over and which slots are left to fill; nothing is said about taste or
 // balance (docs/templates.md#variants-by-alcohol-class).
-import type { IngredientTree } from '../ingredients/tree';
-import type { Id, Role } from '../ingredients/types';
+import type { IngredientTree } from '../drink-ingredients/types';
+import type { Id } from '../ingredients/types';
+import type { Role } from '../drink-ingredients/types';
 import { matchSpec } from './match';
 import { lineRole } from './slots';
 import type { MatchOptions, MatchSpec, Template, TemplateEvidence } from './types';

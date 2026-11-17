@@ -1,7 +1,8 @@
 // Types of the templates module (docs/templates.md). Results are numbers,
 // statuses and reasons; nothing in them judges the drink.
 import type { UnitOverrides } from '../amounts/index';
-import type { Id, Role } from '../ingredients/types';
+import type { Id } from '../ingredients/types';
+import type { Role } from '../drink-ingredients/types';
 
 export type TemplateEvidence = 'verified' | 'secondary' | 'derived' | 'assumption';
 

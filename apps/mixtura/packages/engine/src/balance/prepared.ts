@@ -4,8 +4,8 @@
 // (ingredients/prepared.ts); this file passes the mixing formulas.
 import { resolvePrepared, type PreparedFold, type SpecLookup } from '../ingredients/prepared';
 import type { PreparedError } from '../ingredients/prepared';
-import { resolveProperty } from '../ingredients/properties';
-import type { IngredientTree } from '../ingredients/tree';
+import { resolveProperty } from '../drink-ingredients/properties';
+import type { IngredientTree } from '../drink-ingredients/types';
 import type { Id } from '../ingredients/types';
 import { mix, type Computed, type MixPart, type MixResult } from './mixture';
 

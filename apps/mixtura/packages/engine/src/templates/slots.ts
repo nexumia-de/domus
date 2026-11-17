@@ -2,10 +2,10 @@
 // lines that fit no slot and the slots that stay empty. No ratios here.
 import { toMl, type UnitId } from '../amounts/index';
 import { UNITS } from '../amounts/index';
-import { resolveProperty } from '../ingredients/properties';
-import type { IngredientTree } from '../ingredients/tree';
+import { resolveProperty } from '../drink-ingredients/properties';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { countedVolume } from '../ingredients/unit-volumes';
-import type { Role } from '../ingredients/types';
+import type { Role } from '../drink-ingredients/types';
 import type {
   MatchLine,
   MatchOptions,

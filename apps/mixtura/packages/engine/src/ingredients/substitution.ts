@@ -1,7 +1,7 @@
 // Substitution classes: ingredients with the same resolved class and the
 // same resolved role can stand in for each other by default.
-import { resolveProperty } from './properties';
-import { ancestors, distance, type IngredientTree } from './tree';
+import { inheritedValue } from './properties';
+import { ancestors, distance, type IngredientTreeOf } from './tree';
 import type { Id } from './types';
 
 /**
@@ -12,9 +12,9 @@ import type { Id } from './types';
  * @param b - Second ingredient id.
  * @returns True if both have a resolved substitution class and it is the same.
  */
-export function sameClass(tree: IngredientTree, a: Id, b: Id): boolean {
-  const ca = resolveProperty(tree, a, 'substitutionClass').value;
-  const cb = resolveProperty(tree, b, 'substitutionClass').value;
+export function sameClass(tree: IngredientTreeOf, a: Id, b: Id): boolean {
+  const ca = inheritedValue(tree, a, 'substitutionClass').value;
+  const cb = inheritedValue(tree, b, 'substitutionClass').value;
   return ca !== undefined && ca === cb;
 }
 
@@ -32,17 +32,17 @@ export interface Substitutes {
  * @param id - Ingredient id.
  * @returns Ids with the reason when empty; the ingredient itself and its ancestors are left out and nothing is guessed.
  */
-export function substitutesFor(tree: IngredientTree, id: Id): Substitutes {
+export function substitutesFor(tree: IngredientTreeOf, id: Id): Substitutes {
   if (!tree.byId.has(id)) return { ids: [], reason: `unknown ingredient ${id}` };
-  const cls = resolveProperty(tree, id, 'substitutionClass');
+  const cls = inheritedValue(tree, id, 'substitutionClass');
   if (cls.value === undefined) return { ids: [], reason: cls.reason };
-  const role = resolveProperty(tree, id, 'role');
+  const role = inheritedValue(tree, id, 'role');
   if (role.value === undefined) return { ids: [], reason: role.reason };
   const excluded = new Set([id, ...(ancestors(tree, id) ?? [])]);
   const found = tree.ids
     .filter((other) => !excluded.has(other))
-    .filter((other) => resolveProperty(tree, other, 'substitutionClass').value === cls.value)
-    .filter((other) => resolveProperty(tree, other, 'role').value === role.value)
+    .filter((other) => inheritedValue(tree, other, 'substitutionClass').value === cls.value)
+    .filter((other) => inheritedValue(tree, other, 'role').value === role.value)
     .map((other) => ({ other, d: distance(tree, id, other) as number }));
   found.sort((x, y) => x.d - y.d || (x.other < y.other ? -1 : x.other > y.other ? 1 : 0));
   return { ids: found.map((f) => f.other) };

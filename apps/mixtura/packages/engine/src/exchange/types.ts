@@ -3,7 +3,7 @@
 // file around them and the counts the import preview shows. The records are
 // typed by the fields the exchange reads; the JSON Schemas check the rest.
 
-import type { Ingredient } from '../ingredients/index';
+import type { Ingredient } from '../drink-ingredients/types';
 
 /** The version of the export format this build writes and reads. */
 export const FORMAT_VERSION = 1;

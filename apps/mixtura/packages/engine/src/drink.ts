@@ -17,3 +17,6 @@ export {
   classifyAlcohol,
 } from './alcohol/index';
 export type * from './alcohol/index';
+
+export { INHERITED, resolveAll, resolveProperty } from './drink-ingredients/index';
+export type * from './drink-ingredients/index';

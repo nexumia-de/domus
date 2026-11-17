@@ -1,5 +1,6 @@
 // Types of the stock module: what the stock allows (docs/makeable.md).
-import type { Id, IngredientTree, Level } from '../ingredients/index';
+import type { Id, Level } from '../ingredients/index';
+import type { IngredientTreeOf } from '../ingredients/tree';
 
 /** Whether substitutes may be used. `strict`: the exact ingredient, a descendant or a prepared ingredient. */
 export type StockMode = 'strict' | 'with-substitutes';
@@ -95,7 +96,7 @@ export interface MissingOne {
 
 /** Everything derived from the tree and the specs, independent of the stock; built once, reused on every stock change. */
 export interface StockIndex {
-  readonly tree: IngredientTree;
+  readonly tree: IngredientTreeOf;
   /** Specs ordered by id. */
   readonly specs: readonly StockSpec[];
   readonly specsById: ReadonlyMap<Id, StockSpec>;

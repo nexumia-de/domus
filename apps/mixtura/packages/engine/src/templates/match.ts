@@ -1,7 +1,7 @@
 // Scores a spec against templates by role coverage and ratio fit and returns
 // every candidate with its numbers, best first. Deterministic: the order is
 // distance, then offset, then template id.
-import type { IngredientTree } from '../ingredients/tree';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { assignSlots } from './slots';
 import type {
   Candidate,

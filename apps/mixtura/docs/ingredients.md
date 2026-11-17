@@ -22,12 +22,19 @@ assumption of [balance](balance.md); no drink data is claimed.
 
 | File                 | Job                                                                   |
 | -------------------- | --------------------------------------------------------------------- |
-| `types.ts`           | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
+| `types.ts`           | `BaseIngredient` (general fields), `PreparedIngredient`, result types |
 | `tree.ts`            | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
-| `properties.ts`      | `resolveProperty`, `resolveAll`, `resolveCost`                        |
+| `properties.ts`      | `inheritedValue` (general walk), `resolveCost`                        |
 | `prepared.ts`        | the walk over a prepared ingredient's spec: nesting, cycles, errors   |
 | `substitution.ts`    | `sameClass`, `substitutesFor`                                         |
 | `swap-candidates.ts` | `swapCandidates`: the groups offered when a line is swapped           |
+
+The drink shape is in `packages/engine/src/drink-ingredients/` (exported
+through `src/drink.ts`): `types.ts` has `Ingredient` (the general fields
+plus `abv`, `sugar`, `acid`), the drink `Role` union, `InheritedProperty`,
+`IngredientTree` and the field list; `properties.ts` has
+`resolveProperty`, `resolveAll` and `INHERITED`, with ABV, sugar and acid
+computed (not inherited) for a prepared ingredient.
 
 ## Tree
 

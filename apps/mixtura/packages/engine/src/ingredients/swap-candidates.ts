@@ -2,9 +2,9 @@
 // (docs/ingredients.md#swap-candidates). `substitutesFor` answers only for
 // the same class and role; a swap also needs the same role alone, and a
 // line without a role needs the class and the tree neighbours.
-import { resolveProperty } from './properties';
-import { ancestors, distance, type IngredientTree } from './tree';
-import type { Id, Role } from './types';
+import { inheritedValue } from './properties';
+import { ancestors, distance, type IngredientTreeOf } from './tree';
+import type { Id } from './types';
 
 /** `class`: same class (and same role when there is one); `role`: same role, other class; `near`: siblings and children in the tree. */
 export type SwapGroupKind = 'class' | 'role' | 'near';
@@ -24,7 +24,7 @@ export interface SwapCandidates {
 
 export interface SwapOptions {
   /** The role of the line's slot when it differs from the ingredient's own (a role set on the line). */
-  role?: Role;
+  role?: string;
 }
 
 const byDistanceThenId = (a: { id: Id; d: number }, b: { id: Id; d: number }): number =>
@@ -44,21 +44,21 @@ const byDistanceThenId = (a: { id: Id; d: number }, b: { id: Id; d: number }): n
  * @returns The non-empty groups, or an empty list with a reason for an unknown id.
  */
 export function swapCandidates(
-  tree: IngredientTree,
+  tree: IngredientTreeOf,
   id: Id,
   options: SwapOptions = {},
 ): SwapCandidates {
   if (!tree.byId.has(id)) return { groups: [], reason: `unknown ingredient ${id}` };
-  const cls = resolveProperty(tree, id, 'substitutionClass').value;
-  const role = options.role ?? resolveProperty(tree, id, 'role').value;
+  const cls = inheritedValue(tree, id, 'substitutionClass').value;
+  const role = options.role ?? inheritedValue(tree, id, 'role').value;
   const left = new Set([id, ...(ancestors(tree, id) ?? [])]);
   const others = tree.ids
     .filter((other) => !left.has(other))
     .map((other) => ({
       id: other,
       d: distance(tree, id, other) as number,
-      cls: resolveProperty(tree, other, 'substitutionClass').value,
-      role: resolveProperty(tree, other, 'role').value,
+      cls: inheritedValue(tree, other, 'substitutionClass').value,
+      role: inheritedValue(tree, other, 'role').value,
       category: tree.byId.get(other)?.level === 'category',
     }));
   const ordered = (list: typeof others): Id[] => [...list].sort(byDistanceThenId).map((o) => o.id);

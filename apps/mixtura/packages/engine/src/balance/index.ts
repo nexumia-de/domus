@@ -2,7 +2,7 @@
 // method, figures. Pure; the dilution numbers come from data.
 import type { UnitOverrides } from '../amounts/index';
 import type { SpecLookup } from '../ingredients/prepared';
-import type { IngredientTree } from '../ingredients/tree';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { chooseDilution } from './dilution';
 import { figures } from './figures';
 import { resolveLines } from './lines';

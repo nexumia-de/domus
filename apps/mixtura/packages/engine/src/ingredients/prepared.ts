@@ -2,7 +2,7 @@
 // spec, its nested prepared ingredients, cycles and unknown ids. What a
 // prepared ingredient's value is (ABV, sugar and acid for drinks, a shelf
 // life) is the caller's fold; the resolver only walks and reports errors.
-import type { IngredientTree } from './tree';
+import type { IngredientTreeOf } from './tree';
 import type { Id } from './types';
 
 /** A line of a prepared ingredient's spec, already in ml (and g of solid sugar). */
@@ -59,7 +59,7 @@ export interface PreparedResolution<T> {
 }
 
 function walk<T>(
-  tree: IngredientTree,
+  tree: IngredientTreeOf,
   specs: SpecLookup,
   id: Id,
   stack: readonly Id[],
@@ -130,7 +130,7 @@ function walk<T>(
  * Errors are deduplicated by message, first occurrence kept.
  */
 export function resolvePrepared<T>(
-  tree: IngredientTree,
+  tree: IngredientTreeOf,
   specs: SpecLookup,
   id: Id,
   fold: PreparedFold<T>,
