@@ -66,6 +66,9 @@ export const strings = {
     yesNo: { yes: 'Yes', no: 'No' },
     buyNextHint:
       'Which drinks Buy Next counts when it ranks what to buy. Drinks you stopped making are left out unless you ask for them.',
+    shortcuts: 'Keyboard shortcuts',
+    shortcutsHint:
+      'Single keys on the Drinks list: / searches, n starts a new drink, arrow keys move between drinks. Turn them off if they get in the way of assistive technology.',
     appearance: 'Appearance',
     themeValues: { system: 'Follow System', light: 'Light', dark: 'Dark' },
     about: 'About',
@@ -170,6 +173,12 @@ export const strings = {
     clearFilters: 'Clear Filters',
     showDrinks: (n: number) => `Show ${n} ${n === 1 ? 'Drink' : 'Drinks'}`,
     removeFilter: (label: string) => `Remove filter ${label}`,
+    sort: {
+      button: (word: string) => `Sort, ${word}`,
+      menu: 'Sort drinks by',
+      words: { name: 'Name', changed: 'Recently changed', template: 'Template' },
+      sortedBy: (word: string) => `Sorted by ${word}`,
+    },
     groups: {
       makeable: 'Availability',
       template: 'Template',

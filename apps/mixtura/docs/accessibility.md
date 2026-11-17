@@ -45,6 +45,7 @@ The slow-device options of `e2e/browser.mjs` apply to this script too (about 3 m
   the page behind the sheet (and the focus ring was drawn under the
   backdrop). `shell/modal.ts` makes everything outside an open
   `aria-modal` dialog `inert` after each draw, the toast excepted.
+- **Tab left the filters sheet** ([#75](screens-browse.md#as-built-75)): the page behind was inert, so Tab went to the browser's own controls. `shell/focus-trap.ts` wraps Tab and Shift+Tab inside every open modal dialog; focus returns to the Filters button when the sheet closes (`e2e/list-keys.mjs`).
 - **"Show more drinks" took keyboard focus away.** The new rows come in above the button, which then stood sixty rows below the focus; `screens/drinks/rows.ts` moves focus from the button to the first new row.
 - **Placeholders in dark mode** were 3.64:1 (the browser's grey); one rule
   in `styles/base.css` sets them to `--text-muted`.

@@ -59,6 +59,8 @@ export interface AppState {
   /** Buy Next ranks drafts and retired drinks (Settings). */
   buyNextDrafts: YesNo;
   buyNextRetired: YesNo;
+  /** Single-key shortcuts (`/`, `n`) are on; a device setting kept in this browser only (shortcuts-pref.ts). */
+  shortcuts: YesNo;
   /** A new service worker is waiting; the banner offers the update. */
   update: 'none' | 'available';
   storage: StorageStatus;
@@ -99,6 +101,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     buyNextMode: 'with-substitutes',
     buyNextDrafts: 'yes',
     buyNextRetired: 'no',
+    shortcuts: 'yes',
     update: 'none',
     storage: { kind: 'opening' },
     seed: { kind: 'loading' },

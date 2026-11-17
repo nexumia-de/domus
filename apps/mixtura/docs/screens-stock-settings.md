@@ -115,7 +115,7 @@ screen). Destination **Settings**, URL `#/settings`.
   default Metric, owner question Q3 in [design](design.md#open-questions);
   explained in one line "Entry accepts any unit; this changes only what
   is shown", [units](units.md#display-and-rounding)); **Appearance**
-  (Follow System, Light, Dark; sets `data-theme`); **Without alcohol
+  (Follow System, Light, Dark; sets `data-theme`); **Keyboard shortcuts** (Yes, No; the single keys `/` and `n` of the drinks list, kept in this browser only, [#75](screens-browse.md#as-built-75)); **Without alcohol
   (calculated) means** and **Low ABV means** (the lines of the alcohol
   filters of the drinks list, [as built](screens-browse.md#as-built-37-alcohol-filters));
   **Data** (Export

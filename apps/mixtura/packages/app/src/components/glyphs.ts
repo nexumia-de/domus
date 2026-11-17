@@ -39,3 +39,5 @@ export const more = make([
 /** Two rows of dots: the drag handle. */
 export const grip = make([['path', { d: 'M8 7h8M8 12h8M8 17h8' }]]);
 export const back = make([['path', { d: 'M15 5l-7 7 7 7' }]]);
+/** Two arrows, one up and one down: the sort menu. */
+export const sort = make([['path', { d: 'M7 19V5M4 8l3-3 3 3M17 5v14M14 16l3 3 3-3' }]]);

@@ -25,7 +25,7 @@ Build first (`npm run build`), then in `packages/app`, with
 ([development](development.md)):
 
 ```sh
-for s in walk exchange browse stock swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
+for s in walk exchange browse list-keys stock swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
 ```
 
 A script writes only the files it names, so a file that no script
@@ -56,6 +56,7 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `app-drinks-list`          | <a href="screenshots/app-drinks-list-360x720.png"><img src="screenshots/app-drinks-list-360x720.png" alt="app-drinks-list at 360x720" width="180"></a>                            | <a href="screenshots/app-drinks-list-1200x800.png"><img src="screenshots/app-drinks-list-1200x800.png" alt="app-drinks-list at 1200x800" width="400"></a>                            |
 | `app-drinks-filtered`      | <a href="screenshots/app-drinks-filtered-360x720.png"><img src="screenshots/app-drinks-filtered-360x720.png" alt="app-drinks-filtered at 360x720" width="180"></a>                | <a href="screenshots/app-drinks-filtered-1200x800.png"><img src="screenshots/app-drinks-filtered-1200x800.png" alt="app-drinks-filtered at 1200x800" width="400"></a>                |
+| `app-sort-menu`            | <a href="screenshots/app-sort-menu-360x720.png"><img src="screenshots/app-sort-menu-360x720.png" alt="app-sort-menu at 360x720" width="180"></a>                                  | <a href="screenshots/app-sort-menu-1200x800.png"><img src="screenshots/app-sort-menu-1200x800.png" alt="app-sort-menu at 1200x800" width="400"></a>                                  |
 | `app-filters`              | <a href="screenshots/app-filters-360x720.png"><img src="screenshots/app-filters-360x720.png" alt="app-filters at 360x720" width="180"></a>                                        | <a href="screenshots/app-filters-1200x800.png"><img src="screenshots/app-filters-1200x800.png" alt="app-filters at 1200x800" width="400"></a>                                        |
 | `app-filters-availability` | <a href="screenshots/app-filters-availability-360x720.png"><img src="screenshots/app-filters-availability-360x720.png" alt="app-filters-availability at 360x720" width="180"></a> | <a href="screenshots/app-filters-availability-1200x800.png"><img src="screenshots/app-filters-availability-1200x800.png" alt="app-filters-availability at 1200x800" width="400"></a> |
 | `app-alcohol-sheet`        | <a href="screenshots/app-alcohol-sheet-360x720.png"><img src="screenshots/app-alcohol-sheet-360x720.png" alt="app-alcohol-sheet at 360x720" width="180"></a>                      | <a href="screenshots/app-alcohol-sheet-1200x800.png"><img src="screenshots/app-alcohol-sheet-1200x800.png" alt="app-alcohol-sheet at 1200x800" width="400"></a>                      |

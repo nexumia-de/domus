@@ -159,8 +159,11 @@ Everything else the user did is already saved when it happens.
 - **Keyboard (desktop).** Everything works with Tab, Shift+Tab, Enter,
   Space and Escape; Escape closes a sheet and goes back from a pushed
   screen without changes. Shortcuts, all optional and never the only
-  way: `/` focus search, `n` new drink, `e` edit, `s` try a swap, `?`
-  list the shortcuts. Shortcuts are off while a text field has focus.
+  way: `/` focus search and `n` new drink (built, [#75](screens-browse.md#as-built-75)), `e` edit, `s` try a swap, `?`
+  list the shortcuts (not built). Shortcuts are off while a text field has
+  focus, with Ctrl, Cmd or Alt held and over a dialog, and can be turned off
+  in Settings (WCAG 2.1.4). In a list, arrow keys move between the rows.
+  A modal sheet keeps Tab inside and returns focus to its opener.
 - **No autofocus.** Opening a screen focuses nothing; the on-screen
   keyboard appears only when the user taps a field (the "Add by name"
   field and the search field included). One exception: after the user

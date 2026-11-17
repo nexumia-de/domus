@@ -1,0 +1,55 @@
+/* The menu button: a menu below its button, items of at least 44 px. */
+
+.menu-wrap {
+  position: relative;
+  flex: none;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--sp-1));
+  right: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  max-width: calc(100vw - 2 * var(--sp-4));
+  padding: var(--sp-1);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--target);
+  padding: var(--sp-1) var(--sp-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-md);
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.menu-item[aria-checked='true'] {
+  font-weight: 700;
+  background: var(--accent-soft);
+}
+
+.menu-check {
+  display: inline-flex;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}

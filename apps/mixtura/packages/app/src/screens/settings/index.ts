@@ -6,6 +6,7 @@ import { type YesNo } from '../../store';
 import { h, icon } from '../../dom';
 import { type Screen, type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
+import { saveShortcuts } from '../../shortcuts-pref';
 import { version } from '../../version';
 import { dataRow, dataView, reminderBanner } from './data';
 
@@ -125,6 +126,11 @@ function settings(context: ScreenContext): HTMLElement {
       h('span', { class: 'hint' }, s.unitsHint),
       ...alcoholSettings(context),
       ...buyNextSettings(context),
+      choice<YesNo>('shortcuts', s.shortcuts, s.yesNo, state.shortcuts, (shortcuts) => {
+        saveShortcuts(shortcuts);
+        store.set({ shortcuts });
+      }),
+      h('span', { class: 'hint' }, s.shortcutsHint),
       choice<Theme>('theme', s.appearance, s.themeValues, state.theme, (theme) =>
         store.set({ theme }),
       ),
