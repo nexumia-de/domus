@@ -34,6 +34,7 @@ export interface Stock {
   ingredientId: string;
   present: boolean;
   openedOn?: string;
+  moreBatches?: string[];
   bestBefore?: string;
   note?: string;
 }

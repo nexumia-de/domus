@@ -148,3 +148,20 @@ test('merge never replaces with an older spec and never takes over a version slo
   const older = { ...user, specs: [{ ...v1!, updatedAt: '2026-01-01T00:00:00Z', name: 'Old' }] };
   expect(planImport(current, older, 'merge').skipped.specs).toBe(1);
 });
+
+test('a stock record may carry more batches in format 1, a repeated or false date is refused', () => {
+  const kept = structuredClone(good());
+  expect(kept.formatVersion).toBe(1);
+  expect(kept.stock.some((r) => r.moreBatches?.length)).toBe(true);
+  expect(parse(kept).ok).toBe(true);
+  const old = structuredClone(good());
+  for (const r of old.stock) Reflect.deleteProperty(r, 'moreBatches');
+  const r = parse(old);
+  expect(r.ok && r.migratedFrom).toBeNull();
+  const twice = structuredClone(good());
+  twice.stock.find((x) => x.moreBatches)!.moreBatches = ['2026-10-20', '2026-10-20'];
+  expect(parse(twice).ok).toBe(false);
+  const bad = structuredClone(good());
+  bad.stock.find((x) => x.moreBatches)!.moreBatches = ['20 October'];
+  expect(parse(bad).ok).toBe(false);
+});

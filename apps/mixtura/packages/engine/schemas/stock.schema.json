@@ -8,6 +8,12 @@
     "ingredientId": { "$ref": "urn:mixtura:common#/$defs/id" },
     "present": { "type": "boolean" },
     "openedOn": { "$ref": "urn:mixtura:common#/$defs/date" },
+    "moreBatches": {
+      "description": "Made-on dates of further batches of a prepared ingredient at hand, besides openedOn (the newest); no date twice.",
+      "type": "array",
+      "items": { "$ref": "urn:mixtura:common#/$defs/date" },
+      "uniqueItems": true
+    },
     "bestBefore": { "$ref": "urn:mixtura:common#/$defs/date" },
     "note": { "type": "string" }
   },

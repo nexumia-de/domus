@@ -7,6 +7,8 @@ import { h } from '../../dom';
 import { replace } from '../../navigation';
 import { formatHash } from '../../router';
 import { type ScreenContext, type ScreenView } from '../../screen';
+import { nearDate } from '../../stock/batches';
+import { today } from '../../today';
 import { deriveStock, drinkCounts } from '../../stock/derived';
 import { changeStock, stockState, withPresent, type StockChange } from '../../stock/state';
 import { strings } from '../../strings';
@@ -16,6 +18,9 @@ import type { BrowseModel } from '../browse/model';
 import { failedStatus, loadingStatus } from '../drinks/pane';
 import { status } from '../status';
 import { COMMON_STOCK } from './common';
+import { batchesFocus, batchesSheet, openBatches } from './batches-sheet';
+import { createOpen, createSheet, openCreate } from './create-sheet';
+import { nearDateCard } from './near-date';
 import {
   OTHER_ID,
   clearTargets,
@@ -32,6 +37,7 @@ import { stockTree } from './tree-view';
 import { views } from './views';
 
 const expanded = new Set<string>();
+let createWasOpen = false;
 
 const SHOWS: readonly Show[] = ['all', 'in', 'out'];
 
@@ -146,6 +152,9 @@ export function stockView(context: ScreenContext): ScreenView {
     { class: 'stack stock-screen' },
     views('stock'),
     summary(model, context, present),
+    nearDateCard(nearDate(model.tree, model.preparedSpecs, records, today()), (id) =>
+      openBatches(context, id),
+    ),
     h('div', { class: 'search' }, search),
     h(
       'div',
@@ -203,17 +212,30 @@ export function stockView(context: ScreenContext): ScreenView {
         h('p', { class: 'note' }, strings.stock.commonHint),
       ),
     view.rows.length === 0
-      ? status(strings.stock.noHit)
+      ? status(
+          strings.stock.noHit,
+          writable && q !== '' && !firstMatch(roots, q)
+            ? { label: strings.stock.create(q), onclick: () => openCreate(context, q) }
+            : undefined,
+        )
       : stockTree(view.rows, {
           writable,
           toggle,
+          batches: (node) => openBatches(context, node.id),
           expand: (node) => {
             if (expanded.has(node.id)) expanded.delete(node.id);
             else expanded.add(node.id);
             context.store.set({ stockRev: context.store.get().stockRev + 1 });
           },
         }),
+    batchesSheet(context, model, records, writable),
+    createSheet(context, model),
   );
+  batchesFocus(context, body);
+  if (createOpen(context) && !createWasOpen) {
+    requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
+  }
+  createWasOpen = createOpen(context);
   return { title, body };
 }
 
