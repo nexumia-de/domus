@@ -62,7 +62,7 @@ export function connect(app: Store<AppState>): Connection {
     if (state.theme !== previous.theme || state.units !== previous.units) savePrefs(state);
     if (quiet || !local) return;
     const store = local;
-    for (const key of ['theme', 'units'] as const) {
+    for (const key of ['theme', 'units', 'alcoholWithout', 'alcoholLow'] as const) {
       if (state[key] === previous[key]) continue;
       store.settings.set(key, state[key]).then(
         () => {
@@ -105,6 +105,8 @@ export function connect(app: Store<AppState>): Connection {
       patch({
         theme: settings.theme,
         units: settings.units,
+        alcoholWithout: settings.alcoholWithout,
+        alcoholLow: settings.alcoholLow,
         storage: { kind: 'ready' },
         persistence: await opened.persistence.status(),
       });

@@ -146,14 +146,16 @@ drinks · Swap dropped · Swap reset · Imported {counts} · Import undone · Ex
 
 # Settings
 
-| Row              | Values                                                                                                                                                                                                                                                                                                | Description                                                    |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Amounts shown in | Metric · US · Imperial                                                                                                                                                                                                                                                                                | Entry accepts any unit; this changes only what is shown.       |
-| Appearance       | Follow System · Light · Dark                                                                                                                                                                                                                                                                          |                                                                |
-| Data             | Export and Import                                                                                                                                                                                                                                                                                     | {n} changes since the last export.                             |
-| About            | Version, sources, notes                                                                                                                                                                                                                                                                               |                                                                |
-| Storage          | Checking · Not requested yet. Asked after you first save something. · Kept: the browser will not clear your data on its own. · Not guaranteed: the browser may clear your data when space is short. · This browser cannot promise to keep your data. · Not available while your data cannot be saved. | Answer to the persistent-storage request                       |
-| Backup reminder  | (banner; buttons Export Everything and Dismiss)                                                                                                                                                                                                                                                       | You have {n} changes since your last export. Export Everything |
+| Row                                | Values                                                                                                                                                                                                                                                                                                | Description                                                                                                                                                                        |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Amounts shown in                   | Metric · US · Imperial                                                                                                                                                                                                                                                                                | Entry accepts any unit; this changes only what is shown.                                                                                                                           |
+| Appearance                         | Follow System · Light · Dark                                                                                                                                                                                                                                                                          |                                                                                                                                                                                    |
+| Without alcohol (calculated) means | Below 0.5 % · Up to 0.05 % · 0 %                                                                                                                                                                                                                                                                      | Lines for the alcohol filters on the drinks list, applied to the calculated ABV after dilution. They are not legal terms. Then: Basis of the chosen lines: {evidence}; {evidence}. |
+| Low ABV means                      | Up to 1.2 % · Up to 10 % · Up to 15 %                                                                                                                                                                                                                                                                 |                                                                                                                                                                                    |
+| Data                               | Export and Import                                                                                                                                                                                                                                                                                     | {n} changes since the last export.                                                                                                                                                 |
+| About                              | Version, sources, notes                                                                                                                                                                                                                                                                               |                                                                                                                                                                                    |
+| Storage                            | Checking · Not requested yet. Asked after you first save something. · Kept: the browser will not clear your data on its own. · Not guaranteed: the browser may clear your data when space is short. · This browser cannot promise to keep your data. · Not available while your data cannot be saved. | Answer to the persistent-storage request                                                                                                                                           |
+| Backup reminder                    | (banner; buttons Export Everything and Dismiss)                                                                                                                                                                                                                                                       | You have {n} changes since your last export. Export Everything                                                                                                                     |
 
 # Data
 
@@ -197,3 +199,28 @@ Balance: No figure: {ingredients} have no acid value · No figure after
 dilution: the drink has no method the model knows · ABV before dilution ·
 Sugar to acid · Units of alcohol · How the figures are computed. Texts of
 the panel are scanned by a test for the words listed under "Never used".
+
+# Alcohol filters, as built (#37)
+
+Alcohol (filter group) · Without alcohol (calculated) · Low ABV · row ending
+"· Without alcohol (calculated)" or "· Low ABV" · Sheet note: "Calculated ABV
+after dilution, never a legal label. Without alcohol: {below 0.5 %}. Low ABV:
+above that and up to {10 %}. Change the lines in Settings. With the lines in
+Settings: {n} without alcohol, {n} low ABV, {n} not classified." · {n} could
+not be classified · Why they are not in the result · "These drinks match the
+search and the other filters, but their alcohol class cannot be calculated,
+so they are in neither alcohol filter." · Reasons: The method gives no
+dilution figure (muddled, layered or no method) · An ingredient has no ABV
+figure · A line is left out of the figures and may hold alcohol · The lines in
+Settings are not valid · The figures could not be computed. Never used:
+alcohol-free, non-alcoholic (for a calculated class).
+
+# Buy Next, as built (#33)
+
+Ranked ingredient: {name} · Unlocks {n} drinks · {n} of them with a substitute
+· tag **Type: any product of it works** (a type or category: buy any one
+product of it) or **Product** · line **Products that count as {type}: {names}
+and {n} more** (the products below that type that unlock exactly the same
+drinks, so they are not ranked on their own; it used to read
+"Any brand does the same", which did not say what was meant) · Have It ·
+Show the drinks {name} unlocks · Show more ingredients.

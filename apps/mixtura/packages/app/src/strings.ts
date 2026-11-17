@@ -50,6 +50,16 @@ export const strings = {
     units: 'Amounts shown in',
     unitsHint: 'Entry accepts any unit; this changes only what is shown.',
     unitValues: { metric: 'Metric', us: 'US', imperial: 'Imperial' },
+    alcoholWithout: 'Without alcohol (calculated) means',
+    alcoholLow: 'Low ABV means',
+    alcoholHint:
+      'Lines for the alcohol filters on the drinks list, applied to the calculated ABV after dilution. They are not legal terms.',
+    /** The text of a preset: `none` is exactly 0, `below` is under the line. */
+    presetWithout: (pct: number, bound: string) =>
+      bound === 'upTo' && pct === 0 ? '0 %' : `${bound === 'below' ? 'Below' : 'Up to'} ${pct} %`,
+    presetLow: (pct: number) => `Up to ${pct} %`,
+    alcoholBasis: (without: string, low: string) =>
+      `Basis of the chosen lines: ${without}; ${low}.`,
     appearance: 'Appearance',
     themeValues: { system: 'Follow System', light: 'Light', dark: 'Dark' },
     about: 'About',
@@ -160,6 +170,7 @@ export const strings = {
       method: 'Method',
       base: 'Base',
       strength: 'Strength',
+      alcohol: 'Alcohol',
     },
     availability: {
       yes: 'Makeable now',
@@ -176,6 +187,32 @@ export const strings = {
       'Alcohol by volume after dilution; ranges chosen between the usual ranges of the templates, an assumption.',
     strengthUnknown: (n: number) =>
       `${n} ${n === 1 ? 'drink has' : 'drinks have'} no ABV figure and ${n === 1 ? 'is' : 'are'} left out of strength ranges.`,
+    alcohol: {
+      none: 'Without alcohol (calculated)',
+      low: 'Low ABV',
+      /** The class in words on a row; also the chip. */
+      classWords: { none: 'Without alcohol (calculated)', low: 'Low ABV' } as Record<
+        string,
+        string
+      >,
+      hint: (without: string, low: string) =>
+        `Calculated ABV after dilution, never a legal label. Without alcohol: ${without}. Low ABV: above that and ${low}. Change the lines in Settings.`,
+      tally: (none: number, low: number, unknown: number) =>
+        `With the lines in Settings: ${none} without alcohol, ${low} low ABV, ${unknown} not classified.`,
+      unknownCount: (n: number) => `${n} could not be classified`,
+      unknownTitle: 'Why they are not in the result',
+      unknownIntro:
+        'These drinks match the search and the other filters, but their alcohol class cannot be calculated, so they are in neither alcohol filter.',
+      reasons: {
+        'no-dilution': 'The method gives no dilution figure (muddled, layered or no method)',
+        'unknown-abv': 'An ingredient has no ABV figure',
+        'excluded-line': 'A line is left out of the figures and may hold alcohol',
+        'invalid-thresholds': 'The lines in Settings are not valid',
+        balance: 'The figures could not be computed',
+      } as Record<string, string>,
+      unknownDrink: (name: string, ingredients: string[]) =>
+        ingredients.length > 0 ? `${name}: ${ingredients.join(', ')}` : name,
+    },
     templateChip: (name: string) => `${name} template`,
     baseChip: (name: string) => `Base: ${name}`,
     noTemplate: 'No template',
@@ -239,10 +276,10 @@ export const strings = {
     haveIt: 'Have It',
     haveItName: (name: string) => `Have it: ${name}`,
     added: (name: string) => `Added ${name} to stock`,
-    kindType: 'Type: any product of it will do',
+    kindType: 'Type: any product of it works',
     kindProduct: 'Product',
-    alsoBy: (names: string, more: number) =>
-      `Any brand does the same: ${names}${more > 0 ? ` and ${more} more` : ''}`,
+    alsoBy: (type: string, names: string, more: number) =>
+      `Products that count as ${type}: ${names}${more > 0 ? ` and ${more} more` : ''}`,
     substituteOnly: (n: number) => `${n} of them with a substitute`,
     showDrinks: (name: string) => `Show the drinks ${name} unlocks`,
     hideDrinks: (name: string) => `Hide the drinks ${name} unlocks`,

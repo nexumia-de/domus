@@ -7,7 +7,9 @@ import * as model from '../src/model';
 
 const PUBLIC = [
   'ancestors',
+  'ALCOHOL_PRESETS',
   'ALCOHOL_THRESHOLDS',
+  'alcoholThresholds',
   'assignSlots',
   'buildStockIndex',
   'buildTree',

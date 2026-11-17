@@ -117,10 +117,8 @@ Filters button on desktop. Mock-up: [html](mockups/filters.html),
   bartender thinks in.
 - **Content.** Groups of chips, wrapping, one tap each (check mark and
   bold when on): **Availability** (Makeable now, Missing one, Any),
-  **Alcohol** (Any, With alcohol, Low alcohol, Non-alcoholic; the
-  thresholds are set by the research in
-  [#35](https://github.com/nexumia-de/mixtura/issues/35) and shown on
-  the chip's description once known), **Template** (the root templates
+  **Alcohol** (Without alcohol (calculated), Low ABV; the lines are
+  chosen in Settings, [as built](#as-built-37-alcohol-filters)), **Template** (the root templates
   and their variants), **Status** (Draft, On menu, Retired). Sticky
   bottom bar: Clear Filters and **Show N Drinks** (the count updates
   live).
@@ -130,7 +128,7 @@ Filters button on desktop. Mock-up: [html](mockups/filters.html),
   the full count. _Zero hits_: the button reads "Show 0 Drinks" and is
   disabled, the sheet suggests Clear Filters. Availability chips are
   disabled with "Mark stock first" while the stock is empty. Alcohol
-  chips are hidden until #37 is built. _Error_: none of its own.
+  chips need no stock. _Error_: none of its own.
   _Offline_: unchanged.
 - **Data.** Nothing stored (the active filters are URL state). Counts
   derived.
@@ -363,3 +361,49 @@ What Try a Swap does and where it differs from the text above.
 - **Performance.** One swap step (recompute, redraw the whole screen) takes
   17 ms worst of ten at both sizes in headless Chromium on the cloud host,
   without CPU throttling (`node e2e/swap.mjs`).
+
+# As built (#37, alcohol filters)
+
+Part of [#37](https://github.com/nexumia-de/mixtura/issues/37): the two
+filters on the drinks list. Shelf life dates on prepared ingredients and
+variant suggestions per template stay open in #37.
+
+- **Filter.** Group **Alcohol** in the filters sheet with two chips,
+  **Without alcohol (calculated)** and **Low ABV**; in the address
+  `?alcohol=none` or `?alcohol=low`, with the other filters. A drink is in
+  a filter when the engine's `classifyAlcohol` (on the drink's balance
+  after dilution) gives that class: `none` is the "without" line, `low` is
+  above it and up to the low line; a drink without alcohol is not in "Low
+  ABV". The label says "calculated" and the app never says "alcohol-free" or
+  "non-alcoholic" (a test scans the words). The sheet's note names the lines
+  in force and counts the classes of all drinks ("12 without alcohol, 73 low
+  ABV, 38 not classified" with the default lines on the 639 drinks).
+- **Rows.** While an alcohol filter is on, the second line of a row ends with
+  the class in words ("No template · 8 % ABV · Low ABV").
+- **What could not be classified.** A drink whose class is `unknown` is in
+  neither filter and is not hidden silently: under the count line a button
+  "N could not be classified" (N = drinks that match the search and the
+  other filters but have no class) opens a list grouped by reason, the
+  drinks as links, with the ingredients that have no ABV figure: the method
+  gives no dilution figure (19 with the default seed), an ingredient has no
+  ABV figure (17), a line is left out of the figures and may hold alcohol
+  (2), the balance could not be computed, the lines are invalid. No button
+  when N is 0.
+- **Lines.** Settings: **Without alcohol (calculated) means** Below 0.5 %
+  (default), Up to 0.05 %, 0 %; **Low ABV means** Up to 1.2 %, Up to 10 %
+  (default), Up to 15 %. The 15 % line is for drinks built on fortified or
+  aromatised wine (around 14 to 15 %); its basis is `assumption,
+unverified` in `alcohol-thresholds.json`, and Settings shows the basis of
+  the chosen lines. Stored as the device settings `alcoholWithout` and
+  `alcoholLow` (preset ids; an unknown id means the default), not in the
+  export file.
+- **Counts** on the 639 drinks of the app seed (635 converted, 4 nominal
+  examples): default lines 12 without alcohol (the 9 converted ones and the
+  3 nominal examples), 73 low, 515 standard plus the low-stirred example,
+  38 unknown; up to 15 %: 180 low; the strict lines (0.05 %, 1.2 %): 12 and 2. A test checks the filter result against the engine class on every
+  drink under all nine preset pairs.
+- **Code.** `screens/browse/alcohol.ts` (class per drink, cached per model
+  and lines; tally; unknown groups), `screens/drinks/alcohol-unknown.ts`,
+  the group in `filters-sheet.ts`, Settings in `screens/settings/index.ts`;
+  tests `alcohol-filter.test.ts`, `store-repos.test.ts`, e2e
+  `e2e/alcohol.mjs`. Screenshots `app-alcohol-*` in `docs/screenshots/`.

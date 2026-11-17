@@ -1,6 +1,9 @@
 {
   "version": 1,
-  "default": { "without": "below-0.5", "low": "up-to-10" },
+  "default": {
+    "without": "below-0.5",
+    "low": "up-to-10"
+  },
   "presets": {
     "without": [
       {
@@ -37,6 +40,12 @@
         "maxPct": 10,
         "evidence": "assumption, unverified",
         "basis": "docs/non-alcoholic.md: the bar sense of low ABV (a vermouth or sherry drink); no source read defines low ABV for a cocktail. Adjustable."
+      },
+      {
+        "id": "up-to-15",
+        "maxPct": 15,
+        "evidence": "assumption, unverified",
+        "basis": "docs/non-alcoholic.md: a third line for drinks built on fortified or aromatised wine, which sit around 14 to 15 % ABV after dilution (the nominal sherry and vermouth drink computes to 14.44 %); no source read defines low ABV for a cocktail. Adjustable."
       }
     ]
   }

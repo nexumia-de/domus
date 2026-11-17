@@ -3,6 +3,7 @@
 // falls back to the default for anything unknown, and a write does not
 // count as a user write for the persistence request.
 
+import { ALCOHOL_PRESETS } from '@mixtura/engine';
 import { committed, request } from './db';
 import { toStoreError } from './errors';
 import type { Backup, Settings, Theme, Units } from './types';
@@ -10,6 +11,8 @@ import type { Backup, Settings, Theme, Units } from './types';
 export const defaultSettings: Settings = {
   theme: 'system',
   units: 'metric',
+  alcoholWithout: ALCOHOL_PRESETS.default.without,
+  alcoholLow: ALCOHOL_PRESETS.default.low,
   backup: { changesSinceExport: 0 },
 };
 
@@ -36,6 +39,12 @@ export function parseSettings(records: { key: string; value: unknown }[]): Setti
   return {
     theme: THEMES.find((t) => t === byKey.get('theme')) ?? defaultSettings.theme,
     units: UNITS.find((u) => u === byKey.get('units')) ?? defaultSettings.units,
+    alcoholWithout:
+      ALCOHOL_PRESETS.without.find((p) => p.id === byKey.get('alcoholWithout'))?.id ??
+      defaultSettings.alcoholWithout,
+    alcoholLow:
+      ALCOHOL_PRESETS.low.find((p) => p.id === byKey.get('alcoholLow'))?.id ??
+      defaultSettings.alcoholLow,
     backup: parseBackup(byKey.get('backup')),
   };
 }

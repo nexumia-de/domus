@@ -277,6 +277,14 @@ const unlocks = Number(/Unlocks (\d+)/.exec(await first.locator('.buy-unlocks').
 console.log(`  first suggestion: ${firstName}, unlocks ${unlocks}`);
 expect(unlocks > 0, 'the first suggestion unlocks drinks');
 await noOverflow('on Buy Next');
+{
+  const text = await page
+    .locator('.buy-item')
+    .first()
+    .evaluate((el) => el.parentElement.innerText);
+  expect(!/Any brand/.test(text), 'Buy Next no longer says "Any brand does the same"');
+  expect(/Type: any product of it works|Product/.test(text), 'the kind tag says what a type means');
+}
 await targets('on Buy Next');
 await docShot('buy-next');
 await shot('buy-next');

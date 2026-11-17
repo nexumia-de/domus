@@ -34,12 +34,31 @@ assumption of [balance](balance.md); no drink data is claimed.
 
 `buildTree(list)` returns the tree or all errors, each naming its ids:
 
-| Code             | Ids                                                   |
-| ---------------- | ----------------------------------------------------- |
-| `duplicate-id`   | the id                                                |
-| `missing-parent` | child, missing parent                                 |
-| `level-order`    | child, parent (child must be below parent's level)    |
-| `cycle`          | around the cycle, from its smallest id, closing on it |
+| Code             | Ids                                                             |
+| ---------------- | --------------------------------------------------------------- |
+| `duplicate-id`   | the id                                                          |
+| `missing-parent` | child, missing parent                                           |
+| `level-order`    | child, parent (a category is a root; a product has no children) |
+| `cycle`          | around the cycle, from its smallest id, closing on it           |
+
+**Depth is the data's.** The tree has no fixed number of levels
+([decision on #68](https://github.com/nexumia-de/mixtura/issues/68)): a
+type may be below a type, as deep as the source goes (the seed has five
+levels). `category`, `type` and `product` describe the position, not a
+limit: a root with children is a category, a node without children a
+product, anything between a type. The only level rule left is the one
+that keeps those meanings: a category is always a root and a product has
+no children. Nothing is re-attached to a higher ancestor, so a line that
+names `whiskey` is satisfied by `bourbon-whiskey` and everything below it,
+and a line that names `bourbon-whiskey` is not satisfied by `rye-whiskey`.
+Nothing else in the engine reads the level except `swapCandidates` (leaves
+out categories) and the unlock ranking (`product` or `type` candidate).
+Reason against the alternative (keep flattening and curate by hand): the
+flattening put nodes under types they are not below in the source and
+hid their descendants from recipes; a hand-curated tree would be a second
+copy of third-party data that drifts from the pinned commit. Where the
+source's own parent is wrong, [Mixtura's corrections](seed-data.md#converter)
+override it.
 
 `isA(child, ancestor)` is true for the ingredient itself. `distance` counts
 steps through the nearest common ancestor; separate roots meet in a
@@ -117,5 +136,5 @@ the classes are narrow (`sc-gin`, `sc-brandy`), so for most lines the
 inheritance, the four tree errors, tree queries, substitution ordering,
 swap candidates (`swap-candidates-groups`: groups, a role set by the line,
 no role, no neighbours, unknown id),
-five prepared cases (syrup 1:1 and 2:1, batched with added water, nested,
+the tree four levels deep (`tree-deep`), five prepared cases (syrup 1:1 and 2:1, batched with added water, nested,
 unknown property) and a prepared cycle.

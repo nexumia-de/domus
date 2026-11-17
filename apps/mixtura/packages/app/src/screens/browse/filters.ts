@@ -3,8 +3,9 @@
 // active ones for the chips (docs/screens-browse.md#filters). The URL is the
 // only place they live.
 
-import { isA } from '@mixtura/engine';
+import { ALCOHOL_THRESHOLDS, isA, type AlcoholThresholds } from '@mixtura/engine';
 import type { Availability } from '../../stock/derived';
+import { alcoholOf } from './alcohol';
 import type { BrowseModel, Drink } from './model';
 import { normalise } from './normalise';
 import { bandOf, inBand } from './strength';
@@ -17,9 +18,19 @@ export interface Filters {
   strength?: string;
   /** `yes`, `substitute` or `one`: what the stock allows (docs/screens-stock-settings.md#as-built). */
   makeable?: string;
+  /** `none` or `low`: the alcohol class of the engine under the thresholds of Settings. */
+  alcohol?: string;
 }
 
-export const FILTER_KEYS = ['makeable', 'template', 'method', 'base', 'strength'] as const;
+export const FILTER_KEYS = [
+  'makeable',
+  'alcohol',
+  'template',
+  'method',
+  'base',
+  'strength',
+] as const;
+export const ALCOHOL_VALUES = ['none', 'low'] as const;
 export const MAKEABLE_VALUES = ['yes', 'substitute', 'one'] as const;
 
 /** What the stock allows for each drink, by spec id; absent while nothing is in stock. */
@@ -77,9 +88,14 @@ export function matchesFilters(
   drink: Drink,
   filters: Filters,
   availability?: AvailabilityMap,
+  thresholds: AlcoholThresholds = ALCOHOL_THRESHOLDS,
 ): boolean {
   const { spec } = drink;
   if (filters.q && !matchesSearch(drink, filters.q)) return false;
+  if (filters.alcohol) {
+    if (!(ALCOHOL_VALUES as readonly string[]).includes(filters.alcohol)) return false;
+    if (alcoholOf(model, drink, thresholds).class !== filters.alcohol) return false;
+  }
   if (filters.makeable) {
     const wanted = KIND[filters.makeable as keyof typeof KIND];
     if (!wanted || availability?.get(spec.id)?.kind !== wanted) return false;
@@ -101,8 +117,9 @@ export function applyFilters(
   filters: Filters,
   from: readonly Drink[] = model.drinks,
   availability?: AvailabilityMap,
+  thresholds: AlcoholThresholds = ALCOHOL_THRESHOLDS,
 ): Drink[] {
-  return from.filter((drink) => matchesFilters(model, drink, filters, availability));
+  return from.filter((drink) => matchesFilters(model, drink, filters, availability, thresholds));
 }
 
 export interface Chip {
@@ -117,6 +134,7 @@ export function chipsOf(
   words: {
     template: (name: string) => string;
     makeable: (value: string) => string;
+    alcohol: (value: string) => string;
     base: (name: string) => string;
   },
 ): Chip[] {
@@ -125,6 +143,7 @@ export function chipsOf(
     const value = filters[key] as string;
     const label = {
       makeable: () => words.makeable(value),
+      alcohol: () => words.alcohol(value),
       template: () => words.template(model.templateById.get(value)?.name ?? value),
       method: () => model.vocabulary.methods.find((m) => m.id === value)?.name ?? value,
       base: () => words.base(model.ingredientName(value) ?? value),

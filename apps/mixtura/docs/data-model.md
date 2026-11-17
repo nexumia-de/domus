@@ -72,8 +72,10 @@ schema refers to it.
 ## Ingredient
 
 A node of a tree with the levels `category`, `type`, `product`, joined by
-`parentId` (absent on a root). A child's level is lower than its parent's
-(category above type above product); there are no cycles; both are
+`parentId` (absent on a root). The levels describe the position, not a
+limit: a category is a root, a product has no children, a type is anything
+between and may be below another type (the tree is as deep as its data;
+[ingredients](ingredients.md#tree)). There are no cycles; both rules are
 checked by the engine, not by the schema.
 
 | Field               | Stored or derived | Required | Meaning                                                                                                                                                                                                                                                                   |

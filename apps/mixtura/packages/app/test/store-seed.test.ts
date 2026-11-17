@@ -13,7 +13,7 @@ test('the fixture seed validates against the schemas', () => {
 
 test('the assembled seed (what the build ships) has the expected shape and validates', () => {
   const real = parseSeed(JSON.parse(JSON.stringify(assembleSeed())));
-  expect(real.seedVersion).toMatch(/^bar-assistant-[0-9a-f]{7}\+mixtura-1$/);
+  expect(real.seedVersion).toMatch(/^bar-assistant-[0-9a-f]{7}\+mixtura-2$/);
   expect(real.ingredients).toHaveLength(319);
   expect(real.specs).toHaveLength(639);
   expect(real.specs.filter((s) => s.templateId)).toHaveLength(111);

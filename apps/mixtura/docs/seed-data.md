@@ -143,7 +143,7 @@ strings onto them and lists every unmapped string in its report.
 | `_id`                                                                                                      | `id`                      | Kept as the slug.                                                                                                                                                                                        |
 | `name`                                                                                                     | `name`                    | Kept.                                                                                                                                                                                                    |
 | `_parent_id`                                                                                               | `parentId`                | Kept.                                                                                                                                                                                                    |
-| depth and children                                                                                         | `level`                   | Derived: root with children `category`, other inner node `type`, leaf `product`. Roots without children (24) are products.                                                                               |
+| depth and children                                                                                         | `level`                   | Derived position: root with children `category`, other inner node `type`, leaf `product`. Roots without children (24) are products.                                                                      |
 | `strength`                                                                                                 | `abv`                     | Percent as is (same unit). 0 is kept as 0 for liquids; see problems for 0 meaning unknown.                                                                                                               |
 | `sugar_g_per_ml`                                                                                           | `sugar`                   | Divide by 10. The name says per ml but the values are grams per litre (`simple-syrup` 600, `lime-juice` 17, `sugar` 1000, `lemon-juice` 25); inferred from the values, not documented in the repository. |
 | `acidity`                                                                                                  | `acid`                    | Present on one ingredient (`amontillado` 0.65); unit and reference acid unknown, so not mapped (see missing).                                                                                            |
@@ -269,7 +269,7 @@ the engine's own `parseAmount` for units and `matchSpec` for templates
 | ----------------- | ---------------------------------------------------------------------------------------- |
 | `convert.ts`      | Command line, pin check, writes the files and the report (run through `run.mjs`)         |
 | `source.ts`       | Reads the checkout; a field it does not know fails the run                               |
-| `levels.ts`       | Level and parent of every ingredient                                                     |
+| `levels.ts`       | Level (position) of every ingredient; the parent is the source parent                    |
 | `roles.ts`        | Roles from the curated table by tree node, inheritance, list of unclassified ingredients |
 | `properties.ts`   | ABV and sugar from the source; a 0 that means "not filled in" is left out                |
 | `substitution.ts` | Substitution classes from the connected components of the source's substitute pairs      |
@@ -302,17 +302,60 @@ the engine's own `parseAmount` for units and `matchSpec` for templates
   listed as not counted; 87 specs have a counted line, 105 counted lines
   of 2,803 (optional lines left out) are not counted, 54 `top` lines in
   55 specs likewise (130 specs have at least one line not counted).
-- **Levels.** Root with children `category`, other inner node `type`,
-  leaf `product`. The engine needs a child's level below its parent's and
-  has three levels, but the source tree is up to five deep. Eight inner
-  nodes below another `type` are attached to their nearest ancestor with
-  a higher level instead of their source parent: `bourbon-whiskey`,
-  `scotch-whiskey` (from `whiskey`), `dark-rum` and `rum` (from `rum` and
-  `sugarcane-based-spirits`), `fruit-brandy` (from `brandy`), `tequila`
-  (from `mezcal`), `orange-juice` (from `citrus-juice`), `simple-syrup`
-  (from `syrups`). They keep their children. Consequence: a recipe line
-  that names `whiskey` or `rum` is no longer satisfied by these
-  descendants; see the issue about the level rule.
+- **Levels.** The tree keeps the source's real depth (up to five levels,
+  [decision on #68](ingredients.md#tree)); every parent is the source
+  parent and nothing is re-attached. `level` only describes the position:
+  root with children `category`, other inner node `type`, node without
+  children `product`. Before #68 the converter attached eight inner nodes
+  below another `type` (`bourbon-whiskey`, `scotch-whiskey`, `dark-rum`,
+  `rum`, `fruit-brandy`, `tequila`, `orange-juice`, `simple-syrup`) to a
+  higher ancestor, so a recipe line naming `whiskey`, `rum`, `brandy`,
+  `mezcal`, `citrus juice` or `syrups` was not satisfied by them or their descendants. Now it is. Only the parent of those eight nodes changed in
+  the committed seed; roles, ABV, sugar, classes and every count below are
+  unchanged (their own values or the same inherited ones). Depth of the
+  296 nodes: 39 roots, 153 at depth 1, 70 at depth 2, 33 at depth 3, 1 at
+  depth 4 (`demerara-rum`).
+- **Where wrong-looking placements come from.** Checked on the pinned data:
+  "Cocchi Aperitivo Americano counts as dry vermouth" and "Bacon Fat-Infused
+  Bourbon counts as bourbon" are **the source's own parent links**
+  (`cocchi-aperitivo-americano` under `dry-vermouth`,
+  `bacon-fat-infused-bourbon` under `bourbon-whiskey`), neither flattening
+  (the eight moved nodes are other nodes) nor the curated role table (roles
+  only give a role and do not move a node). Flattening was a separate
+  fault, now removed.
+- **Corrections of the source's links** are not made in the converter. The
+  converter output stays the source's tree. Mixtura's own
+  `packages/engine/data/mixtura/corrections.json` overrides a parent, each
+  with `was`, a `note` and an `evidence` status; the app's
+  `seed-assemble.mjs` applies it (`seed-corrections.mjs`). The list is
+  short and certain, 2 entries, both `assumption, unverified` because no
+  source could be read (en.wikipedia.org is outside the session's network):
+
+  | Node                         | Source parent  | Parent now       | Why                                                                                                         |
+  | ---------------------------- | -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------- |
+  | `cocchi-aperitivo-americano` | `dry-vermouth` | `fortified-wine` | an aromatised quinquina wine like `lillet-blanc`, not a dry vermouth                                        |
+  | `tequila`                    | `mezcal`       | `spirits`        | separate agave spirit and designation; mezcal is not satisfied by tequila (its four ageing children follow) |
+
+  A test (`seed-corrections.test.ts`) checks that each names an existing
+  node, its `was` is the seed's parent, the tree stays valid and no other
+  parent differs from the seed.
+
+  **Doubtful, not corrected** (left as the source has them; the owner or a
+  drink expert decides): `sloe-gin` under `gin` (a liqueur by category);
+  `cask-proof-whiskey` under `bourbon-whiskey` (a strength, not
+  necessarily bourbon); `grape-brandy`, `grappa` and `pisco` under
+  `fruit-brandy` (grape and pomace brandies, whose siblings `cognac` and
+  `armagnac` sit under `brandy`); `coconut-rum` and `pineapple-rum` under
+  `rum` (flavoured rums); `vanilla-vodka` and `vodka-citron` under `vodka`
+  (flavoured); `fig-infused-mezcal` under `mezcal`.
+
+- **Infused and fat-washed spirits.** `bacon-fat-infused-bourbon`,
+  `fig-infused-mezcal` and `sage-infused-vodka` are prepared ingredients by
+  nature, but the source gives only `ingredient_parts` without amounts, so
+  they are plain ingredients (child of their base, ABV inherited) and
+  count as that base: a recipe for bourbon is satisfied by the
+  fat-washed one. Modelling them as prepared ingredients that do not stand
+  in for their base unless asked is larger than this package; issue #88 tracks it.
 - **Prepared ingredients.** Not created: the 13 ingredients with
   `ingredient_parts` have no amounts, and a prepared ingredient needs a
   spec and a yield. They are plain ingredients.
@@ -476,7 +519,7 @@ licence AGPL-3.0-or-later; the variant templates are in
 `data/template-variants/`. The app's `seed-assemble.mjs` merges them after
 the converted data (ingredients 296 + 23 = 319, specs 635 + 4 = 639,
 templates 6 + 4 = 10) and appends Mixtura's notice to the Bar Assistant notice
-that About shows; the seed version becomes `bar-assistant-5a504d4+mixtura-1`.
+that About shows; the corrections of `corrections.json` are applied to the parents first; the seed version becomes `bar-assistant-5a504d4+mixtura-2`.
 Tests: `non-alcoholic-data.test.ts` (schemas, evidence of every value, merge
 without id clash, examples). Alcohol classes of the 635 converted drinks:
 [counts](non-alcoholic.md#as-built-36).

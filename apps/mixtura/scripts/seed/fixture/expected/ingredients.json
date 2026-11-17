@@ -3,7 +3,7 @@
 "ingredients":[
 {"abv":44.7,"id":"aromatic-bitters","level":"product","name":"Aromatic Bitters","parentId":"bitters","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0.3},
 {"assumed":["role"],"id":"bitters","level":"category","name":"Bitters","role":"bitter","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0.5},
-{"abv":40,"id":"bourbon","level":"type","name":"Bourbon","parentId":"spirits","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":40,"id":"bourbon","level":"type","name":"Bourbon","parentId":"whiskey","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
 {"abv":0,"assumed":["role"],"id":"dairy","level":"category","name":"Dairy","role":"texture","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
 {"abv":18,"assumed":["substitutionClass"],"id":"dry-vermouth","level":"product","name":"Dry Vermouth","parentId":"fortified-wine","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"substitutionClass":"sc-dry-vermouth","sugar":3},
 {"abv":0,"id":"egg","level":"product","name":"Egg","parentId":"dairy","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},

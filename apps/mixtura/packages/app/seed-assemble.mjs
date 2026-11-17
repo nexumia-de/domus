@@ -6,6 +6,7 @@
 // data (docs/seed-data.md, docs/store.md).
 import { readFileSync } from 'node:fs';
 import { ROOT_TEMPLATES, VARIANT_TEMPLATES } from '@mixtura/engine';
+import { applyCorrections } from './seed-corrections.mjs';
 
 const engineData = new URL('../engine/data/seed/', import.meta.url);
 const own = new URL('../engine/data/mixtura/', import.meta.url);
@@ -18,15 +19,19 @@ export function assembleSeed() {
   const vocabulary = read('vocabulary.json');
   const mixturaIngredients = read('ingredients.json', own);
   const mixturaSpecs = read('specs.json', own);
+  const { corrections } = read('corrections.json', own);
   const { attribution } = ingredients;
   return {
-    seedVersion: `bar-assistant-${attribution.commit.slice(0, 7)}+mixtura-1`,
+    seedVersion: `bar-assistant-${attribution.commit.slice(0, 7)}+mixtura-2`,
     attribution: {
       ...attribution,
       notice: `${attribution.notice} ${mixturaIngredients.attribution.notice}`,
     },
     vocabulary: { methods: vocabulary.methods, glasses: vocabulary.glasses },
-    ingredients: [...ingredients.ingredients, ...mixturaIngredients.ingredients],
+    ingredients: [
+      ...applyCorrections(ingredients.ingredients, corrections),
+      ...mixturaIngredients.ingredients,
+    ],
     templates: [...ROOT_TEMPLATES, ...VARIANT_TEMPLATES],
     specs: [...specs.specs, ...mixturaSpecs.specs],
     affinities: [],

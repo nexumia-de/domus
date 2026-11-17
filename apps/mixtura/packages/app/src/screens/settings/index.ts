@@ -1,5 +1,6 @@
 // Settings and About (built by #17). Choosing a value applies at once.
 
+import { ALCOHOL_PRESETS, type AlcoholPreset } from '@mixtura/engine';
 import { type Theme, type Units } from '../../app-state';
 import { h, icon } from '../../dom';
 import { type Screen, type ScreenContext } from '../../screen';
@@ -37,6 +38,43 @@ function choice<V extends string>(
   );
 }
 
+function presetLabels(
+  presets: readonly AlcoholPreset[],
+  text: (p: AlcoholPreset) => string,
+): Record<string, string> {
+  return Object.fromEntries(presets.map((p) => [p.id, text(p)]));
+}
+
+function alcoholSettings({ state, store }: ScreenContext): HTMLElement[] {
+  const s = strings.settings;
+  const chosen = (list: readonly AlcoholPreset[], id: string): AlcoholPreset =>
+    list.find((p) => p.id === id) ?? (list[0] as AlcoholPreset);
+  const without = chosen(ALCOHOL_PRESETS.without, state.alcoholWithout);
+  const low = chosen(ALCOHOL_PRESETS.low, state.alcoholLow);
+  return [
+    choice<string>(
+      'alcohol-without',
+      s.alcoholWithout,
+      presetLabels(ALCOHOL_PRESETS.without, (p) => s.presetWithout(p.maxPct, p.bound ?? 'upTo')),
+      without.id,
+      (alcoholWithout) => store.set({ alcoholWithout }),
+    ),
+    choice<string>(
+      'alcohol-low',
+      s.alcoholLow,
+      presetLabels(ALCOHOL_PRESETS.low, (p) => s.presetLow(p.maxPct)),
+      low.id,
+      (alcoholLow) => store.set({ alcoholLow }),
+    ),
+    h('span', { class: 'hint' }, s.alcoholHint),
+    h(
+      'span',
+      { class: 'hint', id: 'alcohol-basis' },
+      s.alcoholBasis(without.evidence, low.evidence),
+    ),
+  ];
+}
+
 function navRow(href: string, title: string, sub: string): HTMLElement {
   return h(
     'a',
@@ -51,7 +89,8 @@ function navRow(href: string, title: string, sub: string): HTMLElement {
   );
 }
 
-function settings({ state, store, data }: ScreenContext): HTMLElement {
+function settings(context: ScreenContext): HTMLElement {
+  const { state, store, data } = context;
   const s = strings.settings;
   return h(
     'div',
@@ -62,6 +101,7 @@ function settings({ state, store, data }: ScreenContext): HTMLElement {
       { class: 'card' },
       choice<Units>('units', s.units, s.unitValues, state.units, (units) => store.set({ units })),
       h('span', { class: 'hint' }, s.unitsHint),
+      ...alcoholSettings(context),
       choice<Theme>('theme', s.appearance, s.themeValues, state.theme, (theme) =>
         store.set({ theme }),
       ),

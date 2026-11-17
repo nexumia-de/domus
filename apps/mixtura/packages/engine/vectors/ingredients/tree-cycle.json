@@ -1,7 +1,7 @@
 {
   "id": "tree-cycle",
   "kind": "tree-errors",
-  "description": "a > b > c > a (parentId runs a to c, c to b, b to a). The cycle is reported once, starting at its smallest id and closing on it, and the self-parent d is a cycle of its own. Levels are all type here; the level-order errors of the same input are listed too, so the vector pins the complete error list.",
+  "description": "a > b > c > a (parentId runs a to c, c to b, b to a). The cycle is reported once, starting at its smallest id and closing on it, and the self-parent d is a cycle of its own. Levels are all type; a type below a type is legal (the tree keeps its source depth), so the cycles are the only errors.",
   "ingredients": [
     {
       "id": "a",
@@ -30,22 +30,6 @@
   ],
   "expected": {
     "errors": [
-      {
-        "code": "level-order",
-        "ids": ["a", "c"]
-      },
-      {
-        "code": "level-order",
-        "ids": ["b", "a"]
-      },
-      {
-        "code": "level-order",
-        "ids": ["c", "b"]
-      },
-      {
-        "code": "level-order",
-        "ids": ["d", "d"]
-      },
       {
         "code": "cycle",
         "ids": ["a", "c", "b", "a"]

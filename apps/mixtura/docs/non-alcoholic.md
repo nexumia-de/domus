@@ -518,6 +518,7 @@ sorts the ABV after dilution into `none`, `low`, `standard` or `unknown`.
 | Without alcohol, stricter             | `up-to-0.05`: up to 0.05 %; `none`: exactly 0 | `read`                   |
 | Low ABV, UK line                      | `up-to-1.2`: up to 1.2 %                      | `read`                   |
 | Low ABV, bar sense (default)          | `up-to-10`: up to 10 %                        | `assumption, unverified` |
+| Low ABV, fortified-wine drinks        | `up-to-15`: up to 15 % (#37)                  | `assumption, unverified` |
 
 A drink is `unknown`, with a `reason` and the ingredient `ids`, when
 the method gives no figure after dilution (`no-dilution`), an ingredient's
@@ -551,6 +552,14 @@ and a top of champagne without a volume). The 9 without alcohol are
 (low), so "non-alc" in a name does not survive the calculation. None of the
 9 matches a variant: they have no line with role `base` (juice, syrup and
 soda only), and every variant needs its required `base` slot filled. Counts are in `docs/seed-data.md`.
+
+**Filters (#37).** The drinks list filters by these classes and the presets
+are chosen in Settings ([as built](screens-browse.md#as-built-37-alcohol-filters)).
+Counts with all 639 app drinks (the 635 above plus 4 nominal examples):
+default 12 / 73 / 516 / 38 (none, low, standard, unknown); up to 15 %: 12 /
+180 / 409 / 38. The 15 % line was added because drinks on fortified or
+aromatised wine sit around 14 to 15 % (the nominal sherry drink is 14.44 %);
+no source defines low ABV for a cocktail, so it is an assumption like the 10 % line.
 
 **Nominal examples.** Four drinks in
 `packages/engine/data/mixtura/specs.json`, one per variant, built from the

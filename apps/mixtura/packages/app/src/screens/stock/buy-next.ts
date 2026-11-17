@@ -99,6 +99,7 @@ export function buyNextView(context: ScreenContext): ScreenView {
               'span',
               { class: 'row-sub' },
               strings.buyNext.alsoBy(
+                c.name,
                 c.alsoBy.slice(0, PREVIEW).join(', '),
                 c.alsoBy.length - PREVIEW,
               ),

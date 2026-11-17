@@ -145,9 +145,13 @@ test('settings default, save and load', async () => {
   expect(await store.settings.load()).toEqual({
     theme: 'system',
     units: 'metric',
+    alcoholWithout: 'below-0.5',
+    alcoholLow: 'up-to-10',
     backup: { changesSinceExport: 0 },
   });
   await store.settings.set('theme', 'dark');
+  await store.settings.set('alcoholLow', 'up-to-15');
+  await store.settings.set('alcoholWithout', 'no-such-preset');
   await store.settings.set('backup', {
     changesSinceExport: 3,
     lastExportAt: '2026-11-17T09:30:00Z',
@@ -155,6 +159,8 @@ test('settings default, save and load', async () => {
   expect(await store.settings.load()).toEqual({
     theme: 'dark',
     units: 'metric',
+    alcoholWithout: 'below-0.5',
+    alcoholLow: 'up-to-15',
     backup: { changesSinceExport: 3, lastExportAt: '2026-11-17T09:30:00Z' },
   });
   store.close();

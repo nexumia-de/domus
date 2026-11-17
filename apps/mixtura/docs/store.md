@@ -25,15 +25,15 @@ never written into the database. Built by issue #24.
 Defined as data in `store/schema.ts`; a test compares a freshly migrated
 database with that table.
 
-| Store         | Key            | Indexes                                                                                 | Holds                                                  |
-| ------------- | -------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `specs`       | `id`           | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each      |
-| `ingredients` | `id`           | `parentId`, `level`                                                                     | User ingredients, prepared ones included               |
-| `templates`   | `id`           | `parentId`                                                                              | User templates                                         |
-| `affinities`  | `id`           | none                                                                                    | User affinities                                        |
-| `stock`       | `ingredientId` | none                                                                                    | Stock records                                          |
-| `settings`    | `key`          | none                                                                                    | Device settings: `theme`, `units`, `backup`            |
-| `meta`        | `key`          | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked) |
+| Store         | Key            | Indexes                                                                                 | Holds                                                                                                           |
+| ------------- | -------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `specs`       | `id`           | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each                                                               |
+| `ingredients` | `id`           | `parentId`, `level`                                                                     | User ingredients, prepared ones included                                                                        |
+| `templates`   | `id`           | `parentId`                                                                              | User templates                                                                                                  |
+| `affinities`  | `id`           | none                                                                                    | User affinities                                                                                                 |
+| `stock`       | `ingredientId` | none                                                                                    | Stock records                                                                                                   |
+| `settings`    | `key`          | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup` |
+| `meta`        | `key`          | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                          |
 
 Differences from the wording of issue #24: there is no `spec-versions`
 store (the data model keeps each version as its own record in `specs`,

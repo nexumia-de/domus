@@ -1,16 +1,11 @@
 // The alcohol thresholds of data/alcohol-thresholds.json (docs/non-alcoholic.md).
 import raw from '../../data/alcohol-thresholds.json';
-import type { AlcoholThresholds } from './types';
+import type { AlcoholPreset, AlcoholThresholds } from './types';
 
-interface WithoutPreset {
-  id: string;
-  maxPct: number;
+interface WithoutPreset extends AlcoholPreset {
   bound: 'below' | 'upTo';
 }
-interface LowPreset {
-  id: string;
-  maxPct: number;
-}
+type LowPreset = AlcoholPreset;
 const data = raw as {
   default: { without: string; low: string };
   presets: { without: WithoutPreset[]; low: LowPreset[] };
@@ -36,3 +31,23 @@ export const ALCOHOL_THRESHOLDS: AlcoholThresholds = {
   withoutBound: without(data.default.without).bound,
   lowPct: low(data.default.low).maxPct,
 };
+
+/** The selectable lines with their evidence, and the ids of the defaults (data/alcohol-thresholds.json). */
+export const ALCOHOL_PRESETS: {
+  readonly without: readonly AlcoholPreset[];
+  readonly low: readonly AlcoholPreset[];
+  readonly default: { readonly without: string; readonly low: string };
+} = { without: data.presets.without, low: data.presets.low, default: data.default };
+
+/**
+ * The thresholds for chosen preset ids.
+ *
+ * @param withoutId - Id of a "without alcohol" preset; an unknown id means the default.
+ * @param lowId - Id of a low-ABV preset; an unknown id means the default.
+ * @returns The two lines in percent ABV after dilution, ready for `classifyAlcohol`.
+ */
+export function alcoholThresholds(withoutId?: string, lowId?: string): AlcoholThresholds {
+  const w = data.presets.without.find((x) => x.id === withoutId) ?? without(data.default.without);
+  const l = data.presets.low.find((x) => x.id === lowId) ?? low(data.default.low);
+  return { withoutPct: w.maxPct, withoutBound: w.bound, lowPct: l.maxPct };
+}

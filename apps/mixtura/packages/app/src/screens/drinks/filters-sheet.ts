@@ -5,6 +5,7 @@
 
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
+import type { AlcoholThresholds } from '@mixtura/engine';
 import type { Derived } from '../../stock/derived';
 import { strings } from '../../strings';
 import {
@@ -14,6 +15,7 @@ import {
   type FilterKey,
   type Filters,
 } from '../browse/filters';
+import { tallyAlcohol } from '../browse/alcohol';
 import type { BrowseModel, Option } from '../browse/model';
 import { STRENGTH_BANDS } from '../browse/strength';
 
@@ -32,6 +34,7 @@ interface Choice {
 function groups(
   model: BrowseModel,
   stock: Derived | undefined,
+  thresholds: AlcoholThresholds,
 ): { key: FilterKey; title: string; choices: Choice[]; hint?: string; disabled?: boolean }[] {
   const counts = model.templateCounts();
   const withCount = (name: string, count: number): string => `${name} (${count})`;
@@ -56,6 +59,15 @@ function groups(
       disabled: empty,
       hint: empty ? words.markStockFirst : undefined,
     },
+    {
+      key: 'alcohol',
+      title: strings.browse.groups.alcohol,
+      choices: [
+        { id: 'none', label: strings.browse.alcohol.none },
+        { id: 'low', label: strings.browse.alcohol.low },
+      ],
+      hint: alcoholHint(model, thresholds),
+    },
     { key: 'template', title: strings.browse.groups.template, choices: templates },
     { key: 'method', title: strings.browse.groups.method, choices: options(model.methodOptions()) },
     { key: 'base', title: strings.browse.groups.base, choices: options(model.baseOptions()) },
@@ -71,6 +83,16 @@ function groups(
         .join(' '),
     },
   ];
+}
+
+function alcoholHint(model: BrowseModel, t: AlcoholThresholds): string {
+  const a = strings.browse.alcohol;
+  const without =
+    t.withoutBound === 'upTo' && t.withoutPct === 0
+      ? 'exactly 0 %'
+      : `${t.withoutBound === 'below' ? 'below' : 'up to'} ${t.withoutPct} %`;
+  const tally = tallyAlcohol(model, model.drinks, t);
+  return `${a.hint(without, `up to ${t.lowPct} %`)} ${a.tally(tally.none, tally.low, tally.unknown)}`;
 }
 
 function chip(label: string, on: boolean, toggle: () => void, disabled = false): HTMLElement {
@@ -93,10 +115,11 @@ export function filtersSheet(
   filters: Filters,
   count: number,
   stock: Derived | undefined,
+  thresholds: AlcoholThresholds,
   actions: SheetActions,
 ): HTMLElement {
   const active = activeFilters(filters).length > 0;
-  const groupEls = groups(model, stock).map((group) =>
+  const groupEls = groups(model, stock, thresholds).map((group) =>
     h(
       'section',
       { class: 'sheet-group', 'aria-label': group.title },

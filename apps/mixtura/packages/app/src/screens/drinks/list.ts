@@ -20,9 +20,11 @@ import {
   withFilter,
   type Filters,
 } from '../browse/filters';
+import { alcoholOf, thresholdsFor, unknownGroups } from '../browse/alcohol';
 import type { BrowseModel } from '../browse/model';
 import { status } from '../status';
 import { filtersSheet } from './filters-sheet';
+import { unknownDetails } from './alcohol-unknown';
 import { drinkRow } from './row';
 import { incrementalRows } from './rows';
 import { hashWith, specHash } from './url';
@@ -77,6 +79,7 @@ function chipRow(context: ScreenContext, model: BrowseModel, filters: Filters): 
         : value === 'one'
           ? strings.browse.availability.one
           : strings.browse.availability.yes,
+    alcohol: (value) => strings.browse.alcohol.classWords[value] ?? value,
     base: strings.browse.baseChip,
   });
   if (chips.length === 0) return null;
@@ -121,7 +124,23 @@ export function drinksListPane(
   const filters = parseFilters(context.route.query);
   const stock = stockState(context);
   const derived = stock.kind === 'ready' ? deriveStock(model, stock.records) : undefined;
-  const hits = applyFilters(model, filters, model.drinks, derived?.states);
+  const thresholds = thresholdsFor(context.state.alcoholWithout, context.state.alcoholLow);
+  const hits = applyFilters(model, filters, model.drinks, derived?.states, thresholds);
+  // Drinks that match everything but the alcohol filter, and whose class is unknown.
+  const unclassified =
+    filters.alcohol === undefined
+      ? []
+      : unknownGroups(
+          model,
+          applyFilters(
+            model,
+            { ...filters, alcohol: undefined },
+            model.drinks,
+            derived?.states,
+          ).filter((d) => alcoholOf(model, d, thresholds).class === 'unknown'),
+          thresholds,
+        );
+  const unclassifiedCount = unclassified.reduce((n, g) => n + g.drinks.length, 0);
   const key = listKey(context.route);
   const sheetOpen = context.route.query.get('sheet') === 'filters';
 
@@ -154,6 +173,7 @@ export function drinksListPane(
                   specHash(drink.spec.lineageId, filters),
                   drink.spec.lineageId === selected,
                   derived?.states.get(drink.spec.id),
+                  filters.alcohol === undefined ? undefined : alcoholOf(model, drink, thresholds),
                 ),
               );
 
@@ -178,9 +198,10 @@ export function drinksListPane(
       { class: 'note list-count', role: 'status' },
       strings.browse.count(hits.length, model.drinks.length),
     ),
+    unclassifiedCount > 0 && unknownDetails(unclassified, unclassifiedCount, filters),
     ...rows,
     sheetOpen &&
-      filtersSheet(model, filters, hits.length, derived, {
+      filtersSheet(model, filters, hits.length, derived, thresholds, {
         apply: (next) => replace(context.store, hashWith(context.route, next)),
         close: () => closeSheet(context, filters),
       }),

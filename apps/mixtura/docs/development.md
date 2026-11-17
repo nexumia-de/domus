@@ -96,7 +96,7 @@ built app from a local static server in a fresh Chromium profile at both
 sizes and checks the four destinations, back navigation, touch targets, no
 horizontal overflow, the theme, a reload and a deep link with the network
 off, no request outside the origin, and the update flow with a second
-"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)). `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
+"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/alcohol.mjs` covers the alcohol filters and their presets ([screens](screens-browse.md#as-built-37-alcohol-filters)); `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)). `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
 `docs/screenshots/` at scale 2. Playwright (pinned, see
 [dependencies](dependencies.md)) uses its own browser; where that is not
 installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its

@@ -2,6 +2,7 @@
 // derive everything else. The route is the URL; preferences live in the
 // local store (store/), with a copy in prefs.ts for the first paint.
 
+import { ALCOHOL_PRESETS } from '@mixtura/engine';
 import { type DestId } from './destinations';
 import { parseHash, type Route } from './router';
 import { initialSpecView, type SpecView } from './screens/spec/session';
@@ -48,6 +49,9 @@ export interface AppState {
   route: Route;
   theme: Theme;
   units: Units;
+  /** Threshold presets of the alcohol filters, kept in Settings (ids of the engine's `ALCOHOL_PRESETS`). */
+  alcoholWithout: string;
+  alcoholLow: string;
   /** A new service worker is waiting; the banner offers the update. */
   update: 'none' | 'available';
   storage: StorageStatus;
@@ -79,6 +83,8 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
   return {
     route: parseHash(hash),
     ...prefs,
+    alcoholWithout: ALCOHOL_PRESETS.default.without,
+    alcoholLow: ALCOHOL_PRESETS.default.low,
     update: 'none',
     storage: { kind: 'opening' },
     seed: { kind: 'loading' },

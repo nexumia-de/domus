@@ -5,6 +5,7 @@ import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
 import type { Availability } from '../../stock/derived';
 import { strings } from '../../strings';
+import type { DrinkAlcohol } from '../browse/alcohol';
 import type { BrowseModel, Drink } from '../browse/model';
 
 export function drinkRow(
@@ -13,6 +14,7 @@ export function drinkRow(
   href: string,
   selected: boolean,
   availability?: Availability,
+  alcohol?: DrinkAlcohol,
 ): HTMLElement {
   const { spec } = drink;
   const template = spec.templateId ? model.templateById.get(spec.templateId) : undefined;
@@ -20,7 +22,10 @@ export function drinkRow(
   const second = [
     template?.name ?? strings.browse.noTemplate,
     abv === undefined ? strings.browse.abvNone : strings.browse.abvRow(abv),
-  ].join(' · ');
+    ...(alcohol ? [strings.browse.alcohol.classWords[alcohol.class] ?? ''] : []),
+  ]
+    .filter(Boolean)
+    .join(' · ');
   return h(
     'li',
     {},

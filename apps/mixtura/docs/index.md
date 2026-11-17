@@ -21,7 +21,7 @@ links. Change history is in [log.md](log.md).
 # Specifications
 
 - [Balance](balance.md) - Formulas, the balance engine module and its figures with unknowns, scaling and pre-diluted batches with shelf life, adjustable dilution model, computed usual ranges per root template, vector file format, worked examples and the evidence table (nothing verified yet; owner tasks listed).
-- [Ingredients](ingredients.md) - The ingredient module of the engine: tree validation, property inheritance with sources, prepared ingredients computed from their spec, substitution classes, swap candidates for Try a Swap, and the vectors that pin them.
+- [Ingredients](ingredients.md) - The ingredient module of the engine: tree validation, property inheritance with sources, prepared ingredients computed from their spec, substitution classes, swap candidates for Try a Swap, the tree with the source's real depth, and the vectors that pin them.
 - [What the stock allows](makeable.md) - Which specs the stock makes makeable (exact, hierarchy, prepared, substitutes, optional lines), missing one, and the unlock ranking with its tie-breaks, performance numbers and vectors.
 - [Units](units.md) - Every unit with exact value or convention, behaviour in balance, parsing grammar, display and rounding (pour precision for ml); table also in `packages/engine/data/units.json`.
 - [Templates](templates.md) - The six root templates as data, matching a spec to a template by roles and ratios with distance and a tie rule, the range check (within, below, above, unknown) and the evidence of every number (all assumptions).
@@ -47,7 +47,7 @@ links. Change history is in [log.md](log.md).
 # Behaviour and design
 
 - [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.
-- [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the sections "As built" say what #18, #19 and #20 do with the real seed data.
+- [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the sections "As built" say what #18, #19, #20 and the alcohol filters of #37 do with the real seed data.
 - [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family.
 - [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About; the section "As built" says what #30 and #33 do.
 - [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.

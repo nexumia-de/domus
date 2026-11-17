@@ -1,6 +1,6 @@
 // Builds and validates the ingredient tree from a flat list, and answers
 // questions about it (ancestors, descendants, isA, distance). Pure.
-import type { Id, Ingredient, Level, TreeError } from './types';
+import type { Id, Ingredient, TreeError } from './types';
 
 export interface IngredientTree {
   /** Ingredients by id. */
@@ -13,7 +13,6 @@ export interface IngredientTree {
 
 export type TreeResult = { ok: true; tree: IngredientTree } | { ok: false; errors: TreeError[] };
 
-const levelRank: Record<Level, number> = { category: 0, type: 1, product: 2 };
 const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 /** Finds each cycle once, starting at its smallest id, ids closing back on the first. */
@@ -50,7 +49,7 @@ function findCycles(byId: Map<Id, Ingredient>): TreeError[] {
  * Validates the list and builds the ingredient tree.
  *
  * @param list - Ingredients with ids, `parentId` links and levels; ABV in percent, sugar in g per 100 ml, acid in percent.
- * @returns The tree, or every error found: duplicate ids, missing parents, cycles, a child's level not below its parent's.
+ * @returns The tree, or every error found: duplicate ids, missing parents, cycles, a category below another node or any node below a product.
  */
 export function buildTree(list: readonly Ingredient[]): TreeResult {
   const errors: TreeError[] = [];
@@ -73,11 +72,11 @@ export function buildTree(list: readonly Ingredient[]): TreeResult {
         ids: [id, item.parentId],
         message: `${id} has parent ${item.parentId}, which does not exist`,
       });
-    } else if (levelRank[item.level] <= levelRank[parent.level]) {
+    } else if (item.level === 'category' || parent.level === 'product') {
       errors.push({
         code: 'level-order',
         ids: [id, item.parentId],
-        message: `${id} (${item.level}) must be below its parent ${item.parentId} (${parent.level})`,
+        message: `${id} (${item.level}) cannot be below ${item.parentId} (${parent.level}): a category is a root and a product has no children`,
       });
     }
   }

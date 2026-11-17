@@ -29,3 +29,15 @@ export interface AlcoholClassResult {
   /** The thresholds used. */
   thresholds: AlcoholThresholds;
 }
+
+/** One selectable line of `data/alcohol-thresholds.json`, with where it comes from. */
+export interface AlcoholPreset {
+  id: string;
+  /** The line in percent ABV after dilution. */
+  maxPct: number;
+  /** Only for "without alcohol" lines: `below` or `upTo` (0 means exactly 0). */
+  bound?: 'below' | 'upTo';
+  /** `read`, `secondary`, `derived` or `assumption, unverified`. */
+  evidence: string;
+  basis: string;
+}

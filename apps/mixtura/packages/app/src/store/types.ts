@@ -54,6 +54,10 @@ export interface Backup {
 export interface Settings {
   theme: Theme;
   units: Units;
+  /** Id of the "without alcohol" threshold preset (engine `ALCOHOL_PRESETS`). */
+  alcoholWithout: string;
+  /** Id of the low-ABV threshold preset. */
+  alcoholLow: string;
   backup: Backup;
 }
 

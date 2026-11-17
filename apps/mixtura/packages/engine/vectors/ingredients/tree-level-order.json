@@ -1,7 +1,7 @@
 {
   "id": "tree-level-order",
   "kind": "tree-errors",
-  "description": "A category below a product breaks \"a child level is lower than its parent level\".",
+  "description": "A product has no children, and a category is always a root. A type below a type is allowed (vector tree-deep).",
   "ingredients": [
     {
       "id": "rye",
@@ -11,12 +11,27 @@
     {
       "id": "spirit",
       "name": "Spirit",
-      "level": "category",
+      "level": "type",
       "parentId": "rye"
+    },
+    {
+      "id": "whiskey",
+      "name": "Whiskey",
+      "level": "type"
+    },
+    {
+      "id": "shelf",
+      "name": "Shelf",
+      "level": "category",
+      "parentId": "whiskey"
     }
   ],
   "expected": {
     "errors": [
+      {
+        "code": "level-order",
+        "ids": ["shelf", "whiskey"]
+      },
       {
         "code": "level-order",
         "ids": ["spirit", "rye"]

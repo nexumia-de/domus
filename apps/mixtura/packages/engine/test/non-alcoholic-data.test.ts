@@ -125,8 +125,11 @@ describe('thresholds', () => {
       [0.05, 'upTo'],
       [0, 'upTo'],
     ]);
-    expect(data.presets.low.map((p: any) => p.maxPct)).toEqual([1.2, 10]);
+    expect(data.presets.low.map((p: any) => p.maxPct)).toEqual([1.2, 10, 15]);
     expect(data.presets.low.find((p: any) => p.maxPct === 10).evidence).toBe(
+      'assumption, unverified',
+    );
+    expect(data.presets.low.find((p: any) => p.maxPct === 15).evidence).toBe(
       'assumption, unverified',
     );
     for (const group of [data.presets.without, data.presets.low]) {

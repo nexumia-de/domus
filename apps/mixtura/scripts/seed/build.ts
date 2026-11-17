@@ -26,7 +26,6 @@ export interface Report {
   counts: Record<string, number>;
   skipped: { id: string; reasons: string[] }[];
   skippedByReason: Record<string, number>;
-  reparented: { id: string; was: string; now?: string }[];
   unclassified: Record<string, string>;
   abvOmitted: string[];
   sugarOmitted: string[];
@@ -83,15 +82,9 @@ function buildIngredients(src: SourceData, pin: Pin, curated: Curated) {
     } as Ingredient;
   });
   list.sort(byId);
-  const reparented = [...placement]
-    .flatMap(([id, p]) =>
-      p.droppedParentId ? [{ id, was: p.droppedParentId, now: p.parentId }] : [],
-    )
-    .sort((a, b) => (a.id < b.id ? -1 : 1));
   return {
     list,
     roles,
-    reparented,
     abvOmitted: abvOmitted.sort(),
     sugarOmitted: sugarOmitted.sort(),
     classes,
@@ -214,7 +207,6 @@ export function buildSeed(
     },
     skipped: skipped.sort((a, b) => (a.id < b.id ? -1 : 1)),
     skippedByReason,
-    reparented: ing.reparented,
     unclassified: Object.fromEntries([...ing.roles.unclassified].sort()),
     abvOmitted: ing.abvOmitted,
     sugarOmitted: ing.sugarOmitted,
