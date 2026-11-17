@@ -2,6 +2,8 @@
 
 ## 2026-11-17
 
+- **Name check** (#44): [name check](name-check.md) with queries and dates for Flathub, F-Droid metadata, npm, PyPI, Docker Hub, Alpine and GitHub; trademark registers, app stores and domains not checked (hosts blocked); [name decision](decisions/app-name.md) consequences updated.
+- **Packaging study** (#42): [packaging](packaging.md) and the proposal [decision](decisions/packaging.md) (needs decision); follow-up issues #92 to #96; hosts in [development](development.md#hosts-for-the-packaging-study-and-the-name-check).
 - **Spec editor** (#25) and **referenced entities** (#61): routes `#/drinks/new` and `#/drinks/<id>/edit`, `screens/editor/` and components `line-row`, `amount-input`, `reorder`, `ingredient-picker`, `ingredient-form-sheet`; amounts as typed with the engine grammar, template slots, role per line, drag and keyboard reorder, drafts in the new store `drafts` (schema version 3), one save function behind a `SpecSaver` for #26, a copy of a built-in drink with `parentId` for #27, the user's ingredients and prepared ingredients (the balance now gets the prepared specs, so drinks using them are derived), deletes with Undo that are refused when referenced (`store/references.ts`, `StoreError` kind `referenced`); unit tests `editor-*.test.ts`, `store-references.test.ts`, end-to-end `e2e/editor.mjs`; see [as built](screens-specs.md#as-built-25).
 
 - **Buy Next wording**: "Any brand does the same: ..." became "Products that count as {type}: ..." and the tag "Type: any product of it will do" "Type: any product of it works", in [UI strings](ui-strings.md) and the screen.

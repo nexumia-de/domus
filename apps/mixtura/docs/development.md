@@ -252,3 +252,59 @@ www.cdc.gov
 `europepmc.org` answers 403 from the site itself. Of the others only
 `assets.publishing.service.gov.uk` was tried again (403); the rest were
 blocked in the first pass and not retried.
+
+## Hosts for the packaging study and the name check
+
+Tested on 2026-11-17 with `curl -sS -m 15 -o /dev/null -w '%{http_code}' https://<host>/`.
+Reachable and used (`git clone` for source and docs repositories, API
+calls for the registries):
+
+```
+github.com
+api.github.com
+gitlab.com
+gitlab.gnome.org
+f-droid.org
+developer.android.com
+flathub.org
+registry.npmjs.org
+pypi.org
+hub.docker.com
+pkgs.alpinelinux.org
+```
+
+Blocked (403 from the proxy or no resolution) and not retried; each would
+have settled an open point:
+
+```
+developer.chrome.com
+docs.github.com
+www.pwabuilder.com
+capacitorjs.com
+v2.tauri.app
+www.electronjs.org
+webkitgtk.org
+wiki.gnome.org
+play.google.com
+apps.apple.com
+tmsearch.euipo.europa.eu
+tmview.europa.eu
+register.dpma.de
+tmsearch.uspto.gov
+branddb.wipo.int
+rdap.org
+whois.denic.de
+packages.debian.org
+packages.ubuntu.com
+aur.archlinux.org
+repology.org
+snapcraft.io
+search.f-droid.org
+```
+
+`developer.chrome.com` has the Trusted Web Activity pages, `docs.github.com`
+the Pages, secrets and fork rules, the trademark and store hosts the name
+check ([name check](name-check.md#not-checked)). `crates.io` answered 403
+and `search.nixos.org` 401. Tool documentation was read from the tools'
+source repositories instead; `f-droid.org/docs/Inclusion_Policy/` came
+through the fetch tool as a summary.

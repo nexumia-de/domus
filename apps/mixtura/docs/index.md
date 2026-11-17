@@ -18,6 +18,9 @@ links. Change history is in [log.md](log.md).
 - [How bartenders work](bartender-practice.md) - Templates and ratios, balance as numbers, how drinks are developed, pairing, non-alcoholic drinks, operations; what a tool should do and the data model that follows.
 - [Non-alcoholic and low-ABV drinks](non-alcoholic.md) - What ethanol does and what replaces it, ingredient classes with data-model properties, template carry-over, low-ABV bases, shelf life and food safety, legal terms in the EU, Germany, UK and US checked against primary texts, proposed filter thresholds, and as built: classes, thresholds, the alcohol class and the seed counts; every number with its evidence status.
 
+- [Packaging](packaging.md) - Study of Android (installed PWA, Trusted Web Activity, PWABuilder, Capacitor, Tauri) and Linux/Phosh (installed web apps, WebKitGTK Flatpak shell, Tauri, Electron): needs, licences, storage, signing, store policy, device test plan, risks.
+- [Name check](name-check.md) - Search of stores and registries for Mixtura and Drink Builder with queries and dates, the trademark and domain checks that were blocked, and a plain risk assessment (not legal advice).
+
 # Specifications
 
 - [Balance](balance.md) - Formulas, the balance engine module and its figures with unknowns, scaling and pre-diluted batches with shelf life, adjustable dilution model, computed usual ranges per root template, vector file format, worked examples and the evidence table (nothing verified yet; owner tasks listed).
@@ -34,6 +37,7 @@ links. Change history is in [log.md](log.md).
 - [Two apps, one engine](decisions/two-apps-one-engine.md) - Bar and kitchen are separate apps; shared code moves out when the second app needs it; the bar app comes first.
 - [Stored unit versus display unit](decisions/units-and-display.md) - Amounts stored as entered, computed in ml and g, display system a setting; default metric proposed, needs owner decision.
 - [Counted units, open amounts and the glass volume](decisions/counted-units.md) - Counted units are units without a table volume; volume only as data (`unitVolumes`, `topMl`), otherwise a line is listed as not counted; no glass volume; batches round counts up.
+- [Packaging for Android and Linux](decisions/packaging.md) - Proposal, needs decision: Capacitor APK on GitHub Releases after a device test, web apps on Linux first, Flatpak shell only if needed, no TWA.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
 
 # Reference
