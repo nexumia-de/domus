@@ -606,7 +606,7 @@ the app passes today's date from the device (`src/today.ts`).
   life) and never stored. The engine's makeable does not read the date: a
   batch past its date is still "in stock" for the stock rules; the app says
   so in words. "I made this" on the spec screen
-  replaces the date of the newest batch. Several batches with their own dates
+  adds a batch and "Used up" uses up the newest. Several batches with their own dates
   are kept from #101 on: the further dates are `moreBatches` on the same
   stock record, shown and changed on the Stock screen
   ([as built](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)).

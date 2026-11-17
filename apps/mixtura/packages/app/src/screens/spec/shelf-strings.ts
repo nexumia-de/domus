@@ -19,6 +19,9 @@ export const shelfStrings = {
     `Past the date you set by ${days} ${days === 1 ? 'day' : 'days'}. Check it before you use it.`,
   unknown: 'No shelf life entered, so no date to compare.',
   invalid: 'The made-on date is not a date.',
+  alreadyRecorded: 'A batch made on that day is already recorded.',
+  otherBatches: (n: number) =>
+    `${n} more ${n === 1 ? 'batch' : 'batches'} at hand, see Stock. This card shows the newest.`,
   madeThis: 'I made this',
   madeThisAria: (name: string) => `I made ${name} today`,
   otherDay: 'Made on another day',

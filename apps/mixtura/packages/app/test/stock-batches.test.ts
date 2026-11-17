@@ -9,8 +9,10 @@ import {
   addBatch,
   batchDates,
   batchesOf,
+  madeBatch,
   nearDate,
   removeBatch,
+  usedUpNewest,
   withBatchDates,
 } from '../src/stock/batches';
 import type { StockRecords } from '../src/stock/state';
@@ -165,6 +167,43 @@ describe('batches near their date', () => {
     expect(nearDate(tree, preparedSpecs, records, '2026-11-13').map((e) => e.id)).toEqual(['mine']);
     expect(nearDate(tree, preparedSpecs, records, '2026-11-18')[0]!.batches[0]).toMatchObject({
       status: 'past',
+    });
+  });
+});
+
+describe('the spec screen: I made this and Used up', () => {
+  test('I made this adds a batch, keeps the previous one, and says no to a day already there', () => {
+    const first = madeBatch(undefined, 'mine', '2026-11-10')!;
+    expect(first).toEqual(stock('mine', '2026-11-10'));
+    const second = madeBatch(first, 'mine', '2026-11-15')!;
+    expect(second).toEqual(stock('mine', '2026-11-15', ['2026-11-10']));
+    expect(madeBatch(second, 'mine', '2026-11-10')).toBeNull();
+  });
+
+  test('Used up uses up the newest and the next one is shown; the last leaves nothing behind', () => {
+    const two = stock('mine', '2026-11-15', ['2026-11-10']);
+    const one = usedUpNewest(two, 'mine');
+    expect(one).toEqual(stock('mine', '2026-11-10'));
+    expect(usedUpNewest(one, 'mine')).toEqual(stock('mine', undefined, undefined, false));
+    expect(usedUpNewest(undefined, 'mine')).toEqual(stock('mine', undefined, undefined, false));
+  });
+
+  test('no stale date comes back after the last batch was used up', () => {
+    const out = usedUpNewest(stock('mine', '2026-11-15', ['2026-11-10']), 'mine');
+    const none = usedUpNewest(out, 'mine');
+    expect(madeBatch(none, 'mine', '2026-11-20')).toEqual(stock('mine', '2026-11-20'));
+  });
+
+  test('a note and the best-before date stay through every transition', () => {
+    const rec = {
+      ...stock('mine', '2026-11-15', ['2026-11-10']),
+      note: 'n',
+      bestBefore: '2026-12-01',
+    };
+    expect(usedUpNewest(rec, 'mine')).toMatchObject({ note: 'n', bestBefore: '2026-12-01' });
+    expect(madeBatch(rec, 'mine', '2026-11-20')).toMatchObject({
+      note: 'n',
+      bestBefore: '2026-12-01',
     });
   });
 });

@@ -114,3 +114,23 @@ export function nearDate(
       (a.batches[0]?.daysLeft ?? 0) - (b.batches[0]?.daysLeft ?? 0) || a.name.localeCompare(b.name),
   );
 }
+
+/**
+ * What "I made this" on the spec screen does: a batch made on `date` is added
+ * to the batches at hand; null when that day is already recorded.
+ */
+export function madeBatch(record: Stock | undefined, id: string, date: string): Stock | null {
+  const base = record ?? { ingredientId: id, present: false };
+  return batchDates(base).includes(date) ? null : addBatch(base, date);
+}
+
+/**
+ * What "Used up" on the spec screen does: the batch the card shows, the
+ * newest (`openedOn`), is used up and the card shows the next one. The last
+ * batch leaves the ingredient as "Out" with no date.
+ */
+export function usedUpNewest(record: Stock | undefined, id: string): Stock {
+  const base = record ?? { ingredientId: id, present: false };
+  const [newest] = batchDates(base);
+  return newest === undefined ? withBatchDates(base, []) : removeBatch(base, newest);
+}
