@@ -1,0 +1,35 @@
+{
+  "id": "match-highball-equal-parts",
+  "kind": "match",
+  "description": "Spirit and mixer in equal parts (the 1944 description of the Screwdriver as half vodka, half orange juice): 60 ml whiskey, 60 ml soda. Working: mixer 2 x 60 / 60 = 2 parts, equal to the new minimum 2 (it was below the old minimum 4); distance 0.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 60,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates; the band edge is sourced as stated in docs/templates.md#evidence"
+}

@@ -1,75 +1,77 @@
-// Types of the specs module: comparing two versions of a drink and building
-// the family of a drink (docs/screens-specs.md, docs/engine.md). Only the
-// fields the functions read are named, so a stored spec fits as it is.
+// Types of the specs module: comparing two versions of a spec and building
+// its family (docs/screens-specs.md, docs/engine.md). Only the fields the
+// functions read are named, so a stored spec fits as it is. The drink
+// fields (`topMl`, `method`, `glass`, `garnish`) are in drink-specs/types.ts.
 
-/** The part of a spec line a comparison reads. */
-export interface DiffLine {
+/** The general part of a spec line a comparison reads; a domain adds its own amount fields. */
+export interface VersionLine {
   ingredientId: string;
   amount: number;
   amountMax?: number;
   unit: string;
-  /** Volume in ml of a `top` line. */
-  topMl?: number;
   role?: string;
   optional?: boolean;
   note?: string;
   substitutes?: readonly { ingredientId: string; amount?: number; unit?: string }[];
 }
 
-/** The part of a spec a comparison reads. */
-export interface DiffSpec {
+/** The general part of a spec a comparison reads; a domain adds its own fields. */
+export interface VersionSpec<L extends VersionLine = VersionLine> {
   name?: string;
   templateId?: string;
-  lines: readonly DiffLine[];
-  method?: string;
-  glass?: string;
-  garnish?: string;
+  lines: readonly L[];
   notes?: string;
 }
 
 /** What differs on a line that exists on both sides. */
 export type LineField = 'ingredient' | 'amount' | 'role' | 'optional' | 'note' | 'substitutes';
 
-export interface LineDiff {
+export interface LineDiffOf<L extends VersionLine = VersionLine> {
   kind: 'added' | 'removed' | 'changed';
   /** The line in the older spec; absent when added. */
-  before?: DiffLine;
+  before?: L;
   /** The line in the newer spec; absent when removed. */
-  after?: DiffLine;
+  after?: L;
   /** What differs, for `changed` only. */
   fields: LineField[];
 }
 
-export type SpecField = 'name' | 'template' | 'method' | 'glass' | 'garnish' | 'notes';
-
-export interface FieldDiff {
-  field: SpecField;
+export interface FieldDiffOf<F extends string = string> {
+  field: F;
   /** The value in the older spec; absent when it had none. */
   before?: string;
   /** The value in the newer spec; absent when it has none. */
   after?: string;
 }
 
-export interface SpecDiff {
-  lines: LineDiff[];
-  fields: FieldDiff[];
+export interface SpecDiffOf<L extends VersionLine = VersionLine, F extends string = string> {
+  lines: LineDiffOf<L>[];
+  fields: FieldDiffOf<F>[];
   /** True when nothing differs (a different order of lines is no difference). */
   empty: boolean;
 }
 
-export interface DiffOptions {
+export interface DiffOptionsOf<L extends VersionLine = VersionLine> {
   /** The role of a line, so a replaced ingredient in the same role reads as a change of that line. */
-  roleOf?: (line: DiffLine) => string | undefined;
+  roleOf?: (line: L) => string | undefined;
+}
+
+/** What a domain compares beside the lines: its spec fields in order, and extra amount fields of a line. */
+export interface DiffDomain<L extends VersionLine, S extends VersionSpec<L>, F extends string> {
+  /** Spec fields with how to read each, in the order they are reported. */
+  fields: readonly (readonly [F, (s: S) => string | undefined])[];
+  /** Line fields that count as part of the amount beside `amount`, `amountMax` and `unit` (drinks: `topMl`). */
+  amountKeys: readonly (keyof L)[];
 }
 
 /** One entry of the list of changes of a riff. */
-export type RiffChangeItem =
-  { type: 'line'; line: LineDiff } | { type: 'field'; change: FieldDiff };
+export type RiffChangeItemOf<L extends VersionLine = VersionLine, F extends string = string> =
+  { type: 'line'; line: LineDiffOf<L> } | { type: 'field'; change: FieldDiffOf<F> };
 
-export interface RiffChange {
+export interface RiffChangeOf<L extends VersionLine = VersionLine, F extends string = string> {
   /** Number of entries: every changed, added or removed line counts once. */
   count: number;
-  items: RiffChangeItem[];
+  items: RiffChangeItemOf<L, F>[];
 }
 
 /** The part of a spec the family reads. */

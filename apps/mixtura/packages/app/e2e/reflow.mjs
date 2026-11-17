@@ -75,7 +75,7 @@ const site = await serve();
 const browser = await launch();
 const problems = [];
 for (const [label, width, height, text] of sizes) {
-  const context = await browser.newContext({ viewport: { width, height } });
+  const context = await browser.newContext({ viewport: { width, height }, bypassCSP: true });
   const page = await context.newPage();
   page.on('pageerror', (error) => {
     throw error;

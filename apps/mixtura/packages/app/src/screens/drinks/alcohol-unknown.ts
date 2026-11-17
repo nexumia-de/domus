@@ -6,12 +6,14 @@ import { h } from '../../dom';
 import { strings } from '../../strings';
 import type { UnknownGroup } from '../browse/alcohol';
 import type { Filters } from '../browse/filters';
+import type { SortId } from '../browse/sort';
 import { specHash } from './url';
 
 export function unknownDetails(
   groups: readonly UnknownGroup[],
   total: number,
   filters: Filters,
+  sort?: SortId,
 ): HTMLElement {
   const words = strings.browse.alcohol;
   return h(
@@ -37,7 +39,7 @@ export function unknownDetails(
               {},
               h(
                 'a',
-                { href: specHash(drink.spec.lineageId, filters) },
+                { href: specHash(drink.spec.lineageId, filters, sort) },
                 words.unknownDrink(drink.spec.name, ingredients),
               ),
             ),

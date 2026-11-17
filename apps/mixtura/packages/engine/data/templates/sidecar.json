@@ -19,9 +19,9 @@
     {
       "id": "liqueur",
       "role": "modifier",
-      "minParts": 0.38,
+      "minParts": 0.25,
       "maxParts": 1.5,
-      "note": "3/4 oz liqueur in the place of the syrup"
+      "note": "3/4 oz liqueur in the place of the syrup; down to 0.25 parts as in Embury's 8 : 2 : 1 sour"
     }
   ],
   "slotEvidence": "assumption",
@@ -44,6 +44,6 @@
   "source": {
     "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified: no primary source was read for the slot ratios, the nominal spec or the dilution; only the juice acid that enters the acid range (lime 4.58, lemon 4.80 g per 100 ml, Penniston et al. 2008) was read; see docs/templates.md#evidence."
+    "note": "Assumption, unverified for the nominal slot ratios; the lower edge of the liqueur slot (0.25) is Embury's 1 part sweet to 8 parts base as cited on Wikipedia (secondary); see docs/templates.md#evidence."
   }
 }

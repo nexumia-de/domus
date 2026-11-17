@@ -39,6 +39,7 @@ links. Change history is in [log.md](log.md).
 - [Stored unit versus display unit](decisions/units-and-display.md) - Amounts stored as entered, computed in ml and g, display system a setting; default metric proposed, needs owner decision.
 - [Counted units, open amounts and the glass volume](decisions/counted-units.md) - Counted units are units without a table volume; volume only as data (`unitVolumes`, `topMl`), otherwise a line is listed as not counted; no glass volume; batches round counts up.
 - [Packaging for Android and Linux](decisions/packaging.md) - Proposal, needs decision: Capacitor APK on GitHub Releases after a device test, web apps on Linux first, Flatpak shell only if needed, no TWA.
+- [Hosting](decisions/hosting.md) - Proposed on the owner's direction: Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages; real headers, correct caching, a preview per pull request.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
 - [Where the shared model lives](decisions/shared-model.md) - Proposal, needs decision: a new repository with an npm package consumed by git tag and built by `prepare`; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
 
@@ -64,5 +65,6 @@ links. Change history is in [log.md](log.md).
 - [Accessibility pass](accessibility.md) - The browser checks on every screen at both sizes in light and dark (names, focus, order, headings, landmarks, fields, targets, contrast, reduced motion, 200 % zoom), what they found and fixed, the open findings.
 - [Screenshots](screenshots.md) - The current screens at 360x720 and 1200x800 in light and dark, how to regenerate them, and the mock-up pictures kept apart.
 - [Development](development.md) - Setup, commands, layout, the app shell and how to add a screen, service worker and update flow, e2e test, the engine's purity rule, the CI jobs and the hosts the research needed.
+- [Deployment](deployment.md) - Where the app is hosted (Cloudflare Workers static assets at mixtura.nexumia.de; GitHub Pages until the move is confirmed), the `_headers` file and the caching of each file, the deploy job with and without secrets, the owner's one-time steps with the exact token permission, what was verified.
 - [Install](install.md) - Public address, how to install on Android, Linux desktop and a Phosh phone (browser support from MDN, device steps marked as unchecked), updates, offline use, where the data lives, removal, and the owner's steps to switch on GitHub Pages.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

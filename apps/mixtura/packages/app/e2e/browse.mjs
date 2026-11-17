@@ -197,11 +197,11 @@ await sheet.waitFor();
 expect((await hash()).includes('sheet=filters'), 'the sheet is part of the address');
 await page.getByRole('button', { name: /^Martini \(\d+\)/ }).click();
 await inHash('template=martini');
-expect((await count()) === '57', 'the Martini template filter shows its 57 drinks');
+expect((await count()) === '104', 'the Martini template filter shows its 104 drinks');
 await page.getByRole('button', { name: /^Gin \(\d+\)/ }).click();
 await inHash('base=gin');
 const martiniGin = Number(await count());
-expect(martiniGin > 0 && martiniGin < 57, `combined filters narrow the result (${martiniGin})`);
+expect(martiniGin > 0 && martiniGin < 104, `combined filters narrow the result (${martiniGin})`);
 await page.getByRole('button', { name: '30 % ABV and over' }).click();
 t0 = Date.now();
 await inHash('strength=ge30');
@@ -362,7 +362,7 @@ expect(
   'variants sit under their parent',
 );
 expect(
-  templateRows[0].includes('Base, Sour, Sweet') && templateRows[0].includes('24 drinks'),
+  templateRows[0].includes('Base, Sour, Sweet') && templateRows[0].includes('25 drinks'),
   'a row has roles and the number of drinks',
 );
 await docShot('templates');
@@ -386,7 +386,7 @@ await page.locator('.slots').waitFor();
 expect((await hash()) === '#/templates/daiquiri', 'Back returns to the template');
 await page.getByRole('link', { name: 'Show in Drinks' }).click();
 await page.locator('.list-count').waitFor();
-await waitCount(24);
+await waitCount(25);
 expect(
   (await hash()) === '#/drinks?template=daiquiri',
   'Show in Drinks filters the list to the template',
@@ -448,6 +448,59 @@ for (const want of [
 }
 await noOverflow('with the batch sheet open');
 await docShot('spec-batch');
+
+// A batch for a volume, and more than 12 drinks (#80).
+const batchDialog = page.getByRole('dialog');
+const field = batchDialog.getByLabel(/^(Number of drinks|Target volume)$/);
+const setField = async (text) => {
+  await field.fill(text);
+  await field.press('Enter');
+};
+await batchDialog.getByRole('button', { name: 'Volume', exact: true }).click();
+await page.waitForFunction(() => location.hash.includes('volume=530'));
+expect(
+  (await batchDialog.innerText()).includes('Batch of 530 ml'),
+  "Volume starts from today's batch (4 drinks make 530 ml)",
+);
+await setField('1 l');
+await page.waitForFunction(() => location.hash.includes('volume=1000'));
+const volumeText = await batchDialog.innerText();
+for (const want of ['Batch of 1000 ml', 'Servings', '7.6 of 131 ml', 'Pour per serving']) {
+  expect(volumeText.includes(want), `the volume batch says "${want}"`);
+}
+await noOverflow('with the volume batch');
+await targets('in the batch sheet');
+await docShot('spec-batch-volume');
+await shot('spec-batch-volume');
+await setField('abc');
+expect(
+  (await batchDialog.getByRole('alert').innerText()).includes('Enter a volume above 0'),
+  'a volume that is not one is said under the field',
+);
+expect((await field.inputValue()) === 'abc', 'and the typed text stays');
+expect((await hash()).includes('volume=1000'), 'the address is unchanged');
+await setField('50');
+await page.waitForFunction(() => location.hash.includes('volume=50'));
+expect(
+  (await batchDialog.innerText()).includes('less than one serving'),
+  'a volume below one serving says so',
+);
+await batchDialog.getByRole('button', { name: 'Drinks', exact: true }).click();
+await page.waitForFunction(() => !location.hash.includes('volume='));
+expect((await hash()).includes('servings=4'), 'Drinks brings the number of drinks back');
+await setField('40');
+await page.waitForFunction(() => location.hash.includes('servings=40'));
+expect(
+  (await batchDialog.innerText()).includes('Batch of 40 drinks'),
+  'the sheet makes a batch of more than 12 drinks',
+);
+await setField('201');
+expect(
+  (await batchDialog.getByRole('alert').innerText()).includes('whole number'),
+  'more than 200 drinks is refused',
+);
+await setField('4');
+await page.waitForFunction(() => location.hash.includes('servings=4'));
 await page.getByRole('button', { name: 'Close the batch' }).click();
 await page.locator('[data-sheet]').waitFor({ state: 'detached' });
 expect(!(await hash()).includes('sheet='), 'closing the sheet leaves the address of the drink');

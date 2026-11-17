@@ -1,7 +1,7 @@
 {
   "id": "near-highball-little-mixer",
   "kind": "match",
-  "description": "Near miss: 60 ml spirit with 30 ml soda is 1 part, below 4: distance 0.75.",
+  "description": "Near miss: 60 ml spirit with 30 ml soda is 1 part, below 2: distance (2 - 1) / 2 = 0.5.",
   "lines": [
     {
       "ingredientId": "whiskey",
@@ -19,7 +19,7 @@
     "candidates": {
       "highball": {
         "fits": false,
-        "distance": 0.75,
+        "distance": 0.5,
         "ratios": {
           "mixer": "below"
         }

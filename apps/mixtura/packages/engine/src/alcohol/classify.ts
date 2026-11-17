@@ -2,8 +2,8 @@
 // unknown against thresholds that are passed in as data (docs/non-alcoholic.md).
 // Pure: it reads the balance figures and, for lines balance did not count, the tree.
 import type { BalanceFigures } from '../balance/types';
-import { resolveProperty } from '../ingredients/properties';
-import type { IngredientTree } from '../ingredients/tree';
+import { resolveProperty } from '../drink-ingredients/properties';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { ALCOHOL_THRESHOLDS } from './data';
 import type { AlcoholClassResult, AlcoholThresholds } from './types';
 

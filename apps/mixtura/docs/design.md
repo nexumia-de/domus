@@ -276,7 +276,9 @@ checked at 360 × 720 and at 1200 × 800, in light and in dark.
 Placeholder icons, replaced when the owner decides the look (open question
 on the accent). Source `packages/app/src/icons/icon.svg` (white coupe glass on the proposed copper
 `#9a4a12`, rounded square) and `icon-maskable.svg` (full-bleed square, glass inside the 80 %
-safe zone). `node packages/app/e2e/make-icons.mjs` renders `icon-192.png`, `icon-512.png`
-and `icon-maskable-512.png` with Playwright; the PNGs are committed. The manifest's
+safe zone) and `icon-monochrome.svg` (the glass alone, black on transparent, same
+safe zone, for themed icons: manifest purpose `monochrome`). `node
+packages/app/e2e/make-icons.mjs` renders `icon-192.png`, `icon-512.png`,
+`icon-maskable-512.png` and `icon-monochrome-512.png` with Playwright; the PNGs are committed. The manifest's
 `theme_color` and `background_color` are `--bg` of the light theme (`#faf8f5`); `index.html`
 adds `theme-color` meta tags for light and dark.

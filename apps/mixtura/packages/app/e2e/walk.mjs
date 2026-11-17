@@ -63,10 +63,21 @@ expect(true, 'the service worker controls the page');
 // The four destinations, in order, as bottom navigation or rail.
 const labels = await page.locator('nav.nav a').allInnerTexts();
 expect(labels.join() === 'Drinks,Templates,Stock,Settings', 'four destinations in order');
-const box = await page.locator('nav.nav').boundingBox();
+// Measured inside the page: a late redraw replaces the element, and a locator's
+// boundingBox() answers null for the one it lost (seen on a slow CI runner).
+const box = await page.evaluate(() => {
+  const r = document.querySelector('nav.nav').getBoundingClientRect();
+  return { x: r.x, y: r.y, width: r.width, height: r.height };
+});
 expect(phone ? box.y > height / 2 : box.x === 0 && box.width === 88, 'bottom bar or rail');
-for (const link of await page.locator('nav.nav a').all()) {
-  const size = await link.boundingBox();
+const linkSizes = await page.locator('nav.nav a').evaluateAll((links) =>
+  links.map((a) => {
+    const r = a.getBoundingClientRect();
+    return { width: r.width, height: r.height };
+  }),
+);
+expect(linkSizes.length === 4, 'four navigation targets are measured');
+for (const size of linkSizes) {
   expect(size.width >= 44 && size.height >= 44, 'navigation target is at least 44 x 44');
 }
 await shot('shell');

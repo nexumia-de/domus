@@ -1,5 +1,5 @@
 // The service worker: keeps the app's files at install and answers every
-// request from them, never from the network. A new build has a new cache
+// request from them, never from the network (the install fetches bypass the HTTP cache). A new build has a new cache
 // name (build.mjs, from a hash of the files), so its files replace the old
 // ones together. A new worker waits until the page sends 'skip-waiting',
 // which the page does only when the user taps Update.
@@ -29,7 +29,11 @@ interface Worker {
 const worker = self as unknown as Worker;
 
 worker.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(APP_CACHE).then((cache) => cache.addAll(APP_FILES)));
+  // `cache: 'reload'` skips the HTTP cache: a host that serves the fixed file
+  // names with max-age (GitHub Pages: 600 s) must not hand an old file to the
+  // new worker, which would store it under the new cache name.
+  const requests = APP_FILES.map((file) => new Request(file, { cache: 'reload' }));
+  event.waitUntil(caches.open(APP_CACHE).then((cache) => cache.addAll(requests)));
 });
 
 worker.addEventListener('activate', (event) => {
@@ -47,6 +51,18 @@ worker.addEventListener('message', (event) => {
   if (event.data === 'skip-waiting') void worker.skipWaiting();
 });
 
+// A host may redirect a precached address (Cloudflare Workers static assets:
+// /index.html to /). A navigation must not be answered with a redirected
+// response (the browser refuses it), so the copy is rebuilt without the flag.
+const plain = (response: Response) =>
+  response.redirected
+    ? new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      })
+    : response;
+
 worker.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
@@ -54,7 +70,13 @@ worker.addEventListener('fetch', (event) => {
       const hit =
         (await cache.match(event.request, { ignoreSearch: true })) ??
         (event.request.mode === 'navigate' ? await cache.match('index.html') : undefined);
-      return hit ?? Response.error();
+      if (hit) return plain(hit);
+      // The manifest's install-dialog screenshots are not precached (build.mjs):
+      // they come from the network when online, and are simply missing offline.
+      if (new URL(event.request.url).pathname.includes('/screenshots/')) {
+        return fetch(event.request).catch(() => Response.error());
+      }
+      return Response.error();
     }),
   );
 });

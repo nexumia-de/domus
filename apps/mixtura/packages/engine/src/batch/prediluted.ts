@@ -10,7 +10,7 @@ import {
   type BalanceOptions,
   type BalanceSpec,
 } from '../balance/index';
-import type { IngredientTree } from '../ingredients/tree';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { countedVolume } from '../ingredients/unit-volumes';
 import { roundCount, scaleLines, type ScaleOptions } from './scale';
 import { shelfLife } from './shelf';

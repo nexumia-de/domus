@@ -4,10 +4,12 @@
 // the current entry, so Back leaves the list instead of undoing keystrokes.
 
 import * as glyph from '../../components/glyphs';
+import { menuButton } from '../../components/menu-button';
 import { searchField } from '../../components/search-field';
 import { h } from '../../dom';
 import { back, go, replace } from '../../navigation';
 import { type ScreenContext } from '../../screen';
+import { formatHash } from '../../router';
 import { listKey } from '../../shell/scroll';
 import { deriveStock } from '../../stock/derived';
 import { stockState } from '../../stock/state';
@@ -23,31 +25,19 @@ import {
 } from '../browse/filters';
 import { alcoholOf, thresholdsFor, unknownGroups } from '../browse/alcohol';
 import type { BrowseModel } from '../browse/model';
+import { parseSort, sortDrinks, SORT_IDS, sortParams, type SortId } from '../browse/sort';
 import { status } from '../status';
+import { whileHere } from '../still-here';
 import { filtersSheet } from './filters-sheet';
 import { unknownDetails } from './alcohol-unknown';
 import { drinkRow } from './row';
 import { incrementalRows } from './rows';
+import { installDrinksKeys } from './shortcuts';
 import { hashWith, specHash } from './url';
 
 let sheetWasOpen = false;
-let shortcut = false;
 
 const wide = (): boolean => window.matchMedia('(min-width: 840px)').matches;
-
-/** `/` focuses the search field when no field has focus (docs/behaviour.md#interaction-rules). */
-function installShortcut(): void {
-  if (shortcut) return;
-  shortcut = true;
-  document.addEventListener('keydown', (event) => {
-    const target = event.target as HTMLElement | null;
-    if (event.key !== '/' || target?.closest('input, textarea, select')) return;
-    const field = document.querySelector<HTMLElement>('[data-focus="search"]');
-    if (!field) return;
-    event.preventDefault();
-    field.focus();
-  });
-}
 
 function filtersButton(context: ScreenContext, filters: Filters): HTMLElement {
   const n = activeFilters(filters).length;
@@ -69,6 +59,24 @@ function filtersButton(context: ScreenContext, filters: Filters): HTMLElement {
     glyph.filter(),
     n > 0 && String(n),
   );
+}
+
+/** The sort menu: the order is the `sort` parameter of the address; Name is the default and has none. */
+function sortMenu(context: ScreenContext, sort: SortId): HTMLElement {
+  const words = strings.browse.sort;
+  return menuButton({
+    label: words.button(words.words[sort]),
+    menuLabel: words.menu,
+    focusKey: 'sort',
+    icon: glyph.sort(),
+    items: SORT_IDS.map((id) => ({ id, label: words.words[id], checked: id === sort })),
+    onSelect: (id) => {
+      const query = new URLSearchParams(context.route.query);
+      query.delete('sort');
+      for (const [key, value] of sortParams(id as SortId)) query.set(key, value);
+      replace(context.store, formatHash(context.route.path, query));
+    },
+  });
 }
 
 function chipRow(context: ScreenContext, model: BrowseModel, filters: Filters): HTMLElement | null {
@@ -125,13 +133,18 @@ export function drinksListPane(
   model: BrowseModel,
   selected?: string,
 ): { title: string; body: Node; action: Node } {
-  installShortcut();
+  installDrinksKeys(context.store);
   const filters = parseFilters(context.route.query);
   const stock = stockState(context);
   const derived = stock.kind === 'ready' ? deriveStock(model, stock.records) : undefined;
   const thresholds = thresholdsFor(context.state.alcoholWithout, context.state.alcoholLow);
   const pool = poolOf(model, filters);
-  const hits = applyFilters(model, filters, pool, derived?.states, thresholds);
+  const sort = parseSort(context.route.query);
+  const hits = sortDrinks(
+    model,
+    applyFilters(model, filters, pool, derived?.states, thresholds),
+    sort,
+  );
   // Drinks that match everything but the alcohol filter, and whose class is unknown.
   const unclassified =
     filters.alcohol === undefined
@@ -147,6 +160,8 @@ export function drinksListPane(
   const key = listKey(context.route);
   const sheetOpen = context.route.query.get('sheet') === 'filters';
 
+  // The list's one tab stop: the open drink, else the first one.
+  const tabStop = hits.find((d) => d.spec.lineageId === selected) ?? hits[0];
   const waitingForStock = filters.makeable !== undefined && stock.kind === 'loading';
   const noStock =
     filters.makeable !== undefined && derived !== undefined && derived.states.size === 0;
@@ -173,10 +188,11 @@ export function drinksListPane(
                 drinkRow(
                   model,
                   drink,
-                  specHash(drink.spec.lineageId, filters),
+                  specHash(drink.spec.lineageId, filters, sort),
                   drink.spec.lineageId === selected,
                   derived?.states.get(drink.spec.id),
                   filters.alcohol === undefined ? undefined : alcoholOf(model, drink, thresholds),
+                  drink === tabStop,
                 ),
               );
 
@@ -191,8 +207,14 @@ export function drinksListPane(
         label: strings.browse.searchLabel,
         hint: strings.browse.searchHint,
         clearLabel: strings.browse.clearSearch,
-        onChange: (q) => replace(context.store, hashWith(context.route, { ...filters, q })),
+        // Lands 200 ms after the last key: only while this screen is still the address,
+        // and against the address as it is by then.
+        onChange: (q) =>
+          whileHere(context, (now) =>
+            replace(context.store, hashWith(now, { ...parseFilters(now.query), q })),
+          ),
       }),
+      sortMenu(context, sort),
       filtersButton(context, filters),
     ),
     chipRow(context, model, filters),
@@ -201,7 +223,9 @@ export function drinksListPane(
       { class: 'note list-count', role: 'status' },
       strings.browse.count(hits.length, model.drinks.length),
     ),
-    unclassifiedCount > 0 && unknownDetails(unclassified, unclassifiedCount, filters),
+    sort !== 'name' &&
+      h('p', { class: 'note' }, strings.browse.sort.sortedBy(strings.browse.sort.words[sort])),
+    unclassifiedCount > 0 && unknownDetails(unclassified, unclassifiedCount, filters, sort),
     ...rows,
     sheetOpen &&
       filtersSheet(model, filters, hits.length, derived, thresholds, {
@@ -211,6 +235,13 @@ export function drinksListPane(
   );
   if (sheetOpen && !sheetWasOpen) {
     requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
+  }
+  // Closing the sheet returns focus to the button that opened it (the dialog pattern). Without
+  // scrolling: on a slow device this runs a frame late, after the user has scrolled on.
+  if (!sheetOpen && sheetWasOpen) {
+    requestAnimationFrame(() =>
+      body.querySelector<HTMLElement>('[data-focus="filters"]')?.focus({ preventScroll: true }),
+    );
   }
   sheetWasOpen = sheetOpen;
 

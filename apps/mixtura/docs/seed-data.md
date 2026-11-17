@@ -419,18 +419,18 @@ From the pinned commit (counts by the converter, which also prints them):
 | Specs with ABV, sugar and acid all known          | 0 of 635                           |
 | Specs with ABV known after dilution               | 617 (19 have no or unknown method) |
 | Specs with sugar known after dilution             | 635                                |
-| Specs with a template                             | 107 of 635                         |
+| Specs with a template                             | 158 of 635 (107 before #70)        |
 
-Per template: Martini 57, Daiquiri 24, Sidecar 14, Old-Fashioned 8,
-Highball 3, Flip 1 (`bluebird-eggnog`: the egg is a counted line without a
-volume, so its slot is filled and its ratio unmeasured); 528 fit none. The numbers are what the data gives; nothing was
+Per template: Martini 104, Daiquiri 25, Sidecar 14, Old-Fashioned 8,
+Highball 6, Flip 1 (`bluebird-eggnog`: the egg is a counted line without a
+volume, so its slot is filled and its ratio unmeasured); 477 fit none (528 before the band edges of [templates](templates.md#evidence) were set from sources, #70; grouping of the rest: [seed measurement](templates.md#seed-measurement)). The numbers are what the data gives; nothing was
 tuned. For information only: if the assumed acid values of the classics
 were applied to all of the seed (then still lemon and lime at an assumed 6 % and no other juice), 308 of 548 specs would have all three
 figures; with them as assumptions that number says little about the
-data. Many specs fit no template because the bands are assumptions
-(for example the Manhattan: the Martini template's bitter slot is a
-bitter liqueur of 0.5 to 2 parts, so two dashes of aromatic bitters are
-far below it).
+data. Most of the specs that fit no template have roles the six
+templates lack (lengthener, a second sweetener, bitters in a sour), see
+[templates](templates.md#seed-measurement); the Manhattan and the
+Screwdriver fit since #70.
 
 ### Files
 

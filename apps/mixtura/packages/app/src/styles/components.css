@@ -285,7 +285,8 @@
   color: var(--bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  z-index: 10;
+  /* Above the sheets (20), so its Undo is seen and reachable over one. */
+  z-index: 30;
 }
 
 .toast span {

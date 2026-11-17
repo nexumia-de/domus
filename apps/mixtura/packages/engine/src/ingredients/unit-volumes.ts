@@ -1,7 +1,7 @@
 // The volume of one counted unit of an ingredient, read from its own data.
 // Never inherited and never guessed: no entry means no volume.
 import { UNITS } from '../amounts/table';
-import type { IngredientTree } from './tree';
+import type { IngredientTreeOf } from './tree';
 import type { Id, UnitVolume } from './types';
 
 const counted = new Set<string>(UNITS.filter((u) => u.kind === 'count').map((u) => u.id));
@@ -16,7 +16,7 @@ const counted = new Set<string>(UNITS.filter((u) => u.kind === 'count').map((u) 
  * @returns Volume in ml with the evidence of the per-unit number, or undefined when none is known as data.
  */
 export function countedVolume(
-  tree: IngredientTree,
+  tree: IngredientTreeOf,
   id: Id,
   unit: string,
   amount: number,

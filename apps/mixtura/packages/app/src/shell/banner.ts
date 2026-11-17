@@ -20,12 +20,18 @@ export function updateBanner(state: AppState, onUpdate: () => void): HTMLElement
 const reasons: Record<string, string> = {
   unavailable: strings.storage.reasons.unavailable,
   blocked: strings.storage.reasons.blocked,
+  stale: strings.storage.reasons.stale,
   'too-new': strings.storage.reasons.tooNew,
   migration: strings.storage.reasons.migration,
   quota: strings.storage.reasons.quota,
 };
 
-function line(title: string, text: string, onRetry?: () => void): HTMLElement {
+function line(
+  title: string,
+  text: string,
+  onRetry?: () => void,
+  action: string = strings.storage.retry,
+): HTMLElement {
   return h(
     'div',
     { class: 'banner', role: 'status' },
@@ -34,7 +40,7 @@ function line(title: string, text: string, onRetry?: () => void): HTMLElement {
       h(
         'button',
         { class: 'btn btn--tonal', type: 'button', 'data-focus': 'retry', onclick: onRetry },
-        strings.storage.retry,
+        action,
       ),
   );
 }
@@ -44,10 +50,18 @@ function line(title: string, text: string, onRetry?: () => void): HTMLElement {
  * be used (the app is read-only), the built-in data did not load, a setting
  * was not saved. Null when all is well.
  */
-export function statusBanner(state: AppState, onRetry: () => void): HTMLElement | null {
+export function statusBanner(
+  state: AppState,
+  onRetry: () => void,
+  onReload: () => void = () => location.reload(),
+): HTMLElement | null {
   const s = strings.storage;
   if (state.storage.kind === 'error') {
     const reason = reasons[state.storage.error] ?? state.storage.reason;
+    // Another window upgraded the database: Try Again cannot help, a reload does.
+    if (state.storage.error === 'stale') {
+      return line(s.title, s.text(reason), onReload, s.reload);
+    }
     return line(s.title, s.text(reason), onRetry);
   }
   if (state.seed.kind === 'failed') return line(s.seedTitle, s.seedText, onRetry);

@@ -201,8 +201,9 @@ export function templateOf(
 export interface SpecOptions {
   /** Drinks to show amounts for, 1 to 12 (default 1). */
   servings?: number;
-  /** Build the batch for `servings` drinks (the sheet is open). */
+  /** Build the batch for `servings` drinks (the sheet is open), or for `volumeMl` when given. */
   batch?: boolean;
+  volumeMl?: number;
   /** Temporary state of this screen (what-if volumes); defaults to none. */
   view?: SpecView;
   /** Try a Swap: the swap of the address, null outside swap mode. */
@@ -332,7 +333,9 @@ export function specVM(
       model.tree,
       spec.method,
       effective.lines,
-      servings,
+      options.volumeMl === undefined
+        ? { kind: 'drinks', servings }
+        : { kind: 'volume', ml: options.volumeMl },
       system,
       model.ingredientName,
     );

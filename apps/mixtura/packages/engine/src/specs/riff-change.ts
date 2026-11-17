@@ -1,4 +1,4 @@
-import type { RiffChange, SpecDiff } from './types';
+import type { RiffChangeOf, SpecDiffOf, VersionLine } from './types';
 
 /**
  * Turns the difference between a riff and its parent into a list of changes
@@ -8,8 +8,10 @@ import type { RiffChange, SpecDiff } from './types';
  * @param diff The difference from `diffSpecs`, parent as the older side.
  * @returns The number of changes and the entries, lines first, then fields other than the name.
  */
-export function summariseRiff(diff: SpecDiff): RiffChange {
-  const items: RiffChange['items'] = [
+export function summariseRiff<L extends VersionLine, F extends string>(
+  diff: SpecDiffOf<L, F>,
+): RiffChangeOf<L, F> {
+  const items: RiffChangeOf<L, F>['items'] = [
     ...diff.lines.map((line) => ({ type: 'line' as const, line })),
     ...diff.fields
       .filter((change) => change.field !== 'name')

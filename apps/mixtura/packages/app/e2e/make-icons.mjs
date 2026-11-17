@@ -12,6 +12,7 @@ const jobs = [
   ['icon.svg', 'icon-192.png', 192],
   ['icon.svg', 'icon-512.png', 512],
   ['icon-maskable.svg', 'icon-maskable-512.png', 512],
+  ['icon-monochrome.svg', 'icon-monochrome-512.png', 512],
 ];
 const browser = await launch();
 for (const [source, target, size] of jobs) {

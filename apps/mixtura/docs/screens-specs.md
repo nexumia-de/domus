@@ -300,9 +300,29 @@ Ingredients                       Batch of 4 drinks            [x]
 - **Swap mode.** Stepper and batch work in
   [swap mode](screens-browse.md#as-built-20): the swap is a parameter of the
   same address and the batch is made from the swapped lines.
-- **Not built.** A batch for a **target volume** instead of a number of
-  drinks (issue 52 names it) and more than 12 drinks are follow-up work
-  ([#80](https://github.com/nexumia-de/mixtura/issues/80)).
+- **Batch for a volume and for many drinks**
+  ([#80](https://github.com/nexumia-de/mixtura/issues/80)). The sheet
+  starts with **Make a batch for**: **Drinks** or **Volume** (two-way
+  switch) and one field with **Set** (Enter sets too). _Drinks_: a whole
+  number from 1 to 200 (`servings=n`; the stepper on the spec still stops at
+  12, its minus works from any number). _Volume_: ml, or a unit (`1 l`,
+  `1,5 l`, `32 oz`; litres are read by the app because the engine's unit
+  table has none), above 0 and up to 100 l, `volume=<ml>` in the address
+  beside `sheet=batch` (dropped when the sheet closes). The servings are the
+  volume divided by the pour of one drink (the engine's `prediluted` for one
+  serving), a fraction, and go to `prediluted` as such. The sheet is titled
+  "Batch of 1000 ml" and has a **Servings** row ("7.6 of 131 ml"); the
+  other rows are those of the batch as made, so Total volume is near the
+  target, not equal ("999 ml"). Switching to Volume starts from today's
+  batch (drinks times one pour, to 10 ml); switching back keeps the number of
+  drinks. Less than one pour says "That is less than one serving. One drink
+  is 131 ml; enter at least that." (half a millilitre of slack, so the shown
+  pour is accepted). A wrong entry is said under the field, the typed text
+  stays and the address does not change. Nothing is stored. Unit-tested in
+  `test/spec-batch-target.test.ts`; `e2e/browse.mjs` walks it.
+- **Swap mode** already worked before #80 (the stepper and the sheet
+  take the swapped lines, `e2e/swap.mjs`); the sheet's volume mode works
+  there the same way ([test](../packages/app/test/spec-batch-target.test.ts)).
 
 # What-if volume of a top
 

@@ -5,13 +5,14 @@
 // those actions (#20, #27, #25): until then only built actions are shown.
 // Try a Swap (#20) is the same screen with a swap in the address.
 
+import type { BatchActions } from '../../components/batch-controls';
 import { batchSheet } from '../../components/batch-sheet';
 import { balancePanel } from '../../components/balance-panel';
 import { servingsStepper, type StepperActions } from '../../components/servings-stepper';
 import { stockPanel, stockTag, type StockPanelActions } from '../../components/stock-panel';
 import { specLines, specMeta, type LineActions } from '../../components/spec-lines';
 import { h } from '../../dom';
-import { back, go, replace } from '../../navigation';
+import { go, replace } from '../../navigation';
 import { type Route } from '../../router';
 import { type Screen, type ScreenContext, type ScreenView } from '../../screen';
 import { strings } from '../../strings';
@@ -23,6 +24,8 @@ import { openTopField, parseTopVolume, setTopMl, viewFor } from './session';
 import { sheetLineOf, swapActions, type SwapActions } from './swap-actions';
 import { swapOf } from './swap-state';
 import { swapStrings } from './swap-strings';
+import { batchActions } from './batch-actions';
+import { volumeOf } from './batch-target';
 import { servingsOf, specAddress } from './servings';
 import { versionStrings as vs } from '../versions/strings';
 import { specVM, type SpecVM, type TagVM } from './view-model';
@@ -35,6 +38,8 @@ import { variantCard } from '../../components/variant-card';
 import { variantVMs } from './variant-vm';
 import { alcoholOf, thresholdsFor } from '../browse/alcohol';
 import { stockStrings } from './stock-strings';
+import { madeBatch, usedUpNewest } from '../../stock/batches';
+import type { Stock } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { showToast } from '../../toasts';
 
@@ -47,7 +52,7 @@ function tag(vm: TagVM): HTMLElement {
 
 function body(
   vm: SpecVM,
-  actions: LineActions & StepperActions & { closeBatch(): void },
+  actions: LineActions & StepperActions & { batch: BatchActions },
   swap: SwapActions,
   lineUnit: string,
   stock: { vm: StockPanelVM | undefined; actions: StockPanelActions },
@@ -120,7 +125,7 @@ function body(
         h('a', { class: 'line-link', href: '#/about' }, strings.spec.sourceLink),
       ),
     vm.swap && compactBar(vm.swap.compact),
-    vm.batch && batchSheet(vm.batch, actions.closeBatch),
+    vm.batch && batchSheet(vm.batch, actions.batch),
     vm.swap?.sheet && swapSheet(vm.swap.sheet, lineUnit, swap),
   );
 }
@@ -173,18 +178,16 @@ export const screens: Screen[] = [
       const { route } = context;
       const servings = servingsOf(route.query);
       const sheetOpen = route.query.get('sheet') === 'batch';
+      const volumeMl = volumeOf(route.query);
       const swapState = swapOf(route.query);
       const sheetLine = swapState ? sheetLineOf(route.query) : null;
       const swap = swapActions(store, route, id, drink.spec.lines, sheetLine);
-      const actions: LineActions & StepperActions & { closeBatch(): void } = {
+      const actions: LineActions & StepperActions & { batch: BatchActions } = {
         ...(swapState && { openLine: swap.openLine }),
-        setServings: (n) => replace(store, specAddress(route, n, sheetOpen ? 'batch' : null)),
+        setServings: (n) =>
+          replace(store, specAddress(route, n, sheetOpen ? 'batch' : null, volumeMl)),
         openBatch: () => (wide() ? replace : go)(store, specAddress(route, servings, 'batch')),
-        closeBatch() {
-          const without = specAddress(route, servings, null);
-          if (wide()) replace(store, without);
-          else back(store, without);
-        },
+        batch: batchActions(store, route, servings, wide()),
         editTop: (index) => store.set({ specView: openTopField(store.get().specView, id, index) }),
         setTop(index, text) {
           const volume = parseTopVolume(text);
@@ -200,6 +203,7 @@ export const screens: Screen[] = [
         view,
         servings,
         batch: sheetOpen,
+        ...(volumeMl !== undefined && { volumeMl }),
         swap: swapState,
         sheetLine,
       });
@@ -219,30 +223,30 @@ export const screens: Screen[] = [
       };
       const shelfVm =
         records && !swapState ? shelfVM(state.model, drink.spec, records, today()) : undefined;
-      const record = (change: { present: boolean; openedOn?: string }): void => {
-        if (!shelfVm || !records) return;
-        const base = withPresent(records, shelfVm.ingredientId, change.present);
-        const { openedOn: _old, ...rest } = base;
-        void _old;
-        const next = {
-          ...rest,
-          ...(change.openedOn !== undefined && { openedOn: change.openedOn }),
-        };
+      const record = (next: Stock | null, text: string): void => {
+        if (!shelfVm) return;
+        if (!next) return void showToast(store, shelfStrings.alreadyRecorded);
         const undo = changeStock(context, [{ id: shelfVm.ingredientId, next }]);
-        showToast(
-          store,
-          change.openedOn !== undefined
-            ? shelfStrings.recorded(shelfVm.name, change.openedOn)
-            : shelfStrings.usedUpToast(shelfVm.name),
-          () => changeStock(context, undo),
-        );
+        showToast(store, text, () => changeStock(context, undo));
       };
+      const made = (date: string): void =>
+        record(
+          shelfVm
+            ? madeBatch(records?.get(shelfVm.ingredientId), shelfVm.ingredientId, date)
+            : null,
+          shelfVm ? shelfStrings.recorded(shelfVm.name, date) : '',
+        );
       const shelfActions: ShelfActions =
         stockNow.kind === 'ready' && stockNow.writable
           ? {
-              madeToday: () => record({ present: true, openedOn: today() }),
-              madeOn: (date) => record({ present: true, openedOn: date }),
-              usedUp: () => record({ present: false }),
+              madeToday: () => made(today()),
+              madeOn: made,
+              usedUp: () =>
+                shelfVm &&
+                record(
+                  usedUpNewest(records?.get(shelfVm.ingredientId), shelfVm.ingredientId),
+                  shelfStrings.usedUpToast(shelfVm.name),
+                ),
             }
           : {};
       const page = body(

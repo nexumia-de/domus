@@ -28,7 +28,7 @@ test('a row has the role line, the method and the number of drinks that follow i
   expect(rows.find((r) => r.id === 'daiquiri')).toMatchObject({
     roles: 'Base, Sour, Sweet',
     method: 'Shake',
-    drinks: 24,
+    drinks: 25,
     user: false,
   });
   expect(rows.find((r) => r.id === 'flip')?.drinks).toBe(1);

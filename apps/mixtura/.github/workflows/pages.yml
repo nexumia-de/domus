@@ -9,10 +9,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# No write permission at workflow level: the build job gets read access only,
+# the deploy job alone may publish (pages: write, id-token: write).
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -22,6 +22,9 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: read # configure-pages reads the Pages settings
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -39,6 +42,9 @@ jobs:
     name: deploy
     needs: build
     runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

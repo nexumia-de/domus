@@ -1,22 +1,24 @@
 // Builds and validates the ingredient tree from a flat list, and answers
 // questions about it (ancestors, descendants, isA, distance). Pure.
-import type { Id, Ingredient, TreeError } from './types';
+import type { BaseIngredient, Id, TreeError } from './types';
 
-export interface IngredientTree {
+/** The tree of a domain's ingredients (drinks: `IngredientTree`). */
+export interface IngredientTreeOf<I extends BaseIngredient = BaseIngredient> {
   /** Ingredients by id. */
-  readonly byId: ReadonlyMap<Id, Ingredient>;
+  readonly byId: ReadonlyMap<Id, I>;
   /** Child ids by parent id, sorted by id. */
   readonly children: ReadonlyMap<Id, readonly Id[]>;
   /** All ids, sorted. */
   readonly ids: readonly Id[];
 }
 
-export type TreeResult = { ok: true; tree: IngredientTree } | { ok: false; errors: TreeError[] };
+export type TreeResultOf<I extends BaseIngredient = BaseIngredient> =
+  { ok: true; tree: IngredientTreeOf<I> } | { ok: false; errors: TreeError[] };
 
 const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 /** Finds each cycle once, starting at its smallest id, ids closing back on the first. */
-function findCycles(byId: Map<Id, Ingredient>): TreeError[] {
+function findCycles(byId: Map<Id, BaseIngredient>): TreeError[] {
   const errors: TreeError[] = [];
   const done = new Set<Id>();
   for (const start of [...byId.keys()].sort(byText)) {
@@ -51,9 +53,9 @@ function findCycles(byId: Map<Id, Ingredient>): TreeError[] {
  * @param list - Ingredients with ids, `parentId` links and levels; ABV in percent, sugar in g per 100 ml, acid in percent.
  * @returns The tree, or every error found: duplicate ids, missing parents, cycles, a category below another node or any node below a product.
  */
-export function buildTree(list: readonly Ingredient[]): TreeResult {
+export function buildTree<I extends BaseIngredient>(list: readonly I[]): TreeResultOf<I> {
   const errors: TreeError[] = [];
-  const byId = new Map<Id, Ingredient>();
+  const byId = new Map<Id, I>();
   const duplicates = new Set<Id>();
   for (const item of list) {
     if (byId.has(item.id)) duplicates.add(item.id);
@@ -63,7 +65,7 @@ export function buildTree(list: readonly Ingredient[]): TreeResult {
     errors.push({ code: 'duplicate-id', ids: [id], message: `duplicate ingredient id: ${id}` });
   }
   for (const id of [...byId.keys()].sort(byText)) {
-    const item = byId.get(id) as Ingredient;
+    const item = byId.get(id) as I;
     if (item.parentId === undefined) continue;
     const parent = byId.get(item.parentId);
     if (!parent) {
@@ -100,7 +102,10 @@ export function buildTree(list: readonly Ingredient[]): TreeResult {
  * @param id - Ingredient id.
  * @returns The ingredient record, or undefined for an unknown id.
  */
-export function getIngredient(tree: IngredientTree, id: Id): Ingredient | undefined {
+export function getIngredient<I extends BaseIngredient>(
+  tree: IngredientTreeOf<I>,
+  id: Id,
+): I | undefined {
   return tree.byId.get(id);
 }
 
@@ -111,7 +116,7 @@ export function getIngredient(tree: IngredientTree, id: Id): Ingredient | undefi
  * @param id - Ingredient id.
  * @returns Ancestor ids, nearest first; undefined for an unknown id.
  */
-export function ancestors(tree: IngredientTree, id: Id): Id[] | undefined {
+export function ancestors(tree: IngredientTreeOf, id: Id): Id[] | undefined {
   if (!tree.byId.has(id)) return undefined;
   const out: Id[] = [];
   let cur = tree.byId.get(id)?.parentId;
@@ -129,7 +134,7 @@ export function ancestors(tree: IngredientTree, id: Id): Id[] | undefined {
  * @param id - Ingredient id.
  * @returns Descendant ids, breadth first, siblings by id; undefined for an unknown id.
  */
-export function descendants(tree: IngredientTree, id: Id): Id[] | undefined {
+export function descendants(tree: IngredientTreeOf, id: Id): Id[] | undefined {
   if (!tree.byId.has(id)) return undefined;
   const out: Id[] = [];
   let level = [...(tree.children.get(id) ?? [])];
@@ -148,7 +153,7 @@ export function descendants(tree: IngredientTree, id: Id): Id[] | undefined {
  * @param ancestor - Id of the candidate ancestor.
  * @returns True if `child` is `ancestor` or below it; false for unknown ids.
  */
-export function isA(tree: IngredientTree, child: Id, ancestor: Id): boolean {
+export function isA(tree: IngredientTreeOf, child: Id, ancestor: Id): boolean {
   if (!tree.byId.has(ancestor)) return false;
   return child === ancestor
     ? tree.byId.has(child)
@@ -163,7 +168,7 @@ export function isA(tree: IngredientTree, child: Id, ancestor: Id): boolean {
  * @param b - Second ingredient id.
  * @returns Number of steps through the nearest common ancestor (two roots are 2 apart); undefined for an unknown id.
  */
-export function distance(tree: IngredientTree, a: Id, b: Id): number | undefined {
+export function distance(tree: IngredientTreeOf, a: Id, b: Id): number | undefined {
   const pa = ancestors(tree, a);
   const pb = ancestors(tree, b);
   if (!pa || !pb) return undefined;

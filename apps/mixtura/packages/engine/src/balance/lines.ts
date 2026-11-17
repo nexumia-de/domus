@@ -3,10 +3,11 @@
 // ingredient tree or, for a prepared ingredient, from its spec.
 import { toGrams, toMl, isEstimatedUnit, UNITS } from '../amounts/index';
 import type { UnitId, UnitOverrides } from '../amounts/index';
-import type { MixPart } from '../ingredients/mixture';
-import { computePrepared, type SpecLookup } from '../ingredients/prepared';
-import { resolveProperty } from '../ingredients/properties';
-import type { IngredientTree } from '../ingredients/tree';
+import type { MixPart } from './mixture';
+import type { SpecLookup } from '../ingredients/prepared';
+import { computePrepared } from './prepared';
+import { resolveProperty } from '../drink-ingredients/properties';
+import type { IngredientTree } from '../drink-ingredients/types';
 import { countedVolume } from '../ingredients/unit-volumes';
 import type { Id } from '../ingredients/types';
 import type { BalanceError, BalanceLine, Excluded } from './types';

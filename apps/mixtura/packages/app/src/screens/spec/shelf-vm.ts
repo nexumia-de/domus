@@ -8,6 +8,7 @@
 import { expiry, limitingShelfLife, type ExpiryStatus } from '@mixtura/engine';
 import type { BrowseModel } from '../browse/model';
 import type { Ingredient, SpecData } from '../browse/types';
+import { batchDates } from '../../stock/batches';
 import type { StockRecords } from '../../stock/state';
 import { shelfStrings as t } from './shelf-strings';
 
@@ -27,6 +28,8 @@ export interface ShelfVM {
     status: BatchStatus;
     /** Words for the state; the card adds a shape. */
     text: string;
+    /** Further batches at hand; this card shows the newest. */
+    others: number;
   };
 }
 
@@ -69,6 +72,7 @@ export function shelfVM(
     const left = e.daysLeft ?? 0;
     vm.batch = {
       madeOn: record.openedOn,
+      others: batchDates(record).length - 1,
       dates: t.madeOn(record.openedOn, e.useBy),
       status,
       text:

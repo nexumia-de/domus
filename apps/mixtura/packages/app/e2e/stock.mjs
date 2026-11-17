@@ -445,6 +445,217 @@ expect(true, 'Buy Next ranks with the settings changed and changed back');
 await noOverflow('on Settings');
 await targets('on Settings');
 
+// ---- Create an ingredient from the search (#83) ----
+await openFresh('#/stock?q=Zzyzx%20Bitter');
+await page.getByText('No ingredient matches.').waitFor();
+await page.waitForFunction(() => document.querySelector('.stock-summary strong'));
+const stockBefore = await inStock();
+await page.getByRole('button', { name: 'Create \u201cZzyzx Bitter\u201d' }).click();
+await page.locator('[data-sheet="ingredient"]').waitFor();
+expect(
+  (await page.locator('#f-name').inputValue()) === 'Zzyzx Bitter',
+  'Create opens the form with the typed name',
+);
+await page.waitForFunction(() => document.activeElement?.hasAttribute('data-sheet'));
+await noOverflow('in the create sheet');
+await targets('in the create sheet');
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Choose where it belongs, for example Rum or Citrus.').waitFor();
+expect(true, 'a form without a place says so next to the field');
+await page.locator('#f-parentId').selectOption({ index: 1 });
+await docShot('stock-create');
+await shot('stock-create');
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Created Zzyzx Bitter and marked it in stock').waitFor();
+await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+expect(!(await hash()).includes('sheet'), 'the sheet is gone from the address after saving');
+await page.waitForFunction(
+  (n) => document.querySelector('.stock-summary strong')?.textContent === `${n} in stock`,
+  stockBefore + 1,
+);
+expect(true, 'the new ingredient is marked in stock');
+await page.goto(`${site.url}#/stock?q=Zzyzx`);
+await page.getByRole('checkbox', { name: 'Zzyzx Bitter, in stock' }).waitFor();
+expect(true, 'the new ingredient is in the tree and in stock');
+await page.reload({ waitUntil: 'load' });
+await page.getByRole('checkbox', { name: 'Zzyzx Bitter, in stock' }).waitFor();
+expect(true, 'a reload keeps the created ingredient');
+await openFresh('#/stock?q=Zzyzx%20Bitter&sheet=ingredient');
+await page.locator('[data-sheet="ingredient"]').waitFor();
+await page.getByRole('button', { name: 'Cancel' }).click();
+await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+await page.goto(`${site.url}#/stock?q=Qwx%20Syrup`);
+await page.getByRole('button', { name: /^Create/ }).click();
+await page.locator('#f-parentId').selectOption({ index: 1 });
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Created Qwx Syrup and marked it in stock').waitFor();
+await page.getByRole('button', { name: 'Undo' }).click();
+await page.waitForFunction(() => !document.querySelector('.toast'));
+await page.goto(`${site.url}#/stock?q=Qwx`);
+await page.getByText('No ingredient matches.').waitFor();
+expect(true, 'Undo takes the created ingredient and its mark back');
+
+// ---- Batches of a prepared ingredient (#101) ----
+await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));
+const SYRUP = 'u-7a0d6c1e-2b4f-4f0a-8e55-91a3c4d5e6f7';
+const dumpStock = () =>
+  page.evaluate(
+    () =>
+      new Promise((res) => {
+        const r = indexedDB.open('mixtura');
+        r.onsuccess = () => {
+          const g = r.result.transaction('stock').objectStore('stock').getAll();
+          g.onsuccess = () => {
+            r.result.close();
+            res(g.result);
+          };
+        };
+      }),
+  );
+await openFresh('#/stock');
+await page.locator('.stock-tree').waitFor();
+await page.evaluate(
+  (id) =>
+    new Promise((res) => {
+      const r = indexedDB.open('mixtura');
+      r.onsuccess = () => {
+        const names = ['ingredients', 'specs', 'stock'];
+        const tx = r.result.transaction(names, 'readwrite');
+        tx.objectStore('ingredients').put({
+          id,
+          name: 'Example rich syrup',
+          level: 'product',
+          parentId: 'syrups',
+          role: 'sweet',
+          shelfLifeDays: 14,
+          prepared: {
+            specId: 'u-0b9e8d7c-6a5b-4c3d-8e2f-1a0b9c8d7e6f',
+            yield: { amount: 300, unit: 'ml' },
+          },
+          source: { name: 'Entered by the user', licence: 'user' },
+        });
+        tx.objectStore('specs').put({
+          id: 'u-0b9e8d7c-6a5b-4c3d-8e2f-1a0b9c8d7e6f',
+          lineageId: 'u-0b9e8d7c-6a5b-4c3d-8e2f-1a0b9c8d7e6f',
+          version: 1,
+          name: 'Example rich syrup recipe',
+          status: 'draft',
+          lines: [
+            { ingredientId: 'sugar', amount: 200, unit: 'g' },
+            { ingredientId: 'water', amount: 100, unit: 'ml' },
+          ],
+        });
+        tx.objectStore('stock').put({
+          ingredientId: id,
+          present: true,
+          openedOn: '2026-11-05',
+          moreBatches: ['2026-11-14'],
+        });
+        tx.oncomplete = () => {
+          r.result.close();
+          res();
+        };
+      };
+    }),
+  SYRUP,
+);
+await openFresh('#/stock');
+const near = page.locator('[data-near-date]');
+await near.waitFor();
+expect(
+  (await near.innerText()).includes('Use soon: 2 days left') &&
+    (await near.innerText()).includes('and 1 more batch at hand'),
+  'the list near their date names the batch that is use soon and counts the other',
+);
+await noOverflow('with the near-date list');
+await targets('with the near-date list');
+await docShot('stock-near-date');
+await shot('stock-near-date');
+await near.getByRole('button', { name: /Example rich syrup/ }).click();
+const sheet = page.locator('[data-sheet="batches"]');
+await sheet.waitFor();
+await page.waitForFunction(() => document.activeElement?.getAttribute('data-sheet') === 'batches');
+expect((await page.locator('.stock-batch').count()) === 2, 'the sheet lists both batches');
+expect(
+  (await sheet.innerText()).includes('Shelf life: 14 days'),
+  'it says the shelf life the user entered',
+);
+await noOverflow('in the batches sheet');
+await targets('in the batches sheet');
+await docShot('stock-batches');
+await shot('stock-batches');
+// Add an older batch that is already past its date.
+await page.locator('#batch-date').fill('2026-11-01');
+await page.getByRole('button', { name: 'Add Batch' }).click();
+await page.getByText('Added a batch of Example rich syrup made on 2026-11-01').waitFor();
+await page.waitForFunction(() => document.querySelectorAll('.stock-batch').length === 3);
+expect(
+  (await page.locator('[data-batch="2026-11-01"]').innerText()).includes(
+    'Past the date you set by 2 days',
+  ),
+  'the older batch says it is past, in words',
+);
+let record = (await dumpStock()).find((r) => r.ingredientId === SYRUP);
+expect(
+  record.openedOn === '2026-11-14' &&
+    JSON.stringify(record.moreBatches) === '["2026-11-05","2026-11-01"]',
+  `the newest batch is openedOn and the others are moreBatches ${JSON.stringify(record)}`,
+);
+await page.locator('#batch-date').fill('2026-11-01');
+await page.getByRole('button', { name: 'Add Batch' }).click();
+await page.getByText('A batch made on 2026-11-01 is already recorded.').waitFor();
+await page.locator('#batch-date').fill('2026-12-01');
+await page.getByRole('button', { name: 'Add Batch' }).click();
+await page.getByText('A batch cannot be made in the future.').waitFor();
+expect(true, 'a repeated or future day is refused in words next to the field');
+// Used up acts at once, Undo brings it back.
+await page.getByRole('button', { name: 'The batch made on 2026-11-01 is used up' }).click();
+await page.waitForFunction(() => document.querySelectorAll('.stock-batch').length === 2);
+await page.getByRole('button', { name: 'Undo' }).click();
+await page.waitForFunction(() => document.querySelectorAll('.stock-batch').length === 3);
+expect(true, 'Used up acts at once and Undo brings the batch back');
+await page.keyboard.press('Escape');
+await sheet.waitFor({ state: 'detached' });
+await page.waitForFunction(() =>
+  document.activeElement?.getAttribute('data-focus')?.startsWith('batches:'),
+);
+expect(true, 'Escape closes the sheet and the focus returns to its opener');
+// The tree row of a prepared ingredient says how many batches and opens the sheet.
+await openFresh('#/stock?q=rich%20syrup');
+const row = page.locator(`[data-row="${SYRUP}"]`);
+await row.waitFor();
+expect((await row.innerText()).includes('3 batches'), 'the row says how many batches there are');
+await row.getByRole('button', { name: 'Batches of Example rich syrup' }).click();
+await sheet.waitFor();
+expect((await page.locator('.stock-batch').count()) === 3, 'a reload keeps the three batches');
+if (phone) {
+  await page.goBack();
+  await sheet.waitFor({ state: 'detached' });
+  expect(true, 'Back closes the sheet on a phone');
+}
+// Used up, one after the other: the last one leaves the ingredient not at hand.
+await openFresh(`#/stock?sheet=batches&ing=${SYRUP}`);
+await sheet.waitFor();
+for (let left = 3; left > 0; left--) {
+  await page
+    .getByRole('button', { name: /is used up$/ })
+    .first()
+    .click();
+  await page.waitForFunction(
+    (n) => document.querySelectorAll('.stock-batch').length === n,
+    left - 1,
+  );
+}
+await page.getByText('No batch at hand.').waitFor();
+record = (await dumpStock()).find((r) => r.ingredientId === SYRUP);
+expect(
+  record.present === false && record.openedOn === undefined && record.moreBatches === undefined,
+  `with no batch left the record is out and holds no date ${JSON.stringify(record)}`,
+);
+await page.keyboard.press('Escape');
+await page.locator('[data-near-date]').waitFor({ state: 'detached' });
+expect(true, 'nothing is near its date any more');
+
 // ---- Numbers ----
 await page.goto(`${site.url}#/stock/buy-next`);
 await page.locator('.buy-item').first().waitFor();

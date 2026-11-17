@@ -530,7 +530,12 @@ await page.evaluate(
   covered,
 );
 await page.locator('textarea#notes').focus();
-await page.locator('textarea#notes').scrollIntoViewIfNeeded();
+// Inside the page: a redraw keeps the focus (data-focus) but replaces the element,
+// and a locator action on the one it lost fails on a slow runner.
+await page.evaluate(() =>
+  document.querySelector('textarea#notes').scrollIntoView({ block: 'nearest' }),
+);
+await page.waitForFunction(() => document.activeElement?.id === 'notes');
 await page.evaluate(() => {
   const scroller = document.querySelector('.pane.detail .pane-scroll');
   scroller.scrollTop = scroller.scrollHeight;

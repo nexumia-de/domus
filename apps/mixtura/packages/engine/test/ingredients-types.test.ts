@@ -1,7 +1,8 @@
 // The exported ingredient types must list the same fields as the JSON
 // Schemas (docs/data-model.md is compared with the schemas elsewhere).
 import { expect, test } from 'vitest';
-import { INGREDIENT_FIELDS, PREPARED_FIELDS } from '../src/ingredients/types';
+import { INGREDIENT_FIELDS } from '../src/drink-ingredients/types';
+import { PREPARED_FIELDS } from '../src/ingredients/types';
 import { schemas } from './schema-helpers';
 
 const keys = (name: string) =>

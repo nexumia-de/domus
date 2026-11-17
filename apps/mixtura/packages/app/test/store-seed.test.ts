@@ -16,7 +16,7 @@ test('the assembled seed (what the build ships) has the expected shape and valid
   expect(real.seedVersion).toMatch(/^bar-assistant-[0-9a-f]{7}\+mixtura-2$/);
   expect(real.ingredients).toHaveLength(319);
   expect(real.specs).toHaveLength(639);
-  expect(real.specs.filter((s) => s.templateId)).toHaveLength(111);
+  expect(real.specs.filter((s) => s.templateId)).toHaveLength(162);
   expect(real.templates.map((t) => t.id).sort()).toEqual(
     [
       'daiquiri',

@@ -64,9 +64,44 @@ test('the service worker precaches every built file under a content-hash cache n
   const sw = read('sw.js');
   const cache = /mixtura-[0-9a-f]{16}/.exec(sw)?.[0];
   expect(cache).toBeTruthy();
-  const precached = listFiles(out).filter((file) => file !== 'sw.js');
+  // The install-dialog screenshots are deliberately not precached (docs/development.md);
+  // `_headers` is for the host, not part of the app.
+  const precached = listFiles(out).filter(
+    (file) => file !== 'sw.js' && file !== '_headers' && !file.startsWith('screenshots'),
+  );
   for (const file of precached) expect(sw).toContain(`"${file}"`);
   expect(sw).toContain('"./"');
+  for (const file of listFiles(out).filter((f) => f.startsWith('screenshots'))) {
+    expect(sw, file).not.toContain(`"${file}"`);
+  }
+});
+
+test('the manifest is complete: categories, shortcuts, screenshots, monochrome icon, description', () => {
+  type Image = { src: string; sizes: string; type: string; purpose?: string; form_factor?: string };
+  const manifest = JSON.parse(read('manifest.webmanifest')) as {
+    categories: string[];
+    shortcuts: { name: string; url: string; icons?: Image[] }[];
+    screenshots: Image[];
+    icons: Image[];
+  };
+  expect(manifest.categories.length).toBeGreaterThan(0);
+  expect(manifest.icons.some((i) => i.purpose === 'monochrome')).toBe(true);
+  expect(manifest.shortcuts.length).toBeGreaterThanOrEqual(2);
+  for (const shortcut of manifest.shortcuts) {
+    expect(shortcut.url).toMatch(/^\.\/#\//);
+    for (const icon of shortcut.icons ?? [])
+      expect(statSync(join(out, icon.src)).size).toBeGreaterThan(0);
+  }
+  const factors = manifest.screenshots.map((s) => s.form_factor);
+  expect(factors).toContain('narrow');
+  expect(factors).toContain('wide');
+  for (const shot of manifest.screenshots) {
+    const png = readFileSync(join(out, shot.src));
+    expect(`${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`).toBe(shot.sizes);
+    const [w = 0, h = 0] = shot.sizes.split('x').map(Number);
+    expect(shot.form_factor === 'wide' ? w > h : h > w).toBe(true);
+  }
+  expect(read('index.html')).toMatch(/<meta\s+name="description"\s+content="[^"]{50,}"/);
 });
 
 test('the cache name changes when a file changes and not otherwise', () => {
@@ -121,4 +156,63 @@ test('no root-absolute URL in the entry, manifest, worker files or script: the a
   for (const file of list) expect(file.startsWith('/'), file).toBe(false);
   expect(read('main.js')).not.toMatch(/register\(["']\//);
   expect(read('app.css')).not.toMatch(/url\(["']?\/(?!\/)/);
+});
+
+test('strict policy: no dynamic code in the scripts, no inline script or style in the page', () => {
+  for (const file of ['main.js', 'rank-worker.js', 'theme-init.js', 'sw.js']) {
+    const code = read(file);
+    expect(code, file).not.toMatch(/new Function\(|\beval\(|Function\(["'`]/);
+  }
+  const html = read('index.html');
+  const inline = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].filter(
+    ([, attributes, body]) => !/\bsrc=/.test(attributes ?? '') || (body ?? '').trim() !== '',
+  );
+  expect(inline).toEqual([]);
+  expect(html).not.toMatch(/<style\b|\sstyle=|\son[a-z]+=/);
+  const policy = /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(html)?.[1] ?? '';
+  expect(policy).toContain("default-src 'self'");
+  expect(policy).toContain("script-src 'self'");
+  expect(policy).toContain("object-src 'none'");
+  expect(policy).toContain("base-uri 'none'");
+  expect(policy).not.toMatch(/unsafe-|https?:|\*/);
+});
+
+test('the _headers file carries the page policy as a header, from the same source', () => {
+  const html = read('index.html');
+  const meta = /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(html)?.[1] ?? '';
+  expect(html).not.toContain('{{');
+  const header = /^ {2}Content-Security-Policy: (.+)$/m.exec(read('_headers'))?.[1] ?? '';
+  expect(header).toBe(`${meta}; frame-ancestors 'none'`);
+  expect(meta).not.toContain('frame-ancestors');
+});
+
+test('_headers: the other security headers, no-cache for the entry files, no immutable', () => {
+  const headers = read('_headers');
+  for (const line of [
+    'X-Content-Type-Options: nosniff',
+    'Referrer-Policy: no-referrer',
+    'Cross-Origin-Opener-Policy: same-origin',
+  ])
+    expect(headers).toContain(`  ${line}`);
+  expect(headers).toMatch(/^ {2}Permissions-Policy: .*camera=\(\)/m);
+  for (const path of ['/', '/index.html', '/sw.js', '/manifest.webmanifest'])
+    expect(headers).toContain(`\n${path}\n  Cache-Control: no-cache\n`);
+  // Fixed file names: no file may be cached without asking the server.
+  expect(headers).not.toMatch(/immutable|max-age/);
+  // Cloudflare's limits: 100 rules, 2,000 characters a line.
+  expect(headers.split('\n').every((line) => line.length <= 2000)).toBe(true);
+  expect(
+    headers.split('\n').filter((line) => /^\S/.test(line) && !line.startsWith('#')).length,
+  ).toBeLessThanOrEqual(100);
+  expect(listFiles(out)).toContain('_headers');
+  expect(read('sw.js')).not.toContain('_headers');
+});
+
+test('the theme bootstrap is an external file that runs before the page is drawn', () => {
+  const html = read('index.html');
+  const head = html.slice(0, html.indexOf('</head>'));
+  expect(head).toMatch(/<script src="theme-init\.js"><\/script>/);
+  expect(head).not.toMatch(/<script[^>]*\b(defer|async|type="module")/);
+  expect(listFiles(out)).toContain('theme-init.js');
+  expect(read('sw.js')).toContain('"theme-init.js"');
 });

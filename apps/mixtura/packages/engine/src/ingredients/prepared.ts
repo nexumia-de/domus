@@ -1,9 +1,8 @@
-// Properties of a prepared ingredient, computed from the lines of its spec
-// with the formulas of docs/balance.md (see mixture.ts). Nested prepared
-// ingredients resolve recursively; a cycle is an error naming the ids.
-import { mix, type Computed, type MixPart } from './mixture';
-import { resolveProperty } from './properties';
-import type { IngredientTree } from './tree';
+// The general part of prepared ingredients: walking a prepared ingredient's
+// spec, its nested prepared ingredients, cycles and unknown ids. What a
+// prepared ingredient's value is (ABV, sugar and acid for drinks, a shelf
+// life) is the caller's fold; the resolver only walks and reports errors.
+import type { IngredientTreeOf } from './tree';
 import type { Id } from './types';
 
 /** A line of a prepared ingredient's spec, already in ml (and g of solid sugar). */
@@ -25,14 +24,6 @@ export interface PreparedSpec {
   yieldMl?: number;
 }
 
-export interface PreparedProperties {
-  /** The yield if the spec has one, else the sum of the lines and the added water. */
-  volumeMl: number;
-  abv: Computed;
-  sugar: Computed;
-  acid: Computed;
-}
-
 export type PreparedErrorCode =
   'prepared-cycle' | 'unknown-ingredient' | 'unknown-spec' | 'not-prepared';
 
@@ -42,22 +33,42 @@ export interface PreparedError {
   message: string;
 }
 
-export type PreparedResult =
-  { ok: true; value: PreparedProperties } | { ok: false; errors: PreparedError[] };
-
 /** Specs by spec id (`prepared.specId` of an ingredient). */
 export type SpecLookup = ReadonlyMap<Id, PreparedSpec>;
 
-function compute(
-  tree: IngredientTree,
+/** What a caller computes while the resolver walks a prepared ingredient. */
+export interface PreparedFold<T> {
+  /** The value of a line whose ingredient is known and not prepared. */
+  raw(id: Id): T | undefined;
+  /**
+   * The value of a prepared ingredient from its spec (undefined when the
+   * spec is unknown) and the values of its lines in line order (undefined
+   * for a line that failed).
+   */
+  prepared(
+    id: Id,
+    spec: PreparedSpec | undefined,
+    parts: readonly (T | undefined)[],
+  ): T | undefined;
+}
+
+/** The fold's value (undefined when the ingredient itself failed) and every error met on the way. */
+export interface PreparedResolution<T> {
+  value: T | undefined;
+  errors: PreparedError[];
+}
+
+function walk<T>(
+  tree: IngredientTreeOf,
   specs: SpecLookup,
   id: Id,
   stack: readonly Id[],
-): PreparedResult {
+  fold: PreparedFold<T>,
+): PreparedResolution<T> {
   const item = tree.byId.get(id);
   if (!item) {
     return {
-      ok: false,
+      value: undefined,
       errors: [
         { code: 'unknown-ingredient', ids: [...stack, id], message: `unknown ingredient ${id}` },
       ],
@@ -65,14 +76,14 @@ function compute(
   }
   if (!item.prepared) {
     return {
-      ok: false,
+      value: undefined,
       errors: [{ code: 'not-prepared', ids: [id], message: `${id} is not a prepared ingredient` }],
     };
   }
   if (stack.includes(id)) {
     const ids = [...stack.slice(stack.indexOf(id)), id];
     return {
-      ok: false,
+      value: undefined,
       errors: [
         { code: 'prepared-cycle', ids, message: `prepared ingredient cycle: ${ids.join(' -> ')}` },
       ],
@@ -82,7 +93,7 @@ function compute(
   if (!spec) {
     const ids = [id, item.prepared.specId];
     return {
-      ok: false,
+      value: fold.prepared(id, undefined, []),
       errors: [
         {
           code: 'unknown-spec',
@@ -94,9 +105,8 @@ function compute(
   }
 
   const errors: PreparedError[] = [];
-  const parts: MixPart[] = [];
+  const parts: (T | undefined)[] = [];
   for (const line of spec.lines) {
-    const part: MixPart = { id: line.ingredientId, ml: line.ml, sugarG: line.sugarG };
     const target = tree.byId.get(line.ingredientId);
     if (!target) {
       errors.push({
@@ -104,36 +114,31 @@ function compute(
         ids: [id, line.ingredientId],
         message: `${id}: unknown ingredient ${line.ingredientId}`,
       });
+      parts.push(undefined);
     } else if (target.prepared) {
-      const nested = compute(tree, specs, line.ingredientId, [...stack, id]);
-      if (nested.ok) {
-        part.abv = nested.value.abv.value;
-        part.sugar = nested.value.sugar.value;
-        part.acid = nested.value.acid.value;
-      } else errors.push(...nested.errors);
-    } else {
-      part.abv = resolveProperty(tree, line.ingredientId, 'abv').value;
-      part.sugar = resolveProperty(tree, line.ingredientId, 'sugar').value;
-      part.acid = resolveProperty(tree, line.ingredientId, 'acid').value;
-    }
-    parts.push(part);
+      const nested = walk(tree, specs, line.ingredientId, [...stack, id], fold);
+      errors.push(...nested.errors);
+      parts.push(nested.value);
+    } else parts.push(fold.raw(line.ingredientId));
   }
-  if (errors.length > 0) {
-    const seen = new Set<string>();
-    return { ok: false, errors: errors.filter((e) => !seen.has(e.message) && seen.add(e.message)) };
-  }
-  const mixed = mix(parts, spec.addedWaterMl ?? 0, spec.yieldMl);
-  return { ok: true, value: mixed };
+  return { value: fold.prepared(id, spec, parts), errors };
 }
 
 /**
- * Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.
- *
- * @param tree - A validated tree.
- * @param specs - Specs of prepared ingredients by spec id; amounts in ml or g.
- * @param id - Id of the prepared ingredient.
- * @returns ABV in percent, sugar in g per 100 ml, acid in percent and volume in ml, or errors (cycle, unknown spec, unit).
+ * Walks a prepared ingredient: its spec, nested prepared ingredients
+ * (recursively), cycles and unknown ids, and folds a value over it.
+ * Errors are deduplicated by message, first occurrence kept.
  */
-export function computePrepared(tree: IngredientTree, specs: SpecLookup, id: Id): PreparedResult {
-  return compute(tree, specs, id, []);
+export function resolvePrepared<T>(
+  tree: IngredientTreeOf,
+  specs: SpecLookup,
+  id: Id,
+  fold: PreparedFold<T>,
+): PreparedResolution<T> {
+  const r = walk(tree, specs, id, [], fold);
+  const seen = new Set<string>();
+  return {
+    value: r.value,
+    errors: r.errors.filter((e) => !seen.has(e.message) && seen.add(e.message)),
+  };
 }
