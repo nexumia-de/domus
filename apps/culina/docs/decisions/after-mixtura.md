@@ -30,7 +30,9 @@ owner decided on two apps with Mixtura first[^two].
 3. Culina adds what cooking needs and drinks do not: weights and
    baker's percentages, yields, expiry dates, roles of a dish.
 4. Recipes are read from [Cooklang](../existing-tools.md) files where
-   possible instead of a new format. To be confirmed when work starts.
+   possible instead of a new format. To be confirmed when work starts;
+   the [Cooklang record](cooklang.md) recommends a one-way export
+   instead (needs decision).
 
 ## Consequences
 

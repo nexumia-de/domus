@@ -3,7 +3,7 @@ type: Research
 title: How chefs work
 description: How experienced chefs structure cooking knowledge (ratios, mother sauces, components), season, pair flavours, develop dishes, cook from stock and run a kitchen; what a tool should do and the data model that follows.
 tags: [research, cooking, ratios, components, pairing, data-model]
-generated: { by: claude-code/2.1.326, at: 2026-11-16 }
+generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
   - id: ratio
     title: 'Michael Ruhlman: Ratio'
@@ -21,22 +21,29 @@ sources:
     title: 'Jain, Rakhi, Bagler: Analysis of food pairing in regional cuisines of India (2015)'
   - id: kalyuga
     title: 'Kalyuga et al.: The expertise reversal effect (2003)'
+  - id: ratios
+    title: Ratios and salt percentages checked against sources
+    url: ratios.md
 ---
 
 # How chefs work
 
 > Written from recalled knowledge of the named books, not from the
-> books at hand. Every number here is a rule of thumb and must be
-> checked against its source before it becomes data or a rule.
+> books at hand. The numbers were checked on 2026-11-17 and corrected
+> where a source disagreed; status, basis and source of each are in
+> [ratios](ratios.md)[^ratios]. Most checks rest on search excerpts and
+> must be re-read at the source before they become data.
 
 # Structures instead of recipes
 
 - Ratios by weight[^ratio]: bread 5 flour : 3 water; pasta 3 flour :
   2 egg; pie dough 3 flour : 2 fat : 1 water; cookie 3 flour : 2 fat :
   1 sugar; pound cake 1 : 1 : 1 : 1; vinaigrette 3 oil : 1 acid; roux
-  1 : 1; custard 2 liquid : 1 egg.
-- Baker's percentages: flour is 100 %; water 60–65 % for pizza and
-  75–85 % for ciabatta; salt about 2 %.
+  1 : 1 to 3 flour : 2 fat (Ruhlman's as reported is 3 : 2); custard
+  2 liquid : 1 egg (unverified).
+- Baker's percentages: flour is 100 %; water about 56 % for Neapolitan
+  pizza (60–65 % for other styles unverified) and 75–85 % for ciabatta;
+  salt 1.8–2 %.
 - Mother sauces[^escoffier]: béchamel, velouté, espagnole, hollandaise,
   tomato; each a thickener or emulsion plus a liquid, with named
   derivatives. The model is a family tree of one structure.
@@ -45,8 +52,9 @@ sources:
 
 # Seasoning and balance
 
-- Salt has numbers: soups and sauces about 0.8–1.2 %, bread 2 %,
-  ferments 2–2.5 %, wet brine 5–6 %, pasta water 1–2 %.
+- Salt has numbers: soups about 0.4–0.5 % (sauces unverified), bread
+  1.8–2 % of flour, sauerkraut 2–3 % of cabbage, wet brine 5–9 % of the
+  brine, pasta water 0.5–2 % of the water.
 - Everything else is a loop of tasting and correcting[^nosrat]:
   flat → salt, then acid; harsh or sour → fat or sweetness; too sweet →
   acid or bitterness; bitter → salt, fat or sweetness; too salty →

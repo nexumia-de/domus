@@ -15,8 +15,9 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
 
 ## Rules
 
-- **Do not start code here** before Mixtura's engine exists; until then
-  this repository holds research and plan only.
+- **Engine code waits for the shared-model decision** (issue #2).
+  Mixtura's engine exists; until that is settled the packages hold only
+  tooling placeholders.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
 - **Not a recipe manager.** Recipe import, meal plans and shopping lists
@@ -26,3 +27,8 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
 - **Sources and licences.** Every ratio, pairing and data set names its
   source and licence. No data from FlavorDB or RecipeNLG.
 - No code copied from Mixtura: what both need moves into shared code.
+
+## Before committing
+
+1. `npm run check` passes (format, lint, typecheck, tests).
+2. `docs/` updated in the same commit.

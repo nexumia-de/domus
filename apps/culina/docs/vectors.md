@@ -1,0 +1,221 @@
+---
+type: Specification
+title: Test vector format
+description: The JSON shape of the worked examples Culina's future engine must reproduce, adapted from Mixtura's vector format to ratio checks, baker's percentages, scaling by weight and salt percentages, with five vectors computed by hand.
+tags: [engine, vectors, ratios, bakers-percentage, scaling, salt]
+generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+sources:
+  - id: mixtura
+    title: 'Mixtura: Balance, vector file format'
+    url: https://github.com/nexumia-de/mixtura/blob/main/docs/balance.md#vector-file-format
+  - id: ratios
+    title: Ratios and salt percentages checked against sources
+    url: ratios.md
+---
+
+# Test vector format
+
+Culina has no code yet. This fixes the format of the worked examples its
+engine will be tested against, so that rules are written down with their
+numbers before code exists. The shape follows Mixtura's vectors[^mixtura]
+so both apps can share one runner when the engine moves into shared code.
+
+## Envelope
+
+One JSON file per worked example, file name equal to `id` plus `.json`.
+
+| Field         | Meaning                                                               |
+| ------------- | --------------------------------------------------------------------- |
+| `id`          | kebab-case, equal to the file name without `.json`                    |
+| `description` | what the example is                                                   |
+| `inputs`      | `kind` selects the rule; the other fields are that rule's inputs      |
+| `expected`    | named numbers the engine must reproduce (`null` where undefined)      |
+| `tolerance`   | absolute, applied to every expected number                            |
+| `source`      | where the arithmetic is written out and how well the inputs are known |
+
+Inputs are self-contained: a vector carries every number it uses, so it
+does not depend on seed data. Masses are in grams, percentages are
+numbers out of 100. Expected numbers are rounded to six decimals.
+
+## Kinds
+
+| `kind`           | Inputs                                                                    | Expected                                                                                                                                            |
+| ---------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bakers_percent` | `lines`: `name`, `g`, `is_flour`                                          | `flour_g`, `dough_g`, `pct` per line (by name), `total_pct`, `hydration_pct`                                                                        |
+| `scale_bakers`   | `formula`: `name`, `pct` (flour lines sum to 100); `target_dough_g`       | `flour_g`, `g` per line, `dough_g`                                                                                                                  |
+| `ratio_check`    | `template`: `name`, `parts`; `lines`: `name`, `g`; `anchor` (a line name) | `parts` per line normalised so the anchor has its template parts; `share_pct` per line; `template_share_pct`; `delta_parts` (actual minus template) |
+| `scale_anchor`   | `template`: `name`, `parts`; `anchor`: `name`, `g`                        | `g` per line                                                                                                                                        |
+| `salt_percent`   | `food_g` or `water_g`, `pct`, `basis` (`food`, `water` or `brine`)        | `salt_g`, `total_g`                                                                                                                                 |
+
+`ratio_check` returns numbers only. Whether a figure lies in a usual
+range is shown by the app against the template's range; a vector never
+says that a dough is wrong. Line names in `expected` are object keys.
+
+Basis of `salt_percent`:
+
+- `food`: salt = food × pct / 100 (sauerkraut on cabbage, soup on soup).
+- `water`: salt = water × pct / 100 (pasta water).
+- `brine`: pct is salt per 100 of salt plus water, so
+  salt = water × pct / (100 − pct).
+
+# Worked examples
+
+All numbers by hand. The input numbers are chosen for the arithmetic;
+where they echo a checked figure, [ratios](ratios.md) has its source.
+
+## 1. Baker's percentages from grams
+
+Flour 1000 g, water 760 g, salt 20 g, yeast 12 g.
+
+- flour = 1000 g; water 100 · 760 / 1000 = 76 %; salt 100 · 20 / 1000 =
+  2 %; yeast 100 · 12 / 1000 = 1.2 %.
+- total 100 + 76 + 2 + 1.2 = 179.2 %; dough 1000 + 760 + 20 + 12 =
+  1792 g; hydration = water % = 76 %.
+
+```json
+{
+  "id": "bakers-percent-from-grams",
+  "description": "Lean dough in grams to baker's percentages",
+  "inputs": {
+    "kind": "bakers_percent",
+    "lines": [
+      { "name": "flour", "g": 1000, "is_flour": true },
+      { "name": "water", "g": 760, "is_flour": false },
+      { "name": "salt", "g": 20, "is_flour": false },
+      { "name": "yeast", "g": 12, "is_flour": false }
+    ]
+  },
+  "expected": {
+    "flour_g": 1000,
+    "dough_g": 1792,
+    "pct": { "flour": 100, "water": 76, "salt": 2, "yeast": 1.2 },
+    "total_pct": 179.2,
+    "hydration_pct": 76
+  },
+  "tolerance": 0.0001,
+  "source": "docs/vectors.md#1-bakers-percentages-from-grams; synthetic amounts"
+}
+```
+
+## 2. Scaling a baker's formula to a dough weight
+
+The formula of example 1, scaled to 900 g of dough.
+
+- flour = 900 / 1.792 = 502.232143 g
+- water = 0.76 · 502.232143 = 381.696429 g
+- salt = 0.02 · 502.232143 = 10.044643 g
+- yeast = 0.012 · 502.232143 = 6.026786 g
+- check: 502.232143 + 381.696429 + 10.044643 + 6.026786 = 900.000001,
+  equal to 900 within the tolerance.
+
+```json
+{
+  "id": "scale-bakers-to-dough-weight",
+  "description": "Baker's formula 100/76/2/1.2 scaled to 900 g of dough",
+  "inputs": {
+    "kind": "scale_bakers",
+    "formula": [
+      { "name": "flour", "pct": 100 },
+      { "name": "water", "pct": 76 },
+      { "name": "salt", "pct": 2 },
+      { "name": "yeast", "pct": 1.2 }
+    ],
+    "target_dough_g": 900
+  },
+  "expected": {
+    "flour_g": 502.232143,
+    "g": { "flour": 502.232143, "water": 381.696429, "salt": 10.044643, "yeast": 6.026786 },
+    "dough_g": 900
+  },
+  "tolerance": 0.000001,
+  "source": "docs/vectors.md#2-scaling-a-bakers-formula-to-a-dough-weight; synthetic formula"
+}
+```
+
+## 3. Ratio check of a pie dough
+
+Template 3 flour : 2 fat : 1 water; made with 300 g flour, 180 g fat,
+110 g water; anchor flour.
+
+- scale = 3 / 300 = 0.01 parts per gram; parts: flour 3, fat
+  180 · 0.01 = 1.8, water 110 · 0.01 = 1.1.
+- delta parts: flour 0, fat 1.8 − 2 = −0.2, water 1.1 − 1 = +0.1.
+- total 590 g; shares: flour 100 · 300 / 590 = 50.847458 %, fat
+  100 · 180 / 590 = 30.508475 %, water 100 · 110 / 590 = 18.644068 %.
+- template shares (6 parts): 50 %, 33.333333 %, 16.666667 %.
+
+```json
+{
+  "id": "ratio-check-pie-dough",
+  "description": "Pie dough 300/180/110 g against 3:2:1, anchored on flour",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": { "name": "pie dough", "parts": { "flour": 3, "fat": 2, "water": 1 } },
+    "lines": [
+      { "name": "flour", "g": 300 },
+      { "name": "fat", "g": 180 },
+      { "name": "water", "g": 110 }
+    ],
+    "anchor": "flour"
+  },
+  "expected": {
+    "parts": { "flour": 3, "fat": 1.8, "water": 1.1 },
+    "share_pct": { "flour": 50.847458, "fat": 30.508475, "water": 18.644068 },
+    "template_share_pct": { "flour": 50, "fat": 33.333333, "water": 16.666667 },
+    "delta_parts": { "flour": 0, "fat": -0.2, "water": 0.1 }
+  },
+  "tolerance": 0.000001,
+  "source": "docs/vectors.md#3-ratio-check-of-a-pie-dough; template 3:2:1 from docs/ratios.md (excerpt only), amounts synthetic"
+}
+```
+
+## 4. Scaling from an anchor: pasta from the egg
+
+Template 3 flour : 2 egg; 165 g of egg weighed.
+
+- flour = 165 · 3 / 2 = 247.5 g; egg stays 165 g.
+
+```json
+{
+  "id": "scale-anchor-pasta-egg",
+  "description": "Pasta dough 3:2 from 165 g of egg",
+  "inputs": {
+    "kind": "scale_anchor",
+    "template": { "name": "pasta dough", "parts": { "flour": 3, "egg": 2 } },
+    "anchor": { "name": "egg", "g": 165 }
+  },
+  "expected": { "g": { "flour": 247.5, "egg": 165 } },
+  "tolerance": 0.000001,
+  "source": "docs/vectors.md#4-scaling-from-an-anchor-pasta-from-the-egg; template from docs/ratios.md (excerpt only), egg mass synthetic"
+}
+```
+
+## 5. Salt by basis: a 6 % brine
+
+2000 g of water, 6 % salt by mass of brine.
+
+- salt = 2000 · 6 / (100 − 6) = 12000 / 94 = 127.659574 g
+- total = 2000 + 127.659574 = 2127.659574 g; check 100 · 127.659574 /
+  2127.659574 = 6.000000 %.
+- On basis `water` the same 6 % gives 120 g: the basis must be stored
+  with every salt percentage.
+
+```json
+{
+  "id": "salt-brine-6-percent",
+  "description": "6 % brine by mass of brine from 2000 g of water",
+  "inputs": { "kind": "salt_percent", "water_g": 2000, "pct": 6, "basis": "brine" },
+  "expected": { "salt_g": 127.659574, "total_g": 2127.659574 },
+  "tolerance": 0.000001,
+  "source": "docs/vectors.md#5-salt-by-basis-a-6-brine; 6 % lies in the corrected range 5-9 % of docs/ratios.md (excerpt only)"
+}
+```
+
+# Open
+
+- Rounding for display (how many grams a scale shows) is a separate
+  rule, as in Mixtura's amounts vectors; it gets its own kind when the
+  engine is planned.
+- Error vectors (flour lines not summing to 100, anchor missing,
+  `pct` ≥ 100 on basis `brine`) list an `error_code` instead of
+  `expected`, as Mixtura's batch vectors do.

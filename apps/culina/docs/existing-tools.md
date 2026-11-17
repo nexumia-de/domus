@@ -48,15 +48,15 @@ read there is marked _unverified_.
 
 # Software
 
-| Tool | Licence | Platform | What goes beyond storing recipes |
-| --- | --- | --- | --- |
-| Cooklang with CookCLI | MIT[^cookcli] | Plain text files, CLI, local web server | Recipes in git, references to other recipes with scaling, a pantry file with amounts and expiry, "what can I cook" with partial matches, menus, shopping list by aisle |
-| Mealie | AGPL-3.0[^mealie] | Self-hosted web, API | Import from URLs, ingredient parser with foods and units, meal plan, shopping lists, groups and households. Pantry-based search, sub-recipes and scaling: _unverified_ |
-| Tandoor | AGPL-3.0 with a clause against selling[^tandoor] | Self-hosted web | Meal plan, shopping, scaling. Food hierarchy, substitutes and step recipes: _unverified_ |
-| Grocy | MIT[^grocy] | Self-hosted web, API | Stock, recipes checked against stock, a "Due Score" for recipes that use up what expires soon, meal plan. Recipe costing: _unverified_ |
-| KitchenOwl | AGPL-3.0[^kitchenowl] | Android (F-Droid), iOS, web | Shared shopping lists, partly offline, recipes, planner |
-| Nextcloud Cookbook | AGPL-3.0[^nccookbook] | Nextcloud app | Import from URLs, recipes as schema.org JSON |
-| Baker's Percentage Calculator | Apache-2.0[^bakers] | Android (F-Droid) | Baker's percentages and scaling; a calculator without recipes |
+| Tool                          | Licence                                          | Platform                                | What goes beyond storing recipes                                                                                                                                       |
+| ----------------------------- | ------------------------------------------------ | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cooklang with CookCLI         | MIT[^cookcli]                                    | Plain text files, CLI, local web server | Recipes in git, references to other recipes with scaling, a pantry file with amounts and expiry, "what can I cook" with partial matches, menus, shopping list by aisle |
+| Mealie                        | AGPL-3.0[^mealie]                                | Self-hosted web, API                    | Import from URLs, ingredient parser with foods and units, meal plan, shopping lists, groups and households. Pantry-based search, sub-recipes and scaling: _unverified_ |
+| Tandoor                       | AGPL-3.0 with a clause against selling[^tandoor] | Self-hosted web                         | Meal plan, shopping, scaling. Food hierarchy, substitutes and step recipes: _unverified_                                                                               |
+| Grocy                         | MIT[^grocy]                                      | Self-hosted web, API                    | Stock, recipes checked against stock, a "Due Score" for recipes that use up what expires soon, meal plan. Recipe costing: _unverified_                                 |
+| KitchenOwl                    | AGPL-3.0[^kitchenowl]                            | Android (F-Droid), iOS, web             | Shared shopping lists, partly offline, recipes, planner                                                                                                                |
+| Nextcloud Cookbook            | AGPL-3.0[^nccookbook]                            | Nextcloud app                           | Import from URLs, recipes as schema.org JSON                                                                                                                           |
+| Baker's Percentage Calculator | Apache-2.0[^bakers]                              | Android (F-Droid)                       | Baker's percentages and scaling; a calculator without recipes                                                                                                          |
 
 GNOME Recipes is GTK3 and was last released in 2020 (_unverified_);
 Apps for GNOME lists no recipe or cooking app[^gnomeapps]. No native app
@@ -68,12 +68,12 @@ stock and expiry; KitchenOwl for shared lists on the phone.
 
 # Data
 
-| Source | Licence | Use for Culina |
-| --- | --- | --- |
-| Open Food Facts | ODbL for the database, CC BY-SA for images[^off] | Products and nutrition, with attribution and share-alike; not culinary knowledge |
-| FlavorDB | CC BY-NC-SA 3.0, download per molecule only[^flavordb] | None |
-| RecipeNLG | Non-commercial research and education only[^recipenlg] | None |
-| FooDB | _unverified_, the site refuses automated requests | None until read |
+| Source          | Licence                                                | Use for Culina                                                                   |
+| --------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Open Food Facts | ODbL for the database, CC BY-SA for images[^off]       | Products and nutrition, with attribution and share-alike; not culinary knowledge |
+| FlavorDB        | CC BY-NC-SA 3.0, download per molecule only[^flavordb] | None                                                                             |
+| RecipeNLG       | Non-commercial research and education only[^recipenlg] | None                                                                             |
+| FooDB           | _unverified_, the site refuses automated requests      | None until read                                                                  |
 
 No openly licensed data for flavour pairing or for substitution was
 found. Both have to be curated, each entry with its source.

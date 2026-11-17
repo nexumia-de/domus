@@ -1,0 +1,15 @@
+{
+  "name": "@culina/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Culina's web app (PWA): Cook's Notebook (placeholder)",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@culina/engine": "0.0.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

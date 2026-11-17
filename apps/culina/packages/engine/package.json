@@ -1,0 +1,15 @@
+{
+  "name": "@culina/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Culina's pure engine (placeholder until the shared-model decision, issue #2)",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}
