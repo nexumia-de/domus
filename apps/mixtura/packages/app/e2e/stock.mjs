@@ -445,6 +445,56 @@ expect(true, 'Buy Next ranks with the settings changed and changed back');
 await noOverflow('on Settings');
 await targets('on Settings');
 
+// ---- Create an ingredient from the search (#83) ----
+await openFresh('#/stock?q=Zzyzx%20Bitter');
+await page.getByText('No ingredient matches.').waitFor();
+await page.waitForFunction(() => document.querySelector('.stock-summary strong'));
+const stockBefore = await inStock();
+await page.getByRole('button', { name: 'Create \u201cZzyzx Bitter\u201d' }).click();
+await page.locator('[data-sheet="ingredient"]').waitFor();
+expect(
+  (await page.locator('#f-name').inputValue()) === 'Zzyzx Bitter',
+  'Create opens the form with the typed name',
+);
+await page.waitForFunction(() => document.activeElement?.hasAttribute('data-sheet'));
+await noOverflow('in the create sheet');
+await targets('in the create sheet');
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Choose where it belongs, for example Rum or Citrus.').waitFor();
+expect(true, 'a form without a place says so next to the field');
+await page.locator('#f-parentId').selectOption({ index: 1 });
+await docShot('stock-create');
+await shot('stock-create');
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Created Zzyzx Bitter and marked it in stock').waitFor();
+await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+expect(!(await hash()).includes('sheet'), 'the sheet is gone from the address after saving');
+await page.waitForFunction(
+  (n) => document.querySelector('.stock-summary strong')?.textContent === `${n} in stock`,
+  stockBefore + 1,
+);
+expect(true, 'the new ingredient is marked in stock');
+await page.goto(`${site.url}#/stock?q=Zzyzx`);
+await page.getByRole('checkbox', { name: 'Zzyzx Bitter, in stock' }).waitFor();
+expect(true, 'the new ingredient is in the tree and in stock');
+await page.reload({ waitUntil: 'load' });
+await page.getByRole('checkbox', { name: 'Zzyzx Bitter, in stock' }).waitFor();
+expect(true, 'a reload keeps the created ingredient');
+await openFresh('#/stock?q=Zzyzx%20Bitter&sheet=ingredient');
+await page.locator('[data-sheet="ingredient"]').waitFor();
+await page.getByRole('button', { name: 'Cancel' }).click();
+await page.locator('[data-sheet]').waitFor({ state: 'detached' });
+await page.goto(`${site.url}#/stock?q=Qwx%20Syrup`);
+await page.getByRole('button', { name: /^Create/ }).click();
+await page.locator('#f-parentId').selectOption({ index: 1 });
+await page.getByRole('button', { name: 'Save Ingredient' }).click();
+await page.getByText('Created Qwx Syrup and marked it in stock').waitFor();
+await page.getByRole('button', { name: 'Undo' }).click();
+await page.waitForFunction(() => !document.querySelector('.toast'));
+await page.goto(`${site.url}#/stock?q=Qwx`);
+await page.getByText('No ingredient matches.').waitFor();
+expect(true, 'Undo takes the created ingredient and its mark back');
+
 // ---- Numbers ----
 await page.goto(`${site.url}#/stock/buy-next`);
 await page.locator('.buy-item').first().waitFor();

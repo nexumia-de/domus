@@ -256,6 +256,9 @@ export const strings = {
     typeNote:
       'Marking a type, such as Gin, means you have some of it. A drink that names a product needs that product marked.',
     noHit: 'No ingredient matches.',
+    create: (text: string) => `Create “${text}”`,
+    created: (name: string) => `Created ${name} and marked it in stock`,
+    cannotCreate: 'Your data cannot be saved here, so the ingredient cannot be created.',
     other: 'Other ingredients',
     leafCount: (marked: number, total: number) => `${marked} of ${total}`,
     productsMarked: (marked: number, total: number) => `${marked} of ${total} marked`,

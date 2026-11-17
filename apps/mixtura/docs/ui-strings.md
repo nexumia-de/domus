@@ -140,7 +140,7 @@ tap ([development](development.md#app-shell)).
 # Toasts (each with Undo)
 
 Retired {name} · Deleted {name} · Removed {ingredient} · Added {name} to
-stock · Marked {name} out of stock · Cleared stock · Copied to your
+stock · Marked {name} out of stock · Created {name} and marked it in stock · Cleared stock · Copied to your
 drinks · Swap dropped · Swap reset · Imported {counts} · Import undone · Exported {counts}
 (Exported and Import undone have no Undo).
 

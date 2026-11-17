@@ -16,6 +16,7 @@ import type { BrowseModel } from '../browse/model';
 import { failedStatus, loadingStatus } from '../drinks/pane';
 import { status } from '../status';
 import { COMMON_STOCK } from './common';
+import { createOpen, createSheet, openCreate } from './create-sheet';
 import {
   OTHER_ID,
   clearTargets,
@@ -32,6 +33,7 @@ import { stockTree } from './tree-view';
 import { views } from './views';
 
 const expanded = new Set<string>();
+let createWasOpen = false;
 
 const SHOWS: readonly Show[] = ['all', 'in', 'out'];
 
@@ -203,7 +205,12 @@ export function stockView(context: ScreenContext): ScreenView {
         h('p', { class: 'note' }, strings.stock.commonHint),
       ),
     view.rows.length === 0
-      ? status(strings.stock.noHit)
+      ? status(
+          strings.stock.noHit,
+          writable && q !== '' && !firstMatch(roots, q)
+            ? { label: strings.stock.create(q), onclick: () => openCreate(context, q) }
+            : undefined,
+        )
       : stockTree(view.rows, {
           writable,
           toggle,
@@ -213,7 +220,12 @@ export function stockView(context: ScreenContext): ScreenView {
             context.store.set({ stockRev: context.store.get().stockRev + 1 });
           },
         }),
+    createSheet(context, model),
   );
+  if (createOpen(context) && !createWasOpen) {
+    requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
+  }
+  createWasOpen = createOpen(context);
   return { title, body };
 }
 
