@@ -31,19 +31,19 @@ sources:
 > Written from recalled knowledge of the named books, not from the
 > books at hand. The numbers were checked on 2026-11-17 and corrected
 > where a source disagreed; status, basis and source of each are in
-> [ratios](ratios.md)[^ratios]. Most checks rest on search excerpts and
-> must be re-read at the source before they become data.
+> [ratios](ratios.md)[^ratios]. All but the pasta water were re-read in
+> the book or at the source; that one still rests on search excerpts.
 
 # Structures instead of recipes
 
 - Ratios by weight[^ratio]: bread 5 flour : 3 water; pasta 3 flour :
   2 egg; pie dough 3 flour : 2 fat : 1 water; cookie 3 flour : 2 fat :
   1 sugar; pound cake 1 : 1 : 1 : 1; vinaigrette 3 oil : 1 acid; roux
-  1 : 1 to 3 flour : 2 fat (Ruhlman's as reported is 3 : 2); custard
-  2 liquid : 1 egg (unverified).
+  3 flour : 2 clarified butter, or equal weights with whole butter;
+  free-standing custard 2 liquid : 1 egg.
 - Baker's percentages: flour is 100 %; water about 56 % for Neapolitan
-  pizza (60–65 % for other styles unverified) and 75–85 % for ciabatta;
-  salt 1.8–2 %.
+  pizza (60–65 % for other styles unverified) and about 73–76 % for
+  ciabatta; salt 1.8–2 %.
 - Mother sauces[^escoffier]: béchamel, velouté, espagnole, hollandaise,
   tomato; each a thickener or emulsion plus a liquid, with named
   derivatives. The model is a family tree of one structure.
@@ -53,8 +53,9 @@ sources:
 # Seasoning and balance
 
 - Salt has numbers: soups about 0.4–0.5 % (sauces unverified), bread
-  1.8–2 % of flour, sauerkraut 2–3 % of cabbage, wet brine 5–9 % of the
-  brine, pasta water 0.5–2 % of the water.
+  1.8–2 % of flour, sauerkraut 2–3 % of cabbage, wet brine 5–6 % of the
+  brine (up to 9 % for flavour, unverified), pasta water 0.5–2 % of the
+  water.
 - Everything else is a loop of tasting and correcting[^nosrat]:
   flat → salt, then acid; harsh or sour → fat or sweetness; too sweet →
   acid or bitterness; bitter → salt, fat or sweetness; too salty →

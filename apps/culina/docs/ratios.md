@@ -1,37 +1,55 @@
 ---
 type: Research
 title: Ratios and salt percentages checked against sources
-description: Each ratio, baker's percentage and salt percentage from How chefs work, checked against a source reachable on 2026-11-17, with unit basis, status (confirmed, corrected, unverified), how the source was read, and the corrections.
+description: Each ratio, baker's percentage and salt percentage from How chefs work, checked against a source, with unit basis, status (confirmed, corrected, unverified), how the source was read (page, book, excerpt) and the corrections; second pass of 2026-11-17 re-read the book and regulation texts.
 tags: [research, ratios, bakers-percentage, salt, fermentation, sources]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
-  - id: npr
-    title: 'NPR: Throw Away The Recipe; Learn The Ratio Instead (2009, feature on Ruhlman: Ratio)'
-    url: https://www.npr.org/2009/07/26/107019060/throw-away-the-recipe-learn-the-ratio-instead
-  - id: ss
-    title: 'Simon & Schuster: Ratio by Michael Ruhlman, book page'
-    url: https://www.simonandschuster.com/books/Ratio/Michael-Ruhlman/Ruhlmans-Ratios/9781416571728
-  - id: garden
-    title: 'Book notes on Ruhlman: Ratio (secondary summary)'
-    url: https://digital-garden-eta-vert.vercel.app/Books/Book-Reviews/Mich/Ratio
-  - id: cooksinfo
-    title: 'CooksInfo: Pound cake'
-    url: https://www.cooksinfo.com/dishes/desserts/cakes/pound-cake/
-  - id: knroux
-    title: 'Kitchen Numbers: Roux'
-    url: https://kitchennmbrs.app/en/product-knowledge/technieken/roux
-  - id: parisi
-    title: 'Billy Parisi: How to make roux'
-    url: https://billyparisi.com/how-to-make-roux
-  - id: kasalt
-    title: 'King Arthur Baking, professional reference: Salt'
-    url: https://www.kingarthurbaking.com/pro/reference/salt
+  - id: r5
+    title: 'Michael Ruhlman: Ratio (Simon & Schuster e-book 2009, ISBN 9781416566120), "Using This Book", e-book position PT5, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT5
+  - id: r17
+    title: 'Ruhlman: Ratio, "The Ratios" list, p. 17, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PA17
+  - id: r14
+    title: 'Ruhlman: Ratio, "Bread Dough", position PT14, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT14
+  - id: r36
+    title: 'Ruhlman: Ratio, "Cookie Dough", position PT36, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT36
+  - id: r54
+    title: 'Ruhlman: Ratio, "Pound Cake and Sponge Cake", position PT54, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT54
+  - id: r94
+    title: 'Ruhlman: Ratio, "Roux", position PT94, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT94
+  - id: r124
+    title: 'Ruhlman: Ratio, "Brine", position PT124, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT124
+  - id: r140
+    title: 'Ruhlman: Ratio, "Vinaigrette", position PT140, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT140
+  - id: r253
+    title: 'Ruhlman: Ratio, "Custard, Free-Standing", position PT253, Google Books'
+    url: https://books.google.com/books?id=yXwYoXmYTD4C&pg=PT253
+  - id: quiche
+    title: 'Michael Ruhlman: Quiche Lorraine (ruhlman.com, 2013-02-07), recipe with 3-2-1 pie dough'
+    url: https://ruhlman.com/quiche-lorraine-recipe/
+  - id: elements
+    title: 'Michael Ruhlman: The Elements of Cooking (Simon & Schuster 2007, ISBN 9780743299787), p. 73, Google Books'
+    url: https://books.google.com/books?id=iX55tiQfXIgC&pg=PA73
+  - id: hamsalt
+    title: "Jeffrey Hamelman: Bread, A Baker's Book of Techniques and Recipes (Wiley 2021, ISBN 9781119577515), p. 43, Google Books"
+    url: https://books.google.com/books?id=PeEeEAAAQBAJ&pg=PA43
+  - id: hamciab
+    title: 'Hamelman: Bread (Wiley 2021, ISBN 9781119689591), Ciabatta with stiff biga, p. 93, Google Books'
+    url: https://books.google.com/books?id=RhQcEAAAQBAJ&pg=PA93
   - id: kaciabatta
     title: 'King Arthur Baking, professional formula: Ciabatta'
     url: https://KingArthurFlour.com/pro/formulas/ciabatta
   - id: tsg
-    title: 'Commission Regulation (EU) No 97/2010, Pizza Napoletana (TSG), product specification'
-    url: https://eur-lex.europa.eu/eli/reg/2010/97/oj
+    title: 'Commission Regulation (EU) No 97/2010, Pizza Napoletana (TSG), Annex II, as adopted by the EU (copy on legislation.gov.uk)'
+    url: https://www.legislation.gov.uk/eur/2010/97/annex/II/adopted
   - id: fda
     title: 'FDA: CPG Sec. 585.750 Sauerkraut; Definition; Adulteration with Thrips (revised 2005-11-29)'
     url: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cpg-sec-585750-sauerkraut-definition-adulteration-thrips
@@ -63,18 +81,18 @@ sources:
     title: 'Press report on a Food Hydrocolloids (2026) study of salt in pasta cooking water'
     url: https://interaksyon.philstar.com/?p=304723
   - id: allergens
-    title: 'Regulation (EU) No 1169/2011, Annex II (UK retained copy on legislation.gov.uk)'
-    url: https://www.legislation.gov.uk/eur/2011/1169/annex/II
+    title: 'Regulation (EU) No 1169/2011, Annex II, as adopted by the EU (copy on legislation.gov.uk)'
+    url: https://www.legislation.gov.uk/eur/2011/1169/annex/II/adopted
 ---
 
 # Ratios and salt percentages checked against sources
 
 Check of every number in [How chefs work](chef-practice.md) (issue #5).
-The check ran on 2026-11-17 in a cloud session whose network blocked
-most cooking sites, King Arthur Baking, USDA FSIS, schema.org,
-Wikipedia, the Internet Archive, Google Books and EUR-Lex
-([hosts](development.md)). Books (Ruhlman's _Ratio_, McGee's _On Food
-and Cooking_) were not at hand; no page number is quoted.
+The first pass on 2026-11-17 ran while most cooking sites, Google
+Books, the Internet Archive and EUR-Lex were blocked and rested mostly
+on search excerpts. A second pass the same day re-read each number in
+the book or at the source where a host had become reachable
+([hosts](development.md)).
 
 ## How to read the tables
 
@@ -82,14 +100,16 @@ and Cooking_) were not at hand; no page number is quoted.
   100 mass of flour), _% of food_ (salt mass per 100 mass of the salted
   food), _% of brine_ (salt mass per 100 mass of salt plus water),
   _% of water_.
-- **Read**: _page_: the page itself was read in this session.
-  _excerpt_: only a search engine's excerpt of the page was seen,
-  because the host is blocked; the value must be re-read at the page
-  before it becomes seed data.
+- **Read**: _page_: the web page or regulation text itself was read.
+  _book_: the book's own sentence, as Google Books shows it for a
+  search inside that book, with the page; _p._ is a printed page, _PT_
+  a position in an e-book preview without printed page numbers. The
+  full page was not displayed. _excerpt_: only a search engine's excerpt
+  of a third-party page was seen because the host is blocked; such a
+  value must be re-read before it becomes seed data.
 - **Status**: _confirmed_ (the source gives the same value), _corrected_
   (the source gives another value or a range; the corrected value is
-  shown), _unverified_ (no reachable source, or sources contradict each
-  other without a way to decide).
+  shown), _unverified_ (no reachable source).
 
 Where sources disagree the table keeps a range. Food-safety numbers are
 taken only from an authority (FDA, USDA, NCHFP); anything else is
@@ -97,38 +117,43 @@ unverified.
 
 # Ratios by weight
 
-| Family       | Value in chef-practice               | Basis           | Status                                       | Read    | Source                                                                                                     | Note                                                                        |
-| ------------ | ------------------------------------ | --------------- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Bread dough  | 5 flour : 3 water                    | parts by weight | confirmed                                    | excerpt | Ruhlman via NPR[^npr]                                                                                      | Yeast and salt come on top of the ratio                                     |
-| Pasta dough  | 3 flour : 2 egg                      | parts by weight | confirmed                                    | excerpt | Ruhlman via NPR[^npr]                                                                                      | Egg weighed, not counted                                                    |
-| Pie dough    | 3 flour : 2 fat : 1 water            | parts by weight | confirmed                                    | excerpt | Ruhlman via NPR[^npr]                                                                                      | "3-2-1 dough"                                                               |
-| Cookie dough | 3 flour : 2 fat : 1 sugar            | parts by weight | confirmed                                    | excerpt | Ruhlman, book page and NPR[^ss][^npr]                                                                      | Written 1 sugar : 2 fat : 3 flour                                           |
-| Pound cake   | 1 flour : 1 butter : 1 sugar : 1 egg | parts by weight | confirmed                                    | excerpt | CooksInfo[^cooksinfo]                                                                                      | Equal weights; not checked as Ruhlman's own figure                          |
-| Vinaigrette  | 3 oil : 1 acid                       | parts by weight | confirmed                                    | excerpt | Ruhlman, book page and NPR[^ss][^npr]                                                                      |                                                                             |
-| Roux         | 1 flour : 1 fat                      | parts by weight | **corrected** to 1 : 1 – 3 : 2 (flour : fat) | excerpt | 1 : 1 Kitchen Numbers[^knroux]; 3 : 2 given as Ruhlman's in a book summary[^garden] and by Parisi[^parisi] | chef-practice attributed 1 : 1 to Ruhlman; his figure as reported is 3 : 2  |
-| Custard      | 2 liquid : 1 egg                     | parts by weight | unverified                                   | excerpt | Book summary[^garden] gives 2 : 1                                                                          | Another excerpt (Food Network) gave the inverse; the book could not be read |
+Ruhlman states that the ratios are by weight and listed in the order
+the ingredients are combined; beurre manié and slurry are the exceptions
+he gives by volume[^r5].
 
-Also found, not in chef-practice: biscuit dough 3 flour : 1 fat : 2
-liquid (Ruhlman, excerpt[^ss][^npr]).
+| Family       | Value in chef-practice               | Basis           | Status                                                                  | Read                 | Source                                    | Note                                                                                                                                                 |
+| ------------ | ------------------------------------ | --------------- | ----------------------------------------------------------------------- | -------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bread dough  | 5 flour : 3 water                    | parts by weight | confirmed                                                               | book, p. 17          | Ruhlman, _Ratio_[^r17]                    | "plus yeast and salt"; in the bread chapter 100 % flour, 60 % water, 3 % fresh yeast, 2 % salt[^r14]                                                 |
+| Pasta dough  | 3 flour : 2 egg                      | parts by weight | confirmed                                                               | book, p. 17          | Ruhlman, _Ratio_[^r17]                    | Egg weighed, not counted                                                                                                                             |
+| Pie dough    | 3 flour : 2 fat : 1 water            | parts by weight | confirmed                                                               | book, p. 17; page    | Ruhlman, _Ratio_[^r17]; his blog[^quiche] | Blog recipe: 12 oz flour, 8 oz butter, 2–4 oz ice water, less water with butter because butter contains water                                        |
+| Cookie dough | 3 flour : 2 fat : 1 sugar            | parts by weight | confirmed                                                               | book, PT36 and p. 17 | Ruhlman, _Ratio_[^r36][^r17]              | Written 1 sugar : 2 fat : 3 flour                                                                                                                    |
+| Pound cake   | 1 flour : 1 butter : 1 sugar : 1 egg | parts by weight | confirmed                                                               | book, PT54           | Ruhlman, _Ratio_[^r54]                    | Now Ruhlman's own figure (first pass: CooksInfo excerpt)                                                                                             |
+| Vinaigrette  | 3 oil : 1 acid                       | parts by weight | confirmed                                                               | book, PT140          | Ruhlman, _Ratio_[^r140]                   | Written "3 parts oil : 1 part vinegar"                                                                                                               |
+| Roux         | 1 flour : 1 fat                      | parts by weight | **corrected**: 3 flour : 2 clarified butter, or 1 : 1 with whole butter | book, p. 17 and PT94 | Ruhlman, _Ratio_[^r17][^r94]              | "Roux = 3 parts flour : 2 parts fat"; "at home, and especially for small amounts, equal parts of flour and whole butter by weight can be used"       |
+| Custard      | 2 liquid : 1 egg                     | parts by weight | **confirmed** (was unverified), for free-standing custard               | book, PT253          | Ruhlman, _Ratio_[^r253]                   | "Free-standing custard = 2 parts liquid : 1 part egg … 16 ounces milk blended with 8 ounces (4 [eggs])"; the inverse read in the first pass is wrong |
+
+Also in Ruhlman's list, not in chef-practice: biscuit dough 3 flour :
+1 fat : 2 liquid; thickening 10 liquid : 1 roux; beurre manié 1 flour :
+1 butter[^r17].
 
 # Baker's percentages
 
-| Item               | Value in chef-practice | Basis     | Status                                                                          | Read    | Source                                 | Note                                                                                         |
-| ------------------ | ---------------------- | --------- | ------------------------------------------------------------------------------- | ------- | -------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Pizza hydration    | 60–65 %                | baker's % | **corrected**: Neapolitan (TSG) about 56 %; 60–65 % for other styles unverified | excerpt | Reg. (EU) 97/2010[^tsg]                | 1 l water to 1.8 kg flour, flour added "until the desired consistency": 1000 / 1800 = 55.6 % |
-| Pizza salt (new)   | –                      | baker's % | added: about 2.8–3.1 % (Neapolitan)                                             | excerpt | Reg. (EU) 97/2010[^tsg]                | 50–55 g salt per 1.8 kg flour: 50 / 1800 = 2.78 %, 55 / 1800 = 3.06 %                        |
-| Ciabatta hydration | 75–85 %                | baker's % | confirmed                                                                       | excerpt | King Arthur formula, 76 %[^kaciabatta] | One professional formula inside the range; the range itself is from secondary sites          |
-| Bread salt         | about 2 %              | baker's % | confirmed, range 1.8–2 %                                                        | excerpt | King Arthur[^kasalt]                   |                                                                                              |
+| Item               | Value in chef-practice | Basis     | Status                                                                          | Read          | Source                                                            | Note                                                                                                                  |
+| ------------------ | ---------------------- | --------- | ------------------------------------------------------------------------------- | ------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Pizza hydration    | 60–65 %                | baker's % | **corrected**: Neapolitan (TSG) about 56 %; 60–65 % for other styles unverified | page          | Reg. (EU) 97/2010[^tsg]                                           | "Pour a litre of water … gradually add 1,8 kg of W 220-380 flour until the desired consistency": 1000 / 1800 = 55.6 % |
+| Pizza salt (new)   | –                      | baker's % | added: about 2.8–3.1 % (Neapolitan)                                             | page          | Reg. (EU) 97/2010[^tsg]                                           | "between 50 and 55 g of sea salt" per 1.8 kg flour: 50 / 1800 = 2.78 %, 55 / 1800 = 3.06 %                            |
+| Ciabatta hydration | 75–85 %                | baker's % | **corrected** to about 73–76 %; 75–85 % as a range unverified                   | book; excerpt | Hamelman, 73 %[^hamciab]; King Arthur, 76 %, excerpt[^kaciabatta] | Hamelman's ciabatta with stiff biga: water 7.3 kg per 10 kg flour, 73 %, salt 2 %                                     |
+| Bread salt         | about 2 %              | baker's % | confirmed, range 1.8–2 %                                                        | book, p. 43   | Hamelman[^hamsalt]; Ruhlman 2 %[^r14]                             | "1.8 to 2 percent based on flour weight. In sourdough production, 1.8 percent is usually adequate"                    |
 
 # Salt percentages
 
-| Use                   | Value in chef-practice | Basis               | Status                                                        | Read                         | Source                                                                 | Note                                                                                                                                                                                         |
-| --------------------- | ---------------------- | ------------------- | ------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Soups and sauces      | 0.8–1.2 %              | % of food           | **corrected** for soups to about 0.4–0.5 %; sauces unverified | page (Zhang), excerpt (RIAL) | Zhang 2024[^zhang]; RIAL[^rial]                                        | Bone broth: 0.36 % NaCl was "a 20 % decrease", so the control was 0.36 / 0.8 = 0.45 %. Soups at 0.40 and 0.50 % NaCl scored highest in a test of 0–0.60 %. No source for 0.8–1.2 % was found |
-| Bread                 | 2 %                    | baker's %           | confirmed, 1.8–2 %                                            | excerpt                      | King Arthur[^kasalt]                                                   | Same figure as above                                                                                                                                                                         |
-| Ferments (sauerkraut) | 2–2.5 %                | % of food (cabbage) | **corrected** to 2–3 %                                        | page                         | FDA CPG 585.750[^fda]; 2.25 % used in a study[^zabat]                  | Food safety: from an authority. NCHFP gives volumes only (3 tbsp canning salt per 5 lb cabbage[^nchfpkraut]) and warns not to cut the salt[^nchfpgen]                                        |
-| Wet brine (meat)      | 5–6 %                  | % of brine          | **corrected** to 5–9 %                                        | excerpt                      | America's Test Kitchen[^atk]                                           | Most moisture taken up at about 6 %; tasters preferred 9 % for flavour. Not a safety number                                                                                                  |
-| Pasta water           | 1–2 %                  | % of water          | **corrected** to 0.5–2 %                                      | excerpt                      | Serious Eats tests as reported[^pastawater]; a 2026 study[^pastastudy] | Tests found 0.5–2 % acceptable; the study found 7 g/l (0.7 %) kept the pasta structure best                                                                                                  |
+| Use                   | Value in chef-practice | Basis               | Status                                                        | Read                           | Source                                                                 | Note                                                                                                                                                                                                                                                          |
+| --------------------- | ---------------------- | ------------------- | ------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Soups and sauces      | 0.8–1.2 %              | % of food           | **corrected** for soups to about 0.4–0.5 %; sauces unverified | page (Zhang), excerpt (RIAL)   | Zhang 2024[^zhang]; RIAL[^rial]                                        | Bone broth: 0.36 % NaCl was "a 20 % decrease", so the control was 0.36 / 0.8 = 0.45 %. Soups at 0.40 and 0.50 % NaCl scored highest in a test of 0–0.60 %. No source for 0.8–1.2 % was found                                                                  |
+| Bread                 | 2 %                    | baker's %           | confirmed, 1.8–2 %                                            | book, p. 43                    | Hamelman[^hamsalt]                                                     | Same figure as above                                                                                                                                                                                                                                          |
+| Ferments (sauerkraut) | 2–2.5 %                | % of food (cabbage) | **corrected** to 2–3 %                                        | page                           | FDA CPG 585.750[^fda]; 2.25 % used in a study[^zabat]                  | Food safety: from an authority. NCHFP gives volumes only (3 tbsp canning salt per 5 lb cabbage[^nchfpkraut]) and warns not to cut the salt[^nchfpgen]                                                                                                         |
+| Wet brine (meat)      | 5–6 %                  | % of brine          | confirmed 5–6 %; up to 9 % for flavour unverified             | book, p. 73 and PT124; excerpt | Ruhlman[^elements][^r124]; America's Test Kitchen, excerpt[^atk]       | _Elements_: about a cup of kosher salt per gallon "will result in a 5 percent to 6 percent brine". _Ratio_: "5 percent salt (or 20 parts water, 1 part salt) by weight", which is 1 / 21 = 4.8 % of the brine. ATK tasters preferred 9 %; not a safety number |
+| Pasta water           | 1–2 %                  | % of water          | **corrected** to 0.5–2 %, still excerpt only                  | excerpt                        | Serious Eats tests as reported[^pastawater]; a 2026 study[^pastastudy] | Tests found 0.5–2 % acceptable; the study found 7 g/l (0.7 %) kept the pasta structure best. Serious Eats and both reports stay blocked                                                                                                                       |
 
 ## Fermentation safety data from NCHFP (added)
 
@@ -145,32 +170,38 @@ the units NCHFP uses.
 
 # Other numbers
 
-| Item                           | Value         | Status    | Read    | Source                          |
-| ------------------------------ | ------------- | --------- | ------- | ------------------------------- |
-| Allergens to declare in the EU | 14 (Annex II) | confirmed | excerpt | Reg. (EU) 1169/2011[^allergens] |
+| Item                           | Value         | Status    | Read | Source                          |
+| ------------------------------ | ------------- | --------- | ---- | ------------------------------- |
+| Allergens to declare in the EU | 14 (Annex II) | confirmed | page | Reg. (EU) 1169/2011[^allergens] |
 
 # Tally
 
-17 numbers from chef-practice: 10 confirmed, 6 corrected, 1 unverified.
-Only the corrections of the sauerkraut range (FDA) and the soup salt
-(Zhang) rest on pages read in this session; all other confirmations and
-corrections rest on search excerpts and must be re-read at the source
-before they become seed data. The NCHFP rows are new and read from the
-pages.
+17 numbers from chef-practice: 11 confirmed, 6 corrected, none
+unverified. Changes in the second pass: custard confirmed (was
+unverified); roux kept as corrected but now from Ruhlman's own text,
+with the fat named; ciabatta corrected from 75–85 % to about 73–76 %;
+wet brine back to the original 5–6 %, with 9 % unverified; pound cake
+now Ruhlman's figure.
+
+Read from the book or the page: 16 of 17. Still resting on excerpts
+only: pasta water (Serious Eats and the press reports are blocked),
+plus parts of rows: the RIAL soup test, King Arthur's 76 % ciabatta and
+ATK's 9 % brine. Sauce salt has no source and stays out of the data.
 
 # Licences
 
-The tables hold single numbers with attribution, not copied text. Of
-the sources only Zabat et al. states a licence on the page read (CC BY
-4.0[^zabat]); the licences of the other pages were not checked and are
-recorded as unknown. Before a number becomes seed data, its entry names
-the source and that source's licence or terms.
+The tables hold single numbers with attribution, not copied text. The
+regulation texts on legislation.gov.uk are under the Open Government
+Licence v3.0 and EUR-Lex reuse terms, as the site states[^tsg]. Zabat
+et al. is CC BY 4.0[^zabat]. The books are copyrighted; only the
+numbers, which are facts, are used, each with the book and page. Before
+a number becomes seed data, its entry names the source and that
+source's licence or terms.
 
 # Before this becomes data
 
-1. Re-read every _excerpt_ row at its page when the host is reachable
-   (King Arthur, EUR-Lex, America's Test Kitchen, NPR, Simon & Schuster)
-   or in the book (_Ratio_: roux, custard, pound cake with page).
+1. Re-read the excerpt-only values when their hosts are reachable
+   (Serious Eats, America's Test Kitchen, King Arthur) or drop them.
 2. Find a source for the salt of sauces, or leave it out.
 3. Each seed ratio carries its source and licence; a number is a range
    shown against the template, never a verdict.

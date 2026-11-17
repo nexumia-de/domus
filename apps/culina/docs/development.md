@@ -129,3 +129,85 @@ ucanr.edu
 EU regulations could not be read either. `docs.cooklang.org` still
 answers 502. Values from blocked hosts were taken only from search
 excerpts and are marked so in [ratios](ratios.md).
+
+## Second ratio pass and nutrition evaluation (2026-11-17, later)
+
+Needed for the second pass of [ratios](ratios.md) and for the
+[nutrition evaluation](nutrition-evaluation.md). Reachable and used:
+
+```
+books.google.com
+ruhlman.com
+archive.org
+www.legislation.gov.uk
+fdc.nal.usda.gov
+world.openfoodfacts.org
+pubmed.ncbi.nlm.nih.gov
+eutils.ncbi.nlm.nih.gov
+raw.githubusercontent.com
+api.github.com
+codeberg.org
+f-droid.org
+```
+
+How they could be read:
+
+- Google Books: the volumes feed (`books.google.com/books/feeds/volumes?q=…`)
+  returns the book's own sentence and page for a search inside a book.
+  The search-inside page itself redirects to a bot check on
+  `www.google.com`, which is blocked.
+- The Internet Archive copy of _Ratio_ is a lending item; its full-text
+  search runs on a data node (`ia601008.us.archive.org`) that is blocked.
+- EU law: `eur-lex.europa.eu` still answers 202 with an empty body for
+  the HTML, TXT and PDF document URLs. The EU texts were read on
+  `www.legislation.gov.uk` in the "as adopted by the EU" version
+  (`…/adopted`), not the later UK version.
+- `pmc.ncbi.nlm.nih.gov` answers scripts with a bot check; full texts
+  come through `eutils.ncbi.nlm.nih.gov` (`efetch`, `db=pmc`).
+- `en.wikipedia.org` answers its API with 429 after a few calls.
+
+Refused by the site: `www.kingarthurbaking.com` (406),
+`www.fsis.usda.gov` (403), `www.seriouseats.com` (402).
+
+Blocked (proxy refused the tunnel, tested with
+`curl -sS -m 15 -o /dev/null https://<host>/`):
+
+```
+web.archive.org
+ia601008.us.archive.org
+www.google.com
+www.npr.org
+www.simonandschuster.com
+www.americastestkitchen.com
+www.cooksinfo.com
+kitchennmbrs.app
+billyparisi.com
+spokesman.com
+interaksyon.philstar.com
+periodicoshomolog.saude.sp.gov.br
+schema.org
+legislation.gov.uk
+www.ars.usda.gov
+www.nal.usda.gov
+data.nal.usda.gov
+www.blsdb.de
+www.mri.bund.de
+ciqual.anses.fr
+www.anses.fr
+www.naehrwertdaten.ch
+webapp.prod.blv.foodcase-services.com
+www.blv.admin.ch
+www.eurofir.org
+opendatacommons.org
+static.openfoodfacts.org
+health.ec.europa.eu
+food.ec.europa.eu
+cronometer.com
+support.cronometer.com
+www.myfitnesspal.com
+support.myfitnesspal.com
+www.yazio.com
+fddb.info
+search.f-droid.org
+de.wikipedia.org
+```
