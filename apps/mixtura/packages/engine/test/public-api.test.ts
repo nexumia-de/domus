@@ -10,6 +10,9 @@ const files = [
   'batch.test.ts',
   'classics.test.ts',
   'ingredients-vectors.test.ts',
+  'stock-vectors.test.ts',
+  'stock-random.test.ts',
+  'stock-seed.test.ts',
   'templates.test.ts',
   'helpers/balance-vectors.ts',
 ];
@@ -26,5 +29,13 @@ test('every vector folder has a test in the list', () => {
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
     .sort();
-  expect(folders).toEqual(['amounts', 'balance', 'batch', 'classics', 'ingredients', 'templates']);
+  expect(folders).toEqual([
+    'amounts',
+    'balance',
+    'batch',
+    'classics',
+    'ingredients',
+    'stock',
+    'templates',
+  ]);
 });

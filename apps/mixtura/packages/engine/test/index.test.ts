@@ -8,6 +8,7 @@ import * as model from '../src/model';
 const PUBLIC = [
   'ancestors',
   'assignSlots',
+  'buildStockIndex',
   'buildTree',
   'checkRange',
   'chooseDilution',
@@ -27,7 +28,9 @@ const PUBLIC = [
   'isEstimatedUnit',
   'lineMl',
   'lineRole',
+  'makeableSpecs',
   'matchSpec',
+  'missingOne',
   'parseAmount',
   'prediluted',
   'resolveAll',
@@ -45,6 +48,7 @@ const PUBLIC = [
   'toMl',
   'UNITS',
   'unitValue',
+  'unlockRanking',
 ];
 
 test('the entry point exports exactly the pinned names', () => {

@@ -84,6 +84,7 @@ others return result objects as documented in their module files
 | `UNITS`                | `readonly UnitRow[]`                                                                                                 | The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit. |
 | `ancestors`            | `(tree: IngredientTree, id: string): string[] \| undefined`                                                          | The ancestors of an ingredient.                                                                          |
 | `assignSlots`          | `(tree: IngredientTree, template: Template, lines: readonly MatchLine[], options?: MatchOptions): SlotAssignment`    | Assigns spec lines to the slots of a template by role.                                                   |
+| `buildStockIndex`      | `(tree: IngredientTree, specs: readonly StockSpec[]): StockIndex`                                                    | Builds the stock index of a tree and specs: what does not depend on the stock, kept for reuse.           |
 | `buildTree`            | `(list: readonly Ingredient[]): TreeResult`                                                                          | Validates the list and builds the ingredient tree.                                                       |
 | `computePrepared`      | `(tree: IngredientTree, specs: SpecLookup, id: string): PreparedResult`                                              | Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.                             |
 | `convert`              | `(amount: Amount, to: UnitId, overrides?: UnitOverrides): Result<Amount>`                                            | Converts between two units of the same kind (volume to volume, mass to mass).                            |
@@ -98,7 +99,9 @@ others return result objects as documented in their module files
 | `isEstimatedUnit`      | `(id: UnitId): boolean`                                                                                              | True when balance must flag the figure as estimated: a convention volume.                                |
 | `lineMl`               | `(line: MatchLine, options?: MatchOptions, tree?: IngredientTree): { ml: number; } \| { reason: UnmeasuredReason; }` | The volume of a line.                                                                                    |
 | `lineRole`             | `(tree: IngredientTree, line: MatchLine): { role: Role; } \| { reason: UnassignedReason; }`                          | The role a line has: its own, else the ingredient's resolved role.                                       |
+| `makeableSpecs`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): MakeableReport`                          | Which specs the stock allows, per line how it is satisfied or why not (docs/makeable.md).                |
 | `matchSpec`            | `(tree: IngredientTree, templates: readonly Template[], spec: MatchSpec, options?: MatchOptions): MatchResult`       | Matches a spec to templates by roles and ratios and ranks every candidate.                               |
+| `missingOne`           | `(index: StockIndex, report: MakeableReport): MissingOne[]`                                                          | Specs that miss exactly one ingredient, with its substitutes.                                            |
 | `parseAmount`          | `(text: string, options?: ParseOptions): Result<Amount>`                                                             | Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.                        |
 | `resolveAll`           | `(tree: IngredientTree, id: string): ResolvedProperties`                                                             | All inherited properties of one ingredient with their sources.                                           |
 | `resolveCost`          | `(tree: IngredientTree, id: string): Resolved<Cost>`                                                                 | The price record of the ingredient itself: cost is never inherited.                                      |
@@ -110,6 +113,7 @@ others return result objects as documented in their module files
 | `toGrams`              | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The mass of an amount.                                                                                   |
 | `toMl`                 | `(amount: Amount, overrides?: UnitOverrides): Result<number>`                                                        | The volume of an amount.                                                                                 |
 | `unitValue`            | `(id: UnitId, overrides?: UnitOverrides): number \| null`                                                            | The size of one unit.                                                                                    |
+| `unlockRanking`        | `(index: StockIndex, stock: readonly StockEntry[], options?: StockOptions): UnlockResult`                            | Ranks the ingredients not in stock by the specs each would make makeable on its own.                     |
 
 ## Drink-specific (`src/drink.ts`)
 
@@ -142,6 +146,30 @@ No new exported name; fields and result values the app can read:
   line whose volume is not known; counted amounts round up to whole units.
 - Counted unit ids are the units of kind `count` in `UNITS`
   ([units](units.md#counted-units)).
+
+## Stock
+
+Part of the general model (`src/stock/`, [what the stock allows](makeable.md)).
+The input types are structural: a seed spec, a stored spec and a stock record
+fit without conversion.
+
+- `StockEntry`: `{ ingredientId, present }` of the stock entity; no quantities.
+- `StockSpec`: `{ id, status?, templateId?, lines }`, a line is
+  `{ ingredientId, optional?, substitutes? }`.
+- `StockOptions`: `mode` (`strict` default, or `with-substitutes`) and
+  `excludeStatuses` (default `['retired']`).
+- `buildStockIndex` is built when the tree or the specs change and reused on
+  every stock change; it is derived and never stored.
+- Results: `MakeableReport` (`mode`, `specs: SpecResult[]` ordered by id,
+  `ignoredStock`), `SpecResult` (`status`, `lines`, `missing`, `unknown`),
+  `UnlockResult` (`ranking`, `needsMore`, `unknown`). Rules, fields,
+  tie-breaks and measured times are in [makeable](makeable.md).
+- Time: on the seed (635 specs, 296 ingredients) `makeableSpecs` takes
+  about 5 ms and `unlockRanking` 20 to 30 ms per stock change; with 2000
+  specs and 501 ingredients about 6 ms and 30 ms (first call 44 ms). The
+  tests assert limits of 0.5 to 6 s. No inverted index is needed: the
+  ranking intersects, per open spec, the ingredients that would satisfy its
+  open lines instead of recomputing every spec per candidate.
 
 # Examples
 
@@ -341,6 +369,7 @@ scans the vector tests for deep imports):
 | `vectors/batch/`       | Scaling, pre-diluted batches, shelf life  | `batch/batch-vector.schema.json`            | `batch.test.ts`                      |
 | `vectors/templates/`   | Matching and the range check              | `templates/templates-vector.schema.json`    | `templates.test.ts`                  |
 | `vectors/classics/`    | 20 checked drinks, template and figures   | `classics/classics-vector.schema.json`      | `classics.test.ts`                   |
+| `vectors/stock/`       | Makeable, missing one, unlock ranking     | `stock/stock-vector.schema.json`            | `stock-vectors.test.ts`              |
 
 A vector file has an `id` equal to its file name, the inputs, the expected
 values worked out by hand with their `tolerance`, and a `source` that says
@@ -369,7 +398,7 @@ describes the shape of its folder.
 neutral), `tsc` writes the declarations to `dist/` (`dist/index.d.ts` and one
 file per module), and `check-dist.mjs` fails the build when the bundle has an
 import, a `process`, `window`, `document`, `navigator`, `fetch`, `require`,
-`__dirname` or a `node:` reference. The bundle is about 48 kB
+`__dirname` or a `node:` reference. The bundle is about 67 kB
 (unminified, with the six templates and the unit and dilution tables); the
 test compares it with this figure (within 25 %). The app resolves `@mixtura/engine` to
 this build, so the root commands build the engine first; see

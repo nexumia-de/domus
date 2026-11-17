@@ -38,3 +38,6 @@ export type * from './ingredients/index';
 
 export { assignSlots, lineMl, lineRole, matchSpec } from './templates/index';
 export type * from './templates/index';
+
+export { buildStockIndex, makeableSpecs, missingOne, unlockRanking } from './stock/index';
+export type * from './stock/index';

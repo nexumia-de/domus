@@ -205,6 +205,13 @@ version, the previous version.
 | `balance`                            | derived           | -        | ABV, sugar, acid, volume and ratios after dilution; see balance.                                                          |
 | `cost`                               | derived           | -        | Sum of amounts times cost of the lines' ingredients.                                                                      |
 
+**Optional lines and what the stock allows.** A line with
+`optional: true` never blocks "makeable": a spec is makeable when every
+other line is satisfied by the stock (the ingredient, a descendant, a
+prepared ingredient whose parts are all there, and with substitutes allowed
+the line's `substitutes` or a same-class, same-role ingredient). The free-text
+`garnish` is never read. Rules and result shapes: [makeable](makeable.md).
+
 A spec whose lines resolve to ingredients with known properties gets
 balance figures; a spec that is the recipe of a prepared ingredient is an
 ordinary spec.
@@ -221,6 +228,10 @@ tracked", `present: false` means "known to be out".
 | `openedOn`     | stored            | no       | Date the bottle or batch was opened.        |
 | `bestBefore`   | stored            | no       | Date after which it should not be used.     |
 | `note`         | stored            | no       | Free text.                                  |
+
+Stock has no quantity: an ingredient is at hand or not, and what the stock
+allows ([makeable](makeable.md)) is decided on that alone. `bestBefore` is
+information for the app; the engine has no clock and does not read it.
 
 ## Affinity
 
