@@ -1,0 +1,300 @@
+// Export and import in a real browser: create data, export, wipe the site
+// data (a fresh browser context), import, compare; a broken file changes
+// nothing; Undo; the backup reminder; no request leaves the origin.
+//
+//   node e2e/exchange.mjs [width height] [--docs]
+/* global document, indexedDB -- in functions the page runs */
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { launch } from './browser.mjs';
+import { expect, serve } from './serve.mjs';
+
+const args = process.argv.slice(2);
+const docs = args.includes('--docs');
+const [width = 1200, height = 800] = args.filter((a) => /^\d+$/.test(a)).map(Number);
+const OUT = resolve('dist', 'walk');
+const DOCS = resolve('..', '..', 'docs', 'screenshots');
+mkdirSync(OUT, { recursive: true });
+const shot = (page, name) =>
+  page.screenshot({ path: join(docs ? DOCS : OUT, `${name}-${width}x${height}.png`) });
+
+const example = JSON.parse(
+  readFileSync(resolve('..', 'engine', 'schemas', 'examples', 'valid', 'export-full.json'), 'utf8'),
+);
+const KINDS = ['ingredients', 'templates', 'specs', 'stock', 'affinities'];
+const user = Object.fromEntries(KINDS.map((k) => [k, example[k]]));
+const norm = (list, key) => [...list].sort((a, b) => (a[key] < b[key] ? -1 : 1));
+const same = (a, b) =>
+  KINDS.every(
+    (k) =>
+      JSON.stringify(norm(a[k], k === 'stock' ? 'ingredientId' : 'id')) ===
+      JSON.stringify(norm(b[k], k === 'stock' ? 'ingredientId' : 'id')),
+  );
+
+const site = await serve();
+const browser = await launch();
+const external = [];
+const newPage = async () => {
+  const context = await browser.newContext({
+    viewport: { width, height },
+    deviceScaleFactor: docs ? 2 : 1,
+    acceptDownloads: true,
+  });
+  const page = await context.newPage();
+  page.on('pageerror', (error) => {
+    throw error;
+  });
+  page.on('request', (r) => {
+    if (!r.url().startsWith(site.url) && !r.url().startsWith('data:')) external.push(r.url());
+  });
+  return page;
+};
+const openData = async (page) => {
+  await page.goto(`${site.url}#/settings/data`);
+  await page.getByRole('button', { name: 'Export Everything' }).waitFor();
+  await page.waitForFunction(() => !document.querySelector('[data-focus="import"]')?.disabled);
+};
+/** Reads or writes the stores without the app. */
+const dump = (page) =>
+  page.evaluate(
+    (names) =>
+      new Promise((res, rej) => {
+        const open = indexedDB.open('mixtura');
+        open.onerror = () => rej(open.error);
+        open.onsuccess = () => {
+          const db = open.result;
+          const tx = db.transaction(names);
+          const out = {};
+          let left = names.length;
+          for (const n of names) {
+            const all = tx.objectStore(n).getAll();
+            all.onsuccess = () => {
+              out[n] = all.result;
+              if (--left === 0) {
+                db.close();
+                res(out);
+              }
+            };
+          }
+        };
+      }),
+    [...KINDS, 'settings', 'meta'],
+  );
+const put = (page, stores) =>
+  page.evaluate(
+    (data) =>
+      new Promise((res, rej) => {
+        const open = indexedDB.open('mixtura');
+        open.onerror = () => rej(open.error);
+        open.onsuccess = () => {
+          const db = open.result;
+          const tx = db.transaction(Object.keys(data), 'readwrite');
+          for (const [name, list] of Object.entries(data)) {
+            for (const r of list) tx.objectStore(name).put(r);
+          }
+          tx.oncomplete = () => {
+            db.close();
+            res();
+          };
+          tx.onerror = () => rej(tx.error);
+        };
+      }),
+    stores,
+  );
+
+// 1. Create data, export it.
+let exported;
+{
+  const page = await newPage();
+  await openData(page);
+  expect(
+    (await page.locator('#nothing-to-export').count()) === 1 &&
+      (await page.getByRole('button', { name: 'Export Everything' }).isDisabled()),
+    'nothing to export: message shown, button disabled',
+  );
+  expect(
+    (await page.locator('#last-export').innerText()) === 'Not exported yet.',
+    'never exported',
+  );
+  await put(page, user);
+  await page.reload();
+  await page.getByRole('button', { name: 'Export Everything' }).waitFor();
+  await page.waitForFunction(() => !document.querySelector('[data-focus="export"]')?.disabled);
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Export Everything' }).click(),
+  ]);
+  expect(
+    /^mixtura-backup-\d{4}-\d{2}-\d{2}\.json$/.test(download.suggestedFilename()),
+    `file name ${download.suggestedFilename()}`,
+  );
+  const path = join(OUT, `export-${width}.json`);
+  await download.saveAs(path);
+  exported = JSON.parse(readFileSync(path, 'utf8'));
+  expect(
+    exported.app === 'mixtura' && exported.formatVersion === 1 && !!exported.exportedAt,
+    'the file has app, format version and instant',
+  );
+  expect(same(exported, user), 'the file holds exactly the user data');
+  expect(
+    !JSON.stringify(exported).includes('"theme"') && !('settings' in exported),
+    'no settings and no seed data in the file',
+  );
+  await page.getByTestId('toast').waitFor();
+  expect(
+    (await page.getByTestId('toast').innerText()).startsWith('Exported 2 ingredients'),
+    'toast with the counts',
+  );
+  await page.waitForFunction(() =>
+    document.querySelector('#last-export')?.textContent?.startsWith('Last export: '),
+  );
+  expect(
+    (await page.locator('#changes-since').innerText()) === '0 changes since the last export.',
+    'the counter restarts',
+  );
+  await shot(page, 'data-exported');
+  await page.context().close();
+}
+
+// 2. Wipe (fresh site data), import, compare, undo.
+const file = join(OUT, `export-${width}.json`);
+{
+  const page = await newPage();
+  await openData(page);
+  expect((await dump(page)).specs.length === 0, 'the database is empty after the wipe');
+  await page.getByTestId('import-input').setInputFiles(file);
+  const preview = page.getByTestId('import-preview');
+  await preview.waitFor();
+  expect(
+    (await preview.innerText()).includes('2 ingredients') &&
+      (await preview.innerText()).includes('2 specs'),
+    'the summary names the counts',
+  );
+  expect((await dump(page)).specs.length === 0, 'nothing is written before the choice');
+  await shot(page, 'data-import-preview');
+  await page.getByRole('button', { name: 'Merge', exact: true }).click();
+  await page.getByTestId('toast').waitFor();
+  expect(
+    (await page.getByTestId('toast').innerText()).startsWith('Imported 2 ingredients'),
+    'toast: Imported with counts',
+  );
+  const after = await dump(page);
+  expect(same(after, user), 'the imported data equals the original');
+  await shot(page, 'data-imported');
+  await page.getByRole('button', { name: 'Undo' }).click();
+  await page.getByText('Import undone').waitFor();
+  const undone = await dump(page);
+  expect(
+    KINDS.every((k) => undone[k].length === 0),
+    'Undo restores the empty state',
+  );
+  expect(
+    undone.meta.every((r) => r.key !== 'importBackup'),
+    'the import backup is gone after undo',
+  );
+  // Replace, then the backup row and its removal.
+  await page.getByTestId('import-input').setInputFiles(file);
+  await page.getByRole('button', { name: 'Replace Everything' }).click();
+  await page.getByText(/^Imported/).waitFor();
+  await page.getByRole('button', { name: 'Delete Import Backup' }).waitFor();
+  await page.getByRole('button', { name: 'Delete Import Backup' }).click();
+  await page.getByRole('button', { name: 'Delete Import Backup' }).waitFor({ state: 'detached' });
+  expect(
+    (await dump(page)).meta.every((r) => r.key !== 'importBackup'),
+    'Delete Import Backup removes the copy',
+  );
+  await page.context().close();
+}
+
+// 3. Broken files change nothing.
+{
+  const page = await newPage();
+  await openData(page);
+  await put(page, { stock: [{ ingredientId: 'lime-juice', present: true }] });
+  const cases = [
+    ['not json', '{nope', 'The file cannot be read'],
+    ['other app', JSON.stringify({ app: 'culina' }), 'The file is not a Mixtura export.'],
+    [
+      'newer format',
+      JSON.stringify({ ...example, formatVersion: 7 }),
+      'The file is from a newer version',
+    ],
+    ['schema', JSON.stringify({ ...example, specs: [{ id: 'x' }] }), 'The file does not match'],
+    ['proto key', `{"app":"mixtura","x":{"__proto__":{"y":1}}}`, 'The file cannot be read'],
+  ];
+  for (const [name, body, title] of cases) {
+    const path = join(OUT, `broken-${width}.json`);
+    writeFileSync(path, body);
+    await page.getByTestId('import-input').setInputFiles(path);
+    const error = page.getByTestId('import-error');
+    await error.waitFor();
+    expect((await error.innerText()).includes(title), `${name}: "${title}"`);
+    expect(
+      (await error.innerText()).includes('Nothing was imported.'),
+      `${name}: nothing imported`,
+    );
+    const data = await dump(page);
+    expect(
+      data.stock.length === 1 && data.specs.length === 0,
+      `${name}: the database is unchanged`,
+    );
+  }
+  const newer = join(OUT, `broken-${width}.json`);
+  writeFileSync(newer, JSON.stringify({ ...example, formatVersion: 7 }));
+  await page.getByTestId('import-input').setInputFiles(newer);
+  await page.getByText('It is format 7; this app reads up to 1.').waitFor();
+  expect(true, 'the newer-format text names both versions');
+  const big = join(OUT, `big-${width}.json`);
+  writeFileSync(big, ' '.repeat(10 * 1024 * 1024 + 1));
+  await page.getByTestId('import-input').setInputFiles(big);
+  await page.getByText('The file is too large').waitFor();
+  expect(true, 'a file above the size limit is refused');
+  await shot(page, 'data-import-error');
+  await page.context().close();
+}
+
+// 4. The reminder: calm, only after changes and 30 days, dismissible, only in Settings.
+{
+  const page = await newPage();
+  await openData(page);
+  const set = (value) =>
+    put(page, { settings: [{ key: 'backup', value }] }).then(() => page.reload());
+  const old = new Date(Date.now() - 45 * 86_400_000).toISOString();
+  await set({ changesSinceExport: 0, lastExportAt: old });
+  await page.getByRole('button', { name: 'Export Everything' }).waitFor();
+  expect((await page.getByTestId('backup-reminder').count()) === 0, 'no reminder without changes');
+  await set({ changesSinceExport: 3, firstChangeAt: new Date().toISOString() });
+  await page.getByRole('button', { name: 'Export Everything' }).waitFor();
+  expect((await page.getByTestId('backup-reminder').count()) === 0, 'no reminder before 30 days');
+  await set({ changesSinceExport: 12, lastExportAt: old });
+  await page.getByTestId('backup-reminder').waitFor();
+  expect(
+    (await page.getByTestId('backup-reminder').innerText()).includes(
+      'You have 12 changes since your last export.',
+    ),
+    'the reminder names the count',
+  );
+  await shot(page, 'data-reminder');
+  await page.goto(`${site.url}#/drinks`);
+  await page.locator('nav.nav').waitFor();
+  expect((await page.getByTestId('backup-reminder').count()) === 0, 'never on the Drinks list');
+  await page.goto(`${site.url}#/settings`);
+  await page.getByTestId('backup-reminder').waitFor();
+  await page.getByRole('button', { name: 'Dismiss' }).click();
+  await page.getByTestId('backup-reminder').waitFor({ state: 'detached' });
+  await page.reload();
+  await page.getByRole('link', { name: /^Data/ }).waitFor();
+  expect((await page.getByTestId('backup-reminder').count()) === 0, 'dismissed stays away');
+  expect(
+    (await page.getByRole('link', { name: /^Data/ }).innerText()).includes(
+      '12 changes since the last export.',
+    ),
+    'the Data row shows the count',
+  );
+  await shot(page, 'settings-data-row');
+  await page.context().close();
+}
+
+expect(external.length === 0, `no request left the origin ${external}`);
+await browser.close();
+await site.close();

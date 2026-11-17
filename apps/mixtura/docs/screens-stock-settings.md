@@ -124,7 +124,7 @@ Built by [#28](https://github.com/nexumia-de/mixtura/issues/28). URL
   with changes and no export (dismissible, never a dialog, never on
   the Drinks list). Per-spec export is in the spec's overflow menu.
 - **Export.** The browser's save dialog; the file name
-  `mixtura-2026-11-17.json` (date from the host). A toast "Exported 34
+  `mixtura-backup-2026-11-17.json` (date from the host). A toast "Exported 34
   stock entries, 18 specs" with the counts.
 - **Import.** Choose a file; it is read and checked completely before
   anything is written: wrong app, unsupported higher `formatVersion`,

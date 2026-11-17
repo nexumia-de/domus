@@ -5,6 +5,7 @@
 // (docs/store.md#failure).
 
 import { type AppState } from './app-state';
+import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
 import { type Store } from './state';
 import {
@@ -24,6 +25,8 @@ export interface AppData {
   catalog(): Catalog;
   /** The writable store, or null while it opens and after it failed. */
   local(): LocalStore | null;
+  /** Export, import, undo and the backup reminder (Settings, Data). */
+  exchange: ExchangeActions;
 }
 
 export interface Connection {
@@ -91,6 +94,10 @@ export function connect(app: Store<AppState>): Connection {
       const opened = await openLocalStore({
         legacyPrefs: readLegacyPrefs,
         onPersist: (persistence) => patch({ persistence }),
+        onBackup: (backup) => {
+          patch({ backup });
+          void exchange.refresh();
+        },
       });
       const settings = await opened.settings.load();
       local = opened;
@@ -101,6 +108,7 @@ export function connect(app: Store<AppState>): Connection {
         storage: { kind: 'ready' },
         persistence: await opened.persistence.status(),
       });
+      void exchange.refresh();
       // The migration has copied the old preferences; the old key is not needed again.
       try {
         localStorage.removeItem(LEGACY_KEY);
@@ -117,9 +125,17 @@ export function connect(app: Store<AppState>): Connection {
     }
   }
 
+  const exchange = createExchangeActions({
+    app,
+    local: () => local,
+    seedVersion: () => seed.seedVersion,
+    now: () => new Date(),
+    download: saveAsFile,
+  });
+
   const ready = open();
   return {
-    data: { catalog: () => catalog, local: () => local },
+    data: { catalog: () => catalog, local: () => local, exchange },
     retry: () => void open(),
     ready,
   };

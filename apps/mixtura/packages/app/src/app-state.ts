@@ -4,7 +4,14 @@
 
 import { type DestId } from './destinations';
 import { parseHash, type Route } from './router';
-import { type PersistState, type StoreErrorKind } from './store';
+import {
+  type Backup,
+  type ExportFile,
+  type ParseFailure,
+  type PersistState,
+  type Plan,
+  type StoreErrorKind,
+} from './store';
 
 export type Theme = 'system' | 'light' | 'dark';
 export type Units = 'metric' | 'us' | 'imperial';
@@ -14,6 +21,27 @@ export type StorageStatus =
   | { kind: 'opening' }
   | { kind: 'ready' }
   | { kind: 'error'; error: StoreErrorKind; reason: string };
+
+/** The import dialog-less flow on the Data screen. */
+export type ImportFlow =
+  | { kind: 'idle' }
+  | { kind: 'busy' }
+  | {
+      kind: 'preview';
+      file: ExportFile;
+      merge: Plan;
+      replace: Plan;
+      migratedFrom: number | null;
+      /** The seed version of the file when it differs from this app's. */
+      seedMismatch: { found: string; own: string } | null;
+    }
+  | { kind: 'error'; failure: ParseFailure };
+
+export interface Toast {
+  id: number;
+  text: string;
+  undo?: () => void;
+}
 
 export interface AppState {
   route: Route;
@@ -28,6 +56,14 @@ export interface AppState {
   persistence: PersistState | 'unknown';
   /** Reason the last settings change could not be saved, else null. */
   saveError: string | null;
+  /** Backup reminder state, from the store. */
+  backup: Backup;
+  /** Records the user entered (what an export would hold); null until known. */
+  userRecords: number | null;
+  /** A copy of the data from before the last import exists. */
+  importBackup: boolean;
+  importFlow: ImportFlow;
+  toast: Toast | null;
   /** Last route of each destination, so switching back restores its stack. */
   lastRoute: Partial<Record<DestId, string>>;
 }
@@ -41,6 +77,11 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     seed: { kind: 'loading' },
     persistence: 'unknown',
     saveError: null,
+    backup: { changesSinceExport: 0 },
+    userRecords: null,
+    importBackup: false,
+    importFlow: { kind: 'idle' },
+    toast: null,
     lastRoute: {},
   };
 }

@@ -40,12 +40,21 @@ export interface Stock {
 export type Theme = 'system' | 'light' | 'dark';
 export type Units = 'metric' | 'us' | 'imperial';
 
+/** Backup reminder state (docs/export-format.md#backup-reminder). Instants are ISO 8601 UTC. */
+export interface Backup {
+  lastExportAt?: string;
+  /** Committed entity writes and deletes since the last export. */
+  changesSinceExport: number;
+  /** When the first of those changes happened; the reminder counts days from here. */
+  firstChangeAt?: string;
+  dismissedAt?: string;
+}
+
 /** Device settings; they are not part of the export file. */
 export interface Settings {
   theme: Theme;
   units: Units;
-  /** Reminder state for export (#28); only stored here, counted there. */
-  backup: { lastExportAt?: string; changesSinceExport: number; dismissedAt?: string };
+  backup: Backup;
 }
 
 export type EntityKind = 'ingredient' | 'template' | 'spec' | 'stock' | 'affinity';

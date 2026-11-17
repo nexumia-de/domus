@@ -108,6 +108,8 @@ score, grade, warning, error (for a figure).
 | Import, wrong file       | The file is not a Mixtura export.        | Nothing was imported.                                             |             |
 | Import, newer format     | The file is from a newer version         | It is format {n}; this app reads up to {m}. Nothing was imported. |             |
 | Import, damaged          | The file cannot be read                  | {reason}. Nothing was imported.                                   |             |
+| Import, wrong format     | The file does not match the format       | {first problem} (and {n} more). Nothing was imported.             |             |
+| Import, too large        | The file is too large                    | Files up to 10 MB are read. Nothing was imported.                 |             |
 | Not found (any route)    | This page is not here                    | The link points to something that was deleted or never existed.   | Open Drinks |
 | Offline (About)          | Updates are checked when you are online. |                                                                   |             |
 | External link offline    | (accessible name)                        | {name}, needs a connection                                        |             |
@@ -131,8 +133,8 @@ tap ([development](development.md#app-shell)).
 
 Retired {name} · Deleted {name} · Removed {ingredient} · Added {name} to
 stock · Marked {name} out of stock · Cleared stock · Copied to your
-drinks · Swap dropped · Imported {counts} · Exported {counts}
-(Exported has no Undo).
+drinks · Swap dropped · Imported {counts} · Import undone · Exported {counts}
+(Exported and Import undone have no Undo).
 
 # Settings
 
@@ -143,7 +145,22 @@ drinks · Swap dropped · Imported {counts} · Exported {counts}
 | Data             | Export and Import                                                                                                                                                                                                                                                                                     | {n} changes since the last export.                             |
 | About            | Version, sources, notes                                                                                                                                                                                                                                                                               |                                                                |
 | Storage          | Checking · Not requested yet. Asked after you first save something. · Kept: the browser will not clear your data on its own. · Not guaranteed: the browser may clear your data when space is short. · This browser cannot promise to keep your data. · Not available while your data cannot be saved. | Answer to the persistent-storage request                       |
-| Backup reminder  | (banner)                                                                                                                                                                                                                                                                                              | You have {n} changes since your last export. Export Everything |
+| Backup reminder  | (banner; buttons Export Everything and Dismiss)                                                                                                                                                                                                                                                       | You have {n} changes since your last export. Export Everything |
+
+# Data
+
+Screen `#/settings/data`: "Everything you entered goes into one file.
+Built-in data is not part of it." · Last export: {date} · Not exported yet. ·
+{n} changes since the last export. · The file has {counts}. · Merge: add
+{a}, replace {r}, skip {s}. Your records stay unless the file has a newer
+version of a drink. · Replace Everything: add, replace, remove, keep ·
+The file was made by an older version (format {n}) and is converted. · The
+file was made with other built-in data ({found}; this app has {own}). Some
+references may not be found. · A copy of your data from before the last
+import, kept so it can be undone. · Buttons: Export Everything · Import
+File · Merge · Replace Everything · Cancel · Undo · Dismiss · Delete
+Import Backup. Counts read "2 ingredients, 1 template, 2 specs, 2 stock
+entries, 1 pairing".
 
 # Accessible names
 

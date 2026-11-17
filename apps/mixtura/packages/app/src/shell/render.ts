@@ -11,6 +11,7 @@ import { type Store } from '../state';
 import { notFound } from './not-found';
 import { statusBanner, updateBanner } from './banner';
 import { nav } from './nav';
+import { toast } from './toast';
 import { panes } from './panes';
 
 export interface Shell {
@@ -49,6 +50,7 @@ export function render(root: HTMLElement, shell: Shell): void {
       nav(state),
       panes(view, pushed, onBack),
     ),
+    toast(state, () => store.set({ toast: null })),
   );
   root.replaceChildren(app);
   document.title = `${view.title} - Drink Builder`;

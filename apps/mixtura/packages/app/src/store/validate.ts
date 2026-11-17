@@ -3,6 +3,7 @@
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import affinity from '../../../engine/schemas/affinity.schema.json';
+import exportSchema from '../../../engine/schemas/export.schema.json';
 import common from '../../../engine/schemas/common.schema.json';
 import ingredient from '../../../engine/schemas/ingredient.schema.json';
 import prepared from '../../../engine/schemas/prepared-ingredient.schema.json';
@@ -19,17 +20,29 @@ const ids: Record<EntityKind, string> = {
   stock: 'urn:mixtura:stock',
   affinity: 'urn:mixtura:affinity',
 };
+const exportId = 'urn:mixtura:export';
 
 let ajv: InstanceType<typeof Ajv2020> | undefined;
 
-function validator(kind: EntityKind): ReturnType<InstanceType<typeof Ajv2020>['getSchema']> {
+function validator(
+  kind: EntityKind | 'export',
+): ReturnType<InstanceType<typeof Ajv2020>['getSchema']> {
   if (!ajv) {
     ajv = new Ajv2020({ allErrors: true, strict: true });
-    for (const schema of [common, prepared, ingredient, template, spec, stock, affinity]) {
+    for (const schema of [
+      common,
+      prepared,
+      ingredient,
+      template,
+      spec,
+      stock,
+      affinity,
+      exportSchema,
+    ]) {
       ajv.addSchema(schema);
     }
   }
-  return ajv.getSchema(ids[kind]);
+  return ajv.getSchema(kind === 'export' ? exportId : ids[kind]);
 }
 
 /** Throws a StoreError of kind `invalid` that lists every problem. */
@@ -41,4 +54,16 @@ export function validateEntity(kind: EntityKind, value: unknown): void {
     (e) => `${e.instancePath || '(record)'} ${e.message ?? 'is invalid'}`,
   );
   throw new StoreError('invalid', `The ${kind} does not match its schema`, details);
+}
+
+/** Problems of a whole export file against the current schema, one line each, at most `limit`. */
+export function exportProblems(value: unknown, limit = 20): string[] {
+  const check = validator('export');
+  if (!check) throw new StoreError('failed', 'No schema for the export file');
+  if (check(value)) return [];
+  const lines = (check.errors ?? []).map(
+    (e) => `${e.instancePath || '(file)'} ${e.message ?? 'is invalid'}`,
+  );
+  const more = lines.length - limit;
+  return more > 0 ? [...lines.slice(0, limit), `and ${more} more problems`] : lines;
 }

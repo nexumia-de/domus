@@ -92,9 +92,12 @@ user entity are user ids. A refusal is a `StoreError` of kind `invalid`
 with one line per problem; nothing is written. Settings and `meta` are
 not entities and use a hand-written parser with defaults.
 
+Every committed write or delete also adds to the backup change counter
+(`store/backup.ts`); export and import are in
+[export and import](export-format.md) (`exchange` on the store).
+
 Not built yet: refusing to delete a user entity that others reference
-([data model](data-model.md#ids)), the change counter for the backup
-reminder (the `backup` setting only holds the state), export and import.
+([data model](data-model.md#ids), issue #61).
 
 ## Persistent storage
 
@@ -125,6 +128,8 @@ same title, text and Try Again as a banner above the working app,
 because read-only browsing needs the app itself.
 
 ## Tests
+
+Export and import: [export and import](export-format.md#tests).
 
 - `test/store-repos.test.ts`: schema equals `schema.ts`, create, read,
   update and delete for every entity, validation refusals, id rules, seed

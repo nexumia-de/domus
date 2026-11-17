@@ -1,0 +1,149 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- fixtures are indexed at known positions */
+import { expect, test } from 'vitest';
+import {
+  buildExport,
+  countsOf,
+  exportFileName,
+  FORMAT_VERSION,
+  migrateFile,
+  parseExportFile,
+  reminderDue,
+  type ExportFile,
+} from '../src/store';
+import { user } from './helpers';
+
+const AT = '2026-11-17T09:30:00Z';
+const good = (): ExportFile => buildExport(user, { exportedAt: AT, seedVersion: 'seed-1' });
+const text = (value: unknown): string => JSON.stringify(value);
+const parse = (value: unknown, bytes = 100) => parseExportFile(text(value), bytes);
+
+test('the export has the format version, the host instant and only user data', () => {
+  const file = good();
+  expect(file.app).toBe('mixtura');
+  expect(file.formatVersion).toBe(FORMAT_VERSION);
+  expect(file.exportedAt).toBe(AT);
+  expect(file.seedVersion).toBe('seed-1');
+  expect(countsOf(file)).toEqual(countsOf(user));
+  expect(Object.keys(file).sort()).toEqual([
+    'affinities',
+    'app',
+    'exportedAt',
+    'formatVersion',
+    'ingredients',
+    'seedVersion',
+    'specs',
+    'stock',
+    'templates',
+  ]);
+  expect(buildExport(user, { exportedAt: AT }).seedVersion).toBeUndefined();
+});
+
+test('the export is stable: the same data gives the same text in any order', () => {
+  const shuffled = { ...user, specs: [...user.specs].reverse(), stock: [...user.stock].reverse() };
+  expect(text(buildExport(shuffled, { exportedAt: AT }))).toBe(
+    text(buildExport(user, { exportedAt: AT })),
+  );
+});
+
+test('file name from the exported date', () => {
+  expect(exportFileName(AT)).toBe('mixtura-backup-2026-11-17.json');
+});
+
+test('a valid file parses and round-trips unchanged', () => {
+  const result = parseExportFile(text(good()), 500);
+  expect(result.ok).toBe(true);
+  if (result.ok) {
+    expect(result.file).toEqual(good());
+    expect(result.migratedFrom).toBeNull();
+  }
+});
+
+test('refusals are named', () => {
+  const kind = (r: ReturnType<typeof parse>) => (r.ok ? 'ok' : r.failure.kind);
+  expect(kind(parseExportFile('{nope', 5))).toBe('unreadable');
+  expect(kind(parseExportFile('[]', 2))).toBe('not-mixtura');
+  expect(kind(parseExportFile('null', 4))).toBe('not-mixtura');
+  expect(kind(parse({ ...good(), app: 'culina' }))).toBe('not-mixtura');
+  expect(kind(parse({ ...good(), formatVersion: 'one' }))).toBe('invalid');
+  expect(kind(parse({ ...good(), formatVersion: 0 }))).toBe('invalid');
+  expect(kind(parse({ ...good(), specs: 'none' }))).toBe('invalid');
+  const withoutStock: Partial<ExportFile> = good();
+  delete withoutStock.stock;
+  expect(kind(parse(withoutStock))).toBe('invalid');
+  expect(kind(parse({ ...good(), extra: 1 }))).toBe('invalid');
+});
+
+test('a file from a newer format is refused with both versions', () => {
+  const r = parse({ ...good(), formatVersion: FORMAT_VERSION + 2 });
+  expect(r).toEqual({
+    ok: false,
+    failure: { kind: 'newer', found: FORMAT_VERSION + 2, supported: FORMAT_VERSION },
+  });
+});
+
+test('a file above the size limit is refused before parsing', () => {
+  const r = parseExportFile('{', 11 * 1024 * 1024);
+  expect(r.ok === false && r.failure.kind).toBe('too-large');
+  expect(parseExportFile('x'.repeat(50), 1, { limit: 10 }).ok).toBe(false);
+});
+
+test('keys that could reach the prototype are refused anywhere in the file', () => {
+  for (const key of ['__proto__', 'constructor', 'prototype']) {
+    const raw = text(good()).replace(
+      '"app":"mixtura"',
+      `"app":"mixtura","x":{"${key}":{"polluted":true}}`,
+    );
+    const r = parseExportFile(raw, raw.length);
+    expect(r.ok === false && r.failure.kind).toBe('unreadable');
+  }
+  expect(({} as Record<string, unknown>)['polluted']).toBeUndefined();
+});
+
+test('ids must follow the user-id rule, except the key of a stock record', () => {
+  const bad = good();
+  bad.ingredients[0] = { ...bad.ingredients[0]!, id: 'lemon-juice' };
+  const r = parse(bad);
+  expect(r.ok).toBe(false);
+  if (!r.ok && r.failure.kind === 'invalid') {
+    expect(r.failure.problems.join('\n')).toMatch(/not a user id|pattern/);
+  }
+  const seedStock = good();
+  expect(seedStock.stock.some((s) => !s.ingredientId.startsWith('u-'))).toBe(true);
+  expect(parse(seedStock).ok).toBe(true);
+});
+
+test('repeated ids and repeated version slots are refused', () => {
+  const dup = good();
+  dup.specs.push({ ...dup.specs[0]!, id: 'u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' });
+  const r = parse(dup);
+  expect(r.ok === false && r.failure.kind).toBe('invalid');
+  const same = good();
+  same.stock.push({ ...same.stock[0]! });
+  expect(parse(same).ok).toBe(false);
+});
+
+test('an older format is migrated step by step, and a gap is an error', () => {
+  const steps = [
+    (f: Record<string, unknown>) => ({ ...f, two: true }),
+    (f: Record<string, unknown>) => ({ ...f, three: true }),
+  ];
+  const out = migrateFile({ a: 1, formatVersion: 1 }, 1, 3, steps);
+  expect(out).toEqual({ a: 1, formatVersion: 3, two: true, three: true });
+  expect(migrateFile({ formatVersion: 2 }, 2, 3, steps)).toMatchObject({ three: true });
+  expect(() => migrateFile({}, 1, 4, steps)).toThrow(/No migration/);
+});
+
+test('the reminder: only after real changes, 30 days, and not again once dismissed', () => {
+  const day = 86_400_000;
+  const now = Date.parse('2026-12-31T12:00:00Z');
+  const ago = (d: number) => new Date(now - d * day).toISOString();
+  expect(reminderDue({ changesSinceExport: 0, lastExportAt: ago(90) }, now)).toBe(false);
+  expect(reminderDue({ changesSinceExport: 3, lastExportAt: ago(29) }, now)).toBe(false);
+  expect(reminderDue({ changesSinceExport: 3, lastExportAt: ago(30) }, now)).toBe(true);
+  expect(reminderDue({ changesSinceExport: 3, firstChangeAt: ago(10) }, now)).toBe(false);
+  expect(reminderDue({ changesSinceExport: 3, firstChangeAt: ago(45) }, now)).toBe(true);
+  expect(reminderDue({ changesSinceExport: 3 }, now)).toBe(false);
+  const dismissed = { changesSinceExport: 3, lastExportAt: ago(90) };
+  expect(reminderDue({ ...dismissed, dismissedAt: ago(2) }, now)).toBe(false);
+  expect(reminderDue({ ...dismissed, dismissedAt: ago(31) }, now)).toBe(true);
+});

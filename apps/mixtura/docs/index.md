@@ -38,6 +38,7 @@ links. Change history is in [log.md](log.md).
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
 - [Seed data](seed-data.md) - Bar Assistant's dataset: format, measured counts, licence, field mapping to the data model, gaps and how they are filled, problems, attribution text.
 
+- [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
 
 # Behaviour and design

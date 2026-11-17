@@ -121,8 +121,11 @@ consequences:[^mdn-storage]
   `/mixtura/` alone; other sites of the same account share its quota.
 - An app installed from another browser has its own, separate data.
 
-Make a backup with Export (Settings, Data) once the export feature exists
-([screens](screens-stock-settings.md)); until then there is nothing to export.
+Make a backup with Export Everything (Settings, Data): one file with all
+your specs, ingredients, stock and pairings, saved through the browser's
+normal download. Import File on another device or after the data was
+cleared brings it back, with Undo ([export format](export-format.md)). The
+app reminds you calmly after 30 days with changes and no export.
 
 ## Remove it
 

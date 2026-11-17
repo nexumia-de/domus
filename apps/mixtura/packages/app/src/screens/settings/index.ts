@@ -5,6 +5,7 @@ import { h, icon } from '../../dom';
 import { type Screen, type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
 import { version } from '../../version';
+import { dataRow, dataView, reminderBanner } from './data';
 
 function choice<V extends string>(
   name: string,
@@ -36,11 +37,26 @@ function choice<V extends string>(
   );
 }
 
-function settings({ state, store }: ScreenContext): HTMLElement {
+function navRow(href: string, title: string, sub: string): HTMLElement {
+  return h(
+    'a',
+    { class: 'row', href },
+    h(
+      'span',
+      { class: 'row-main' },
+      h('span', { class: 'row-title' }, title),
+      h('span', { class: 'row-sub' }, sub),
+    ),
+    h('span', { class: 'row-chev' }, icon([['path', { d: 'M9 5l7 7-7 7' }]])),
+  );
+}
+
+function settings({ state, store, data }: ScreenContext): HTMLElement {
   const s = strings.settings;
   return h(
     'div',
     { class: 'stack' },
+    reminderBanner(state, data.exchange),
     h(
       'div',
       { class: 'card' },
@@ -65,17 +81,8 @@ function settings({ state, store }: ScreenContext): HTMLElement {
     h(
       'div',
       { class: 'card card--flush' },
-      h(
-        'a',
-        { class: 'row', href: '#/about' },
-        h(
-          'span',
-          { class: 'row-main' },
-          h('span', { class: 'row-title' }, s.about),
-          h('span', { class: 'row-sub' }, s.aboutHint),
-        ),
-        h('span', { class: 'row-chev' }, icon([['path', { d: 'M9 5l7 7-7 7' }]])),
-      ),
+      dataRow(state),
+      navRow('#/about', s.about, s.aboutHint),
     ),
   );
 }
@@ -93,6 +100,14 @@ function about(): HTMLElement {
 }
 
 export const screens: Screen[] = [
+  {
+    id: 'data',
+    destination: 'settings',
+    pushed: true,
+    match: (route) =>
+      route.path.length === 2 && route.path[0] === 'settings' && route.path[1] === 'data',
+    view: (context) => ({ title: strings.titles.data, body: dataView(context) }),
+  },
   {
     id: 'settings',
     destination: 'settings',

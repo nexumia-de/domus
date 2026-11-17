@@ -13,7 +13,7 @@
     "build": "node build.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
-    "e2e": "node e2e/walk.mjs 360 720 && node e2e/walk.mjs 1200 800 && node e2e/store.mjs 360 720 && node e2e/store.mjs 1200 800 && node e2e/subpath.mjs"
+    "e2e": "node e2e/walk.mjs 360 720 && node e2e/walk.mjs 1200 800 && node e2e/store.mjs 360 720 && node e2e/store.mjs 1200 800 && node e2e/exchange.mjs 360 720 && node e2e/exchange.mjs 1200 800 && node e2e/subpath.mjs"
   },
   "devDependencies": {
     "fake-indexeddb": "6.2.8"

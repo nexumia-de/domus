@@ -294,6 +294,9 @@ silently. `export.schema.json` always describes the current version only
 (`formatVersion` is a constant there); older versions live in the
 migration code and its vectors.
 
+**Version history.** Version 1 is the first format; no migration exists yet.
+Reading, limits and merge rules: [export format](export-format.md).
+
 ## Storage
 
 On the device the entities live in IndexedDB, schema version 2: stores

@@ -5,7 +5,7 @@
 
 import { committed, request } from './db';
 import { toStoreError } from './errors';
-import type { Settings, Theme, Units } from './types';
+import type { Backup, Settings, Theme, Units } from './types';
 
 export const defaultSettings: Settings = {
   theme: 'system',
@@ -16,15 +16,17 @@ export const defaultSettings: Settings = {
 const THEMES: readonly Theme[] = ['system', 'light', 'dark'];
 const UNITS: readonly Units[] = ['metric', 'us', 'imperial'];
 
-function parseBackup(value: unknown): Settings['backup'] {
+export function parseBackup(value: unknown): Backup {
   const v = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
   const text = (x: unknown): string | undefined => (typeof x === 'string' && x ? x : undefined);
   const lastExportAt = text(v['lastExportAt']);
   const dismissedAt = text(v['dismissedAt']);
+  const firstChangeAt = text(v['firstChangeAt']);
   const n = v['changesSinceExport'];
   return {
     changesSinceExport: typeof n === 'number' && Number.isInteger(n) && n >= 0 ? n : 0,
     ...(lastExportAt && { lastExportAt }),
+    ...(firstChangeAt && { firstChangeAt }),
     ...(dismissedAt && { dismissedAt }),
   };
 }
