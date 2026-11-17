@@ -234,6 +234,7 @@ describe.each(vectors.filter((x) => x.v.kind === 'range'))('$v.id', ({ v }) => {
 test('no verdict words in the template code, data, vectors or document', () => {
   const sources = [
     ...readdirSync(`${root}src/templates`).map((f) => `${root}src/templates/${f}`),
+    ...readdirSync(`${root}src/drink-templates`).map((f) => `${root}src/drink-templates/${f}`),
     ...readdirSync(`${root}data/templates`).map((f) => `${root}data/templates/${f}`),
     ...readdirSync(dir).map((f) => `${dir}${f}`),
     `${root}../../docs/templates.md`,

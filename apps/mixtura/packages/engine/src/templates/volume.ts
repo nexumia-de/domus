@@ -1,0 +1,77 @@
+// Measuring spec lines by volume: the measure that slot ratios use today
+// (ml from the unit table, `topMl`, counted units with their own volume),
+// and `assignSlots` with that measure.
+import { toMl, type UnitId } from '../amounts/index';
+import { UNITS } from '../amounts/index';
+import type { IngredientTreeOf } from '../ingredients/tree';
+import { countedVolume } from '../ingredients/unit-volumes';
+import { fillSlots, type RoledTree } from './slots';
+import type {
+  LineMeasure,
+  MatchLine,
+  MatchOptions,
+  SlotAssignment,
+  Template,
+  UnmeasuredReason,
+} from './types';
+
+const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
+
+/**
+ * The volume of a line.
+ *
+ * @param line - A spec line (amount in its unit, `topMl` in ml).
+ * @param options - Unit overrides.
+ * @param tree - A tree whose ingredients may carry `unitVolumes`; without it a counted line has no volume.
+ * @returns Volume in ml, or why it has none (mass, `top` without volume, counted without volume, invalid amount).
+ */
+export function lineMl(
+  line: MatchLine,
+  options: MatchOptions = {},
+  tree?: IngredientTreeOf,
+): { ml: number } | { reason: UnmeasuredReason } {
+  const kind = unitKind.get(line.unit);
+  if (kind === 'mass') return { reason: 'mass' };
+  if (kind === 'fill') {
+    return line.topMl !== undefined && Number.isFinite(line.topMl) && line.topMl >= 0
+      ? { ml: line.topMl }
+      : { reason: 'top-without-volume' };
+  }
+  if (kind === 'count') {
+    const amount = line.amountMax === undefined ? line.amount : (line.amount + line.amountMax) / 2;
+    const cv = tree ? countedVolume(tree, line.ingredientId, line.unit, amount) : undefined;
+    return cv ? { ml: cv.ml } : { reason: 'counted-without-volume' };
+  }
+  const amount = line.amountMax === undefined ? line.amount : (line.amount + line.amountMax) / 2;
+  const r = toMl({ value: amount, unit: line.unit as UnitId }, options.unitOverrides);
+  return r.ok ? { ml: r.value } : { reason: 'invalid-amount' };
+}
+
+/** `lineMl` as a measure for `fillSlots` and `matchTemplates`. */
+export function volumeMeasure<R extends string>(
+  options: MatchOptions,
+  tree: IngredientTreeOf | undefined,
+): LineMeasure<R> {
+  return (line) => {
+    const v = lineMl(line, options, tree);
+    return 'reason' in v ? v : { value: v.ml };
+  };
+}
+
+/**
+ * Assigns spec lines to the slots of a template by role.
+ *
+ * @param tree - A validated tree that gives each ingredient its role.
+ * @param template - A template.
+ * @param lines - Spec lines with amounts in units of the unit table.
+ * @param options - Unit overrides.
+ * @returns Per slot the lines and their volume in ml, the unassigned lines and the empty slots.
+ */
+export function assignSlots<R extends string>(
+  tree: RoledTree<R>,
+  template: Template<R>,
+  lines: readonly MatchLine<R>[],
+  options: MatchOptions = {},
+): SlotAssignment<R> {
+  return fillSlots(tree, template, lines, volumeMeasure(options, tree));
+}

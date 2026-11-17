@@ -22,13 +22,19 @@ assumption of [balance](balance.md); no drink data is claimed.
 
 | File                 | Job                                                                   |
 | -------------------- | --------------------------------------------------------------------- |
-| `types.ts`           | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
+| `types.ts`           | `BaseIngredient` (general fields), `PreparedIngredient`, result types |
 | `tree.ts`            | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
-| `properties.ts`      | `resolveProperty`, `resolveAll`, `resolveCost`                        |
-| `mixture.ts`         | the mixing formulas of balance (before dilution), in ml and g         |
-| `prepared.ts`        | `computePrepared`: ABV, sugar, acid, volume of a prepared ingredient  |
+| `properties.ts`      | `inheritedValue` (general walk), `resolveCost`                        |
+| `prepared.ts`        | the walk over a prepared ingredient's spec: nesting, cycles, errors   |
 | `substitution.ts`    | `sameClass`, `substitutesFor`                                         |
 | `swap-candidates.ts` | `swapCandidates`: the groups offered when a line is swapped           |
+
+The drink shape is in `packages/engine/src/drink-ingredients/` (exported
+through `src/drink.ts`): `types.ts` has `Ingredient` (the general fields
+plus `abv`, `sugar`, `acid`), the drink `Role` union, `InheritedProperty`,
+`IngredientTree` and the field list; `properties.ts` has
+`resolveProperty`, `resolveAll` and `INHERITED`, with ABV, sugar and acid
+computed (not inherited) for a prepared ingredient.
 
 ## Tree
 
@@ -79,6 +85,12 @@ guessed. Exceptions that follow the data model:
   are not read from its ancestors either; the reason says so.
 
 ## Prepared ingredients
+
+The walk over a prepared ingredient (nesting, cycles, unknown ids) is
+the general `resolvePrepared` in `ingredients/prepared.ts`, internal to
+the engine; it folds a value given by the caller. `computePrepared`
+(`balance/prepared.ts`, drink-specific) passes the mixing formulas, and
+`limitingShelfLife` passes shelf lives.
 
 `computePrepared(tree, specs, id)` mixes the lines of the spec named by
 `prepared.specId` with the formulas of [balance](balance.md#formulas):

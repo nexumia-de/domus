@@ -1,6 +1,6 @@
 // Totals of a spec's lines before dilution: volume, ethanol, sugar, acid.
 // The arithmetic is mixture.ts; this file only turns its answer into figures.
-import { mix, type Computed, type MixPart } from '../ingredients/mixture';
+import { mix, type Computed, type MixPart } from './mixture';
 import type { Id } from '../ingredients/types';
 import type { UnknownIds } from './lines';
 import type { Figure } from './types';

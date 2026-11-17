@@ -1,7 +1,8 @@
 // The part of the stock computation that depends only on the tree and the
 // specs: families (an ingredient and its descendants) and class
 // substitutes, computed on first use and kept. Derived, never stored.
-import { descendants, substitutesFor, type Id, type IngredientTree } from '../ingredients/index';
+import { descendants, substitutesFor, type Id } from '../ingredients/index';
+import type { IngredientTreeOf } from '../ingredients/tree';
 import type { StockIndex, StockSpec } from './types';
 
 const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
@@ -13,7 +14,7 @@ const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
  * @param specs - Specs (also the specs of prepared ingredients); any order, ids unique.
  * @returns The index to pass to `makeableSpecs`, `missingOne` and `unlockRanking`; build it again when tree or specs change, not when the stock changes.
  */
-export function buildStockIndex(tree: IngredientTree, specs: readonly StockSpec[]): StockIndex {
+export function buildStockIndex(tree: IngredientTreeOf, specs: readonly StockSpec[]): StockIndex {
   const sorted = [...specs].sort((a, b) => byText(a.id, b.id));
   const specsById = new Map(sorted.map((s) => [s.id, s]));
   const families = new Map<Id, readonly Id[]>();

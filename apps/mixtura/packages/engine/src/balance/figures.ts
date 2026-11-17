@@ -1,6 +1,6 @@
 // The figures of docs/balance.md: ABV, sugar, acid, volume, sugar-to-acid
 // ratio and units of alcohol, before and after dilution.
-import { mix, type MixPart } from '../ingredients/mixture';
+import { mix, type MixPart } from './mixture';
 import type { UnknownIds } from './lines';
 import { figureOf, totals, volumeOf } from './sums';
 import type { AfterFigures, BalanceFigures, BeforeFigures, DilutionUsed, Figure } from './types';

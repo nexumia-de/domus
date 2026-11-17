@@ -1,7 +1,8 @@
-// The general model: amounts and units, the ingredient tree with roles and
-// inherited properties, prepared ingredients, substitution, and matching a
-// spec to templates by slots. Nothing here knows dilution or ABV rules; this
-// is the part that can move to shared code (docs/decisions/two-apps-one-engine.md).
+// The general model: amounts and units, the ingredient tree, prepared
+// ingredients' specs, substitution, and assigning spec lines to template
+// slots. Nothing here knows dilution or ABV rules; this is the part that can
+// move to shared code (docs/decisions/two-apps-one-engine.md,
+// docs/shared-model.md).
 export {
   convert,
   displayUnit,
@@ -22,22 +23,18 @@ export type * from './amounts/index';
 export {
   ancestors,
   buildTree,
-  computePrepared,
   descendants,
   distance,
   getIngredient,
-  INHERITED,
   isA,
-  resolveAll,
   resolveCost,
-  resolveProperty,
   sameClass,
   substitutesFor,
   swapCandidates,
 } from './ingredients/index';
 export type * from './ingredients/index';
 
-export { assignSlots, lineMl, lineRole, matchSpec, variantSuggestions } from './templates/index';
+export { assignSlots, lineMl, lineRole } from './templates/index';
 export type * from './templates/index';
 
 export {
@@ -49,7 +46,7 @@ export {
 } from './stock/index';
 export type * from './stock/index';
 
-export { buildFamily, diffSpecs, findFamilyCycles, summariseRiff } from './specs/index';
+export { buildFamily, findFamilyCycles, summariseRiff } from './specs/index';
 export type * from './specs/index';
 
 export {
