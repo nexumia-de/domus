@@ -192,28 +192,53 @@ www.who.int
 www.europarl.europa.eu
 ```
 
-Blocked on 2026-11-17 (`curl` tunnel failure, and the fetch tool could not
-resolve them); each would have settled an open point there (legal texts
-of the EU, Germany, UK and US, food-safety limits, product data):
+Reachable on 2026-11-17 in the second pass of the legal and food-safety
+check (issue #67; `curl` through the session proxy, each page or API
+answered 200 unless noted):
 
 ```
 eur-lex.europa.eu
-www.gesetze-im-internet.de
 www.legislation.gov.uk
 www.gov.uk
 www.ecfr.gov
-www.govinfo.gov
 www.fda.gov
 www.ttb.gov
-www.law.cornell.edu
 www.food.gov.uk
 nchfp.uga.edu
+www.bfr.bund.de
+www.gesetze-im-internet.de
+```
+
+Limits found while reading them:
+
+- `eur-lex.europa.eu` answered HTTP 202 with an empty body (a CloudFront
+  bot challenge, header `x-amzn-waf-action: challenge`) after the first
+  two documents, and kept doing so for the rest of the session.
+- `www.ecfr.gov` serves the versioner API
+  (`/api/versioner/v1/full/<date>/title-<n>.xml?part=..&section=..`) only
+  with `curl --compressed`; without it the API answers 406.
+- `www.food.gov.uk` redirects most guidance to `www.gov.uk`.
+- `www.gesetze-im-internet.de` answered, but with intermittent
+  `Connection reset` errors; wrong statute slugs return 404.
+- `www.gov.uk` pages are reachable; the PDFs they link are on
+  `assets.publishing.service.gov.uk`, which the proxy refused (403).
+- `nchfp.uga.edu/search` and `www.efsa.europa.eu` search answer 403;
+  `www.efsa.europa.eu` topic pages tried gave 404 or 429.
+
+Still failing on 2026-11-17 or not tested:
+
+```
+assets.publishing.service.gov.uk
+europepmc.org
+www.govinfo.gov
+www.law.cornell.edu
 www.fsis.usda.gov
 extension.psu.edu
-www.efsa.europa.eu
-www.bfr.bund.de
 www.verbraucherzentrale.de
 www.reading.ac.uk
 www.cdc.gov
-europepmc.org
 ```
+
+`europepmc.org` answers 403 from the site itself. Of the others only
+`assets.publishing.service.gov.uk` was tried again (403); the rest were
+blocked in the first pass and not retried.
