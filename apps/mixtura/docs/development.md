@@ -159,6 +159,26 @@ storage API (a custom scheme, a WebView), the app registers nothing, ignores
 a refused registration and reports persistence as unsupported;
 `e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store. Owner steps: [install](install.md#what-the-owner-must-switch-on).
 
+## Web app manifest
+
+`src/manifest.webmanifest` (copied by `build.mjs`) has `id`, `scope`,
+`start_url`, `display`, `categories` (`food`, `lifestyle`), icons (any,
+maskable and monochrome, [icons](design.md#app-icons)), three `shortcuts`
+(New Drink `./#/drinks/new`, Stock, Buy Next; relative to the manifest, so
+they stay inside the sub-path) and `screenshots` for the install dialog:
+`form_factor` `narrow` (720x1440, the drinks list and a spec) and `wide`
+(2400x1600, the same two). They are the recorded-data screenshots of
+[screenshots](screenshots.md) (`app-drinks-list-*`, `app-spec-*`, seed data
+only, scale 2), copied by `build.mjs` to `screenshots/`; when those
+screens change, regenerate them there and rebuild. They are deliberately
+not precached (about 750 kB, twice the rest of the app, and only the
+install dialog needs them): `sw.js` passes a request under `/screenshots/`
+that is not in the cache to the network, and offline it fails, which only
+costs the richer dialog. `test/build.test.ts` checks the members, the
+declared sizes against the PNG headers and the form factors;
+`e2e/subpath.mjs` that every icon, screenshot and shortcut resolves under
+the sub-path. `index.html` has a `description` meta tag.
+
 ## Content Security Policy
 
 `index.html` carries a meta policy (read at the source: MDN's CSP guide in

@@ -58,7 +58,13 @@ worker.addEventListener('fetch', (event) => {
       const hit =
         (await cache.match(event.request, { ignoreSearch: true })) ??
         (event.request.mode === 'navigate' ? await cache.match('index.html') : undefined);
-      return hit ?? Response.error();
+      if (hit) return hit;
+      // The manifest's install-dialog screenshots are not precached (build.mjs):
+      // they come from the network when online, and are simply missing offline.
+      if (new URL(event.request.url).pathname.includes('/screenshots/')) {
+        return fetch(event.request).catch(() => Response.error());
+      }
+      return Response.error();
     }),
   );
 });

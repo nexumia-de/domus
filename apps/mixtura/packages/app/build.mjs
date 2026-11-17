@@ -69,8 +69,23 @@ const copied = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',
+  'icons/icon-monochrome-512.png',
 ];
 for (const file of copied) copyFileSync(join('src', file), join(out, file));
+// Install-dialog screenshots (manifest `screenshots`): the recorded-data
+// screenshots of docs/screenshots, not precached (docs/development.md).
+mkdirSync(join(out, 'screenshots'), { recursive: true });
+for (const [name, source] of [
+  ['drinks-360x720', 'app-drinks-list-360x720'],
+  ['spec-360x720', 'app-spec-360x720'],
+  ['drinks-1200x800', 'app-drinks-list-1200x800'],
+  ['spec-1200x800', 'app-spec-1200x800'],
+]) {
+  copyFileSync(
+    join('..', '..', 'docs', 'screenshots', `${source}.png`),
+    join(out, 'screenshots', `${name}.png`),
+  );
+}
 writeFileSync(join(out, 'seed', 'seed.json'), JSON.stringify(assembleSeed()));
 copied.push('seed/seed.json');
 
