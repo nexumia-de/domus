@@ -2,10 +2,10 @@
 // lines that fit no slot and the slots that stay empty. No ratios here.
 import { toMl, type UnitId } from '../amounts/index';
 import { UNITS } from '../amounts/index';
-import { resolveProperty } from '../drink-ingredients/properties';
-import type { IngredientTree } from '../drink-ingredients/types';
+import { inheritedValue } from '../ingredients/properties';
+import type { IngredientTreeOf } from '../ingredients/tree';
+import type { BaseIngredient } from '../ingredients/types';
 import { countedVolume } from '../ingredients/unit-volumes';
-import type { Role } from '../drink-ingredients/types';
 import type {
   MatchLine,
   MatchOptions,
@@ -18,6 +18,9 @@ import type {
 
 const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
 
+/** A tree whose ingredients carry roles of type `R`. */
+type RoledTree<R extends string> = IngredientTreeOf<BaseIngredient & { role?: R }>;
+
 /**
  * The role a line has: its own, else the ingredient's resolved role.
  *
@@ -25,13 +28,13 @@ const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
  * @param line - A spec line.
  * @returns The role, or why there is none (unknown ingredient, no role).
  */
-export function lineRole(
-  tree: IngredientTree,
-  line: MatchLine,
-): { role: Role } | { reason: UnassignedReason } {
+export function lineRole<R extends string>(
+  tree: RoledTree<R>,
+  line: MatchLine<R>,
+): { role: R } | { reason: UnassignedReason } {
   if (line.role) return { role: line.role };
   if (!tree.byId.has(line.ingredientId)) return { reason: 'unknown-ingredient' };
-  const r = resolveProperty(tree, line.ingredientId, 'role');
+  const r = inheritedValue(tree, line.ingredientId, 'role');
   return r.value === undefined ? { reason: 'unknown-role' } : { role: r.value };
 }
 
@@ -46,7 +49,7 @@ export function lineRole(
 export function lineMl(
   line: MatchLine,
   options: MatchOptions = {},
-  tree?: IngredientTree,
+  tree?: IngredientTreeOf,
 ): { ml: number } | { reason: UnmeasuredReason } {
   const kind = unitKind.get(line.unit);
   if (kind === 'mass') return { reason: 'mass' };
@@ -74,19 +77,19 @@ export function lineMl(
  * @param options - Unit overrides.
  * @returns Per slot the lines and their volume in ml, the unassigned lines and the empty slots.
  */
-export function assignSlots(
-  tree: IngredientTree,
-  template: Template,
-  lines: readonly MatchLine[],
+export function assignSlots<R extends string>(
+  tree: RoledTree<R>,
+  template: Template<R>,
+  lines: readonly MatchLine<R>[],
   options: MatchOptions = {},
-): SlotAssignment {
-  const fills: SlotFill[] = template.slots.map((s) => ({
+): SlotAssignment<R> {
+  const fills: SlotFill<R>[] = template.slots.map((s) => ({
     slotId: s.id,
     role: s.role,
     optional: s.optional === true,
     lineIndexes: [],
   }));
-  const unassigned: SlotAssignment['unassigned'] = [];
+  const unassigned: SlotAssignment<R>['unassigned'] = [];
   lines.forEach((line, index) => {
     const found = lineRole(tree, line);
     if ('reason' in found) {
@@ -104,7 +107,7 @@ export function assignSlots(
   for (const f of fills) {
     let ml = 0;
     for (const i of f.lineIndexes) {
-      const v = lineMl(lines[i] as MatchLine, options, tree);
+      const v = lineMl(lines[i] as MatchLine<R>, options, tree);
       if ('reason' in v) {
         f.unmeasured = v.reason;
         ml = Number.NaN;

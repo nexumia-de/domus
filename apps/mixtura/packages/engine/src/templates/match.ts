@@ -1,10 +1,12 @@
 // Scores a spec against templates by role coverage and ratio fit and returns
 // every candidate with its numbers, best first. Deterministic: the order is
 // distance, then offset, then template id.
-import type { IngredientTree } from '../drink-ingredients/types';
+import type { IngredientTreeOf } from '../ingredients/tree';
+import type { BaseIngredient } from '../ingredients/types';
 import { assignSlots } from './slots';
 import type {
   Candidate,
+  MatchDomain,
   MatchOptions,
   MatchResult,
   MatchSpec,
@@ -16,14 +18,17 @@ import type {
 /** Floating point noise must not decide a tie. */
 const round = (n: number) => Math.round(n * 1e9) / 1e9;
 
-function evaluate(
-  tree: IngredientTree,
-  template: Template,
-  spec: MatchSpec,
+type RoledTree<R extends string> = IngredientTreeOf<BaseIngredient & { role?: R }>;
+
+function evaluate<R extends string>(
+  tree: RoledTree<R>,
+  template: Template<R>,
+  spec: MatchSpec<R>,
   options: MatchOptions,
-): Omit<Candidate, 'rank'> {
+  referenceRole: R,
+): Omit<Candidate<R>, 'rank'> {
   const assignment = assignSlots(tree, template, spec.lines, options);
-  const refIndex = template.slots.findIndex((s) => s.role === 'base');
+  const refIndex = template.slots.findIndex((s) => s.role === referenceRole);
   const ref = template.slots[refIndex];
   const refMl = assignment.fills[refIndex]?.ml;
   const refParts = ref ? (ref.minParts + ref.maxParts) / 2 : 0;
@@ -62,7 +67,7 @@ function evaluate(
   };
 }
 
-function rank(list: Omit<Candidate, 'rank'>[]): Candidate[] {
+function rank<R extends string>(list: Omit<Candidate<R>, 'rank'>[]): Candidate<R>[] {
   return [...list]
     .sort(
       (a, b) =>
@@ -74,34 +79,38 @@ function rank(list: Omit<Candidate, 'rank'>[]): Candidate[] {
 }
 
 /**
- * The templates a spec is tried against. Variants (`alcohol` set) are offered only for their class, and
+ * The templates a spec is tried against. Variants (a variant class set) are offered only for their class, and
  * then they replace their parent: same slots, so both would tie on every spec and the id would decide.
  */
-function offered(templates: readonly Template[], alcohol: MatchOptions['alcohol']): Template[] {
-  return templates.filter((t) =>
-    t.alcohol !== undefined
-      ? t.alcohol === alcohol
-      : !templates.some(
-          (v) => v.parentId === t.id && v.alcohol !== undefined && v.alcohol === alcohol,
-        ),
-  );
+function offered<T extends { id: string; parentId?: string }>(
+  templates: readonly T[],
+  classOf: (t: T) => string | undefined,
+  wanted: string | undefined,
+): T[] {
+  return templates.filter((t) => {
+    const c = classOf(t);
+    return c !== undefined
+      ? c === wanted
+      : !templates.some((v) => {
+          const vc = classOf(v);
+          return v.parentId === t.id && vc !== undefined && vc === wanted;
+        });
+  });
 }
 
 /**
  * Matches a spec to templates by roles and ratios and ranks every candidate.
- *
- * @param tree - A validated tree that gives each ingredient its role.
- * @param templates - Templates to try; slot ratios are in parts against the base slot.
- * @param spec - Lines (amounts in units of the unit table) and an optional explicit template id.
- * @param options - Unit overrides; `alcohol` (class of the drink) offers the variants of that class in place of their parents.
- * @returns Candidates best first with distance and ratios; `chosen` is the best that fits (absent if none), or the explicit id, which is never replaced.
+ * Ratios are parts against the slot of the domain's reference role;
+ * variants of the class `wanted` are offered in place of their parents.
  */
-export function matchSpec(
-  tree: IngredientTree,
-  templates: readonly Template[],
-  spec: MatchSpec,
-  options: MatchOptions = {},
-): MatchResult {
+export function matchTemplates<R extends string, T extends Template<R>>(
+  tree: RoledTree<R>,
+  templates: readonly T[],
+  spec: MatchSpec<R>,
+  options: MatchOptions,
+  domain: MatchDomain<R, T>,
+  wanted: string | undefined,
+): MatchResult<R> {
   if (spec.templateId !== undefined) {
     const own = templates.find((t) => t.id === spec.templateId);
     if (!own) {
@@ -112,11 +121,13 @@ export function matchSpec(
     }
     return {
       chosen: { templateId: own.id, basis: 'explicit', known: true },
-      candidates: rank([evaluate(tree, own, spec, options)]),
+      candidates: rank([evaluate(tree, own, spec, options, domain.referenceRole)]),
     };
   }
   const candidates = rank(
-    offered(templates, options.alcohol).map((t) => evaluate(tree, t, spec, options)),
+    offered(templates, (t) => domain.variantClass(t), wanted).map((t) =>
+      evaluate(tree, t, spec, options, domain.referenceRole),
+    ),
   );
   const best = candidates[0];
   if (!best || !best.fits) return { candidates };

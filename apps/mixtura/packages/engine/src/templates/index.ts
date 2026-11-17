@@ -1,5 +1,14 @@
+// The general template functions and the types model.ts exports. Types
+// with a role (`Template`, `MatchLine`, `SlotFill`, ...) are generic here;
+// the entry exports their drink shapes from drink-templates/.
 export { assignSlots, lineMl, lineRole } from './slots';
-export { matchSpec } from './match';
-export { variantSuggestions } from './variants';
-export type { OpenSlot, VariantsReason, VariantsResult, VariantSuggestion } from './variants';
-export type * from './types';
+export type {
+  Chosen,
+  Range,
+  RatioStatus,
+  SlotRatio,
+  TemplateEvidence,
+  Unassigned,
+  UnassignedReason,
+  UnmeasuredReason,
+} from './types';

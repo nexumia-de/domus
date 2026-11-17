@@ -9,7 +9,7 @@ import lowStirred from '../../data/template-variants/low-stirred.json';
 import naFoamed from '../../data/template-variants/na-foamed.json';
 import naHighball from '../../data/template-variants/na-highball.json';
 import naSour from '../../data/template-variants/na-sour.json';
-import type { Template } from '../templates/types';
+import type { Template } from './types';
 
 /** The six root templates (Old-Fashioned, Martini, Daiquiri, Sidecar, Highball, Flip) as data, with slots in parts and usual ranges in percent and g per 100 ml; all ratios are assumptions (docs/templates.md). */
 export const ROOT_TEMPLATES: readonly Template[] = [

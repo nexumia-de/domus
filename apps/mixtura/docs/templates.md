@@ -28,19 +28,22 @@ Code: `packages/engine/src/templates/`, one job per file; data:
 `packages/engine/data/templates/*.json`, one file per template, validated
 against `schemas/template.schema.json`.
 
-| File       | Job                                                                            |
-| ---------- | ------------------------------------------------------------------------------ |
-| `types.ts` | `Template`, `MatchSpec`, `Candidate`, `MatchResult`, `RangeCheck`              |
-| `slots.ts` | `assignSlots`: lines to slots by role; unassigned lines, empty slots; `lineMl` |
-| `match.ts` | `matchSpec`: ratios, distance, ranking, the chosen template                    |
+| File          | Job                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| `types.ts`    | general `Template`, `MatchSpec`, `Candidate`, `MatchResult`, generic in the role id         |
+| `slots.ts`    | `assignSlots`: lines to slots by role; unassigned lines, empty slots; `lineMl`              |
+| `match.ts`    | `matchTemplates`: ratios against the reference role, distance, ranking, the chosen template |
+| `variants.ts` | `findVariants`: the variants of the matched template, by a variant class of the domain      |
 
 The drink side lives in `packages/engine/src/drink-templates/` (exported
 through `src/drink.ts`):
 
-| File       | Job                                                                   |
-| ---------- | --------------------------------------------------------------------- |
-| `data.ts`  | `ROOT_TEMPLATES`, the six files in the order of the practice document |
-| `range.ts` | `checkRange`: figures after dilution against the usual range          |
+| File       | Job                                                                                                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------- |
+| `types.ts` | the drink `Template` (`alcohol`, `glass`, `usual`), the role-typed shapes with the drink `Role`, `RangeCheck` |
+| `match.ts` | `matchSpec` and `variantSuggestions`: the base slot as reference, the alcohol class choosing variants         |
+| `data.ts`  | `ROOT_TEMPLATES`, the six files in the order of the practice document                                         |
+| `range.ts` | `checkRange`: figures after dilution against the usual range                                                  |
 
 # Evidence
 
