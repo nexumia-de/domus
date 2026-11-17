@@ -101,6 +101,11 @@ const settle = () => page.waitForTimeout(150);
 
 // ---- Start ----
 await open('#/drinks/daiquiri');
+// The spec screen draws from the seed before the store has opened; on a slow
+// machine the database does not exist yet, so wait for it before the snapshot.
+await page.waitForFunction(async () =>
+  (await indexedDB.databases()).some((d) => d.name === 'mixtura'),
+);
 const before = await stored();
 const savedAbv = await abv();
 expect(
