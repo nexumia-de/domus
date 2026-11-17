@@ -2,6 +2,8 @@
 
 ## 2026-11-17
 
+- **Try a Swap** (#20, swap part of #80): `swapCandidates` in the engine (groups by class, role and tree neighbours, vector `swap-candidates-groups`); the swap lives in the address (`?swap=`), pure state in `screens/spec/swap-state.ts`, differences in `swap-delta.ts`, template in `swap-template.ts`, the line sheet in `swap-sheet-vm.ts` and `components/swap-sheet.ts`, compact bar, Undo toasts (`toasts.ts`), keyboard inset; unit tests `spec-swap.test.ts`, end-to-end `e2e/swap.mjs`; see [as built](screens-browse.md#as-built-20).
+
 - **Stock screen, Makeable filter, Buy Next** (#30, #33): `screens/stock/`, `stock/`, Makeable tag and filter on the drinks list, Availability group in the filters sheet; [as built](screens-stock-settings.md#as-built-30-33); `e2e/stock.mjs`. A redraw no longer loses text typed in a search field. Follow-ups: Makeable tag and stock panel on the spec screen, Create for unknown ingredients, ranking in a worker, remembered mode and draft/retired settings.
 - **Servings and batch** (#52): servings stepper (`?servings=n`) scaling amounts with the engine's rules, batch sheet (`?sheet=batch`) from `prediluted`; the engine exports `roundCount` (counted amounts round up) and the amounts formatter takes `precision: 'batch'`; [screens: own specs](screens-specs.md#servings-and-batch).
 

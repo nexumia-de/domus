@@ -17,6 +17,8 @@ import { trackGeometry, type TrackGeometry } from '../../components/track';
 import { strings } from '../../strings';
 import type { Template } from '../browse/types';
 import { fixed, listNames } from './format';
+import { signed, type FigureChange, type SwapDelta } from './swap-delta';
+import { swapStrings } from './swap-strings';
 
 export type FigureStatus = 'within' | 'below' | 'above' | 'unknown';
 
@@ -39,6 +41,20 @@ export interface FigureVM {
   footer: string;
   /** Why there is no figure, naming the ingredients. */
   missing?: string;
+  /** Try a Swap: "Was 18.3 % -> now 19.7 % (+1.4 points)". */
+  change?: string;
+  /** Try a Swap: the shown difference alone ("+1.4"), absent when unknown or unchanged. */
+  deltaShort?: string;
+  /** Try a Swap: where the saved value sits on the track, in percent. */
+  wasLeft?: number;
+}
+
+/** One figure of the compact bar that keeps the numbers in view while lines are edited. */
+export interface CompactItem {
+  name: string;
+  value: string;
+  positionShort?: string;
+  deltaShort?: string;
 }
 
 export interface BalanceVM {
@@ -55,6 +71,8 @@ export interface BalanceVM {
   details: string[];
   /** The balance could not be computed at all. */
   failure?: string;
+  /** Try a Swap: the volume before the swap, when it changed ("was 122 ml"). */
+  volumeWas?: string;
 }
 
 const FIGURES: { key: RangeFigure; unit: string; decimals: number; property: string }[] = [
@@ -80,6 +98,7 @@ function figureVM(
   figure: Figure | undefined,
   hasTemplate: boolean,
   nameOf: (id: string) => string | undefined,
+  change?: FigureChange,
 ): FigureVM {
   const name = strings.balance.figures[spec.key];
   const known = figure?.known === true;
@@ -122,6 +141,24 @@ function figureVM(
   };
   if (status !== 'unknown' && !assumed) vm.positionShort = strings.balance.position[status];
   if (range) vm.track = trackGeometry(range, value);
+  if (change) {
+    const text = (v: number | undefined): string =>
+      v === undefined ? strings.balance.noFigure : `${fixed(v, spec.decimals)} ${spec.unit}`;
+    const unitWord = spec.unit === '%' ? swapStrings.points : spec.unit;
+    const delta =
+      change.delta === undefined
+        ? undefined
+        : change.delta === 0
+          ? swapStrings.noChange
+          : `${signed(change.delta, spec.decimals)} ${unitWord}`;
+    vm.change = swapStrings.figureChange(text(change.before), text(change.after), delta);
+    if (change.delta !== undefined && change.delta !== 0) {
+      vm.deltaShort = signed(change.delta, spec.decimals);
+    }
+    if (range && change.before !== undefined) {
+      vm.wasLeft = trackGeometry(range, change.before).markLeft;
+    }
+  }
   if (figure && !figure.known) {
     vm.missing = figure.missingIds.length
       ? strings.balance.noFigureNamed(names(figure.missingIds, nameOf), spec.property)
@@ -136,6 +173,7 @@ export function balanceVM(
   template: Template | undefined,
   nameOf: (id: string) => string | undefined,
   describeExcluded: (entry: Excluded) => string = (e) => nameOf(e.ingredientId) ?? e.ingredientId,
+  delta?: SwapDelta,
 ): BalanceVM {
   const gerund = method
     ? (strings.balance.gerunds as Record<string, string | undefined>)[method]
@@ -164,6 +202,7 @@ export function balanceVM(
       figure,
       template !== undefined,
       nameOf,
+      delta?.figures[spec.key],
     );
     if (!after) vm.missing = strings.balance.noFigureDilution;
     return vm;
@@ -237,6 +276,12 @@ export function balanceVM(
     title,
     figures,
     volume: after ? strings.balance.volume(after.volumeMl) : undefined,
+    volumeWas:
+      delta?.volume.before !== undefined &&
+      delta.volume.after !== undefined &&
+      Math.round(delta.volume.before) !== Math.round(delta.volume.after)
+        ? swapStrings.volumeWas(delta.volume.before)
+        : undefined,
     more,
     notes,
     notCounted,

@@ -195,7 +195,8 @@ separate screen: the spec screen in a mode, URL
 - **Purpose.** Change a slot's ingredient or amount without saving and
   watch the numbers; the bartender's "what if".
 - **Content.** The spec screen with a banner "Trying a swap. Nothing is
-  saved." and a Reset button. Changed lines are marked by a bar at the
+  saved." (the Reset button is in the bottom bar, see
+  [as built](#as-built-20)). Changed lines are marked by a bar at the
   left and the words "Changed, was 22.5 ml" (not by colour alone). The
   balance panel shows each figure with a dotted tick for the saved value
   and "was 18.3 %" in the footer. A compact balance bar above the bottom
@@ -277,7 +278,88 @@ template) forced some of it.
   not saved, [#74](screens-specs.md#what-if-volume-of-a-top)); lines
   the figures leave out are listed in the balance panel. The servings stepper and the batch sheet are built
   ([#52](screens-specs.md#servings-and-batch)). The bottom bar (Try a
-  Swap, Riff, Edit) and the overflow menu are not shown until #20, #27
-  and #25 build them;
-  there is no dead control. On a phone the panel is below the lines; from
+  Swap, Riff, Edit) and the overflow menu: the bar shows Try a Swap
+  ([#20](#as-built-20)); Riff, Edit and the menu are not shown until #27
+  and #25 build them; there is no dead control. On a phone the panel is below the lines; from
   640 px of detail width the two sit side by side.
+
+# As built (#20)
+
+What Try a Swap does and where it differs from the text above.
+
+- **The swap is in the address**, as the documents say
+  (`#/drinks/<id>?swap=<line>:<ingredient>:<amount>,...`), not in memory:
+  `<line>` is the position of the line in the spec, `<ingredient>` the
+  ingredient id (empty = unchanged, percent-encoded), `<amount>` a number and
+  a unit id such as `22.5ml`, `0.75oz_us`, `2dash` (empty = unchanged). `swap=`
+  with nothing after it is swap mode with nothing changed. A reload, Back and
+  a shared link restore it; nothing is written to the store, and a test checks
+  IndexedDB and local storage are untouched. (Issue 20 said "the URL does not
+  persist it"; the behaviour document wins.) Several lines can be swapped at
+  once; each changed line shows the bar and "Changed, was 60 ml Light Rum" (the
+  saved amount, and the saved ingredient when that changed).
+- **Entering and leaving.** **Try a Swap** in the bottom bar adds one history
+  entry; every change replaces the address, so Back leaves swap mode. Leaving
+  with at least one change shows the toast "Swap dropped" with **Undo** (opens
+  the swap again). The bottom bar in swap mode is **Reset** (disabled while
+  nothing is changed): all lines back to the saved spec, toast "Swap reset" with
+  Undo. **Riff** and **Save** are not shown until
+  [#27](https://github.com/nexumia-de/mixtura/issues/27) and
+  [#25](https://github.com/nexumia-de/mixtura/issues/25) build them (no dead
+  control); the banner has no Reset button, the bottom bar has it. A line has
+  its own **Reset Line** in the sheet instead of a toast, because a toast would
+  cover the sheet's buttons.
+- **The line sheet** (`?sheet=line-<n>`, a history entry on a phone, a replace on
+  a wide screen; Escape or Done closes it, the swap stays). From the top: the
+  amount (stepper and typed entry), the ingredient, the offers, the search
+  over all ingredients, and Reset Line and Done. The amount is first so that it
+  stays visible with the on-screen keyboard: the sheet follows the visual
+  viewport (`--kb-inset`, `keyboard-inset.ts`) and scrolls. The stepper moves
+  by the pour grid of [units](units.md#display-and-rounding) in the line's unit:
+  2.5 ml, a quarter ounce, a quarter cl, a quarter spoon, 1 dash or counted
+  unit, 5 g; never below one step. Typed text uses the grammar of the amounts
+  parser (`45 ml`, `3/4 oz`, `1½ oz`, `2 dashes`); a bare number takes the line's
+  unit; a decimal comma is accepted. A valid entry applies while typing, with
+  "= 22.5 ml" under the field; text that is not an amount is said when the field
+  is left ("Not understood: blah. ... Try 45 ml, 1½ oz or 2 dashes.") and the last valid amount
+  stays. A `top` line takes an ingredient but no amount here (its volume is the
+  [what-if](screens-specs.md#what-if-volume-of-a-top)).
+- **Offers** come from the engine's
+  [`swapCandidates`](ingredients.md#swap-candidates) for the **saved**
+  ingredient of the line (so the list does not move while swapping) and the
+  line's own role if it sets one: "Same class and role", then "Same role"; for a
+  line without a role "Same class", then "Close in the tree". Eight per group,
+  "Show N more". The chosen one is marked "Selected" with a check; "Saved: X"
+  takes the saved ingredient back. The search covers all ingredients (name, case
+  and accents ignored, the nearest 30) and is the fallback: a line nothing is
+  known for (for example Crushed Ice, an ingredient without parent) says "Nothing
+  is known to fit this line by role or class. Search all ingredients." Seed
+  data: only 69 of 296 ingredients have a substitution class and the classes
+  are narrow, so for most lines "Same role" is what is offered.
+- **Figures.** Each figure keeps its range and word rules and gains a row
+  "Was 18.3 % → now 19.7 % (+1.4 points)" (g/100 ml for sugar, a true minus
+  sign, "no change", "No figure" where a figure is unknown, no difference then);
+  the difference is taken between the numbers as shown, so it always adds up.
+  The dotted tick on the track marks the saved value where the saved figure is
+  known and a range is drawn. The volume line adds "(was 122 ml)". The
+  panel footer is unchanged ("Assumed range 24.2–26.2 %"); the footer text
+  "was ..." of the first design is the row above.
+- **Template.** The engine's `matchSpec` is asked, without the stored template
+  id, for the saved and the swapped lines. A swapped drink that fits a template
+  follows it (tag "Sidecar template (suggested)"); one that fits none follows
+  none unless the saved drink did not fit its stored template either. When
+  the template differs from the saved one the panel says it in one sentence:
+  "Now matches the Sidecar template. Before: Daiquiri." or "Now matches no
+  template. Before: Daiquiri." No name is shown that the engine did not give.
+  No template: no range, no band, the before and after numbers still show.
+- **Compact balance bar.** On a phone (detail pane under 640 px) the three
+  figures with their difference ("ABV 25.1 % +6.8") stay above the bottom bar
+  while the lines are on screen; where the panel is beside the lines it is
+  hidden.
+- **Servings and batch** work in swap mode (the parameters combine): amounts
+  and "was" are multiplied, the batch is made from the swapped lines; the figures
+  stay for one drink ([#80](https://github.com/nexumia-de/mixtura/issues/80),
+  the swap part).
+- **Performance.** One swap step (recompute, redraw the whole screen) takes
+  17 ms worst of ten at both sizes in headless Chromium on the cloud host,
+  without CPU throttling (`node e2e/swap.mjs`).

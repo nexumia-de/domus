@@ -33,6 +33,7 @@ export {
   resolveProperty,
   sameClass,
   substitutesFor,
+  swapCandidates,
 } from './ingredients/index';
 export type * from './ingredients/index';
 

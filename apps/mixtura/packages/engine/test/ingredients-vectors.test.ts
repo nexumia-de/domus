@@ -14,9 +14,11 @@ import {
   resolveProperty,
   sameClass,
   substitutesFor,
+  swapCandidates,
   type Ingredient,
   type IngredientTree,
   type PreparedSpec,
+  type Role,
 } from '../src/index';
 import { makeAjv, schemas } from './schema-helpers';
 import { validate } from './helpers/json-schema';
@@ -33,7 +35,7 @@ interface Vector {
   kind: string;
   ingredients: Ingredient[];
   expected: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-  queries?: { id: string; expected: Record<string, any> }[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+  queries?: { id: string; role?: string; expected: Record<string, any> }[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   specs?: Record<string, PreparedSpec>;
   query?: string;
   tolerance?: number;
@@ -51,7 +53,14 @@ const shape = (r: { value: unknown; from?: string; reason?: string }) =>
 test('there is a vector for every kind of rule', () => {
   const kinds = new Set(files.map((f) => read(f).kind));
   expect([...kinds].sort()).toEqual(
-    ['inheritance', 'prepared', 'substitution', 'tree-errors', 'tree-queries'].sort(),
+    [
+      'inheritance',
+      'prepared',
+      'substitution',
+      'swap-candidates',
+      'tree-errors',
+      'tree-queries',
+    ].sort(),
   );
 });
 
@@ -106,6 +115,14 @@ describe.each(files)('%s', (file) => {
       for (const c of v.expected.sameClass) {
         expect(sameClass(tree, c.a, c.b)).toBe(c.result);
         expect(sameClass(tree, c.b, c.a)).toBe(c.result);
+      }
+    } else if (v.kind === 'swap-candidates') {
+      const tree = treeOf(v);
+      for (const q of v.queries ?? []) {
+        const { role } = q as { role?: Role };
+        expect(swapCandidates(tree, q.id, role ? { role } : {}), `${q.id} ${role ?? ''}`).toEqual(
+          q.expected,
+        );
       }
     } else {
       const tree = treeOf(v);

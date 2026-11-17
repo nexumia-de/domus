@@ -5,8 +5,10 @@
 
 import { type AppState } from './app-state';
 import { destinationOf } from './destinations';
-import { closedSheet, DEFAULT_HASH, normaliseHash, parseHash } from './router';
+import { closedSheet, DEFAULT_HASH, droppedSwap, normaliseHash, parseHash } from './router';
 import { type Store } from './state';
+import { swapStrings } from './screens/spec/swap-strings';
+import { showToast } from './toasts';
 
 interface Entry {
   i: number;
@@ -59,9 +61,13 @@ export function startNavigation(store: Store<AppState>): void {
 
   window.addEventListener('popstate', () => {
     const next = parseHash(normaliseHash(location.hash));
-    const kept = closedSheet(store.get().route, next);
+    const previous = store.get().route;
+    const kept = closedSheet(previous, next);
     if (kept) history.replaceState({ i: index() } satisfies Entry, '', kept.hash);
     show(store, (kept ?? next).hash);
+    // Back out of a swap that changed something drops it (never saved); Undo brings it back.
+    const dropped = kept ? null : droppedSwap(previous, next);
+    if (dropped) showToast(store, swapStrings.toastDropped, () => go(store, dropped.hash));
   });
   window.addEventListener('hashchange', () => {
     // A hash typed into the address bar: keep the app's own entries consistent.

@@ -1,5 +1,6 @@
 import { initialState } from './app-state';
 import { connect } from './data';
+import { watchKeyboardInset } from './keyboard-inset';
 import { startNavigation } from './navigation';
 import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
@@ -37,6 +38,7 @@ if (root) {
 
   shell.applyUpdate = registerServiceWorker(store);
   startNavigation(store);
+  watchKeyboardInset();
   draw();
 
   document.addEventListener('keydown', (event) => {

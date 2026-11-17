@@ -20,14 +20,15 @@ Code: `packages/engine/src/ingredients/`, one job per file. Every figure
 in the vectors is either synthetic (stated in the vector) or an
 assumption of [balance](balance.md); no drink data is claimed.
 
-| File              | Job                                                                   |
-| ----------------- | --------------------------------------------------------------------- |
-| `types.ts`        | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
-| `tree.ts`         | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
-| `properties.ts`   | `resolveProperty`, `resolveAll`, `resolveCost`                        |
-| `mixture.ts`      | the mixing formulas of balance (before dilution), in ml and g         |
-| `prepared.ts`     | `computePrepared`: ABV, sugar, acid, volume of a prepared ingredient  |
-| `substitution.ts` | `sameClass`, `substitutesFor`                                         |
+| File                 | Job                                                                   |
+| -------------------- | --------------------------------------------------------------------- |
+| `types.ts`           | `Ingredient`, `PreparedIngredient`, `SubstitutionClass`, result types |
+| `tree.ts`            | `buildTree`, `ancestors`, `descendants`, `isA`, `distance`            |
+| `properties.ts`      | `resolveProperty`, `resolveAll`, `resolveCost`                        |
+| `mixture.ts`         | the mixing formulas of balance (before dilution), in ml and g         |
+| `prepared.ts`        | `computePrepared`: ABV, sugar, acid, volume of a prepared ingredient  |
+| `substitution.ts`    | `sameClass`, `substitutesFor`                                         |
+| `swap-candidates.ts` | `swapCandidates`: the groups offered when a line is swapped           |
 
 ## Tree
 
@@ -86,10 +87,35 @@ and the same resolved role, ordered by tree distance, then id. The
 ingredient itself and its ancestors are left out. If the class or the role
 of `id` is unknown the list is empty and carries the reason.
 
+## Swap candidates
+
+`swapCandidates(id, { role? })` is what the spec screen's Try a Swap
+offers for a line ([swap mode](screens-browse.md#swap-mode)). It returns
+groups, each ordered by tree distance, then id; empty groups are left
+out, and the ingredient itself and its ancestors are never offered.
+`role` is the role of the line's slot (a role set on the line wins over
+the ingredient's own).
+
+- **With a role:** `class` (same class and same role, the list of
+  `substitutesFor`), then `role` (same role, any other class; categories
+  such as "Spirits" are left out, they are not an ingredient to pour).
+- **Without a role** (13 of the 296 seed ingredients inherit none): `class`
+  (same class, any role), then `near` (siblings and children in the tree,
+  categories left out). An ingredient without parent has no neighbours.
+- No group at all means nothing is known to fit; the screen then offers
+  only the search over all ingredients. Nothing is guessed. An unknown id
+  gives no groups and a reason.
+
+The seed gives a substitution class to only 69 of 296 ingredients, and
+the classes are narrow (`sc-gin`, `sc-brandy`), so for most lines the
+`role` group is the useful one.
+
 ## Vectors
 
 `packages/engine/vectors/ingredients/` (format:
 `ingredient-vector.schema.json`), run by `test/ingredients-vectors.test.ts`:
 inheritance, the four tree errors, tree queries, substitution ordering,
+swap candidates (`swap-candidates-groups`: groups, a role set by the line,
+no role, no neighbours, unknown id),
 five prepared cases (syrup 1:1 and 2:1, batched with added water, nested,
 unknown property) and a prepared cycle.

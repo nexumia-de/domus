@@ -44,6 +44,7 @@ const PUBLIC = [
   'scaleLines',
   'shelfLife',
   'substitutesFor',
+  'swapCandidates',
   'toBase',
   'toGrams',
   'toMl',

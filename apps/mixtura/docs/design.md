@@ -170,8 +170,9 @@ Each block has, from top to bottom:
    width below the band to one range width above it, so the band is the
    middle third; values beyond the scale sit at the edge. In swap mode a
    dotted tick marks the saved value.
-3. **Footer.** "Usual range 17.6–19.0 %", in swap mode followed by
-   "was 18.3 %". Never a score, grade, red or green.
+3. **Footer.** "Usual range 17.6–19.0 %". In swap mode a row below it
+   reads "Was 18.3 % → now 19.7 % (+1.4 points)". Never a score, grade, red
+   or green.
 
 Position is therefore carried by words, arrow shape, diamond fill and
 place on the track, and by no colour. The band uses `--accent-soft`

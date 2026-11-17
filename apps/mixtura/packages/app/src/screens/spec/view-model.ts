@@ -5,6 +5,7 @@
 
 import {
   computeBalance,
+  type BalanceResult,
   getIngredient,
   lineRole,
   matchSpec,
@@ -14,11 +15,16 @@ import {
 import { strings } from '../../strings';
 import type { BrowseModel } from '../browse/model';
 import type { SpecData, SpecLine, Template } from '../browse/types';
-import { balanceVM, type BalanceVM } from './balance-vm';
+import { balanceVM, type BalanceVM, type CompactItem } from './balance-vm';
 import { amountText } from './format';
 import { batchVM, type BatchVM } from './batch-vm';
 import { scaledLine } from './servings';
 import { initialSpecView, type SpecView } from './session';
+import { swapDelta } from './swap-delta';
+import { sheetVM, type SwapSheetVM } from './swap-sheet-vm';
+import { applySwap, changedCount, type Swap } from './swap-state';
+import { swapStrings } from './swap-strings';
+import { swapTemplate } from './swap-template';
 
 /** The volume of a `top` line and what the user can do with it. */
 export interface TopVM {
@@ -45,6 +51,21 @@ export interface LineVM {
   substitutes: string[];
   /** A prepared ingredient links to its own spec. */
   prepared?: { name: string; href: string };
+  /** Try a Swap: the line as a tappable row; `was` names what the saved line had when it differs. */
+  swap?: { changed: boolean; was?: string };
+}
+
+/** Try a Swap as the screen shows it (docs/screens-browse.md#swap-mode). */
+export interface SwapVM {
+  banner: string;
+  /** Lines that differ from the saved spec. */
+  count: number;
+  /** One plain sentence when the swapped drink follows another template or none. */
+  templateChange?: string;
+  /** The three figures with their differences, for the compact bar. */
+  compact: CompactItem[];
+  /** The open line sheet. */
+  sheet?: SwapSheetVM;
 }
 
 export interface TagVM {
@@ -66,6 +87,8 @@ export interface SpecVM {
   batch?: BatchVM;
   /** Said under the balance panel when the drink has no template. */
   noTemplateNote?: string;
+  /** Present in swap mode. */
+  swap?: SwapVM;
   notes?: string;
   source?: string;
 }
@@ -77,6 +100,8 @@ function lineVM(
   system: DisplaySystem,
   view: SpecView,
   servings: number,
+  saved: SpecLine,
+  swapped: boolean,
 ): LineVM {
   const ingredient = getIngredient(model.tree, line.ingredientId);
   const role = lineRole(model.tree, line);
@@ -101,6 +126,18 @@ function lineVM(
       return strings.spec.orLine(`${amount}${name}`);
     }),
   };
+  if (swapped) {
+    const same = line.ingredientId === saved.ingredientId;
+    const sameAmount = line.amount === saved.amount && line.unit === saved.unit;
+    const savedName = model.ingredientName(saved.ingredientId) ?? saved.ingredientId;
+    const was = [
+      !sameAmount || !same ? amountText(scaledLine(saved, servings), system) : '',
+      same ? '' : savedName,
+    ]
+      .filter(Boolean)
+      .join(' ');
+    vm.swap = { changed: !same || !sameAmount, ...(was && { was }) };
+  }
   if (line.unit === 'top') {
     vm.top = {
       state: line.topMl !== undefined ? 'stored' : whatIf !== undefined ? 'what-if' : 'none',
@@ -149,6 +186,10 @@ export interface SpecOptions {
   batch?: boolean;
   /** Temporary state of this screen (what-if volumes); defaults to none. */
   view?: SpecView;
+  /** Try a Swap: the swap of the address, null outside swap mode. */
+  swap?: Swap | null;
+  /** Try a Swap: the line whose sheet is open. */
+  sheetLine?: number | null;
   /** Where the spec lives: built-in drinks show their origin, not a version and a status. */
   origin?: 'seed' | 'user';
 }
@@ -161,18 +202,26 @@ export function specVM(
 ): SpecVM {
   const view = options.view ?? initialSpecView;
   const servings = options.servings ?? 1;
-  // What-if volumes make an effective spec for the figures only; the spec itself is never changed.
-  const effective: SpecData = {
-    ...spec,
-    lines: spec.lines.map((line, index) => {
+  const swap = options.swap ?? null;
+  const swappedLines = swap ? applySwap(spec.lines, swap) : spec.lines;
+  const withWhatIfVolumes = (lines: readonly SpecLine[]): SpecLine[] =>
+    lines.map((line, index) => {
       const ml = view.topMl[index];
       return line.unit === 'top' && line.topMl === undefined && ml !== undefined
         ? { ...line, topMl: ml }
         : line;
-    }),
-  };
+    });
+  // What-if volumes and a swap make an effective spec for the figures only; the spec itself is never changed.
+  const effective: SpecData = { ...spec, lines: withWhatIfVolumes(swappedLines) };
   const withWhatIf = effective.lines.some((line, i) => line !== spec.lines[i]);
-  const { template, basis, unknownId } = templateOf(model, effective);
+  const savedLines = withWhatIfVolumes(spec.lines);
+  const original = templateOf(model, { ...spec, lines: savedLines });
+  const swapChanged = swap !== null && changedCount(swap, spec.lines) > 0;
+  const swappedTemplate = swapChanged
+    ? swapTemplate(model, original, savedLines, effective.lines)
+    : undefined;
+  const { template, basis } = swappedTemplate ?? original;
+  const unknownId = swappedTemplate ? undefined : original.unknownId;
   const tags: TagVM[] = [];
   if (template) {
     tags.push({
@@ -214,14 +263,29 @@ export function specVM(
     const amount = line ? `${amountText(line, system)} ` : '';
     return `${amount}${name}: ${strings.balance.notCountedReason[entry.reason]}`;
   };
-  const result = withWhatIf
-    ? computeBalance(model.tree, { method: spec.method, lines: effective.lines })
-    : model.balanceOf(spec);
-  const balance = balanceVM(result, spec.method, template, model.ingredientName, describeExcluded);
+  const figuresOf = (lines: readonly SpecLine[]): BalanceResult =>
+    computeBalance(model.tree, { method: spec.method, lines: [...lines] });
+  const result = withWhatIf ? figuresOf(effective.lines) : model.balanceOf(spec);
+  const savedResult = swap
+    ? savedLines.some((line, i) => line !== spec.lines[i])
+      ? figuresOf(savedLines)
+      : model.balanceOf(spec)
+    : undefined;
+  const delta = savedResult ? swapDelta(savedResult, result) : undefined;
+  const balance = balanceVM(
+    result,
+    spec.method,
+    template,
+    model.ingredientName,
+    describeExcluded,
+    delta,
+  );
   const vm: SpecVM = {
     name: spec.name,
     tags,
-    lines: spec.lines.map((line, i) => lineVM(model, line, i, system, view, servings)),
+    lines: swappedLines.map((line, i) =>
+      lineVM(model, line, i, system, view, servings, spec.lines[i] as SpecLine, swap !== null),
+    ),
     meta,
     balance,
     servings,
@@ -235,6 +299,30 @@ export function specVM(
       system,
       model.ingredientName,
     );
+  }
+  if (swap) {
+    const count = changedCount(swap, spec.lines);
+    const sheet =
+      options.sheetLine === null || options.sheetLine === undefined
+        ? undefined
+        : sheetVM(model, spec.lines, swappedLines, swap, options.sheetLine, view, system);
+    vm.swap = {
+      banner:
+        count === 0
+          ? swapStrings.bannerEmpty
+          : count === 1
+            ? swapStrings.banner
+            : swapStrings.bannerCount(count),
+      count,
+      compact: balance.figures.map((f) => ({
+        name: f.name,
+        value: f.valueText,
+        ...(f.positionShort && { positionShort: f.positionShort }),
+        ...(f.deltaShort && { deltaShort: f.deltaShort }),
+      })),
+      ...(swappedTemplate?.change && { templateChange: swappedTemplate.change }),
+      ...(sheet && { sheet }),
+    };
   }
   if (!template) {
     vm.noTemplateNote = unknownId ? strings.spec.unknownTemplate : strings.spec.noTemplateNote;

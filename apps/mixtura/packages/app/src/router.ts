@@ -52,3 +52,15 @@ export function closedSheet(previous: Route, next: Route): Route | null {
   query.delete('sheet');
   return parseHash(formatHash(previous.path, query));
 }
+
+/**
+ * Leaving a swap that changed something: the route to return to for Undo, else
+ * null. Moving within the same drink with the swap kept (a sheet closing, a
+ * servings change) is not leaving. An empty swap has nothing to drop.
+ */
+export function droppedSwap(previous: Route, next: Route): Route | null {
+  if (!previous.query.get('swap')) return null;
+  const samePath = previous.path.join('/') === next.path.join('/');
+  if (samePath && next.query.has('swap')) return null;
+  return previous;
+}

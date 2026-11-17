@@ -17,7 +17,7 @@ export function servingsOf(query: URLSearchParams): number {
 }
 
 /** The address of this screen with `servings` and the batch sheet set; 1 serving leaves the parameter out. */
-export function specAddress(route: Route, servings: number, sheet: 'batch' | null): string {
+export function specAddress(route: Route, servings: number, sheet: string | null): string {
   const query = new URLSearchParams(route.query);
   query.delete('servings');
   query.delete('sheet');

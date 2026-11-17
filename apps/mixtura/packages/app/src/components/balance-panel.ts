@@ -21,6 +21,12 @@ function track(figure: FigureVM): HTMLElement | null {
       class: figure.assumed ? 'band band--assumed' : 'band',
       style: `left: ${geometry.bandLeft.toFixed(1)}%; width: ${geometry.bandWidth.toFixed(1)}%`,
     }),
+    figure.wasLeft !== undefined &&
+      h('span', {
+        class: 'was',
+        'data-was': '',
+        style: `left: ${figure.wasLeft.toFixed(1)}%`,
+      }),
     geometry.markLeft !== undefined &&
       h('span', {
         class: geometry.within || figure.assumed ? 'mark' : 'mark mark--out',
@@ -55,6 +61,7 @@ function metric(figure: FigureVM): HTMLElement {
     ),
     track(figure),
     h('div', { class: 'metric-foot' }, h('span', {}, figure.footer)),
+    figure.change && h('p', { class: 'metric-change', 'data-change': figure.key }, figure.change),
     figure.missing && h('p', { class: 'note metric-missing' }, figure.missing),
   );
 }
@@ -73,7 +80,12 @@ export function balancePanel(vm: BalanceVM): HTMLElement {
     { class: 'card balance', 'aria-labelledby': 'balance-title' },
     h('h2', { id: 'balance-title' }, vm.title),
     ...vm.figures.map(metric),
-    vm.volume && h('div', { class: 'metric-foot metric-volume' }, h('span', {}, vm.volume)),
+    vm.volume &&
+      h(
+        'div',
+        { class: 'metric-foot metric-volume' },
+        h('span', {}, vm.volumeWas ? `${vm.volume} (${vm.volumeWas})` : vm.volume),
+      ),
     h(
       'dl',
       { class: 'meta more' },

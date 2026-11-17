@@ -178,8 +178,12 @@ Ingredients                       Batch of 4 drinks            [x]
 - **States.** A drink with no method the model knows has no batch: "A
   batch needs a method the model knows. This drink has none." Not found,
   error and offline as the spec screen.
+- **Swap mode.** Stepper and batch work in
+  [swap mode](screens-browse.md#as-built-20): the swap is a parameter of the
+  same address and the batch is made from the swapped lines.
 - **Not built.** A batch for a **target volume** instead of a number of
-  drinks (issue 52 names it) and the swap mode (#20) are follow-up work.
+  drinks (issue 52 names it) and more than 12 drinks are follow-up work
+  ([#80](https://github.com/nexumia-de/mixtura/issues/80)).
 
 # What-if volume of a top
 

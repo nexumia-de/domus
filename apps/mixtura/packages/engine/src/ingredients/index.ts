@@ -4,3 +4,4 @@ export * from './properties';
 export * from './mixture';
 export * from './prepared';
 export * from './substitution';
+export * from './swap-candidates';
