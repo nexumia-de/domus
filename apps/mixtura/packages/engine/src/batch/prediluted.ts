@@ -28,6 +28,15 @@ function base(amount: Amount, options: BatchOptions): number {
   return b.ok ? b.value.value : NaN;
 }
 
+/**
+ * Builds a pre-diluted batch of a spec with the dilution water added.
+ *
+ * @param tree - A validated tree.
+ * @param spec - The spec of one serving; amounts in units of the unit table.
+ * @param servings - Number of servings above 0.
+ * @param options - Balance options plus rounding and scaling options.
+ * @returns Lines (exact and rounded amounts), water and totals in ml, servings yielded, the figures of the batch as made and the lines served at the glass, or errors.
+ */
 export function prediluted(
   tree: IngredientTree,
   spec: BalanceSpec,

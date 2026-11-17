@@ -7,7 +7,7 @@ import oldFashioned from '../../data/templates/old-fashioned.json';
 import sidecar from '../../data/templates/sidecar.json';
 import type { Template } from './types';
 
-/** In the order of the practice document. */
+/** The six root templates (Old-Fashioned, Martini, Daiquiri, Sidecar, Highball, Flip) as data, with slots in parts and usual ranges in percent and g per 100 ml; all ratios are assumptions (docs/templates.md). */
 export const ROOT_TEMPLATES: readonly Template[] = [
   oldFashioned,
   martini,

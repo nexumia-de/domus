@@ -20,7 +20,7 @@
           "ingredientId": { "$ref": "urn:mixtura:common#/$defs/id" },
           "amount": { "$ref": "urn:mixtura:common#/$defs/amount" },
           "amountMax": { "$ref": "urn:mixtura:common#/$defs/amount" },
-          "unit": { "$ref": "urn:mixtura:common#/$defs/id" },
+          "unit": { "$ref": "urn:mixtura:common#/$defs/unitId" },
           "role": { "$ref": "urn:mixtura:common#/$defs/role" },
           "optional": { "type": "boolean" },
           "note": { "type": "string" },
@@ -31,7 +31,7 @@
               "properties": {
                 "ingredientId": { "$ref": "urn:mixtura:common#/$defs/id" },
                 "amount": { "$ref": "urn:mixtura:common#/$defs/amount" },
-                "unit": { "$ref": "urn:mixtura:common#/$defs/id" }
+                "unit": { "$ref": "urn:mixtura:common#/$defs/unitId" }
               },
               "required": ["ingredientId"],
               "dependentRequired": { "amount": ["unit"], "unit": ["amount"] },

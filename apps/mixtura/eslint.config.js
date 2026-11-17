@@ -48,4 +48,27 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // The app reaches the engine only through its entry point
+    // (docs/engine.md); the seed data files are the one other export path.
+    // packages/engine/test/app-imports.test.ts keeps this rule in place.
+    files: ['packages/app/**/*.ts', 'packages/app/**/*.mjs'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^@mixtura/engine/(?!seed/)',
+              message: 'Import from @mixtura/engine only (docs/engine.md).',
+            },
+            {
+              group: ['**/packages/engine/**', '**/engine/src/**', '**/engine/dist/**'],
+              message: 'Import from @mixtura/engine only (docs/engine.md).',
+            },
+          ],
+        },
+      ],
+    },
+  },
 );

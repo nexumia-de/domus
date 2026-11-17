@@ -1,0 +1,41 @@
+{
+  "id": "martini",
+  "name": "Martini",
+  "why": "Martini template with the classic 2:1 and no bitter slot filled",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec martini (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "properties": {
+    "gin": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    "dry-vermouth": {
+      "role": "modifier",
+      "abv": 18,
+      "sugar": 3,
+      "acid": 0
+    }
+  },
+  "expected": {
+    "templateId": "martini",
+    "volumeAfterMl": 108.0,
+    "abvPct": 27.222222,
+    "sugarPer100Ml": 0.833333,
+    "acidPct": 0.0
+  },
+  "tolerance": 0.0001
+}

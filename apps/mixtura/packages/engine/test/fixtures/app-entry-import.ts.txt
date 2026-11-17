@@ -1,0 +1,4 @@
+import { parseAmount } from '@mixtura/engine';
+import seed from '@mixtura/engine/seed/ingredients.json';
+
+export const parse = (text: string) => [parseAmount(text), seed];

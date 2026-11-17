@@ -1,0 +1,21 @@
+{
+"attribution":{"commit":"fixture","holder":"Nobody","licence":"MIT","notice":"Recipes and ingredient data: Fixture data (https://example.invalid/fixture), MIT License, Copyright (c) 2026 Nobody. Changed by Drink Builder: units, roles and balance figures added, some entries rewritten.","repository":"https://example.invalid/fixture","source":"Fixture data"},
+"ingredients":[
+{"abv":44.7,"id":"aromatic-bitters","level":"product","name":"Aromatic Bitters","parentId":"bitters","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0.3},
+{"assumed":["role"],"id":"bitters","level":"category","name":"Bitters","role":"bitter","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0.5},
+{"abv":40,"id":"bourbon","level":"type","name":"Bourbon","parentId":"spirits","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":18,"assumed":["substitutionClass"],"id":"dry-vermouth","level":"product","name":"Dry Vermouth","parentId":"fortified-wine","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"substitutionClass":"sc-dry-vermouth","sugar":3},
+{"assumed":["role"],"id":"fortified-wine","level":"category","name":"Fortified Wine","role":"modifier","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"}},
+{"abv":40,"id":"gin","level":"product","name":"Gin","parentId":"spirits","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":0,"assumed":["role"],"id":"juices","level":"category","name":"Juices","role":"lengthener","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":10},
+{"abv":0,"id":"lemon-juice","level":"product","name":"Lemon Juice","parentId":"juices","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":2.5},
+{"abv":0,"id":"simple-syrup","level":"product","name":"Simple Syrup","parentId":"sweeteners","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":60},
+{"assumed":["role"],"id":"spirits","level":"category","name":"Spirits","role":"base","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":18,"assumed":["substitutionClass"],"id":"sweet-vermouth","level":"product","name":"Sweet Vermouth","parentId":"fortified-wine","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"substitutionClass":"sc-dry-vermouth","sugar":15},
+{"abv":0,"assumed":["role"],"id":"sweeteners","level":"category","name":"Sweeteners","role":"sweet","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":60},
+{"abv":0,"id":"tea","level":"product","name":"Tea","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"id":"unfilled-spirit","level":"product","name":"Unfilled Spirit","parentId":"spirits","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":40,"id":"wheated-bourbon","level":"product","name":"Wheated Bourbon","parentId":"bourbon","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0},
+{"abv":40,"id":"whiskey","level":"type","name":"Whiskey","parentId":"spirits","source":{"licence":"MIT","name":"Fixture data","note":"commit fixture","url":"https://example.invalid/fixture"},"sugar":0}
+]
+}

@@ -74,9 +74,13 @@ function rank(list: Omit<Candidate, 'rank'>[]): Candidate[] {
 }
 
 /**
- * Without `spec.templateId`: all templates ranked, `chosen` is the best one
- * that fits (absent if none fits). With it: only that template is analysed
- * and it is `chosen`; an explicit id is never replaced by a suggestion.
+ * Matches a spec to templates by roles and ratios and ranks every candidate.
+ *
+ * @param tree - A validated tree that gives each ingredient its role.
+ * @param templates - Templates to try; slot ratios are in parts against the base slot.
+ * @param spec - Lines (amounts in units of the unit table) and an optional explicit template id.
+ * @param options - Unit overrides.
+ * @returns Candidates best first with distance and ratios; `chosen` is the best that fits (absent if none), or the explicit id, which is never replaced.
  */
 export function matchSpec(
   tree: IngredientTree,

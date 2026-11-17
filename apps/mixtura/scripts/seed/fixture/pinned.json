@@ -1,0 +1,8 @@
+{
+  "name": "Fixture data",
+  "repository": "https://example.invalid/fixture",
+  "commit": "fixture",
+  "licence": "MIT",
+  "holder": "Nobody",
+  "copyright": "Copyright (c) 2026 Nobody"
+}

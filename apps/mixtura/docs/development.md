@@ -18,23 +18,29 @@ npm ci
 
 ## Commands
 
-| Command                | What it does                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------ |
-| `npm run check`        | format check, lint, typecheck, tests, build, in that order; stops at the first error |
-| `npm run format`       | Prettier writes all files                                                            |
-| `npm run format:check` | Prettier checks all files                                                            |
-| `npm run lint`         | ESLint (flat config, typescript-eslint, purity rule for the engine)                  |
-| `npm run typecheck`    | `tsc --noEmit` in both packages                                                      |
-| `npm test`             | vitest in both packages                                                              |
-| `npm run build`        | `packages/engine/dist/engine.mjs` and `packages/app/dist/` (the app, see below)      |
-| `npm run e2e`          | builds, then walks the built app in Chromium at 360 x 720 and 1200 x 800             |
+| Command                      | What it does                                                                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check`              | format check, lint, typecheck, tests, build, in that order; stops at the first error                                              |
+| `npm run format`             | Prettier writes all files                                                                                                         |
+| `npm run format:check`       | Prettier checks all files                                                                                                         |
+| `npm run lint`               | ESLint (flat config, typescript-eslint, purity rule for the engine)                                                               |
+| `npm run typecheck`          | `tsc --noEmit` in both packages                                                                                                   |
+| `npm test`                   | vitest in both packages                                                                                                           |
+| `npm run build`              | `packages/engine/dist/` (`engine.mjs`, declarations, purity check) and `packages/app/dist/` (the app, see below)                  |
+| `npm run seed -- <checkout>` | regenerates `packages/engine/data/seed/` from a local checkout of the Bar Assistant data ([seed data](seed-data.md#regenerating)) |
+| `npm run e2e`                | builds, then walks the built app in Chromium at 360 x 720 and 1200 x 800                                                          |
 
 ## Layout
 
-- `packages/engine` (`@mixtura/engine`): the pure engine. `src/index.ts`,
-  `vectors/` for the test vectors of every rule and formula, `test/`.
+- `packages/engine` (`@mixtura/engine`): the pure engine. `src/index.ts` is
+  its only public entry ([engine](engine.md)); `vectors/` for the test
+  vectors of every rule and formula, `test/`. The app imports
+  `@mixtura/engine` only, resolved to the engine's build (`dist/`): the app's
+  `test` and `typecheck` scripts build the engine first, the root `build`
+  does it in order, and a lint rule fails any deep import.
 - `packages/app` (`@mixtura/app`): the web app, built with esbuild, no UI
   framework. The shell and its source layout are in [App shell](#app-shell).
+- `scripts/seed/`: the seed data converter and its fixture ([seed data](seed-data.md#converter)); not engine code.
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.
 - Every dependency is pinned exactly; see [dependencies](dependencies.md).
 

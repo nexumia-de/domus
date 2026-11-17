@@ -15,6 +15,14 @@ export interface BalanceOptions {
   dilution?: DilutionOptions;
 }
 
+/**
+ * Computes the figures of a spec: volume, ABV, sugar, acid and ratios before and after dilution (docs/balance.md).
+ *
+ * @param tree - A validated tree whose ingredients carry ABV (percent), sugar (g per 100 ml), acid (percent).
+ * @param spec - Method id and lines (amounts in a unit of the unit table; `topMl` in ml).
+ * @param options - Specs of prepared ingredients, unit overrides, dilution table, bound or fraction.
+ * @returns Figures in ml, percent and g per 100 ml, each a number or `known: false` with the ingredient ids that prevent it; or errors.
+ */
 export function computeBalance(
   tree: IngredientTree,
   spec: BalanceSpec,

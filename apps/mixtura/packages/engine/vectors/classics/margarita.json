@@ -1,0 +1,52 @@
+{
+  "id": "margarita",
+  "name": "Margarita",
+  "why": "Sidecar template: orange liqueur as the modifier; the optional agave syrup is left out",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "tequila-blanco",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec margarita (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "properties": {
+    "tequila-blanco": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0.3,
+      "acid": 0
+    },
+    "triple-sec": {
+      "role": "modifier",
+      "abv": 40,
+      "sugar": 25,
+      "acid": 0
+    },
+    "lime-juice": {
+      "role": "sour",
+      "abv": 0,
+      "sugar": 1.7,
+      "acid": 6
+    }
+  },
+  "expected": {
+    "templateId": "sidecar",
+    "volumeAfterMl": 131.25,
+    "abvPct": 25.142857,
+    "sugarPer100Ml": 4.714286,
+    "acidPct": 1.028571
+  },
+  "tolerance": 0.0001
+}

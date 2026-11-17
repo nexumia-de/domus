@@ -24,6 +24,7 @@ links. Change history is in [log.md](log.md).
 - [Ingredients](ingredients.md) - The ingredient module of the engine: tree validation, property inheritance with sources, prepared ingredients computed from their spec, substitution classes, and the vectors that pin them.
 - [Units](units.md) - Every unit with exact value or convention, behaviour in balance, parsing grammar, display and rounding; table also in `packages/engine/data/units.json`.
 - [Templates](templates.md) - The six root templates as data, matching a spec to a template by roles and ratios with distance and a tie rule, the range check (within, below, above, unknown) and the evidence of every number (all assumptions).
+- [Engine](engine.md) - The one public entry point of the engine package: purity, every exported function with signature and units, general model apart from drink-specific rules, vector folders, how to add a rule, executed examples, the build and its size.
 - [Engine amounts module](engine-amounts.md) - Parse, convert, scale and format amounts: files, error codes, options and the vector files.
 
 # Decisions
@@ -36,7 +37,7 @@ links. Change history is in [log.md](log.md).
 # Reference
 
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
-- [Seed data](seed-data.md) - Bar Assistant's dataset: format, measured counts, licence, field mapping to the data model, gaps and how they are filled, problems, attribution text.
+- [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds and the 20 checked classics.
 
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.

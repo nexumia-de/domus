@@ -24,7 +24,13 @@ export type Formatted = {
 
 const OUNCE: Record<DisplaySystem, UnitId> = { metric: 'ml', us: 'oz_us', imperial: 'oz_imp' };
 
-/** The unit an amount is shown in: its own if it belongs to the system or is a convention. */
+/**
+ * The unit an amount is shown in: its own if it belongs to the system or is a convention.
+ *
+ * @param unit - The stored unit id.
+ * @param system - The display system setting.
+ * @returns The unit id to show; the stored amount itself is never rewritten.
+ */
 export function displayUnit(unit: UnitId, system: DisplaySystem): UnitId {
   if (unit === 'ml' || unit === 'cl') return system === 'metric' ? unit : OUNCE[system];
   if (unit === 'oz_us' || unit === 'oz_imp') return OUNCE[system];
@@ -51,6 +57,13 @@ function unitText(unit: UnitId, value: number): string {
   return SYMBOL[unit] ?? unit;
 }
 
+/**
+ * Like `formatAmount`, with the shown amount and the rounding step.
+ *
+ * @param amount - Value in `amount.unit`.
+ * @param options - Display system and entered-unit handling.
+ * @returns `text`, `shown` (amount in the display unit, rounded) and `step` (rounding step in the display unit), or an error.
+ */
 export function formatAmountDetailed(
   amount: Amount,
   options: FormatOptions = {},
@@ -82,6 +95,13 @@ export function formatAmountDetailed(
   return ok({ text: `${number} ${unitText(unit, rounded)}`, shown, step });
 }
 
+/**
+ * Formats an amount for display (rounded for reading, never stored).
+ *
+ * @param amount - Value in `amount.unit`.
+ * @param options - Display system and entered-unit handling.
+ * @returns The text, for example `45 ml` or `1.5 oz`, or an error.
+ */
 export function formatAmount(amount: Amount, options: FormatOptions = {}): Result<string> {
   const f = formatAmountDetailed(amount, options);
   return f.ok ? ok(f.value.text) : f;

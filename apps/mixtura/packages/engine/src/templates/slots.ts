@@ -17,7 +17,13 @@ import type {
 
 const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
 
-/** The role a line has: its own, else the ingredient's resolved role. */
+/**
+ * The role a line has: its own, else the ingredient's resolved role.
+ *
+ * @param tree - A validated tree.
+ * @param line - A spec line.
+ * @returns The role, or why there is none (unknown ingredient, no role).
+ */
 export function lineRole(
   tree: IngredientTree,
   line: MatchLine,
@@ -28,7 +34,13 @@ export function lineRole(
   return r.value === undefined ? { reason: 'unknown-role' } : { role: r.value };
 }
 
-/** The volume of a line in ml, or why it has none (mass, `top` without volume, invalid amount). */
+/**
+ * The volume of a line.
+ *
+ * @param line - A spec line (amount in its unit, `topMl` in ml).
+ * @param options - Unit overrides.
+ * @returns Volume in ml, or why it has none (mass, `top` without volume, invalid amount).
+ */
 export function lineMl(
   line: MatchLine,
   options: MatchOptions = {},
@@ -46,8 +58,13 @@ export function lineMl(
 }
 
 /**
- * Lines go to the first slot of their role that is still empty, else to the
- * first slot of that role; several lines may share a slot (their volumes add).
+ * Assigns spec lines to the slots of a template by role.
+ *
+ * @param tree - A validated tree that gives each ingredient its role.
+ * @param template - A template.
+ * @param lines - Spec lines with amounts in units of the unit table.
+ * @param options - Unit overrides.
+ * @returns Per slot the lines and their volume in ml, the unassigned lines and the empty slots.
  */
 export function assignSlots(
   tree: IngredientTree,

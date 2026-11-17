@@ -7,6 +7,14 @@ import type { Found, Id, Ingredient, InheritedProperty, Missing, Resolved } from
 /** ABV, sugar and acid of a prepared ingredient are computed from its spec, never inherited. */
 const computedWhenPrepared: readonly InheritedProperty[] = ['abv', 'sugar', 'acid'];
 
+/**
+ * Reads a property from the ingredient or its nearest ancestor that has it.
+ *
+ * @param tree - A validated tree.
+ * @param id - Ingredient id.
+ * @param property - `role`, `abv` (percent), `sugar` (g per 100 ml), `acid` (percent), `shelfLifeDays` (days) or `substitutionClass`.
+ * @returns The value and the id that supplied it, or no value and the reason; never a default.
+ */
 export function resolveProperty<P extends InheritedProperty>(
   tree: IngredientTree,
   id: Id,
@@ -28,7 +36,13 @@ export function resolveProperty<P extends InheritedProperty>(
   return { value: undefined, reason: `no ancestor of ${id} defines ${property}` };
 }
 
-/** The price record of the ingredient itself: cost is never inherited. */
+/**
+ * The price record of the ingredient itself: cost is never inherited.
+ *
+ * @param tree - A validated tree.
+ * @param id - Ingredient id.
+ * @returns The cost (price in the record's currency for a quantity) or no value and the reason.
+ */
 export function resolveCost(
   tree: IngredientTree,
   id: Id,
@@ -43,6 +57,7 @@ export type ResolvedProperties = {
   [P in InheritedProperty]: Resolved<NonNullable<Ingredient[P]>>;
 };
 
+/** The names of the properties a child inherits from its ancestors. */
 export const INHERITED: readonly InheritedProperty[] = [
   'role',
   'abv',
@@ -52,7 +67,13 @@ export const INHERITED: readonly InheritedProperty[] = [
   'substitutionClass',
 ];
 
-/** All inherited properties of one ingredient with their sources. */
+/**
+ * All inherited properties of one ingredient with their sources.
+ *
+ * @param tree - A validated tree.
+ * @param id - Ingredient id.
+ * @returns One `resolveProperty` result per inherited property.
+ */
 export function resolveAll(tree: IngredientTree, id: Id): ResolvedProperties {
   const out: Record<string, Found<unknown> | Missing> = {};
   for (const p of INHERITED) out[p] = resolveProperty(tree, id, p);

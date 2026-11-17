@@ -6,7 +6,14 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/engine.mjs"
+    },
+    "./seed/ingredients.json": "./data/seed/ingredients.json",
+    "./seed/specs.json": "./data/seed/specs.json",
+    "./seed/vocabulary.json": "./data/seed/vocabulary.json",
+    "./seed/LICENSE-bar-assistant.txt": "./data/seed/LICENSE-bar-assistant.txt"
   },
   "scripts": {
     "build": "node build.mjs",
@@ -15,5 +22,9 @@
   },
   "devDependencies": {
     "ajv": "8.17.1"
-  }
+  },
+  "files": [
+    "dist",
+    "data/seed"
+  ]
 }

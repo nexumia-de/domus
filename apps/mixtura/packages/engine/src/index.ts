@@ -1,9 +1,5 @@
-/** The engine's name; the first exported function, replaced by real engine code later. */
-export function engineName(): string {
-  return 'mixtura-engine';
-}
-
-export * from './ingredients/index';
-export * from './balance/index';
-export * from './batch/index';
-export * from './templates/index';
+// The engine's only public entry (docs/engine.md). The general model and the
+// drink-specific rules are separate files; test/index.test.ts pins the list of
+// exported names, so nothing becomes public by accident.
+export * from './model';
+export * from './drink';

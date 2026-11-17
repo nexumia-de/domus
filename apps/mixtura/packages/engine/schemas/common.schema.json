@@ -46,12 +46,18 @@
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
     },
+    "unitId": {
+      "description": "Unit id of the unit table (data/units.json): lower-case words joined by hyphen or underscore, for example ml or oz_us.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+([_-][a-z0-9]+)*$",
+      "maxLength": 80
+    },
     "quantity": {
       "description": "An amount with its unit id.",
       "type": "object",
       "properties": {
         "amount": { "$ref": "#/$defs/amount" },
-        "unit": { "$ref": "#/$defs/id" }
+        "unit": { "$ref": "#/$defs/unitId" }
       },
       "required": ["amount", "unit"],
       "additionalProperties": false

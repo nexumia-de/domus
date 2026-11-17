@@ -126,7 +126,14 @@ function compute(
   return { ok: true, value: mixed };
 }
 
-/** Computes ABV, sugar, acid and volume of the prepared ingredient `id`. */
+/**
+ * Computes ABV, sugar, acid and volume of a prepared ingredient from its spec.
+ *
+ * @param tree - A validated tree.
+ * @param specs - Specs of prepared ingredients by spec id; amounts in ml or g.
+ * @param id - Id of the prepared ingredient.
+ * @returns ABV in percent, sugar in g per 100 ml, acid in percent and volume in ml, or errors (cycle, unknown spec, unit).
+ */
 export function computePrepared(tree: IngredientTree, specs: SpecLookup, id: Id): PreparedResult {
   return compute(tree, specs, id, []);
 }

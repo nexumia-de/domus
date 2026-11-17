@@ -1,0 +1,45 @@
+{
+  "_id": "fixture-neat",
+  "name": "Fixture Neat",
+  "instructions": "Invented for the converter test.",
+  "created_at": null,
+  "updated_at": null,
+  "description": "Invented.",
+  "source": null,
+  "garnish": "A garnish text that must not be shipped.",
+  "abv": null,
+  "tags": [],
+  "glass": null,
+  "method": null,
+  "utensils": [],
+  "parent_cocktail_id": null,
+  "year": null,
+  "author": null,
+  "images": [],
+  "ingredients": [
+    {
+      "_id": "wheated-bourbon",
+      "name": "Wheated Bourbon",
+      "sort": 1,
+      "amount": 60,
+      "units": "ml",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    },
+    {
+      "_id": "unfilled-spirit",
+      "name": "Unfilled Spirit",
+      "sort": 2,
+      "amount": 15,
+      "units": "ml",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    }
+  ]
+}

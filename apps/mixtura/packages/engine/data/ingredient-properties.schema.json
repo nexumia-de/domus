@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:ingredient-properties",
+  "title": "Curated ingredient data",
+  "type": "object",
+  "required": ["version", "roles", "classics"],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["role", "basis"],
+        "properties": {
+          "role": {
+            "enum": [
+              "base",
+              "modifier",
+              "sweet",
+              "sour",
+              "bitter",
+              "accent",
+              "texture",
+              "lengthener",
+              null
+            ]
+          },
+          "basis": {
+            "const": "assumption"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "classics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "abv": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "sugar": {
+            "type": "number",
+            "minimum": 0
+          },
+          "acid": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "basis": {
+            "const": "assumption"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "source": true
+            },
+            "required": ["source"]
+          },
+          {
+            "properties": {
+              "basis": true
+            },
+            "required": ["basis"]
+          }
+        ],
+        "minProperties": 2,
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

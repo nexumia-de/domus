@@ -1,0 +1,52 @@
+{
+  "id": "brandy-flip",
+  "name": "Brandy Flip",
+  "why": "Flip template, the only one no converted seed spec reaches (every flip of the dataset counts its egg in whole units); the nominal Flip of docs/balance.md with the egg as 45 ml",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "egg",
+      "amount": 45,
+      "unit": "ml"
+    }
+  ],
+  "source": "Nominal Flip of docs/balance.md (60 ml brandy, 15 ml syrup, 45 ml whole egg: assumptions, no source read); ingredient properties from the seed plus the curated classics values",
+  "properties": {
+    "brandy": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0.2,
+      "acid": 0
+    },
+    "simple-syrup": {
+      "role": "sweet",
+      "abv": 0,
+      "sugar": 60,
+      "acid": 0
+    },
+    "egg": {
+      "role": "texture",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    }
+  },
+  "expected": {
+    "templateId": "flip",
+    "volumeAfterMl": 150.0,
+    "abvPct": 16.0,
+    "sugarPer100Ml": 6.08,
+    "acidPct": 0.0
+  },
+  "tolerance": 0.0001
+}

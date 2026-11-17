@@ -20,7 +20,13 @@ const FIGURES: [RangeFigure, keyof RangeInput][] = [
 /** Tolerance for decimal ranges such as 25.6 – 27.8 meeting computed values. */
 const EPS = 1e-9;
 
-/** Always three entries, in the order abv, sugar, acid. `after` absent means no dilution figures. */
+/**
+ * Compares figures after dilution with a template's usual ranges.
+ *
+ * @param template - A template with optional usual ranges (ABV in percent, sugar in g per 100 ml, acid in percent).
+ * @param after - Figures after dilution, or undefined when there are none.
+ * @returns Three entries in the order abv, sugar, acid: within, below, above or unknown with the reason and the evidence.
+ */
 export function checkRange(template: Template, after: RangeInput | undefined): RangeCheck[] {
   return FIGURES.map(([figure, key]): RangeCheck => {
     const range = template.usual?.[figure];

@@ -1,0 +1,57 @@
+{
+  "_id": "fixture-martini",
+  "name": "Fixture Martini",
+  "instructions": "Invented for the converter test.",
+  "created_at": null,
+  "updated_at": null,
+  "description": "Invented.",
+  "source": null,
+  "garnish": "A garnish text that must not be shipped.",
+  "abv": null,
+  "tags": ["Dry", "Classic"],
+  "glass": "Coupe",
+  "method": "Stir",
+  "utensils": [],
+  "parent_cocktail_id": null,
+  "year": null,
+  "author": null,
+  "images": [],
+  "ingredients": [
+    {
+      "_id": "gin",
+      "name": "Gin",
+      "sort": 1,
+      "amount": 60,
+      "units": "ml",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    },
+    {
+      "_id": "dry-vermouth",
+      "name": "Dry Vermouth",
+      "sort": 2,
+      "amount": 30,
+      "units": "ml",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    },
+    {
+      "_id": "aromatic-bitters",
+      "name": "Aromatic Bitters",
+      "sort": 3,
+      "amount": 2,
+      "units": "dashes",
+      "optional": true,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    }
+  ]
+}

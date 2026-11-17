@@ -13,8 +13,8 @@ import {
   toGrams,
   toMl,
   UNITS,
-} from '../src/amounts';
-import type { Amount, DisplaySystem, Result, UnitId, UnitOverrides } from '../src/amounts';
+} from '../src/index';
+import type { Amount, DisplaySystem, Result, UnitId, UnitOverrides } from '../src/index';
 import { validate } from './helpers/json-schema';
 
 const dir = fileURLToPath(new URL('../vectors/amounts/', import.meta.url));

@@ -6,7 +6,13 @@ import type { IngredientTree } from '../ingredients/tree';
 import type { Id } from '../ingredients/types';
 import type { ShelfLife } from './types';
 
-/** On a tie the ingredient that comes first in `ids` is named. */
+/**
+ * The shelf life of a batch: the shortest of its parts.
+ *
+ * @param tree - A validated tree.
+ * @param ids - Ingredient ids of the parts.
+ * @returns Days and the limiting ingredient (the first in `ids` on a tie), or unknown with the ids that have none.
+ */
 export function shelfLife(tree: IngredientTree, ids: readonly Id[]): ShelfLife {
   const missing: Id[] = [];
   let best: { days: number; limitingId: Id } | undefined;

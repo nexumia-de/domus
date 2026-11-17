@@ -1,0 +1,52 @@
+{
+  "id": "jack-rose",
+  "name": "Jack Rose",
+  "why": "Daiquiri template: grenadine as the sweet part",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "apple-brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "grenadine-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec jack-rose (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "properties": {
+    "apple-brandy": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0.2,
+      "acid": 0
+    },
+    "grenadine-syrup": {
+      "role": "sweet",
+      "abv": 0,
+      "sugar": 60,
+      "acid": 0
+    },
+    "lemon-juice": {
+      "role": "sour",
+      "abv": 0,
+      "sugar": 2.5,
+      "acid": 6
+    }
+  },
+  "expected": {
+    "templateId": "daiquiri",
+    "volumeAfterMl": 131.25,
+    "abvPct": 18.285714,
+    "sugarPer100Ml": 10.805714,
+    "acidPct": 1.028571
+  },
+  "tolerance": 0.0001
+}

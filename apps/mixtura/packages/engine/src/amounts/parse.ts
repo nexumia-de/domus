@@ -31,6 +31,13 @@ function resolve(symbol: string, id: UnitId, options: ParseOptions): UnitId {
   return options.ounce === 'imperial' ? 'oz_imp' : 'oz_us';
 }
 
+/**
+ * Parses text such as `1 1/2 oz` into an exact amount; never throws for user input.
+ *
+ * @param text - What the user typed: a number (decimal, fraction, vulgar fraction) and a unit symbol.
+ * @param options - `ounce` chooses the meaning of a plain `oz` (default US fluid ounce); `solid` makes it the mass ounce.
+ * @returns `{ ok: true, value: { value, unit } }` with the number as typed (no unit conversion), or an error code and message.
+ */
 export function parseAmount(text: string, options: ParseOptions = {}): Result<Amount> {
   const trimmed = text.trim();
   if (trimmed === '') return fail('empty', 'Enter an amount.');

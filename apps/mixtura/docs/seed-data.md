@@ -17,7 +17,8 @@ repository and reading it with `jq` and Python only; nothing from it was
 run and none of it is committed here. Commit studied:
 `5a504d474614494119882eb91a8ffdc5491a483f` (2026-09-13, the only commit
 of the shallow clone). Every number below was counted from the files.
-The converter is a later issue; this document is its specification.
+The converter (`scripts/seed/`, issue #13) implements this specification;
+where it deviates, the section [Converter](#converter) says so.
 
 ## Network access
 
@@ -249,6 +250,210 @@ the app's licence page):
 | Data                         | Source                                      | Licence | Use                                  |
 | ---------------------------- | ------------------------------------------- | ------- | ------------------------------------ |
 | Seed recipes and ingredients | Bar Assistant public data, commit `5a504d4` | MIT     | Seed data; images and texts not used |
+
+## Converter
+
+Decisions of the owner for the shipped data: **names, tags, ingredients,
+amounts, units, method and glass only.** Not shipped: recipe instructions,
+descriptions, garnish text, line notes, images and every per-recipe source
+link or book reference, because the dataset does not say where those texts
+come from. `parent_cocktail_id` (a link between two recipes) and the
+substitute links (ingredient ids) are kept. Each record has the dataset as
+its `source` (name, MIT, repository, `commit <sha>`).
+
+Code in `scripts/seed/`, one job per file; it reads a local checkout, uses
+the engine's own `parseAmount` for units and `matchSpec` for templates
+(imports, no copy), and is not part of the engine's runtime code.
+
+| File              | Job                                                                                      |
+| ----------------- | ---------------------------------------------------------------------------------------- |
+| `convert.ts`      | Command line, pin check, writes the files and the report (run through `run.mjs`)         |
+| `source.ts`       | Reads the checkout; a field it does not know fails the run                               |
+| `levels.ts`       | Level and parent of every ingredient                                                     |
+| `roles.ts`        | Roles from the curated table by tree node, inheritance, list of unclassified ingredients |
+| `properties.ts`   | ABV and sugar from the source; a 0 that means "not filled in" is left out                |
+| `substitution.ts` | Substitution classes from the connected components of the source's substitute pairs      |
+| `units.ts`        | Unit string to engine unit id through `parseAmount` (one alias: `topup` is `top`)        |
+| `specs.ts`        | Cocktail to spec; template suggestion; recipes with a rejected unit are kept out         |
+| `build.ts`        | Puts it together, counts, validates                                                      |
+| `validate.ts`     | Ajv against `packages/engine/schemas/`, tree check, references; any problem throws       |
+| `stable-json.ts`  | Sorted keys, one record per line, so a rerun gives no diff                               |
+| `pinned.json`     | Repository, commit, licence, holder: the pin; the checkout's `.git/HEAD` must match it   |
+
+### Rules and deviations from the mapping above
+
+- **Units.** A recipe with a line the amounts module rejects is kept out
+  (owner decision), not just the line. 115 of 663 recipes, 35 distinct reasons,
+  most frequent `whole` 29, `leaves` 23, `slice`/`slices` 20,
+  `sprig`/`sprigs` 16, `part`/`parts` 9, `wedge`/`wedges` 6, `pinch` 4, `amount
+range not above the amount` 4 (`amount_max` not larger than `amount`),
+  `amount of 0` 2; the full list per recipe is in the report. `topup` becomes `top`; `oz` becomes the US
+  fluid ounce (`oz_us`) and, for `sugar`, the mass ounce. The source's
+  `top` amount (1 or 120) has no known unit, so the seed has no `topMl`
+  and a top line is left out of balance figures.
+- **Levels.** Root with children `category`, other inner node `type`,
+  leaf `product`. The engine needs a child's level below its parent's and
+  has three levels, but the source tree is up to five deep. Eight inner
+  nodes below another `type` are attached to their nearest ancestor with
+  a higher level instead of their source parent: `bourbon-whiskey`,
+  `scotch-whiskey` (from `whiskey`), `dark-rum` and `rum` (from `rum` and
+  `sugarcane-based-spirits`), `fruit-brandy` (from `brandy`), `tequila`
+  (from `mezcal`), `orange-juice` (from `citrus-juice`), `simple-syrup`
+  (from `syrups`). They keep their children. Consequence: a recipe line
+  that names `whiskey` or `rum` is no longer satisfied by these
+  descendants; see the issue about the level rule.
+- **Prepared ingredients.** Not created: the 13 ingredients with
+  `ingredient_parts` have no amounts, and a prepared ingredient needs a
+  spec and a yield. They are plain ingredients.
+- **ABV and sugar.** A 0 is left out (unknown, inherits) for ABV under
+  `spirits`, `liqueurs`, `aperitif`, `fortified-wine`, `bitters`, `wines`
+  and `creme-de` (18 ingredients), for sugar under `sweeteners`,
+  `liqueurs`, `creme-de`, `aperitif`, `fortified-wine` and `infusions`
+  (1: `infusions`). Sugar is divided by 10 as specified.
+- **Acid** is never written to the seed: no value was read from a source
+  (see below).
+- **Substitution classes.** 23 classes over 69 ingredients, named
+  `sc-<smallest id>`, by the rule in the table above, not curated by hand;
+  marked in `assumed`.
+- **Roles.** The table in `packages/engine/data/ingredient-properties.json`
+  has 55 entries (45 give a role, 10 are `null`), children
+  inherit; every entry is `basis: assumption` and the ingredient lists
+  `role` in `assumed`. By rule: under `spirits` base (three sweet
+  spirit-based liqueurs modifier), `liqueurs`, `creme-de`,
+  `fortified-wine` and `wines` modifier, `aperitif` and `bitters`
+  bitter, `sweeteners` sweet, citrus juice sour, other juices, sodas,
+  beer and sparkling wine lengthener, dairy and eggs texture, fruit,
+  herbs, spices and seasonings accent. **Unclassified (13 ingredients, reported, no
+  role):** `activated-charcoal`, `batter`, `gardenia-mix`, `coffee`,
+  `cold-brew-coffee`, `espresso`, `crushed-ice`, `hot-chocolate`,
+  `infusions`, `mango-puree`, `white-peach-puree`, `tea`, `water`.
+- **Curated classics values.** The same file has a `classics` part: acid
+  values (all `assumption`, no source read; 6 % for lemon and lime juice as
+  in [balance](balance.md#usual-ranges-per-template), 0 for spirits,
+  bitters, sweeteners, liqueurs, fortified wine, bitter aperitifs, soda
+  water and eggs) used **only** by the [checked classics](#checked-classics).
+  They are not in the seed. A search summary (not the page; the hosts
+  were not reachable) of a citrus study gave 4.9 to 6.0 g per 100 ml for
+  lemon juice, in line with 6 %; not used as a source.
+- **Schema change.** `spec.schema.json` and `common.schema.json` required
+  unit ids to be slugs, which rejects `oz_us`; a `unitId` type (hyphen or
+  underscore allowed) replaces it for line units and quantities.
+- **Template suggestion.** The engine's `matchSpec` over the six root
+  templates with the recipe's lines without optional lines; a spec that
+  fits none has no `templateId`.
+
+### Result
+
+From the pinned commit (counts by the converter, which also prints them):
+
+| Count                                             | Value                             |
+| ------------------------------------------------- | --------------------------------- |
+| Ingredients converted                             | 296 of 296                        |
+| Specs converted, skipped                          | 548, 115 (of 663)                 |
+| Ingredients with a resolved role                  | 283 (13 unclassified)             |
+| Lines (without optional) missing role, abv, sugar | 0.4 %, 0.7 %, 0 % of 2,364        |
+| Lines missing acid                                | 100 %                             |
+| Specs with ABV, sugar and acid all known          | 0 of 548                          |
+| Specs with ABV known after dilution               | 526 (7 have no or unknown method) |
+| Specs with sugar known after dilution             | 541                               |
+| Specs with a template                             | 106 of 548                        |
+
+Per template: Martini 57, Daiquiri 24, Sidecar 14, Old-Fashioned 8,
+Highball 3, Flip 0 (every flip counts its egg in whole units and is kept
+out); 442 fit none. The numbers are what the data gives; nothing was
+tuned. For information only: if the assumed acid values of the classics
+were applied to all of the seed, 308 of 548 specs would have all three
+figures; with them as assumptions that number says little about the
+data. Many specs fit no template because the bands are assumptions
+(for example the Manhattan: the Martini template's bitter slot is a
+bitter liqueur of 0.5 to 2 parts, so two dashes of aromatic bitters are
+far below it).
+
+### Files
+
+`packages/engine/data/seed/`, committed, read-only for the app, exported
+by the engine package as `@mixtura/engine/seed/<file>`:
+
+| File                        | Content                                                       | Size   |
+| --------------------------- | ------------------------------------------------------------- | ------ |
+| `ingredients.json`          | `{ attribution, ingredients: Ingredient[] }`, sorted by id    | 86 kB  |
+| `specs.json`                | `{ attribution, specs: Spec[] }`, sorted by id                | 329 kB |
+| `vocabulary.json`           | `{ attribution, glasses: {id,name}[], methods: {id,name}[] }` | 1 kB   |
+| `LICENSE-bar-assistant.txt` | The source's licence text, for the licence page               | 1 kB   |
+
+Every file but the licence has `attribution`: `source`, `repository`,
+`commit`, `licence`, `holder`, `notice` (the text for About). Objects
+have sorted keys, the big arrays one record per line. Ingredients follow
+the [data model](data-model.md#ingredient), specs the
+[spec](data-model.md#spec) with `status: draft` and `version: 1`.
+Roughly 415 kB uncompressed, small enough to load whole; no split further.
+
+### Regenerating
+
+```sh
+git init /path/to/empty-dir && cd /path/to/empty-dir && git fetch --depth 1 https://github.com/bar-assistant/data 5a504d474614494119882eb91a8ffdc5491a483f && git checkout FETCH_HEAD
+```
+
+```sh
+npm run seed -- /path/to/empty-dir
+```
+
+The checkout is only read (never run); the script stops if its
+`.git/HEAD` is not the pinned commit. It prints the counts and writes a
+report with every skipped recipe and reason to
+`$TMPDIR/mixtura-seed-report.json` (`--report <file>` changes it; not
+committed). A rerun produces no diff. The build never needs the network.
+To move to another commit, change `scripts/seed/pinned.json`, regenerate
+and review the diff of the report.
+
+The test fixture `scripts/seed/fixture/source` is a small invented dataset
+in the source format; its expected output is committed and a test fails if
+the converter's output differs. After a change of the converter or of the
+curated file, regenerate it:
+
+```sh
+node scripts/seed/run.mjs scripts/seed/fixture/source --out scripts/seed/fixture/expected --pin scripts/seed/fixture/pinned.json
+```
+
+### Thresholds
+
+The test `seed.test.ts` fails when more than this share of the lines of
+all specs (optional lines left out) names an ingredient whose resolved
+property is unknown. They are regression guards set above the measured
+values, not quality targets. Acid is excluded: it is unknown on every line
+by design.
+
+Threshold role: 2 %, Threshold abv: 3 %, Threshold sugar: 1 %.
+
+### Checked classics
+
+`packages/engine/vectors/classics/`, 20 vectors, schema
+`classics-vector.schema.json`, run by `classics.test.ts`. Each holds the
+lines, the ingredient properties used, the expected template and the
+figures after dilution. The figures were calculated by a separate
+script outside the engine from the formulas of [balance](balance.md) and
+the matching rules of [templates](templates.md) (checked by hand for the
+Daiquiri: 105 ml, 18.286 % ABV, 10.67 g sugar per 100 ml with sugar of the
+rum and lime counted, 1.029 % acid) and the engine must agree within
+0.0001. A second test requires that the seed plus the curated classics
+values still give the properties written in each vector.
+
+| Template      | Drinks                                                                                                                            |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Old-Fashioned | Old Fashioned                                                                                                                     |
+| Martini       | Martini, Negroni (bitter slot used), Boulevardier; Manhattan fits none and is kept to show it                                     |
+| Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                      |
+| Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets                                                                                |
+| Highball      | Whisky Highball (the `top` line read as 120 ml: assumption)                                                                       |
+| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because no converted spec reaches it                            |
+| none          | Cuba Libre, Moscow Mule, Screwdriver, Cosmopolitan: acid unknown (cola, ginger beer, orange juice, cranberry juice have no value) |
+
+Why these: well known, in the dataset with units the amounts module
+accepts, and between them every template, the optional slot, a `top`
+line, an unknown figure and four near misses. Where a classic fits no
+template (Manhattan, Screwdriver: 3 parts of mixer against a band of 4
+to 6) that is the result of the assumed bands, not of the data, and is
+recorded as such in the vector.
 
 ## Network hosts
 

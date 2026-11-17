@@ -4,7 +4,14 @@ import { resolveProperty } from './properties';
 import { ancestors, distance, type IngredientTree } from './tree';
 import type { Id } from './types';
 
-/** True if both have a resolved substitution class and it is the same. */
+/**
+ * Whether two ingredients can stand in for each other by class.
+ *
+ * @param tree - A validated tree.
+ * @param a - First ingredient id.
+ * @param b - Second ingredient id.
+ * @returns True if both have a resolved substitution class and it is the same.
+ */
 export function sameClass(tree: IngredientTree, a: Id, b: Id): boolean {
   const ca = resolveProperty(tree, a, 'substitutionClass').value;
   const cb = resolveProperty(tree, b, 'substitutionClass').value;
@@ -19,10 +26,11 @@ export interface Substitutes {
 }
 
 /**
- * Ingredients of the same class and role as `id`, nearest first. The
- * ingredient itself and its ancestors are left out: a more general node
- * (a category) is not something to buy instead. Without a resolved class
- * or role nothing is guessed: the list is empty and says why.
+ * Ingredients of the same class and role as `id`, nearest first.
+ *
+ * @param tree - A validated tree.
+ * @param id - Ingredient id.
+ * @returns Ids with the reason when empty; the ingredient itself and its ancestors are left out and nothing is guessed.
  */
 export function substitutesFor(tree: IngredientTree, id: Id): Substitutes {
   if (!tree.byId.has(id)) return { ids: [], reason: `unknown ingredient ${id}` };

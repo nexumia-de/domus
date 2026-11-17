@@ -12,7 +12,14 @@ export interface ScaleOptions {
 
 const kinds = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
 
-/** One line scaled by `factor`; `topMl` scales with it. */
+/**
+ * Scales one line.
+ *
+ * @param line - A balance line.
+ * @param factor - Unitless multiplier above 0.
+ * @param options - Rounding of the scaled amount.
+ * @returns The line in the same unit (`topMl` in ml scales with it), or an error.
+ */
 export function scaleLine(
   line: BalanceLine,
   factor: number,
@@ -38,7 +45,14 @@ export function scaleLine(
   return { ok: true, value: out };
 }
 
-/** All lines scaled to `servings` times the spec; errors name the lines. */
+/**
+ * Scales all lines to a number of servings.
+ *
+ * @param lines - The lines of one serving.
+ * @param servings - Number of servings above 0 (the factor).
+ * @param options - Rounding of the scaled amounts.
+ * @returns The scaled lines in their own units, or errors that name the lines.
+ */
 export function scaleLines(
   lines: readonly BalanceLine[],
   servings: number,

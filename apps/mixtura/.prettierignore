@@ -1,2 +1,4 @@
 dist/
 package-lock.json
+packages/engine/data/seed/
+scripts/seed/fixture/expected/

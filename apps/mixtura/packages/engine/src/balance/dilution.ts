@@ -18,6 +18,7 @@ interface Row {
   evidence: DilutionEvidence;
 }
 
+/** The dilution table of data/dilution.json: water added per method as a fraction of the pre-dilution volume (low, default, high) with its evidence. */
 export const DILUTION: DilutionTable = (raw as { methods: Row[] }).methods.map(
   (m): DilutionMethod => ({
     id: m.id,
@@ -37,7 +38,13 @@ function basisOf(evidence: DilutionEvidence): 'sourced' | 'assumption' {
   return evidence === 'assumption' ? 'assumption' : 'sourced';
 }
 
-/** The dilution fraction for a method, or why there is none. */
+/**
+ * The dilution fraction for a method, or why there is none.
+ *
+ * @param method - Method id, or undefined.
+ * @param options - Table, bound (`low`, `default`, `high`) or an explicit fraction.
+ * @returns Fraction of the pre-dilution volume (0.25 adds a quarter) with its basis and evidence, or the reason.
+ */
 export function chooseDilution(
   method: string | undefined,
   options: DilutionOptions = {},

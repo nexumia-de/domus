@@ -19,11 +19,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
-    "e2e": "npm run build && npm run e2e -w @mixtura/app"
+    "e2e": "npm run build && npm run e2e -w @mixtura/app",
+    "seed": "node scripts/seed/run.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "22.20.5",
+    "ajv": "8.17.1",
     "esbuild": "0.28.2",
     "eslint": "10.14.0",
     "globals": "17.14.0",

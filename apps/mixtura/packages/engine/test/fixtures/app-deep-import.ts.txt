@@ -1,0 +1,3 @@
+import { parseAmount } from '@mixtura/engine/src/amounts/parse';
+
+export const parse = (text: string) => parseAmount(text);

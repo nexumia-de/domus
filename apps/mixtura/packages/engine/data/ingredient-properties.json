@@ -1,0 +1,338 @@
+{
+  "version": 1,
+  "description": "Mixtura-owned ingredient data for the seed (docs/seed-data.md). roles: role rules by tree node, applied by scripts/seed/roles.ts, null marks a node left unclassified. classics: property values added only when the checked classics are computed (packages/engine/vectors/classics), not written into the seed. Every entry names a source or has basis assumption.",
+  "roles": {
+    "activated-charcoal": {
+      "role": null,
+      "basis": "assumption",
+      "note": "No role fits (colouring, a mix, ice, a group of unlike things, tea); left unclassified."
+    },
+    "aperitif": {
+      "role": "bitter",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Bittersweet aperitifs and amari."
+    },
+    "apple-cider-vinegar": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "apricot-brandy": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Sweet spirit-based liqueur (sugar 180 to 220 g per litre in the source); listed by hand, rule: a spirit with 100 g/l sugar or more is a modifier."
+    },
+    "aquafaba": {
+      "role": "texture",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "balsamic-vinegar": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "batter": {
+      "role": null,
+      "basis": "assumption",
+      "note": "No role fits (colouring, a mix, ice, a group of unlike things, tea); left unclassified."
+    },
+    "beer": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "beverages": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Mixers and soft drinks."
+    },
+    "bitters": {
+      "role": "bitter",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "celery": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "cinnamon": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "citrus-juice": {
+      "role": "sour",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Citrus juice is the sour part."
+    },
+    "coconut-rum": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Sweet spirit-based liqueur (sugar 180 to 220 g per litre in the source); listed by hand, rule: a spirit with 100 g/l sugar or more is a modifier."
+    },
+    "coffee": {
+      "role": null,
+      "basis": "assumption",
+      "note": "Could be a modifier or a lengthener; left unclassified."
+    },
+    "cream-of-coconut": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "creme-de": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "crushed-ice": {
+      "role": null,
+      "basis": "assumption",
+      "note": "No role fits (colouring, a mix, ice, a group of unlike things, tea); left unclassified."
+    },
+    "dairy": {
+      "role": "texture",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "fig-jam": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "fortified-wine": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "fruits-and-vegetables": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Fruit, herbs and vegetables are accents."
+    },
+    "honey": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "hot-chocolate": {
+      "role": null,
+      "basis": "assumption",
+      "note": "Could be a modifier or a lengthener; left unclassified."
+    },
+    "infusions": {
+      "role": null,
+      "basis": "assumption",
+      "note": "No role fits (colouring, a mix, ice, a group of unlike things, tea); left unclassified."
+    },
+    "juices": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Juices other than citrus are mixers."
+    },
+    "lavender-syrup": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "lime-cordial": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Also sour; one role only."
+    },
+    "liqueurs": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "mango-puree": {
+      "role": null,
+      "basis": "assumption",
+      "note": "A puree can sweeten, sour or thicken; left unclassified."
+    },
+    "marmalade": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "milk": {
+      "role": "texture",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "olive-brine": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "onion-brine": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "orange-flower-water": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "orange-juice": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Orange juice is used as a mixer (screwdriver) rather than as the sour part."
+    },
+    "pimms-1": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "A liqueur-like aperitif, not a mixer; listed by hand."
+    },
+    "rose-water": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "saline-solution": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "salt": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "sloe-gin": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Sweet spirit-based liqueur (sugar 180 to 220 g per litre in the source); listed by hand, rule: a spirit with 100 g/l sugar or more is a modifier."
+    },
+    "soy-sauce": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "sparkling-wine": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Sparkling wine tops a drink."
+    },
+    "spices": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "spirits": {
+      "role": "base",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Everything under spirits is a base."
+    },
+    "strawberry-shrub-syrup": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "strawberry-soda": {
+      "role": "lengthener",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "sweeteners": {
+      "role": "sweet",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "tabasco": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "tea": {
+      "role": null,
+      "basis": "assumption",
+      "note": "No role fits (colouring, a mix, ice, a group of unlike things, tea); left unclassified."
+    },
+    "vanilla-extract": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    },
+    "water": {
+      "role": null,
+      "basis": "assumption",
+      "note": "Could be a modifier or a lengthener; left unclassified."
+    },
+    "white-peach-puree": {
+      "role": null,
+      "basis": "assumption",
+      "note": "A puree can sweeten, sour or thicken; left unclassified."
+    },
+    "wines": {
+      "role": "modifier",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed."
+    },
+    "worcestershire-sauce": {
+      "role": "accent",
+      "basis": "assumption",
+      "note": "Rule: by the node's place in the source tree (docs/seed-data.md, Roles); not reviewed. Seasoning or flavouring."
+    }
+  },
+  "classics": {
+    "lemon-juice": {
+      "acid": 6,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Same value as docs/balance.md. A search summary (not the page) of a study of citrus juices gave 48.5 to 60.3 g/l citric acid for lemon juice, 4.9 to 6.0 g per 100 ml, which agrees; it was not read."
+    },
+    "lime-juice": {
+      "acid": 6,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Same value as docs/balance.md; a search summary of another page gave lime juice lower than lemon (about 4.7 g per 100 ml); not read."
+    },
+    "spirits": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Distilled spirits taken as acid free."
+    },
+    "bitters": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Bitters taken as acid free at their small volume."
+    },
+    "sweeteners": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Sugar and syrups taken as acid free."
+    },
+    "liqueurs": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Liqueurs taken as acid free, as the triple sec of docs/balance.md."
+    },
+    "fortified-wine": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Vermouth taken as acid free, as the dry vermouth of docs/balance.md."
+    },
+    "aperitif": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Bitter aperitifs taken as acid free."
+    },
+    "club-soda": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Soda water taken as acid free."
+    },
+    "egg": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Whole egg taken as acid free, as in docs/balance.md."
+    },
+    "egg-white": {
+      "acid": 0,
+      "basis": "assumption",
+      "note": "Assumption, unverified: no source was read; used so that the checked classics have all three balance figures. Egg white taken as acid free."
+    }
+  }
+}

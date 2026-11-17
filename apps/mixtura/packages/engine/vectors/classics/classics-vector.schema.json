@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Checked classic: a drink whose template match and figures were worked out by hand",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "why",
+    "method",
+    "lines",
+    "properties",
+    "expected",
+    "tolerance",
+    "source"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "why": { "type": "string", "minLength": 1 },
+    "method": { "type": "string" },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["ingredientId", "amount", "unit"],
+        "additionalProperties": false,
+        "properties": {
+          "ingredientId": { "type": "string" },
+          "amount": { "type": "number", "exclusiveMinimum": 0 },
+          "unit": { "type": "string" },
+          "topMl": { "type": "number", "exclusiveMinimum": 0 }
+        }
+      }
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "role": { "type": "string" },
+          "abv": { "type": "number" },
+          "sugar": { "type": "number" },
+          "acid": { "type": "number" }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "required": ["templateId", "volumeAfterMl", "abvPct", "sugarPer100Ml", "acidPct"],
+      "additionalProperties": false,
+      "properties": {
+        "templateId": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "volumeAfterMl": { "type": "number" },
+        "abvPct": { "anyOf": [{ "type": "number" }, { "const": "unknown" }] },
+        "sugarPer100Ml": { "anyOf": [{ "type": "number" }, { "const": "unknown" }] },
+        "acidPct": { "anyOf": [{ "type": "number" }, { "const": "unknown" }] },
+        "abvPctMissingIds": { "type": "array", "items": { "type": "string" } },
+        "sugarPer100MlMissingIds": { "type": "array", "items": { "type": "string" } },
+        "acidPctMissingIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tolerance": { "type": "number", "exclusiveMinimum": 0 },
+    "source": { "type": "string", "minLength": 1 }
+  }
+}

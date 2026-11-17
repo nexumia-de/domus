@@ -12,6 +12,7 @@ export type UnitRow = {
   overridable: boolean;
 };
 
+/** The unit table of data/units.json: id, symbols, kind, size in ml or g, status and evidence of each unit. */
 export const UNITS: readonly UnitRow[] = (raw as { units: UnitRow[] }).units;
 
 const byId = new Map<UnitId, UnitRow>(UNITS.map((u) => [u.id, u]));
@@ -22,7 +23,13 @@ export function unitRow(id: UnitId): UnitRow {
   return row;
 }
 
-/** ml (volume) or g (mass) per one unit; null for a fill unit such as `top`. */
+/**
+ * The size of one unit.
+ *
+ * @param id - Unit id.
+ * @param overrides - Replacement ml per unit for overridable convention units.
+ * @returns ml (volume unit) or g (mass unit) per one unit; null for a fill unit such as `top`.
+ */
 export function unitValue(id: UnitId, overrides?: UnitOverrides): number | null {
   const row = unitRow(id);
   const o = overrides?.[id];
@@ -30,7 +37,12 @@ export function unitValue(id: UnitId, overrides?: UnitOverrides): number | null 
   return row.value;
 }
 
-/** True when balance must flag the figure as estimated: a convention volume. */
+/**
+ * True when balance must flag the figure as estimated: a convention volume.
+ *
+ * @param id - Unit id.
+ * @returns Whether the unit's volume is a convention (dash, teaspoon) rather than exact.
+ */
 export function isEstimatedUnit(id: UnitId): boolean {
   const row = unitRow(id);
   return row.kind === 'volume' && row.status === 'convention';
