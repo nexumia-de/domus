@@ -185,7 +185,7 @@ examples in `schemas/examples/`.
 - **As purchased versus edible portion.** `yields` records, per state,
   the weight that remains as a percentage of the weight as bought;
   edible portion yield = edible / purchased[^yield]. Purchased to edible
-  and back is derived. An ingredient with no recorded yield for a state
+  and back is derived ([engine rules](engine-rules.md#edible-portion)). An ingredient with no recorded yield for a state
   is "unknown", never 100 %.
 - **Sourced numbers.** Yield, shelf life, density and unit weight must
   name a source: the word `user` for the user's own measurement,
@@ -261,7 +261,8 @@ nesting. Schema: `component.schema.json`. One stored record is one
 - **Nesting.** A line may refer to another component by mass of its
   output. Needing 200 g of a sauce whose `yield` is 800 g takes a quarter
   of its recipe; a component without `yield` cannot be used by mass, and
-  the engine says so (issue 10). Cycles are rejected by the engine.
+  the engine says so (`no-yield`). Cycles are rejected by the engine
+  (`cycle`); see [engine rules](engine-rules.md#components).
 - **Preferments and the two formulas.** A preferment (poolish, biga,
   levain) is a component with its own lines (flour, water). The **final
   dough** formula is the dough's own lines, the preferment as one line;

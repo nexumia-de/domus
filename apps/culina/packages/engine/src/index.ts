@@ -78,5 +78,34 @@ export type {
 export { saltFor } from './salt/percent';
 export type { SaltBasis, SaltErrorCode, SaltInput, SaltResult } from './salt/percent';
 
+export { flourAndWater } from './components/composition';
+export type { CompositionOptions } from './components/composition';
+export { expandComponent } from './components/expand';
+export { componentLineGrams } from './components/lines';
+export { portionsFromYield, portionWeight } from './components/portions';
+export { componentYield } from './components/yield';
+export type {
+  Component,
+  ComponentError,
+  ComponentErrorCode,
+  ComponentLine,
+  ComponentRef,
+  ExpandOptions,
+  ExpandResult,
+  FactsByIngredient,
+  FoodState,
+  LineGrams,
+  LinesResult,
+  PortionsResult,
+  PortionWeightResult,
+  RawIngredient,
+  UnmeasuredLine,
+  YieldFigures,
+  YieldResult,
+} from './components/types';
+
+export { toEdible, toPurchased, yieldFor } from './yields/edible';
+export type { EdibleResult, IngredientYield, YieldError, YieldLookup } from './yields/edible';
+
 /** The engine's name; the app shows it until it has real screens. */
 export const engineName = (): string => 'culina-engine';

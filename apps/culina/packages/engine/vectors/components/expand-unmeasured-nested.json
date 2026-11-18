@@ -1,0 +1,97 @@
+{
+  "id": "expand-unmeasured-nested",
+  "description": "Lines without amount in a nested component and in the top component are reported",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dish",
+    "components": [
+      {
+        "id": "dish",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "pasta"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 250,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "parsley"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 400,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salt"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "pasta",
+        "g": 300
+      },
+      {
+        "ingredient_id": "tomato",
+        "g": 200
+      }
+    ],
+    "raw_g": 500,
+    "factor": 1,
+    "unmeasured": [
+      {
+        "path": ["dish"],
+        "index": 2,
+        "ref_id": "parsley"
+      },
+      {
+        "path": ["dish", "sauce"],
+        "index": 1,
+        "ref_id": "salt"
+      }
+    ]
+  },
+  "tolerance": 0.000001,
+  "source": "Sauce fraction 250 / 500 = 0.5: tomato 400 x 0.5 = 200; pasta 300; sum 500 g. Salt (sauce line 1) and parsley (dish line 2) have no amount and are listed, not guessed; a component reports its own unmeasured lines first, then its sub-components in line order."
+}

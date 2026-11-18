@@ -1,0 +1,47 @@
+{
+  "id": "expand-error-no-yield-nested",
+  "description": "A sub-component without yield cannot be used by mass",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dish",
+    "components": [
+      {
+        "id": "dish",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 700,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "no-yield",
+  "error_detail": {
+    "componentId": "sauce",
+    "path": ["dish", "sauce"]
+  },
+  "tolerance": 0.000001,
+  "source": "The sauce has no recorded yield, so 200 g of it has no fraction (200 / unknown). Nothing is assumed."
+}

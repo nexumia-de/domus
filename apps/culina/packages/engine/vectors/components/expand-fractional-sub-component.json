@@ -1,0 +1,102 @@
+{
+  "id": "expand-fractional-sub-component",
+  "description": "Needing 200 g of a sauce that yields 800 g takes a quarter of its recipe",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "pasta",
+    "components": [
+      {
+        "id": "pasta",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "pasta"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 700,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 800,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "pasta",
+        "g": 300
+      },
+      {
+        "ingredient_id": "tomato",
+        "g": 175
+      },
+      {
+        "ingredient_id": "onion",
+        "g": 50
+      },
+      {
+        "ingredient_id": "oil",
+        "g": 25
+      }
+    ],
+    "raw_g": 550,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Fraction = 200 / 800 = 0.25: tomato 700 x 0.25 = 175, onion 200 x 0.25 = 50, oil 100 x 0.25 = 25; plus pasta 300 = 550 g. The sauce loses 200 g of its 1000 g input. Synthetic yield."
+}

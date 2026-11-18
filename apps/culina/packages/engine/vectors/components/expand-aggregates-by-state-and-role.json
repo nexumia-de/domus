@@ -1,0 +1,85 @@
+{
+  "id": "expand-aggregates-by-state-and-role",
+  "description": "The same ingredient on two lines is summed; another state or role stays separate",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "mix",
+    "components": [
+      {
+        "id": "mix",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            },
+            "state": "raw"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            },
+            "state": "raw"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 80,
+              "unit": "g"
+            },
+            "state": "cooked"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 20,
+              "unit": "g"
+            },
+            "state": "raw",
+            "role": "aromatic"
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "onion",
+        "state": "raw",
+        "g": 150
+      },
+      {
+        "ingredient_id": "onion",
+        "state": "cooked",
+        "g": 80
+      },
+      {
+        "ingredient_id": "onion",
+        "state": "raw",
+        "role": "aromatic",
+        "g": 20
+      }
+    ],
+    "raw_g": 250,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Raw onion without role 100 + 50 = 150; cooked 80; raw with role aromatic 20; total 250 g."
+}

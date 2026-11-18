@@ -1,0 +1,22 @@
+{
+  "id": "edible-to-edible",
+  "description": "Purchased to edible",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_edible",
+    "yields": [
+      {
+        "state": "prepared",
+        "percent": 62.5,
+        "source": "synthetic"
+      }
+    ],
+    "state": "prepared",
+    "g": 800
+  },
+  "expected": {
+    "g": 500
+  },
+  "tolerance": 0.000001,
+  "source": "Edible = 800 x 62.5 / 100 = 500 g. Yield 62.5 % is synthetic."
+}

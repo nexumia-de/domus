@@ -1,0 +1,85 @@
+{
+  "id": "expand-flat",
+  "description": "One component with mass, volume and kilogram lines, no yield",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 500,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 0.1,
+              "unit": "kg"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "ml"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salt"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ],
+    "facts_by_ingredient": {
+      "oil": {
+        "densityGPerMl": 0.9
+      }
+    }
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 500
+      },
+      {
+        "ingredient_id": "onion",
+        "g": 100
+      },
+      {
+        "ingredient_id": "oil",
+        "g": 90
+      },
+      {
+        "ingredient_id": "salt",
+        "g": 10
+      }
+    ],
+    "raw_g": 700,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Tomato 500 g; onion 0.1 kg = 100 g; oil 100 ml x 0.9 g/ml = 90 g; salt 10 g; sum 700 g. Synthetic density."
+}

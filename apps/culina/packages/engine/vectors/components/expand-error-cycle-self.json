@@ -1,0 +1,48 @@
+{
+  "id": "expand-error-cycle-self",
+  "description": "A component that uses itself",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "a",
+    "components": [
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "x"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "a"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "a"]
+  },
+  "tolerance": 0.000001,
+  "source": "a uses a: the path is a, a. Synthetic numbers."
+}

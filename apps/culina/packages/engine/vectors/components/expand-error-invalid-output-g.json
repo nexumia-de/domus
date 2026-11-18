@@ -1,0 +1,39 @@
+{
+  "id": "expand-error-invalid-output-g",
+  "description": "An output weight of 0",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "a",
+    "output_g": 0,
+    "components": [
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "x"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "outputG"
+  },
+  "tolerance": 0.000001,
+  "source": "The output weight must be greater than 0."
+}

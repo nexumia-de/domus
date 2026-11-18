@@ -1,0 +1,54 @@
+{
+  "id": "expand-error-component-needs-mass",
+  "description": "A sub-component used by volume",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dish",
+    "components": [
+      {
+        "id": "dish",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "ml"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 700,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 800,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "error_code": "component-needs-mass",
+  "error_detail": {
+    "componentId": "dish",
+    "index": 0
+  },
+  "tolerance": 0.000001,
+  "source": "A component has no density; its yield is a weight, so it is used by mass only."
+}
