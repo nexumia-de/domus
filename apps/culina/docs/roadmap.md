@@ -31,7 +31,8 @@ in [how chefs work](chef-practice.md) and
 5. **Helper.** Culina teaches until it is no longer needed
    ([decision](decisions/mentor.md)): skills with scripted questions
    and cautions from research and textbooks, a learned skill no longer
-   taught; the correction checklist and suggestions from a tasting
+   taught; substitutes with their effect and handling rules per
+   ingredient (when it goes in and why); the correction checklist and suggestions from a tasting
    check; known dishes shipped as a source of ideas, matched to the
    catalogue by role.
 6. **Sync.** The same mechanism as Mixtura in three units (place,

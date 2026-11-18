@@ -44,6 +44,19 @@ have thought them through, as with the drinks in Mixtura.
 6. **The notebook is where it ends.** With every skill learned the app
    is the notebook, the ratios and the finder. These stay as built.
 
+7. **Substitutes with their effect.** Wherever an ingredient is named
+   the app can offer what replaces it, each with what changes (taste,
+   texture, amount, handling), as in the owner's example: butter by
+   oil, with the direction the taste takes. A substitute is reference
+   knowledge, not teaching: it is always offered and does not fade.
+8. **Handling of an ingredient.** When an ingredient goes into the dish
+   and how it is treated, with the reason; the owner's examples: toast
+   tomato paste first, pepper late, when spices go in. Such a rule
+   hangs on the ingredient or its group, so it shows on every dish that
+   uses it, shipped or own, and it belongs to a skill, so it fades
+   under point 4. The owner's examples are examples of the kind, not
+   data: each rule ships only with a source under point 3.
+
 ## Open
 
 - Where the known dishes come from and how many (ingredient lists and
@@ -62,5 +75,8 @@ have thought them through, as with the drinks in Mixtura.
 - A skill and its state are new entities for the
   [data model](../data-model.md); the state is personal and belongs to
   the profile in the [sync decision](sync.md).
+- Substitutes with an effect extend what the finder already does with
+  substitutes ([engine rules](../engine-rules.md#what-the-stock-allows));
+  handling rules are a new entity keyed by ingredient or group.
 - The catalogue, stock and import get no further growth beyond the role
   table that lets ratio cards and shipped dishes match the catalogue.
