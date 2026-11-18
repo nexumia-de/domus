@@ -268,8 +268,8 @@ Run on 2026-11-18 on Linux with Docker, `curl` and Node. The backend of the
 two fronts was the `httpd:2.4.71` server of option a started without any CORS
 answer. Nobody tested with a real phone or with HTTPS.
 
-| Front        | Checks done                                                                                                            | Browser test               |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| Front        | Checks done                                                                                                            | Browser test                                                                        |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | nginx 1.30.6 | `curl`: preflight, `401` with CORS headers, origin not allowed, no duplicate headers; the Node adapter test (10 tests) | `e2e/webdav.mjs` in headless Chromium at 360x720 and 1200x800: passed on 2026-11-18 |
 | Caddy 2.11.9 | the same                                                                                                               | `e2e/webdav.mjs` in headless Chromium at 360x720 and 1200x800: passed on 2026-11-18 |
 
