@@ -11,6 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order; the helper (skills, checklist, known dishes) comes before sync.
+- [Helper build plan](helper-plan.md) - The owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
 - [Deployment](deployment.md) - Deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter, and how to serve the same folder elsewhere.
 
 # Research

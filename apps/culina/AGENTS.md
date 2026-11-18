@@ -23,13 +23,14 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
   needs too moves to materia by a pull request there.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
-- **Your own recipe book**: recipes are components and dishes with
-  versions. No scraping of recipe sites and no meal plans; those exist
-  in Mealie, Tandoor and Grocy
-  ([existing tools](docs/existing-tools.md)). No shopping list inside
-  Culina: that is the planned sister app emptio; Culina only offers to
-  hand missing ingredients to it
-  ([decision](docs/decisions/recipe-book.md)).
+- **Recipes**: classics shipped by country, each following one named
+  source (amounts as facts, method in our own words, no copied text, no
+  bulk import of a site), and the user's own components and dishes with
+  versions. No meal plans and no food diary. No shopping list inside
+  Culina: that is the sister app emptio; Culina only offers to hand
+  missing ingredients to it
+  ([helper](docs/decisions/mentor.md),
+  [recipe book](docs/decisions/recipe-book.md)).
 - **Teaching is scripted and sourced.** No language model. Every
   caution, question and explanation names a paper or textbook, or is
   marked as a judgement. Teaching belongs to skills; a skill the user

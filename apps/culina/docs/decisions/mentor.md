@@ -70,15 +70,24 @@ have thought them through, as with the drinks in Mixtura.
    under point 4. The owner's examples are examples of the kind, not
    data: each rule ships only with a source under point 3.
 
-## Open
+9. **Four stages, and no overload.** Follow (cook a classic step by
+   step), understand (its components, ratio and substitutes), vary
+   (change, taste, correct, keep a version), free (ratios, components,
+   what is there: the app as first built, which is what a chef needs
+   and where the user is to arrive). The user moves per dish and per
+   skill; the app proposes and never switches. One thing on the screen
+   at a time; the start screen asks what to cook.
+10. **Sources of dishes.** Old public-domain books, institutions, and
+    one good modern recipe per dish, read by hand, named, amounts as
+    facts and the method in our own words. The owner called the rule
+    "no scraping of recipe sites" obsolete; what stays is that no text
+    is copied and no site is imported in bulk.
+11. **Content in English and German**, 2 portions by default, mostly
+    vegetarian with nothing excluded, nutrition values per portion
+    ([evaluation](../nutrition-evaluation.md)).
 
-- The list of dishes per country and the sources they follow, for the
-  owner's review before recipes are written.
-- How a shipped dish, a technique and a handling rule are stored
-  ([data model](../data-model.md)).
-- `opentextbc.ca` and `europepmc.org` answer with a bot check that is
-  not worked around; the BC cook textbooks are mirrored on
-  `workforce.libretexts.org`, which the session reaches.
+The order of the work, the data and who does what:
+[helper build plan](../helper-plan.md).
 
 ## Consequences
 
