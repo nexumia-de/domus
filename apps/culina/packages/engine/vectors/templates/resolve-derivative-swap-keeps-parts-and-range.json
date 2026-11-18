@@ -1,0 +1,68 @@
+{
+  "id": "resolve-derivative-swap-keeps-parts-and-range",
+  "description": "A swap sets the ingredient class and keeps parts and range",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "butter-pie",
+        "name": "butter-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "swap",
+            "role": "fat",
+            "ingredientClass": "butter"
+          }
+        ]
+      }
+    ],
+    "id": "butter-pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 1
+    },
+    "lineage": ["pie", "butter-pie"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      }
+    },
+    "ingredient_classes": {
+      "fat": "butter"
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Parent 3:2:1 with a range 1.5-2.5 on fat; synthetic template numbers chosen for the arithmetic, not from a source"
+}

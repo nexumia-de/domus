@@ -1,0 +1,24 @@
+{
+  "id": "scale-anchor-error-zero-grams",
+  "description": "0 g cannot be scaled",
+  "inputs": {
+    "kind": "scale_anchor",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "anchor": {
+      "name": "flour",
+      "g": 0
+    }
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "role": "flour"
+  },
+  "source": "grams must be above 0"
+}

@@ -45,10 +45,16 @@ TypeScript, installed for that build only).
   tag and that the installed version is that one.
 - Engine modules, one job per file: `src/amounts/` (types, unit table
   reader, conversion, rounding), `src/scale/` (scaling by weight and the
-  cautions), `src/bakers/` (baker's percentages, formulas, hydration);
-  `data/units.json` is the unit table; `vectors/units/` and
-  `vectors/percentages/` hold the worked examples that
-  `test/units-vectors.test.ts` and `test/percentages-vectors.test.ts` run.
+  cautions), `src/bakers/` (baker's percentages, formulas, hydration),
+  `src/ratios/` (ratio templates: types, resolution, family queries,
+  range check, scaling from an anchor, percentages, seed),
+  `src/salt/` (salt by basis); `data/units.json` is the unit table and
+  `data/templates.json` the seed templates; `vectors/units/`,
+  `vectors/percentages/`, `vectors/templates/` and `vectors/salt/` hold
+  the worked examples that `test/units-vectors.test.ts`,
+  `test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts` and
+  `test/salt-vectors.test.ts` run; `test/ratios.test.ts` has the unit
+  tests and the seed checks.
   Rules: [engine rules](engine-rules.md).
 - `packages/app` (`@culina/app`): the web app. It imports `@culina/engine`
   only; a lint rule fails any deep import.

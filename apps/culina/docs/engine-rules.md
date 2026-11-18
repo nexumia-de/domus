@@ -1,8 +1,20 @@
 ---
 type: Specification
-title: Engine rules for amounts, scaling and baker's percentages
-description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration with what is counted, as implemented in the engine (issue 8).
-tags: [engine, units, conversion, scaling, bakers-percentage, hydration, rounding]
+title: Engine rules for amounts, scaling, baker's percentages and ratio templates
+description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9).
+tags:
+  [
+    engine,
+    units,
+    conversion,
+    scaling,
+    bakers-percentage,
+    hydration,
+    rounding,
+    ratio-templates,
+    salt,
+    range-check,
+  ]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: yardpound
@@ -17,12 +29,18 @@ sources:
   - id: vectors
     title: Test vector format
     url: vectors.md
+  - id: ratios
+    title: Ratios and salt percentages checked against sources
+    url: ratios.md
+  - id: datamodel
+    title: Data model, ratio template
+    url: data-model.md#ratio-template
 ---
 
 # Engine rules for amounts, scaling and baker's percentages
 
-What the engine in `packages/engine/src/amounts`, `scale` and `bakers`
-does, in the order a cook meets it. All functions are pure; a function
+What the engine in `packages/engine/src/amounts`, `scale`, `bakers`,
+`ratios` and `salt` does, in the order a cook meets it. All functions are pure; a function
 that can fail returns `{ ok: true, … }` or `{ ok: false, error: { code,
 … } }`, never throws and never returns NaN. The engine rounds nowhere
 except in [the output step](#rounding).
@@ -120,7 +138,7 @@ engine adjusts neither; it returns flags:
   (default `['salt']`).
 
 How much to change a time or a salt amount is a cook's decision (salt
-percentages are issue 9, times are out of scope).
+from a percentage is [below](#salt-by-basis); times are out of scope).
 
 # Baker's percentages
 
@@ -159,12 +177,180 @@ ingredient and derives none. Flour 0 gives `no-base`. In the lean dough
 of [the vector format](vectors.md) the hydration equals the water line's
 percentage.
 
+# Ratio templates
+
+`src/ratios/`, issue 9. A template is stored as in
+[the data model](data-model.md#ratio-template)[^datamodel]: a root has
+`parts` (role, parts above 0, optional `range`), a derivative has
+`parentId` and `changes` (`add`, `remove`, `swap`). Everything below is
+pure and returns `{ ok, … }`; the errors of this chapter are about
+template **data**, never about a recipe.
+
+## Resolving a derivative
+
+`resolveTemplate(templates, id)` walks `parentId` to the root and applies
+each derivative's `changes` in order from the root down. It returns the
+effective template: `parts` (role, parts, `range`, `ingredientClass`),
+`anchor` and `lineage` (root first, this id last).
+
+- Roles keep the root's order; an added role goes last; removing a role
+  and adding it again puts it last.
+- A range stays with its part to every descendant. A `swap` sets
+  `ingredientClass` and keeps parts and range. No change alters parts or
+  a range of an existing role: a variant with other parts is a root of
+  its own.
+- The anchor is the nearest `anchor` from the template up to the root.
+  If that role is not among the effective parts, the error is
+  `anchor-removed`.
+
+| Code                     | When (fields besides `code`)                                                                          |
+| ------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `duplicate-id`           | two templates in the set share an id (`templateId`); checked first, whatever the id                   |
+| `unknown-template`       | the id asked for is not in the set (`templateId`)                                                     |
+| `unknown-parent`         | a `parentId` is not in the set (`templateId`, `parentId`)                                             |
+| `cycle`                  | the parents lead back to a template (`path`: ids from the start to the first repeat, which ends it)   |
+| `not-root-or-derivative` | not (`parts` and no `parentId`, `changes`) and not (`parentId`, `changes`, no `parts`) (`templateId`) |
+| `invalid-parts`          | parts not finite or not above 0, in a root or an `add` (`templateId`, `role`)                         |
+| `invalid-range`          | `min` above `max`, or a bound not finite or negative (`templateId`, `role`)                           |
+| `duplicate-role`         | a root names a role twice (`templateId`, `role`)                                                      |
+| `role-exists`            | `add` of a role that is already there (`templateId`, `role`)                                          |
+| `unknown-role`           | `remove` or `swap` of a role that is not there (`templateId`, `role`)                                 |
+| `anchor-removed`         | the effective anchor is not a role (`templateId`, `role`)                                             |
+
+Only the chain of the template asked for is checked, apart from
+`duplicate-id`.
+
+## Family tree
+
+By the `parentId` links, ids in input order: `templateChildren` (direct
+children), `templateSiblings` (same parent, without itself; a root has
+none), `templateAncestors` (nearest first, up to the root; the result
+can be `cycle`, `unknown-template` or `unknown-parent`, with the same
+`path` as above).
+
+## Range check
+
+`checkRatio(template, amounts, { anchor? })`: `amounts` are grams by
+role. The anchor is the option or else the template's. The amounts are
+scaled so that the anchor has its template parts: `parts = g · anchor
+parts / anchor g`. Per template role, in template order, the result has
+`parts`, `templateParts`, `deltaParts` (actual minus template),
+`sharePct` (of the sum of all amounts given, extra roles included),
+`templateSharePct` and, **only when the template gives a range for the
+role**, `range`, `position` and `distance`:
+
+| Position | Condition             | Distance (in parts) |
+| -------- | --------------------- | ------------------- |
+| `below`  | parts < `min`         | `min` − parts       |
+| `within` | `min` ≤ parts ≤ `max` | 0                   |
+| `above`  | parts > `max`         | parts − `max`       |
+
+A role of the template with no amount has 0 parts and is also in
+`notUsed`; a given role the template lacks is in `extra`. Parts, deltas
+and distances are trimmed to 12 significant digits (as in
+[rounding](#rounding)), so a value that is on a bound in decimals is on
+it. Errors about the input: `no-anchor`, `unknown-anchor`,
+`anchor-not-measured` (the anchor amount is absent or 0),
+`invalid-value` (an amount not finite or negative, or a result that
+overflows; with `role`).
+
+**No verdicts.** Numbers are ranges, not verdicts: no function, field or
+message says that a recipe is wrong, invalid or failed, or that
+something is missing. A cook may leave a range on purpose; the app shows
+the position, nothing more. A test searches the results for such words.
+**Ranges are never invented**: where a source gives one ratio and no
+range, the template has none and the check reports the deviation only.
+
+## Scaling from an anchor and percentages
+
+`scaleFromAnchor(template, role, g)`: `g_role = g · parts_role / parts of
+the weighed role`; errors `unknown-role`, `invalid-value`.
+`templatePercent(template)`: `parts / anchor parts · 100` per role, the
+anchor 100; `no-anchor` when the template has none. Ratio and baker's
+percentage are the same mechanism (parts 5 : 3 is flour 100, water 60).
+
+Not in the engine yet: matching a recipe against all templates to find
+candidates (materia's `matchTemplates`) is a later adapter once
+ingredients and their roles exist.
+
+# Salt by basis
+
+`saltFor({ basis, pct, foodG?, waterG? })` in `src/salt/percent.ts`; the
+basis is part of every salt percentage ([ratios](ratios.md)[^ratios]):
+
+- `food`: salt = food · pct / 100;
+- `water`: salt = water · pct / 100;
+- `brine` (pct is salt per 100 of salt plus water): salt = water · pct /
+  (100 − pct).
+
+It returns `saltG` and `totalG` (food or water plus the salt). Errors:
+`basis-needs-food`, `basis-needs-water`, `invalid-value` (a mass not
+finite or negative), `pct-out-of-range` (not finite, negative, or at
+least 100 on `brine`). Which percentage is usual for a use stays in
+[ratios](ratios.md); the engine holds none.
+
+# Seed templates
+
+`data/templates.json`, read by `SEED_TEMPLATES`, each valid against
+`template.schema.json`. **Rule:** only rows of [ratios](ratios.md)[^ratios]
+with status confirmed or corrected, read as page or book (not excerpt
+only), that are parts by weight or a baker's percentage. `source` names
+the section, the row, its status and the source title; a test checks the
+prefix `docs/ratios.md`, unique ids and that each resolves. A range is
+there only where the row gives one. `anchor` (the first role, egg for
+custard, oil for the vinaigrette) is a choice for the percentages, not a
+number from a source. No seed template is a derivative: derivatives
+cannot change parts, and no row is the variation of another.
+
+| Template id                  | Row                               | Numbers                                                  |
+| ---------------------------- | --------------------------------- | -------------------------------------------------------- |
+| `bread-dough-ratio`          | Bread dough                       | flour 5, water 3                                         |
+| `bread-dough-bakers-percent` | Bread dough (note) and Bread salt | flour 100, water 60, fresh yeast 3, salt 2 (range 1.8–2) |
+| `pasta-dough`                | Pasta dough                       | flour 3, egg 2                                           |
+| `pie-dough`                  | Pie dough                         | flour 3, fat 2, water 1                                  |
+| `cookie-dough`               | Cookie dough                      | flour 3, fat 2, sugar 1                                  |
+| `pound-cake`                 | Pound cake                        | flour, fat (butter), sugar, egg 1 each                   |
+| `vinaigrette`                | Vinaigrette                       | oil 3, acid 1                                            |
+| `roux`                       | Roux (corrected)                  | flour 3, fat 2 (clarified butter)                        |
+| `roux-whole-butter`          | Roux (corrected)                  | flour 1, fat 1 (whole butter)                            |
+| `free-standing-custard`      | Custard                           | liquid 2, egg 1                                          |
+| `neapolitan-pizza-dough`     | Pizza hydration, Pizza salt       | flour 100, water 55.6, salt 2.95 (range 2.8–3.1)         |
+| `ciabatta-stiff-biga`        | Ciabatta hydration (book part)    | flour 100, water 73, salt 2                              |
+
+Choices where the row leaves room: the pizza salt row gives only the
+range 2.8–3.1 %, so the part is its **midpoint**, 2.95, the one number
+here that is arithmetic and not a source figure; pizza water is the
+row's 1000 / 1800 = 55.6 %. The ciabatta range 73–76 % is **not** used,
+because 76 % is from an excerpt only; 73 % and the salt 2 % are Hamelman's
+(book). The pie-dough blog recipe's 2–4 oz water per 12 oz flour is a
+recipe, not a range of the ratio, so pie dough has none.
+
+**Not seed templates, and why:**
+
+- Salt rows (soups and sauces, ferments, wet brine, pasta water): basis
+  is percent of food, brine or water, not parts or baker's percent of a
+  template; they belong to `saltFor`. Pasta water is also excerpt only.
+- Pizza hydration 60–65 % and ciabatta 75–85 %: unverified.
+- Extra lines of Ruhlman's list in ratios.md (biscuit dough, thickening,
+  beurre manié): no row with status and read.
+- Fermentation data (NCHFP): volumes, not parts by weight.
+
+**Mother sauces: none included.** [How chefs
+work](chef-practice.md) names béchamel, velouté, espagnole, hollandaise
+and tomato, but [ratios](ratios.md) has no sourced row for the structure
+of any of them. Only the roux row exists, and it is the thickener, not a
+sauce. Nothing was recalled or invented; a sourced row first, then a
+template with derivatives.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,
-rounding, the three scalings) and `vectors/percentages/` (baker's
+rounding, the three scalings), `vectors/percentages/` (baker's
 percentages, formulas, hydration, the zero-flour and the unequal-base
-errors) in the format of [the vector format](vectors.md)[^vectors]. Each
+errors), `vectors/templates/` (derivative resolution, nested
+derivatives, every error code, family queries, the range check in all
+three positions and on the bounds, a template without range, scaling from
+an anchor, percentages) and `vectors/salt/` (three bases, errors) in the format of [the vector format](vectors.md)[^vectors]. Each
 names its basis. Expected numbers are plain arithmetic written out in
 the vector's `source`; densities and unit weights in vectors are
 synthetic and say so. `test/units-vectors.test.ts` and

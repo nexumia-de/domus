@@ -1,0 +1,54 @@
+{
+  "id": "ratio-check-pie-dough",
+  "description": "Pie dough 300/180/110 g against 3:2:1, anchored on flour",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      },
+      {
+        "name": "fat",
+        "g": 180
+      },
+      {
+        "name": "water",
+        "g": 110
+      }
+    ],
+    "anchor": "flour"
+  },
+  "expected": {
+    "parts": {
+      "flour": 3,
+      "fat": 1.8,
+      "water": 1.1
+    },
+    "share_pct": {
+      "flour": 50.847458,
+      "fat": 30.508475,
+      "water": 18.644068
+    },
+    "template_share_pct": {
+      "flour": 50,
+      "fat": 33.333333,
+      "water": 16.666667
+    },
+    "delta_parts": {
+      "flour": 0,
+      "fat": -0.2,
+      "water": 0.1
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "docs/vectors.md#3-ratio-check-of-a-pie-dough; template 3:2:1 from docs/ratios.md (excerpt only), amounts synthetic"
+}

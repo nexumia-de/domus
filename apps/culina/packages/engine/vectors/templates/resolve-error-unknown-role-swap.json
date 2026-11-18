@@ -1,0 +1,49 @@
+{
+  "id": "resolve-error-unknown-role-swap",
+  "description": "Swapping a role the parent does not have",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "other",
+        "name": "other",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "swap",
+            "role": "sugar",
+            "ingredientClass": "honey"
+          }
+        ]
+      }
+    ],
+    "id": "other"
+  },
+  "error_code": "unknown-role",
+  "error_detail": {
+    "templateId": "other",
+    "role": "sugar"
+  },
+  "source": "sugar is not in the parent; synthetic template numbers chosen for the arithmetic, not from a source"
+}

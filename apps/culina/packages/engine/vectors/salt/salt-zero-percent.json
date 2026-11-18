@@ -1,0 +1,16 @@
+{
+  "id": "salt-zero-percent",
+  "description": "0 % is no salt",
+  "inputs": {
+    "kind": "salt_percent",
+    "food_g": 500,
+    "pct": 0,
+    "basis": "food"
+  },
+  "expected": {
+    "salt_g": 0,
+    "total_g": 500
+  },
+  "tolerance": 1e-6,
+  "source": "salt = 500 x 0 / 100 = 0 g; synthetic amounts"
+}

@@ -15,7 +15,7 @@ sources:
 
 # Test vector format
 
-Culina's first vectors (units, scaling, baker's percentages, hydration) are in `packages/engine/vectors/`; the rest wait for their issues. This fixes the format of the worked examples its
+Culina's vectors (units, scaling, baker's percentages, hydration, ratio templates, salt) are in `packages/engine/vectors/`. This fixes the format of the worked examples its
 engine will be tested against, so that rules are written down with their
 numbers before code exists. The shape follows Mixtura's vectors[^mixtura]
 so both apps can share one runner when the engine moves into shared code.
@@ -82,6 +82,30 @@ also accepts `target_flour_g` instead of `target_dough_g`; in
 `bakers_percent` the line named `water` is the water for `hydration_pct`.
 The tolerance is absolute. Densities and unit weights inside vectors are
 synthetic, chosen for the arithmetic, and every vector says so.
+
+## Kinds of ratio templates and salt (issue 9)
+
+Folders: `packages/engine/vectors/templates/` and
+`packages/engine/vectors/salt/`. Rules: [engine rules](engine-rules.md#ratio-templates).
+Vectors carry their templates inline, never the seed. Examples 3, 4 and 5
+below are in these folders unchanged. Error vectors carry `error_code`
+and, where the error names more than the code, `error_detail`: fields the
+error must contain (`templateId`, `parentId`, `role`, `path`).
+
+| `kind`             | Inputs                                                                                                          | Expected                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `resolve_template` | `templates` in the stored shape of `template.schema.json`; `id`                                                 | `roles` (in order), `parts`, `lineage`, `anchor`, optional `ranges`, `ingredient_classes`       |
+| `template_family`  | `templates`; `id`; `query` (`children`, `ancestors`, `siblings`)                                                | `ids` in the order the query defines                                                            |
+| `ratio_check`      | as above; `template` may also have `ranges` (role to `min`, `max`) and `anchor`; the `anchor` input is optional | as above, plus `position` and `distance` by role (only roles with a range), `not_used`, `extra` |
+| `scale_anchor`     | as above                                                                                                        | as above                                                                                        |
+| `template_percent` | `template`: `name`, `anchor`, `parts`                                                                           | `pct` by role, the anchor 100                                                                   |
+| `salt_percent`     | as above                                                                                                        | as above                                                                                        |
+
+`position` is `below`, `within` or `above` and `distance` the parts
+outside the range (0 within; the bounds are inside). A template without
+a range gives neither; the vector `ratio-check-no-range-reports-deviation`
+shows that. Ranges and parts in vectors are synthetic where the vector
+says so; vectors that use parts of a row of [ratios](ratios.md) name it.
 
 # Worked examples
 
@@ -238,7 +262,5 @@ Template 3 flour : 2 egg; 165 g of egg weighed.
 
 # Open
 
-- Error vectors for `ratio_check`, `scale_anchor` and `salt_percent`
-  (anchor missing, `pct` ≥ 100 on basis `brine`) come with issue 9.
-  Error vectors exist for the issue 8 kinds, with `error_code` instead of
-  `expected`, as Mixtura's batch vectors do.
+None. Error vectors exist for every kind, with `error_code` instead of
+`expected`, as Mixtura's batch vectors do.

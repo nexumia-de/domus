@@ -1,0 +1,25 @@
+{
+  "id": "percent-anchor-not-first",
+  "description": "Percent of an anchor that is not the first role: 3 flour : 2 fat : 1 water on fat",
+  "inputs": {
+    "kind": "template_percent",
+    "template": {
+      "name": "pie dough",
+      "anchor": "fat",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    }
+  },
+  "expected": {
+    "pct": {
+      "flour": 150,
+      "fat": 100,
+      "water": 50
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "flour 100 x 3 / 2 = 150 %, water 100 x 1 / 2 = 50 %; parts 3:2:1 as the Pie dough row of docs/ratios.md"
+}

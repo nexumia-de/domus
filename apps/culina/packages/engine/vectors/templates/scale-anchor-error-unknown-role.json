@@ -1,0 +1,24 @@
+{
+  "id": "scale-anchor-error-unknown-role",
+  "description": "The weighed role is not in the template",
+  "inputs": {
+    "kind": "scale_anchor",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "anchor": {
+      "name": "sugar",
+      "g": 50
+    }
+  },
+  "error_code": "unknown-role",
+  "error_detail": {
+    "role": "sugar"
+  },
+  "source": "sugar is not in 3:2:1"
+}

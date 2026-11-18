@@ -1,0 +1,31 @@
+{
+  "id": "ratio-check-error-anchor-zero",
+  "description": "The anchor amount is 0",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 0
+      },
+      {
+        "name": "fat",
+        "g": 200
+      }
+    ],
+    "anchor": "flour"
+  },
+  "error_code": "anchor-not-measured",
+  "error_detail": {
+    "role": "flour"
+  },
+  "source": "0 g cannot be scaled to parts"
+}

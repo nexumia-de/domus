@@ -1,0 +1,27 @@
+{
+  "id": "ratio-check-error-no-anchor",
+  "description": "Neither the template nor the call names an anchor",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      },
+      {
+        "name": "fat",
+        "g": 200
+      }
+    ]
+  },
+  "error_code": "no-anchor",
+  "source": "Without an anchor there is no scale"
+}

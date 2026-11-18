@@ -218,7 +218,8 @@ ranges, and derivatives that change a parent. Schema:
   `parentId`, or `parentId` and `changes` and no `parts` (checked by the
   schema). The family tree is the `parentId` links; children, ancestors
   and siblings are derived. Cycles cannot be excluded by a schema and
-  are rejected by the engine (issue 9).
+  are rejected by the engine with the error `cycle` and the path of
+  ids ([engine rules](engine-rules.md#ratio-templates)).
 - **Ratios and baker's percentages are one thing.** A ratio 5 flour : 3
   water has `parts` 5 and 3; a baker's formula has the anchor at 100
   (flour 100, water 56, salt 3) and its numbers are percentages. The
@@ -229,7 +230,7 @@ ranges, and derivatives that change a parent. Schema:
   [ratios](ratios.md) that give a range (salt in Neapolitan dough 2.8 to
   3.1 %). Where a source gives one value, the template has no range and
   the check reports the deviation only. That `min` is not above `max` is
-  checked by the engine. The range check says `below`, `within`,
+  checked by the engine (`invalid-range`). The range check says `below`, `within`,
   `above`, never "wrong" ([vectors](vectors.md)[^vectors]).
 - Roles are the shared id space of [roles](#roles). `ingredientClass` is
   a node of the ingredient tree.

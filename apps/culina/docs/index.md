@@ -22,9 +22,9 @@ links. Change history is in [log.md](log.md).
 
 # Specifications
 
-- [Test vector format](vectors.md) - JSON shape of the engine's worked examples for ratio checks, baker's percentages, scaling by weight and salt, with five vectors computed by hand and the kinds the engine now runs.
+- [Test vector format](vectors.md) - JSON shape of the engine's worked examples for ratio checks, baker's percentages, scaling by weight and salt, with five vectors computed by hand and the kinds the engine now runs, now including ratio templates and salt.
 
-- [Engine rules](engine-rules.md) - Unit table with exact factors (US customary cup, tablespoon, teaspoon), conversion and its errors, the explicit rounding step, scaling by weight with time and salt cautions, baker's percentages and hydration; vectors in `packages/engine/vectors/`.
+- [Engine rules](engine-rules.md) - Unit table with exact factors (US customary cup, tablespoon, teaspoon), conversion and its errors, the explicit rounding step, scaling by weight with time and salt cautions, baker's percentages and hydration, ratio templates with derivatives, family queries, the range check (numbers, no verdicts) and the seed templates, salt by basis; vectors in `packages/engine/vectors/`.
 
 - [Data model](data-model.md) - Every stored entity with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`.
 

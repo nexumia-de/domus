@@ -49,5 +49,34 @@ export type {
   HydrationResult,
 } from './bakers/types';
 
+export { checkRatio } from './ratios/check';
+export { templateAncestors, templateChildren, templateSiblings } from './ratios/family';
+export { templatePercent } from './ratios/percent';
+export { resolveTemplate } from './ratios/resolve';
+export { scaleFromAnchor } from './ratios/scale';
+export { SEED_TEMPLATES } from './ratios/seed';
+export type {
+  AncestorsResult,
+  CheckResult,
+  EffectivePart,
+  EffectiveTemplate,
+  PartRange,
+  PercentResult,
+  RangePosition,
+  RatioError,
+  RatioErrorCode,
+  RatioTemplate,
+  ResolveResult,
+  RoleCheck,
+  ScaleAnchorResult,
+  TemplateChange,
+  TemplateError,
+  TemplateErrorCode,
+  TemplatePart,
+} from './ratios/types';
+
+export { saltFor } from './salt/percent';
+export type { SaltBasis, SaltErrorCode, SaltInput, SaltResult } from './salt/percent';
+
 /** The engine's name; the app shows it until it has real screens. */
 export const engineName = (): string => 'culina-engine';

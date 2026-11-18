@@ -1,0 +1,71 @@
+{
+  "id": "resolve-anchor-nearest",
+  "description": "The anchor is the nearest one defined going up; the child without one inherits the root's",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "child",
+        "name": "child",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "sugar",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "grand",
+        "name": "grand",
+        "source": "user",
+        "parentId": "child",
+        "changes": [
+          {
+            "op": "add",
+            "role": "egg",
+            "parts": 1
+          }
+        ],
+        "anchor": "fat"
+      }
+    ],
+    "id": "grand"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water", "sugar", "egg"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 1,
+      "sugar": 1,
+      "egg": 1
+    },
+    "lineage": ["pie", "child", "grand"],
+    "anchor": "fat"
+  },
+  "tolerance": 1e-6,
+  "source": "Root anchor flour, grand anchor fat; synthetic template numbers chosen for the arithmetic, not from a source"
+}

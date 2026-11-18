@@ -1,0 +1,28 @@
+{
+  "id": "scale-anchor-three-roles",
+  "description": "Pie dough 3:2:1 from 80 g of water",
+  "inputs": {
+    "kind": "scale_anchor",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "anchor": {
+      "name": "water",
+      "g": 80
+    }
+  },
+  "expected": {
+    "g": {
+      "flour": 240,
+      "fat": 160,
+      "water": 80
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "g = 80 x parts / 1: flour 240, fat 160, water 80. Template 3:2:1 from docs/ratios.md; water mass synthetic"
+}

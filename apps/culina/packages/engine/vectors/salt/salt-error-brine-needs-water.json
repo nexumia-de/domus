@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-brine-needs-water",
+  "description": "Basis brine with only food given",
+  "inputs": {
+    "kind": "salt_percent",
+    "food_g": 1000,
+    "pct": 5,
+    "basis": "brine"
+  },
+  "error_code": "basis-needs-water",
+  "source": "water_g is missing"
+}

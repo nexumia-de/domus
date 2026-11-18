@@ -1,0 +1,31 @@
+{
+  "id": "ratio-check-error-negative-amount",
+  "description": "A negative amount is not a mass",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      },
+      {
+        "name": "fat",
+        "g": -5
+      }
+    ],
+    "anchor": "flour"
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "role": "fat"
+  },
+  "source": "a mass is not negative"
+}

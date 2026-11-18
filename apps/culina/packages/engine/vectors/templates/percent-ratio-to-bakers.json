@@ -1,0 +1,23 @@
+{
+  "id": "percent-ratio-to-bakers",
+  "description": "Ratio 5 flour : 3 water as percent of the flour",
+  "inputs": {
+    "kind": "template_percent",
+    "template": {
+      "name": "bread dough",
+      "anchor": "flour",
+      "parts": {
+        "flour": 5,
+        "water": 3
+      }
+    }
+  },
+  "expected": {
+    "pct": {
+      "flour": 100,
+      "water": 60
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "water 100 x 3 / 5 = 60 %; parts 5:3 as the Bread dough row of docs/ratios.md"
+}

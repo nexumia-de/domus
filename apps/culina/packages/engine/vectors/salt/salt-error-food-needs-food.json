@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-food-needs-food",
+  "description": "Basis food with only water given",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 1000,
+    "pct": 2,
+    "basis": "food"
+  },
+  "error_code": "basis-needs-food",
+  "source": "food_g is missing"
+}
