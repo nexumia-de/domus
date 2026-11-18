@@ -160,12 +160,11 @@ on pull requests and is not a required check. Host read for it on
 developers.cloudflare.com
 ```
 
-Refused by the session proxy, needed only to look at the result of a
-deploy:
+`culina.nexumia.de` is reachable from the session since 2026-11-18.
+Refused by the session proxy, and not needed so far:
 
 ```
 api.cloudflare.com
-culina.nexumia.de
 ```
 
 # Network hosts
