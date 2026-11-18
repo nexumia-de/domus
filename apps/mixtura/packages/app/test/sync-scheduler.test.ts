@@ -101,6 +101,18 @@ test('Sync Now runs a cycle, stores the binding state and writes the file', asyn
   expect(binding?.etag).toBeTypeOf('string');
 });
 
+test('a cycle that throws is an internal failure and does not block the next request', async () => {
+  const r = await rig();
+  await r.bind();
+  vi.spyOn(r.local.bindings, 'get').mockRejectedValueOnce(new Error('closed'));
+  const first = r.scheduler.syncNow(r.placeId);
+  const second = r.scheduler.syncNow(r.placeId);
+  expect(await first).toEqual({ kind: 'failed', reason: 'internal' });
+  expect((await second).kind).toBe('ok');
+  expect(r.scheduler.activity(r.placeId).running).toBe(false);
+  expect((await r.scheduler.syncNow(r.placeId)).kind).toBe('ok');
+});
+
 test('a failure is kept in the binding and a later success clears it', async () => {
   const r = await rig();
   await r.bind();
@@ -176,7 +188,9 @@ test('a stock change in a bound place syncs after the debounce, once for a burst
   expect(r.storage.writes).toBe(before);
   expect(r.scheduler.activity(r.placeId).pending).toBe(true);
   await vi.advanceTimersByTimeAsync(1000);
-  for (let i = 0; i < 50 && r.storage.writes === before; i++) await settle();
+  // The cycle derives a key off the main thread: wait by the clock, not by a count of ticks.
+  const until = performance.now() + 10_000;
+  while (r.storage.writes === before && performance.now() < until) await settle();
   expect(r.storage.writes).toBe(before + 1);
   expect(r.scheduler.activity(r.placeId).pending).toBe(false);
 });

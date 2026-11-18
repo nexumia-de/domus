@@ -12,6 +12,7 @@ import { placesBlock } from './places-block';
 import { openSheetOf, sheetCode, sheetPlace } from './sheet-address';
 import { passphraseSheet, shareSheet } from './share-sheet';
 import { storageSheet } from './storage-sheet';
+import { sheetShown } from './sheet-drafts';
 import { storagesBlock } from './storages-block';
 import { syncStrings } from './strings';
 
@@ -57,7 +58,9 @@ function moveFocus(open: string | null): void {
 }
 
 export function syncPage(context: ScreenContext): ScreenView {
-  moveFocus(openSheetOf(context));
+  const open = openSheetOf(context);
+  sheetShown(open);
+  moveFocus(open);
   const view = syncView(context);
   const writable = context.state.storage.kind === 'ready';
   const body = h('div', { class: 'stack sync-page' });

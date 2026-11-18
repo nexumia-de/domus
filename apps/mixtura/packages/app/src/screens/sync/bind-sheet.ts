@@ -22,7 +22,7 @@ const d = drafts.bind;
 const redraw = (context: ScreenContext): void =>
   context.store.set({ syncViewRev: context.store.get().syncViewRev + 1 });
 
-async function start(context: ScreenContext, place: Place, view: SyncView): Promise<void> {
+export async function start(context: ScreenContext, place: Place, view: SyncView): Promise<void> {
   const local = context.data.local();
   const storage = view.storages.find((s) => s.id === d.storageId) ?? view.storages[0];
   const folder = normaliseFolder(d.folder);
@@ -38,12 +38,18 @@ async function start(context: ScreenContext, place: Place, view: SyncView): Prom
   d.busy = true;
   d.problem = null;
   redraw(context);
-  await bindPlace(local, {
-    placeId: place.id,
-    storageId: storage.id,
-    folder,
-    passphrase: d.passphrase,
-  });
+  try {
+    await bindPlace(local, {
+      placeId: place.id,
+      storageId: storage.id,
+      folder,
+      passphrase: d.passphrase,
+    });
+  } catch {
+    d.busy = false;
+    d.problem = syncStrings.failed;
+    return redraw(context);
+  }
   invalidateSync(context.store);
   d.busy = false;
   closeSyncSheet(context);

@@ -23,25 +23,32 @@ const redraw = (context: ScreenContext): void =>
 /** The problem of the last attempt, kept as a code so the setup link can follow it. */
 let lastProblem: JoinProblem | null = null;
 
-async function start(context: ScreenContext): Promise<void> {
+export async function start(context: ScreenContext): Promise<void> {
   const local = context.data.local();
   if (!local || d.busy) return;
   d.busy = true;
   d.problem = null;
   lastProblem = null;
   redraw(context);
-  const result = await joinPlace(
-    {
-      local,
-      scheduler: context.data.sync,
-      cipher: context.data.cipher,
-      changed: () => {
-        invalidateSync(context.store);
-        invalidateStock(context.store);
+  let result: Awaited<ReturnType<typeof joinPlace>>;
+  try {
+    result = await joinPlace(
+      {
+        local,
+        scheduler: context.data.sync,
+        cipher: context.data.cipher,
+        changed: () => {
+          invalidateSync(context.store);
+          invalidateStock(context.store);
+        },
       },
-    },
-    { storageId: d.storageId, folder: d.folder, placeCode: d.code, passphrase: d.passphrase },
-  );
+      { storageId: d.storageId, folder: d.folder, placeCode: d.code, passphrase: d.passphrase },
+    );
+  } catch {
+    d.busy = false;
+    d.problem = syncStrings.failed;
+    return redraw(context);
+  }
   d.busy = false;
   invalidateSync(context.store);
   if (!result.ok) {

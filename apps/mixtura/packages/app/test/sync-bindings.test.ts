@@ -47,6 +47,17 @@ test('a storage needs a name and an http(s) address; empty user and password are
   expect(checkAddress(' http://127.0.0.1:8080/ ')).toBe('http://127.0.0.1:8080');
 });
 
+test('an address with user info, a query or a fragment is refused', () => {
+  expect(checkAddress('https://user:pass@dav.example/dav')).toBeNull();
+  expect(checkAddress('https://user@dav.example/dav')).toBeNull();
+  expect(checkAddress('https://dav.example/dav?token=1')).toBeNull();
+  expect(checkAddress('https://dav.example/dav#top')).toBeNull();
+  expect(checkStorage({ ...draft, address: 'https://u:p@dav.example/dav' })).toEqual({
+    ok: false,
+    reason: 'bad-address',
+  });
+});
+
 interface Device {
   local: LocalStore;
   app: ReturnType<typeof createStore<ReturnType<typeof initialState>>>;

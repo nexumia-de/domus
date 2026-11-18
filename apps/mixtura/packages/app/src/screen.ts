@@ -38,6 +38,8 @@ export interface Screen {
   pushed: boolean;
   match(route: Route): boolean;
   view(context: ScreenContext): ScreenView;
+  /** Called once when the route moves to another screen; forgets what the screen kept in memory. */
+  leave?(): void;
 }
 
 /** The first screen that matches; null means "not found". */

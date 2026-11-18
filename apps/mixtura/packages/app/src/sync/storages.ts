@@ -13,12 +13,15 @@ export interface StorageDraft {
 
 export type StorageRefusal = 'empty-label' | 'empty-address' | 'bad-address';
 
-/** The address as kept: trimmed, no trailing slash; null when it is not an http(s) address. */
+/** The address as kept: trimmed, no trailing slash; null when it is not a plain http(s) address (no user info, query or fragment). */
 export function checkAddress(raw: string): string | null {
   const text = raw.trim().replace(/\/+$/, '');
   if (!/^https?:\/\/[^\s]+$/.test(text)) return null;
   try {
-    return new URL(text).host === '' ? null : text;
+    const url = new URL(text);
+    const plain =
+      url.username === '' && url.password === '' && url.search === '' && url.hash === '';
+    return url.host === '' || !plain ? null : text;
   } catch {
     return null;
   }

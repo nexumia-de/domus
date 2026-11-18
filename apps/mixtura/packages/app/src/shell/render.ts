@@ -15,6 +15,7 @@ import { trapFocus } from './focus-trap';
 import { inertBehindModal } from './modal';
 import { toast } from './toast';
 import { panes } from './panes';
+import { trackLeave } from './leave';
 import { captureScroll, restoreScroll } from './scroll';
 
 export interface Shell {
@@ -30,6 +31,7 @@ export function render(root: HTMLElement, shell: Shell): void {
   const { store } = shell;
   const state = store.get();
   const screen = resolve(state.route, shell.screens);
+  trackLeave(screen);
   const context: ScreenContext = {
     route: state.route,
     state,

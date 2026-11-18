@@ -1,6 +1,8 @@
 // What the user typed into the sheets of the Sync page, in memory only: the
-// fields survive a redraw, a closed sheet forgets them. Passwords and
-// passphrases live here and in the stores, nowhere else.
+// fields survive a redraw. A sheet starts empty when a button opens it and is
+// forgotten when it closes, everything when the page is left
+// (sheet-drafts.ts). Passwords and passphrases live here and in the stores,
+// nowhere else.
 
 import type { ConnectionState } from '../../sync/webdav-connection';
 import { DEFAULT_FOLDER } from '../../sync/location';
@@ -72,7 +74,7 @@ export function reset(sheet: 'storage' | 'bind' | 'move' | 'join'): void {
   resetCopies();
 }
 
-/** Forgets everything (leaving the page, tests). */
+/** Forgets everything (leaving the page). */
 export function resetAll(): void {
   const empty = fresh();
   Object.assign(drafts.storage, empty.storage);

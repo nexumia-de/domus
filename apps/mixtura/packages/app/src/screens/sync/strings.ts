@@ -92,6 +92,7 @@ export const syncStrings = {
     'Keep the stock of a place in step on your devices, or share it with another person. Each place has one encrypted file in a storage you choose. Nothing leaves this device until you add a storage and sync a place.',
   setupLink: 'Setup guide',
   close: 'Close',
+  failed: 'This did not work on this device. Try again.',
   loading: 'Loading',
   readOnly: 'Sync cannot be changed while your data cannot be saved.',
   storages: {

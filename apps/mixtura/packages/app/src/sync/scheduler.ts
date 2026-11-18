@@ -81,7 +81,7 @@ export function createScheduler(deps: SchedulerDeps): Scheduler {
     await local.bindings.put(withState(fresh, nextState(fresh, outcome, deps.now())));
   }
 
-  async function cycle(placeId: string): Promise<CycleResult> {
+  async function runCycle(placeId: string): Promise<CycleResult> {
     const local = deps.local();
     if (!local) return { kind: 'skipped', why: 'no-store' };
     const binding = await local.bindings.get(bindingKey(placeId));
@@ -126,6 +126,15 @@ export function createScheduler(deps: SchedulerDeps): Scheduler {
     return outcome;
   }
 
+  /** Never rejects: an unexpected throw (closed store, bad snapshot) is an internal failure. */
+  async function cycle(placeId: string): Promise<CycleResult> {
+    try {
+      return await runCycle(placeId);
+    } catch {
+      return { kind: 'failed', reason: 'internal' };
+    }
+  }
+
   function request(placeId: string): Promise<CycleResult> {
     const current = running.get(placeId);
     if (!current) {
@@ -139,10 +148,11 @@ export function createScheduler(deps: SchedulerDeps): Scheduler {
     }
     let next = queued.get(placeId);
     if (!next) {
-      next = current.then(() => {
+      const again = (): Promise<CycleResult> => {
         queued.delete(placeId);
         return request(placeId);
-      });
+      };
+      next = current.then(again, again);
       queued.set(placeId, next);
     }
     return next;

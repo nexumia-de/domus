@@ -149,10 +149,16 @@ binding (Undo restores it); the file in the storage is not touched.
 ## As built
 
 Files: `src/screens/sync/` (page, `storages-block`, `places-block`, one sheet per
-file, `drafts`, `fields`, `copy-row`, `strings`), `src/sync/` (`status`,
+file, `drafts`, `sheet-drafts`, `fields`, `copy-row`, `strings`), `src/sync/` (`status`,
 `scheduler`, `browser-triggers`, `storages`, `bindings`, `join`, `relocate`,
 `share-values`, `location`, `local-state`, `view`), `src/stock/written.ts` (tells
 the scheduler that the user changed a place), `src/styles/sync.css`.
+
+Drafts: a sheet starts empty when a button opens it and is forgotten when it closes
+(`sheet-drafts.ts`); Sync This Place and Join a Place keep theirs while Add Storage is
+open over them. Leaving the page forgets everything (`Screen.leave`, called by the shell
+via `shell/leave.ts`). A write or test that throws clears the busy state and says
+"This did not work on this device. Try again."
 
 - `AppData` gained `sync` (the scheduler) and `cipher` (one cipher, so a derived key
   is reused for a place's file).

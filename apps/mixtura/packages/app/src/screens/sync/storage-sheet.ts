@@ -38,7 +38,7 @@ function typed(context: ScreenContext, set: (value: string) => void): (value: st
   };
 }
 
-async function test(context: ScreenContext): Promise<void> {
+export async function test(context: ScreenContext): Promise<void> {
   const checked = checkStorage(d);
   if (!checked.ok) {
     d.problem = refusalText(checked.reason);
@@ -49,19 +49,23 @@ async function test(context: ScreenContext): Promise<void> {
   d.testing = true;
   redraw(context);
   const { baseUrl, username, password } = checked.storage;
-  const result = await testConnection(
-    createWebdavAdapter({
-      baseUrl,
-      ...(username !== undefined && { username }),
-      ...(password !== undefined && { password }),
-    }),
-  );
-  d.testing = false;
-  d.test = result;
+  try {
+    d.test = await testConnection(
+      createWebdavAdapter({
+        baseUrl,
+        ...(username !== undefined && { username }),
+        ...(password !== undefined && { password }),
+      }),
+    );
+  } catch {
+    d.problem = syncStrings.failed;
+  } finally {
+    d.testing = false;
+  }
   redraw(context);
 }
 
-async function save(context: ScreenContext): Promise<void> {
+export async function save(context: ScreenContext): Promise<void> {
   const local = context.data.local();
   const checked = checkStorage(d);
   if (!local) return;
@@ -69,7 +73,12 @@ async function save(context: ScreenContext): Promise<void> {
     d.problem = refusalText(checked.reason);
     return redraw(context);
   }
-  await addStorage(local, checked.storage);
+  try {
+    await addStorage(local, checked.storage);
+  } catch {
+    d.problem = syncStrings.failed;
+    return redraw(context);
+  }
   invalidateSync(context.store);
   closeSyncSheet(context);
 }
