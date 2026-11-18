@@ -25,7 +25,7 @@ are sub-issues of it; there are no milestones
    from the catalogue and by free name, ticking, the home order; the
    local store; installable and offline; deployed. Usable by one person
    on one device.
-2. **Shared.** The list in the household's place, encrypted, over
+2. **Shared.** The list as Emptio's file in the household's place, encrypted, over
    storage the user configured. From here it can replace KitchenOwl in
    the household, which is why it comes before stores.
 3. **Stores.** Stores with the default route of their chain (Rewe,

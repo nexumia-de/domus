@@ -123,15 +123,18 @@ State of Culina's catalogue on 2026-11-18, from its build session:
 
 # Sync and the household
 
-- The list and the stores live in the household's **place**, the unit
-  that already holds stock and is the same place in Mixtura and Culina.
-  One invite then shares stock, list and stores.
-- materia's unit document keeps collections it does not know, so a
-  place written by Emptio survives a cycle of an older sister app. Culina's
-  local store does not keep them today: it has a fixed list of kinds
-  and is pinned to materia 0.2.0 without unit documents. Its sync goal
-  has to carry unknown collections through. Mixtura
-  loses them as well, see below.
+- The household's **place** is the same place in Mixtura, Culina and
+  Emptio: one place id, one folder on the storage, one invite. **Each
+  app writes its own file there** and no app writes into another's
+  (Culina's sync decision, point 3, by the owner; confirmed for Emptio
+  on 2026-11-18). Emptio's file holds its list and stores as
+  collections of a `materia-unit` document.
+- An earlier version of this plan put the list into the same file as
+  Mixtura's stock. That was dropped: Mixtura rebuilds its file from its
+  own state and would have lost the list, and stock is per app anyway,
+  because the apps' ingredient ids differ.
+- For the hand-over an app **reads** another app's file of the same
+  place and never writes it.
 - Entries are small records merged per key by materia's rules: two
   people adding offline both keep their entries; ticking is a later
   write of the same record.
@@ -141,13 +144,11 @@ State of Culina's catalogue on 2026-11-18, from its build session:
 State of Mixtura's sync on 2026-11-18, from its sync session (read in
 the code, not tested):
 
-- Mixtura writes places as `materia-place` documents on materia 0.2.0
-  and rebuilds the file from its own state on every write. **A
-  collection it does not know is lost** as soon as Mixtura next writes
-  the place. The list inside the place therefore needs Mixtura to move
-  places to `materia-unit` documents and to keep unknown collections in
-  its local store. That choice belongs before Mixtura's work on
-  libraries and the profile (Mixtura issue 143).
+- Mixtura writes its place file as a `materia-place` document on
+  materia 0.2.0, as `<folder>/<place id>.json`, and rebuilds it from
+  its own state on every write. With a file per app this harms no one,
+  but the file name does not say which app it belongs to; a name per
+  app is part of the neutral names (decision 7).
 - The invite link carries `format: "mixtura-invite"` and the default
   folder on the storage is `mixtura`; one file per place,
   `<folder>/<place id>.json`. Both names are of one app, while the
@@ -169,9 +170,10 @@ the device. Two ways, both needed:
    shows them for confirmation and adds them. Bought entries go back to
    Culina's stock the same way. Works offline once both apps are
    installed, and for a household that never sets up sync.
-2. **By the shared place, with sync.** Stock and list are in the same
-   place, so "what is missing" and "what was bought" arrive on every
-   device.
+2. **By the shared place, with sync.** Emptio reads Culina's file of
+   the place for what is missing, and Culina reads Emptio's for what
+   was bought; each offers, the person confirms, and each writes only
+   its own file.
 
 The format of the link is a small contract between the apps and is
 written down before either side builds it.
@@ -207,18 +209,19 @@ By the owner on 2026-11-18:
    checked for collisions.
 2. **The ingredient catalogue** gets a data package of its own that
    Culina and Emptio install; materia holds no food. It is named **cibus**.
-3. **The list lives inside the place**, for one invite and for the
-   hand-over to stock.
+3. **The list belongs to the place**, as Emptio's own file in the
+   place's folder: one invite, and no app writes another app's file.
 4. **Priority has three steps**: _now_, _soon_ (the default),
    _sometime_.
 5. **Amounts are free text**; number and unit only where an entry comes
    from a recipe.
-6. **Mixtura is fixed first**: places become `materia-unit` documents
-   that keep collections of other apps, before Mixtura's work on
-   libraries and the profile.
-7. **Neutral names** for the invite format and the folder on the
-   storage, accepted by all three apps; Mixtura still reads its present
-   ones.
+6. **A file per app** in the place's folder. The fix of Mixtura first
+   decided here (keeping collections of other apps) is no longer
+   needed and was withdrawn the same day.
+7. **Neutral names** for the invite format, the folder on the storage
+   and the file of each app, accepted by all three apps; Mixtura still
+   reads its present ones. The names are proposed in Mixtura
+   (issue 153).
 8. **Planning without milestones**: each goal of the
    [roadmap](roadmap.md) is an issue and its work items are sub-issues.
    This replaces the milestone rule of the shared agent rules for this

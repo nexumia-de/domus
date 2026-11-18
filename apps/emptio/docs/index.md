@@ -11,11 +11,11 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order: foundations, the list, sharing, stores, hand-over, Domus.
-- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the list inside the household's place, hand-over by link and by sync, screens, the owner's decisions.
+- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the list as its own file in the household's place, hand-over by link and by sync, screens, the owner's decisions.
 
 # Specifications
 
-- [Data model](data-model.md) - Entry, category and store with fields and ids, what is derived, records in collections of the household's place, limits of merging.
+- [Data model](data-model.md) - Entry, category and store with fields and ids, what is derived, records in collections of Emptio's file in the place, limits of merging.
 - [Engine rules](engine-rules.md) - Sort key of a name, order at home and in a store, hiding, category of a new entry, adding what is already there; later rules in outline.
 - [Test vector format](vectors.md) - JSON shape of the worked examples, the three kinds that exist, how the files are checked.
 

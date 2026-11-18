@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Data model
-description: Every stored entity of Emptio (entry, category, store) with fields, ids and timestamps, what is derived and never stored, how the entities are records in collections of the household's place, and the limits of merging.
+description: Every stored entity of Emptio (entry, category, store) with fields, ids and timestamps, what is derived and never stored, how the entities are records in collections of Emptio's file in the household's place, and the limits of merging.
 tags: [data-model, entry, category, store, sync, records]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -24,7 +24,8 @@ a removed one. `updatedAt` and every other time is a UTC timestamp
 `YYYY-MM-DDThh:mm:ss[.fff]Z`. Ids are made by the app (the engine gets
 them as input) and never reused.
 
-The records live in three collections of the household's place:
+The records live in three collections of Emptio's own file in the
+household's place ([sync](architecture.md#sync-and-the-household)):
 
 | Collection   | Key             | Holds                 | Built in |
 | ------------ | --------------- | --------------------- | -------- |
