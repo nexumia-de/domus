@@ -11,7 +11,7 @@ import {
   type BalanceSpec,
 } from '../balance/index';
 import type { IngredientTree } from '../drink-ingredients/types';
-import { countedVolume } from '../ingredients/unit-volumes';
+import { countedVolume } from '../drink-ingredients/unit-volumes';
 import { roundCount, scaleLines, type ScaleOptions } from './scale';
 import { shelfLife } from './shelf';
 import type { Batch, BatchError, BatchLine, BatchResult } from './types';

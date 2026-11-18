@@ -8,7 +8,7 @@ import type { SpecLookup } from '../ingredients/prepared';
 import { computePrepared } from './prepared';
 import { resolveProperty } from '../drink-ingredients/properties';
 import type { IngredientTree } from '../drink-ingredients/types';
-import { countedVolume } from '../ingredients/unit-volumes';
+import { countedVolume } from '../drink-ingredients/unit-volumes';
 import type { Id } from '../ingredients/types';
 import type { BalanceError, BalanceLine, Excluded } from './types';
 

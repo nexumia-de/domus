@@ -6,7 +6,7 @@ import type { IngredientTree, Role } from '../drink-ingredients/types';
 import type { Id } from '../ingredients/types';
 import { matchTemplates } from '../templates/match';
 import type { TemplateEvidence } from '../templates/types';
-import { volumeMeasure } from '../templates/volume';
+import { volumeMeasure } from './volume';
 import {
   findVariants,
   type OpenSlot as GeneralOpenSlot,

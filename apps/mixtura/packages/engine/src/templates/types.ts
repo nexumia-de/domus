@@ -3,7 +3,6 @@
 // Roles are the domain's role ids (`R`); the drink shapes with the drink
 // `Role` union, alcohol class and usual ranges are in
 // drink-templates/types.ts.
-import type { UnitOverrides } from '../amounts/index';
 import type { Id } from '../ingredients/types';
 
 export type TemplateEvidence = 'verified' | 'secondary' | 'derived' | 'assumption';
@@ -52,10 +51,6 @@ export interface MatchSpec<R extends string = string> {
   /** An explicit template id is never overridden. */
   templateId?: Id;
   lines: readonly MatchLine<R>[];
-}
-
-export interface MatchOptions {
-  unitOverrides?: UnitOverrides;
 }
 
 /**
