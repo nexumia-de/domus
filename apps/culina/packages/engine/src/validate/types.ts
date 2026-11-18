@@ -41,6 +41,12 @@ export interface ModelAffinity {
   b: string;
 }
 
+export interface ModelTasting {
+  id: string;
+  /** The version record the note was made on: a component or a dish. */
+  ref: { kind: 'component' | 'dish'; id: string };
+}
+
 /** The records to check, by the collection names of the export file. A missing collection is empty. */
 export interface ModelInput {
   ingredients?: readonly ModelIngredient[];
@@ -49,15 +55,18 @@ export interface ModelInput {
   dishes?: readonly ModelDish[];
   stock?: readonly ModelStock[];
   affinities?: readonly ModelAffinity[];
+  tastings?: readonly ModelTasting[];
 }
 
 /** The kind of record a finding is about. */
-export type EntityKind = 'ingredient' | 'template' | 'component' | 'dish' | 'stock' | 'affinity';
+export type EntityKind =
+  'ingredient' | 'template' | 'component' | 'dish' | 'stock' | 'affinity' | 'tasting';
 
 export type FindingCode =
   | 'duplicate-id'
   | 'unknown-ingredient'
   | 'unknown-component'
+  | 'unknown-dish'
   | 'unknown-template'
   | 'unknown-parent'
   | 'unknown-family'

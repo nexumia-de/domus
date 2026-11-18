@@ -60,6 +60,12 @@
       "items": {
         "$ref": "affinity.schema.json"
       }
+    },
+    "tastings": {
+      "type": "array",
+      "items": {
+        "$ref": "tasting.schema.json"
+      }
     }
   }
 }

@@ -1,0 +1,111 @@
+{
+  "id": "tasting-ref-kind-selects-the-collection",
+  "description": "A component id does not satisfy a dish ref, nor the other way round",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "only-component",
+          "name": "only-component",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "only-component",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "only-dish",
+          "name": "only-dish",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "only-dish",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "tastings": [
+        {
+          "id": "n1",
+          "ref": {
+            "kind": "dish",
+            "id": "only-component"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n2",
+          "ref": {
+            "kind": "component",
+            "id": "only-dish"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n3",
+          "ref": {
+            "kind": "component",
+            "id": "only-component"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n4",
+          "ref": {
+            "kind": "dish",
+            "id": "only-dish"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-dish",
+        "kind": "tasting",
+        "id": "n1",
+        "path": "ref",
+        "ref": "only-component"
+      },
+      {
+        "code": "unknown-component",
+        "kind": "tasting",
+        "id": "n2",
+        "path": "ref",
+        "ref": "only-dish"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

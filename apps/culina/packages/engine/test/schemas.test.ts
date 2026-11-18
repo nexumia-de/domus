@@ -23,7 +23,16 @@ const example = (name: string, kind: 'valid' | 'invalid'): unknown =>
 type Doc = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-const entities = ['ingredient', 'template', 'component', 'dish', 'stock', 'affinity', 'export'];
+const entities = [
+  'ingredient',
+  'template',
+  'component',
+  'dish',
+  'stock',
+  'affinity',
+  'tasting',
+  'export',
+];
 
 describe('every schema has one valid and one invalid example', () => {
   test.each(entities)('%s', (name) => {
@@ -73,6 +82,7 @@ describe('invalid cases named by the issue', () => {
     expect(fails('component', (d: Doc) => (d.totalMassG = 1700))).toBe(true);
     expect(fails('component', (d: Doc) => (d.yield.lossPercent = 5))).toBe(true);
     expect(fails('stock', (d: Doc) => (d.daysLeft = 3))).toBe(true);
+    expect(fails('tasting', (d: Doc) => (d.dishName = 'Bread'))).toBe(true);
     expect(fails('template', (d: Doc) => (d.parts[0].percent = 100))).toBe(true);
     expect(fails('ingredient', (d: Doc) => (d.level = 2))).toBe(true);
   });
@@ -112,9 +122,24 @@ describe('invalid cases named by the issue', () => {
       }),
     ).toBe(false);
   });
+  test('tasting notes are records of their own, not a list inside a component or dish', () => {
+    const note = { date: '2026-11-18', text: 'Needs salt.' };
+    expect(fails('component', (d: Doc) => (d.tastings = [note]))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.tastings = [note]))).toBe(true);
+  });
+  test('a tasting note points at a component or a dish version', () => {
+    expect(fails('tasting', (d: Doc) => (d.ref.kind = 'dish'))).toBe(false);
+    expect(fails('tasting', (d: Doc) => (d.ref.kind = 'ingredient'))).toBe(true);
+    expect(fails('tasting', (d: Doc) => delete d.ref)).toBe(true);
+    expect(fails('tasting', (d: Doc) => (d.ref.id = 'Not A Slug'))).toBe(true);
+    expect(fails('tasting', (d: Doc) => (d.date = '18.11.2026'))).toBe(true);
+    expect(fails('tasting', (d: Doc) => (d.text = ''))).toBe(true);
+    expect(fails('tasting', (d: Doc) => (d['x-mood'] = 'happy'))).toBe(false);
+  });
   test('export: only formatVersion 1 is read, entities are checked inside', () => {
     expect(fails('export', (d: Doc) => (d.formatVersion = 2))).toBe(true);
     expect(fails('export', (d: Doc) => (d.stock[0].state = 'frozen'))).toBe(true);
+    expect(fails('export', (d: Doc) => (d.tastings[0].ref.kind = 'stock'))).toBe(true);
   });
 });
 
@@ -127,6 +152,7 @@ describe('data-model.md and the schemas agree', () => {
     dish: 'Dish',
     stock: 'Stock item',
     affinity: 'Affinity',
+    tasting: 'Tasting note',
     export: 'Export file',
   };
   const table = (title: string): Map<string, boolean> => {

@@ -6,6 +6,7 @@ import type { Known } from './common';
 import { dishFindings } from './dishes';
 import { ingredientFindings } from './ingredients';
 import { stockFindings } from './stock';
+import { tastingFindings } from './tastings';
 import { templateFindings } from './templates';
 import type { ModelInput, ValidationResult } from './types';
 
@@ -18,13 +19,14 @@ const idsOf = (records: readonly { id: string }[] = []): Set<string> =>
  * so pass seed and user records together.
  *
  * @param model - The collections of the export file, as stored.
- * @returns `ok` and every finding, ordered by collection (ingredients, templates, components, dishes, stock, affinities), then record order, then field order. A later record with an id already used in its collection gets only `duplicate-id`.
+ * @returns `ok` and every finding, ordered by collection (ingredients, templates, components, dishes, stock, affinities, tastings), then record order, then field order. A later record with an id already used in its collection gets only `duplicate-id`.
  */
 export function validateModel(model: ModelInput): ValidationResult {
   const known: Known = {
     ingredients: idsOf(model.ingredients),
     templates: idsOf(model.templates),
     components: idsOf(model.components),
+    dishes: idsOf(model.dishes),
   };
   const findings = [
     ...ingredientFindings(model.ingredients ?? []),
@@ -33,6 +35,7 @@ export function validateModel(model: ModelInput): ValidationResult {
     ...dishFindings(model.dishes ?? [], known),
     ...stockFindings(model.stock ?? [], known),
     ...affinityFindings(model.affinities ?? [], known),
+    ...tastingFindings(model.tastings ?? [], known),
   ];
   return { ok: findings.length === 0, findings };
 }

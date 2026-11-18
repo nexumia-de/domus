@@ -4,9 +4,11 @@ import { fail, KINDS, type Kind, type Row, type Rows, type StoreError, emptyRows
 export const DB_NAME = 'culina';
 /**
  * IndexedDB's own version only creates object stores. The data schema version lives in `meta`:
- * IndexedDB cannot roll its version back when a data migration fails.
+ * IndexedDB cannot roll its version back when a data migration fails. Raise it whenever an
+ * object store is added; the upgrade creates the missing stores and keeps the rows.
+ * 1: the first six kinds, `meta`, `backup`. 2: adds `tastings`.
  */
-const LAYOUT_VERSION = 1;
+const LAYOUT_VERSION = 2;
 export const ALL_STORES = [...KINDS, 'meta', 'backup'] as const;
 export type StoreName = (typeof ALL_STORES)[number];
 

@@ -108,18 +108,6 @@
         "change": { "$ref": "#/$defs/text" },
         "reason": { "$ref": "#/$defs/text" }
       }
-    },
-    "tastings": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["date", "text"],
-        "additionalProperties": false,
-        "properties": {
-          "date": { "$ref": "#/$defs/date" },
-          "text": { "$ref": "#/$defs/text" }
-        }
-      }
     }
   }
 }
