@@ -78,6 +78,11 @@ So the order of a store has to come from the household.
    one. A line "n items for other stores" stays visible, so nothing is
    forgotten.
 
+Confirmed by the owner on 2026-11-18: a new store always starts with
+the default route of its chain, and the user moves categories from
+there. A route the user changed by hand is never overwritten; learning
+only offers a change.
+
 The ordering and hiding rules are pure and belong in the engine with
 test vectors; the starting routes are data with their source named.
 
