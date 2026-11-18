@@ -1,0 +1,31 @@
+{
+  "id": "plan-merge-tombstone-older-skipped",
+  "kind": "plan",
+  "title": "An older tombstone does not remove a newer live stock record",
+  "mode": "merge",
+  "current": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-06-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "incoming": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "deleted": true
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "stock": 1
+    }
+  }
+}

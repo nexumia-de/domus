@@ -7,12 +7,19 @@
 // ever describes the newest version.
 
 import { parsePrefs } from '../prefs';
+import type { Clock } from './clock';
 
 export interface MigrationContext {
   db: IDBDatabase;
   tx: IDBTransaction;
   /** Raw text of the interim `localStorage` preferences, or null. */
   legacyPrefs: string | null;
+  /** The instant for records a migration makes; never read from inside a migration. */
+  clock: Clock;
+  /** Makes the id of a record a migration creates (a user id). */
+  newId: () => string;
+  /** Name of the place made for existing stock. */
+  placeName: string;
 }
 
 export interface Migration {
@@ -64,10 +71,53 @@ function createDrafts({ db }: MigrationContext): void {
   db.createObjectStore('drafts', { keyPath: 'key' });
 }
 
+/** The old stock rows as records of one place, all stamped with the migration's instant. */
+export function rowsInPlace(rows: readonly object[], placeId: string, at: string): object[] {
+  return rows.map((row) => ({ ...row, placeId, updatedAt: at }));
+}
+
+/**
+ * Version 4: stock per place. IndexedDB cannot change a key path in place, so
+ * the rows are read, the store is deleted and made again with the key
+ * `[placeId, ingredientId]`, and the rows go back into the default place.
+ * Everything happens in the one upgrade transaction: the read completes before
+ * the delete, and a failure anywhere aborts the whole upgrade, leaving version 3.
+ * A migration after this one must not touch `stock` before this one's read
+ * callback has run (later ones queue their work the same way).
+ */
+function stockPerPlace({ db, tx, clock, newId, placeName }: MigrationContext): void {
+  const at = clock();
+  const place = { id: newId(), name: placeName, updatedAt: at };
+  const read = tx.objectStore('stock').getAll();
+  read.onsuccess = () => {
+    try {
+      const rows = read.result as object[];
+      db.deleteObjectStore('stock');
+      const places = db.createObjectStore('places', { keyPath: 'id' });
+      const stock = db.createObjectStore('stock', { keyPath: ['placeId', 'ingredientId'] });
+      stock.createIndex('placeId', 'placeId');
+      places.put(place);
+      for (const record of rowsInPlace(rows, place.id, at)) stock.put(record);
+      tx.objectStore('settings').put({
+        key: 'places',
+        value: { ticked: [place.id], entry: place.id },
+      });
+    } catch {
+      // A thrown error here would not reach `migrate`: abort so the open fails and version 3 stays.
+      tx.abort();
+    }
+  };
+}
+
 export const migrations: readonly Migration[] = [
   { version: 1, describe: 'Create the object stores', up: createStores },
   { version: 2, describe: 'Move the shell preferences into settings', up: importLegacyPrefs },
   { version: 3, describe: 'Add the store for editor drafts', up: createDrafts },
+  {
+    version: 4,
+    describe: 'Keep stock per place and make the default place',
+    up: stockPerPlace,
+  },
 ];
 
 /** Runs every migration above `oldVersion` up to `newVersion`, in order. */

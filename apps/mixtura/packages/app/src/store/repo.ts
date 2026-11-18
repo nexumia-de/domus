@@ -14,19 +14,19 @@ export interface RepoContext {
   afterWrite: () => void;
 }
 
-export interface Repo<T> {
-  get(key: string): Promise<T | undefined>;
+export interface Repo<T, K extends IDBValidKey = string> {
+  get(key: K): Promise<T | undefined>;
   list(): Promise<T[]>;
   /** All records whose index key equals `key`, in index order. */
   listBy(index: string, key: IDBValidKey): Promise<T[]>;
   put(value: T): Promise<void>;
-  delete(key: string): Promise<void>;
+  delete(key: K): Promise<void>;
 }
 
 export interface RepoOptions<T> {
   store: string;
   kind: EntityKind;
-  /** Fields of a record that must be user ids; empty for stock (keyed by any ingredient id). */
+  /** Fields of a record that must be user ids; stock checks only `placeId` (its ingredient may be a seed id). */
   userIdFields?: (keyof T & string)[];
 }
 
@@ -49,10 +49,10 @@ async function run<R>(
   }
 }
 
-export function createRepo<T extends object>(
+export function createRepo<T extends object, K extends IDBValidKey = string>(
   context: RepoContext,
   options: RepoOptions<T>,
-): Repo<T> {
+): Repo<T, K> {
   const { db } = context;
   const { store, kind, userIdFields = [] } = options;
   return {

@@ -1,0 +1,29 @@
+{
+  "id": "plan-merge-place-older-skipped",
+  "kind": "plan",
+  "title": "Merge keeps a place whose file copy is older",
+  "mode": "merge",
+  "current": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Home",
+        "updatedAt": "2026-06-01T00:00:00Z"
+      }
+    ]
+  },
+  "incoming": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Cabin",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "places": 1
+    }
+  }
+}

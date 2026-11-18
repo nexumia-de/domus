@@ -46,7 +46,8 @@ export interface ExchangeHost {
 export { TOAST_MS } from './toast';
 
 export function formatCounts(counts: Counts): string {
-  const parts = KINDS.filter((k) => counts[k] > 0).map((k) => {
+  // Places are not shown until the place screens exist (#131): one place is the same as before.
+  const parts = KINDS.filter((k) => k !== 'places' && counts[k] > 0).map((k) => {
     const [one, many] = strings.data.kinds[k];
     return `${counts[k]} ${counts[k] === 1 ? one : many}`;
   });
@@ -60,6 +61,9 @@ const sum = (a: Counts, b: Counts): Counts => {
 };
 
 /** What an applied plan brought in: added plus replaced records. */
+/** The total the screens show: places are left out until the place screens exist (#131). */
+export const shownTotal = (counts: Counts): number => total({ ...counts, places: 0 });
+
 export const importedCounts = (plan: Plan): Counts => sum(plan.added, plan.replaced);
 
 /** The browser's download: a Blob behind a temporary link. */
@@ -89,7 +93,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
     try {
       const file = await local.exchange.exportData({ exportedAt: host.now().toISOString() });
       app.set({
-        userRecords: total(countsOf(file)),
+        userRecords: shownTotal(countsOf(file)),
         importBackup: (await local.exchange.importBackup()) !== undefined,
         backup: await local.backup.load(),
       });
@@ -124,7 +128,11 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
       try {
         // Size is checked before the file is read into memory.
         const text = file.size > MAX_FILE_BYTES ? '' : await file.text();
-        const result = parseExportFile(text, file.size);
+        const selection = await local.placeSelection();
+        const placeForOldStock = selection.places.find((p) => p.id === selection.entry);
+        const result = parseExportFile(text, file.size, {
+          migrationInput: { ...(placeForOldStock && { placeForOldStock }) },
+        });
         if (!result.ok) {
           app.set({ importFlow: { kind: 'error', failure: result.failure } });
           return;

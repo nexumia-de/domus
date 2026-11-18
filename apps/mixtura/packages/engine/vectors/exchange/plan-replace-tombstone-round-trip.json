@@ -1,0 +1,49 @@
+{
+  "id": "plan-replace-tombstone-round-trip",
+  "kind": "plan",
+  "title": "Replace writes a tombstone like any stock record and leaves an identical one alone",
+  "mode": "replace",
+  "current": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-06-01T00:00:00Z",
+        "deleted": true
+      },
+      {
+        "placeId": "p1",
+        "ingredientId": "lime",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "incoming": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-06-01T00:00:00Z",
+        "deleted": true
+      },
+      {
+        "placeId": "p1",
+        "ingredientId": "lime",
+        "updatedAt": "2026-06-01T00:00:00Z",
+        "deleted": true
+      }
+    ]
+  },
+  "expected": {
+    "replaced": {
+      "stock": 1
+    },
+    "skipped": {
+      "stock": 1
+    },
+    "writes": {
+      "stock": ["p1/lime"]
+    }
+  }
+}

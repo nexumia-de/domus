@@ -5,7 +5,7 @@
 
 import { type AppState, type ImportFlow } from '../../app-state';
 import { h, icon } from '../../dom';
-import { type ExchangeActions, formatCounts } from '../../exchange-actions';
+import { type ExchangeActions, formatCounts, shownTotal } from '../../exchange-actions';
 import { type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
 import { MAX_FILE_BYTES, reminderDue, type ParseFailure } from '../../store';
@@ -57,6 +57,8 @@ function failureText(failure: ParseFailure): { title: string; text: string } {
   switch (failure.kind) {
     case 'not-mixtura':
       return e.notMixtura;
+    case 'needs-place':
+      return e.needsPlace;
     case 'newer':
       return { title: e.newer.title, text: e.newer.text(failure.found, failure.supported) };
     case 'unreadable':
@@ -87,6 +89,7 @@ function importPanel(flow: ImportFlow, exchange: ExchangeActions): HTMLElement |
     ingredients: file.ingredients.length,
     templates: file.templates.length,
     specs: file.specs.length,
+    places: file.places.length,
     stock: file.stock.length,
     affinities: file.affinities.length,
   };
@@ -98,14 +101,14 @@ function importPanel(flow: ImportFlow, exchange: ExchangeActions): HTMLElement |
       'span',
       { class: 'hint' },
       s.mergeHint(
-        `add ${total(flow.merge.added)}, replace ${total(flow.merge.replaced)}, skip ${total(flow.merge.skipped)}`,
+        `add ${shownTotal(flow.merge.added)}, replace ${shownTotal(flow.merge.replaced)}, skip ${shownTotal(flow.merge.skipped)}`,
       ),
     ),
     h(
       'span',
       { class: 'hint' },
       s.replaceHint(
-        `add ${total(flow.replace.added)}, replace ${total(flow.replace.replaced)}, remove ${total(flow.replace.removed)}, keep ${total(flow.replace.skipped)}`,
+        `add ${shownTotal(flow.replace.added)}, replace ${shownTotal(flow.replace.replaced)}, remove ${shownTotal(flow.replace.removed)}, keep ${shownTotal(flow.replace.skipped)}`,
       ),
     ),
     flow.migratedFrom !== null && h('span', { class: 'hint' }, s.migrated(flow.migratedFrom)),
@@ -147,9 +150,6 @@ function importPanel(flow: ImportFlow, exchange: ExchangeActions): HTMLElement |
     ),
   );
 }
-
-const total = (counts: Record<string, number>): number =>
-  Object.values(counts).reduce((sum, n) => sum + n, 0);
 
 export function dataView({ state, data }: ScreenContext): HTMLElement {
   const { exchange } = data;

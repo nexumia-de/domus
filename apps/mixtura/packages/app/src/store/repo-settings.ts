@@ -6,7 +6,7 @@
 import { ALCOHOL_PRESETS } from '@mixtura/engine';
 import { committed, request } from './db';
 import { toStoreError } from './errors';
-import type { Backup, BuyNextMode, Settings, Theme, Units, YesNo } from './types';
+import type { Backup, BuyNextMode, PlaceSettings, Settings, Theme, Units, YesNo } from './types';
 
 export const defaultSettings: Settings = {
   theme: 'system',
@@ -17,6 +17,8 @@ export const defaultSettings: Settings = {
   buyNextDrafts: 'yes',
   buyNextRetired: 'no',
   backup: { changesSinceExport: 0 },
+  // Filled by the migration to schema version 4 with the default place.
+  places: { ticked: [], entry: '' },
 };
 
 const THEMES: readonly Theme[] = ['system', 'light', 'dark'];
@@ -39,6 +41,14 @@ export function parseBackup(value: unknown): Backup {
   };
 }
 
+export function parsePlaceSettings(value: unknown): PlaceSettings {
+  const v = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
+  const ticked = Array.isArray(v['ticked'])
+    ? v['ticked'].filter((id): id is string => typeof id === 'string' && id !== '')
+    : [];
+  return { ticked, entry: typeof v['entry'] === 'string' ? v['entry'] : '' };
+}
+
 export function parseSettings(records: { key: string; value: unknown }[]): Settings {
   const byKey = new Map(records.map((r) => [r.key, r.value]));
   return {
@@ -57,6 +67,7 @@ export function parseSettings(records: { key: string; value: unknown }[]): Setti
     buyNextRetired:
       YES_NO.find((v) => v === byKey.get('buyNextRetired')) ?? defaultSettings.buyNextRetired,
     backup: parseBackup(byKey.get('backup')),
+    places: parsePlaceSettings(byKey.get('places')),
   };
 }
 

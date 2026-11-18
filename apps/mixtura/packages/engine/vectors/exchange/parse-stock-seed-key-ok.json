@@ -20,6 +20,6 @@
   "bytes": 100,
   "expected": {
     "ok": true,
-    "migratedFrom": null
+    "migratedFrom": 1
   }
 }

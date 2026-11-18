@@ -1,16 +1,21 @@
 // The stock records in memory: read once from the local store, changed
 // at once on a toggle (the screen never waits for the disk) and written
 // behind it in order. A write that fails puts the old records back and
-// says so. Docs: docs/screens-stock-settings.md#as-built.
+// says so. Records are kept per place; the screens read the combined view of
+// the ticked places and write to the entry place. Docs:
+// docs/screens-stock-settings.md#as-built.
 
 import { type AppState } from '../app-state';
 import { type AppData } from '../data';
 import { type Store } from '../state';
-import { toStoreError, type LocalStore, type Stock } from '../store';
+import { toStoreError, type LocalStore, type StockFields, type StockRecord } from '../store';
 import { strings } from '../strings';
 import { showToast } from '../toast';
+import { nowInstant } from '../today';
+import { combinePlaces } from './combine';
 
-export type StockRecords = ReadonlyMap<string, Stock>;
+/** The combined stock of the ticked places: one live record per ingredient. */
+export type StockRecords = ReadonlyMap<string, StockFields>;
 
 export type StockState =
   | { kind: 'loading' }
@@ -21,18 +26,25 @@ interface Context {
   state: AppState;
   store: Store<AppState>;
   data: AppData;
+  /** The instant for `updatedAt` of a change; the app's clock unless a test passes one. */
+  now?: () => string;
 }
 
-/** One change: the record to put, or null to delete it (back to "not tracked"). */
+/** One change: what to put, or null to remove the record (back to "not tracked"). */
 export interface StockChange {
   id: string;
-  next: Stock | null;
+  next: StockFields | null;
 }
 
 interface Cache {
   local: LocalStore;
   epoch: number;
   state: StockState;
+  /** Every place's records, tombstones included; `state.records` is derived from them. */
+  byPlace: Map<string, Map<string, StockRecord>>;
+  ticked: string[];
+  /** The place changes are written to; empty when the store has none (nothing can be written). */
+  entry: string;
 }
 
 let epoch = 0;
@@ -54,26 +66,56 @@ export function stockState({ state, store, data }: Context): StockState {
   const local = data.local();
   if (!local) return { kind: 'ready', records: new Map(), writable: false };
   if (cache?.local === local && cache.epoch === epoch) return cache.state;
-  const entry: Cache = { local, epoch, state: { kind: 'loading' } };
+  const entry: Cache = {
+    local,
+    epoch,
+    state: { kind: 'loading' },
+    byPlace: new Map(),
+    ticked: [],
+    entry: '',
+  };
   cache = entry;
-  local.stock.list().then(
-    (list) => finish(entry, new Map(list.map((r) => [r.ingredientId, r]))),
-    () => finish(entry, new Map()),
+  Promise.all([local.stock.list(), local.placeSelection()]).then(
+    ([list, selection]) => {
+      for (const record of list) {
+        const place = entry.byPlace.get(record.placeId) ?? new Map<string, StockRecord>();
+        place.set(record.ingredientId, record);
+        entry.byPlace.set(record.placeId, place);
+      }
+      entry.ticked = selection.ticked;
+      entry.entry = selection.entry;
+      finish(entry);
+    },
+    () => finish(entry),
   );
-  function finish(target: Cache, records: StockRecords): void {
-    target.state = { kind: 'ready', records, writable: true };
+  function finish(target: Cache): void {
+    target.state = {
+      kind: 'ready',
+      records: combinePlaces(target.byPlace, target.ticked),
+      writable: target.entry !== '',
+    };
     if (cache === target) bump(store);
   }
   return entry.state;
 }
 
-function applyToRecords(records: StockRecords, changes: readonly StockChange[]): StockRecords {
-  const next = new Map(records);
-  for (const { id, next: record } of changes) {
-    if (record) next.set(id, record);
-    else next.delete(id);
+/** Puts records into the entry place's map of the cache and refreshes the combined view. */
+function setRecords(entry: Cache, records: ReadonlyMap<string, StockRecord | undefined>): void {
+  const place = entry.byPlace.get(entry.entry) ?? new Map<string, StockRecord>();
+  for (const [id, record] of records) {
+    if (record) place.set(id, record);
+    else place.delete(id);
   }
-  return next;
+  entry.byPlace.set(entry.entry, place);
+  if (entry.state.kind === 'ready') {
+    entry.state = { ...entry.state, records: combinePlaces(entry.byPlace, entry.ticked) };
+  }
+}
+
+/** The record a change stores: the fields for the entry place, stamped, or a tombstone. */
+function recordOf(entry: Cache, { id, next }: StockChange, at: string): StockRecord {
+  const base = { placeId: entry.entry, ingredientId: id, updatedAt: at };
+  return next ? { ...next, ...base } : { ...base, deleted: true };
 }
 
 /**
@@ -84,20 +126,26 @@ export function changeStock(context: Context, changes: readonly StockChange[]): 
   const current = stockState(context);
   const entry = cache;
   if (current.kind !== 'ready' || !current.writable || !entry || changes.length === 0) return [];
-  const undo = changes.map(({ id }) => ({ id, next: current.records.get(id) ?? null }));
-  entry.state = { ...current, records: applyToRecords(current.records, changes) };
+  // What the entry place held before: Undo puts it back, a failed write restores it exactly.
+  const before = new Map(
+    changes.map(({ id }) => [id, entry.byPlace.get(entry.entry)?.get(id)] as const),
+  );
+  const undo = changes.map(({ id }) => {
+    const old = before.get(id);
+    return { id, next: old && !('deleted' in old) ? old : null };
+  });
+  const at = (context.now ?? nowInstant)();
+  const records = changes.map((change) => recordOf(entry, change, at));
+  setRecords(entry, new Map(records.map((r) => [r.ingredientId, r])));
   bump(context.store);
   const local = entry.local;
   queue = queue.then(async () => {
     try {
-      for (const { id, next } of changes) {
-        if (next) await local.stock.put(next);
-        else await local.stock.delete(id);
-      }
+      for (const record of records) await local.stock.put(record);
     } catch (error) {
       // Put the old records back, unless the screen has moved on to other data.
-      if (cache === entry && entry.state.kind === 'ready') {
-        entry.state = { ...entry.state, records: applyToRecords(entry.state.records, undo) };
+      if (cache === entry) {
+        setRecords(entry, before);
         bump(context.store);
       }
       showToast(context.store, `${strings.data.notSaved}. ${toStoreError(error).message}`);
@@ -110,7 +158,7 @@ export function changeStock(context: Context, changes: readonly StockChange[]): 
 export const stockWrites = (): Promise<void> => queue;
 
 /** The record that marks an ingredient in stock or out, keeping its other fields. */
-export function withPresent(records: StockRecords, id: string, present: boolean): Stock {
+export function withPresent(records: StockRecords, id: string, present: boolean): StockFields {
   return { ...records.get(id), ingredientId: id, present };
 }
 

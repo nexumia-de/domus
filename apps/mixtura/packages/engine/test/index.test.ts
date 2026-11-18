@@ -75,6 +75,7 @@ const PUBLIC = [
   'FORMAT_VERSION',
   'isNoOp',
   'isUserId',
+  'stockKey',
   'KINDS',
   'MAX_FILE_BYTES',
   'migrateFile',

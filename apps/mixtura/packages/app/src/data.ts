@@ -115,6 +115,7 @@ export function connect(app: Store<AppState>): Connection {
           });
         },
         legacyPrefs: readLegacyPrefs,
+        placeName: strings.places.home,
         onPersist: (persistence) => patch({ persistence }),
         onBackup: (backup) => {
           patch({ backup });

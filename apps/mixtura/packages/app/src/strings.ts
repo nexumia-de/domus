@@ -132,6 +132,10 @@ export const strings = {
     notSaved: 'Not saved',
     errors: {
       notMixtura: { title: 'The file is not a Mixtura export.', text: 'Nothing was imported.' },
+      needsPlace: {
+        title: 'The file cannot be read yet',
+        text: 'It is an older export and your data has no place to put its stock. Nothing was imported.',
+      },
       newer: {
         title: 'The file is from a newer version',
         text: (found: number, supported: number) =>
@@ -155,10 +159,15 @@ export const strings = {
       ingredients: ['ingredient', 'ingredients'],
       templates: ['template', 'templates'],
       specs: ['spec', 'specs'],
+      places: ['place', 'places'],
       stock: ['stock entry', 'stock entries'],
       affinities: ['pairing', 'pairings'],
     },
     nothingChanged: 'nothing',
+  },
+  places: {
+    /** Name of the place made for existing stock and on a fresh install (store/places.ts keeps the same text). */
+    home: 'Home',
   },
   about: {
     version: 'Version',

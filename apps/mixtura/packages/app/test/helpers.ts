@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { IDBFactory } from 'fake-indexeddb';
 import { openLocalStore, parseSeed, type LocalStore, type StoreOptions } from '../src/store';
-import type { Affinity, Ingredient, Spec, Stock, Template } from '../src/store';
+import type { Affinity, Ingredient, Place, Spec, Stock, StockRecord, Template } from '../src/store';
 
 const read = (url: string): unknown =>
   JSON.parse(readFileSync(fileURLToPath(new URL(url, import.meta.url)), 'utf8'));
@@ -16,10 +16,13 @@ const example = read('../../engine/schemas/examples/valid/export-full.json') as 
   ingredients: Ingredient[];
   templates: Template[];
   specs: Spec[];
-  stock: Stock[];
+  places: Place[];
+  stock: StockRecord[];
   affinities: Affinity[];
 };
 export const user = example;
+/** The live stock records of the example (the file also holds a tombstone). */
+export const userStock = example.stock.filter((r): r is Stock => !('deleted' in r));
 
 export const freshFactory = (): IDBFactory => new IDBFactory();
 

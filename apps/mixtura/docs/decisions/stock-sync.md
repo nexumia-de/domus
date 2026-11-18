@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Stock sync over storage the user configured
-description: Stock is kept per place; each place can be synced to a WebDAV folder the user chose, encrypted in the browser with a passphrase per place; several storages at once; places can be combined; a second person joins by invite link or QR code; the general parts live in materia; what "no server" means now and the order of work.
+description: Three synced units (place for stock, library for drinks, profile for a person's own devices); each can be synced to a WebDAV folder the user chose, encrypted in the browser with a passphrase per place; several storages at once; places can be combined; a second person joins by invite link or QR code; the general parts live in materia; what "no server" means now and the order of work.
 tags: [decision, sync, webdav, stock, places, encryption, materia]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -204,6 +204,63 @@ Nextcloud instances in the example.
 
 Because the file is encrypted with the place's passphrase, a backend,
 whoever runs it, sees only ciphertext.
+
+## Three synced units: place, library, profile
+
+Added by the owner on 2026-11-18: a user has several devices and wants
+everything of theirs on all of them, and a collection of drinks should
+be shareable like a place. The split into three units is the owner's;
+the details are the agent's (#143).
+
+| Unit        | Holds                                                                                        | Shared with                        |
+| ----------- | -------------------------------------------------------------------------------------------- | ---------------------------------- |
+| **Place**   | stock, and the custom ingredients it refers to                                               | the people of a household or a bar |
+| **Library** | specs with all versions and riffs, own templates, custom ingredients, affinities             | whoever works on the same drinks   |
+| **Profile** | preferences, and the list of the person's places and libraries with where each one is stored | nobody: the person's own devices   |
+
+1. **One mechanism.** Each unit is one encrypted file on a backend the
+   user chose, with its own passphrase, the same adapter, merge and
+   cycle, and it is joined by invite link or QR code. A unit without a
+   binding stays local.
+2. **Several of each.** A device can hold several places and several
+   libraries, its own and joined ones, and exactly one profile. New
+   stock goes to the entry place, a new spec to the entry library; the
+   drinks of all libraries are listed together.
+3. **The profile is the key ring.** For every place and library it
+   carries the backend address, the folder and the passphrase, so a
+   second device of the same person gets all of them by joining the
+   profile once. Storage user names and passwords are never in it; they
+   are entered once per device.
+4. **Preferences in the profile**: units, the alcohol thresholds, the
+   Buy Next options, theme. **Device-only**: storage credentials, which
+   places are ticked, the entry place and entry library, the backup
+   reminder state, editor drafts.
+5. **"Profile", not "account".** Nothing is registered anywhere; the
+   profile is a file like the others. The screens call it "My Devices".
+6. **No roles.** Whoever has a unit's invite and access to its folder
+   can read and change it. Read-only sharing comes from the storage: a
+   member whose folder access is read-only reads the file and cannot
+   write it, and the app shows the unit as read-only.
+7. **Every user entity gets a change time and removal markers**, as
+   stock did with places (#131), and specs, templates, ingredients and
+   affinities get the id of their library. A removal carries over; an
+   edit made later on another device wins over an earlier removal.
+8. **Versions.** A version is written once and never changed, so
+   versions merge by id. Two devices that both created the same version
+   number of one drink while offline: both are kept, and the one created
+   later gets the next free number at merge, by a rule that gives the
+   same result on every device.
+9. **Riffs across libraries.** A riff may have its parent in another
+   library; someone who has only the riff's library sees the parent as
+   missing, as the family view already handles.
+10. **Order.** Places end to end first (the roadmap's first "done
+    when"), then profile and library between a person's own devices,
+    then a library shared with other people. Each step is usable alone.
+    Sending one drink as a link without any backend stays #142.
+
+Each device makes its own default place and default library before it
+joins anything; joining a profile offers to fold them into the
+profile's.
 
 ## Consequences
 

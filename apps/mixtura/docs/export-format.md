@@ -27,14 +27,14 @@ The format itself is in the
 
 ## Where the rules live
 
-| Job                                                                                   | Where                                                                    |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Shape of the file, building the object, file name, counts                             | engine `exchange/types.ts`, `build.ts`                                   |
-| Reading a file: size, forbidden keys, version, migration, ids, repeats, riff loops    | engine `exchange/parse.ts`, `migrate.ts`, `ids.ts`                       |
-| The merge and replace plan                                                            | engine `exchange/merge.ts` (order of `updatedAt`: `instant.ts`)          |
-| JSON Schema check (Ajv)                                                               | app `store/validate.ts`, handed to the engine as `schemaProblems`        |
-| Reading and writing IndexedDB, one transaction, import backup, Undo, the clock, files | app `store/exchange/` (`snapshot.ts`, `index.ts`), `exchange-actions.ts` |
-| Change counter and reminder                                                           | app `store/backup.ts`, `store/exchange/reminder.ts`                      |
+| Job                                                                                   | Where                                                                     |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Shape of the file, building the object, file name, counts                             | engine `exchange/types.ts`, `build.ts`                                    |
+| Reading a file: size, forbidden keys, version, migration, ids, repeats, riff loops    | engine `exchange/parse.ts`, `migrate.ts`, `ids.ts`                        |
+| The merge and replace plan                                                            | engine `exchange/merge.ts` (order of `updatedAt`: `instantMs` of materia) |
+| JSON Schema check (Ajv)                                                               | app `store/validate.ts`, handed to the engine as `schemaProblems`         |
+| Reading and writing IndexedDB, one transaction, import backup, Undo, the clock, files | app `store/exchange/` (`snapshot.ts`, `index.ts`), `exchange-actions.ts`  |
+| Change counter and reminder                                                           | app `store/backup.ts`, `store/exchange/reminder.ts`                       |
 
 The schema check is the one dependency the engine must not have: Ajv's
 compiler is a development tool of the app (it generates the validators at
@@ -77,16 +77,19 @@ input and is checked completely before anything is written:
    refuses the file (no prototype pollution).
 3. `app` is `mixtura` ("not a Mixtura export" otherwise).
 4. `formatVersion` is a whole number from 1. Above the app's version:
-   refused with both numbers ("It is format 3; this app reads up to 1.").
+   refused with both numbers ("It is format 3; this app reads up to 2.").
    Below: migrated by the pure functions of the engine's `exchange/migrate.ts`
-   ([migration rule](data-model.md#export-file)); the list is empty while
-   version 1 is the only one.
+   ([migration rule](data-model.md#export-file),
+   [version 2](#version-2-stock-per-place)); the app passes what a step
+   needs besides the file (`migrationInput`).
 5. The current JSON Schema `export.schema.json` with all entity schemas
    (`additionalProperties: false`), at most 20 problems reported.
 6. Ids: ingredients, templates, affinities, specs and `lineageId` must be
-   user ids (`u-<uuid>`); a stock record may use a seed id. Repeated ids,
-   repeated stock keys and repeated (`lineageId`, `version`) slots are
-   refused.
+   user ids (`u-<uuid>`), and so are place ids and the `placeId` of stock;
+   the `ingredientId` of a stock record may be a seed id. Repeated ids,
+   repeated stock keys (place and ingredient together) and repeated
+   (`lineageId`, `version`) slots are refused, and so is a stock record
+   whose `placeId` names no place of the file.
 
 Any problem refuses the whole file and nothing changes; there is no
 partial import. A valid file shows a summary and, for both modes, what
@@ -95,21 +98,47 @@ replace, removed.
 
 ### Modes
 
-| Mode               | Same id                                                                                        | Not in the file                      |
-| ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------ |
-| Merge              | The existing record stays; a spec with a newer `updatedAt` in the file replaces its older one. | Stays.                               |
-| Replace Everything | The file's record is written; an identical record is left alone (skipped).                     | Deleted (the five user stores only). |
+| Mode               | Same id                                                                                                               | Not in the file                     |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Merge              | The existing record stays; a spec, place or stock record with a newer `updatedAt` in the file replaces its older one. | Stays.                              |
+| Replace Everything | The file's record is written; an identical record is left alone (skipped).                                            | Deleted (the six user stores only). |
 
 A merge never drops a spec version: a file record that would take the
 (`lineageId`, `version`) slot of a different existing record is skipped.
-Records without `updatedAt` (everything but specs) are never replaced by a
-merge. Settings are never touched by an import.
+Records without `updatedAt` (ingredients, templates, affinities) are never
+replaced by a merge. Settings are never touched by an import.
+
+Keys: `id` for every kind except stock, which has the pair `placeId` and
+`ingredientId`: the same ingredient in two places is two records. In a
+merge a record whose key is new is added; for an existing key the one with
+the newer `updatedAt` wins, an equal or older one is skipped. A tombstone is
+a stock record like any other, so a newer removal wins over an older live
+record and a newer live record brings a removed one back; the same rule
+applies to places (a newer name wins).
+
+### Version 2: stock per place
+
+Format version 2 ([#131](https://github.com/nexumia-de/mixtura/issues/131))
+adds `places` to the file (written before `stock`), gives every stock
+record `placeId` and `updatedAt`, and allows tombstones
+(`deleted: true`, no other field; [stock](data-model.md#stock)). The
+migration from version 1 (`formatMigrations[0]`) puts all stock of the
+old file into one place and sets `places` to that place alone. The engine
+has no ids or clock, so the place comes from the caller:
+`parseExportFile(text, bytes, check, { migrationInput: { placeForOldStock } })`,
+where the app passes its entry place (`exchange-actions.ts`). Migrated stock
+records get `updatedAt` equal to the file's `exportedAt`, or the place's
+`updatedAt` if the file has none. A version 1 file parsed without
+`placeForOldStock` is refused with the failure `needs-place`; nothing is
+guessed. Merging a migrated file into the app that supplied the place
+adds the stock to that place, and a migrated record is skipped when the
+app has the same record with a newer or equal `updatedAt`.
 
 ### One transaction, import backup, Undo
 
 `applyInTransaction` reads the data, computes the plan from it and writes
 the result plus the import backup (`meta` key `importBackup`: the data as it
-was and the time) in one IndexedDB transaction over the five stores and
+was and the time) in one IndexedDB transaction over the six stores and
 `meta`. A failure (full device, a record the store refuses) aborts it all:
 data and backup stay as they were. The toast "Imported {counts}" offers
 Undo for 8 seconds; Undo replaces the data with the backup in one transaction
@@ -147,10 +176,13 @@ rather than only in memory.
 
 - Engine `test/exchange.test.ts` (with Ajv): file shape, stability, file
   name, refusals (damaged, other app, newer, invalid, too large, forbidden
-  keys, id rule, duplicates), migration mechanism.
+  keys, id rule, duplicates), migration mechanism, the version 1 file
+  (`schemas/examples/legacy/`) read with and without a place, tombstones.
 - Engine `test/exchange-vectors.test.ts` over `vectors/exchange/` (schema
   check stubbed): every merge and replace case of the plan and every
-  refusal that does not depend on the schema.
+  refusal that does not depend on the schema, among them the version 1
+  migration, tombstones, stock and place merge by `updatedAt` (newer, older,
+  equal), the same ingredient in two places and an unknown place.
 - `test/exchange-format.test.ts` (app): the wrapper uses the real schema
   check; reminder rule.
 - `test/exchange-store.test.ts`: round trip into a fresh database, merge and

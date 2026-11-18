@@ -55,6 +55,7 @@ const entities: [string, string][] = [
   ['Ingredient', 'ingredient'],
   ['Template', 'template'],
   ['Spec', 'spec'],
+  ['Place', 'place'],
   ['Stock', 'stock'],
   ['Affinity', 'affinity'],
   ['Export file', 'export'],

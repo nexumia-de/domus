@@ -1,6 +1,7 @@
 // Building the export object from a snapshot of the user's data. Pure: the
 // instant and the versions come from the host (docs/export-format.md).
 
+import { stockKey } from './keys';
 import {
   APP_TAG,
   FORMAT_VERSION,
@@ -15,6 +16,7 @@ export const emptySnapshot = (): Snapshot => ({
   ingredients: [],
   templates: [],
   specs: [],
+  places: [],
   stock: [],
   affinities: [],
 });
@@ -24,6 +26,7 @@ export const countsOf = (snapshot: Snapshot): Counts => ({
   ingredients: snapshot.ingredients.length,
   templates: snapshot.templates.length,
   specs: snapshot.specs.length,
+  places: snapshot.places.length,
   stock: snapshot.stock.length,
   affinities: snapshot.affinities.length,
 });
@@ -55,7 +58,8 @@ export function buildExport(
     ingredients: sorted(snapshot.ingredients, (i) => i.id),
     templates: sorted(snapshot.templates, (t) => t.id),
     specs: sorted(snapshot.specs, (s) => `${s.lineageId}/${String(s.version).padStart(9, '0')}`),
-    stock: sorted(snapshot.stock, (s) => s.ingredientId),
+    places: sorted(snapshot.places, (p) => p.id),
+    stock: sorted(snapshot.stock, (s) => stockKey(s)),
     affinities: sorted(snapshot.affinities, (a) => a.id),
   };
 }

@@ -227,19 +227,38 @@ A spec whose lines resolve to ingredients with known properties gets
 balance figures; a spec that is the recipe of a prepared ingredient is an
 ordinary spec.
 
+## Place
+
+A place where ingredients are kept: a home bar, a cabin, a friend's flat.
+Stock is kept per place ([stock sync](decisions/stock-sync.md)). A user who
+never adds a place has one, named `Home`, made by the first start or by the
+[storage migration](store.md#migrations).
+
+| Field       | Stored or derived | Required | Meaning                                          |
+| ----------- | ----------------- | -------- | ------------------------------------------------ |
+| `id`        | stored            | yes      | User id (`u-` and a UUID).                       |
+| `name`      | stored            | yes      | What the user calls it; not empty.               |
+| `updatedAt` | stored            | yes      | Instant of the last change; newer wins on merge. |
+
 ## Stock
 
-One record per ingredient the user keeps track of; no record means "not
-tracked", `present: false` means "known to be out".
+One record per place and ingredient the user keeps track of; no record
+means "not tracked", `present: false` means "known to be out". A removed
+record stays as a **tombstone** (`deleted: true`, and no other field than
+the key and `updatedAt`), so a merge can tell "removed here" from "never
+entered here"; the app treats a tombstone as no record.
 
-| Field          | Stored or derived | Required | Meaning                                                                                                                                                                                                                                                                                                 |
-| -------------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ingredientId` | stored            | yes      | The ingredient; also the key of the record.                                                                                                                                                                                                                                                             |
-| `present`      | stored            | yes      | At hand or not.                                                                                                                                                                                                                                                                                         |
-| `openedOn`     | stored            | no       | Date the bottle or batch was opened; for a prepared ingredient the day its current batch was made ([shelf life](non-alcoholic.md#shelf-life-with-entered-dates)).                                                                                                                                       |
-| `moreBatches`  | stored            | no       | Made-on dates of further batches of a prepared ingredient at hand, besides `openedOn`, which is the newest; no date twice. An optional field, so the export format stays 1 ([migration rule](#export-file)); [as built](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101). |
-| `bestBefore`   | stored            | no       | Date after which it should not be used.                                                                                                                                                                                                                                                                 |
-| `note`         | stored            | no       | Free text.                                                                                                                                                                                                                                                                                              |
+| Field          | Stored or derived | Required | Meaning                                                                                                                                                                                                               |
+| -------------- | ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `placeId`      | stored            | yes      | The [place](#place); with `ingredientId` the key of the record.                                                                                                                                                       |
+| `ingredientId` | stored            | yes      | The ingredient; with `placeId` the key of the record.                                                                                                                                                                 |
+| `updatedAt`    | stored            | yes      | Instant of the last change, set by the app; the newer record wins on merge.                                                                                                                                           |
+| `deleted`      | stored            | no       | `true` on a tombstone, absent on a live record. A tombstone has no `present`, `openedOn`, `moreBatches`, `bestBefore` or `note`.                                                                                      |
+| `present`      | stored            | no       | At hand or not. Required on a live record, not allowed on a tombstone.                                                                                                                                                |
+| `openedOn`     | stored            | no       | Date the bottle or batch was opened; for a prepared ingredient the day its current batch was made ([shelf life](non-alcoholic.md#shelf-life-with-entered-dates)).                                                     |
+| `moreBatches`  | stored            | no       | Made-on dates of further batches of a prepared ingredient at hand, besides `openedOn`, which is the newest; no date twice. [As built](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101). |
+| `bestBefore`   | stored            | no       | Date after which it should not be used.                                                                                                                                                                               |
+| `note`         | stored            | no       | Free text.                                                                                                                                                                                                            |
 
 Stock has no quantity: an ingredient is at hand or not, and what the stock
 allows ([makeable](makeable.md)) is decided on that alone. `bestBefore` is
@@ -307,7 +326,8 @@ One JSON file with everything the user entered; seed data is not in it
 | `ingredients`   | stored            | yes      | User ingredients, prepared ones included.                            |
 | `templates`     | stored            | yes      | User templates.                                                      |
 | `specs`         | stored            | yes      | User specs, all versions.                                            |
-| `stock`         | stored            | yes      | Stock records.                                                       |
+| `places`        | stored            | yes      | Places; every `stock[].placeId` names one of them.                   |
+| `stock`         | stored            | yes      | Stock records of all places, tombstones included.                    |
 | `affinities`    | stored            | yes      | User affinities.                                                     |
 
 **Migration rule.** Each change of the format that removes, renames or
@@ -321,24 +341,30 @@ silently. `export.schema.json` always describes the current version only
 (`formatVersion` is a constant there); older versions live in the
 migration code and its vectors.
 
-**Version history.** Version 1 is the first format; no migration exists yet.
-The optional fields `lines[].topMl` and `unitVolumes` and the counted unit
+**Version history.** Version 1 is the first format. Version 2 makes stock
+per place: the file gains `places`, and stock records gain `placeId` and
+`updatedAt` and may be tombstones. The migration from 1 to 2 puts all the
+stock of the old file into one place that the app supplies (the engine has
+no ids), stamped with the file's `exportedAt`
+([export format](export-format.md#version-2-stock-per-place)). The
+optional fields `lines[].topMl` and `unitVolumes` and the counted unit
 ids (`whole`, `slice`, ...) were added to version 1 without a bump: an older
 file has none of them and stays valid.
 Reading, limits and merge rules: [export format](export-format.md).
 
 ## Storage
 
-On the device the entities live in IndexedDB, schema version 2: stores
+On the device the entities live in IndexedDB, schema version 4: stores
 `specs` (one record per version, indexed by `lineageId`),
 `ingredients` (prepared ones included), `templates`, `affinities`,
-`stock` (keyed by `ingredientId`), `settings` and `meta`. Seed data is
+`places`, `stock` (keyed by `placeId` and `ingredientId`), `settings`,
+`meta` and `drafts`. Seed data is
 not stored there. Stores, indexes, migrations: [store](store.md).
 
 ## Schemas and examples
 
 `packages/engine/schemas/`: `common`, `ingredient`, `prepared-ingredient`,
-`template`, `spec`, `stock`, `affinity`, `export` (`*.schema.json`, draft
+`template`, `spec`, `place`, `stock`, `affinity`, `export` (`*.schema.json`, draft
 2020-12, `additionalProperties: false` everywhere). `examples/valid/` and
 `examples/invalid/` hold files named after their schema; the tests in
 `packages/engine/test/` validate each valid file, require each invalid

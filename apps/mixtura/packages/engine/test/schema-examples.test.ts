@@ -31,6 +31,9 @@ describe('valid examples', () => {
 
 const expected: Record<string, string> = {
   'export-future-version.json': 'formatVersion must be equal to constant',
+  'stock-tombstone-with-present.json': 'must be equal to one of the allowed values',
+  'stock-without-place.json': "must have required property 'placeId'",
+  'stock-live-without-present.json': "must have required property 'present'",
   'spec-missing-unit.json': "must have required property 'unit'",
   'ingredient-prepared-with-abv.json': 'data/abv boolean schema is false',
   'ingredient-abv-fraction-name.json': '/abv must be <= 100',

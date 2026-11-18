@@ -1,0 +1,32 @@
+{
+  "id": "plan-merge-place-newer-name",
+  "kind": "plan",
+  "title": "Merge renames a place whose file copy has a newer updatedAt",
+  "mode": "merge",
+  "current": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Home",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "incoming": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Cabin",
+        "updatedAt": "2026-06-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "replaced": {
+      "places": 1
+    },
+    "writes": {
+      "places": ["p1"]
+    }
+  }
+}

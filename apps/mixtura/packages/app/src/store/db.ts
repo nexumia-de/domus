@@ -2,7 +2,10 @@
 // Everything that can go wrong comes out as a StoreError.
 
 import { StoreError, toStoreError } from './errors';
+import { systemClock, type Clock } from './clock';
+import { newUserId } from './ids';
 import { migrate, type Migration, migrations } from './migrations';
+import { DEFAULT_PLACE_NAME } from './places';
 import { DB_NAME, SCHEMA_VERSION } from './schema';
 
 export interface OpenOptions {
@@ -12,6 +15,12 @@ export interface OpenOptions {
   migrations?: readonly Migration[];
   /** Raw interim preferences for migration 2; read inside the upgrade. */
   legacyPrefs?: () => string | null;
+  /** The instant for records a migration makes (migration 4); defaults to the system clock. */
+  clock?: Clock;
+  /** Makes ids for records a migration creates; defaults to user ids. */
+  newId?: () => string;
+  /** Name of the default place migration 4 makes; the app passes its fixed string. */
+  placeName?: string;
   /**
    * Called after another tab upgraded or deleted the database and this
    * connection was closed so it could proceed: the store is unusable from
@@ -80,7 +89,19 @@ export async function openDatabase(options: OpenOptions = {}): Promise<IDBDataba
       if (!tx) return;
       try {
         const legacyPrefs = options.legacyPrefs?.() ?? null;
-        migrate({ db: opening.result, tx, legacyPrefs }, event.oldVersion, version, list);
+        migrate(
+          {
+            db: opening.result,
+            tx,
+            legacyPrefs,
+            clock: options.clock ?? systemClock,
+            newId: options.newId ?? newUserId,
+            placeName: options.placeName ?? DEFAULT_PLACE_NAME,
+          },
+          event.oldVersion,
+          version,
+          list,
+        );
       } catch (error) {
         upgradeError = new StoreError('migration', toStoreError(error).message);
         tx.abort();

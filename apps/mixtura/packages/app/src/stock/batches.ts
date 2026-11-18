@@ -12,7 +12,7 @@ import {
   type IngredientTree,
   type PreparedSpec,
 } from '@mixtura/engine';
-import type { Stock } from '../store';
+import type { StockFields } from '../store';
 import type { StockRecords } from './state';
 
 export type BatchStatus = ExpiryStatus | 'invalid';
@@ -27,13 +27,13 @@ export interface Batch {
 }
 
 /** The made-on dates of the batches at hand, newest first, each once. Nothing when it is not at hand. */
-export function batchDates(record: Stock | undefined): string[] {
+export function batchDates(record: StockFields | undefined): string[] {
   if (!record?.present || !record.openedOn) return [];
   return [...new Set([record.openedOn, ...(record.moreBatches ?? [])])].sort().reverse();
 }
 
 /** The record with these batch dates: the newest in `openedOn`, the rest in `moreBatches`. */
-export function withBatchDates(record: Stock, dates: readonly string[]): Stock {
+export function withBatchDates(record: StockFields, dates: readonly string[]): StockFields {
   const [newest, ...rest] = [...new Set(dates)].sort().reverse();
   const { openedOn: _opened, moreBatches: _more, ...kept } = record;
   void _opened;
@@ -47,12 +47,12 @@ export function withBatchDates(record: Stock, dates: readonly string[]): Stock {
 }
 
 /** A batch made on `date` added; a record that was not at hand starts again with this one. */
-export function addBatch(record: Stock, date: string): Stock {
+export function addBatch(record: StockFields, date: string): StockFields {
   return withBatchDates(record, [...batchDates(record), date]);
 }
 
 /** The batch made on `date` taken away (used up); the last one leaves the ingredient not at hand. */
-export function removeBatch(record: Stock, date: string): Stock {
+export function removeBatch(record: StockFields, date: string): StockFields {
   return withBatchDates(
     record,
     batchDates(record).filter((d) => d !== date),
@@ -64,7 +64,7 @@ export function batchesOf(
   tree: IngredientTree,
   prepared: ReadonlyMap<string, PreparedSpec>,
   id: string,
-  record: Stock | undefined,
+  record: StockFields | undefined,
   today: string,
 ): Batch[] {
   const limit = limitingShelfLife(tree, prepared, id);
@@ -119,7 +119,11 @@ export function nearDate(
  * What "I made this" on the spec screen does: a batch made on `date` is added
  * to the batches at hand; null when that day is already recorded.
  */
-export function madeBatch(record: Stock | undefined, id: string, date: string): Stock | null {
+export function madeBatch(
+  record: StockFields | undefined,
+  id: string,
+  date: string,
+): StockFields | null {
   const base = record ?? { ingredientId: id, present: false };
   return batchDates(base).includes(date) ? null : addBatch(base, date);
 }
@@ -129,7 +133,7 @@ export function madeBatch(record: Stock | undefined, id: string, date: string): 
  * newest (`openedOn`), is used up and the card shows the next one. The last
  * batch leaves the ingredient as "Out" with no date.
  */
-export function usedUpNewest(record: Stock | undefined, id: string): Stock {
+export function usedUpNewest(record: StockFields | undefined, id: string): StockFields {
   const base = record ?? { ingredientId: id, present: false };
   const [newest] = batchDates(base);
   return newest === undefined ? withBatchDates(base, []) : removeBatch(base, newest);

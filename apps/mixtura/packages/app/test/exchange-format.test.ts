@@ -1,7 +1,9 @@
 // The app side of the exchange rules (rules themselves: packages/engine/test/exchange*.test.ts):
 // the wrapper hands the real Ajv check to the engine, and the backup reminder.
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
-import { buildExport, parseExportFile, reminderDue } from '../src/store';
+import { buildExport, FORMAT_VERSION, parseExportFile, reminderDue } from '../src/store';
 import { openFresh, user } from './helpers';
 
 const AT = '2026-11-17T09:30:00Z';
@@ -12,22 +14,39 @@ test('a valid file parses with the app schema check and round-trips unchanged', 
   expect(result.ok && result.file).toEqual(good());
 });
 
-test('a file written before batches imports unchanged, with no new format version', async () => {
-  const old = structuredClone(good());
-  for (const r of old.stock) Reflect.deleteProperty(r, 'moreBatches');
-  const parsed = parseExportFile(JSON.stringify(old), 500);
-  expect(parsed.ok && parsed.migratedFrom).toBeNull();
-  if (!parsed.ok) return;
-  expect(parsed.file.formatVersion).toBe(1);
+const legacy = readFileSync(
+  fileURLToPath(
+    new URL('../../engine/schemas/examples/legacy/export-v1-full.json', import.meta.url),
+  ),
+  'utf8',
+);
+
+test('a version 1 file is read into the given place and imports with its batches', async () => {
   const store = await openFresh();
+  const selection = await store.placeSelection();
+  const place = selection.places.find((p) => p.id === selection.entry);
+  const parsed = parseExportFile(legacy, 500, { migrationInput: { placeForOldStock: place } });
+  expect(parsed.ok && parsed.migratedFrom).toBe(1);
+  if (!parsed.ok) return;
+  expect(parsed.file.formatVersion).toBe(FORMAT_VERSION);
   await store.exchange.importData(parsed.file, 'replace');
-  expect(await store.stock.list()).toEqual(old.stock);
+  const stock = await store.stock.list();
+  expect(stock).toHaveLength(2);
+  expect(stock.every((r) => r.placeId === selection.entry)).toBe(true);
+  expect(stock).toContainEqual(expect.objectContaining({ moreBatches: ['2026-10-20'] }));
+});
+
+test('a version 1 file without a place to put its stock in is refused', () => {
+  expect(parseExportFile(legacy, 500)).toEqual({ ok: false, failure: { kind: 'needs-place' } });
 });
 
 test('a stock record with batches is stored, exported and refused when a date repeats', async () => {
   const store = await openFresh();
+  const { entry } = await store.placeSelection();
   const record = {
+    placeId: entry,
     ingredientId: 'lime-juice',
+    updatedAt: AT,
     present: true,
     openedOn: '2026-11-10',
     moreBatches: ['2026-11-01'],

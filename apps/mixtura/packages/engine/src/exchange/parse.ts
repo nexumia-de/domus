@@ -7,7 +7,14 @@
 
 import { findFamilyCycles } from '@nexumia-de/materia';
 import { isUserId } from './ids';
-import { migrateFile, type FormatMigration, formatMigrations } from './migrate';
+import { keyOf } from './keys';
+import {
+  migrateFile,
+  MissingMigrationInput,
+  type FormatMigration,
+  formatMigrations,
+  type MigrationInput,
+} from './migrate';
 import { APP_TAG, FORMAT_VERSION, MAX_FILE_BYTES, type ExportFile } from './types';
 
 export type ParseFailure =
@@ -19,6 +26,8 @@ export type ParseFailure =
   | { kind: 'not-mixtura' }
   /** A format version above the one this app reads. */
   | { kind: 'newer'; found: number; supported: number }
+  /** A version 1 file, but the host gave no place for its stock (`placeForOldStock`). */
+  | { kind: 'needs-place' }
   /** Schema or id problems, one line each. */
   | { kind: 'invalid'; problems: string[] };
 
@@ -35,7 +44,7 @@ function forbiddenKeyReviver(key: string, value: unknown): unknown {
 
 const fail = (failure: ParseFailure): ParseResult => ({ ok: false, failure });
 
-/** Ids that must be user ids (`u-<uuid>`): everything but the key of a stock record. */
+/** Ids that must be user ids (`u-<uuid>`): everything but the ingredient key of a stock record. */
 export function idProblems(file: ExportFile): string[] {
   const problems: string[] = [];
   const check = (path: string, id: unknown): void => {
@@ -44,6 +53,8 @@ export function idProblems(file: ExportFile): string[] {
   file.ingredients.forEach((r, i) => check(`/ingredients/${i}/id`, r.id));
   file.templates.forEach((r, i) => check(`/templates/${i}/id`, r.id));
   file.affinities.forEach((r, i) => check(`/affinities/${i}/id`, r.id));
+  file.places.forEach((r, i) => check(`/places/${i}/id`, r.id));
+  file.stock.forEach((r, i) => check(`/stock/${i}/placeId`, r.placeId));
   file.specs.forEach((r, i) => {
     check(`/specs/${i}/id`, r.id);
     check(`/specs/${i}/lineageId`, r.lineageId);
@@ -74,8 +85,12 @@ export function duplicateProblems(file: ExportFile): string[] {
     file.affinities.map((r) => r.id),
   );
   dupes(
+    '/places',
+    file.places.map((r) => r.id),
+  );
+  dupes(
     '/stock',
-    file.stock.map((r) => r.ingredientId),
+    file.stock.map((r) => keyOf('stock', r)),
   );
   dupes(
     '/specs',
@@ -85,6 +100,16 @@ export function duplicateProblems(file: ExportFile): string[] {
     '/specs',
     file.specs.map((r) => `${r.lineageId}#${r.version}`),
   );
+  return problems;
+}
+
+/** Stock of a place the file does not hold would have no owner. */
+export function placeProblems(file: ExportFile): string[] {
+  const known = new Set(file.places.map((p) => p.id));
+  const problems: string[] = [];
+  file.stock.forEach((r, i) => {
+    if (!known.has(r.placeId)) problems.push(`/stock/${i}/placeId names a place not in the file`);
+  });
   return problems;
 }
 
@@ -111,6 +136,8 @@ export interface ExportParseOptions {
   limit?: number;
   migrations?: readonly FormatMigration[];
   currentVersion?: number;
+  /** Inputs for the migrations; a version 1 file needs `placeForOldStock`. */
+  migrationInput?: MigrationInput;
 }
 
 /**
@@ -119,7 +146,7 @@ export interface ExportParseOptions {
  * @param text The file's text.
  * @param bytes The size the host reports for the file, checked before and after reading.
  * @param schemaProblems The host's check of the migrated file against the export JSON Schema.
- * @param options Limit, migrations and current version, for tests.
+ * @param options Limit, the inputs of the migrations, and migrations and current version for tests.
  * @returns The typed file and the version it was migrated from, or a named refusal.
  */
 export function parseExportFile(
@@ -152,9 +179,16 @@ export function parseExportFile(
   let migratedFrom: number | null = null;
   if (version < supported) {
     try {
-      file = migrateFile(file, version, supported, options.migrations ?? formatMigrations);
+      file = migrateFile(
+        file,
+        version,
+        supported,
+        options.migrations ?? formatMigrations,
+        options.migrationInput,
+      );
       migratedFrom = version;
     } catch (error) {
+      if (error instanceof MissingMigrationInput) return fail({ kind: 'needs-place' });
       return fail({
         kind: 'unreadable',
         reason: error instanceof Error ? error.message : 'invalid',
@@ -165,7 +199,12 @@ export function parseExportFile(
   const problems = schemaProblems(file);
   if (problems.length > 0) return fail({ kind: 'invalid', problems });
   const typed = file as unknown as ExportFile;
-  const more = [...idProblems(typed), ...duplicateProblems(typed), ...cycleProblems(typed)];
+  const more = [
+    ...idProblems(typed),
+    ...duplicateProblems(typed),
+    ...placeProblems(typed),
+    ...cycleProblems(typed),
+  ];
   if (more.length > 0) return fail({ kind: 'invalid', problems: more.slice(0, 20) });
   return { ok: true, file: typed, migratedFrom };
 }

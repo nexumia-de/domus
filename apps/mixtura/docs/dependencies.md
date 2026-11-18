@@ -20,7 +20,7 @@ Apache-2.0, compatible with it.
 
 | Package               | Version | Licence           | Use                                                                                                                                                                                          |
 | --------------------- | ------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@nexumia-de/materia` | 0.1.0   | AGPL-3.0-or-later | The general model shared with Culina (ingredient tree, templates, specs, stock, shelf life); a git dependency of `@mixtura/engine`, bundled into `dist/engine.mjs`; no dependency of its own |
+| `@nexumia-de/materia` | 0.2.0   | AGPL-3.0-or-later | The general model shared with Culina (ingredient tree, templates, specs, stock, shelf life); a git dependency of `@mixtura/engine`, bundled into `dist/engine.mjs`; no dependency of its own |
 
 Licence read from its `LICENSE` and `package.json`; the same licence and
 owner as Mixtura. Pinned by git reference in

@@ -20,23 +20,30 @@ sources:
 ([data model](data-model.md)). Seed data is shipped with the app and
 never written into the database. Built by issue #24.
 
-## Object stores (schema version 3)
+## Object stores (schema version 4)
 
 Defined as data in `store/schema.ts`; a test compares a freshly migrated
 database with that table.
 
-| Store         | Key            | Indexes                                                                                 | Holds                                                                                                           |
-| ------------- | -------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `specs`       | `id`           | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each                                                               |
-| `ingredients` | `id`           | `parentId`, `level`                                                                     | User ingredients, prepared ones included                                                                        |
-| `templates`   | `id`           | `parentId`                                                                              | User templates                                                                                                  |
-| `affinities`  | `id`           | none                                                                                    | User affinities                                                                                                 |
-| `stock`       | `ingredientId` | none                                                                                    | Stock records                                                                                                   |
-| `settings`    | `key`          | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup` |
-| `meta`        | `key`          | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                          |
-| `drafts`      | `key`          | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                              |
+| Store         | Key                       | Indexes                                                                                 | Holds                                                                                                                             |
+| ------------- | ------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `specs`       | `id`                      | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each                                                                                 |
+| `ingredients` | `id`                      | `parentId`, `level`                                                                     | User ingredients, prepared ones included                                                                                          |
+| `templates`   | `id`                      | `parentId`                                                                              | User templates                                                                                                                    |
+| `affinities`  | `id`                      | none                                                                                    | User affinities                                                                                                                   |
+| `places`      | `id`                      | none                                                                                    | Places where ingredients are kept ([data model](data-model.md#place))                                                             |
+| `stock`       | `[placeId, ingredientId]` | `placeId`                                                                               | Stock records per place, tombstones included ([data model](data-model.md#stock))                                                  |
+| `settings`    | `key`                     | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup`, `places` (below) |
+| `meta`        | `key`                     | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                                            |
+| `drafts`      | `key`                     | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                                                |
 
-A stock record may carry `moreBatches` (the made-on dates of further batches of a prepared ingredient, [#101](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)): the store is keyed by `ingredientId` and holds whole records, so the schema version stays 3 and no migration is needed; the schema check on every put refuses a repeated or malformed date.
+A stock record may carry `moreBatches` (the made-on dates of further batches of a prepared ingredient, [#101](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)): the store holds whole records, so this needed no migration; the schema check on every put refuses a repeated or malformed date.
+
+### Places
+
+Stock is kept per place ([#131](https://github.com/nexumia-de/mixtura/issues/131), [stock sync](decisions/stock-sync.md)). The `stock` store is keyed by the pair `[placeId, ingredientId]` with an index on `placeId`; `stockRepo` takes that pair as the key. A record the user removes is not deleted but replaced by a tombstone (`{ placeId, ingredientId, updatedAt, deleted: true }`), so a later merge can tell "removed" from "never entered" ([stock](data-model.md#stock)). The `places` store holds `{ id, name, updatedAt }` and is exported; both stores are checked against their JSON Schemas on every put (`place.schema.json`, `stock.schema.json`), and `placeId` and a place's `id` must be user ids.
+
+The device setting `places` (store `settings`, never exported) is `{ ticked: string[], entry: string }`: `ticked` are the places that count for derived views, `entry` the place new stock entries go to. `store/places.ts` (`resolveSelection`, `LocalStore.placeSelection()`) makes it consistent with the places that exist: ids of deleted places drop out, no ticked place means the first place, a missing entry place means the first ticked one. `stock/state.ts` keeps the records per place in memory and gives the screens the **combined view of the ticked places**, one record per ingredient and without tombstones (`stock/combine.ts`): present when any ticked place has it present, taken from the first ticked place that has it present, else the first with a record. Changes go to the entry place, stamped with `updatedAt` from the app's clock (`today.ts`, `nowInstant`). No screen shows places yet; with one place the app behaves as before.
 
 Differences from the wording of issue #24: there is no `spec-versions`
 store (the data model keeps each version as its own record in `specs`,
@@ -60,6 +67,7 @@ edited after release.
 | 1       | Creates the stores above, empty.                                                                                                  |
 | 2       | Copies the shell's interim `localStorage` preferences (`mixtura.prefs`) into `settings` once; no old value means nothing written. |
 | 3       | Creates `drafts`, empty.                                                                                                          |
+| 4       | Stock per place: makes the default place and moves all stock into it ([below](#migration-4-stock-per-place)).                     |
 
 After opening, `data.ts` removes the old key. A copy of theme and units
 stays in `localStorage` (`mixtura.prefs-copy`, `prefs.ts`) only so the
@@ -71,6 +79,10 @@ and a test that opens a database of the previous version with data in it
 (`test/store-migrations.test.ts`). A migration that throws aborts the
 upgrade; the old database stays as it was (error `migration`). A stored
 version above the app's is refused untouched (`too-new`).
+
+### Migration 4: stock per place
+
+IndexedDB cannot change a key path in place, so inside the one upgrade transaction the migration (1) reads all old stock rows with `getAll` (the read completes before anything is deleted), (2) deletes the `stock` store, (3) creates `places` and the new `stock` store with the key `[placeId, ingredientId]` and the index `placeId`, (4) writes one place named `Home` (`strings.places.home`), (5) writes every old row with that `placeId` and `updatedAt` set to the migration's instant, all other fields as they were, and (6) writes the setting `places` with that place as the only ticked and the entry place. A fresh install runs the same chain (version 1 creates the old empty `stock`), so it also gets `Home`. The clock, the id generator and the name come in through the migration context (`OpenOptions.clock`, `newId`, `placeName`); the pure helper `rowsInPlace` stamps the rows. Any failure aborts the upgrade and leaves version 3 with its stock; the test makes the clock throw to show it. A later migration that touches `stock` must queue its work after this one's read callback has run.
 
 ## Reading: seed plus user data
 
@@ -170,11 +182,16 @@ Export and import: [export and import](export-format.md#tests).
   update and delete for every entity, validation refusals, id rules, seed
   never in user stores, overlay rules, settings.
 - `test/store-migrations.test.ts`: version 1 database with data upgraded,
-  legacy preferences moved once, failing migration rolled back, newer
-  database refused, no IndexedDB, blocked upgrade.
+  legacy preferences moved once, version 3 databases (with several stock
+  rows including `moreBatches`, and empty) upgraded into the default place
+  with nothing lost, a failing migration rolled back (also migration 4),
+  fresh install with the default place, newer database refused, no
+  IndexedDB, blocked upgrade. `test/stock-places.test.ts`: combined view
+  and entry place.
 - `test/store-persist.test.ts`, `test/store-seed.test.ts`,
   `test/store-references.test.ts` (references and drafts).
 - `e2e/store.mjs` in a real browser: settings survive a reload, a
   hand-built version 1 database with a spec and stock record is migrated
-  and keeps them, no IndexedDB and a too-new database show the banner.
+  and keeps them, a version 3 database with stock rows ends with all of
+  them in the default place, no IndexedDB and a too-new database show the banner.
   The tests use `fake-indexeddb` ([dependencies](dependencies.md)).

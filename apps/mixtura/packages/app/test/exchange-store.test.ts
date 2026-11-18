@@ -16,10 +16,13 @@ const AT = '2026-11-17T09:30:00Z';
 const clockAt = (iso: string) => () => iso;
 const file = (snapshot: Snapshot = user) => buildExport(snapshot, { exportedAt: AT });
 
+/** Puts the records in by hand; the store's own default place goes first, the data brings its places. */
 async function fill(store: LocalStore, data: Snapshot = user): Promise<void> {
+  for (const p of await store.places.list()) await store.places.delete(p.id);
   for (const r of data.ingredients) await store.ingredients.put(r);
   for (const r of data.templates) await store.templates.put(r);
   for (const r of data.specs) await store.specs.put(r);
+  for (const r of data.places) await store.places.put(r);
   for (const r of data.stock) await store.stock.put(r);
   for (const r of data.affinities) await store.affinities.put(r);
 }
@@ -27,6 +30,7 @@ const all = async (store: LocalStore): Promise<Snapshot> => ({
   ingredients: await store.ingredients.list(),
   templates: await store.templates.list(),
   specs: await store.specs.list(),
+  places: await store.places.list(),
   stock: await store.stock.list(),
   affinities: await store.affinities.list(),
 });
@@ -88,7 +92,8 @@ test('replace makes the data equal the file and removes the rest', async () => {
   const small = file({ ...user, specs: [user.specs[0]!], stock: [], affinities: [] });
   const plan = await store.exchange.importData(small, 'replace');
   expect(plan.removed.specs).toBe(1);
-  expect(plan.removed.stock).toBe(2);
+  // Two live records and a tombstone: a tombstone is a record like the others.
+  expect(plan.removed.stock).toBe(3);
   expect(plan.skipped.ingredients).toBe(2);
   const now = await all(store);
   expect(now.specs).toHaveLength(1);
@@ -112,6 +117,7 @@ const buildEmpty = (): Snapshot => ({
   ingredients: [],
   templates: [],
   specs: [],
+  places: [],
   stock: [],
   affinities: [],
 });
