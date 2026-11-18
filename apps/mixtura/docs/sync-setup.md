@@ -84,12 +84,12 @@ WEBDAV_PASSWORD=choose-a-password docker compose up -d
 
 Enter this in the app under Sync, Add Storage:
 
-| Field    | Value                                       |
-| -------- | ------------------------------------------- |
-| Address  | `http://localhost:8080`                     |
-| User     | `mixtura`                                   |
-| Password | the one you chose                           |
-| Folder   | any name, for example `flat` (made for you) |
+| Field    | Value                                                                                                                |
+| -------- | -------------------------------------------------------------------------------------------------------------------- |
+| Address  | `http://localhost:8080`                                                                                              |
+| User     | `mixtura`                                                                                                            |
+| Password | the one you chose                                                                                                    |
+| Folder   | any name, for example `flat` (made for you); the default `household` is shared with the other apps of your household |
 
 Press Test Connection; it should say "Connected". This address works only in
 a browser on the machine that runs Docker. For a phone or another computer
@@ -115,7 +115,8 @@ Compose recreates the container.
 
 **Where the data lives.** In the Docker volume `dav-data`, which Compose names
 after the folder: `webdav-server_dav-data`. Each place is one encrypted file
-`<folder>/<place code>.json` inside it.
+`<folder>/<place code>.json` inside it (files of other apps of the household sit
+next to it as `<folder>/<place code>.<app>.json`; this app never writes them).
 
 **Back it up.** The files are ciphertext, so a copy is safe to keep anywhere.
 Stop the server first if you want a copy that is certain to be consistent:

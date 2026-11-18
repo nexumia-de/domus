@@ -168,7 +168,8 @@ export const syncStrings = {
       'The stock of this place is kept in an encrypted file in the storage you choose. Whoever has the passphrase and access to the folder can read and change it.',
     storage: 'Storage',
     folder: 'Folder',
-    folderHint: (id: string) => `The file is <folder>/${id}.json`,
+    folderHint: (id: string) =>
+      `The file is <folder>/${id}.json. Other apps of your household use the same folder.`,
     passphrase: 'Passphrase',
     passphraseHint:
       'Write it down. It is kept on this device, and without it nobody can open the file again, not even you on a new device.',
@@ -238,6 +239,7 @@ export const inviteProblemTexts: Record<InviteFailure, string> = {
   damaged: 'This invite link is damaged or cut off. Ask for a new invite.',
   version:
     'This invite was made by a newer version of the app. Update the app and open the link again.',
+  kind: 'This invite is not for a place. This version of the app can only join places.',
   type: 'This invite is for a kind of storage this app does not know. Enter the values by hand or ask for a new invite.',
   'no-passphrase': 'This invite has no passphrase. Ask for a new invite.',
   'bad-address': 'The storage address in this invite is not valid. Ask for a new invite.',

@@ -6,7 +6,7 @@
 import type { Cipher, StorageAdapter } from '@mixtura/engine';
 import { isUserId, type LocalStore } from '../store';
 import { snapshotOf } from './local-state';
-import { adapterFor, filePath, normaliseFolder } from './location';
+import { adapterFor, DEFAULT_FOLDER, filePath, LEGACY_FOLDER, normaliseFolder } from './location';
 import { normalisePassphrase } from './passphrase';
 import { syncPlace } from './cycle';
 import type { Scheduler } from './scheduler';
@@ -59,7 +59,7 @@ export async function joinPlace(deps: JoinDeps, input: JoinInput): Promise<JoinR
   const { local } = deps;
   const placeId = input.placeCode.trim();
   if (!isUserId(placeId)) return { ok: false, problem: 'invalid-code' };
-  const folder = normaliseFolder(input.folder);
+  let folder = normaliseFolder(input.folder);
   if (folder === null) return { ok: false, problem: 'invalid-folder' };
   const passphrase = normalisePassphrase(input.passphrase);
   if (passphrase.trim() === '') return { ok: false, problem: 'empty-passphrase' };
@@ -69,16 +69,37 @@ export async function joinPlace(deps: JoinDeps, input: JoinInput): Promise<JoinR
   const existing = await snapshotOf(local, placeId);
   const previous = await local.bindings.get(['place', placeId]);
   // Read only: nothing is created before the file is known to be there and to open.
-  const probe = await syncPlace({
-    place: existing?.place ?? { id: placeId, name: JOINED_PLACE_NAME, updatedAt: BEFORE_ANY_NAME },
-    rows: existing?.rows ?? [],
-    ingredients: existing?.ingredients ?? [],
-    adapter: (deps.adapter ?? adapterFor)(storage),
-    cipher: deps.cipher,
-    path: filePath(folder, placeId),
-    passphrase,
-    readOnly: true,
-  });
+  const adapter = (deps.adapter ?? adapterFor)(storage);
+  const probeIn = (inFolder: string) =>
+    syncPlace({
+      place: existing?.place ?? {
+        id: placeId,
+        name: JOINED_PLACE_NAME,
+        updatedAt: BEFORE_ANY_NAME,
+      },
+      rows: existing?.rows ?? [],
+      ingredients: existing?.ingredients ?? [],
+      adapter,
+      cipher: deps.cipher,
+      path: filePath(inFolder, placeId),
+      passphrase,
+      readOnly: true,
+    });
+  let probe = await probeIn(folder);
+  // Places made before the neutral default folder live in the old one: look there once,
+  // only when the default was asked for and holds no file. Any other answer stands.
+  if (
+    folder === DEFAULT_FOLDER &&
+    probe.kind !== 'failed' &&
+    probe.kind !== 'moved' &&
+    probe.etag === undefined
+  ) {
+    const legacy = await probeIn(LEGACY_FOLDER);
+    if (legacy.kind !== 'failed' && legacy.kind !== 'moved' && legacy.etag !== undefined) {
+      folder = LEGACY_FOLDER;
+      probe = legacy;
+    }
+  }
   if (probe.kind === 'failed') return { ok: false, problem: problemOfFailure(probe) };
   if (probe.kind === 'moved') return { ok: false, problem: 'moved' };
   if (probe.etag === undefined) return { ok: false, problem: 'missing-file' };

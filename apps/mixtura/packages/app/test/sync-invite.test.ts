@@ -39,8 +39,9 @@ test('values become text, a link and the same values again', async () => {
 
 test('the text names the format, version and type', () => {
   expect(good()).toEqual({
-    format: 'mixtura-invite',
+    format: 'materia-invite',
     version: 1,
+    kind: 'place',
     type: 'webdav',
     address: ADDRESS,
     folder: 'flat/stock',
@@ -76,8 +77,17 @@ test('the storage user name and password are in neither the text nor the link', 
     expect(JSON.stringify(decoded)).not.toContain(secret);
   }
   expect(Object.keys(good()).sort()).toEqual(
-    ['address', 'folder', 'format', 'passphrase', 'place', 'type', 'version'].sort(),
+    ['address', 'folder', 'format', 'kind', 'passphrase', 'place', 'type', 'version'].sort(),
   );
+});
+
+test('an invite in the old mixtura-invite format is still a place', () => {
+  const old: Record<string, unknown> = { ...good(), format: 'mixtura-invite' };
+  delete old.kind;
+  expect(read(old)).toEqual({ ok: true, invite: VALUES });
+  expect(reason({ ...old, version: 2 })).toBe('version');
+  expect(read({ ...old, kind: 'library' })).toEqual({ ok: true, invite: VALUES });
+  expect(inviteProblemTexts.kind).toContain('only join places');
 });
 
 test('unknown extra fields are ignored', () => {
@@ -88,13 +98,16 @@ test('address and folder are normalised like the sheet does', () => {
   const r = read({ ...good(), address: `${ADDRESS}///`, folder: '/flat//stock/' });
   expect(r).toEqual({ ok: true, invite: VALUES });
   const empty = read({ ...good(), folder: '' });
-  expect(empty.ok && empty.invite.folder).toBe('mixtura');
+  expect(empty.ok && empty.invite.folder).toBe('household');
 });
 
 test('every refusal has its reason', () => {
   const cases: [Record<string, unknown>, InviteFailure][] = [
     [{ ...good(), version: 2 }, 'version'],
     [{ ...good(), version: 0 }, 'version'],
+    [{ ...good(), kind: 'library' }, 'kind'],
+    [{ ...good(), kind: undefined }, 'damaged'],
+    [{ ...good(), kind: 5 }, 'damaged'],
     [{ ...good(), type: 's3' }, 'type'],
     [{ ...good(), passphrase: '' }, 'no-passphrase'],
     [{ ...good(), passphrase: '   ' }, 'no-passphrase'],

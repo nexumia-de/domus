@@ -156,7 +156,7 @@ Agent's choice of the scheme; the requirement is the owner's.
   (`#…`), which browsers do not send to the server that hosts the app.
   The QR code encodes the same link, so a phone's camera opens it; the
   app needs no camera permission.
-- It carries: format version, storage type, address, folder, place id
+- It carries: format name (`materia-invite`) and version, kind (`place`), storage type, address, folder, place id
   and the passphrase. Never the storage user name or password: each
   member signs in to the storage with their own account, and the folder
   is shared between them in the storage itself.
@@ -168,6 +168,30 @@ Agent's choice of the scheme; the requirement is the owner's.
   the place's stock. The screen says so where the invite is shown.
 - Built in #136: [invite link](../screens-sync.md#invite-link); the link
   is `#/join/<payload>`, the QR code is drawn in the app, no camera.
+
+## One place, one folder, one file per app
+
+Decided by the owner on 2026-11-18. Culina (cooking) and Emptio (shopping lists)
+will use the same place as Mixtura: one place id, one storage folder, one invite.
+
+- **One file per app.** Mixtura's file stays `<folder>/<place id>.json` (no
+  migration). Another app writes `<folder>/<place id>.<app>.json`, for example
+  `.culina.json` or `.emptio.json`. `sync/location.ts` builds Mixtura's path and
+  states the rule; a unit test holds it.
+- **An app reads another app's file, never writes it.** Nothing reads another
+  app's file yet; it comes when an app needs it.
+- **Why.** No app can damage another's data or be blocked by its format version;
+  the merge rules stay with the app that owns the shape; a conditional write
+  (`If-Match`) never conflicts with another app.
+- **Neutral names.** The invite format is `materia-invite` (version 1, new field
+  `kind: "place"`, so libraries and a profile can use it later); `mixtura-invite`
+  is still read. The default folder is `household` instead of `mixtura`; existing
+  bindings keep the folder they stored, and joining by hand with the default
+  folder looks once in `mixtura` when it finds no file ([screens](../screens-sync.md#places)).
+- **Dropped.** Issue #153's first item (places as `materia-unit` documents that
+  carry unknown collections) is not done: no app writes into another app's file, so
+  nothing needs to carry foreign collections. Moving places to `materia-unit` is
+  decided within #143.
 
 ## Bring your own backend
 

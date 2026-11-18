@@ -9,7 +9,7 @@
 // says so and ends successfully.
 /* global document, window, location, history, indexedDB -- in functions the page runs */
 import { resolve } from 'node:path';
-import { deflateRawSync } from 'node:zlib';
+import { deflateRawSync, inflateRawSync } from 'node:zlib';
 import { launch } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
@@ -447,6 +447,19 @@ expect(
     flat.passphrase.length >= 20,
   'A: the Share sheet shows address, folder, place code and passphrase',
 );
+{
+  const payload = flat.invite.slice(flat.invite.indexOf('#/join/') + '#/join/'.length);
+  const made = JSON.parse(inflateRawSync(Buffer.from(payload.slice(2), 'base64url')).toString());
+  expect(
+    payload.startsWith('1.') &&
+      made.format === 'materia-invite' &&
+      made.version === 1 &&
+      made.kind === 'place' &&
+      made.place === flat.code &&
+      made.folder === folder1,
+    `A: the Share sheet's link is a materia-invite of kind place ${JSON.stringify(made).replace(flat.passphrase, '…')}`,
+  );
+}
 
 await join(B, 'S1', flat);
 await B.page.locator('[data-testid="toast"]').filter({ hasText: 'Joined the place' }).waitFor();
@@ -615,8 +628,9 @@ expect(kept.includes('vodka') && kept.includes('campari'), 'local data stays aft
 
 // ================= 8. Joining through an invite link =================
 const invite = {
-  format: 'mixtura-invite',
+  format: 'materia-invite',
   version: 1,
+  kind: 'place',
   type: 'webdav',
   address: url1,
   folder: folder1,
@@ -786,6 +800,25 @@ expect((await syncRow(A, 'Flat').count()) === 1, 'A: Flat syncs again after join
 expect(
   !(await A.page.evaluate(() => location.href)).includes(flat.passphrase),
   'A: the passphrase is not in the address',
+);
+
+// A link in the old mixtura-invite format (no kind) still fills the join sheet and joins.
+const oldInvite = { ...invite, format: 'mixtura-invite' };
+delete oldInvite.kind;
+await openInvite(A, linkOf(oldInvite));
+await prefilled(A, 'from an old mixtura-invite link');
+await A.page.locator('[data-focus="join-start"]').click();
+await A.page.locator('[data-testid="toast"]').filter({ hasText: 'Joined the place' }).waitFor();
+await waitStatus(A, 'Flat', 'synced');
+expect(
+  (await syncRow(A, 'Flat').count()) === 1,
+  'A: Flat syncs again after joining by an old mixtura-invite link',
+);
+// An invite of another kind is refused with its own text.
+await openInvite(A, linkOf({ ...invite, kind: 'library' }));
+expect(
+  (await problemOf(A)).includes('not for a place'),
+  'A: an invite of another kind says it is not for a place',
 );
 
 console.log(

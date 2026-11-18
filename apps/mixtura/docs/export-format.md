@@ -195,7 +195,9 @@ version; another one is refused with its own message.
   drink), no storage in this browser.
 - **Invite link.** The invite to join a place is a sibling,
   `#/join/<payload>`, coded the same way (`1.` and base64url of deflate-raw
-  JSON) but with its own text and handling; it is not an export file. See
+  JSON) but with its own text and handling; it is not an export file. Its format
+  name is `materia-invite` (version 1, `kind: "place"`); the older `mixtura-invite`
+  is still read. See
   [screens: sync](screens-sync.md#invite-link).
 - **Permissions.** The Content-Security-Policy and Permissions-Policy are
   unchanged: streams need no entry, and `clipboard-write` is not in the

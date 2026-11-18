@@ -72,9 +72,13 @@ Every place of the device with its **state line** and the actions that fit it:
 
 Page level: **Sync All** (every bound place) and **Join a Place…**.
 
-- **Sync This Place…** (sheet): a storage, a folder (default `mixtura`) and the
+- **Sync This Place…** (sheet): a storage, a folder (default `household`, the same for every app of a household) and the
   generated passphrase with Copy. **Start Syncing** stores the binding and runs the
-  first cycle. The file is `<folder>/<place id>.json`.
+  first cycle. The file is `<folder>/<place id>.json`; other apps keep their own
+  files next to it (`<place id>.<app>.json`) and Mixtura never writes them
+  ([decision](decisions/stock-sync.md#one-place-one-folder-one-file-per-app)). The
+  folder hint says so in one sentence. Bindings made before 2026-11-18 keep the
+  folder `mixtura` they stored.
 - **Share…** shows the **invite link** (a read-only field with Copy) and its QR code,
   the sentence that the link contains the passphrase but not the storage's user name
   or password, and the sentence that whoever has the invite or the values and access
@@ -90,7 +94,12 @@ Page level: **Sync All** (every bound place) and **Join a Place…**.
   move changes nothing.
 - **Stop Syncing** removes the binding at once with Undo. Stock on the device and
   the file in the storage stay, and the toast says so.
-- **Join a Place…** (sheet): a storage, folder, place code and passphrase. The file
+- **Join a Place…** (sheet): a storage, folder, place code and passphrase. When the
+  folder is the default (`household`) and it holds no file for the code, the old
+  default `mixtura` is probed once the same way and, if the file is there and opens,
+  the place is bound with folder `mixtura`; any other failure of the first probe
+  (wrong passphrase, blocked, ...) is reported without a second request, and a
+  folder the user typed is never substituted. The file
   is read first without writing (`sync/join.ts`): a wrong passphrase, a missing
   file, a file that moved, a bad code or folder leaves nothing behind and says why.
   Only then the place is created if the device lacks it (named "Joined place" with
@@ -156,8 +165,9 @@ The invite is JSON, `sync/invite.ts` (`inviteText`, `readInvite`, pure):
 
 ```json
 {
-  "format": "mixtura-invite",
+  "format": "materia-invite",
   "version": 1,
+  "kind": "place",
   "type": "webdav",
   "address": "<storage base address>",
   "folder": "<folder>",
@@ -165,6 +175,13 @@ The invite is JSON, `sync/invite.ts` (`inviteText`, `readInvite`, pure):
   "passphrase": "<passphrase>"
 }
 ```
+
+The format is neutral (named after materia, the shared model) so libraries and a
+profile can use it later with another `kind`; chosen by the owner on 2026-11-18.
+Reading: `materia-invite` version 1 needs `kind: "place"`; another string is
+refused with its own text ("This invite is not for a place. This version of the app
+can only join places."), a missing or non-string kind is damaged. The old
+`mixtura-invite` version 1 (no `kind`, always a place) is still read.
 
 Never the storage's user name or password (a unit test builds the invite from a
 storage that has both). The link is `<app address>#/join/<payload>`, the payload
@@ -188,7 +205,7 @@ address through `checkAddress`, the folder through `normaliseFolder`, the place
 through `isUserId`, a passphrase that is not empty, unknown fields ignored.
 
 A link that cannot be used also opens the join sheet, empty, with a text per
-reason: damaged or cut off, a newer version ("Update the app and open the link
+reason: damaged or cut off, a kind that is not a place, a newer version ("Update the app and open the link
 again."), an unknown storage type, no passphrase ("This invite has no passphrase.
 Ask for a new invite."), a bad address, folder or place code.
 
@@ -271,6 +288,18 @@ every target is at least 44 px on the Sync page and on the sheets it opens.
 `--docs` writes the screenshots of [screenshots](screenshots.md#sync).
 
 ## Verified and not verified
+
+Neutral invite and folder (#153, reduced), run on 2026-11-18 in headless Chromium:
+`npm run check` (exit 0); unit tests of the `materia-invite` text, the `kind`
+refusals, the old `mixtura-invite`, the default folder fallback in `joinPlace` (found
+in the default, found only in the old folder, missing in both, no second probe for
+a typed folder or another failure), a binding that stored `mixtura` still syncing to
+`mixtura/<id>.json`, and the file path rule; `e2e/sync.mjs` at 360x720 and 1200x800
+(case 8 now checks that the Share sheet's link decodes to `materia-invite` of kind
+`place`, that an old `mixtura-invite` link fills the sheet and joins, and that
+another kind is refused); `e2e/a11y.mjs` at both sizes; `e2e/reflow.mjs`; the Sync
+This Place screenshots remade (new folder hint). Not verified: another app writing a
+file next to Mixtura's (none exists yet); a real Nextcloud.
 
 Invite link (#136), run on 2026-11-18 in headless Chromium: `npm run check`;
 unit tests of the invite (round trip, every refusal, no user name or password,

@@ -246,7 +246,8 @@ of `SETUP_URL`); this section is what it is built on.
 
 [tools/webdav-server/README.md](../tools/webdav-server/README.md): with Docker,
 `WEBDAV_PASSWORD=… docker compose up -d`, then in the app address
-`http://localhost:8080`, the user and password, and a folder name. The hosted
+`http://localhost:8080`, the user and password, and a folder name (default `household`, shared with other apps of the household; a
+place has one file per app: `<folder>/<place id>.json` is Mixtura's). The hosted
 app reaches `http://` only on `localhost` and `127.0.0.1`; for a phone or
 another computer the server needs an `https` address (a reverse proxy), and
 `ALLOWED_ORIGINS_REGEX` lists the app's origin if it is not the hosted one.

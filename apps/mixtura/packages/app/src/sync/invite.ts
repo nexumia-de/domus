@@ -10,7 +10,11 @@ import type { ShareValues } from './share-values';
 import { normaliseFolder } from './location';
 import { checkAddress } from './storages';
 
-export const INVITE_FORMAT = 'mixtura-invite';
+export const INVITE_FORMAT = 'materia-invite';
+/** The format before 2026-11-18: no `kind`, always a place. Still read. */
+export const LEGACY_INVITE_FORMAT = 'mixtura-invite';
+/** What an invite is for; only a place can be joined so far. */
+export const INVITE_KIND_PLACE = 'place';
 export const INVITE_VERSION = 1;
 /** Longest invite text read, in characters; an invite is a few hundred. */
 export const MAX_INVITE_CHARS = 4096;
@@ -19,7 +23,14 @@ const MAX_FOLDER = 512;
 const MAX_PASSPHRASE = 512;
 
 export type InviteFailure =
-  'damaged' | 'version' | 'type' | 'no-passphrase' | 'bad-address' | 'bad-folder' | 'bad-place';
+  | 'damaged'
+  | 'version'
+  | 'kind'
+  | 'type'
+  | 'no-passphrase'
+  | 'bad-address'
+  | 'bad-folder'
+  | 'bad-place';
 
 export type InviteRead = { ok: true; invite: ShareValues } | { ok: false; reason: InviteFailure };
 
@@ -28,6 +39,7 @@ export const inviteText = (values: ShareValues): string =>
   JSON.stringify({
     format: INVITE_FORMAT,
     version: INVITE_VERSION,
+    kind: INVITE_KIND_PLACE,
     type: 'webdav',
     address: values.address,
     folder: values.folder,
@@ -48,8 +60,14 @@ export function readInvite(text: string): InviteRead {
   }
   if (typeof data !== 'object' || data === null || Array.isArray(data)) return fail('damaged');
   const o = data as Record<string, unknown>;
-  if (o.format !== INVITE_FORMAT || typeof o.version !== 'number') return fail('damaged');
+  const legacy = o.format === LEGACY_INVITE_FORMAT;
+  if ((o.format !== INVITE_FORMAT && !legacy) || typeof o.version !== 'number')
+    return fail('damaged');
   if (o.version !== INVITE_VERSION) return fail('version');
+  if (!legacy) {
+    if (typeof o.kind !== 'string') return fail('damaged');
+    if (o.kind !== INVITE_KIND_PLACE) return fail('kind');
+  }
   if (o.type !== 'webdav') return fail('type');
   const { passphrase, address, folder, place } = o;
   if (typeof passphrase !== 'string' || passphrase.trim() === '') return fail('no-passphrase');
