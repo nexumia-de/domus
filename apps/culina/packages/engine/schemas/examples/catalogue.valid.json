@@ -13,6 +13,7 @@
     {
       "id": "fdc-169230",
       "name": "Garlic",
+      "names": { "de": { "name": "Knoblauch", "source": "user" } },
       "densityGPerMl": {
         "value": 0.575,
         "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 cup = 136 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
@@ -59,5 +60,12 @@
     "file": "FOOD_DES.txt",
     "sha256": "bb2047218cdad1d830da69e760386409fde3b7afabceae604c5479f280d4fa2e",
     "licence": "CC0 1.0 Universal (public domain), as stated on https://fdc.nal.usda.gov/ (section Licensing)"
+  },
+  "namesDataset": {
+    "name": "Wikidata, German labels and aliases by USDA NDB number (P1978)",
+    "file": "tools/catalogue/wikidata-de.json",
+    "sha256": "bb2047218cdad1d830da69e760386409fde3b7afabceae604c5479f280d4fa2e",
+    "retrieved": "2026-11-18",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://www.wikidata.org/wiki/Wikidata:Licensing"
   }
 }

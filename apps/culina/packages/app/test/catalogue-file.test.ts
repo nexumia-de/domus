@@ -69,6 +69,7 @@ describe('the shipped file', () => {
       'id',
       'name',
       'parentId',
+      'names',
       'densityGPerMl',
       'unitWeightG',
       'yields',
@@ -127,10 +128,12 @@ describe('rows recomputed from the fixture excerpt', () => {
   });
   test('the rows equal the shipped rows, and the serialisation is stable', () => {
     for (const row of rows) {
-      // The shipped row also has its parent link and its yields, which the excerpt cannot give.
+      // The shipped row also has its parent link, its yields and its German names, which the
+      // excerpt cannot give (the names have their own test, catalogue-names.test.ts).
       const rest = { ...must(shipped.ingredients.find((r) => r.id === row.id)) };
       delete rest.parentId;
       delete rest.yields;
+      delete rest.names;
       expect(rest).toEqual(row);
     }
     const envelope = { ...shipped, ingredients: rows };

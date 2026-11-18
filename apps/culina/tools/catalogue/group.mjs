@@ -2,6 +2,7 @@
 // names, and the numbers a parent can honestly carry. Pure: no file access, no clock. The rules
 // are stated in docs/ingredient-catalogue.md (Grouping rule); change both together.
 import { createHash } from 'node:crypto';
+import { agreedCategory, agreedNames } from './group-names.mjs';
 
 /** A parent has at least this many food rows below it (itself not counted). */
 export const MIN_ROWS_BELOW = 2;
@@ -122,11 +123,14 @@ export const groupRows = (foodRows) => {
     const parent = parentOf(name);
     const group = { id: groupIdOf(name), name };
     if (parent !== undefined) group.parentId = idOf(parent);
+    const names = agreedNames(members);
+    if (names !== undefined) group.names = names;
     const density = agreed(members, 'densityGPerMl', 'density');
     const piece = agreed(members, 'unitWeightG', 'unit weight');
     if (density !== undefined) group.densityGPerMl = density;
     if (piece !== undefined) group.unitWeightG = piece;
-    group['x-group'] = { rows: members.length };
+    const category = agreedCategory(members);
+    group['x-group'] = { rows: members.length, ...(category !== undefined ? { category } : {}) };
     out.push(group);
   }
   const ids = new Set(out.map((row) => row.id));
