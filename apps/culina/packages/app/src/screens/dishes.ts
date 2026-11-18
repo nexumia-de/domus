@@ -1,6 +1,7 @@
 // The Dishes screen: the list, and the detail of one dish beside it or as its own screen.
-import { getDish, listDishes, notebook } from '../demo';
+import { getDish, listDishes, notebook } from '../notebook';
 import { strings } from '../strings';
+import { notebookExtras } from './notebook-extras';
 import { dishDetail } from './dish-detail';
 import type { ListState } from './entry-list';
 import { notebookScreen } from './notebook-screen';
@@ -23,7 +24,7 @@ export const dishesScreen = (param?: string): HTMLElement =>
         searchLabel: strings.notebook.searchLabel,
         listLabel: strings.dishes.listLabel,
         empty: strings.screens.dishes.empty,
-        example: strings.dishes.exampleNote,
+        emptyNotebook: strings.empty.dishes,
         guidanceSummary: strings.screens.dishes.guidanceSummary,
         guidance: strings.screens.dishes.guidance,
       },
@@ -33,6 +34,7 @@ export const dishesScreen = (param?: string): HTMLElement =>
       },
       unknown: strings.dishes.unknown,
       chooseOne: strings.dishes.chooseOne,
+      extras: notebookExtras('dishes'),
     },
     param,
   );

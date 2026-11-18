@@ -1,0 +1,26 @@
+{
+  "id": "convert-lines-error-no-base",
+  "description": "Percent entry needs a percentBase",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "percent",
+    "component": {
+      "id": "x",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "a"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "No percentBase, so no line is the reference.",
+  "error_code": "no-percent-base"
+}

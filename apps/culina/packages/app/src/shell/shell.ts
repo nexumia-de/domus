@@ -1,15 +1,18 @@
 import { renderScreen } from '../screens/screens';
-import type { Route } from '../router';
+import type { Action, Route } from '../router';
 import { strings } from '../strings';
 import { el } from './el';
 import { createNav } from './nav';
+import { mountToast } from './toast';
 
 export interface Shell {
   /**
    * Shows a screen. With `focusHeading` the screen heading takes focus
    * (after navigation); on first load nothing is focused.
    */
-  show(route: Route, param: string | undefined, focusHeading: boolean): void;
+  show(route: Route, param: string | undefined, focusHeading: boolean, action?: Action): void;
+  /** Draws the current screen again (the notebook changed); keeps scroll and focus where they are. */
+  refresh(): void;
 }
 
 /** Landmarks: header (banner), nav, main. The screen replaces the content of main. */
@@ -30,10 +33,18 @@ export const mountShell = (root: HTMLElement): Shell => {
   const frame = el('div', 'app');
   frame.append(header, nav.element, main);
   root.append(skip, frame);
+  mountToast(root);
+  let shown: { route: Route; param: string | undefined; action: Action | undefined } | undefined;
 
   return {
-    show(route, param, focusHeading) {
-      const screen = renderScreen(route, param);
+    refresh() {
+      // An editor owns its form: the notebook changing under it must not redraw it.
+      if (shown === undefined || shown.action !== undefined) return;
+      main.replaceChildren(renderScreen(shown.route, shown.param));
+    },
+    show(route, param, focusHeading, action) {
+      shown = { route, param, action };
+      const screen = renderScreen(route, param, action);
       main.replaceChildren(screen);
       nav.setCurrent(route);
       const heading = screen.querySelector('h1');

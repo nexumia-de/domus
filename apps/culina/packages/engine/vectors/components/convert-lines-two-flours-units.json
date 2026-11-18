@@ -1,0 +1,86 @@
+{
+  "id": "convert-lines-two-flours-units",
+  "description": "Two flours in different units add up to the base; a pound of water and a sub-component become percent",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "percent",
+    "component": {
+      "id": "dough",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "wheat"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "kg"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "rye"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "lb"
+          }
+        },
+        {
+          "ref": {
+            "kind": "component",
+            "id": "starter"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Base 500 + 500 = 1000 g; 1 lb = 453.59237 g = 45.359237 %; 200 / 1000 = 20 %. Synthetic amounts.",
+  "expected": {
+    "lines": [
+      {
+        "amount": {
+          "value": 0.5,
+          "unit": "kg"
+        }
+      },
+      {
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "amount": {
+          "value": 45.359237,
+          "unit": "percent"
+        }
+      },
+      {
+        "amount": {
+          "value": 20,
+          "unit": "percent"
+        }
+      }
+    ]
+  }
+}

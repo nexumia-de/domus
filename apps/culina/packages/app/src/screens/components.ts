@@ -1,7 +1,8 @@
 // The Components screen: the list, and the detail of one component beside it or as its own screen.
 import { componentMeta } from '../components/meta';
-import { getComponent, listComponents, notebook } from '../demo';
+import { getComponent, listComponents, notebook } from '../notebook';
 import { strings } from '../strings';
+import { notebookExtras } from './notebook-extras';
 import { componentDetail } from './component-detail';
 import type { ListState } from './entry-list';
 import { notebookScreen } from './notebook-screen';
@@ -20,7 +21,7 @@ export const componentsScreen = (param?: string): HTMLElement =>
         searchLabel: strings.notebook.searchLabel,
         listLabel: strings.components.listLabel,
         empty: strings.screens.components.empty,
-        example: strings.components.exampleNote,
+        emptyNotebook: strings.empty.components,
         guidanceSummary: strings.screens.components.guidanceSummary,
         guidance: strings.screens.components.guidance,
       },
@@ -30,6 +31,7 @@ export const componentsScreen = (param?: string): HTMLElement =>
       },
       unknown: strings.components.unknown,
       chooseOne: strings.components.chooseOne,
+      extras: notebookExtras('components'),
     },
     param,
   );

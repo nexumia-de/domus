@@ -1,5 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import {
+  actionFromHash,
   DEFAULT_ROUTE,
   paramFromHash,
   hashFor,
@@ -93,4 +94,26 @@ test('component and dish routes carry an id; unknown ids are the screens to hand
   expect(paramFromHash('#/settings/x')).toBeUndefined();
   expect(hashFor('dishes', 'example-vegetable-plate')).toBe('#/dishes/example-vegetable-plate');
   expect(hashFor('components')).toBe('#/components');
+});
+
+test('editor routes: new, and edit of an id; they round-trip and carry no id for new', () => {
+  expect(actionFromHash('#/components/new')).toBe('new');
+  expect(paramFromHash('#/components/new')).toBeUndefined();
+  expect(actionFromHash('#/dishes/u-1/edit')).toBe('edit');
+  expect(paramFromHash('#/dishes/u-1/edit')).toBe('u-1');
+  expect(actionFromHash('#/components/u-1')).toBeUndefined();
+  expect(actionFromHash('#/ratios/new')).toBeUndefined();
+  expect(actionFromHash('#/components/u-1/other')).toBeUndefined();
+  expect(hashFor('components', undefined, 'new')).toBe('#/components/new');
+  expect(hashFor('dishes', 'u-1', 'edit')).toBe('#/dishes/u-1/edit');
+  for (const hash of ['#/components/new', '#/dishes/u-1/edit']) {
+    const { host } = fakeHost(hash);
+    const seen: string[] = [];
+    startRouter(host, ({ route, param, action }) => seen.push(`${route}:${param}:${action}`));
+    expect(host.history.replaceState).not.toHaveBeenCalled();
+    expect(seen).toHaveLength(1);
+  }
+  const stray = fakeHost('#/components/u-1/other');
+  startRouter(stray.host, () => undefined);
+  expect(stray.host.history.replaceState).toHaveBeenCalledWith(null, '', '#/components/u-1');
 });

@@ -1,5 +1,5 @@
-// The list pane of the component and dish screens: search by name, one link per entry, the quiet
-// line that says the data is example data, and the collapsible guidance.
+// The list pane of the component and dish screens: the action to add one, search by name, one
+// link per entry, a quiet empty state that invites, and the collapsible guidance.
 import { filterByName } from '../shared/search';
 import { hashFor, type Route } from '../router';
 import { el } from '../shell/el';
@@ -20,8 +20,10 @@ export interface ListText {
   title: string;
   searchLabel: string;
   listLabel: string;
+  /** No entry matches the search. */
   empty: string;
-  example: string;
+  /** The notebook has none of these yet. */
+  emptyNotebook: string;
   guidanceSummary: string;
   guidance: string;
 }
@@ -43,13 +45,21 @@ export const entryList = (
   entries: readonly Entry[],
   state: ListState,
   text: ListText,
-  options: { asHeading: boolean; current?: string; note?: string },
+  options: {
+    asHeading: boolean;
+    current?: string;
+    note?: string;
+    /** Shown under the title: the way to add one. */
+    actions?: Node[];
+    /** Shown with the empty state: example data. */
+    emptyActions?: Node[];
+  },
 ): HTMLElement => {
   const pane = el('section', 'entry-list split-list');
   if (options.asHeading) pane.append(el('h1', undefined, text.title));
   else pane.setAttribute('aria-label', text.listLabel);
   if (options.note !== undefined) pane.append(el('p', 'note-quiet', options.note));
-  pane.append(el('p', 'note-quiet example-note', text.example));
+  if (options.actions !== undefined) pane.append(...options.actions);
 
   const search = el('input', 'field');
   search.type = 'search';
@@ -66,6 +76,10 @@ export const entryList = (
   const draw = (): void => {
     rows.replaceChildren();
     const shown = filterByName(entries, state.query);
+    if (entries.length === 0) {
+      rows.append(el('p', 'empty', text.emptyNotebook), ...(options.emptyActions ?? []));
+      return;
+    }
     if (shown.length === 0) {
       rows.append(el('p', 'empty', text.empty));
       return;

@@ -1,5 +1,5 @@
 // The local store in a browser: records survive a reload and a service worker update, and
-// the store makes no request that leaves the origin. No screen writes yet, so the page is
+// the store makes no request that leaves the origin. The page is
 // opened with `?e2e-store`, which exposes the open store as a promise on
 // `globalThis.__culinaStore` (src/store/e2e-hook.ts; inert without that query).
 import { readFileSync, writeFileSync } from 'node:fs';

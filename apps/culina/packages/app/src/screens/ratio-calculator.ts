@@ -1,5 +1,7 @@
 // The calculator on a ratio card: three modes, results per role, a quiet note on cautions.
 import type { EffectiveTemplate, UnitId } from '@culina/engine';
+import { setPrefill } from '../editor/prefill';
+import { hashFor } from '../router';
 import { calculate, cautionsOf, type CalcResult } from '../ratios/calc';
 import { formatMass, MASS_UNITS, type MassUnit } from '../shared/mass';
 import { parseEntry } from '../shared/parse';
@@ -139,6 +141,20 @@ export const calculatorSection = (template: EffectiveTemplate): HTMLElement => {
   }
   shownUnit.control.addEventListener('change', () => drawResults(false));
 
+  // Hands the amounts shown above to the component editor, one line per role.
+  const make = el('a', 'btn quiet make-link', strings.ratios.makeRecipe);
+  make.href = hashFor('components', undefined, 'new');
+  make.addEventListener('click', () => {
+    setPrefill({
+      templateId: template.id,
+      ...(template.anchor === undefined ? {} : { baseRole: template.anchor }),
+      lines: template.parts.map((part) => {
+        const g = last?.rows.find((r) => r.role === part.role)?.g;
+        return g === undefined ? { role: part.role } : { role: part.role, g };
+      }),
+    });
+  });
+
   section.append(
     heading,
     modes,
@@ -149,6 +165,7 @@ export const calculatorSection = (template: EffectiveTemplate): HTMLElement => {
     shownUnit.wrap,
     results,
     notes,
+    make,
   );
   update();
   return section;

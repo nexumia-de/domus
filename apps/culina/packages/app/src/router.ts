@@ -1,5 +1,6 @@
 /**
- * Hash router: #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings.
+ * Hash router: #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
+ * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit.
  * The back stack is the browser history.
  */
 export const ROUTES = ['ratios', 'components', 'dishes', 'settings'] as const;
@@ -9,8 +10,16 @@ export const DEFAULT_ROUTE: Route = 'ratios';
 /** Routes whose hash may carry one more segment (a template, component or dish id). */
 const WITH_PARAM: readonly Route[] = ['ratios', 'components', 'dishes'];
 
-export const hashFor = (route: Route, param?: string): string =>
-  param ? `#/${route}/${encodeURIComponent(param)}` : `#/${route}`;
+/** The editors: a new record, or the record in `param` edited. */
+export type Action = 'new' | 'edit';
+const WITH_ACTION: readonly Route[] = ['components', 'dishes'];
+
+export const hashFor = (route: Route, param?: string, action?: Action): string => {
+  if (action === 'new') return `#/${route}/new`;
+  if (!param) return `#/${route}`;
+  const base = `#/${route}/${encodeURIComponent(param)}`;
+  return action === 'edit' ? `${base}/edit` : base;
+};
 
 const segments = (hash: string): string[] =>
   hash.replace(/^#\/?/, '').split('?')[0]?.split('/') ?? [];
@@ -21,11 +30,19 @@ export const routeFromHash = (hash: string): Route => {
   return ROUTES.find((route) => route === segment) ?? DEFAULT_ROUTE;
 };
 
+/** `new` for #/components/new, `edit` for #/components/<id>/edit; otherwise undefined. */
+export const actionFromHash = (hash: string): Action | undefined => {
+  if (!WITH_ACTION.includes(routeFromHash(hash))) return undefined;
+  const [, second, third] = segments(hash);
+  if (second === 'new' && third === undefined) return 'new';
+  return second && third === 'edit' ? 'edit' : undefined;
+};
+
 /** The second path segment, decoded, for routes that take one; otherwise undefined. */
 export const paramFromHash = (hash: string): string | undefined => {
   if (!WITH_PARAM.includes(routeFromHash(hash))) return undefined;
   const raw = segments(hash)[1];
-  if (!raw) return undefined;
+  if (!raw || actionFromHash(hash) === 'new') return undefined;
   try {
     return decodeURIComponent(raw);
   } catch {
@@ -43,6 +60,8 @@ export interface Navigation {
   route: Route;
   /** The id after the route: a ratio template, a component or a dish. */
   param?: string;
+  /** Set on an editor route. */
+  action?: Action;
   /** True for the route the page was opened on. */
   initial: boolean;
 }
@@ -52,9 +71,15 @@ export const startRouter = (host: RouterHost, onRoute: (navigation: Navigation) 
   const go = (initial: boolean): void => {
     const route = routeFromHash(host.location.hash);
     const param = paramFromHash(host.location.hash);
-    const canonical = hashFor(route, param);
+    const action = actionFromHash(host.location.hash);
+    const canonical = hashFor(route, param, action);
     if (host.location.hash !== canonical) host.history.replaceState(null, '', canonical);
-    onRoute(param === undefined ? { route, initial } : { route, param, initial });
+    onRoute({
+      route,
+      ...(param === undefined ? {} : { param }),
+      ...(action === undefined ? {} : { action }),
+      initial,
+    });
   };
   host.addEventListener('hashchange', () => go(false));
   go(true);

@@ -6,6 +6,7 @@ import { hashFor } from '../router';
 import type { ComponentRecord, Notebook } from '../records';
 import { el } from '../shell/el';
 import { strings } from '../strings';
+import { detailActions } from './detail-actions';
 import { linesSection } from './component-lines';
 import { scaleSections } from './component-scale';
 import { yieldSection } from './component-yield';
@@ -16,6 +17,7 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
   back.href = hashFor('components');
   card.append(back, el('h1', undefined, component.name));
   if (component.role !== undefined) card.append(el('p', 'muted', roleLabel(component.role)));
+  card.append(detailActions('components', component.id, component.name));
 
   const known = (id: string): boolean => nb.components.some((c) => c.id === id);
   const figures = yieldView(nb, component);
@@ -25,5 +27,11 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
     yieldSection(figures),
     ...scaleSections(nb, component, recordedG),
   );
+  if (component.method !== undefined) {
+    const notes = el('section', 'notes-section');
+    notes.append(el('h2', undefined, strings.components.notesHeading));
+    for (const step of component.method) notes.append(el('p', undefined, step));
+    card.append(notes);
+  }
   return card;
 };

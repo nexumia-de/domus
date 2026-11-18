@@ -1,0 +1,38 @@
+{
+  "id": "convert-lines-error-cannot-convert",
+  "description": "A cup of an ingredient without density cannot become percent",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "percent",
+    "component": {
+      "id": "x",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "a"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "b"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cup"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "A volume needs a density; none is given.",
+  "error_code": "cannot-convert"
+}
