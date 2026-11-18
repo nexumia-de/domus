@@ -11,7 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order: foundations, the list, sharing, stores, hand-over, Domus.
-- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the list inside the household's place, hand-over by link and by sync, screens, open decisions.
+- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the list inside the household's place, hand-over by link and by sync, screens, the owner's decisions.
 
 # Research
 

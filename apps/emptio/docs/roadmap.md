@@ -1,7 +1,7 @@
 ---
 type: Plan
 title: Roadmap
-description: Goals of Emptio and their order - foundations, the list with priority, sharing by sync, stores with routes, hand-over with Culina and Mixtura, Domus; work items become issues in milestones once the owner agreed to the plan.
+description: Goals of Emptio and their order - foundations, the list with priority, sharing by sync, stores with routes, hand-over with Culina and Mixtura, Domus; each goal is an issue with sub-issues.
 tags: [plan, roadmap, goals]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 ---
@@ -10,15 +10,16 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 
 # How the plan is tracked
 
-This file keeps the goals and their order. Work items become issues in
-milestones `M<n> – <goal>` once the owner agreed to the plan and the
-[open decisions](architecture.md#open-decisions-for-the-owner) are
-made. How the app is built: [architecture](architecture.md).
+This file keeps the goals and their order. Each goal is an
+[issue](https://github.com/nexumia-de/emptio/issues) and its work items
+are sub-issues of it; there are no milestones
+([decision 6](architecture.md#decisions)). How the app is built:
+[architecture](architecture.md).
 
 # Goals
 
 0. **Foundations.** Repository set up like Culina (rules for agents,
-   licence, check, CI); the open decisions made; the data model and the
+   licence, check, CI); the data model and the
    engine rules as documents with their first vectors.
 1. **The list.** Entries with priority and category, adding by search
    from the catalogue and by free name, ticking, the home order; the
@@ -41,6 +42,7 @@ made. How the app is built: [architecture](architecture.md).
 # Depends on others
 
 - Goal 2 needs the sync parts that exist in Mixtura today
+  as the shared package hospes
   ([shared host code](architecture.md#shared-host-code)).
 - Goal 4 needs Culina's stock and finder (its goal 4) and a common
   ingredient catalogue.

@@ -1,7 +1,7 @@
 ---
 type: Plan
 title: How Emptio is built
-description: Plan of 2026-11-18 for the shopping list app - same shape as Culina (pure engine with vectors, PWA shell, materia pinned), what is stored and what is derived, the engine's rules, the list as collections inside the household's place, hand-over with Culina and Mixtura by link and by sync, the screens, and the decisions still open for the owner.
+description: Plan of 2026-11-18 for the shopping list app - same shape as Culina (pure engine with vectors, PWA shell, materia pinned), what is stored and what is derived, the engine's rules, the list as collections inside the household's place, hand-over with Culina and Mixtura by link and by sync, the screens, and the owner's decisions.
 tags: [plan, architecture, data-model, engine, sync, screens]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -90,7 +90,7 @@ Ticking needs the time; it comes in as input, as in materia.
 Foods come from Culina's ingredient catalogue, so both apps speak the
 same ingredient ids. That catalogue is generated in Culina today; with
 a second app needing it, the data moves to a place both install from
-(open decision 2). Household goods (cleaning, drugstore) are in no
+(decision 2). Household goods (cleaning, drugstore) are in no
 catalogue: a short curated list of categories and usual items, with its
 source named, and free names beyond that.
 
@@ -144,23 +144,27 @@ written down before either side builds it.
 
 The WebDAV adapter, the local store and the sync screens exist in
 Mixtura, and Culina will need them at its sync goal. materia cannot
-take them: it is pure and they use `fetch` and IndexedDB. A third app
-copying them is against the rule of no duplicated code (open
-decision 1).
+take them: it is pure and they use `fetch` and IndexedDB. They move to
+a second shared package, **hospes** (decision 1).
 
-# Open decisions for the owner
+# Decisions
 
-1. **Shared host code**: a second package next to materia for the parts
-   that touch the host (sync adapter, local store, later common screens
-   and design), or each app keeps its own. Recommended: the package,
-   started when the first of Culina and Emptio reaches sync.
-2. **Where the ingredient catalogue lives** once two apps need it:
-   materia (as data, with categories passed in) or a data package of
-   its own. Recommended: its own package; materia holds no food.
-3. **List inside the place** or a unit of its own. Recommended: inside
-   the place, for one invite and for the hand-over to stock.
-4. **Priority in three steps** (_now_, _soon_, _sometime_), or other
-   words.
-5. **Amounts**: free text ("2 packs") or number and unit. Recommended:
-   free text first; number and unit only where an entry comes from a
-   recipe.
+By the owner on 2026-11-18:
+
+1. **Shared host code** goes into a second package next to materia,
+   named **hospes**, for the parts that touch the host (sync adapter,
+   local store, later common screens and design). The name is not yet
+   checked for collisions.
+2. **The ingredient catalogue** gets a data package of its own that
+   Culina and Emptio install; materia holds no food. Its name is open
+   (not "penus").
+3. **The list lives inside the place**, for one invite and for the
+   hand-over to stock.
+4. **Priority has three steps**: _now_, _soon_ (the default),
+   _sometime_.
+5. **Amounts are free text**; number and unit only where an entry comes
+   from a recipe.
+6. **Planning without milestones**: each goal of the
+   [roadmap](roadmap.md) is an issue and its work items are sub-issues.
+   This replaces the milestone rule of the shared agent rules for this
+   repository.
