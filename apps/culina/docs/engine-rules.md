@@ -573,6 +573,47 @@ yield) and could move to materia later; nothing was moved. Vectors:
 `packages/engine/vectors/validate/`, kind `validate_model`
 ([vector format](vectors.md#kind-of-cross-record-validation-issue-36)).
 
+# Versions and variations
+
+Culina's part of the version model; the line matching is materia's
+`diffVersions`, called through `src/model.ts`. Code: `src/versions/`
+(`chain.ts`, `diff.ts`). Records are the stored ones: each version is a
+record with `version.family`, `parent` and `date`
+([data model](data-model.md#version)). Pure: the date is a field of the
+record, set by the host, never read from a clock.
+
+- **Family and head.** `versionFamily(records, id)` returns the records
+  of the family of `id`, oldest first, and the head. The order is the
+  depth along the `parent` chain inside the family, then date, then id, so
+  versions saved on one day stay in order and a restore (a new record
+  whose parent is the previous head) is the newest. Unknown `id`:
+  `unknown-version`. `familyHeads` gives one head per family;
+  `versionNumber` is the position in the chain, the first being 1.
+- **Variations.** `variationsOf(records, id)` lists the families whose
+  first version has a `parent` in the family of `id`, with each head.
+  `variationParent` answers `none`, `parent` (the record it was made from)
+  or `removed` when that record is gone.
+- **Diff.** `diffComponentVersions(before, after)` and
+  `diffDishVersions(before, after)` return `{ ok: true, diff }` with
+  `changes` (line changes first, then fields) and `empty`; different
+  families give `different-family`. Lines are matched, not compared by
+  position (identical lines, then the same ref, then the same role), so a
+  different order is no difference. A line change names its `fields`
+  (`ref`, `amount`, `role`, `state`, `note`, `optional`); an amount is
+  compared as entered (1 kg is not 1000 g). A line that exists in both
+  versions with no differing field is not a change. Fields compared:
+  components `name`, `role`, `templateId`, `percentBase`, `yield`,
+  `method`; dishes `name`, `portions`, `note`; dish slots are lines with
+  their role. Change, reason, date and tasting notes are not compared. A
+  sub-component in the same role replaced by another is one changed line
+  (field `ref`); without a role it reads as one removed and one added
+  line.
+
+Vectors: `packages/engine/vectors/versions/`, kinds `diff_component`,
+`diff_dish`, `version_family` and `variations`
+([vector format](vectors.md#kinds-of-versions-and-variations-issue-17)),
+run by `test/versions-vectors.test.ts`.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

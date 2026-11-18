@@ -137,6 +137,21 @@ compared exactly, findings in order; `tolerance` is 0.
 | ---------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `validate_model` | `model`: any of `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`, `tastings` (arrays) | `ok`; `findings`: `code`, `kind`, `id`, optional `path`, `ref`, `ids`, `role`, in the engine's order |
 
+## Kinds of versions and variations (issue 17)
+
+Folder: `packages/engine/vectors/versions/`. Rules:
+[engine rules](engine-rules.md#versions-and-variations). Records are inline
+in the stored shape (only the fields the rule reads). Lines are written as
+`kind:id value unit` in `expected`; `tolerance` is 0. Error vectors carry
+`error_code`.
+
+| `kind`           | Inputs                                       | Expected                                                                                                 |
+| ---------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `diff_component` | `before`, `after`: components with `version` | `empty`; `changes`: `{type: line, kind, fields, before, after}` or `{type: field, field, before, after}` |
+| `diff_dish`      | `before`, `after`: dishes with `version`     | as `diff_component`                                                                                      |
+| `version_family` | `records` (`id`, `version`), `id`            | `versions` (ids, oldest first), `head`, `number` of `id`                                                 |
+| `variations`     | `records`, `id`                              | `variations` (`family`, `head`), optional `parent` (`kind`, optional `id`)                               |
+
 # Worked examples
 
 All numbers by hand. The input numbers are chosen for the arithmetic;
