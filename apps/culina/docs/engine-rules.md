@@ -670,7 +670,7 @@ Culina's finder (issue #21, [recipe book decision](decisions/recipe-book.md)):
 stock allows, fully or partly, with substitutes named. Code:
 `src/makeable/` (`context.ts` the one adapter to materia, `eligible.ts`,
 `amount.ts`, `evaluate.ts`, `template.ts`, `candidate.ts`, `rank.ts`,
-`for-role.ts`). Pure: `today` is an input, nothing is read from a clock.
+`for-role.ts`, `uses.ts`). Pure: `today` is an input, nothing is read from a clock.
 Results are `{ ok: true, candidates, useUpFirst }` or `{ ok: false, error }`
 with `invalid-tree`, `invalid-date` (today, or the use-by of an item, named
 by `itemId`), `cycle` (components that make each other, with `path`) or
@@ -785,6 +785,19 @@ role)` lists the stock items whose ingredient roles (inherited) include the
 role, or whose component has that `role`, earliest use-by first, so a
 screen can offer candidates for an open slot.
 
+**Starting from one ingredient.** `usesIngredient(input, ingredientId)`
+(same input as `makeable`; ingredients, components, dishes and
+`options.siblingSubstitution` are read) lists the family heads of
+components and dishes that use the ingredient or one it can stand in for,
+by the rules that decide a line: a line naming the ingredient, a line
+naming a class above it (the tree), and, with sibling substitution on, a
+line naming a leaf beside it. A line or slot that names a component counts
+when that component (its head) does, through any depth; optional lines
+count. Result `{ ok: true, records: [{ kind, id }] }` in name, then id
+order, or the tree or date error of `makeable`. Ratio templates are not
+listed (their roles are not ingredient lines). The ranking and the reasons
+of a record come from `makeable`; this only says which records to keep.
+
 **Materia.** Used: `buildTree` (the tree, with its errors), `isA` (a stocked
 descendant), `inheritedValue` (roles from ancestors), `dayNumber` (dates);
 the heads of families are Culina's own `familyHeads` (see
@@ -802,8 +815,8 @@ is not an ingredient node): no schema field was added; if wanted it needs a
 field on lines and slots. `useBy` is not derived from `preparedOn` plus a
 shelf life. Taste effects and shopping lists are out of scope.
 
-Vectors: `packages/engine/vectors/makeable/`, kinds `makeable` and
-`stock_for_role` ([vector format](vectors.md#kinds-of-the-finder-issue-21)),
+Vectors: `packages/engine/vectors/makeable/`, kinds `makeable`,
+`stock_for_role` and `uses_ingredient` ([vector format](vectors.md#kinds-of-the-finder-issue-21)),
 run by `test/makeable-vectors.test.ts`; `test/makeable.test.ts` holds the
 properties (a substitute never changes an amount, the stock order does not
 matter).
