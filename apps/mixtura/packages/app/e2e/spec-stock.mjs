@@ -71,10 +71,19 @@ const setStock = async (ids) => {
       new Promise((res) => {
         const r = indexedDB.open('mixtura');
         r.onsuccess = () => {
-          const tx = r.result.transaction('stock', 'readwrite');
+          const tx = r.result.transaction(['stock', 'places'], 'readwrite');
           const s = tx.objectStore('stock');
           s.clear();
-          for (const id of list) s.put({ ingredientId: id, present: true });
+          const places = tx.objectStore('places').getAll();
+          places.onsuccess = () => {
+            for (const id of list)
+              s.put({
+                placeId: places.result[0].id,
+                ingredientId: id,
+                updatedAt: '2026-11-18T08:00:00Z',
+                present: true,
+              });
+          };
           tx.oncomplete = () => {
             r.result.close();
             res();

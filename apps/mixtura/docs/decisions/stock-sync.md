@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Stock sync over storage the user configured
-description: Stock is kept per place; each place can be synced to a WebDAV folder the user chose, encrypted in the browser with a passphrase per place; several storages at once; places can be combined; a second person joins by invite link or QR code; the general parts live in materia; what "no server" means now and the order of work.
+description: Stock is kept per place and a person's own data in a library; each can be synced to a WebDAV folder the user chose, encrypted in the browser with a passphrase per place; several storages at once; places can be combined; a second person joins by invite link or QR code; the general parts live in materia; what "no server" means now and the order of work.
 tags: [decision, sync, webdav, stock, places, encryption, materia]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -204,6 +204,41 @@ Nextcloud instances in the example.
 
 Because the file is encrypted with the place's passphrase, a backend,
 whoever runs it, sees only ciphertext.
+
+## A person's own data: the library
+
+Added by the owner on 2026-11-18: a user has several devices and wants
+everything of theirs on all of them, in the first version. The design is
+the agent's (#143).
+
+1. **Two synced units.** A _place_ is shared with other people and
+   holds stock. The _library_ is one person's own data, meant for their
+   own devices: specs with all versions and riffs, own templates, custom
+   ingredients, affinities, the list of places, and preferences.
+2. **The same mechanism.** One encrypted file on a backend the user
+   chose, with its own passphrase; the same adapter, merge and cycle; a
+   second device joins by invite link or QR code.
+3. **One join brings everything.** The library carries, per place, the
+   backend address, the folder and the passphrase, so a second device
+   of the same person gets every place by joining the library once.
+   Storage user names and passwords are never in it; they are entered
+   once per device.
+4. **Preferences that sync**: units, the alcohol thresholds, the Buy
+   Next options, theme. **Device-only**: storage credentials, which
+   places are ticked and which one new entries go to, the backup
+   reminder state, editor drafts.
+5. **Every user entity gets a change time and removal markers**, as
+   stock did with places (#131). A removal carries over; an edit made
+   later on another device wins over an earlier removal.
+6. **Versions.** A version is written once and never changed, so
+   versions merge by id. Two devices that both created the same version
+   number of one drink while offline: both are kept, and the one created
+   later gets the next free number at merge, by a rule that gives the
+   same result on every device.
+7. **Not in the first version**: sharing a library or single drinks
+   with other people (#142). Each device makes its own default place
+   before it joins; joining a library offers to fold that place into one
+   of the library's places.
 
 ## Consequences
 

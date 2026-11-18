@@ -21,15 +21,12 @@ const shot = (page, name) =>
 const example = JSON.parse(
   readFileSync(resolve('..', 'engine', 'schemas', 'examples', 'valid', 'export-full.json'), 'utf8'),
 );
-const KINDS = ['ingredients', 'templates', 'specs', 'stock', 'affinities'];
+const KINDS = ['ingredients', 'templates', 'specs', 'places', 'stock', 'affinities'];
+const keyOf = (k) => (k === 'stock' ? (r) => `${r.placeId} ${r.ingredientId}` : (r) => r.id);
 const user = Object.fromEntries(KINDS.map((k) => [k, example[k]]));
-const norm = (list, key) => [...list].sort((a, b) => (a[key] < b[key] ? -1 : 1));
+const norm = (list, key) => [...list].sort((a, b) => (key(a) < key(b) ? -1 : 1));
 const same = (a, b) =>
-  KINDS.every(
-    (k) =>
-      JSON.stringify(norm(a[k], k === 'stock' ? 'ingredientId' : 'id')) ===
-      JSON.stringify(norm(b[k], k === 'stock' ? 'ingredientId' : 'id')),
-  );
+  KINDS.every((k) => JSON.stringify(norm(a[k], keyOf(k))) === JSON.stringify(norm(b[k], keyOf(k))));
 
 const site = await serve();
 const browser = await launch();
@@ -90,6 +87,8 @@ const put = (page, stores) =>
         open.onsuccess = () => {
           const db = open.result;
           const tx = db.transaction(Object.keys(data), 'readwrite');
+          // The file's places replace the default place the app made.
+          if (data.places) tx.objectStore('places').clear();
           for (const [name, list] of Object.entries(data)) {
             for (const r of list) tx.objectStore(name).put(r);
           }
@@ -135,7 +134,7 @@ let exported;
   await download.saveAs(path);
   exported = JSON.parse(readFileSync(path, 'utf8'));
   expect(
-    exported.app === 'mixtura' && exported.formatVersion === 1 && !!exported.exportedAt,
+    exported.app === 'mixtura' && exported.formatVersion === 2 && !!exported.exportedAt,
     'the file has app, format version and instant',
   );
   expect(same(exported, user), 'the file holds exactly the user data');
@@ -182,13 +181,19 @@ const file = join(OUT, `export-${width}.json`);
     'toast: Imported with counts',
   );
   const after = await dump(page);
-  expect(same(after, user), 'the imported data equals the original');
+  // A merge keeps the default place the app made, beside the places of the file.
+  expect(
+    same({ ...after, places: [] }, { ...user, places: [] }) &&
+      user.places.every((p) => after.places.some((a) => a.id === p.id)) &&
+      after.places.length === user.places.length + 1,
+    'the imported data equals the original',
+  );
   await shot(page, 'data-imported');
   await page.getByRole('button', { name: 'Undo' }).click();
   await page.getByText('Import undone').waitFor();
   const undone = await dump(page);
   expect(
-    KINDS.every((k) => undone[k].length === 0),
+    KINDS.every((k) => undone[k].length === (k === 'places' ? 1 : 0)),
     'Undo restores the empty state',
   );
   expect(
@@ -213,7 +218,17 @@ const file = join(OUT, `export-${width}.json`);
 {
   const page = await newPage();
   await openData(page);
-  await put(page, { stock: [{ ingredientId: 'lime-juice', present: true }] });
+  const [home] = (await dump(page)).places;
+  await put(page, {
+    stock: [
+      {
+        placeId: home.id,
+        ingredientId: 'lime-juice',
+        updatedAt: '2026-11-18T08:00:00Z',
+        present: true,
+      },
+    ],
+  });
   const cases = [
     ['not json', '{nope', 'The file cannot be read'],
     ['other app', JSON.stringify({ app: 'culina' }), 'The file is not a Mixtura export.'],
@@ -245,7 +260,7 @@ const file = join(OUT, `export-${width}.json`);
   const newer = join(OUT, `broken-${width}.json`);
   writeFileSync(newer, JSON.stringify({ ...example, formatVersion: 7 }));
   await page.getByTestId('import-input').setInputFiles(newer);
-  await page.getByText('It is format 7; this app reads up to 1.').waitFor();
+  await page.getByText('It is format 7; this app reads up to 2.').waitFor();
   expect(true, 'the newer-format text names both versions');
   const big = join(OUT, `big-${width}.json`);
   writeFileSync(big, ' '.repeat(10 * 1024 * 1024 + 1));

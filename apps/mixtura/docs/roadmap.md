@@ -44,11 +44,14 @@ The reasons are in [how bartenders work](bartender-practice.md) and
 8. **Stock sync.** Stock per place; each place can be synced to a
    WebDAV folder the user chose, encrypted with a passphrase per place;
    several storages at once; a second person joins by invite link or QR
-   code ([decision](decisions/stock-sync.md)).
+   code. A person's own specs, riffs, ingredients and preferences sync
+   between their devices the same way
+   ([decision](decisions/stock-sync.md)).
    _Done when_: two browser profiles with two storages each share one
    place, change stock on both sides while offline and converge without
    losing a change; a second place on the other storage stays
-   independent; a local-only place sends no request. Mixtura and Culina
+   independent; a local-only place sends no request; two devices of one
+   person hold the same specs after both edited offline. Mixtura and Culina
    then become public.
 9. **Later.** Cost per drink, menus, curated affinities with sources,
    further storage adapters.

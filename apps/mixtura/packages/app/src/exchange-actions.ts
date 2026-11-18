@@ -61,6 +61,9 @@ const sum = (a: Counts, b: Counts): Counts => {
 };
 
 /** What an applied plan brought in: added plus replaced records. */
+/** The total the screens show: places are left out until the place screens exist (#131). */
+export const shownTotal = (counts: Counts): number => total({ ...counts, places: 0 });
+
 export const importedCounts = (plan: Plan): Counts => sum(plan.added, plan.replaced);
 
 /** The browser's download: a Blob behind a temporary link. */
@@ -90,7 +93,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
     try {
       const file = await local.exchange.exportData({ exportedAt: host.now().toISOString() });
       app.set({
-        userRecords: total(countsOf(file)),
+        userRecords: shownTotal(countsOf(file)),
         importBackup: (await local.exchange.importBackup()) !== undefined,
         backup: await local.backup.load(),
       });

@@ -519,7 +519,7 @@ await page.evaluate(
     new Promise((res) => {
       const r = indexedDB.open('mixtura');
       r.onsuccess = () => {
-        const names = ['ingredients', 'specs', 'stock'];
+        const names = ['ingredients', 'specs', 'stock', 'places'];
         const tx = r.result.transaction(names, 'readwrite');
         tx.objectStore('ingredients').put({
           id,
@@ -545,12 +545,17 @@ await page.evaluate(
             { ingredientId: 'water', amount: 100, unit: 'ml' },
           ],
         });
-        tx.objectStore('stock').put({
-          ingredientId: id,
-          present: true,
-          openedOn: '2026-11-05',
-          moreBatches: ['2026-11-14'],
-        });
+        // Into the default place the app made.
+        const places = tx.objectStore('places').getAll();
+        places.onsuccess = () =>
+          tx.objectStore('stock').put({
+            placeId: places.result[0].id,
+            ingredientId: id,
+            updatedAt: '2026-11-17T12:00:00Z',
+            present: true,
+            openedOn: '2026-11-05',
+            moreBatches: ['2026-11-14'],
+          });
         tx.oncomplete = () => {
           r.result.close();
           res();
