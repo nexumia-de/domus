@@ -63,7 +63,8 @@ jobs:
 
   # The WebDAV adapter against the real server of tools/webdav-server: the
   # integration test in Node, e2e/webdav.mjs and, with a second server, e2e/sync.mjs in a
-  # browser (docs/sync-backends.md).
+  # browser (docs/sync-backends.md). The same Node test also runs against the nginx and Caddy
+  # fronts of tools/webdav-front (docs/sync-setup.md).
   # Not a required check unless the owner adds it to the ruleset.
   webdav:
     name: webdav
@@ -86,8 +87,8 @@ jobs:
         working-directory: tools/webdav-server
       - name: Wait for the servers
         run: |
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null "$MIXTURA_WEBDAV_URL/"
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null "$MIXTURA_WEBDAV_URL_2/"
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL/"
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL_2/"
       - run: npm run build
       - run: npx vitest run test/sync-webdav-integration.test.ts
         working-directory: packages/app
@@ -99,13 +100,30 @@ jobs:
         working-directory: packages/app
       - run: node e2e/sync.mjs 1200 800
         working-directory: packages/app
+      - run: docker compose --profile nginx --profile caddy up -d
+        working-directory: tools/webdav-front
+      - name: Wait for the fronts
+        run: |
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8090/
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8091/
+      - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8090 npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
+      - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8091 npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
       - name: Server log
         if: failure()
         run: docker compose --profile second logs --no-color
         working-directory: tools/webdav-server
+      - name: Front log
+        if: failure()
+        run: docker compose --profile nginx --profile caddy logs --no-color
+        working-directory: tools/webdav-front
       - run: docker compose --profile second down -v
         if: always()
         working-directory: tools/webdav-server
+      - run: docker compose --profile nginx --profile caddy down -v
+        if: always()
+        working-directory: tools/webdav-front
 
   # Needs the secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID. While
   # they are missing the job ends green and says so in its summary, so pull

@@ -10,4 +10,7 @@ export ALLOWED_ORIGINS_REGEX
 mkdir -p /var/dav/files /var/dav/lock
 chown -R daemon:daemon /var/dav
 htpasswd -Bbc /var/dav/users.passwd "$WEBDAV_USER" "$WEBDAV_PASSWORD" 2>/dev/null
-exec httpd -DFOREGROUND -f /usr/local/apache2/conf/httpd.conf
+# BACKEND_ONLY=1: no CORS answers at all, the backend of tools/webdav-front.
+set --
+[ "${BACKEND_ONLY:-}" != 1 ] || set -- -DNO_CORS
+exec httpd -DFOREGROUND "$@" -f /usr/local/apache2/conf/httpd.conf

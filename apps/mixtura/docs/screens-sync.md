@@ -53,7 +53,7 @@ one probe file and shows one text per state: reachable, unauthorised, blocked,
 unreachable, server error; `blocked` names the cause in plain words (the
 storage did not answer in a way a browser may read, usually because it does
 not allow requests from this app, CORS) and links to
-[sync backends](sync-backends.md) on GitHub (`SETUP_URL`, kept in one place);
+[Set up storage for sync](sync-setup.md) on GitHub (`SETUP_URL`, kept in one place);
 a storage that answers but hides its `ETag` header has its own sentence. A
 result is dropped as soon as a field changes. **Remove** is refused while a
 place uses the storage, naming the places; otherwise it acts at once with Undo.

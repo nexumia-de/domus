@@ -77,6 +77,14 @@ replaces a file instead of changing it leaves the container looking at the old
 one; after editing either, recreate the containers with
 `docker compose up -d --force-recreate`.
 
+## Without CORS answers
+
+`BACKEND_ONLY=1` starts Apache with `-DNO_CORS`: no CORS header and no
+preflight answer, a plain WebDAV server. It is the test backend of the nginx
+and Caddy fronts in [`tools/webdav-front`](../webdav-front/); without the
+variable nothing changes. The step-by-step guide for users, with HTTPS and
+backups: [Set up storage for sync](../../docs/sync-setup.md).
+
 ## Files
 
 - `compose.yaml`: the service, with the image pinned by digest.

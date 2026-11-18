@@ -150,7 +150,7 @@ so the rule cannot be removed silently
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
 requests and pushes to `main`. The job is named `check`; this is the
 required status check name for the branch-protection ruleset. A second
-job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below; a fourth, `webdav` (#133), starts both Docker servers of `tools/webdav-server` (`--profile second`) and runs `test/sync-webdav-integration.test.ts`, `e2e/webdav.mjs` and `e2e/sync.mjs` (360 x 720 and 1200 x 800) against them ([sync backends](sync-backends.md#the-test-server)). None of the three is required yet; if `webdav` should be, the owner adds the name to the ruleset (`.github/rulesets/main.json`) and re-imports it. Actions are
+job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below; a fourth, `webdav` (#133), starts both Docker servers of `tools/webdav-server` (`--profile second`) and runs `test/sync-webdav-integration.test.ts`, `e2e/webdav.mjs` and `e2e/sync.mjs` (360 x 720 and 1200 x 800) against them, then starts the nginx and Caddy fronts of `tools/webdav-front` (#141) and runs the integration test against each ([sync backends](sync-backends.md#the-test-server), [setup guide](sync-setup.md)). None of the three is required yet; if `webdav` should be, the owner adds the name to the ruleset (`.github/rulesets/main.json`) and re-imports it. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
 The app uses only relative URLs, so the same build

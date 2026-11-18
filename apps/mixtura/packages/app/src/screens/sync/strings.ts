@@ -9,7 +9,7 @@ import type { InviteFailure } from '../../sync/invite';
 import type { RelocateProblem } from '../../sync/relocate';
 
 /** The setup document a user follows to make a storage usable from a browser. */
-export const SETUP_URL = 'https://github.com/nexumia-de/mixtura/blob/main/docs/sync-backends.md';
+export const SETUP_URL = 'https://github.com/nexumia-de/mixtura/blob/main/docs/sync-setup.md';
 
 /** `minutes` since a sync, as words; a date after a day. */
 export function ago(at: string, now: string): string {

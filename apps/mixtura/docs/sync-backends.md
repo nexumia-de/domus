@@ -11,6 +11,9 @@ sources:
   - id: spike
     title: 'Spike: WebDAV from the browser'
     url: webdav-spike.md
+  - id: setup
+    title: 'Set up storage for sync (user guide)'
+    url: sync-setup.md
   - id: materia
     title: 'materia, sync: the StorageAdapter interface'
     url: https://github.com/nexumia-de/materia
@@ -221,7 +224,25 @@ Stop both with `docker compose --profile second down -v`.
 Editing `httpd.conf` after the container exists: `docker compose up -d --force-recreate`
 (a single-file bind mount keeps the old file when an editor replaces it).
 
+## Fronts: nginx and Caddy
+
+`tools/webdav-front/` (#141) holds a minimal reverse proxy each for nginx
+(`nginx/default.conf.template`) and Caddy (`caddy/Caddyfile`), a Compose file
+that starts either in front of the `httpd` server of `tools/webdav-server` run
+without any CORS answer (`BACKEND_ONLY=1` in its entrypoint, which starts Apache
+with `-DNO_CORS`; without that variable nothing changes), and a README. They
+add what a plain WebDAV server lacks (point 5 of
+[what a backend must do](#what-a-backend-must-do)): the origin check against
+`ALLOWED_ORIGINS_REGEX`, the preflight answered without credentials, the
+exposed `ETag`, and the same headers on the `401`. Ports `8090` (nginx) and
+`8091` (Caddy) on `127.0.0.1`. The Node integration test passes unchanged
+against both, and CI runs it ([development](development.md#ci)); what was
+tested in which way is in the [setup guide](sync-setup.md#what-was-tested).
+
 ## Setup for a user
+
+The guide for users is [Set up storage for sync](sync-setup.md) (the target
+of `SETUP_URL`); this section is what it is built on.
 
 [tools/webdav-server/README.md](../tools/webdav-server/README.md): with Docker,
 `WEBDAV_PASSWORD=… docker compose up -d`, then in the app address
