@@ -233,6 +233,7 @@ const build = (
           title: t.pickerSearch,
           items: pickerItems(),
           canCreate: true,
+          catalogue: true,
           onPick(ref) {
             slot.ref = ref;
             if (ref.kind === 'component' && !(MASS_ONLY as readonly string[]).includes(slot.unit)) {

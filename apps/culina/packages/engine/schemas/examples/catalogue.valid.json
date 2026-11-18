@@ -1,0 +1,27 @@
+{
+  "format": "culina-ingredient-catalogue",
+  "formatVersion": 1,
+  "dataset": {
+    "name": "USDA FoodData Central, SR Legacy",
+    "release": "2018-04",
+    "file": "FoodData_Central_sr_legacy_food_json_2018-04.json",
+    "sha256": "70d4235ae3a2bdf48a7b9eaa1286a83fa67b6f3270436c9ce8b008213f500129",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://fdc.nal.usda.gov/ (section Licensing)"
+  },
+  "generatedBy": "tools/catalogue/build.mjs",
+  "ingredients": [
+    {
+      "id": "fdc-169230",
+      "name": "Garlic",
+      "densityGPerMl": {
+        "value": 0.575,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 cup = 136 g"
+      },
+      "unitWeightG": {
+        "value": 3,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 clove = 3 g"
+      },
+      "x-fdc": { "id": 169230, "description": "Garlic, raw" }
+    }
+  ]
+}

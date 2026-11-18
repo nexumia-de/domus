@@ -304,6 +304,29 @@ note of an existing line are kept as they are.
   spot with a name, an optional role, an optional yield (percent of the
   purchased weight) and an optional shelf life, all with the source `user`.
   Nothing is looked up outside the device.
+- **From the catalogue.** In the ingredient picker (a component line, a
+  dish slot) a section "From the catalogue" sits below the user's own
+  entries and the search text filters it too: entries whose name contains the
+  text, those that start with it first, at most 25 at once with a quiet line
+  "Showing 25 of N" for the rest; with no text it says how many ingredients it
+  holds. Each row shows the name and "by volume", "by piece" or both. An entry
+  already in the notebook is not offered again (it is in the user's own
+  list). Choosing an entry copies the catalogue row, unchanged, into the
+  notebook through the ordinary save path (`saveRecord`) and picks it; from then on it
+  is the user's ingredient, and picking it again, or an entry the user already
+  has, writes nothing. The catalogue is the file `catalogue.json` of the
+  app's own origin ([ingredient catalogue](ingredient-catalogue.md)), fetched
+  the first time a picker opens and kept for the session; it is precached by
+  the service worker, so the section works offline, and `main.js` does not
+  carry it. While it loads the section says so quietly; if it cannot be loaded
+  (or is not a catalogue of format 1) it says "The catalogue could not be
+  loaded. Your own ingredients still work." and the picker works as before, and
+  the next picker tries again. Entries that do not fit the ingredient
+  schema are left out. **Test:** `test/catalogue-app.test.ts` (reading, loading
+  once, retry, copying without overwriting), `e2e/catalogue.mjs` (empty
+  notebook, search, choosing, volume and count amounts against the engine
+  from the catalogue rows, reload, offline under the service worker, an
+  unavailable file, no console error or foreign request, 360 px).
 - **Cycles.** A component that is the one edited, or that uses it
   (directly or through another), is shown in the picker as "this component"
   or "uses this component" and cannot be chosen; a draft that would still
@@ -604,7 +627,7 @@ another origin, on every run of the shell and the offline checks).
 
 Built by `packages/app/build.mjs`: it hashes all built files into a cache
 name `culina-<16 hex>` and gives `sw.js` the exact file list (every built
-file except `sw.js`). On `install` it precaches the list and takes over
+file except `sw.js`, `catalogue.json` among them). On `install` it precaches the list and takes over
 at once (`skipWaiting`); on `activate` it deletes every cache that starts
 with `culina-` and has another version, then claims the open pages. A
 `GET` request of its own origin is answered from the cache, a navigation

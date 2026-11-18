@@ -1,3 +1,4 @@
 dist/
 package-lock.json
 packages/app/src/store/validators.generated.*
+packages/app/data/ingredient-catalogue.json

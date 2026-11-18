@@ -5,6 +5,7 @@ import { filterByName } from '../../shared/search';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { nextId } from '../fields';
+import { catalogueSection } from './catalogue-section';
 import { button } from './form-bits';
 import { ingredientCreate } from './ingredient-create';
 
@@ -21,6 +22,8 @@ export interface PickerOptions {
   items: readonly PickerItem[];
   /** Offer to create an ingredient from the search text. */
   canCreate: boolean;
+  /** Also search the shipped ingredient catalogue (below the notebook's own entries). */
+  catalogue?: boolean;
   onPick(ref: ComponentRef): void;
   onClose(): void;
 }
@@ -40,10 +43,14 @@ export const picker = (options: PickerOptions): HTMLElement => {
   wrap.append(label, search);
   const list = el('ul', 'rows picker-rows');
   const create = el('div', 'picker-create');
+  const catalogue = options.catalogue
+    ? catalogueSection(() => search.value, options.onPick)
+    : undefined;
 
   const draw = (): void => {
     list.replaceChildren();
     create.replaceChildren();
+    catalogue?.update();
     const shown = filterByName(options.items, search.value);
     for (const item of shown) {
       const row = el('li');
@@ -73,6 +80,12 @@ export const picker = (options: PickerOptions): HTMLElement => {
   };
   search.addEventListener('input', draw);
   draw();
-  box.append(wrap, list, create, button(t.pickerClose, 'quiet', options.onClose));
+  box.append(
+    wrap,
+    list,
+    ...(catalogue ? [catalogue.node] : []),
+    create,
+    button(t.pickerClose, 'quiet', options.onClose),
+  );
   return box;
 };

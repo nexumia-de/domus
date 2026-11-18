@@ -1,0 +1,6 @@
+{
+  "format": "culina-ingredient-catalogue",
+  "formatVersion": 2,
+  "dataset": { "name": "USDA FoodData Central, SR Legacy", "release": "April 2018" },
+  "ingredients": [{ "id": "Not A Slug", "name": "Garlic", "densityGPerMl": { "value": 0.575 } }]
+}

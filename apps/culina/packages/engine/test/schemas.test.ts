@@ -32,6 +32,7 @@ const entities = [
   'affinity',
   'tasting',
   'export',
+  'catalogue',
 ];
 
 describe('every schema has one valid and one invalid example', () => {
@@ -141,6 +142,13 @@ describe('invalid cases named by the issue', () => {
     expect(fails('export', (d: Doc) => (d.stock[0].state = 'frozen'))).toBe(true);
     expect(fails('export', (d: Doc) => (d.tastings[0].ref.kind = 'stock'))).toBe(true);
   });
+  test('catalogue: format 1 only, entries are ingredient records with sourced numbers', () => {
+    expect(fails('catalogue', (d: Doc) => (d.formatVersion = 2))).toBe(true);
+    expect(fails('catalogue', (d: Doc) => delete d.dataset.sha256)).toBe(true);
+    expect(fails('catalogue', (d: Doc) => delete d.ingredients[0].densityGPerMl.source)).toBe(true);
+    expect(fails('catalogue', (d: Doc) => (d.ingredients[0].id = 'Not A Slug'))).toBe(true);
+    expect(fails('catalogue', (d: Doc) => (d.ingredients[0]['x-fdc'] = { id: 1 }))).toBe(false);
+  });
 });
 
 describe('data-model.md and the schemas agree', () => {
@@ -154,6 +162,7 @@ describe('data-model.md and the schemas agree', () => {
     affinity: 'Affinity',
     tasting: 'Tasting note',
     export: 'Export file',
+    catalogue: 'Ingredient catalogue file',
   };
   const table = (title: string): Map<string, boolean> => {
     const start = doc.indexOf(`\n## ${title}\n`);
