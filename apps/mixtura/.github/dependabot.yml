@@ -32,3 +32,8 @@ updates:
     directory: /tools/webdav-server
     schedule:
       interval: weekly
+  # The reverse-proxy images that add CORS in front of a WebDAV server (tools/webdav-front).
+  - package-ecosystem: docker-compose
+    directory: /tools/webdav-front
+    schedule:
+      interval: weekly

@@ -176,7 +176,7 @@ drinks · Swap dropped · Swap reset · Imported {counts} · Import undone · Ex
 # Sync (#135)
 
 `screens/sync/strings.ts` (`syncStrings`, `problemTexts`, `connectionTexts`); the
-address of the setup guide, `SETUP_URL`, is kept there and nowhere else. Header
+address of the setup guide, `SETUP_URL` ([sync-setup.md](sync-setup.md) on GitHub), is kept there and nowhere else. Header
 capitalisation for titles and buttons, sentence capitalisation for descriptions.
 Settings has a row **Sync** ("Storages, places and sharing", title `strings.titles.sync`);
 the Places sheet on Stock has **Open Sync** with "Storages, passphrases and sharing are on the Sync page."

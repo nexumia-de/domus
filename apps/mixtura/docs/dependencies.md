@@ -92,9 +92,11 @@ schemas).
 Not in `package.json`, not shipped in the app: a container the tests start
 and users can run ([sync backends](sync-backends.md#the-test-server)).
 
-| Image                                                                                                     | Version | Licence    | Use                                                                                                                  |
-| --------------------------------------------------------------------------------------------------------- | ------- | ---------- | -------------------------------------------------------------------------------------------------------------------- |
-| `httpd` (Docker Official Image) `sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9` | 2.4.71  | Apache-2.0 | WebDAV server with `mod_dav` for the integration test, `e2e/webdav.mjs` and the user setup in `tools/webdav-server/` |
+| Image                                                                                                     | Version | Licence      | Use                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------- | ------- | ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `httpd` (Docker Official Image) `sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9` | 2.4.71  | Apache-2.0   | WebDAV server with `mod_dav` for the integration test, `e2e/webdav.mjs` and the user setup in `tools/webdav-server/` |
+| `nginx` (Docker Official Image) `sha256:42c68eab6f7e22611786a9fe1d1c019e275c50185bd54b8f75dc2b9184322703` | 1.30.6  | BSD-2-Clause | Reverse proxy that adds CORS, `tools/webdav-front/nginx/` (#141)                                                     |
+| `caddy` (Docker Official Image) `sha256:4851e54a46b206517c574821bb5cc67f170d2156041e9fbc4c9193b45e84a75b` | 2.11.9  | Apache-2.0   | Reverse proxy that adds CORS, `tools/webdav-front/caddy/` (#141)                                                     |
 
 Pinned by tag and digest in `tools/webdav-server/compose.yaml` (the digest is
 the multi-platform index, `amd64` and `arm64` among others; Dependabot's
@@ -115,6 +117,27 @@ adapter's documented limits. Other servers (nginx with its DAV module,
 Caddy, SabreDAV, `rclone serve webdav`) were not run and are not ruled out;
 the adapter works against anything that meets the
 [list of requirements](sync-backends.md#what-a-backend-must-do).
+
+The two reverse proxies of `tools/webdav-front/compose.yaml` (#141, [setup
+guide](sync-setup.md#a-web-server-in-front-of-your-webdav-server)) are pinned
+the same way, and `.github/dependabot.yml` has a `docker-compose` entry for
+`/tools/webdav-front`; the `httpd` image there is the one of
+`tools/webdav-server`, run as the plain backend (`BACKEND_ONLY=1`).
+
+- **nginx 1.30.6**: licence read from `/usr/share/doc/nginx/copyright` inside
+  the image: Igor Sysoev and Nginx, Inc., "Redistribution and use in source and
+  binary forms, with or without modification, are permitted provided that"
+  the two numbered conditions hold, which is the 2-clause BSD licence. The
+  image is Debian 13 with its own packages; the configuration
+  (`default.conf.template`) is ours.
+- **Caddy 2.11.9**: the image's label `org.opencontainers.image.licenses` is
+  `Apache-2.0`, and the `LICENSE` of the project's `v2.11.9` tag on GitHub
+  starts "Apache License, Version 2.0" (the image carries no licence file).
+
+Both are only run, nothing of them is copied into this repository or the
+app. Why these two: they are what operators already run in front of other
+services and they can be configured for exactly the CORS answers the adapter
+needs ([setup guide](sync-setup.md#a-web-server-in-front-of-your-webdav-server)).
 
 The adapter and the stores add no npm dependency.
 
