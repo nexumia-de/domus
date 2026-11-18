@@ -72,10 +72,21 @@ const setStock = (ids) =>
       new Promise((res) => {
         const r = indexedDB.open('mixtura');
         r.onsuccess = () => {
-          const tx = r.result.transaction('stock', 'readwrite');
+          // Stock is kept per place (docs/store.md): the rows go into the default place.
+          const tx = r.result.transaction(['stock', 'places'], 'readwrite');
           const s = tx.objectStore('stock');
           s.clear();
-          for (const id of list) s.put({ ingredientId: id, present: true });
+          const places = tx.objectStore('places').getAll();
+          places.onsuccess = () => {
+            for (const id of list) {
+              s.put({
+                placeId: places.result[0].id,
+                ingredientId: id,
+                updatedAt: '2026-11-18T10:00:00.000Z',
+                present: true,
+              });
+            }
+          };
           tx.oncomplete = () => {
             r.result.close();
             res();
