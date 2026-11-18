@@ -5,6 +5,7 @@
 import type { ConnectionState } from '../../sync/webdav-connection';
 import type { SyncProblem } from '../../sync/status';
 import type { JoinProblem } from '../../sync/join';
+import type { InviteFailure } from '../../sync/invite';
 import type { RelocateProblem } from '../../sync/relocate';
 
 /** The setup document a user follows to make a storage usable from a browser. */
@@ -177,13 +178,22 @@ export const syncStrings = {
   },
   share: {
     title: (name: string) => `Share ${name}`,
-    intro: 'Another person enters these four values under Sync, Join a Place.',
+    intro:
+      'Send the invite link or show the QR code. The other person opens the link in the app, or scans the code with their camera app.',
+    inviteLink: 'Invite link',
+    preparing: 'Preparing the invite…',
+    qrAria: 'QR code of the invite link',
+    noQr: 'The invite is too long for a QR code. Send the link.',
+    inviteNote:
+      'The link contains the passphrase but not the storage’s user name or password. The other person adds the storage with their own.',
+    byHand: 'Or enter these values by hand',
+    byHandIntro: 'Under Sync, Join a Place.',
     address: 'Storage address',
     folder: 'Folder',
     placeCode: 'Place code',
     passphrase: 'Passphrase',
     warning:
-      'Whoever has these values and access to the folder can read and change this place’s stock.',
+      'Whoever has the invite or these values and access to the folder can read and change this place’s stock.',
     copy: 'Copy',
     copyAria: (what: string) => `Copy ${what}`,
     copied: 'Copied',
@@ -216,5 +226,21 @@ export const syncStrings = {
     start: 'Join Place',
     starting: 'Joining…',
     done: 'Joined the place',
+    fromInvite:
+      'Filled in from an invite. Check the values, then join. Nothing is saved until you do.',
+    inviteStorage: (address: string) =>
+      `This place is in the storage at ${address}. Add it as a storage with your own user name and password, or choose another storage.`,
   },
 } as const;
+
+/** What an invite link that cannot be used says, per reason. */
+export const inviteProblemTexts: Record<InviteFailure, string> = {
+  damaged: 'This invite link is damaged or cut off. Ask for a new invite.',
+  version:
+    'This invite was made by a newer version of the app. Update the app and open the link again.',
+  type: 'This invite is for a kind of storage this app does not know. Enter the values by hand or ask for a new invite.',
+  'no-passphrase': 'This invite has no passphrase. Ask for a new invite.',
+  'bad-address': 'The storage address in this invite is not valid. Ask for a new invite.',
+  'bad-folder': 'The folder in this invite is not valid. Ask for a new invite.',
+  'bad-place': 'The place code in this invite is not valid. Ask for a new invite.',
+};

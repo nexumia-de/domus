@@ -7,6 +7,7 @@
 import type { ConnectionState } from '../../sync/webdav-connection';
 import { DEFAULT_FOLDER } from '../../sync/location';
 import { resetCopies } from './copy-row';
+import { resetInvite } from './invite-block';
 
 export interface Drafts {
   storage: {
@@ -32,6 +33,10 @@ export interface Drafts {
     folder: string;
     code: string;
     passphrase: string;
+    /** The storage address an invite names ('' without an invite); the storage is chosen for it. */
+    address: string;
+    /** The user chose a storage in the sheet, so the invite's address no longer chooses. */
+    picked: boolean;
     show: boolean;
     busy: boolean;
     problem: string | null;
@@ -58,6 +63,8 @@ const fresh = (): Drafts => ({
     folder: DEFAULT_FOLDER,
     code: '',
     passphrase: '',
+    address: '',
+    picked: false,
     show: false,
     busy: false,
     problem: null,
@@ -72,6 +79,7 @@ export function reset(sheet: 'storage' | 'bind' | 'move' | 'join'): void {
   const empty = fresh();
   Object.assign(drafts[sheet], empty[sheet]);
   resetCopies();
+  resetInvite();
 }
 
 /** Forgets everything (leaving the page). */
@@ -83,4 +91,5 @@ export function resetAll(): void {
   Object.assign(drafts.join, empty.join);
   drafts.page = null;
   resetCopies();
+  resetInvite();
 }

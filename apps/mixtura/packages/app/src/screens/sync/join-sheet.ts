@@ -8,6 +8,7 @@ import { invalidateSync, type SyncView } from '../../sync/view';
 import { invalidateStock } from '../../stock/state';
 import { showToast } from '../../toast';
 import { drafts } from './drafts';
+import { chooseStorage, inviteStorageNote } from './join-invite';
 import { problemLine, showButton, storageSelect, textField } from './fields';
 import { closeSyncSheet, openSyncSheet } from './sheet-address';
 import { sheetFrame } from './sheet-frame';
@@ -67,11 +68,13 @@ export function joinSheet(
   again: boolean,
   writable: boolean,
 ): HTMLElement {
-  if (!view.storages.some((s) => s.id === d.storageId)) d.storageId = view.storages[0]?.id ?? '';
+  chooseStorage(view);
   const select = storageSelect('join-storage', t.storage, view.storages, d.storageId, (id) => {
     d.storageId = id;
+    d.picked = true;
     d.problem = null;
   });
+  const proposed = inviteStorageNote(context, view);
   const clear = (): void => {
     d.problem = null;
     lastProblem = null;
@@ -81,22 +84,26 @@ export function joinSheet(
     again ? t.againTitle : t.title,
     () => closeSyncSheet(context),
     h('p', { class: 'note' }, again ? t.againIntro : t.intro),
-    select ??
-      h(
-        'div',
-        { class: 'sheet-group' },
-        h('p', { class: 'note', 'data-testid': 'join-no-storage' }, syncStrings.bind.noStorage),
-        h(
-          'button',
-          {
-            type: 'button',
-            class: 'btn btn--tonal',
-            'data-focus': 'join-add-storage',
-            onclick: () => openSyncSheet(context, 'storage'),
-          },
-          syncStrings.storages.add,
-        ),
-      ),
+    d.address !== '' && h('p', { class: 'note', 'data-testid': 'join-from-invite' }, t.fromInvite),
+    select,
+    proposed ??
+      (select
+        ? null
+        : h(
+            'div',
+            { class: 'sheet-group' },
+            h('p', { class: 'note', 'data-testid': 'join-no-storage' }, syncStrings.bind.noStorage),
+            h(
+              'button',
+              {
+                type: 'button',
+                class: 'btn btn--tonal',
+                'data-focus': 'join-add-storage',
+                onclick: () => openSyncSheet(context, 'storage'),
+              },
+              syncStrings.storages.add,
+            ),
+          )),
     textField({
       id: 'join-folder',
       label: t.folder,

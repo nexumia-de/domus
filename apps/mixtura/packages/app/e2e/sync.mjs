@@ -7,8 +7,9 @@
 //
 // MIXTURA_WEBDAV_USER defaults to `mixtura`. Without both addresses the script
 // says so and ends successfully.
-/* global document, window, location, indexedDB -- in functions the page runs */
+/* global document, window, location, history, indexedDB -- in functions the page runs */
 import { resolve } from 'node:path';
+import { deflateRawSync } from 'node:zlib';
 import { launch } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
@@ -35,7 +36,7 @@ const folder2 = `parents-${stamp}`;
 const site = await serve();
 const browser = await launch();
 const log = []; // every request of both people: { who, method, url }
-const newPerson = async (who) => {
+const newPerson = async (who, start = '#/stock', ready = '.stock-tree') => {
   const context = await browser.newContext({
     viewport: { width, height },
     deviceScaleFactor: docs ? 2 : 1,
@@ -46,8 +47,8 @@ const newPerson = async (who) => {
     throw error;
   });
   context.on('request', (r) => log.push({ who, method: r.method(), url: r.url() }));
-  await page.goto(`${site.url}#/stock`, { waitUntil: 'load' });
-  await page.locator('.stock-tree').waitFor();
+  await page.goto(`${site.url}${start}`, { waitUntil: 'load' });
+  await page.locator(ready).waitFor();
   return { who, context, page };
 };
 const A = await newPerson('A');
@@ -285,7 +286,9 @@ const share = async (p, name) => {
   await p.page.getByRole('button', { name: `Share ${name}` }).click();
   await sheet(p).waitFor();
   const read = (id) => p.page.locator(`#${id}`).inputValue();
+  await p.page.locator('[data-testid="invite-qr"]').waitFor();
   const values = {
+    invite: await read('share-invite'),
     address: await read('share-address'),
     folder: await read('share-folder'),
     code: await read('share-code'),
@@ -296,6 +299,31 @@ const share = async (p, name) => {
       'can read and change',
     ),
     `${p.who}: the Share sheet says who can read and change the stock`,
+  );
+  const qr = await p.page.locator('[data-testid="invite-qr"] svg').evaluate((svg) => {
+    const box = svg.getBoundingClientRect();
+    const fills = [...svg.querySelectorAll('[fill]')].map((n) => n.getAttribute('fill'));
+    return {
+      role: svg.getAttribute('role'),
+      label: svg.getAttribute('aria-label'),
+      width: box.width,
+      fits: box.right <= window.innerWidth,
+      fills,
+    };
+  });
+  expect(
+    qr.role === 'img' &&
+      qr.label === 'QR code of the invite link' &&
+      qr.width <= 240 &&
+      qr.fits &&
+      qr.fills.join() === '#fff,#000',
+    `${p.who}: the QR code is a labelled image, dark on white, at most 240 px ${JSON.stringify(qr)}`,
+  );
+  const sheetText = await sheet(p).innerText();
+  expect(
+    sheetText.includes('contains the passphrase but not the storage’s user name or password') &&
+      sheetText.includes('Or enter these values by hand'),
+    `${p.who}: the Share sheet says what the link holds and offers the values by hand`,
   );
   await measure(p, 'on the Share sheet');
   if (name === 'Flat') await docShot(p, 'sync-share');
@@ -584,6 +612,181 @@ await pause(4500);
 expect(external() === stopped, `after Stop Syncing a change causes no request ${stopped}`);
 const kept = await stockOf(A);
 expect(kept.includes('vodka') && kept.includes('campari'), 'local data stays after Stop Syncing');
+
+// ================= 8. Joining through an invite link =================
+const invite = {
+  format: 'mixtura-invite',
+  version: 1,
+  type: 'webdav',
+  address: url1,
+  folder: folder1,
+  place: flat.code,
+  passphrase: flat.passphrase,
+};
+/** A link made by hand, the way the app codes it: `1.` and the base64url of the deflated text. */
+const linkOf = (object) =>
+  `${site.url}#/join/1.${deflateRawSync(Buffer.from(JSON.stringify(object))).toString('base64url')}`;
+const JOIN_SHEET = '#/settings/sync?sheet=join';
+const hashOf = (p) => p.page.evaluate(() => location.hash);
+/** Opens a link in a running app and waits for the join sheet it is replaced by. */
+const openInvite = async (p, link) => {
+  await p.page.goto(link);
+  await p.page.waitForFunction(() => location.hash === '#/settings/sync?sheet=join');
+  await p.page.locator('[data-sheet="join"]').waitFor();
+};
+const noPayload = async (p, what) => {
+  const state = await p.page.evaluate(() => ({
+    href: location.href,
+    state: JSON.stringify(history.state),
+  }));
+  expect(
+    !state.href.includes('#/join') && !state.href.includes('1.') && !state.state.includes('1.'),
+    `${p.who}: the payload is not in the address or the history state ${what}`,
+  );
+};
+const problemOf = (p) => p.page.locator('[data-testid="join-problem"]').innerText();
+const bindingCount = (p) =>
+  p.page.evaluate(
+    () =>
+      new Promise((done) => {
+        const open = indexedDB.open('mixtura');
+        open.onsuccess = () => {
+          const all = open.result.transaction('bindings').objectStore('bindings').getAll();
+          all.onsuccess = () => {
+            open.result.close();
+            done(all.result.length);
+          };
+        };
+      }),
+  );
+
+// A damaged link, a newer version and a link without passphrase open the sheet empty, with the reason.
+const C = await newPerson('C');
+await openInvite(C, `${site.url}#/join/1.!!!!`);
+expect(
+  (await hashOf(C)) === JOIN_SHEET,
+  `C: a damaged link is replaced by the join sheet ${await hashOf(C)}`,
+);
+expect(
+  (await problemOf(C)).includes('damaged') &&
+    (await C.page.locator('#join-passphrase').inputValue()) === '',
+  'C: a damaged link says so and fills nothing',
+);
+await measure(C, 'on the Join sheet with a damaged invite');
+await noPayload(C, 'after a damaged link');
+await C.page.goBack();
+await C.page.waitForFunction(() => location.hash === '#/stock');
+await C.page.goForward();
+await C.page.waitForFunction(() => location.hash === '#/settings/sync?sheet=join');
+await noPayload(C, 'after Back and Forward');
+expect(
+  (await C.page.locator('[data-testid="join-problem"]').count()) === 0,
+  'C: the reason is forgotten when the sheet is left',
+);
+await openInvite(C, linkOf({ ...invite, version: 2 }));
+expect(
+  (await problemOf(C)).includes('newer version of the app'),
+  'C: a newer invite says to update the app',
+);
+await openInvite(C, linkOf({ ...invite, type: 's3' }));
+expect(
+  (await problemOf(C)).includes('kind of storage this app does not know'),
+  'C: an unknown storage type is said',
+);
+await C.context.close();
+const D = await newPerson(
+  'D',
+  linkOf({ ...invite, passphrase: '' }).slice(site.url.length),
+  '[data-sheet="join"]',
+);
+await D.page.locator('[data-testid="join-problem"]').waitFor();
+expect(
+  (await hashOf(D)) === JOIN_SHEET &&
+    (await problemOf(D)).includes('This invite has no passphrase. Ask for a new invite.'),
+  'D: the app opened by a link without passphrase shows the join sheet and says so',
+);
+await noPayload(D, 'after the app was opened by a link');
+await D.context.close();
+
+// A person without storage opens the link: the address is proposed, Add Storage has it filled in.
+const E = await newPerson('E');
+await openInvite(E, flat.invite);
+await noPayload(E, 'after a valid link');
+expect(
+  (await hashOf(E)) === JOIN_SHEET,
+  `E: the link is replaced by the join sheet ${await hashOf(E)}`,
+);
+const prefilled = async (p, where) => {
+  const got = {
+    folder: await p.page.locator('#join-folder').inputValue(),
+    code: await p.page.locator('#join-code').inputValue(),
+    passphrase: await p.page.locator('#join-passphrase').inputValue(),
+    type: await p.page.locator('#join-passphrase').getAttribute('type'),
+  };
+  expect(
+    got.folder === flat.folder &&
+      got.code === flat.code &&
+      got.passphrase === flat.passphrase &&
+      got.type === 'password',
+    `${p.who}: folder, place code and the masked passphrase are filled in ${where}`,
+  );
+};
+await prefilled(E, 'from the invite');
+const proposed = await E.page.locator('[data-testid="join-invite-storage"]').innerText();
+expect(
+  proposed.includes(`storage at ${url1}`) &&
+    (await E.page.locator('#join-storage').count()) === 0 &&
+    (await E.page.locator('[data-focus="join-start"]').isDisabled()),
+  'E: without a storage the sheet names the address and cannot join yet',
+);
+await measure(E, 'on the Join sheet from an invite without storage');
+expect((await bindingCount(E)) === 0, 'E: nothing is stored before Join is pressed');
+await E.page.locator('[data-focus="join-add-storage"]').click();
+await E.page.locator('[data-sheet="storage"]').waitFor();
+expect(
+  (await E.page.locator('#storage-address').inputValue()) === url1,
+  'E: Add Storage opens with the invite’s address filled in',
+);
+await E.page.fill('#storage-label', 'Invited');
+await E.page.fill('#storage-user', user);
+await E.page.fill('#storage-password', password);
+await E.page.locator('[data-focus="storage-save"]').click();
+await E.page.locator('[data-sheet="join"]').waitFor();
+await E.page.locator('#join-storage').waitFor();
+expect(
+  (await E.page.locator('#join-storage option:checked').innerText()).startsWith('Invited ·'),
+  'E: back on the join sheet the new storage is chosen',
+);
+await prefilled(E, 'after adding the storage');
+expect(
+  (await E.page.locator('[data-testid="join-invite-storage"]').count()) === 0,
+  'E: the note is gone once a storage has the address',
+);
+expect((await hashOf(E)) === JOIN_SHEET, 'E: the address is the join sheet again');
+await E.page.locator('[data-focus="join-start"]').click();
+await E.page.locator('[data-testid="toast"]').filter({ hasText: 'Joined the place' }).waitFor();
+await waitStatus(E, 'Flat', 'synced');
+await setEntry(E, 'Flat');
+expect((await stockOf(E)).join() === expected, 'E: the place arrives with its stock');
+await E.context.close();
+
+// A person with the storage configured: it is chosen for the link, and Join works at once.
+await openInvite(A, flat.invite);
+await prefilled(A, 'from the invite');
+expect(
+  (await A.page.locator('#join-storage option:checked').innerText()).startsWith('S1 ·') &&
+    (await A.page.locator('[data-testid="join-invite-storage"]').count()) === 0,
+  'A: the storage at the invite’s address is chosen and no note is shown',
+);
+await measure(A, 'on the Join sheet from an invite');
+await A.page.locator('[data-focus="join-start"]').click();
+await A.page.locator('[data-testid="toast"]').filter({ hasText: 'Joined the place' }).waitFor();
+await waitStatus(A, 'Flat', 'synced');
+expect((await syncRow(A, 'Flat').count()) === 1, 'A: Flat syncs again after joining by link');
+expect(
+  !(await A.page.evaluate(() => location.href)).includes(flat.passphrase),
+  'A: the passphrase is not in the address',
+);
 
 console.log(
   `done at ${width}x${height}: ${log.filter((r) => !r.url.startsWith(site.url)).length} requests to the storages`,

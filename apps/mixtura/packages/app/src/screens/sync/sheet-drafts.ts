@@ -6,6 +6,7 @@
 
 import { resetCopies } from './copy-row';
 import { reset, resetAll } from './drafts';
+import { resetInvite } from './invite-block';
 import type { SyncSheet } from './sheet-address';
 
 type Draft = 'storage' | 'bind' | 'move' | 'join';
@@ -19,7 +20,10 @@ const parked = new Set<Draft>();
 
 const forget = (sheet: SyncSheet): void => {
   if (HOLDS_DRAFT.includes(sheet)) reset(sheet as Draft);
-  else resetCopies();
+  else {
+    resetCopies();
+    resetInvite();
+  }
 };
 
 /** Called with the sheet the address names on every draw of the page. */

@@ -12,8 +12,8 @@ Versions are pinned exactly in `package.json`; the lockfile pins the
 rest. Licences read from each package's `package.json` in
 `node_modules`. Mixtura itself is AGPL-3.0-or-later ([LICENSE](../LICENSE)).
 Nothing third-party is bundled into the engine, and the app ships no
-package of its own except the two small run-time helpers that Ajv's
-generated validators import (see below). All dependencies are development only and MIT or
+packages of its own except the two small run-time helpers that Ajv's
+generated validators import and the QR encoder (see below). All dependencies are development only and MIT or
 Apache-2.0, compatible with it.
 
 ## Shared code
@@ -72,6 +72,13 @@ dependencies (`workerd`, `miniflare`, `esbuild` and others) were not listed.
 | Package                           | Version | Licence | Use                                                                                                                                                                                                            |
 | --------------------------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ajv` (generated validators only) | 8.17.1  | MIT     | The validators that check every store write ([store](store.md)) are generated at build time; the bundle holds them plus Ajv's `equal` and `ucs2length` helpers (with `fast-deep-equal`, MIT), not the compiler |
+| `qrcode-generator`                | 2.0.4   | MIT     | Draws the QR code of an invite link (`components/qr.ts`); no dependencies                                                                                                                                      |
+
+Licence of `qrcode-generator` read from its files in `node_modules`: `package.json`
+has `"license": "MIT"` and the header of `dist/qrcode.mjs` says "Licensed under the
+MIT license" (Copyright (c) 2009 Kazuhiko Arase); the package has no separate licence
+file and no `dependencies`. The build removes comments (`legalComments: 'none'`), so
+`build.mjs` puts the notice back as the first line of `main.js`. Pinned exactly in `packages/app/package.json`.
 
 The compiler, `fast-uri`, `json-schema-traverse` and `require-from-string`
 are development only. The JSON Schemas name URLs as identifiers; they are
