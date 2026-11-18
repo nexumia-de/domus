@@ -1,0 +1,81 @@
+/*
+ * Design tokens: the only file with colours, font sizes, spacing and radii.
+ * Every other stylesheet uses var(--...) (test/tokens-only.test.ts).
+ * Light set on :root, the dark set twice (system preference unless the
+ * user chose Light, and the explicit Dark choice); test/contrast.test.ts
+ * checks the pairs and that both dark blocks are identical.
+ */
+:root {
+  color-scheme: light dark;
+
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-2: #f1eee8;
+  --text: #1d1a17;
+  --text-muted: #5a544d;
+  --border: #857e75;
+  --divider: #e3ded5;
+  --accent: #a02b45;
+  --on-accent: #ffffff;
+  --accent-soft: #f9e3e8;
+  --focus: #1d1a17;
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  --target: 44px;
+  --nav-h: 64px;
+  --side-w: 220px;
+  --content-w: 720px;
+  --focus-width: 3px;
+  --focus-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #151311;
+    --surface: #1f1c19;
+    --surface-2: #2a2623;
+    --text: #f3efea;
+    --text-muted: #b7afa6;
+    --border: #8a8279;
+    --divider: #38332e;
+    --accent: #f29baf;
+    --on-accent: #2a0a12;
+    --accent-soft: #3c1a24;
+    --focus: #f3efea;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #151311;
+  --surface: #1f1c19;
+  --surface-2: #2a2623;
+  --text: #f3efea;
+  --text-muted: #b7afa6;
+  --border: #8a8279;
+  --divider: #38332e;
+  --accent: #f29baf;
+  --on-accent: #2a0a12;
+  --accent-soft: #3c1a24;
+  --focus: #f3efea;
+}
