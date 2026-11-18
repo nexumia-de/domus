@@ -3,7 +3,7 @@ type: Decision Record
 title: Whether Culina reads and writes Cooklang files
 description: Current state of Cooklang (spec, licences, parsers, apps), what it can express of Culina's model, comparison with schema.org/Recipe and an own JSON export, and the recommendation: own JSON as the lossless format, Cooklang as a one-way export, no import in the first version.
 tags: [decision, cooklang, export, import, formats, licences]
-status: needs decision
+status: decided
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
   - id: spec
@@ -49,7 +49,30 @@ sources:
 
 # Whether Culina reads and writes Cooklang files
 
-Status: **needs decision** (issue #6). It refines point 4 of
+Status: **decided by the owner on 2026-11-18** (issue #6): Culina
+**imports and exports** Cooklang. Own JSON stays the lossless format.
+On import the user supplies what a Cooklang file cannot carry (see
+[Decision](#decision)). The text from Context on is the proposal as it
+was written on 2026-11-17, which recommended export only.
+
+## Decision
+
+1. **Own JSON is the lossless format** for export, import and backup.
+2. **Export to Cooklang**: one component per file, with the losses
+   listed under [What is lost](#what-is-lost).
+3. **Import from Cooklang**, with a step in which the user completes
+   what the file does not say before anything is saved: the role of
+   each line, the mass of amounts given by volume or count (or the
+   ingredient's density or unit weight), the yield, the percent base,
+   and which ingredient of the notebook a name means. A line the user
+   leaves open is kept as text and reported as unmeasured, never
+   guessed.
+4. Nothing is imported silently: the import shows what was read, what
+   is open, and saves only on confirmation.
+
+Built with export and import in issue 18.
+
+Before the decision: (issue #6). It refines point 4 of
 [After Mixtura](after-mixtura.md), which said recipes are read from
 Cooklang files "where possible", to be confirmed.
 
