@@ -164,10 +164,11 @@ expect((await rowPlaces('lime-juice')) === null, 'one place: still no place name
 
 // ---- The sheet: opens without the keyboard, lists Home, refuses what it must ----
 await openSheet();
-expect(
-  await page.evaluate(() => document.activeElement?.getAttribute('data-sheet') === 'places'),
-  'the sheet takes the focus, not a text field',
-);
+// The sheet takes the focus in the next animation frame; on a slow device that
+// is later than this line (e2e-slow on pull request #147), so wait for it. A
+// text field taking the focus instead makes this time out.
+await page.waitForFunction(() => document.activeElement?.getAttribute('data-sheet') === 'places');
+expect(true, 'the sheet takes the focus, not a text field');
 expect((await page.locator('li.place-row').count()) === 1, 'one place is listed');
 expect(
   (await row('Home').locator('[role="checkbox"]').getAttribute('aria-checked')) === 'true',
