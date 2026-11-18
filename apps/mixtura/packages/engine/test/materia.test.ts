@@ -20,3 +20,14 @@ test('materia is pinned to a version tag or a commit', () => {
     /^github:nexumia-de\/materia#(v\d+\.\d+\.\d+|[0-9a-f]{40})$/,
   );
 });
+
+// npm writes `git+ssh://` for a GitHub dependency, which fails on every
+// machine without an SSH key for GitHub (CI among them). After any command
+// that rewrites the lockfile, put `git+https://` back
+// (docs/development.md#the-materia-dependency).
+test('the lockfile fetches materia over https', () => {
+  const lock = JSON.parse(readFileSync(`${root}../../package-lock.json`, 'utf8'));
+  expect(lock.packages['node_modules/@nexumia-de/materia'].resolved).toMatch(
+    /^git\+https:\/\/github\.com\/nexumia-de\/materia\.git#[0-9a-f]{40}$/,
+  );
+});
