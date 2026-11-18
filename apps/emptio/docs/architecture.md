@@ -129,12 +129,34 @@ State of Culina's catalogue on 2026-11-18, from its build session:
   place written by Emptio survives a cycle of an older sister app. Culina's
   local store does not keep them today: it has a fixed list of kinds
   and is pinned to materia 0.2.0 without unit documents. Its sync goal
-  has to carry unknown collections through. Mixtura: not yet answered.
+  has to carry unknown collections through. Mixtura
+  loses them as well, see below.
 - Entries are small records merged per key by materia's rules: two
   people adding offline both keep their entries; ticking is a later
   write of the same record.
 - Encrypted, over storage the user configured (WebDAV), as Mixtura. A
   place without a binding sends nothing.
+
+State of Mixtura's sync on 2026-11-18, from its sync session (read in
+the code, not tested):
+
+- Mixtura writes places as `materia-place` documents on materia 0.2.0
+  and rebuilds the file from its own state on every write. **A
+  collection it does not know is lost** as soon as Mixtura next writes
+  the place. The list inside the place therefore needs Mixtura to move
+  places to `materia-unit` documents and to keep unknown collections in
+  its local store. That choice belongs before Mixtura's work on
+  libraries and the profile (Mixtura issue 143).
+- The invite link carries `format: "mixtura-invite"` and the default
+  folder on the storage is `mixtura`; one file per place,
+  `<folder>/<place id>.json`. Both names are of one app, while the
+  place is meant for three.
+- The host-side sync code is about 1,900 lines in `sync/` and about
+  2,000 lines of screens. Nothing in it is about drinks; it is tied to
+  Mixtura's store, app state and DOM helper, which is the work of
+  taking it out into hospes.
+- `tools/webdav-server` in Mixtura is a Docker WebDAV server with CORS
+  that the compose file of Domus can reuse.
 
 # Hand-over with the sister apps
 

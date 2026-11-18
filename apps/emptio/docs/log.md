@@ -2,6 +2,7 @@
 
 ## 2026-11-18
 
+- **Update**: [how Emptio is built](architecture.md#sync-and-the-household) with the state of Mixtura's sync reported by its sync session: unknown collections of a place are lost today, the invite format and folder carry Mixtura's name, size and coupling of the host-side sync code.
 - **Decision**: by the owner: the German ingredient names of Culina's catalogue (Culina issue 69) are pulled forward, noted in [how Emptio is built](architecture.md#catalogue).
 - **Update**: [how Emptio is built](architecture.md#catalogue) with the state of Culina's catalogue reported by its build session (no shopping category, ids, German names planned, the move to a package is simple, `matchIngredients`) and that Culina's local store does not keep unknown collections yet.
 - **Decision**: by the owner: Rewe offers come through a connector the household hosts; an entry on offer is shown as _now_ in that store where this is switched on, in [how Emptio is built](architecture.md#rules-of-the-engine) (rule 8), [store layouts](store-layouts.md#the-unofficial-rewe-client) and the [roadmap](roadmap.md) (goal 6). Goals are issues 1 to 6 with sub-issues 7 to 18.
