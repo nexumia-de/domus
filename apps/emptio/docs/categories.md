@@ -11,6 +11,9 @@ sources:
   - id: off-categories
     title: Open Food Facts, taxonomies/food/categories.txt
     url: https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/taxonomies/food/categories.txt
+  - id: usda-groups
+    title: USDA National Nutrient Database for Standard Reference, Release 28, FD_GROUP.txt (the 25 food groups)
+    url: https://www.ars.usda.gov/ARSUserFiles/80400535/DATA/SR/sr28/dnload/sr28asc.zip
   - id: culina-catalogue
     title: Culina, tools/catalogue/derive.mjs at 7b0ed3e (USDA food categories read by the generator)
     url: https://github.com/nexumia-de/culina/blob/main/tools/catalogue/derive.mjs
@@ -61,28 +64,47 @@ as the general starting route until a store has its own.
 
 Culina's catalogue is generated from USDA FoodData Central SR Legacy,
 whose rows carry a food category. The generator reads it but does not
-write it out yet ([architecture](architecture.md#catalogue)). The table
-for the categories that generator names[^culina-catalogue]:
+write it out yet ([architecture](architecture.md#catalogue)). The 25
+food groups of the USDA data[^usda-groups] and the category each gives
+by default:
 
-| USDA food category                | Category    |
-| --------------------------------- | ----------- |
-| Vegetables and Vegetable Products | `produce`   |
-| Fruits and Fruit Juices           | `produce`   |
-| Dairy and Egg Products            | `dairy`     |
-| Baked Products                    | `bakery`    |
-| Cereal Grains and Pasta           | `pantry`    |
-| Legumes and Legume Products       | `pantry`    |
-| Nut and Seed Products             | `baking`    |
-| Spices and Herbs                  | `seasoning` |
-| Fats and Oils                     | `seasoning` |
-| Sweets                            | `snacks`    |
+| USDA food group                     | Category    |
+| ----------------------------------- | ----------- |
+| Dairy and Egg Products              | `dairy`     |
+| Spices and Herbs                    | `seasoning` |
+| Baby Foods                          | `baby`      |
+| Fats and Oils                       | `seasoning` |
+| Poultry Products                    | `meat`      |
+| Soups, Sauces, and Gravies          | `pantry`    |
+| Sausages and Luncheon Meats         | `meat`      |
+| Breakfast Cereals                   | `breakfast` |
+| Fruits and Fruit Juices             | `produce`   |
+| Pork Products                       | `meat`      |
+| Vegetables and Vegetable Products   | `produce`   |
+| Nut and Seed Products               | `baking`    |
+| Beef Products                       | `meat`      |
+| Beverages                           | `drinks`    |
+| Finfish and Shellfish Products      | `fish`      |
+| Legumes and Legume Products         | `pantry`    |
+| Lamb, Veal, and Game Products       | `meat`      |
+| Baked Products                      | `bakery`    |
+| Sweets                              | `snacks`    |
+| Cereal Grains and Pasta             | `pantry`    |
+| Fast Foods                          | `other`     |
+| Meals, Entrees, and Side Dishes     | `other`     |
+| Snacks                              | `snacks`    |
+| American Indian/Alaska Native Foods | `other`     |
+| Restaurant Foods                    | `other`     |
+
+The names are those of the SR28 group file; that SR Legacy's category
+descriptions are spelled the same was checked only for the ten the
+generator names[^culina-catalogue].
 
 A group is too coarse for some foods (fruit juice is a drink, butter is
 in "Dairy and Egg Products" but oil in "Fats and Oils", fresh herbs are
-produce). The catalogue package therefore needs a category per food
-with the group as the default and exceptions by hand. The full list of
-USDA groups was not read at its source (the host was blocked) and the
-remaining groups are mapped when the generator writes them out.
+produce, flour is in "Cereal Grains and Pasta" but belongs to
+`baking`). The catalogue package therefore needs a category per food
+with the group as the default and exceptions by hand.
 
 # Household goods
 
@@ -109,8 +131,8 @@ German names follow with the German texts of the app.
 - **Default categories of KitchenOwl and Specifically Clementines**:
   could not be read; and KitchenOwl's would bring AGPL text of another
   project into the data for no gain.
-- **GS1 Global Product Classification, Google product taxonomy, the
-  USDA documentation, Wikidata**: not read, see below.
+- **GS1 Global Product Classification, Google product taxonomy,
+  Wikidata**: not read, see below.
 - No openly licensed list of household goods was found; none was
   searched for beyond the above.
 
@@ -121,14 +143,15 @@ These hosts were blocked on 2026-11-18 (tested with `curl`):
 ```
 www.gs1.org
 support.google.com
-www.ars.usda.gov
 ```
 
-The first two hold the terms of the GS1 and Google taxonomies, the
-third the documentation of SR Legacy with the full list of food groups.
+They hold the terms of the GS1 and Google taxonomies. Neither is
+needed while the categories are the project's own.
 
 [^off-terms]: Open Food Facts, https://world.openfoodfacts.org/terms-of-use and https://world.openfoodfacts.org/data
 
 [^off-categories]: Open Food Facts, https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/taxonomies/food/categories.txt
 
 [^culina-catalogue]: Culina, tools/catalogue/derive.mjs, https://github.com/nexumia-de/culina/blob/main/tools/catalogue/derive.mjs
+
+[^usda-groups]: USDA National Nutrient Database for Standard Reference, Release 28, file FD_GROUP.txt in sr28asc.zip, https://www.ars.usda.gov/ARSUserFiles/80400535/DATA/SR/sr28/dnload/sr28asc.zip

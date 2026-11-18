@@ -2,6 +2,7 @@
 
 ## 2026-11-18
 
+- **Update**: [categories](categories.md#from-the-food-catalogue-to-a-category): all 25 USDA food groups mapped to a category, read from the SR28 group file after the owner allowed the host.
 - **Decision**: by the owner in Mixtura's sync session, reported by it: invite format `materia-invite`, default folder `household`, Emptio's place file `<place id>.emptio.json`; in [how Emptio is built](architecture.md#decisions) (decision 7).
 - **Update**: [name check](name-check.md): DPMAregister counts about 3 marks for Emptio and about 498 for Domus; the entries could not be opened by script and are left to the owner.
 - **Decision**: by the owner, correcting the plan: each app writes its own file in the place's folder, as Culina's sync decision already said; the list is no longer planned inside Mixtura's file and the fix of Mixtura for that is withdrawn. In [how Emptio is built](architecture.md#sync-and-the-household) and the [data model](data-model.md#records).
