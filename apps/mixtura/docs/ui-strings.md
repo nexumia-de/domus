@@ -160,7 +160,18 @@ drinks · Swap dropped · Swap reset · Imported {counts} · Import undone · Ex
 
 # Places
 
-One fixed string so far: **Home**, the name of the place made for existing stock by the migration to schema version 4 and on a fresh install (`strings.places.home`; `store/places.ts` keeps the same text for the migration and a test keeps them equal). The Data summary does not list places while the place screens do not exist.
+`strings.places`. **Home** is the name of the place made for existing stock by the migration to schema version 4 and on a fresh install (`store/places.ts` keeps the same text for the migration and a test keeps them equal). Places screen text (#131), header capitalisation for buttons and titles, sentence capitalisation for descriptions:
+
+| Where         | Text                                                                                                                                                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Stock line    | {names joined with " · "} · Places (button)                                                                                                                                                                                            |
+| Sheet         | Places · Close · Stock is kept per place. The places that count decide what you can make. · Places (list label)                                                                                                                        |
+| Row           | {name} counts (check box) · New entries go here (radio) · Rename ("Rename {name}") · Remove ("Remove {name}") · New name of {name} (field label)                                                                                       |
+| Add           | Add a place · Name of the new place · Add Place                                                                                                                                                                                        |
+| Notes         | The only place cannot be removed. · Places cannot be changed while your data cannot be saved.                                                                                                                                          |
+| Refusals      | At least one place has to count. · New entries go to {name}, so it has to count. Choose another place for new entries first. · Enter a name for the place. · A place called {name} exists already. · The last place cannot be removed. |
+| Toasts        | Removed {name} and its {n} stock entry/entries (Undo) · Still in stock at {names} · {n} still in stock at other places · Marked {name} in stock / out of stock (existing)                                                              |
+| Batches sheet | {name}: in stock (the check box of a place's block; its words are In stock, Out, Not tracked)                                                                                                                                          |
 
 # Data
 

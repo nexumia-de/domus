@@ -39,7 +39,7 @@ export function buyNextView(context: ScreenContext): ScreenView {
     return { title, body: h('div', { class: 'stack' }, views('buy-next'), body) };
   }
   const { model } = browse;
-  const { records, writable } = state;
+  const { records, entryRecords, writable } = state;
   // The address decides when it names a mode; otherwise the remembered one.
   const named = context.route.query.get('strict');
   const strict = named === null ? context.state.buyNextMode === 'strict' : named === '1';
@@ -72,7 +72,7 @@ export function buyNextView(context: ScreenContext): ScreenView {
   };
 
   const haveIt = (c: Candidate): void => {
-    const undo = changeStock(context, [{ id: c.id, next: withPresent(records, c.id, true) }]);
+    const undo = changeStock(context, [{ id: c.id, next: withPresent(entryRecords, c.id, true) }]);
     if (undo.length > 0) {
       showToast(context.store, strings.buyNext.added(c.name), () => changeStock(context, undo));
     }

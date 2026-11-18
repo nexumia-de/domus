@@ -1,12 +1,12 @@
 // The sheets over the Stock screen are the address parameter `sheet`
-// (`ingredient`, `batches` with `ing`): one history entry on a phone, so Back
+// (`ingredient`, `batches` with `ing`, `places`): one history entry on a phone, so Back
 // closes them; a replace on a wide screen.
 
 import { back, go, replace } from '../../navigation';
 import { formatHash } from '../../router';
 import { type ScreenContext } from '../../screen';
 
-export type StockSheet = 'ingredient' | 'batches';
+export type StockSheet = 'ingredient' | 'batches' | 'places';
 
 const wide = (): boolean => window.matchMedia('(min-width: 840px)').matches;
 

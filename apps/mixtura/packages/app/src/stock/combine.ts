@@ -8,7 +8,8 @@ export type RecordsByPlace = ReadonlyMap<string, ReadonlyMap<string, StockRecord
 
 /**
  * Combines the ticked places. An ingredient is present when any ticked place has it present; its record
- * is the one of the first ticked place that has it present, else the first that has a live record.
+ * is the one of the first ticked place that has it present (the one with the newest batch date when
+ * several do, so a fresh batch is never hidden by an older one), else the first with a live record.
  * Tombstones count as no record. With one ticked place this is that place's live records.
  * @param byPlace Records of every place.
  * @param ticked The places that count, in order.
@@ -23,7 +24,11 @@ export function combinePlaces(
     for (const [id, record] of byPlace.get(placeId) ?? []) {
       if ('deleted' in record) continue;
       const chosen = out.get(id);
-      if (!chosen || (!chosen.present && record.present)) out.set(id, record);
+      const fresher =
+        chosen?.present === true &&
+        record.present &&
+        (record.openedOn ?? '') > (chosen.openedOn ?? '');
+      if (!chosen || (!chosen.present && record.present) || fresher) out.set(id, record);
     }
   }
   return out;

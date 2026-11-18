@@ -210,12 +210,14 @@ export const screens: Screen[] = [
       const lineUnit = sheetLine === null ? 'ml' : (drink.spec.lines[sheetLine]?.unit ?? 'ml');
       const stockNow = stockState(context);
       const records = stockNow.kind === 'ready' ? stockNow.records : null;
+      // Marks and batches are written to the entry place, so they start from its own record.
+      const own = stockNow.kind === 'ready' ? stockNow.entryRecords : new Map();
       const stockActions: StockPanelActions = {
         ...(stockNow.kind === 'ready' &&
           stockNow.writable && {
             mark(ingredientId, name) {
               const undo = changeStock(context, [
-                { id: ingredientId, next: withPresent(records ?? new Map(), ingredientId, true) },
+                { id: ingredientId, next: withPresent(own, ingredientId, true) },
               ]);
               showToast(store, stockStrings.marked(name), () => changeStock(context, undo));
             },
@@ -231,9 +233,7 @@ export const screens: Screen[] = [
       };
       const made = (date: string): void =>
         record(
-          shelfVm
-            ? madeBatch(records?.get(shelfVm.ingredientId), shelfVm.ingredientId, date)
-            : null,
+          shelfVm ? madeBatch(own.get(shelfVm.ingredientId), shelfVm.ingredientId, date) : null,
           shelfVm ? shelfStrings.recorded(shelfVm.name, date) : '',
         );
       const shelfActions: ShelfActions =
@@ -244,7 +244,7 @@ export const screens: Screen[] = [
               usedUp: () =>
                 shelfVm &&
                 record(
-                  usedUpNewest(records?.get(shelfVm.ingredientId), shelfVm.ingredientId),
+                  usedUpNewest(own.get(shelfVm.ingredientId), shelfVm.ingredientId),
                   shelfStrings.usedUpToast(shelfVm.name),
                 ),
             }

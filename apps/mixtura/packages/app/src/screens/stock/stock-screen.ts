@@ -20,6 +20,9 @@ import { status } from '../status';
 import { COMMON_STOCK } from './common';
 import { batchesFocus, batchesSheet, openBatches } from './batches-sheet';
 import { createOpen, createSheet, openCreate } from './create-sheet';
+import { placesLine } from './places-line';
+import { placesFocus, placesSheet } from './places-sheet';
+import { stillPresent } from './still-present';
 import { nearDateCard } from './near-date';
 import {
   OTHER_ID,
@@ -86,36 +89,60 @@ export function stockView(context: ScreenContext): ScreenView {
     return { title, body: h('div', { class: 'stack' }, views('stock'), body) };
   }
   const { model } = browse;
-  const { records, writable } = state;
+  const { records, entryRecords, writable } = state;
+  const entryName = state.selection.places.find((p) => p.id === state.selection.entry)?.name ?? '';
   const q = (context.route.query.get('q') ?? '').trim();
   const show = parseShow(context.route.query.get('show'));
-  const roots = buildStockTree(model.tree, records, drinkCounts(model), strings.stock.other);
+  const roots = buildStockTree(
+    model.tree,
+    records,
+    drinkCounts(model),
+    strings.stock.other,
+    state.presentAt,
+  );
   const view = viewRows(roots, { q, show, expanded });
   const present = countPresent(roots);
   const narrowed = isNarrowed({ q, show });
   const toMark = markTargets(view.matches);
   const toClear = clearTargets(view.matches);
 
-  const apply = (changes: StockChange[], text: string): void => {
+  // A mark in the combined view goes to the entry place; when another place still has the
+  // ingredient the check mark stays, and the toast says why.
+  const apply = (changes: StockChange[], text: string, off: readonly string[] = []): void => {
     const undo = changeStock(context, changes);
-    if (undo.length > 0) showToast(context.store, text, () => changeStock(context, undo));
+    const stays = stillPresent(stockState(context), off);
+    const said = stays.length === 0 ? text : `${text}. ${stays.text}`;
+    if (undo.length > 0) showToast(context.store, said, () => changeStock(context, undo));
+    else if (stays.length > 0) showToast(context.store, stays.text);
   };
+  // The check box shows the combined state and always acts on the entry place's own record.
   const toggle = (node: StockNode): void => {
     if (!writable) return;
-    const on = !node.present;
+    const own = entryRecords.get(node.id)?.present === true;
+    const on = !own;
     const text = !on
       ? strings.stock.markedOut(node.name)
-      : node.children.length > 0
-        ? strings.stock.markedType(node.name)
-        : strings.stock.marked(node.name);
-    apply([{ id: node.id, next: withPresent(records, node.id, on) }], text);
+      : node.present
+        ? strings.places.addedAt(entryName)
+        : node.children.length > 0
+          ? strings.stock.markedType(node.name)
+          : strings.stock.marked(node.name);
+    apply(
+      [{ id: node.id, next: withPresent(entryRecords, node.id, on) }],
+      text,
+      on ? [] : [node.id],
+    );
   };
   const setMany = (nodes: StockNode[], on: boolean): void => {
     const changes = nodes
-      .filter((n) => n.present !== on)
-      .map((n) => ({ id: n.id, next: withPresent(records, n.id, on) }));
+      .filter((n) => (on ? !n.present : entryRecords.get(n.id)?.present === true))
+      .map((n) => ({ id: n.id, next: withPresent(entryRecords, n.id, on) }));
     if (changes.length === 0) return;
-    apply(changes, (on ? strings.stock.markedMany : strings.stock.clearedMany)(changes.length));
+    apply(
+      changes,
+      (on ? strings.stock.markedMany : strings.stock.clearedMany)(changes.length),
+      on ? [] : changes.map((c) => c.id),
+    );
   };
   const setQuery = (next: string, nextShow: Show = show): void =>
     replace(context.store, hashFor(next, nextShow));
@@ -153,6 +180,7 @@ export function stockView(context: ScreenContext): ScreenView {
     'div',
     { class: 'stack stock-screen' },
     views('stock'),
+    placesLine(context, state),
     summary(model, context, present),
     nearDateCard(nearDate(model.tree, model.preparedSpecs, records, today()), (id) =>
       openBatches(context, id),
@@ -224,16 +252,19 @@ export function stockView(context: ScreenContext): ScreenView {
           writable,
           toggle,
           batches: (node) => openBatches(context, node.id),
+          places: (node) => openBatches(context, node.id, 'places'),
           expand: (node) => {
             if (expanded.has(node.id)) expanded.delete(node.id);
             else expanded.add(node.id);
             context.store.set({ stockRev: context.store.get().stockRev + 1 });
           },
         }),
-    batchesSheet(context, model, records, writable),
+    batchesSheet(context, model, state),
+    placesSheet(context, writable),
     createSheet(context, model),
   );
   batchesFocus(context, body);
+  placesFocus(context, body);
   if (createOpen(context) && !createWasOpen) {
     requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
   }

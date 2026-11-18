@@ -14,6 +14,8 @@ export interface TreeActions {
   toggle(node: StockNode): void;
   expand(node: StockNode): void;
   batches(node: StockNode): void;
+  /** Opens the sheet with one block per counting place. */
+  places(node: StockNode): void;
   writable: boolean;
 }
 
@@ -66,6 +68,22 @@ function batchButton(node: StockNode, actions: TreeActions): HTMLElement {
       onclick: () => actions.batches(node),
     },
     batchStrings.button,
+  );
+}
+
+function placesButton(node: StockNode, depth: number, actions: TreeActions): HTMLElement {
+  return h(
+    'button',
+    {
+      class: 'stock-places-line',
+      type: 'button',
+      style: `padding-left: calc(var(--sp-2) + ${depth * 20}px + 44px)`,
+      'data-places': '',
+      'data-focus': `places:${node.id}`,
+      'aria-label': strings.places.forAria(node.name),
+      onclick: () => actions.places(node),
+    },
+    node.places.join(' · '),
   );
 }
 
@@ -141,6 +159,7 @@ function rowOf(row: Row, actions: TreeActions): HTMLElement {
       node.prepared && node.children.length === 0 ? batchButton(node, actions) : null,
       row.expanded === null ? null : expander(node, open, actions),
     ),
+    node.places.length > 0 ? placesButton(node, depth, actions) : null,
   );
 }
 
