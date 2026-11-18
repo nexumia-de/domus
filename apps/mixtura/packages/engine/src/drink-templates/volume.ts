@@ -3,16 +3,16 @@
 // and `assignSlots` with that measure. Drink side: it reads the unit table,
 // which stays in Mixtura (docs/decisions/shared-model.md).
 import { toMl, UNITS, type UnitId, type UnitOverrides } from '../amounts/index';
-import type { IngredientTreeOf } from '../ingredients/tree';
+import type { IngredientTreeOf } from '@nexumia-de/materia';
 import { countedVolume } from '../drink-ingredients/unit-volumes';
-import { fillSlots, type RoledTree } from '../templates/slots';
+import { fillSlots, type RoledTree } from '@nexumia-de/materia';
 import type {
   LineMeasure,
   MatchLine,
   SlotAssignment,
   Template,
   UnmeasuredReason,
-} from '../templates/types';
+} from '@nexumia-de/materia';
 
 /** What the volume measure reads of the caller's options. */
 export interface VolumeOptions {

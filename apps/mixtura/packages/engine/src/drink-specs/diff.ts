@@ -1,8 +1,8 @@
 // Comparing two versions of a drink: the general comparison
 // (specs/diff.ts) with the drink fields method, glass and garnish and the
 // volume of a `top` line as part of the amount.
-import { diffVersions } from '../specs/diff';
-import type { DiffDomain } from '../specs/types';
+import { diffVersions } from '@nexumia-de/materia';
+import type { DiffDomain } from '@nexumia-de/materia';
 import type { DiffLine, DiffOptions, DiffSpec, FieldDiff, LineDiff, SpecField } from './types';
 
 const DRINK: DiffDomain<DiffLine, DiffSpec, SpecField> = {

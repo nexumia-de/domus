@@ -5,7 +5,7 @@
 // The JSON Schema check is done by the host's validator, passed in: the engine
 // carries no schema library (docs/export-format.md#where-the-rules-live).
 
-import { findFamilyCycles } from '../specs/index';
+import { findFamilyCycles } from '@nexumia-de/materia';
 import { isUserId } from './ids';
 import { migrateFile, type FormatMigration, formatMigrations } from './migrate';
 import { APP_TAG, FORMAT_VERSION, MAX_FILE_BYTES, type ExportFile } from './types';

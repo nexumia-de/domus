@@ -1,8 +1,8 @@
 // The drink domain's inherited properties: ABV, sugar and acid beside the
 // general ones, and ABV, sugar and acid of a prepared ingredient computed
 // from its spec. The walk itself is general (ingredients/properties.ts).
-import { inheritedValue, resolveAllOf } from '../ingredients/properties';
-import type { Id, Resolved } from '../ingredients/types';
+import { inheritedValue, resolveAllOf } from '@nexumia-de/materia';
+import type { Id, Resolved } from '@nexumia-de/materia';
 import type { Ingredient, IngredientTree, InheritedProperty } from './types';
 
 /** ABV, sugar and acid of a prepared ingredient are computed from its spec, never inherited. */

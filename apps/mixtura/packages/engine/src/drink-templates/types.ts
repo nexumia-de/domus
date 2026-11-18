@@ -2,9 +2,9 @@
 // (templates/types.ts) with the drink `Role` union, the alcohol class of a
 // variant, the glass and the usual ABV, sugar and acid ranges.
 import type { Role } from '../drink-ingredients/types';
-import type { Id } from '../ingredients/types';
-import type * as General from '../templates/types';
-import type { Range, TemplateEvidence } from '../templates/types';
+import type { Id } from '@nexumia-de/materia';
+import type * as General from '@nexumia-de/materia';
+import type { Range, TemplateEvidence } from '@nexumia-de/materia';
 import type { VolumeOptions } from './volume';
 
 export type TemplateSlot = General.TemplateSlot<Role>;

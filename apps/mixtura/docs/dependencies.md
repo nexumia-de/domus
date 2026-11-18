@@ -16,6 +16,18 @@ package of its own except the two small run-time helpers that Ajv's
 generated validators import (see below). All dependencies are development only and MIT or
 Apache-2.0, compatible with it.
 
+## Shared code
+
+| Package               | Version | Licence           | Use                                                                                                                                                                                          |
+| --------------------- | ------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@nexumia-de/materia` | 0.1.0   | AGPL-3.0-or-later | The general model shared with Culina (ingredient tree, templates, specs, stock, shelf life); a git dependency of `@mixtura/engine`, bundled into `dist/engine.mjs`; no dependency of its own |
+
+Licence read from its `LICENSE` and `package.json`; the same licence and
+owner as Mixtura. Pinned by git reference in
+`packages/engine/package.json`, the commit in the lockfile; npm builds
+it on install with its `prepare` script
+([decision](decisions/shared-model.md)).
+
 ## Development only
 
 | Package             | Version | Licence    | Use                                                                                                                                           |

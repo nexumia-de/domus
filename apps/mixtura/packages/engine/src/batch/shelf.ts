@@ -3,7 +3,7 @@
 // inherited); a part without one makes the whole unknown, never a default.
 import { resolveProperty } from '../drink-ingredients/properties';
 import type { IngredientTree } from '../drink-ingredients/types';
-import type { Id } from '../ingredients/types';
+import type { Id } from '@nexumia-de/materia';
 import type { ShelfLife } from './types';
 
 /**

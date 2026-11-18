@@ -26,5 +26,8 @@
   "files": [
     "dist",
     "data/seed"
-  ]
+  ],
+  "dependencies": {
+    "@nexumia-de/materia": "github:nexumia-de/materia#a375c02c7a2842f4ddbf9e1474d959baeb85d683"
+  }
 }

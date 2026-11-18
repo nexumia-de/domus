@@ -2,7 +2,7 @@
 // `YYYY-MM-DDThh:mm:ss[.fff]Z` (UTC), so the day number of the date plus the
 // time of day in milliseconds is enough.
 
-import { dayNumber } from '../shelf/index';
+import { dayNumber } from '@nexumia-de/materia';
 
 const PATTERN = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?Z$/;
 const DAY_MS = 86_400_000;

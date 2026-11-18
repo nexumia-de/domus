@@ -2,11 +2,11 @@
 // with the formulas of docs/balance.md (see mixture.ts). The walk over
 // nested prepared ingredients and cycles is the general resolver
 // (ingredients/prepared.ts); this file passes the mixing formulas.
-import { resolvePrepared, type PreparedFold, type SpecLookup } from '../ingredients/prepared';
-import type { PreparedError } from '../ingredients/prepared';
+import { resolvePrepared, type PreparedFold, type SpecLookup } from '@nexumia-de/materia';
+import type { PreparedError } from '@nexumia-de/materia';
 import { resolveProperty } from '../drink-ingredients/properties';
 import type { IngredientTree } from '../drink-ingredients/types';
-import type { Id } from '../ingredients/types';
+import type { Id } from '@nexumia-de/materia';
 import { mix, type Computed, type MixPart, type MixResult } from './mixture';
 
 export interface PreparedProperties {

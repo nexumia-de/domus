@@ -1,7 +1,7 @@
 // Balance of a spec (docs/balance.md): lines to ml, totals, dilution by
 // method, figures. Pure; the dilution numbers come from data.
 import type { UnitOverrides } from '../amounts/index';
-import type { SpecLookup } from '../ingredients/prepared';
+import type { SpecLookup } from '@nexumia-de/materia';
 import type { IngredientTree } from '../drink-ingredients/types';
 import { chooseDilution } from './dilution';
 import { figures } from './figures';

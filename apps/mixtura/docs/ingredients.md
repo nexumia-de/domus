@@ -16,7 +16,7 @@ sources:
 # Ingredients
 
 Engine side of the Ingredient entity of the [data model](data-model.md).
-Code: `packages/engine/src/ingredients/`, one job per file. Every figure
+Code: `src/ingredients/` in [materia](https://github.com/nexumia-de/materia) and the drink side in `packages/engine/src/drink-ingredients/`, one job per file. Every figure
 in the vectors is either synthetic (stated in the vector) or an
 assumption of [balance](balance.md); no drink data is claimed.
 
@@ -87,7 +87,7 @@ guessed. Exceptions that follow the data model:
 ## Prepared ingredients
 
 The walk over a prepared ingredient (nesting, cycles, unknown ids) is
-the general `resolvePrepared` in `ingredients/prepared.ts`, internal to
+the general `resolvePrepared` in materia's `ingredients/prepared.ts`, internal to
 the engine; it folds a value given by the caller. `computePrepared`
 (`balance/prepared.ts`, drink-specific) passes the mixing formulas, and
 `limitingShelfLife` passes shelf lives.
