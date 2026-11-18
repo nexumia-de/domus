@@ -12,7 +12,8 @@ import {
 
 test('every route round-trips through its hash', () => {
   for (const route of ROUTES) expect(routeFromHash(hashFor(route))).toBe(route);
-  expect(ROUTES).toEqual(['ratios', 'components', 'dishes', 'stock', 'settings']);
+  // Cook is the sixth route; the stock screens stay routes of their own under the Cook entry.
+  expect(ROUTES).toEqual(['ratios', 'components', 'dishes', 'cook', 'stock', 'settings']);
 });
 
 test('an empty or unknown hash is the default route, Ratios', () => {

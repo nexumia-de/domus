@@ -62,8 +62,8 @@ const navigation = async (browser, origin, width) => {
   );
   check(
     links.length === 5 &&
-      links.map((l) => l.name).join() === 'Ratios,Components,Dishes,Stock,Settings',
-    `${width}px: the navigation has five entries, Stock between Dishes and Settings`,
+      links.map((l) => l.name).join() === 'Ratios,Components,Dishes,Cook,Settings',
+    `${width}px: the navigation has five entries, Cook between Dishes and Settings`,
   );
   check(
     links.every((l) => l.w >= 44 && l.h >= 44 && !l.clipped && l.right <= width + 0.5),
@@ -217,7 +217,7 @@ const detail = async (browser, origin) => {
   await page.getByLabel('Use by').fill('2026-11-20');
   await layout(page, `${label} (detail)`);
   await page.getByRole('button', { name: 'Save', exact: true }).click();
-  await page.getByRole('heading', { level: 1, name: 'Stock' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What is there' }).waitFor();
   let onion = byRef(await stockRows(page), 'onion')[0];
   check(
     same(onion.amount, { value: 500, unit: 'g' }) &&
@@ -284,7 +284,7 @@ const detail = async (browser, origin) => {
   // Reload keeps it all.
   const before = await stockRows(page);
   await page.reload();
-  await page.getByRole('heading', { level: 1, name: 'Stock' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What is there' }).waitFor();
   check(
     same(await stockRows(page), before) && (await rowNames(page)).length === 3,
     `${label}: a reload keeps every item`,
@@ -371,7 +371,7 @@ const remaining = async (browser, origin) => {
   await openAt(page, origin, 'stock/u-x/edit');
   await page.getByLabel('Note').fill('crisper drawer');
   await page.getByRole('button', { name: 'Save', exact: true }).click();
-  await page.getByRole('heading', { level: 1, name: 'Stock' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What is there' }).waitFor();
   const x = byRef(await stockRows(page), 'celery')[0];
   check(
     same(x['x-emptio'], { boughtOn: '2026-11-10', shop: 'Market' }) && x.note === 'crisper drawer',
@@ -404,7 +404,7 @@ const offline = async (browser, origin) => {
     `${label}: offline, searching the catalogue and ticking work`,
   );
   await page.goto(`${origin}/#/stock`);
-  await page.getByRole('heading', { level: 1, name: 'Stock' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What is there' }).waitFor();
   check((await rowNames(page)).length === 1, `${label}: offline, the list shows what was ticked`);
   await context.close();
   return problems;

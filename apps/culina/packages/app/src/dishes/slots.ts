@@ -1,6 +1,6 @@
 // The slots of one dish: the filling, the amount per portion and the total for a number of portions.
 import { toGrams, unitKind } from '@culina/engine';
-import { explain, refName, roleLabel } from '../components/names';
+import { explain, refName, roleInvite, roleLabel } from '../components/names';
 import type { DishRecord, Notebook, SlotRecord } from '../records';
 import { strings } from '../strings';
 import { inviteText, openRoles } from './roles';
@@ -23,6 +23,8 @@ export interface SlotRow {
 export interface OpenRow {
   role: string;
   text: string;
+  /** What is there for the role: "You could add a crunch: toasted nuts". */
+  offer?: string;
 }
 
 const amountOf = (nb: Notebook, slot: SlotRecord): number | string | undefined => {
@@ -63,6 +65,21 @@ export const slotRows = (nb: Notebook, dish: DishRecord, portions: number): Slot
     return row;
   });
 
-/** Invitations for the roles the dish does not fill. */
-export const openRows = (dish: DishRecord): OpenRow[] =>
-  openRoles(dish.slots.map((s) => s.role)).map((role) => ({ role, text: inviteText(role) }));
+/**
+ * Invitations for the roles the dish does not fill. `offers` gives the names in stock for a role;
+ * a role with none has no offer.
+ */
+export const openRows = (
+  dish: DishRecord,
+  offers: (role: string) => string[] = () => [],
+): OpenRow[] =>
+  openRoles(dish.slots.map((s) => s.role)).map((role) => {
+    const names = offers(role);
+    return {
+      role,
+      text: inviteText(role),
+      ...(names.length > 0
+        ? { offer: strings.cook.offer(roleInvite(role), names.join(', ')) }
+        : {}),
+    };
+  });

@@ -177,6 +177,15 @@ dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
 [behaviour](behaviour.md#components).
 
+# Cook screens
+
+`#/cook`, `#/cook/use-up`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook)).
+Three view links at the top (14 px, 44 px high, the current one with a
+4 px bar of `--accent` and bold text), two selects for the filters, an
+entry list in the `.rows` style: name, kind and status as text, then the
+reason and the notes in muted text. No alarm colour; `styles/cook.css`.
+Screenshots: `docs/screenshots/cook-*`.
+
 # Stock screens
 
 `#/stock`, `#/stock/add`, `#/stock/<id>/edit` ([behaviour](behaviour.md#stock)).

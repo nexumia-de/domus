@@ -1,0 +1,116 @@
+/* The finder: the three views of Cook, the filters, the entries and the use-up list. */
+.cook-tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-3);
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--divider);
+}
+
+.cook-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  padding: 0 var(--sp-1);
+  border-bottom: var(--sp-1) solid transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* The current view: a bar and the strong text colour, not colour alone. */
+.cook-tab[aria-current='page'] {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.cook-asof {
+  margin: 0 0 var(--sp-1);
+}
+
+.cook-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0 var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.cook-start {
+  margin-bottom: var(--sp-3);
+}
+
+.cook-start-heading,
+.cook-nearest-heading {
+  margin: var(--sp-3) 0 var(--sp-2);
+  font-size: var(--fs-md);
+}
+
+.cook-picks {
+  margin-bottom: var(--sp-3);
+}
+
+.cook-pick {
+  justify-content: space-between;
+}
+
+.cook-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--sp-3);
+}
+
+.cook-entry .cook-link {
+  gap: var(--sp-1);
+}
+
+.cook-note {
+  display: block;
+}
+
+/* Offers and substitutes are plain text beside the facts; the status words carry the meaning. */
+.cook-status {
+  font-weight: 600;
+}
+
+.cook-empty .new-link {
+  margin-inline-end: var(--sp-2);
+}
+
+.use-up-uses {
+  padding: 0 var(--sp-3) var(--sp-2);
+}
+
+.use-up-uses p {
+  margin: 0;
+}
+
+.use-up-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.use-up-links li + li {
+  border-top: 0;
+}
+
+.use-up-recipe {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.slot-offer {
+  display: block;
+  color: var(--text-muted);
+}

@@ -1,7 +1,9 @@
-import type { Action, Route } from '../router';
+import { USE_UP, type Action, type Route } from '../router';
 import { historyScreen } from './history';
 import { importScreen } from './import/import-screen';
 import { componentsScreen } from './components';
+import { cookScreen } from './cook/cook-screen';
+import { useUpScreen } from './cook/use-up';
 import { dishesScreen } from './dishes';
 import { componentEditor } from './editor/component-editor';
 import { dishEditor } from './editor/dish-editor';
@@ -15,6 +17,7 @@ const SCREENS: Record<Route, (param?: string) => HTMLElement> = {
   ratios: ratiosScreen,
   components: componentsScreen,
   dishes: dishesScreen,
+  cook: (param) => (param === USE_UP ? useUpScreen() : cookScreen()),
   stock: stockScreen,
   settings: settingsScreen,
 };
@@ -26,6 +29,7 @@ const EDITORS: Partial<Record<Route, (id?: string) => HTMLElement>> = {
 
 export const renderScreen = (route: Route, param?: string, action?: Action): HTMLElement => {
   if (action === 'import' && route === 'settings') return importScreen();
+  if (route === 'cook' && action === 'with') return cookScreen(param);
   if (route === 'stock' && action === 'add') return stockAddScreen();
   if (route === 'stock' && action === 'edit') return stockEditScreen(param);
   if (action === 'history' && (route === 'components' || route === 'dishes')) {

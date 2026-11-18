@@ -40,8 +40,8 @@ export const mountShell = (root: HTMLElement): Shell => {
   return {
     refresh() {
       // An editor owns its form: the notebook changing under it must not redraw it.
-      if (shown === undefined || shown.action !== undefined) return;
-      main.replaceChildren(backupBanner(), renderScreen(shown.route, shown.param));
+      if (shown === undefined || (shown.action !== undefined && shown.action !== 'with')) return;
+      main.replaceChildren(backupBanner(), renderScreen(shown.route, shown.param, shown.action));
       void refreshBackupBanner();
     },
     show(route, param, focusHeading, action) {

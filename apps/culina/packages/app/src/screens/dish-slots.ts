@@ -36,7 +36,9 @@ export const slotsSection = (rows: readonly SlotRow[], open: readonly OpenRow[])
     amount(row.totalG),
   ]);
   for (const slot of open) {
-    cells.push([{ content: el('span', 'slot-invite', slot.text), span: 3 }]);
+    const invite = el('span', 'slot-invite', slot.text);
+    if (slot.offer !== undefined) invite.append(el('span', 'slot-offer', slot.offer));
+    cells.push([{ content: invite, span: 3 }]);
   }
   const table = dataTable(
     'slots-table',

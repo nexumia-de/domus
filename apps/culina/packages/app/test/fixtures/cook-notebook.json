@@ -1,0 +1,384 @@
+{
+  "_note": "Synthetic fixture for the finder: ingredients, components, dishes and stock as stored. Names, amounts and dates are made up; today is 2026-11-18.",
+  "today": "2026-11-18",
+  "ingredients": [
+    {
+      "id": "cook-dairy",
+      "name": "Dairy"
+    },
+    {
+      "id": "cook-butter",
+      "name": "Butter",
+      "parentId": "cook-dairy",
+      "roles": ["fat"]
+    },
+    {
+      "id": "cook-salted-butter",
+      "name": "Salted butter",
+      "parentId": "cook-butter"
+    },
+    {
+      "id": "cook-unsalted-butter",
+      "name": "Unsalted butter",
+      "parentId": "cook-butter"
+    },
+    {
+      "id": "cook-cream",
+      "name": "Cream",
+      "parentId": "cook-dairy"
+    },
+    {
+      "id": "cook-yoghurt",
+      "name": "Yoghurt",
+      "parentId": "cook-dairy",
+      "names": {
+        "de": {
+          "name": "Joghurt",
+          "source": "Entered by hand for the fixture"
+        }
+      }
+    },
+    {
+      "id": "cook-allium",
+      "name": "Allium",
+      "roles": ["aromatic"]
+    },
+    {
+      "id": "cook-leek",
+      "name": "Leek",
+      "parentId": "cook-allium",
+      "names": {
+        "de": {
+          "name": "Lauch",
+          "aliases": ["Porree"],
+          "source": "Entered by hand for the fixture"
+        }
+      }
+    },
+    {
+      "id": "cook-onion",
+      "name": "Onion",
+      "parentId": "cook-allium",
+      "names": {
+        "de": {
+          "name": "Zwiebel",
+          "source": "Entered by hand for the fixture"
+        }
+      }
+    },
+    {
+      "id": "cook-garlic",
+      "name": "Garlic",
+      "parentId": "cook-allium"
+    },
+    {
+      "id": "cook-potato",
+      "name": "Potato"
+    },
+    {
+      "id": "cook-thyme",
+      "name": "Thyme"
+    },
+    {
+      "id": "cook-walnut",
+      "name": "Walnut",
+      "roles": ["crunch"]
+    },
+    {
+      "id": "cook-salt",
+      "name": "Salt"
+    }
+  ],
+  "components": [
+    {
+      "id": "cook-potato-leek-soup",
+      "name": "Potato and leek soup",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-leek"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "role": "aromatic"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-potato"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "role": "main"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-cream"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "role": "sauce"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-salt"
+          }
+        }
+      ],
+      "version": {
+        "family": "cook-potato-leek-soup",
+        "date": "2026-11-10"
+      },
+      "role": "main"
+    },
+    {
+      "id": "cook-buttered-leeks",
+      "name": "Buttered leeks",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-leek"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "role": "main"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-unsalted-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          },
+          "role": "sauce"
+        }
+      ],
+      "version": {
+        "family": "cook-buttered-leeks",
+        "date": "2026-11-10"
+      }
+    },
+    {
+      "id": "cook-onion-tart-1",
+      "name": "Onion tart",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-onion"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "role": "main"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-garlic"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          },
+          "role": "aromatic"
+        }
+      ],
+      "version": {
+        "family": "cook-onion-tart-1",
+        "date": "2026-11-05"
+      }
+    },
+    {
+      "id": "cook-onion-tart-2",
+      "name": "Onion tart",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-onion"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "role": "main"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-thyme"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g"
+          },
+          "role": "garnish"
+        }
+      ],
+      "version": {
+        "family": "cook-onion-tart-1",
+        "parent": "cook-onion-tart-1",
+        "date": "2026-11-12",
+        "change": "Thyme instead of garlic"
+      }
+    },
+    {
+      "id": "cook-walnut-butter",
+      "name": "Walnut butter",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-walnut"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          },
+          "role": "crunch"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-unsalted-butter"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "role": "sauce"
+        }
+      ],
+      "version": {
+        "family": "cook-walnut-butter",
+        "date": "2026-11-10"
+      }
+    }
+  ],
+  "dishes": [
+    {
+      "id": "cook-soup-plate",
+      "name": "Soup plate",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "cook-potato-leek-soup"
+          }
+        },
+        {
+          "role": "sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "cook-cream"
+          }
+        }
+      ],
+      "version": {
+        "family": "cook-soup-plate",
+        "date": "2026-11-10"
+      }
+    }
+  ],
+  "stock": [
+    {
+      "id": "cook-s-leek",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-leek"
+      },
+      "amount": {
+        "value": 500,
+        "unit": "g"
+      },
+      "state": "raw",
+      "useBy": "2026-11-19"
+    },
+    {
+      "id": "cook-s-potato",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-potato"
+      },
+      "amount": {
+        "value": 1000,
+        "unit": "g"
+      }
+    },
+    {
+      "id": "cook-s-cream",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-cream"
+      },
+      "useBy": "2026-11-22"
+    },
+    {
+      "id": "cook-s-salted-butter",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-salted-butter"
+      },
+      "amount": {
+        "value": 250,
+        "unit": "g"
+      }
+    },
+    {
+      "id": "cook-s-onion",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-onion"
+      },
+      "amount": {
+        "value": 300,
+        "unit": "g"
+      }
+    },
+    {
+      "id": "cook-s-walnut",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-walnut"
+      },
+      "amount": {
+        "value": 100,
+        "unit": "g"
+      }
+    },
+    {
+      "id": "cook-s-yoghurt",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-yoghurt"
+      },
+      "useBy": "2026-11-25"
+    },
+    {
+      "id": "cook-s-salt",
+      "ref": {
+        "kind": "ingredient",
+        "id": "cook-salt"
+      },
+      "always": true
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 // Writes the documentation screenshots to docs/screenshots/ (scale 2): `npm run screenshots -w @culina/app`.
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { store as storeCookFixture } from './cook-fixture.mjs';
 import { buildApp, distDir, launch } from './harness.mjs';
 import { seed } from './seed.mjs';
 import { serve } from './serve.mjs';
@@ -93,6 +94,13 @@ const stocked = async (page) => {
   }, stockItems);
   await page.reload();
   await page.getByRole('heading', { level: 1 }).waitFor();
+};
+// The finder: the fixture notebook and stock of e2e/cook.mjs, written through the store's test hook.
+const cooked = async (page) => {
+  await storeCookFixture(page);
+  await page.reload();
+  await page.getByRole('heading', { level: 1 }).waitFor();
+  await page.locator('.cook-screen').waitFor();
 };
 const LATER = `&e2e-now=${new Date(Date.now() + 40 * 86_400_000).toISOString()}`;
 // [file, width, height, colour scheme, route, steps after load, whole page, with example data, extra query]
@@ -225,6 +233,42 @@ const shots = [
     stocked,
     true,
     true,
+    STOCK_NOW,
+  ],
+  ['cook-360x720-light.png', 360, 720, 'light', 'cook', cooked, true, false, STOCK_NOW],
+  ['cook-360x720-dark.png', 360, 720, 'dark', 'cook', cooked, true, false, STOCK_NOW],
+  ['cook-1000x700-light.png', 1000, 700, 'light', 'cook', cooked, true, false, STOCK_NOW],
+  [
+    'cook-use-up-360x720-light.png',
+    360,
+    720,
+    'light',
+    'cook/use-up',
+    cooked,
+    true,
+    false,
+    STOCK_NOW,
+  ],
+  [
+    'cook-use-up-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'cook/use-up',
+    cooked,
+    true,
+    false,
+    STOCK_NOW,
+  ],
+  [
+    'cook-ingredient-360x720-light.png',
+    360,
+    720,
+    'light',
+    'cook/cook-leek/with',
+    cooked,
+    true,
+    false,
     STOCK_NOW,
   ],
 ];

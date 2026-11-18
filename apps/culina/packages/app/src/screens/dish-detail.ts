@@ -1,5 +1,9 @@
 // The detail of one dish: the portion control, the role slots with their amounts, and the raw
 // ingredients of the whole dish for the chosen portions.
+import { cookInput } from '../cook/input';
+import { cookToday, notebookSource } from '../cook/source';
+import { lookupOf } from '../cook/lookup';
+import { offersFor } from '../cook/offers';
 import { dishRaw } from '../dishes/raw';
 import { openRows, slotRows } from '../dishes/slots';
 import { hashFor } from '../router';
@@ -27,6 +31,8 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   card.append(versionSection('dishes', dish));
 
   const results = el('div', 'dish-results');
+  const source = notebookSource();
+  const offers = offersFor(cookInput(source, cookToday()), lookupOf(source));
   const draw = (portions: number): void => {
     const rows = slotRows(nb, dish, portions);
     const raw = dishRaw(nb, rows);
@@ -36,7 +42,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
       el('h2', undefined, strings.notebook.rawHeading),
       rawBlock(raw, strings.notebook.rawPortions(n)),
     );
-    results.replaceChildren(slotsSection(rows, openRows(dish)), rawSection);
+    results.replaceChildren(slotsSection(rows, openRows(dish, offers)), rawSection);
   };
   const initial = dish.portions ?? 1;
   const control = stepper(
