@@ -72,4 +72,24 @@ export const COMPONENTS: ComponentRecord[] = [
     ],
     version: version('example-herb-oil'),
   },
+  // A second version of the herb oil, so the history screen has something to show. Same
+  // amounts; only the method text is added, and it says it is an example.
+  {
+    id: 'example-herb-oil-2',
+    name: 'Example: Herb oil',
+    role: 'garnish',
+    lines: [
+      { ref: ingredient('oil'), amount: g(100) },
+      { ref: ingredient('parsley'), amount: g(20) },
+      { ref: ingredient('salt') },
+    ],
+    method: ['Example text, not a method.'],
+    version: {
+      family: 'example-herb-oil',
+      parent: 'example-herb-oil',
+      date: '2026-11-19',
+      change: 'Example: a method text was added',
+      reason: 'Example data for the history screen',
+    },
+  },
 ];

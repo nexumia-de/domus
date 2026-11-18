@@ -1,0 +1,66 @@
+{
+  "id": "variation-parent-none",
+  "description": "A family that did not start as a variation has no parent",
+  "inputs": {
+    "kind": "variations",
+    "id": "p2",
+    "records": [
+      {
+        "id": "p1",
+        "version": {
+          "family": "p1",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "p2",
+        "version": {
+          "family": "p1",
+          "date": "2026-11-02",
+          "parent": "p1"
+        }
+      },
+      {
+        "id": "v1",
+        "version": {
+          "family": "v1",
+          "date": "2026-11-03",
+          "parent": "p1"
+        }
+      },
+      {
+        "id": "v2",
+        "version": {
+          "family": "v1",
+          "date": "2026-11-04",
+          "parent": "v1"
+        }
+      },
+      {
+        "id": "w1",
+        "version": {
+          "family": "w1",
+          "date": "2026-11-05",
+          "parent": "p2"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "variations": [
+      {
+        "family": "v1",
+        "head": "v2"
+      },
+      {
+        "family": "w1",
+        "head": "w1"
+      }
+    ],
+    "parent": {
+      "kind": "none"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}

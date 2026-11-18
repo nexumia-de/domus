@@ -24,6 +24,10 @@ const picking = async (page) => {
 };
 const DOUGH = 'components/example-flat-dough/edit';
 const PLATE = 'dishes/example-vegetable-plate/edit';
+const HISTORY = 'components/example-herb-oil/history';
+const OLD = 'components/example-herb-oil';
+const historyReady = (page) => page.locator('.history-entry').first().waitFor();
+const oldReady = (page) => page.locator('.older-version').waitFor();
 // [file, width, height, colour scheme, route, steps after load, whole page, with example data]
 const shots = [
   ['ratios-360x720-light.png', 360, 720, 'light', 'ratios'],
@@ -71,6 +75,11 @@ const shots = [
   ['editor-picker-360x720-light.png', 360, 720, 'light', 'components/new', picking, false, true],
   ['editor-dish-360x720-light.png', 360, 720, 'light', PLATE, editorReady, true, true],
   ['editor-dish-1000x700-light.png', 1000, 700, 'light', PLATE, editorReady, true, true],
+  ['history-360x720-light.png', 360, 720, 'light', HISTORY, historyReady, true, true],
+  ['history-360x720-dark.png', 360, 720, 'dark', HISTORY, historyReady, true, true],
+  ['history-1000x700-light.png', 1000, 700, 'light', HISTORY, historyReady, true, true],
+  ['version-old-360x720-light.png', 360, 720, 'light', OLD, oldReady, false, true],
+  ['version-old-1000x700-light.png', 1000, 700, 'light', OLD, oldReady, false, true],
 ];
 
 buildApp();

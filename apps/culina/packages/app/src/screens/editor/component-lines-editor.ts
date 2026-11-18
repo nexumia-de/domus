@@ -5,7 +5,13 @@ import { wouldCycle } from '../../editor/cycle';
 import { lineFigures } from '../../editor/figures';
 import type { ComponentForm, LineForm } from '../../editor/component-form';
 import { AMOUNT_UNITS, MASS_ONLY, type EntryUnit } from '../../editor/units';
-import { listComponents, listIngredients, notebook } from '../../notebook';
+import {
+  canonicalLines,
+  familyView,
+  listComponents,
+  listIngredients,
+  notebook,
+} from '../../notebook';
 import { formatMass, formatNumber } from '../../shared/mass';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -39,15 +45,20 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
       }));
     }
     const others = form.lines.flatMap((l, i) => (i !== index && l.ref ? [{ ref: l.ref }] : []));
+    const family = form.version?.family ?? form.id;
     return listComponents().map((c) => {
       const blocked =
-        c.id === form.id
+        c.version.family === family
           ? t.pickerSelf
-          : wouldCycle(listComponents(), { id: form.id, lines: others }, c.id)
+          : wouldCycle(
+                familyView(),
+                { id: family, lines: canonicalLines(others) },
+                c.version.family,
+              )
             ? t.pickerUses
             : undefined;
       return {
-        ref: { kind: 'component' as const, id: c.id },
+        ref: { kind: 'component' as const, id: c.version.family },
         name: c.name,
         ...(blocked === undefined ? {} : { blocked }),
       };

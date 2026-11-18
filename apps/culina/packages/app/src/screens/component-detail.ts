@@ -6,7 +6,9 @@ import { hashFor } from '../router';
 import type { ComponentRecord, Notebook } from '../records';
 import { el } from '../shell/el';
 import { strings } from '../strings';
+import { headOfFamily } from '../notebook';
 import { detailActions } from './detail-actions';
+import { versionLines, versionSection } from './version-info';
 import { linesSection } from './component-lines';
 import { scaleSections } from './component-scale';
 import { yieldSection } from './component-yield';
@@ -17,7 +19,11 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
   back.href = hashFor('components');
   card.append(back, el('h1', undefined, component.name));
   if (component.role !== undefined) card.append(el('p', 'muted', roleLabel(component.role)));
-  card.append(detailActions('components', component.id, component.name));
+  card.append(versionLines('components', component));
+  if (headOfFamily('components', component.id)?.id === component.id) {
+    card.append(detailActions('components', component.id, component.name));
+  }
+  card.append(versionSection('components', component));
 
   const known = (id: string): boolean => nb.components.some((c) => c.id === id);
   const figures = yieldView(nb, component);

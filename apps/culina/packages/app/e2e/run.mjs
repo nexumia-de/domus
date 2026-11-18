@@ -10,6 +10,7 @@ import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
 import { smoke } from './smoke.mjs';
 import { store } from './store.mjs';
+import { versions } from './versions.mjs';
 
 buildApp();
 const server = await serve(distDir);
@@ -25,6 +26,7 @@ try {
   await editorMore(browser, server);
   await install(browser, server);
   await store(browser, server);
+  await versions(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

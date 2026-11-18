@@ -8,3 +8,13 @@ export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';
 export { startNotebook } from './start';
 export { subscribe, today } from './state';
+export * from './versions';
+export {
+  makeVariation,
+  removeFamily,
+  removeTasting,
+  restoreFamily,
+  restoreVersion,
+  saveTasting,
+} from './versions-actions';
+export { canonicalLines, familyView } from './family-view';

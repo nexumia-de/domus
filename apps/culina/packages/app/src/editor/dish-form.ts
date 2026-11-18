@@ -2,6 +2,7 @@
 import type { ComponentRef } from '@culina/engine';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
 import { parseEntry } from '../shared/parse';
+import type { VersionNote } from './version-save';
 import type { AmountUnit } from './units';
 
 export interface SlotForm {
@@ -22,6 +23,8 @@ export interface DishForm {
   note: string;
   slots: SlotForm[];
   version?: VersionInfo;
+  /** Change, reason and tasting note for the version Save adds. */
+  versionNote?: VersionNote;
 }
 
 export type DishProblem =

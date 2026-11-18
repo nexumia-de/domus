@@ -1,0 +1,48 @@
+{
+  "id": "family-chain-restore",
+  "description": "A restore is a new head whose parent is the previous head: v1, v2, v3 (restore of v1) is a fourth version after v3",
+  "inputs": {
+    "kind": "version_family",
+    "id": "c1",
+    "records": [
+      {
+        "id": "c1",
+        "version": {
+          "family": "c1",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "c2",
+        "version": {
+          "family": "c1",
+          "date": "2026-11-02",
+          "parent": "c1"
+        }
+      },
+      {
+        "id": "c3",
+        "version": {
+          "family": "c1",
+          "date": "2026-11-03",
+          "parent": "c2"
+        }
+      },
+      {
+        "id": "c4",
+        "version": {
+          "family": "c1",
+          "date": "2026-11-04",
+          "parent": "c3"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "versions": ["c1", "c2", "c3", "c4"],
+    "head": "c4",
+    "number": 1
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}

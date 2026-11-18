@@ -24,9 +24,23 @@ export interface IngredientRecord {
   note?: string;
 }
 
+/** The `version` object of a stored component or dish (data model, Version). */
 export interface VersionInfo {
+  /** The id of the first version. */
   family: string;
+  /** The version edited, or the record a variation was made from. */
+  parent?: string;
   date: string;
+  change?: string;
+  reason?: string;
+}
+
+/** A tasting note: a record of its own that refers to one version record. */
+export interface TastingRecord {
+  id: string;
+  ref: { kind: 'component' | 'dish'; id: string };
+  date: string;
+  text: string;
 }
 
 /** A component record: the engine's `Component` plus the fields only the screens read. */
