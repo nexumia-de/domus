@@ -23,12 +23,14 @@ const { demo } = engine;
 
 export { shown, engine };
 export const nb = demo.notebook();
-export const components = demo.listComponents();
+// The demo holds every version; the screens list one component per family, its head.
+const allComponents = demo.listComponents();
+export const components = engine.familyHeads(allComponents);
 export const dishes = demo.listDishes();
 /** Records in the order the lists show them: by name, ignoring case. */
 export const byName = (records) =>
   [...records].sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
-export const component = (id) => components.find((c) => c.id === id);
+export const component = (id) => allComponents.find((c) => c.id === id);
 export const dish = (id) => dishes.find((d) => d.id === id);
 
 const STATES = { raw: 'raw', cooked: 'cooked', prepared: 'prepared' };
@@ -66,7 +68,7 @@ export const lineTable = (id) => {
     const m = lines.lines.find((l) => l.index === index);
     return [
       line.ref.kind === 'component'
-        ? components.find((x) => x.id === line.ref.id).name
+        ? allComponents.find((x) => x.id === line.ref.id).name
         : nb.ingredientName(line.ref.id),
       m ? shown(m.g) : 'to taste',
       pct && m ? String(Number(pct[String(index)].toFixed(1))) : '',
@@ -96,7 +98,7 @@ export const slotTable = (id, portions) =>
     ).g;
     const name =
       s.ref.kind === 'component'
-        ? components.find((c) => c.id === s.ref.id).name
+        ? allComponents.find((c) => c.id === s.ref.id).name
         : nb.ingredientName(s.ref.id);
     return [name, shown(g), shown(g * portions)];
   });
