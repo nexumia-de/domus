@@ -1,7 +1,7 @@
 ---
 type: Research
 title: Name check
-description: What was found on 2026-11-18 for the names Emptio, Domus, hospes and cibus in package registries, GitHub, Flathub and by web search; a family organiser app named Domus exists; trademark registers and the app stores could not be read.
+description: What was found on 2026-11-18 for the names Emptio, Domus, hospes and cibus in package registries, GitHub, Flathub and by web search; a family organiser app named Domus exists; the German trademark register counts about 3 marks for Emptio and about 498 for Domus, whose entries were not read.
 tags: [research, names, trademarks]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -25,14 +25,15 @@ sources:
 # Name check
 
 Done on 2026-11-18 by registry lookups, GitHub and Flathub searches and
-web search. It is not a trademark search: the registers could not be
-read. Mixtura's check ([there](https://github.com/nexumia-de/mixtura/blob/main/docs/name-check.md))
+web search. It is not a full trademark search: only counts were read
+from the register. Mixtura's check ([there](https://github.com/nexumia-de/mixtura/blob/main/docs/name-check.md))
 used the same method.
 
 # Short result
 
-- **Emptio**: no serious collision found. One small project of the
-  same kind exists on GitHub.
+- **Emptio**: no collision found in software. One small project of the
+  same kind exists on GitHub. The trademark register counts about 3
+  marks under the name, not yet read.
 - **Domus**: **a family organiser app of that name exists** for iOS
   and Android (grocery lists, calendar, recipes, household documents),
   close to what the umbrella is. The owner should decide before the
@@ -56,32 +57,46 @@ The Latin meanings (emptio: purchase; domus: house, household; hospes:
 host, guest; cibus: food) are from general knowledge, not read at a
 source.
 
+# Trademark register
+
+After the owner allowed the hosts, the simple search of DPMAregister
+(national, European Union and international marks) was run in a
+headless browser on 2026-11-18:
+
+| Name   | Marks found | Read                                                                                                                                                          |
+| ------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Emptio | about 3     | No. The list of the entries could not be opened by the script, so whether they are for software, and whether the name is the mark or its owner, is not known. |
+| Domus  | about 498   | No                                                                                                                                                            |
+
+hospes and cibus were not searched; they are package names.
+
 # Not checked
 
-- Trademark registers: EUIPO, DPMA, WIPO.
+- The entries behind the counts above, and the EUIPO search itself
+  (`euipo.europa.eu` answers, its search did not load without a full
+  browser session).
 - Searches inside Google Play, the Apple App Store and F-Droid; the
   store results above come from web search and are incomplete.
 - Company registers, domains, social media names.
 
-Hosts that were blocked (tested with `curl`):
+Hosts still blocked (tested with `curl`):
 
 ```
-euipo.europa.eu
-register.dpma.de
 play.google.com
 apps.apple.com
 en.wiktionary.org
 www.npmjs.com
 ```
 
-The first two are the trademark registers, the next two the app
-stores, then the dictionary for the meanings; `www.npmjs.com` answers
-403 to the proxy, the registry itself was used.
+The first two are the app stores, then the dictionary for the
+meanings; `www.npmjs.com` answers 403 to the proxy, the registry itself
+was used.
 
 # What the owner can do
 
-Search "Emptio" and "Domus" in the EUIPO and DPMA registers for classes
-9 and 42 (software), and decide on Domus: keep it as a repository name
+Open <https://register.dpma.de/DPMAregister/marke/einsteiger>, search
+"Emptio" and read the three entries (classes 9 and 42 are software),
+and decide on Domus: keep it as a repository name
 only, with "Household" as the visible name, or choose another name.
 
 [^npm]: npm registry, https://registry.npmjs.org/

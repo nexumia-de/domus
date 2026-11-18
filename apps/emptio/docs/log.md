@@ -2,6 +2,7 @@
 
 ## 2026-11-18
 
+- **Update**: [name check](name-check.md): DPMAregister counts about 3 marks for Emptio and about 498 for Domus; the entries could not be opened by script and are left to the owner.
 - **Decision**: by the owner, correcting the plan: each app writes its own file in the place's folder, as Culina's sync decision already said; the list is no longer planned inside Mixtura's file and the fix of Mixtura for that is withdrawn. In [how Emptio is built](architecture.md#sync-and-the-household) and the [data model](data-model.md#records).
 - **Creation**: Goal 0 (issue 1). The repository is set up like Culina (issue 7): rules for agents, licence, workspaces `packages/engine` and `packages/app`, `npm run check`, CI, [development](development.md), [dependencies](dependencies.md). [Data model](data-model.md) (issue 8). [Engine rules](engine-rules.md) and [vector format](vectors.md) with six vectors for rules 1, 4 and 5 (issue 9). [Name check](name-check.md) and the [name decision](decisions/app-name.md) (issue 10): a family organiser app named Domus exists. [Starting categories](categories.md) with `packages/engine/data/categories.json` (issue 11). The owner named the catalogue package cibus.
 - **Decision**: by the owner, in [how Emptio is built](architecture.md#decisions): Mixtura is fixed first so that places keep collections of other apps, and the invite format and storage folder get neutral names. The work is an issue in Mixtura.

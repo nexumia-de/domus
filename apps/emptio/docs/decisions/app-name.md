@@ -28,7 +28,8 @@ By the owner on 2026-11-18:
 
 - "Shopping List" is descriptive and cannot be protected; it also
   cannot be taken away.
-- The [name check](../name-check.md) found no serious collision for
-  Emptio, hospes and cibus as used here.
+- The [name check](../name-check.md) found no collision in software for
+  Emptio, hospes and cibus as used here. The trademark register counts
+  about 3 marks for Emptio whose entries are not yet read.
 - **Open**: an app named Domus for family organisation exists. Until
   the owner decides, Domus is used as a repository name only.
