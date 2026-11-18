@@ -1,0 +1,208 @@
+{
+  "id": "findings-in-collection-order",
+  "description": "Findings follow the collections (ingredients, templates, components, dishes, stock, affinities), then record order, then field order",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        },
+        {
+          "id": "onion",
+          "name": "onion",
+          "parentId": "alliums"
+        }
+      ],
+      "templates": [
+        {
+          "id": "sweet",
+          "name": "sweet",
+          "source": "user",
+          "parentId": "ghost",
+          "changes": [
+            {
+              "op": "swap",
+              "role": "fat",
+              "ingredientClass": "oil"
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "id": "c1",
+          "name": "c1",
+          "lines": [
+            {
+              "ref": {
+                "kind": "component",
+                "id": "sauce"
+              }
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "pepper"
+              }
+            }
+          ],
+          "version": {
+            "family": "c0",
+            "date": "2026-11-18",
+            "parent": "c0"
+          },
+          "templateId": "pie"
+        },
+        {
+          "id": "c2",
+          "name": "c2",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c2",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d1",
+          "name": "d1",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "component",
+                "id": "c9"
+              }
+            },
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "s1",
+          "ref": {
+            "kind": "ingredient",
+            "id": "milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ],
+      "affinities": [
+        {
+          "id": "f1",
+          "a": "salt",
+          "b": "lime"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "ingredient",
+        "id": "onion",
+        "path": "parentId",
+        "ref": "alliums"
+      },
+      {
+        "code": "unknown-parent",
+        "kind": "template",
+        "id": "sweet",
+        "path": "parentId",
+        "ref": "ghost"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "template",
+        "id": "sweet",
+        "path": "changes[0].ingredientClass",
+        "ref": "oil"
+      },
+      {
+        "code": "unknown-template",
+        "kind": "component",
+        "id": "c1",
+        "path": "templateId",
+        "ref": "pie"
+      },
+      {
+        "code": "unknown-component",
+        "kind": "component",
+        "id": "c1",
+        "path": "lines[0].ref",
+        "ref": "sauce"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "component",
+        "id": "c1",
+        "path": "lines[1].ref",
+        "ref": "pepper"
+      },
+      {
+        "code": "unknown-family",
+        "kind": "component",
+        "id": "c1",
+        "path": "version.family",
+        "ref": "c0"
+      },
+      {
+        "code": "unknown-parent",
+        "kind": "component",
+        "id": "c1",
+        "path": "version.parent",
+        "ref": "c0"
+      },
+      {
+        "code": "unknown-component",
+        "kind": "dish",
+        "id": "d1",
+        "path": "slots[0].ref",
+        "ref": "c9"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "stock",
+        "id": "s1",
+        "path": "ref",
+        "ref": "milk"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "affinity",
+        "id": "f1",
+        "path": "b",
+        "ref": "lime"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

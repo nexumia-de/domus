@@ -1,0 +1,80 @@
+{
+  "id": "reference-kind-selects-the-collection",
+  "description": "An ingredient ref does not find a component of that id, nor the other way round",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "only-ingredient",
+          "name": "only-ingredient"
+        }
+      ],
+      "components": [
+        {
+          "id": "only-component",
+          "name": "only-component",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "only-ingredient"
+              }
+            }
+          ],
+          "version": {
+            "family": "only-component",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "s1",
+          "ref": {
+            "kind": "component",
+            "id": "only-ingredient"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        },
+        {
+          "id": "s2",
+          "ref": {
+            "kind": "ingredient",
+            "id": "only-component"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-component",
+        "kind": "stock",
+        "id": "s1",
+        "path": "ref",
+        "ref": "only-ingredient"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "stock",
+        "id": "s2",
+        "path": "ref",
+        "ref": "only-component"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

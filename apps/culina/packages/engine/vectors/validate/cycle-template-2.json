@@ -1,0 +1,51 @@
+{
+  "id": "cycle-template-2",
+  "description": "Template parents that run around a cycle of length 2",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "n1",
+          "name": "n1",
+          "source": "user",
+          "parentId": "n2",
+          "changes": [
+            {
+              "op": "add",
+              "role": "sugar",
+              "parts": 1
+            }
+          ]
+        },
+        {
+          "id": "n2",
+          "name": "n2",
+          "source": "user",
+          "parentId": "n1",
+          "changes": [
+            {
+              "op": "add",
+              "role": "sugar",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "template",
+        "id": "n1",
+        "path": "parentId",
+        "ids": ["n1", "n2", "n1"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

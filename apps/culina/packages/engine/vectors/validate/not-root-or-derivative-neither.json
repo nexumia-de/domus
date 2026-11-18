@@ -1,0 +1,28 @@
+{
+  "id": "not-root-or-derivative-neither",
+  "description": "A root with neither parts nor a parent",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "empty",
+          "name": "empty",
+          "source": "user"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "not-root-or-derivative",
+        "kind": "template",
+        "id": "empty"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

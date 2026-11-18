@@ -1,0 +1,37 @@
+{
+  "id": "duplicate-id-ingredient",
+  "description": "A later ingredient with a used id is reported once; its parent is not checked",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "a",
+          "name": "a"
+        },
+        {
+          "id": "b",
+          "name": "b",
+          "parentId": "a"
+        },
+        {
+          "id": "a",
+          "name": "a",
+          "parentId": "ghost"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "kind": "ingredient",
+        "id": "a"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

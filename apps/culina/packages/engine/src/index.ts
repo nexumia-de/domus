@@ -107,5 +107,20 @@ export type {
 export { toEdible, toPurchased, yieldFor } from './yields/edible';
 export type { EdibleResult, IngredientYield, YieldError, YieldLookup } from './yields/edible';
 
+export { validateModel } from './validate/model';
+export type {
+  EntityKind,
+  Finding,
+  FindingCode,
+  ModelAffinity,
+  ModelComponent,
+  ModelDish,
+  ModelIngredient,
+  ModelInput,
+  ModelStock,
+  ModelVersion,
+  ValidationResult,
+} from './validate/types';
+
 /** The engine's name; the app shows it until it has real screens. */
 export const engineName = (): string => 'culina-engine';

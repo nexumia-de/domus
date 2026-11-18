@@ -1,0 +1,55 @@
+{
+  "id": "unknown-family-and-parent-together",
+  "description": "A missing family and a missing parent are two findings, family first",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "c3",
+          "name": "c3",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c1",
+            "date": "2026-11-18",
+            "parent": "c2"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-family",
+        "kind": "component",
+        "id": "c3",
+        "path": "version.family",
+        "ref": "c1"
+      },
+      {
+        "code": "unknown-parent",
+        "kind": "component",
+        "id": "c3",
+        "path": "version.parent",
+        "ref": "c2"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

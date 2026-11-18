@@ -1,0 +1,58 @@
+{
+  "id": "template-error-of-parent-is-reported-once",
+  "description": "A broken parent is reported with the parent, not again with each derivative",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "bad",
+          "name": "bad",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 1
+            },
+            {
+              "role": "salt",
+              "parts": 1,
+              "range": {
+                "min": 2,
+                "max": 1
+              }
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "child",
+          "name": "child",
+          "source": "user",
+          "parentId": "bad",
+          "changes": [
+            {
+              "op": "add",
+              "role": "sugar",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "invalid-range",
+        "kind": "template",
+        "id": "bad",
+        "path": "parts[1].range",
+        "role": "salt"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

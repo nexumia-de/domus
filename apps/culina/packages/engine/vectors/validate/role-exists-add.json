@@ -1,0 +1,58 @@
+{
+  "id": "role-exists-add",
+  "description": "A derivative adds a role its parent already has",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            },
+            {
+              "role": "fat",
+              "parts": 2
+            },
+            {
+              "role": "water",
+              "parts": 1
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "more-flour",
+          "name": "more-flour",
+          "source": "user",
+          "parentId": "pie",
+          "changes": [
+            {
+              "op": "add",
+              "role": "flour",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "role-exists",
+        "kind": "template",
+        "id": "more-flour",
+        "path": "changes[0]",
+        "role": "flour"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

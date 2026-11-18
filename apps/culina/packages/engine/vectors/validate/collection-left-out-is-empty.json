@@ -1,0 +1,41 @@
+{
+  "id": "collection-left-out-is-empty",
+  "description": "Only the records given exist: with no ingredients every ingredient reference is unknown",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "components": [
+        {
+          "id": "c",
+          "name": "c",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c",
+            "date": "2026-11-18"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-ingredient",
+        "kind": "component",
+        "id": "c",
+        "path": "lines[0].ref",
+        "ref": "salt"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

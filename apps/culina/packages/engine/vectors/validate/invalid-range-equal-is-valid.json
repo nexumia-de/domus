@@ -1,0 +1,37 @@
+{
+  "id": "invalid-range-equal-is-valid",
+  "description": "A range with min equal to max is valid",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "dough",
+          "name": "dough",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 100
+            },
+            {
+              "role": "salt",
+              "parts": 3,
+              "range": {
+                "min": 3,
+                "max": 3
+              }
+            }
+          ],
+          "anchor": "flour"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

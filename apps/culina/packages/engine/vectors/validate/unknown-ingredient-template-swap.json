@@ -1,0 +1,65 @@
+{
+  "id": "unknown-ingredient-template-swap",
+  "description": "A swap names an ingredient class that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "butter",
+          "name": "butter"
+        }
+      ],
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            },
+            {
+              "role": "fat",
+              "parts": 2
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "vegan-pie",
+          "name": "vegan-pie",
+          "source": "user",
+          "parentId": "pie",
+          "changes": [
+            {
+              "op": "swap",
+              "role": "fat",
+              "ingredientClass": "butter"
+            },
+            {
+              "op": "swap",
+              "role": "fat",
+              "ingredientClass": "oil"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-ingredient",
+        "kind": "template",
+        "id": "vegan-pie",
+        "path": "changes[1].ingredientClass",
+        "ref": "oil"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

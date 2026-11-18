@@ -1,0 +1,53 @@
+{
+  "id": "duplicate-id-same-id-in-two-kinds-is-fine",
+  "description": "The same id in two collections is not a duplicate; each kind has its own ids",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "x",
+          "name": "x"
+        }
+      ],
+      "components": [
+        {
+          "id": "x",
+          "name": "x",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "x"
+              }
+            }
+          ],
+          "version": {
+            "family": "x",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "x",
+          "ref": {
+            "kind": "component",
+            "id": "x"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}
