@@ -1,0 +1,26 @@
+{
+  "id": "expiry-no-use-by-with-amount",
+  "description": "An amount and state do not make a date",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "amount": {
+        "value": 500,
+        "unit": "g"
+      },
+      "state": "raw"
+    },
+    "today": "2026-11-18"
+  },
+  "expected": {
+    "ok": true,
+    "status": "none"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: the use-by day is the last good day, so days left is the calendar distance from today to it (docs/engine-rules.md#stock)."
+}

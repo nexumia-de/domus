@@ -1,0 +1,50 @@
+{
+  "id": "suggest-storages-shortest-first",
+  "description": "Every storage place with a value is offered, the shortest first",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-11-16"
+    },
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "freezer",
+        "days": 90
+      },
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      },
+      {
+        "state": "raw",
+        "storage": "pantry",
+        "days": 300
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "suggestions": [
+      {
+        "storage": "fridge",
+        "days": 5,
+        "useBy": "2026-11-21"
+      },
+      {
+        "storage": "freezer",
+        "days": 90,
+        "useBy": "2027-02-14"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example values written for this rule; no shelf life is a recommendation."
+}

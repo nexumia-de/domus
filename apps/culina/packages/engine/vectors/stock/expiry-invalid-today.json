@@ -1,0 +1,22 @@
+{
+  "id": "expiry-invalid-today",
+  "description": "Today that is not a real date",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-11-20"
+    },
+    "today": "2026-13-01"
+  },
+  "error_code": "invalid-date",
+  "error_detail": {
+    "field": "today"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: a date that is not a real calendar date is an error, never a guess."
+}

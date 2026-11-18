@@ -1,0 +1,25 @@
+{
+  "id": "use-no-rounding-noise",
+  "description": "0.3 minus 0.1 is 0.2, not 0.19999999999999998",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 0.3,
+      "unit": "kg"
+    },
+    "used": {
+      "value": 0.1,
+      "unit": "kg"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": false,
+    "amount": {
+      "value": 0.2,
+      "unit": "kg"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

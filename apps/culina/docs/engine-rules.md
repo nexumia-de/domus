@@ -621,6 +621,48 @@ Vectors: `packages/engine/vectors/versions/`, kinds `diff_component`,
 ([vector format](vectors.md#kinds-of-versions-and-variations-issue-17)),
 run by `test/versions-vectors.test.ts`.
 
+# Stock
+
+The stock item is in the [data model](data-model.md#stock-item): presence
+is the whole item, the rest is optional. Code: `src/stock/`. The rules read
+dates passed in; the engine has no clock. Days and statuses come from
+materia's `expiry` (`daysBetween`, `addDays`) through `src/model.ts`.
+
+- **Remaining days** (`stockExpiry(item, today, shelfLife?, options?)`).
+  With an entered `useBy`: `daysLeft` is the calendar distance from today
+  to it (0 on the day itself, negative after), basis `entered`. The use-by
+  day is the last good day, so on that day the status is `use-soon`, from
+  the next day `past`. Status `use-soon` means `daysLeft` is at most the
+  window (materia's `USE_SOON_DAYS`, 2, an assumption that no source backs;
+  `soonDays` overrides it), `fresh` otherwise.
+- **Derived date.** Without `useBy`, if the item has `preparedOn` and
+  `state` and the ingredient's recorded `shelfLife` has exactly one value
+  of days for that state, the date is `preparedOn` plus those days, basis
+  `shelf-life`. No record, a record for another state, or two different
+  values (fridge and freezer) give status `none`. Nothing is written back
+  and no shelf life is invented; every shelf life in the data has a source.
+- **Presence only and always there** have status `none`: no date, no
+  days left.
+- **Suggestions** (`useBySuggestions(item, shelfLife)`): per storage place
+  with a value for the item's state, `preparedOn` plus the days, shortest
+  first. The app offers them; the user chooses.
+- **Using up** (`useAmount(stock, used, facts?)`): the used amount is
+  converted to the stock's unit (same kind by the unit table, other kinds
+  only with the ingredient's density or unit weight, else the conversion
+  error `needs-density`, `needs-unit-weight`, `not-convertible`); the rest
+  is rounded to six decimals; nothing left (or more used than there is)
+  is `usedUp`.
+- A date that is not a real calendar date is `invalid-date` with the field
+  (`today`, `useBy`, `preparedOn`).
+- `validateModel` reports a stock `ref` that is no ingredient or component
+  (`unknown-ingredient`, `unknown-component`, path `ref`), also for items
+  with presence only.
+
+Vectors: `packages/engine/vectors/stock/`, kinds `stock_expiry`,
+`stock_suggest` and `stock_use`
+([vector format](vectors.md#kinds-of-stock-issue-20)), run by
+`test/stock-vectors.test.ts`; `test/stock-schema.test.ts` covers the schema.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,
@@ -629,7 +671,7 @@ percentages, formulas, hydration, the zero-flour and the unequal-base
 errors), `vectors/ratios/templates/` (derivative resolution, nested
 derivatives, every error code, family queries, the range check in all
 three positions and on the bounds, a template without range, scaling from
-an anchor, percentages) `vectors/ratios/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions) in the format of [the vector format](vectors.md)[^vectors]. Each
+an anchor, percentages) `vectors/ratios/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions), `vectors/stock/` (remaining days in the future, today, past, without use-by, presence only, from a recorded shelf life, suggestions, using up an amount) in the format of [the vector format](vectors.md)[^vectors]. Each
 names its basis. Expected numbers are plain arithmetic written out in
 the vector's `source`; densities and unit weights in vectors are
 synthetic and say so. `test/units-vectors.test.ts` and

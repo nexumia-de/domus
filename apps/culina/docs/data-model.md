@@ -394,23 +394,57 @@ same time never lose one.
 
 ## Stock item
 
-What the user has. Schema: `stock.schema.json`.
+What the user has. Schema: `stock.schema.json`. An item can be nothing
+but "this ingredient (or prepared component) is there": only `id` and
+`ref` are required, and ticking in the app writes exactly that. The
+kitchen's detail stays in the model as optional fields and can be added
+to any item at any time. Items are stored; days left are derived.
 
-| Field        | Type   | Required | Meaning                            |
-| ------------ | ------ | -------- | ---------------------------------- |
-| `id`         | id     | yes      | See [ids](#ids)                    |
-| `ref`        | ref    | yes      | An ingredient or a component       |
-| `amount`     | amount | yes      | Mass, volume or count; not percent |
-| `state`      | state  | yes      | `raw`, `cooked` or `prepared`      |
-| `preparedOn` | date   | no       | When it was cooked or made         |
-| `useBy`      | date   | no       | The date the user entered          |
-| `note`       | string | no       | Free text                          |
+| Field        | Type    | Required | Meaning                                                                      |
+| ------------ | ------- | -------- | ---------------------------------------------------------------------------- |
+| `id`         | id      | yes      | See [ids](#ids)                                                              |
+| `ref`        | ref     | yes      | An ingredient or a component (a prepared item the user made)                 |
+| `amount`     | amount  | no       | Mass, volume or count; not percent                                           |
+| `state`      | state   | no       | `raw`, `cooked` or `prepared`                                                |
+| `always`     | boolean | no       | The user marks it as always there; it counts as present until it is unticked |
+| `preparedOn` | date    | no       | When it was cooked or made                                                   |
+| `useBy`      | date    | no       | The date the user entered                                                    |
+| `note`       | string  | no       | Free text                                                                    |
+
+Stored as, for presence only and with every detail:
+
+```json
+{ "id": "u-5c1d…", "ref": { "kind": "ingredient", "id": "carrot" } }
+```
+
+```json
+{
+  "id": "u-9a4e…",
+  "ref": { "kind": "component", "id": "u-77b2…" },
+  "amount": { "value": 400, "unit": "g" },
+  "state": "prepared",
+  "always": false,
+  "preparedOn": "2026-11-16",
+  "useBy": "2026-11-20",
+  "note": "second shelf"
+}
+```
+
+Shared with other apps: rows are materia's sync record (`{ key,
+updatedAt, value }` or `{ key, updatedAt, deleted }`), so stock can sync
+later and another app can add items. Fields starting with `x-` written
+by another app are kept: Culina changes a copy of the stored record and
+never rebuilds it from the fields it knows.
 
 Days left, "use soon" and "past", the limiting shelf life of a dish and
 "what can I make, ranked by what must go first" are derived. If `useBy`
 is absent, the engine may derive a date from `preparedOn` plus the shelf
-life of the ingredient or component for that state; it never writes it
-back.
+life of the ingredient for that state, only when the ingredient records
+exactly one value for the state; it never writes it back and invents no
+shelf life. With several storage places (pantry, fridge, freezer) the
+screen offers the dates as suggestions and the user chooses. Components
+have no shelf life of their own yet, so for them only an entered `useBy`
+counts.
 
 ## Affinity
 

@@ -1,0 +1,21 @@
+{
+  "id": "use-more-than-there-is",
+  "description": "Using more than there is also leaves nothing",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 500,
+      "unit": "g"
+    },
+    "used": {
+      "value": 600,
+      "unit": "g"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

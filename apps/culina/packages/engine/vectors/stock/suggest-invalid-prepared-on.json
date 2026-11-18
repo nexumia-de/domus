@@ -1,0 +1,29 @@
+{
+  "id": "suggest-invalid-prepared-on",
+  "description": "A date prepared that is not a real date",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-02-30"
+    },
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "error_code": "invalid-date",
+  "error_detail": {
+    "field": "preparedOn"
+  },
+  "tolerance": 0,
+  "source": "Synthetic."
+}

@@ -1,0 +1,28 @@
+{
+  "id": "suggest-no-state",
+  "description": "No state: nothing to match",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "preparedOn": "2026-11-16"
+    },
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "suggestions": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example values written for this rule; no shelf life is a recommendation."
+}

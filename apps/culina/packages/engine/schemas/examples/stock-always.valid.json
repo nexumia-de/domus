@@ -1,0 +1,6 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+  "ref": { "kind": "ingredient", "id": "olive-oil" },
+  "always": true,
+  "x-emptio": { "boughtOn": "2026-11-10" }
+}
