@@ -145,12 +145,13 @@ in the stored shape (only the fields the rule reads). Lines are written as
 `kind:id value unit` in `expected`; `tolerance` is 0. Error vectors carry
 `error_code`.
 
-| `kind`           | Inputs                                       | Expected                                                                                                 |
-| ---------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `diff_component` | `before`, `after`: components with `version` | `empty`; `changes`: `{type: line, kind, fields, before, after}` or `{type: field, field, before, after}` |
-| `diff_dish`      | `before`, `after`: dishes with `version`     | as `diff_component`                                                                                      |
-| `version_family` | `records` (`id`, `version`), `id`            | `versions` (ids, oldest first), `head`, `number` of `id`                                                 |
-| `variations`     | `records`, `id`                              | `variations` (`family`, `head`), optional `parent` (`kind`, optional `id`)                               |
+| `kind`             | Inputs                                       | Expected                                                                                                 |
+| ------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `diff_component`   | `before`, `after`: components with `version` | `empty`; `changes`: `{type: line, kind, fields, before, after}` or `{type: field, field, before, after}` |
+| `diff_dish`        | `before`, `after`: dishes with `version`     | as `diff_component`                                                                                      |
+| `version_family`   | `records` (`id`, `version`), `id`            | `versions` (ids, oldest first), `head`, `number` of `id`                                                 |
+| `variation_cycles` | `records`, `id`                              | `cycles` (lists of family ids), `parent` of `id` (`kind`, optional `id`)                                 |
+| `variations`       | `records`, `id`                              | `variations` (`family`, `head`), optional `parent` (`kind`, optional `id`)                               |
 
 # Worked examples
 

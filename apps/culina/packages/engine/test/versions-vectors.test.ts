@@ -4,6 +4,7 @@ import { describe, expect, test } from 'vitest';
 import {
   diffComponentVersions,
   diffDishVersions,
+  variationCycles,
   variationParent,
   variationsOf,
   versionFamily,
@@ -73,6 +74,16 @@ function variations(vector: Vector): void {
   }
 }
 
+function cycles(vector: Vector): void {
+  const i = vector.inputs as unknown as { id: string; records: Versioned[] };
+  const e = vector.expected as { cycles: string[][]; parent: { kind: string; id: string } };
+  expect(variationCycles(i.records)).toEqual(e.cycles);
+  const got = variationParent(i.records, i.id);
+  expect(
+    got.kind === 'parent' ? { kind: got.kind, id: got.record.id } : { kind: got.kind },
+  ).toEqual(e.parent);
+}
+
 describe('version vectors', () => {
   for (const vector of loadVectors('versions')) {
     test(vector.id, () => {
@@ -82,6 +93,8 @@ describe('version vectors', () => {
           return diff(vector);
         case 'version_family':
           return family(vector);
+        case 'variation_cycles':
+          return cycles(vector);
         case 'variations':
           return variations(vector);
         default:

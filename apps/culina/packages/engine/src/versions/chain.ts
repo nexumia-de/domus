@@ -1,5 +1,7 @@
 // The chain of a family: which records are its versions, in which order, which one is the
 // head, and how variations point at the record they were made from. Pure; no clock.
+import { buildFamily, findFamilyCycles } from '../model';
+import type { FamilySpec } from '../model';
 import type { FamilyResult, Variation, VariationParent, Versioned } from './types';
 
 /** Steps from the first version, following `parent` inside the family; a loop stops the walk. */
@@ -72,8 +74,26 @@ export function versionNumber<T extends Versioned>(
 }
 
 /**
+ * The records as materia's `FamilySpec`: lineage = `version.family`, `version` = the number in
+ * the chain, and `parentId` (the record a variation was made from) only on a first version.
+ */
+const specsOf = <T extends Versioned>(records: readonly T[]): FamilySpec[] =>
+  records.map((r) => {
+    const first = r.id === r.version.family;
+    const number = versionNumber(records, r.id) ?? 1;
+    return {
+      id: r.id,
+      lineageId: r.version.family,
+      version: number,
+      ...(first && r.version.parent !== undefined ? { parentId: r.version.parent } : {}),
+      createdAt: r.version.date,
+    };
+  });
+
+/**
  * The variations made from any version of the family of record `id`: families whose first
- * version has a `parent` in this family. Sorted by the date of the first version, then id.
+ * version has a `parent` in this family, with each head, as materia's `buildFamily` finds them
+ * (riffs in order of creation).
  */
 export function variationsOf<T extends Versioned>(
   records: readonly T[],
@@ -81,30 +101,20 @@ export function variationsOf<T extends Versioned>(
 ): Variation<T>[] {
   const own = records.find((r) => r.id === id);
   if (own === undefined) return [];
-  const family = own.version.family;
-  const inFamily = new Set(records.filter((r) => r.version.family === family).map((r) => r.id));
+  const family = buildFamily(specsOf(records), own.version.family);
   const out: Variation<T>[] = [];
-  for (const first of records) {
-    const { parent } = first.version;
-    if (first.id !== first.version.family || parent === undefined || !inFamily.has(parent))
-      continue;
-    if (first.version.family === family) continue;
-    const head = versionFamily(records, first.id);
-    if (head.ok) out.push({ family: first.id, first, head: head.head });
+  for (const lineage of family.children) {
+    const first = records.find((r) => r.id === lineage);
+    const head = first === undefined ? undefined : versionFamily(records, first.id);
+    if (first !== undefined && head?.ok) out.push({ family: lineage, first, head: head.head });
   }
-  return out.sort(
-    (a, b) =>
-      (a.first.version.date < b.first.version.date
-        ? -1
-        : a.first.version.date > b.first.version.date
-          ? 1
-          : 0) || (a.family < b.family ? -1 : 1),
-  );
+  return out;
 }
 
 /**
  * Where the family of record `id` came from: nothing (it did not start as a variation), the
- * record it was made from, or `removed` when that record no longer exists.
+ * record it was made from, or `removed` when that record no longer exists (`missingParent`).
+ * A loop of variations is reported by `variationCycles`.
  */
 export function variationParent<T extends Versioned>(
   records: readonly T[],
@@ -112,11 +122,14 @@ export function variationParent<T extends Versioned>(
 ): VariationParent<T> {
   const own = records.find((r) => r.id === id);
   if (own === undefined) return { kind: 'none' };
-  const first = records.find((r) => r.id === own.version.family);
-  const parent = first?.version.parent;
-  if (parent === undefined) return { kind: 'none' };
-  const record = records.find((r) => r.id === parent);
-  return record === undefined || record.version.family === own.version.family
-    ? { kind: 'removed' }
-    : { kind: 'parent', record };
+  const family = buildFamily(specsOf(records), own.version.family);
+  if (family.missingParent !== undefined) return { kind: 'removed' };
+  const parentId = records.find((r) => r.id === own.version.family)?.version.parent;
+  const record = parentId === undefined ? undefined : records.find((r) => r.id === parentId);
+  return record === undefined ? { kind: 'none' } : { kind: 'parent', record };
+}
+
+/** Loops of variations (a family that is its own ancestor), as lists of family ids. */
+export function variationCycles<T extends Versioned>(records: readonly T[]): string[][] {
+  return findFamilyCycles(specsOf(records));
 }

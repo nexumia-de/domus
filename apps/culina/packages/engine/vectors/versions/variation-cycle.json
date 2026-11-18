@@ -1,0 +1,16 @@
+{
+  "id": "variation-cycle",
+  "description": "Two families that are variations of each other (only from imported data): reported as one loop, and the parent of each is still the record it names",
+  "inputs": {
+    "kind": "variation_cycles",
+    "id": "a1",
+    "records": [
+      { "id": "a1", "version": { "family": "a1", "date": "2026-11-01", "parent": "b1" } },
+      { "id": "b1", "version": { "family": "b1", "date": "2026-11-02", "parent": "a1" } },
+      { "id": "c1", "version": { "family": "c1", "date": "2026-11-03" } }
+    ]
+  },
+  "expected": { "cycles": [["a1", "b1"]], "parent": { "kind": "parent", "id": "b1" } },
+  "tolerance": 0,
+  "source": "Synthetic example: findFamilyCycles of materia on the families."
+}

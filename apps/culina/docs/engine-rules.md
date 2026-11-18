@@ -589,10 +589,17 @@ record, set by the host, never read from a clock.
   whose parent is the previous head) is the newest. Unknown `id`:
   `unknown-version`. `familyHeads` gives one head per family;
   `versionNumber` is the position in the chain, the first being 1.
-- **Variations.** `variationsOf(records, id)` lists the families whose
-  first version has a `parent` in the family of `id`, with each head.
-  `variationParent` answers `none`, `parent` (the record it was made from)
-  or `removed` when that record is gone.
+- **Variations.** Built on materia's `buildFamily` and `findFamilyCycles`
+  (called through `src/model.ts`). The records are mapped to `FamilySpec`:
+  `lineageId` = `version.family`, `version` = the number in the chain,
+  `parentId` = `version.parent` on a first version only, `createdAt` = the
+  date. `variationsOf(records, id)` lists the families that are riffs of the
+  family of `id` (materia's `children`, in order of creation) with each head.
+  `variationParent` answers `none`, `parent` (the record it was made from) or
+  `removed` when materia reports `missingParent`. `variationCycles` returns
+  materia's loops of variations (only imported data can contain one). Culina
+  keeps its own `versionFamily`, `familyHeads` and `versionNumber`: materia
+  has no head, order or number helper for specs.
 - **Diff.** `diffComponentVersions(before, after)` and
   `diffDishVersions(before, after)` return `{ ok: true, diff }` with
   `changes` (line changes first, then fields) and `empty`; different
@@ -610,7 +617,7 @@ record, set by the host, never read from a clock.
   line.
 
 Vectors: `packages/engine/vectors/versions/`, kinds `diff_component`,
-`diff_dish`, `version_family` and `variations`
+`diff_dish`, `version_family`, `variations` and `variation_cycles`
 ([vector format](vectors.md#kinds-of-versions-and-variations-issue-17)),
 run by `test/versions-vectors.test.ts`.
 

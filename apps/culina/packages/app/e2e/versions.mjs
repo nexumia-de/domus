@@ -225,6 +225,21 @@ const notes = async (page, { v1, v2 }) => {
     snapshot === JSON.stringify(await listStore(page, 'components')),
     `${label}: no version record changed by tasting notes`,
   );
+  // Remove with Undo.
+  await entry(1).getByRole('button', { name: 'Remove', exact: true }).click();
+  await page.getByText('Removed the tasting note').waitFor();
+  await entry(1).getByText('No tasting note on this version yet.').waitFor();
+  check(
+    (await listStore(page, 'tastings')).length === 1,
+    `${label}: Remove takes the note out of the store`,
+  );
+  await page.getByRole('button', { name: 'Undo' }).click();
+  await entry(1).getByText('Floury, needs fat').waitFor();
+  check(
+    (await listStore(page, 'tastings')).length === 2 &&
+      snapshot === JSON.stringify(await listStore(page, 'components')),
+    `${label}: Undo brings the note back, no version record changed`,
+  );
   void v2;
 };
 

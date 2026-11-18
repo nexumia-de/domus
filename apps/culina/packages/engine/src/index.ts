@@ -127,6 +127,7 @@ export type {
 
 export {
   familyHeads,
+  variationCycles,
   variationParent,
   variationsOf,
   versionFamily,

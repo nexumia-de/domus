@@ -11,6 +11,7 @@ import {
   headOfFamily,
   newId,
   notebook,
+  removeTasting,
   restoreVersion,
   saveTasting,
   today,
@@ -127,6 +128,20 @@ export const historyScreen = (kind: Kind, id?: string): HTMLElement => {
         button(t.editNote, 'quiet edit-note', () => {
           editing = { versionId: entry.record.id, note };
           draw();
+        }),
+      );
+      item.append(
+        button(t.removeNote, 'quiet remove-note', () => {
+          void removeTasting(note.id).then((done) => {
+            if (!done.ok) return showToast(storeText(done.error.code));
+            draw();
+            showToast(t.noteRemoved, {
+              label: strings.editor.undo,
+              run() {
+                void saveTasting(done.removed).then(draw);
+              },
+            });
+          });
         }),
       );
       box.append(item);

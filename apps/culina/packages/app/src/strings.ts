@@ -335,6 +335,8 @@ export const strings = {
     noNotes: 'No tasting note on this version yet.',
     addNote: 'Add a tasting note',
     editNote: 'Edit',
+    removeNote: 'Remove',
+    noteRemoved: 'Removed the tasting note',
     saveNote: 'Save note',
     cancelNote: 'Cancel',
     noteDate: 'Date of the tasting',

@@ -29,4 +29,4 @@ export {
   unlockRanking,
   USE_SOON_DAYS,
 } from '@nexumia-de/materia';
-export type { DiffDomain, VersionLine, VersionSpec } from '@nexumia-de/materia';
+export type { DiffDomain, FamilySpec, VersionLine, VersionSpec } from '@nexumia-de/materia';

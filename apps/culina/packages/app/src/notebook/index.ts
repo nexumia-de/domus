@@ -12,6 +12,7 @@ export * from './versions';
 export {
   makeVariation,
   removeFamily,
+  removeTasting,
   restoreFamily,
   restoreVersion,
   saveTasting,

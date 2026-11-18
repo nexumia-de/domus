@@ -390,8 +390,9 @@ stored is ever written again ([data model](data-model.md#version)).
   the current one), the difference to the version before from the engine
   ([engine rules](engine-rules.md#versions-and-variations)) as one row per
   changed line or field ("Changed: Butter, 40 g → Butter, 50 g (amount)"),
-  and its tasting notes. A note is added or edited afterwards with its date
-  (default today) and text; notes are records of their own, so the version is
+  and its tasting notes. A note is added, edited or removed afterwards with
+  its date (default today) and text; Remove acts at once with a toast and
+  Undo; notes are records of their own, so the version is
   never touched.
 - **Restore.** Adds a new current version with the content of the old one,
   `parent` = the current head and the change text "Restored version N". The

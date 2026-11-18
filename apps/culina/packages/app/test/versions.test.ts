@@ -13,6 +13,7 @@ import {
   numberOf,
   parentOf,
   removeFamily,
+  removeTasting,
   restoreFamily,
   restoreVersion,
   saveRecord,
@@ -150,6 +151,9 @@ test('tasting notes are records of their own: added and edited later, version un
   expect((await saveTasting({ ...note, text: 'Fine, a bit flat' })).ok).toBe(true);
   expect(tastingsOf(v1.id).map((t) => t.text)).toEqual(['Fine, a bit flat']);
   expect(puts.filter((p) => p.id === v1.id)).toHaveLength(1);
+  const gone = await removeTasting(note.id);
+  expect(gone.ok).toBe(true);
+  expect(tastingsOf(v1.id)).toEqual([]);
   seenOnce();
 });
 

@@ -22,6 +22,10 @@ export interface RemovedFamily {
 export const saveTasting = (record: TastingRecord): Promise<Result> =>
   saveRecord('tastings', record);
 
+/** Removes one tasting note (a tombstone); the result carries it, for Undo. */
+export const removeTasting = async (id: string): Promise<Result<{ removed: TastingRecord }>> =>
+  removeRecord('tastings', id);
+
 /** Deletes a whole component or dish: every version record and every note on one. */
 export const removeFamily = async (
   kind: VersionKind,
