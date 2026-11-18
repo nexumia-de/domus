@@ -11,6 +11,7 @@ const TYPES = {
   '.webmanifest': 'application/manifest+json',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.json': 'application/json; charset=utf-8',
 };
 
 /** Starts on a free port; resolves to { origin, url, close }. `url` ends with the base. */

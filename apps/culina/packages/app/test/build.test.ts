@@ -73,11 +73,20 @@ test('the build writes the page, one script, one stylesheet, the manifest, icons
     'theme-init.js',
     'app.css',
     'manifest.webmanifest',
+    'catalogue.json',
     'sw.js',
   ]) {
     expect(files, file).toContain(file);
   }
   expect(files.filter((f) => f.startsWith('icons/')).length).toBeGreaterThanOrEqual(4);
+});
+
+test('the catalogue is its own file, precached, and main.js does not carry it', () => {
+  const catalogue = readFileSync(new URL('catalogue.json', dist), 'utf8');
+  expect(JSON.parse(catalogue).format).toBe('culina-ingredient-catalogue');
+  const main = readFileSync(new URL('main.js', dist), 'utf8');
+  expect(main).not.toContain('fdc-169230');
+  expect(main).toContain('catalogue.json');
 });
 
 test('built URLs are relative', () => {

@@ -1,5 +1,6 @@
 // `npm run e2e`: build, serve dist/, run the browser checks. Exit code 1 on any failure.
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
+import { catalogue } from './catalogue.mjs';
 import { components } from './components.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
@@ -24,6 +25,7 @@ try {
   await hostRedirect(browser, redirectServer);
   await editor(browser, server);
   await editorMore(browser, server);
+  await catalogue(browser, server);
   await install(browser, server);
   await store(browser, server);
   await versions(browser, server);

@@ -172,6 +172,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
           title: t.pickerSearch,
           items: items(open.kind, index),
           canCreate: open.kind === 'ingredient',
+          catalogue: open.kind === 'ingredient',
           onPick(ref) {
             line.ref = ref;
             if (
