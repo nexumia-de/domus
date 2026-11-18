@@ -158,6 +158,10 @@ drinks · Swap dropped · Swap reset · Imported {counts} · Import undone · Ex
 | Storage                            | Checking · Not requested yet. Asked after you first save something. · Kept: the browser will not clear your data on its own. · Not guaranteed: the browser may clear your data when space is short. · This browser cannot promise to keep your data. · Not available while your data cannot be saved. | Answer to the persistent-storage request                                                                                                                                           |
 | Backup reminder                    | (banner; buttons Export Everything and Dismiss)                                                                                                                                                                                                                                                       | You have {n} changes since your last export. Export Everything                                                                                                                     |
 
+# Places
+
+One fixed string so far: **Home**, the name of the place made for existing stock by the migration to schema version 4 and on a fresh install (`strings.places.home`; `store/places.ts` keeps the same text for the migration and a test keeps them equal). The Data summary does not list places while the place screens do not exist.
+
 # Data
 
 Screen `#/settings/data`: "Everything you entered goes into one file.
@@ -165,7 +169,7 @@ Built-in data is not part of it." · Last export: {date} · Not exported yet. ·
 {n} changes since the last export. · The file has {counts}. · Merge: add
 {a}, replace {r}, skip {s}. Your records stay unless the file has a newer
 version of a drink. · Replace Everything: add, replace, remove, keep ·
-The file was made by an older version (format {n}) and is converted. · The
+The file was made by an older version (format {n}) and is converted. · The file is an older export and your data has no place to put its stock (The file cannot be read yet). · The
 file was made with other built-in data ({found}; this app has {own}). Some
 references may not be found. · A copy of your data from before the last
 import, kept so it can be undone. · Buttons: Export Everything · Import

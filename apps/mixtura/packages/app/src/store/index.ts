@@ -1,7 +1,7 @@
 // The local store: opens the database, builds the repositories, the
 // persistence request and the catalog. Docs: docs/store.md.
 
-import { createBackupTracker, systemClock, type BackupTracker, type Clock } from './backup';
+import { createBackupTracker, systemClock, type BackupTracker } from './backup';
 import { openDatabase, type OpenOptions } from './db';
 import { createExchange, type Exchange } from './exchange';
 import { createPersistence, type Persistence, type PersistState } from './persist';

@@ -8,13 +8,7 @@
 import { type AppState } from '../app-state';
 import { type AppData } from '../data';
 import { type Store } from '../state';
-import {
-  toStoreError,
-  type LocalStore,
-  type Stock,
-  type StockFields,
-  type StockRecord,
-} from '../store';
+import { toStoreError, type LocalStore, type StockFields, type StockRecord } from '../store';
 import { strings } from '../strings';
 import { showToast } from '../toast';
 import { nowInstant } from '../today';

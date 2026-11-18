@@ -93,10 +93,20 @@ const dump = (page, stores) =>
       'true',
     'the unit setting survives a reload',
   );
-  const data = await dump(page, ['settings']);
-  expect(data.version === 3, 'a new database is at the current version');
+  const data = await dump(page, ['settings', 'places', 'stock']);
+  expect(data.version === 4, 'a new database is at the current version');
   const byKey = Object.fromEntries(data.settings.map((r) => [r.key, r.value]));
   expect(byKey.theme === 'dark' && byKey.units === 'us', 'the settings are records of the store');
+  expect(
+    data.places.length === 1 && data.places[0].name === 'Home' && data.stock.length === 0,
+    'a new database has the default place Home and no stock',
+  );
+  expect(
+    byKey.places?.entry === data.places[0].id &&
+      byKey.places.ticked.length === 1 &&
+      byKey.places.ticked[0] === data.places[0].id,
+    'the default place is the entry place and the only ticked one',
+  );
   expect(
     (await page.locator('#persistence').count()) === 1,
     'Settings reports the persistence answer',
@@ -161,13 +171,16 @@ const dump = (page, stores) =>
   await page.waitForFunction(() => localStorage.getItem('mixtura.prefs') === null);
   expect(true, 'the interim localStorage key is removed after the migration');
   const data = await dump(page, ['specs', 'stock', 'settings']);
-  expect(data.version === 3, 'the database was upgraded to the current version (3)');
+  expect(data.version === 4, 'the database was upgraded to the current version (4)');
   expect(
     data.specs.length === 1 && data.specs[0].name === 'Kept through the upgrade',
     'the spec survived the upgrade',
   );
-  expect(data.stock.length === 1, 'the stock record survived the upgrade');
-  expect(data.settings.length === 2, 'the settings were imported');
+  expect(
+    data.stock.length === 1 && data.stock[0].ingredientId === 'lime-juice',
+    'the stock record survived the upgrade',
+  );
+  expect(data.settings.length === 3, 'the preferences were imported and the places set');
   await page.reload();
   await ready(page);
   expect((await theme(page)) === 'dark', 'the migrated theme survives a reload');
@@ -175,6 +188,71 @@ const dump = (page, stores) =>
     (await dump(page, ['specs'])).specs.length === 1,
     'the spec is still there after the reload',
   );
+  await page.context().close();
+}
+
+// 2b. A version 3 database with stock rows: every row is in the default place afterwards.
+{
+  const rows = [
+    { ingredientId: 'gin', present: true, openedOn: '2026-11-01' },
+    { ingredientId: 'rum', present: true, moreBatches: ['2026-10-20', '2026-10-01'] },
+    { ingredientId: 'lime-juice', present: false, note: 'buy more' },
+  ];
+  const page = await newPage();
+  await page.goto(`${site.url}icons/icon.svg`);
+  await page.evaluate(
+    (fixture) =>
+      new Promise((resolve, reject) => {
+        const open = indexedDB.open('mixtura', 3);
+        open.onupgradeneeded = () => {
+          const db = open.result;
+          for (const name of ['specs', 'ingredients', 'templates', 'affinities'])
+            db.createObjectStore(name, { keyPath: 'id' });
+          db.createObjectStore('stock', { keyPath: 'ingredientId' });
+          for (const name of ['settings', 'meta', 'drafts'])
+            db.createObjectStore(name, { keyPath: 'key' });
+          for (const row of fixture) open.transaction.objectStore('stock').put(row);
+          open.transaction.objectStore('settings').put({ key: 'theme', value: 'dark' });
+        };
+        open.onsuccess = () => {
+          open.result.close();
+          resolve();
+        };
+        open.onerror = () => reject(open.error);
+      }),
+    rows,
+  );
+  expect((await dump(page, ['stock'])).version === 3, 'the fixture database is version 3');
+  await page.goto(`${site.url}#/stock`);
+  await page.waitForFunction(
+    () => document.querySelector('.stock-summary strong')?.textContent === '2 in stock',
+  );
+  expect(true, 'the Stock screen shows the two ingredients that were in stock');
+  const data = await dump(page, ['places', 'stock', 'settings']);
+  expect(data.version === 4, 'the version 3 database was upgraded to 4');
+  expect(data.places.length === 1 && data.places[0].name === 'Home', 'there is one default place');
+  const place = data.places[0].id;
+  expect(data.stock.length === rows.length, 'no stock row was lost');
+  for (const row of rows) {
+    const got = data.stock.find((r) => r.ingredientId === row.ingredientId);
+    expect(
+      got &&
+        got.placeId === place &&
+        typeof got.updatedAt === 'string' &&
+        Object.entries(row).every(([k, v]) => JSON.stringify(got[k]) === JSON.stringify(v)),
+      `the stock row for ${row.ingredientId} is in the default place with all its fields`,
+    );
+  }
+  const byKey = Object.fromEntries(data.settings.map((r) => [r.key, r.value]));
+  expect(
+    byKey.places?.entry === place && byKey.places.ticked.length === 1 && byKey.theme === 'dark',
+    'the places setting names the default place and the other settings stay',
+  );
+  await page.reload();
+  await page.waitForFunction(
+    () => document.querySelector('.stock-summary strong')?.textContent === '2 in stock',
+  );
+  expect(true, 'the stock is still shown after a reload');
   await page.context().close();
 }
 
