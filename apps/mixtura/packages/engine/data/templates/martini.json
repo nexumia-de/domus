@@ -30,6 +30,14 @@
       "maxParts": 2,
       "optional": true,
       "note": "a bitter liqueur (Negroni family, Boulevardier: no nominal figure exists in the documents) or dashes of aromatic bitters (IBA Manhattan: 1 dash to 50 ml whiskey and 20 ml vermouth is 0.037 parts, read at iba-world.com)"
+    },
+    {
+      "id": "sugar",
+      "role": "sweet",
+      "minParts": 0.05,
+      "maxParts": 0.5,
+      "optional": true,
+      "note": "a dash or teaspoon of syrup or sugar; Band chosen here, not from a source."
     }
   ],
   "slotEvidence": "assumption",
@@ -50,8 +58,8 @@
     "evidence": "assumption"
   },
   "source": {
-    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "name": "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapter 2, Martini; quantities read by the lead on 2026-11-18 from the owner's copy and cited as facts, no text copied. docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified for the nominal slot ratios; the lower edges of the fortified slot (0.25) and the bitter slot (0.02) were set below the IBA Manhattan and Dry Martini specifications, read at iba-world.com on 2026-11-17 (primary for the observed values; the edges are chosen round numbers); see docs/templates.md#evidence."
+    "note": "Assumption, unverified for the bands and the usual ranges; the schema has one evidence field per template, so slotEvidence and usual.evidence stay assumption although the nominal ratio was read. Read: classic 2 oz gin, 3/4 oz dry vermouth (vodka: 2 1/2 oz, 1/2 oz); root recipe 2 oz gin, 1 oz dry vermouth, 1 dash orange bitters. The nominal spec (60 ml : 30 ml) is the root recipe. The book files Negroni and Manhattan under this template; the lower edges of the modifier slot (0.25) and bitter slot (0.02) were set below the IBA Dry Martini and Manhattan specifications read at iba-world.com on 2026-11-17 (primary for the observed values; the edges are chosen round numbers). The sweet slot is chosen here. See docs/templates.md#evidence."
   }
 }

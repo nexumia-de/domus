@@ -1,0 +1,47 @@
+{
+  "id": "match-daiquiri-bitters",
+  "kind": "match",
+  "description": "Daiquiri with 1.8 ml of bitters (0.06 parts): 60 ml rum, 22.5 ml lime, 22.5 ml syrup. The bitter slot (0.02 - 0.25) takes the dashes.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1.8,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["daiquiri"],
+    "candidates": {
+      "daiquiri": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "sweet": "within",
+          "bitters": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "match-flip-accent-unmeasured",
+  "kind": "match",
+  "description": "Flip with grated nutmeg: 60 ml brandy, 15 ml syrup, 45 ml egg, 1 pinch of nutmeg. The pinch has no known volume: the accent slot is filled, its ratio unmeasured.",
+  "lines": [
+    {
+      "ingredientId": "brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "egg",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "nutmeg",
+      "amount": 1,
+      "unit": "pinch"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "flip",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["flip"],
+    "candidates": {
+      "flip": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "sugar": "within",
+          "egg": "within",
+          "accent": "unmeasured"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

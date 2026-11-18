@@ -409,21 +409,21 @@ the engine's own `parseAmount` for units and `matchSpec` for templates
 
 From the pinned commit (counts by the converter, which also prints them):
 
-| Count                                             | Value                              |
-| ------------------------------------------------- | ---------------------------------- |
-| Ingredients converted                             | 296 of 296                         |
-| Specs converted, skipped                          | 635, 28 (of 663)                   |
-| Ingredients with a resolved role                  | 283 (13 unclassified)              |
-| Lines (without optional) missing role, abv, sugar | 0.4 %, 0.6 %, 0 % of 2,803         |
-| Lines missing acid                                | 100 %                              |
-| Specs with ABV, sugar and acid all known          | 0 of 635                           |
-| Specs with ABV known after dilution               | 617 (19 have no or unknown method) |
-| Specs with sugar known after dilution             | 635                                |
-| Specs with a template                             | 158 of 635 (107 before #70)        |
+| Count                                             | Value                                                                    |
+| ------------------------------------------------- | ------------------------------------------------------------------------ |
+| Ingredients converted                             | 296 of 296                                                               |
+| Specs converted, skipped                          | 635, 28 (of 663)                                                         |
+| Ingredients with a resolved role                  | 283 (13 unclassified)                                                    |
+| Lines (without optional) missing role, abv, sugar | 0.4 %, 0.6 %, 0 % of 2,803                                               |
+| Lines missing acid                                | 100 %                                                                    |
+| Specs with ABV, sugar and acid all known          | 0 of 635                                                                 |
+| Specs with ABV known after dilution               | 617 (19 have no or unknown method)                                       |
+| Specs with sugar known after dilution             | 635                                                                      |
+| Specs with a template                             | 315 of 635 (158 before the optional slots of 2026-11-18, 107 before #70) |
 
-Per template: Martini 104, Daiquiri 25, Sidecar 14, Old-Fashioned 8,
-Highball 6, Flip 1 (`bluebird-eggnog`: the egg is a counted line without a
-volume, so its slot is filled and its ratio unmeasured); 477 fit none (528 before the band edges of [templates](templates.md#evidence) were set from sources, #70; grouping of the rest: [seed measurement](templates.md#seed-measurement)). The numbers are what the data gives; nothing was
+Per template: Martini 112, Daiquiri 127, Sidecar 51, Old-Fashioned 8,
+Highball 15, Flip 2 (`bluebird-eggnog`, `eggnog`: the egg is a counted line without a
+volume, so its slot is filled and its ratio unmeasured); 320 fit none (477 before the optional slots of 2026-11-18, 528 before the band edges of [templates](templates.md#evidence) were set from sources, #70; grouping of the rest: [seed measurement](templates.md#seed-measurement)). The numbers are what the data gives; nothing was
 tuned. For information only: if the assumed acid values of the classics
 were applied to all of the seed (then still lemon and lime at an assumed 6 % and no other juice), 308 of 548 specs would have all three
 figures; with them as assumptions that number says little about the
@@ -501,15 +501,15 @@ rum and lime counted, 0.785 % acid with lime at 4.58 g per 100 ml; 1.029 % with 
 0.0001. A second test requires that the seed plus the curated classics
 values still give the properties written in each vector.
 
-| Template      | Drinks                                                                                                                                              |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Old-Fashioned | Old Fashioned                                                                                                                                       |
-| Martini       | Martini, Negroni (bitter slot used), Boulevardier; Manhattan fits none and is kept to show it                                                       |
-| Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                                        |
-| Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets                                                                                                  |
-| Highball      | Whisky Highball (the `top` line read as 120 ml: assumption)                                                                                         |
-| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because the seed's egg line is a counted line without a volume                    |
-| none          | Cuba Libre, Moscow Mule, Cosmopolitan: acid unknown (cola, ginger beer, cranberry juice have no value); Screwdriver: acid known (orange juice read) |
+| Template      | Drinks                                                                                                                           |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Old-Fashioned | Old Fashioned                                                                                                                    |
+| Martini       | Martini, Negroni (bitter slot used), Boulevardier, Manhattan                                                                     |
+| Daiquiri      | Daiquiri, Gimlet, Whiskey Sour, Tommy's Margarita, Jack Rose                                                                     |
+| Sidecar       | Sidecar, Margarita, White Lady, Between the Sheets, Cosmopolitan (optional mixer slot, 2026-11-18)                               |
+| Highball      | Whisky Highball (the `top` line read as 120 ml: assumption), Screwdriver                                                         |
+| Flip          | Brandy Flip: the nominal flip of balance (egg 45 ml, assumption), because the seed's egg line is a counted line without a volume |
+| none          | Cuba Libre, Moscow Mule: acid unknown (cola, ginger beer have no value, no sweet line for the Daiquiri)                          |
 
 **Juice acid in the curated file** (since 2026-11-17, #70): read from
 sources, the rest of the `classics` values stay assumptions. Values in g

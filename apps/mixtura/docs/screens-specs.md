@@ -26,8 +26,8 @@ Built by [#25](https://github.com/nexumia-de/mixtura/issues/25). URL
   see the balance while typing.
 - **Content.** Top bar: back, "Edit {name}" or "New Drink", a "Draft
   kept" tag once something is typed. Fields in this order: Name,
-  Template (a picker, optional; choosing one adds its slots as empty
-  lines with their role, never overwrites typed lines), **Ingredients**
+  Template (a picker, optional; choosing one adds its required slots as
+  empty lines with their role, never optional slots, never overwrites typed lines), **Ingredients**
   (one card per line: ingredient field with the role tag, amount field,
   unit picker, a line menu), Add Ingredient, Method, Glass, Garnish,
   Notes, Status (Draft, On menu, Retired). On desktop the ingredients

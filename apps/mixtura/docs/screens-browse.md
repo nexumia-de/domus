@@ -28,8 +28,9 @@ Destination **Templates**, URL `#/templates`.
   bartender's mental map: six root templates and their variants.
 - **Content.** A list grouped by root template (Old-Fashioned, Martini,
   Daiquiri, Sidecar, Highball, Flip), variants indented under their
-  parent (`parentId`). Row: name, the slots as a role line ("Base, Sour,
-  Sweet"), method, number of drinks that follow it, and a tag "User" for
+  parent (`parentId`). Row: name, the required slots as a role line ("Base, Sour,
+  Sweet"), a second line "Optional: …" with the roles that only optional slots
+  add (none for a template without them), method, number of drinks that follow it, and a tag "User" for
   the user's own templates.
 - **Actions.** Tap a row: template detail. Search field at the top
   filters by name. No create or edit in the first versions (user
@@ -51,7 +52,8 @@ URL `#/templates/<id>`; pushed on Templates.
 - **Purpose.** Read what a template is: slots with ratio ranges, method,
   usual ranges, and the drinks that follow it.
 - **Content.** Title; slots as a table (role, parts as a range, optional
-  marked "optional"); method and glass; the **usual ranges** (ABV, sugar,
+  marked "optional", then the slot's note; the optional slots say that their
+  band is chosen here, not from a source); method and glass; the **usual ranges** (ABV, sugar,
   acid after dilution) drawn as bands with the numbers and the source
   line; notes; the list of drinks that follow the template (same rows
   as the drinks list).

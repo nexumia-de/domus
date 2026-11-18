@@ -278,19 +278,19 @@ acid: lime 4.58 and lemon 4.80 g per 100 ml, read from Penniston et al.
 both sours). The acid range therefore rests on one read input and the
 assumed dilution and nominal volumes; its evidence stays `assumption`.
 
-| Template      | Nominal spec (ml)                      | Method | ABV after, % | Sugar, g/100 ml | Acid, %     |
-| ------------- | -------------------------------------- | ------ | ------------ | --------------- | ----------- |
-| Old-Fashioned | 60 whiskey, 4.2 g sugar, 1.8 bitters   | stir   | 32.1 – 34.9  | 5.4 – 5.9       | 0           |
-| Martini       | 60 gin, 30 dry vermouth                | stir   | 25.6 – 27.8  | 0               | 0           |
-| Daiquiri      | 60 rum, 22.5 lime, 22.5 syrup          | shake  | 17.6 – 19.0  | 10.4 – 11.2     | 0.75 – 0.82 |
-| Sidecar       | 60 cognac, 22.5 lemon, 22.5 triple sec | shake  | 24.2 – 26.2  | 4.4 – 4.7       | 0.79 – 0.86 |
-| Highball      | 60 spirit, 150 soda                    | build  | 9.9 – 10.9   | 0               | 0           |
-| Flip          | 60 brandy, 15 syrup, 45 egg            | shake  | 15.4 – 16.7  | 5.9 – 6.4       | 0           |
+| Template      | Nominal spec (ml)                    | Method | ABV after, % | Sugar, g/100 ml | Acid, %     |
+| ------------- | ------------------------------------ | ------ | ------------ | --------------- | ----------- |
+| Old-Fashioned | 60 whiskey, 4.2 g sugar, 1.8 bitters | stir   | 32.1 – 34.9  | 5.4 – 5.9       | 0           |
+| Martini       | 60 gin, 30 dry vermouth              | stir   | 25.6 – 27.8  | 0               | 0           |
+| Daiquiri      | 60 rum, 22.5 lime, 22.5 syrup        | shake  | 17.6 – 19.0  | 10.4 – 11.2     | 0.75 – 0.82 |
+| Sidecar       | 60 cognac, 30 lemon, 40 triple sec   | shake  | 23.7 – 25.6  | 6.2 – 6.7       | 0.85 – 0.92 |
+| Highball      | 60 spirit, 150 soda                  | build  | 9.9 – 10.9   | 0               | 0           |
+| Flip          | 60 brandy, 15 syrup, 45 egg          | shake  | 15.4 – 16.7  | 5.9 – 6.4       | 0           |
 
 (First value `f_high`, second `f_low`.) Highball with 120 to 180 ml of
 mixer spans 9.1 to 12.1 %. The practice document's "sours 0.8–1.2 % acid
 and 8–12 g sugar per 100 ml" is itself unsourced; with the read juice
-acid the computed sour rows (0.75 – 0.86 %) sit below its acid figure.
+acid the computed sour rows (0.75 – 0.92 %) start below its acid figure.
 Neither is a verdict: no source for acid or sugar ranges of a drink was
 found.
 

@@ -32,14 +32,9 @@
       },
       "daiquiri": {
         "fits": false,
-        "distance": 3,
+        "distance": 2,
         "emptyRequired": ["acid", "sweet"],
-        "unassigned": [
-          {
-            "index": 1,
-            "reason": "no-slot-for-role"
-          }
-        ]
+        "unassigned": []
       }
     }
   },

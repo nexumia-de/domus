@@ -22,6 +22,30 @@
       "minParts": 0.75,
       "maxParts": 3,
       "note": "whole egg, 45 ml"
+    },
+    {
+      "id": "liqueur",
+      "role": "modifier",
+      "minParts": 0.1,
+      "maxParts": 1,
+      "optional": true,
+      "note": "a liqueur beside the syrup; Band chosen here, not from a source."
+    },
+    {
+      "id": "cream",
+      "role": "texture",
+      "minParts": 0.5,
+      "maxParts": 3,
+      "optional": true,
+      "note": "cream, milk or coconut cream, role texture like the egg (ingredient tree); 1 oz against 1 1/2 to 2 oz of base is 0.5 to 1.33 parts; upper edge 3 as the egg slot so that a batch Eggnog (1 l cream to 720 ml spirit, 2.78 parts) fits. Band chosen here, not from a source."
+    },
+    {
+      "id": "accent",
+      "role": "accent",
+      "minParts": 0.001,
+      "maxParts": 1,
+      "optional": true,
+      "note": "a pinch of salt or grated nutmeg on a Flip or Eggnog; a counted line without a known volume fills the slot and adds no ratio; added so that the seed Eggnog (salt) has a slot. Band chosen here, not from a source."
     }
   ],
   "slotEvidence": "assumption",
@@ -42,8 +66,8 @@
     "evidence": "assumption"
   },
   "source": {
-    "name": "docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "name": "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapter 6, Flip; quantities read by the lead on 2026-11-18 from the owner's copy and cited as facts, no text copied. docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
     "licence": "AGPL-3.0-or-later",
-    "note": "Assumption, unverified: no primary source was read; see docs/templates.md#evidence."
+    "note": "Assumption, unverified for the bands and the usual ranges; the schema has one evidence field per template, so slotEvidence and usual.evidence stay assumption although the nominal ratio was read. Read: classic 2 oz spirit or fortified wine, 2 tsp demerara sugar, 1 whole egg; root recipe 2 oz oloroso sherry, 1/2 oz syrup, 1 whole egg. The nominal spec (60 ml : 15 ml : 45 ml egg) is the root recipe. The book files Pina Colada and Eggnog under this template; the optional slots are chosen here. See docs/templates.md#evidence."
   }
 }

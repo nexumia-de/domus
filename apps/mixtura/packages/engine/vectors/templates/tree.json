@@ -125,6 +125,36 @@
       "id": "mystery-bottle",
       "name": "Mystery bottle",
       "level": "product"
+    },
+    {
+      "id": "cream",
+      "name": "Cream",
+      "level": "product",
+      "role": "texture"
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "level": "product",
+      "role": "accent"
+    },
+    {
+      "id": "nutmeg",
+      "name": "Nutmeg",
+      "level": "product",
+      "role": "accent"
+    },
+    {
+      "id": "vodka",
+      "name": "Vodka",
+      "level": "product",
+      "role": "base"
+    },
+    {
+      "id": "cranberry-juice",
+      "name": "Cranberry juice",
+      "level": "product",
+      "role": "lengthener"
     }
   ]
 }

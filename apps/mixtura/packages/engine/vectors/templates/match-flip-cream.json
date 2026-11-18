@@ -1,0 +1,47 @@
+{
+  "id": "match-flip-cream",
+  "kind": "match",
+  "description": "Flip with cream: 60 ml brandy, 15 ml syrup, 45 ml egg, 30 ml cream. The egg line comes first and takes the egg slot, the cream (role texture too) goes to the optional cream slot: 1.0 parts of band 0.5 - 3.",
+  "lines": [
+    {
+      "ingredientId": "brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "egg",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "cream",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "flip",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["flip"],
+    "candidates": {
+      "flip": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "sugar": "within",
+          "egg": "within",
+          "cream": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

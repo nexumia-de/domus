@@ -197,11 +197,11 @@ await sheet.waitFor();
 expect((await hash()).includes('sheet=filters'), 'the sheet is part of the address');
 await page.getByRole('button', { name: /^Martini \(\d+\)/ }).click();
 await inHash('template=martini');
-expect((await count()) === '104', 'the Martini template filter shows its 104 drinks');
+expect((await count()) === '112', 'the Martini template filter shows its 112 drinks');
 await page.getByRole('button', { name: /^Gin \(\d+\)/ }).click();
 await inHash('base=gin');
 const martiniGin = Number(await count());
-expect(martiniGin > 0 && martiniGin < 104, `combined filters narrow the result (${martiniGin})`);
+expect(martiniGin > 0 && martiniGin < 112, `combined filters narrow the result (${martiniGin})`);
 await page.getByRole('button', { name: '30 % ABV and over' }).click();
 t0 = Date.now();
 await inHash('strength=ge30');
@@ -362,7 +362,7 @@ expect(
   'variants sit under their parent',
 );
 expect(
-  templateRows[0].includes('Base, Sour, Sweet') && templateRows[0].includes('25 drinks'),
+  templateRows[0].includes('Base, Sour, Sweet') && templateRows[0].includes('127 drinks'),
   'a row has roles and the number of drinks',
 );
 await docShot('templates');
@@ -386,7 +386,7 @@ await page.locator('.slots').waitFor();
 expect((await hash()) === '#/templates/daiquiri', 'Back returns to the template');
 await page.getByRole('link', { name: 'Show in Drinks' }).click();
 await page.locator('.list-count').waitFor();
-await waitCount(25);
+await waitCount(127);
 expect(
   (await hash()) === '#/drinks?template=daiquiri',
   'Show in Drinks filters the list to the template',
@@ -394,8 +394,8 @@ expect(
 await page.goto(`${site.url}#/templates/flip`);
 await page.locator('.spec .list-rows li').first().waitFor();
 expect(
-  (await page.locator('.spec .list-rows li').count()) === 1,
-  'the Flip template lists its one drink',
+  (await page.locator('.spec .list-rows li').count()) === 2,
+  'the Flip template lists its two drinks',
 );
 await page.goto(`${site.url}#/templates/nowhere`);
 await page.getByRole('heading', { name: 'This template is not here' }).waitFor();

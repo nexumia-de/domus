@@ -1,0 +1,41 @@
+{
+  "id": "match-highball-modifier",
+  "kind": "match",
+  "description": "Highball with a splash of liqueur: 60 ml bourbon, 120 ml soda, 10 ml sweet vermouth (0.33 parts, optional modifier slot 0.1 - 0.75).",
+  "lines": [
+    {
+      "ingredientId": "bourbon",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 10,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within",
+          "modifier": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

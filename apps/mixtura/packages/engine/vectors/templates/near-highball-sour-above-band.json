@@ -1,0 +1,36 @@
+{
+  "id": "near-highball-sour-above-band",
+  "kind": "match",
+  "description": "Near miss: 60 ml whiskey, 120 ml soda, 15 ml lemon juice (0.5 parts). A full sour part is above the Highball's squeeze slot (0.05 - 0.37) by 0.5 / 0.37 - 1 = 0.3514, and the Daiquiri fails on its empty sweet slot: no template fits.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": null,
+    "candidates": {
+      "highball": {
+        "fits": false,
+        "distance": 0.35135,
+        "ratios": {
+          "sour": "above",
+          "mixer": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

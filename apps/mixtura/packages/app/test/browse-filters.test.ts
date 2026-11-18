@@ -163,7 +163,7 @@ test('chips name the active filters, and an id the data lacks shows as it is', (
 test('the seed: counts, accent-free search and filters over 639 drinks', () => {
   const seed = seedModel();
   expect(seed.drinks).toHaveLength(639);
-  expect(applyFilters(seed, { q: '', template: 'martini' })).toHaveLength(104);
+  expect(applyFilters(seed, { q: '', template: 'martini' })).toHaveLength(112);
   expect(applyFilters(seed, { q: 'aperol' }).length).toBeGreaterThan(0);
   expect(applyFilters(seed, { q: 'APEROL' })).toEqual(applyFilters(seed, { q: 'aperol' }));
   const gin = applyFilters(seed, { q: '', base: 'gin' });

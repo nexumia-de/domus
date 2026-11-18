@@ -1,0 +1,51 @@
+{
+  "id": "match-daiquiri-collins-not-highball",
+  "kind": "match",
+  "description": "Collins: 60 ml gin, 30 ml lemon (1.0 parts), 15 ml syrup (0.5), 60 ml soda (2.0). Sour and soda fit the optional mixer slot of the Daiquiri; the Highball has the soda but its squeeze slot ends at 0.37, so the 1.0 parts of juice are above it (distance 1.0 / 0.37 - 1 = 1.7027) and the book's filing under the Daiquiri holds.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 60,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["daiquiri"],
+    "candidates": {
+      "daiquiri": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "sweet": "within",
+          "mixer": "within"
+        }
+      },
+      "highball": {
+        "fits": false,
+        "distance": 1.7027
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}
