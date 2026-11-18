@@ -1,0 +1,33 @@
+{
+  "id": "spec-timer",
+  "description": "A timer with ~ and an unnamed quantity",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Lay the potatoes on a #baking sheet{} and place into the #oven{}. Bake for ~{25%minutes}."
+  },
+  "expected": {
+    "cookware": [
+      {
+        "name": "baking sheet",
+        "optional": false
+      },
+      {
+        "name": "oven",
+        "optional": false
+      }
+    ],
+    "timers": [
+      {
+        "quantity": {
+          "text": "25",
+          "value": 25,
+          "unit": "minutes",
+          "locked": false
+        }
+      }
+    ],
+    "steps": ["Lay the potatoes on a baking sheet and place into the oven. Bake for 25 minutes."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Timer"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "spec-optional-reference",
+  "description": "An optional recipe reference",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Serve with @?./sauces/chimichurri{}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "chimichurri",
+        "optional": true,
+        "reference": true,
+        "path": "sauces/chimichurri"
+      }
+    ],
+    "steps": ["Serve with chimichurri."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Optional ingredients and cookware (reference)"
+}

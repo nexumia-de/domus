@@ -1,0 +1,25 @@
+{
+  "id": "spec-ingredient-multiword-without-quantity",
+  "description": "Ingredients: a single word needs no braces, several words end with {}",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Then add @salt and @ground black pepper{} to taste."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "salt",
+        "optional": false,
+        "reference": false
+      },
+      {
+        "name": "ground black pepper",
+        "optional": false,
+        "reference": false
+      }
+    ],
+    "steps": ["Then add salt and ground black pepper to taste."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Ingredients (first example)"
+}

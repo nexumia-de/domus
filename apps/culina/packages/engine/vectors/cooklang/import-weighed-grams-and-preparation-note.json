@@ -1,0 +1,57 @@
+{
+  "id": "import-weighed-grams-and-preparation-note",
+  "description": "A volume the user weighed becomes grams; the preparation and the written quantity are both kept in the note; the record may be a variation (parent set)",
+  "inputs": {
+    "kind": "cooklang_import",
+    "text": "Fold in @flour{1%cup}(sifted).",
+    "decisions": [
+      {
+        "target": {
+          "kind": "ingredient",
+          "id": "u-00000000-0000-4000-8000-000000000001"
+        },
+        "amount": {
+          "mode": "grams",
+          "grams": 120
+        }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000046",
+      "name": "Bread",
+      "date": "2026-11-18",
+      "change": "Imported from bread.cook",
+      "parent": "u-00000000-0000-4000-8000-000000000047"
+    },
+    "facts": {}
+  },
+  "expected": {
+    "component": {
+      "id": "u-00000000-0000-4000-8000-000000000046",
+      "name": "Bread",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000001"
+          },
+          "amount": {
+            "value": 120,
+            "unit": "g"
+          },
+          "note": "sifted, 1 cup"
+        }
+      ],
+      "method": ["Fold in flour."],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000046",
+        "date": "2026-11-18",
+        "change": "Imported from bread.cook",
+        "parent": "u-00000000-0000-4000-8000-000000000047"
+      }
+    },
+    "unmeasured": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the file uses the specification's syntax (README); the decisions are the user's, the densities made up for the vector."
+}

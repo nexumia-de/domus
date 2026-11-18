@@ -1,0 +1,18 @@
+{
+  "id": "spec-metadata-front-matter",
+  "description": "YAML front matter between --- lines: a title and a list of tags",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "---\ntitle: Spaghetti Carbonara\ntags:\n  - pasta\n  - quick\n  - comfort food\n---\n"
+  },
+  "expected": {
+    "metadata": {
+      "title": "Spaghetti Carbonara",
+      "tags": ["pasta", "quick", "comfort food"]
+    },
+    "ingredients": [],
+    "steps": []
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Metadata"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "spec-steps-backslash-keeps-the-line-break",
+  "description": "A trailing backslash keeps the line break inside one step",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Lay out the @rice paper{1}.\\\nTop with @avocado{1/2}(sliced),\\\n@cucumber{1/2}(julienned),\\\nand @cooked shrimp{4}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "rice paper",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": false,
+          "value": 1
+        }
+      },
+      {
+        "name": "avocado",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1/2",
+          "locked": false,
+          "value": 0.5
+        },
+        "note": "sliced"
+      },
+      {
+        "name": "cucumber",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1/2",
+          "locked": false,
+          "value": 0.5
+        },
+        "note": "julienned"
+      },
+      {
+        "name": "cooked shrimp",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "4",
+          "locked": false,
+          "value": 4
+        }
+      }
+    ],
+    "steps": ["Lay out the rice paper.\nTop with avocado,\ncucumber,\nand cooked shrimp."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Steps (backslash)"
+}

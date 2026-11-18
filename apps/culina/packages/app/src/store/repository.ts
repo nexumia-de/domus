@@ -1,5 +1,6 @@
 // The repository: get, list, put, remove, listRows per kind, over one open database.
 import { nextUpdatedAt } from './clock';
+import { bulkStore, type Bulk } from './bulk';
 import { draftStore, type Drafts } from './drafts';
 import { failed, readKind, run } from './idb';
 import { storeLog, toId } from './log';
@@ -24,6 +25,8 @@ export interface Store extends ReadStore {
   readonly schemaVersion: number;
   /** Unfinished forms: their own object store, not validated, not exported or synced. */
   readonly drafts: Drafts;
+  /** Many records in one transaction: import and its Undo. */
+  readonly bulk: Bulk;
 }
 
 const byKey = (a: Row, b: Row): number => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
@@ -93,6 +96,7 @@ export const readWriteStore = (
   ...readOnlyStore(db),
   schemaVersion,
   drafts: draftStore(db, now),
+  bulk: bulkStore(db, now),
   async put(kind, record) {
     const id = (record as { id?: unknown } | null)?.id;
     const issues = schemaIssues(kind, record);

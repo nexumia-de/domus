@@ -153,6 +153,26 @@ in the stored shape (only the fields the rule reads). Lines are written as
 | `variation_cycles` | `records`, `id`                              | `cycles` (lists of family ids), `parent` of `id` (`kind`, optional `id`)                                 |
 | `variations`       | `records`, `id`                              | `variations` (`family`, `head`), optional `parent` (`kind`, optional `id`)                               |
 
+## Kinds of export, matching, merging and Cooklang (issue 18)
+
+Folders: `packages/engine/vectors/export/`, `match/`, `merge/` and
+`cooklang/`. Rules: [exchange](exchange.md). Records are inline in the
+stored shape; `tolerance` is 0. Error vectors carry `error_code` (and
+`error_detail`, a subset the error must carry). The parser vectors are the
+specification's own examples, each naming its section in `source`.
+
+| `kind`               | Inputs                                                                                | Expected                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `export_round_trip`  | `records` (per kind), `exportedAt`                                                    | `kinds`, `counts`, `fileName`; build, text and parse return the same records         |
+| `export_parse`       | `file` (object) or `text`, optional `current` and `migrations` (a test chain by name) | `counts`, optional `formatVersion`; or `error_code` and `error_detail`               |
+| `match_names`        | `names`, `candidates` (`id`, `name`, `origin`, `parentId`)                            | `matches`: per name `exact` (id or null), `close` and `classes` (ids)                |
+| `merge_plan`         | `mine`, `file` (records per kind), `choices` (`kind/id` to `mine` or `theirs`)        | `add`, `same`, `conflicts`, `immutable`, `skippedNotes`, `writes`                    |
+| `remap_ingredients`  | `records`, `map` (file id to notebook id)                                             | `ingredients`, `parents`, `lineRefs`, `slotRefs`, `stockRefs`, `affinities`          |
+| `cooklang_parse`     | `text`                                                                                | any of `metadata`, `ingredients`, `cookware`, `timers`, `steps`, `notes`, `sections` |
+| `cooklang_serialize` | `component`, `names`, `facts`, optional `tasting`, `otherNotes`                       | `text`, `fileName`, `lost`                                                           |
+| `cooklang_import`    | `text`, `decisions` (target, amount mode, role), `options`, `facts`                   | `component`, `unmeasured` (line indexes); or `error_code` with the line `index`      |
+| `cooklang_modes`     | `text`, `facts` by ingredient name                                                    | `modes`: the amount modes offered per ingredient occurrence                          |
+
 # Worked examples
 
 All numbers by hand. The input numbers are chosen for the arithmetic;

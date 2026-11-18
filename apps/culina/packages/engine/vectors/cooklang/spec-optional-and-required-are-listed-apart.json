@@ -1,0 +1,37 @@
+{
+  "id": "spec-optional-and-required-are-listed-apart",
+  "description": "The same ingredient required in one step and optional in another stays two occurrences",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Stir @parmesan{100%g} into the sauce.\n\nTop with extra @?parmesan{50%g} before serving."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "parmesan",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "100",
+          "locked": false,
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "name": "parmesan",
+        "optional": true,
+        "reference": false,
+        "quantity": {
+          "text": "50",
+          "locked": false,
+          "value": 50,
+          "unit": "g"
+        }
+      }
+    ],
+    "steps": ["Stir parmesan into the sauce.", "Top with extra parmesan before serving."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Optional ingredients and cookware (two occurrences)"
+}

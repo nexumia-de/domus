@@ -1,0 +1,79 @@
+{
+  "id": "version-record-conflict-is-immutable",
+  "description": "A version record with the same id and other content can only stay as it is: the choice \"theirs\" writes nothing, and a tasting note on that version is left out",
+  "inputs": {
+    "kind": "merge_plan",
+    "mine": {
+      "components": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000a",
+          "name": "Pan sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              },
+              "amount": {
+                "value": 30,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "date": "2026-11-01"
+          }
+        }
+      ]
+    },
+    "file": {
+      "components": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000a",
+          "name": "Pan sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              },
+              "amount": {
+                "value": 99,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "date": "2026-11-01"
+          }
+        }
+      ],
+      "tastings": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000028",
+          "ref": {
+            "kind": "component",
+            "id": "u-00000000-0000-4000-8000-00000000000a"
+          },
+          "date": "2026-11-06",
+          "text": "Note"
+        }
+      ]
+    },
+    "choices": {
+      "components/u-00000000-0000-4000-8000-00000000000a": "theirs"
+    }
+  },
+  "expected": {
+    "add": {},
+    "same": {},
+    "conflicts": ["components/u-00000000-0000-4000-8000-00000000000a"],
+    "immutable": ["components/u-00000000-0000-4000-8000-00000000000a"],
+    "skippedNotes": ["u-00000000-0000-4000-8000-000000000028"],
+    "writes": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is by id and by content, no kitchen figure is involved."
+}

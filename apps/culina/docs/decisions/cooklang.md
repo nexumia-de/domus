@@ -70,7 +70,7 @@ was written on 2026-11-17, which recommended export only.
 4. Nothing is imported silently: the import shows what was read, what
    is open, and saves only on confirmation.
 
-Built with export and import in issue 18.
+Built with export and import in issue 18: see [exchange](../exchange.md#cooklang) for what the reader and writer support and [behaviour](../behaviour.md#export-and-import). Spec read on 2026-11-18 at `raw.githubusercontent.com/cooklang/spec/main/` (`README.md`, `conventions.md`); no parser or library was used.
 
 Before the decision: (issue #6). It refines point 4 of
 [After Mixtura](after-mixtura.md), which said recipes are read from

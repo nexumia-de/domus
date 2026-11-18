@@ -1,0 +1,26 @@
+{
+  "id": "spec-block-comment",
+  "description": "[- -] is a block comment inside a step",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Slowly add @milk{4%cup} [- TODO change units to litres -], keep mixing"
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "milk",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "4",
+          "locked": false,
+          "value": 4,
+          "unit": "cup"
+        }
+      }
+    ],
+    "steps": ["Slowly add milk , keep mixing"]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Comments (block)"
+}

@@ -1,0 +1,108 @@
+{
+  "id": "remap-points-references-at-the-notebook-ingredient",
+  "description": "The file's onion is the notebook's onion: lines, slots, stock, parent links and affinities follow, and the file's own onion record is dropped",
+  "inputs": {
+    "kind": "remap_ingredients",
+    "records": {
+      "ingredients": [
+        {
+          "id": "f-onion",
+          "name": "Onion"
+        },
+        {
+          "id": "f-red",
+          "name": "Red onion",
+          "parentId": "f-onion"
+        }
+      ],
+      "components": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000a",
+          "name": "x",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "f-onion"
+              },
+              "amount": {
+                "value": 1,
+                "unit": "count"
+              }
+            },
+            {
+              "ref": {
+                "kind": "component",
+                "id": "f-onion"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "date": "2026-11-01"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000014",
+          "name": "d",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "f-onion"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-000000000014",
+            "date": "2026-11-01"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000001e",
+          "ref": {
+            "kind": "ingredient",
+            "id": "f-onion"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "state": "raw"
+        }
+      ],
+      "affinities": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000032",
+          "a": "f-onion",
+          "b": "f-red",
+          "strength": 2,
+          "source": "user"
+        }
+      ]
+    },
+    "map": {
+      "f-onion": "u-onion"
+    }
+  },
+  "expected": {
+    "ingredients": ["f-red"],
+    "parents": {
+      "f-red": "u-onion"
+    },
+    "lineRefs": [
+      ["ingredient", "u-onion"],
+      ["component", "f-onion"]
+    ],
+    "slotRefs": [["ingredient", "u-onion"]],
+    "stockRefs": [["ingredient", "u-onion"]],
+    "affinities": [["u-onion", "f-red"]]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is by id and by content, no kitchen figure is involved."
+}

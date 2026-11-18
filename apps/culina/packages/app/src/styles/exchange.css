@@ -1,0 +1,93 @@
+/* Export, import, the backup reminder and the Cooklang step: tokens only. */
+.backup-banner {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.backup-banner[hidden] {
+  display: none;
+}
+
+.backup-text {
+  margin: 0 0 var(--sp-2);
+}
+
+.backup-banner .actions {
+  margin: 0;
+}
+
+.data-section {
+  margin: var(--sp-4) 0;
+}
+
+.data-section h2,
+.import h2 {
+  margin: var(--sp-5) 0 var(--sp-2);
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.import h3 {
+  margin: var(--sp-3) 0 var(--sp-1);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.file-pick {
+  position: relative;
+  margin: 0 0 var(--sp-3);
+}
+
+.file-pick:focus-within {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.summary-list {
+  margin: 0 0 var(--sp-3);
+  padding-inline-start: var(--sp-5);
+}
+
+.cook-line-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cook-line {
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.cook-line .field {
+  margin-bottom: var(--sp-2);
+}
+
+.cook-line-title {
+  margin: 0 0 var(--sp-2);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.name-row .field {
+  margin-bottom: var(--sp-2);
+}
+
+.confirm-row {
+  margin: var(--sp-3) 0;
+}
+
+.confirm-row .btn {
+  margin-inline-end: var(--sp-2);
+}
+
+.cooklang-export {
+  margin: 0 0 var(--sp-3);
+}

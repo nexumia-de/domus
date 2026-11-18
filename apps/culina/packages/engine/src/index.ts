@@ -157,3 +157,56 @@ export type {
 
 /** The engine's name; the app shows it until it has real screens. */
 export const engineName = (): string => 'culina-engine';
+
+export {
+  EXPORT_FORMAT,
+  EXPORT_VERSION,
+  buildExport,
+  exportFileName,
+  serializeExport,
+} from './exchange/build';
+export { EXPORT_MIGRATIONS, parseExport } from './exchange/parse';
+export type { ParseOptions } from './exchange/parse';
+export { IMMUTABLE_KINDS, conflictKey, mergeWrites, planMerge, sameRecord } from './exchange/merge';
+export type { Choice, Conflict, MergePlan } from './exchange/merge';
+export { remapIngredients } from './exchange/remap';
+export { matchIngredients, nameWords, normaliseName } from './exchange/match';
+export type { Candidate, NameMatch } from './exchange/match';
+export { EXPORT_KINDS } from './exchange/types';
+export type {
+  ExportContent,
+  ExportEnvelope,
+  ExportError,
+  ExportErrorCode,
+  ExportKind,
+  ExportMigration,
+  ExportRecord,
+  FullRecordSets,
+  ParseResult,
+  RecordSets,
+  RecordValidator,
+  RecordValidators,
+} from './exchange/types';
+
+export { parseCooklang, ingredientUses } from './cooklang/parse';
+export { parseInline, parseQuantity, plainText } from './cooklang/inline';
+export { componentToCooklang, fileStem } from './cooklang/serialize';
+export type {
+  CooklangComponent,
+  Loss,
+  SerializeContext,
+  SerializeResult,
+} from './cooklang/serialize';
+export { availableModes, givenAmount, quantityText, resolveAmount } from './cooklang/amount';
+export type { AmountErrorCode, AmountMode, AmountResult } from './cooklang/amount';
+export { importComponent } from './cooklang/import';
+export type { ImportErrorCode, ImportOptions, ImportResult, LineDecision } from './cooklang/import';
+export { unitFromWord } from './cooklang/units';
+export type {
+  Block,
+  CookIngredient,
+  CooklangDocument,
+  IngredientUse,
+  MetaValue,
+  Segment,
+} from './cooklang/types';
