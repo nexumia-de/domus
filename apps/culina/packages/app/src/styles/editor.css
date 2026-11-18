@@ -159,6 +159,13 @@
   color: var(--text-muted);
 }
 
+.picker-heading {
+  margin: var(--sp-3) 0 var(--sp-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
 .picker-create {
   margin-bottom: var(--sp-2);
 }

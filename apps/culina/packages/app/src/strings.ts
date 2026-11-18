@@ -255,6 +255,17 @@ export const strings = {
     pickerSelf: 'this component',
     pickerCreate: (name: string): string => `Add ${name} as a new ingredient`,
     pickerCreateEmpty: 'Add a new ingredient',
+    catalogueHeading: 'From the catalogue',
+    catalogueLoading: 'Loading the catalogue.',
+    catalogueUnavailable: 'The catalogue could not be loaded. Your own ingredients still work.',
+    catalogueHint: (count: number): string =>
+      `Type a name to search ${count} ingredients of the catalogue.`,
+    catalogueNone: 'Nothing in the catalogue has that name.',
+    catalogueMore: (shown: number, total: number): string =>
+      `Showing ${shown} of ${total}. Type more to narrow the list.`,
+    catalogueBoth: 'by volume and by piece',
+    catalogueVolume: 'by volume',
+    cataloguePiece: 'by piece',
     createName: 'Ingredient name',
     createRole: 'Role (optional)',
     createYield: 'Yield in percent of the purchased weight (optional)',

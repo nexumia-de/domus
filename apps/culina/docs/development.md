@@ -134,7 +134,7 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
 `e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
-and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request).
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
@@ -161,7 +161,9 @@ dataset, 210 MB unzipped, is never committed) and give the third its
 path. The generator reads the folder or the `.json` file, writes the
 file above (or `--out <file>`), and a rerun on the same dataset gives
 identical bytes; it prints the number of rows. `npm run build` copies the
-file, minified, to `dist/catalogue.json`. Prettier ignores the generated
+file, minified, to `dist/catalogue.json` (the app fetches it on first use of
+the picker and the service worker precaches it; `main.js` does not carry
+it). Prettier ignores the generated
 file.
 
 Hosts tested on 2026-11-18, both answered 200 through the proxy:
