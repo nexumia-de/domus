@@ -31,8 +31,8 @@ owner decided on two apps with Mixtura first[^two].
    baker's percentages, yields, expiry dates, roles of a dish.
 4. Recipes are read from [Cooklang](../existing-tools.md) files where
    possible instead of a new format. To be confirmed when work starts;
-   the [Cooklang record](cooklang.md) recommends a one-way export
-   instead (needs decision).
+   decided on 2026-11-18: import and export, see the
+   [Cooklang record](cooklang.md).
 
 ## Consequences
 

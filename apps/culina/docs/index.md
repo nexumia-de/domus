@@ -37,7 +37,8 @@ links. Change history is in [log.md](log.md).
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Notebook.
 - [After Mixtura](decisions/after-mixtura.md) - Culina is the second app on the engine Mixtura builds first, as a PWA with own local data.
 - [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
-- [Cooklang](decisions/cooklang.md) - Needs decision: own JSON as the lossless format, Cooklang as a one-way export, no import and no schema.org export in the first version.
+- [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
+- [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock.
 
 # Development
 
