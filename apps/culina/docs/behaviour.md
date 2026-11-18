@@ -460,7 +460,11 @@ file except `sw.js`). On `install` it precaches the list and takes over
 at once (`skipWaiting`); on `activate` it deletes every cache that starts
 with `culina-` and has another version, then claims the open pages. A
 `GET` request of its own origin is answered from the cache, a navigation
-that is not cached gets `index.html`. Registration (`src/sw-register.ts`)
+that is not cached gets `index.html`. A stored response that a host answered
+through a redirect (some hosts send `index.html` to its folder) is given out
+as a new response with the same content, because a browser refuses a
+redirected response for a navigation ([deployment](deployment.md#the-redirect-of-indexhtml);
+**Test:** `e2e/host-redirect.mjs`). Registration (`src/sw-register.ts`)
 only happens over `http:` or `https:` and not when the page URL has
 `?no-sw` (the e2e tests use it where they do not test the worker).
 **Test:** `test/build.test.ts` runs the built `sw.js` against fake caches

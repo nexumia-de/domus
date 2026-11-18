@@ -151,6 +151,23 @@ no `.github/rulesets/` file yet). Actions are pinned to a
 commit SHA; Dependabot updates npm and GitHub Actions weekly
 (`.github/dependabot.yml`).
 
+A third job, `deploy`, needs both, runs only for a push to `main` and
+uploads the build to the host ([deployment](deployment.md)). It is skipped
+on pull requests and is not a required check. Host read for it on
+2026-11-18 and reachable from the session:
+
+```
+developers.cloudflare.com
+```
+
+Refused by the session proxy, needed only to look at the result of a
+deploy:
+
+```
+api.cloudflare.com
+culina.nexumia.de
+```
+
 # Network hosts
 
 Needed to check the facts in [existing tools and data](existing-tools.md);

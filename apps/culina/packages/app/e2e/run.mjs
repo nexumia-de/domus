@@ -4,6 +4,7 @@ import { components } from './components.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
+import { hostRedirect } from './host-redirect.mjs';
 import { install } from './install.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
@@ -13,11 +14,13 @@ import { store } from './store.mjs';
 buildApp();
 const server = await serve(distDir);
 const subServer = await serve(distDir, '/apps/cook/');
+const redirectServer = await serve(distDir, '/', { redirectIndex: true });
 const browser = await launch();
 try {
   await smoke(browser, server, subServer);
   await ratios(browser, server);
   await components(browser, server);
+  await hostRedirect(browser, redirectServer);
   await editor(browser, server);
   await editorMore(browser, server);
   await install(browser, server);
@@ -28,6 +31,7 @@ try {
   await browser.close();
   await server.close();
   await subServer.close();
+  await redirectServer.close();
 }
 console.log(failureCount() === 0 ? 'e2e passed' : `e2e failed: ${failureCount()} check(s)`);
 process.exit(failureCount() === 0 ? 0 : 1);

@@ -1,4 +1,5 @@
-// A tiny static file server for dist/. `base` serves the app under a sub-path.
+// A tiny static file server for dist/. `base` serves the app under a sub-path;
+// `redirectIndex` answers `index.html` with a 307 to its folder, as some static hosts do.
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, normalize } from 'node:path';
@@ -13,7 +14,7 @@ const TYPES = {
 };
 
 /** Starts on a free port; resolves to { origin, url, close }. `url` ends with the base. */
-export const serve = (dir, base = '/') =>
+export const serve = (dir, base = '/', { redirectIndex = false } = {}) =>
   new Promise((resolve) => {
     const server = createServer(async (req, res) => {
       const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
@@ -22,6 +23,10 @@ export const serve = (dir, base = '/') =>
         return;
       }
       let rel = path.slice(base.length);
+      if (redirectIndex && rel.endsWith('index.html')) {
+        res.writeHead(307, { location: path.slice(0, -'index.html'.length) }).end();
+        return;
+      }
       if (rel === '' || rel.endsWith('/')) rel += 'index.html';
       rel = normalize(rel);
       if (rel.startsWith('..')) {

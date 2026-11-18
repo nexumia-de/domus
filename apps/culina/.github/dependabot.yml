@@ -15,6 +15,12 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+  # The wrangler version the deploy job uses.
+  - package-ecosystem: npm
+    directory: /tools/wrangler
+    schedule:
+      interval: weekly
+    versioning-strategy: increase
   - package-ecosystem: github-actions
     directory: /
     schedule:

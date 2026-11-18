@@ -11,7 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order; the shared model comes from materia, engine work has started.
-- [Deployment](deployment.md) - Not deployed yet; planned at culina.nexumia.de on Cloudflare Workers static assets like Mixtura, and the owner steps then needed.
+- [Deployment](deployment.md) - Deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter, and how to serve the same folder elsewhere.
 
 # Research
 

@@ -49,13 +49,27 @@ scope.addEventListener('activate', (event) => {
   );
 });
 
+/**
+ * Some hosts answer `index.html` with a redirect to the folder, so the stored copy is marked
+ * as redirected, and a browser refuses such a response for a navigation. The same content in
+ * a new response carries no mark.
+ */
+const unmarked = (response: Response): Response =>
+  response.redirected
+    ? new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      })
+    : response;
+
 const answer = async (request: Request): Promise<Response> => {
   const cache = await caches.open(CACHE_NAME);
   const hit = await cache.match(request, { ignoreSearch: true });
-  if (hit) return hit;
+  if (hit) return unmarked(hit);
   if (request.mode === 'navigate') {
     const shell = await cache.match('index.html');
-    if (shell) return shell;
+    if (shell) return unmarked(shell);
   }
   return fetch(request);
 };
