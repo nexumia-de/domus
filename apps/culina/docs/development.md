@@ -224,6 +224,13 @@ Wikidata changed. The snapshot is the generator's only input from Wikidata.
 
 ## CI
 
+**Since 2026-11-18 the account has no GitHub Actions minutes left**: jobs
+end within seconds without a runner and `deploy` does not run. Until the
+minutes return, the owner allows a merge without green CI when
+`npm run check` and, for a change to the app, the e2e run pass locally
+on the branch with main merged in; the pull request says so. The live
+site is not updated by such a merge.
+
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
 requests and pushes to `main` in the job `check`, as in Mixtura. A second
 job, `e2e`, needs `check`, installs Chromium with

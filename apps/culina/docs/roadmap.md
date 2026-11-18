@@ -28,8 +28,15 @@ in [how chefs work](chef-practice.md) and
    notes, export and import.
 4. **Stock.** What is there with state and use-by date; what it allows,
    ranked by urgency and role.
-5. **Sync.** The same mechanism as Mixtura in three units (place,
+5. **Helper.** Culina teaches until it is no longer needed
+   ([decision](decisions/mentor.md)): skills with scripted questions
+   and cautions from research and textbooks, a learned skill no longer
+   taught; substitutes with their effect and handling rules per
+   ingredient (when it goes in and why); the correction checklist and suggestions from a tasting
+   check; known dishes shipped as a source of ideas, matched to the
+   catalogue by role.
+6. **Sync.** The same mechanism as Mixtura in three units (place,
    library, profile), encrypted, over storage the user configured
    ([decision](decisions/sync.md)).
-6. **Later.** Curated affinities with sources, the correction
-   checklist, cost, prep lists, allergens.
+7. **Later.** Curated affinities with sources, cost, prep lists,
+   allergens.

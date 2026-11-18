@@ -2,9 +2,11 @@
 
 # Culina
 
-A cook's notebook for people who no longer need a recipe box: ratios and
-templates instead of recipes, dishes built from components, cooking from
-what is there, and your own versions with tasting notes. Visible name:
+A helper in the kitchen that teaches until it is no longer needed
+([decision](docs/decisions/mentor.md)): scripted, without a language
+model, from research and textbooks; ratios and templates, dishes built
+from components, cooking from what is there, and your own versions with
+tasting notes. Visible name:
 **Cook's Notebook** ([decision](docs/decisions/app-name.md)). Knowledge
 of this repository: [docs/index.md](docs/index.md).
 
@@ -28,6 +30,10 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
   Culina: that is the planned sister app emptio; Culina only offers to
   hand missing ingredients to it
   ([decision](docs/decisions/recipe-book.md)).
+- **Teaching is scripted and sourced.** No language model. Every
+  caution, question and explanation names a paper or textbook, or is
+  marked as a judgement. Teaching belongs to skills; a skill the user
+  marked as learned is not taught again.
 - **Sources and licences.** Every ratio, pairing and data set names its
   source and licence. No data from FlavorDB or RecipeNLG.
 - No code copied from Mixtura or materia.
