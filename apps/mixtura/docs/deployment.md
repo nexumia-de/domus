@@ -1,9 +1,9 @@
 ---
 type: Guide
 title: Deployment
-description: Where Mixtura is deployed (Cloudflare Workers static assets at mixtura.nexumia.de, GitHub Pages until the move is confirmed), the headers and caching of the files, how the deploy job behaves with and without secrets, and the owner's one-time steps with the exact token permission.
+description: Where Mixtura is deployed (Cloudflare Workers static assets at mixtura.nexumia.de, live since 2026-11-18; GitHub Pages until the owner has moved the data), the headers and caching of the files, how the deploy job behaves with and without secrets, and the owner's one-time steps with the exact token permission.
 tags: [deployment, cloudflare, headers, caching, service-worker, owner]
-generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: cf-headers
     title: 'Cloudflare, Workers static assets: Headers (read 2026-11-17)'
@@ -42,10 +42,10 @@ sources:
 The app is static files (`npm run build` writes `packages/app/dist`). Decision
 and reasons: [hosting](decisions/hosting.md). Today it is on two hosts:
 
-| Host                             | Address                                           | Status                                                                                                                    |
-| -------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| GitHub Pages (`pages.yml`)       | `https://nexumia-de.github.io/mixtura/`           | Present address. Stays unchanged until the owner confirms the Cloudflare address works, then it is removed (steps below). |
-| Cloudflare Workers static assets | `https://mixtura.nexumia.de/` (owner attaches it) | Target. Worker `mixtura`, deployed by the job `deploy-cloudflare` once the secrets exist.                                 |
+| Host                             | Address                                 | Status                                                                                                    |
+| -------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| GitHub Pages (`pages.yml`)       | `https://nexumia-de.github.io/mixtura/` | Old address. Removed once the owner has moved their data (steps 5 and 6 below).                           |
+| Cloudflare Workers static assets | `https://mixtura.nexumia.de/`           | Live since 2026-11-18. Worker `mixtura`, deployed by the job `deploy-cloudflare` on every push to `main`. |
 
 ## What is in the repository
 
@@ -184,10 +184,10 @@ so the required checks do not change; the new job is not required.
    Scripts and the resources used by the Preview", and this worker has no
    bindings[^cf-previews]). Account resources: include only the one account.
    No zone permission, no other account permission. Do not use the template
-   "Edit Cloudflare Workers": it is broader. **Unverified:** that this one
-   permission is enough for `wrangler deploy` and `wrangler preview` (needs a
-   real token); if the first run reports a missing permission, add the one it
-   names and correct this file.
+   "Edit Cloudflare Workers": it is broader. The owner's token was enough for
+   `wrangler deploy` on 2026-11-18; `wrangler preview` has not run yet (no pull
+   request since the secrets were set). If it reports a missing permission,
+   add the one it names and correct this file.
 2. **Secrets.** In the repository (Settings, Secrets and variables, Actions) or
    the organisation, add `CLOUDFLARE_API_TOKEN` (the token) and
    `CLOUDFLARE_ACCOUNT_ID` (Find account and zone IDs in the Cloudflare docs).
@@ -209,6 +209,21 @@ so the required checks do not change; the new job is not required.
 6. **Remove Pages** once the new address works: delete `.github/workflows/pages.yml`
    in a pull request, switch Pages off in the repository settings (Source
    to None), and change the present address in [install](install.md) to the new one.
+
+## State on 2026-11-18
+
+- Steps 1 to 4 are done. The owner set the secrets; the re-run of CI on `main`
+  (run 44190131617, attempt 2) deployed with `wrangler deploy` and the smoke
+  check passed on the `workers.dev` address. The owner then attached
+  `mixtura.nexumia.de`.
+- Checked from an agent session at `https://mixtura.nexumia.de/`: `/` `200`
+  with the app root, `server: cloudflare`; the full CSP header with
+  `frame-ancestors 'none'`, nosniff, referrer, permissions and opener
+  policies; `no-cache` on `/`, `/index.html`, `/sw.js` and the manifest;
+  `public, max-age=0, must-revalidate` on `main.js`; `/index.html` `307` to
+  `/`; `404` for `/_headers` and an unknown path. The edge sends what the
+  local asset server sent.
+- Steps 5 (move the data) and 6 (remove Pages) are open.
 
 ## State on 2026-11-17
 
@@ -236,10 +251,12 @@ rule of `_headers` as listed above (including `no-cache`, the `307` of
 `e2e/update.mjs`, `e2e/subpath.mjs`, `e2e/walk.mjs`; the workflow with
 `actionlint`; the no-secrets branch and the smoke script run locally.
 
-**Unverified (needs credentials or the real service):** `wrangler deploy` and
-`wrangler preview` against Cloudflare; the token permission above; the
-`deployment-url` output for `preview`; the custom domain; whether the edge
-sends exactly what the local asset server sends.
+Verified on 2026-11-18 against Cloudflare: `wrangler deploy` with the owner's
+token, the smoke check, the custom domain and the headers at the edge (see
+the state above).
+
+**Unverified:** `wrangler preview` and its `deployment-url` output (no pull
+request has run with the secrets yet).
 
 [^cf-headers]: [Cloudflare, Headers](https://developers.cloudflare.com/workers/static-assets/headers/)
 

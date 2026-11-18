@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-18
+
+- **Live at mixtura.nexumia.de**: with the owner's Cloudflare secrets, `deploy-cloudflare` deployed on `main` and its smoke check passed; the owner attached the custom domain. Headers, caching, the `/index.html` redirect and the 404s checked at the edge; they match the local asset server. `wrangler preview` still unverified. Data move and removing Pages are open. See [deployment](deployment.md#state-on-2026-11-18).
+
 ## 2026-11-17
 
 - **`e2e/swap.mjs` no longer races the store opening**: the spec screen draws from the seed before IndexedDB is open, so on a slow runner the test's "before" snapshot saw no database and the later check "IndexedDB and local storage are untouched by swaps" failed (`e2e-slow` on `main` after #125). Shown with a probe at 6x throttle: no database when the heading appears, the database later. The test now waits for the database before the snapshot, as `e2e/store.mjs` does. No app change.
