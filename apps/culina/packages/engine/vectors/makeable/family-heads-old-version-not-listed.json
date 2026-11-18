@@ -1,0 +1,116 @@
+{
+  "id": "family-heads-old-version-not-listed",
+  "description": "Stock that fits only the old version does not list the family: the head needs an egg too",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat",
+        "roles": ["oil"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "salt"
+      },
+      {
+        "id": "sugar"
+      }
+    ],
+    "components": [
+      {
+        "id": "p1",
+        "name": "Pastry",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "p1",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "p2",
+        "name": "Pastry",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg"
+            }
+          }
+        ],
+        "version": {
+          "family": "p1",
+          "date": "2026-11-05",
+          "parent": "p1"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        },
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [],
+    "useUpFirst": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}

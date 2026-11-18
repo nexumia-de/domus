@@ -663,6 +663,151 @@ Vectors: `packages/engine/vectors/stock/`, kinds `stock_expiry`,
 ([vector format](vectors.md#kinds-of-stock-issue-20)), run by
 `test/stock-vectors.test.ts`; `test/stock-schema.test.ts` covers the schema.
 
+# What the stock allows
+
+Culina's finder (issue #21, [recipe book decision](decisions/recipe-book.md)):
+`makeable(input)` says which components, dishes and ratio templates the
+stock allows, fully or partly, with substitutes named. Code:
+`src/makeable/` (`context.ts` the one adapter to materia, `eligible.ts`,
+`amount.ts`, `evaluate.ts`, `template.ts`, `candidate.ts`, `rank.ts`,
+`for-role.ts`). Pure: `today` is an input, nothing is read from a clock.
+Results are `{ ok: true, candidates, useUpFirst }` or `{ ok: false, error }`
+with `invalid-tree`, `invalid-date` (today, or the use-by of an item, named
+by `itemId`), `cycle` (components that make each other, with `path`) or
+`invalid-template` (the template error as `cause`). Every result is a list
+with reasons, not a score.
+
+**Input.** The ingredient tree (`id`, `parentId`, `roles`), components,
+dishes, ratio templates, stock items, `today` (`YYYY-MM-DD`), optional
+`facts` (density and unit weight per ingredient, as for conversion) and
+`options`. A stock item has `ref` and optional `amount`, `state`,
+`useBy` and `always`; `preparedOn` is accepted and not read, because
+no use-by is derived from it here (open). The input types are structural
+subsets, so stored records pass as they are. `always` is the name the
+finder expects for the "always there" flag of the stock item; the stock
+schema owns the field.
+
+**Candidates are family heads.** Components and dishes enter once per
+family, as the head version (`familyHeads`); a line or stock item that
+refers to any version of a component is resolved to its family head. Every
+ratio template is a candidate (templates have no versions).
+
+**Per line** (a component line, a dish slot, a made sub-component's line,
+a template role), `status` is one of:
+
+| Status                 | Meaning                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `have`                 | Stock fits and the known amounts cover the need (or the line has no usable amount)     |
+| `have-by-substitution` | A sibling stands in and covers the need; the `substitution` names asked and substitute |
+| `have-amount-unknown`  | Fits, but an item has no amount (presence only) or one that cannot be converted        |
+| `short`                | Amount known and below the need; `need` and `have` are in the line's unit              |
+| `missing`              | Nothing fits; `stateMismatch` lists items of the right ingredient in the wrong state   |
+
+The first tier that has an item decides the line: (1) the line's own
+items; (2) for a component line, a sub-component made from its own lines;
+(3) for an ingredient line, a sibling. Substitution is therefore consulted
+only where there is nothing of the line's own, never to top up a short
+amount.
+
+- **The tree is the class mechanism.** A line that names a parent
+  ingredient ("butter") is satisfied by any stocked descendant ("salted
+  butter"), which is no substitution. A generic item in stock does not
+  satisfy a line that names a specific child.
+- **Sibling substitution** (`options.siblingSubstitution`, default `true`):
+  a line that names a leaf ingredient (no children) with a parent may be
+  satisfied by an item of another child of that parent, or below it. A
+  line that names a class, a root or a component never takes a sibling.
+  The substitute is the stocked ingredient whose item is used first
+  (earliest use-by, then id); the report names it, always. **Substitution
+  never changes an amount**: `need` is the line's amount, a substitute that
+  is too little is `short` (test `makeable.test.ts` and vector
+  `substitution-short-keeps-amount`). The effect on the result (taste,
+  texture) is not computed.
+- **State.** When line and item both have a state they must be equal; an
+  item without a state fits; a raw item never stands for a component (a
+  prepared thing).
+- **Amounts.** Stock amounts are converted to the line's unit with the
+  engine's `convert` and the facts of the stock item's ingredient (else the
+  line's); only values already in one unit are added. Several items of one
+  ingredient add up, taken earliest use-by first until the need is covered;
+  the items taken are the line's `items`. A line without an amount, or a
+  percent line of a made sub-component, has no `need` and cannot be short.
+  An always-there item covers a line the other items cannot, without an
+  amount flag.
+- **Nested components.** A line that refers to a component is satisfied
+  either by a stock item that is that prepared component (`source:
+'stock'`) or, when there is none, by making it from its own lines
+  (`source: 'made'`, with `parts`). The made lines are scaled by the amount
+  needed over the recorded yield (`scaleByFactor`, `scaled: true`); without
+  a yield or a mass amount they are one run as written (`scaled: false`).
+  A sub-component that cannot be made makes the line `missing` and shows
+  its `parts`; the threshold below applies to the outer lines only.
+- **Optional lines** never count as lacking and add no role.
+
+**Partial matches.** `options.maxMissing` (default 0) is the number of
+required lines that may be `missing` or `short`. A candidate is listed when
+it lacks at most that many and at least one required line is there;
+`complete` means none lacking, `have-amount-unknown` counts as there.
+
+**Ratio templates.** A template has roles and parts but no amounts, so it
+cannot be short. Ingredient `roles` and template roles share one id space
+([roles](data-model.md#roles)), so a role is covered by a stocked
+ingredient whose roles, own or inherited from the tree (materia's
+`inheritedValue`), include it; where a derivative swapped the role to an
+ingredient class, by an ingredient in that class. The item used first is
+the one reported. Templates are resolved with `resolveTemplate`; the
+ingredient data that ships does not yet carry roles, so templates are
+findable once the user's or the shipped ingredients do.
+
+**Urgency.** The urgency of a candidate is the earliest `useBy` among the
+stock items it would use (`usedItems`, through made sub-components), with
+`daysLeft` from `today` (negative when past, still the most urgent) and the
+item that sets it. Items without `useBy` and always-there items never drive
+it; a candidate with no dated item has no urgency and is the least urgent.
+
+**Ranking contract.** Candidates are ordered by urgency first (earliest
+use-by first, none last), then by the number of distinct roles covered
+(more first), then by name and id as plain string comparison; the order
+does not depend on the order of the input. Complete and partial candidates
+share the list (`complete`, `lacking` tell them apart); the reasons are the
+urgency's item and `roles`.
+
+**Use up first.** `useUpFirst` lists the stock items that have a use-by,
+earliest first, each with the candidates that use it (in ranking order);
+an item no candidate uses stays in the list, always-there items are left
+out.
+
+**Open roles.** A dish candidate carries `openRoles`: the dish roles no
+slot has (`DEFAULT_DISH_ROLES`: main, sauce, crunch, acid, garnish, a
+parameter `options.dishRoles`; the same rule as the app's `openRoles`,
+which is not moved). `stockForRole({ ingredients, components, stock, today },
+role)` lists the stock items whose ingredient roles (inherited) include the
+role, or whose component has that `role`, earliest use-by first, so a
+screen can offer candidates for an open slot.
+
+**Materia.** Used: `buildTree` (the tree, with its errors), `isA` (a stocked
+descendant), `inheritedValue` (roles from ancestors), `dayNumber` (dates);
+the heads of families are Culina's own `familyHeads` (see
+[versions](#versions-and-variations)).
+Not usable: `makeableSpecs`, `missingOne` and `unlockRanking` read
+presence only (no amounts, no state, no partial threshold, no component
+lines), `satisfyLine` ties substitution to spec-listed stand-ins and to the
+`substitutionClass` property, which Culina's ingredients do not have, and
+`substitutesFor`, `sameClass` read that class too (Culina's class is the
+tree). `expiry` and `limitingShelfLife` derive a date from shelf life, which
+this issue does not.
+
+**Open.** A recipe line cannot name a class beyond the tree (a "fat" that
+is not an ingredient node): no schema field was added; if wanted it needs a
+field on lines and slots. `useBy` is not derived from `preparedOn` plus a
+shelf life. Taste effects and shopping lists are out of scope.
+
+Vectors: `packages/engine/vectors/makeable/`, kinds `makeable` and
+`stock_for_role` ([vector format](vectors.md#kinds-of-the-finder-issue-21)),
+run by `test/makeable-vectors.test.ts`; `test/makeable.test.ts` holds the
+properties (a substitute never changes an amount, the stock order does not
+matter).
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

@@ -199,6 +199,14 @@ examples in `schemas/examples/`.
 
 - **Level is derived.** Category or variety is the position in the tree,
   not a field.
+- **The tree is the substitution class.** A recipe line that names a
+  parent ingredient ("butter") is satisfied by any descendant in stock; a
+  line that names a leaf ingredient may, unless the rule is switched off,
+  be satisfied by a sibling under the same parent, and the finder reports
+  that as a substitution naming the substitute. A substitute never changes
+  the amount of the line ([engine rules](engine-rules.md#what-the-stock-allows)).
+  A line cannot name a class that is not a node of the tree; that would
+  need a new field on lines and slots and is open.
 - **As purchased versus edible portion.** `yields` records, per state,
   the weight that remains as a percentage of the weight as bought;
   yield % = EP weight / AP weight x 100[^yield] (the book's term for EP is

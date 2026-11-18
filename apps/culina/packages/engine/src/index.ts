@@ -227,3 +227,25 @@ export type {
   MetaValue,
   Segment,
 } from './cooklang/types';
+
+export { DEFAULT_DISH_ROLES, makeable, openDishRoles, stockForRole } from './makeable';
+export type {
+  MakeableCandidate,
+  MakeableComponent,
+  MakeableDish,
+  MakeableError,
+  MakeableErrorCode,
+  MakeableIngredient,
+  MakeableInput,
+  MakeableLine,
+  MakeableLineReport,
+  MakeableLineStatus,
+  MakeableOptions,
+  MakeableResult,
+  MakeableStockItem,
+  MakeableSubstitution,
+  MakeableUrgency,
+  MakeableUseUp,
+  RoleStockItem,
+  StockForRoleResult,
+} from './makeable';

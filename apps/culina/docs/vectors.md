@@ -190,6 +190,32 @@ specification's own examples, each naming its section in `source`.
 | `cooklang_import`    | `text`, `decisions` (target, amount mode, role), `options`, `facts`                   | `component`, `unmeasured` (line indexes); or `error_code` with the line `index`      |
 | `cooklang_modes`     | `text`, `facts` by ingredient name                                                    | `modes`: the amount modes offered per ingredient occurrence                          |
 
+## Kinds of the finder (issue 21)
+
+Run by `test/makeable-vectors.test.ts` from `packages/engine/vectors/makeable/`.
+`expected` is a subset of the result: objects by field, arrays by position
+and length; `urgency: null` asserts no urgency.
+
+| `kind`           | `inputs`                                                                                                                                             | `expected`                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `makeable`       | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
+| `stock_for_role` | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                       | `items` (`itemId`, `ingredientId`, `useBy`)  |
+
+Errors use `error_code` and `error_detail` as elsewhere (`invalid-tree`,
+`invalid-date`, `cycle`, `invalid-template`). Covered: exact match, a
+parent line taking a descendant, a generic item not satisfying a specific
+line, sibling substitution on, off, earliest use-by and for a class line, a
+short substitute keeping the amount, state mismatch (cooked line and raw
+item, raw item and prepared component), a prepared component in stock,
+presence-only stock, short amounts, batches adding up, conversion by the
+engine, partial matches with the threshold, optional lines, a nested
+component from stock and made (scaled, short, unscaled), family heads and a
+stock item of another version, the ranking (urgency beats roles, roles break
+an urgency tie, name then id, no use-by last, a date in the past),
+always-there items, empty stock, open roles, ratio templates (inherited
+roles, threshold, swapped class), use up first and the errors. Amounts,
+dates and ingredients are synthetic and say so in `source`.
+
 # Worked examples
 
 All numbers by hand. The input numbers are chosen for the arithmetic;

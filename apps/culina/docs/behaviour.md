@@ -610,7 +610,7 @@ the user confirms). Older versions would be migrated by the export migration cha
   "Add as a new ingredient"; a chosen match makes the file's lines, slots, stock, parent links and
   pairings point at the notebook's ingredient and no duplicate is created. The candidate list
   comes from one function, `candidateIngredients()` in `src/exchange/candidates.ts` (the
-  notebook today; a shipped catalogue is added there).
+  notebook's ingredients; the Cooklang step adds the catalogue's, see below).
 - **Replace everything.** Asks first with an inline row ("Replace the N records here with the M
   records of the file?"), then writes the file's records and gives the others a tombstone.
 - Both act at once with an **Undo** toast (10 s): the previous version of every touched record is
@@ -627,7 +627,10 @@ steps; `=` locks are not kept) and asks, in this order:
    given below), and, when a component of that name exists, "A new component" or "A variation of
    ...".
 2. **Which ingredient each name means**, once per name (the same name on other lines follows the
-   choice). Offered: the exact match (preselected, only this), close matches, a component for a
+   choice). Offered: the exact match (preselected, only this), close matches (the notebook's
+   ingredients first, then the shipped catalogue's, marked "From the catalogue"; the catalogue is
+   loaded when the step opens, and if it cannot be loaded a quiet line says so and the notebook's
+   ingredients are still offered), a component for a
    recipe reference `@./path`, "Create a new ingredient" and, when the tree knows classes of the
    matches, "File it under (optional)": a new ingredient may be filed under a close match or
    its parent class (the ingredient tree, materia's `buildTree`, parent links), so a match can be
@@ -640,7 +643,12 @@ steps; `=` locks are not kept) and asks, in this order:
 
 Save writes the new ingredients and the component in one transaction as **version 1 of a new
 family** (date from the clock, change "Imported from <file>", `parent` only for a variation); the
-same file imported again is a new family or a variation, never an overwrite. A toast offers Undo.
+same file imported again is a new family or a variation, never an overwrite. A catalogue entry
+chosen for a name (or as the class to file a new ingredient under) is copied into the notebook
+with its parent chain in that save, the picker's way, and the lines point at the copy; Undo takes
+the copies back too. Nothing is copied for a name left unconfirmed or when the step is left.
+A toast offers Undo.
+**Test:** `test/import-catalogue.test.ts`, `e2e/import-catalogue.mjs` (empty notebook, offline).
 
 ## Cooklang export
 

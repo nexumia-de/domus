@@ -486,6 +486,9 @@ export const strings = {
     cookSameName: 'same name',
     cookCloseName: 'close',
     cookComponent: 'component',
+    cookFromCatalogue: 'From the catalogue',
+    cookCatalogueUnavailable:
+      'The catalogue could not be loaded, so only your own ingredients are proposed.',
     cookNameLabel: (name: string): string => `Ingredient for ${name}`,
     cookLinesHeading: 'Amounts and roles',
     cookNoQuantity: 'No quantity in the file',

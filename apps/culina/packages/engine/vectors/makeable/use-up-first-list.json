@@ -1,0 +1,193 @@
+{
+  "id": "use-up-first-list",
+  "description": "Stock with a use-by sorted by date with the candidates that use each; an unused item stays, always-there and undated items are left out",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat",
+        "roles": ["oil"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "salt"
+      },
+      {
+        "id": "sugar"
+      },
+      {
+        "id": "onion",
+        "roles": ["aromatic"]
+      },
+      {
+        "id": "milk",
+        "roles": ["liquid"]
+      }
+    ],
+    "components": [
+      {
+        "id": "alpha",
+        "name": "Alpha",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            },
+            "role": "starch"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg"
+            },
+            "role": "binder"
+          }
+        ],
+        "version": {
+          "family": "alpha",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "beta",
+        "name": "Beta",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg"
+            },
+            "role": "binder"
+          }
+        ],
+        "version": {
+          "family": "beta",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        },
+        "useBy": "2026-11-23"
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "egg"
+        },
+        "useBy": "2026-11-19"
+      },
+      {
+        "id": "s3",
+        "ref": {
+          "kind": "ingredient",
+          "id": "milk"
+        },
+        "useBy": "2026-11-21"
+      },
+      {
+        "id": "s4",
+        "ref": {
+          "kind": "ingredient",
+          "id": "salt"
+        },
+        "always": true,
+        "useBy": "2026-11-19"
+      },
+      {
+        "id": "s5",
+        "ref": {
+          "kind": "ingredient",
+          "id": "sugar"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "alpha"
+      },
+      {
+        "id": "beta"
+      }
+    ],
+    "useUpFirst": [
+      {
+        "itemId": "s2",
+        "daysLeft": 1,
+        "useBy": "2026-11-19",
+        "candidates": [
+          {
+            "kind": "component",
+            "id": "alpha"
+          },
+          {
+            "kind": "component",
+            "id": "beta"
+          }
+        ]
+      },
+      {
+        "itemId": "s3",
+        "daysLeft": 3,
+        "candidates": []
+      },
+      {
+        "itemId": "s1",
+        "daysLeft": 5,
+        "candidates": [
+          {
+            "kind": "component",
+            "id": "alpha"
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}
