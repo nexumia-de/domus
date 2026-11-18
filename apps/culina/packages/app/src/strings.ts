@@ -263,6 +263,11 @@ export const strings = {
     catalogueNone: 'Nothing in the catalogue has that name.',
     catalogueMore: (shown: number, total: number): string =>
       `Showing ${shown} of ${total}. Type more to narrow the list.`,
+    catalogueVariants: (count: number): string => (count === 1 ? '1 variant' : `${count} variants`),
+    catalogueClosedMark: '\u25B8',
+    catalogueOpenMark: '\u25BE',
+    catalogueShow: (name: string): string => `Show the variants of ${name}`,
+    catalogueHide: (name: string): string => `Hide the variants of ${name}`,
     catalogueBoth: 'by volume and by piece',
     catalogueVolume: 'by volume',
     cataloguePiece: 'by piece',

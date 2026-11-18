@@ -150,6 +150,47 @@
   cursor: pointer;
 }
 
+/* A catalogue parent: its own choice and a toggle for its variants, both at least one target. */
+.picker-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.picker-group .picker-choice {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.picker-toggle {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: var(--target);
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-inline-start: 1px solid var(--divider);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.picker-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--focus-width));
+}
+
+.picker-children {
+  margin-inline-start: var(--sp-4);
+  border: 0;
+  border-top: 1px solid var(--divider);
+  border-inline-start: 1px solid var(--divider);
+  border-radius: 0;
+}
+
 .picker-blocked {
   color: var(--text-muted);
 }
