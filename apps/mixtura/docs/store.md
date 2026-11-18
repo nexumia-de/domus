@@ -118,6 +118,13 @@ Every committed write or delete also adds to the backup change counter
 (`store/backup.ts`); export and import are in
 [export and import](export-format.md) (`exchange` on the store; the pure rules of the file and the merge plan are in the engine, [engine](engine.md#export-and-import)).
 
+## Syncing a place
+
+`LocalStore.transactPlace(placeId, work)` reads a place, its stock rows and the
+ingredient ids inside one transaction over `places`, `stock` and `ingredients`,
+runs `work` on them and puts what it returns. The sync cycle's result is
+stored through it ([sync cycle](sync-cycle.md#applying-the-result)).
+
 ## References
 
 `store/references.ts` wraps the delete calls of `ingredients` and `specs`

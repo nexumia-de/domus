@@ -188,7 +188,8 @@ others return result objects as documented in their module files
 `envelopeAad`, `mergeRecords`, `mergePlace`, `combinePlaces` and `planSync`
 with the format constants are the general parts of stock sync
 ([decision](decisions/stock-sync.md)); their types are re-exported by
-name. The app reaches them only through `@mixtura/engine`; the Web Crypto
+name, including the adapter port's `StorageAdapter`, `ReadResult`,
+`WriteResult` and `AdapterFailure`. The app reaches them only through `@mixtura/engine`; the Web Crypto
 cipher that fills materia's `Cipher` port is app code
 ([sync encryption](sync-encryption.md)).
 

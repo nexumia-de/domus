@@ -18,6 +18,7 @@ import { draftsRepo, type DraftsRepo } from './repo-drafts';
 import { withReferenceChecks } from './references';
 import { keyValueRepo, settingsRepo, type SettingsRepo } from './repo-settings';
 import type { Repo } from './repo';
+import { transactPlace, type PlaceContents, type PlaceWrite } from './sync-apply';
 import { resolveSelection, type PlaceSelection } from './places';
 import type { Affinity, Backup, Ingredient, Place, StockKey, StockRecord, Template } from './types';
 
@@ -27,6 +28,7 @@ export * from './errors';
 export * from './exchange';
 export * from './ids';
 export { DEFAULT_PLACE_NAME, resolveSelection, type PlaceSelection } from './places';
+export type { PlaceContents, PlaceWrite } from './sync-apply';
 export type { Persistence, PersistState } from './persist';
 export type { Repo } from './repo';
 export * from './seed';
@@ -44,6 +46,8 @@ export interface LocalStore {
   settings: SettingsRepo;
   /** The places that exist, the ones that count and the entry place, read now. */
   placeSelection(): Promise<PlaceSelection>;
+  /** Reads one place and writes `work`'s answer in one transaction (the sync cycle's result). */
+  transactPlace(placeId: string, work: (current: PlaceContents) => PlaceWrite): Promise<void>;
   /** Unsaved editor state; not entities, not exported. */
   drafts: DraftsRepo;
   persistence: Persistence;
@@ -92,6 +96,7 @@ export async function openLocalStore(options: StoreOptions = {}): Promise<LocalS
     settings,
     placeSelection: async () =>
       resolveSelection(await places.list(), (await settings.load()).places),
+    transactPlace: (placeId, work) => transactPlace(db, placeId, work),
     drafts: draftsRepo(db),
     persistence,
     backup,

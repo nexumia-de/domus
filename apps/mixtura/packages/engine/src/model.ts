@@ -137,6 +137,7 @@ export {
   planSync,
 } from '@nexumia-de/materia';
 export type {
+  AdapterFailure,
   Cipher,
   CombinedEntry,
   DocumentError,
@@ -146,8 +147,11 @@ export type {
   MergeResult,
   Place,
   PlaceDocument,
+  ReadResult,
+  StorageAdapter,
   SyncPlan,
   SyncRecord,
+  WriteResult,
 } from '@nexumia-de/materia';
 
 export * from './exchange/index';
