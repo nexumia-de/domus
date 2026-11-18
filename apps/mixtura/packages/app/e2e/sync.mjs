@@ -412,7 +412,7 @@ expect(
     'a blocked answer names the cause in plain words',
   );
   const href = await C.page.locator('[data-testid="test-result"] a').getAttribute('href');
-  expect(href.endsWith('/docs/sync-backends.md'), 'and links to the setup document');
+  expect(href.endsWith('/docs/sync-setup.md'), 'and links to the setup document');
   await C.context.close();
 }
 for (const p of [A, B]) {
