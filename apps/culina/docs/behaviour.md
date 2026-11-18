@@ -317,8 +317,16 @@ note of an existing line are kept as they are.
   part that follows its parent's name ("unbleached") with the full name as its
   accessible name. The toggle is a button (Enter or Space, `aria-expanded`, the
   focus stays on it) and, like every row, at least 44 px; what the user opened
-  or closed is kept while the text stays the same. Entries whose name contains
-  the text, those that start with it first, at most 25 top-level results at
+  or closed is kept while the text stays the same. Entries whose name or alias
+  contains the text, in English or any other language the entry has names in
+  (German: a search for "Mehl" finds the flours), ignoring case, accents and
+  umlauts ("kase" finds "Käse") and sharp s as ss; one predicate
+  (`shared/names.ts`: all searchable names of a record) that the import matcher
+  and the stock entry can use later. A row found through another language shows
+  that name beside the English one, marked with its `lang`, so "Rosenkohl"
+  gives "Brussels sprouts Rosenkohl by volume"; a row found by its English name
+  shows no second name. The display language otherwise stays English. Those
+  that start with the text in any name come first, at most 25 top-level results at
   once with a quiet line "Showing 25 of N" for the rest. Each row shows the
   name and "by volume", "by piece" or both (a parent without numbers shows just
   its name). An entry already in the notebook is not offered again (it is in the
@@ -338,7 +346,9 @@ note of an existing line are kept as they are.
   out; an entry whose parent is not in the file is a top-level result.
   **Test:** `test/catalogue-app.test.ts` (reading, loading once, retry, copying
   without overwriting), `test/catalogue-tree.test.ts` (tree, search, chain,
-  adopting with the chain), `e2e/catalogue.mjs` and `e2e/catalogue-tree.mjs`
+  adopting with the chain), `test/names.test.ts` (the name predicate),
+  `e2e/catalogue-german.mjs` (search by a German name and an alias, the name
+  shown, choosing it stores the names, offline), `e2e/catalogue.mjs` and `e2e/catalogue-tree.mjs`
   (empty notebook, search, a collapsed parent and its count, keyboard, a
   matched variant under its parents, choosing a parent and a variant, the
   stored chain and `validateModel`, volume and count amounts against the

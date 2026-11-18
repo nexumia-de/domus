@@ -2,6 +2,7 @@
 // Pure: the picker draws what these functions return. An entry whose parent is not in the file is
 // a root, so a file that is cut or out of date still lists everything.
 import type { IngredientRecord } from '../records';
+import { matchesAnyName } from '../shared/names';
 
 export interface CatalogueNode {
   entry: IngredientRecord;
@@ -53,7 +54,8 @@ export interface Found {
 }
 
 /**
- * The part of the tree that matches `needle` (a name contains it, ignoring case): hits, and the
+ * The part of the tree that matches `needle` (a name or alias in any language contains it, ignoring
+ * case and accents, see shared/names): hits, and the
  * ancestors that lead to them. `offered` says whether an entry may be a hit (the ones in the
  * notebook are not). An empty needle matches nothing.
  */
@@ -62,11 +64,11 @@ export const searchTree = (
   needle: string,
   offered: (entry: IngredientRecord) => boolean,
 ): Found[] => {
-  const text = needle.trim().toLowerCase();
+  const text = needle.trim();
   if (text === '') return [];
   const visit = (node: CatalogueNode): Found | undefined => {
     const children = node.children.flatMap((child) => visit(child) ?? []);
-    const hit = offered(node.entry) && node.entry.name.toLowerCase().includes(text);
+    const hit = offered(node.entry) && matchesAnyName(node.entry, text);
     if (!hit && children.length === 0) return undefined;
     const below = children.reduce((sum, child) => sum + 1 + child.below, 0);
     return { entry: node.entry, hit, children, below };

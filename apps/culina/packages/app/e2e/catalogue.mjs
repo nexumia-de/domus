@@ -1,5 +1,6 @@
 // The ingredient catalogue in the picker: an empty notebook, search, pick, amounts by volume and
-// by piece against the engine, reload, offline under the service worker, a failed load, 360 px.
+// by piece against the engine, reload, offline under the service worker, a failed load, 360 px;
+// German names are in catalogue-german.mjs.
 import { check, watch } from './harness.mjs';
 import {
   addLine,
@@ -9,6 +10,7 @@ import {
   searchBox,
   setAmount,
 } from './catalogue-helpers.mjs';
+import { catalogueGerman } from './catalogue-german.mjs';
 import { catalogueTree } from './catalogue-tree.mjs';
 import { engine } from './notebook-fixture.mjs';
 import { shown } from './ratio-fixture.mjs';
@@ -237,6 +239,7 @@ export const catalogue = async (browser, server) => {
   );
   await context.close();
   await catalogueTree(browser, origin);
+  await catalogueGerman(browser, origin);
   await offline(browser, origin);
   await unavailable(browser, origin);
 };
