@@ -3,8 +3,8 @@
 // (docs/decisions/shared-model.md).
 // Never inherited and never guessed: no entry means no volume.
 import { UNITS } from '../amounts/table';
-import type { IngredientTreeOf } from '../ingredients/tree';
-import type { Id, UnitVolume } from '../ingredients/types';
+import type { IngredientTreeOf } from '@nexumia-de/materia';
+import type { Id, UnitVolume } from '@nexumia-de/materia';
 
 const counted = new Set<string>(UNITS.filter((u) => u.kind === 'count').map((u) => u.id));
 

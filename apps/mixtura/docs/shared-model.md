@@ -292,6 +292,20 @@ two steps:
   needs a mass measure.
 - Step 9 (exchange) stays as written: not now.
 
+**Step 8 is done** (#43, nexumia-de/materia#1): the five folders are
+gone from `packages/engine/src/`; `model.ts` re-exports their public
+names from `@nexumia-de/materia` with explicit type lists (materia also
+exports the generic types whose drink shapes have the same names), and
+the drink folders import the generic functions from the package. The
+entry's names, every vector and every test result are unchanged. Two
+tests changed with the move: `ingredients-types.test.ts` imports
+`PREPARED_FIELDS` from the package, and the verdict-word check of
+`templates.test.ts` no longer reads `src/templates/`, which materia now
+checks itself. The module table above describes the engine before the
+move. The general vectors stay here as well: they run through the
+engine's entry and show that the adoption changed nothing; materia has
+its own copies.
+
 [^code]: `packages/engine/src` at commit `b28e70e`, read 2026-11-17.
 
 [^engine]: [Engine](engine.md)

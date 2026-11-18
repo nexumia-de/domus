@@ -1,6 +1,6 @@
 // Types of the alcohol module (docs/non-alcoholic.md, docs/engine.md). A class is a
 // statement about the computed number, never about the drink's legal status.
-import type { Id } from '../ingredients/types';
+import type { Id } from '@nexumia-de/materia';
 
 /** `none` below the "without alcohol" line, `low` up to the low line, `standard` above, `unknown` when the figure is not known. */
 export type AlcoholClass = 'none' | 'low' | 'standard' | 'unknown';

@@ -58,9 +58,15 @@ keeps drink rules apart from the general model, in two files that
 | `src/model.ts` | General model: amounts and units, ingredient tree, prepared-ingredient specs, substitution, assigning spec lines to template slots                                                                                                                                                            |
 | `src/drink.ts` | Drink-specific: the drink ingredient (ABV, sugar, acid, drink roles) and its inherited properties, prepared-ingredient figures, balance figures, dilution, matching and variants of drink templates, comparing drink versions, usual-range check, the six root templates, batching with water |
 
-The general modules are being freed of drink rules step by step
-([shared model](shared-model.md#extraction-order)); `drink.ts` imports
-from them, and the coupling points still left are listed there.
+Since 2026-11-18 the general model, except amounts and the export
+exchange, is not in this repository: `model.ts` re-exports it from
+[materia](https://github.com/nexumia-de/materia), the package shared with Culina, which the engine installs from an
+exact git tag ([shared model](shared-model.md#extraction-order),
+[decision](decisions/shared-model.md)). `drink.ts` and the drink folders
+import the generic functions from `@nexumia-de/materia` and pass the
+drink lists. The build bundles materia into `dist/engine.mjs`, so the
+app sees one engine as before. A bug in a general function is fixed in
+materia, followed by a new tag and a bump here.
 
 # API
 
@@ -204,7 +210,7 @@ No new exported name; fields and result values the app can read:
 
 ## Stock
 
-Part of the general model (`src/stock/`, [what the stock allows](makeable.md)).
+Part of the general model (materia `src/stock/`, [what the stock allows](makeable.md)).
 The input types are structural: a seed spec, a stored spec and a stock record
 fit without conversion.
 
@@ -231,7 +237,7 @@ fit without conversion.
 
 ## Shelf
 
-Part of the general model (`src/shelf/`, [non-alcoholic](non-alcoholic.md#shelf-life-with-entered-dates)).
+Part of the general model (materia `src/shelf/`, [non-alcoholic](non-alcoholic.md#shelf-life-with-entered-dates)).
 Dates are `YYYY-MM-DD` strings; the engine has no clock, so today and the
 day a batch was made are arguments. The shelf life is the user's own value
 (`shelfLifeDays` on a prepared ingredient): no number is proposed. `expiry`
@@ -246,7 +252,7 @@ ingredients inside it (raw parts carry none and say nothing).
 ## Variant suggestions
 
 `variantSuggestions` (`src/drink-templates/match.ts`, on the general
-`src/templates/variants.ts`) finds the template a spec
+materia `src/templates/variants.ts`) finds the template a spec
 follows (an explicit id or the engine's match), then the variants of that
 template (`alcohol` `none` or `low`, [templates](templates.md#variants-by-alcohol-class)).
 For each: the lines with role `base` (replaced), the other lines (carried

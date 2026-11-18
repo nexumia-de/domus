@@ -2,12 +2,8 @@
 // (ingredients/types.ts) with ABV, sugar and acid and the drink roles.
 // test/ingredients-types.test.ts compares the field lists below with the
 // schemas.
-import type { IngredientTreeOf, TreeResultOf } from '../ingredients/tree';
-import {
-  PREPARED_FIELDS,
-  type BaseIngredient,
-  type PreparedIngredient,
-} from '../ingredients/types';
+import type { IngredientTreeOf, TreeResultOf } from '@nexumia-de/materia';
+import { PREPARED_FIELDS, type BaseIngredient, type PreparedIngredient } from '@nexumia-de/materia';
 
 export type Role =
   'base' | 'modifier' | 'sweet' | 'sour' | 'bitter' | 'accent' | 'texture' | 'lengthener';

@@ -3,19 +3,19 @@
 // reference, lines measured by volume, and the alcohol class of a drink
 // choosing its variants.
 import type { IngredientTree, Role } from '../drink-ingredients/types';
-import type { Id } from '../ingredients/types';
-import { matchTemplates } from '../templates/match';
-import type { TemplateEvidence } from '../templates/types';
+import type { Id } from '@nexumia-de/materia';
+import { matchTemplates } from '@nexumia-de/materia';
+import type { TemplateEvidence } from '@nexumia-de/materia';
 import { volumeMeasure } from './volume';
 import {
   findVariants,
   type OpenSlot as GeneralOpenSlot,
   type VariantDomain,
-} from '../templates/variants';
-import type { VariantsReason } from '../templates/variants';
+} from '@nexumia-de/materia';
+import type { VariantsReason } from '@nexumia-de/materia';
 import type { MatchOptions, MatchResult, MatchSpec, Template } from './types';
 
-export type { VariantsReason } from '../templates/variants';
+export type { VariantsReason } from '@nexumia-de/materia';
 
 const DRINK: VariantDomain<Role, Template> = {
   referenceRole: 'base',

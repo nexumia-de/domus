@@ -385,7 +385,7 @@ spec's lines.
 
 ## As built (#26)
 
-Code: engine `packages/engine/src/specs/` (`diffSpecs`), store
+Code: engine `packages/engine/src/drink-specs/` (`diffSpecs`, on materia's `diffVersions`), store
 `store/versions.ts` (`appendVersion`, `setStatus`, `restoreVersion`), the
 editor's `save.ts` (`versionSaver`), `commit.ts` and `components/save-sheet.ts`,
 `screens/versions/` (`diff-vm`, `list-vm`, `list-view`, `diff-view`,
@@ -458,7 +458,7 @@ the family view; the family view is `#/drinks/<id>/family`, from the
 
 ## As built (#27)
 
-Code: engine `specs/family.ts` (`buildFamily`, `findFamilyCycles`) and
+Code: materia `specs/family.ts` (`buildFamily`, `findFamilyCycles`) and
 `specs/riff-change.ts` (`summariseRiff`), `screens/family/`,
 `riffDraft` in `editor/draft.ts`, the riff route in `editor/index.ts`.
 Screenshots: [family](screenshots/versions-family-360x720.png),

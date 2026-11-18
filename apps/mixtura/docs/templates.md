@@ -32,7 +32,7 @@ sources:
 # Templates
 
 Engine side of the Template entity of the [data model](data-model.md).
-Code: `packages/engine/src/templates/`, one job per file; data:
+Code: `src/templates/` in [materia](https://github.com/nexumia-de/materia), one job per file; data:
 `packages/engine/data/templates/*.json`, one file per template, validated
 against `schemas/template.schema.json`.
 

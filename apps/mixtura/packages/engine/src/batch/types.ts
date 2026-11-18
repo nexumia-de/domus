@@ -1,7 +1,7 @@
 // Types of the batch module (docs/balance.md, "Batching").
 import type { Amount } from '../amounts/index';
 import type { BalanceFigures, BalanceLine } from '../balance/index';
-import type { Id } from '../ingredients/types';
+import type { Id } from '@nexumia-de/materia';
 
 export type BatchErrorCode = 'invalid-servings' | 'no-dilution' | 'invalid-line' | 'balance-error';
 

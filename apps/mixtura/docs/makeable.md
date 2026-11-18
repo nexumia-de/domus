@@ -19,7 +19,7 @@ sources:
 # What the stock allows
 
 Engine side of [stock](screens-stock-settings.md): pure functions in
-`packages/engine/src/stock/`, exported through the entry point
+`src/stock/` of materia, exported through the engine's entry point
 ([engine](engine.md#stock)). Nothing is stored; every result is derived
 from the ingredient tree, the specs and the stock
 ([data model](data-model.md#stored-versus-derived)). No number about drinks

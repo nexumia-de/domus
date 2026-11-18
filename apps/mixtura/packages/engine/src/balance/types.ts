@@ -1,7 +1,7 @@
 // Types of the balance module (docs/balance.md). Every figure is a number or
 // an explicit "unknown" with the ingredient ids that prevented it; nothing is
 // defaulted and nothing is a verdict.
-import type { Id } from '../ingredients/types';
+import type { Id } from '@nexumia-de/materia';
 
 export type Figure<T = number> =
   { known: true; value: T } | { known: false; missingIds: Id[]; reason: string };

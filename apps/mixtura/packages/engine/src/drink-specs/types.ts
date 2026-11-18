@@ -1,7 +1,7 @@
 // The drink shapes of the version comparison: the general types
 // (specs/types.ts) with the volume of a `top` line and the drink fields
 // method, glass and garnish.
-import type * as General from '../specs/types';
+import type * as General from '@nexumia-de/materia';
 
 /** The part of a spec line a comparison reads. */
 export interface DiffLine extends General.VersionLine {
