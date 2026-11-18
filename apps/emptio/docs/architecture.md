@@ -83,6 +83,11 @@ Each is a pure function with vectors:
    with their origin. **Hand-over out**: bought entries with an
    ingredient id become proposed stock records.
 
+8. **Raised by an offer**: where the household switched this on, an
+   entry at _soon_ or _sometime_ that is on offer in the store one is
+   in is shown as _now_ there, marked as an offer with its price. The
+   stored priority does not change; the offers come in as input.
+
 Ticking needs the time; it comes in as input, as in materia.
 
 # Catalogue

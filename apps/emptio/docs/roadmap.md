@@ -36,8 +36,10 @@ are sub-issues of it; there are no milestones
    entries are offered to stock; then the same with Mixtura.
 5. **Domus.** The landing page for all apps, and the compose file with
    a sync storage the apps can use as it is.
-6. **Later.** Staples that return, proposals from history, offers and
-   prices through a connector the household hosts (Rewe), barcodes.
+6. **Offers.** A connector the household hosts (Rewe first) brings the
+   offers of a market; entries on offer are raised to _now_ in that
+   store, where the household switched this on.
+7. **Later.** Staples that return, proposals from history, barcodes.
 
 # Depends on others
 
