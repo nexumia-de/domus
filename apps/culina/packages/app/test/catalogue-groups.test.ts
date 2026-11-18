@@ -41,7 +41,7 @@ describe('the grouping rule on the fixture excerpt', () => {
   });
   test('the parent is as deep as the shared segments go; levels are not skipped', () => {
     const flour = byName('Wheat flour, white, all-purpose');
-    expect(flour['x-group']).toEqual({ rows: 3 });
+    expect(flour['x-group']).toEqual({ rows: 3, category: 'Cereal Grains and Pasta' });
     expect(byId('fdc-168894').parentId).toBe(flour.id);
     // "Wheat flour" and "Wheat flour, white" have a single child each and are not made.
     expect(rows.some((r) => r.name === 'Wheat flour' || r.name === 'Wheat flour, white')).toBe(

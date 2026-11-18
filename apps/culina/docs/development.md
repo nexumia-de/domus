@@ -181,8 +181,46 @@ fdc.nal.usda.gov
 ```
 
 The home page (licensing) and the dataset zips under
-`https://fdc.nal.usda.gov/fdc-datasets/` are on that host; no other host
-is needed.
+`https://fdc.nal.usda.gov/fdc-datasets/` are on that host. The German names
+need two more, tested on 2026-11-18, both answered 200:
+
+```
+query.wikidata.org
+www.wikidata.org
+```
+
+`query.wikidata.org` is the SPARQL endpoint, `www.wikidata.org` the
+licensing page (Wikidata:Licensing). The generator itself uses neither:
+it reads the committed snapshot.
+
+### German names
+
+`tools/catalogue/wikidata-de.json` is the trimmed answer of two SPARQL
+queries ([ingredient catalogue](ingredient-catalogue.md#german-names)).
+To refresh it, send a generic User-Agent (no contact data) and fetch
+everything at once, never per item. The first query is
+`tools/catalogue/wikidata-items.rq`:
+
+```
+curl -sS -A 'culina-catalogue-research/0.1' -H 'Accept: application/sparql-results+json' --data-urlencode query@tools/catalogue/wikidata-items.rq https://query.wikidata.org/sparql -o items.json
+```
+
+```
+node tools/catalogue/snapshot.mjs classes-query items.json > classes.rq
+```
+
+```
+curl -sS -A 'culina-catalogue-research/0.1' -H 'Accept: application/sparql-results+json' --data-urlencode query@classes.rq https://query.wikidata.org/sparql -o classes.json
+```
+
+```
+node tools/catalogue/snapshot.mjs build items.json classes.json fdc-sr-legacy/FoodData_Central_sr_legacy_food_json_2018-04.json 2026-11-18
+```
+
+Replace the date with the day of the fetch; the files in the first three
+steps stay outside the repository. The last step writes the snapshot, then
+rebuild the catalogue as above; the diff of the two files shows what
+Wikidata changed. The snapshot is the generator's only input from Wikidata.
 
 ## CI
 

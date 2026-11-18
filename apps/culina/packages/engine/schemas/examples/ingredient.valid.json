@@ -2,6 +2,7 @@
   "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
   "name": "Onion",
   "parentId": "alliums",
+  "names": { "de": { "name": "Zwiebel", "aliases": ["Küchenzwiebel"], "source": "user" } },
   "roles": ["aromatic"],
   "season": { "months": [8, 9, 10], "region": "own garden", "source": "user" },
   "allergens": [],

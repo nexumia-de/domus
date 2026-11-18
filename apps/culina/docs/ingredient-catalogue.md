@@ -1,8 +1,8 @@
 ---
 type: Specification
 title: Ingredient catalogue
-description: The catalogue of basic ingredients shipped with the app, generated from USDA FoodData Central SR Legacy; why that dataset, the selection rule, how density and unit weight are derived, how the ingredient tree and the yields are built, the file, and what the catalogue does not have.
-tags: [catalogue, ingredients, data, usda, licences, generator, tree, yields]
+description: The catalogue of basic ingredients shipped with the app, generated from USDA FoodData Central SR Legacy; why that dataset, the selection rule, how density and unit weight are derived, how the ingredient tree and the yields are built, where the German names (Wikidata) and USDA's food categories come from and by which rules, the file, and what the catalogue does not have.
+tags: [catalogue, ingredients, data, usda, wikidata, german, licences, generator, tree, yields]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: fdc
@@ -20,6 +20,12 @@ sources:
   - id: srcsv
     title: 'SR Legacy CSV, April 2018 (FoodData_Central_sr_legacy_food_csv_2018-04.zip), inspected for a refuse field, none found'
     url: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip
+  - id: wdlic
+    title: 'Wikidata:Licensing (all structured data is CC0), read 2026-11-18'
+    url: https://www.wikidata.org/wiki/Wikidata:Licensing
+  - id: wdsparql
+    title: 'Wikidata Query Service, SPARQL endpoint (property P1978, USDA NDB number)'
+    url: https://query.wikidata.org/sparql
   - id: fdczip
     title: 'Foundation Foods JSON, October 2026 (FoodData_Central_foundation_food_json_2026-10-29.zip), inspected, not used'
     url: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-10-29.zip
@@ -167,7 +173,7 @@ fewer than the name has).
    no number. A parent has no yields. The parent record carries
    `x-group: { rows }`, the number of food rows below it.
 
-Result for SR Legacy 2018-04: 539 food rows and 116 parents, 655 entries.
+Result for SR Legacy 2018-04: 539 food rows and 116 parents, 655 entries (a catalogue of 291 kB, 33 kB gzipped; 245 kB and 28 kB before the German names).
 380 food rows have a parent, 153 stand alone and 6 food rows are
 roots of a group. The tree has 6 levels (212 entries at the top, 283, 111,
 37, 10 and 2 below). 53 parents are at the top, 43, 16 and 4 at the next
@@ -215,6 +221,134 @@ SR28 ASCII archive of the same dataset, listed on the same download page[^sr28zi
 - Weights of the portions are edible-portion weights, so the density and
   unit weight of a row do not change with its yield.
 
+## German names
+
+English stays the canonical language of the data and the code; German is
+supported on top, so a search for "Mehl" finds flour and a shopping list
+app can search the same file in German. The names come from Wikidata, whose
+structured data is public domain: "All structured data (i.e. the main,
+Property, Lexeme, and EntitySchema namespaces) is released into the public
+domain under Creative Commons Zero", "All data in Wikidata has a CC0
+license" (Wikidata:Licensing, read 2026-11-18)[^wdlic]. Nothing is translated by hand
+or from memory: a food has a German name only when a Wikidata item carries
+its USDA NDB number (property P1978) and the rules below accept the item.
+
+**The snapshot.** The generator never calls the network. Two SPARQL
+queries to `https://query.wikidata.org/sparql`[^wdsparql] on 2026-11-18 (a
+generic User-Agent, no per-item requests) fetched every item with a P1978
+value at once: item, NDB number, German and English label, German aliases
+(`skos:altLabel`), and the classes (P31 and P279); the second query gave
+the English labels of the P31 classes. The response had 1,470 rows (item and NDB
+number pairs; 142 items carry more than one NDB number). The file
+`tools/catalogue/wikidata-de.json` keeps the rows whose NDB number
+belongs to a food row of the catalogue: 293 rows, with the query text, the
+date and both row counts in its head, one row per line (about 46 kB, 9 kB
+gzipped). A row has the item id, the NDB number as Wikidata writes it,
+`ndbCount` (how many NDB numbers the item carries in the whole response,
+which trimming would otherwise lose), the German label, the sorted German
+aliases, the English label and the P31 class ids; the class ids that are a
+taxon (the class's English label ends in "taxon": `Q16521` and
+`Q136343650`, hybrid taxon) are listed in the head. `tools/catalogue/snapshot.mjs`
+trims saved responses to this file, see [development](development.md#german-names);
+the generator reads only the file, and the envelope's `namesDataset` holds
+its SHA-256 and date.
+
+**The rules**, in `tools/catalogue/wikidata.mjs`, applied in this order to
+each food row, the first that fails ends it (the counts are for the 539 rows):
+
+1. **Join.** The food's NDB number and the item's are both normalised: four
+   or five digits only, padded to five with a leading zero ("1001" and
+   "01001" are the same). Anything else (six digits such as "011022",
+   other numbering schemes, text) joins nothing. 260 foods have no item; 279 have one.
+2. **Ties between items.** If more than one item carries the NDB number,
+   none is used (14 foods, 14 numbers).
+3. **German label.** The item must have one (15 foods fail here).
+4. **Label against food.** The item's English label must say the food. If the
+   item carries one NDB number, all words of its English label (lower case,
+   plural endings dropped; the label written as one word counts, "corn starch"
+   for "Cornstarch") occur in the description without its parentheses (39
+   foods fail). If the item carries several NDB numbers it is a class
+   ("milk" for fourteen milks, "margarine" for 39 foods) and is used
+   only when its label has exactly the words of the description's first
+   segment, the text before the first comma ("Milk, whole" yes; "Orange peel"
+   for "orange" no; 62 foods fail). Scientific English labels ("Carya" for
+   hickory nuts, "Morus" for mulberries) never occur in USDA's
+   descriptions and fall out here.
+5. **Taxon.** 40 foods have an item (after rule 2) that is an instance of a
+   taxon (P31 `Q16521` or `Q136343650`): 32 of them fail the rules above, in
+   practice rule 4,
+   3 are rejected because their German label is a scientific name (a
+   capitalised word followed by a lower-case word, or `×`, `sect.`, `var.`:
+   "Lactuca sativa var. angustana", "Vaccinium sect. Cyanococcus"), 5 are
+   kept: the item is the food's common-name item, as "Rosenkohl" for
+   "Brussels sprouts", "Rotkohl", "Kohlrabi", "Triticale", "Rote Bete". The
+   pattern is applied to the label of taxon items only, because it also
+   matches loan names ("Aceto balsamico", which stays).
+6. **Aliases.** The item's German aliases without the label itself,
+   duplicates (ignoring case) and scientific names, sorted. Where Wikidata
+   has a longer list than a cook needs the list stays long: nothing is
+   chosen by hand.
+
+**Result.** 146 of 539 foods have a German name (72 through a class item
+with several NDB numbers), 83 of them also aliases. A name's `source` is
+"Wikidata Q..., label de and aliases, NDB ..., snapshot 2026-11-18".
+
+**Parents.** A generated parent takes a German name only when every food
+row below it has a German name, there are at least two rows, and all the names
+are the same; it has no aliases, and its `source` says so and lists the
+Wikidata items ("Derived by tools/catalogue/build.mjs: all 5 rows below have
+the de name "Milch"; Wikidata Q..."). A parent that is itself a food row has
+its own name (or none). 12 of 116 parents get one: Cream, fluid
+(Sahne), Guavas (Guaven), Margarine and the four parents below it
+(Margarine), "Milk, lowfat, fluid, 1% milkfat" (Milch), Oranges
+(Orange), Pineapple (Ananas), Shortening and "Shortening, household"
+(Shortening). Parents such as "Milk" or "Cheese" stay English only. A search
+for a German name still reaches the foods below a parent without one, and
+the parent is shown on the way.
+
+**Doubtful, listed for the owner** (the rules cannot see these; each is
+Wikidata's own label):
+
+- "Oil, corn, peanut, and olive": "Öle" (Q42962, plural, the generic oil
+  item), aliases "Süßöl", "Öl".
+- "Cheese, cream": "Doppelrahmkäse" (Q426337, English label "cream cheese").
+- "Pears, raw, bosc": "Boscs Flaschenbirne" (Q894405), aliases of other
+  names for the cultivar ("Kaiser Alexander", "Kaiserkrone").
+- "Spinach, raw": "Blattspinat" (Q36814998), alias "Spinat".
+- "Spices, cloves, ground": "Nelke" (Q15622897, also the carnation's word).
+- "Spices, allspice, ground": "Piment" (Q1963621).
+- "Spices, mustard seed, ground": "Senfkorn" (Q1937700), also "Senfsaaten".
+- "Spices, pepper, red or cayenne": "Cayennepfeffer" (Q52075540).
+- "Spices, poppy seed": "Mohnsaat", alias "Mohn".
+- "Thyme, fresh": "Thymiankraut" (Q3215980), alias "Thymian".
+- "Vinegar, distilled": "Essig" (Q41354), the generic item; aliases
+  include "Acetum", "Orleans-Verfahren", "Schnellessigverfahren" (also for
+  red wine and cider vinegar).
+- "Oil, rice bran": "Reisöl" (Q175933).
+- "Fish oil, menhaden, fully hydrogenated": "Fischöl" (generic, also
+  sardine), alias "Tran".
+- "Lard": "Schweineschmalz" (Q72827), alias "Fettbemme".
+- "Cream, fluid, light (coffee cream...)": "Sahne" (Q13228), aliases "Rahm",
+  "Obers", "Nidel": one word for light, whipping and half and half.
+- "Wheat flour, whole-grain": "Weizenmehl" (Q2249305), not "Vollkorn".
+- "Peaches, yellow, raw": "Pfirsich" with alias "Nektarine".
+- "Kohlrabi, raw": "Kohlrabi" (taxon item) with alias "Kohlrübe", another vegetable.
+- "Carrots, raw": "Karotte" (Q81), alias "Wurzel".
+- "Dulce de Leche": "Dulce de leche" and "Eggnog": "Eggnog" are loan
+  names, and "Shortening", "Brauner Reis" (lower case, as Wikidata has it).
+- "Guavas, strawberry": "Guaven", the plural.
+
+Many aliases are regional or historical ("Rüeblí", "Schmer", "Fettbemme");
+they are kept because a search by them is right.
+
+## Food category
+
+USDA's `foodCategory.description` of the SR Legacy JSON (for example "Dairy
+and Egg Products", "Spices and Herbs") is written out for every food
+row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
+`x-group.category` only when every food row below it has the same one
+(107 of 116 parents). It is not mapped to shop aisles or anything else.
+
 ## What the catalogue does not have
 
 - No meat, fish, poultry, baked goods, beverages, soups, sauces, canned,
@@ -229,7 +363,9 @@ SR28 ASCII archive of the same dataset, listed on the same download page[^sr28zi
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English names only; US customary portions only; the data is from 2018.
+- English as the canonical language; German names for 146 of 539 foods and 12 of 116
+  parents ([German names](#german-names)), no other language; US customary portions
+  only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added
   vitamins, margarines, oils); the source's variants are kept, and the
   tree above groups them by the commas of USDA's names, nothing more. Some
@@ -250,8 +386,15 @@ tests the grouping rule on a second excerpt (with `food-des-excerpt.txt`
 for the yields) and on synthetic names, the parents' numbers and ids, the
 yields, the input-order independence of the bytes, and runs the shipped
 file through `validateModel` (no `cycle`, no `unknown-parent`) and
-`buildTree`. The catalogue schema and its examples
+`buildTree`. `packages/app/test/catalogue-names.test.ts` tests the German names: the NDB join,
+the tie, label and taxon rules on small excerpts, the parents' names and categories, the
+snapshot builder, that every shipped name cites an item of the committed snapshot with that
+label, and the bytes. The catalogue schema and its examples
 are in `packages/engine/schemas/`.
+
+[^wdlic]: Wikidata, Wikidata:Licensing, sections Official policy and Determining the copyright of a dataset, read 2026-11-18.
+
+[^wdsparql]: Wikidata Query Service, `https://query.wikidata.org/sparql`, queried 2026-11-18; the query text is in `tools/catalogue/wikidata-items.rq` and in the snapshot.
 
 [^sr28zip]: USDA FoodData Central, Download Datasets, SR Legacy archive list, `sr28asc.zip` and `sr28_doc.pdf`, read 2026-11-18.
 
