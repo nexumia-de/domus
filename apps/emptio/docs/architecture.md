@@ -99,15 +99,35 @@ a second app needing it, the data moves to a place both install from
 catalogue: a short curated list of categories and usual items, with its
 source named, and free names beyond that.
 
+State of Culina's catalogue on 2026-11-18, from its build session:
+
+- 539 foods and 116 parents, generated from USDA FoodData Central SR
+  Legacy (CC0) by `tools/catalogue/build.mjs`. Food ids are
+  `fdc-<FDC id>` and stable for one data release; parent ids depend on
+  the grouping rule and can change with it.
+- **It has no shopping category.** The tree groups by name ("Butter",
+  "Oil"), not by aisle. The generator reads USDA's food category
+  ("Dairy and Egg Products", "Baked Products", ...) but does not write
+  it. Writing it out is small; the table from USDA categories to shop
+  categories has to be decided (issue 11).
+- German names are planned only (Culina issue 69).
+- Moving the generator into a package of its own is simple; it needs
+  one unit table of Culina. Best done after or together with the German
+  names.
+- Culina's engine gets `matchIngredients` (pull request 72), which maps
+  a free name to an ingredient id. Emptio needs the same for rule 4, so
+  it is a candidate for the shared code, not for a copy.
+
 # Sync and the household
 
 - The list and the stores live in the household's **place**, the unit
   that already holds stock and is the same place in Mixtura and Culina.
   One invite then shares stock, list and stores.
 - materia's unit document keeps collections it does not know, so a
-  place written by Emptio survives a cycle of an older sister app. To
-  be checked before building on it: that the sister apps' local stores
-  keep such collections too.
+  place written by Emptio survives a cycle of an older sister app. Culina's
+  local store does not keep them today: it has a fixed list of kinds
+  and is pinned to materia 0.2.0 without unit documents. Its sync goal
+  has to carry unknown collections through. Mixtura: not yet answered.
 - Entries are small records merged per key by materia's rules: two
   people adding offline both keep their entries; ticking is a later
   write of the same record.
