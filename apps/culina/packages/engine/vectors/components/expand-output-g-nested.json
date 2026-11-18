@@ -1,0 +1,96 @@
+{
+  "id": "expand-output-g-nested",
+  "description": "Output weight of a dish with a sub-component: the factor applies to the whole tree",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "pie",
+    "output_g": 400,
+    "components": [
+      {
+        "id": "pie",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "filling"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 800,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      },
+      {
+        "id": "filling",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "apple"
+            },
+            "amount": {
+              "value": 500,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "sugar"
+            },
+            "amount": {
+              "value": 150,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "flour",
+        "g": 150
+      },
+      {
+        "ingredient_id": "apple",
+        "g": 125
+      },
+      {
+        "ingredient_id": "sugar",
+        "g": 37.5
+      }
+    ],
+    "raw_g": 312.5,
+    "factor": 0.5,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Factor = 400 / 800 = 0.5. Pie lines: flour 300 x 0.5 = 150, filling 300 x 0.5 = 150 g. Filling fraction 150 / 600 = 0.25: apple 125, sugar 37.5. Sum 150 + 125 + 37.5 = 312.5 g. Synthetic yields."
+}

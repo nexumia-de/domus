@@ -1,0 +1,74 @@
+{
+  "id": "expand-output-g",
+  "description": "Amounts for 400 g of a sauce that yields 800 g",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "output_g": 400,
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 700,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 800,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 350
+      },
+      {
+        "ingredient_id": "onion",
+        "g": 100
+      },
+      {
+        "ingredient_id": "oil",
+        "g": 50
+      }
+    ],
+    "raw_g": 500,
+    "factor": 0.5,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Factor = 400 / 800 = 0.5: tomato 350, onion 100, oil 50; sum 500 g of input for 400 g of output. Synthetic yield."
+}

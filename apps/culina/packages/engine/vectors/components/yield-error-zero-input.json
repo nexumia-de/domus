@@ -1,0 +1,31 @@
+{
+  "id": "yield-error-zero-input",
+  "description": "A yield is recorded but no line has an amount",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "x",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          }
+        }
+      ],
+      "yield": {
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        },
+        "source": "user (synthetic)"
+      }
+    }
+  },
+  "error_code": "zero-input",
+  "error_detail": {
+    "componentId": "x"
+  },
+  "tolerance": 0.000001,
+  "source": "Yield percent would be 100 x 100 / 0, which is undefined."
+}

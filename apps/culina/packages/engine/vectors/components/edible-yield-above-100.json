@@ -1,0 +1,27 @@
+{
+  "id": "edible-yield-above-100",
+  "description": "A cooked state can weigh more than purchased",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_edible",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 80,
+        "source": "synthetic"
+      },
+      {
+        "state": "cooked",
+        "percent": 250,
+        "source": "synthetic"
+      }
+    ],
+    "state": "cooked",
+    "g": 200
+  },
+  "expected": {
+    "g": 500
+  },
+  "tolerance": 0.000001,
+  "source": "The entry for state cooked is chosen: 200 x 250 / 100 = 500 g. Yields are synthetic."
+}

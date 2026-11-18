@@ -1,0 +1,80 @@
+{
+  "id": "expand-error-cycle",
+  "description": "Two components that use each other",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "a",
+    "components": [
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "x"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "b"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      },
+      {
+        "id": "b",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "y"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "a"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "b", "a"]
+  },
+  "tolerance": 0.000001,
+  "source": "a uses b and b uses a: walking from a gives a, b and then a again. Synthetic numbers."
+}

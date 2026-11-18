@@ -1,0 +1,102 @@
+{
+  "id": "expand-two-level",
+  "description": "A pie that uses 300 g of a filling that yields 600 g",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "pie",
+    "components": [
+      {
+        "id": "pie",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "filling"
+            },
+            "amount": {
+              "value": 300,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "filling",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "apple"
+            },
+            "amount": {
+              "value": 500,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "sugar"
+            },
+            "amount": {
+              "value": 150,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "flour",
+        "g": 300
+      },
+      {
+        "ingredient_id": "butter",
+        "g": 200
+      },
+      {
+        "ingredient_id": "apple",
+        "g": 250
+      },
+      {
+        "ingredient_id": "sugar",
+        "g": 75
+      }
+    ],
+    "raw_g": 825,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Fraction of the filling = 300 / 600 = 0.5; apple 500 x 0.5 = 250, sugar 150 x 0.5 = 75; flour 300 + butter 200 + 250 + 75 = 825 g. Synthetic yield."
+}

@@ -1,0 +1,45 @@
+{
+  "id": "expand-error-cannot-convert",
+  "description": "A volume line of an ingredient without density",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "ml"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "cannot-convert",
+  "error_detail": {
+    "componentId": "sauce",
+    "index": 1,
+    "cause": {
+      "code": "needs-density"
+    }
+  },
+  "tolerance": 0.000001,
+  "source": "Oil is given in ml and the ingredient has no density, so grams are unknown."
+}

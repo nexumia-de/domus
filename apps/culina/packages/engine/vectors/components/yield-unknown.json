@@ -1,0 +1,48 @@
+{
+  "id": "yield-unknown",
+  "description": "No yield recorded: unknown, no default",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 700,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "oil"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "input_g": 1000,
+    "known": false
+  },
+  "tolerance": 0.000001,
+  "source": "Input 1000 g; no yield recorded, so output, loss and yield percent are not given."
+}

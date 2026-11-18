@@ -1,0 +1,75 @@
+{
+  "id": "expand-error-cycle-below-start",
+  "description": "A cycle that does not contain the start id",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "top",
+    "components": [
+      {
+        "id": "top",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "a"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "b"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      },
+      {
+        "id": "b",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "a"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["top", "a", "b", "a"]
+  },
+  "tolerance": 0.000001,
+  "source": "top uses a, a uses b, b uses a: the path runs from top to the first repeated id a. Synthetic numbers."
+}

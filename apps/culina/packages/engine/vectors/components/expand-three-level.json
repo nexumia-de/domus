@@ -1,0 +1,138 @@
+{
+  "id": "expand-three-level",
+  "description": "A dish with a sauce that holds a stock",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dish",
+    "components": [
+      {
+        "id": "dish",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "noodles"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 250,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "stock"
+            },
+            "amount": {
+              "value": 250,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      },
+      {
+        "id": "stock",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "bone"
+            },
+            "amount": {
+              "value": 600,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "water"
+            },
+            "amount": {
+              "value": 900,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 1000,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "noodles",
+        "g": 200
+      },
+      {
+        "ingredient_id": "bone",
+        "g": 75
+      },
+      {
+        "ingredient_id": "water",
+        "g": 112.5
+      },
+      {
+        "ingredient_id": "butter",
+        "g": 25
+      },
+      {
+        "ingredient_id": "flour",
+        "g": 25
+      }
+    ],
+    "raw_g": 437.5,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Sauce fraction 250 / 500 = 0.5: stock 250 x 0.5 = 125 g, butter 25, flour 25. Stock fraction 125 / 1000 = 0.125: bone 600 x 0.125 = 75, water 900 x 0.125 = 112.5. Sum 200 + 75 + 112.5 + 25 + 25 = 437.5 g. Order is first seen: noodles, then the sauce line stock (bone, water), then butter, flour. Synthetic yields."
+}

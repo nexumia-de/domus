@@ -1,0 +1,87 @@
+{
+  "id": "expand-percent-lines",
+  "description": "Percent lines of a dough against the summed flour",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dough",
+    "components": [
+      {
+        "id": "dough",
+        "percentBase": "flour",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "wheat"
+            },
+            "amount": {
+              "value": 600,
+              "unit": "g"
+            },
+            "role": "flour"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "rye"
+            },
+            "amount": {
+              "value": 400,
+              "unit": "g"
+            },
+            "role": "flour"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "water"
+            },
+            "role": "water",
+            "amount": {
+              "value": 75,
+              "unit": "percent"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salt"
+            },
+            "amount": {
+              "value": 2,
+              "unit": "percent"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "wheat",
+        "role": "flour",
+        "g": 600
+      },
+      {
+        "ingredient_id": "rye",
+        "role": "flour",
+        "g": 400
+      },
+      {
+        "ingredient_id": "water",
+        "role": "water",
+        "g": 750
+      },
+      {
+        "ingredient_id": "salt",
+        "g": 20
+      }
+    ],
+    "raw_g": 1770,
+    "factor": 1,
+    "unmeasured": []
+  },
+  "tolerance": 0.000001,
+  "source": "Base = flour lines 600 + 400 = 1000 g; water 75 % of 1000 = 750; salt 2 % of 1000 = 20; sum 1770 g. Percent lines are not part of the base."
+}

@@ -1,0 +1,32 @@
+{
+  "id": "expand-error-unknown-component",
+  "description": "A line refers to a component that is not in the list",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dish",
+    "components": [
+      {
+        "id": "dish",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "ghost"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "unknown-component",
+  "error_detail": {
+    "componentId": "ghost",
+    "path": ["dish", "ghost"]
+  },
+  "tolerance": 0.000001,
+  "source": "dish refers to ghost; no component with that id exists."
+}

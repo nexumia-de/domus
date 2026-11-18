@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Engine rules for amounts, scaling, baker's percentages and ratio templates
-description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9).
+description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9), and components with yield, nesting, edible portion and portions (issue 10).
 tags:
   [
     engine,
@@ -14,6 +14,10 @@ tags:
     ratio-templates,
     salt,
     range-check,
+    components,
+    yield,
+    edible-portion,
+    portions,
   ]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -35,12 +39,15 @@ sources:
   - id: datamodel
     title: Data model, ratio template
     url: data-model.md#ratio-template
+  - id: yield
+    title: 'Basic Kitchen and Food Service Management (BC Campus): Yield testing (AP, EP, yield percentage, cost factor; search excerpt only, host blocked)'
+    url: https://opentextbc.ca/basickitchenandfoodservicemanagement/chapter/yield-testing
 ---
 
 # Engine rules for amounts, scaling and baker's percentages
 
 What the engine in `packages/engine/src/amounts`, `scale`, `bakers`,
-`ratios` and `salt` does, in the order a cook meets it. All functions are pure; a function
+`ratios`, `salt`, `components` and `yields` does, in the order a cook meets it. All functions are pure; a function
 that can fail returns `{ ok: true, … }` or `{ ok: false, error: { code,
 … } }`, never throws and never returns NaN. The engine rounds nowhere
 except in [the output step](#rounding).
@@ -164,7 +171,8 @@ counted:
 - flour: lines with the base role (default `flour`);
 - water: lines whose role is in `waterRoles` (default `['water']`);
 - a line with a recorded `composition { flourG, waterG }` (a preferment
-  such as a poolish or a soaker; issue 10 will compute it) adds its own
+  such as a poolish or a soaker; `flourAndWater` computes it from the
+  preferment's [expansion](#components)) adds its own
   flour and water instead of its `g`;
 - a line flagged `component` **without** composition is on neither side;
   its id is returned in `notCounted`, so the result says what it left
@@ -342,6 +350,110 @@ of any of them. Only the roux row exists, and it is the thickener, not a
 sauce. Nothing was recalled or invented; a sourced row first, then a
 template with derivatives.
 
+# Components
+
+Code: `src/components/`. A component is a recipe with its own output
+weight; the engine takes the stored record as is (`id`, `percentBase`,
+`lines`, `yield`; the rest is ignored). Everything below is derived from
+the stored amounts every time; nothing is stored back. materia's
+`resolvePrepared` walks prepared ingredients measured in ml inside the
+ingredient tree; Culina's components are separate records measured by
+mass, so the walk here is Culina's own until materia's prepared lines are
+measure-neutral.
+
+## Line grams
+
+`componentLineGrams(component, factsByIngredient)` gives the grams of
+every line of one component, in line order, with `unmeasured` (the
+indexes of lines without amount: kept, never an error and never guessed)
+and `inputG` (the sum of the measured lines).
+
+- Mass, volume and count go through `toGrams` with the facts of the line's
+  ingredient; a failure is `cannot-convert` with the `index` of the line
+  and the conversion error as `cause`.
+- A `percent` line is its percent of the summed grams of the lines that
+  are not in percent and whose role is the component's `percentBase`. It
+  is `no-percent-base` when `percentBase` is absent or that sum is 0. A
+  formula written entirely in percent therefore has no mass: give it one
+  first (`fromBakersPercent` with a target) and enter the grams.
+- A line that refers to a component must be a mass or a percent; volume
+  and count are `component-needs-mass`, because a component has no
+  density, only a yield in grams.
+- A percent of 0 or less is `invalid-value`. Every error carries the
+  `componentId`.
+
+## Expansion
+
+`expandComponent(components, id, factsByIngredient, { outputG })` walks
+the tree to the raw ingredients.
+
+- A line that uses g grams of a sub-component takes the fraction
+  g / (that sub-component's yield in grams) of the sub-component's own
+  expansion, to any depth. Needing 200 g of a sauce that yields 800 g
+  takes a quarter of its recipe.
+- Without `outputG` the top component is one run as written (`factor` 1).
+  With it the amounts are for that much output: factor = `outputG` / the
+  component's yield in grams.
+- A sub-component, or with `outputG` the top component, without a
+  recorded yield is `no-yield` with the `componentId` that lacks it and
+  the `path` to it. Nothing is assumed.
+- `cycle` carries the `path` of ids from the start id to the first
+  repeated id (`a`, `b`, `a`); `unknown-component` carries the missing id
+  and the path; `duplicate-id` the id; `invalid-value` (field `outputG`
+  or `yield`) a number that is not finite and greater than 0, or a yield
+  that is not a mass. A cycle is looked for before a yield is needed, and
+  only below the start id.
+- `raw` lists `{ ingredientId, state?, role?, g }` aggregated by
+  ingredient, state and role in first-seen order (a component reports its
+  own lines first, then its sub-components in line order). The role is the
+  one on the line that names the ingredient. `rawG` is their sum.
+- `unmeasured` lists `{ path, index, ref }` for lines without amount
+  anywhere in the tree: the raw amounts then lack them and the caller
+  must show that.
+- `flourAndWater(raw, { baseRole, waterRoles })` adds up the raw
+  ingredients by role (defaults as in [hydration](#hydration)); the
+  result is the `composition` of a preferment line for `hydration`, and
+  the same call on the top component's expansion gives the total formula's
+  flour and water.
+
+## Yield and loss
+
+`componentYield(component, factsByIngredient)` gives `inputG` (the
+component's own measured lines; a sub-component line counts with the mass
+used), `unmeasured` and a `yield`: `{ known: true, outputG, lossG,
+yieldPct }` with loss = input - output (negative when weight is gained)
+and yield % = 100 · output / input, or `{ known: false }` when no yield
+is recorded. There is no default and no estimate. `zero-input` only when
+a yield is recorded and the input is 0.
+
+# Edible portion
+
+Code: `src/yields/edible.ts`. Yield % = EP / AP x 100 (edible portion over
+as purchased)[^yield]; issue 37 re-checks the definition at a readable
+source. The helpers take the ingredient's already resolved `yields` list
+(inheritance in the ingredient tree is a later issue).
+
+- `yieldFor(yields, state)` returns `known: true` with percent and source,
+  or `known: false`. An ingredient with no entry for a state is unknown,
+  never 100 %. Two entries for one state are `duplicate-state`.
+- `toEdible(purchasedG, yields, state)` = purchased · percent / 100;
+  `toPurchased(edibleG, yields, state)` = edible · 100 / percent. Without
+  a recorded yield both are `unknown-yield` with the state; grams that are
+  not finite or negative, or a percent that is not finite and above 0, are
+  `invalid-value`. A percent above 100 is allowed (cooked rice). The
+  engine holds no yield figures: they come from user entry or sourced
+  data.
+
+# Portions
+
+Code: `src/components/portions.ts`. `portionsFromYield(yieldG, portionG)`
+gives `portions` (unrounded), `wholePortions` and `remainderG`. The whole
+count floors the quotient after trimming it to 12 significant digits, so
+0.3 g in portions of 0.1 g is 3 and not 2; the remainder is not negative.
+`portionWeight(yieldG, count)` gives the unrounded weight of one portion.
+Both need numbers that are finite and above 0 (`invalid-value` with the
+field). Rounding a portion for display is the caller's step.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,
@@ -350,11 +462,19 @@ percentages, formulas, hydration, the zero-flour and the unequal-base
 errors), `vectors/templates/` (derivative resolution, nested
 derivatives, every error code, family queries, the range check in all
 three positions and on the bounds, a template without range, scaling from
-an anchor, percentages) and `vectors/salt/` (three bases, errors) in the format of [the vector format](vectors.md)[^vectors]. Each
+an anchor, percentages) `vectors/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions) in the format of [the vector format](vectors.md)[^vectors]. Each
 names its basis. Expected numbers are plain arithmetic written out in
 the vector's `source`; densities and unit weights in vectors are
 synthetic and say so. `test/units-vectors.test.ts` and
-`test/percentages-vectors.test.ts` run every file, fail on an unknown
+`test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts`,
+`test/salt-vectors.test.ts` and `test/components-vectors.test.ts` run every file, fail on an unknown
 kind and on an empty folder. The scaling property test (`test/scale.test.ts`)
 scales 200 fixed factors from 0.001 to 1000 by k and then 1/k and
 requires the original within a relative 1e-12.
+
+The component property test (`test/components-property.test.ts`) builds
+300 nested components of depth up to 4 from a fixed-seed generator and
+requires `rawG` to equal the input weight computed on the side (the sum
+over leaves of g times the product of the use fractions along the path)
+within a relative 1e-12; with every sub-component's yield equal to its
+own input, `rawG` equals the top component's `inputG`.

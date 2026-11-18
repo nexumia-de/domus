@@ -1,0 +1,16 @@
+{
+  "id": "edible-error-unknown-yield-purchased",
+  "description": "The way back also refuses an unknown yield",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_purchased",
+    "state": "raw",
+    "g": 100
+  },
+  "error_code": "unknown-yield",
+  "error_detail": {
+    "state": "raw"
+  },
+  "tolerance": 0.000001,
+  "source": "No yields at all: unknown."
+}

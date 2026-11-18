@@ -1,0 +1,55 @@
+{
+  "id": "yield-unmeasured-line",
+  "description": "A line without amount is listed and not in the input",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "soup",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 900,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "bean"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          }
+        }
+      ],
+      "yield": {
+        "amount": {
+          "value": 800,
+          "unit": "g"
+        },
+        "source": "user (synthetic)"
+      }
+    }
+  },
+  "expected": {
+    "input_g": 1000,
+    "known": true,
+    "output_g": 800,
+    "loss_g": 200,
+    "yield_pct": 80,
+    "unmeasured": [2]
+  },
+  "tolerance": 0.000001,
+  "source": "Input 900 + 100 = 1000 g; salt (line 2) has no amount; yield 80 %. Synthetic."
+}

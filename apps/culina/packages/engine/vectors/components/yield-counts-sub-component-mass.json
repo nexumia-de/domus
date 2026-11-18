@@ -1,0 +1,48 @@
+{
+  "id": "yield-counts-sub-component-mass",
+  "description": "A sub-component line counts with the mass used",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "dish",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "pasta"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        }
+      ],
+      "yield": {
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        },
+        "source": "user (synthetic)"
+      }
+    }
+  },
+  "expected": {
+    "input_g": 550,
+    "known": true,
+    "output_g": 500,
+    "loss_g": 50,
+    "yield_pct": 90.909091
+  },
+  "tolerance": 0.000001,
+  "source": "Input 300 + 250 = 550 g (the sauce is counted by its used mass); loss 50 g; yield 100 x 500 / 550 = 90.909091 %. Synthetic."
+}

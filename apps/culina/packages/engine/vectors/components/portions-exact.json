@@ -1,0 +1,17 @@
+{
+  "id": "portions-exact",
+  "description": "A yield that divides evenly",
+  "inputs": {
+    "kind": "portions",
+    "operation": "portions_from_yield",
+    "yield_g": 1200,
+    "portion_g": 150
+  },
+  "expected": {
+    "portions": 8,
+    "whole_portions": 8,
+    "remainder_g": 0
+  },
+  "tolerance": 0.000001,
+  "source": "1200 / 150 = 8 portions, remainder 0 g."
+}

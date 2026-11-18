@@ -15,7 +15,7 @@ sources:
 
 # Test vector format
 
-Culina's vectors (units, scaling, baker's percentages, hydration, ratio templates, salt) are in `packages/engine/vectors/`. This fixes the format of the worked examples its
+Culina's vectors (units, scaling, baker's percentages, hydration, ratio templates, salt, components) are in `packages/engine/vectors/`. This fixes the format of the worked examples its
 engine will be tested against, so that rules are written down with their
 numbers before code exists. The shape follows Mixtura's vectors[^mixtura]
 so both apps can share one runner when the engine moves into shared code.
@@ -106,6 +106,23 @@ outside the range (0 within; the bounds are inside). A template without
 a range gives neither; the vector `ratio-check-no-range-reports-deviation`
 shows that. Ranges and parts in vectors are synthetic where the vector
 says so; vectors that use parts of a row of [ratios](ratios.md) name it.
+
+## Kinds of components, yield and portions (issue 10)
+
+Folder: `packages/engine/vectors/components/`. Rules:
+[engine rules](engine-rules.md#components). Each vector carries its
+components inline in the stored shape (`id`, `percentBase`, `lines` with
+`ref`, `amount`, `role`, `state`, and `yield` with `amount` and `source`);
+top-level fields are snake_case. Yield figures in vectors are synthetic
+and say so in `source`. Error vectors carry `error_code` and
+`error_detail` (`componentId`, `index`, `path`, `cause`, `state`, `field`).
+
+| `kind`             | Inputs                                                                                                                   | Expected                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| `expand_component` | `components`, `id`, optional `output_g`, optional `facts_by_ingredient`                                                  | `raw` (`ingredient_id`, optional `state`, `role`, `g`, in order), `raw_g`, `factor`, `unmeasured` (`path`, `index`, `ref_id`) |
+| `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` (indexes)                         |
+| `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                        |
+| `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                   |
 
 # Worked examples
 

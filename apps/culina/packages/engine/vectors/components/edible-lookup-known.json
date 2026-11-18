@@ -1,0 +1,27 @@
+{
+  "id": "edible-lookup-known",
+  "description": "The recorded yield of a state with its source",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "lookup",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 80,
+        "source": "synthetic"
+      },
+      {
+        "state": "cooked",
+        "percent": 250,
+        "source": "synthetic"
+      }
+    ],
+    "state": "raw"
+  },
+  "expected": {
+    "known": true,
+    "percent": 80
+  },
+  "tolerance": 0.000001,
+  "source": "State raw has 80 %. Synthetic."
+}
