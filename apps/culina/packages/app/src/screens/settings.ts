@@ -1,7 +1,14 @@
 import { engineLine } from '../engine-info';
 import { applyTheme, browserStore, readTheme, THEMES, writeTheme, type Theme } from '../prefs';
 import { el } from '../shell/el';
+import { persistenceState, type PersistenceState } from '../store/persistence';
 import { strings } from '../strings';
+
+const STORAGE: Record<PersistenceState, string> = {
+  persistent: strings.settings.storagePersistent,
+  'best-effort': strings.settings.storageBestEffort,
+  unsupported: strings.settings.storageUnsupported,
+};
 
 const LABELS: Record<Theme, string> = {
   system: strings.settings.themeSystem,
@@ -34,11 +41,15 @@ export const settingsScreen = (): HTMLElement => {
     group.append(label);
   }
 
+  const storage = el('p', 'muted');
+  void persistenceState().then((state) => (storage.textContent = STORAGE[state]));
+
   section.append(
     el('h1', undefined, strings.settings.title),
     group,
     note,
     el('p', 'muted', strings.settings.privacy),
+    storage,
     el('p', 'muted', engineLine()),
   );
   return section;

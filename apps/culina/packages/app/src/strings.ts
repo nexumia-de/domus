@@ -84,5 +84,18 @@ export const strings = {
       'The choice could not be saved on this device. It applies until the app is closed.',
     privacy: 'Everything stays on this device. Nothing is sent anywhere.',
     engineLine: (name: string): string => `Engine: ${name}`,
+    storagePersistent: 'Storage: kept by the browser',
+    storageBestEffort: 'Storage: the browser may clear it when space runs low',
+    storageUnsupported: 'Storage: not reported by this browser',
+  },
+  // Texts for the store's error codes; the editing screens show them.
+  store: {
+    unavailable: 'This browser cannot keep data here. Private browsing can cause this.',
+    quotaExceeded: 'There is no space left on this device. Free some space and try again.',
+    newerSchema: 'Your data was saved by a newer version of this app. Update the app to open it.',
+    migrationFailed:
+      'Your data could not be brought up to date. It is untouched and can still be read.',
+    invalidRecord: 'This entry has a value that is not allowed, so it was not saved.',
+    notFound: 'That entry no longer exists.',
   },
 } as const;

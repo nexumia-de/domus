@@ -26,9 +26,9 @@ links. Change history is in [log.md](log.md).
 
 - [Engine rules](engine-rules.md) - Unit table with exact factors (US customary cup, tablespoon, teaspoon), conversion and its errors, the explicit rounding step, scaling by weight with time and salt cautions, baker's percentages and hydration, ratio templates with derivatives, family queries, the range check (numbers, no verdicts) and the seed templates, salt by basis, and components with nesting, yield and loss, edible portion and portions, and cross-record validation of the model (references, cycles, anchors, ranges); vectors in `packages/engine/vectors/`.
 
-- [Data model](data-model.md) - Every stored entity with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`.
+- [Data model](data-model.md) - Every stored entity with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`; storage and migrations of the local store (IndexedDB database, sync-ready rows with `updatedAt` and tombstones, the clock rule, migration procedure and failure behaviour, persistence, logging).
 
-- [Behaviour](behaviour.md) - Screens, navigation (one back stack, phone first), the ratio list and cards with the calculator, number entry, cautions and the neutral range display, interaction rules, empty, error and offline states, the service worker and the installability check of the PWA, each rule with the test that checks it.
+- [Behaviour](behaviour.md) - Screens, navigation (one back stack, phone first), the ratio list and cards with the calculator, number entry, cautions and the neutral range display, interaction rules, empty, error and offline states, the service worker and the installability check of the PWA, the local store's Settings line and error texts, each rule with the test that checks it.
 
 - [Design](design.md) - Light and dark with a user override, the Beet accent, colour, type and spacing tokens with computed contrast ratios, the ratio screens, icon rules, the 720 px breakpoint and screenshots.
 
@@ -42,5 +42,5 @@ links. Change history is in [log.md](log.md).
 
 # Development
 
-- [Development](development.md) - Setup, commands, layout, the engine's purity rule, the app build, tests and service worker, CI (jobs `check` and `e2e`) and the network hosts.
+- [Development](development.md) - Setup, commands, layout, the engine's purity rule, the app build, generated validators, tests and service worker, CI (jobs `check` and `e2e`) and the network hosts.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

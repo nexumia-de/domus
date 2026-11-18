@@ -2,7 +2,20 @@
 type: Specification
 title: Data model
 description: Every entity Culina stores (ingredient, ratio template, component, dish, stock item, affinity) and the export file, with fields, required flags, units, ids, what is stored versus derived, which part is the general model shared with Mixtura and which is kitchen-specific, how it stays compatible with both Cooklang outcomes, and the open questions with proposals.
-tags: [data-model, schema, json-schema, units, ids, export, ratios, components, yield]
+tags:
+  [
+    data-model,
+    schema,
+    json-schema,
+    units,
+    ids,
+    export,
+    storage,
+    migrations,
+    ratios,
+    components,
+    yield,
+  ]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
   - id: chef
@@ -518,6 +531,119 @@ fall short for ratio and component thinking.
   yield per state, a sub-component's yield used for scaling, or
   tasting-note versions in the format itself.
 
+# Storage and migrations
+
+Built by issue #15 in `packages/app/src/store/` (the app, not the engine:
+the engine stays pure). Only what the user entered is stored; everything
+in [Stored versus derived](#stored-versus-derived) is computed.
+
+**Database.** One IndexedDB database `culina`. One object store per entity
+kind, named like the collections of the [export file](#export-file):
+`ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
+each with the key path `key`. Two more: `meta` (`key` to `value`; today
+only `schemaVersion`, an integer that starts at 1) and `backup` (empty
+except during a migration). No device id yet; sync adds it to `meta`
+without a migration.
+
+**Row shape.** A row is materia's `SyncRecord` from the start, so sync
+later needs no data migration and `mergeRecords` works on the rows
+unchanged:
+
+```json
+{ "key": "u-3f1c...", "updatedAt": "2026-11-18T08:00:00.000Z", "value": { "id": "u-3f1c...", "name": "Onion" } }
+{ "key": "u-3f1c...", "updatedAt": "2026-11-18T08:05:00.000Z", "deleted": true }
+```
+
+- `key` is the record's `id`; `value` is the record, valid against its
+  schema; `updatedAt` is an ISO 8601 UTC instant with `Z`.
+- **Why `updatedAt` and `deleted` are outside the record:** the schemas
+  are closed and the export file holds records, not rows; keeping the
+  metadata in the row leaves every record valid against its schema
+  unchanged and the export format independent of the store.
+- **Removal writes a tombstone** (`deleted: true`, no `value`) and never
+  deletes the row, so a later merge knows the record was removed
+  ([decision](decisions/shared-model.md)). `get` and `list` do not return
+  tombstones; `listRows` returns every row for sync and export. Writing a
+  record under a tombstoned id revives it with a newer `updatedAt`.
+- The unit test `test/store.test.ts` checks the row shape structurally.
+  The engine does not re-export materia's `normaliseRecord` and
+  `mergeRecords` yet; it will when sync is built, and the store imports
+  nothing from materia directly.
+
+**The clock** is injected: `openStore({ now, indexedDB?, migrations? })`;
+the app passes `() => new Date().toISOString()`. **Rule:** a write gets
+the later of `now()` and the stored `updatedAt` plus 1 ms, so every write
+is strictly newer than the row it replaces, also when the device clock
+went backwards. Tested in `test/store.test.ts`.
+
+**Repository.** `get(kind, id)`, `list(kind)`, `put(kind, record)`,
+`remove(kind, id)`, `listRows(kind)`, all async, returning
+`{ ok: true, ... }` or `{ ok: false, error: { code, ... } }`; they do not
+throw for expected failures.
+
+| Code               | When                                                                                    | Carries                      |
+| ------------------ | --------------------------------------------------------------------------------------- | ---------------------------- |
+| `invalid-record`   | `put` of a record that does not meet its schema (also: no `id`)                         | `issues`: paths and keywords |
+| `not-found`        | `get` or `remove` of an id that is not there or was removed                             |                              |
+| `quota-exceeded`   | the browser's `QuotaExceededError`; nothing was written                                 |                              |
+| `unavailable`      | no IndexedDB, or opening is refused or blocked (private mode), or another storage error | `reason`: the error name     |
+| `newer-schema`     | the database was written by a newer app version; it is not opened and not written to    | `found`, `supported`         |
+| `migration-failed` | a migration step failed; the old data is untouched and readable                         | `step` (`1->2`), `reason`    |
+
+**Validation.** Every `put` is validated against the JSON Schemas of
+`packages/engine/schemas/` before anything is stored. The app's Content
+Security Policy forbids `eval`, so the validators are compiled at build
+time: `packages/app/compile-schemas.mjs` generates
+`src/store/validators.generated.js` with Ajv's standalone code (see
+[development](development.md#app-build-service-worker-and-tests)).
+Cross-record rules (references, cycles) are **not** checked on a write,
+since a reference may arrive later; `checkStore(store, seed?)` loads all
+kinds and returns the findings of the engine's `validateModel`.
+
+**Schema version and migrations.** The data schema version is `schemaVersion`
+in `meta`, not IndexedDB's own version: IndexedDB's version cannot be
+rolled back when a data migration fails, so it only serves to create the
+object stores (`onupgradeneeded`). Migrations are an ordered list
+`{ from: n, to: n + 1, migrate(rows) }` of pure functions over plain data
+(`src/store/migrations/`); the schema version is 1 plus the number of
+migrations. There is none yet. Opening a database:
+
+1. No `schemaVersion` (new database): write the current one.
+2. Newer than the app knows: `newer-schema`, nothing is opened for writing;
+   the app tells the user to update.
+3. Older: the runner reads all rows, copies them to `backup` with the old
+   version, runs the migrations in order in memory, validates every
+   migrated record against its schema (and that `key` equals `id`), then
+   writes all rows and the new `schemaVersion` in **one readwrite
+   transaction** over all stores, clearing `backup` in the same
+   transaction.
+4. On any failure (a migration throws, a result breaks a schema, the write
+   fails) the transaction aborts, so the old rows and the old version
+   stay, `backup` is cleared afterwards, and `openStore` returns
+   `migration-failed` with the step and a short reason plus a read-only
+   handle to the old data. A crash during a migration leaves the old data
+   as it was; a leftover `backup` is cleared by the next open.
+
+A reason is the error name and message of the migration code, cut to 120
+characters; a migration must not put record text in its messages. Each
+migration comes with a before and an after fixture in
+`packages/app/test/fixtures/store/` and a test; `test/store-migrate.test.ts`
+proves the runner with test-only migrations (a rename of a field, one that
+throws).
+
+**Persistence.** `requestPersistence()` wraps `navigator.storage.persist()`,
+`persisted()` and `estimate()` and answers `persistent`, `best-effort` or
+`unsupported`. It is to be called when the user first saves something, not
+at start; Settings shows the current state read with `persisted()`
+([behaviour](behaviour.md#local-store)).
+
+**What is logged.** `storeLog(event, { kind, count, ids })`: event names,
+kinds, counts, schema versions and record ids, never names, notes or other
+text (ids are a branded type that only accepts id-shaped strings). The log
+is a no-op unless `localStorage['culina.debug']` is `1`.
+`test/store-log.test.ts` puts a distinctive note through put, get, remove
+and a failing migration and checks that the log does not contain it.
+
 # Schemas and tests
 
 - `common`, `ingredient`, `template`, `component`, `dish`, `stock`,
@@ -578,3 +704,6 @@ For the owner; each has a proposal.
    pure `validateModel` in the engine with named findings for unknown
    references, cycles, anchors that are no role, `min` above `max` and
    duplicate ids; see [engine rules](engine-rules.md#cross-record-validation).
+10. **Device id for sync.** _Decided (issue #15):_ not stored now; the rows
+    already are sync records, and the id is added to `meta` when sync is
+    built. See [Storage and migrations](#storage-and-migrations).

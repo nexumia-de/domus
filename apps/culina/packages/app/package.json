@@ -9,11 +9,16 @@
     "@culina/engine": "0.0.0"
   },
   "scripts": {
+    "pretest": "node compile-schemas.mjs",
     "test": "vitest run",
+    "pretypecheck": "node compile-schemas.mjs",
     "typecheck": "tsc --noEmit -p .",
     "build": "node build.mjs",
     "icons": "node scripts/make-icons.mjs",
     "e2e": "node e2e/run.mjs",
     "screenshots": "node e2e/screenshots.mjs"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.8"
   }
 }

@@ -36,6 +36,7 @@ sets tags in materia); Dependabot does not follow git tags of this form.
 | `typescript-eslint` | 8.72.2  | MIT        | Lint for TypeScript                                                                                     |
 | `globals`           | 17.14.0 | MIT        | Lint globals for scripts                                                                                |
 | `ajv`               | 8.17.1  | MIT        | JSON Schema 2020-12 validation in schema tests (same version as Mixtura)                                |
+| `fake-indexeddb`    | 6.2.8   | Apache-2.0 | IndexedDB in the store's unit tests (the app package; same version as Mixtura)                          |
 | `prettier`          | 3.9.10  | MIT        | Formatting                                                                                              |
 | `@types/node`       | 22.20.5 | MIT        | Types for tests (Node 22 in CI)                                                                         |
 | `esbuild`           | 0.28.2  | MIT        | Builds the app bundle, stylesheet and service worker (same version as Mixtura)                          |
@@ -52,6 +53,19 @@ browser is not an npm dependency: CI installs it with
 Chromium already present set `PLAYWRIGHT_CHROMIUM_PATH` to its binary.
 The app has no runtime dependency apart from the engine: no framework, no
 web font, no CDN.
+
+Licence of `fake-indexeddb` read on 2026-11-18 from
+`node_modules/fake-indexeddb`: `package.json` says Apache-2.0 and `LICENSE`
+is the Apache License 2.0 text. Used in tests only.
+
+**`ajv` also ships, in part.** Besides validating in tests, Ajv 8.17.1
+(MIT; `package.json` and `LICENSE` read on 2026-11-18) generates the
+store's validators at build time (`packages/app/compile-schemas.mjs`,
+standalone code). The generated code imports two small runtime helpers,
+`ajv/dist/runtime/equal` (which uses `fast-deep-equal` 3.1.3, MIT) and
+`ajv/dist/runtime/ucs2length`, and esbuild puts them into `main.js`. The
+Ajv compiler itself does not ship. Both are MIT, compatible with the
+AGPL. Size: see the [log](log.md).
 
 ## GitHub Actions
 
