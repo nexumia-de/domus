@@ -1,0 +1,56 @@
+{
+  "id": "two-findings-one-model",
+  "description": "A cycle and a dangling reference in one model are both reported, and the result is not ok",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "a",
+          "name": "a",
+          "parentId": "b"
+        },
+        {
+          "id": "b",
+          "name": "b",
+          "parentId": "a"
+        }
+      ],
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "ingredient",
+        "id": "a",
+        "path": "parentId",
+        "ids": ["a", "b", "a"]
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "stock",
+        "id": "s",
+        "path": "ref",
+        "ref": "milk"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

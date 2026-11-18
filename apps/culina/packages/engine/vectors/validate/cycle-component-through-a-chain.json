@@ -1,0 +1,85 @@
+{
+  "id": "cycle-component-through-a-chain",
+  "description": "A component that only reaches a cycle is not part of it; the cycle is reported once",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "a",
+          "name": "a",
+          "lines": [
+            {
+              "ref": {
+                "kind": "component",
+                "id": "b"
+              }
+            }
+          ],
+          "version": {
+            "family": "a",
+            "date": "2026-11-18"
+          }
+        },
+        {
+          "id": "b",
+          "name": "b",
+          "lines": [
+            {
+              "ref": {
+                "kind": "component",
+                "id": "c"
+              }
+            }
+          ],
+          "version": {
+            "family": "b",
+            "date": "2026-11-18"
+          }
+        },
+        {
+          "id": "c",
+          "name": "c",
+          "lines": [
+            {
+              "ref": {
+                "kind": "component",
+                "id": "b"
+              }
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c",
+            "date": "2026-11-18"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "component",
+        "id": "b",
+        "path": "lines[0].ref",
+        "ids": ["b", "c", "b"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

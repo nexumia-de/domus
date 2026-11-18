@@ -1,0 +1,32 @@
+{
+  "id": "anchor-absent-is-allowed",
+  "description": "A template without an anchor has no percentages and is valid",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "brine",
+          "name": "brine",
+          "source": "user",
+          "parts": [
+            {
+              "role": "water",
+              "parts": 100
+            },
+            {
+              "role": "salt",
+              "parts": 6
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

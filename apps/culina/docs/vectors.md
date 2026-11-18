@@ -15,7 +15,7 @@ sources:
 
 # Test vector format
 
-Culina's vectors (units, scaling, baker's percentages, hydration, ratio templates, salt, components) are in `packages/engine/vectors/`. This fixes the format of the worked examples its
+Culina's vectors (units, scaling, baker's percentages, hydration, ratio templates, salt, components, cross-record validation) are in `packages/engine/vectors/`. This fixes the format of the worked examples its
 engine will be tested against, so that rules are written down with their
 numbers before code exists. The shape follows Mixtura's vectors[^mixtura]
 so both apps can share one runner when the engine moves into shared code.
@@ -123,6 +123,18 @@ and say so in `source`. Error vectors carry `error_code` and
 | `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` (indexes)                         |
 | `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                        |
 | `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                   |
+
+## Kind of cross-record validation (issue 36)
+
+Folder: `packages/engine/vectors/validate/`. Rules:
+[engine rules](engine-rules.md#cross-record-validation). Each vector carries its
+whole model inline (`inputs.model`, the collections of the export file in the
+stored shapes) and is self-contained. `expected` is `{ ok, findings }` and is
+compared exactly, findings in order; `tolerance` is 0.
+
+| `kind`           | Inputs                                                                                             | Expected                                                                                             |
+| ---------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `validate_model` | `model`: any of `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities` (arrays) | `ok`; `findings`: `code`, `kind`, `id`, optional `path`, `ref`, `ids`, `role`, in the engine's order |
 
 # Worked examples
 

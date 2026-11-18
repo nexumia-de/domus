@@ -1,0 +1,67 @@
+{
+  "id": "unknown-parent-version-is-same-kind",
+  "description": "A version parent must be a record of the same kind: a component id does not serve a dish",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "older",
+          "name": "older",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "older",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d1",
+          "name": "d1",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18",
+            "parent": "older"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "dish",
+        "id": "d1",
+        "path": "version.parent",
+        "ref": "older"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

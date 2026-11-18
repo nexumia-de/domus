@@ -1,0 +1,48 @@
+{
+  "id": "unknown-parent-version-component",
+  "description": "A component version whose parent record does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "c1",
+          "name": "c1",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c1",
+            "date": "2026-11-18",
+            "parent": "c0"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "component",
+        "id": "c1",
+        "path": "version.parent",
+        "ref": "c0"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

@@ -1,0 +1,188 @@
+{
+  "id": "duplicate-id-every-kind",
+  "description": "Every collection reports its duplicates, in collection order",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        },
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "templates": [
+        {
+          "id": "t",
+          "name": "t",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 1
+            }
+          ]
+        },
+        {
+          "id": "t",
+          "name": "t",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 1
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "id": "c",
+          "name": "c",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c",
+            "date": "2026-11-18"
+          }
+        },
+        {
+          "id": "c",
+          "name": "c",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d",
+          "name": "d",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d",
+            "date": "2026-11-18"
+          }
+        },
+        {
+          "id": "d",
+          "name": "d",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        },
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ],
+      "affinities": [
+        {
+          "id": "f",
+          "a": "salt",
+          "b": "salt"
+        },
+        {
+          "id": "f",
+          "a": "salt",
+          "b": "salt"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "kind": "ingredient",
+        "id": "salt"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "template",
+        "id": "t"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "component",
+        "id": "c"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "dish",
+        "id": "d"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "stock",
+        "id": "s"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "affinity",
+        "id": "f"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

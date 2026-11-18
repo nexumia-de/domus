@@ -1,0 +1,65 @@
+{
+  "id": "cycle-version-parent",
+  "description": "Version parents of components that loop are a cycle on the field version.parent",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "v1",
+          "name": "v1",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "v1",
+            "date": "2026-11-18",
+            "parent": "v2"
+          }
+        },
+        {
+          "id": "v2",
+          "name": "v2",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "v1",
+            "date": "2026-11-18",
+            "parent": "v1"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "component",
+        "id": "v1",
+        "path": "version.parent",
+        "ids": ["v1", "v2", "v1"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

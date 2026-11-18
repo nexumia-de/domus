@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Engine rules for amounts, scaling, baker's percentages and ratio templates
-description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9), and components with yield, nesting, edible portion and portions (issue 10).
+description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9), and components with yield, nesting, edible portion and portions (issue 10), and cross-record validation of the model with named findings (issue 36).
 tags:
   [
     engine,
@@ -18,6 +18,9 @@ tags:
     yield,
     edible-portion,
     portions,
+    validation,
+    references,
+    cycles,
   ]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -453,6 +456,77 @@ count floors the quotient after trimming it to 12 significant digits, so
 `portionWeight(yieldG, count)` gives the unrounded weight of one portion.
 Both need numbers that are finite and above 0 (`invalid-value` with the
 field). Rounding a portion for display is the caller's step.
+
+# Cross-record validation
+
+`validateModel(model)` checks what the JSON Schemas cannot, because it
+spans records ([data model](data-model.md#schemas-and-tests)). Input: the
+collections of the export file, `ingredients`, `templates`, `components`,
+`dishes`, `stock`, `affinities`, as stored (a record valid against its
+schema is accepted as is). Only the records given exist; a collection left
+out is empty, so the caller passes seed and user records together. Output:
+`{ ok, findings }`; it collects every finding, never throws and does not
+change its input. A finding is `{ code, kind, id, path?, ref?, ids?, role? }`:
+the record (`kind`, `id`), the field (`path`, as `lines[2].ref`), the
+missing id (`ref`), the ids around a cycle (`ids`) and the role.
+
+Order: collections as above, then record order, then field order (in a
+template: parent, cycle, structure and anchor, swaps; in a component:
+template, lines, cycles, version). Where records share an id inside one
+kind, the later ones get only `duplicate-id` and no other check; ids may
+repeat across kinds.
+
+| Code                     | Kinds                                      | When                                                                                                                                                         |
+| ------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `duplicate-id`           | any                                        | the id was used by an earlier record of the same kind                                                                                                        |
+| `unknown-ingredient`     | template, component, dish, stock, affinity | an ingredient id (swap `ingredientClass`, a line, slot or stock `ref` of kind `ingredient`, affinity `a` and `b`) is no ingredient                           |
+| `unknown-component`      | component, dish, stock                     | a `ref` of kind `component` is no component                                                                                                                  |
+| `unknown-template`       | component                                  | `templateId` is no template                                                                                                                                  |
+| `unknown-parent`         | ingredient, template, component, dish      | `parentId` or `version.parent` is no record of that kind                                                                                                     |
+| `unknown-family`         | component, dish                            | `version.family`, the id of the first version, is no record of that kind                                                                                     |
+| `cycle`                  | ingredient, template, component, dish      | parents loop, components nest in a loop, or version parents loop; `ids` run from the smallest id around and end with it (length 1: `[a, a]`)                 |
+| `anchor-not-a-role`      | template                                   | the effective anchor (own, else the nearest ancestor's) is not among the effective roles; `role` is the anchor; `path` is `anchor` when the template sets it |
+| `invalid-range`          | template                                   | a range has `min` above `max` (or is negative or not finite); `path` `parts[i].range`                                                                        |
+| `not-root-or-derivative` | template                                   | not exactly parts without parent, or parent with changes without parts                                                                                       |
+| `invalid-parts`          | template                                   | parts not above 0 (the schema refuses it too)                                                                                                                |
+| `duplicate-role`         | template                                   | a root lists a role twice                                                                                                                                    |
+| `role-exists`            | template                                   | an `add` of a role the parent chain already has                                                                                                              |
+| `unknown-role`           | template                                   | a `remove` or `swap` of a role the parent chain does not have                                                                                                |
+
+**What each check is based on.**
+
+- Template structure (the last six codes and the anchor) is the existing
+  `resolveTemplate`, mapped to findings. A template is resolved only when
+  its parent chain is sound (no unknown parent, no cycle), and only an error
+  in the template itself is kept: an error of an ancestor is reported with
+  the ancestor, so it is not repeated for each derivative. While an
+  ancestor is broken, errors further down are therefore not yet visible.
+- Ingredient parents and cycles are materia's `buildTree`, its errors
+  mapped (`missing-parent` is `unknown-parent`). Culina's ingredients have
+  no `level`; all are passed with one level so its level-order check
+  cannot fire.
+- Cycles of templates, components and versions are found by a small walk
+  over ids only (`src/validate/graph.ts`). `expandComponent` is not reused:
+  it needs amounts and yields and stops at the first error. Each cycle the
+  walk meets is reported once, with the record of its smallest id; where
+  cycles overlap, not every elementary cycle is listed. The walk recurses
+  once per link, so a chain of many thousands of parents is out of scope.
+- `version.family` is the id of the first version
+  ([data model](data-model.md#version)), so it must be a record of the
+  same kind; a family with no first version left is reported.
+  `version.parent` is a record of the same kind too.
+- **Anchor is optional.** Issue 36 says "exactly one anchor role"; the
+  template schema allows no anchor ("absent means no percentages"), so none
+  is required. The rule checked is that an anchor that exists is one of the
+  effective roles. A derivative that removes the anchor role reports
+  `anchor-not-a-role` unless it sets its own anchor.
+- Not checked: role ids against a role list (there is none, open question
+  2 of the data model), `percentBase` against the lines, amounts.
+
+The tree and reference checks are general (nothing here knows mass or
+yield) and could move to materia later; nothing was moved. Vectors:
+`packages/engine/vectors/validate/`, kind `validate_model`
+([vector format](vectors.md#kind-of-cross-record-validation-issue-36)).
 
 # Vectors
 

@@ -1,0 +1,49 @@
+{
+  "id": "cycle-version-parent-length-1",
+  "description": "A dish that is its own previous version",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d1",
+          "name": "d1",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18",
+            "parent": "d1"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "dish",
+        "id": "d1",
+        "path": "version.parent",
+        "ids": ["d1", "d1"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

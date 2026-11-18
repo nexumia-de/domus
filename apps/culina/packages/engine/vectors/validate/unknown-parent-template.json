@@ -1,0 +1,38 @@
+{
+  "id": "unknown-parent-template",
+  "description": "A derivative of a template that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "sweet",
+          "name": "sweet",
+          "source": "user",
+          "parentId": "ghost",
+          "changes": [
+            {
+              "op": "add",
+              "role": "sugar",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "template",
+        "id": "sweet",
+        "path": "parentId",
+        "ref": "ghost"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

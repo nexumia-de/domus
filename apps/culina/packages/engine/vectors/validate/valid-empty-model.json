@@ -1,0 +1,17 @@
+{
+  "id": "valid-empty-model",
+  "description": "An empty model and empty collections have nothing to report",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [],
+      "dishes": []
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "unknown-ingredient-stock",
+  "description": "Stock of an ingredient that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-ingredient",
+        "kind": "stock",
+        "id": "s",
+        "path": "ref",
+        "ref": "milk"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

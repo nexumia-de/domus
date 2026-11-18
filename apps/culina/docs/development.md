@@ -50,15 +50,17 @@ TypeScript, installed for that build only).
   range check, scaling from an anchor, percentages, seed),
   `src/salt/` (salt by basis), `src/components/` (line grams, expansion,
   yield and loss, portions, flour and water of an expansion),
-  `src/yields/` (edible portion); `data/units.json` is the unit table and
+  `src/yields/` (edible portion), `src/validate/` (cross-record
+  validation: types, the entry `model.ts`, one file per kind with
+  references, an id-only cycle walk, version references); `data/units.json` is the unit table and
   `data/templates.json` the seed templates; `vectors/units/`,
-  `vectors/percentages/`, `vectors/templates/`, `vectors/salt/` and `vectors/components/` hold
+  `vectors/percentages/`, `vectors/templates/`, `vectors/salt/`, `vectors/components/` and `vectors/validate/` hold
   the worked examples that `test/units-vectors.test.ts`,
   `test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts` and
-  `test/salt-vectors.test.ts` and `test/components-vectors.test.ts` run;
+  `test/salt-vectors.test.ts`, `test/components-vectors.test.ts` and `test/validate-vectors.test.ts` run;
   `test/ratios.test.ts` has the unit tests and the seed checks,
   `test/components.test.ts` and `test/components-property.test.ts` those of
-  components.
+  components, `test/validate.test.ts` those of validation.
   Rules: [engine rules](engine-rules.md).
 - `packages/app` (`@culina/app`): the web app. It imports `@culina/engine`
   only; a lint rule fails any deep import.

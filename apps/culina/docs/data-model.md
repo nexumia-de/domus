@@ -219,7 +219,9 @@ ranges, and derivatives that change a parent. Schema:
   schema). The family tree is the `parentId` links; children, ancestors
   and siblings are derived. Cycles cannot be excluded by a schema and
   are rejected by the engine with the error `cycle` and the path of
-  ids ([engine rules](engine-rules.md#ratio-templates)).
+  ids ([engine rules](engine-rules.md#ratio-templates)); `validateModel`
+  reports them together with unknown parents ([cross-record
+  validation](engine-rules.md#cross-record-validation)).
 - **Ratios and baker's percentages are one thing.** A ratio 5 flour : 3
   water has `parts` 5 and 3; a baker's formula has the anchor at 100
   (flour 100, water 56, salt 3) and its numbers are percentages. The
@@ -230,7 +232,7 @@ ranges, and derivatives that change a parent. Schema:
   [ratios](ratios.md) that give a range (salt in Neapolitan dough 2.8 to
   3.1 %). Where a source gives one value, the template has no range and
   the check reports the deviation only. That `min` is not above `max` is
-  checked by the engine (`invalid-range`). The range check says `below`, `within`,
+  checked by the engine (`invalid-range`, also in `validateModel`). The range check says `below`, `within`,
   `above`, never "wrong" ([vectors](vectors.md)[^vectors]).
 - Roles are the shared id space of [roles](#roles). `ingredientClass` is
   a node of the ingredient tree.
@@ -263,6 +265,9 @@ nesting. Schema: `component.schema.json`. One stored record is one
   of its recipe; a component without `yield` cannot be used by mass, and
   the engine says so (`no-yield`). Cycles are rejected by the engine
   (`cycle`); see [engine rules](engine-rules.md#components).
+  `validateModel` reports unknown components, templates and ingredients
+  and nesting cycles by ids alone ([cross-record
+  validation](engine-rules.md#cross-record-validation)).
 - **Preferments and the two formulas.** A preferment (poolish, biga,
   levain) is a component with its own lines (flour, water). The **final
   dough** formula is the dough's own lines, the preferment as one line;
@@ -428,8 +433,9 @@ One JSON file with everything the user entered, validated by
   exists is merged or replaced by the user's choice (the merge mechanism
   is the general part of the exchange module[^mixshared]).
 - Cross-record rules a schema cannot state (references exist, no
-  cycles, `min` not above `max`, one anchor) are the engine's job and
-  its errors are named, not silent.
+  cycles, `min` not above `max`, an anchor that exists is a role) are the
+  engine's job (`validateModel`) and its findings are named, not silent.
+  The anchor is optional, so "one anchor" is not required.
 
 # Cooklang
 
@@ -546,6 +552,7 @@ For the owner; each has a proposal.
 8. **Name of the version field**: `formatVersion` instead of the issue's
    `schemaVersion`. _Proposal:_ `formatVersion`, equal to Mixtura, so a
    shared exchange module needs no mapping.
-9. **Cross-record validation.** Schemas cannot check references, cycles or
-   `min` <= `max`. _Proposal:_ a pure `validateModel` in the engine
-   (issues 9 and 10) with named errors; a later issue.
+9. **Cross-record validation.** _Decided and implemented (issue 36):_ a
+   pure `validateModel` in the engine with named findings for unknown
+   references, cycles, anchors that are no role, `min` above `max` and
+   duplicate ids; see [engine rules](engine-rules.md#cross-record-validation).

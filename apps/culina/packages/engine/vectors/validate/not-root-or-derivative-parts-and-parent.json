@@ -1,0 +1,55 @@
+{
+  "id": "not-root-or-derivative-parts-and-parent",
+  "description": "A template with a parent and parts instead of changes",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            },
+            {
+              "role": "fat",
+              "parts": 2
+            },
+            {
+              "role": "water",
+              "parts": 1
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "odd",
+          "name": "odd",
+          "source": "user",
+          "parentId": "pie",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "not-root-or-derivative",
+        "kind": "template",
+        "id": "odd"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

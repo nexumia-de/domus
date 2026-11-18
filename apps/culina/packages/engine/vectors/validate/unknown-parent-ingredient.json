@@ -1,0 +1,30 @@
+{
+  "id": "unknown-parent-ingredient",
+  "description": "An ingredient below a parent that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "onion",
+          "name": "onion",
+          "parentId": "alliums"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "ingredient",
+        "id": "onion",
+        "path": "parentId",
+        "ref": "alliums"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

@@ -1,0 +1,45 @@
+{
+  "id": "invalid-range-min-above-max",
+  "description": "The usual range of salt has min 3.1 above max 2.8",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "dough",
+          "name": "dough",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 100
+            },
+            {
+              "role": "salt",
+              "parts": 3,
+              "range": {
+                "min": 3.1,
+                "max": 2.8
+              }
+            }
+          ],
+          "anchor": "flour"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "invalid-range",
+        "kind": "template",
+        "id": "dough",
+        "path": "parts[1].range",
+        "role": "salt"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}
