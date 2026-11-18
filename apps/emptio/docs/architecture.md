@@ -218,10 +218,14 @@ By the owner on 2026-11-18:
 6. **A file per app** in the place's folder. The fix of Mixtura first
    decided here (keeping collections of other apps) is no longer
    needed and was withdrawn the same day.
-7. **Neutral names** for the invite format, the folder on the storage
-   and the file of each app, accepted by all three apps; Mixtura still
-   reads its present ones. The names are proposed in Mixtura
-   (issue 153).
+7. **Neutral names**, chosen by the owner in Mixtura's sync session on
+   2026-11-18 (reported by that session, built in Mixtura issue 153):
+   the invite format is `materia-invite` (version 1, with
+   `kind: "place"`), the default folder on the storage is `household`,
+   and Emptio's file of a place is `<folder>/<place id>.emptio.json`
+   (Culina's `.culina.json`; Mixtura keeps `<place id>.json`). Mixtura
+   still reads `mixtura-invite`, and existing bindings keep their
+   folder.
 8. **Planning without milestones**: each goal of the
    [roadmap](roadmap.md) is an issue and its work items are sub-issues.
    This replaces the milestone rule of the shared agent rules for this
