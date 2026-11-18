@@ -185,7 +185,7 @@ Nextcloud instances in the example.
    (`Access-Control-Allow-Origin`, the preflight without credentials,
    `Access-Control-Expose-Headers: ETag`). An unmodified Nextcloud does
    not; its public share links do not either (tested, see the spike).
-3. **Mixtura ships recipes, not services**: the CORS configuration for
+3. **Mixtura ships setup guides, not services**: the CORS configuration for
    a web server in front of WebDAV, a Docker setup of a WebDAV server
    that answers CORS (the one the tests use), and later a Worker the
    user deploys in front of storage that does not answer CORS.
