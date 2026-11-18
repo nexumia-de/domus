@@ -5,6 +5,7 @@ import { install } from './install.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
 import { smoke } from './smoke.mjs';
+import { store } from './store.mjs';
 
 buildApp();
 const server = await serve(distDir);
@@ -14,6 +15,7 @@ try {
   await smoke(browser, server, subServer);
   await ratios(browser, server);
   await install(browser, server);
+  await store(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

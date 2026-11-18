@@ -189,6 +189,37 @@ desktop list and back with the browser's back (`page.goBack()`).
 | Error   | The shell has no network and no data to fail on. One error exists: the theme cannot be stored (private mode, blocked storage, full). The choice then applies until the page closes and Settings says so in a `role="status"` line. **Test:** `test/prefs.test.ts` (the write reports `false`). |
 | Offline | The whole app is precached: every screen, the stylesheet, the icons and the manifest work without a connection and there is no offline banner, since nothing needs the network. **Test:** `e2e/smoke.mjs` (offline reload renders and navigates).                                              |
 
+# Local store
+
+The app keeps what the user enters in IndexedDB ([data model](data-model.md#storage-and-migrations));
+no screen writes yet. Settings shows one quiet line about it, read with
+`navigator.storage.persisted()` (the request is made when the user first
+saves something):
+
+| State       | Settings line                                         |
+| ----------- | ----------------------------------------------------- |
+| persistent  | Storage: kept by the browser                          |
+| best-effort | Storage: the browser may clear it when space runs low |
+| unsupported | Storage: not reported by this browser                 |
+
+**Test:** `e2e/store.mjs`, `test/store-persistence.test.ts`.
+
+Texts for the store's errors (`strings.store`, shown by the editing
+screens later; none says a recipe is wrong):
+
+| Code               | Text                                                                              |
+| ------------------ | --------------------------------------------------------------------------------- |
+| `unavailable`      | This browser cannot keep data here. Private browsing can cause this.              |
+| `quota-exceeded`   | There is no space left on this device. Free some space and try again.             |
+| `newer-schema`     | Your data was saved by a newer version of this app. Update the app to open it.    |
+| `migration-failed` | Your data could not be brought up to date. It is untouched and can still be read. |
+| `invalid-record`   | This entry has a value that is not allowed, so it was not saved.                  |
+| `not-found`        | That entry no longer exists.                                                      |
+
+The store makes no network request. **Test:** `e2e/store.mjs` (no request
+leaves the origin while records are written, read, reloaded and read after
+a service worker update).
+
 # No data leaves the device
 
 No server, no account, no telemetry, no analytics, no web font, no CDN.

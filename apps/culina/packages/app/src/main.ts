@@ -7,4 +7,5 @@ if (root) {
   const shell = mountShell(root);
   startRouter(window, ({ route, param, initial }) => shell.show(route, param, !initial));
   registerServiceWorker();
+  if (new URLSearchParams(window.location.search).has('e2e-store')) void import('./store/e2e-hook');
 }

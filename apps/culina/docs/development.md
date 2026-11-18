@@ -101,12 +101,28 @@ only over http(s) and not with `?no-sw` on the page URL. Serve `dist/` from
 does it with `e2e/serve.mjs` (`node:http`, free port, optional sub-path).
 All URLs are relative, so a sub-path works.
 
+**Generated validators.** The strict Content Security Policy forbids `eval`,
+so Ajv cannot compile schemas in the browser.
+`packages/app/compile-schemas.mjs` compiles the schemas of
+`packages/engine/schemas/` with Ajv's standalone code into
+`src/store/validators.generated.js` (and a `.d.ts`), git-ignored,
+ESM. It runs as `pretest`, `pretypecheck` and at the start of `build.mjs`.
+esbuild bundles the two Ajv runtime helpers the code imports.
+
+**E2E hook of the store.** No screen writes yet, so `e2e/store.mjs` opens the
+app with `?e2e-store`; `src/main.ts` then loads `src/store/e2e-hook.ts`,
+which puts the opened store, as a promise, on `globalThis.__culinaStore`.
+Without that query nothing is exposed and the store is not opened. The
+test also changes the cache version in `dist/sw.js` to simulate an update
+and restores the file afterwards.
+
 Unit tests (`npm test -w @culina/app`, in `npm run check`): router,
 preferences, tokens-only rule, contrast of every token pair in both
 themes (also compared with the table in [design](design.md)), strings,
 manifest and `index.html` (installability fields, strict Content
 Security Policy), build output, the service worker run against fake
-caches, service worker registration, and the engine entry point.
+caches, service worker registration, and the engine entry point, and the local store with a fake IndexedDB
+(`test/store*.test.ts`, fixtures in `test/fixtures/store/`).
 
 `npm run e2e` is a separate script (it launches Chromium and takes
 longer). It builds, serves `dist/` twice (at `/` and under `/apps/cook/`)
@@ -115,7 +131,8 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 44 px, landmarks and names, keyboard and focus, theme switch and reload,
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
-`e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check)).
+`e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
