@@ -23,10 +23,18 @@ Every push to `main` that passed `check` and `e2e` is deployed to
 host is Cloudflare Workers static assets[^cf-assets]; it is an adapter, not a
 base ([hosting decision](decisions/hosting.md)).
 
-**Not confirmed from an agent session:** whether the first run of the job
-succeeded and the address answers. `api.cloudflare.com` and
-`culina.nexumia.de` are refused by the session proxy; the job's log on GitHub
-shows the result.
+**State on 2026-11-18:** the first run of `deploy` (merge of pull request 61)
+succeeded and `https://culina.nexumia.de/` answers. Checked from an agent
+session with a browser at 360 px: the start page, `/index.html` (answered
+with `307` to `/`) and `#/components` open with the service worker in
+control, and a reload works offline.
+
+**Found there:** Cloudflare adds its Web Analytics script
+(`static.cloudflareinsights.com/beacon.min.js`) to the page it serves. The
+page's Content Security Policy refuses it, so nothing is loaded or sent, but
+the browser console shows one error per page load, and the app's rule is no
+telemetry. It is a setting of the Cloudflare zone, not of this repository;
+see the owner steps.
 
 ## What is deployed
 
@@ -91,9 +99,12 @@ Tried here: the browser tests serve `dist/` with the plain Node server in
    available to this repository (the owner added them on 2026-11-18). The
    token needs the right to edit Workers scripts and, for the Custom
    Domain, to edit Workers routes of the zone `nexumia.de`.
-2. After the first green `deploy`: open `https://culina.nexumia.de/`.
-   Cloudflare creates the DNS record and the certificate for a Custom
-   Domain itself[^cf-domains].
+2. Done on 2026-11-18: the first `deploy` created the Custom Domain with
+   its DNS record and certificate[^cf-domains].
+3. Open: switch off the automatic Web Analytics script for
+   `culina.nexumia.de` in the Cloudflare dashboard (Web Analytics of the
+   account, the entry of the site), so that no beacon script is added to
+   the page.
 
 ## Open
 
