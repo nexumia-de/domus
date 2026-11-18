@@ -1,4 +1,4 @@
-// Reading and writing the five user stores as one unit, inside one
+// Reading and writing the six user stores as one unit, inside one
 // IndexedDB transaction each. The import backup (the data as it was before
 // an import) lives in `meta` and is written in the same transaction as the
 // import, so there is never an import without its undo.
@@ -19,13 +19,15 @@ const STORE_OF: Record<Kind, string> = {
   ingredients: 'ingredients',
   templates: 'templates',
   specs: 'specs',
+  places: 'places',
   stock: 'stock',
   affinities: 'affinities',
 };
 
-const keyOf = (kind: Kind, record: object): string =>
+/** The key of a record in its object store; stock has the compound key place, ingredient. */
+const keyOf = (kind: Kind, record: object): IDBValidKey =>
   kind === 'stock'
-    ? (record as { ingredientId: string }).ingredientId
+    ? [(record as { placeId: string }).placeId, (record as { ingredientId: string }).ingredientId]
     : (record as { id: string }).id;
 
 async function readAll(tx: IDBTransaction): Promise<Snapshot> {

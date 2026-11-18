@@ -1,33 +1,185 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- fixtures are indexed at known positions */
 import { expect, test } from 'vitest';
 import { openDatabase } from '../src/store/db';
-import { migrations, type Migration } from '../src/store/migrations';
+import { migrations, rowsInPlace, type Migration } from '../src/store/migrations';
+import { DEFAULT_PLACE_NAME } from '../src/store/places';
+import { strings } from '../src/strings';
 import { SCHEMA_VERSION } from '../src/store/schema';
-import { openLocalStore, StoreError } from '../src/store';
-import { freshFactory, user } from './helpers';
+import { isUserId, openLocalStore, StoreError } from '../src/store';
+import { freshFactory, openFresh, user } from './helpers';
 
 const v1 = migrations.filter((m) => m.version === 1);
 
 /** Opens a database as the previous release did: only the first migration. */
 const openOld = (factory: IDBFactory) => openDatabase({ factory, version: 1, migrations: v1 });
 
-test('opening a version 1 database upgrades it to 2 without losing data', async () => {
+/** Stock rows as versions 1 to 3 stored them: keyed by ingredient, no place. */
+const oldRows = [
+  { ingredientId: 'gin', present: true, openedOn: '2026-11-01', note: 'back bar' },
+  { ingredientId: 'lime-juice', present: false },
+  {
+    ingredientId: user.ingredients[0]!.id,
+    present: true,
+    openedOn: '2026-11-10',
+    moreBatches: ['2026-11-01', '2026-10-20'],
+    bestBefore: '2026-12-01',
+  },
+];
+const AT = '2026-11-18T08:00:00Z';
+const PLACE_ID = 'u-00000000-0000-4000-8000-000000000001';
+const options = { clock: () => AT, newId: () => PLACE_ID, placeName: 'Home' };
+
+/** Opens a database as release 3 did: migrations 1 to 3, and puts the rows into its stock store. */
+async function openV3(factory: IDBFactory, rows: readonly object[] = oldRows): Promise<void> {
+  const old = await openDatabase({
+    factory,
+    version: 3,
+    migrations: migrations.filter((m) => m.version <= 3),
+  });
+  expect(old.version).toBe(3);
+  expect(old.transaction('stock').objectStore('stock').keyPath).toBe('ingredientId');
+  const tx = old.transaction('stock', 'readwrite');
+  for (const row of rows) tx.objectStore('stock').put(row);
+  await new Promise((done) => (tx.oncomplete = done));
+  old.close();
+}
+
+test('opening a version 1 database upgrades it to the current one without losing data', async () => {
   const factory = freshFactory();
   const old = await openOld(factory);
   expect(old.version).toBe(1);
   const tx = old.transaction(['specs', 'ingredients', 'stock'], 'readwrite');
   tx.objectStore('specs').put(user.specs[1]);
   tx.objectStore('ingredients').put(user.ingredients[0]);
-  tx.objectStore('stock').put(user.stock[0]);
+  tx.objectStore('stock').put(oldRows[0]);
   await new Promise((done) => (tx.oncomplete = done));
   old.close();
 
-  const store = await openLocalStore({ factory, storage: undefined });
+  const store = await openLocalStore({ factory, storage: undefined, ...options });
   expect(await store.specs.get(user.specs[1]!.id)).toEqual(user.specs[1]);
   expect(await store.ingredients.list()).toEqual([user.ingredients[0]]);
-  expect(await store.stock.list()).toEqual([user.stock[0]]);
+  expect(await store.stock.list()).toEqual([{ ...oldRows[0], placeId: PLACE_ID, updatedAt: AT }]);
   // No old preferences: nothing is invented, defaults apply.
   expect((await store.settings.load()).theme).toBe('system');
+  store.close();
+});
+
+test('migration 4: every stock row of a version 3 database lands in the default place', async () => {
+  const factory = freshFactory();
+  await openV3(factory);
+  const store = await openLocalStore({ factory, storage: undefined, ...options });
+  expect(await store.places.list()).toEqual([{ id: PLACE_ID, name: 'Home', updatedAt: AT }]);
+  const stock = await store.stock.list();
+  expect(stock).toHaveLength(oldRows.length);
+  // Every field of every row survives (the batches included), plus the place and the instant.
+  for (const row of oldRows) {
+    expect(stock).toContainEqual({ ...row, placeId: PLACE_ID, updatedAt: AT });
+    expect(await store.stock.get([PLACE_ID, row.ingredientId])).toEqual({
+      ...row,
+      placeId: PLACE_ID,
+      updatedAt: AT,
+    });
+  }
+  expect(await store.stock.listBy('placeId', PLACE_ID)).toHaveLength(oldRows.length);
+  expect((await store.settings.load()).places).toEqual({ ticked: [PLACE_ID], entry: PLACE_ID });
+  expect(await store.placeSelection()).toMatchObject({ ticked: [PLACE_ID], entry: PLACE_ID });
+  store.close();
+});
+
+test('migration 4: an empty version 3 database gets the default place and no stock', async () => {
+  const factory = freshFactory();
+  await openV3(factory, []);
+  const store = await openLocalStore({ factory, storage: undefined, ...options });
+  expect(await store.places.list()).toEqual([{ id: PLACE_ID, name: 'Home', updatedAt: AT }]);
+  expect(await store.stock.list()).toEqual([]);
+  expect((await store.settings.load()).places).toEqual({ ticked: [PLACE_ID], entry: PLACE_ID });
+  store.close();
+});
+
+test('migration 4: other data and the settings of a version 3 database stay', async () => {
+  const factory = freshFactory();
+  await openV3(factory);
+  const db = await openDatabase({
+    factory,
+    version: 3,
+    migrations: migrations.filter((m) => m.version <= 3),
+  });
+  const tx = db.transaction(['settings', 'specs', 'drafts'], 'readwrite');
+  tx.objectStore('settings').put({ key: 'theme', value: 'dark' });
+  tx.objectStore('specs').put(user.specs[1]);
+  tx.objectStore('drafts').put({ key: 'draft/x', value: { a: 1 } });
+  await new Promise((done) => (tx.oncomplete = done));
+  db.close();
+  const store = await openLocalStore({ factory, storage: undefined, ...options });
+  expect((await store.settings.load()).theme).toBe('dark');
+  expect(await store.specs.list()).toEqual([user.specs[1]]);
+  expect(await store.drafts.get('draft/x')).toBeDefined();
+  store.close();
+});
+
+test('migration 4 runs once: the stock written after it is not moved again', async () => {
+  const factory = freshFactory();
+  await openV3(factory);
+  const first = await openLocalStore({ factory, storage: undefined, ...options });
+  await first.stock.put({ placeId: PLACE_ID, ingredientId: 'rum', updatedAt: AT, present: true });
+  first.close();
+  let ids = 0;
+  const second = await openLocalStore({
+    factory,
+    storage: undefined,
+    ...options,
+    newId: () => `u-00000000-0000-4000-8000-${String(++ids).padStart(12, '0')}`,
+  });
+  expect(ids).toBe(0);
+  expect(await second.stock.list()).toHaveLength(oldRows.length + 1);
+  expect(await second.places.list()).toHaveLength(1);
+  second.close();
+});
+
+test('migration 4 that fails leaves the version 3 database and its stock as they were', async () => {
+  const factory = freshFactory();
+  await openV3(factory);
+  const error = await openLocalStore({
+    factory,
+    storage: undefined,
+    ...options,
+    clock: () => {
+      throw new Error('no clock');
+    },
+  }).catch((e: unknown) => e);
+  expect(error).toMatchObject({ kind: 'migration' });
+  const db = await openDatabase({
+    factory,
+    version: 3,
+    migrations: migrations.filter((m) => m.version <= 3),
+  });
+  const rows = await new Promise<object[]>((resolve) => {
+    const req = db.transaction('stock').objectStore('stock').getAll();
+    req.onsuccess = () => resolve(req.result as object[]);
+  });
+  expect(rows).toHaveLength(oldRows.length);
+  expect([...db.objectStoreNames]).not.toContain('places');
+  db.close();
+});
+
+test('rowsInPlace stamps rows and cannot be fooled by a row that carries a place', () => {
+  expect(rowsInPlace([{ ingredientId: 'gin', present: true, placeId: 'other' }], 'p', AT)).toEqual([
+    { ingredientId: 'gin', present: true, placeId: 'p', updatedAt: AT },
+  ]);
+});
+
+test('a fresh install has the default place, named like the fixed string, ticked and entry', async () => {
+  const store = await openFresh();
+  const places = await store.places.list();
+  expect(places).toHaveLength(1);
+  expect(places[0]!.name).toBe(strings.places.home);
+  expect(places[0]!.name).toBe(DEFAULT_PLACE_NAME);
+  expect(isUserId(places[0]!.id)).toBe(true);
+  expect(await store.placeSelection()).toEqual({
+    places,
+    ticked: [places[0]!.id],
+    entry: places[0]!.id,
+  });
   store.close();
 });
 
@@ -133,7 +285,14 @@ test('an upgrade that another tab holds up reports blocked', async () => {
   const holder = await new Promise<IDBDatabase>((resolve) => {
     const open = factory.open('mixtura', 1);
     open.onupgradeneeded = () =>
-      migrations[0]!.up({ db: open.result, tx: open.transaction!, legacyPrefs: null });
+      migrations[0]!.up({
+        db: open.result,
+        tx: open.transaction!,
+        legacyPrefs: null,
+        clock: () => '2026-11-18T08:00:00Z',
+        newId: () => 'u-00000000-0000-4000-8000-000000000000',
+        placeName: 'Home',
+      });
     open.onsuccess = () => resolve(open.result);
   });
   const error = await openLocalStore({ factory, storage: undefined }).catch((e: unknown) => e);

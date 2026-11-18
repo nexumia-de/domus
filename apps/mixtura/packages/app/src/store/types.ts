@@ -30,13 +30,48 @@ export interface Affinity {
   [field: string]: unknown;
 }
 
-export interface Stock {
+/** A place where ingredients are kept; stock is kept per place (docs/data-model.md#place). */
+export interface Place {
+  id: string;
+  name: string;
+  updatedAt: string;
+}
+
+/** What the screens read and edit of a stock record: the ingredient and what is known of it. */
+export interface StockFields {
   ingredientId: string;
   present: boolean;
   openedOn?: string;
   moreBatches?: string[];
   bestBefore?: string;
   note?: string;
+}
+
+/** A live stock record of one place; keyed by `placeId` and `ingredientId`. */
+export interface Stock extends StockFields {
+  placeId: string;
+  updatedAt: string;
+}
+
+/** A removed stock record, kept so a merge can tell removed from never entered. */
+export interface StockTombstone {
+  placeId: string;
+  ingredientId: string;
+  updatedAt: string;
+  deleted: true;
+}
+
+export type StockRecord = Stock | StockTombstone;
+
+/** The key of a stock record in its store: place, then ingredient. */
+export type StockKey = [placeId: string, ingredientId: string];
+
+/** Which places count (device setting, never exported). */
+export interface PlaceSettings {
+  /** The places that count for derived views, in order. */
+  ticked: string[];
+  /** The place new stock entries go to. */
+  entry: string;
 }
 
 export type Theme = 'system' | 'light' | 'dark';
@@ -69,6 +104,7 @@ export interface Settings {
   buyNextDrafts: YesNo;
   buyNextRetired: YesNo;
   backup: Backup;
+  places: PlaceSettings;
 }
 
-export type EntityKind = 'ingredient' | 'template' | 'spec' | 'stock' | 'affinity';
+export type EntityKind = 'ingredient' | 'template' | 'spec' | 'place' | 'stock' | 'affinity';

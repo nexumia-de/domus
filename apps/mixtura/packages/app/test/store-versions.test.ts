@@ -196,6 +196,7 @@ async function snapshot(store: LocalStore) {
     ingredients: await store.ingredients.list(),
     templates: await store.templates.list(),
     specs: await store.specs.list(),
+    places: await store.places.list(),
     stock: await store.stock.list(),
     affinities: await store.affinities.list(),
   };

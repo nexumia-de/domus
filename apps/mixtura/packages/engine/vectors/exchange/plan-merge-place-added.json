@@ -1,0 +1,32 @@
+{
+  "id": "plan-merge-place-added",
+  "kind": "plan",
+  "title": "Merge adds a place that is new",
+  "mode": "merge",
+  "current": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Home",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "incoming": {
+    "places": [
+      {
+        "id": "p2",
+        "name": "Cabin",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "added": {
+      "places": 1
+    },
+    "writes": {
+      "places": ["p2"]
+    }
+  }
+}

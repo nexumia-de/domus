@@ -5,7 +5,7 @@
 export const DB_NAME = 'mixtura';
 
 /** Raise with every change of `stores`, and add a migration for it. */
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export interface IndexDef {
   name: string;
@@ -15,7 +15,7 @@ export interface IndexDef {
 
 export interface StoreDef {
   name: string;
-  keyPath: string;
+  keyPath: string | string[];
   indexes: IndexDef[];
 }
 
@@ -43,7 +43,14 @@ export const stores: readonly StoreDef[] = [
   },
   { name: 'templates', keyPath: 'id', indexes: [{ name: 'parentId', keyPath: 'parentId' }] },
   { name: 'affinities', keyPath: 'id', indexes: [] },
-  { name: 'stock', keyPath: 'ingredientId', indexes: [] },
+  { name: 'places', keyPath: 'id', indexes: [] },
+  // One record per place and ingredient (docs/data-model.md#stock); removed
+  // records stay as tombstones.
+  {
+    name: 'stock',
+    keyPath: ['placeId', 'ingredientId'],
+    indexes: [{ name: 'placeId', keyPath: 'placeId' }],
+  },
   { name: 'settings', keyPath: 'key', indexes: [] },
   { name: 'meta', keyPath: 'key', indexes: [] },
   // Unsaved editor state, one record per editor address (`draft/<id>`); never exported.

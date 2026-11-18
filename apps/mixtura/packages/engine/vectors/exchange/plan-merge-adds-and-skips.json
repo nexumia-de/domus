@@ -24,7 +24,9 @@
     ],
     "stock": [
       {
+        "placeId": "p1",
         "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
         "present": true
       }
     ]
@@ -39,7 +41,7 @@
     },
     "writes": {
       "ingredients": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"],
-      "stock": ["lemon"]
+      "stock": ["p1/lemon"]
     }
   }
 }

@@ -6,14 +6,16 @@ export { buildExport, countsOf, exportFileName, totalCount } from './build';
 export { isUserId } from './ids';
 export { isNoOp, planImport } from './merge';
 export { formatMigrations, migrateFile } from './migrate';
+export { stockKey } from './keys';
 export { parseExportFile } from './parse';
 export type { ParseFailure, ExportParseOptions, ParseResult, SchemaCheck } from './parse';
 export type { ImportMode, Plan } from './merge';
-export type { FormatMigration } from './migrate';
+export type { FormatMigration, MigrationInput } from './migrate';
 export { FORMAT_VERSION, KINDS, MAX_FILE_BYTES } from './types';
 export type {
   Counts,
   ExchangeAffinity,
+  ExchangePlace,
   ExchangeSpec,
   ExchangeStock,
   ExchangeTemplate,

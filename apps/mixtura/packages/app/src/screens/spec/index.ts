@@ -39,7 +39,7 @@ import { variantVMs } from './variant-vm';
 import { alcoholOf, thresholdsFor } from '../browse/alcohol';
 import { stockStrings } from './stock-strings';
 import { madeBatch, usedUpNewest } from '../../stock/batches';
-import type { Stock } from '../../store';
+import type { StockFields } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { showToast } from '../../toasts';
 
@@ -223,7 +223,7 @@ export const screens: Screen[] = [
       };
       const shelfVm =
         records && !swapState ? shelfVM(state.model, drink.spec, records, today()) : undefined;
-      const record = (next: Stock | null, text: string): void => {
+      const record = (next: StockFields | null, text: string): void => {
         if (!shelfVm) return;
         if (!next) return void showToast(store, shelfStrings.alreadyRecorded);
         const undo = changeStock(context, [{ id: shelfVm.ingredientId, next }]);

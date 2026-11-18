@@ -2,10 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:mixtura:stock",
   "title": "Stock",
-  "description": "Whether an ingredient is at hand; one record per ingredient.",
+  "description": "Whether an ingredient is at hand in one place; one record per place and ingredient. A removed record stays as a tombstone (deleted: true, no other fields) so a merge can tell removed from never entered.",
   "type": "object",
   "properties": {
+    "placeId": { "$ref": "urn:mixtura:common#/$defs/id" },
     "ingredientId": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "updatedAt": { "$ref": "urn:mixtura:common#/$defs/timestamp" },
+    "deleted": { "const": true },
     "present": { "type": "boolean" },
     "openedOn": { "$ref": "urn:mixtura:common#/$defs/date" },
     "moreBatches": {
@@ -17,6 +20,9 @@
     "bestBefore": { "$ref": "urn:mixtura:common#/$defs/date" },
     "note": { "type": "string" }
   },
-  "required": ["ingredientId", "present"],
+  "required": ["placeId", "ingredientId", "updatedAt"],
+  "if": { "required": ["deleted"], "properties": { "deleted": true } },
+  "then": { "propertyNames": { "enum": ["placeId", "ingredientId", "updatedAt", "deleted"] } },
+  "else": { "required": ["present"], "properties": { "present": true } },
   "additionalProperties": false
 }

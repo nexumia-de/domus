@@ -1,7 +1,7 @@
 {
   "id": "parse-stock-batches-ok",
   "kind": "parse",
-  "title": "A stock record with more batches needs no new format version",
+  "title": "A version 1 stock record with more batches still imports",
   "document": {
     "app": "mixtura",
     "formatVersion": 1,
@@ -22,6 +22,6 @@
   "bytes": 100,
   "expected": {
     "ok": true,
-    "migratedFrom": null
+    "migratedFrom": 1
   }
 }

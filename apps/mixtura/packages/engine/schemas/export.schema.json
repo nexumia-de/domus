@@ -2,16 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:mixtura:export",
   "title": "Export file",
-  "description": "Everything the user entered, as one file; format version 1.",
+  "description": "Everything the user entered, as one file; format version 2.",
   "type": "object",
   "properties": {
     "app": { "const": "mixtura" },
-    "formatVersion": { "const": 1 },
+    "formatVersion": { "const": 2 },
     "exportedAt": { "$ref": "urn:mixtura:common#/$defs/timestamp" },
     "seedVersion": { "type": "string", "minLength": 1 },
     "ingredients": { "type": "array", "items": { "$ref": "urn:mixtura:ingredient" } },
     "templates": { "type": "array", "items": { "$ref": "urn:mixtura:template" } },
     "specs": { "type": "array", "items": { "$ref": "urn:mixtura:spec" } },
+    "places": { "type": "array", "items": { "$ref": "urn:mixtura:place" } },
     "stock": { "type": "array", "items": { "$ref": "urn:mixtura:stock" } },
     "affinities": { "type": "array", "items": { "$ref": "urn:mixtura:affinity" } }
   },
@@ -22,6 +23,7 @@
     "ingredients",
     "templates",
     "specs",
+    "places",
     "stock",
     "affinities"
   ],

@@ -3,14 +3,17 @@
 // (docs/export-format.md#import-modes):
 //  - replace: the file becomes the data; records not in the file go;
 //    identical records are left alone and counted as skipped.
-//  - merge: add what is new; for the same id keep the existing record,
-//    except a spec with a newer `updatedAt` in the file, which replaces it.
+//  - merge: add what is new; for the same key keep the existing record,
+//    except a spec, place or stock record with a newer `updatedAt` in the
+//    file, which replaces it (equal or older is skipped). Keys: `id`, and
+//    place plus ingredient for stock.
 // Spec versions are never dropped by a merge: a file record that would take
 // the (lineageId, version) slot of a different existing record is skipped.
 
 import { emptySnapshot } from './build';
-import { instantMs } from './instant';
-import { KINDS, type Counts, type Kind, type Snapshot } from './types';
+import { instantMs } from '@nexumia-de/materia';
+import { keyOf } from './keys';
+import { KINDS, type Counts, type Snapshot } from './types';
 
 export type ImportMode = 'merge' | 'replace';
 
@@ -26,12 +29,14 @@ export interface Plan {
   deletes: Snapshot;
 }
 
-const zero = (): Counts => ({ ingredients: 0, templates: 0, specs: 0, stock: 0, affinities: 0 });
-
-const keyOf = (kind: Kind, record: object): string =>
-  kind === 'stock'
-    ? (record as { ingredientId: string }).ingredientId
-    : (record as { id: string }).id;
+const zero = (): Counts => ({
+  ingredients: 0,
+  templates: 0,
+  specs: 0,
+  places: 0,
+  stock: 0,
+  affinities: 0,
+});
 
 const slotOf = (record: object): string => {
   const { lineageId, version } = record as { lineageId: string; version: number };
@@ -102,7 +107,11 @@ export function planImport(current: Snapshot, incoming: Snapshot, mode: ImportMo
       const key = keyOf(kind, record);
       const old = existing.get(key);
       if (old) {
-        if (kind === 'specs' && newer(record, old) && slots.get(slotOf(record)) === key) {
+        const takesOver =
+          kind === 'specs'
+            ? newer(record, old) && slots.get(slotOf(record)) === key
+            : (kind === 'places' || kind === 'stock') && newer(record, old);
+        if (takesOver) {
           write.push(record);
           plan.replaced[kind]++;
         } else plan.skipped[kind]++;

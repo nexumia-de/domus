@@ -1,0 +1,40 @@
+{
+  "id": "plan-replace-places",
+  "kind": "plan",
+  "title": "Replace keys places by id and removes the ones not in the file",
+  "mode": "replace",
+  "current": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Home",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": "p2",
+        "name": "Cabin",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "incoming": {
+    "places": [
+      {
+        "id": "p1",
+        "name": "Home",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "skipped": {
+      "places": 1
+    },
+    "removed": {
+      "places": 1
+    },
+    "deletes": {
+      "places": ["p2"]
+    }
+  }
+}

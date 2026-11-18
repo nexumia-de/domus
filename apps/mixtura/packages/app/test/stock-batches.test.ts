@@ -16,7 +16,7 @@ import {
   withBatchDates,
 } from '../src/stock/batches';
 import type { StockRecords } from '../src/stock/state';
-import type { Stock } from '../src/store';
+import type { StockFields } from '../src/store';
 import { fixtureIngredients } from './browse-fixture';
 import { statusText } from '../src/screens/stock/batch-text';
 
@@ -53,7 +53,12 @@ const built = buildModel({
 if (!built.ok) throw new Error(built.reason);
 const { tree, preparedSpecs } = built.model;
 
-const stock = (id: string, openedOn?: string, moreBatches?: string[], present = true): Stock => ({
+const stock = (
+  id: string,
+  openedOn?: string,
+  moreBatches?: string[],
+  present = true,
+): StockFields => ({
   ingredientId: id,
   present,
   ...(openedOn && { openedOn }),
@@ -108,7 +113,7 @@ describe('the dates on the record', () => {
 });
 
 describe('where each batch stands', () => {
-  const at = (today: string, record: Stock = stock('mine', '2026-11-01', ['2026-11-10'])) =>
+  const at = (today: string, record: StockFields = stock('mine', '2026-11-01', ['2026-11-10'])) =>
     batchesOf(tree, preparedSpecs, 'mine', record, today);
 
   test('each batch has its own date, use-by and state, with today passed in', () => {

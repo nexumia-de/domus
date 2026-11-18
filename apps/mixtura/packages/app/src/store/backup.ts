@@ -3,12 +3,11 @@
 // so tests stay deterministic. Updates run one after another, so two quick
 // writes never lose a count. Docs: docs/export-format.md#backup-reminder.
 
+import type { Clock } from './clock';
 import { keyValueRepo, parseBackup } from './repo-settings';
 import type { Backup } from './types';
 
-export type Clock = () => string;
-
-export const systemClock: Clock = () => new Date().toISOString();
+export { systemClock, type Clock } from './clock';
 
 export interface BackupTracker {
   load(): Promise<Backup>;

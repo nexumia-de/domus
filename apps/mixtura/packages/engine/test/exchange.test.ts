@@ -39,6 +39,7 @@ test('the export has the format version, the host instant and only user data', (
     'exportedAt',
     'formatVersion',
     'ingredients',
+    'places',
     'seedVersion',
     'specs',
     'stock',
@@ -149,19 +150,51 @@ test('merge never replaces with an older spec and never takes over a version slo
   expect(planImport(current, older, 'merge').skipped.specs).toBe(1);
 });
 
-test('a stock record may carry more batches in format 1, a repeated or false date is refused', () => {
+type Live = Extract<ExportFile['stock'][number], { present: boolean }>;
+const withBatches = (file: ExportFile): Live =>
+  file.stock.find((x): x is Live => !x.deleted && !!x.moreBatches) as Live;
+
+test('a stock record may carry more batches, a repeated or false date is refused', () => {
   const kept = structuredClone(good());
-  expect(kept.formatVersion).toBe(1);
-  expect(kept.stock.some((r) => r.moreBatches?.length)).toBe(true);
+  expect(kept.formatVersion).toBe(FORMAT_VERSION);
+  expect(withBatches(kept).moreBatches?.length).toBeGreaterThan(0);
   expect(parse(kept).ok).toBe(true);
-  const old = structuredClone(good());
-  for (const r of old.stock) Reflect.deleteProperty(r, 'moreBatches');
-  const r = parse(old);
-  expect(r.ok && r.migratedFrom).toBeNull();
   const twice = structuredClone(good());
-  twice.stock.find((x) => x.moreBatches)!.moreBatches = ['2026-10-20', '2026-10-20'];
+  withBatches(twice).moreBatches = ['2026-10-20', '2026-10-20'];
   expect(parse(twice).ok).toBe(false);
   const bad = structuredClone(good());
-  bad.stock.find((x) => x.moreBatches)!.moreBatches = ['20 October'];
+  withBatches(bad).moreBatches = ['20 October'];
   expect(parse(bad).ok).toBe(false);
+});
+
+test('a tombstone has no other fields and a live record needs present', () => {
+  const tomb = structuredClone(good());
+  const t = tomb.stock.find((x) => x.deleted);
+  expect(t).toBeDefined();
+  expect(parse(tomb).ok).toBe(true);
+  tomb.stock[tomb.stock.indexOf(t!)] = { ...t!, present: true } as never;
+  expect(parse(tomb).ok).toBe(false);
+  const live = structuredClone(good());
+  const l = live.stock.find((x) => !x.deleted)!;
+  Reflect.deleteProperty(l, 'present');
+  expect(parse(live).ok).toBe(false);
+});
+
+const legacy = readJson(`${schemasDir}examples/legacy/export-v1-full.json`);
+const OLD_PLACE = { id: 'u-7c0d1e2f-3a4b-4c5d-8e6f-0a1b2c3d4e5f', name: 'Home', updatedAt: AT };
+
+test('a version 1 file is read with the given place and refused without one', () => {
+  const r = parseExportFile(text(legacy), 500, schemaProblems, {
+    migrationInput: { placeForOldStock: OLD_PLACE },
+  });
+  expect(r.ok && r.migratedFrom).toBe(1);
+  if (r.ok) {
+    expect(r.file.formatVersion).toBe(2);
+    expect(r.file.places).toEqual([OLD_PLACE]);
+    expect(r.file.stock).toHaveLength(2);
+    expect(r.file.stock.every((s) => s.placeId === OLD_PLACE.id)).toBe(true);
+    expect(withBatches(r.file).moreBatches).toEqual(['2026-10-20']);
+  }
+  const none = parseExportFile(text(legacy), 500, schemaProblems);
+  expect(none).toEqual({ ok: false, failure: { kind: 'needs-place' } });
 });
