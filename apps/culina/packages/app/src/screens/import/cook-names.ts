@@ -2,18 +2,18 @@
 // asked once. Only an exact match is preselected; everything else waits for the user's choice.
 import { choose, createForUnset, unresolvedNames } from '../../exchange/cook-model';
 import type { CookModel, NameRow, Target } from '../../exchange/cook-model';
-import { factsByIngredient } from '../../notebook';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 const text = strings.importing;
 const NEW = 'new';
 
-const factsOf = (target: Target) =>
-  target.kind === 'ingredient' ? (factsByIngredient()[target.id] ?? {}) : {};
+const factsOf = (model: CookModel) => (target: Target) =>
+  target.kind === 'ingredient' ? (model.facts[target.id] ?? {}) : {};
 
 const keyOfTarget = (t: Target): string => `${t.kind}:${t.id}`;
-const optionLabel = (name: string, tag: string): string => `${name} (${tag})`;
+const optionLabel = (name: string, tag: string, origin: string): string =>
+  origin === 'catalogue' ? `${name} (${tag}, ${text.cookFromCatalogue})` : `${name} (${tag})`;
 
 /** The select of one name: the proposals, "create a new ingredient", and for that the class to file it under. */
 function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => void): HTMLElement {
@@ -30,7 +30,7 @@ function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => vo
         : option.tag === 'component'
           ? text.cookComponent
           : text.cookCloseName;
-    const node = el('option', undefined, optionLabel(option.name, tag));
+    const node = el('option', undefined, optionLabel(option.name, tag, option.origin));
     node.value = keyOfTarget(option.target);
     select.append(node);
   }
@@ -66,11 +66,11 @@ function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => vo
 
   select.addEventListener('change', () => {
     const value = select.value;
-    if (value === '') choose(model, row.key, { type: 'unset' }, factsOf);
-    else if (value === NEW) choose(model, row.key, { type: 'new' }, factsOf);
+    if (value === '') choose(model, row.key, { type: 'unset' }, factsOf(model));
+    else if (value === NEW) choose(model, row.key, { type: 'new' }, factsOf(model));
     else {
       const found = row.options.find((o) => keyOfTarget(o.target) === value);
-      if (found) choose(model, row.key, { type: 'existing', target: found.target }, factsOf);
+      if (found) choose(model, row.key, { type: 'existing', target: found.target }, factsOf(model));
     }
     under.hidden = value !== NEW || parents.length === 0;
     changed(false);
@@ -80,7 +80,7 @@ function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => vo
       model,
       row.key,
       { type: 'new', ...(under.value === '' ? {} : { parentId: under.value }) },
-      factsOf,
+      factsOf(model),
     );
     changed(false);
   });

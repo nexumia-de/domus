@@ -6,7 +6,7 @@ import { ancestors, buildTree } from '../model';
 export interface Candidate {
   id: string;
   name: string;
-  /** `notebook` today; a shipped catalogue later. Not read by the rules. */
+  /** `notebook` or `catalogue`. Not read by the rules. */
   origin: string;
   parentId?: string;
 }
