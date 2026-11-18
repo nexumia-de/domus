@@ -12,6 +12,7 @@ import type {
   AmountMode,
   Candidate,
   CooklangDocument,
+  FactsByIngredient,
   IngredientFacts,
   IngredientUse,
   LineDecision,
@@ -27,6 +28,8 @@ export interface NameOption {
   name: string;
   /** `same` for an exact match, `close`, or `component` for a recipe reference. */
   tag: 'same' | 'close' | 'component';
+  /** Where the candidate comes from: `notebook` or `catalogue`. */
+  origin: string;
 }
 
 export interface NameRow {
@@ -57,11 +60,14 @@ export interface CookModel {
   lines: LineRow[];
   title: string;
   yieldGrams: string;
+  /** What the ingredients that may be chosen are known to weigh, by id. */
+  facts: FactsByIngredient;
 }
 
 export interface CookContext {
   ingredients: readonly Candidate[];
   components: readonly Candidate[];
+  facts?: FactsByIngredient;
 }
 
 const keyOf = (use: IngredientUse): string =>
@@ -99,7 +105,7 @@ export function buildCookModel(text: string, fileName: string, context: CookCont
     const comp = byComponent[i];
     const options: NameOption[] = [];
     const add = (c: Candidate, tag: NameOption['tag'], kind: Target['kind']): void => {
-      options.push({ target: { kind, id: c.id }, name: c.name, tag });
+      options.push({ target: { kind, id: c.id }, name: c.name, tag, origin: c.origin });
     };
     if (use.reference) {
       if (comp?.exact) add(comp.exact, 'component', 'component');
@@ -139,6 +145,7 @@ export function buildCookModel(text: string, fileName: string, context: CookCont
         ? doc.metadata.title
         : fileStem(fileName),
     yieldGrams: yieldText(doc.metadata.yield),
+    facts: context.facts ?? {},
   };
   for (const line of lines) line.mode = defaultMode(modesFor(model, line, () => ({})));
   return model;

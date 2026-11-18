@@ -81,7 +81,8 @@ Component refs are never changed.
 ## Matching names to ingredients
 
 `matchIngredients(names, candidates)`, candidates `{ id, name, origin,
-parentId? }` (the notebook's first; a shipped catalogue later). For each name:
+parentId? }` (the notebook's first, then the shipped catalogue's entries with
+`origin: 'catalogue'`; see below). For each name:
 
 - **Exact**: the first candidate in list order whose name is the same after
   _normalising_: lower case, split at anything that is no letter or digit,
@@ -98,6 +99,28 @@ parentId? }` (the notebook's first; a shipped catalogue later). For each name:
   listed already, at most five. A parent that is no candidate ends the chain.
 
 Nothing is created or chosen by the function; it proposes.
+
+**Candidates of the Cooklang import** come from `candidateIngredients(catalogue)`
+(`packages/app/src/exchange/candidates.ts`): the notebook's ingredients first, then
+the entries of the shipped catalogue (parents and foods, an entry the notebook
+already holds is listed once, as the notebook's). The rules above are not
+changed: an exact name in the notebook wins because it comes first; only an
+exact match is preselected. Choosing a catalogue candidate adopts the entry
+with its parent chain on Save (`adoptEntry`, as the picker does), also for a
+catalogue class a new ingredient is filed under; nothing is adopted before Save
+or when the step is left. The catalogue loads when the step opens; if it
+cannot be loaded the notebook's candidates remain and one quiet line says so.
+The JSON merge keeps the notebook's candidates only.
+
+**What the rule proposes for common names** (shipped catalogue, empty
+notebook): `butter`, `egg`, `milk`, `garlic`, `wheat flour` have an exact match
+(the parent or the food of that name), `sugar` exact "Sugars", `onion` exact
+"Onions" (plural form). `flour` and `salt` have none: the closest are the
+two-word flours (Arrowroot, Millet, Corn, ...; the file says only "flour", so
+no one is better) and "Salt, table". Most variants carry USDA's comma-separated
+names, and a Cooklang ingredient name cannot contain a comma, so a file never
+names such a food exactly; it reaches one as a close match (`white bread wheat
+flour`) or through its parent. No ordering change was needed.
 
 ## Cooklang
 
