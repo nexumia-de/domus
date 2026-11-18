@@ -18,6 +18,7 @@ links. Change history is in [log.md](log.md).
 - [Existing tools and data](existing-tools.md) - Survey of FOSS cooking software and data sets with licences, and the gap Culina fills.
 - [Evaluation of nutrition values and food tracking](nutrition-evaluation.md) - Nutrient databases and licences read at the source, per-portion figures by weight and their precision, hand-over to trackers, EU rules, and the recommendation: derived per-portion figures from bundled USDA data, dishes handed to an existing tracker, no diary, no backend.
 - [How chefs work](chef-practice.md) - Ratios, components, seasoning, pairing, cooking from stock, operations; what a tool should do and the data model that follows.
+- [Classic dishes by country](classic-dishes.md) - Survey for Germany, Italy, France and Spain: the public-domain cookbooks that open in full, 25 dishes per country with their place in the source and how far each was read, and the gap for dishes younger than the books.
 - [Ratios and salt percentages checked against sources](ratios.md) - Every ratio, baker's percentage and salt percentage with basis, status (confirmed, corrected, unverified) and source; NCHFP fermentation data.
 
 # Specifications
