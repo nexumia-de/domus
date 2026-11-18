@@ -35,18 +35,25 @@ export function syncAddress(
   return formatHash(['settings', 'sync'], query);
 }
 
+/** The address of the bind or join sheet the storage sheet was opened over, to return to on a wide screen. */
+let under: string | null = null;
+
 export function openSyncSheet(
   context: ScreenContext,
   sheet: SyncSheet,
   params: { place?: string; code?: string } = {},
 ): void {
   const address = syncAddress(sheet, params);
+  const open = openSheetOf(context);
+  under = sheet === 'storage' && (open === 'bind' || open === 'join') ? context.route.hash : null;
   if (wide()) replace(context.store, address);
   else go(context.store, address);
 }
 
 export function closeSyncSheet(context: ScreenContext): void {
   const address = syncAddress(null);
-  if (wide()) replace(context.store, address);
+  const returnTo = openSheetOf(context) === 'storage' ? under : null;
+  under = null;
+  if (wide()) replace(context.store, returnTo ?? address);
   else back(context.store, address);
 }

@@ -24,9 +24,9 @@ and triggers) and [#137](https://github.com/nexumia-de/mixtura/issues/137)
 [design](design.md); texts in [UI strings](ui-strings.md#sync-135). What the
 screens use: the [cycle](sync-cycle.md), the [adapter and the device-local
 stores](sync-backends.md), the [encryption](sync-encryption.md) and the
-[decision](decisions/stock-sync.md). An invite link and a QR code are a later
-issue; the four values they would carry are in one module
-(`sync/share-values.ts`).
+[decision](decisions/stock-sync.md). The invite link and QR code
+([#136](https://github.com/nexumia-de/mixtura/issues/136)) are built from the
+four values of one module (`sync/share-values.ts`).
 
 ## Purpose
 
@@ -75,11 +75,14 @@ Page level: **Sync All** (every bound place) and **Join a Place…**.
 - **Sync This Place…** (sheet): a storage, a folder (default `mixtura`) and the
   generated passphrase with Copy. **Start Syncing** stores the binding and runs the
   first cycle. The file is `<folder>/<place id>.json`.
-- **Share…** shows what another person enters by hand: the storage address, the
-  folder, the **place code** (the place id) and the passphrase, each with Copy, and
-  the sentence that whoever has these values and access to the folder can read and
-  change this place's stock. Copy may be refused by the browser; the field stays
-  selectable and the sheet says so.
+- **Share…** shows the **invite link** (a read-only field with Copy) and its QR code,
+  the sentence that the link contains the passphrase but not the storage's user name
+  or password, and the sentence that whoever has the invite or the values and access
+  to the folder can read and change this place's stock. Under "Or enter these values
+  by hand" follow what another person can enter instead: the storage address, the
+  folder, the **place code** (the place id) and the passphrase, each with Copy. Copy
+  may be refused by the browser; the field stays selectable and the sheet says so.
+  Details: [Invite link](#invite-link).
 - **Show Passphrase** shows the passphrase alone, with Copy.
 - **Move…** chooses another storage or folder and uses `movePlace`: the merge goes
   to the new location, the old file gets the moved marker, the binding points at the
@@ -95,7 +98,8 @@ Page level: **Sync All** (every bound place) and **Join a Place…**.
   counts, the binding is stored and the first cycle runs; should that cycle fail, the
   place, its records, its counting and the binding are taken away again. Joining a
   place the device has binds it (a moved place's old binding is replaced). **Join
-  Again…** opens the same sheet with only the place code filled in.
+  Again…** opens the same sheet with only the place code filled in. Opened by an
+  [invite link](#invite-link) the sheet comes filled in.
 
 The Places sheet on Stock shows the same state line under each place and the link
 **Open Sync**; nothing else there changed.
@@ -146,10 +150,62 @@ binding (Undo restores it); the file in the storage is not touched.
 - Passwords and passphrases never appear in an address, a toast, the console or an
   error detail (failures carry the reason only).
 
+## Invite link
+
+The invite is JSON, `sync/invite.ts` (`inviteText`, `readInvite`, pure):
+
+```json
+{
+  "format": "mixtura-invite",
+  "version": 1,
+  "type": "webdav",
+  "address": "<storage base address>",
+  "folder": "<folder>",
+  "place": "<place id>",
+  "passphrase": "<passphrase>"
+}
+```
+
+Never the storage's user name or password (a unit test builds the invite from a
+storage that has both). The link is `<app address>#/join/<payload>`, the payload
+coded exactly like the share-a-drink link (`share/link.ts`: `1.` and the base64url
+of the deflate-raw text; `sync/invite-link.ts`). The QR code encodes the same link;
+it is an inline `<svg>` drawn from DOM calls by `components/qr.ts` (package
+`qrcode-generator`, error correction M, [dependencies](dependencies.md)), black on
+white with a quiet zone of four modules in both themes, 240 px, with
+`role="img"` and the label "QR code of the invite link". The app uses no camera:
+the other person scans it with their own camera app, which opens the link. A link
+too long for the largest code shows the link only.
+
+Opening a link (`screens/sync/invite-watch.ts`, started in `main.ts`): the route
+`#/join/<payload>` is replaced at once by `#/settings/sync?sheet=join`, so the
+payload is neither in the address bar nor in the history and a reload does not
+apply it again. The values go into the in-memory join draft (folder, place code,
+passphrase, and the proposed storage address); nothing is stored, logged or put in
+an address before Join, and the draft is forgotten when the sheet closes. Reading
+is untrusted input: payload at most 8,000 characters, text at most 4,096, the
+address through `checkAddress`, the folder through `normaliseFolder`, the place
+through `isUserId`, a passphrase that is not empty, unknown fields ignored.
+
+A link that cannot be used also opens the join sheet, empty, with a text per
+reason: damaged or cut off, a newer version ("Update the app and open the link
+again."), an unknown storage type, no passphrase ("This invite has no passphrase.
+Ask for a new invite."), a bad address, folder or place code.
+
+Join sheet with an invite: the storage whose address equals the invite's is chosen
+(until the user picks another). When none has it, the sheet says "This place is in
+the storage at {address}. Add it as a storage with your own user name and
+password, or choose another storage." with **Add Storage**, which opens the sheet
+with the address filled in; the join draft waits under it, also on screens from
+840 px (closing the storage sheet returns to the sheet it was opened over), and the
+new storage is chosen when the join sheet is back. Folder, place code and the
+masked passphrase stay editable.
+
 ## As built
 
 Files: `src/screens/sync/` (page, `storages-block`, `places-block`, one sheet per
-file, `drafts`, `sheet-drafts`, `fields`, `copy-row`, `strings`), `src/sync/` (`status`,
+file, `drafts`, `sheet-drafts`, `fields`, `copy-row`, `strings`, `invite-block`,
+`invite-draft`, `invite-watch`, `join-invite`), `src/components/qr.ts`, `src/sync/` (`invite`, `invite-link`, `status`,
 `scheduler`, `browser-triggers`, `storages`, `bindings`, `join`, `relocate`,
 `share-values`, `location`, `local-state`, `view`), `src/stock/written.ts` (tells
 the scheduler that the user changed a place), `src/styles/sync.css`.
@@ -171,8 +227,8 @@ via `shell/leave.ts`). A write or test that throws clears the busy state and say
   user created.
 - Weak ETags of Apache are handled in the adapter ([sync backends](sync-backends.md#limits)).
 - A place that is removed on a device takes its binding with it.
-- Not built: the invite link and QR code, sharing one library or profile, a way to
-  rotate a passphrase.
+- Not built: reading a QR code inside the app (no camera), sharing one library or
+  profile, a way to rotate a passphrase.
 
 ## End-to-end test
 
@@ -201,12 +257,29 @@ through the UI. It checks:
    no place name and no ingredient id in clear.
 7. A wrong passphrase on join is refused in words and leaves no place; Stop Syncing
    and then a change cause no request.
+8. Invite links: the Share sheet has the link and a QR code (labelled, dark on white,
+   at most 240 px, inside the screen); a damaged link, a newer version, an unknown
+   type and the app opened by a link without passphrase show their texts on an empty
+   join sheet; the payload is in neither the address nor the history (also after Back
+   and Forward); a person without the storage sees the proposed address, Add Storage
+   has it filled in, the new storage is chosen, nothing is stored before Join, and
+   Join brings the place and its stock; a person with the storage gets it chosen and
+   joins at once.
 
 It also measures, inside the page in one step, that nothing scrolls sideways and
 every target is at least 44 px on the Sync page and on the sheets it opens.
 `--docs` writes the screenshots of [screenshots](screenshots.md#sync).
 
 ## Verified and not verified
+
+Invite link (#136), run on 2026-11-18 in headless Chromium: `npm run check`;
+unit tests of the invite (round trip, every refusal, no user name or password,
+extra fields, caps, join draft) and of the QR matrix; `e2e/sync.mjs` at 360x720 and
+1200x800 with case 8 above; `e2e/a11y.mjs` at both sizes (the Share scene holds the
+link and the code) and in a temporary copy at 240 % text size; `e2e/csp.mjs`,
+`e2e/walk.mjs`, `e2e/share.mjs`; the screenshots remade. Not verified: scanning the
+code with a real camera or phone, and the code in a phone browser; the invite on a real
+Nextcloud.
 
 Verified on 2026-11-18, after the review fixes, in headless Chromium:
 `npm run check`; the unit tests (state line, scheduler with fake timers, rules for

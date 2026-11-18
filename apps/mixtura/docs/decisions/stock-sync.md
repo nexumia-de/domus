@@ -166,6 +166,8 @@ Agent's choice of the scheme; the requirement is the owner's.
   editing and asks which configured storage to use, or to add one.
 - Whoever has the invite and access to the folder can read and change
   the place's stock. The screen says so where the invite is shown.
+- Built in #136: [invite link](../screens-sync.md#invite-link); the link
+  is `#/join/<payload>`, the QR code is drawn in the app, no camera.
 
 ## Bring your own backend
 

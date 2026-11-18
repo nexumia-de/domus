@@ -29,6 +29,10 @@ await build({
   entryPoints: ['src/main.ts'],
   outfile: join(out, 'main.js'),
   define: { APP_VERSION: JSON.stringify(version) },
+  // The MIT licence of the bundled QR encoder asks for its notice in every copy (docs/dependencies.md).
+  banner: {
+    js: '/* Includes QR Code Generator for JavaScript, Copyright (c) 2009 Kazuhiko Arase, released under the MIT license */',
+  },
 });
 
 // The ranking worker (stock/rank-worker.ts) is its own script next to the page.

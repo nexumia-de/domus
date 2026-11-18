@@ -109,6 +109,8 @@ async function syncSheet(page, sheet) {
   await wanted.waitFor();
   await wanted.click();
   await page.locator(`[data-sheet="${sheet}"]`).waitFor();
+  // The invite link is made by an async compression: wait for it and its QR code.
+  if (sheet === 'share') await page.locator('[data-testid="invite-qr"] svg[role="img"]').waitFor();
   await quiet(page);
 }
 

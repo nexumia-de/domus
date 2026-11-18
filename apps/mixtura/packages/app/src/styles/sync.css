@@ -63,3 +63,16 @@ select.input {
 .place-sync {
   padding-left: var(--sp-1);
 }
+
+/* The QR code stays dark on white in both themes; a fixed size, not text-relative. */
+.qr {
+  display: flex;
+  justify-content: center;
+}
+
+.qr-code {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: #fff;
+}

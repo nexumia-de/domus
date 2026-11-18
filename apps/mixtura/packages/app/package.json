@@ -6,7 +6,8 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "dependencies": {
-    "@mixtura/engine": "0.0.0"
+    "@mixtura/engine": "0.0.0",
+    "qrcode-generator": "2.0.4"
   },
   "scripts": {
     "build": "node build.mjs",

@@ -193,6 +193,10 @@ version; another one is refused with its own message.
 - **Refusals**, one state each: damaged or cut off, newer link or file
   version, too large, not a Mixtura drink (including a file without a
   drink), no storage in this browser.
+- **Invite link.** The invite to join a place is a sibling,
+  `#/join/<payload>`, coded the same way (`1.` and base64url of deflate-raw
+  JSON) but with its own text and handling; it is not an export file. See
+  [screens: sync](screens-sync.md#invite-link).
 - **Permissions.** The Content-Security-Policy and Permissions-Policy are
   unchanged: streams need no entry, and `clipboard-write` is not in the
   denied list of `headers.mjs`, so the default (the page itself) applies.
