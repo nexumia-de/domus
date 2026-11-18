@@ -121,4 +121,33 @@ export type {
   LimitingShelfLife,
 } from '@nexumia-de/materia';
 
+export {
+  buildDocument,
+  buildEnvelope,
+  combinePlaces,
+  DOCUMENT_FORMAT,
+  DOCUMENT_VERSION,
+  ENVELOPE_FORMAT,
+  ENVELOPE_VERSION,
+  envelopeAad,
+  mergePlace,
+  mergeRecords,
+  parseDocument,
+  parseEnvelope,
+  planSync,
+} from '@nexumia-de/materia';
+export type {
+  Cipher,
+  CombinedEntry,
+  DocumentError,
+  Envelope,
+  EnvelopeError,
+  LocalPlaceState,
+  MergeResult,
+  Place,
+  PlaceDocument,
+  SyncPlan,
+  SyncRecord,
+} from '@nexumia-de/materia';
+
 export * from './exchange/index';
