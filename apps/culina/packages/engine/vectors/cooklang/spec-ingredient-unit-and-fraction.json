@@ -1,0 +1,37 @@
+{
+  "id": "spec-ingredient-unit-and-fraction",
+  "description": "A unit after %, and a fraction",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Place @bacon strips{1%kg} on a baking sheet and glaze with @syrup{1/2%tbsp}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "bacon strips",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": false,
+          "value": 1,
+          "unit": "kg"
+        }
+      },
+      {
+        "name": "syrup",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1/2",
+          "locked": false,
+          "value": 0.5,
+          "unit": "tbsp"
+        }
+      }
+    ],
+    "steps": ["Place bacon strips on a baking sheet and glaze with syrup."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Ingredients (unit)"
+}

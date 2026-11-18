@@ -1,0 +1,23 @@
+{
+  "id": "spec-cookware",
+  "description": "Cookware with # : a single word, and several words with {}",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Place the potatoes into a #pot.\nMash the potatoes with a #potato masher{}."
+  },
+  "expected": {
+    "cookware": [
+      {
+        "name": "pot",
+        "optional": false
+      },
+      {
+        "name": "potato masher",
+        "optional": false
+      }
+    ],
+    "steps": ["Place the potatoes into a pot. Mash the potatoes with a potato masher."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Cookware"
+}

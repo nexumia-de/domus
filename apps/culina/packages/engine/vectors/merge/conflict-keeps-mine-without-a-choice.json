@@ -1,0 +1,34 @@
+{
+  "id": "conflict-keeps-mine-without-a-choice",
+  "description": "A record with the same id and other content is a conflict; with no choice the notebook keeps its own",
+  "inputs": {
+    "kind": "merge_plan",
+    "mine": {
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour"
+        }
+      ]
+    },
+    "file": {
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Wheat flour"
+        }
+      ]
+    },
+    "choices": {}
+  },
+  "expected": {
+    "add": {},
+    "same": {},
+    "conflicts": ["ingredients/u-00000000-0000-4000-8000-000000000001"],
+    "immutable": [],
+    "skippedNotes": [],
+    "writes": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is by id and by content, no kitchen figure is involved."
+}

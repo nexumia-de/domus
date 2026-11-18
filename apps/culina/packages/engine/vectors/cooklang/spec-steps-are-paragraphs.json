@@ -1,0 +1,14 @@
+{
+  "id": "spec-steps-are-paragraphs",
+  "description": "Each paragraph is a step; lines inside one are the same step",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "A step,\nthe same step.\n\nA different step."
+  },
+  "expected": {
+    "ingredients": [],
+    "steps": ["A step, the same step.", "A different step."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Steps"
+}

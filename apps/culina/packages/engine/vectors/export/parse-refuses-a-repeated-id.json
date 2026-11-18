@@ -1,0 +1,29 @@
+{
+  "id": "parse-refuses-a-repeated-id",
+  "description": "Two records of one kind with the same id are refused",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 1,
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour"
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour again"
+        }
+      ]
+    }
+  },
+  "error_code": "duplicate-id",
+  "error_detail": {
+    "kind": "ingredients",
+    "index": 1,
+    "id": "u-00000000-0000-4000-8000-000000000001"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (ids, schema, version), no kitchen figure is involved."
+}

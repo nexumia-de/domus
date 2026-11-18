@@ -1,0 +1,25 @@
+{
+  "id": "spec-ingredient-quantity",
+  "description": "A quantity in braces",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Poke holes in @potato{2}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "potato",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "2",
+          "locked": false,
+          "value": 2
+        }
+      }
+    ],
+    "steps": ["Poke holes in potato."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Ingredients (quantity)"
+}

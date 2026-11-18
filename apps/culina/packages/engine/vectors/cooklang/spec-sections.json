@@ -1,0 +1,63 @@
+{
+  "id": "spec-sections",
+  "description": "= and == name sections; the number of = does not matter",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "= Dough\n\nMix @flour{200%g} and @water{100%ml} together until smooth.\n\n== Filling ==\n\nCombine @cheese{100%g} and @spinach{50%g}, then season to taste."
+  },
+  "expected": {
+    "sections": ["Dough", "Filling"],
+    "ingredients": [
+      {
+        "name": "flour",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "200",
+          "locked": false,
+          "value": 200,
+          "unit": "g"
+        }
+      },
+      {
+        "name": "water",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "100",
+          "locked": false,
+          "value": 100,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "cheese",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "100",
+          "locked": false,
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "name": "spinach",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "50",
+          "locked": false,
+          "value": 50,
+          "unit": "g"
+        }
+      }
+    ],
+    "steps": [
+      "Mix flour and water together until smooth.",
+      "Combine cheese and spinach, then season to taste."
+    ]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Sections"
+}

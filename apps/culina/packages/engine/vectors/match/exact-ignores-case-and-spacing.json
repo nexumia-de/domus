@@ -1,0 +1,64 @@
+{
+  "id": "exact-ignores-case-and-spacing",
+  "description": "Case and extra spaces do not matter; the words of another ingredient inside the name or the name inside theirs are close matches; the ancestor of the matches is offered as a class",
+  "inputs": {
+    "kind": "match_names",
+    "names": ["  ONION  "],
+    "candidates": [
+      {
+        "id": "alliums",
+        "name": "Alliums",
+        "origin": "notebook"
+      },
+      {
+        "id": "u-onion",
+        "name": "Onion",
+        "origin": "notebook",
+        "parentId": "alliums"
+      },
+      {
+        "id": "red-onion",
+        "name": "Red onion",
+        "origin": "notebook",
+        "parentId": "u-onion"
+      },
+      {
+        "id": "tomato",
+        "name": "Tomatoes",
+        "origin": "notebook"
+      },
+      {
+        "id": "cat-tomato",
+        "name": "Tomato",
+        "origin": "catalogue"
+      },
+      {
+        "id": "berry",
+        "name": "Berry",
+        "origin": "notebook"
+      },
+      {
+        "id": "olive-oil",
+        "name": "Olive oil",
+        "origin": "notebook"
+      },
+      {
+        "id": "sunflower-oil",
+        "name": "Sunflower oil",
+        "origin": "notebook"
+      }
+    ]
+  },
+  "expected": {
+    "matches": [
+      {
+        "name": "  ONION  ",
+        "exact": "u-onion",
+        "close": ["red-onion"],
+        "classes": ["alliums"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of words, no kitchen figure is involved."
+}

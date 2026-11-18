@@ -1,0 +1,27 @@
+{
+  "id": "spec-reference-to-another-recipe",
+  "description": "@./path{qty} refers to another recipe; the path is relative, without .cook",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Pour over with @./sauces/Hollandaise{150%g}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "Hollandaise",
+        "optional": false,
+        "reference": true,
+        "quantity": {
+          "text": "150",
+          "locked": false,
+          "value": 150,
+          "unit": "g"
+        },
+        "path": "sauces/Hollandaise"
+      }
+    ],
+    "steps": ["Pour over with Hollandaise."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Referencing other recipes"
+}

@@ -1,0 +1,61 @@
+{
+  "id": "conventions-example-with-timer-and-lock",
+  "description": "The conventions' scaling example read whole",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "---\nservings: 4\n---\n\nMix @flour{500%g} with @water{300%ml}.\nAdd @yeast{=1%packet} and let rise for ~{1%hour}."
+  },
+  "expected": {
+    "metadata": {
+      "servings": "4"
+    },
+    "ingredients": [
+      {
+        "name": "flour",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "500",
+          "locked": false,
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "name": "water",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "300",
+          "locked": false,
+          "value": 300,
+          "unit": "ml"
+        }
+      },
+      {
+        "name": "yeast",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": true,
+          "value": 1,
+          "unit": "packet"
+        }
+      }
+    ],
+    "timers": [
+      {
+        "quantity": {
+          "text": "1",
+          "value": 1,
+          "unit": "hour",
+          "locked": false
+        }
+      }
+    ],
+    "steps": ["Mix flour with water. Add yeast and let rise for 1 hour."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, conventions.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/conventions.md, MIT), section Scaling and Servings (Example)"
+}

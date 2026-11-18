@@ -1,0 +1,20 @@
+{
+  "id": "parse-refuses-a-chain-with-a-gap",
+  "description": "A reader at version 3 with no migration from 2 refuses a version 1 file",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 1
+    },
+    "current": 3,
+    "migrations": "test:rename-only"
+  },
+  "error_code": "bad-migration",
+  "error_detail": {
+    "found": 2,
+    "supported": 3
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (ids, schema, version), no kitchen figure is involved."
+}

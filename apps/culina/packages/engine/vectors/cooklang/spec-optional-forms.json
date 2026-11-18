@@ -1,0 +1,25 @@
+{
+  "id": "spec-optional-forms",
+  "description": "Optional works for single words, with a space after the sigil it is plain text, and a ? elsewhere is plain text",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "@? thyme\n\nDid you add the @salt{}?\n\nAdd @?chives."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "salt",
+        "optional": false,
+        "reference": false
+      },
+      {
+        "name": "chives",
+        "optional": true,
+        "reference": false
+      }
+    ],
+    "steps": ["@? thyme", "Did you add the salt?", "Add chives."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Optional ingredients and cookware (forms)"
+}

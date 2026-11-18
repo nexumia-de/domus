@@ -32,6 +32,8 @@ links. Change history is in [log.md](log.md).
 
 - [Design](design.md) - Light and dark with a user override, the Beet accent, colour, type and spacing tokens with computed contrast ratios, the ratio, component, dish and editor screens, icon rules, the 720 px breakpoint and screenshots.
 
+- [Export, import, matching and Cooklang](exchange.md) - The engine's pure rules of the export file, merging by id with conflicts, remapping ingredient ids, matching names to ingredients, and the Cooklang reader and writer written from the specification, with what is supported and what is lost; vectors in `packages/engine/vectors/`.
+
 # Decisions
 
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Notebook.
