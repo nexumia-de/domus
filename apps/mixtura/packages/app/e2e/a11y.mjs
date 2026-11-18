@@ -35,6 +35,9 @@ const scenes = [
   ['buy-next', '#/stock/buy-next'],
   ['settings', '#/settings'],
   ['data', '#/settings/data'],
+  ['sync', '#/settings/sync'],
+  ['sync-storage', '#/settings/sync?sheet=storage'],
+  ['sync-join', '#/settings/sync?sheet=join'],
   ['about', '#/about'],
   ['not-found', '#/nowhere'],
 ];

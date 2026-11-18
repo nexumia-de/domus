@@ -3,11 +3,13 @@
 // behind, in order, like a stock mark. A failed write reads the store again
 // and says so. Rules: `places-rules.ts`. Docs: docs/screens-stock-settings.md#places-131.
 
-import { toStoreError, newUserId, type Place, type StockRecord } from '../store';
+import { toStoreError, newUserId, type Binding, type Place, type StockRecord } from '../store';
+import { invalidateSync } from '../sync/view';
 import { strings } from '../strings';
 import { showToast } from '../toast';
 import { nowInstant } from '../today';
 import * as rules from './places-rules';
+import { placeWritten } from './written';
 import {
   enqueueWrite,
   invalidateStock,
@@ -103,9 +105,10 @@ export function renamePlace(context: StockContext, id: string, raw: string): rul
   if (checked.name === old.name) return null;
   const at = nowInstant();
   const next = rules.renamePlace(cache.selection, id, checked.name, at);
-  commit(context, cache, next, (local) =>
-    local.places.put({ id, name: checked.name, updatedAt: at }),
-  );
+  commit(context, cache, next, async (local) => {
+    await local.places.put({ id, name: checked.name, updatedAt: at });
+    placeWritten(id);
+  });
   return null;
 }
 
@@ -115,6 +118,7 @@ function restore(
   place: Place,
   records: Map<string, StockRecord>,
   before: rules.Selection,
+  binding: () => Binding | undefined,
 ): void {
   const cache = readyCache(context);
   if (!cache) return;
@@ -123,6 +127,9 @@ function restore(
     await local.places.put(place);
     for (const record of records.values()) await local.stock.put(record);
     await saveSelection(local, before);
+    const bound = binding();
+    if (bound) await local.bindings.put(bound);
+    invalidateSync(context.store);
   });
 }
 
@@ -139,15 +146,20 @@ export function removePlace(context: StockContext, id: string): rules.Refusal | 
   const before = cache.selection;
   const records = new Map(cache.byPlace.get(id) ?? []);
   setPlaceRecords(cache, id, null);
+  // A synced place stops syncing with its removal; Undo binds it again. The file stays in the storage.
+  let binding: Binding | undefined;
   commit(context, cache, result.selection, async (local) => {
+    binding = await local.bindings.get(['place', id]);
+    if (binding) await local.bindings.delete(['place', id]);
     for (const ingredientId of records.keys()) await local.stock.delete([id, ingredientId]);
     await local.places.delete(id);
     await saveSelection(local, result.selection);
+    invalidateSync(context.store);
   });
   showToast(
     context.store,
     words.removed(place.name, [...records.values()].filter((r) => !('deleted' in r)).length),
-    () => restore(context, place, records, before),
+    () => restore(context, place, records, before, () => binding),
   );
   return null;
 }

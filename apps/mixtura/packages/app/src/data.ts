@@ -7,8 +7,12 @@
 import { type AppState } from './app-state';
 import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
+import type { Cipher } from '@mixtura/engine';
+import { createCipher } from './sync/cipher';
+import { createScheduler, type Scheduler } from './sync/scheduler';
 import { type Store } from './state';
 import { strings } from './strings';
+import { nowInstant } from './today';
 import {
   createCatalog,
   emptySeed,
@@ -28,6 +32,10 @@ export interface AppData {
   local(): LocalStore | null;
   /** Export, import, undo and the backup reminder (Settings, Data). */
   exchange: ExchangeActions;
+  /** When sync runs, and the one way to run it (docs/sync-cycle.md#triggers). */
+  sync: Scheduler;
+  /** The one cipher of the app, so keys derived for a place's file stay cached. */
+  cipher: Cipher;
 }
 
 export interface Connection {
@@ -161,9 +169,18 @@ export function connect(app: Store<AppState>): Connection {
     download: saveAsFile,
   });
 
+  const cipher = createCipher();
+  const sync = createScheduler({
+    local: () => local,
+    app,
+    now: nowInstant,
+    online: () => globalThis.navigator?.onLine !== false,
+    cipher,
+  });
+
   const ready = open();
   return {
-    data: { catalog: () => catalog, local: () => local, exchange },
+    data: { catalog: () => catalog, local: () => local, exchange, sync, cipher },
     retry: () => void open(),
     ready,
   };

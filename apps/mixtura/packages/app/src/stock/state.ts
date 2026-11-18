@@ -15,6 +15,7 @@ import { nowInstant } from '../today';
 import { combinePlaces, type RecordsByPlace } from './combine';
 import { tidy, type Selection } from './places-rules';
 import { presentAt } from './places-view';
+import { placeWritten } from './written';
 
 /** The combined stock of the ticked places: one live record per ingredient. */
 export type StockRecords = ReadonlyMap<string, StockFields>;
@@ -212,6 +213,7 @@ export function changeStock(context: StockContext, changes: readonly StockChange
   enqueueWrite(async () => {
     try {
       for (const record of records) await local.stock.put(record);
+      for (const placeId of new Set(records.map((r) => r.placeId))) placeWritten(placeId);
     } catch (error) {
       // Put the old records back, unless the screen has moved on to other data.
       if (cache === entry) {

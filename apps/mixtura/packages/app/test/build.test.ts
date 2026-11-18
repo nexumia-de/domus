@@ -5,6 +5,7 @@ import { mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from 'node:f
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
+import { SETUP_URL } from '../src/screens/sync/strings';
 
 let out = '';
 const read = (file: string) => readFileSync(join(out, file), 'utf8');
@@ -130,9 +131,11 @@ test('no external URL appears in the built output', () => {
       /^https?:\/\/(json-schema\.org\/|raw\.githubusercontent\.com\/ajv-validator\/)/;
     // The two local addresses of `connect-src` are policy source expressions (a port wildcard),
     // not addresses the app requests.
+    // `SETUP_URL` is the one link of the Sync page to the setup guide: shown as a link, requested
+    // only when the user follows it (a new tab), never by the app.
     const policySource = /^http:\/\/(localhost|127\.0\.0\.1):\*;?$/;
     const urls = (read(file).match(/https?:\/\/[^\s"'<>)]+/g) ?? []).filter(
-      (u) => u !== namespace && !identifier.test(u) && !policySource.test(u),
+      (u) => u !== namespace && u !== SETUP_URL && !identifier.test(u) && !policySource.test(u),
     );
     expect(urls, file).toEqual([]);
   }

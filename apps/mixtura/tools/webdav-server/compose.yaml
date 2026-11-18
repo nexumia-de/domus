@@ -19,5 +19,24 @@ services:
       - ./entrypoint.sh:/entrypoint.sh:ro
       - dav-data:/var/dav
 
+  # A second, independent server for the tests that need two storages (e2e/sync.mjs). Only
+  # started with `--profile second`, so `docker compose up -d` stays one server for users.
+  webdav2:
+    profiles: ['second']
+    image: httpd:2.4.71@sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9
+    entrypoint: ['/entrypoint.sh']
+    restart: unless-stopped
+    environment:
+      WEBDAV_USER: ${WEBDAV_USER:-mixtura}
+      WEBDAV_PASSWORD: ${WEBDAV_PASSWORD:?set WEBDAV_PASSWORD}
+      ALLOWED_ORIGINS_REGEX: ${ALLOWED_ORIGINS_REGEX:-}
+    ports:
+      - '127.0.0.1:${WEBDAV_PORT_2:-8081}:80'
+    volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+      - dav-data-2:/var/dav
+
 volumes:
   dav-data:
+  dav-data-2:

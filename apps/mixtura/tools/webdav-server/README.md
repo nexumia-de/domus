@@ -59,6 +59,24 @@ docker compose down
 
 Add `-v` to delete the stored files as well.
 
+## A second server (tests)
+
+The end-to-end test of sync needs two storages. The Compose file has a second,
+independent service that is only started on request:
+
+```sh
+WEBDAV_PASSWORD=choose-a-password docker compose --profile second up -d
+```
+
+It listens on port `8081` (`WEBDAV_PORT_2`) and keeps its files in the volume
+`dav-data-2`. `docker compose down -v` needs the same `--profile second` to
+remove it too.
+
+`httpd.conf` and `entrypoint.sh` are mounted as single files. An editor that
+replaces a file instead of changing it leaves the container looking at the old
+one; after editing either, recreate the containers with
+`docker compose up -d --force-recreate`.
+
 ## Files
 
 - `compose.yaml`: the service, with the image pinned by digest.

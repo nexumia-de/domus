@@ -288,3 +288,34 @@ test('testConnection: unauthorised, blocked, unreachable and server', async () =
     detail: 'HTTP 502',
   });
 });
+
+test('write: If-Match is sent in the strong form for a weak ETag', async () => {
+  const fake = script(reply(204));
+  await make(fake).write('a.json', '{}', 'W/"e1"');
+  expect(fake.calls[0]?.headers['If-Match']).toBe('"e1"');
+});
+
+test('write: a weak ETag that meets 412 waits 1,100 ms and repeats once; success then counts', async () => {
+  const fake = script(reply(412), reply(204, '', { ETag: '"e2"' }));
+  const waits: number[] = [];
+  const adapter = make(fake, { delay: async (ms: number) => void waits.push(ms) });
+  expect(await adapter.write('a.json', '{}', 'W/"e1"')).toEqual({ ok: true, etag: '"e2"' });
+  expect(waits).toEqual([1100]);
+  expect(fake.calls.map((c) => c.headers['If-Match'])).toEqual(['"e1"', '"e1"']);
+});
+
+test('write: a weak ETag that meets 412 twice is a conflict after one wait only', async () => {
+  const fake = script(reply(412), reply(412));
+  const waits: number[] = [];
+  const adapter = make(fake, { delay: async (ms: number) => void waits.push(ms) });
+  expect(await adapter.write('a.json', '{}', 'W/"e1"')).toEqual({ ok: false, failure: 'conflict' });
+  expect(waits).toEqual([1100]);
+});
+
+test('write: a strong ETag that meets 412 is a conflict at once, without waiting', async () => {
+  const fake = script(reply(412));
+  const waits: number[] = [];
+  const adapter = make(fake, { delay: async (ms: number) => void waits.push(ms) });
+  expect(await adapter.write('a.json', '{}', '"e1"')).toEqual({ ok: false, failure: 'conflict' });
+  expect(waits).toEqual([]);
+});

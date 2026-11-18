@@ -14,7 +14,16 @@ export interface WebdavOptions {
   fetch?: typeof fetch;
   /** Whether the browser thinks it is online; for tests, defaults to `navigator.onLine`. */
   online?: () => boolean;
+  /** Waits this many milliseconds; for tests, defaults to `setTimeout`. */
+  delay?: (ms: number) => Promise<void>;
 }
+
+/** How long Apache keeps an ETag weak after a write, plus a margin (docs/sync-backends.md). */
+export const WEAK_ETAG_WAIT_MS = 1100;
+
+const isWeak = (etag: string): boolean => etag.startsWith('W/');
+/** `If-Match` never matches a weak ETag, so the strong form is sent. */
+const strong = (etag: string): string => (isWeak(etag) ? etag.slice(2) : etag);
 
 type Failure = { ok: false; failure: AdapterFailure; detail?: string };
 
@@ -31,6 +40,8 @@ function failureOf(status: number): Failure | undefined {
 
 export function createWebdavAdapter(options: WebdavOptions): StorageAdapter {
   const { baseUrl, username, password } = options;
+  const delay =
+    options.delay ?? ((ms: number) => new Promise<void>((done) => setTimeout(done, ms)));
   const online = options.online ?? (() => globalThis.navigator?.onLine !== false);
   const authorization =
     username === undefined && password === undefined
@@ -78,9 +89,26 @@ export function createWebdavAdapter(options: WebdavOptions): StorageAdapter {
 
   const put = (path: string, body: string, ifMatch: string | null | undefined) => {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (typeof ifMatch === 'string') headers['If-Match'] = ifMatch;
+    if (typeof ifMatch === 'string') headers['If-Match'] = strong(ifMatch);
     else if (ifMatch === null) headers['If-None-Match'] = '*';
     return send('PUT', fileUrl(baseUrl, path), headers, body);
+  };
+
+  /**
+   * A put that waits once and repeats when the caller's ETag was weak and the answer is 412:
+   * the server may only have been inside the second in which it marks every ETag weak.
+   */
+  const putPatiently = async (path: string, body: string, ifMatch: string | null | undefined) => {
+    const answer = await put(path, body, ifMatch);
+    if (
+      !(answer instanceof Response) ||
+      answer.status !== 412 ||
+      typeof ifMatch !== 'string' ||
+      !isWeak(ifMatch)
+    )
+      return answer;
+    await delay(WEAK_ETAG_WAIT_MS);
+    return put(path, body, ifMatch);
   };
 
   const written = (answer: Response): WriteResult => {
@@ -105,14 +133,14 @@ export function createWebdavAdapter(options: WebdavOptions): StorageAdapter {
     },
 
     async write(path, body, ifMatch): Promise<WriteResult> {
-      const first = await put(path, body, ifMatch);
+      const first = await putPatiently(path, body, ifMatch);
       if (!(first instanceof Response)) return first;
       // 404, or 409 as WebDAV says it: the folder above the file is missing.
       if (first.status !== 404 && first.status !== 409) return written(first);
       if (folderUrls(baseUrl, path).length === 0) return fail('not-found', `HTTP ${first.status}`);
       const made = await makeFolders(path);
       if (made) return made;
-      const retry = await put(path, body, ifMatch);
+      const retry = await putPatiently(path, body, ifMatch);
       if (!(retry instanceof Response)) return retry;
       if (retry.status === 404 || retry.status === 409) {
         return fail('not-found', `HTTP ${retry.status}`);

@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { nextState, type SyncOutcome } from '../src/sync';
+import { withState } from '../src/sync/state';
 import { instant, PLACE_ID } from './helpers/sync-client';
 
 const merged = {
@@ -54,5 +55,24 @@ test('moved: counts as a sync and says moved', () => {
     etag: 'e3',
     lastSyncAt: NOW,
     lastError: 'moved',
+  });
+});
+
+test('a blocked failure because the ETag header is hidden is recorded as such', () => {
+  const failed = {
+    kind: 'failed' as const,
+    reason: 'blocked' as const,
+    detail: 'etag-not-exposed',
+  };
+  expect(nextState({}, failed, NOW).lastError).toBe('blocked:etag-not-exposed');
+  expect(nextState({}, { kind: 'failed', reason: 'blocked' }, NOW).lastError).toBe('blocked');
+});
+
+test('withState replaces the cycle fields and removes the ones that are absent', () => {
+  const binding = { unitId: 'x', etag: 'e1', lastSyncAt: instant(1), lastError: 'server' };
+  expect(withState(binding, { etag: 'e2', lastSyncAt: instant(2) })).toEqual({
+    unitId: 'x',
+    etag: 'e2',
+    lastSyncAt: instant(2),
   });
 });

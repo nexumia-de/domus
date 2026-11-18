@@ -57,6 +57,7 @@ const styles = [
   'editor',
   'versions',
   'spec-extras',
+  'sync',
   'app',
 ];
 const css = styles
