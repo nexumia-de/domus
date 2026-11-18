@@ -1,0 +1,32 @@
+{
+  "id": "hydration-component-not-counted",
+  "description": "A starter without composition is not counted",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "flour",
+        "g": 500,
+        "role": "flour"
+      },
+      {
+        "id": "water",
+        "g": 350,
+        "role": "water"
+      },
+      {
+        "id": "starter",
+        "g": 100,
+        "component": true
+      }
+    ]
+  },
+  "expected": {
+    "hydration_pct": 70,
+    "flour_g": 500,
+    "water_g": 350,
+    "not_counted": ["starter"]
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: water over flour. 100 * 350 / 500 = 70 %; the starter has no recorded composition and is on neither side."
+}

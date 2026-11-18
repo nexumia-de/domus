@@ -1,0 +1,14 @@
+{
+  "id": "round-tie-away-2675",
+  "description": "2.675 g at step 0.01 g",
+  "inputs": {
+    "kind": "round",
+    "g": 2.675,
+    "step_g": 0.01
+  },
+  "expected": {
+    "g": 2.68
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. 2.675 / 0.01 = 267.5, a tie as a decimal; halves go away from zero: 268 * 0.01 = 2.68."
+}

@@ -1,0 +1,38 @@
+{
+  "id": "scale-bakers-round-trip",
+  "description": "Formula 100/76/2/1.2 at 1792 g of dough gives back the grams of example 1",
+  "inputs": {
+    "kind": "scale_bakers",
+    "formula": [
+      {
+        "name": "flour",
+        "pct": 100
+      },
+      {
+        "name": "water",
+        "pct": 76
+      },
+      {
+        "name": "salt",
+        "pct": 2
+      },
+      {
+        "name": "yeast",
+        "pct": 1.2
+      }
+    ],
+    "target_dough_g": 1792
+  },
+  "expected": {
+    "flour_g": 1000,
+    "g": {
+      "flour": 1000,
+      "water": 760,
+      "salt": 20,
+      "yeast": 12
+    },
+    "dough_g": 1792
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams. Flour = 1792 / 1.792 = 1000 g; water 0.76 * 1000 = 760; salt 20; yeast 12; the grams of docs/vectors.md example 1, so percentages to grams and back is the identity."
+}

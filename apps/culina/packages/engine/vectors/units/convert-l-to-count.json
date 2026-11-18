@@ -1,0 +1,21 @@
+{
+  "id": "convert-l-to-count",
+  "description": "1 l in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "l"
+    },
+    "to": "count",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 10
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 l -> grams -> count with the synthetic facts {\"densityGPerMl\":0.5,\"unitWeightG\":50}: grams = 500, result 10 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

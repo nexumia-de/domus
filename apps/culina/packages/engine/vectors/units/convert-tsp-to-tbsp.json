@@ -1,0 +1,17 @@
+{
+  "id": "convert-tsp-to-tbsp",
+  "description": "10 tsp in tbsp",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 10,
+      "unit": "tsp"
+    },
+    "to": "tbsp"
+  },
+  "expected": {
+    "value": 3.333333
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 10 tsp * 4.92892159375 / 14.78676478125 = 3.333333 tbsp (factors: base ml per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

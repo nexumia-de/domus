@@ -1,0 +1,21 @@
+{
+  "id": "scale-bakers-to-dough-weight",
+  "description": "Baker's formula 100/76/2/1.2 scaled to 900 g of dough",
+  "inputs": {
+    "kind": "scale_bakers",
+    "formula": [
+      { "name": "flour", "pct": 100 },
+      { "name": "water", "pct": 76 },
+      { "name": "salt", "pct": 2 },
+      { "name": "yeast", "pct": 1.2 }
+    ],
+    "target_dough_g": 900
+  },
+  "expected": {
+    "flour_g": 502.232143,
+    "g": { "flour": 502.232143, "water": 381.696429, "salt": 10.044643, "yeast": 6.026786 },
+    "dough_g": 900
+  },
+  "tolerance": 0.000001,
+  "source": "docs/vectors.md#2-scaling-a-bakers-formula-to-a-dough-weight; synthetic formula"
+}

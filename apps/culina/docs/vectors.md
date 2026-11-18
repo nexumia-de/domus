@@ -15,7 +15,7 @@ sources:
 
 # Test vector format
 
-Culina has no code yet. This fixes the format of the worked examples its
+Culina's first vectors (units, scaling, baker's percentages, hydration) are in `packages/engine/vectors/`; the rest wait for their issues. This fixes the format of the worked examples its
 engine will be tested against, so that rules are written down with their
 numbers before code exists. The shape follows Mixtura's vectors[^mixtura]
 so both apps can share one runner when the engine moves into shared code.
@@ -57,6 +57,31 @@ Basis of `salt_percent`:
 - `water`: salt = water × pct / 100 (pasta water).
 - `brine`: pct is salt per 100 of salt plus water, so
   salt = water × pct / (100 − pct).
+
+## Kinds of the engine's amounts and scaling (issue 8)
+
+Folders: `packages/engine/vectors/units/` and
+`packages/engine/vectors/percentages/`. Rules: [engine rules](engine-rules.md).
+Field names are snake_case in the vectors and camelCase in the code; the
+runners map them. Error vectors carry `error_code` (and `error_line_id`
+where the error names a line) instead of `expected`.
+
+| `kind`         | Inputs                                                                                   | Expected                                                        |
+| -------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `convert`      | `amount` (`value`, `unit`), `to`, optional `facts` (`densityGPerMl`, `unitWeightG`)      | `value` in unit `to`                                            |
+| `round`        | `g`, optional `step_g` (absent: the default display step)                                | `g`                                                             |
+| `scale_factor` | `lines` (`id`, optional `amount`, `role`), `factor`, optional `salt_roles`               | `factor`, `values` (amount per line id), `unscaled`, `cautions` |
+| `scale_total`  | `lines`, `target_g`, optional `facts_by_id`, optional `salt_roles`                       | as `scale_factor`                                               |
+| `scale_line`   | `lines`, `line_id`, `have` (an amount), optional `facts_by_id`, optional `salt_roles`    | as `scale_factor`                                               |
+| `hydration`    | `lines` (`id`, `g`, `role`, optional `composition`, `component`), optional `water_roles` | `hydration_pct`, `flour_g`, `water_g`, `not_counted`            |
+
+`bakers_percent` and `scale_bakers` keep the fields above, with one
+mapping in the runner: `is_flour` true gives the role `flour`; in a
+formula without `is_flour` a line named `flour` is flour; `scale_bakers`
+also accepts `target_flour_g` instead of `target_dough_g`; in
+`bakers_percent` the line named `water` is the water for `hydration_pct`.
+The tolerance is absolute. Densities and unit weights inside vectors are
+synthetic, chosen for the arithmetic, and every vector says so.
 
 # Worked examples
 
@@ -213,9 +238,7 @@ Template 3 flour : 2 egg; 165 g of egg weighed.
 
 # Open
 
-- Rounding for display (how many grams a scale shows) is a separate
-  rule, as in Mixtura's amounts vectors; it gets its own kind when the
-  engine is planned.
-- Error vectors (flour lines not summing to 100, anchor missing,
-  `pct` ≥ 100 on basis `brine`) list an `error_code` instead of
+- Error vectors for `ratio_check`, `scale_anchor` and `salt_percent`
+  (anchor missing, `pct` ≥ 100 on basis `brine`) come with issue 9.
+  Error vectors exist for the issue 8 kinds, with `error_code` instead of
   `expected`, as Mixtura's batch vectors do.

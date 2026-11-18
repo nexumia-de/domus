@@ -1,0 +1,20 @@
+{
+  "id": "convert-lb-to-l",
+  "description": "10 lb in l",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 10,
+      "unit": "lb"
+    },
+    "to": "l",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 9.071847
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 10 lb -> grams -> l with the synthetic facts {\"densityGPerMl\":0.5}: grams = 4535.9237, result 9.071847 l. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

@@ -1,0 +1,64 @@
+{
+  "id": "scale-factor-1-5",
+  "description": "Four lines by 1.5, one without amount, one percent",
+  "inputs": {
+    "kind": "scale_factor",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 200,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "butter",
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "salt",
+        "amount": {
+          "value": 4,
+          "unit": "g"
+        },
+        "role": "salt"
+      },
+      {
+        "id": "pepper"
+      },
+      {
+        "id": "hydration",
+        "amount": {
+          "value": 50,
+          "unit": "percent"
+        }
+      }
+    ],
+    "factor": 1.5
+  },
+  "expected": {
+    "factor": 1.5,
+    "values": {
+      "flour": 300,
+      "butter": 150,
+      "salt": 6,
+      "hydration": 50
+    },
+    "unscaled": [
+      {
+        "id": "pepper",
+        "reason": "no-amount"
+      },
+      {
+        "id": "hydration",
+        "reason": "percent"
+      }
+    ],
+    "cautions": ["time-not-linear", "salt-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: each amount in its own unit. 200 * 1.5 = 300, 100 * 1.5 = 150, 4 * 1.5 = 6; percent and missing amounts unchanged. Salt caution because a line has role salt."
+}

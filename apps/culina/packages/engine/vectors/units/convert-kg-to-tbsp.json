@@ -1,0 +1,20 @@
+{
+  "id": "convert-kg-to-tbsp",
+  "description": "1 kg in tbsp",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "kg"
+    },
+    "to": "tbsp",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 135.256091
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 kg -> grams -> tbsp with the synthetic facts {\"densityGPerMl\":0.5}: grams = 1000, result 135.256091 tbsp. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

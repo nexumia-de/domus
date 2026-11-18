@@ -1,0 +1,35 @@
+{
+  "id": "scale-factor-own-unit",
+  "description": "Volume and count lines keep their unit",
+  "inputs": {
+    "kind": "scale_factor",
+    "lines": [
+      {
+        "id": "milk",
+        "amount": {
+          "value": 2,
+          "unit": "cup"
+        }
+      },
+      {
+        "id": "egg",
+        "amount": {
+          "value": 3,
+          "unit": "count"
+        }
+      }
+    ],
+    "factor": 0.5
+  },
+  "expected": {
+    "factor": 0.5,
+    "values": {
+      "milk": 1,
+      "egg": 1.5
+    },
+    "unscaled": [],
+    "cautions": ["time-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: each amount in its own unit, no facts needed. 2 * 0.5 = 1 cup, 3 * 0.5 = 1.5 count."
+}

@@ -1,0 +1,43 @@
+{
+  "id": "bakers-percent-two-flours",
+  "description": "Two flours add up to 100 %",
+  "inputs": {
+    "kind": "bakers_percent",
+    "lines": [
+      {
+        "name": "white",
+        "g": 700,
+        "is_flour": true
+      },
+      {
+        "name": "whole-wheat",
+        "g": 300,
+        "is_flour": true
+      },
+      {
+        "name": "water",
+        "g": 800,
+        "is_flour": false
+      },
+      {
+        "name": "salt",
+        "g": 20,
+        "is_flour": false
+      }
+    ]
+  },
+  "expected": {
+    "flour_g": 1000,
+    "dough_g": 1820,
+    "pct": {
+      "white": 70,
+      "whole-wheat": 30,
+      "water": 80,
+      "salt": 2
+    },
+    "total_pct": 182,
+    "hydration_pct": 80
+  },
+  "tolerance": 0.0001,
+  "source": "Basis: percent of the summed flour. Flour = 700 + 300 = 1000 g; water 100 * 800 / 1000 = 80 %; salt 2 %; dough 1820 g = 182 %. Synthetic amounts."
+}

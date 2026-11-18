@@ -1,0 +1,14 @@
+{
+  "id": "round-tie-away-negative",
+  "description": "-2.675 g at step 0.01 g",
+  "inputs": {
+    "kind": "round",
+    "g": -2.675,
+    "step_g": 0.01
+  },
+  "expected": {
+    "g": -2.68
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. Mirror of the positive tie: away from zero gives -2.68."
+}

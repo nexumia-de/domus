@@ -1,0 +1,14 @@
+{
+  "id": "convert-error-unknown-unit",
+  "description": "1 pinch to g",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "pinch"
+    },
+    "to": "g"
+  },
+  "error_code": "unknown-unit",
+  "source": "Basis: the unit table has ten ids; pinch is none of them."
+}

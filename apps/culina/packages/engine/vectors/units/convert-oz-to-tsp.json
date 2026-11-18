@@ -1,0 +1,20 @@
+{
+  "id": "convert-oz-to-tsp",
+  "description": "1 oz in tsp",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "oz"
+    },
+    "to": "tsp",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 11.503337
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 oz -> grams -> tsp with the synthetic facts {\"densityGPerMl\":0.5}: grams = 28.349523, result 11.503337 tsp. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

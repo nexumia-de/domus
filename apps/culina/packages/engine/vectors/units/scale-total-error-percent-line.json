@@ -1,0 +1,27 @@
+{
+  "id": "scale-total-error-percent-line",
+  "description": "A percent line cannot be weighed",
+  "inputs": {
+    "kind": "scale_total",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 300,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "water",
+        "amount": {
+          "value": 70,
+          "unit": "percent"
+        }
+      }
+    ],
+    "target_g": 100
+  },
+  "error_code": "percent-line",
+  "error_line_id": "water",
+  "source": "Basis: grams. A percent line has no mass of its own."
+}

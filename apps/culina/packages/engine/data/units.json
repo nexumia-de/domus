@@ -1,0 +1,44 @@
+{
+  "g": {
+    "kind": "mass",
+    "toBase": 1,
+    "source": "The gram, the canonical mass unit of every computation."
+  },
+  "kg": { "kind": "mass", "toBase": 1000, "source": "SI prefix kilo: 1 kg = 1000 g exactly." },
+  "oz": {
+    "kind": "mass",
+    "toBase": 28.349523125,
+    "source": "International avoirdupois ounce = 1 lb / 16 = 453.59237 g / 16 exactly (international yard and pound agreement, 1959; not read in this session)."
+  },
+  "lb": {
+    "kind": "mass",
+    "toBase": 453.59237,
+    "source": "International avoirdupois pound = 0.45359237 kg exactly (international yard and pound agreement, 1959; not read in this session)."
+  },
+  "ml": {
+    "kind": "volume",
+    "toBase": 1,
+    "source": "The millilitre, the canonical volume unit: 1 ml = 1 cm3."
+  },
+  "l": { "kind": "volume", "toBase": 1000, "source": "SI: 1 l = 1000 ml exactly." },
+  "tsp": {
+    "kind": "volume",
+    "toBase": 4.92892159375,
+    "source": "US customary teaspoon = 1 tbsp / 3 = 4.92892159375 ml exactly (US gallon = 231 cubic inches, 1 inch = 2.54 cm; NIST Handbook 44 Appendix C and NIST SP 811 not read in this session)."
+  },
+  "tbsp": {
+    "kind": "volume",
+    "toBase": 14.78676478125,
+    "source": "US customary tablespoon = 1 cup / 16 = 14.78676478125 ml exactly (US gallon = 231 cubic inches, 1 inch = 2.54 cm; NIST Handbook 44 Appendix C and NIST SP 811 not read in this session)."
+  },
+  "cup": {
+    "kind": "volume",
+    "toBase": 236.5882365,
+    "source": "US customary cup = 1 US gallon / 16 = 231 * 2.54^3 / 16 ml = 236.5882365 ml exactly (US gallon = 231 cubic inches, 1 inch = 2.54 cm; NIST Handbook 44 Appendix C and NIST SP 811 not read in this session)."
+  },
+  "count": {
+    "kind": "count",
+    "toBase": 1,
+    "source": "A counted piece; its mass is the ingredient's own unitWeightG, never a default."
+  }
+}

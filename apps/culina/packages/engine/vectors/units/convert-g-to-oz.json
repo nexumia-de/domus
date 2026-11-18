@@ -1,0 +1,17 @@
+{
+  "id": "convert-g-to-oz",
+  "description": "100 g in oz",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "g"
+    },
+    "to": "oz"
+  },
+  "expected": {
+    "value": 3.527396
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 g * 1 / 28.349523125 = 3.527396 oz (factors: base g per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

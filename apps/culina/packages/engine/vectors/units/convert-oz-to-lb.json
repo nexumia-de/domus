@@ -1,0 +1,17 @@
+{
+  "id": "convert-oz-to-lb",
+  "description": "100 oz in lb",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "oz"
+    },
+    "to": "lb"
+  },
+  "expected": {
+    "value": 6.25
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 oz * 28.349523125 / 453.59237 = 6.25 lb (factors: base g per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

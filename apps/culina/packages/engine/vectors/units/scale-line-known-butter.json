@@ -1,0 +1,39 @@
+{
+  "id": "scale-line-known-butter",
+  "description": "300 g of butter on hand",
+  "inputs": {
+    "kind": "scale_line",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "butter",
+        "amount": {
+          "value": 250,
+          "unit": "g"
+        }
+      }
+    ],
+    "line_id": "butter",
+    "have": {
+      "value": 300,
+      "unit": "g"
+    }
+  },
+  "expected": {
+    "factor": 1.2,
+    "values": {
+      "flour": 600,
+      "butter": 300
+    },
+    "unscaled": [],
+    "cautions": ["time-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. Factor 300 / 250 = 1.2; 500 * 1.2 = 600."
+}

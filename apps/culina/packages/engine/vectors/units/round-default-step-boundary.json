@@ -1,0 +1,13 @@
+{
+  "id": "round-default-step-boundary",
+  "description": "9.96 g with the default step",
+  "inputs": {
+    "kind": "round",
+    "g": 9.96
+  },
+  "expected": {
+    "g": 10
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. Below 10 g the step is 0.1 g: 9.96 / 0.1 = 99.6, rounds to 100 steps = 10 g."
+}

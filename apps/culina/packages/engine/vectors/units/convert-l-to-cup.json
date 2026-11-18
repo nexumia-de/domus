@@ -1,0 +1,17 @@
+{
+  "id": "convert-l-to-cup",
+  "description": "1 l in cup",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "l"
+    },
+    "to": "cup"
+  },
+  "expected": {
+    "value": 4.226753
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 l * 1000 / 236.5882365 = 4.226753 cup (factors: base ml per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

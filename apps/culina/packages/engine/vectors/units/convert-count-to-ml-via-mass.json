@@ -1,0 +1,21 @@
+{
+  "id": "convert-count-to-ml-via-mass",
+  "description": "2 count to ml through mass with both facts",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 2,
+      "unit": "count"
+    },
+    "to": "ml",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 200
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: pieces to millilitres. 2 * 50 g = 100 g; 100 g / 0.5 g per ml = 200 ml. Facts are synthetic (chosen for the arithmetic, not real ingredients)."
+}

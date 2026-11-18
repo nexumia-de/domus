@@ -1,0 +1,22 @@
+{
+  "id": "bakers-percent-from-grams",
+  "description": "Lean dough in grams to baker's percentages",
+  "inputs": {
+    "kind": "bakers_percent",
+    "lines": [
+      { "name": "flour", "g": 1000, "is_flour": true },
+      { "name": "water", "g": 760, "is_flour": false },
+      { "name": "salt", "g": 20, "is_flour": false },
+      { "name": "yeast", "g": 12, "is_flour": false }
+    ]
+  },
+  "expected": {
+    "flour_g": 1000,
+    "dough_g": 1792,
+    "pct": { "flour": 100, "water": 76, "salt": 2, "yeast": 1.2 },
+    "total_pct": 179.2,
+    "hydration_pct": 76
+  },
+  "tolerance": 0.0001,
+  "source": "docs/vectors.md#1-bakers-percentages-from-grams; synthetic amounts"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "bakers-percent-zero-flour",
+  "description": "No flour line",
+  "inputs": {
+    "kind": "bakers_percent",
+    "lines": [
+      {
+        "name": "water",
+        "g": 100,
+        "is_flour": false
+      },
+      {
+        "name": "salt",
+        "g": 2,
+        "is_flour": false
+      }
+    ]
+  },
+  "error_code": "no-base",
+  "source": "Basis: percent of the flour. The flour mass is 0, so no percentage is defined. Synthetic amounts."
+}

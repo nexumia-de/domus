@@ -1,0 +1,24 @@
+{
+  "id": "scale-line-error-unknown-line",
+  "description": "Line id not in the recipe",
+  "inputs": {
+    "kind": "scale_line",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      }
+    ],
+    "line_id": "butter",
+    "have": {
+      "value": 300,
+      "unit": "g"
+    }
+  },
+  "error_code": "unknown-line",
+  "error_line_id": "butter",
+  "source": "Basis: the recipe has no line butter."
+}

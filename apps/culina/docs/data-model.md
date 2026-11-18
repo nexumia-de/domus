@@ -141,9 +141,9 @@ Rules:
 - **Mass first.** Professional kitchens and bakers work by weight; volume
   and count are conversions that need data about the ingredient, and
   where that data is missing the engine answers "cannot convert", never
-  a guess ([engine rules](https://github.com/nexumia-de/culina/issues/8),
-  issue 8). The unit table (factors, US customary definitions of `tsp`,
-  `tbsp` and `cup`) belongs to issue 8; the schema only fixes the ids.
+  a guess ([engine rules](engine-rules.md)). The unit table (factors, US
+  customary definitions of `tsp`, `tbsp` and `cup`) is
+  `packages/engine/data/units.json`; the schema only fixes the ids.
 - **Dates without a clock.** The engine has no clock. Every function that
   needs "today" takes it as an input `YYYY-MM-DD`; days left are whole
   calendar days between two such dates. The store or the app supplies
@@ -531,9 +531,10 @@ For the owner; each has a proposal.
    trimmed, roasted or frozen are not states. _Proposal:_ keep three; a
    fourth is a format version bump. Trim loss is already inside
    `yields` from raw to the edible state.
-5. **Cup, tablespoon, teaspoon.** _Proposal:_ US customary, defined in
-   the unit table of issue 8 with an exact factor and a citation; no
-   metric cup.
+5. **Cup, tablespoon, teaspoon.** _Decided (issue 8):_ US customary, in
+   the unit table with exact factors (cup = 231 · 2.54³ / 16 ml =
+   236.5882365 ml, tbsp = cup / 16, tsp = tbsp / 3); no metric cup. See
+   [engine rules](engine-rules.md#units-and-factors).
 6. **Allergens before issue 27.** _Proposal:_ keep the reserved field
    (data may be entered, the engine ignores it), and let issue 27 decide
    "may contain" and the Annex II exceptions.

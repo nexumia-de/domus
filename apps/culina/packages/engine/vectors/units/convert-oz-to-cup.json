@@ -1,0 +1,20 @@
+{
+  "id": "convert-oz-to-cup",
+  "description": "10 oz in cup",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 10,
+      "unit": "oz"
+    },
+    "to": "cup",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 2.396529
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 10 oz -> grams -> cup with the synthetic facts {\"densityGPerMl\":0.5}: grams = 283.495231, result 2.396529 cup. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

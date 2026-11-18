@@ -1,0 +1,17 @@
+{
+  "id": "convert-ml-to-tbsp",
+  "description": "100 ml in tbsp",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "ml"
+    },
+    "to": "tbsp"
+  },
+  "expected": {
+    "value": 6.762805
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 ml * 1 / 14.78676478125 = 6.762805 tbsp (factors: base ml per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

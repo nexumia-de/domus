@@ -1,0 +1,20 @@
+{
+  "id": "convert-g-to-cup",
+  "description": "1000 g in cup",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1000,
+      "unit": "g"
+    },
+    "to": "cup",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 8.453506
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1000 g -> grams -> cup with the synthetic facts {\"densityGPerMl\":0.5}: grams = 1000, result 8.453506 cup. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}
