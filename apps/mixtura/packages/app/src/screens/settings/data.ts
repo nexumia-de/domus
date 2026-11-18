@@ -3,12 +3,13 @@
 // docs/screens-stock-settings.md#export-and-import. The reminder is a calm
 // banner on the Settings screens only, never on the Drinks list.
 
-import { type AppState, type ImportFlow } from '../../app-state';
+import { type AppState } from '../../app-state';
 import { h, icon } from '../../dom';
-import { type ExchangeActions, formatCounts, shownTotal } from '../../exchange-actions';
+import { importPanel } from '../../components/import-preview';
+import { type ExchangeActions } from '../../exchange-actions';
 import { type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
-import { MAX_FILE_BYTES, reminderDue, type ParseFailure } from '../../store';
+import { reminderDue } from '../../store';
 
 const s = strings.data;
 
@@ -48,105 +49,6 @@ export function reminderBanner(state: AppState, exchange: ExchangeActions): HTML
         onclick: () => void exchange.dismissReminder(),
       },
       s.dismiss,
-    ),
-  );
-}
-
-function failureText(failure: ParseFailure): { title: string; text: string } {
-  const e = s.errors;
-  switch (failure.kind) {
-    case 'not-mixtura':
-      return e.notMixtura;
-    case 'needs-place':
-      return e.needsPlace;
-    case 'newer':
-      return { title: e.newer.title, text: e.newer.text(failure.found, failure.supported) };
-    case 'unreadable':
-      return { title: e.unreadable.title, text: e.unreadable.text(failure.reason) };
-    case 'too-large':
-      return { title: e.tooLarge.title, text: e.tooLarge.text(MAX_FILE_BYTES / (1024 * 1024)) };
-    case 'invalid':
-      return {
-        title: e.invalid.title,
-        text: e.invalid.text(failure.problems[0] ?? 'Invalid', failure.problems.length - 1),
-      };
-  }
-}
-
-function importPanel(flow: ImportFlow, exchange: ExchangeActions): HTMLElement | null {
-  if (flow.kind === 'error') {
-    const { title, text } = failureText(flow.failure);
-    return h(
-      'div',
-      { class: 'card', role: 'alert', 'data-testid': 'import-error' },
-      h('strong', {}, title),
-      h('span', {}, text),
-    );
-  }
-  if (flow.kind !== 'preview') return null;
-  const file = flow.file;
-  const counts = {
-    ingredients: file.ingredients.length,
-    templates: file.templates.length,
-    specs: file.specs.length,
-    places: file.places.length,
-    stock: file.stock.length,
-    affinities: file.affinities.length,
-  };
-  return h(
-    'div',
-    { class: 'card', 'data-testid': 'import-preview' },
-    h('strong', {}, s.summary(formatCounts(counts))),
-    h(
-      'span',
-      { class: 'hint' },
-      s.mergeHint(
-        `add ${shownTotal(flow.merge.added)}, replace ${shownTotal(flow.merge.replaced)}, skip ${shownTotal(flow.merge.skipped)}`,
-      ),
-    ),
-    h(
-      'span',
-      { class: 'hint' },
-      s.replaceHint(
-        `add ${shownTotal(flow.replace.added)}, replace ${shownTotal(flow.replace.replaced)}, remove ${shownTotal(flow.replace.removed)}, keep ${shownTotal(flow.replace.skipped)}`,
-      ),
-    ),
-    flow.migratedFrom !== null && h('span', { class: 'hint' }, s.migrated(flow.migratedFrom)),
-    flow.seedMismatch !== null &&
-      h('span', { class: 'hint' }, s.seedMismatch(flow.seedMismatch.found, flow.seedMismatch.own)),
-    h(
-      'div',
-      { class: 'btn-row' },
-      h(
-        'button',
-        {
-          class: 'btn btn--primary',
-          type: 'button',
-          'data-focus': 'import-merge',
-          onclick: () => void exchange.apply('merge'),
-        },
-        s.merge,
-      ),
-      h(
-        'button',
-        {
-          class: 'btn btn--tonal',
-          type: 'button',
-          'data-focus': 'import-replace',
-          onclick: () => void exchange.apply('replace'),
-        },
-        s.replace,
-      ),
-      h(
-        'button',
-        {
-          class: 'btn btn--tonal',
-          type: 'button',
-          'data-focus': 'import-cancel',
-          onclick: () => exchange.cancelImport(),
-        },
-        s.cancel,
-      ),
     ),
   );
 }

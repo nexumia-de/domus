@@ -188,6 +188,27 @@ File · Merge · Replace Everything · Cancel · Undo · Dismiss · Delete
 Import Backup. Counts read "2 ingredients, 1 template, 2 specs, 2 stock
 entries, 1 pairing".
 
+# Share a drink (#142)
+
+Sheet on the spec screen: Share {name} · "Anyone you send this link to can
+add a copy of the drink. The drink is inside the link; nothing is
+uploaded." · Link · Copy Link · Link copied · The link could not be copied.
+Select it above and copy it by hand. · Send... · Preparing the link · This
+drink is too big for a link / Use Export on the Data screen to send it as a
+file. · Open Data · The link could not be made. Nothing was changed. ·
+Close. Button name: Share {name} by link; tooltip Share.
+
+Opening a link, screen title Shared Drink: Opening the link · Somebody sent
+you {name} (or "a drink") · Adds {n versions, n ingredients, n templates}. It
+is added to your own drinks; nothing you have is replaced. · You already have
+this drink. Nothing would change. · Add Drink · Not Now · Close. Errors (each
+ends "Nothing was added."): The link is damaged / It may have been cut off when
+it was sent. Ask for the link again. · The link is from a newer version /
+Update the app and open the link again. · The link holds too much / It is
+larger than a file this app reads. · The link is not a drink from Drink
+Builder · This browser cannot keep drinks / Storage is not available, so the
+drink cannot be added.
+
 # Accessible names
 
 Icon-only buttons (visible tooltip on desktop, `aria-label` always):

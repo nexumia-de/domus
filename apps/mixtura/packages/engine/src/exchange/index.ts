@@ -2,6 +2,8 @@
 // validating an export file, migrating older formats and planning a merge or
 // replace. Applying a plan, backups and files are the host's job
 // (docs/export-format.md, docs/engine.md).
+export { buildShareFile } from './share';
+export type { ShareResult } from './share';
 export { buildExport, countsOf, exportFileName, totalCount } from './build';
 export { isUserId } from './ids';
 export { isNoOp, planImport } from './merge';

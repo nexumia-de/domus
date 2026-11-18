@@ -25,7 +25,8 @@ import { type Store } from './state';
 export interface ExchangeActions {
   exportAll(): Promise<void>;
   chooseFile(file: File): Promise<void>;
-  apply(mode: ImportMode): Promise<void>;
+  /** Applies the previewed file; true when it was written. */
+  apply(mode: ImportMode): Promise<boolean>;
   cancelImport(): void;
   undo(): Promise<void>;
   deleteImportBackup(): Promise<void>;
@@ -158,7 +159,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
     async apply(mode) {
       const local = host.local();
       const flow = app.get().importFlow;
-      if (!local || flow.kind !== 'preview') return;
+      if (!local || flow.kind !== 'preview') return false;
       app.set({ importFlow: { kind: 'busy' } });
       try {
         const plan = await local.exchange.importData(flow.file, mode);
@@ -166,8 +167,10 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
         app.set({ importFlow: { kind: 'idle' } });
         toast(strings.data.imported(formatCounts(importedCounts(plan))), () => void this.undo());
         await refresh();
+        return true;
       } catch (error) {
         fail(error);
+        return false;
       }
     },
     cancelImport: () => app.set({ importFlow: { kind: 'idle' } }),
