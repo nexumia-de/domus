@@ -1,0 +1,21 @@
+{
+  "id": "convert-ml-to-count",
+  "description": "100 ml in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "ml"
+    },
+    "to": "count",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 1
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 ml -> grams -> count with the synthetic facts {\"densityGPerMl\":0.5,\"unitWeightG\":50}: grams = 50, result 1 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

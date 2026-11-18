@@ -1,0 +1,17 @@
+{
+  "id": "convert-l-to-tsp",
+  "description": "1 l in tsp",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "l"
+    },
+    "to": "tsp"
+  },
+  "expected": {
+    "value": 202.884136
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 l * 1000 / 4.92892159375 = 202.884136 tsp (factors: base ml per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

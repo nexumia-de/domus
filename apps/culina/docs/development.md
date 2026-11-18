@@ -43,6 +43,13 @@ TypeScript, installed for that build only).
   bundle. `src/model.ts` re-exports the general model from materia;
   `test/model.test.ts` checks that the dependency is an exact version
   tag and that the installed version is that one.
+- Engine modules, one job per file: `src/amounts/` (types, unit table
+  reader, conversion, rounding), `src/scale/` (scaling by weight and the
+  cautions), `src/bakers/` (baker's percentages, formulas, hydration);
+  `data/units.json` is the unit table; `vectors/units/` and
+  `vectors/percentages/` hold the worked examples that
+  `test/units-vectors.test.ts` and `test/percentages-vectors.test.ts` run.
+  Rules: [engine rules](engine-rules.md).
 - `packages/app` (`@culina/app`): the web app. It imports `@culina/engine`
   only; a lint rule fails any deep import.
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.
@@ -228,3 +235,20 @@ structured data), `openrecipeformat.readthedocs.io` (ORF field
 reference), `opentextbc.ca` and `workforce.libretexts.org` (yield
 testing, as purchased and edible portion), `ajv.js.org`,
 `www.theperfectloaf.com`, `www.thefreshloaf.com`, `busbysbakery.com`.
+
+## Engine units (2026-11-18)
+
+Needed to read the unit definitions for [engine rules](engine-rules.md).
+Blocked at first, allowed by the owner on 2026-11-18 and then read:
+
+```
+www.nist.gov
+www.govinfo.gov
+doi.org
+```
+
+Handbook 44 Appendix C is on `www.nist.gov`, the Federal Register of
+1959-07-01 on `www.govinfo.gov`. Also allowed and answering, not needed
+in the end: `nvlpubs.nist.gov`, `physics.nist.gov`, `www.law.cornell.edu`,
+`www.bipm.org`, `www.ecfr.gov`. `www.federalregister.gov` answers at its
+root but refused a document request (proxy 403).

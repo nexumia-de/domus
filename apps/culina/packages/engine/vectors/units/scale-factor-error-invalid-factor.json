@@ -1,0 +1,44 @@
+{
+  "id": "scale-factor-error-invalid-factor",
+  "description": "Factor 0",
+  "inputs": {
+    "kind": "scale_factor",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 200,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "butter",
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "salt",
+        "amount": {
+          "value": 4,
+          "unit": "g"
+        },
+        "role": "salt"
+      },
+      {
+        "id": "pepper"
+      },
+      {
+        "id": "hydration",
+        "amount": {
+          "value": 50,
+          "unit": "percent"
+        }
+      }
+    ],
+    "factor": 0
+  },
+  "error_code": "invalid-factor",
+  "source": "Basis: a factor is finite and greater than zero."
+}

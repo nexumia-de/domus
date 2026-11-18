@@ -1,0 +1,36 @@
+{
+  "id": "hydration-preferment-composition",
+  "description": "A poolish with recorded composition",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "flour",
+        "g": 500,
+        "role": "flour"
+      },
+      {
+        "id": "water",
+        "g": 300,
+        "role": "water"
+      },
+      {
+        "id": "poolish",
+        "g": 200,
+        "component": true,
+        "composition": {
+          "flourG": 100,
+          "waterG": 100
+        }
+      }
+    ]
+  },
+  "expected": {
+    "hydration_pct": 66.666667,
+    "flour_g": 600,
+    "water_g": 400,
+    "not_counted": []
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: water over flour. Flour 500 + 100 = 600 g, water 300 + 100 = 400 g; 100 * 400 / 600 = 66.666667 %. Synthetic composition."
+}

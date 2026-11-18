@@ -1,0 +1,21 @@
+{
+  "id": "convert-tsp-to-count",
+  "description": "100 tsp in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "tsp"
+    },
+    "to": "count",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 4.928922
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 tsp -> grams -> count with the synthetic facts {\"densityGPerMl\":0.5,\"unitWeightG\":50}: grams = 246.44608, result 4.928922 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

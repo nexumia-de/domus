@@ -1,0 +1,35 @@
+{
+  "id": "scale-bakers-two-flours-by-flour",
+  "description": "Two flours scaled to 500 g of flour",
+  "inputs": {
+    "kind": "scale_bakers",
+    "formula": [
+      {
+        "name": "white",
+        "pct": 70,
+        "is_flour": true
+      },
+      {
+        "name": "whole-wheat",
+        "pct": 30,
+        "is_flour": true
+      },
+      {
+        "name": "water",
+        "pct": 80
+      }
+    ],
+    "target_flour_g": 500
+  },
+  "expected": {
+    "flour_g": 500,
+    "g": {
+      "white": 350,
+      "whole-wheat": 150,
+      "water": 400
+    },
+    "dough_g": 900
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams. 0.70 * 500 = 350; 0.30 * 500 = 150; water 0.80 * 500 = 400; dough 900 g. Synthetic formula."
+}

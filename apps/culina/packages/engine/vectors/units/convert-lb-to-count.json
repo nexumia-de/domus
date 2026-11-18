@@ -1,0 +1,20 @@
+{
+  "id": "convert-lb-to-count",
+  "description": "1 lb in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "lb"
+    },
+    "to": "count",
+    "facts": {
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 9.071847
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 lb -> grams -> count with the synthetic facts {\"unitWeightG\":50}: grams = 453.59237, result 9.071847 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

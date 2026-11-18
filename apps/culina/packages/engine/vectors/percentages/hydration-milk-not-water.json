@@ -1,0 +1,32 @@
+{
+  "id": "hydration-milk-not-water",
+  "description": "Milk counts only with a water role",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "flour",
+        "g": 500,
+        "role": "flour"
+      },
+      {
+        "id": "water",
+        "g": 100,
+        "role": "water"
+      },
+      {
+        "id": "milk",
+        "g": 200,
+        "role": "dairy"
+      }
+    ]
+  },
+  "expected": {
+    "hydration_pct": 20,
+    "flour_g": 500,
+    "water_g": 100,
+    "not_counted": []
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: water over flour. Milk has role dairy, which is no water role: 100 * 100 / 500 = 20 %."
+}

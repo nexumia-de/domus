@@ -1,0 +1,14 @@
+{
+  "id": "convert-error-needs-unit-weight",
+  "description": "2 count to grams without a unit weight",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 2,
+      "unit": "count"
+    },
+    "to": "g"
+  },
+  "error_code": "needs-unit-weight",
+  "source": "Basis: grams. Count to mass needs the unit weight; none is given."
+}

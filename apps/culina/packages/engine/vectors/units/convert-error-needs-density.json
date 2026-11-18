@@ -1,0 +1,14 @@
+{
+  "id": "convert-error-needs-density",
+  "description": "1 cup to grams without a density",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "cup"
+    },
+    "to": "g"
+  },
+  "error_code": "needs-density",
+  "source": "Basis: grams. Volume to mass needs the ingredient density; none is given, so the answer is an error (docs/engine-rules.md#conversion-and-its-errors)."
+}

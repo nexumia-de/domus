@@ -1,0 +1,32 @@
+{
+  "id": "hydration-simple",
+  "description": "Flour 1000 g and water 760 g",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "flour",
+        "g": 1000,
+        "role": "flour"
+      },
+      {
+        "id": "water",
+        "g": 760,
+        "role": "water"
+      },
+      {
+        "id": "salt",
+        "g": 20,
+        "role": "salt"
+      }
+    ]
+  },
+  "expected": {
+    "hydration_pct": 76,
+    "flour_g": 1000,
+    "water_g": 760,
+    "not_counted": []
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: water over flour. 100 * 760 / 1000 = 76 %; salt is on neither side."
+}

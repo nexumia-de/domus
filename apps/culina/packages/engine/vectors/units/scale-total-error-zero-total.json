@@ -1,0 +1,15 @@
+{
+  "id": "scale-total-error-zero-total",
+  "description": "No measured line",
+  "inputs": {
+    "kind": "scale_total",
+    "lines": [
+      {
+        "id": "pepper"
+      }
+    ],
+    "target_g": 100
+  },
+  "error_code": "zero-total",
+  "source": "Basis: grams. The total of no lines is 0, so no factor exists."
+}

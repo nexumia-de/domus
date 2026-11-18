@@ -1,0 +1,16 @@
+{
+  "id": "hydration-error-no-base",
+  "description": "No flour",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "water",
+        "g": 100,
+        "role": "water"
+      }
+    ]
+  },
+  "error_code": "no-base",
+  "source": "Basis: water over flour; the flour mass is 0."
+}

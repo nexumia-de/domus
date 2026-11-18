@@ -1,0 +1,13 @@
+{
+  "id": "round-default-step-small",
+  "description": "0.25 g with the default step",
+  "inputs": {
+    "kind": "round",
+    "g": 0.25
+  },
+  "expected": {
+    "g": 0.3
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. Below 10 g the default step is 0.1 g (assumption, unverified); 0.25 / 0.1 = 2.5, tie, away from zero: 3 * 0.1 = 0.3."
+}

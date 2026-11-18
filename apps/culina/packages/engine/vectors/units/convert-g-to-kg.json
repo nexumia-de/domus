@@ -1,0 +1,17 @@
+{
+  "id": "convert-g-to-kg",
+  "description": "1000 g in kg",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1000,
+      "unit": "g"
+    },
+    "to": "kg"
+  },
+  "expected": {
+    "value": 1
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1000 g * 1 / 1000 = 1 kg (factors: base g per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}
