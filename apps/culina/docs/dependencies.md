@@ -67,6 +67,18 @@ standalone code). The generated code imports two small runtime helpers,
 Ajv compiler itself does not ship. Both are MIT, compatible with the
 AGPL. Size: see the [log](log.md).
 
+## Deploy tool
+
+Not installed by `npm ci`: the job `deploy` runs it with `npx`, at the
+version pinned in `tools/wrangler/package.json` (the same as Mixtura's).
+
+| Package    | Version | Licence           | Use                                                                                                                |
+| ---------- | ------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `wrangler` | 4.158.0 | MIT OR Apache-2.0 | Uploads `packages/app/dist` to Cloudflare Workers static assets ([deployment](deployment.md)); nothing of it ships |
+
+Licence read on 2026-11-18 from `wrangler/package.json` in the npx cache.
+It is a tool that runs in CI, not linked into the app.
+
 ## GitHub Actions
 
 | Action               | Version | Use                      |
