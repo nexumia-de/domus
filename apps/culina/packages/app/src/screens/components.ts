@@ -27,7 +27,9 @@ export const componentsScreen = (param?: string): HTMLElement =>
       },
       detail: (id) => {
         const component = getComponent(id);
-        return component === undefined ? undefined : componentDetail(notebook(), component);
+        return component === undefined
+          ? undefined
+          : componentDetail(notebook(component), component);
       },
       unknown: strings.components.unknown,
       chooseOne: strings.components.chooseOne,

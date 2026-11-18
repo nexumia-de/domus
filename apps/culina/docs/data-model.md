@@ -340,6 +340,27 @@ version), `date`, optional `parent`, `change`, `reason`.
   in a new family, which is how "my version of that" is kept.
 - The head of a family is its latest version by date and parent chain;
   the version number is derived.
+- **Append-only.** A stored version record is never written again. Save
+  adds a record (new id, same family, `parent` = the version edited, `date`
+  from the host's clock, optional `change` and `reason` as typed); Restore
+  adds a record with the content of an old version and `parent` = the
+  current head; a variation is a record in a new family whose `parent` is
+  the version it came from. Deleting a component or dish tombstones every
+  version of the family and the notes on them together, and Undo restores
+  them together; that is the user's delete of the whole thing, not a change
+  of history. The app refuses a put of a stored version id
+  ([behaviour](behaviour.md#versions-history-and-variations)).
+- **Head and number.** The head is the version furthest along the `parent`
+  chain in the family; the number is the position in that chain, the first
+  being 1 ([engine rules](engine-rules.md#versions-and-variations)).
+- **What a reference names.** The model leaves open whether the `ref` of a
+  line or slot to a component names a version id or the family. Culina
+  stores the id the editor gives it, the **family** id, and treats any
+  version id as a reference to the head of that record's family when
+  computing, so a sub-component follows the current version. A reference
+  never needs rewriting when a new version is saved. `validateModel`
+  accepts any record id as a reference; a variation whose parent was deleted
+  reports `unknown-parent` there, which the app shows as "parent removed".
 - Each version is its own record with its own `id`; that id is what a
   [tasting note](#tasting-note) points at. A note belongs to the version
   it was made on and may be added later; adding one never changes the

@@ -125,5 +125,35 @@ export type {
   ValidationResult,
 } from './validate/types';
 
+export {
+  familyHeads,
+  variationCycles,
+  variationParent,
+  variationsOf,
+  versionFamily,
+  versionNumber,
+} from './versions/chain';
+export { diffComponentVersions, diffDishVersions } from './versions/diff';
+export type {
+  DiffComponent,
+  DiffDish,
+  DiffLine,
+  DiffResult,
+  FamilyResult,
+  FamilyVersions,
+  FieldChange,
+  LineChange,
+  LineField,
+  Variation,
+  VariationParent,
+  VersionChange,
+  VersionDiff,
+  VersionError,
+  VersionErrorCode,
+  VersionField,
+  VersionMeta,
+  Versioned,
+} from './versions/types';
+
 /** The engine's name; the app shows it until it has real screens. */
 export const engineName = (): string => 'culina-engine';

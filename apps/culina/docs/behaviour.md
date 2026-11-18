@@ -352,10 +352,10 @@ slot, a line or slot without its ingredient or filling, an amount that is
 not a number above 0 (empty is allowed), a portions or yield entry that is
 not, a cycle. Each is one quiet sentence next to Save (`strings.editor.needs`).
 Nothing about the recipe itself ever blocks: ranges are information. A new
-record is its own version family with the date of the store's clock
-(`version.family` = its id); saving an edit overwrites the record in place
-(version history is a later issue). Ids are `u-` and a random UUID, made in
-the app shell.
+record is version 1 of its own family with the date of the store's clock
+(`version.family` = its id). Saving an edit never overwrites: it adds a new
+version record ([versions](#versions-history-and-variations)). Ids are `u-`
+and a random UUID, made in the app shell.
 
 **Drafts.** Every change is kept as a draft in the store's own `drafts`
 object store ([data model](data-model.md#drafts)) after a pause of 0.3 s,
@@ -367,8 +367,10 @@ removes the draft; "Discard changes" removes it and shows the stored record
 `e2e/editor.mjs` (leave at once, return, reload).
 
 **Delete.** "Delete" on a component or dish, and in its editor, acts at once:
-the record is tombstoned in the store and a toast offers "Undo" for 10
-seconds; there is no confirmation dialog. Undo writes the kept record again.
+every version record of the component or dish and every tasting note on one
+is tombstoned in the store (the user's delete of the whole thing, not a
+rewrite of history) and a toast offers "Undo" for 10 seconds; there is no
+confirmation dialog. Undo writes all kept records again.
 **Test:** `e2e/editor.mjs`, `e2e/editor-more.mjs`.
 
 **Form behaviour.** No field is focused when an editor opens. A field that
@@ -378,6 +380,60 @@ px. Lines and slots are reordered with "Move up" and "Move down" buttons
 (focus follows the moved line); there is no drag-only interaction. The
 screens fit 360 px without horizontal scroll. **Test:** `e2e/editor.mjs`
 (`layout`), `e2e/editor-more.mjs`.
+
+# Versions, history and variations
+
+Every save of an existing component or dish adds a **version**; nothing
+stored is ever written again ([data model](data-model.md#version)).
+**Test:** `test/versions.test.ts`, `e2e/versions.mjs`.
+
+- **Save.** Next to Save, three optional fields: what changed, why, and a
+  tasting note. Save of a new record stores version 1; Save of an existing
+  one stores a new record (new id, same family, `parent` = the version
+  edited, today's date from the injected clock) and opens it. A tasting note
+  typed there becomes a `tastings` record that refers to the new version.
+  The editor always opens the current version of a family, also when it is
+  reached with the id of an older one. The three fields are kept in the
+  draft like everything else.
+- **Lists and references.** Lists and pickers show one entry per family, its
+  head (the latest version). A line or slot stores the id of the **family**
+  (the id of its first version) when picked in the editor; any version id
+  works as a reference, and the screens resolve it to the head of that
+  family, so sub-components always follow the current version of what they
+  use. An older version shown read-only keeps its own lines but resolves its
+  sub-components the same way.
+- **Detail.** Under the name: "Version 3 · 2026-11-18", the change and the
+  reason if written, links "History" and (on the current version only)
+  "Make a variation", Edit and Delete. An older version opens at
+  `#/components/<versionId>` (or `#/dishes/<versionId>`), read-only, with the
+  quiet line "This is an older version." and a link to the current one.
+- **History** (`#/components/<id>/history`, `#/dishes/<id>/history`, `id` any
+  version of the family): the versions newest first, each with number, date,
+  change and reason, "Open this version", "Restore as a new version" (not on
+  the current one), the difference to the version before from the engine
+  ([engine rules](engine-rules.md#versions-and-variations)) as one row per
+  changed line or field ("Changed: Butter, 40 g → Butter, 50 g (amount)"),
+  and its tasting notes. A note is added, edited or removed afterwards with
+  its date (default today) and text; Remove acts at once with a toast and
+  Undo; notes are records of their own, so the version is
+  never touched.
+- **Restore.** Adds a new current version with the content of the old one,
+  `parent` = the current head and the change text "Restored version N". The
+  history only grows.
+- **Variation.** "Make a variation" copies the current version into a new
+  record in a **new family** with `version.parent` = the version it came
+  from, named "<name> (variation)", and opens it. The parent lists its
+  variations (their current versions) and the variation says "Variation of
+  <name> (from version N)", each a link. When the parent is deleted the
+  variations stay and say "Variation of a record that was removed".
+- **Append-only.** `saveRecord` refuses a version record that is already
+  stored (`invalid-record`, path `id`); no function puts a stored version
+  again. The test spies on the store and requires that no component or dish
+  id is put twice across Save, Restore, Make a variation and tasting-note
+  edits.
+
+Screenshots: [design](design.md#screenshots). Out of scope: merging
+branches, sharing versions between devices, comparing different recipes.
 
 # Navigation
 

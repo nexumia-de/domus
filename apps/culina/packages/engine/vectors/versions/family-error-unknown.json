@@ -1,0 +1,20 @@
+{
+  "id": "family-error-unknown",
+  "description": "An id that is no record",
+  "inputs": {
+    "kind": "version_family",
+    "id": "nope",
+    "records": [
+      {
+        "id": "c1",
+        "version": {
+          "family": "c1",
+          "date": "2026-11-01"
+        }
+      }
+    ]
+  },
+  "error_code": "unknown-version",
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}

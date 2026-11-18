@@ -1,4 +1,5 @@
 import type { Action, Route } from '../router';
+import { historyScreen } from './history';
 import { componentsScreen } from './components';
 import { dishesScreen } from './dishes';
 import { componentEditor } from './editor/component-editor';
@@ -18,5 +19,9 @@ const EDITORS: Partial<Record<Route, (id?: string) => HTMLElement>> = {
   dishes: dishEditor,
 };
 
-export const renderScreen = (route: Route, param?: string, action?: Action): HTMLElement =>
-  action === undefined ? SCREENS[route](param) : (EDITORS[route] ?? SCREENS[route])(param);
+export const renderScreen = (route: Route, param?: string, action?: Action): HTMLElement => {
+  if (action === 'history' && (route === 'components' || route === 'dishes')) {
+    return historyScreen(route, param);
+  }
+  return action === undefined ? SCREENS[route](param) : (EDITORS[route] ?? SCREENS[route])(param);
+};

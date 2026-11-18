@@ -1,0 +1,109 @@
+{
+  "id": "diff-component-fields",
+  "description": "Name, yield and method change; lines do not",
+  "inputs": {
+    "kind": "diff_component",
+    "before": {
+      "id": "a1",
+      "name": "Example sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "a1",
+        "date": "2026-11-01"
+      },
+      "yield": {
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        },
+        "source": "user"
+      },
+      "method": ["Simmer"]
+    },
+    "after": {
+      "id": "a2",
+      "name": "Example sauce, thicker",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "a1",
+        "date": "2026-11-08",
+        "parent": "a1"
+      },
+      "yield": {
+        "amount": {
+          "value": 450,
+          "unit": "g"
+        },
+        "source": "user"
+      },
+      "method": ["Simmer", "Strain"]
+    }
+  },
+  "expected": {
+    "empty": false,
+    "changes": [
+      {
+        "type": "field",
+        "field": "name",
+        "before": "Example sauce",
+        "after": "Example sauce, thicker"
+      },
+      {
+        "type": "field",
+        "field": "yield",
+        "before": "500 g",
+        "after": "450 g"
+      },
+      {
+        "type": "field",
+        "field": "method",
+        "before": "Simmer",
+        "after": "Simmer\nStrain"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}

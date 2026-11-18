@@ -24,7 +24,7 @@ import {
   emptyIngredientForm,
   roleId,
 } from '../src/editor/ingredient-form';
-import { draftKey, dropDraft, keepDraft, loadDraft } from '../src/notebook';
+import { allVersions, draftKey, dropDraft, keepDraft, loadDraft } from '../src/notebook';
 import { openStore } from '../src/store';
 import type { ComponentRecord } from '../src/records';
 import { clockOf, freshFactory } from './store-helpers';
@@ -99,8 +99,8 @@ test('example data is written through the store, once, and is a valid notebook',
   expect(
     validateModel({
       ingredients: listIngredients(),
-      components: listComponents(),
-      dishes: listDishes(),
+      components: allVersions('components'),
+      dishes: allVersions('dishes'),
     }).findings,
   ).toEqual([]);
   expect(notebook().ingredientName('flour')).toBe('Flour');

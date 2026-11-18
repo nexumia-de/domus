@@ -1,13 +1,14 @@
-// The notebook cache: every record in memory, so the screens stay synchronous. The store is
+// The notebook cache: every record in memory (every version of a component or dish), so the screens stay synchronous. The store is
 // opened and read once at startup (start.ts); writes go through the store first and only then
 // change the cache (actions.ts). Without a store the cache is the empty, read-only notebook.
 import type { ErrorCode, Store } from '../store';
-import type { ComponentRecord, DishRecord, IngredientRecord } from '../records';
+import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
 
 export interface NotebookState {
   ingredients: IngredientRecord[];
   components: ComponentRecord[];
   dishes: DishRecord[];
+  tastings: TastingRecord[];
   /** Undefined when the store could not be opened. */
   store: Store | undefined;
   /** Why the store could not be opened. */
@@ -20,6 +21,7 @@ export const state: NotebookState = {
   ingredients: [],
   components: [],
   dishes: [],
+  tastings: [],
   store: undefined,
   problem: undefined,
   now: () => new Date().toISOString(),
@@ -53,6 +55,7 @@ export const reset = (): void => {
   state.ingredients = [];
   state.components = [];
   state.dishes = [];
+  state.tastings = [];
   state.store = undefined;
   state.problem = undefined;
 };
