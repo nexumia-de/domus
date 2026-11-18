@@ -15,13 +15,49 @@
       "name": "Garlic",
       "densityGPerMl": {
         "value": 0.575,
-        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 cup = 136 g"
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 cup = 136 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
       },
       "unitWeightG": {
         "value": 3,
         "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 clove = 3 g"
       },
-      "x-fdc": { "id": 169230, "description": "Garlic, raw" }
+      "yields": [
+        {
+          "state": "raw",
+          "percent": 87,
+          "source": "USDA FoodData Central, SR Legacy archive SR28 (sr28asc.zip), FOOD_DES.txt, NDB_No 11215 (FDC ID 169230): Refuse 13 %, Ref_desc \"Knob and skin\"; yield = 100 - 13"
+        }
+      ],
+      "x-fdc": {
+        "id": 169230,
+        "description": "Garlic, raw"
+      }
+    },
+    {
+      "id": "fdc-173410",
+      "name": "Butter, salted",
+      "parentId": "fdc-group-butter",
+      "densityGPerMl": {
+        "value": 0.959,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 173410, portion: 1 cup = 227 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
+      },
+      "x-fdc": {
+        "id": 173410,
+        "description": "Butter, salted"
+      }
+    },
+    {
+      "id": "fdc-group-butter",
+      "name": "Butter",
+      "x-group": {
+        "rows": 5
+      }
     }
-  ]
+  ],
+  "refuseDataset": {
+    "name": "USDA FoodData Central, SR Legacy archive SR28 (sr28asc.zip), FOOD_DES.txt",
+    "file": "FOOD_DES.txt",
+    "sha256": "bb2047218cdad1d830da69e760386409fde3b7afabceae604c5479f280d4fa2e",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://fdc.nal.usda.gov/ (section Licensing)"
+  }
 }

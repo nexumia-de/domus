@@ -11,6 +11,7 @@ import type {
 export interface IngredientRecord {
   id: string;
   name: string;
+  parentId?: string;
   roles?: string[];
   yields?: IngredientYield[];
   shelfLife?: {

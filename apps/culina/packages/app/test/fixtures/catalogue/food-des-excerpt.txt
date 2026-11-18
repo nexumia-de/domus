@@ -1,0 +1,17 @@
+~01001~^~0100~^~Butter, salted~^~BUTTER,WITH SALT~^~~^~~^~Y~^~~^0^~~^6.38^4.27^8.79^3.87
+~01002~^~0100~^~Butter, whipped, with salt~^~BUTTER,WHIPPED,W/ SALT~^~~^~~^~Y~^~~^0^~~^6.38^^^
+~01077~^~0100~^~Milk, whole, 3.25% milkfat, with added vitamin D~^~MILK,WHL,3.25% MILKFAT,W/ ADDED VITAMIN D~^~~^~~^~Y~^~~^0^~~^6.38^4.27^8.79^3.87
+~01145~^~0100~^~Butter, without salt~^~BUTTER,WITHOUT SALT~^~~^~~^~Y~^~~^0^~~^6.38^4.27^8.79^3.87
+~01211~^~0100~^~Milk, whole, 3.25% milkfat, without added vitamin A and vitamin D~^~MILK,WHL,3.25% MILKFAT,WO/ ADDED VIT A & VITAMIN D~^~~^~~^~Y~^~~^0^~~^^^^
+~02005~^~0200~^~Spices, caraway seed~^~CARAWAY SEED~^~~^~~^~Y~^~~^0^~Carum carvi~^6.25^3.36^8.37^2.90
+~04517~^~0400~^~Oil, grapeseed~^~OIL,GRAPESEED~^~~^~~^~~^~~^0^~~^0.00^^8.84^
+~09003~^~0900~^~Apples, raw, with skin~^~APPLES,RAW,WITH SKIN~^~Includes USDA commodity food A343~^~~^~Y~^~Core and stem~^10^~Malus domestica~^6.25^3.36^8.37^3.60
+~09412~^~0900~^~Pears, raw, bartlett~^~PEARS,RAW,BARTLETT~^~~^~~^~~^~Stem, core and seeds~^10^~Pyrus communis~^^^^
+~09414~^~0900~^~Pears, raw, bosc~^~PEARS,RAW,BOSC~^~~^~~^~~^~Stem, core and seeds~^10^~Pyrus communis~^^^^
+~11109~^~1100~^~Cabbage, raw~^~CABBAGE,RAW~^~~^~~^~Y~^~Outer leaves and core~^20^~Brassica oleracea (Capitata Group)~^6.25^2.44^8.37^3.57
+~11112~^~1100~^~Cabbage, red, raw~^~CABBAGE,RED,RAW~^~~^~~^~Y~^~Outer leaves and core~^20^~Brassica oleracea (Capitata Group)~^6.25^2.44^8.37^3.57
+~11215~^~1100~^~Garlic, raw~^~GARLIC,RAW~^~~^~~^~Y~^~Knob and skin~^13^~Allium sativum~^6.25^2.78^8.37^3.84
+~12088~^~1200~^~Nuts, cashew butter, plain, without salt added~^~CASHEW BUTTER,PLN,WO/SALT~^~~^~~^~~^~~^0^~~^5.30^3.47^8.37^4.07
+~20081~^~2000~^~Wheat flour, white, all-purpose, enriched, bleached~^~WHEAT FLR,WHITE,ALL-PURPOSE,ENR,BLEACHED~^~~^~~^~Y~^~~^0^~~^5.70^4.05^8.37^4.12
+~20082~^~2000~^~Wheat flour, white, all-purpose, self-rising, enriched~^~WHEAT FLR,WHITE,ALL-PURPOSE,SELF-RISING,ENR~^~~^~~^~Y~^~~^0^~~^5.70^4.05^8.37^4.12
+~20481~^~2000~^~Wheat flour, white, all-purpose, unenriched~^~WHEAT FLR,WHITE,ALL-PURPOSE,UNENR~^~~^~~^~Y~^~~^0^~~^5.70^4.05^8.37^4.12

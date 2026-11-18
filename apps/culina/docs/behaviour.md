@@ -306,26 +306,43 @@ note of an existing line are kept as they are.
   Nothing is looked up outside the device.
 - **From the catalogue.** In the ingredient picker (a component line, a
   dish slot) a section "From the catalogue" sits below the user's own
-  entries and the search text filters it too: entries whose name contains the
-  text, those that start with it first, at most 25 at once with a quiet line
-  "Showing 25 of N" for the rest; with no text it says how many ingredients it
-  holds. Each row shows the name and "by volume", "by piece" or both. An entry
-  already in the notebook is not offered again (it is in the user's own
-  list). Choosing an entry copies the catalogue row, unchanged, into the
-  notebook through the ordinary save path (`saveRecord`) and picks it; from then on it
-  is the user's ingredient, and picking it again, or an entry the user already
-  has, writes nothing. The catalogue is the file `catalogue.json` of the
-  app's own origin ([ingredient catalogue](ingredient-catalogue.md)), fetched
-  the first time a picker opens and kept for the session; it is precached by
-  the service worker, so the section works offline, and `main.js` does not
-  carry it. While it loads the section says so quietly; if it cannot be loaded
-  (or is not a catalogue of format 1) it says "The catalogue could not be
-  loaded. Your own ingredients still work." and the picker works as before, and
-  the next picker tries again. Entries that do not fit the ingredient
-  schema are left out. **Test:** `test/catalogue-app.test.ts` (reading, loading
-  once, retry, copying without overwriting), `e2e/catalogue.mjs` (empty
-  notebook, search, choosing, volume and count amounts against the engine
-  from the catalogue rows, reload, offline under the service worker, an
+  entries and the search text filters it too. With no text it says how many
+  entries it holds. The catalogue is a tree
+  ([ingredient catalogue](ingredient-catalogue.md#grouping-rule)): a result is
+  a **parent first, its variants below it**. A parent that matches the text
+  itself shows its variants **collapsed** with a toggle that says "N variants"
+  and names what it opens ("Show the variants of Wheat flour"); a parent that is
+  only on the way to a matching variant is shown **open**, so a matched
+  variant always stands under the parents that lead to it, each row named by the
+  part that follows its parent's name ("unbleached") with the full name as its
+  accessible name. The toggle is a button (Enter or Space, `aria-expanded`, the
+  focus stays on it) and, like every row, at least 44 px; what the user opened
+  or closed is kept while the text stays the same. Entries whose name contains
+  the text, those that start with it first, at most 25 top-level results at
+  once with a quiet line "Showing 25 of N" for the rest. Each row shows the
+  name and "by volume", "by piece" or both (a parent without numbers shows just
+  its name). An entry already in the notebook is not offered again (it is in the
+  user's own list) but stays as the way to its variants. **Choosing an entry**
+  copies the catalogue row, unchanged, into the notebook through the ordinary
+  save path (`saveRecord`) and picks it: a variant also saves its parent chain,
+  root first, only the entries not in the notebook yet; a parent saves itself and
+  its own parents. The notebook's ingredient tree is therefore whole, and a
+  record the user already has, changed or not, is never written again. The
+  catalogue is the file `catalogue.json` of the app's own origin, fetched the
+  first time a picker opens and kept for the session; it is precached by the
+  service worker, so the section works offline, and `main.js` does not carry
+  it. While it loads the section says so quietly; if it cannot be loaded (or is
+  not a catalogue of format 1) it says "The catalogue could not be loaded. Your
+  own ingredients still work." and the picker works as before, and the next
+  picker tries again. Entries that do not fit the ingredient schema are left
+  out; an entry whose parent is not in the file is a top-level result.
+  **Test:** `test/catalogue-app.test.ts` (reading, loading once, retry, copying
+  without overwriting), `test/catalogue-tree.test.ts` (tree, search, chain,
+  adopting with the chain), `e2e/catalogue.mjs` and `e2e/catalogue-tree.mjs`
+  (empty notebook, search, a collapsed parent and its count, keyboard, a
+  matched variant under its parents, choosing a parent and a variant, the
+  stored chain and `validateModel`, volume and count amounts against the
+  engine from the catalogue rows, reload, offline under the service worker, an
   unavailable file, no console error or foreign request, 360 px).
 - **Cycles.** A component that is the one edited, or that uses it
   (directly or through another), is shown in the picker as "this component"

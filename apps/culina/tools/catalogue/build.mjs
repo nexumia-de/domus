@@ -1,6 +1,7 @@
 // Generates the ingredient catalogue from USDA FoodData Central, SR Legacy (JSON).
 //
-//   node tools/catalogue/build.mjs <unzipped dataset folder or .json file> [--out <file>]
+//   node tools/catalogue/build.mjs <unzipped dataset folder or .json file> --refuse <FOOD_DES.txt>
+//     [--out <file>]
 //
 // The output is rebuilt, never edited: the same dataset gives the same bytes (no clock, rows
 // sorted by id). The rules are in derive.mjs and stated in docs/ingredient-catalogue.md. Not
@@ -10,6 +11,8 @@ import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deriveDensity, deriveUnitWeight, isBasic, nameOf } from './derive.mjs';
+import { groupRows } from './group.mjs';
+import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
@@ -39,8 +42,11 @@ const releaseOf = (file) => {
 const units = JSON.parse(readFileSync(unitsFile, 'utf8'));
 const mlOf = (unit) => units[unit].toBase;
 
-/** Rows for every selected food that has a density or a unit weight, sorted by id. */
-export const buildRows = (foods, release) => {
+/**
+ * Rows for every selected food that has a density or a unit weight, sorted by id. `refuse` (from
+ * readRefuse) adds the yields; without it the rows have none.
+ */
+export const buildRows = (foods, release, refuse = new Map()) => {
   const where = `${DATASET}, release ${release}`;
   const rows = [];
   for (const food of foods) {
@@ -62,6 +68,8 @@ export const buildRows = (foods, release) => {
         source: `${where}, FDC ID ${food.fdcId}, portion: ${piece.portion}`,
       };
     }
+    const yields = deriveYields(food, refuse);
+    if (yields !== undefined) row.yields = yields;
     row['x-fdc'] = { id: food.fdcId, description: food.description };
     rows.push(row);
   }
@@ -79,6 +87,10 @@ export const buildRows = (foods, release) => {
   return rows.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 };
 
+/** The catalogue entries: the food rows with their parent links, and the parents. */
+export const buildCatalogue = (foods, release, refuse = new Map()) =>
+  groupRows(buildRows(foods, release, refuse));
+
 /** The file's text: the envelope with one ingredient per line, so diffs stay readable. */
 export const serialise = (envelope) => {
   const { ingredients, ...head } = envelope;
@@ -91,17 +103,24 @@ const main = () => {
   const args = process.argv.slice(2);
   const outAt = args.indexOf('--out');
   const out = outAt === -1 ? defaultOut : args[outAt + 1];
-  const input = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--out');
-  if (input === undefined || out === undefined) {
-    console.error('usage: node tools/catalogue/build.mjs <dataset folder or .json> [--out <file>]');
+  const refuseAt = args.indexOf('--refuse');
+  const refuseFile = refuseAt === -1 ? undefined : args[refuseAt + 1];
+  const input = args.find(
+    (a, i) => !a.startsWith('--') && args[i - 1] !== '--out' && args[i - 1] !== '--refuse',
+  );
+  if (input === undefined || out === undefined || refuseFile === undefined) {
+    console.error(
+      'usage: node tools/catalogue/build.mjs <dataset folder or .json> --refuse <FOOD_DES.txt> [--out <file>]',
+    );
     process.exit(2);
   }
+  const refuseText = readFileSync(refuseFile);
   const file = jsonFileOf(input);
   const text = readFileSync(file);
   const release = releaseOf(file);
   const foods = JSON.parse(text.toString('utf8')).SRLegacyFoods;
   if (!Array.isArray(foods)) throw new Error('no SRLegacyFoods list in the file');
-  const ingredients = buildRows(foods, release);
+  const ingredients = buildCatalogue(foods, release, readRefuse(refuseText.toString('latin1')));
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,
@@ -112,14 +131,21 @@ const main = () => {
       sha256: createHash('sha256').update(text).digest('hex'),
       licence: LICENCE,
     },
+    refuseDataset: {
+      name: REFUSE_SOURCE,
+      file: basename(refuseFile),
+      sha256: createHash('sha256').update(refuseText).digest('hex'),
+      licence: LICENCE,
+    },
     generatedBy: 'tools/catalogue/build.mjs',
     ingredients,
   };
   writeFileSync(out, serialise(envelope));
-  const withDensity = ingredients.filter((r) => r.densityGPerMl).length;
-  const withPiece = ingredients.filter((r) => r.unitWeightG).length;
+  const foodRows = ingredients.filter((r) => r['x-fdc'] !== undefined);
+  const groups = ingredients.filter((r) => r['x-group'] !== undefined);
+  const count = (list, field) => list.filter((r) => r[field]).length;
   console.log(
-    `${ingredients.length} rows, ${withDensity} with density, ${withPiece} with unit weight -> ${out}`,
+    `${ingredients.length} entries: ${foodRows.length} foods (${count(foodRows, 'densityGPerMl')} density, ${count(foodRows, 'unitWeightG')} unit weight, ${count(foodRows, 'yields')} yields), ${groups.length} parents (${count(groups, 'densityGPerMl')} density, ${count(groups, 'unitWeightG')} unit weight) -> ${out}`,
   );
 };
 
