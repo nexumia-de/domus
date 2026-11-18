@@ -13,9 +13,11 @@ sources:
 
 `packages/app/e2e/a11y.mjs` (with `a11y-audit.mjs` and `a11y-focus.mjs`)
 runs in the CI job `e2e` as `node e2e/a11y.mjs 360 720` and `... 1200 800`.
-It opens 17 screens (drinks list, filters sheet, spec, batch sheet, swap,
-swap sheet, editor, editor with an error, ingredient form, templates,
-template, stock, Buy Next, settings, data, about, not found) in light and
+It opens 27 screens (drinks list, filters sheet, spec, batch sheet, share
+sheet of a drink, share preview, swap, swap sheet, editor, editor with an
+error, ingredient form, templates, template, stock, Places sheet, Buy Next,
+settings, data, the Sync page and its sheets Add Storage, Join, Sync This
+Place, Share, Move and Show Passphrase, about, not found) in light and
 dark and fails on any finding. No library: the rules are hand-written, so
 nothing has to be licensed, pinned or fetched and the pass runs offline.
 `axe-core` was not evaluated; the hand-written checks cover the list of

@@ -105,7 +105,49 @@ screen. The backup reminder's change counter does not count synced changes.
 `nextState(previous, outcome, now)` (`state.ts`) gives `{ etag, lastSyncAt,
 lastError }`: `ok` takes the etag and the time and clears the error; `moved`
 does the same with `lastError: 'moved'`; `failed` keeps etag and time and sets
-`lastError` to the reason (`unsupported-file:newer-version` with a code).
+`lastError` to the reason (`unsupported-file:newer-version` with a code;
+`blocked:etag-not-exposed` for a storage that hides its ETag header, which
+needs another fix than a missing CORS setup). `withState(binding, next)` puts
+those fields into a binding and removes the ones `next` lacks.
+
+## Triggers
+
+`sync/scheduler.ts` (`createScheduler`) is the one place where cycles are
+started; `sync/browser-triggers.ts` connects the browser events to it. It uses
+`syncPlace`, `applyOutcome` and `nextState` and keeps nothing of its own that
+could not be rebuilt: the binding holds the etag, the last sync time and the
+last error; what is only in memory is which place has a change waiting and
+the last envelope (for its salt).
+
+| Trigger                                   | What happens                                                                             |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Sync Now, Sync All (Sync page)            | A cycle for the place, or for every bound place                                          |
+| App start, once the store is open         | A cycle for every bound place whose file did not say `moved`                             |
+| A stock change or rename in a bound place | A cycle 3 seconds after the last change (a burst is one cycle)                           |
+| The browser comes back online             | A cycle for every bound place that did not say `moved`                                   |
+| The page becomes visible again            | A cycle for every bound place whose last sync is older than 5 minutes (or that has none) |
+
+Rules that hold for all of them:
+
+- **One cycle per place at a time.** A request while a cycle runs is queued
+  once: a second and a third request share the queued cycle, so none is lost
+  and none is doubled. Different places run side by side.
+- **An unbound place never causes a request**, whatever the trigger; the
+  binding is read first.
+- **Offline (`navigator.onLine === false`) nothing is tried.** The place is
+  marked as having a change waiting, its state line says "Waiting for
+  connection", and the `online` event runs the cycle.
+- A cycle that fails keeps its reason in the binding; the next trigger tries
+  again (a place that was `moved` is left alone until it is joined again).
+- Changes that arrive by sync are written by `applyOutcome` only, which does
+  not tell the scheduler and does not count for the backup reminder, so a
+  merge never starts a cycle of its own.
+- A change the user makes while a cycle is in flight stays (the apply step
+  merges again inside its transaction) and goes out with the next cycle, which
+  its own trigger starts.
+
+The clock is `nowInstant` (`today.ts`); tests pass their own and use fake
+timers. Tests: `test/sync-scheduler.test.ts`.
 
 ## Moving a place
 

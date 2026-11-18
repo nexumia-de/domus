@@ -15,6 +15,7 @@ import { trapFocus } from './focus-trap';
 import { inertBehindModal } from './modal';
 import { toast } from './toast';
 import { panes } from './panes';
+import { trackLeave } from './leave';
 import { captureScroll, restoreScroll } from './scroll';
 
 export interface Shell {
@@ -30,6 +31,7 @@ export function render(root: HTMLElement, shell: Shell): void {
   const { store } = shell;
   const state = store.get();
   const screen = resolve(state.route, shell.screens);
+  trackLeave(screen);
   const context: ScreenContext = {
     route: state.route,
     state,
@@ -43,6 +45,8 @@ export function render(root: HTMLElement, shell: Shell): void {
 
   const active = document.activeElement;
   const focused = active?.getAttribute('data-focus');
+  // A sheet holding the focus itself (it takes it when it opens) keeps it through a redraw.
+  const sheetFocused = active?.getAttribute('data-sheet');
   const caret =
     active instanceof HTMLInputElement
       ? { start: active.selectionStart, end: active.selectionEnd }
@@ -69,6 +73,11 @@ export function render(root: HTMLElement, shell: Shell): void {
   restoreScroll(root, state.route, scroll, view.list !== undefined);
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;
   again?.focus({ preventScroll: true });
+  if (!focused && sheetFocused !== null && sheetFocused !== undefined) {
+    root
+      .querySelector<HTMLElement>(`[data-sheet="${sheetFocused}"]`)
+      ?.focus({ preventScroll: true });
+  }
   // Text typed but not yet in the address (the search is debounced) survives a redraw that
   // brings back the value this field last handed over, such as a finished write.
   if (

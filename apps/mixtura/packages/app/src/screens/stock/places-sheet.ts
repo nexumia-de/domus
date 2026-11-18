@@ -15,6 +15,9 @@ import {
   tickPlace,
 } from '../../stock/places-actions';
 import { stockState } from '../../stock/state';
+import { statusOf, syncView } from '../../sync/view';
+import { statusText } from '../sync/status-text';
+import { nowInstant } from '../../today';
 import { strings } from '../../strings';
 import { closeSheet, sheetIs } from './sheet-address';
 
@@ -67,6 +70,8 @@ export function placesSheet(context: ScreenContext, writable: boolean): HTMLElem
     say(refusal);
   };
 
+  const sync = syncView(context);
+  const online = globalThis.navigator?.onLine !== false;
   const row = (place: (typeof places)[number]): HTMLElement => {
     const on = ticked.includes(place.id);
     const editing = renaming?.id === place.id;
@@ -126,6 +131,15 @@ export function placesSheet(context: ScreenContext, writable: boolean): HTMLElem
         ),
         editing ? name : null,
       ),
+      sync &&
+        h(
+          'span',
+          { class: 'note place-sync', 'data-place-sync': place.id },
+          statusText(
+            statusOf(sync, place.id, { activity: context.data.sync.activity, online }),
+            nowInstant(),
+          ),
+        ),
       h(
         'div',
         { class: 'place-actions' },
@@ -228,6 +242,16 @@ export function placesSheet(context: ScreenContext, writable: boolean): HTMLElem
       places.length <= 1 && h('p', { class: 'note' }, t.onlyPlace),
       problem &&
         h('p', { class: 'field-error', role: 'alert', 'data-places-problem': '' }, problem),
+      h(
+        'div',
+        { class: 'sheet-group' },
+        h('p', { class: 'note' }, strings.places.syncLinkHint),
+        h(
+          'a',
+          { class: 'btn btn--tonal', href: '#/settings/sync', 'data-focus': 'places-sync' },
+          strings.places.syncLink,
+        ),
+      ),
       h(
         'div',
         { class: 'sheet-group' },

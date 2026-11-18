@@ -116,6 +116,12 @@ export function shareSheet(
       ...content(share, sender),
     ),
   );
+  sheet.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    // The sheet takes Escape itself; the app's Escape would leave the screen.
+    event.stopPropagation();
+    close();
+  });
   return h(
     'div',
     {

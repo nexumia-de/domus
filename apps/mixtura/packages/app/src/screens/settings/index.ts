@@ -151,6 +151,7 @@ function settings(context: ScreenContext): HTMLElement {
       'div',
       { class: 'card card--flush' },
       dataRow(state),
+      navRow('#/settings/sync', strings.titles.sync, s.syncHint),
       navRow('#/about', s.about, s.aboutHint),
     ),
   );

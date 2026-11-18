@@ -126,7 +126,8 @@ by the tests of the repository.
 | Templates | `#/templates`, detail `#/templates/<template id>` |
 | Stock | `#/stock`, search and show `#/stock?q=…&show=in`; sheets `?sheet=places`, `?sheet=batches&ing=<id>` |
 | Buy Next | `#/stock/buy-next`, `?strict=1` without substitutes, `?open=<ingredient id>` for the unlocked drinks |
-| Settings | `#/settings`, export and import `#/settings/data` |
+| Settings | `#/settings`, export and import `#/settings/data`, sync `#/settings/sync` |
+| Sync | `#/settings/sync`; sheets `?sheet=storage`, `?sheet=join` (with `code=<place id>` for Join Again), `?sheet=bind`, `?sheet=move`, `?sheet=share`, `?sheet=passphrase` with `place=<place id>`; never a passphrase or password in the address; see [screens: sync](screens-sync.md) |
 | Shared drink | `#/share/<payload>` opens once and becomes `#/share` while the preview shows; see [export format](export-format.md#share-link) |
 | About | `#/about` |
 

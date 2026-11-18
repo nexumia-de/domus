@@ -20,11 +20,26 @@ export interface BindingState {
  */
 export function nextState(previous: BindingState, outcome: SyncOutcome, now: string): BindingState {
   if (outcome.kind === 'failed') {
-    const lastError = outcome.code ? `${outcome.reason}:${outcome.code}` : outcome.reason;
+    // `blocked` with the detail `etag-not-exposed` is told apart: the fix is another one.
+    const code =
+      outcome.code ?? (outcome.detail === 'etag-not-exposed' ? outcome.detail : undefined);
+    const lastError = code ? `${outcome.reason}:${code}` : outcome.reason;
     return { ...previous, lastError };
   }
   const etag = outcome.etag ?? previous.etag;
   return outcome.kind === 'moved'
     ? { etag, lastSyncAt: now, lastError: 'moved' }
     : { etag, lastSyncAt: now };
+}
+
+/** The binding with its cycle fields replaced by `next` (an absent field is removed, not kept). */
+export function withState<B extends BindingState>(binding: B, next: BindingState): B {
+  const out: B = { ...binding };
+  delete out.etag;
+  delete out.lastSyncAt;
+  delete out.lastError;
+  if (next.etag !== undefined) out.etag = next.etag;
+  if (next.lastSyncAt !== undefined) out.lastSyncAt = next.lastSyncAt;
+  if (next.lastError !== undefined) out.lastError = next.lastError;
+  return out;
 }

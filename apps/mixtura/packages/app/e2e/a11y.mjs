@@ -35,6 +35,15 @@ const scenes = [
   ['buy-next', '#/stock/buy-next'],
   ['settings', '#/settings'],
   ['data', '#/settings/data'],
+  ['sync', '#/settings/sync'],
+  ['sync-storage', '#/settings/sync?sheet=storage'],
+  ['sync-join', '#/settings/sync?sheet=join'],
+  ['sync-bind', '#/settings/sync', (page) => syncSheet(page, 'bind')],
+  ['sync-share', '#/settings/sync', (page) => syncSheet(page, 'share')],
+  ['sync-move', '#/settings/sync', (page) => syncSheet(page, 'move')],
+  ['sync-passphrase', '#/settings/sync', (page) => syncSheet(page, 'passphrase')],
+  ['spec-share', '#/drinks', specShare],
+  ['share-preview', '#/drinks', sharePreview],
   ['about', '#/about'],
   ['not-found', '#/nowhere'],
 ];
@@ -63,6 +72,94 @@ async function ingredientForm(page) {
   await page.locator('.ingredient-sheet').waitFor();
   await page.locator('#f-name').fill('');
   await page.locator('#f-name').blur();
+}
+
+// The sheets of the Sync page and the share screens need data (a storage, a
+// bound place, an own drink). Every step looks at the page and makes only what
+// is missing, because one browser context serves all scenes of a pass. No step
+// navigates the document (the zoom pass injects a style rule first): clicks and
+// the address hash only.
+const SYNC_KEYS = {
+  bind: 'place-bind',
+  share: 'place-share',
+  move: 'place-move',
+  passphrase: 'place-passphrase',
+};
+
+async function ensureStorage(page) {
+  if ((await page.locator('[data-focus^="storage-remove:"]').count()) > 0) return;
+  await page.locator('[data-focus="storage-add"]').click();
+  await page.locator('#storage-label').fill('Test storage');
+  await page.locator('#storage-address').fill('http://127.0.0.1:9/dav');
+  await page.locator('[data-focus="storage-save"]').click();
+  await page.locator('[data-sheet="storage"]').waitFor({ state: 'detached' });
+  await page.locator('[data-focus^="storage-remove:"]').first().waitFor();
+}
+
+async function syncSheet(page, sheet) {
+  await ensureStorage(page);
+  const bindButton = page.locator('[data-focus^="place-bind:"]');
+  if (sheet !== 'bind' && (await bindButton.count()) > 0) {
+    await bindButton.first().click();
+    await page.locator('[data-sheet="bind"]').waitFor();
+    await page.locator('[data-focus="bind-start"]').click();
+    await page.locator('[data-sheet="bind"]').waitFor({ state: 'detached' });
+  }
+  const wanted = page.locator(`[data-focus^="${SYNC_KEYS[sheet]}:"]`).first();
+  await wanted.waitFor();
+  await wanted.click();
+  await page.locator(`[data-sheet="${sheet}"]`).waitFor();
+  await quiet(page);
+}
+
+const DRINK = 'Accessible Test Drink';
+
+async function ensureDrink(page) {
+  await page.evaluate(() => (location.hash = '#/drinks'));
+  await page.locator('.pane h1:visible').last().waitFor();
+  await quiet(page);
+  const row = page.locator('a.row', { hasText: DRINK }).first();
+  if ((await row.count()) === 0) {
+    await page.evaluate(() => (location.hash = '#/drinks/new'));
+    await page.locator('select#template').waitFor();
+    await page.locator('select#template').selectOption({ label: 'Daiquiri' });
+    await page.locator('input#name').fill(DRINK);
+    const names = ['light rum', 'lime juice', 'simple syrup'];
+    for (const name of names) {
+      const empty = page.locator('[data-line-card]', { hasText: 'Empty line from the template' });
+      if ((await empty.count()) === 0) break;
+      await empty.first().locator('.line-ingredient').click();
+      await page.locator('[data-focus="pick-search"]').fill(name);
+      await page.locator('[data-focus="pick-search"]').press('Enter');
+      await page.waitForFunction(() => !location.hash.includes('sheet='));
+    }
+    const amounts = page.locator('[data-line-card] input[name="amount"]');
+    for (let i = 0; i < 3; i++) await amounts.nth(i).fill('20 ml');
+    await page.locator('[data-action="save"]').click();
+    await page.locator('.spec').waitFor({ timeout: 5000 });
+    return;
+  }
+  await row.click();
+  await page.locator('.spec').waitFor();
+}
+
+async function specShare(page) {
+  await ensureDrink(page);
+  // The toast of the save sits over the sheet's lower part until it times out.
+  await page.locator('[data-testid="toast"]').waitFor({ state: 'detached', timeout: 15000 });
+  await page.locator('[data-focus="share"]').click();
+  await page.locator('[data-testid="share-link"]').waitFor();
+  await quiet(page);
+}
+
+async function sharePreview(page) {
+  await specShare(page);
+  const link = await page.locator('[data-testid="share-link"]').inputValue();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await page.locator('[data-testid="share-sheet"]').waitFor({ state: 'detached' });
+  await page.evaluate((hash) => (location.hash = hash), link.slice(link.indexOf('#')));
+  await page.locator('[data-testid="import-preview"]').waitFor({ timeout: 5000 });
+  await quiet(page);
 }
 
 const open = async (page, address) => {

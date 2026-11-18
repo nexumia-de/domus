@@ -2,6 +2,7 @@ import { initialState } from './app-state';
 import { connect } from './data';
 import { watchKeyboardInset } from './keyboard-inset';
 import { startNavigation } from './navigation';
+import { watchSyncTriggers } from './sync/browser-triggers';
 import { watchShareLinks } from './share/watch';
 import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
@@ -43,6 +44,8 @@ if (root) {
   startNavigation(store);
   watchShareLinks({ app: store, local: connection.data.local }, store, connection.ready);
   watchKeyboardInset();
+  watchSyncTriggers(connection.data.sync, store);
+  void connection.ready.then(() => connection.data.sync.start());
   draw();
 
   document.addEventListener('keydown', (event) => {

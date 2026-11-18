@@ -5,6 +5,7 @@ import { h } from '../../dom';
 import { type ScreenContext } from '../../screen';
 import { countingNames } from '../../stock/places-rules';
 import { type StockState } from '../../stock/state';
+import { syncView } from '../../sync/view';
 import { strings } from '../../strings';
 import { openSheet, stockAddress } from './sheet-address';
 
@@ -12,6 +13,8 @@ export function placesLine(
   context: ScreenContext,
   state: Extract<StockState, { kind: 'ready' }>,
 ): HTMLElement {
+  // Read the sync view now, so the Places sheet opens with it and does not redraw when it arrives.
+  syncView(context);
   return h(
     'div',
     { class: 'places-line' },

@@ -28,6 +28,13 @@ Build first (`npm run build`), then in `packages/app`, with
 for s in walk exchange browse list-keys stock places swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
 ```
 
+The Sync screens come from `e2e/sync.mjs`, which needs both Docker servers
+([sync backends](sync-backends.md#the-test-server)):
+
+```sh
+for size in "360 720" "1200 800"; do node e2e/sync.mjs $size --docs; done
+```
+
 A script writes only the files it names, so a file that no script
 writes is stale: add its screen to a script or delete it, and keep this
 page complete. `e2e/breakpoint.mjs` (839 and 840 px in dark) writes to
@@ -108,6 +115,18 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 | `app-stock-empty`         | <a href="screenshots/app-stock-empty-360x720.png"><img src="screenshots/app-stock-empty-360x720.png" alt="app-stock-empty at 360x720" width="180"></a>                         | <a href="screenshots/app-stock-empty-1200x800.png"><img src="screenshots/app-stock-empty-1200x800.png" alt="app-stock-empty at 1200x800" width="400"></a>                         |
 | `app-buy-next`            | <a href="screenshots/app-buy-next-360x720.png"><img src="screenshots/app-buy-next-360x720.png" alt="app-buy-next at 360x720" width="180"></a>                                  | <a href="screenshots/app-buy-next-1200x800.png"><img src="screenshots/app-buy-next-1200x800.png" alt="app-buy-next at 1200x800" width="400"></a>                                  |
 | `app-buy-next-open`       | <a href="screenshots/app-buy-next-open-360x720.png"><img src="screenshots/app-buy-next-open-360x720.png" alt="app-buy-next-open at 360x720" width="180"></a>                   | <a href="screenshots/app-buy-next-open-1200x800.png"><img src="screenshots/app-buy-next-open-1200x800.png" alt="app-buy-next-open at 1200x800" width="400"></a>                   |
+
+## Sync
+
+From `e2e/sync.mjs --docs` (needs the two Docker servers, [screens: sync](screens-sync.md#end-to-end-test)); test data only, the passphrase shown is generated for the run. Light theme.
+
+| Screen             | 360x720                                                                                                                                                                                 | 1200x800                                                                                                                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `app-sync-page`    | <a href="screenshots/app-sync-page-360x720.png"><img src="screenshots/app-sync-page-360x720.png" alt="Sync page: storages, places and their state lines at 360x720" width="180"></a>    | <a href="screenshots/app-sync-page-1200x800.png"><img src="screenshots/app-sync-page-1200x800.png" alt="Sync page: storages, places and their state lines at 1200x800" width="400"></a>    |
+| `app-sync-storage` | <a href="screenshots/app-sync-storage-360x720.png"><img src="screenshots/app-sync-storage-360x720.png" alt="Add Storage with the result of Test Connection at 360x720" width="180"></a> | <a href="screenshots/app-sync-storage-1200x800.png"><img src="screenshots/app-sync-storage-1200x800.png" alt="Add Storage with the result of Test Connection at 1200x800" width="400"></a> |
+| `app-sync-bind`    | <a href="screenshots/app-sync-bind-360x720.png"><img src="screenshots/app-sync-bind-360x720.png" alt="Sync This Place with the generated passphrase at 360x720" width="180"></a>        | <a href="screenshots/app-sync-bind-1200x800.png"><img src="screenshots/app-sync-bind-1200x800.png" alt="Sync This Place with the generated passphrase at 1200x800" width="400"></a>        |
+| `app-sync-share`   | <a href="screenshots/app-sync-share-360x720.png"><img src="screenshots/app-sync-share-360x720.png" alt="Share: the four values at 360x720" width="180"></a>                             | <a href="screenshots/app-sync-share-1200x800.png"><img src="screenshots/app-sync-share-1200x800.png" alt="Share: the four values at 1200x800" width="400"></a>                             |
+| `app-sync-join`    | <a href="screenshots/app-sync-join-360x720.png"><img src="screenshots/app-sync-join-360x720.png" alt="Join a Place at 360x720" width="180"></a>                                         | <a href="screenshots/app-sync-join-1200x800.png"><img src="screenshots/app-sync-join-1200x800.png" alt="Join a Place at 1200x800" width="400"></a>                                         |
 
 ## Spec editor
 

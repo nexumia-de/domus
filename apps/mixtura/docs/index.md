@@ -62,6 +62,7 @@ links. Change history is in [log.md](log.md).
 - [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the sections "As built" say what #18, #19, #20 and the alcohol filters of #37 do with the real seed data.
 - [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family; "As built" sections say what #25, #26 and #27 do.
 - [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About; the section "As built" says what #30 and #33 do.
+- [Screens: sync](screens-sync.md) - The Sync page under Settings: storages with Test Connection, places with their state line, Sync This Place, Share, Join, Move, Stop Syncing, the five triggers of a sync cycle, what is stored and derived, the end-to-end test, what was not verified.
 - [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.
 - [UI strings](ui-strings.md) - Every fixed text of the app, including empty, error and offline states.
 

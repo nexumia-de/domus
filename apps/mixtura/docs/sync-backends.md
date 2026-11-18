@@ -21,7 +21,8 @@ sources:
 How the app reaches the storage a user configured ([decision](decisions/stock-sync.md#bring-your-own-backend)).
 Built by issue #133: the WebDAV adapter, the device-local storages and
 bindings, the policy change and a server for the tests. The sync cycle is
-#134, the screens are #135; nothing here is visible in the app yet.
+#134 ([sync cycle](sync-cycle.md)); the screens that use the adapter, the
+storages and the bindings are #135 ([screens: sync](screens-sync.md)).
 
 ## What a backend must do
 
@@ -95,12 +96,18 @@ failure. This is "Test Connection" of the settings screen (#135).
   a first `PUT` was refused; the base folder itself must exist.
 - **A weak ETag never matches `If-Match`.** Apache sends a weak `ETag`
   (`W/"…"`) for a file written less than a second ago, so a conditional write
-  inside that second is a false `conflict`. The adapter passes etags on
-  unchanged; the sync cycle (#134) retries after a read, and because the merge
-  is safe without the condition ([decision, point 8](decisions/stock-sync.md#decision))
-  it may write unconditionally after a repeated `conflict`. Nextcloud has the
-  opposite weakness, an unchanged ETag within one second
-  ([spike](webdav-spike.md#nextcloud-keeps-the-etag-on-writes-within-one-second)).
+  inside that second used to be a false `conflict`; found with the test server
+  when the sync cycle's attempts were used up within that second. The adapter
+  now sends `If-Match` in the strong form (a leading `W/` is removed), and when
+  the ETag the caller passed was weak and the answer is `412` it waits 1,100 ms
+  and repeats that one write once before it reports `conflict`. The wait is an
+  injected function (`delay`), so unit tests do not wait; a strong ETag that
+  meets `412` is a conflict at once. `test/sync-webdav-integration.test.ts`
+  writes right after a read of a fresh file against the real server. Nextcloud
+  has the opposite weakness, an unchanged ETag within one second
+  ([spike](webdav-spike.md#nextcloud-keeps-the-etag-on-writes-within-one-second));
+  the merge is safe without the condition
+  ([decision, point 8](decisions/stock-sync.md#decision)).
 - **The `PUT` of the test server returns no ETag**; `write` then gives no
   `etag`, and the next read does.
 - **Redirects are followed** by `fetch`; a browser drops the `Authorization`
@@ -197,6 +204,19 @@ and `npm run e2e` need no server. CI runs both against the server in the job
 app's origin (with its policy and service worker), bundles the adapter into the
 page and does read, create, conditional write, conflict, a wrong password, a
 dead address, offline and a blocked address through the browser's own `fetch`.
+
+A second, independent server for the tests that need two storages
+(`e2e/sync.mjs`): `docker compose --profile second up -d` in the same folder
+starts it on port 8081 (`WEBDAV_PORT_2`, volume `dav-data-2`); users who run
+`docker compose up -d` get one server only. The addresses reach the scripts as
+`MIXTURA_WEBDAV_URL` and `MIXTURA_WEBDAV_URL_2`:
+
+```sh
+cd packages/app && MIXTURA_WEBDAV_URL=http://127.0.0.1:8080 MIXTURA_WEBDAV_URL_2=http://127.0.0.1:8081 MIXTURA_WEBDAV_PASSWORD=test node e2e/sync.mjs 360 720
+```
+
+Without both addresses `e2e/sync.mjs` prints "skipped" and ends successfully.
+Stop both with `docker compose --profile second down -v`.
 
 Editing `httpd.conf` after the container exists: `docker compose up -d --force-recreate`
 (a single-file bind mount keeps the old file when an editor replaces it).

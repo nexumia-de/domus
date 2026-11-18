@@ -53,6 +53,16 @@ if (url === undefined) {
       expect(now).toMatchObject({ ok: true, missing: false, body: '{"n":3}' });
     });
 
+    test('a conditional write right after a write succeeds although the server marks the ETag weak', async () => {
+      const key = `${folder}/weak.json`;
+      expect(await adapter.write(key, '{"w":1}', null)).toMatchObject({ ok: true });
+      const read = await adapter.read(key);
+      if (!read.ok || read.missing) throw new Error('the file should be there');
+      // Inside the first second Apache's ETag is weak; the adapter must still write.
+      expect(await adapter.write(key, '{"w":2}', read.etag)).toMatchObject({ ok: true });
+      expect(await adapter.read(key)).toMatchObject({ body: '{"w":2}' });
+    });
+
     test('an unconditional write replaces the file', async () => {
       expect(await adapter.write(path, '{"n":5}')).toMatchObject({ ok: true });
       expect(await adapter.read(path)).toMatchObject({ body: '{"n":5}' });
