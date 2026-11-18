@@ -1,0 +1,72 @@
+{
+  "id": "ratio-check-above-range",
+  "description": "Water at 75 parts is above 70 by 5; salt at 2.5 is above 2.2 by 0.3",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "lean dough",
+      "anchor": "flour",
+      "parts": {
+        "flour": 100,
+        "water": 65,
+        "salt": 2
+      },
+      "ranges": {
+        "water": {
+          "min": 60,
+          "max": 70
+        },
+        "salt": {
+          "min": 1.8,
+          "max": 2.2
+        }
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 1000
+      },
+      {
+        "name": "water",
+        "g": 750
+      },
+      {
+        "name": "salt",
+        "g": 25
+      }
+    ]
+  },
+  "expected": {
+    "parts": {
+      "flour": 100,
+      "water": 75.0,
+      "salt": 2.5
+    },
+    "share_pct": {
+      "flour": 56.338028,
+      "water": 42.253521,
+      "salt": 1.408451
+    },
+    "template_share_pct": {
+      "flour": 59.88024,
+      "water": 38.922156,
+      "salt": 1.197605
+    },
+    "delta_parts": {
+      "flour": 0,
+      "water": 10.0,
+      "salt": 0.5
+    },
+    "position": {
+      "water": "above",
+      "salt": "above"
+    },
+    "distance": {
+      "water": 5,
+      "salt": 0.3
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Parts = g x 100 / 1000, so water 75 and salt 2.5; ranges water 60-70, salt 1.8-2.2; total 1775 g, shares 100 x g / 1775; template shares 100 x parts / 167. Distance above: 75 - 70 = 5 and 2.5 - 2.2 = 0.3. synthetic template numbers chosen for the arithmetic, not from a source"
+}

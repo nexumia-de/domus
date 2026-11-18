@@ -1,0 +1,32 @@
+{
+  "id": "resolve-error-duplicate-role",
+  "description": "A root with the same role twice",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "twice",
+        "name": "twice",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "flour",
+            "parts": 2
+          }
+        ],
+        "anchor": "flour"
+      }
+    ],
+    "id": "twice"
+  },
+  "error_code": "duplicate-role",
+  "error_detail": {
+    "templateId": "twice",
+    "role": "flour"
+  },
+  "source": "flour twice; synthetic template numbers chosen for the arithmetic, not from a source"
+}

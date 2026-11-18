@@ -1,0 +1,16 @@
+{
+  "id": "salt-brine-5-percent",
+  "description": "5 % brine from 1000 g of water",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 1000,
+    "pct": 5,
+    "basis": "brine"
+  },
+  "expected": {
+    "salt_g": 52.631579,
+    "total_g": 1052.631579
+  },
+  "tolerance": 1e-6,
+  "source": "salt = 1000 x 5 / 95 = 52.631579 g; total 1052.631579 g; check 100 x 52.631579 / 1052.631579 = 5 %; synthetic amounts"
+}

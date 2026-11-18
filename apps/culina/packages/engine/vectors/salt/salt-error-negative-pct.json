@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-negative-pct",
+  "description": "A negative percentage",
+  "inputs": {
+    "kind": "salt_percent",
+    "food_g": 1000,
+    "pct": -1,
+    "basis": "food"
+  },
+  "error_code": "pct-out-of-range",
+  "source": "pct must not be negative"
+}

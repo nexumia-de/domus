@@ -1,0 +1,16 @@
+{
+  "id": "salt-water-6-percent",
+  "description": "The same 6 % on basis water gives 120 g",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 2000,
+    "pct": 6,
+    "basis": "water"
+  },
+  "expected": {
+    "salt_g": 120,
+    "total_g": 2120
+  },
+  "tolerance": 1e-6,
+  "source": "salt = 2000 x 6 / 100 = 120 g; total 2120 g; synthetic amounts"
+}

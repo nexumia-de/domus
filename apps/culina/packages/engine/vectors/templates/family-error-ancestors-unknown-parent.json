@@ -1,0 +1,30 @@
+{
+  "id": "family-error-ancestors-unknown-parent",
+  "description": "Ancestors with a missing parent",
+  "inputs": {
+    "kind": "template_family",
+    "templates": [
+      {
+        "id": "sweet-pie",
+        "name": "sweet-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "sugar",
+            "parts": 1
+          }
+        ]
+      }
+    ],
+    "id": "sweet-pie",
+    "query": "ancestors"
+  },
+  "error_code": "unknown-parent",
+  "error_detail": {
+    "templateId": "sweet-pie",
+    "parentId": "pie"
+  },
+  "source": "sweet-pie without its parent in the set; synthetic template numbers chosen for the arithmetic, not from a source"
+}

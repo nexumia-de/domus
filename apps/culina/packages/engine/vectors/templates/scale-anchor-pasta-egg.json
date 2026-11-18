@@ -1,0 +1,26 @@
+{
+  "id": "scale-anchor-pasta-egg",
+  "description": "Pasta dough 3:2 from 165 g of egg",
+  "inputs": {
+    "kind": "scale_anchor",
+    "template": {
+      "name": "pasta dough",
+      "parts": {
+        "flour": 3,
+        "egg": 2
+      }
+    },
+    "anchor": {
+      "name": "egg",
+      "g": 165
+    }
+  },
+  "expected": {
+    "g": {
+      "flour": 247.5,
+      "egg": 165
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "docs/vectors.md#4-scaling-from-an-anchor-pasta-from-the-egg; template from docs/ratios.md (excerpt only), egg mass synthetic"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-negative-mass",
+  "description": "A negative mass",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": -5,
+    "pct": 2,
+    "basis": "water"
+  },
+  "error_code": "invalid-value",
+  "source": "a mass is not negative"
+}

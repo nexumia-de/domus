@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-brine-above-100",
+  "description": "A brine above 100 % is impossible",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 1000,
+    "pct": 120,
+    "basis": "brine"
+  },
+  "error_code": "pct-out-of-range",
+  "source": "pct is salt per 100 of salt plus water; it cannot pass 100"
+}

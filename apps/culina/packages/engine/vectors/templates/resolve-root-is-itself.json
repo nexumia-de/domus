@@ -1,0 +1,42 @@
+{
+  "id": "resolve-root-is-itself",
+  "description": "A root resolves to its own parts; the lineage is the root alone",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      }
+    ],
+    "id": "pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 1
+    },
+    "lineage": ["pie"],
+    "anchor": "flour"
+  },
+  "tolerance": 1e-6,
+  "source": "Parts 3:2:1 as the Pie dough row of docs/ratios.md; synthetic template numbers chosen for the arithmetic, not from a source"
+}

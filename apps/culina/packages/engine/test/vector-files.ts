@@ -11,6 +11,8 @@ export interface Vector {
   expected?: Record<string, unknown>;
   error_code?: string;
   error_line_id?: string;
+  /** Fields the error must carry (a subset), for example `role` or `path`. */
+  error_detail?: Record<string, unknown>;
   tolerance: number;
   source: string;
 }
@@ -60,5 +62,8 @@ export function expectError(
   expect(result.error?.code, vector.id).toBe(vector.error_code);
   if (vector.error_line_id !== undefined) {
     expect(result.error?.lineId, vector.id).toBe(vector.error_line_id);
+  }
+  if (vector.error_detail !== undefined) {
+    expect(result.error, vector.id).toMatchObject(vector.error_detail);
   }
 }

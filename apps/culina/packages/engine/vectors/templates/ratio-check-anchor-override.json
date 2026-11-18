@@ -1,0 +1,55 @@
+{
+  "id": "ratio-check-anchor-override",
+  "description": "The anchor given with the call replaces the template's: anchor fat 200 g has 2 parts",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      },
+      "anchor": "flour"
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 360
+      },
+      {
+        "name": "fat",
+        "g": 200
+      },
+      {
+        "name": "water",
+        "g": 90
+      }
+    ],
+    "anchor": "fat"
+  },
+  "expected": {
+    "parts": {
+      "flour": 3.6,
+      "fat": 2,
+      "water": 0.9
+    },
+    "share_pct": {
+      "flour": 55.384615,
+      "fat": 30.769231,
+      "water": 13.846154
+    },
+    "template_share_pct": {
+      "flour": 50,
+      "fat": 33.333333,
+      "water": 16.666667
+    },
+    "delta_parts": {
+      "flour": 0.6,
+      "fat": 0,
+      "water": -0.1
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Scale = 2 / 200 = 0.01 parts per gram: flour 3.6, water 0.9; total 650 g. Template 3:2:1 from docs/ratios.md; amounts synthetic"
+}

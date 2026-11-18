@@ -1,0 +1,16 @@
+{
+  "id": "salt-food-2-percent",
+  "description": "Salt on the food: 2 % of 2000 g",
+  "inputs": {
+    "kind": "salt_percent",
+    "food_g": 2000,
+    "pct": 2,
+    "basis": "food"
+  },
+  "expected": {
+    "salt_g": 40,
+    "total_g": 2040
+  },
+  "tolerance": 1e-6,
+  "source": "salt = 2000 x 2 / 100 = 40 g; total 2040 g; synthetic amounts"
+}

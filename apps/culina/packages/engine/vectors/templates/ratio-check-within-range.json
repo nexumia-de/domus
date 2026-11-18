@@ -1,0 +1,72 @@
+{
+  "id": "ratio-check-within-range",
+  "description": "Water 65 and salt 2 are within their ranges",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "lean dough",
+      "anchor": "flour",
+      "parts": {
+        "flour": 100,
+        "water": 65,
+        "salt": 2
+      },
+      "ranges": {
+        "water": {
+          "min": 60,
+          "max": 70
+        },
+        "salt": {
+          "min": 1.8,
+          "max": 2.2
+        }
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 1000
+      },
+      {
+        "name": "water",
+        "g": 650
+      },
+      {
+        "name": "salt",
+        "g": 20
+      }
+    ]
+  },
+  "expected": {
+    "parts": {
+      "flour": 100,
+      "water": 65.0,
+      "salt": 2.0
+    },
+    "share_pct": {
+      "flour": 59.88024,
+      "water": 38.922156,
+      "salt": 1.197605
+    },
+    "template_share_pct": {
+      "flour": 59.88024,
+      "water": 38.922156,
+      "salt": 1.197605
+    },
+    "delta_parts": {
+      "flour": 0,
+      "water": 0.0,
+      "salt": 0.0
+    },
+    "position": {
+      "water": "within",
+      "salt": "within"
+    },
+    "distance": {
+      "water": 0,
+      "salt": 0
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Parts = g x 100 / 1000, so water 65 and salt 2; ranges water 60-70, salt 1.8-2.2; total 1670 g, shares 100 x g / 1670; template shares 100 x parts / 167. synthetic template numbers chosen for the arithmetic, not from a source"
+}

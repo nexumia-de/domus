@@ -1,0 +1,16 @@
+{
+  "id": "salt-brine-6-percent",
+  "description": "6 % brine by mass of brine from 2000 g of water",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 2000,
+    "pct": 6,
+    "basis": "brine"
+  },
+  "expected": {
+    "salt_g": 127.659574,
+    "total_g": 2127.659574
+  },
+  "tolerance": 1e-6,
+  "source": "docs/vectors.md#5-salt-by-basis-a-6-brine; 6 % lies in the corrected range 5-9 % of docs/ratios.md (excerpt only)"
+}

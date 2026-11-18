@@ -1,0 +1,17 @@
+{
+  "id": "percent-error-no-anchor",
+  "description": "A template without an anchor has no percentages",
+  "inputs": {
+    "kind": "template_percent",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    }
+  },
+  "error_code": "no-anchor",
+  "source": "data-model: no anchor means no percentages"
+}
