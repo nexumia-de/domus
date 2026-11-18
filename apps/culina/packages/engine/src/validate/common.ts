@@ -8,6 +8,7 @@ export interface Known {
   ingredients: ReadonlySet<string>;
   templates: ReadonlySet<string>;
   components: ReadonlySet<string>;
+  dishes: ReadonlySet<string>;
 }
 
 type Extra = Partial<Omit<Finding, 'code' | 'kind' | 'id'>>;

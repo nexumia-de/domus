@@ -37,9 +37,6 @@
     "version": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/version"
     },
-    "tastings": {
-      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/tastings"
-    },
     "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
   }
 }

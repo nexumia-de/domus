@@ -132,9 +132,9 @@ whole model inline (`inputs.model`, the collections of the export file in the
 stored shapes) and is self-contained. `expected` is `{ ok, findings }` and is
 compared exactly, findings in order; `tolerance` is 0.
 
-| `kind`           | Inputs                                                                                             | Expected                                                                                             |
-| ---------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `validate_model` | `model`: any of `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities` (arrays) | `ok`; `findings`: `code`, `kind`, `id`, optional `path`, `ref`, `ids`, `role`, in the engine's order |
+| `kind`           | Inputs                                                                                                         | Expected                                                                                             |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `validate_model` | `model`: any of `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`, `tastings` (arrays) | `ok`; `findings`: `code`, `kind`, `id`, optional `path`, `ref`, `ids`, `role`, in the engine's order |
 
 # Worked examples
 

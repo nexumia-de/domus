@@ -118,6 +118,7 @@ export type {
   ModelIngredient,
   ModelInput,
   ModelStock,
+  ModelTasting,
   ModelVersion,
   ValidationResult,
 } from './validate/types';

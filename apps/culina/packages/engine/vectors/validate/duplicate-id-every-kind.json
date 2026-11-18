@@ -145,6 +145,26 @@
           "a": "salt",
           "b": "salt"
         }
+      ],
+      "tastings": [
+        {
+          "id": "n",
+          "ref": {
+            "kind": "component",
+            "id": "c"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n",
+          "ref": {
+            "kind": "component",
+            "id": "c"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
       ]
     }
   },
@@ -180,6 +200,11 @@
         "code": "duplicate-id",
         "kind": "affinity",
         "id": "f"
+      },
+      {
+        "code": "duplicate-id",
+        "kind": "tasting",
+        "id": "n"
       }
     ]
   },

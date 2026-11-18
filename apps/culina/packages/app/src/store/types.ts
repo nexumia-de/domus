@@ -8,6 +8,7 @@ export const KINDS = [
   'dishes',
   'stock',
   'affinities',
+  'tastings',
 ] as const;
 export type Kind = (typeof KINDS)[number];
 
@@ -36,6 +37,7 @@ export const emptyRows = (): Rows => ({
   dishes: [],
   stock: [],
   affinities: [],
+  tastings: [],
 });
 
 export type ErrorCode =
