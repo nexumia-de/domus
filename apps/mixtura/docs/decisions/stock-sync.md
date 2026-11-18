@@ -188,6 +188,9 @@ will use the same place as Mixtura: one place id, one storage folder, one invite
   is still read. The default folder is `household` instead of `mixtura`; existing
   bindings keep the folder they stored, and joining by hand with the default
   folder looks once in `mixtura` when it finds no file ([screens](../screens-sync.md#places)).
+  The owner chose these on 2026-11-18 over `domus-invite` and the folder `domus`,
+  because the name of the apps' umbrella is not settled; names tied to materia and
+  to no brand do not depend on it.
 - **Dropped.** Issue #153's first item (places as `materia-unit` documents that
   carry unknown collections) is not done: no app writes into another app's file, so
   nothing needs to carry foreign collections. Moving places to `materia-unit` is
