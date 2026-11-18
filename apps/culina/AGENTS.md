@@ -21,10 +21,13 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
   needs too moves to materia by a pull request there.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
-- **Not a recipe manager.** Recipe import, meal plans and shopping lists
-  exist in Mealie, Tandoor and Grocy
-  ([existing tools](docs/existing-tools.md)); Culina does not rebuild
-  them.
+- **Your own recipe book**: recipes are components and dishes with
+  versions. No scraping of recipe sites and no meal plans; those exist
+  in Mealie, Tandoor and Grocy
+  ([existing tools](docs/existing-tools.md)). No shopping list inside
+  Culina: that is the planned sister app emptio; Culina only offers to
+  hand missing ingredients to it
+  ([decision](docs/decisions/recipe-book.md)).
 - **Sources and licences.** Every ratio, pairing and data set names its
   source and licence. No data from FlavorDB or RecipeNLG.
 - No code copied from Mixtura or materia.
