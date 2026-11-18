@@ -1,0 +1,221 @@
+/* Editors, buttons, the picker and the toast: every colour, size and space is a token. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-width: var(--target);
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn[disabled] {
+  opacity: var(--dim);
+  cursor: default;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+}
+
+.detail-actions {
+  margin-top: var(--sp-2);
+}
+
+.new-link,
+.make-link {
+  margin: 0 0 var(--sp-3);
+}
+
+.editor h2 {
+  margin: var(--sp-5) 0 var(--sp-2);
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.editor .field-wrap,
+.editor .field,
+.editor .btn {
+  scroll-margin-block: var(--sp-6);
+}
+
+.area {
+  resize: vertical;
+}
+
+.line-edits {
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.line-edit {
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.pick-btn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 0 var(--sp-2);
+  text-align: start;
+}
+
+.pick-name {
+  overflow-wrap: anywhere;
+}
+
+.line-amount {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+
+.line-amount .field-wrap {
+  flex: 1 1 6rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.line-amount select {
+  flex: 0 1 6rem;
+  width: auto;
+  min-width: 4.5rem;
+}
+
+.unit-fixed {
+  display: inline-flex;
+  align-items: center;
+  min-width: 4.5rem;
+  min-height: var(--target);
+  padding: 0 var(--sp-3);
+  color: var(--text-muted);
+}
+
+.line-figure {
+  min-height: 1.5em;
+  margin: var(--sp-1) 0 var(--sp-2);
+}
+
+.line-actions {
+  margin: 0;
+}
+
+.slot-edit select {
+  margin-bottom: var(--sp-2);
+}
+
+.picker {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--divider);
+}
+
+.picker-rows {
+  margin-bottom: var(--sp-2);
+}
+
+.picker-choice {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--fs-md);
+  text-align: start;
+  cursor: pointer;
+}
+
+.picker-blocked {
+  color: var(--text-muted);
+}
+
+.picker-empty {
+  padding: var(--sp-3);
+  color: var(--text-muted);
+}
+
+.picker-create {
+  margin-bottom: var(--sp-2);
+}
+
+.create {
+  padding: var(--sp-3);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+.create select {
+  margin-bottom: var(--sp-3);
+}
+
+.editor-end {
+  margin-top: var(--sp-5);
+}
+
+.ratio-info {
+  margin-top: var(--sp-4);
+}
+
+/* The toast sits above the bottom navigation on a phone and in the corner from 720 px. */
+.toast-host {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: calc(var(--nav-h) + var(--sp-3));
+  left: var(--sp-4);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: inset var(--sp-1) 0 0 var(--accent);
+  pointer-events: auto;
+}
+
+.toast-text {
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .toast-host {
+    left: auto;
+    bottom: var(--sp-4);
+    width: 24rem;
+  }
+}

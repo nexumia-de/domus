@@ -72,10 +72,10 @@ TypeScript, installed for that build only).
   `src/router.ts` (hash router), `src/prefs.ts` (theme in `localStorage`),
   `src/theme-init.ts`, `src/sw-register.ts`, `src/sw.ts`, `src/strings.ts`
   (all visible texts), `src/engine-info.ts` (the app's one use of the
-  engine), `src/shell/` (landmarks, navigation), `src/screens/` (screens and their
-  parts), `src/shared/` (number entry, mass display, search), `src/ratios/`,
+  engine), `src/shell/` (landmarks, navigation, toast), `src/screens/` (screens and their
+  parts), `src/shared/` (number entry, mass display, search), `src/notebook/` (the in-memory notebook over the store: reads, writes, drafts, example data), `src/editor/` (form state of the editors, without DOM), `src/ratios/`,
   `src/components/` and `src/dishes/` (view logic without DOM), `src/demo/`
-  (example records behind one access module), `src/records.ts` (record types), `src/styles/` (`tokens.css` and token-only stylesheets),
+  (the example records as plain data), `src/records.ts` (record types), `src/styles/` (`tokens.css` and token-only stylesheets),
   `src/icons/` (navigation icons), `src/assets/` (app icons: SVG and PNG),
   `scripts/make-icons.mjs` (`npm run icons -w @culina/app`, rasterises the SVGs),
   `test/` (vitest), `e2e/` (Playwright scripts, below).
@@ -111,8 +111,8 @@ so Ajv cannot compile schemas in the browser.
 ESM. It runs as `pretest`, `pretypecheck` and at the start of `build.mjs`.
 esbuild bundles the two Ajv runtime helpers the code imports.
 
-**E2E hook of the store.** No screen writes yet, so `e2e/store.mjs` opens the
-app with `?e2e-store`; `src/main.ts` then loads `src/store/e2e-hook.ts`,
+**E2E hook of the store.** `e2e/store.mjs` and `e2e/editor.mjs` open the
+app with `?e2e-store` to read and write the store directly; `src/main.ts` then loads `src/store/e2e-hook.ts`,
 which puts the opened store, as a promise, on `globalThis.__culinaStore`.
 Without that query nothing is exposed and the store is not opened. The
 test also changes the cache version in `dist/sw.js` to simulate an update

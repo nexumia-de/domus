@@ -1,10 +1,11 @@
-// The local store: the one entry point for the app. Nothing in a screen opens it yet.
+// The local store: the one entry point for the app (opened once at startup by src/notebook).
 export { checkStore } from './check';
 export { openStore } from './open';
 export type { OpenOptions, OpenResult } from './open';
 export { persistenceState, requestPersistence, storageEstimate } from './persistence';
 export type { PersistenceState } from './persistence';
 export type { ReadStore, Store } from './repository';
+export type { Draft, Drafts } from './drafts';
 export { setStoreLogSink } from './log';
 export { KINDS } from './types';
 export type {

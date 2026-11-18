@@ -13,6 +13,12 @@ export interface IngredientRecord {
   name: string;
   roles?: string[];
   yields?: IngredientYield[];
+  shelfLife?: {
+    state: FoodState;
+    storage: 'pantry' | 'fridge' | 'freezer';
+    days: number;
+    source: string;
+  }[];
   densityGPerMl?: { value: number; source: string };
   unitWeightG?: { value: number; source: string };
   note?: string;

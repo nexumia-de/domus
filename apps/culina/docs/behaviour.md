@@ -16,9 +16,9 @@ sources:
 # Behaviour
 
 What Cook's Notebook does today. It has four screens; Ratios, Components
-and Dishes have their content (read only), and nothing is stored: Components
-and Dishes show hand-written example data, and stored user data comes with
-later issues. Colours, type and layout are in
+and Dishes have their content, and Components and Dishes can be written and
+edited by the user ([editor](#editor)); what is entered is kept in the local
+store. Colours, type and layout are in
 [design](design.md). The audience is an experienced cook who wants the
 numbers fast: no tutorial, no first-run tour. The same conventions as
 Mixtura[^mixtura].
@@ -43,7 +43,8 @@ The seed templates of the engine (`SEED_TEMPLATES`, 12 today), shown by
 `ratio-calculator.ts` and `ratio-compare.ts`. All arithmetic is the
 engine's; the app formats. The pure view logic is in `src/ratios/`
 (`families.ts`, `search.ts`, `parse.ts`, `calc.ts`, `compare.ts`,
-`format.ts`), without DOM. Nothing is stored and nothing can be edited.
+`format.ts`), without DOM. A ratio is read only; the calculator's amounts can
+start a component ([editor](#editor)).
 
 **Routes.** `#/ratios` is the list, `#/ratios/<templateId>` a card. An
 unknown id shows the list with a quiet line ("That ratio is not in the
@@ -142,15 +143,15 @@ view logic without DOM in `src/components/` (`lines.ts`, `figures.ts`,
 `bakersPercent`, `componentYield`, `expandComponent`, `portionsFromYield`,
 `toPurchased`); the app rounds once for display (`src/shared/mass.ts`).
 
-**Data and the example-data rule.** Records come from one module,
-`src/demo/index.ts` (`listComponents`, `getComponent`, `listDishes`,
-`getDish`, `ingredientName`, `factsByIngredient`), so the store can replace
-it later without touching a screen. Today it serves 12 ingredients, 5
-components and 2 dishes written by hand: valid against the schemas, no
-`validateModel` finding, every name, note and yield source says "Example",
-all numbers are made-up round figures, none is a real recipe or a real
-yield. Both lists carry one quiet line ("Example data. Your own components
-come with the notebook."). **Test:** `test/demo-data.test.ts`.
+**Data and the example-data rule.** Records come from the notebook in memory
+(`src/notebook/`: `listComponents`, `getComponent`, `listDishes`, `getDish`,
+`ingredientName`, `factsByIngredient`), filled from the local store at
+startup ([editor](#editor)). The hand-written example set stays in
+`src/demo/` as plain data: 12 ingredients, 5 components and 2 dishes, valid
+against the schemas, no `validateModel` finding, every name, note and yield
+source says "Example", all numbers are made-up round figures, none is a real
+recipe or a real yield. It reaches the store only through "Add example
+data". **Test:** `test/demo-data.test.ts`.
 
 **Routes and list.** `#/components` is the list, `#/components/<id>` the
 screen; an unknown id shows the list with a quiet line and keeps the URL.
@@ -196,8 +197,8 @@ fixture.
 `yield-loss`, `yield-gain`, `yield-unknown`, `portions-remainder`,
 `portions-exact`, `portions-binary-noise` and the error vectors from disk and
 checks the view functions against them and against direct engine calls on
-the demo data. `e2e/components.mjs` compares the rendered tables with numbers
-that `e2e/notebook-fixture.mjs` computes by calling the engine on the demo
+the example data. `e2e/components.mjs` loads it through "Add example data" and compares the rendered tables with numbers
+that `e2e/notebook-fixture.mjs` computes by calling the engine on the example
 data (200 g of the sauce, three levels deep, 75 g portions, a factor of 2,
 the dough's percentages).
 
@@ -241,6 +242,116 @@ slot, line and raw tables use a fixed layout, so long names wrap, very long
 numbers wrap inside their cell and nothing scrolls sideways (tested at 360 px
 with the longest ingredient name, three levels of nesting and 9-digit
 entries). Every link, button and field is at least 44 x 44 px.
+
+# Editor
+
+Issue #16. The user writes components and dishes the way a cook thinks:
+amounts by weight or as baker's percentages, switchable at any time. Data
+goes into the local store; every figure shown is derived and never stored.
+Routes: `#/components/new`, `#/components/<id>/edit`, `#/dishes/new`,
+`#/dishes/<id>/edit` (`src/router.ts`, `action` in the navigation). Code:
+form state and its translations without DOM in `src/editor/`
+(`component-form.ts`, `component-convert.ts`, `figures.ts`, `cycle.ts`,
+`dish-form.ts`, `ingredient-form.ts`, `prefill.ts`), the screens in
+`src/screens/editor/`, the notebook access in `src/notebook/`.
+**Test:** `test/editor-component.test.ts`, `test/notebook.test.ts`,
+`test/router.test.ts`, `e2e/editor.mjs`, `e2e/editor-more.mjs`.
+
+**The notebook and the store.** The screens read the notebook from memory
+(`src/notebook/`, replacing `src/demo/index.ts` as their data access): the
+store is opened and read once before the first screen, and a write goes
+through the store (which validates it) first and changes the memory only
+when the store accepted it. A store that cannot open (`unavailable`,
+`newer-schema`, `migration-failed`) leaves the empty notebook and says why
+in one quiet line on the lists, in Settings and when a save is tried; the
+app never crashes on it. Lists are sorted by name, ignoring case.
+
+**Empty notebook.** Components and Dishes say, quietly, that nothing is
+there yet and invite ("Add a component", "Add a dish"). "Add example data"
+(on the empty lists and in Settings) writes the hand-written example
+records into the store through the same writes; they stay marked "Example"
+in name, note and yield source, can be edited and deleted like any record,
+and are not added twice. **Test:** `test/notebook.test.ts`, `e2e/components.mjs`
+(which loads them this way first).
+
+**Component editor.** Name, the role it usually fills in a dish, ingredients
+and sub-components with amount and unit (every unit of the schemas; a
+sub-component takes a mass), the yield as weighed (left empty until then;
+the source is `user`), and method and notes (one per line, stored as
+`method`). A line without an amount is kept ("to taste"). The state and
+note of an existing line are kept as they are.
+
+- **Weight or percent.** The two radio buttons switch at any time. In
+  percent entry the lines that are not the reference are percent of the
+  reference mass (`percentBase`, `percent` lines in the stored record);
+  the reference lines (role = `percentBase`) stay in their mass unit, so
+  several flours add up. Switching converts every line with the engine's
+  `convertComponentLines` ([engine rules](engine-rules.md#converting-lines-between-weight-and-percent));
+  the app does no arithmetic of its own. Choosing the reference ingredient
+  in percent entry converts the lines anew; without one the lines stay
+  weights until one is chosen. Each percent line shows the grams it comes
+  to, each weight line its percent of the reference, both from
+  `componentLineGrams` and `bakersPercent`. A line the engine cannot
+  convert (a cup of an ingredient without a density) is said quietly and
+  nothing changes. **Test:** `test/editor-component.test.ts` (grams unchanged
+  by the conversion), `e2e/editor.mjs` (percentages equal the engine's,
+  switch to weight, reload, values equal).
+- **Ingredient picker.** Search over the user's own ingredients (or
+  components, for a sub-component line); an ingredient is created on the
+  spot with a name, an optional role, an optional yield (percent of the
+  purchased weight) and an optional shelf life, all with the source `user`.
+  Nothing is looked up outside the device.
+- **Cycles.** A component that is the one edited, or that uses it
+  (directly or through another), is shown in the picker as "this component"
+  or "uses this component" and cannot be chosen; a draft that would still
+  make a cycle is not stored and says so. The check is the engine's
+  `validateModel`. **Test:** `e2e/editor.mjs`.
+- **Make a recipe from this ratio.** The calculator section of a ratio
+  card has the link; it opens `#/components/new` with one line per role of
+  the ratio, amounts as the calculator shows them, the role kept and the
+  template in `templateId`; the anchor role is the reference. The
+  ingredient of each line is still to pick and a line without one is only
+  in the draft: saving says so quietly. The usual range of the ratio is
+  shown under the lines as information, in the neutral words of the ratio
+  card, and never blocks saving. **Test:** `e2e/editor-more.mjs`.
+
+**Dish editor.** Name, portions (a whole number or empty), a note, and role
+slots: a role, a filling (a component or an ingredient, from the same
+picker) and an amount per portion. A stored slot always has a filling; a
+slot without one lives only in the draft. Open roles remain derived on the
+dish screen. **Test:** `test/notebook.test.ts`, `e2e/editor-more.mjs`.
+
+**What blocks saving.** Only what cannot be stored: no name, no line or
+slot, a line or slot without its ingredient or filling, an amount that is
+not a number above 0 (empty is allowed), a portions or yield entry that is
+not, a cycle. Each is one quiet sentence next to Save (`strings.editor.needs`).
+Nothing about the recipe itself ever blocks: ranges are information. A new
+record is its own version family with the date of the store's clock
+(`version.family` = its id); saving an edit overwrites the record in place
+(version history is a later issue). Ids are `u-` and a random UUID, made in
+the app shell.
+
+**Drafts.** Every change is kept as a draft in the store's own `drafts`
+object store ([data model](data-model.md#drafts)) after a pause of 0.3 s,
+and at once when the screen is left or the page is hidden. One draft per
+edited record, one for "new component", one for "new dish". Opening the
+editor again shows the draft's state directly, without a dialog. Save
+removes the draft; "Discard changes" removes it and shows the stored record
+(or an empty form) again. **Test:** `test/store-drafts.test.ts`,
+`e2e/editor.mjs` (leave at once, return, reload).
+
+**Delete.** "Delete" on a component or dish, and in its editor, acts at once:
+the record is tombstoned in the store and a toast offers "Undo" for 10
+seconds; there is no confirmation dialog. Undo writes the kept record again.
+**Test:** `e2e/editor.mjs`, `e2e/editor-more.mjs`.
+
+**Form behaviour.** No field is focused when an editor opens. A field that
+gets focus scrolls clear of the on-screen keyboard (`scroll-margin` on the
+form controls; the page itself scrolls). Every control is at least 44 x 44
+px. Lines and slots are reordered with "Move up" and "Move down" buttons
+(focus follows the moved line); there is no drag-only interaction. The
+screens fit 360 px without horizontal scroll. **Test:** `e2e/editor.mjs`
+(`layout`), `e2e/editor-more.mjs`.
 
 # Navigation
 
@@ -294,14 +405,14 @@ entries). Every link, button and field is at least 44 x 44 px.
 
 | State   | Behaviour                                                                                                                                                                                                                                                                                      |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Empty   | Components, Dishes and Ratios: an empty search is one quiet line; a list without a detail (desktop) says to choose one. An open dish slot is an invitation, never an error.                                                                                                                    |
+| Empty   | Components, Dishes and Ratios: an empty search is one quiet line; a list without a detail (desktop) says to choose one. An empty notebook invites ("Add a component", "Add example data"). An open dish slot is an invitation, never an error.                                                 |
 | Error   | The shell has no network and no data to fail on. One error exists: the theme cannot be stored (private mode, blocked storage, full). The choice then applies until the page closes and Settings says so in a `role="status"` line. **Test:** `test/prefs.test.ts` (the write reports `false`). |
 | Offline | The whole app is precached: every screen, the stylesheet, the icons and the manifest work without a connection and there is no offline banner, since nothing needs the network. **Test:** `e2e/smoke.mjs` (offline reload renders and navigates).                                              |
 
 # Local store
 
 The app keeps what the user enters in IndexedDB ([data model](data-model.md#storage-and-migrations));
-no screen writes yet. Settings shows one quiet line about it, read with
+the editors write ([editor](#editor)). Settings shows one quiet line about it, read with
 `navigator.storage.persisted()` (the request is made when the user first
 saves something):
 
@@ -314,7 +425,7 @@ saves something):
 **Test:** `e2e/store.mjs`, `test/store-persistence.test.ts`.
 
 Texts for the store's errors (`strings.store`, shown by the editing
-screens later; none says a recipe is wrong):
+screens; none says a recipe is wrong):
 
 | Code               | Text                                                                              |
 | ------------------ | --------------------------------------------------------------------------------- |

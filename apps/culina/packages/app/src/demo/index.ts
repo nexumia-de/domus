@@ -1,6 +1,8 @@
-// The one access point of the screens to the notebook's records. Today it serves hand-written
-// example data; the local store replaces this module without touching the screens.
+// The example set as plain data, with the same reading functions the notebook has. The screens
+// do not use it: it reaches the store through "Add example data" (src/notebook/examples.ts), and
+// the tests and the browser fixture read the examples from here.
 import type { FactsByIngredient } from '@culina/engine';
+import { buildNotebook, factsOf } from '../notebook/build';
 import type { ComponentRecord, DishRecord, IngredientRecord, Notebook } from '../records';
 import { COMPONENTS } from './components';
 import { DISHES } from './dishes';
@@ -18,22 +20,6 @@ export const getIngredient = (id: string): IngredientRecord | undefined =>
 /** The name of an ingredient; the id itself when the record is not there. */
 export const ingredientName = (id: string): string => getIngredient(id)?.name ?? id;
 
-/** Density and piece weight per ingredient id, for the engine's conversions. */
-export const factsByIngredient = (): FactsByIngredient =>
-  Object.fromEntries(
-    INGREDIENTS.map((i) => [
-      i.id,
-      {
-        ...(i.densityGPerMl === undefined ? {} : { densityGPerMl: i.densityGPerMl.value }),
-        ...(i.unitWeightG === undefined ? {} : { unitWeightG: i.unitWeightG.value }),
-      },
-    ]),
-  );
+export const factsByIngredient = (): FactsByIngredient => factsOf(INGREDIENTS);
 
-/** What the view logic reads, all from this module. */
-export const notebook = (): Notebook => ({
-  components: COMPONENTS,
-  facts: factsByIngredient(),
-  ingredientName,
-  ingredientYields: (id) => getIngredient(id)?.yields,
-});
+export const notebook = (): Notebook => buildNotebook(INGREDIENTS, COMPONENTS);

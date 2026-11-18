@@ -1,6 +1,8 @@
 // `npm run e2e`: build, serve dist/, run the browser checks. Exit code 1 on any failure.
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 import { components } from './components.mjs';
+import { editor } from './editor.mjs';
+import { editorMore } from './editor-more.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { install } from './install.mjs';
 import { ratios } from './ratios.mjs';
@@ -16,6 +18,8 @@ try {
   await smoke(browser, server, subServer);
   await ratios(browser, server);
   await components(browser, server);
+  await editor(browser, server);
+  await editorMore(browser, server);
   await install(browser, server);
   await store(browser, server);
 } catch (error) {

@@ -639,14 +639,13 @@ rolled back when a data migration fails, so it only serves to create the
 object stores (`onupgradeneeded`), which creates every store that is
 missing and touches no row. IndexedDB's version is 1 for the first six
 kinds plus `meta` and `backup` and **2** since `tastings` was added
-(issue 50): a browser that already holds version 1 of the database gets the
+(issue 50) and **3** since `drafts` was added (issue 16, see [drafts](#drafts)): a browser that already holds version 1 of the database gets the
 new store on the next open and keeps its rows (`test/store-tastings.test.ts`
 builds the old layout and opens it). Migrations are an ordered list
 `{ from: n, to: n + 1, migrate(rows) }` of pure functions over plain data
 (`src/store/migrations/`); the schema version is 1 plus the number of
 migrations. There is none yet, and none was written for tasting notes:
-the data schema version stays 1 because nothing is released and no screen
-writes yet. A record stored by the commit before issue 50 could still hold
+the data schema version stays 1 because nothing is released. A record stored by the commit before issue 50 could still hold
 a `tastings` list inside a component or dish, since the old schema allowed
 it; such a record is neither migrated nor validated on read (only `put`
 validates), it is rejected when it is written again, and the list is
@@ -689,6 +688,20 @@ text (ids are a branded type that only accepts id-shaped strings). The log
 is a no-op unless `localStorage['culina.debug']` is `1`.
 `test/store-log.test.ts` puts a distinctive note through put, get, remove
 and a failing migration and checks that the log does not contain it.
+
+## Drafts
+
+An editor keeps what the user has typed but not saved in its own object
+store `drafts` (IndexedDB layout version 3; created on the next open, rows
+of an older database kept, `test/store-drafts.test.ts` builds the version 2
+layout). A row has the shape of every row, `{ key, updatedAt, value }`, but
+the value is the form state and is **not validated**: an unfinished form
+may break every schema. The key names the draft: `component:new`,
+`component:<id>`, `dish:new`, `dish:<id>`. Drafts are not records: they are
+not in `list`, `listRows`, the export file, the backup or any sync, and the
+log never carries their content. A removed draft is deleted outright, since
+nothing needs a tombstone. The data schema version stays 1. API: `store.drafts`
+with `get`, `put`, `remove` and `list`.
 
 # Schemas and tests
 

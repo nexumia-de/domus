@@ -3,6 +3,7 @@
 import { check, watch } from './harness.mjs';
 import { FORBIDDEN, overflow, smallTargets } from './measure.mjs';
 import * as fx from './notebook-fixture.mjs';
+import { seed } from './seed.mjs';
 import { controlled } from './smoke.mjs';
 
 const DISH = 'example-flat-dough-with-sauce';
@@ -60,6 +61,7 @@ const phone = async (browser, origin) => {
     await d.dismiss();
   });
 
+  await seed(page, origin);
   // Lists
   await open(page, origin, 'components');
   check(
@@ -69,14 +71,13 @@ const phone = async (browser, origin) => {
   check(
     same(
       await names(page),
-      fx.components.map((c) => c.name),
+      fx.byName(fx.components).map((c) => c.name),
     ),
     `${label}: the component list shows the ${fx.components.length} example components by name`,
   );
   check(
-    (await page.locator('.example-note').innerText()) ===
-      'Example data. Your own components come with the notebook.',
-    `${label}: components say they are example data`,
+    (await names(page)).every((n) => n.startsWith('Example')),
+    `${label}: the records added by "Add example data" are marked as examples in their name`,
   );
   const search = page.getByLabel('Search by name');
   await search.fill('  PAN ');
@@ -109,14 +110,13 @@ const phone = async (browser, origin) => {
   check(
     same(
       await names(page),
-      fx.dishes.map((d) => d.name),
+      fx.byName(fx.dishes).map((d) => d.name),
     ),
     `${label}: the dish list shows the ${fx.dishes.length} example dishes`,
   );
   check(
-    (await page.locator('.example-note').innerText()) ===
-      'Example data. Your own dishes come with the notebook.',
-    `${label}: dishes say they are example data`,
+    (await names(page)).every((n) => n.startsWith('Example')),
+    `${label}: the example dishes are marked as examples in their name`,
   );
   await page.getByLabel('Search by name').fill('plate');
   check(same(await names(page), [fx.dish(PLATE).name]), `${label}: dish search filters by name`);
@@ -426,6 +426,7 @@ const desktop = async (browser, origin) => {
   const context = await browser.newContext({ viewport: { width: 1000, height: 700 } });
   const problems = watch(context, origin);
   const page = await context.newPage();
+  await seed(page, origin);
   await open(page, origin, `dishes/${DISH}`);
   const boxes = await page.evaluate(() => {
     const b = (s) => document.querySelector(s).getBoundingClientRect();
@@ -491,6 +492,7 @@ const offline = async (browser, origin) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
   const problems = watch(context, new URL(origin).origin);
   const page = await context.newPage();
+  await seed(page, origin);
   await page.goto(`${origin}#/dishes`);
   await page.getByRole('heading', { level: 1, name: 'Dishes' }).waitFor();
   await controlled(page);

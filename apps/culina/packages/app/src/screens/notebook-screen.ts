@@ -13,6 +13,8 @@ export interface NotebookScreen {
   detail(id: string): HTMLElement | undefined;
   unknown: string;
   chooseOne: string;
+  /** The action to add an entry and the example-data action of an empty notebook. */
+  extras: { actions: Node[]; emptyActions: Node[]; note?: string };
 }
 
 export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElement => {
@@ -20,20 +22,24 @@ export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElem
   const screen = el('section', `screen split ${route}-screen`);
   const detail = param === undefined ? undefined : config.detail(param);
   if (detail === undefined || param === undefined) {
-    const note = param === undefined ? undefined : config.unknown;
-    const list = entryList(
-      route,
-      entries,
-      state,
-      text,
-      note === undefined ? { asHeading: true } : { asHeading: true, note },
-    );
+    const note = param === undefined ? config.extras.note : config.unknown;
+    const list = entryList(route, entries, state, text, {
+      asHeading: true,
+      actions: config.extras.actions,
+      emptyActions: config.extras.emptyActions,
+      ...(note === undefined ? {} : { note }),
+    });
     screen.append(list, el('p', 'pane-empty muted', config.chooseOne));
     return screen;
   }
   screen.classList.add('has-detail');
   screen.append(
-    entryList(route, entries, state, text, { asHeading: false, current: param }),
+    entryList(route, entries, state, text, {
+      asHeading: false,
+      current: param,
+      actions: config.extras.actions,
+      emptyActions: config.extras.emptyActions,
+    }),
     detail,
   );
   return screen;
