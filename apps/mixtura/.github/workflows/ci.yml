@@ -87,8 +87,8 @@ jobs:
         working-directory: tools/webdav-server
       - name: Wait for the servers
         run: |
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null "$MIXTURA_WEBDAV_URL/"
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null "$MIXTURA_WEBDAV_URL_2/"
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL/"
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL_2/"
       - run: npm run build
       - run: npx vitest run test/sync-webdav-integration.test.ts
         working-directory: packages/app
@@ -104,8 +104,8 @@ jobs:
         working-directory: tools/webdav-front
       - name: Wait for the fronts
         run: |
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null http://127.0.0.1:8090/
-          curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null http://127.0.0.1:8091/
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8090/
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8091/
       - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8090 npx vitest run test/sync-webdav-integration.test.ts
         working-directory: packages/app
       - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8091 npx vitest run test/sync-webdav-integration.test.ts
