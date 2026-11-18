@@ -153,11 +153,24 @@ const reloadEquals = async (page, origin, saved) => {
   );
   // Leave without saving: the draft keeps this state; discard it.
   await page.getByRole('button', { name: 'Discard changes' }).click();
-  await page.waitForFunction(() => document.querySelectorAll('.line-edit').length > 0);
+  // The form is rebuilt after the draft is dropped: wait for the stored values, not for any form.
+  const storedValues = saved.lines.map((l) => String(l.amount.value));
+  await page
+    .waitForFunction(
+      (want) =>
+        JSON.stringify(
+          [...document.querySelectorAll('.component-editor .line-edit input.field')].map(
+            (i) => i.value,
+          ),
+        ) === JSON.stringify(want),
+      storedValues,
+      { timeout: 5000 },
+    )
+    .catch(() => undefined);
   check(
     same(
       (await lineValues(page)).map((l) => l[1]),
-      saved.lines.map((l) => String(l.amount.value)),
+      storedValues,
     ),
     `${label}: Discard changes returns to the stored values`,
   );
