@@ -5,6 +5,6 @@ import { registerServiceWorker } from './sw-register';
 const root = document.getElementById('app');
 if (root) {
   const shell = mountShell(root);
-  startRouter(window, ({ route, initial }) => shell.show(route, !initial));
+  startRouter(window, ({ route, param, initial }) => shell.show(route, param, !initial));
   registerServiceWorker();
 }

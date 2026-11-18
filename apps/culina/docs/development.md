@@ -110,7 +110,7 @@ caches, service worker registration, and the engine entry point.
 
 `npm run e2e` is a separate script (it launches Chromium and takes
 longer). It builds, serves `dist/` twice (at `/` and under `/apps/cook/`)
-and runs `e2e/smoke.mjs` (shell at 320, 360 and 1000 px, navigation
+and runs `e2e/ratios.mjs` (ratio list, cards, calculator against vector-derived amounts, comparison, 360 px overflow of every card, desktop list beside the card, offline) and `e2e/smoke.mjs` (shell at 320, 360 and 1000 px, navigation
 placement, no horizontal scroll on every screen, targets of at least 44 x
 44 px, landmarks and names, keyboard and focus, theme switch and reload,
 offline reload with the service worker controlling the page, no console

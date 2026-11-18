@@ -38,3 +38,17 @@ test('the two texts in index.html are the ones in strings', () => {
   expect(html).toContain(`<title>${strings.appName}</title>`);
   expect(html).toContain(`<noscript>${strings.noScript}</noscript>`);
 });
+
+// No wording says a recipe or a ratio is wrong (docs/behaviour.md). Comments are left out of the scan.
+const FORBIDDEN =
+  /\b(wrong|errors?|invalid|incorrect|mistakes?|failed|fail|too much|too little|missing|bad)\b/i;
+
+test('no text says that a recipe or a ratio is wrong, invalid, failed or missing', () => {
+  const source = readSrc('strings.ts')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
+  expect(source.length).toBeGreaterThan(1000);
+  expect(source.match(FORBIDDEN), 'strings.ts').toBeNull();
+  expect('That is too much salt'.match(FORBIDDEN)).not.toBeNull();
+  expect('an invalid ratio'.match(FORBIDDEN)).not.toBeNull();
+});

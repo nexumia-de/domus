@@ -1,6 +1,7 @@
 import { expect, test, vi } from 'vitest';
 import {
   DEFAULT_ROUTE,
+  paramFromHash,
   hashFor,
   ROUTES,
   routeFromHash,
@@ -59,4 +60,26 @@ test('an unknown hash is rewritten without a new history entry', () => {
   expect(seen).toEqual(['ratios']);
   expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/ratios');
   expect(host.location.hash).toBe('#/ratios');
+});
+
+test('a ratio card route carries the template id; other routes carry none', () => {
+  expect(routeFromHash('#/ratios/pie-dough')).toBe('ratios');
+  expect(paramFromHash('#/ratios/pie-dough')).toBe('pie-dough');
+  expect(paramFromHash('#/ratios/pie%20dough?x=1')).toBe('pie dough');
+  expect(paramFromHash('#/ratios/%E0%A4%A')).toBe('%E0%A4%A');
+  expect(paramFromHash('#/ratios')).toBeUndefined();
+  expect(paramFromHash('#/ratios/')).toBeUndefined();
+  expect(paramFromHash('#/dishes/42')).toBeUndefined();
+  expect(hashFor('ratios', 'pie-dough')).toBe('#/ratios/pie-dough');
+});
+
+test('a card hash is kept as it is; a trailing slash is rewritten', () => {
+  const kept = fakeHost('#/ratios/pasta-dough');
+  const seen: string[] = [];
+  startRouter(kept.host, ({ route, param }) => seen.push(`${route}:${param}`));
+  expect(seen).toEqual(['ratios:pasta-dough']);
+  expect(kept.host.history.replaceState).not.toHaveBeenCalled();
+  const slash = fakeHost('#/ratios/');
+  startRouter(slash.host, () => undefined);
+  expect(slash.host.history.replaceState).toHaveBeenCalledWith(null, '', '#/ratios');
 });
