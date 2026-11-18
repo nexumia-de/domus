@@ -32,6 +32,8 @@ interface Shipped {
   ingredients: CatalogueRow[];
 }
 const shipped = read('../data/ingredient-catalogue.json') as Shipped;
+/** The food rows: entries with an FDC id; the others are the generated parents. */
+const foodRows = shipped.ingredients.filter((r) => r['x-fdc'] !== undefined);
 const excerpt = (read('./fixtures/catalogue/sr-legacy-excerpt.json') as { SRLegacyFoods: Food[] })
   .SRLegacyFoods;
 const units = read('../../engine/data/units.json') as Record<string, { toBase: number }>;
@@ -45,30 +47,36 @@ describe('the shipped file', () => {
     const ids = shipped.ingredients.map((r) => r.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual([...ids].sort());
-    for (const row of shipped.ingredients) {
-      expect(row.id).toBe(`fdc-${row['x-fdc'].id}`);
+    for (const row of foodRows) {
+      expect(row.id).toBe(`fdc-${row['x-fdc']?.id}`);
       expect(row.densityGPerMl !== undefined || row.unitWeightG !== undefined, row.id).toBe(true);
     }
   });
   test('names are unique and every number names its FDC id, dataset release and portion', () => {
     const names = shipped.ingredients.map((r) => r.name);
     expect(new Set(names).size).toBe(names.length);
-    for (const row of shipped.ingredients) {
+    for (const row of foodRows) {
       for (const n of [row.densityGPerMl, row.unitWeightG]) {
         if (n === undefined) continue;
-        expect(n.source, row.id).toContain(`FDC ID ${row['x-fdc'].id}`);
+        expect(n.source, row.id).toContain(`FDC ID ${row['x-fdc']?.id}`);
         expect(n.source, row.id).toContain(`release ${shipped.dataset.release}`);
         expect(n.source, row.id).toMatch(/portion: .+ = [\d.]+ g/);
       }
     }
   });
-  test('carries no field the source does not give: no roles, yields, shelf life', () => {
+  test('carries no field the source does not give: no roles, shelf life, season', () => {
+    const allowed = [
+      'id',
+      'name',
+      'parentId',
+      'densityGPerMl',
+      'unitWeightG',
+      'yields',
+      'x-fdc',
+      'x-group',
+    ];
     for (const row of shipped.ingredients) {
-      expect(
-        Object.keys(row).filter(
-          (k) => !['id', 'name', 'densityGPerMl', 'unitWeightG', 'x-fdc'].includes(k),
-        ),
-      ).toEqual([]);
+      expect(Object.keys(row).filter((k) => !allowed.includes(k))).toEqual([]);
     }
   });
 });
@@ -119,7 +127,11 @@ describe('rows recomputed from the fixture excerpt', () => {
   });
   test('the rows equal the shipped rows, and the serialisation is stable', () => {
     for (const row of rows) {
-      expect(shipped.ingredients.find((r) => r.id === row.id)).toEqual(row);
+      // The shipped row also has its parent link and its yields, which the excerpt cannot give.
+      const rest = { ...must(shipped.ingredients.find((r) => r.id === row.id)) };
+      delete rest.parentId;
+      delete rest.yields;
+      expect(rest).toEqual(row);
     }
     const envelope = { ...shipped, ingredients: rows };
     expect(serialise(envelope)).toBe(serialise(envelope));

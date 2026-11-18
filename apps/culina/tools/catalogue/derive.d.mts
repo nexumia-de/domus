@@ -5,6 +5,7 @@ export interface Portion {
 }
 export interface Food {
   fdcId: number;
+  ndbNumber?: number;
   description: string;
   foodCategory?: { description: string };
   foodPortions?: Portion[];

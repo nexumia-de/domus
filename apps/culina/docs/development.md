@@ -153,14 +153,22 @@ unzip -d fdc-sr-legacy FoodData_Central_sr_legacy_food_json_2018-04.zip
 ```
 
 ```
-node tools/catalogue/build.mjs fdc-sr-legacy
+curl -sS -O https://fdc.nal.usda.gov/fdc-datasets/SR-Legacy-Archive/sr28asc.zip
 ```
 
-Run the first two in a scratch folder outside the repository (the raw
-dataset, 210 MB unzipped, is never committed) and give the third its
-path. The generator reads the folder or the `.json` file, writes the
+```
+unzip -d fdc-sr28 sr28asc.zip
+```
+
+```
+node tools/catalogue/build.mjs fdc-sr-legacy --refuse fdc-sr28/FOOD_DES.txt
+```
+
+Run the first four in a scratch folder outside the repository (the raw
+datasets, 210 MB unzipped for the JSON, are never committed) and give the
+fifth their paths; `--refuse` is the refuse file for the yields. The generator reads the folder or the `.json` file, writes the
 file above (or `--out <file>`), and a rerun on the same dataset gives
-identical bytes; it prints the number of rows. `npm run build` copies the
+identical bytes; it prints the number of entries, parents and yields. `npm run build` copies the
 file, minified, to `dist/catalogue.json` (the app fetches it on first use of
 the picker and the service worker precaches it; `main.js` does not carry
 it). Prettier ignores the generated

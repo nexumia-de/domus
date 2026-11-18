@@ -1,21 +1,21 @@
 // The ingredient catalogue in the picker: an empty notebook, search, pick, amounts by volume and
 // by piece against the engine, reload, offline under the service worker, a failed load, 360 px.
-import { readFileSync } from 'node:fs';
 import { check, watch } from './harness.mjs';
+import {
+  addLine,
+  file,
+  idsWithChains,
+  rowNamed,
+  searchBox,
+  setAmount,
+} from './catalogue-helpers.mjs';
+import { catalogueTree } from './catalogue-tree.mjs';
 import { engine } from './notebook-fixture.mjs';
 import { shown } from './ratio-fixture.mjs';
 import { formReady, layout, listStore, open } from './editor-helpers.mjs';
 import { controlled } from './smoke.mjs';
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const file = JSON.parse(
-  readFileSync(new URL('../data/ingredient-catalogue.json', import.meta.url), 'utf8'),
-);
-const rowNamed = (name) => {
-  const row = file.ingredients.find((r) => r.name === name);
-  if (!row) throw new Error(`catalogue row ${name} not found`);
-  return row;
-};
 const GARLIC = rowNamed('Garlic'); // density and unit weight
 const FLOUR = rowNamed('Wheat flour, white, all-purpose, enriched, bleached'); // density
 const EGG = rowNamed('Egg, whole, fresh'); // unit weight
@@ -29,21 +29,10 @@ const FACTS = Object.fromEntries(
   ]),
 );
 
-const searchBox = (page) => page.getByLabel('Search your notebook');
 const catalogueRows = (page) => page.locator('.picker-catalogue .picker-choice');
 const ownRows = (page) => page.locator('.picker > .picker-rows .picker-choice');
 const entryButton = (page, name) =>
   page.locator('.picker-catalogue').getByRole('button', { name: new RegExp(`^${name} by `) });
-
-const addLine = async (page) => {
-  await page.getByRole('button', { name: 'Add an ingredient' }).click();
-  await searchBox(page).waitFor();
-};
-const setAmount = async (page, index, amount, unit) => {
-  const line = page.locator('.line-edit').nth(index);
-  await line.locator('input.field').first().fill(amount);
-  await line.locator('select').selectOption(unit);
-};
 
 const pickAndCompute = async (page, origin) => {
   const label = '360px catalogue picker';
@@ -107,10 +96,7 @@ const pickAndCompute = async (page, origin) => {
 
   await addLine(page);
   await searchBox(page).fill('all-purpose, enriched, bleached');
-  await page
-    .locator('.picker-catalogue')
-    .getByRole('button', { name: /^Wheat flour/ })
-    .click();
+  await entryButton(page, FLOUR.name).click();
   await setAmount(page, 2, '2', 'cup');
   await addLine(page);
   await searchBox(page).fill('egg, whole, fresh');
@@ -154,8 +140,8 @@ const pickAndCompute = async (page, origin) => {
   );
   const ids = (await listStore(page, 'ingredients')).map((r) => r.id).sort();
   check(
-    same(ids, [GARLIC.id, EGG.id, FLOUR.id].sort()),
-    `${label}: three ingredients are in the notebook, each its catalogue row`,
+    same(ids, idsWithChains(GARLIC, FLOUR, EGG)),
+    `${label}: the three chosen ingredients are in the notebook with their parent chains (${ids.length} records)`,
   );
   return component.id;
 };
@@ -167,7 +153,7 @@ const reload = async (page, origin, id) => {
   await page.getByRole('heading', { level: 1, name: 'From the catalogue' }).waitFor();
   const stored = await listStore(page, 'ingredients');
   check(
-    stored.length === 3 &&
+    stored.length === idsWithChains(GARLIC, FLOUR, EGG).length &&
       same(
         stored.find((r) => r.id === GARLIC.id),
         GARLIC,
@@ -205,8 +191,8 @@ const offline = async (browser, origin) => {
   await entryButton(page, 'Egg, whole, fresh').first().click();
   await page.locator('.picker').waitFor({ state: 'detached' });
   check(
-    same(await listStore(page, 'ingredients'), [EGG]),
-    `${label}: offline, search and choosing an entry work`,
+    same((await listStore(page, 'ingredients')).map((r) => r.id).sort(), idsWithChains(EGG)),
+    `${label}: offline, search and choosing an entry work, with its parents`,
   );
   check(
     problems.length === 0,
@@ -250,6 +236,7 @@ export const catalogue = async (browser, server) => {
     `catalogue: no console errors, CSP violations or foreign requests${problems.length ? ' ' + problems.join('; ') : ''}`,
   );
   await context.close();
+  await catalogueTree(browser, origin);
   await offline(browser, origin);
   await unavailable(browser, origin);
 };

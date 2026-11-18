@@ -27,6 +27,24 @@
         }
       }
     },
+    "refuseDataset": {
+      "description": "Where the refuse percentages of the yields come from: a second file of the same source, read by tools/catalogue/build.mjs.",
+      "type": "object",
+      "required": ["name", "file", "sha256", "licence"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        },
+        "file": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "licence": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        }
+      }
+    },
     "generatedBy": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
     },
