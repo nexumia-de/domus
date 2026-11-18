@@ -1,0 +1,12 @@
+{
+  "id": "bread-dough-bakers-percent",
+  "name": "Bread dough, baker's percentages",
+  "source": "ratios.md, row Bread dough (100 % flour, 60 % water, 3 % fresh yeast, 2 % salt)",
+  "parentId": "bread-dough-ratio",
+  "changes": [
+    { "op": "set", "role": "flour", "parts": 100 },
+    { "op": "set", "role": "water", "parts": 60, "range": { "min": 55, "max": 65 } },
+    { "op": "add", "role": "yeast", "parts": 3 },
+    { "op": "add", "role": "salt", "parts": 2, "range": { "min": 1.8, "max": 2 } }
+  ]
+}

@@ -42,10 +42,28 @@ function applyChanges(parts: EffectivePart[], t: RatioTemplate): EffectivePart[]
   for (const change of t.changes ?? []) {
     const at = current.findIndex((p) => p.role === change.role);
     const where = { templateId: t.id, role: change.role };
-    if (change.op === 'add') {
+    if (change.op === 'add' || change.op === 'set') {
       if (!positive(change.parts)) return fail({ code: 'invalid-parts', ...where });
-      if (at >= 0) return fail({ code: 'role-exists', ...where });
-      current = [...current, { role: change.role, parts: change.parts }];
+      if (change.range !== undefined && !validRange(change.range)) {
+        return fail({ code: 'invalid-range', ...where });
+      }
+      const range = change.range ? { range: { ...change.range } } : {};
+      if (change.op === 'add') {
+        if (at >= 0) return fail({ code: 'role-exists', ...where });
+        current = [...current, { role: change.role, parts: change.parts, ...range }];
+      } else if (at < 0) {
+        return fail({ code: 'unknown-role', ...where });
+      } else {
+        // A range belongs to the parts it was sourced for: `set` drops it unless it gives one.
+        const { ingredientClass } = current[at] as EffectivePart;
+        const next: EffectivePart = {
+          role: change.role,
+          parts: change.parts,
+          ...range,
+          ...(ingredientClass !== undefined ? { ingredientClass } : {}),
+        };
+        current = current.map((p, i) => (i === at ? next : p));
+      }
     } else if (at < 0) {
       return fail({ code: 'unknown-role', ...where });
     } else if (change.op === 'remove') {
@@ -84,7 +102,8 @@ function chainOf(byId: Map<string, RatioTemplate>, id: string): RatioTemplate[] 
  * Resolves a template against its parents: the root's parts, then each
  * derivative's changes in order from the root down. Ranges stay with their
  * part; a `swap` sets the part's `ingredientClass` and keeps parts and
- * range. The anchor is the nearest one defined from the template up.
+ * range; a `set` replaces the parts and the range (none given: no range)
+ * and keeps the class. The anchor is the nearest one defined from the template up.
  *
  * @param templates - Every template in the set, in the stored shape.
  * @param id - The template to resolve.

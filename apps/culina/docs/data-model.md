@@ -221,16 +221,16 @@ A named formula by mass: parts per role, an anchor role, optional usual
 ranges, and derivatives that change a parent. Schema:
 `template.schema.json`.
 
-| Field      | Type            | Required | Meaning                                                                                  |
-| ---------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                                          |
-| `name`     | string          | yes      | Visible name                                                                             |
-| `source`   | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`                                            |
-| `parentId` | id              | no       | The template this one derives from; with `changes`, instead of `parts`                   |
-| `anchor`   | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages           |
-| `parts`    | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                   |
-| `changes`  | array of object | no       | Derivatives only: `add` (role, parts), `remove` (role), `swap` (role, `ingredientClass`) |
-| `note`     | string          | no       | Free text                                                                                |
+| Field      | Type            | Required | Meaning                                                                                                                                           |
+| ---------- | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`       | id              | yes      | See [ids](#ids)                                                                                                                                   |
+| `name`     | string          | yes      | Visible name                                                                                                                                      |
+| `source`   | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`                                                                                                     |
+| `parentId` | id              | no       | The template this one derives from; with `changes`, instead of `parts`                                                                            |
+| `anchor`   | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages                                                                    |
+| `parts`    | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                                                                            |
+| `changes`  | array of object | no       | Derivatives only: `add` (role, parts, optional `range`), `set` (role, parts, optional `range`), `remove` (role), `swap` (role, `ingredientClass`) |
+| `note`     | string          | no       | Free text                                                                                                                                         |
 
 - **Root or derivative, not both**: a template has `parts` and no
   `parentId`, or `parentId` and `changes` and no `parts` (checked by the
@@ -240,6 +240,12 @@ ranges, and derivatives that change a parent. Schema:
   ids ([engine rules](engine-rules.md#ratio-templates)); `validateModel`
   reports them together with unknown parents ([cross-record
   validation](engine-rules.md#cross-record-validation)).
+- **Changes.** `add` puts a new role last, with parts and an optional
+  range. `set` gives an existing role other parts and an optional range;
+  it keeps the role's `ingredientClass` and drops an inherited range
+  unless it gives one, since a range belongs to the parts it was
+  sourced for. `remove` and `swap` as before. The rules and errors are in
+  [engine rules](engine-rules.md#resolving-a-derivative).
 - **Ratios and baker's percentages are one thing.** A ratio 5 flour : 3
   water has `parts` 5 and 3; a baker's formula has the anchor at 100
   (flour 100, water 56, salt 3) and its numbers are percentages. The

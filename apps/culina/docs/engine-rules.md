@@ -193,7 +193,7 @@ percentage.
 `src/ratios/`, issue 9. A template is stored as in
 [the data model](data-model.md#ratio-template)[^datamodel]: a root has
 `parts` (role, parts above 0, optional `range`), a derivative has
-`parentId` and `changes` (`add`, `remove`, `swap`). Everything below is
+`parentId` and `changes` (`add`, `set`, `remove`, `swap`). Everything below is
 pure and returns `{ ok, … }`; the errors of this chapter are about
 template **data**, never about a recipe.
 
@@ -207,26 +207,32 @@ effective template: `parts` (role, parts, `range`, `ingredientClass`),
 - Roles keep the root's order; an added role goes last; removing a role
   and adding it again puts it last.
 - A range stays with its part to every descendant. A `swap` sets
-  `ingredientClass` and keeps parts and range. No change alters parts or
-  a range of an existing role: a variant with other parts is a root of
-  its own.
+  `ingredientClass` and keeps parts and range.
+- `add` puts a new role last, with parts and an optional `range`.
+- `set` gives an existing role new parts and an optional `range`. It
+  keeps the role's `ingredientClass` and its place in the order. A range
+  belongs to the parts it was sourced for: when `set` gives none, the
+  inherited range is dropped, not kept. `set` works on a role added by
+  an earlier derivative or change, and a later derivative may `set`
+  it again. `set` of a role that is not there (unknown, or removed
+  earlier) is `unknown-role`.
 - The anchor is the nearest `anchor` from the template up to the root.
   If that role is not among the effective parts, the error is
   `anchor-removed`.
 
-| Code                     | When (fields besides `code`)                                                                          |
-| ------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `duplicate-id`           | two templates in the set share an id (`templateId`); checked first, whatever the id                   |
-| `unknown-template`       | the id asked for is not in the set (`templateId`)                                                     |
-| `unknown-parent`         | a `parentId` is not in the set (`templateId`, `parentId`)                                             |
-| `cycle`                  | the parents lead back to a template (`path`: ids from the start to the first repeat, which ends it)   |
-| `not-root-or-derivative` | not (`parts` and no `parentId`, `changes`) and not (`parentId`, `changes`, no `parts`) (`templateId`) |
-| `invalid-parts`          | parts not finite or not above 0, in a root or an `add` (`templateId`, `role`)                         |
-| `invalid-range`          | `min` above `max`, or a bound not finite or negative (`templateId`, `role`)                           |
-| `duplicate-role`         | a root names a role twice (`templateId`, `role`)                                                      |
-| `role-exists`            | `add` of a role that is already there (`templateId`, `role`)                                          |
-| `unknown-role`           | `remove` or `swap` of a role that is not there (`templateId`, `role`)                                 |
-| `anchor-removed`         | the effective anchor is not a role (`templateId`, `role`)                                             |
+| Code                     | When (fields besides `code`)                                                                                |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `duplicate-id`           | two templates in the set share an id (`templateId`); checked first, whatever the id                         |
+| `unknown-template`       | the id asked for is not in the set (`templateId`)                                                           |
+| `unknown-parent`         | a `parentId` is not in the set (`templateId`, `parentId`)                                                   |
+| `cycle`                  | the parents lead back to a template (`path`: ids from the start to the first repeat, which ends it)         |
+| `not-root-or-derivative` | not (`parts` and no `parentId`, `changes`) and not (`parentId`, `changes`, no `parts`) (`templateId`)       |
+| `invalid-parts`          | parts not finite or not above 0, in a root, an `add` or a `set` (`templateId`, `role`)                      |
+| `invalid-range`          | `min` above `max`, or a bound not finite or negative, in a root, an `add` or a `set` (`templateId`, `role`) |
+| `duplicate-role`         | a root names a role twice (`templateId`, `role`)                                                            |
+| `role-exists`            | `add` of a role that is already there (`templateId`, `role`)                                                |
+| `unknown-role`           | `remove`, `swap` or `set` of a role that is not there (`templateId`, `role`)                                |
+| `anchor-removed`         | the effective anchor is not a role (`templateId`, `role`)                                                   |
 
 Only the chain of the template asked for is checked, apart from
 `duplicate-id`.
@@ -310,8 +316,13 @@ the section, the row, its status and the source title; a test checks the
 prefix `docs/ratios.md`, unique ids and that each resolves. A range is
 there only where the row gives one. `anchor` (the first role, egg for
 custard, oil for the vinaigrette) is a choice for the percentages, not a
-number from a source. No seed template is a derivative: derivatives
-cannot change parts, and no row is the variation of another.
+number from a source. Two seed templates are derivatives that change
+parts with `set` (issue 51): `roux-whole-butter` varies `roux` (flour 1,
+fat 1; no range, so the roux range is dropped) and
+`bread-dough-bakers-percent` varies `bread-dough-ratio` (flour 100, water
+60 by `set`, yeast 3 and salt 2 with range 1.8–2 by `add`). Pizza dough
+and ciabatta stay roots. `test/seed-templates-pinned.test.ts` pins all
+12 resolved seed templates (parts, ranges, anchor, lineage).
 
 | Template id                  | Row                               | Numbers                                                  |
 | ---------------------------- | --------------------------------- | -------------------------------------------------------- |
@@ -491,12 +502,12 @@ repeat across kinds.
 | `unknown-family`         | component, dish                            | `version.family`, the id of the first version, is no record of that kind                                                                                     |
 | `cycle`                  | ingredient, template, component, dish      | parents loop, components nest in a loop, or version parents loop; `ids` run from the smallest id around and end with it (length 1: `[a, a]`)                 |
 | `anchor-not-a-role`      | template                                   | the effective anchor (own, else the nearest ancestor's) is not among the effective roles; `role` is the anchor; `path` is `anchor` when the template sets it |
-| `invalid-range`          | template                                   | a range has `min` above `max` (or is negative or not finite); `path` `parts[i].range`                                                                        |
+| `invalid-range`          | template                                   | a range has `min` above `max` (or is negative or not finite); `path` `parts[i].range`, or `changes[i].range` for an `add` or `set`                           |
 | `not-root-or-derivative` | template                                   | not exactly parts without parent, or parent with changes without parts                                                                                       |
-| `invalid-parts`          | template                                   | parts not above 0 (the schema refuses it too)                                                                                                                |
+| `invalid-parts`          | template                                   | parts not above 0, in a root, an `add` or a `set` (the schema refuses it too)                                                                                |
 | `duplicate-role`         | template                                   | a root lists a role twice                                                                                                                                    |
 | `role-exists`            | template                                   | an `add` of a role the parent chain already has                                                                                                              |
-| `unknown-role`           | template                                   | a `remove` or `swap` of a role the parent chain does not have                                                                                                |
+| `unknown-role`           | template                                   | a `remove`, `swap` or `set` of a role the parent chain does not have                                                                                         |
 
 **What each check is based on.**
 

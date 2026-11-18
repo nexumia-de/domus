@@ -94,7 +94,7 @@ error must contain (`templateId`, `parentId`, `role`, `path`).
 
 | `kind`             | Inputs                                                                                                          | Expected                                                                                        |
 | ------------------ | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `resolve_template` | `templates` in the stored shape of `template.schema.json`; `id`                                                 | `roles` (in order), `parts`, `lineage`, `anchor`, optional `ranges`, `ingredient_classes`       |
+| `resolve_template` | `templates` in the stored shape of `template.schema.json` (changes `add`, `set`, `remove`, `swap`); `id`        | `roles` (in order), `parts`, `lineage`, `anchor`, optional `ranges`, `ingredient_classes`       |
 | `template_family`  | `templates`; `id`; `query` (`children`, `ancestors`, `siblings`)                                                | `ids` in the order the query defines                                                            |
 | `ratio_check`      | as above; `template` may also have `ranges` (role to `min`, `max`) and `anchor`; the `anchor` input is optional | as above, plus `position` and `distance` by role (only roles with a range), `not_used`, `extra` |
 | `scale_anchor`     | as above                                                                                                        | as above                                                                                        |
