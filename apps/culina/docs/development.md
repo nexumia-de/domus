@@ -139,6 +139,41 @@ Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
 
+## Ingredient catalogue
+
+`packages/app/data/ingredient-catalogue.json` is generated, never edited
+([ingredient catalogue](ingredient-catalogue.md)). To rebuild it:
+
+```
+curl -sS -O https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip
+```
+
+```
+unzip -d fdc-sr-legacy FoodData_Central_sr_legacy_food_json_2018-04.zip
+```
+
+```
+node tools/catalogue/build.mjs fdc-sr-legacy
+```
+
+Run the first two in a scratch folder outside the repository (the raw
+dataset, 210 MB unzipped, is never committed) and give the third its
+path. The generator reads the folder or the `.json` file, writes the
+file above (or `--out <file>`), and a rerun on the same dataset gives
+identical bytes; it prints the number of rows. `npm run build` copies the
+file, minified, to `dist/catalogue.json`. Prettier ignores the generated
+file.
+
+Hosts tested on 2026-11-18, both answered 200 through the proxy:
+
+```
+fdc.nal.usda.gov
+```
+
+The home page (licensing) and the dataset zips under
+`https://fdc.nal.usda.gov/fdc-datasets/` are on that host; no other host
+is needed.
+
 ## CI
 
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
