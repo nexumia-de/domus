@@ -82,6 +82,19 @@ const PUBLIC = [
   'parseExportFile',
   'planImport',
   'totalCount',
+  'buildDocument',
+  'buildEnvelope',
+  'combinePlaces',
+  'DOCUMENT_FORMAT',
+  'DOCUMENT_VERSION',
+  'ENVELOPE_FORMAT',
+  'ENVELOPE_VERSION',
+  'envelopeAad',
+  'mergePlace',
+  'mergeRecords',
+  'parseDocument',
+  'parseEnvelope',
+  'planSync',
 ];
 
 test('the entry point exports exactly the pinned names', () => {

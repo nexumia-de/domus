@@ -31,6 +31,8 @@ test('the bundle has no DOM, host or Node-only reference', () => {
 
 test('the check finds what it is meant to find', () => {
   expect(checkDist('const a = window.x;')).not.toEqual([]);
+  expect(checkDist('const d = document.body;')).not.toEqual([]);
+  expect(checkDist("return { ok: true, document: doc, e: 'not-a-document' };")).toEqual([]);
   expect(checkDist('import fs from "node:fs";')).not.toEqual([]);
   expect(checkDist('const t = Date.now();')).not.toEqual([]);
   expect(checkDist('export const one = () => 1;')).toEqual([]);
