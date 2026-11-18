@@ -85,8 +85,8 @@ synthetic, chosen for the arithmetic, and every vector says so.
 
 ## Kinds of ratio templates and salt (issue 9)
 
-Folders: `packages/engine/vectors/templates/` and
-`packages/engine/vectors/salt/`. Rules: [engine rules](engine-rules.md#ratio-templates).
+Folders: `packages/engine/vectors/ratios/templates/` and
+`packages/engine/vectors/ratios/salt/`. Rules: [engine rules](engine-rules.md#ratio-templates).
 Vectors carry their templates inline, never the seed. Examples 3, 4 and 5
 below are in these folders unchanged. Error vectors carry `error_code`
 and, where the error names more than the code, `error_detail`: fields the

@@ -1,4 +1,4 @@
-// Runs every vector in vectors/templates against the engine (docs/vectors.md).
+// Runs every vector in vectors/ratios/templates against the engine (docs/vectors.md).
 // Mapping for `ratio_check`, `scale_anchor` and `template_percent`: the
 // inline `template` has `parts` (role -> parts, in order), optional `ranges`
 // (role -> min, max) and optional `anchor`; its id is its name. `lines` are
@@ -18,7 +18,7 @@ import type { EffectiveTemplate, PartRange, RatioTemplate } from '../src/index';
 import { expectError, loadVectors, nearRecord } from './vector-files';
 import type { Vector } from './vector-files';
 
-const vectors = loadVectors('templates');
+const vectors = loadVectors('ratios/templates');
 
 interface InlineTemplate {
   name: string;
