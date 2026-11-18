@@ -1,0 +1,83 @@
+{
+  "id": "share-prepared-cycle",
+  "kind": "share",
+  "title": "A prepared ingredient that needs itself ends, no loop",
+  "current": {
+    "places": [
+      {
+        "id": "u-00000001-0000-4000-8000-000000000001",
+        "name": "Home",
+        "updatedAt": "2026-01-01T00:00:00Z"
+      }
+    ],
+    "stock": [
+      {
+        "placeId": "u-00000001-0000-4000-8000-000000000001",
+        "ingredientId": "gin",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ],
+    "affinities": [
+      {
+        "id": "u-00000050-0000-4000-8000-000000000050",
+        "ingredients": ["gin", "lime"]
+      }
+    ],
+    "ingredients": [
+      {
+        "id": "u-0000005a-0000-4000-8000-00000000005a",
+        "name": "Unrelated",
+        "level": "product"
+      },
+      {
+        "id": "u-0000001e-0000-4000-8000-00000000001e",
+        "name": "Loop A",
+        "level": "product",
+        "prepared": {
+          "specId": "u-0000001f-0000-4000-8000-00000000001f",
+          "yield": {
+            "amount": 100,
+            "unit": "ml"
+          }
+        }
+      }
+    ],
+    "specs": [
+      {
+        "id": "u-0000005b-0000-4000-8000-00000000005b",
+        "lineageId": "u-0000005b-0000-4000-8000-00000000005b",
+        "version": 1,
+        "name": "Other drink",
+        "status": "draft",
+        "lines": [
+          {
+            "ingredientId": "gin",
+            "amount": 60,
+            "unit": "ml"
+          }
+        ]
+      },
+      {
+        "id": "u-0000001f-0000-4000-8000-00000000001f",
+        "lineageId": "u-0000001f-0000-4000-8000-00000000001f",
+        "version": 1,
+        "name": "Loop spec",
+        "status": "draft",
+        "lines": [
+          {
+            "ingredientId": "u-0000001e-0000-4000-8000-00000000001e",
+            "amount": 60,
+            "unit": "ml"
+          }
+        ]
+      }
+    ],
+    "templates": []
+  },
+  "specId": "u-0000001f-0000-4000-8000-00000000001f",
+  "expected": {
+    "specs": ["u-0000001f-0000-4000-8000-00000000001f"],
+    "ingredients": ["u-0000001e-0000-4000-8000-00000000001e"]
+  }
+}

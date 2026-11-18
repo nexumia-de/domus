@@ -147,6 +147,57 @@ after the toast has gone only by the toast; Settings offers Delete Import
 Backup ([screens](screens-stock-settings.md#export-and-import)). The next
 import overwrites it.
 
+## Share file
+
+Issue [#142](https://github.com/nexumia-de/mixtura/issues/142). One drink of the
+user's own travels as a small export file of format version 2, built by the
+engine's `buildShareFile(snapshot, specId, exportedAt)`
+(`exchange/share.ts`). It holds:
+
+- the chosen spec version and, following `parentId`, every parent version
+  that is the user's own (earlier versions of the drink, the own drink a riff
+  was made from);
+- its template and that template's parents, when they are the user's own;
+- every user ingredient its lines and substitutes name, with the user
+  ancestors of each, and for a prepared ingredient the spec that makes it
+  with everything that spec needs, recursively. Every walk stops at a record
+  it already took, so loops end.
+
+No stock, places or pairings (the lists are empty), no `seedVersion`.
+"Own" is the id test `isUserId` (`u-` and a UUID); seed records have slug ids
+and the receiver has them already, so a riff of a built-in drink carries only
+the riff. An id that is no user spec gives
+`{ ok: false, failure: { kind: 'unknown-spec', specId } }`. Vectors:
+`vectors/exchange/share/`.
+
+### Share link
+
+`<app origin and base path>#/share/<payload>`. The payload is `1.` and the
+base64url (no padding) of the deflate-raw compressed UTF-8 JSON of the share
+file, made with the platform's `CompressionStream` and `DecompressionStream`
+(`packages/app/src/share/link.ts`; no dependency). The `1` is the link
+version; another one is refused with its own message.
+
+- **Limit on making.** A link longer than 8,000 characters is not made; the
+  sheet says to use Export instead.
+- **Limit on reading.** Decompression stops at `MAX_FILE_BYTES` (10 MB) and
+  refuses the payload, so a small payload cannot inflate without end.
+- **Opening** (`share/open.ts`, `share/watch.ts`). The payload is taken out of
+  the address at once (`history.replaceState` to `#/share`), so it is neither
+  in the address bar nor in the history and a reload does not apply it
+  again; a bare `#/share` with nothing to show goes to the normal start. The
+  text goes through the same `parseExportFile` and `planImport` in merge
+  mode as a file, and the same preview component; Add Drink applies it with
+  the same transaction, import backup and Undo. After reading, places, stock
+  and pairings are dropped, so a link cannot create or change a place.
+- **Refusals**, one state each: damaged or cut off, newer link or file
+  version, too large, not a Mixtura drink (including a file without a
+  drink), no storage in this browser.
+- **Permissions.** The Content-Security-Policy and Permissions-Policy are
+  unchanged: streams need no entry, and `clipboard-write` is not in the
+  denied list of `headers.mjs`, so the default (the page itself) applies.
+  The link travels outside the app only when the person sends it.
+
 ## Change counter and reminder
 
 The `backup` setting holds `changesSinceExport`, `firstChangeAt`,
@@ -188,6 +239,12 @@ rather than only in memory.
 - `test/exchange-store.test.ts`: round trip into a fresh database, merge and
   replace rules, version-slot rule, Undo, a failing import changing
   nothing, change counter.
+- Share: engine `test/exchange-share.test.ts` (vectors, and every share file
+  of the example data passes the real schema and the parser); app
+  `test/share-link.test.ts` (round trip, unicode, limit, each refusal, the
+  decompression cap) and `test/share-open.test.ts` (preview, no places or
+  stock, same link twice, error states, sending); `e2e/share.mjs` at 360 x
+  720 and 1200 x 800.
 - `e2e/exchange.mjs` at 360 x 720 and 1200 x 800: export, wipe (fresh
   context), import, compare, Undo, five kinds of broken file, reminder, no
   request leaving the origin. Screenshots `docs/screenshots/data-*`.

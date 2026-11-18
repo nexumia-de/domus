@@ -477,3 +477,31 @@ Screenshots: [family](screenshots/versions-family-360x720.png),
   absent shows "Parent not available". Import refuses a file in which drinks
   are riffs of each other, naming them (`cycleProblems` in `exchange/parse.ts`);
   the editor cannot create a loop.
+
+## As built (#142)
+
+Share one drink by link. Code: `screens/spec/share.ts`,
+`components/share-sheet.ts`, `share/` (`link.ts`, `send.ts`, `open.ts`,
+`watch.ts`, `strings.ts`), `screens/share/`, `components/import-preview.ts`;
+file and link format in [export format](export-format.md#share-file).
+
+- **Share on the spec screen.** A header icon button (tooltip and accessible
+  name "Share {name} by link") for a drink of the user's own. A built-in drink
+  has nothing to send, so it has no button, and a hand-typed `?sheet=share`
+  opens nothing (the simpler of the two options).
+- **The sheet** (`?sheet=share`, so Back closes it like the batch sheet): the
+  drink's name, a line saying the drink is inside the link and nothing is
+  uploaded, the link in a read-only field that is always there (select-all
+  on focus; the fallback when the clipboard is blocked), **Copy Link** with the
+  visible note "Link copied" (or the instruction to copy by hand), and
+  **Send...** where `navigator.share` exists. The link is made again each
+  time the sheet opens. Too big: "This drink is too big for a link" with a
+  link to Data. No QR code (comes with #136).
+- **Opening a link** shows the import preview component, titled "Somebody sent
+  you {name}", with Add Drink and Not Now; no Replace. A link whose records
+  are all in already says so and disables Add Drink. After Add Drink the
+  drink opens; the toast offers Undo as for a file import.
+- **The preview component** moved from `settings/data.ts` into
+  `components/import-preview.ts`; the Data screen uses it unchanged.
+- **Not done:** the name of the drink is found as the one version no other
+  version in the file is made from (none shown when that is ambiguous).

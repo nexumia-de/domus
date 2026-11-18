@@ -38,8 +38,23 @@ export type ImportFlow =
       migratedFrom: number | null;
       /** The seed version of the file when it differs from this app's. */
       seedMismatch: { found: string; own: string } | null;
+      /** Set when the file came from a share link: the preview is the one-drink variant. */
+      share?: { name: string | null };
     }
-  | { kind: 'error'; failure: ParseFailure };
+  | { kind: 'error'; failure: ParseFailure }
+  /** A share link that could not be opened (share/open.ts). */
+  | { kind: 'share-error'; reason: ShareFailure };
+
+/** Why a share link was not opened: the decoding reasons, a payload that is no drink, no storage. */
+export type ShareFailure = 'damaged' | 'version' | 'too-large' | 'not-drink' | 'no-storage';
+
+/** The sheet that shares one drink; `note` is what the last Copy Link did. */
+export type ShareState =
+  | { kind: 'closed' }
+  | { kind: 'busy' }
+  | { kind: 'ready'; url: string; name: string; note: 'none' | 'copied' | 'failed' }
+  | { kind: 'too-long' }
+  | { kind: 'failed' };
 
 export interface Toast {
   id: number;
@@ -77,6 +92,8 @@ export interface AppState {
   /** A copy of the data from before the last import exists. */
   importBackup: boolean;
   importFlow: ImportFlow;
+  /** The share sheet of the spec screen (share/actions.ts). */
+  share: ShareState;
   toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
@@ -111,6 +128,7 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     userRecords: null,
     importBackup: false,
     importFlow: { kind: 'idle' },
+    share: { kind: 'closed' },
     toast: null,
     browseRev: 0,
     rankRev: 0,

@@ -4,6 +4,7 @@
 
 export {
   buildExport,
+  buildShareFile,
   countsOf,
   exportFileName,
   FORMAT_VERSION,
@@ -11,4 +12,4 @@ export {
   MAX_FILE_BYTES,
   totalCount as total,
 } from '@mixtura/engine';
-export type { Counts, ExportFile, Kind, Snapshot } from '@mixtura/engine';
+export type { Counts, ExportFile, Kind, ShareResult, Snapshot } from '@mixtura/engine';

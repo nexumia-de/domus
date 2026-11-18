@@ -69,6 +69,7 @@ const PUBLIC = [
   'unitValue',
   'unlockRanking',
   'buildExport',
+  'buildShareFile',
   'countsOf',
   'exportFileName',
   'formatMigrations',

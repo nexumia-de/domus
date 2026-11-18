@@ -42,6 +42,7 @@ import { madeBatch, usedUpNewest } from '../../stock/batches';
 import type { StockFields } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { showToast } from '../../toasts';
+import { shareParts } from './share';
 
 function tag(vm: TagVM): HTMLElement {
   const classes = `tag${vm.strong ? ' tag--strong' : ''}${vm.href ? ' tag--link' : ''}`;
@@ -271,6 +272,13 @@ export const screens: Screen[] = [
               ).class,
             ),
       );
+      const sharing = shareParts(
+        context,
+        route,
+        { id: drink.spec.id, name: vm.name, own: drink.origin === 'user' && !swapState },
+        servings,
+      );
+      if (sharing.sheet) page.append(sharing.sheet);
       if (sheetOpen && !sheetWasOpen) {
         requestAnimationFrame(() =>
           (page as HTMLElement).querySelector<HTMLElement>('[data-sheet]')?.focus(),
@@ -286,6 +294,7 @@ export const screens: Screen[] = [
       return {
         title: vm.name,
         body: page,
+        ...(sharing.headerAction && { headerAction: sharing.headerAction }),
         actions: swapState
           ? h(
               'div',
