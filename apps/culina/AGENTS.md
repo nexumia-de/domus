@@ -15,9 +15,10 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
 
 ## Rules
 
-- **Engine code waits for the shared-model decision** (issue #2).
-  Mixtura's engine exists; until that is settled the packages hold only
-  tooling placeholders.
+- **The general model comes from materia**, pinned to an exact version
+  tag ([decision](docs/decisions/shared-model.md)). Culina's engine adds
+  the kitchen rules (mass, baker's percentages, yields); what Mixtura
+  needs too moves to materia by a pull request there.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
 - **Not a recipe manager.** Recipe import, meal plans and shopping lists
@@ -26,7 +27,7 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
   them.
 - **Sources and licences.** Every ratio, pairing and data set names its
   source and licence. No data from FlavorDB or RecipeNLG.
-- No code copied from Mixtura: what both need moves into shared code.
+- No code copied from Mixtura or materia.
 
 ## Before committing
 

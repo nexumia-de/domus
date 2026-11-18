@@ -3,7 +3,7 @@ type: Reference
 title: Dependencies
 description: Every dependency of Culina with exact version, licence and use.
 tags: [dependencies, licences]
-generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 ---
 
 # Dependencies
@@ -11,9 +11,19 @@ generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 Versions are pinned exactly in `package.json` and equal Mixtura's, so
 both repositories stay aligned; the lockfile pins the rest. Licences read
 from each package's `package.json` in `node_modules`. Culina itself is
-AGPL-3.0-or-later ([LICENSE](../LICENSE)). Nothing third-party is shipped;
-all dependencies are development only and MIT or Apache-2.0, compatible
-with it.
+AGPL-3.0-or-later ([LICENSE](../LICENSE)). The only runtime dependency
+is materia, the owner's own shared code under the same licence; all
+others are development only and MIT or Apache-2.0, compatible with it.
+
+## Runtime
+
+| Package               | Version | Licence           | Use                                                                                                                                                                                                                                                   |
+| --------------------- | ------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@nexumia-de/materia` | 0.2.0   | AGPL-3.0-or-later | The general model shared with Mixtura (ingredient tree, templates, specs, stock, shelf life, sync formats); a git dependency of `@culina/engine` at tag `v0.2.0` (commit `588d744`); no dependency of its own ([decision](decisions/shared-model.md)) |
+
+Licence read from `LICENSE` and `package.json` in
+`node_modules/@nexumia-de/materia`. Its tag is raised by hand (the owner
+sets tags in materia); Dependabot does not follow git tags of this form.
 
 ## Development only
 

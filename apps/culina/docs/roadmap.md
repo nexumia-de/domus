@@ -1,7 +1,7 @@
 ---
 type: Plan
 title: Roadmap
-description: Goals and their order for Culina; nothing starts before Mixtura's engine exists; work items are GitHub issues.
+description: Goals and their order for Culina; the shared model comes from materia; work items are GitHub issues.
 tags: [plan, roadmap]
 generated: { by: claude-code/2.1.326, at: 2026-11-16 }
 ---
@@ -16,6 +16,8 @@ in [how chefs work](chef-practice.md) and
 # Goals
 
 0. **Wait for Mixtura's engine** ([decision](decisions/after-mixtura.md)).
+   Done: the engine exists and its general model is the package
+   materia ([decision](decisions/shared-model.md)).
 1. **Foundations.** The general model moves into shared code; Culina's
    data model as a document; the numbers in
    [how chefs work](chef-practice.md) checked against their sources;
