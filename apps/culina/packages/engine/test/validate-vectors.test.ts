@@ -36,6 +36,7 @@ describe('validate vectors', () => {
         'not-root-or-derivative',
         'role-exists',
         'unknown-component',
+        'unknown-dish',
         'unknown-family',
         'unknown-ingredient',
         'unknown-parent',

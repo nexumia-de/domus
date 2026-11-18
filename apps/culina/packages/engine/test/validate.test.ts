@@ -21,6 +21,7 @@ const collections = {
   dish: 'dishes',
   stock: 'stock',
   affinity: 'affinities',
+  tasting: 'tastings',
 } as const;
 
 // code:ref of every finding expected when the example is the only record of the model
@@ -41,11 +42,13 @@ const alone: Record<keyof typeof collections, string[]> = {
   ],
   stock: ['unknown-component:u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3'],
   affinity: ['unknown-ingredient:carrot', 'unknown-ingredient:hazelnut'],
+  tasting: ['unknown-component:u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2'],
 };
 
 const referenceCodes = [
   'unknown-ingredient',
   'unknown-component',
+  'unknown-dish',
   'unknown-template',
   'unknown-parent',
   'unknown-family',
@@ -77,6 +80,7 @@ describe('schema examples put into a model alone', () => {
     const pointsTo: Record<string, string> = {
       'unknown-ingredient': 'ingredients',
       'unknown-component': 'components',
+      'unknown-dish': 'dishes',
       'unknown-template': 'templates',
     };
     expect(result.findings.length).toBeGreaterThan(0);

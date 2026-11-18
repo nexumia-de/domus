@@ -175,13 +175,7 @@
           "version": {
             "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
             "date": "2026-11-17"
-          },
-          "tastings": [
-            {
-              "date": "2026-11-18",
-              "text": "Crumb open, crust good, needs a little more salt."
-            }
-          ]
+          }
         }
       ],
       "dishes": [
@@ -290,6 +284,17 @@
           },
           "source": "user",
           "confidence": "low"
+        }
+      ],
+      "tastings": [
+        {
+          "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee5",
+          "ref": {
+            "kind": "component",
+            "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2"
+          },
+          "date": "2026-11-18",
+          "text": "Crumb open, crust good, needs a little more salt."
         }
       ]
     }

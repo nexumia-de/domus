@@ -22,8 +22,5 @@
   ],
   "yield": { "amount": { "value": 1.7, "unit": "kg" }, "source": "user" },
   "method": ["Mix, rest, fold, shape, bake."],
-  "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" },
-  "tastings": [
-    { "date": "2026-11-18", "text": "Crumb open, crust good, needs a little more salt." }
-  ]
+  "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" }
 }

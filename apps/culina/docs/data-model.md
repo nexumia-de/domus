@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Data model
-description: Every entity Culina stores (ingredient, ratio template, component, dish, stock item, affinity) and the export file, with fields, required flags, units, ids, what is stored versus derived, which part is the general model shared with Mixtura and which is kitchen-specific, how it stays compatible with both Cooklang outcomes, and the open questions with proposals.
+description: Every entity Culina stores (ingredient, ratio template, component, dish, stock item, affinity, tasting note) and the export file, with fields, required flags, units, ids, what is stored versus derived, which part is the general model shared with Mixtura and which is kitchen-specific, how it stays compatible with both Cooklang outcomes, and the open questions with proposals.
 tags:
   [
     data-model,
@@ -108,7 +108,8 @@ replaced by a reference to it.
 | Ratio template          | `templates/` roles, slots, matching, variants             | Parts by mass with an anchor role, ranges from sourced rows, derivatives as changes       |
 | Component               | `ingredients/prepared.ts`: nesting, cycles, yield         | Yield by weight, percentage lines, baker's percentage base, method steps                  |
 | Dish                    | `templates/slots.ts`: roles filled by things              | Dish roles (main, sauce, crunch, acid, garnish, starch) and portions                      |
-| Version                 | `specs/`: versions, family, diff                          | Tasting notes; diff fields are lines, yield and method                                    |
+| Version                 | `specs/`: versions, family, diff                          | Diff fields are lines, yield and method                                                   |
+| Tasting note            | none                                                      | A note with a date on one version of a component or dish                                  |
 | Stock item              | `stock/` and `shelf/`: what is held, dates, fresh or past | Amount and state on stock, date prepared, use by                                          |
 | Affinity                | `affinity.schema.json` exists in Mixtura                  | Context is cuisine, season, technique; later (issue 27 and the pairing work), no code yet |
 | Export file             | `exchange/`: envelope, version check, migrations          | Culina's entity kinds                                                                     |
@@ -272,7 +273,6 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
-| `tastings`    | array of object | no       | `date` and `text`                                                           |
 
 - **Lines.** An amount is mass, volume or count, or `percent` of the
   `percentBase` mass. A line without an amount ("salt to taste") is kept
@@ -316,7 +316,6 @@ One stored record is one [version](#version).
 | `portions` | integer         | no       | Number of portions the dish makes                                      |
 | `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional` |
 | `version`  | object          | yes      | See [Version](#version)                                                |
-| `tastings` | array of object | no       | `date` and `text`                                                      |
 | `note`     | string          | no       | Free text                                                              |
 
 Weight per portion, the roles covered ("no crunch") and what is missing
@@ -325,8 +324,8 @@ percent.
 
 ## Version
 
-Not an entity of its own: the `version` object in a component or dish,
-plus its `tastings`. Fields of `version`: `family` (id of the first
+Not an entity of its own: the `version` object in a component or dish.
+Fields of `version`: `family` (id of the first
 version), `date`, optional `parent`, `change`, `reason`.
 
 - A new version is a new record, so every version stays complete and a
@@ -335,8 +334,36 @@ version), `date`, optional `parent`, `change`, `reason`.
   in a new family, which is how "my version of that" is kept.
 - The head of a family is its latest version by date and parent chain;
   the version number is derived.
-- A tasting note belongs to the version it was made on and may be added
-  later.
+- Each version is its own record with its own `id`; that id is what a
+  [tasting note](#tasting-note) points at. A note belongs to the version
+  it was made on and may be added later; adding one never changes the
+  version, so versions stay immutable ([sync](decisions/sync.md)).
+
+## Tasting note
+
+A note on one version of a component or dish, a record of its own
+([decision](decisions/sync.md), point 4). Schema: `tasting.schema.json`.
+It replaces the `tastings` list that components and dishes had: with sync,
+the merge is per record, so two devices or two people adding a note at the
+same time never lose one.
+
+| Field  | Type   | Required | Meaning                                                                                        |
+| ------ | ------ | -------- | ---------------------------------------------------------------------------------------------- |
+| `id`   | id     | yes      | See [ids](#ids)                                                                                |
+| `ref`  | object | yes      | `kind` (`component` or `dish`) and `id`: the id of the **version record** the note was made on |
+| `date` | date   | yes      | The day of the tasting, as entered                                                             |
+| `text` | string | yes      | The note                                                                                       |
+
+- `ref.id` is the id of one stored version, not of the family: a note on
+  the second version of a sauce points at that record, so the note stays
+  with the version that was tasted. The family and the head of a family
+  are found through the version's `version.family`.
+- Several notes may point at one version. `validateModel` reports a `ref`
+  that is no record of the kind it names (`unknown-component`,
+  `unknown-dish`) and a repeated `id` (`duplicate-id`); see [engine
+  rules](engine-rules.md#cross-record-validation).
+- A note is never part of the version it refers to, so it is not copied
+  when a new version is made.
 
 ## Stock item
 
@@ -393,7 +420,8 @@ refused by the schema. There is no role entity yet (open question 2).
 | Component `yield` (weighed output)             | Loss, yield percent, portions weight                                    |
 | Ingredient `yields`                            | Purchased to edible and back; unknown stays unknown                     |
 | Ingredient density and unit weight             | Volume and count to mass                                                |
-| `version` and `tastings`                       | Version number, head of a family, diff, variation tree                  |
+| `version`                                      | Version number, head of a family, diff, variation tree                  |
+| Tasting notes (own records)                    | The notes of a version, the latest note of a family                     |
 | Stock `amount`, `state`, `preparedOn`, `useBy` | Days left, use soon, past, makeable, what must go first, what to buy    |
 | Ingredient `shelfLife`                         | Use-by date from `preparedOn`; a dish's limiting shelf life             |
 | Allergens as data (reserved)                   | Allergens of a dish: union over its expanded ingredients (issue 27)     |
@@ -421,6 +449,7 @@ One JSON file with everything the user entered, validated by
 | `dishes`        | array    | no       | Dish records               |
 | `stock`         | array    | no       | Stock item records         |
 | `affinities`    | array    | no       | Affinity records           |
+| `tastings`      | array    | no       | Tasting note records       |
 
 ```json
 {
@@ -437,7 +466,7 @@ One JSON file with everything the user entered, validated by
   integer (the same name Mixtura uses; the issue called it
   `schemaVersion`). `seedVersion` names the seed data that ids refer to.
 - Arrays `ingredients`, `templates`, `components`, `dishes`, `stock`,
-  `affinities` are optional; the export holds user entities, seed entities
+  `affinities`, `tastings` are optional; the export holds user entities, seed entities
   stay in the seed.
 - **Forward compatibility.** A reader checks `format` and
   `formatVersion` **first** and refuses a higher version with a message
@@ -448,6 +477,10 @@ One JSON file with everything the user entered, validated by
   enum value, raises `formatVersion` and comes with a pure migration
   from the previous version to the next. Older files are read by
   migrating step by step.
+- **Format version.** Moving tasting notes out of components and dishes
+  into `tastings` (issue 50) changes the format, and `formatVersion`
+  stays 1 on purpose: nothing is released, so no export file of the old
+  shape exists outside development and no migration is written.
 - Identity: importing never overwrites a seed entity, and a user id that
   exists is merged or replaced by the user's choice (the merge mechanism
   is the general part of the exchange module[^mixshared]).
@@ -540,7 +573,7 @@ in [Stored versus derived](#stored-versus-derived) is computed.
 **Database.** One IndexedDB database `culina`. One object store per entity
 kind, named like the collections of the [export file](#export-file):
 `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
-each with the key path `key`. Two more: `meta` (`key` to `value`; today
+`tastings`, each with the key path `key`. Two more: `meta` (`key` to `value`; today
 only `schemaVersion`, an integer that starts at 1) and `backup` (empty
 except during a migration). No device id yet; sync adds it to `meta`
 without a migration.
@@ -603,10 +636,23 @@ kinds and returns the findings of the engine's `validateModel`.
 **Schema version and migrations.** The data schema version is `schemaVersion`
 in `meta`, not IndexedDB's own version: IndexedDB's version cannot be
 rolled back when a data migration fails, so it only serves to create the
-object stores (`onupgradeneeded`). Migrations are an ordered list
+object stores (`onupgradeneeded`), which creates every store that is
+missing and touches no row. IndexedDB's version is 1 for the first six
+kinds plus `meta` and `backup` and **2** since `tastings` was added
+(issue 50): a browser that already holds version 1 of the database gets the
+new store on the next open and keeps its rows (`test/store-tastings.test.ts`
+builds the old layout and opens it). Migrations are an ordered list
 `{ from: n, to: n + 1, migrate(rows) }` of pure functions over plain data
 (`src/store/migrations/`); the schema version is 1 plus the number of
-migrations. There is none yet. Opening a database:
+migrations. There is none yet, and none was written for tasting notes:
+the data schema version stays 1 because nothing is released and no screen
+writes yet. A record stored by the commit before issue 50 could still hold
+a `tastings` list inside a component or dish, since the old schema allowed
+it; such a record is neither migrated nor validated on read (only `put`
+validates), it is rejected when it is written again, and the list is
+ignored by everything. This is accepted for development data only; once
+a version is released, a change like this needs a migration step.
+Opening a database:
 
 1. No `schemaVersion` (new database): write the current one.
 2. Newer than the app knows: `newer-schema`, nothing is opened for writing;
@@ -647,7 +693,7 @@ and a failing migration and checks that the log does not contain it.
 # Schemas and tests
 
 - `common`, `ingredient`, `template`, `component`, `dish`, `stock`,
-  `affinity`, `export` in `packages/engine/schemas/`, JSON Schema draft
+  `affinity`, `tasting`, `export` in `packages/engine/schemas/`, JSON Schema draft
   2020-12[^jsonschema]. Each has an absolute `$id`
   (`https://nexumia-de.github.io/culina/schemas/<name>.schema.json`; an
   identifier, not necessarily a place to download), shared types live in
@@ -707,3 +753,7 @@ For the owner; each has a proposal.
 10. **Device id for sync.** _Decided (issue #15):_ not stored now; the rows
     already are sync records, and the id is added to `meta` when sync is
     built. See [Storage and migrations](#storage-and-migrations).
+11. **Tasting notes: a list or records.** _Decided (issue 50, from the
+    [sync decision](decisions/sync.md)):_ records of their own, pointing at
+    the version they were made on; `formatVersion` stays 1 because nothing
+    is released. See [Tasting note](#tasting-note).

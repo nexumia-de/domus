@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/tasting.schema.json",
+  "title": "Tasting note",
+  "description": "A note on one version of a component or dish, a record of its own. ref.id is the id of the version record the note was made on.",
+  "type": "object",
+  "required": ["id", "ref", "date", "text"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "ref": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["component", "dish"] },
+        "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" }
+      }
+    },
+    "date": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    },
+    "text": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
+  }
+}

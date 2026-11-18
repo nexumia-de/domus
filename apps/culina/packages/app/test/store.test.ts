@@ -39,6 +39,7 @@ describe('create, reopen, read back', () => {
       'dishes',
       'stock',
       'affinities',
+      'tastings',
     ] as const) {
       expect(await store.list(kind)).toEqual({ ok: true, records: [] });
     }

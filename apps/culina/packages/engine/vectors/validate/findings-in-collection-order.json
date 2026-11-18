@@ -1,6 +1,6 @@
 {
   "id": "findings-in-collection-order",
-  "description": "Findings follow the collections (ingredients, templates, components, dishes, stock, affinities), then record order, then field order",
+  "description": "Findings follow the collections (ingredients, templates, components, dishes, stock, affinities, tastings), then record order, then field order",
   "inputs": {
     "kind": "validate_model",
     "model": {
@@ -118,6 +118,17 @@
           "a": "salt",
           "b": "lime"
         }
+      ],
+      "tastings": [
+        {
+          "id": "n1",
+          "ref": {
+            "kind": "dish",
+            "id": "d9"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
       ]
     }
   },
@@ -200,6 +211,13 @@
         "id": "f1",
         "path": "b",
         "ref": "lime"
+      },
+      {
+        "code": "unknown-dish",
+        "kind": "tasting",
+        "id": "n1",
+        "path": "ref",
+        "ref": "d9"
       }
     ]
   },

@@ -466,7 +466,7 @@ field). Rounding a portion for display is the caller's step.
 `validateModel(model)` checks what the JSON Schemas cannot, because it
 spans records ([data model](data-model.md#schemas-and-tests)). Input: the
 collections of the export file, `ingredients`, `templates`, `components`,
-`dishes`, `stock`, `affinities`, as stored (a record valid against its
+`dishes`, `stock`, `affinities`, `tastings`, as stored (a record valid against its
 schema is accepted as is). Only the records given exist; a collection left
 out is empty, so the caller passes seed and user records together. Output:
 `{ ok, findings }`; it collects every finding, never throws and does not
@@ -474,7 +474,7 @@ change its input. A finding is `{ code, kind, id, path?, ref?, ids?, role? }`:
 the record (`kind`, `id`), the field (`path`, as `lines[2].ref`), the
 missing id (`ref`), the ids around a cycle (`ids`) and the role.
 
-Order: collections as above, then record order, then field order (in a
+Order: collections as above (tastings after affinities), then record order, then field order (in a
 template: parent, cycle, structure and anchor, swaps; in a component:
 template, lines, cycles, version). Where records share an id inside one
 kind, the later ones get only `duplicate-id` and no other check; ids may
@@ -484,7 +484,8 @@ repeat across kinds.
 | ------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `duplicate-id`           | any                                        | the id was used by an earlier record of the same kind                                                                                                        |
 | `unknown-ingredient`     | template, component, dish, stock, affinity | an ingredient id (swap `ingredientClass`, a line, slot or stock `ref` of kind `ingredient`, affinity `a` and `b`) is no ingredient                           |
-| `unknown-component`      | component, dish, stock                     | a `ref` of kind `component` is no component                                                                                                                  |
+| `unknown-component`      | component, dish, stock, tasting            | a `ref` of kind `component` is no component (a tasting `ref` of that kind: no component version with that id)                                                |
+| `unknown-dish`           | tasting                                    | a tasting `ref` of kind `dish` is no dish (no dish version with that id)                                                                                     |
 | `unknown-template`       | component                                  | `templateId` is no template                                                                                                                                  |
 | `unknown-parent`         | ingredient, template, component, dish      | `parentId` or `version.parent` is no record of that kind                                                                                                     |
 | `unknown-family`         | component, dish                            | `version.family`, the id of the first version, is no record of that kind                                                                                     |
@@ -515,6 +516,12 @@ repeat across kinds.
   walk meets is reported once, with the record of its smallest id; where
   cycles overlap, not every elementary cycle is listed. The walk recurses
   once per link, so a chain of many thousands of parents is out of scope.
+- A tasting note's `ref.id` is the id of a version record, and every
+  version is a record of its own, so it is looked up among the ids of its
+  kind: `component` in `components`, `dish` in `dishes`. `unknown-dish` is
+  new with tasting notes (issue 50); no existing code named a dish that
+  does not exist. A note on an ingredient is no valid record (the schema
+  allows only the two kinds).
 - `version.family` is the id of the first version
   ([data model](data-model.md#version)), so it must be a record of the
   same kind; a family with no first version left is reported.
