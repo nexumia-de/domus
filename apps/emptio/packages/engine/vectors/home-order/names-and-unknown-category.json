@@ -1,0 +1,29 @@
+{
+  "kind": "home-order",
+  "title": "Names sort by their key (umlauts with their base letter, case ignored); an unknown category counts as other; later bought first",
+  "input": {
+    "categoryOrder": ["produce", "other"],
+    "entries": [
+      { "id": "e1", "name": "Zucchini", "categoryId": "produce", "priority": "soon" },
+      { "id": "e2", "name": "Äpfel", "categoryId": "produce", "priority": "soon" },
+      { "id": "e3", "name": "bananen", "categoryId": "produce", "priority": "soon" },
+      { "id": "e4", "name": "Batteries", "categoryId": "gone-category", "priority": "soon" },
+      { "id": "e5", "name": "Tape", "categoryId": "other", "priority": "soon" },
+      {
+        "id": "e6",
+        "name": "Salt",
+        "categoryId": "other",
+        "priority": "soon",
+        "bought": { "at": "2026-11-17T09:00:00Z" }
+      },
+      {
+        "id": "e7",
+        "name": "Rice",
+        "categoryId": "other",
+        "priority": "soon",
+        "bought": { "at": "2026-11-18T09:00:00Z" }
+      }
+    ]
+  },
+  "expected": { "order": ["e2", "e3", "e1", "e4", "e5", "e7", "e6"] }
+}

@@ -13,7 +13,7 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 This file keeps the goals and their order. Each goal is an
 [issue](https://github.com/nexumia-de/emptio/issues) and its work items
 are sub-issues of it; there are no milestones
-([decision 6](architecture.md#decisions)). How the app is built:
+([decision 8](architecture.md#decisions)). How the app is built:
 [architecture](architecture.md).
 
 # Goals
@@ -25,7 +25,7 @@ are sub-issues of it; there are no milestones
    from the catalogue and by free name, ticking, the home order; the
    local store; installable and offline; deployed. Usable by one person
    on one device.
-2. **Shared.** The list in the household's place, encrypted, over
+2. **Shared.** The list as Emptio's file in the household's place, encrypted, over
    storage the user configured. From here it can replace KitchenOwl in
    the household, which is why it comes before stores.
 3. **Stores.** Stores with the default route of their chain (Rewe,
@@ -36,8 +36,10 @@ are sub-issues of it; there are no milestones
    entries are offered to stock; then the same with Mixtura.
 5. **Domus.** The landing page for all apps, and the compose file with
    a sync storage the apps can use as it is.
-6. **Later.** Staples that return, proposals from history, offers and
-   prices through a connector the household hosts (Rewe), barcodes.
+6. **Offers.** A connector the household hosts (Rewe first) brings the
+   offers of a market; entries on offer are raised to _now_ in that
+   store, where the household switched this on.
+7. **Later.** Staples that return, proposals from history, barcodes.
 
 # Depends on others
 

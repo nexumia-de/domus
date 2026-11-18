@@ -1,7 +1,7 @@
 ---
 type: Research
 title: Store layouts and the route through a store
-description: Whether German stores (Rewe, Aldi, Rossmann) are laid out alike, that no open data on shelf order per store was found, a proposal to learn the route per store from the order of ticking, hiding items a store does not carry, and why the unofficial Rewe client rewerse-engineering is not bound into the app.
+description: Whether German stores (Rewe, Aldi, Rossmann) are laid out alike, that no open data on shelf order per store was found, a proposal to learn the route per store from the order of ticking, hiding items a store does not carry, and why the unofficial Rewe client rewerse-engineering is used only through a connector the household hosts, for offers.
 tags: [research, stores, layout, categories, rewe, data-sources]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -99,7 +99,7 @@ recipes.
 What it does not offer: any place of a product in a store, the range
 of a market without pickup or delivery, availability on the shelf.
 
-Why it is not bound into the app:
+Why it is not bound into the app itself:
 
 - It needs the client certificate of the REWE app, which the user
   extracts from the APK. A web app cannot present it, and we cannot
@@ -110,9 +110,14 @@ Why it is not bound into the app:
 - Every lookup would tell REWE what the household buys.
 - It does not answer the question asked here, the route.
 
-If offers are wanted later, the way that fits is a file: the owner runs
-the CLI himself and the app imports the result. That is a separate
-issue, not part of the first version.
+Decided by the owner on 2026-11-18: the API is used, through a
+connector the household hosts itself next to its sync storage (Domus),
+to show offers. Where the household switched it on, an entry that is on
+offer in the store one is in is raised to _now_ there
+([rule 8](architecture.md#rules-of-the-engine)). The app without a
+connector works as before and sends nothing. Open for that work:
+matching the name of an offer to an entry, which market's offers apply,
+and keeping the last offers for use without network.
 
 [^lp-umbau]: Lebensmittel Praxis, Ladenumbau: Drei Beispiele, https://lebensmittelpraxis.de/zentrale-management/15498-ladenumbau-drei-beispiele.html?showall=1
 

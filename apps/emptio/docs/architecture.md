@@ -62,7 +62,8 @@ in a store, counts, proposals for the route.
 
 # Rules of the engine
 
-Each is a pure function with vectors:
+Each is a pure function with vectors; the exact statements are in the
+[engine rules](engine-rules.md):
 
 1. **Order at home**: by priority, then category, then name.
 2. **Order in a store**: by the store's route; within a category _now_
@@ -70,9 +71,9 @@ Each is a pure function with vectors:
 3. **Hidden in a store**: entries of categories the store does not
    carry, and entries marked "not here" for it; their count stays
    visible.
-4. **Category of a new entry**: from the catalogue for a known
-   ingredient; for a free name the category the household last gave
-   that name; otherwise "Other".
+4. **Category of a new entry**: the category the household last gave
+   the same thing; otherwise the one the catalogue gives the
+   ingredient; otherwise "Other".
 5. **Twice the same**: adding what is already open raises the existing
    entry (amounts added when the units match) and keeps the higher
    priority.
@@ -82,6 +83,11 @@ Each is a pure function with vectors:
 7. **Hand-over in**: missing ingredients of a recipe become entries
    with their origin. **Hand-over out**: bought entries with an
    ingredient id become proposed stock records.
+
+8. **Raised by an offer**: where the household switched this on, an
+   entry at _soon_ or _sometime_ that is on offer in the store one is
+   in is shown as _now_ there, marked as an offer with its price. The
+   stored priority does not change; the offers come in as input.
 
 Ticking needs the time; it comes in as input, as in materia.
 
@@ -94,20 +100,65 @@ a second app needing it, the data moves to a place both install from
 catalogue: a short curated list of categories and usual items, with its
 source named, and free names beyond that.
 
+State of Culina's catalogue on 2026-11-18, from its build session:
+
+- 539 foods and 116 parents, generated from USDA FoodData Central SR
+  Legacy (CC0) by `tools/catalogue/build.mjs`. Food ids are
+  `fdc-<FDC id>` and stable for one data release; parent ids depend on
+  the grouping rule and can change with it.
+- **It has no shopping category.** The tree groups by name ("Butter",
+  "Oil"), not by aisle. The generator reads USDA's food category
+  ("Dairy and Egg Products", "Baked Products", ...) but does not write
+  it. Writing it out is small; the table from USDA categories to shop
+  categories has to be decided (issue 11).
+- German names are planned only (Culina issue 69). The owner decided
+  on 2026-11-18 to pull them forward, so that the search works in
+  German from the start.
+- Moving the generator into a package of its own is simple; it needs
+  one unit table of Culina. Best done after or together with the German
+  names.
+- Culina's engine gets `matchIngredients` (pull request 72), which maps
+  a free name to an ingredient id. Emptio needs the same for rule 4, so
+  it is a candidate for the shared code, not for a copy.
+
 # Sync and the household
 
-- The list and the stores live in the household's **place**, the unit
-  that already holds stock and is the same place in Mixtura and Culina.
-  One invite then shares stock, list and stores.
-- materia's unit document keeps collections it does not know, so a
-  place written by Emptio survives a cycle of an older sister app. To
-  be checked before building on it: that the sister apps' local stores
-  keep such collections too.
+- The household's **place** is the same place in Mixtura, Culina and
+  Emptio: one place id, one folder on the storage, one invite. **Each
+  app writes its own file there** and no app writes into another's
+  (Culina's sync decision, point 3, by the owner; confirmed for Emptio
+  on 2026-11-18). Emptio's file holds its list and stores as
+  collections of a `materia-unit` document.
+- An earlier version of this plan put the list into the same file as
+  Mixtura's stock. That was dropped: Mixtura rebuilds its file from its
+  own state and would have lost the list, and stock is per app anyway,
+  because the apps' ingredient ids differ.
+- For the hand-over an app **reads** another app's file of the same
+  place and never writes it.
 - Entries are small records merged per key by materia's rules: two
   people adding offline both keep their entries; ticking is a later
   write of the same record.
 - Encrypted, over storage the user configured (WebDAV), as Mixtura. A
   place without a binding sends nothing.
+
+State of Mixtura's sync on 2026-11-18, from its sync session (read in
+the code, not tested):
+
+- Mixtura writes its place file as a `materia-place` document on
+  materia 0.2.0, as `<folder>/<place id>.json`, and rebuilds it from
+  its own state on every write. With a file per app this harms no one,
+  but the file name does not say which app it belongs to; a name per
+  app is part of the neutral names (decision 7).
+- The invite link carries `format: "mixtura-invite"` and the default
+  folder on the storage is `mixtura`; one file per place,
+  `<folder>/<place id>.json`. Both names are of one app, while the
+  place is meant for three.
+- The host-side sync code is about 1,900 lines in `sync/` and about
+  2,000 lines of screens. Nothing in it is about drinks; it is tied to
+  Mixtura's store, app state and DOM helper, which is the work of
+  taking it out into hospes.
+- `tools/webdav-server` in Mixtura is a Docker WebDAV server with CORS
+  that the compose file of Domus can reuse.
 
 # Hand-over with the sister apps
 
@@ -119,9 +170,10 @@ the device. Two ways, both needed:
    shows them for confirmation and adds them. Bought entries go back to
    Culina's stock the same way. Works offline once both apps are
    installed, and for a household that never sets up sync.
-2. **By the shared place, with sync.** Stock and list are in the same
-   place, so "what is missing" and "what was bought" arrive on every
-   device.
+2. **By the shared place, with sync.** Emptio reads Culina's file of
+   the place for what is missing, and Culina reads Emptio's for what
+   was bought; each offers, the person confirms, and each writes only
+   its own file.
 
 The format of the link is a small contract between the apps and is
 written down before either side builds it.
@@ -156,15 +208,25 @@ By the owner on 2026-11-18:
    local store, later common screens and design). The name is not yet
    checked for collisions.
 2. **The ingredient catalogue** gets a data package of its own that
-   Culina and Emptio install; materia holds no food. Its name is open
-   (not "penus").
-3. **The list lives inside the place**, for one invite and for the
-   hand-over to stock.
+   Culina and Emptio install; materia holds no food. It is named **cibus**.
+3. **The list belongs to the place**, as Emptio's own file in the
+   place's folder: one invite, and no app writes another app's file.
 4. **Priority has three steps**: _now_, _soon_ (the default),
    _sometime_.
 5. **Amounts are free text**; number and unit only where an entry comes
    from a recipe.
-6. **Planning without milestones**: each goal of the
+6. **A file per app** in the place's folder. The fix of Mixtura first
+   decided here (keeping collections of other apps) is no longer
+   needed and was withdrawn the same day.
+7. **Neutral names**, chosen by the owner in Mixtura's sync session on
+   2026-11-18 (reported by that session, built in Mixtura issue 153):
+   the invite format is `materia-invite` (version 1, with
+   `kind: "place"`), the default folder on the storage is `household`,
+   and Emptio's file of a place is `<folder>/<place id>.emptio.json`
+   (Culina's `.culina.json`; Mixtura keeps `<place id>.json`). Mixtura
+   still reads `mixtura-invite`, and existing bindings keep their
+   folder.
+8. **Planning without milestones**: each goal of the
    [roadmap](roadmap.md) is an issue and its work items are sub-issues.
    This replaces the milestone rule of the shared agent rules for this
    repository.

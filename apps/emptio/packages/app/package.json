@@ -1,0 +1,15 @@
+{
+  "name": "@emptio/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Emptio's web app (PWA): Shopping List, the shell",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@emptio/engine": "0.0.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}
