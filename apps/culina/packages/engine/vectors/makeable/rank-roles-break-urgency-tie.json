@@ -1,0 +1,150 @@
+{
+  "id": "rank-roles-break-urgency-tie",
+  "description": "Two candidates with the same earliest use-by: the one covering more distinct roles comes first, before the name decides",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat",
+        "roles": ["oil"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "salt"
+      },
+      {
+        "id": "sugar"
+      },
+      {
+        "id": "onion",
+        "roles": ["aromatic"]
+      },
+      {
+        "id": "milk",
+        "roles": ["liquid"]
+      }
+    ],
+    "components": [
+      {
+        "id": "alpha",
+        "name": "Alpha",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            },
+            "role": "starch"
+          }
+        ],
+        "version": {
+          "family": "alpha",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "beta",
+        "name": "Beta",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            },
+            "role": "starch"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg"
+            },
+            "role": "binder"
+          }
+        ],
+        "version": {
+          "family": "beta",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        },
+        "useBy": "2026-11-21"
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "egg"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "beta",
+        "roles": ["binder", "starch"],
+        "urgency": {
+          "itemId": "s1",
+          "daysLeft": 3
+        }
+      },
+      {
+        "id": "alpha",
+        "roles": ["starch"],
+        "urgency": {
+          "itemId": "s1",
+          "daysLeft": 3
+        }
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}
