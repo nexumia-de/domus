@@ -48,6 +48,7 @@ links. Change history is in [log.md](log.md).
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
 - [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds, the 20 checked classics and Mixtura's own additions.
 
+- [Spike: WebDAV from the browser](webdav-spike.md) - A browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second; the app's CSP blocks other hosts; options for the owner.
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
 

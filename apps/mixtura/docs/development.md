@@ -509,3 +509,19 @@ Third pass (#116, 2026-11-17), after the owner allowed `iba-world.com`,
 `WebFetch` resolves only hosts the session allows (`cocktailtower.pages.dev`
 and `forums.egullet.org` did not resolve); `WebSearch` returned only
 summaries.
+
+## Hosts for the WebDAV spike
+
+Tested on 2026-11-18 with `curl -sS -m 15 -o /dev/null -w '%{http_code}' https://<host>/`
+for the [WebDAV spike](webdav-spike.md). Docker Hub was reachable and
+the `nextcloud:31-apache` image was pulled from it. These two gave
+`CONNECT tunnel failed, response 403`:
+
+```
+download.nextcloud.com
+apps.nextcloud.com
+```
+
+The first has the release archives (not needed, the image was enough);
+the second is the app store, needed to read whether a Nextcloud app can
+add CORS headers for WebDAV (option B of the spike).
