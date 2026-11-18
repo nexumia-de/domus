@@ -42,7 +42,7 @@ links. Change history is in [log.md](log.md).
 - [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
-- [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship as ideas; their source and the kitchens are open.
+- [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship by country as full recipes with their techniques, first Germany, Italy, France and Spain.
 - [Hosting](decisions/hosting.md) - Decided: the app is a static folder any host or own server can serve; Cloudflare is the first host and only an adapter in this repository, no shared deploy code.
 - [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock.
 

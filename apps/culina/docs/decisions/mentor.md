@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Culina is a scripted kitchen helper that teaches until it is no longer needed
-description: Decided by the owner on 2026-11-18. Culina helps its user become a better, independent cook; it teaches by scripts without a language model, from research and textbooks; a skill that is learned is no longer taught; known dishes ship with the app as a source of ideas; the notebook is what remains when the teaching has faded. The source of the dishes and the kitchens to start with are open.
+description: Decided by the owner on 2026-11-18. Culina helps its user become a better, independent cook; it teaches by scripts without a language model, from research and textbooks; a skill that is learned is no longer taught; known dishes ship with the app as a source of ideas; the notebook is what remains when the teaching has faded. Dishes come by country, starting with Germany, Italy, France and Spain; every statement is marked studied, textbook or tradition.
 tags: [decision, scope, teaching, skills, classics]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 ---
@@ -27,20 +27,33 @@ have thought them through, as with the drinks in Mixtura.
 2. **Scripted, no language model.** What the helper asks and says is
    written text and rules in the data and the engine. It works offline
    and needs no server and no key.
-3. **From research and textbooks.** Every caution, question and
-   explanation names its source: a peer-reviewed paper, a textbook of
-   cooking or of food science. Nothing from memory; a statement without
-   a source is marked as a judgement, as with the ratios
-   ([ratios](../ratios.md)).
+3. **From research and textbooks, read by us.** Every caution, question
+   and explanation names its source and is written in our own words;
+   a source's text is never copied. Each statement carries one of
+   three levels: **studied** (a peer-reviewed paper measured it),
+   **textbook** (a textbook of cooking or food science states it) or
+   **tradition** (kitchens do it; no test was found). Nothing from
+   memory. A first trial on 2026-11-18 with the owner's three examples
+   gave one of each kind of outcome, and corrected a claim made from
+   memory (pepper loses pungency as well as aroma when cooked long).
 4. **A learned skill is not taught again.** Teaching is attached to
    skills (a technique or a judgement, such as searing or correcting
    seasoning), not to dishes. The user marks a skill as learned; from
    then on its teaching is not shown, on any dish, and can be brought
    back by the user. The app may propose, never decide.
-5. **Known dishes ship with the app.** They answer "what can I cook"
-   for a user without own recipes, built from components and ratios so
-   that the structure shows. This adds to the
+5. **Known dishes ship with the app, by country.** Traditional dishes
+   as full recipes: ingredients with amounts, steps, and the one source
+   each follows; amounts are taken from the source, the method is in
+   our own words, and an amount the source leaves vague is marked as
+   settled by us. A shipped dish is a starting version; what the user
+   cooks from it is their version in the notebook, and the app never
+   claims the one true recipe. The first countries are Germany, Italy,
+   France and Spain. This adds to the
    [recipe book decision](recipe-book.md); scraping stays excluded.
+   Each step names the technique it uses. The explanation of a
+   technique (what to watch for, why, the source) is written once per
+   technique and shown in every recipe that uses it, until the user
+   marks the skill as learned (point 4).
 6. **The notebook is where it ends.** With every skill learned the app
    is the notebook, the ratios and the finder. These stay as built.
 
@@ -59,13 +72,13 @@ have thought them through, as with the drinks in Mixtura.
 
 ## Open
 
-- Where the known dishes come from and how many (ingredient lists and
-  ratios cited as facts, method text written here), and the owner's
-  review of the list before it is built.
-- Which kitchens to start with.
-- Sources under an open licence: the BC Cook Articulation textbooks
-  (opentextbc.ca) are refused by the session's network (HTTP 403 on
-  2026-11-18); see [development](../development.md).
+- The list of dishes per country and the sources they follow, for the
+  owner's review before recipes are written.
+- How a shipped dish, a technique and a handling rule are stored
+  ([data model](../data-model.md)).
+- `opentextbc.ca` and `europepmc.org` answer with a bot check that is
+  not worked around; the BC cook textbooks are mirrored on
+  `workforce.libretexts.org`, which the session reaches.
 
 ## Consequences
 
