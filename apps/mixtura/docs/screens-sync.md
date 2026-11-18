@@ -208,16 +208,18 @@ every target is at least 44 px on the Sync page and on the sheets it opens.
 
 ## Verified and not verified
 
-Verified: `npm run check`; the unit tests (state line, scheduler with fake timers,
-rules for storages, binding, join and move); `e2e/sync.mjs` at both sizes against
-two `httpd` servers in Docker, in headless Chromium; the accessibility pass includes
-the Sync page and its Add Storage and Join sheets.
+Verified on 2026-11-18, after the review fixes, in headless Chromium:
+`npm run check`; the unit tests (state line, scheduler with fake timers, rules for
+storages, binding, join and move, sheet drafts, failed writes); the whole
+`npm run e2e`; `e2e/sync.mjs` at 360x720 and 1200x800 against two `httpd` servers
+in Docker (`tools/webdav-server`, profile `second`); the screenshots of
+[screenshots](screenshots.md#sync), made by the same script with `--docs`; the
+accessibility pass (`e2e/a11y.mjs`, both sizes, light and dark) over the Sync page
+and all six sheets (Add Storage, Join, Sync This Place, Share, Move, Show
+Passphrase), which also ran without sideways scrolling at 240 % text size in a
+temporary copy, because CI fonts are wider than local ones.
 
 Not verified: Firefox, Safari and any phone browser; a real Nextcloud (it needs the
 CORS and `ETag` setup of the [spike](webdav-spike.md) and keeps ETags for a second);
-the CI job `webdav` with the second server (written, not run in CI); the Sync This
-Place, Share, Move and Show Passphrase sheets in the automated accessibility pass
-(they need a place id in the address; their size and overflow are measured by
-`e2e/sync.mjs`, their names and focus order are not audited separately); dark mode
-of the Sync page beyond the accessibility and dark passes of the page and its Add
-Storage sheet; a screen reader.
+dark mode of the sheets beyond the accessibility pass (`e2e/dark.mjs` covers the
+page and Add Storage); a screen reader.
