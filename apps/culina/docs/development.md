@@ -242,11 +242,11 @@ For the [data model](data-model.md), tested 2026-11-17 with
 `json-schema.org`, `www.legislation.gov.uk`,
 `raw.githubusercontent.com` (301) and `www.kingarthurbaking.com` (406 for
 curl, readable with the fetch tool). Blocked (no DNS or tunnel 403) and
-needed to read more: `schema.org`, `developers.google.com` (Recipe
-structured data), `openrecipeformat.readthedocs.io` (ORF field
-reference), `opentextbc.ca` and `workforce.libretexts.org` (yield
-testing, as purchased and edible portion), `ajv.js.org`,
-`www.theperfectloaf.com`, `www.thefreshloaf.com`, `busbysbakery.com`.
+needed to read more: `developers.google.com` (Recipe structured data),
+`ajv.js.org`, `www.theperfectloaf.com`, `www.thefreshloaf.com`,
+`busbysbakery.com`. (`schema.org`, `openrecipeformat.readthedocs.io`,
+`opentextbc.ca` and `workforce.libretexts.org` were blocked then; see
+the next section.)
 
 ## Engine units (2026-11-18)
 
@@ -264,3 +264,27 @@ Handbook 44 Appendix C is on `www.nist.gov`, the Federal Register of
 in the end: `nvlpubs.nist.gov`, `physics.nist.gov`, `www.law.cornell.edu`,
 `www.bipm.org`, `www.ecfr.gov`. `www.federalregister.gov` answers at its
 root but refused a document request (proxy 403).
+
+## Yield, schema.org and ORF sources (2026-11-18)
+
+Needed to re-check the definitions in the [data model](data-model.md)
+(issue 37). Allowed by the owner on 2026-11-18, tested with
+`curl -sS -m 15 -o /dev/null -w '%{http_code}' https://<host>/` and read:
+
+```
+workforce.libretexts.org
+schema.org
+openrecipeformat.readthedocs.io
+```
+
+`openrecipeformat.readthedocs.io` answers the root with a 302 to
+`/latest/`; `schema.org` pages come gzip-compressed. Also allowed and
+answering (200), not needed: `www.w3.org`. Refused: `opentextbc.ca`
+(403), so the same book was read on `workforce.libretexts.org` (shelf
+"Food Production, Service and Culinary Arts", book "Basic Kitchen and
+Food Service Management (BC Campus)"; its search and shelf listings are
+built by script, so the book's pages were reached by following the links
+on the book's own page). The licence of the Open Recipe Format is not
+stated on its documentation pages and the host of its source repository
+was not among the hosts allowed for this task, so the licence stays
+unread.

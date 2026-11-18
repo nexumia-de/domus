@@ -33,8 +33,8 @@ sources:
     title: "Busby's Bakery: Bakers percentages and bakers formulas (pre-fermented flour; search excerpt only, host blocked)"
     url: https://busbysbakery.com/bakers-percentages/
   - id: yield
-    title: 'Basic Kitchen and Food Service Management (BC Campus): Yield testing (AP, EP, yield percentage, cost factor; search excerpt only, host blocked)'
-    url: https://opentextbc.ca/basickitchenandfoodservicemanagement/chapter/yield-testing
+    title: 'Basic Kitchen and Food Service Management (BC Cook Articulation Committee, BCcampus; CC BY 4.0), chapter 3 "Food Costing", section 3.2 "Yield Testing" (AP, EP, yield percentage, factor; read 2026-11-18 on workforce.libretexts.org, the same book on opentextbc.ca answers 403)'
+    url: https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Basic_Kitchen_and_Food_Service_Management_(BC_Campus)/03%3A_Food_Costing/3.02%3A_Yield_Testing
   - id: eu
     title: 'Regulation (EU) 1169/2011, Annex II, substances causing allergies or intolerances (read 2026-11-17)'
     url: https://www.legislation.gov.uk/eur/2011/1169/annex/II
@@ -42,14 +42,17 @@ sources:
     title: 'Cooklang specification README (ingredients @name{qty%unit}, recipe references, no percentage notation; read 2026-11-17)'
     url: https://raw.githubusercontent.com/cooklang/spec/main/README.md
   - id: orf
-    title: 'Open Recipe Format (techhat/openrecipeformat): README; YAML based, field reference host blocked'
-    url: https://raw.githubusercontent.com/techhat/openrecipeformat/master/README.rst
+    title: 'Open Recipe Format, documentation start page (YAML based, accurate and flexible storage of recipes; read 2026-11-18; licence not stated on the pages read)'
+    url: https://openrecipeformat.readthedocs.io/latest/
+  - id: orfref
+    title: 'Open Recipe Format Reference (ingredients, amounts, processing, yields, steps; read 2026-11-18)'
+    url: https://openrecipeformat.readthedocs.io/latest/topics/reference/orf.html
   - id: mealie
     title: 'Mealie: recipe schema (recipe.py; yield as quantity and text, ingredients as a list; ingredient type not read)'
     url: https://raw.githubusercontent.com/hay-kot/mealie/mealie-next/mealie/schema/recipe/recipe.py
   - id: schemaorg
-    title: 'schema.org/Recipe: recipeIngredient as plain text (taken from the Cooklang decision record; schema.org itself blocked)'
-    url: decisions/cooklang.md
+    title: 'schema.org/Recipe, recipeIngredient and recipeYield (development version; CC BY-SA 3.0 per schema.org/docs/terms.html; read 2026-11-18)'
+    url: https://schema.org/Recipe
   - id: jsonschema
     title: 'JSON Schema: Structuring a complex schema ($id, $defs, $ref, $schema, draft 2020-12; read 2026-11-17)'
     url: https://json-schema.org/understanding-json-schema/structuring
@@ -184,7 +187,8 @@ examples in `schemas/examples/`.
   not a field.
 - **As purchased versus edible portion.** `yields` records, per state,
   the weight that remains as a percentage of the weight as bought;
-  edible portion yield = edible / purchased[^yield]. Purchased to edible
+  yield % = EP weight / AP weight x 100[^yield] (the book's term for EP is
+  "edible product"; "edible portion" is Culina's name for it). Purchased to edible
   and back is derived ([engine rules](engine-rules.md#edible-portion)). An ingredient with no recorded yield for a state
   is "unknown", never 100 %.
 - **Sourced numbers.** Yield, shelf life, density and unit weight must
@@ -283,7 +287,9 @@ nesting. Schema: `component.schema.json`. One stored record is one
   percent is not stored.
 - **Standardised recipe.** A component with lines, yield and portions
   (on the dish) is the standardised recipe of a professional kitchen:
-  quantities, yield, portion size and sub-recipes in one record[^yield].
+  quantities, yield, portion size and sub-recipes in one record. Only the
+  yield part is in the source: "Professional recipes should always state
+  a yield"[^yield].
 
 ## Dish
 
@@ -470,22 +476,38 @@ fall short for ratio and component thinking.
   preferment and final mix[^ka]. Culina's anchor and `percentBase` are
   that idea for any template.
 - **As purchased versus edible portion.** Kitchens cost and plan on the
-  edible portion: yield % = EP / AP x 100, cost factor = 100 / yield %,
-  and the amount to order is the needed EP divided by the yield[^yield].
-  All of this is derived from `yields`; the cost half waits for issue
-  5.3.
-- **Standardised recipes and sub-recipes.** One record with quantities,
-  yield, portion size and references to other recipes[^yield]; Culina's
-  component plus dish.
-- **schema.org/Recipe.** `recipeIngredient` is a list of plain text
-  strings and `recipeYield` a quantity or servings[^schemaorg]: no
-  separate amount, unit and ingredient, no nesting, no percentages.
+  edible portion: yield % = EP / AP x 100 and cost factor = 100 / yield
+  %[^yield]. The same section says the yield percentage tells "how much
+  raw product to actually order" but gives no formula; the amount to
+  order as the needed EP divided by the yield is Culina's derivation from
+  the first formula. All of this is derived from `yields`; the cost half
+  waits for issue 5.3.
+- **Standardised recipes and sub-recipes.** The book says "Professional
+  recipes should always state a yield"[^yield]; that section names no
+  portion size or sub-recipe references, so those are Culina's own
+  design, not taken from it: component plus dish.
+- **schema.org/Recipe.** `recipeIngredient` takes `Text`, `ItemList` or
+  `PropertyValue`: "The ingredients can be represented as free text or
+  more structured values", and the markup example on the Recipe page
+  uses `PropertyValue` with `value`, `unitCode` and `name`. `recipeYield`
+  is `QuantitativeValue` or `Text`, "the quantity produced by the recipe
+  (for example, number of people served, number of servings, etc)"[^schemaorg].
+  Recipe sites mostly publish free text, but the vocabulary allows an
+  amount and a unit. The property definitions read name no percentage,
+  no nesting of recipes in ingredients and no yield per ingredient
+  state.
 - **Cooklang.** Typed quantities with units, recipe references for
   sub-recipes, YAML metadata; no percentages, ratios, yield per state or
   versions[^cooklangspec].
-- **Open Recipe Format.** YAML based, aimed at storing recipes
-  accurately[^orf]; its field reference could not be read (host blocked),
-  so nothing is claimed about its ingredient shape.
+- **Open Recipe Format.** YAML based, designed for "accurate and
+  flexible storage of recipes"[^orf]. Each ingredient is a dict with a
+  list `amounts` of `amount` and `unit` (several amounts when one recipe
+  is stored at several yields), `processing` tags such as "whole",
+  "minced" or "steamed", `usda_num`, `notes` and `substitutions`; the
+  recipe has `yields` (amount and unit), `steps`, `oven_*` and source
+  fields[^orfref]. Typed amounts and units, like Cooklang; no percentages,
+  ratios, nesting of recipes or yield per state in the field reference.
+  Its licence is not stated on the pages read and stays unread.
 - **Mealie and Tandoor.** Mealie's recipe model has a yield as quantity
   and text, an ingredient list, steps and notes[^mealie]; its ingredient
   type was not read. Tandoor's model could not be confirmed from its

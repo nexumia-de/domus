@@ -99,7 +99,7 @@ Cooklang files "where possible", to be confirmed.
 | `cooklang-ts`                            | MIT, deprecated                                                      | LICENSE file[^ts]                     |
 | CookCLI                                  | MIT                                                                  | LICENSE file[^cli]                    |
 | Cook apps (iOS, Android)                 | not stated                                                           | page[^app]                            |
-| schema.org vocabulary                    | unverified (schema.org blocked)                                      | –                                     |
+| schema.org vocabulary                    | CC BY-SA 3.0 (copyright in the schema), read 2026-11-18              | schema.org/docs/terms.html            |
 
 Writing the format needs no licence: Culina would produce text in a
 documented syntax. The MIT repository text is the one to cite. Reading
@@ -124,13 +124,16 @@ would need the MIT parser as a dependency (WASM).
 ### Alternatives for exchange
 
 - **schema.org/Recipe as JSON-LD**: what recipe sites publish and what
-  Mealie's URL import reads. `recipeIngredient` is a list of plain
-  strings such as "3 apples"; `recipeYield` a quantity or servings;
+  Mealie's URL import reads. `recipeIngredient` takes text, an
+  `ItemList` or a `PropertyValue` ("free text or more structured
+  values", read at schema.org on 2026-11-18); sites mostly publish
+  strings such as "3 apples". `recipeYield` is a quantity or text;
   `recipeInstructions` text or `HowToStep`/`HowToSection`; Google advises
-  separate `Recipe` objects for variants[^google][^unhead]. These were
-  read only as search excerpts; schema.org itself is blocked.
-  Ingredients lose their structure (amount, unit, name in one string);
-  components flatten into sections; no ratios, roles or versions.
+  separate `Recipe` objects for variants[^google][^unhead] (these two
+  still search excerpts only). Ingredients as published lose their
+  structure (amount, unit, name in one string) unless written as
+  `PropertyValue`; components flatten into sections; no ratios, roles or
+  versions.
 - **Mealie, Tandoor, Nextcloud Cookbook**: Mealie imports from Tandoor,
   Nextcloud Cookbook, Paprika and others and exports its own JSON;
   Tandoor imports Nextcloud, Mealie and Cooklang and exports only its
@@ -160,8 +163,10 @@ would need the MIT parser as a dependency (WASM).
    component (amounts kept, no template) is the smallest version; open
    an issue then.
 4. **No schema.org export in the first version.** It loses more than
-   Cooklang (ingredients become strings) and its licence could not be
-   checked here. Reconsider together with handing recipes to a tracker.
+   Cooklang (ingredients become strings in what recipe sites read; the
+   vocabulary's `PropertyValue` could carry an amount and a unit, but
+   not percentages or nesting). Its schema is CC BY-SA 3.0 (read
+   2026-11-18). Reconsider together with handing recipes to a tracker.
 
 Point 4 of [After Mixtura](after-mixtura.md) ("recipes are read from
 Cooklang files") is replaced by this record once the owner decides.
@@ -172,7 +177,7 @@ Cooklang files") is replaced by this record once the owner decides.
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Culina → Cooklang                   | ratios and baker's percentages (only amounts at one size remain), role slots, template families, version history and older tasting notes, licence of a source, the stock and expiry data                                                                |
 | Cooklang → Culina (if import comes) | step text with inline positions, cookware and timers (kept only as text), `=` locked amounts unless Culina models them, optional markers, sections, text quantities ("a pinch") that cannot scale, volumes that cannot become weights without a density |
-| Culina → schema.org                 | everything lost to Cooklang, plus the split of amount, unit and name                                                                                                                                                                                    |
+| Culina → schema.org                 | everything lost to Cooklang, plus the split of amount, unit and name (as usually published)                                                                                                                                                             |
 | Culina → own JSON                   | nothing                                                                                                                                                                                                                                                 |
 
 ## Consequences

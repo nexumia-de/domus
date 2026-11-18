@@ -43,8 +43,8 @@ sources:
     title: Data model, ratio template
     url: data-model.md#ratio-template
   - id: yield
-    title: 'Basic Kitchen and Food Service Management (BC Campus): Yield testing (AP, EP, yield percentage, cost factor; search excerpt only, host blocked)'
-    url: https://opentextbc.ca/basickitchenandfoodservicemanagement/chapter/yield-testing
+    title: 'Basic Kitchen and Food Service Management (BC Cook Articulation Committee, BCcampus; CC BY 4.0), chapter 3 "Food Costing", section 3.2 "Yield Testing" (AP, EP, yield percentage, factor; read 2026-11-18 on workforce.libretexts.org, the same book on opentextbc.ca answers 403)'
+    url: https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Basic_Kitchen_and_Food_Service_Management_(BC_Campus)/03%3A_Food_Costing/3.02%3A_Yield_Testing
 ---
 
 # Engine rules for amounts, scaling and baker's percentages
@@ -431,9 +431,13 @@ a yield is recorded and the input is 0.
 
 # Edible portion
 
-Code: `src/yields/edible.ts`. Yield % = EP / AP x 100 (edible portion over
-as purchased)[^yield]; issue 37 re-checks the definition at a readable
-source. The helpers take the ingredient's already resolved `yields` list
+Code: `src/yields/edible.ts`. Yield % = EP / AP x 100 (edible over as
+purchased)[^yield]: the book writes "EP weight ÷ AP weight × 100 = yield
+%" and calls EP "edible product"; "edible portion" is Culina's name for
+the same quantity. `toEdible` is that formula solved for EP, `toPurchased`
+solved for AP (the book names no formula for the amount to order, only
+that the yield percentage tells "how much raw product to actually order";
+the division is derived here). The helpers take the ingredient's already resolved `yields` list
 (inheritance in the ingredient tree is a later issue).
 
 - `yieldFor(yields, state)` returns `known: true` with percent and source,
