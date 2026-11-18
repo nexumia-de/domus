@@ -44,8 +44,9 @@ The reasons are in [how bartenders work](bartender-practice.md) and
 8. **Stock sync.** Stock per place; each place can be synced to a
    WebDAV folder the user chose, encrypted with a passphrase per place;
    several storages at once; a second person joins by invite link or QR
-   code. A person's own specs, riffs, ingredients and preferences sync
-   between their devices the same way
+   code. Drinks live in libraries that sync and can be shared the same
+   way, and a profile carries a person's preferences and their places
+   and libraries to their other devices
    ([decision](decisions/stock-sync.md)).
    _Done when_: two browser profiles with two storages each share one
    place, change stock on both sides while offline and converge without
