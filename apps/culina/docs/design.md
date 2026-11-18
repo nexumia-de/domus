@@ -236,6 +236,11 @@ Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 | Ingredient picker, 360 x 720 | ![Picker](screenshots/editor-picker-360x720-light.png)                        |
 | Dish editor, 360 x 720       | ![Dish editor](screenshots/editor-dish-360x720-light.png)                     |
 | Dish editor, 1000 x 700      | ![Dish editor, desktop](screenshots/editor-dish-1000x700-light.png)           |
+| History, 360 x 720 light     | ![History, light](screenshots/history-360x720-light.png)                      |
+| History, 360 x 720 dark      | ![History, dark](screenshots/history-360x720-dark.png)                        |
+| History, 1000 x 700          | ![History, desktop](screenshots/history-1000x700-light.png)                   |
+| Older version, 360 x 720     | ![Older version](screenshots/version-old-360x720-light.png)                   |
+| Older version, 1000 x 700    | ![Older version, desktop](screenshots/version-old-1000x700-light.png)         |
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 

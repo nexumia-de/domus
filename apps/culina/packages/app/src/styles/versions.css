@@ -1,0 +1,86 @@
+/* Versions, history and variations: quiet text, the same tokens as the other screens. */
+.touch-link {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--target);
+  min-height: var(--target);
+}
+
+.version-lines p,
+.version-section p {
+  margin: 0 0 var(--sp-1);
+}
+
+.version-section {
+  margin-bottom: var(--sp-4);
+}
+
+.version-actions {
+  margin-block: var(--sp-2);
+}
+
+.variation-list {
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.version-fields {
+  margin-top: var(--sp-4);
+}
+
+.history-list {
+  display: grid;
+  gap: var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-entry {
+  min-width: 0;
+}
+
+.history-entry h2 {
+  display: inline-block;
+  margin-right: var(--sp-2);
+}
+
+.history-entry p {
+  overflow-wrap: anywhere;
+}
+
+.diff-rows {
+  display: grid;
+  gap: var(--sp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.diff-row {
+  padding-left: var(--sp-3);
+  border-left: 3px solid var(--divider);
+  overflow-wrap: anywhere;
+}
+
+.diff-added {
+  border-left-color: var(--accent);
+}
+
+.diff-removed {
+  color: var(--text-muted);
+}
+
+.tasting-note {
+  margin-bottom: var(--sp-2);
+}
+
+.tasting-note p {
+  margin: 0 0 var(--sp-1);
+}
+
+.note-form {
+  display: grid;
+  gap: var(--sp-2);
+}

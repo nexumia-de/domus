@@ -13,7 +13,8 @@ import {
 import { AMOUNT_UNITS, MASS_ONLY, ROLE_IDS, type AmountUnit } from '../../editor/units';
 import {
   draftKey,
-  getDish,
+  headOfFamily,
+  saveTasting,
   listComponents,
   listIngredients,
   loadDraft,
@@ -33,6 +34,8 @@ import { editorActions } from './editor-actions';
 import { areaField, bareSelect, button, mark, textField } from './form-bits';
 import { picker } from './picker';
 import { storeText } from './store-text';
+import { versionFields } from './version-fields';
+import { asNextVersion, tastingText } from '../../editor/version-save';
 
 const t = strings.editor;
 const isForm = (value: unknown): value is DishForm =>
@@ -54,7 +57,7 @@ const needsText = (p: DishProblem): string => {
 };
 
 export const dishEditor = (id?: string): HTMLElement => {
-  const stored = id === undefined ? undefined : getDish(id);
+  const stored = id === undefined ? undefined : headOfFamily('dishes', id);
   const screen = el('section', 'screen editor dish-editor');
   const back = el('a', 'back-link', strings.dishes.back);
   back.href = hashFor('dishes');
@@ -117,7 +120,7 @@ const build = (
 
   const pickerItems = () => [
     ...listComponents().map((c) => ({
-      ref: { kind: 'component' as const, id: c.id },
+      ref: { kind: 'component' as const, id: c.version.family },
       name: c.name,
       meta: strings.components.subTag,
     })),
@@ -279,14 +282,30 @@ const build = (
       status.textContent = built.problems.map(needsText).join(' ');
       return;
     }
-    const done = await saveRecord('dishes', built.record);
+    const record = asNextVersion(
+      built.record,
+      form.isNew,
+      form.versionNote ?? {},
+      newId(),
+      today(),
+    );
+    const done = await saveRecord('dishes', record);
     if (!done.ok) {
       status.textContent = storeText(done.error.code);
       return;
     }
+    const tasting = tastingText(form.versionNote ?? {});
+    if (tasting !== undefined) {
+      await saveTasting({
+        id: newId(),
+        ref: { kind: 'dish', id: record.id },
+        date: today(),
+        text: tasting,
+      });
+    }
     await session.close();
-    showToast(t.saved(built.record.name));
-    window.location.hash = hashFor('dishes', built.record.id);
+    showToast(t.saved(record.name));
+    window.location.hash = hashFor('dishes', record.id);
   };
 
   screen.append(
@@ -296,6 +315,7 @@ const build = (
     el('h2', undefined, t.slotsHeading),
     list,
     addSlot,
+    versionFields(form, changed),
     editorActions({
       isNew: form.isNew,
       onSave: () => void save(),

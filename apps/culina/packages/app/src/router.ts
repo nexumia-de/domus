@@ -1,6 +1,7 @@
 /**
  * Hash router: #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
- * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit.
+ * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, and the
+ * history screens #/components/<id>/history, #/dishes/<id>/history.
  * The back stack is the browser history.
  */
 export const ROUTES = ['ratios', 'components', 'dishes', 'settings'] as const;
@@ -11,14 +12,14 @@ export const DEFAULT_ROUTE: Route = 'ratios';
 const WITH_PARAM: readonly Route[] = ['ratios', 'components', 'dishes'];
 
 /** The editors: a new record, or the record in `param` edited. */
-export type Action = 'new' | 'edit';
+export type Action = 'new' | 'edit' | 'history';
 const WITH_ACTION: readonly Route[] = ['components', 'dishes'];
 
 export const hashFor = (route: Route, param?: string, action?: Action): string => {
   if (action === 'new') return `#/${route}/new`;
   if (!param) return `#/${route}`;
   const base = `#/${route}/${encodeURIComponent(param)}`;
-  return action === 'edit' ? `${base}/edit` : base;
+  return action === 'edit' || action === 'history' ? `${base}/${action}` : base;
 };
 
 const segments = (hash: string): string[] =>
@@ -30,12 +31,12 @@ export const routeFromHash = (hash: string): Route => {
   return ROUTES.find((route) => route === segment) ?? DEFAULT_ROUTE;
 };
 
-/** `new` for #/components/new, `edit` for #/components/<id>/edit; otherwise undefined. */
+/** `new`, `edit` for #/components/<id>/edit, `history` for #/components/<id>/history. */
 export const actionFromHash = (hash: string): Action | undefined => {
   if (!WITH_ACTION.includes(routeFromHash(hash))) return undefined;
   const [, second, third] = segments(hash);
   if (second === 'new' && third === undefined) return 'new';
-  return second && third === 'edit' ? 'edit' : undefined;
+  return second && (third === 'edit' || third === 'history') ? third : undefined;
 };
 
 /** The second path segment, decoded, for routes that take one; otherwise undefined. */

@@ -12,16 +12,19 @@ import {
 } from '../../editor/component-form';
 import { inCycle } from '../../editor/cycle';
 import { formFromPrefill, takePrefill } from '../../editor/prefill';
+import { asNextVersion, tastingText } from '../../editor/version-save';
 import { MASS_ONLY, ROLE_IDS, type MassUnit } from '../../editor/units';
 import {
+  canonicalLines,
   draftKey,
-  getComponent,
+  familyView,
   getIngredient,
-  listComponents,
+  headOfFamily,
   loadDraft,
   newId,
   notebook,
   saveRecord,
+  saveTasting,
   today,
 } from '../../notebook';
 import { hashFor } from '../../router';
@@ -35,6 +38,7 @@ import { editorActions } from './editor-actions';
 import { areaField, bareSelect, button, mark, textField } from './form-bits';
 import { ratioInfo } from './ratio-info';
 import { storeText } from './store-text';
+import { versionFields } from './version-fields';
 
 const t = strings.editor;
 const isForm = (value: unknown): value is ComponentForm =>
@@ -59,7 +63,8 @@ const needsText = (p: Problem): string => {
 
 /** The editor for a new component (no `id`) or for the stored component `id`. */
 export const componentEditor = (id?: string): HTMLElement => {
-  const stored = id === undefined ? undefined : getComponent(id);
+  // An older version is never edited: the editor opens the current one of its family.
+  const stored = id === undefined ? undefined : headOfFamily('components', id);
   const screen = el('section', 'screen editor component-editor');
   const back = el('a', 'back-link', strings.components.back);
   back.href = hashFor('components');
@@ -249,19 +254,43 @@ const build = (
   const save = async (): Promise<void> => {
     const built = formToRecord(form, today());
     const problems: Problem[] = built.ok ? [] : built.problems;
-    if (built.ok && inCycle(listComponents(), built.record)) problems.push({ code: 'cycle' });
+    if (
+      built.ok &&
+      inCycle(familyView(), {
+        id: form.version?.family ?? form.id,
+        lines: canonicalLines(built.record.lines),
+      })
+    ) {
+      problems.push({ code: 'cycle' });
+    }
     if (!built.ok || problems.length > 0) {
       status.textContent = problems.map(needsText).join(' ');
       return;
     }
-    const done = await saveRecord('components', built.record);
+    const record = asNextVersion(
+      built.record,
+      form.isNew,
+      form.versionNote ?? {},
+      newId(),
+      today(),
+    );
+    const done = await saveRecord('components', record);
     if (!done.ok) {
       status.textContent = storeText(done.error.code);
       return;
     }
+    const tasting = tastingText(form.versionNote ?? {});
+    if (tasting !== undefined) {
+      await saveTasting({
+        id: newId(),
+        ref: { kind: 'component', id: record.id },
+        date: today(),
+        text: tasting,
+      });
+    }
     await session.close();
-    showToast(t.saved(built.record.name));
-    window.location.hash = hashFor('components', built.record.id);
+    showToast(t.saved(record.name));
+    window.location.hash = hashFor('components', record.id);
   };
 
   const remove = async (): Promise<void> => {
@@ -284,6 +313,6 @@ const build = (
     notes.wrap,
   );
   if (info) screen.append(info.element);
-  screen.append(actions);
+  screen.append(versionFields(form, changed), actions);
   syncAll();
 };

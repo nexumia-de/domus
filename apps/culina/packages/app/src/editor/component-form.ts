@@ -3,6 +3,7 @@
 import type { ComponentLine, ComponentRef, FoodState } from '@culina/engine';
 import type { ComponentRecord, VersionInfo } from '../records';
 import { parseEntry } from '../shared/parse';
+import type { VersionNote } from './version-save';
 import type { EntryUnit, MassUnit } from './units';
 
 export interface LineForm {
@@ -36,6 +37,8 @@ export interface ComponentForm {
   /** One step or note per line. */
   method: string;
   version?: VersionInfo;
+  /** Change, reason and tasting note for the version Save adds. */
+  versionNote?: VersionNote;
 }
 
 export type Problem =

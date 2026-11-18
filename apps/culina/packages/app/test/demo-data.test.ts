@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { validateModel } from '@culina/engine';
+import { familyHeads, validateModel } from '@culina/engine';
 import { expect, test } from 'vitest';
 import {
   factsByIngredient,
@@ -69,7 +69,8 @@ test('every demo record is marked as an example, and every yield too', () => {
 });
 
 test('the set covers what the screens must show', () => {
-  const components = listComponents();
+  // The set holds every version; the screens list one component per family.
+  const components = familyHeads(listComponents());
   expect(components.length).toBeGreaterThanOrEqual(4);
   expect(components.length).toBeLessThanOrEqual(5);
   expect(components.some((c) => c.percentBase !== undefined)).toBe(true);
