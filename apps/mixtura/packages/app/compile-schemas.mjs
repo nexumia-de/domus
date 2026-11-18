@@ -5,19 +5,25 @@
 // `<name>.schema.json` becomes `validators.<name>`; a new schema or field
 // needs no change here. Output (git-ignored): src/store/schema-validators.generated.mjs.
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import standaloneCode from 'ajv/dist/standalone/index.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const schemaDir = join(here, '..', 'engine', 'schemas');
+// Device-local records (storages, bindings): compiled like the others, but kept out of the export schema.
+const deviceDir = join(schemaDir, 'device');
 const target = join(here, 'src', 'store', 'schema-validators.generated.mjs');
 
-const files = readdirSync(schemaDir)
-  .filter((name) => name.endsWith('.schema.json'))
-  .sort();
-const schemas = files.map((name) => JSON.parse(readFileSync(join(schemaDir, name), 'utf8')));
+const list = (dir) =>
+  readdirSync(dir)
+    .filter((name) => name.endsWith('.schema.json'))
+    .sort()
+    .map((name) => join(dir, name));
+const paths = [...list(schemaDir), ...list(deviceDir)];
+const files = paths.map((path) => basename(path));
+const schemas = paths.map((path) => JSON.parse(readFileSync(path, 'utf8')));
 
 // Same options as the former run-time compile: every error, strict schemas.
 const ajv = new Ajv2020({

@@ -9,7 +9,7 @@ const directives = [
   "script-src 'self'",
   "style-src 'self'",
   "img-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https: http://localhost:* http://127.0.0.1:*",
   "worker-src 'self'",
   "manifest-src 'self'",
   "object-src 'none'",

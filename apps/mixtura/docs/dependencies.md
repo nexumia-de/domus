@@ -80,6 +80,37 @@ the run-time compiler to 356,585 (96,032 gzip) with generated validators;
 hand-written validators were rejected (they would drift from the
 schemas).
 
+## Test and user server
+
+Not in `package.json`, not shipped in the app: a container the tests start
+and users can run ([sync backends](sync-backends.md#the-test-server)).
+
+| Image                                                                                                     | Version | Licence    | Use                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------- | ------- | ---------- | -------------------------------------------------------------------------------------------------------------------- |
+| `httpd` (Docker Official Image) `sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9` | 2.4.71  | Apache-2.0 | WebDAV server with `mod_dav` for the integration test, `e2e/webdav.mjs` and the user setup in `tools/webdav-server/` |
+
+Pinned by tag and digest in `tools/webdav-server/compose.yaml` (the digest is
+the multi-platform index, `amd64` and `arm64` among others; Dependabot's
+`docker-compose` entry updates both). Licence read from the header of
+`include/httpd.h` inside the image ("The ASF licenses this file to You under
+the Apache License, Version 2.0"; the image carries no `LICENSE` file). The
+image is Debian 13 with its packages under their own licences; nothing of it
+is copied into this repository or the app, the server is only run.
+
+Why this one: the task named `httpd` with `mod_dav` as the candidate, it is
+the server of the CORS configuration measured in the
+[spike](webdav-spike.md), it needs no build step and no extra module, it
+supports `MKCOL`, basic authentication, `If-Match` and `If-None-Match: *`,
+and the official image has multi-platform builds. Its measured quirks (weak
+ETag within a second of a write, no ETag on `PUT`) are listed in the
+[spike](webdav-spike.md#the-test-server-httpd-with-mod_dav) and handled by the
+adapter's documented limits. Other servers (nginx with its DAV module,
+Caddy, SabreDAV, `rclone serve webdav`) were not run and are not ruled out;
+the adapter works against anything that meets the
+[list of requirements](sync-backends.md#what-a-backend-must-do).
+
+The adapter and the stores add no npm dependency.
+
 ## GitHub Actions
 
 | Action                       | Version | Use                                                      |

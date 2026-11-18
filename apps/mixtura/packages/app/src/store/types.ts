@@ -37,6 +37,35 @@ export interface Place {
   updatedAt: string;
 }
 
+/** A storage the user configured on this device for sync. Device-local, never exported. */
+export interface Storage {
+  id: string;
+  label: string;
+  type: 'webdav';
+  baseUrl: string;
+  username?: string;
+  password?: string;
+}
+
+/** The synced units; only places for now. */
+export type UnitKind = 'place';
+
+/** Where one synced unit of this device is stored. Device-local, never exported. */
+export interface Binding {
+  unitKind: UnitKind;
+  unitId: string;
+  storageId: string;
+  folder: string;
+  passphrase: string;
+  /** The etag of the file as last read or written. */
+  etag?: string;
+  lastSyncAt?: string;
+  lastError?: string;
+}
+
+/** The key of a binding in its store. */
+export type BindingKey = [unitKind: UnitKind, unitId: string];
+
 /** What the screens read and edit of a stock record: the ingredient and what is known of it. */
 export interface StockFields {
   ingredientId: string;
@@ -108,3 +137,5 @@ export interface Settings {
 }
 
 export type EntityKind = 'ingredient' | 'template' | 'spec' | 'place' | 'stock' | 'affinity';
+/** Device-local records: validated like entities, but not entities (never exported, no backup count). */
+export type DeviceKind = 'storage' | 'binding';

@@ -225,6 +225,40 @@ reaches a Nextcloud whose administrator does not add the headers. Not
 tested: `If-Match` on the public endpoint, a share password, an
 instance with public shares switched off.
 
+## The test server: httpd with mod_dav
+
+Measured on 2026-11-18 for issue #133 on the server of `tools/webdav-server`
+([sync backends](sync-backends.md#the-test-server)): `httpd:2.4.71` (digest
+`sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9`),
+`mod_dav` and `mod_dav_fs`, the CORS configuration of this spike, Docker 29,
+requests with `curl` and from Chromium 153 (the e2e script).
+
+| Question                                                              | Answer                                                                                                                                                                                                                                          |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PUT` with `If-None-Match: *`, file new                               | 201, no `ETag` in the answer                                                                                                                                                                                                                    |
+| `PUT` with `If-None-Match: *`, file there                             | 412                                                                                                                                                                                                                                             |
+| `PUT` into a missing folder                                           | 409; `MKCOL` of the folder 201; `MKCOL` of an existing folder 405                                                                                                                                                                               |
+| `GET`, missing file                                                   | 404                                                                                                                                                                                                                                             |
+| `GET`                                                                 | 200 with `ETag`                                                                                                                                                                                                                                 |
+| `PUT` with `If-Match` of the current ETag, file at least a second old | 204                                                                                                                                                                                                                                             |
+| `PUT` with `If-Match` of an old ETag                                  | 412                                                                                                                                                                                                                                             |
+| `PUT` with `If-Match` right after a write                             | 412, even with the current ETag: the ETag of a file written less than a second ago is weak (`W/"…"`) and a weak ETag never matches `If-Match`                                                                                                   |
+| ETag after writes within one second                                   | changes every time: `"<size>-<mtime in microseconds>"`, so three writes of the same size in under a second gave three ETags (`W/"3-6608b22985962"`, `W/"3-6608b2298b722"`, `W/"3-6608b229943c2"`); after one second the same value without `W/` |
+| Preflight without credentials                                         | 204 with `Allow-Origin` (the page's origin), `Allow-Methods`, `Allow-Headers`, `Expose-Headers: ETag`, `Max-Age`                                                                                                                                |
+| Preflight from an origin that does not match                          | no `Access-Control-…` header                                                                                                                                                                                                                    |
+| Exposed `ETag`                                                        | `Access-Control-Expose-Headers: ETag` on `GET`, and the page reads it (from Chromium, `W/"7-6608b4368bd1c"`)                                                                                                                                    |
+| Any request without credentials, or with a wrong password             | 401, with the CORS headers, so the page can tell it from a network error                                                                                                                                                                        |
+| `PUT` does not give an `ETag`                                         | true for 201 and 204: after a write the ETag comes from the next `GET`                                                                                                                                                                          |
+
+Consequences: against this server `If-Match` is strict (no lost update, as
+opposed to Nextcloud) at the price of false conflicts inside the second after
+a write; the adapter and the cycle treat both cases the same way
+([limits](sync-backends.md#limits)). Chromium: with the app's service worker
+controlling the page every read after the first failed until the worker left
+cross-origin requests alone ([service worker](sync-backends.md#service-worker)).
+Not measured: Firefox, Safari, other servers, an `arm64` image (the image index
+has `arm64`; only `amd64` was run).
+
 ## Decision
 
 The owner chose "bring your own backend" on 2026-11-18
@@ -235,6 +269,8 @@ native transport in a wrapped app (option C) and a Bar Assistant adapter
 stay possible later.
 
 ## Not verified
+
+(Measured later for the test server: [above](#the-test-server-httpd-with-mod_dav); `PROPFIND` is allowed by that server's CORS headers but the adapter never uses it, `MKCOL` is used and tested from the page.)
 
 - Firefox, Safari, Chromium on Android.
 - nginx or Caddy in front of Nextcloud; Nextcloud's own `.htaccess`

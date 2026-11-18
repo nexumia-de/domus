@@ -354,11 +354,13 @@ Reading, limits and merge rules: [export format](export-format.md).
 
 ## Storage
 
-On the device the entities live in IndexedDB, schema version 4: stores
+On the device the entities live in IndexedDB, schema version 5: stores
 `specs` (one record per version, indexed by `lineageId`),
 `ingredients` (prepared ones included), `templates`, `affinities`,
 `places`, `stock` (keyed by `placeId` and `ingredientId`), `settings`,
-`meta` and `drafts`. Seed data is
+`meta`, `drafts` and the two device-local stores `storages` and `bindings`
+(sync configuration with credentials, not entities, never exported:
+[sync backends](sync-backends.md#the-stores)). Seed data is
 not stored there. Stores, indexes, migrations: [store](store.md).
 
 ## Schemas and examples

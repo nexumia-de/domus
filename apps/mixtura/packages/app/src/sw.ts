@@ -1,5 +1,5 @@
 // The service worker: keeps the app's files at install and answers every
-// request from them, never from the network (the install fetches bypass the HTTP cache). A new build has a new cache
+// request of the app's own origin from them, never from the network (the install fetches bypass the HTTP cache). A new build has a new cache
 // name (build.mjs, from a hash of the files), so its files replace the old
 // ones together. A new worker waits until the page sends 'skip-waiting',
 // which the page does only when the user taps Update.
@@ -24,6 +24,7 @@ interface Worker {
   addEventListener(type: 'message', listener: (event: MessageEvent_) => void): void;
   skipWaiting(): Promise<void>;
   readonly clients: { claim(): Promise<void> };
+  readonly location: { readonly origin: string };
 }
 
 const worker = self as unknown as Worker;
@@ -65,6 +66,9 @@ const plain = (response: Response) =>
 
 worker.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  // The user's sync storage is another origin: its answers are never the app's files and the
+  // browser must handle the request itself (docs/sync-backends.md#service-worker).
+  if (new URL(event.request.url).origin !== worker.location.origin) return;
   event.respondWith(
     caches.open(APP_CACHE).then(async (cache) => {
       const hit =

@@ -109,6 +109,13 @@ function stockPerPlace({ db, tx, clock, newId, placeName }: MigrationContext): v
   };
 }
 
+/** Version 5: the device-local stores for sync storages and the bindings of synced units. */
+function createSyncStores({ db }: MigrationContext): void {
+  db.createObjectStore('storages', { keyPath: 'id' });
+  const bindings = db.createObjectStore('bindings', { keyPath: ['unitKind', 'unitId'] });
+  bindings.createIndex('storageId', 'storageId');
+}
+
 export const migrations: readonly Migration[] = [
   { version: 1, describe: 'Create the object stores', up: createStores },
   { version: 2, describe: 'Move the shell preferences into settings', up: importLegacyPrefs },
@@ -117,6 +124,11 @@ export const migrations: readonly Migration[] = [
     version: 4,
     describe: 'Keep stock per place and make the default place',
     up: stockPerPlace,
+  },
+  {
+    version: 5,
+    describe: 'Add the device-local stores for storages and bindings',
+    up: createSyncStores,
   },
 ];
 
