@@ -28,5 +28,8 @@ in [how chefs work](chef-practice.md) and
    notes, export and import.
 4. **Stock.** What is there with state and use-by date; what it allows,
    ranked by urgency and role.
-5. **Later.** Curated affinities with sources, the correction
+5. **Sync.** The same mechanism as Mixtura in three units (place,
+   library, profile), encrypted, over storage the user configured
+   ([decision](decisions/sync.md)).
+6. **Later.** Curated affinities with sources, the correction
    checklist, cost, prep lists, allergens.
