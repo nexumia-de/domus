@@ -11,15 +11,14 @@ import {
   type LineRow,
   type Target,
 } from '../../exchange/cook-model';
-import { factsByIngredient } from '../../notebook';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { nextId } from '../fields';
 
 const text = strings.importing;
 
-const factsOf = (target: Target) =>
-  target.kind === 'ingredient' ? (factsByIngredient()[target.id] ?? {}) : {};
+const factsOf = (model: CookModel) => (target: Target) =>
+  target.kind === 'ingredient' ? (model.facts[target.id] ?? {}) : {};
 
 const modeLabel = (model: CookModel, line: LineRow, mode: AmountMode['mode']): string => {
   const written = quantityText(line.use.quantity);
@@ -30,7 +29,7 @@ const modeLabel = (model: CookModel, line: LineRow, mode: AmountMode['mode']): s
   const done = resolveAmount(
     line.use.quantity,
     { mode: 'facts' },
-    target === undefined ? {} : factsOf(target),
+    target === undefined ? {} : factsOf(model)(target),
   );
   return text.cookByFacts(done.ok && done.amount ? String(done.amount.value) : '');
 };
@@ -49,7 +48,7 @@ function lineRow(model: CookModel, line: LineRow, roles: string, changed: () => 
       written === '' ? `${line.use.name}: ${text.cookNoQuantity}` : `${line.use.name}: ${written}`,
     ),
   );
-  const modes = modesFor(model, line, factsOf);
+  const modes = modesFor(model, line, factsOf(model));
   const select = el('select', 'field');
   select.setAttribute('aria-label', text.cookAmountFor(line.use.name));
   for (const mode of modes) {

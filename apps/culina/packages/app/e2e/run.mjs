@@ -7,6 +7,7 @@ import { editorMore } from './editor-more.mjs';
 import { exportImport } from './export-import.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
+import { importCatalogue } from './import-catalogue.mjs';
 import { install } from './install.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
@@ -31,6 +32,7 @@ try {
   await store(browser, server);
   await versions(browser, server);
   await exportImport(browser, server);
+  await importCatalogue(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

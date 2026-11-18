@@ -2,7 +2,10 @@
 // component (version 1 of a new family, or of a variation), in one transaction.
 import { importComponent, quantityText } from '@culina/engine';
 import type { IngredientFacts } from '@culina/engine';
-import { factsByIngredient, newId, reloadNotebook, today } from '../notebook';
+import { adoptEntry } from '../catalogue/adopt';
+import { chainOf } from '../catalogue/tree';
+import { factsByIngredient, getIngredient, newId, reloadNotebook, today } from '../notebook';
+import type { IngredientRecord } from '../records';
 import { state } from '../notebook/state';
 import { fail } from '../store/types';
 import { strings } from '../strings';
@@ -16,6 +19,8 @@ export interface CookSaveInput {
   percentBase?: string;
   /** The version record the new component is a variation of; none for a new family. */
   parent?: string;
+  /** The catalogue's entries by id: a name or a class chosen from it is adopted on save. */
+  catalogue?: ReadonlyMap<string, IngredientRecord>;
 }
 
 export interface Unmeasured {
@@ -30,6 +35,28 @@ export type CookSaveResult =
 export async function saveCookImport(input: CookSaveInput): Promise<CookSaveResult> {
   const { model } = input;
   if (state.store === undefined) return fail({ code: 'unavailable' });
+  const catalogue = input.catalogue ?? new Map<string, IngredientRecord>();
+  // What the user confirmed from the catalogue: the entries chosen for a name and the classes new
+  // ingredients are filed under. Each comes with its parent chain, through the picker's `adoptEntry`.
+  const chosen = new Set<string>();
+  for (const row of model.rows) {
+    if (row.choice.type === 'existing' && row.choice.target.kind === 'ingredient') {
+      chosen.add(row.choice.target.id);
+    } else if (row.choice.type === 'new' && row.choice.parentId !== undefined) {
+      chosen.add(row.choice.parentId);
+    }
+  }
+  const adopted: string[] = [];
+  for (const id of chosen) {
+    const entry = catalogue.get(id);
+    if (entry === undefined || getIngredient(id) !== undefined) continue;
+    const added = [...chainOf(entry, catalogue), entry].filter(
+      (r) => getIngredient(r.id) === undefined,
+    );
+    const done = await adoptEntry(entry, catalogue);
+    if (!done.ok) return done;
+    adopted.push(...added.map((r) => r.id));
+  }
   const created = new Map<string, string>();
   const ingredients = model.rows.flatMap((row) => {
     if (row.choice.type !== 'new') return [];
@@ -71,6 +98,7 @@ export async function saveCookImport(input: CookSaveInput): Promise<CookSaveResu
   const written = await state.store.bulk.putMany(entries);
   if (!written.ok) return written;
   rememberChanges([
+    ...adopted.map((id) => ({ kind: 'ingredients' as const, id })),
     ...ingredients.map((r) => ({ kind: 'ingredients' as const, id: r.id })),
     { kind: 'components' as const, id },
   ]);

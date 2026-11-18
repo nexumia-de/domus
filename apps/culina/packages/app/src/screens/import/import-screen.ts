@@ -1,6 +1,7 @@
 // `#/settings/import`: choose a file, read it, then the step for its kind. Nothing is stored
 // until the user confirms in that step; a file that is refused changes nothing.
 import { readExportText } from '../../exchange/read-file';
+import { loadCatalogue } from '../../catalogue/load';
 import { storeProblem } from '../../notebook';
 import { state } from '../../notebook/state';
 import { hashFor } from '../../router';
@@ -29,6 +30,7 @@ export const importScreen = (): HTMLElement => {
     return section;
   }
 
+  let latest = 0;
   const input = el('input', 'sr-only');
   input.type = 'file';
   input.accept = '.json,.cook,application/json,text/plain';
@@ -39,11 +41,15 @@ export const importScreen = (): HTMLElement => {
     if (file === undefined) return;
     status.textContent = '';
     host.replaceChildren();
-    void file.text().then((content) => {
+    const mine = ++latest;
+    void file.text().then(async (content) => {
       if (isCooklang(file.name)) {
-        renderCookImport(host, content, file.name, status);
+        // The catalogue comes from the app's own origin; a failed load leaves the notebook's own.
+        const entries = await loadCatalogue();
+        if (mine === latest) renderCookImport(host, content, file.name, status, entries);
         return;
       }
+      if (mine !== latest) return;
       const read = readExportText(content);
       if (!read.ok) status.textContent = read.message;
       else void renderJsonImport(host, read.content, status);
