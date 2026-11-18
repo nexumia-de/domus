@@ -61,7 +61,7 @@ study, and nothing here was run on a device.
 - The app is static files with a service worker and a manifest
   (`packages/app/src/manifest.webmanifest`: `id`, `start_url` and `scope`
   all `./`, `display: standalone`, 192 and 512 px icons, one maskable).
-  It is published at `https://nexumia-de.github.io/mixtura/`
+  It is published at `https://mixtura.nexumia.de/`
   ([install](install.md)).
 - Data lives in IndexedDB of the browser profile that opened the app
   ([store](store.md)); the export file is the only bridge between
@@ -103,18 +103,12 @@ Android page describes App Links; that a TWA uses the same file is
 **unverified** here (the TWA page is blocked) but is how Bubblewrap names
 it.
 
-For Mixtura this means: the app sits under `/mixtura/` of
-`nexumia-de.github.io`, and the file would have to be at
-`https://nexumia-de.github.io/.well-known/assetlinks.json`, not in this
-repository's Pages site. Two ways, both outside this repository: a
-repository `nexumia-de.github.io` that serves the file (that a GitHub
-organisation site works like this and that dot-directories are served is
-**unverified**, GitHub documentation is blocked), or a custom domain for
-the app like the one the Flatpak repository already has
-(`flatpak.nexumia.de`, [app repository](#sources) note in the toolkit).
-Either way the file belongs to the whole origin, shared with every other
-Pages site of the organisation, and each re-signing of the app changes
-its fingerprint list. Android re-checks the file only periodically or at
+For Mixtura this means: the app has its own origin,
+`https://mixtura.nexumia.de` ([deployment](deployment.md)), so the file
+would be `https://mixtura.nexumia.de/.well-known/assetlinks.json` and could
+be built into `packages/app/dist` by this repository. That Cloudflare's
+static assets serve a dot-directory is **unverified**. Each re-signing of
+the app changes its fingerprint list. Android re-checks the file only periodically or at
 install[^applinks]. Without a verified file a TWA falls back to a browser
 tab with an address bar (**unverified**, standard behaviour of the
 technique, not read here).

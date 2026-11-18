@@ -5,8 +5,8 @@ list: Mixtura treats a drink as a template with role slots, shows its
 balance as numbers, keeps your own specs with their versions and tells
 you what your bottles allow and which one bottle would unlock the most.
 
-Status: early. The app shell is published at
-<https://nexumia-de.github.io/mixtura/>; how to install it is in
+Status: early. The app is published at
+<https://mixtura.nexumia.de/>; how to install it is in
 [docs/install.md](docs/install.md). The plan is in
 [docs/roadmap.md](docs/roadmap.md), the screens in
 [docs/screenshots.md](docs/screenshots.md), the reasons in
