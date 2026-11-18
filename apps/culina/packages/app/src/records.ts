@@ -3,6 +3,7 @@
 import type {
   Component,
   FactsByIngredient,
+  StockItem,
   FoodState,
   IngredientFacts,
   IngredientYield,
@@ -72,6 +73,12 @@ export interface DishRecord {
   version: VersionInfo;
   note?: string;
 }
+
+/**
+ * A stock record. Fields of other apps (`x-...`) are carried along: an edit changes a copy of the
+ * stored record and never rebuilds it from the typed fields.
+ */
+export type StockRecord = StockItem & { [extra: `x-${string}`]: unknown };
 
 export type { FoodState, IngredientFacts };
 

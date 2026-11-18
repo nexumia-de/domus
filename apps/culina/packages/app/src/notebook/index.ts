@@ -8,6 +8,17 @@ export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';
 export { reloadNotebook } from './load';
 export { startNotebook } from './start';
+export {
+  getStockItem,
+  listStock,
+  removeStockItem,
+  restoreStock,
+  saveStockItem,
+  stockName,
+  stockOf,
+  tick,
+  untick,
+} from './stock';
 export { subscribe, today } from './state';
 export * from './versions';
 export {

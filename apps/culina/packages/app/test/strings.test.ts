@@ -1,6 +1,7 @@
+import { readdirSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { strings } from '../src/strings';
-import { readSrc } from './css';
+import { readSrc, srcUrl } from './css';
 
 const leaves = (value: unknown, path = 'strings'): [string, string][] =>
   typeof value === 'string'
@@ -26,10 +27,11 @@ test('the placeholder screens have the same parts: title, empty state, collapsib
   }
 });
 
-test('the navigation names its four destinations and the screens use them as titles', () => {
+test('the navigation names its five destinations and the screens use them as titles', () => {
   expect(strings.nav.ratios).toBe(strings.screens.ratios.title);
   expect(strings.nav.components).toBe(strings.screens.components.title);
   expect(strings.nav.dishes).toBe(strings.screens.dishes.title);
+  expect(strings.nav.stock).toBe(strings.stock.title);
   expect(strings.nav.settings).toBe(strings.settings.title);
 });
 
@@ -44,11 +46,16 @@ const FORBIDDEN =
   /\b(wrong|errors?|invalid|incorrect|mistakes?|failed|fail|too much|too little|missing|bad)\b/i;
 
 test('no text says that a recipe or a ratio is wrong, invalid, failed or missing', () => {
-  const source = readSrc('strings.ts')
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/^\s*\/\/.*$/gm, '');
-  expect(source.length).toBeGreaterThan(1000);
-  expect(source.match(FORBIDDEN), 'strings.ts').toBeNull();
+  // Every strings file is scanned: the main one and the ones split off by area.
+  const files = readdirSync(srcUrl('')).filter((name) => /^strings(-[a-z]+)?\.ts$/.test(name));
+  expect(files).toContain('strings-stock.ts');
+  for (const file of files) {
+    const source = readSrc(file)
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    expect(source.length, file).toBeGreaterThan(1000);
+    expect(source.match(FORBIDDEN), file).toBeNull();
+  }
   expect('That is too much salt'.match(FORBIDDEN)).not.toBeNull();
   expect('an invalid ratio'.match(FORBIDDEN)).not.toBeNull();
 });
