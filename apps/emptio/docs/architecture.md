@@ -62,7 +62,8 @@ in a store, counts, proposals for the route.
 
 # Rules of the engine
 
-Each is a pure function with vectors:
+Each is a pure function with vectors; the exact statements are in the
+[engine rules](engine-rules.md):
 
 1. **Order at home**: by priority, then category, then name.
 2. **Order in a store**: by the store's route; within a category _now_
@@ -70,9 +71,9 @@ Each is a pure function with vectors:
 3. **Hidden in a store**: entries of categories the store does not
    carry, and entries marked "not here" for it; their count stays
    visible.
-4. **Category of a new entry**: from the catalogue for a known
-   ingredient; for a free name the category the household last gave
-   that name; otherwise "Other".
+4. **Category of a new entry**: the category the household last gave
+   the same thing; otherwise the one the catalogue gives the
+   ingredient; otherwise "Other".
 5. **Twice the same**: adding what is already open raises the existing
    entry (amounts added when the units match) and keeps the higher
    priority.
@@ -205,8 +206,7 @@ By the owner on 2026-11-18:
    local store, later common screens and design). The name is not yet
    checked for collisions.
 2. **The ingredient catalogue** gets a data package of its own that
-   Culina and Emptio install; materia holds no food. Its name is open
-   (not "penus").
+   Culina and Emptio install; materia holds no food. It is named **cibus**.
 3. **The list lives inside the place**, for one invite and for the
    hand-over to stock.
 4. **Priority has three steps**: _now_, _soon_ (the default),

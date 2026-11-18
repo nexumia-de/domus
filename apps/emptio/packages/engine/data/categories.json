@@ -1,0 +1,26 @@
+{
+  "format": "emptio-categories",
+  "version": 1,
+  "source": "Curated by the Emptio project on 2026-11-18 from the usual departments of German supermarkets and drugstores; own work, AGPL-3.0-or-later. German names not yet reviewed by a native speaker.",
+  "categories": [
+    { "id": "produce", "en": "Fruit & vegetables", "de": "Obst & Gemüse" },
+    { "id": "bakery", "en": "Bread & bakery", "de": "Brot & Backwaren" },
+    { "id": "dairy", "en": "Dairy & eggs", "de": "Milchprodukte & Eier" },
+    { "id": "meat", "en": "Meat & sausages", "de": "Fleisch & Wurst" },
+    { "id": "fish", "en": "Fish", "de": "Fisch" },
+    { "id": "frozen", "en": "Frozen", "de": "Tiefkühl" },
+    { "id": "pantry", "en": "Pasta, rice & tins", "de": "Nudeln, Reis & Konserven" },
+    { "id": "baking", "en": "Baking", "de": "Backzutaten" },
+    { "id": "seasoning", "en": "Oil, vinegar & spices", "de": "Öl, Essig & Gewürze" },
+    { "id": "breakfast", "en": "Cereal & spreads", "de": "Müsli & Aufstriche" },
+    { "id": "snacks", "en": "Sweets & snacks", "de": "Süßes & Snacks" },
+    { "id": "drinks", "en": "Drinks", "de": "Getränke" },
+    { "id": "alcohol", "en": "Wine, beer & spirits", "de": "Wein, Bier & Spirituosen" },
+    { "id": "baby", "en": "Baby", "de": "Baby" },
+    { "id": "pets", "en": "Pets", "de": "Tierbedarf" },
+    { "id": "cleaning", "en": "Cleaning & laundry", "de": "Putzen & Waschen" },
+    { "id": "household", "en": "Household & paper", "de": "Haushalt & Papier" },
+    { "id": "care", "en": "Body care & health", "de": "Körperpflege & Gesundheit" },
+    { "id": "other", "en": "Other", "de": "Sonstiges" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@emptio/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Emptio's pure engine: the rules of the shopping list",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

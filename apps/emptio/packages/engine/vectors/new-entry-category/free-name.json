@@ -1,0 +1,22 @@
+{
+  "kind": "new-entry-category",
+  "title": "A free name takes the category of an earlier entry with the same key, whatever its spelling; without one it is other",
+  "input": {
+    "name": "  spülmittel ",
+    "earlier": [
+      {
+        "id": "e1",
+        "name": "Spülmittel",
+        "categoryId": "cleaning",
+        "addedAt": "2026-10-02T08:00:00Z"
+      },
+      {
+        "id": "e2",
+        "name": "Spültabs",
+        "categoryId": "household",
+        "addedAt": "2026-11-02T08:00:00Z"
+      }
+    ]
+  },
+  "expected": { "categoryId": "cleaning" }
+}

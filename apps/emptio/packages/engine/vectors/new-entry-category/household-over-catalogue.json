@@ -1,0 +1,25 @@
+{
+  "kind": "new-entry-category",
+  "title": "The category the household last gave the ingredient wins over the catalogue's",
+  "input": {
+    "name": "Eggs",
+    "catalogue": { "ingredientId": "fdc-171287", "categoryId": "dairy" },
+    "earlier": [
+      {
+        "id": "e1",
+        "name": "Eggs",
+        "ingredientId": "fdc-171287",
+        "categoryId": "dairy",
+        "addedAt": "2026-11-01T08:00:00Z"
+      },
+      {
+        "id": "e2",
+        "name": "Eggs",
+        "ingredientId": "fdc-171287",
+        "categoryId": "produce",
+        "addedAt": "2026-11-10T08:00:00Z"
+      }
+    ]
+  },
+  "expected": { "categoryId": "produce" }
+}
