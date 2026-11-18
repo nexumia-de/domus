@@ -41,13 +41,15 @@ links. Change history is in [log.md](log.md).
 - [Packaging for Android and Linux](decisions/packaging.md) - Proposal, needs decision: Capacitor APK on GitHub Releases after a device test, web apps on Linux first, Flatpak shell only if needed, no TWA.
 - [Hosting](decisions/hosting.md) - Proposed on the owner's direction: Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages; real headers, correct caching, a preview per pull request.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
-- [Where the shared model lives](decisions/shared-model.md) - Proposal, needs decision: a new repository with an npm package consumed by git tag and built by `prepare`; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
+- [Where the shared model lives](decisions/shared-model.md) - Accepted 2026-11-18: the repository nexumia-de/materia with an npm package consumed by git tag and built by `prepare`; no unit system in its first version; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
+- [Stock sync](decisions/stock-sync.md) - Stock per place, synced to WebDAV storage the user configured, encrypted per place in the browser, joined by invite link or QR code; general parts in materia; what the rule "no server" means now; the order of work.
 
 # Reference
 
 - [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
 - [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds, the 20 checked classics and Mixtura's own additions.
 
+- [Spike: WebDAV from the browser](webdav-spike.md) - A browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second; the app's CSP blocks other hosts; options for the owner.
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
 

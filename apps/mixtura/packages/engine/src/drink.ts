@@ -7,7 +7,9 @@ export { chooseDilution, computeBalance, computePrepared, DILUTION } from './bal
 export type * from './balance/index';
 
 export {
+  assignSlots,
   checkRange,
+  lineMl,
   matchSpec,
   ROOT_TEMPLATES,
   VARIANT_TEMPLATES,

@@ -1,8 +1,10 @@
 // The volume of one counted unit of an ingredient, read from its own data.
+// Drink side: it reads the unit table, which stays in Mixtura
+// (docs/decisions/shared-model.md).
 // Never inherited and never guessed: no entry means no volume.
 import { UNITS } from '../amounts/table';
-import type { IngredientTreeOf } from './tree';
-import type { Id, UnitVolume } from './types';
+import type { IngredientTreeOf } from '../ingredients/tree';
+import type { Id, UnitVolume } from '../ingredients/types';
 
 const counted = new Set<string>(UNITS.filter((u) => u.kind === 'count').map((u) => u.id));
 

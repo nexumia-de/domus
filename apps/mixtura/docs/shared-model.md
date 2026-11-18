@@ -37,27 +37,28 @@ the [shared model decision](decisions/shared-model.md) (needs decision).
 
 # Modules
 
-| Module (`packages/engine/src/`)                                        | Exported through                                       | Kind                            | Notes                                                                                       |
-| ---------------------------------------------------------------------- | ------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------- |
-| `amounts/` (parse, convert, scale, format, rounding, unit table)       | `model.ts`                                             | general, with bar units in it   | unit table `data/units.json`; `UnitId` is a closed union                                    |
-| `ingredients/tree.ts`, `properties.ts` (tree, levels, inheritance)     | `model.ts`                                             | general (step 3)                | `ancestors`, `descendants`, `isA`, `resolveCost`; generic `inheritedValue` internal         |
-| `drink-ingredients/` (step 3)                                          | `drink.ts`                                             | drink-specific                  | `Ingredient`, `Role`, `InheritedProperty`, `resolveProperty`, `resolveAll`, `INHERITED`     |
-| `ingredients/substitution.ts`, `swap-candidates.ts`                    | `model.ts`                                             | general                         | substitution classes, `swapCandidates` groups by class, role and tree                       |
-| `ingredients/prepared.ts` (prepared components)                        | types through `model.ts`                               | general (step 2)                | `resolvePrepared` walks nesting and cycles with a caller's fold; internal                   |
-| `balance/prepared.ts` (step 2)                                         | `drink.ts`                                             | drink-specific                  | `computePrepared`: ABV, sugar and acid by the mixing formulas                               |
-| `balance/mixture.ts` (step 1)                                          | types only, through `drink.ts`                         | drink-specific                  | the mixing formulas of [balance](balance.md); used by `balance/prepared.ts`                 |
-| `ingredients/unit-volumes.ts`                                          | not exported                                           | general, volume only            | ml per counted unit                                                                         |
-| `templates/slots.ts`, `match.ts`, `volume.ts` (roles, slots, matching) | `assignSlots`, `lineRole`, `lineMl` through `model.ts` | general                         | measure a parameter (step 5), role ids generic (step 4); `volume.ts` is the ml measure      |
-| `templates/variants.ts`                                                | internal                                               | general (step 4)                | `findVariants` by a variant class of the domain                                             |
-| `drink-templates/match.ts`, `types.ts` (step 4)                        | `drink.ts`                                             | drink-specific                  | `matchSpec`, `variantSuggestions`; drink `Template` and role-typed shapes                   |
-| `drink-templates/range.ts`, `data.ts` (step 1)                         | `drink.ts`                                             | drink-specific                  | usual ABV, sugar, acid ranges; the six root and four variant templates                      |
-| `specs/` (versions: diff, family, riff summary)                        | `model.ts`                                             | general (step 7)                | `diffVersions` takes the compared fields (internal); comparison types generic               |
-| `drink-specs/` (step 7)                                                | `drink.ts`                                             | drink-specific                  | `diffSpecs` with `method`, `glass`, `garnish`, `topMl`; `DiffLine`, `DiffSpec`, `SpecField` |
-| `stock/` (makeable, missing one, unlock ranking)                       | `model.ts`                                             | general                         | imports only `ingredients/`; stock is present or not                                        |
-| `shelf/` (dates, expiry, limiting shelf life)                          | `model.ts`                                             | general                         | whole-day calendar arithmetic, `fresh`, `use-soon`, `past`                                  |
-| `balance/` (dilution, figures, lines, sums)                            | `drink.ts`                                             | drink-specific                  | dilution model `data/dilution.json`                                                         |
-| `batch/` (scale lines, pre-diluted batch, batch shelf life)            | `drink.ts`                                             | drink-specific, scaling general | `scaleLine` and `scaleLines` take balance lines                                             |
-| `alcohol/` (classes, thresholds, presets)                              | `drink.ts`                                             | drink-specific                  | `data/alcohol-thresholds.json`                                                              |
+| Module (`packages/engine/src/`)                                    | Exported through                           | Kind                            | Notes                                                                                       |
+| ------------------------------------------------------------------ | ------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------- |
+| `amounts/` (parse, convert, scale, format, rounding, unit table)   | `model.ts`                                 | Mixtura only (step 6)           | not moved to materia; unit table `data/units.json`; `UnitId` is a closed union              |
+| `ingredients/tree.ts`, `properties.ts` (tree, levels, inheritance) | `model.ts`                                 | general (step 3)                | `ancestors`, `descendants`, `isA`, `resolveCost`; generic `inheritedValue` internal         |
+| `drink-ingredients/` (step 3)                                      | `drink.ts`                                 | drink-specific                  | `Ingredient`, `Role`, `InheritedProperty`, `resolveProperty`, `resolveAll`, `INHERITED`     |
+| `ingredients/substitution.ts`, `swap-candidates.ts`                | `model.ts`                                 | general                         | substitution classes, `swapCandidates` groups by class, role and tree                       |
+| `ingredients/prepared.ts` (prepared components)                    | types through `model.ts`                   | general (step 2)                | `resolvePrepared` walks nesting and cycles with a caller's fold; internal                   |
+| `balance/prepared.ts` (step 2)                                     | `drink.ts`                                 | drink-specific                  | `computePrepared`: ABV, sugar and acid by the mixing formulas                               |
+| `balance/mixture.ts` (step 1)                                      | types only, through `drink.ts`             | drink-specific                  | the mixing formulas of [balance](balance.md); used by `balance/prepared.ts`                 |
+| `drink-ingredients/unit-volumes.ts` (step 6)                       | not exported                               | drink-specific                  | ml per counted unit; reads the unit table                                                   |
+| `templates/slots.ts`, `match.ts` (roles, slots, matching)          | `lineRole` through `model.ts`              | general                         | measure a parameter (step 5), role ids generic (step 4)                                     |
+| `drink-templates/volume.ts` (step 6)                               | `assignSlots`, `lineMl` through `drink.ts` | drink-specific                  | the ml measure; reads the unit table                                                        |
+| `templates/variants.ts`                                            | internal                                   | general (step 4)                | `findVariants` by a variant class of the domain                                             |
+| `drink-templates/match.ts`, `types.ts` (step 4)                    | `drink.ts`                                 | drink-specific                  | `matchSpec`, `variantSuggestions`; drink `Template` and role-typed shapes                   |
+| `drink-templates/range.ts`, `data.ts` (step 1)                     | `drink.ts`                                 | drink-specific                  | usual ABV, sugar, acid ranges; the six root and four variant templates                      |
+| `specs/` (versions: diff, family, riff summary)                    | `model.ts`                                 | general (step 7)                | `diffVersions` takes the compared fields (internal); comparison types generic               |
+| `drink-specs/` (step 7)                                            | `drink.ts`                                 | drink-specific                  | `diffSpecs` with `method`, `glass`, `garnish`, `topMl`; `DiffLine`, `DiffSpec`, `SpecField` |
+| `stock/` (makeable, missing one, unlock ranking)                   | `model.ts`                                 | general                         | imports only `ingredients/`; stock is present or not                                        |
+| `shelf/` (dates, expiry, limiting shelf life)                      | `model.ts`                                 | general                         | whole-day calendar arithmetic, `fresh`, `use-soon`, `past`                                  |
+| `balance/` (dilution, figures, lines, sums)                        | `drink.ts`                                 | drink-specific                  | dilution model `data/dilution.json`                                                         |
+| `batch/` (scale lines, pre-diluted batch, batch shelf life)        | `drink.ts`                                 | drink-specific, scaling general | `scaleLine` and `scaleLines` take balance lines                                             |
+| `alcohol/` (classes, thresholds, presets)                          | `drink.ts`                                 | drink-specific                  | `data/alcohol-thresholds.json`                                                              |
 
 - **Export exchange**: since issue 65 the pure parts are the engine
   module `exchange/` (`build.ts`, `merge.ts`, `migrate.ts`, `parse.ts`),
@@ -261,6 +262,35 @@ drink side calls with its lists. Still drink-coupled before step 8:
 Steps 1 to 7 change only Mixtura and are useful without Culina; step 8
 needs the [decision](decisions/shared-model.md) on where the package
 lives.
+
+## Decided on 2026-11-18
+
+The [decision](decisions/shared-model.md) is accepted: the package is
+`@nexumia-de/materia` in
+[nexumia-de/materia](https://github.com/nexumia-de/materia). It changes
+two steps:
+
+- **Step 6 becomes "cut the unit table out of the general modules"**
+  and is no longer "units as data". Done (#118): the two files are
+  `drink-ingredients/unit-volumes.ts` and `drink-templates/volume.ts`,
+  `assignSlots` and `lineMl` are exported through `drink.ts`,
+  `MatchOptions` exists only as the drink type, and
+  `test/general-imports.test.ts` pins that `ingredients/`,
+  `templates/`, `specs/`, `stock/` and `shelf/` import nothing from
+  another folder of the engine. `amounts/` stays in Mixtura, with
+  `ingredients/unit-volumes.ts` and `templates/volume.ts`, which move to
+  the drink side; the general template types no longer name
+  `UnitOverrides`. materia carries no unit system until Culina needs
+  one.
+- **Step 8 moves** `ingredients/` (tree, properties, substitution, swap
+  candidates, prepared resolver), `templates/` (slots, matching,
+  variants), `specs/`, `stock/` and `shelf/` with their general vectors;
+  `amounts/` is not part of it. The volume names in general types
+  (`PreparedLine.ml`, `SlotFill.ml`, `MatchLine.topMl`, the volume
+  reasons of `UnmeasuredReason`) move as they are, because renaming
+  them would change Mixtura's public API; they are renamed when Culina
+  needs a mass measure.
+- Step 9 (exchange) stays as written: not now.
 
 [^code]: `packages/engine/src` at commit `b28e70e`, read 2026-11-17.
 

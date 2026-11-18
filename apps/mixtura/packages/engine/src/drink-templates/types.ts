@@ -5,6 +5,7 @@ import type { Role } from '../drink-ingredients/types';
 import type { Id } from '../ingredients/types';
 import type * as General from '../templates/types';
 import type { Range, TemplateEvidence } from '../templates/types';
+import type { VolumeOptions } from './volume';
 
 export type TemplateSlot = General.TemplateSlot<Role>;
 
@@ -21,7 +22,7 @@ export type MatchLine = General.MatchLine<Role>;
 
 export type MatchSpec = General.MatchSpec<Role>;
 
-export interface MatchOptions extends General.MatchOptions {
+export interface MatchOptions extends VolumeOptions {
   /** The drink's alcohol class from `classifyAlcohol`; absent leaves every variant out (docs/templates.md#variants-by-alcohol-class). */
   alcohol?: 'none' | 'low' | 'standard' | 'unknown';
 }

@@ -1,8 +1,8 @@
 // The general model: amounts and units, the ingredient tree, prepared
-// ingredients' specs, substitution, and assigning spec lines to template
-// slots. Nothing here knows dilution or ABV rules; this is the part that can
-// move to shared code (docs/decisions/two-apps-one-engine.md,
-// docs/shared-model.md).
+// ingredients' specs, substitution, template slots, specs, stock and shelf
+// life. Nothing here knows dilution or ABV rules. Everything but amounts/
+// and exchange/ moves to materia (docs/decisions/shared-model.md,
+// docs/shared-model.md); those two stay in Mixtura.
 export {
   convert,
   displayUnit,
@@ -34,7 +34,7 @@ export {
 } from './ingredients/index';
 export type * from './ingredients/index';
 
-export { assignSlots, lineMl, lineRole } from './templates/index';
+export { lineRole } from './templates/index';
 export type * from './templates/index';
 
 export {

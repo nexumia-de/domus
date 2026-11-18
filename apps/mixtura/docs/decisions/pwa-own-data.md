@@ -35,3 +35,13 @@ Chosen by the owner on 2026-11-16:
   reminder matter early.
 - Syncing with a Bar Assistant server stays possible later and is not
   planned now.
+
+## Amendment of 2026-11-18: stock sync
+
+"No server, no account" still holds for Mixtura itself. Since the
+[stock sync decision](stock-sync.md) the app may send requests to
+storage the user configured (a WebDAV folder), and only there. Sync is
+off until the user adds a storage and binds a place to it; without that
+the app sends no request to another host, and local data works offline
+as before. What is sent is encrypted in the browser with a passphrase
+per place.

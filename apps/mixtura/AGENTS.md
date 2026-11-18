@@ -16,8 +16,15 @@ rules do not apply. Its sister app for cooking is
 
 ## Architecture rules
 
-- **Own local data, offline first.** No server, no account, no
-  telemetry, no network request the user did not start.
+- **Own local data, offline first.** No server of ours, no account, no
+  telemetry. The only requests to another host go to storage the user
+  configured for stock sync, which is off by default; a place without a
+  binding sends none, and local data works offline as before
+  ([decision](docs/decisions/stock-sync.md)).
+- **Shared code lives in materia.** The general model and the general
+  parts of sync are in [materia](https://github.com/nexumia-de/materia),
+  pinned to an exact tag; nothing drink-specific goes there, and a bug
+  in it is fixed there ([decision](docs/decisions/shared-model.md)).
 - **Derive, don't store.** What can be made, balance numbers, cost and
   "what unlocks the most" are computed from specs, ingredients and stock
   every time; only what the user entered is stored.

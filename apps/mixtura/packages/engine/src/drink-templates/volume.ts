@@ -1,19 +1,23 @@
 // Measuring spec lines by volume: the measure that slot ratios use today
 // (ml from the unit table, `topMl`, counted units with their own volume),
-// and `assignSlots` with that measure.
-import { toMl, type UnitId } from '../amounts/index';
-import { UNITS } from '../amounts/index';
+// and `assignSlots` with that measure. Drink side: it reads the unit table,
+// which stays in Mixtura (docs/decisions/shared-model.md).
+import { toMl, UNITS, type UnitId, type UnitOverrides } from '../amounts/index';
 import type { IngredientTreeOf } from '../ingredients/tree';
-import { countedVolume } from '../ingredients/unit-volumes';
-import { fillSlots, type RoledTree } from './slots';
+import { countedVolume } from '../drink-ingredients/unit-volumes';
+import { fillSlots, type RoledTree } from '../templates/slots';
 import type {
   LineMeasure,
   MatchLine,
-  MatchOptions,
   SlotAssignment,
   Template,
   UnmeasuredReason,
-} from './types';
+} from '../templates/types';
+
+/** What the volume measure reads of the caller's options. */
+export interface VolumeOptions {
+  unitOverrides?: UnitOverrides;
+}
 
 const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
 
@@ -27,7 +31,7 @@ const unitKind = new Map<string, string>(UNITS.map((u) => [u.id, u.kind]));
  */
 export function lineMl(
   line: MatchLine,
-  options: MatchOptions = {},
+  options: VolumeOptions = {},
   tree?: IngredientTreeOf,
 ): { ml: number } | { reason: UnmeasuredReason } {
   const kind = unitKind.get(line.unit);
@@ -49,7 +53,7 @@ export function lineMl(
 
 /** `lineMl` as a measure for `fillSlots` and `matchTemplates`. */
 export function volumeMeasure<R extends string>(
-  options: MatchOptions,
+  options: VolumeOptions,
   tree: IngredientTreeOf | undefined,
 ): LineMeasure<R> {
   return (line) => {
@@ -71,7 +75,7 @@ export function assignSlots<R extends string>(
   tree: RoledTree<R>,
   template: Template<R>,
   lines: readonly MatchLine<R>[],
-  options: MatchOptions = {},
+  options: VolumeOptions = {},
 ): SlotAssignment<R> {
   return fillSlots(tree, template, lines, volumeMeasure(options, tree));
 }
