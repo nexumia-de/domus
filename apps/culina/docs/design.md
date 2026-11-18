@@ -166,6 +166,16 @@ range display is plain text, and dimmed results use `--dim`. From 720 px
 the list (16 rem) sits beside the card; below it the card is a screen of
 its own. Rules of use: [behaviour](behaviour.md#ratios).
 
+# Component and dish screens
+
+Shared pieces (panes, fields, list rows, cards, tables, `num`) live in
+`common.css`; `notebook.css` adds the line, slot and raw tables (fixed
+layout, number columns of 5 to 6 rem), the small "component" tag (an outline,
+no fill), the yield figures, the 44 px portion buttons and the open slot: a
+dashed `--border` outline with `--text-muted` text. There is no error or
+warning token, and none was added. Rules of use:
+[behaviour](behaviour.md#components).
+
 # Icons
 
 Own simple line icons drawn for this app, AGPL-3.0-or-later like the
@@ -203,6 +213,10 @@ Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 | Ratio card, 360 light   | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)    |
 | Ratio card, 360 dark    | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)      |
 | Ratio card, 1000 x 700  | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png) |
+| Component, 360 x 720    | ![Component](screenshots/component-360x720-light.png)             |
+| Dish, 360 x 720 light   | ![Dish, light](screenshots/dish-360x720-light.png)                |
+| Dish, 360 x 720 dark    | ![Dish, dark](screenshots/dish-360x720-dark.png)                  |
+| Dish, 1000 x 700        | ![Dish, desktop](screenshots/dish-1000x700-light.png)             |
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 

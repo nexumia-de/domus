@@ -14,6 +14,7 @@ const filled = async (page) => {
   await page.getByLabel('water (g)').fill('310');
   await page.getByLabel('salt (g)').fill('8');
 };
+const SAUCE = 'components/example-pan-sauce';
 // [file, width, height, colour scheme, route, steps after load, whole page]
 const shots = [
   ['ratios-360x720-light.png', 360, 720, 'light', 'ratios'],
@@ -24,6 +25,10 @@ const shots = [
   ['ratio-card-360x720-light.png', 360, 720, 'light', CARD, filled, true],
   ['ratio-card-360x720-dark.png', 360, 720, 'dark', CARD, filled, true],
   ['ratio-card-1000x700-light.png', 1000, 700, 'light', CARD, filled, true],
+  ['component-360x720-light.png', 360, 720, 'light', SAUCE],
+  ['dish-360x720-light.png', 360, 720, 'light', 'dishes/example-vegetable-plate'],
+  ['dish-360x720-dark.png', 360, 720, 'dark', 'dishes/example-vegetable-plate'],
+  ['dish-1000x700-light.png', 1000, 700, 'light', 'dishes/example-flat-dough-with-sauce'],
 ];
 
 buildApp();

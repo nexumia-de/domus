@@ -13,7 +13,7 @@ export const ratiosScreen = (param?: string): HTMLElement => {
   const templates = SEED_TEMPLATES;
   const template = param === undefined ? undefined : templates.find((t) => t.id === param);
   const resolved = template === undefined ? undefined : resolveTemplate(templates, template.id);
-  const screen = el('section', 'screen ratios');
+  const screen = el('section', 'screen ratios split');
   if (template === undefined || resolved === undefined || !resolved.ok) {
     const note = param === undefined ? undefined : strings.ratios.unknownRatio;
     const list = ratioList(
@@ -24,7 +24,7 @@ export const ratiosScreen = (param?: string): HTMLElement => {
     screen.append(list, el('p', 'pane-empty muted', strings.ratios.chooseOne));
     return screen;
   }
-  screen.classList.add('has-card');
+  screen.classList.add('has-card', 'has-detail');
   screen.append(
     ratioList(templates, state, { asHeading: false, current: template.id }),
     ratioCard(templates, template, resolved.template),

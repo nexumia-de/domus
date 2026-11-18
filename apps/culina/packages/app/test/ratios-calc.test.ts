@@ -1,7 +1,7 @@
 import { resolveTemplate, SEED_TEMPLATES } from '@culina/engine';
 import { describe, expect, test } from 'vitest';
 import { calculate, cautionsOf, fromFactor, fromRole, fromTotal } from '../src/ratios/calc';
-import { formatMass } from '../src/ratios/format';
+import { formatMass } from '../src/shared/mass';
 import { effectiveOf, readVector } from './vector-templates';
 
 const near = (

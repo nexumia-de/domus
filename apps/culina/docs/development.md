@@ -72,8 +72,10 @@ TypeScript, installed for that build only).
   `src/router.ts` (hash router), `src/prefs.ts` (theme in `localStorage`),
   `src/theme-init.ts`, `src/sw-register.ts`, `src/sw.ts`, `src/strings.ts`
   (all visible texts), `src/engine-info.ts` (the app's one use of the
-  engine), `src/shell/` (landmarks, navigation), `src/screens/` (one file per
-  screen), `src/styles/` (`tokens.css` and token-only stylesheets),
+  engine), `src/shell/` (landmarks, navigation), `src/screens/` (screens and their
+  parts), `src/shared/` (number entry, mass display, search), `src/ratios/`,
+  `src/components/` and `src/dishes/` (view logic without DOM), `src/demo/`
+  (example records behind one access module), `src/records.ts` (record types), `src/styles/` (`tokens.css` and token-only stylesheets),
   `src/icons/` (navigation icons), `src/assets/` (app icons: SVG and PNG),
   `scripts/make-icons.mjs` (`npm run icons -w @culina/app`, rasterises the SVGs),
   `test/` (vitest), `e2e/` (Playwright scripts, below).
@@ -126,7 +128,7 @@ caches, service worker registration, and the engine entry point, and the local s
 
 `npm run e2e` is a separate script (it launches Chromium and takes
 longer). It builds, serves `dist/` twice (at `/` and under `/apps/cook/`)
-and runs `e2e/ratios.mjs` (ratio list, cards, calculator against vector-derived amounts, comparison, 360 px overflow of every card, desktop list beside the card, offline) and `e2e/smoke.mjs` (shell at 320, 360 and 1000 px, navigation
+and runs `e2e/components.mjs` (component and dish screens: lists, search, amounts against numbers computed by the engine through `e2e/notebook-fixture.mjs`, portions, nesting and back, open slots, 360 px overflow, targets, offline), `e2e/ratios.mjs` (ratio list, cards, calculator against vector-derived amounts, comparison, 360 px overflow of every card, desktop list beside the card, offline) and `e2e/smoke.mjs` (shell at 320, 360 and 1000 px, navigation
 placement, no horizontal scroll on every screen, targets of at least 44 x
 44 px, landmarks and names, keyboard and focus, theme switch and reload,
 offline reload with the service worker controlling the page, no console

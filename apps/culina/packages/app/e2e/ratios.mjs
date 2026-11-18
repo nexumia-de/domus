@@ -1,10 +1,8 @@
 // Ratio list, cards, calculator, comparison: browser checks.
 import { PIE_500, seed, shown, VECTOR_CASES } from './ratio-fixture.mjs';
 import { check, watch } from './harness.mjs';
+import { FORBIDDEN, overflow, smallTargets } from './measure.mjs';
 import { controlled } from './smoke.mjs';
-
-const FORBIDDEN =
-  /\b(wrong|errors?|invalid|incorrect|mistakes?|failed|fail|too much|too little|missing)\b/i;
 
 const open = async (page, origin, hash) => {
   await page.goto(`${origin}/?no-sw#/ratios${hash ?? ''}`);
@@ -21,26 +19,6 @@ const amounts = (page) =>
     ),
   );
 const sameAmounts = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-
-const overflow = (page) =>
-  page.evaluate(() => {
-    const w = document.documentElement.clientWidth;
-    return {
-      scroll: document.documentElement.scrollWidth - w,
-      wide: [...document.querySelectorAll('main *')]
-        .filter((n) => !n.closest('.sr-only') && n.getBoundingClientRect().right > w + 1)
-        .map((n) => n.tagName + '.' + n.className),
-    };
-  });
-
-const smallTargets = (page) =>
-  page.evaluate(() =>
-    [...document.querySelectorAll('a, select, input:not([type=radio]), summary, label.choice')]
-      .filter((n) => n.getBoundingClientRect().width > 0 && !n.closest('.sr-only'))
-      .map((n) => ({ n, r: n.getBoundingClientRect() }))
-      .filter(({ r }) => r.width < 44 || r.height < 44)
-      .map(({ n, r }) => `${n.tagName}.${n.className} ${r.width}x${r.height}`),
-  );
 
 const phone = async (browser, origin, label) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });

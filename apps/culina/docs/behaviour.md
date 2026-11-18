@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Behaviour
-description: Screens, navigation, the ratio list and cards with the calculator and the neutral range display, interaction rules, states, offline behaviour and the installability check of Cook's Notebook, each rule with the test that checks it.
+description: Screens, navigation, the ratio list and cards with the calculator and the neutral range display, the component and dish screens with role slots, interaction rules, states, offline behaviour and the installability check of Cook's Notebook, each rule with the test that checks it.
 tags: [behaviour, ui, navigation, pwa, accessibility]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -15,22 +15,22 @@ sources:
 
 # Behaviour
 
-What Cook's Notebook does today. It has four screens; Ratios has its
-content (list, cards, calculator), Components and Dishes are still
-placeholders, and nothing is stored: the content of the other screens and
-any stored user data come with later issues. Colours, type and layout are in
+What Cook's Notebook does today. It has four screens; Ratios, Components
+and Dishes have their content (read only), and nothing is stored: Components
+and Dishes show hand-written example data, and stored user data comes with
+later issues. Colours, type and layout are in
 [design](design.md). The audience is an experienced cook who wants the
 numbers fast: no tutorial, no first-run tour. The same conventions as
 Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route                       | Today                                                                                            | Source                      |
-| ---------- | --------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
-| Ratios     | `#/ratios`, `#/ratios/<id>` | The ratio list and the ratio cards ([below](#ratios)); the start screen                          | `src/screens/ratios.ts`     |
-| Components | `#/components`              | The same                                                                                         | `src/screens/components.ts` |
-| Dishes     | `#/dishes`                  | The same                                                                                         | `src/screens/dishes.ts`     |
-| Settings   | `#/settings`                | Theme (Follow system, Light, Dark), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen     | Route                               | Today                                                                                            | Source                      |
+| ---------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
+| Ratios     | `#/ratios`, `#/ratios/<id>`         | The ratio list and the ratio cards ([below](#ratios)); the start screen                          | `src/screens/ratios.ts`     |
+| Components | `#/components`, `#/components/<id>` | The component list and the component screen ([below](#components))                               | `src/screens/components.ts` |
+| Dishes     | `#/dishes`, `#/dishes/<id>`         | The dish list and the dish screen with role slots ([below](#dishes))                             | `src/screens/dishes.ts`     |
+| Settings   | `#/settings`                        | Theme (Follow system, Light, Dark), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
 An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 `#/ratios` without a new history entry. **Test:** `test/router.test.ts`,
@@ -133,6 +133,115 @@ templates that have derivatives (`test/ratios-view.test.ts`); the browser
 test of "variation and back" goes from one card to another through the
 desktop list and back with the browser's back (`page.goBack()`).
 
+# Components
+
+`src/screens/components.ts` (list), `component-detail.ts` and its parts
+`component-lines.ts`, `component-yield.ts`, `component-scale.ts`, with the
+view logic without DOM in `src/components/` (`lines.ts`, `figures.ts`,
+`raw.ts`, `names.ts`). All arithmetic is the engine's (`componentLineGrams`,
+`bakersPercent`, `componentYield`, `expandComponent`, `portionsFromYield`,
+`toPurchased`); the app rounds once for display (`src/shared/mass.ts`).
+
+**Data and the example-data rule.** Records come from one module,
+`src/demo/index.ts` (`listComponents`, `getComponent`, `listDishes`,
+`getDish`, `ingredientName`, `factsByIngredient`), so the store can replace
+it later without touching a screen. Today it serves 12 ingredients, 5
+components and 2 dishes written by hand: valid against the schemas, no
+`validateModel` finding, every name, note and yield source says "Example",
+all numbers are made-up round figures, none is a real recipe or a real
+yield. Both lists carry one quiet line ("Example data. Your own components
+come with the notebook."). **Test:** `test/demo-data.test.ts`.
+
+**Routes and list.** `#/components` is the list, `#/components/<id>` the
+screen; an unknown id shows the list with a quiet line and keeps the URL.
+Search by name works as on the ratio list (trimmed, case-insensitive, text
+kept when a screen opens and when the user comes back). Phone: the screen is
+its own page; from 720 px the list stays beside it, the open entry marked
+with `aria-current`. **Test:** `e2e/components.mjs` at 360 and 1000 px.
+
+**Component screen**, top to bottom: name and usual role; **Lines** (name,
+grams, and the percent of the `percentBase` where the component has one; a
+sub-component line is a link with a small "component" tag and opens that
+component, one level only, no inline tree; a line without an amount says
+"to taste" and has no number; under an ingredient line with a state and a
+recorded yield for it, "buy about X g" from `toPurchased`, and nothing where
+none is recorded, never 100 %); **Yield** (input, output, loss, yield percent
+and the output's source; a gain is called gain); **Scale** (the output weight
+wanted in grams, or a factor when the component has no output weight);
+**Portions** (only with an output weight: the weight of one portion gives
+"About 2.7 portions: 2 whole, 50 g left over."); **What goes in, all the way
+down** (raw ingredients through every nesting level for the wanted output,
+one row per ingredient and state, a total, and the lines without an amount
+listed apart). Without an entry the list is the recipe as written; the line
+table always shows the recipe as written.
+
+**"Not weighed yet".** A component without a recorded output shows the
+neutral line "Output not weighed yet" and a factor field instead of the
+output field; it cannot be used by weight inside another component, and the
+screens say so where that matters (below). **Test:** `test/components-view.test.ts`,
+`e2e/components.mjs`.
+
+**Engine errors never crash a screen.** A cycle, an unknown component, a unit
+that needs a density, a missing output weight or an unusable number gives one
+quiet sentence in the place of the amounts ("These components use each other
+in a circle: ...", "The output of X is not weighed yet, so it cannot be
+scaled."), and the rest of the screen renders. **Test:**
+`test/components-view.test.ts` with the engine's error vectors and a broken
+fixture.
+
+**Amounts equal the engine.** `test/components-view.test.ts` reads
+`expand-three-level`, `expand-fractional-sub-component`,
+`expand-output-g-nested`, `expand-percent-lines`,
+`expand-aggregates-by-state-and-role`, `expand-unmeasured-nested`,
+`yield-loss`, `yield-gain`, `yield-unknown`, `portions-remainder`,
+`portions-exact`, `portions-binary-noise` and the error vectors from disk and
+checks the view functions against them and against direct engine calls on
+the demo data. `e2e/components.mjs` compares the rendered tables with numbers
+that `e2e/notebook-fixture.mjs` computes by calling the engine on the demo
+data (200 g of the sauce, three levels deep, 75 g portions, a factor of 2,
+the dough's percentages).
+
+# Dishes
+
+`src/screens/dishes.ts`, `dish-detail.ts`, `dish-slots.ts`, `stepper.ts`;
+view logic in `src/dishes/` (`slots.ts`, `raw.ts`, `roles.ts`).
+
+**Role slots.** Slots appear in stored order: the role label (main element,
+sauce, crunch, acid, garnish, starch), the filling (a component is a link,
+an ingredient plain text), the amount per portion and the total for the
+chosen portions. A slot can be marked optional.
+
+**The empty slot rule.** The stored model has no empty slot (a slot always
+has a filling), so an open slot is derived: a role of main, sauce, crunch,
+acid or garnish that no slot has is shown after the filled slots as a dashed
+row with an invitation ("Open: add a crunch"). It has no red, no icon, no
+alert role and the quiet text colour; there is no error or warning colour in
+the design at all. Starch is often there but is never invited. **Test:**
+`test/dishes-view.test.ts`, `e2e/components.mjs`.
+
+**Portion control.** A number field with minus and plus buttons of 44 px,
+starting at the dish's `portions` or 1 and not remembered between visits.
+Typing `6` or `2,5` recalculates at once; the buttons step by whole portions
+and never go below 1; text that is not a number above 0 gets the hint "Enter
+a number above 0." and keeps the last results. The totals are per-portion
+amounts times the portions; the list "What goes in, all the way down" expands
+each component slot by the engine with its total as the wanted output (the
+nested-yield rule) and adds the ingredient slots. A slot whose component has
+no output weight cannot be scaled: it stays in the table, the sum leaves it
+out and a "Not added up" list says why; the other slots still add up. Lines
+without an amount are listed apart. **Test:** `test/dishes-view.test.ts`,
+`e2e/components.mjs` (4, 6, 7, 2.5 portions against the engine).
+
+**Navigation.** A component link in a slot or in a component line is an
+ordinary navigation: dish, sauce, stock, base is four history entries and the
+browser's back goes back through them. **Test:** `e2e/components.mjs`.
+
+**Layout.** One column on the phone, list beside the screen from 720 px; the
+slot, line and raw tables use a fixed layout, so long names wrap, very long
+numbers wrap inside their cell and nothing scrolls sideways (tested at 360 px
+with the longest ingredient name, three levels of nesting and 9-digit
+entries). Every link, button and field is at least 44 x 44 px.
+
 # Navigation
 
 - **One back stack: the browser history.** Every destination is a hash
@@ -185,7 +294,7 @@ desktop list and back with the browser's back (`page.goBack()`).
 
 | State   | Behaviour                                                                                                                                                                                                                                                                                      |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Empty   | Components and Dishes show their heading, one sentence and the collapsible guidance. Ratios: an empty search is one quiet line; a list without a card (desktop) says to choose one.                                                                                                            |
+| Empty   | Components, Dishes and Ratios: an empty search is one quiet line; a list without a detail (desktop) says to choose one. An open dish slot is an invitation, never an error.                                                                                                                    |
 | Error   | The shell has no network and no data to fail on. One error exists: the theme cannot be stored (private mode, blocked storage, full). The choice then applies until the page closes and Settings says so in a `role="status"` line. **Test:** `test/prefs.test.ts` (the write reports `false`). |
 | Offline | The whole app is precached: every screen, the stylesheet, the icons and the manifest work without a connection and there is no offline banner, since nothing needs the network. **Test:** `e2e/smoke.mjs` (offline reload renders and navigates).                                              |
 

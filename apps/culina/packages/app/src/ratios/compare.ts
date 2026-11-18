@@ -2,8 +2,8 @@
 import { checkRatio } from '@culina/engine';
 import type { EffectiveTemplate } from '@culina/engine';
 import { strings } from '../strings';
-import { formatNumber } from './format';
-import { parseEntry } from './parse';
+import { formatNumber } from '../shared/mass';
+import { parseEntry } from '../shared/parse';
 
 export interface CompareRow {
   role: string;
