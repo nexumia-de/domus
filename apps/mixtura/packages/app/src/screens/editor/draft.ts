@@ -239,8 +239,9 @@ export function moveLine(draft: Draft, key: string, to: number): Draft {
 }
 
 /**
- * Choosing a template adds its slots as empty lines with their role, for the
- * roles no line has yet; typed lines are never changed or removed.
+ * Choosing a template adds its required slots as empty lines with their role,
+ * for the roles no line has yet; optional slots add no line, and typed lines
+ * are never changed or removed.
  */
 export function withTemplate(
   draft: Draft,
@@ -254,7 +255,7 @@ export function withTemplate(
     result.lines.map((l) => roleOf(l)).filter((r): r is Role => r !== undefined),
   );
   for (const slot of template.slots) {
-    if (covered.has(slot.role)) continue;
+    if (slot.optional === true || covered.has(slot.role)) continue;
     covered.add(slot.role);
     result = emptyLine(result, slot.role).draft;
   }

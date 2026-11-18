@@ -1,7 +1,7 @@
 {
   "id": "match-daiquiri-classic",
   "kind": "match",
-  "description": "Classic: 60 ml rum, 22.5 ml lime, 22.5 ml syrup, 0.75 parts each. Sidecar misses: the syrup has no slot and the liqueur slot is empty.",
+  "description": "Classic: 60 ml rum, 22.5 ml lime, 22.5 ml syrup, 0.75 parts each. Sidecar misses: the syrup goes to its optional sugar slot but the liqueur slot is empty.",
   "lines": [
     {
       "ingredientId": "rum",
@@ -37,14 +37,9 @@
       },
       "sidecar": {
         "fits": false,
-        "distance": 2,
+        "distance": 1,
         "emptyRequired": ["liqueur"],
-        "unassigned": [
-          {
-            "index": 2,
-            "reason": "no-slot-for-role"
-          }
-        ]
+        "unassigned": []
       }
     }
   },

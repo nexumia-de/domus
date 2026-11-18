@@ -369,6 +369,7 @@ export const strings = {
     slotRole: 'Role',
     slotParts: 'Parts',
     optional: 'optional',
+    optionalRoles: (roles: string) => `Optional: ${roles}`,
     method: 'Method',
     glass: 'Glass',
     usualRanges: 'Usual ranges after dilution',

@@ -1,7 +1,7 @@
 {
   "id": "match-sidecar-classic",
   "kind": "match",
-  "description": "Classic: 60 ml cognac, 22.5 ml lemon, 22.5 ml triple sec. Martini also reads the liqueur as its modifier but leaves the lemon without a slot.",
+  "description": "Variation, 2 : 3/4 : 3/4 (the nominal before 2026-11-18; the book's Sidecar is 1 1/2 : 1 : 3/4, vector match-sidecar-book-ratio): 60 ml cognac, 22.5 ml lemon, 22.5 ml triple sec, still inside the bands. Martini also reads the liqueur as its modifier but leaves the lemon without a slot.",
   "lines": [
     {
       "ingredientId": "cognac",

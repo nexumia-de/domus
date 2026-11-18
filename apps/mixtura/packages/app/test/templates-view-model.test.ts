@@ -28,10 +28,18 @@ test('a row has the role line, the method and the number of drinks that follow i
   expect(rows.find((r) => r.id === 'daiquiri')).toMatchObject({
     roles: 'Base, Sour, Sweet',
     method: 'Shake',
-    drinks: 25,
+    drinks: 127,
     user: false,
   });
-  expect(rows.find((r) => r.id === 'flip')?.drinks).toBe(1);
+  expect(rows.find((r) => r.id === 'flip')?.drinks).toBe(2);
+  // Optional slots stay out of the role line and add their own roles after it.
+  expect(rows.find((r) => r.id === 'sidecar')).toMatchObject({
+    roles: 'Base, Sour, Modifier',
+    optionalRoles: 'Sweet, Bitter, Lengthener, Accent',
+  });
+  expect(rows.find((r) => r.id === 'highball')?.optionalRoles).toBe(
+    'Sour, Sweet, Modifier, Bitter',
+  );
 });
 
 test('search filters the overview by name, without case or accents', () => {

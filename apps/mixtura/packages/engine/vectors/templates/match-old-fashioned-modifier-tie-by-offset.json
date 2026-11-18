@@ -1,0 +1,56 @@
+{
+  "id": "match-old-fashioned-modifier-tie-by-offset",
+  "kind": "match",
+  "description": "Sazerac style: 60 ml whiskey, 5 ml syrup (0.17), 1.8 ml bitters (0.06), 10 ml triple sec as a rinse or splash (0.33). The optional modifier slot (0.02 - 0.5) takes the liqueur. The Martini fits too (modifier 0.33, bitter 0.06, optional sugar 0.17) at distance 0; the Old-Fashioned has the smaller offset (0.66 against 2.04), so it wins by offset.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1.8,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 10,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "old-fashioned",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["old-fashioned", "martini"],
+    "candidates": {
+      "old-fashioned": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "sugar": "within",
+          "bitters": "within",
+          "modifier": "within"
+        }
+      },
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within",
+          "bittersweet": "within",
+          "sugar": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

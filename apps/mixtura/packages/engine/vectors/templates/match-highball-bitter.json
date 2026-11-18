@@ -1,0 +1,41 @@
+{
+  "id": "match-highball-bitter",
+  "kind": "match",
+  "description": "Highball with bitters: 60 ml whiskey, 120 ml soda, 1.8 ml bitters (0.06 parts, optional bitter slot 0.02 - 0.25).",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1.8,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within",
+          "bitters": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "match-sidecar-second-modifier",
+  "kind": "match",
+  "description": "Equal-parts sour: 30 ml gin, 30 ml triple sec, 30 ml dry vermouth, 30 ml lemon, each 2.0 parts. The second modifier slot (0.25 - 2.67) takes the vermouth; acid and liqueur are at the upper edge 2.0 and 2.0.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within",
+          "liqueur-2": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

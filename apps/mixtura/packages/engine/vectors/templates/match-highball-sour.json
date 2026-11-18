@@ -1,0 +1,45 @@
+{
+  "id": "match-highball-sour",
+  "kind": "match",
+  "description": "Highball with a squeeze: 60 ml whiskey, 120 ml soda, 6 ml lemon juice (0.2 parts, optional sour slot 0.05 - 0.37). The Daiquiri has no sweet line and fails.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 6,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within",
+          "sour": "within"
+        }
+      },
+      "daiquiri": {
+        "fits": false,
+        "distance": 1.47368
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

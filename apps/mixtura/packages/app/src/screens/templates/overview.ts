@@ -59,6 +59,12 @@ function listBody(context: ScreenContext, model: BrowseModel, selected?: string)
                   { class: 'row-main' },
                   h('span', { class: 'row-title' }, row.name),
                   h('span', { class: 'row-sub' }, row.roles),
+                  row.optionalRoles &&
+                    h(
+                      'span',
+                      { class: 'row-sub' },
+                      strings.templates.optionalRoles(row.optionalRoles),
+                    ),
                   h(
                     'span',
                     { class: 'row-sub' },

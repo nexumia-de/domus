@@ -3,7 +3,7 @@ type: Specification
 title: Templates
 description: The six root templates as data, how a spec is matched to a template by roles and ratios (assignment, distance, tie rule, no template as an outcome), the range check with its within, below, above and unknown results, the evidence of every number and the vectors that pin them.
 tags: [templates, matching, ranges, engine, vectors]
-generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
   - id: balance
     title: 'Balance, section Usual ranges per template (computed ranges, all assumptions)'
@@ -15,7 +15,7 @@ sources:
     title: 'Data model, section Template'
     url: data-model.md#template
   - id: codex
-    title: 'Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (2018); not at hand, the six templates are known only through the practice document'
+    title: "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapters 1 to 6; the quantities of the table in Evidence were read by the lead on 2026-11-18 from the owner's copy; ratios cited as facts, no text copied"
   - id: iba
     title: 'IBA, official specifications, one page per cocktail (https://iba-world.com/iba-cocktail/<slug>/, list https://iba-world.com/cocktails/all-cocktails/), read on 2026-11-17 (#116): 102 cocktails; amounts as printed in the table of the section IBA specifications read. Primary for what the IBA prints; the site no longer lists Screwdriver, Tom Collins, Jack Rose, Gimlet'
   - id: wiki-iba
@@ -56,18 +56,45 @@ through `src/drink.ts`):
 
 # Evidence
 
-**No nominal ratio in the six templates is verified.** _Cocktail Codex_
-was not at hand and its pages could not be read
-([development](development.md#network-hosts)); the templates are known
-only through the [practice document](bartender-practice.md#templates-instead-of-recipes).
+**The nominal ratios were read in the book; nothing else is verified.**
+The six roots come from _Cocktail Codex_[^codex]. On 2026-11-18 the lead
+read the classic recipe and the authors' root recipe of each chapter from
+the owner's copy; the quantities are facts and are cited as such, no text
+is copied. Parts are `2 × slot / base` ([Ratios](#ratios)):
+
+| Chapter, template | Classic recipe                                          | Authors' root recipe                                  | Nominal spec of the data (ml) | Agrees with                         |
+| ----------------- | ------------------------------------------------------- | ----------------------------------------------------- | ----------------------------- | ----------------------------------- |
+| 1 Old-Fashioned   | 2 oz bourbon, 1 sugar cube, 2 dashes bitters            | 2 oz, 1 tsp syrup, 2 + 1 dashes bitters               | 60, 4.2 g sugar, 1.8 bitters  | the classic                         |
+| 2 Martini         | 2 oz gin, 3/4 oz dry vermouth (vodka: 2 1/2 oz, 1/2 oz) | 2 oz gin, 1 oz dry vermouth, 1 dash orange bitters    | 60, 30                        | the root                            |
+| 3 Daiquiri        | 2 oz rum, 3/4 oz lime juice, 3/4 oz simple syrup        | 2 oz rum (1 3/4 + 1/4), 1 oz lime juice, 3/4 oz syrup | 60, 22.5, 22.5                | the classic                         |
+| 4 Sidecar         | 1 1/2 oz Cognac, 1 oz orange liqueur, 3/4 oz lemon      | the same plus 1 tsp simple syrup                      | 60, 40, 30 (since 2026-11-18) | the classic (before: 2 : 3/4 : 3/4) |
+| 5 Highball        | 2 oz whisky, 6 oz seltzer                               | 2 oz whisky, 4 oz seltzer                             | 60, 150 (5 oz)                | between the two                     |
+| 6 Flip            | 2 oz spirit or fortified wine, 2 tsp demerara, 1 egg    | 2 oz oloroso sherry, 1/2 oz syrup, 1 whole egg        | 60, 15, 45 egg                | the root                            |
+
+The book files every other drink under one of these six: Collins, Mule,
+Mojito, French 75, Whiskey Sour, Southside and Mai Tai under the Daiquiri
+(chapter 3); Margarita, Cosmopolitan and Last Word under the Sidecar
+(chapter 4); Negroni and Manhattan under the Martini (chapter 2); Sazerac
+and Mint Julep under the Old-Fashioned (chapter 1); Aperol Spritz and
+Bloody Mary under the Highball (chapter 5); Piña Colada and Eggnog under
+the Flip (chapter 6). The data follows that: six roots, no seventh, and
+optional slots for what the book treats as variation
+([decision](decisions/six-roots-optional-slots.md)).
+
+**What stays an assumption.** The schema has one evidence field per
+template (`slotEvidence`) and one for the usual ranges (`usual.evidence`),
+and neither can say "nominal ratio read, band chosen". Both stay
+`assumption` for all six templates; the `source.note` of each file says
+precisely what was read and what was chosen here, and a range check
+returns `assumption` with every range. The schema was not extended.
+Reading the table: the book states only the nominal ratios. Every band
+(÷ 2 to × 2 around the nominal, the edges below, the optional slots), every
+usual range (computed, [balance](balance.md#usual-ranges-per-template))
+and the Highball ABV span are chosen here or computed, not read.
 Since #116 the IBA specifications are read at the primary source
 ([below](#iba-specifications-read)); they agree with the sourced band
-edges for the Martini and Manhattan, which keep their evidence status
-`assumption` because an edge is a chosen round number below an observed
-value, not an author's ratio.
-Every template carries `slotEvidence: assumption` and
-`usual.evidence: assumption`, and its `source` says so; a range check
-returns that status with every range.
+edges for the Martini and Manhattan, which keep `assumption` because an
+edge is a chosen round number below an observed value.
 
 | Number                                                          | Where it comes from                                                                                                                                                                                                                                                                                                                                                                                           | Status                           |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
@@ -75,17 +102,19 @@ returns that status with every range.
 | Lime 4.58, lemon 4.80 g acid per 100 ml in the sour acid ranges | Penniston et al. 2008, Table 1, read[^penniston]; the range around them stays computed from assumed volumes and dilution                                                                                                                                                                                                                                                                                      | input read, range assumption     |
 | Highball ABV 9.1 – 12.1 %                                       | the same section: 120 to 180 ml of mixer                                                                                                                                                                                                                                                                                                                                                                      | assumption                       |
 | Highball mixer 2 – 6 parts                                      | lower edge 2: 1944 Screwdriver 1 : 1 (Newsweek, quoted on Wikipedia)[^wiki-screwdriver], IBA Screwdriver 1 : 2 is 4 parts[^wiki-iba] (the IBA site no longer lists the Screwdriver, so only the Wikipedia reading remains); upper edge 6 and nominal 4 – 6: practice document, 4 to 6 oz of mixer against 2 oz of spirit                                                                                      | assumption                       |
-| Nominal slot ratios (2 : 1, 2 : ¾ : ¾ ...)                      | practice document                                                                                                                                                                                                                                                                                                                                                                                             | assumption                       |
+| Nominal slot ratios (2 : 1, 2 : ¾ : ¾, 1½ : 1 : ¾ ...)          | Cocktail Codex[^codex], table above (read by the lead 2026-11-18); the schema cannot mark "nominal read, band assumed", so the field stays `assumption`                                                                                                                                                                                                                                                       | read; field stays assumption     |
 | Martini modifier slot, 0.25 – 2                                 | lower edge: IBA Dry Martini 60 ml gin, 10 ml vermouth is 0.33 parts[^iba] (read at iba-world.com), Embury's Martini 7 : 1 is 0.29 (search summary of a page, unverified); 0.25 is a round number below both (assumption); upper edge 2 as before                                                                                                                                                              | secondary lower edge, assumption |
 | Martini second modifier slot, 0.25 – 2 (optional)               | structure: Manhattan with equal parts sweet and dry vermouth (named on Wikipedia[^wiki-iba]; the IBA Manhattan page prints no such variant); band as the first modifier slot                                                                                                                                                                                                                                  | assumption                       |
 | Daiquiri sweet and Sidecar liqueur slots, 0.25 – 1.5            | lower edge 0.25 = Embury's 1 part sweet to 8 parts base (2 x 1 / 8)[^wiki-embury]; sour 0.5 (2 x 2 / 8) was already inside 0.38 – 1.5; upper edge unchanged                                                                                                                                                                                                                                                   | secondary lower edge             |
+| Sidecar acid and liqueur upper edges 2.0 and 2.67               | twice the book's nominal (1.0 and 1.33), by the band rule below; lower edges 0.38 and 0.25 unchanged                                                                                                                                                                                                                                                                                                          | assumption                       |
+| Optional slots of the six templates                             | **chosen here**, each slot's `note` says so; the book files the drinks under the template but gives no ratio for them                                                                                                                                                                                                                                                                                         | assumption                       |
 | Band around a nominal ratio: ÷ 2 to × 2                         | **chosen here** so that the classic riffs fit; rounded to two decimals; not from any source                                                                                                                                                                                                                                                                                                                   | assumption                       |
 | Martini bitter slot, 0.02 – 2 (optional)                        | upper edge 2: **chosen here** so that Boulevardier fits (Negroni family). Lower edge 0.02 so that dashes of aromatic bitters fit: IBA Manhattan 50 ml whiskey, 20 ml vermouth, 1 dash (0.92 ml, [units](units.md)) is 0.037 parts[^iba] (read at iba-world.com); Embury names bitters among the modifying agents of the aromatic type[^wiki-embury]; the edge 0.02 is a round number below 0.037 (assumption) | assumption                       |
 
-Bands are data, not code: changing a band is editing a JSON file. Owner
-task: read the Codex chapters on the six templates and replace the
-bands by the authors' own ratios; every template that then agrees with a
-source gets `verified` for that part.
+Bands are data, not code: changing a band is editing a JSON file. Open
+question for the owner: if the schema is to say "nominal ratio verified,
+band assumption" separately, `slotEvidence` needs a second field; until
+then nothing is marked `verified`.
 
 **What the literature says (#70, read 2026-11-17).** Primary sources
 could not be read: _Cocktail Codex_, Embury, Regan, Wondrich and the IBA
@@ -117,12 +146,24 @@ reachable and quotes what is needed, as a secondary source:
   half-orange-juice and half-vodka drink"[^wiki-screwdriver]: 1 : 1 is 2
   parts, so a Screwdriver of 2 : 3 (the seed's) is a classic proportion.
 - The Codex's six roots (Old-Fashioned, Martini, Daiquiri, Sidecar,
-  Highball, Flip) and their structure (core, balance, seasoning) are known
-  only from search-result summaries; no ratio was read, so the nominal
-  ratios stay assumptions. Regan's, Wondrich's and Difford's families were
-  not reachable at all.
+  Highball, Flip): until 2026-11-17 known only from search-result
+  summaries; the quantities of the table above were read on 2026-11-18.
+  Regan's, Wondrich's and Difford's families were not reachable at all.
 
-**What changed in the data** (all lower or structural edges, each tied to
+**What changed in the data on 2026-11-18** (six roots kept, the book's
+filings followed; [decision](decisions/six-roots-optional-slots.md)): the
+Sidecar's nominal ratio is the book's 1½ : 1 : ¾ (liqueur 1.33, acid 1.0
+parts), its band upper edges 2.0 (acid) and 2.67 (liqueur), its usual
+ranges recomputed (23.7 – 25.6 %, 6.2 – 6.7 g, 0.85 – 0.92 %); optional
+slots, all with bands chosen here: Daiquiri modifier 0.1 – 1.5, mixer
+0.5 – 6, bitters 0.02 – 0.25, accent 0.001 – 1; Sidecar sugar 0.05 – 0.75,
+second modifier 0.25 – 2.67, bitters 0.02 – 0.25, accent, mixer 0.5 – 6;
+Martini sugar 0.05 – 0.5; Old-Fashioned modifier 0.02 – 0.5, accent;
+Highball sour 0.05 – 0.37, sweet 0.05 – 0.5, modifier 0.1 – 0.75, bitters
+0.02 – 0.25; Flip modifier 0.1 – 1, cream 0.5 – 3, accent. Each
+`source` names the book and chapter.
+
+**What changed in the data on 2026-11-17** (all lower or structural edges, each tied to
 a source above; evidence stays `assumption` for the template as a whole
 because the nominal ratios are unread, and the `source.note` of each file
 names the sourced edge): Martini modifier slot 0.5 to 0.25, Martini bitter
@@ -201,98 +242,93 @@ were**: secondary (Embury via Wikipedia) or unread (Codex, Regan).
 matches every non-optional line set of the seed against the root templates
 and groups the specs that fit none by the roles of their lines.
 
-| Measured on 635 specs  | Before (bands of 2026-11-17) | After |
-| ---------------------- | ---------------------------- | ----- |
-| Specs with a template  | 107                          | 158   |
-| Martini                | 57                           | 104   |
-| Daiquiri               | 24                           | 25    |
-| Sidecar                | 14                           | 14    |
-| Old-Fashioned          | 8                            | 8     |
-| Highball               | 3                            | 6     |
-| Flip                   | 1                            | 1     |
-| Specs with no template | 528                          | 477   |
+| Measured on 635 specs  | Before (bands of 2026-11-17) | After (#70) | Optional slots (2026-11-18) |
+| ---------------------- | ---------------------------- | ----------- | --------------------------- |
+| Specs with a template  | 107                          | 158         | 315                         |
+| Martini                | 57                           | 104         | 112                         |
+| Daiquiri               | 24                           | 25          | 127                         |
+| Sidecar                | 14                           | 14          | 51                          |
+| Old-Fashioned          | 8                            | 8           | 8                           |
+| Highball               | 3                            | 6           | 15                          |
+| Flip                   | 1                            | 1           | 2                           |
+| Specs with no template | 528                          | 477         | 320                         |
 
 (The issue counted 442 of 548 unmatched at the time of its writing; the
 seed has 635 specs now.) The Manhattan (classic vector `manhattan`) now
-fits the Martini and the Screwdriver (`screwdriver`) the Highball.
+fits the Martini and the Screwdriver (`screwdriver`) the Highball; with
+the optional slots the Cosmopolitan (`cosmopolitan`) fits the Sidecar,
+as the book files it. The stored `templateId` of the seed specs follows
+the engine (a test compares them); 639 drinks in the app include four
+that are not in this count.
 
-What stays unmatched, by role signature (after; counts of specs) and
-the reason the nearest template fails (a spec can have several):
+**Two templates fit.** With the optional slots 37 specs fit both the
+Daiquiri and the Sidecar (base, sour, sweet and liqueur: the Daiquiri's
+optional modifier against the Sidecar's optional sugar), 32 of them go to
+the Daiquiri and 5 to the Sidecar. None needs the id rule: the offset
+(distance from the band middles, [Matching](#matching)) decides every
+time. Sour and soda: a drink with a full sour part (above 0.37 parts)
+and soda fits the Daiquiri through its mixer slot and not the Highball,
+whose sour slot ends at 0.37 (`match-daiquiri-collins-not-highball`).
 
-| Group (roles of the lines, method)              | Specs | Nearest, why                                                |
-| ----------------------------------------------- | ----- | ----------------------------------------------------------- |
-| base, modifier, sour, sweet (shake)             | 29    | Daiquiri or Sidecar: two sweeteners, no slot for the second |
-| base, lengthener, sour, sweet (shake)           | 22    | Daiquiri: no slot for a lengthener (Collins, Fizz, Mule)    |
-| base, bitter, lengthener, sour, sweet (shake)   | 19    | Daiquiri, Highball: bitter and lengthener                   |
-| base, bitter, sour, sweet (shake)               | 18    | Daiquiri: dashes of bitters, no slot                        |
-| base, lengthener, modifier, sour, sweet (shake) | 16    | Daiquiri: tiki and multi-ingredient sours                   |
-| accent, base, sour, sweet (shake)               | 13    | Daiquiri: muddled herbs or fruit (Smash, Southside)         |
-| base, modifier, sour (shake)                    | 12    | Sidecar: two liqueurs or equal parts (Corpse Reviver 2)     |
-| base, bitter, modifier (stir)                   | 11    | Martini: bitter liqueur above the band or two modifiers     |
+What stays unmatched, by role signature (after the optional slots;
+counts of specs) and the reason the nearest template fails (a spec can
+have several):
 
-Largest reasons over all unmatched specs: no slot for a lengthener (90
-at the nearest Daiquiri), for bitters (73), for a second modifier (69), for
-an accent (41). So the remaining gap is **structural** (families with
-roles the six templates do not have), not ratio bands.
+| Group (roles of the lines, method)            | Specs | Nearest, why                                                            |
+| --------------------------------------------- | ----- | ----------------------------------------------------------------------- |
+| base, bitter, sour, sweet (shake)             | 13    | Daiquiri (3), Martini, Flip: bitter above the 0.25 band of the Daiquiri |
+| base, bitter, lengthener, sour, sweet (shake) | 13    | Daiquiri: the same, bitter above 0.25                                   |
+| base, bitter, modifier (stir)                 | 11    | Martini: bitter liqueur above 2 parts or a second modifier above 2      |
+| base, bitter, modifier, sour (shake)          | 8     | Martini, Sidecar: bitter liqueur with sour                              |
+| base, bitter, sweet (stir)                    | 8     | Old-Fashioned: bitter liqueur above the bitter slot                     |
+| bitter, lengthener (build), no base line      | 6     | Highball: Aperol Spritz and kin, no base slot filled                    |
+| base, lengthener, sour (build)                | 6     | Daiquiri needs a sweet line, Highball's squeeze band ends at 0.37       |
 
-## Proposed families (not implemented)
+Drinks with **no base line** (the Spritz family: aperitif, wine and soda;
+liqueur-only drinks) stay unmatched on purpose: matching measures every
+slot against the base slot, which is general code in
+[materia](https://github.com/nexumia-de/materia). 73 of the 320 unmatched
+specs have no base-role line and miss the base slot of every template
+(35 of them also at the nearest Highball). The rest of the gap: Moscow
+Mule, Paloma, Bloody Mary and similar drinks without a sweet line fail
+the Daiquiri's required sweet slot; sours with a sour part above 1.5
+(Mai Tai with a small base, Paloma with grapefruit juice) are above the
+band; Mint Julep has 0.75 parts of syrup against the Old-Fashioned's
+0.33; Piña Colada has no sour and its cream of coconut has role `sweet`;
+Aperol Spritz has no base line. Making the sweet slot of the Daiquiri
+optional was tried and measured (319 instead of 315 matched; Moscow Mule,
+Paloma and Cosmopolitan fit the Daiquiri) but it also sends Bloody Mary
+to the Daiquiri against the book's Highball and drops the meaning of the
+sweet slot; it is not in the data and is an owner decision.
 
-A new root template changes the pinned "six roots" (tests, the classics
-coverage, the screens' wording) and needs a source for its bands; none
-of the following has an author's ratio for a band yet (the Collins family
-has IBA data points, see below), so they are proposals with measured
-demand, not data:
+## The six roots with optional slots, as the book files them
 
-| Family                                                | Structure                                  | Specs it would take                                                            | Source needed                                                                             |
-| ----------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| Collins and Fizz, Mule (sour + soda)                  | base, sour, sweet, lengthener              | 18 (measured with a trial template, bands 0.38 - 1.5, 0.25 - 1.5, 1 - 4 parts) | IBA John Collins, Gin Fizz, Moscow Mule, Cuba Libre, French 75 read[^iba]; proposal below |
-| Sours with a second sweetener or bitters              | Daiquiri or Sidecar with optional slots    | about 60 (groups above)                                                        | Codex Daiquiri and Sidecar chapters, Embury "special flavouring agents"                   |
-| Spritz (aperitif + wine + soda)                       | no base role: bitter, lengthener, modifier | 11 (`bitter+lengthener`, `lengthener+modifier`)                                | IBA Spritz or Americano specification                                                     |
-| Stirred with two modifiers and a sweetener            | base, bitter, modifier, sweet (stir)       | 9                                                                              | Codex Martini and Old-Fashioned chapters                                                  |
-| Tiki and multi-spirit sours                           | several base lines, juice, syrup, liqueur  | 16 + 7                                                                         | Wondrich, Beachbum Berry (not read)                                                       |
-| Flips and egg drinks, hot drinks, Champagne cocktails | texture or sparkling wine, hot method      | few in the seed                                                                | Regan, Codex Flip chapter; no method for hot drinks                                       |
+The three kinds of drink the book files under a template are handled as
+optional slots, not as new roots. The proposals of 2026-11-17 for a
+Collins root (#114), a Spritz root and a stirred family with two
+modifiers are **superseded** by the
+[decision](decisions/six-roots-optional-slots.md): the Collins family is
+the Daiquiri with its mixer slot, the stirred drinks are the Martini and
+Old-Fashioned with their optional slots; only the Spritz (no base line)
+stays out, and matching it needs a general rule in materia. The IBA data
+points of the Collins family (John Collins 1.333 : 0.667 : 2.667, Moscow
+Mule 0.444 and 5.333, Cuba Libre 0.4 and 4.8, French 75 1 : 1 : 4) are
+in [IBA specifications read](#iba-specifications-read); the mixer band
+0.5 – 6 is chosen here and contains them.
 
-### Collins family as a seventh root (#114)
-
-Does the family now have a sourced band? **Partly.** The IBA
-specifications read on 2026-11-17[^iba] give four to five measured
-members, so every edge below is an observed value of a primary source,
-but no author states a ratio for the family (Codex and Embury could not
-be read), and the width of a band is still a choice. Parts as in
-[Ratios](#ratios), base 2:
-
-| Member (IBA) | Sour (juice) | Sweet (syrup) | Lengthener (soda, ginger beer, cola, sparkling wine) |
-| ------------ | ------------ | ------------- | ---------------------------------------------------- |
-| John Collins | 1.333        | 0.667         | 2.667                                                |
-| Gin Fizz     | 1.333        | 0.444         | splash, no amount                                    |
-| Moscow Mule  | 0.444        | none          | 5.333 (ginger beer carries the sugar)                |
-| Cuba Libre   | 0.4          | none          | 4.8 (cola carries the sugar)                         |
-| French 75    | 1            | 1             | 4                                                    |
-| Mojito       | 0.889        | sugar 2 tsp   | soda unmeasured                                      |
-
-Proposed slots (not data; the template is its own issue because it
-changes the six-roots pins):
-
-| Slot       | Role         | Parts                 | Edge from                                                                                                                        | Status                          |
-| ---------- | ------------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| base       | `base`       | 2                     | reference                                                                                                                        |                                 |
-| sour       | `sour`       | 0.4 - 1.5             | lower: Cuba Libre 0.4 (rounded down, Mule 0.444); upper: John Collins and Gin Fizz 1.333, rounded up to the band of the Daiquiri | observed edges, rounding chosen |
-| sweet      | `sweet`      | 0.25 - 1.5 (optional) | optional because Mule and Cuba Libre have no syrup; 0.444 to 1 observed, band as the Daiquiri sweet slot                         | observed values, edges chosen   |
-| lengthener | `lengthener` | 2.5 - 6               | lower: John Collins 2.667 rounded down; upper: Mule 5.333 rounded up (the Highball keeps 2 - 6 and its slots differ by the sour) | observed edges, rounding chosen |
-
-`slotEvidence` would be `secondary` for the edges (a primary page read,
-but no author's ratio and the rounding is chosen), the nominal ratio
-John Collins (2 : 1.33 : 0.67 : 2.67) stays `assumption` for the
-family. Method `shake` for Fizz, `build` for Collins, Mule and Cuba
-Libre, so the method is not part of the match. The Highball root
-(base and lengthener only) is a subset of this family when the sour slot
-is empty, so the tie rule must prefer the Highball when no sour line
-exists; the seed would move about 18 specs, to be re-measured with the
-real file.
-
-The trial template for the first row was removed again: it is not in the
-data. Where the sources are read, a family is added as one JSON file in
-`data/templates/` plus its vectors; the matching code does not change.
+How a line without a volume is measured: `lineMl` gives a counted line
+(leaf, sprig, pinch, whole) a volume only when the ingredient has
+`unitVolumes`, and the seed has none for mint, so 87 of the 120 accent
+lines of the seed are counted without volume. Such a line fills its
+slot (role coverage counts), its ratio is `unmeasured` and adds nothing
+to the distance (vectors `match-daiquiri-accent-unmeasured`,
+`match-sidecar-accent-unmeasured`, `match-old-fashioned-accent-unmeasured`,
+`match-flip-accent-unmeasured`). The other 33 accent lines (dashes of
+salt solution, brine in ml, a barspoon of horseradish) are measured and
+read 0.00 to 0.67 parts of the base, so the accent band is 0.001 – 1. A
+second line of the same role (a second sweetener) adds to the first
+slot of that role and needs no `sweet-2` slot; a second modifier goes to
+the next empty modifier slot where the template has one.
 
 # Ratios
 
@@ -302,17 +338,18 @@ the first slot with role `base` counts as its own `minParts` / `maxParts`
 `2 × volume of the slot / volume of the reference slot`. The six
 templates:
 
-| Template      | Slots (role, parts)                                                                 | Method | Parent   |
-| ------------- | ----------------------------------------------------------------------------------- | ------ | -------- |
-| Old-Fashioned | base 2, sweet 0.08 – 0.33, bitter 0.03 – 0.12                                       | stir   |          |
-| Martini       | base 2, modifier 0.25 – 2, modifier 0.25 – 2 (optional), bitter 0.02 – 2 (optional) | stir   |          |
-| Daiquiri      | base 2, sour 0.38 – 1.5, sweet 0.25 – 1.5                                           | shake  |          |
-| Sidecar       | base 2, sour 0.38 – 1.5, modifier 0.25 – 1.5                                        | shake  | daiquiri |
-| Highball      | base 2, lengthener 2 – 6                                                            | build  |          |
-| Flip          | base 2, sweet 0.25 – 1, texture 0.75 – 3                                            | shake  |          |
+| Template      | Required slots (role, parts)                  | Optional slots (role, parts)                                                                      | Method | Parent   |
+| ------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------ | -------- |
+| Old-Fashioned | base 2, sweet 0.08 – 0.33, bitter 0.03 – 0.12 | modifier 0.02 – 0.5, accent 0.001 – 1                                                             | stir   |          |
+| Martini       | base 2, modifier 0.25 – 2                     | modifier 0.25 – 2, bitter 0.02 – 2, sweet 0.05 – 0.5                                              | stir   |          |
+| Daiquiri      | base 2, sour 0.38 – 1.5, sweet 0.25 – 1.5     | modifier 0.1 – 1.5, lengthener 0.5 – 6, bitter 0.02 – 0.25, accent 0.001 – 1                      | shake  |          |
+| Sidecar       | base 2, sour 0.38 – 2, modifier 0.25 – 2.67   | sweet 0.05 – 0.75, modifier 0.25 – 2.67, bitter 0.02 – 0.25, accent 0.001 – 1, lengthener 0.5 – 6 | shake  | daiquiri |
+| Highball      | base 2, lengthener 2 – 6                      | sour 0.05 – 0.37, sweet 0.05 – 0.5, modifier 0.1 – 0.75, bitter 0.02 – 0.25                       | build  |          |
+| Flip          | base 2, sweet 0.25 – 1, texture 0.75 – 3      | modifier 0.1 – 1, texture (cream) 0.5 – 3, accent 0.001 – 1                                       | shake  |          |
 
 The Sidecar is a sour whose sweet part is a liqueur: its third slot has
-role `modifier` and the Daiquiri's has role `sweet`. So a Margarita with
+role `modifier` and the Daiquiri's has role `sweet`; the Sidecar's nominal
+ratio is the book's 1½ : 1 : ¾ oz (2 : 1.33 : 1.0 parts). So a Margarita with
 triple sec (role `modifier`) is a Sidecar and one with agave syrup is a
 Daiquiri; both are the sour family.
 
@@ -361,8 +398,13 @@ template is analysed and it is `chosen` with basis `explicit`
 (basis `suggested`) when the id is missing.
 
 The Highball and the Flip are the cases where one role decides: a
-carbonated mixer (`lengthener`) makes a Highball, an egg (`texture`) a
-Flip; without the egg, spirit and syrup fit no template.
+carbonated mixer (`lengthener`) with at most a squeeze of sour makes a
+Highball, an egg or cream (`texture`) a Flip; without it, spirit and syrup
+fit no template. Where optional slots let two templates fit (Daiquiri and
+Sidecar; Old-Fashioned and Martini), distance 0 is shared and the offset
+decides: the template whose bands are nearer to the middle for the
+measured slots wins (`match-daiquiri-modifier-tie-by-offset`,
+`match-old-fashioned-modifier-tie-by-offset`).
 
 # Variants by alcohol class
 
@@ -455,7 +497,7 @@ outside its range is worded "outside the usual range of this template"
 
 `packages/engine/vectors/templates/`, schema `templates-vector.schema.json`,
 run by `test/templates.test.ts`; ingredients with roles only are in
-`tree.json`. 45 vectors, expected values worked out by hand from the
+`tree.json`. 66 vectors, expected values worked out by hand from the
 bands above:
 
 - `match-*` and `near-*`: a classic example and riffs per template
@@ -470,6 +512,21 @@ bands above:
   `match-highball-iba-screwdriver-ratio`; the three near misses for
   Martini, Sidecar and Highball were moved to ratios below the new edges
   (0.2, 0.1667 and 1 part).
+- Since 2026-11-18, one vector per new optional slot, each matching only
+  because of it, with the parts worked out in the description:
+  `match-daiquiri-collins-not-highball` (sour and soda go to the
+  Daiquiri, the Highball is above its 0.37 squeeze edge),
+  `match-daiquiri-bitters`, `-accent-unmeasured`, `-modifier-tie-by-offset`;
+  `match-sidecar-book-ratio` (1½ : 1 : ¾), `-root-syrup`, `-second-modifier`,
+  `-bitters`, `-accent-unmeasured`, `-mixer` (Cosmopolitan);
+  `match-martini-sugar`; `match-old-fashioned-modifier-tie-by-offset`,
+  `-accent-unmeasured`; `match-highball-sour`, `-sweet`, `-modifier`,
+  `-bitter`; `match-flip-liqueur`, `-cream`, `-accent-unmeasured`; and
+  the near miss `near-highball-sour-above-band`. `range-sidecar` follows
+  the new nominal. Three candidate expectations changed because the
+  optional slots now take a line: `match-daiquiri-classic` (Sidecar
+  distance 2 to 1), `match-martini-classic` and `explicit-template-kept`
+  (Daiquiri distance 3 to 2, the vermouth fits its modifier slot).
 - `ambiguous-*`: the tie rule (inline templates; id order, and offset
   before id).
 - `unknown-*`, `role-override-*`: lines without role or ingredient,

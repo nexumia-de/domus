@@ -1,7 +1,7 @@
 {
   "id": "cosmopolitan",
   "name": "Cosmopolitan",
-  "why": "Vodka, orange liqueur, lime and cranberry juice: no template; acid of cranberry juice unknown",
+  "why": "Vodka, orange liqueur, lime and cranberry juice: Sidecar by its optional mixer slot (the book files it there); acid of cranberry juice unknown",
   "method": "shake",
   "lines": [
     {
@@ -52,7 +52,7 @@
     }
   },
   "expected": {
-    "templateId": null,
+    "templateId": "sidecar",
     "volumeAfterMl": 125.0,
     "abvPct": 17.6,
     "sugarPer100Ml": 5.88,

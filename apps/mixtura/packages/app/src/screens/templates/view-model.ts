@@ -15,8 +15,10 @@ export interface TemplateRow {
   name: string;
   /** Variants are drawn indented. */
   variant: boolean;
-  /** "Base, Sour, Sweet". */
+  /** The roles of the required slots: "Base, Sour, Sweet". */
   roles: string;
+  /** Roles that optional slots add beyond those; empty when none. */
+  optionalRoles: string;
   method: string;
   drinks: number;
   user: boolean;
@@ -26,7 +28,19 @@ const methodName = (model: BrowseModel, id: string): string =>
   model.vocabulary.methods.find((m) => m.id === id)?.name ?? id;
 
 const roleLine = (template: Template): string =>
-  template.slots.map((slot) => strings.spec.roles[slot.role]).join(', ');
+  template.slots
+    .filter((slot) => slot.optional !== true)
+    .map((slot) => strings.spec.roles[slot.role])
+    .join(', ');
+
+/** Roles that only optional slots add, once each; empty when there are none. */
+const optionalRoleLine = (template: Template): string => {
+  const required = new Set(template.slots.filter((s) => s.optional !== true).map((s) => s.role));
+  const extra = new Set(
+    template.slots.filter((s) => s.optional === true && !required.has(s.role)).map((s) => s.role),
+  );
+  return [...extra].map((role) => strings.spec.roles[role]).join(', ');
+};
 
 /** Root templates by name, each followed by its variants; `q` filters by name. */
 export function templateRows(model: BrowseModel, q: string): TemplateRow[] {
@@ -40,6 +54,7 @@ export function templateRows(model: BrowseModel, q: string): TemplateRow[] {
     name: t.name,
     variant,
     roles: roleLine(t),
+    optionalRoles: optionalRoleLine(t),
     method: methodName(model, t.method),
     drinks: counts.get(t.id) ?? 0,
     user: model.userTemplateIds.has(t.id),

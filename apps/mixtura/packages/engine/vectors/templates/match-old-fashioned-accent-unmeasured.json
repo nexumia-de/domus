@@ -1,0 +1,47 @@
+{
+  "id": "match-old-fashioned-accent-unmeasured",
+  "kind": "match",
+  "description": "Julep style: 60 ml bourbon, 5 ml syrup, 1.8 ml bitters, 4 sprigs of mint. The sprigs have no known volume: the accent slot is filled, its ratio unmeasured.",
+  "lines": [
+    {
+      "ingredientId": "bourbon",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 1.8,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "mint",
+      "amount": 4,
+      "unit": "sprig"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "old-fashioned",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["old-fashioned"],
+    "candidates": {
+      "old-fashioned": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "sugar": "within",
+          "bitters": "within",
+          "accent": "unmeasured"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

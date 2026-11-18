@@ -163,6 +163,12 @@ describe('draft operations', () => {
     expect(blank.lines.every((l) => l.ingredientId === '')).toBe(true);
   });
 
+  test('a template adds no line for its optional slots', () => {
+    const template = ROOT_TEMPLATES.find((t) => t.id === 'sidecar') as Template;
+    const blank = withTemplate(blankDraft(), template, () => undefined);
+    expect(blank.lines.map((l) => l.role).sort()).toEqual(['base', 'modifier', 'sour']);
+  });
+
   test('move, remove and put back', () => {
     const d = filled(m);
     const keys = d.lines.map((l) => l.key);
