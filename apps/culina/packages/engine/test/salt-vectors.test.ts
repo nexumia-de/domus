@@ -1,4 +1,4 @@
-// Runs every vector in vectors/salt against the engine (docs/vectors.md).
+// Runs every vector in vectors/ratios/salt against the engine (docs/vectors.md).
 // Mapping: `food_g` and `water_g` are `foodG` and `waterG`.
 import { describe, test } from 'vitest';
 import { saltFor } from '../src/index';
@@ -6,7 +6,7 @@ import type { SaltBasis } from '../src/index';
 import { expectError, loadVectors, near } from './vector-files';
 import type { Vector } from './vector-files';
 
-const vectors = loadVectors('salt');
+const vectors = loadVectors('ratios/salt');
 
 function run(vector: Vector): void {
   const i = vector.inputs;

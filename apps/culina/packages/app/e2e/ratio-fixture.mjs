@@ -1,4 +1,4 @@
-// Expected calculator output, derived from the engine's vectors (packages/engine/vectors/templates)
+// Expected calculator output, derived from the engine's vectors (packages/engine/vectors/ratios/templates)
 // and from the seed templates (packages/engine/data/templates.json), not typed in by hand.
 import { readFileSync } from 'node:fs';
 
@@ -28,7 +28,7 @@ export const VECTOR_CASES = [
     grams: 100,
   },
 ].map((c) => {
-  const v = read(`vectors/templates/${c.vector}.json`);
+  const v = read(`vectors/ratios/templates/${c.vector}.json`);
   const role = c.weighed ?? v.inputs.anchor.name;
   const grams = c.grams ?? v.inputs.anchor.g;
   const seedParts = templateById(c.template).parts.map((p) => [p.role, p.parts]);
