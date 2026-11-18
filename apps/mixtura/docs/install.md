@@ -1,9 +1,9 @@
 ---
 type: Guide
 title: Install
-description: How to open and install Mixtura (Drink Builder) on Android, Linux desktop and a Phosh phone, how updates arrive, offline use, where the data lives and how to remove it, the move to mixtura.nexumia.de, plus what the owner must switch on for GitHub Pages.
-tags: [install, pwa, pages, android, linux, owner]
-generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+description: How to open and install Mixtura (Drink Builder) from mixtura.nexumia.de on Android, Linux desktop and a Phosh phone, how updates arrive, offline use, where the data lives and how to remove it.
+tags: [install, pwa, android, linux]
+generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: mdn-installing
     title: 'MDN, Installing and uninstalling web apps (mdn/content, files/en-us/web/progressive_web_apps/guides/installing/index.md, read 2026-11-17)'
@@ -14,20 +14,15 @@ sources:
   - id: mdn-storage
     title: 'MDN, Storage quotas and eviction criteria (mdn/content, files/en-us/web/api/storage_api/storage_quotas_and_eviction_criteria/index.md, read 2026-11-17)'
     url: https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria
-  - id: pages
-    title: 'Workflow .github/workflows/pages.yml and the e2e test packages/app/e2e/subpath.mjs in this repository'
 ---
 
 # Install
 
-Address today: <https://nexumia-de.github.io/mixtura/>. After the move to
-Cloudflare ([hosting](decisions/hosting.md), steps in
-[deployment](deployment.md#owner-steps-once)) the address is
-<https://mixtura.nexumia.de/>; this page names the new address in the
-places that change, and switches over once the owner confirms it works.
+Address: <https://mixtura.nexumia.de/> ([hosting](decisions/hosting.md),
+[deployment](deployment.md)).
 Mixtura is a web app that works offline after the first visit and can be
 installed ([decision](decisions/pwa-own-data.md)). There is no account, no
-server and no store; the page is static files, on GitHub Pages today.
+server and no store; the page is static files.
 
 Statements marked **to be checked on a device** are not verified: the
 author could read only the MDN pages in the sources, which do not name
@@ -58,7 +53,7 @@ From MDN[^mdn-installable][^mdn-installing]:
 
 ## Android
 
-1. Open <https://nexumia-de.github.io/mixtura/> in Chrome.
+1. Open <https://mixtura.nexumia.de/> in Chrome.
 2. Open the browser menu and choose the install command. MDN says only
    that on mobile the command is "generally found in the menu of browser
    options" and that the install has to be confirmed.[^mdn-installing] The
@@ -110,7 +105,7 @@ the app then reloads once with the new version. Details:
 ## Where the data lives
 
 Everything you enter stays on your device, in the browser's storage for the
-address `https://nexumia-de.github.io`; nothing is sent anywhere. That has
+address `https://mixtura.nexumia.de`; nothing is sent anywhere. That has
 consequences:[^mdn-storage]
 
 - **Clearing site data for the address deletes your data.** So does
@@ -121,13 +116,9 @@ consequences:[^mdn-storage]
   sites not used for seven days if tracking prevention is on. MDN cites
   research by the Chrome team that browsers very rarely do this for sites
   that are visited regularly.
-- The storage belongs to the whole origin `nexumia-de.github.io`, not to
-  `/mixtura/` alone; other sites of the same account share its quota.
-- **The data belongs to the address.** `https://mixtura.nexumia.de` is a
-  different origin: it starts empty, and an app installed from the old
-  address keeps the old data. When you move, use Export Everything on the old
-  address and Import File on the new one (below), then install again from the
-  new address and remove the old app.
+- **The data belongs to the address.** Another address (a Preview of a pull
+  request, the `workers.dev` address) is a different origin and starts
+  empty; Export Everything and Import File carry data between them.
 - An app installed from another browser has its own, separate data.
 
 Make a backup with Export Everything (Settings, Data): one file with all
@@ -148,39 +139,10 @@ app reminds you calmly after 30 days with changes and no export.
 - To also delete the data, clear the site data for the address in the
   browser settings (see above).
 
-## What the owner must switch on
+## Where it is hosted
 
-This section is for GitHub Pages, the present host. The Cloudflare steps
-(token, secrets, custom domain `mixtura.nexumia.de`, then removing Pages) are in
-[deployment](deployment.md#owner-steps-once).
-
-The workflow `.github/workflows/pages.yml` builds `packages/app` and
-deploys `packages/app/dist` on every push to `main` and on manual start.
-The workflow has `contents: read` only; the `build` job adds `pages: read`
-(`configure-pages` reads the Pages settings) and only the `deploy` job has
-`pages: write` and `id-token: write`. A build provenance attestation was
-considered and left out: it needs `attestations: write` and `id-token: write`
-in the build job, which this change removes.
-Pages cannot be enabled by a workflow, so the first run fails at
-`configure-pages` until these steps are done (only the workflow `Pages`
-fails, never the required check `check`):
-
-1. Open the repository on GitHub, Settings.
-2. Open Pages in the sidebar.
-3. Under Build and deployment, set Source to GitHub Actions.
-4. Open the Actions tab, select the workflow Pages, choose Run workflow on `main`.
-5. After the run is green, open <https://nexumia-de.github.io/mixtura/>.
-6. Optional: Settings, Environments, `github-pages`: the default rule lets
-   only `main` deploy; keep it, and add no required reviewers if every
-   merge should publish at once.
-7. Branch protection: the required check names stay `check` (CI). `e2e`
-   is not required yet ([development](development.md#ci)). The workflow
-   `Pages` runs after the merge and is no pull request check, so it must
-   not be required. No ruleset change is needed for this pull request.
-
-If the repository is private, GitHub Pages needs a plan that supports it;
-Pages sites are public even then unless the account has access control for
-them. **Not verified**, check the plan before enabling.
+Cloudflare Workers static assets, deployed by CI on every push to `main`;
+setup, headers and owner steps are in [deployment](deployment.md).
 
 [^mdn-installing]: [MDN, Installing and uninstalling web apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Installing)
 

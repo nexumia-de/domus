@@ -17,8 +17,9 @@ Cloudflare as LocalGameGalaxy does); merging this change accepts it.
 
 ## Context
 
-The app is static files and has been published to GitHub Pages
-([install](../install.md)). Pages cannot set response headers: the
+The app is static files and was set up for GitHub Pages (`pages.yml`); Pages
+was never switched on in the repository settings, so it was never published
+there. Pages cannot set response headers: the
 Content-Security-Policy is only a meta tag, which cannot carry
 `frame-ancestors` ([development](../development.md#content-security-policy)),
 and every file is served with `max-age=600`, which the service worker works
@@ -30,8 +31,8 @@ Cloudflare Workers static assets.
 Host Mixtura on Cloudflare Workers static assets, worker `mixtura`, at
 `mixtura.nexumia.de` (custom domain attached in the dashboard). Deploy from
 CI: `wrangler deploy` on `main`, `wrangler preview` for pull requests from
-this repository. GitHub Pages stays until the owner confirms the new address
-works, then it is removed. Details: [deployment](../deployment.md)[^deployment].
+this repository. The Pages workflow is removed (2026-11-18: never published,
+see Context). Details: [deployment](../deployment.md)[^deployment].
 
 ## Reasons
 
@@ -51,8 +52,6 @@ works, then it is removed. Details: [deployment](../deployment.md)[^deployment].
 - An API token to look after (rotate, scope to one account, keep out of
   forks); the deploy job skips quietly while it is missing.
 - DNS and hosting at one provider.
-- Stored data belongs to the address: moving from `nexumia-de.github.io` to
-  `mixtura.nexumia.de` needs Export and Import once ([install](../install.md#where-the-data-lives)).
 - A deploy tool (wrangler) that is not in the workspace, pinned in
   `tools/wrangler/package.json` and updated by Dependabot.
 

@@ -84,7 +84,7 @@ has no GTK sister app, its desktop reason does
 - **Keys.** One Android signing key as a repository secret plus an offline
   backup by the owner; never committed. A lost key blocks updates and
   registration.
-- **No origin dependency.** The APK does not need `nexumia-de.github.io`
+- **No origin dependency.** The APK does not need `mixtura.nexumia.de`
   root files or a custom domain, so the Pages address can still change.
 - **Cost.** One Android project and a tag-only signing job; no Linux
   package to maintain unless the device test demands it.

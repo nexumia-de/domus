@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-18
+
+- **Live at mixtura.nexumia.de**: with the owner's Cloudflare secrets, `deploy-cloudflare` deployed on `main` and its smoke check passed; the owner attached the custom domain. Headers, caching, the `/index.html` redirect and the 404s checked at the edge; they match the local asset server. `wrangler preview` still unverified. See [deployment](deployment.md#state-on-2026-11-18).
+- **GitHub Pages removed; README and docs name mixtura.nexumia.de**: every run of `pages.yml` had failed at `configure-pages` because Pages was never switched on, so the app was never at `nexumia-de.github.io/mixtura/` and no data has to move. Workflow deleted; [README](../README.md), [install](install.md) (address, data, the owner section replaced by a pointer to deployment), [deployment](deployment.md), [development](development.md#ci), [packaging](packaging.md) (asset links file now on its own origin) and the [hosting decision](decisions/hosting.md) updated.
+
 ## 2026-11-17
 
 - **`e2e/swap.mjs` no longer races the store opening**: the spec screen draws from the seed before IndexedDB is open, so on a slow runner the test's "before" snapshot saw no database and the later check "IndexedDB and local storage are untouched by swaps" failed (`e2e-slow` on `main` after #125). Shown with a probe at 6x throttle: no database when the heading appears, the database later. The test now waits for the database before the snapshot, as `e2e/store.mjs` does. No app change.

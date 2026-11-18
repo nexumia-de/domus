@@ -152,21 +152,19 @@ required status check name for the branch-protection ruleset. A second
 job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below. Neither is required yet. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
-`.github/workflows/pages.yml` (job `build`, then `deploy`) publishes
-`packages/app/dist` to GitHub Pages on pushes to `main` and manual start; it
-is not a required check. The app uses only relative URLs, so the same build
+The app uses only relative URLs, so the same build
 works at `/`, under `/mixtura/` and under a deep path, and when the page
 is opened as `index.html`; `npm run e2e` serves it under `/`, `/mixtura/`
 and `/apps/drinks/v1/` (`e2e/subpath.mjs`) and the build test rejects
 root-absolute URLs. Where a native wrapper has no service worker or no
 storage API (a custom scheme, a WebView), the app registers nothing, ignores
 a refused registration and reports persistence as unsupported;
-`e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store. Owner steps: [install](install.md#what-the-owner-must-switch-on).
+`e2e/no-sw.mjs` removes both APIs and checks browse, a spec and the store.
 
 The job `deploy-cloudflare` (same file) deploys the build artifact of the run to
 Cloudflare Workers static assets after `check` passed and skips with a notice
-while the secrets are missing; see [deployment](deployment.md). `pages.yml`
-stays until the owner confirms the Cloudflare address.
+while the secrets are missing; see [deployment](deployment.md). It is the only host: GitHub Pages
+(`pages.yml`) was never switched on and was removed on 2026-11-18.
 
 ## Web app manifest
 
@@ -245,9 +243,9 @@ wrangler) and the `workers.dev` and `nexumia.de` addresses of the smoke check;
 the job runs on GitHub's runners. **Unverified from this session:**
 `api.cloudflare.com`, which was not called.
 
-The Pages workflow runs on GitHub's runners and needs only GitHub itself
-(`github.com`, `api.github.com`, the Pages service and the npm registry for
-`npm ci`, which GitHub-hosted runners reach). The install guide was checked
+The CI workflow runs on GitHub's runners and needs GitHub itself, the npm
+registry for `npm ci` and, for `deploy-cloudflare`, Cloudflare's API, all of
+which GitHub-hosted runners reach. The install guide was checked
 against `raw.githubusercontent.com/mdn/content` because `developer.mozilla.org`,
 `support.google.com`, `web.dev`, `help.gnome.org` and `support.mozilla.org`
 answered 403 through the session proxy on 2026-11-17. For the policy work
