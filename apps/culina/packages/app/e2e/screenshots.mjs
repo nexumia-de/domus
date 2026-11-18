@@ -28,11 +28,84 @@ const HISTORY = 'components/example-herb-oil/history';
 const OLD = 'components/example-herb-oil';
 const historyReady = (page) => page.locator('.history-entry').first().waitFor();
 const oldReady = (page) => page.locator('.older-version').waitFor();
-// [file, width, height, colour scheme, route, steps after load, whole page, with example data]
+// An export file with one record that differs from the example data and one that may be here already.
+const EXPORT_FILE = JSON.stringify({
+  format: 'culina-export',
+  formatVersion: 1,
+  exportedAt: '2026-11-18T08:00:00Z',
+  ingredients: [
+    { id: 'flour', name: 'Strong flour' },
+    { id: 'u-00000000-0000-4000-8000-000000000077', name: 'Rye flour' },
+  ],
+});
+const COOK_FILE = `---
+title: Imported sauce
+yield: 400%g
+---
+
+Mix @flour{200%g} and @butter{1/2%cup} in a #pot{}.
+
+Add @saffron{1%pinch}, @salt and @flour{1%tbsp}.
+
+> Taste before serving.
+`;
+const importing = (name, content, ready) => async (page) => {
+  await page
+    .locator('input[type=file]')
+    .setInputFiles({ name, mimeType: 'text/plain', buffer: Buffer.from(content) });
+  await page.getByText(ready, { exact: true }).waitFor();
+};
+const IMPORT_JSON = importing('export.json', EXPORT_FILE, 'Records that differ');
+const IMPORT_COOK = importing('sauce.cook', COOK_FILE, 'Complete the recipe');
+const LATER = `&e2e-now=${new Date(Date.now() + 40 * 86_400_000).toISOString()}`;
+// [file, width, height, colour scheme, route, steps after load, whole page, with example data, extra query]
 const shots = [
   ['ratios-360x720-light.png', 360, 720, 'light', 'ratios'],
   ['ratios-360x720-dark.png', 360, 720, 'dark', 'ratios'],
-  ['settings-360x720-light.png', 360, 720, 'light', 'settings'],
+  ['settings-360x720-light.png', 360, 720, 'light', 'settings', undefined, true],
+  ['settings-1000x700-light.png', 1000, 700, 'light', 'settings', undefined, true],
+  ['import-merge-360x720-light.png', 360, 720, 'light', 'settings/import', IMPORT_JSON, true, true],
+  [
+    'import-merge-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'settings/import',
+    IMPORT_JSON,
+    true,
+    true,
+  ],
+  [
+    'import-cooklang-360x720-light.png',
+    360,
+    720,
+    'light',
+    'settings/import',
+    IMPORT_COOK,
+    true,
+    true,
+  ],
+  [
+    'import-cooklang-360x720-dark.png',
+    360,
+    720,
+    'dark',
+    'settings/import',
+    IMPORT_COOK,
+    true,
+    true,
+  ],
+  [
+    'import-cooklang-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'settings/import',
+    IMPORT_COOK,
+    true,
+    true,
+  ],
+  ['backup-banner-360x720-light.png', 360, 720, 'light', 'ratios', undefined, false, true, LATER],
   ['ratios-1000x700-light.png', 1000, 700, 'light', 'ratios'],
   ['ratio-list-360x720-light.png', 360, 720, 'light', 'ratios'],
   ['ratio-card-360x720-light.png', 360, 720, 'light', CARD, filled, true],
@@ -86,7 +159,17 @@ buildApp();
 mkdirSync(out, { recursive: true });
 const server = await serve(distDir);
 const browser = await launch();
-for (const [file, width, height, colorScheme, route, steps, fullPage, withExamples] of shots) {
+for (const [
+  file,
+  width,
+  height,
+  colorScheme,
+  route,
+  steps,
+  fullPage,
+  withExamples,
+  query,
+] of shots) {
   const context = await browser.newContext({
     viewport: { width, height },
     deviceScaleFactor: 2,
@@ -95,8 +178,9 @@ for (const [file, width, height, colorScheme, route, steps, fullPage, withExampl
   const page = await context.newPage();
   if (withExamples) await seed(page, server.url);
   await page.goto('about:blank');
-  await page.goto(`${server.url}?no-sw#/${route}`);
+  await page.goto(`${server.url}?no-sw${query ?? ''}#/${route}`);
   await page.getByRole('heading', { level: 1 }).waitFor();
+  if (query) await page.waitForTimeout(300);
   if (steps) await steps(page);
   await page.screenshot({ path: out + file, fullPage: Boolean(fullPage) });
   console.log(file);

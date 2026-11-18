@@ -368,3 +368,20 @@ on the book's own page). The licence of the Open Recipe Format is not
 stated on its documentation pages and the host of its source repository
 was not among the hosts allowed for this task, so the licence stays
 unread.
+
+## Cooklang specification (2026-11-18)
+
+Needed to write the Cooklang reader and writer from the specification
+(issue 18). Tested with
+`curl -sS -m 15 -o /dev/null -w '%{http_code}' https://<host>/`:
+
+```
+cooklang.org
+raw.githubusercontent.com
+github.com/cooklang
+```
+
+`cooklang.org` answered 200 and `raw.githubusercontent.com` 301 for its root and 200 for the
+files read (`cooklang/spec` `README.md` and `conventions.md`, MIT). `github.com/cooklang`
+answered 400 and `github.com/cooklang/spec` 403 (proxy), so the spec was read from the raw
+host. The vectors in `packages/engine/vectors/cooklang/` name the section of each example.

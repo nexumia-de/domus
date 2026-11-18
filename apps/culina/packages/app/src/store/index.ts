@@ -6,6 +6,7 @@ export { persistenceState, requestPersistence, storageEstimate } from './persist
 export type { PersistenceState } from './persistence';
 export type { ReadStore, Store } from './repository';
 export type { Draft, Drafts } from './drafts';
+export type { Bulk, Change, Entry } from './bulk';
 export { setStoreLogSink } from './log';
 export { KINDS } from './types';
 export type {

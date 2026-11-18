@@ -7,6 +7,7 @@ import type { ComponentRecord, Notebook } from '../records';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import { headOfFamily } from '../notebook';
+import { cooklangAction } from './cooklang-action';
 import { detailActions } from './detail-actions';
 import { versionLines, versionSection } from './version-info';
 import { linesSection } from './component-lines';
@@ -23,7 +24,7 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
   if (headOfFamily('components', component.id)?.id === component.id) {
     card.append(detailActions('components', component.id, component.name));
   }
-  card.append(versionSection('components', component));
+  card.append(cooklangAction(component), versionSection('components', component));
 
   const known = (id: string): boolean => nb.components.some((c) => c.id === id);
   const figures = yieldView(nb, component);

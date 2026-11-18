@@ -6,6 +6,7 @@ export type { WritableKind } from './actions';
 export { addExamples } from './examples';
 export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';
+export { reloadNotebook } from './load';
 export { startNotebook } from './start';
 export { subscribe, today } from './state';
 export * from './versions';

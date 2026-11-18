@@ -3,6 +3,7 @@
 import { components } from './components.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
+import { exportImport } from './export-import.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
 import { install } from './install.mjs';
@@ -27,6 +28,7 @@ try {
   await install(browser, server);
   await store(browser, server);
   await versions(browser, server);
+  await exportImport(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

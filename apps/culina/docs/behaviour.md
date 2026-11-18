@@ -25,12 +25,12 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route                               | Today                                                                                            | Source                      |
-| ---------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
-| Ratios     | `#/ratios`, `#/ratios/<id>`         | The ratio list and the ratio cards ([below](#ratios)); the start screen                          | `src/screens/ratios.ts`     |
-| Components | `#/components`, `#/components/<id>` | The component list and the component screen ([below](#components))                               | `src/screens/components.ts` |
-| Dishes     | `#/dishes`, `#/dishes/<id>`         | The dish list and the dish screen with role slots ([below](#dishes))                             | `src/screens/dishes.ts`     |
-| Settings   | `#/settings`                        | Theme (Follow system, Light, Dark), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen     | Route                               | Today                                                                                                                                                               | Source                      |
+| ---------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Ratios     | `#/ratios`, `#/ratios/<id>`         | The ratio list and the ratio cards ([below](#ratios)); the start screen                                                                                             | `src/screens/ratios.ts`     |
+| Components | `#/components`, `#/components/<id>` | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
+| Dishes     | `#/dishes`, `#/dishes/<id>`         | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
+| Settings   | `#/settings`                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
 An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 `#/ratios` without a new history entry. **Test:** `test/router.test.ts`,
@@ -467,6 +467,98 @@ branches, sharing versions between devices, comparing different recipes.
 | Empty   | Components, Dishes and Ratios: an empty search is one quiet line; a list without a detail (desktop) says to choose one. An empty notebook invites ("Add a component", "Add example data"). An open dish slot is an invitation, never an error.                                                 |
 | Error   | The shell has no network and no data to fail on. One error exists: the theme cannot be stored (private mode, blocked storage, full). The choice then applies until the page closes and Settings says so in a `role="status"` line. **Test:** `test/prefs.test.ts` (the write reports `false`). |
 | Offline | The whole app is precached: every screen, the stylesheet, the icons and the manifest work without a connection and there is no offline banner, since nothing needs the network. **Test:** `e2e/smoke.mjs` (offline reload renders and navigates).                                              |
+
+# Export and import
+
+Issue #18. Engine rules: [exchange](exchange.md). Code: `src/exchange/` (logic, no DOM),
+`src/screens/settings-data.ts`, `src/screens/import/`, `src/shell/backup-banner.ts`,
+`src/store/bulk.ts`. **Test:** `e2e/export-import.mjs`, `e2e/cooklang-flow.mjs`,
+`test/reminder.test.ts`, `test/cook-model.test.ts`, `test/store-bulk.test.ts`,
+`test/router-import.test.ts`. Screenshots: `docs/screenshots/import-*`, `settings-*`,
+`backup-banner-360x720-light.png`.
+
+## Settings, Your data
+
+Export everything, Import from a file (`#/settings/import`), the date of the last export, and the
+reminder period. **Export** hands the browser one file, `cooks-notebook-YYYY-MM-DD.json`
+(no name, no time of day), built by the engine from the store's live records: every version,
+tasting note and ingredient; not drafts, not tombstones. It makes no request. Nothing to export
+gives a quiet sentence.
+
+## Backup reminder
+
+The date of the last export is kept in `localStorage` (`culina.lastExport`) with the period the
+user chose (`culina.reminderDays`: Never, 7, 14, **30 (default)**, 90 days). A quiet line above the
+screen (never a dialog) shows only when the notebook has changes that no export holds (some
+row's `updatedAt`, tombstones included, is later than the last export) **and** the period has
+passed since the last export, or, with no export yet, since the oldest change. Text: "Your notebook
+has changes that are in no export yet." / "... The last export was N days ago." with "Export now"
+(links to Settings) and "Not now" (hides it until the app is reopened). Exporting hides it.
+**Test:** `test/reminder.test.ts`; `e2e/export-import.mjs` injects the clock with
+`?e2e-now=<instant>` (`src/store/e2e-clock.ts`, inert without the query) instead of waiting.
+
+## The import screen
+
+`#/settings/import`: choose a file; `.cook` files go to the Cooklang step, everything else is read
+as an export file. A file that cannot be used (not JSON, not an export, a record that does not fit
+its schema, a repeated id, a newer version) ends in one quiet sentence plus "Nothing was changed."
+and **never touches stored data** (the engine returns no records and nothing is written before
+the user confirms). Older versions would be migrated by the export migration chain (none yet).
+
+**JSON files.** The summary lists counts per entity. Then:
+
+- **Merge** (default). By id: records the notebook does not have are added, identical ones are
+  left, records with the same id and other content are listed as conflicts, and the user picks
+  "Keep mine" or "Take the file's" per conflict or "for all". **Newer wins is never assumed.**
+  A component or dish version record is immutable ([data model](data-model.md#version)): such a
+  conflict offers no choice, the notebook's record stays, and tasting notes of the file that
+  belong to that version are left out and counted. A record removed here earlier is added again.
+- **Ingredients that may be here already.** A file ingredient whose id the notebook does not know but
+  whose name it does (`matchIngredients`: same name ignoring case, spacing and plural, or sharing
+  all words with one) is listed with the exact match preselected (never a close one) and
+  "Add as a new ingredient"; a chosen match makes the file's lines, slots, stock, parent links and
+  pairings point at the notebook's ingredient and no duplicate is created. The candidate list
+  comes from one function, `candidateIngredients()` in `src/exchange/candidates.ts` (the
+  notebook today; a shipped catalogue is added there).
+- **Replace everything.** Asks first with an inline row ("Replace the N records here with the M
+  records of the file?"), then writes the file's records and gives the others a tombstone.
+- Both act at once with an **Undo** toast (10 s): the previous version of every touched record is
+  put back, a record that was new is removed, other records are left alone. Deviation: the
+  store's `backup` object store is cleared at every open and only holds migration data, so Undo
+  keeps what it needs in memory; after the toast or a reload it is gone (hence the question before
+  "replace").
+
+**Cooklang files.** Nothing is saved until the step is complete and the user presses Save.
+The step shows what was read (ingredient lines, steps; cookware, timers and notes stay as words in the
+steps; `=` locks are not kept) and asks, in this order:
+
+1. Name, output weight in grams (prefilled from a mass `yield`), percent base (among the roles
+   given below), and, when a component of that name exists, "A new component" or "A variation of
+   ...".
+2. **Which ingredient each name means**, once per name (the same name on other lines follows the
+   choice). Offered: the exact match (preselected, only this), close matches, a component for a
+   recipe reference `@./path`, "Create a new ingredient" and, when the tree knows classes of the
+   matches, "File it under (optional)": a new ingredient may be filed under a close match or
+   its parent class (the ingredient tree, materia's `buildTree`, parent links), so a match can be
+   an ingredient or its class. Nothing is created that the user did not see; "Create a new
+   ingredient for every name left open" is one button. Save waits until every name is decided.
+3. **Amounts and roles per line**: as written (mass, or a volume or count Culina knows), from the
+   ingredient's density or unit weight (only when it has one), "I weighed it" (grams) or "Leave open,
+   keep as text". A line left open keeps the written quantity as its note and is **reported as
+   unmeasured** after saving; nothing is guessed. A role is optional (lower case id).
+
+Save writes the new ingredients and the component in one transaction as **version 1 of a new
+family** (date from the clock, change "Imported from <file>", `parent` only for a variation); the
+same file imported again is a new family or a variation, never an overwrite. A toast offers Undo.
+
+## Cooklang export
+
+A component's detail has "Export as Cooklang": one `.cook` file for the shown version; one quiet
+sentence says what it cannot carry ([decision](decisions/cooklang.md#what-is-lost): ratios and
+percentages, roles, states, version history, other tasting notes, step characters that would read
+as markup).
+
+**Text:** `strings.importing`, `strings.backup`, `strings.settings`, `strings.cooklang`.
 
 # Local store
 

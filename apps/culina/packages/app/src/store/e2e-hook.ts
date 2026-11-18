@@ -1,3 +1,4 @@
+import { e2eNow } from './e2e-clock';
 import { openStore } from './index';
 
 /**
@@ -6,5 +7,5 @@ import { openStore } from './index';
  * Inert otherwise; it makes no network request.
  */
 (globalThis as Record<string, unknown>).__culinaStore = openStore({
-  now: () => new Date().toISOString(),
+  now: e2eNow(globalThis.location.search) ?? (() => new Date().toISOString()),
 });

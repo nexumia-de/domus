@@ -509,8 +509,13 @@ One JSON file with everything the user entered, validated by
   stays 1 on purpose: nothing is released, so no export file of the old
   shape exists outside development and no migration is written.
 - Identity: importing never overwrites a seed entity, and a user id that
-  exists is merged or replaced by the user's choice (the merge mechanism
-  is the general part of the exchange module[^mixshared]).
+  exists is merged or replaced by the user's choice. Built in issue 18 in
+  the engine (`buildExport`, `parseExport`, `planMerge`; [exchange](exchange.md)),
+  not with materia's document helpers: the envelope above is Culina's own.
+  The file holds live records only (no drafts, no tombstones); `exportedAt`
+  is the app clock's instant. The merge rule by id (conflicts listed, never
+  "newer wins", version records immutable) is in
+  [behaviour](behaviour.md#the-import-screen).
 - Cross-record rules a schema cannot state (references exist, no
   cycles, `min` not above `max`, an anchor that exists is a role) are the
   engine's job (`validateModel`) and its findings are named, not silent.
@@ -518,8 +523,9 @@ One JSON file with everything the user entered, validated by
 
 # Cooklang
 
-[Cooklang](decisions/cooklang.md)[^cooklang] is undecided (needs
-decision, issue 6); the model works either way.
+[Cooklang](decisions/cooklang.md)[^cooklang] is decided (issue 6) and built
+(issue 18, [exchange](exchange.md#cooklang)): own JSON is lossless, Cooklang
+is exported per component and imported through a completion step.
 
 - **Own JSON as the lossless format**: the recommendation of the decision
   record. Nothing in this model depends on Cooklang.
@@ -530,7 +536,7 @@ decision, issue 6); the model works either way.
   (derived from `percentBase`). Version, tasting notes, roles, ranges and
   yield per state have no Cooklang place and are lost or go into
   metadata.
-- **If import is chosen**: `amount` is optional on a line and `method`
+- **Import (built)**: `amount` is optional on a line and `method`
   holds steps as text, so a recipe without quantities or with units the
   model does not know can still be kept (the unit goes into `note`, the
   line stays unmeasured). Cooklang metadata maps to `source` and `note`;

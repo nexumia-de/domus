@@ -2,6 +2,7 @@ import { renderScreen } from '../screens/screens';
 import type { Action, Route } from '../router';
 import { strings } from '../strings';
 import { el } from './el';
+import { backupBanner, refreshBackupBanner } from './backup-banner';
 import { createNav } from './nav';
 import { mountToast } from './toast';
 
@@ -40,12 +41,14 @@ export const mountShell = (root: HTMLElement): Shell => {
     refresh() {
       // An editor owns its form: the notebook changing under it must not redraw it.
       if (shown === undefined || shown.action !== undefined) return;
-      main.replaceChildren(renderScreen(shown.route, shown.param));
+      main.replaceChildren(backupBanner(), renderScreen(shown.route, shown.param));
+      void refreshBackupBanner();
     },
     show(route, param, focusHeading, action) {
       shown = { route, param, action };
       const screen = renderScreen(route, param, action);
-      main.replaceChildren(screen);
+      main.replaceChildren(backupBanner(), screen);
+      void refreshBackupBanner();
       nav.setCurrent(route);
       const heading = screen.querySelector('h1');
       document.title = `${heading?.textContent ?? ''} - ${strings.appName}`;
