@@ -1,13 +1,13 @@
 /**
- * Hash router: #/ratios, #/ratios/<templateId>, #/components, #/dishes, #/settings.
+ * Hash router: #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings.
  * The back stack is the browser history.
  */
 export const ROUTES = ['ratios', 'components', 'dishes', 'settings'] as const;
 export type Route = (typeof ROUTES)[number];
 export const DEFAULT_ROUTE: Route = 'ratios';
 
-/** Routes whose hash may carry one more segment (a template id). */
-const WITH_PARAM: readonly Route[] = ['ratios'];
+/** Routes whose hash may carry one more segment (a template, component or dish id). */
+const WITH_PARAM: readonly Route[] = ['ratios', 'components', 'dishes'];
 
 export const hashFor = (route: Route, param?: string): string =>
   param ? `#/${route}/${encodeURIComponent(param)}` : `#/${route}`;
@@ -41,7 +41,7 @@ export interface RouterHost {
 
 export interface Navigation {
   route: Route;
-  /** The id after the route, for example a ratio template. */
+  /** The id after the route: a ratio template, a component or a dish. */
   param?: string;
   /** True for the route the page was opened on. */
   initial: boolean;

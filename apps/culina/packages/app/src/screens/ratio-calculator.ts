@@ -1,8 +1,8 @@
 // The calculator on a ratio card: three modes, results per role, a quiet note on cautions.
 import type { EffectiveTemplate, UnitId } from '@culina/engine';
 import { calculate, cautionsOf, type CalcResult } from '../ratios/calc';
-import { formatMass, MASS_UNITS, type MassUnit } from '../ratios/format';
-import { parseEntry } from '../ratios/parse';
+import { formatMass, MASS_UNITS, type MassUnit } from '../shared/mass';
+import { parseEntry } from '../shared/parse';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import { nextId, numberField, selectField } from './fields';

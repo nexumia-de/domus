@@ -2,8 +2,9 @@ import type { RatioTemplate } from '@culina/engine';
 import { SEED_TEMPLATES } from '@culina/engine';
 import { expect, test } from 'vitest';
 import { groupFamilies, relatives } from '../src/ratios/families';
-import { shortRatio, formatNumber } from '../src/ratios/format';
-import { parseEntry } from '../src/ratios/parse';
+import { shortRatio } from '../src/ratios/format';
+import { formatNumber } from '../src/shared/mass';
+import { parseEntry } from '../src/shared/parse';
 import { filterTemplates } from '../src/ratios/search';
 
 const root = (id: string, name: string): RatioTemplate => ({

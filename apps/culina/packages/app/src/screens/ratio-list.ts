@@ -15,7 +15,7 @@ export interface ListState {
 
 const row = (templates: readonly RatioTemplate[], template: RatioTemplate, current?: string) => {
   const item = el('li');
-  const a = el('a', 'ratio-row');
+  const a = el('a', 'ratio-row row-link');
   a.href = hashFor('ratios', template.id);
   if (template.id === current) a.setAttribute('aria-current', 'page');
   a.append(el('span', 'ratio-name', template.name));
@@ -37,7 +37,7 @@ export const ratioList = (
   state: ListState,
   options: { asHeading: boolean; current?: string; note?: string },
 ): HTMLElement => {
-  const pane = el('section', 'ratio-list');
+  const pane = el('section', 'ratio-list split-list');
   if (options.asHeading) pane.append(el('h1', undefined, strings.screens.ratios.title));
   else pane.setAttribute('aria-label', strings.ratios.listLabel);
   if (options.note !== undefined) pane.append(el('p', 'note-quiet', options.note));

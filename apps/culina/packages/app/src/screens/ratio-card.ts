@@ -2,7 +2,7 @@
 import { templatePercent } from '@culina/engine';
 import type { EffectiveTemplate, RatioTemplate } from '@culina/engine';
 import { relatives } from '../ratios/families';
-import { formatNumber } from '../ratios/format';
+import { formatNumber } from '../shared/mass';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
 import { strings } from '../strings';

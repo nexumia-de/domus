@@ -69,7 +69,7 @@ test('a ratio card route carries the template id; other routes carry none', () =
   expect(paramFromHash('#/ratios/%E0%A4%A')).toBe('%E0%A4%A');
   expect(paramFromHash('#/ratios')).toBeUndefined();
   expect(paramFromHash('#/ratios/')).toBeUndefined();
-  expect(paramFromHash('#/dishes/42')).toBeUndefined();
+  expect(paramFromHash('#/settings/42')).toBeUndefined();
   expect(hashFor('ratios', 'pie-dough')).toBe('#/ratios/pie-dough');
 });
 
@@ -82,4 +82,15 @@ test('a card hash is kept as it is; a trailing slash is rewritten', () => {
   const slash = fakeHost('#/ratios/');
   startRouter(slash.host, () => undefined);
   expect(slash.host.history.replaceState).toHaveBeenCalledWith(null, '', '#/ratios');
+});
+
+test('component and dish routes carry an id; unknown ids are the screens to handle', () => {
+  expect(routeFromHash('#/components/example-pan-sauce')).toBe('components');
+  expect(paramFromHash('#/components/example-pan-sauce')).toBe('example-pan-sauce');
+  expect(paramFromHash('#/dishes/example-vegetable-plate?x=1')).toBe('example-vegetable-plate');
+  expect(paramFromHash('#/components')).toBeUndefined();
+  expect(paramFromHash('#/dishes/')).toBeUndefined();
+  expect(paramFromHash('#/settings/x')).toBeUndefined();
+  expect(hashFor('dishes', 'example-vegetable-plate')).toBe('#/dishes/example-vegetable-plate');
+  expect(hashFor('components')).toBe('#/components');
 });
