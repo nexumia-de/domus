@@ -473,20 +473,20 @@ refused by the schema. There is no role entity yet (open question 2).
 
 # Stored versus derived
 
-| Stored (user entry or seed)                    | Derived every time                                                      |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| Amounts as entered (value and unit)            | Grams, conversions, scaled amounts                                      |
-| Template parts and ranges                      | Percentages, shares, position against the range, family tree            |
-| Component lines, `percentBase`                 | Raw ingredients through any nesting depth, total and final formula      |
-| Component `yield` (weighed output)             | Loss, yield percent, portions weight                                    |
-| Ingredient `yields`                            | Purchased to edible and back; unknown stays unknown                     |
-| Ingredient density and unit weight             | Volume and count to mass                                                |
-| `version`                                      | Version number, head of a family, diff, variation tree                  |
-| Tasting notes (own records)                    | The notes of a version, the latest note of a family                     |
-| Stock `amount`, `state`, `preparedOn`, `useBy` | Days left, use soon, past, makeable, what must go first, what to buy    |
-| Ingredient `shelfLife`                         | Use-by date from `preparedOn`; a dish's limiting shelf life             |
-| Allergens as data (reserved)                   | Allergens of a dish: union over its expanded ingredients (issue 27)     |
-| (nothing)                                      | Cost per edible unit, nutrition per portion, hydration, salt percentage |
+| Stored (user entry or seed)                              | Derived every time                                                      |
+| -------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Amounts as entered (value and unit)                      | Grams, conversions, scaled amounts                                      |
+| Template parts and ranges                                | Percentages, shares, position against the range, family tree            |
+| Component lines, `percentBase`                           | Raw ingredients through any nesting depth, total and final formula      |
+| Component `yield` (weighed output)                       | Loss, yield percent, portions weight                                    |
+| Ingredient `yields`                                      | Purchased to edible and back; unknown stays unknown                     |
+| Ingredient density and unit weight                       | Volume and count to mass                                                |
+| `version`                                                | Version number, head of a family, diff, variation tree                  |
+| Tasting notes (own records)                              | The notes of a version, the latest note of a family                     |
+| Stock `always`, `amount`, `state`, `preparedOn`, `useBy` | Days left, use soon, past, makeable, what must go first, what to buy    |
+| Ingredient `shelfLife`                                   | Use-by date from `preparedOn`; a dish's limiting shelf life             |
+| Allergens as data (reserved)                             | Allergens of a dish: union over its expanded ingredients (issue 27)     |
+| (nothing)                                                | Cost per edible unit, nutrition per portion, hydration, salt percentage |
 
 A schema test refuses `totalMassG`, `lossPercent`, `daysLeft`, a stored
 `percent` on a template part and a stored ingredient `level`.

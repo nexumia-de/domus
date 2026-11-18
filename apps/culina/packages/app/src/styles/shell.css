@@ -65,9 +65,14 @@
   list-style: none;
 }
 
+/* Each entry is as wide as its label needs and the rest is shared, so five labels fit at 320 px. */
 .nav-list li {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   min-width: 0;
+}
+
+.nav-label {
+  white-space: nowrap;
 }
 
 .nav-link {

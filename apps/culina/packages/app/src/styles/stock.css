@@ -28,7 +28,23 @@
 
 /* The tick: a box that holds a check mark, so the state is a shape and not a colour. */
 .stock-tick {
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: flex-start;
+  gap: var(--sp-3);
+  width: auto;
+  text-align: start;
+}
+
+.stock-edit .line-amount,
+.stock-use .line-amount {
+  align-items: flex-end;
+}
+
+.stock-edit .line-amount select,
+.stock-use .line-amount select {
+  margin-bottom: var(--sp-3);
 }
 
 .stock-mark {
@@ -109,4 +125,9 @@
 
 .stock-picks {
   margin-bottom: var(--sp-2);
+}
+
+.stock-tick .entry-meta {
+  flex: none;
+  white-space: nowrap;
 }

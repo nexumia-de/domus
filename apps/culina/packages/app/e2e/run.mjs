@@ -11,6 +11,7 @@ import { install } from './install.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
 import { smoke } from './smoke.mjs';
+import { stock } from './stock.mjs';
 import { store } from './store.mjs';
 import { versions } from './versions.mjs';
 
@@ -31,6 +32,7 @@ try {
   await store(browser, server);
   await versions(browser, server);
   await exportImport(browser, server);
+  await stock(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

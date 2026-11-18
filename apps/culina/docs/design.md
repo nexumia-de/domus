@@ -136,7 +136,8 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
   header, one pane, **bottom navigation** (icon above label, sticky, 64 px
-  high). From 720 px: **side navigation** (`--side-w` wide, icon beside
+  high; five entries, each as wide as its label needs, the rest shared, so
+  "Components" stays on one line at 320 px). From 720 px: **side navigation** (`--side-w` wide, icon beside
   label) with the app name above it, content on the right at most
   `--content-w` wide. **Test:** `e2e/smoke.mjs` (bottom bar at 360 px, side
   column at 1000 px).
@@ -175,6 +176,15 @@ no fill), the yield figures, the 44 px portion buttons and the open slot: a
 dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
 [behaviour](behaviour.md#components).
+
+# Stock screens
+
+`#/stock`, `#/stock/add`, `#/stock/<id>/edit` ([behaviour](behaviour.md#stock)).
+The navigation icon is a shelf with two jars. A tick is a box with a check
+mark (`--accent` border and `--accent-soft` fill when ticked, the mark is
+the shape); a pressed "Always there" has a check mark and a bar. Remaining
+days are muted text in words, one colour for all of them. Tokens only, in
+`styles/stock.css`. Screenshots: `docs/screenshots/stock-*`.
 
 # Editor screens
 
