@@ -70,8 +70,11 @@ const box = await page.evaluate(() => {
   return { x: r.x, y: r.y, width: r.width, height: r.height };
 });
 expect(phone ? box.y > height / 2 : box.x === 0 && box.width === 88, 'bottom bar or rail');
-const linkSizes = await page.locator('nav.nav a').evaluateAll((links) =>
-  links.map((a) => {
+// Also inside the page, in one step: a locator hands over elements that a late
+// redraw has already replaced, and a replaced link measures 0 x 0 (seen in
+// e2e-slow on pull request #144).
+const linkSizes = await page.evaluate(() =>
+  [...document.querySelectorAll('nav.nav a')].map((a) => {
     const r = a.getBoundingClientRect();
     return { width: r.width, height: r.height };
   }),
