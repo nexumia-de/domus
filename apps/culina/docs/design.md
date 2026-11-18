@@ -176,6 +176,19 @@ dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
 [behaviour](behaviour.md#components).
 
+# Editor screens
+
+Buttons (`.btn`, `.primary`, `.quiet`, in `editor.css`) are 44 px high with
+the existing tokens: the primary one is `--accent` on `--on-accent`, the
+others `--surface` with a `--border` outline. A line or slot of the editor is
+a bordered card of the list-row family; the picker opens inside it. Percent
+lines show their unit as a fixed muted "%", with the grams they come to in
+`--text-muted` below. A value that cannot be stored gets the dashed outline
+of the number fields and a quiet sentence next to Save, never an alarm
+colour. The toast is a bordered `--surface` box with the accent bar, above the
+bottom navigation on a phone and in the corner from 720 px. No new token.
+Rules of use: [behaviour](behaviour.md#editor).
+
 # Icons
 
 Own simple line icons drawn for this app, AGPL-3.0-or-later like the
@@ -203,20 +216,26 @@ collapsible `<details>`. All visible texts are in `src/strings.ts`.
 
 Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 
-| Screen                  | Image                                                             |
-| ----------------------- | ----------------------------------------------------------------- |
-| Ratios, 360 x 720 light | ![Ratios, light](screenshots/ratios-360x720-light.png)            |
-| Ratios, 360 x 720 dark  | ![Ratios, dark](screenshots/ratios-360x720-dark.png)              |
-| Settings, 360 x 720     | ![Settings](screenshots/settings-360x720-light.png)               |
-| Ratios, 1000 x 700      | ![Ratios, desktop](screenshots/ratios-1000x700-light.png)         |
-| Ratio list, 360 x 720   | ![Ratio list](screenshots/ratio-list-360x720-light.png)           |
-| Ratio card, 360 light   | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)    |
-| Ratio card, 360 dark    | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)      |
-| Ratio card, 1000 x 700  | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png) |
-| Component, 360 x 720    | ![Component](screenshots/component-360x720-light.png)             |
-| Dish, 360 x 720 light   | ![Dish, light](screenshots/dish-360x720-light.png)                |
-| Dish, 360 x 720 dark    | ![Dish, dark](screenshots/dish-360x720-dark.png)                  |
-| Dish, 1000 x 700        | ![Dish, desktop](screenshots/dish-1000x700-light.png)             |
+| Screen                       | Image                                                                         |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| Ratios, 360 x 720 light      | ![Ratios, light](screenshots/ratios-360x720-light.png)                        |
+| Ratios, 360 x 720 dark       | ![Ratios, dark](screenshots/ratios-360x720-dark.png)                          |
+| Settings, 360 x 720          | ![Settings](screenshots/settings-360x720-light.png)                           |
+| Ratios, 1000 x 700           | ![Ratios, desktop](screenshots/ratios-1000x700-light.png)                     |
+| Ratio list, 360 x 720        | ![Ratio list](screenshots/ratio-list-360x720-light.png)                       |
+| Ratio card, 360 light        | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)                |
+| Ratio card, 360 dark         | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)                  |
+| Ratio card, 1000 x 700       | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png)             |
+| Component, 360 x 720         | ![Component](screenshots/component-360x720-light.png)                         |
+| Dish, 360 x 720 light        | ![Dish, light](screenshots/dish-360x720-light.png)                            |
+| Dish, 360 x 720 dark         | ![Dish, dark](screenshots/dish-360x720-dark.png)                              |
+| Dish, 1000 x 700             | ![Dish, desktop](screenshots/dish-1000x700-light.png)                         |
+| Component editor, 360 light  | ![Component editor, light](screenshots/editor-component-360x720-light.png)    |
+| Component editor, 360 dark   | ![Component editor, dark](screenshots/editor-component-360x720-dark.png)      |
+| Component editor, 1000 x 700 | ![Component editor, desktop](screenshots/editor-component-1000x700-light.png) |
+| Ingredient picker, 360 x 720 | ![Picker](screenshots/editor-picker-360x720-light.png)                        |
+| Dish editor, 360 x 720       | ![Dish editor](screenshots/editor-dish-360x720-light.png)                     |
+| Dish editor, 1000 x 700      | ![Dish editor, desktop](screenshots/editor-dish-1000x700-light.png)           |
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 

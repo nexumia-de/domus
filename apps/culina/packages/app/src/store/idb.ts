@@ -6,10 +6,10 @@ export const DB_NAME = 'culina';
  * IndexedDB's own version only creates object stores. The data schema version lives in `meta`:
  * IndexedDB cannot roll its version back when a data migration fails. Raise it whenever an
  * object store is added; the upgrade creates the missing stores and keeps the rows.
- * 1: the first six kinds, `meta`, `backup`. 2: adds `tastings`.
+ * 1: the first six kinds, `meta`, `backup`. 2: adds `tastings`. 3: adds `drafts`.
  */
-const LAYOUT_VERSION = 2;
-export const ALL_STORES = [...KINDS, 'meta', 'backup'] as const;
+const LAYOUT_VERSION = 3;
+export const ALL_STORES = [...KINDS, 'drafts', 'meta', 'backup'] as const;
 export type StoreName = (typeof ALL_STORES)[number];
 
 export const openDb = (factory: IDBFactory): Promise<IDBDatabase> =>

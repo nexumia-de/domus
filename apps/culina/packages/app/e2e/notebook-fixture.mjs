@@ -21,10 +21,13 @@ const code = Buffer.from(bundle.outputFiles[0].text).toString('base64');
 const engine = await import(`data:text/javascript;base64,${code}`);
 const { demo } = engine;
 
-export { shown };
+export { shown, engine };
 export const nb = demo.notebook();
 export const components = demo.listComponents();
 export const dishes = demo.listDishes();
+/** Records in the order the lists show them: by name, ignoring case. */
+export const byName = (records) =>
+  [...records].sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
 export const component = (id) => components.find((c) => c.id === id);
 export const dish = (id) => dishes.find((d) => d.id === id);
 

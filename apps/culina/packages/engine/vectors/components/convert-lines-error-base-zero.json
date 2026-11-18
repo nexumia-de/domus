@@ -1,0 +1,27 @@
+{
+  "id": "convert-lines-error-base-zero",
+  "description": "A base role with no mass cannot be the 100 percent",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "percent",
+    "component": {
+      "id": "x",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "a"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "No line has the role flour, so the base mass is 0.",
+  "error_code": "no-percent-base"
+}

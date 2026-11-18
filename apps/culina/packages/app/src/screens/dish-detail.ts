@@ -7,6 +7,7 @@ import type { DishRecord, Notebook } from '../records';
 import { formatNumber } from '../shared/mass';
 import { el } from '../shell/el';
 import { strings } from '../strings';
+import { detailActions } from './detail-actions';
 import { slotsSection } from './dish-slots';
 import { rawBlock } from './raw-table';
 import { stepper } from './stepper';
@@ -17,6 +18,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   back.href = hashFor('dishes');
   card.append(back, el('h1', undefined, dish.name));
   if (dish.note !== undefined) card.append(el('p', 'muted', dish.note));
+  card.append(detailActions('dishes', dish.id, dish.name));
 
   const results = el('div', 'dish-results');
   const draw = (portions: number): void => {
