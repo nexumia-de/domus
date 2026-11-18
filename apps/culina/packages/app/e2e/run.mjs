@@ -2,6 +2,7 @@
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { install } from './install.mjs';
+import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
 import { smoke } from './smoke.mjs';
 
@@ -11,6 +12,7 @@ const subServer = await serve(distDir, '/apps/cook/');
 const browser = await launch();
 try {
   await smoke(browser, server, subServer);
+  await ratios(browser, server);
   await install(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);

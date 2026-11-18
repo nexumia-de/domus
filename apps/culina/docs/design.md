@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Design
-description: Light and dark themes with a user override, the Beet accent, colour, type, spacing and radius tokens with computed contrast, icon rules, breakpoints and the screenshots of the Cook's Notebook shell.
+description: Light and dark themes with a user override, the Beet accent, colour, type, spacing and radius tokens with computed contrast, the ratio screens, icon rules, breakpoints and the screenshots of Cook's Notebook.
 tags: [design, ui, accessibility, tokens, pwa]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -125,7 +125,7 @@ Sizes are in `rem`, so the system's text size setting scales them.
 Weights: 400 body, 600 labels and summaries, 700 headings and the current
 destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 `--sp-5` 24, `--sp-6` 32 px; radius `--radius` 12 px, `--radius-sm` 8 px;
-`--target` 44 px; `--nav-h` 64 px; `--side-w` 220 px; `--content-w`
+`--target` 44 px; `--dim` 0.6 (opacity of results shown again while an entry is not a number); `--nav-h` 64 px; `--side-w` 220 px; `--content-w`
 720 px; focus ring `--focus-width` 3 px with `--focus-offset` 2 px.
 
 # Layout and breakpoints
@@ -155,6 +155,17 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 - **No hover-only affordance:** nothing appears or changes meaning on
   hover; there are no hover styles.
 
+# Ratio screens
+
+Rows and tables follow the tokens above. Ratio rows are `--surface` boxes
+with a `--divider` hairline, the open card marked by `--accent-soft` and a
+bar like the navigation. Tables have right-aligned numbers with tabular
+figures (class `num`). Nothing on these screens uses an alarm colour: an
+entry that is not a number gets a dashed outline and a text hint, the
+range display is plain text, and dimmed results use `--dim`. From 720 px
+the list (16 rem) sits beside the card; below it the card is a screen of
+its own. Rules of use: [behaviour](behaviour.md#ratios).
+
 # Icons
 
 Own simple line icons drawn for this app, AGPL-3.0-or-later like the
@@ -182,12 +193,16 @@ collapsible `<details>`. All visible texts are in `src/strings.ts`.
 
 Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 
-| Screen                  | Image                                                     |
-| ----------------------- | --------------------------------------------------------- |
-| Ratios, 360 x 720 light | ![Ratios, light](screenshots/ratios-360x720-light.png)    |
-| Ratios, 360 x 720 dark  | ![Ratios, dark](screenshots/ratios-360x720-dark.png)      |
-| Settings, 360 x 720     | ![Settings](screenshots/settings-360x720-light.png)       |
-| Ratios, 1000 x 700      | ![Ratios, desktop](screenshots/ratios-1000x700-light.png) |
+| Screen                  | Image                                                             |
+| ----------------------- | ----------------------------------------------------------------- |
+| Ratios, 360 x 720 light | ![Ratios, light](screenshots/ratios-360x720-light.png)            |
+| Ratios, 360 x 720 dark  | ![Ratios, dark](screenshots/ratios-360x720-dark.png)              |
+| Settings, 360 x 720     | ![Settings](screenshots/settings-360x720-light.png)               |
+| Ratios, 1000 x 700      | ![Ratios, desktop](screenshots/ratios-1000x700-light.png)         |
+| Ratio list, 360 x 720   | ![Ratio list](screenshots/ratio-list-360x720-light.png)           |
+| Ratio card, 360 light   | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)    |
+| Ratio card, 360 dark    | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)      |
+| Ratio card, 1000 x 700  | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png) |
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 

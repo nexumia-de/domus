@@ -28,9 +28,9 @@ links. Change history is in [log.md](log.md).
 
 - [Data model](data-model.md) - Every stored entity with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`.
 
-- [Behaviour](behaviour.md) - Screens, navigation (one back stack, phone first), interaction rules, empty, error and offline states, the service worker and the installability check of the PWA shell, each rule with the test that checks it.
+- [Behaviour](behaviour.md) - Screens, navigation (one back stack, phone first), the ratio list and cards with the calculator, number entry, cautions and the neutral range display, interaction rules, empty, error and offline states, the service worker and the installability check of the PWA, each rule with the test that checks it.
 
-- [Design](design.md) - Light and dark with a user override, the Beet accent, colour, type and spacing tokens with computed contrast ratios, icon rules, the 720 px breakpoint and screenshots.
+- [Design](design.md) - Light and dark with a user override, the Beet accent, colour, type and spacing tokens with computed contrast ratios, the ratio screens, icon rules, the 720 px breakpoint and screenshots.
 
 # Decisions
 

@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Behaviour
-description: Screens, navigation, interaction rules, states, offline behaviour and the installability check of the Cook's Notebook shell, each rule with the test that checks it.
+description: Screens, navigation, the ratio list and cards with the calculator and the neutral range display, interaction rules, states, offline behaviour and the installability check of Cook's Notebook, each rule with the test that checks it.
 tags: [behaviour, ui, navigation, pwa, accessibility]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -15,25 +15,123 @@ sources:
 
 # Behaviour
 
-What the Cook's Notebook shell does today. It has four screens and no
-content yet: the real content of Ratios, Components and Dishes, and any
-stored user data, come with later issues. Colours, type and layout are in
+What Cook's Notebook does today. It has four screens; Ratios has its
+content (list, cards, calculator), Components and Dishes are still
+placeholders, and nothing is stored: the content of the other screens and
+any stored user data come with later issues. Colours, type and layout are in
 [design](design.md). The audience is an experienced cook who wants the
 numbers fast: no tutorial, no first-run tour. The same conventions as
 Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route          | Today                                                                                            | Source                      |
-| ---------- | -------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
-| Ratios     | `#/ratios`     | Heading, empty-state text, collapsible guidance; the start screen                                | `src/screens/ratios.ts`     |
-| Components | `#/components` | The same                                                                                         | `src/screens/components.ts` |
-| Dishes     | `#/dishes`     | The same                                                                                         | `src/screens/dishes.ts`     |
-| Settings   | `#/settings`   | Theme (Follow system, Light, Dark), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen     | Route                       | Today                                                                                            | Source                      |
+| ---------- | --------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------- |
+| Ratios     | `#/ratios`, `#/ratios/<id>` | The ratio list and the ratio cards ([below](#ratios)); the start screen                          | `src/screens/ratios.ts`     |
+| Components | `#/components`              | The same                                                                                         | `src/screens/components.ts` |
+| Dishes     | `#/dishes`                  | The same                                                                                         | `src/screens/dishes.ts`     |
+| Settings   | `#/settings`                | Theme (Follow system, Light, Dark), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
 An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 `#/ratios` without a new history entry. **Test:** `test/router.test.ts`,
 `e2e/smoke.mjs`.
+
+# Ratios
+
+The seed templates of the engine (`SEED_TEMPLATES`, 12 today), shown by
+`src/screens/ratios.ts`, `ratio-list.ts`, `ratio-card.ts`,
+`ratio-calculator.ts` and `ratio-compare.ts`. All arithmetic is the
+engine's; the app formats. The pure view logic is in `src/ratios/`
+(`families.ts`, `search.ts`, `parse.ts`, `calc.ts`, `compare.ts`,
+`format.ts`), without DOM. Nothing is stored and nothing can be edited.
+
+**Routes.** `#/ratios` is the list, `#/ratios/<templateId>` a card. An
+unknown id shows the list with a quiet line ("That ratio is not in the
+list.") and keeps the URL. Back is the browser history. **Test:**
+`test/router.test.ts`, `e2e/ratios.mjs`.
+
+**List.** A search field at the top (not focused when the screen opens),
+case-insensitive substring of the name, trimmed; an empty search shows
+all. Every ratio is one link, at least 44 px high, with the name and the
+ratio in short form in template order ("3 : 2 : 1", "flour : fat :
+water"). No match: one quiet line. Ratios are grouped by family (the root
+of the lineage, named after the root, root first, then variations in seed
+order); **a family of one member has no heading**, since it would repeat
+the row's name, so today the list looks flat. The search text stays when
+a card opens and when the user comes back. **Test:**
+`test/ratios-view.test.ts`, `e2e/ratios.mjs`.
+
+**Card.** Name; table of parts (ingredient role, parts, percent of the
+anchor from `templatePercent` where the template has one); the usual range
+as plain text beside the part ("usual 1.8-2", only where the template
+gives one); the source line (the template's `source`, small, wrapped);
+the family (parent and variations as links, no heading when there are
+none); the calculator; "Compare my amounts". On a phone (below 720 px) the
+card is its own screen with a link back to the list; from 720 px the list
+stays in a column beside the card, the open card marked with
+`aria-current`. **Test:** `e2e/ratios.mjs` at 360 and 1000 px.
+
+**Calculator.** A radio group chooses what is entered:
+
+| Mode                | Entry                                     | Result per role                                                   | Engine                       |
+| ------------------- | ----------------------------------------- | ----------------------------------------------------------------- | ---------------------------- |
+| From one ingredient | a role, an amount, a unit (g, kg, oz, lb) | amount x parts of the role / parts of the weighed one             | `toGrams`, `scaleFromAnchor` |
+| Total weight        | an amount, a unit                         | the role's share of the template's parts                          | `toGrams`                    |
+| Factor              | a number                                  | parts times the factor, **one part is one gram times the factor** | none                         |
+
+Results update on every input and are shown in the unit chosen with
+"Show amounts in" (g by default). Display: the grams are rounded once with
+the engine's `roundMass` and `displayStep` (0.1 g below 10 g, else 1 g;
+333.33 g shows as 333 g, 247.5 g as 248 g), then converted with `convert`;
+kg and lb show 3 decimals, oz 2, which only trims conversion noise. Numbers
+sit right-aligned with tabular figures.
+
+**Number entry.** `500`, `500.5` and `500,5` (comma as decimal mark),
+trimmed, are numbers; everything else, and anything not above 0, is not.
+The hint "Enter a number above 0." appears under the field (inline,
+`aria-live`, field `aria-invalid`, dashed outline), never a dialog. The
+previous results stay visible, dimmed with the `--dim` token, not red. An
+empty field shows no hint and no results. **Test:** `test/ratios-view.test.ts`,
+`e2e/ratios.mjs` (also asserts that no dialog opens).
+
+**Cautions.** A quiet note under the results: "Cooking time does not scale
+with the amounts." always when something is calculated (the parts read as
+grams are no real reference batch), and "Salt does not scale linearly:
+taste." when the engine's `cautionsFor` flags `salt-not-linear`, that is
+when the template has a role `salt` (the engine gives no flag at factor 1).
+
+**Compare my amounts.** A collapsible `<details>`, closed by default. The
+cook enters grams per role, starting with the anchor; the app shows, from
+`checkRatio`, the parts each role comes to, the template's parts and the
+difference, and where the template has a range one neutral phrase:
+"below the usual range by 0.3", "within the usual range", "above the usual
+range by 0.2" (the bounds belong to "within"). A role left blank says "not
+entered". No red, no warning icon. **Test:** `test/ratios-compare.test.ts`
+(vectors `ratio-check-pie-dough`, `ratio-check-below-range`),
+`e2e/ratios.mjs` (bread dough salt 8, 9, 10, 11 g on 500 g flour).
+
+**The wording rule.** No text says that a recipe or a ratio is wrong,
+invalid, failed or missing, and none says too much or too little (the only
+word about the entry itself is the number hint above). **Test:**
+`test/strings.test.ts` scans `strings.ts` for those words;
+`e2e/ratios.mjs` scans the rendered card.
+
+**Calculator output equals the engine vectors.** `test/ratios-calc.test.ts`
+reads `scale-anchor-pasta-egg` (3:2 from 165 g egg), `scale-anchor-three-roles`
+(3:2:1 from 80 g water) and `percent-ratio-to-bakers` (5:3, 100 g flour
+gives 100 and 60) from disk and checks `calc.ts` in all three modes and in
+four units; `e2e/ratios.mjs` enters the same weights in the browser and
+compares the displayed amounts with those vectors (via
+`e2e/ratio-fixture.mjs`), and 500 g flour in pie dough 3:2:1 (500, 333.33...,
+166.66...; displayed 500 g, 333 g, 167 g).
+
+**Limit: variations.** All 12 seed templates are roots (derivatives cannot
+change parts and no sourced derivative exists), so no shipped card has a
+family section and every family has one member. Grouping and the
+parent/variation links are built generally and tested with fixture
+templates that have derivatives (`test/ratios-view.test.ts`); the browser
+test of "variation and back" goes from one card to another through the
+desktop list and back with the browser's back (`page.goBack()`).
 
 # Navigation
 
@@ -62,7 +160,8 @@ An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 # Interaction rules
 
 - **Touch targets at least 44 x 44 px** for everything tappable
-  (navigation links, summaries, radio rows). **Test:** `e2e/smoke.mjs`.
+  (navigation links, ratio rows, fields, selects, summaries, radio rows).
+  **Test:** `e2e/smoke.mjs`, `e2e/ratios.mjs`.
 - **No hover-only affordance.** Nothing appears or changes meaning on
   hover. **Test:** `test/tokens-only.test.ts` (no `:hover` in any stylesheet).
 - **Keyboard.** Everything works with the keyboard: Tab order follows the
@@ -86,7 +185,7 @@ An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 
 | State   | Behaviour                                                                                                                                                                                                                                                                                      |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Empty   | Ratios, Components and Dishes show their heading, one sentence and the collapsible guidance. Real lists replace the sentence later.                                                                                                                                                            |
+| Empty   | Components and Dishes show their heading, one sentence and the collapsible guidance. Ratios: an empty search is one quiet line; a list without a card (desktop) says to choose one.                                                                                                            |
 | Error   | The shell has no network and no data to fail on. One error exists: the theme cannot be stored (private mode, blocked storage, full). The choice then applies until the page closes and Settings says so in a `role="status"` line. **Test:** `test/prefs.test.ts` (the write reports `false`). |
 | Offline | The whole app is precached: every screen, the stylesheet, the icons and the manifest work without a connection and there is no offline banner, since nothing needs the network. **Test:** `e2e/smoke.mjs` (offline reload renders and navigates).                                              |
 

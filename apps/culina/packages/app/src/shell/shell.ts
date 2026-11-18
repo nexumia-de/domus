@@ -9,7 +9,7 @@ export interface Shell {
    * Shows a screen. With `focusHeading` the screen heading takes focus
    * (after navigation); on first load nothing is focused.
    */
-  show(route: Route, focusHeading: boolean): void;
+  show(route: Route, param: string | undefined, focusHeading: boolean): void;
 }
 
 /** Landmarks: header (banner), nav, main. The screen replaces the content of main. */
@@ -32,8 +32,8 @@ export const mountShell = (root: HTMLElement): Shell => {
   root.append(skip, frame);
 
   return {
-    show(route, focusHeading) {
-      const screen = renderScreen(route);
+    show(route, param, focusHeading) {
+      const screen = renderScreen(route, param);
       main.replaceChildren(screen);
       nav.setCurrent(route);
       const heading = screen.querySelector('h1');
