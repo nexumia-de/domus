@@ -1,9 +1,10 @@
 ---
 type: Decision Record
-title: Where the shared model lives (proposal)
-description: Proposal, needs decision by the owner. The general model moves into a new public repository with its own npm package, which Mixtura and Culina consume as a git dependency pinned to an exact tag and built by its prepare script; phosh-toolkit, a monorepo, GitHub Packages, npmjs and submodules were weighed and not proposed.
-tags: [decision, architecture, culina, shared-code, dependencies, needs-decision]
+title: Where the shared model lives
+description: Accepted by the owner on 2026-11-18. The general model moves into the public repository nexumia-de/materia with its own npm package, which Mixtura and Culina consume as a git dependency pinned to an exact tag and built by its prepare script; phosh-toolkit, a monorepo, GitHub Packages, npmjs and submodules were weighed and not chosen. The first version carries no unit system.
+tags: [decision, architecture, culina, shared-code, dependencies, materia]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+verified: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
   - id: inventory
     title: 'Shared model inventory'
@@ -46,11 +47,40 @@ sources:
     url: https://nodejs.org/api/typescript.html
 ---
 
-# Where the shared model lives (proposal)
+# Where the shared model lives
 
-**Status: proposal, `needs decision`.** Nothing below is decided until the
-owner confirms or changes it. Second part of Mixtura issue #43 (Culina
-issue #2).
+**Status: accepted.** The owner chose option (a) on 2026-11-18. Second
+part of Mixtura issue #43 (Culina issue #2).
+
+## Decision
+
+1. The shared code lives in
+   [nexumia-de/materia](https://github.com/nexumia-de/materia): public,
+   AGPL-3.0-or-later, one npm package `@nexumia-de/materia`, consumed
+   as a git dependency at an exact version tag
+   (`github:nexumia-de/materia#v<semver>`) and built by its `prepare`
+   script. The owner sets the tags.
+2. Mixtura and Culina stay private until stock sync works, then become
+   public.
+3. The extraction is finished before any sync code is written. The
+   general parts of sync (places, the record merge with its vectors,
+   the sync file format, the adapter interface) are written in materia
+   from the start ([stock sync](stock-sync.md)); nothing drink-specific
+   goes there.
+4. **The first version of materia carries no unit system** (decided by
+   the agent on 2026-11-18, as step 6 of the
+   [extraction order](../shared-model.md#extraction-order) asked to
+   decide first). `amounts/`, the ml per counted unit
+   (`ingredients/unit-volumes.ts`) and the volume measure
+   (`templates/volume.ts`) stay in Mixtura. Reasons: the general modules
+   touch the unit table in only those two files and one type
+   (`UnitOverrides` in `templates/types.ts`), so cutting them is small;
+   making every amounts function take a unit system is large; and
+   whether Culina, which measures by mass, can use that module is not
+   known before Culina builds its amounts. Shared code moves when a
+   second app needs it, never in advance[^code-reuse].
+
+The text below is the proposal as it was written on 2026-11-17.
 
 ## Context
 

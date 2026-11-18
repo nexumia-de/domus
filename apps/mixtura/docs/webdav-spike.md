@@ -31,8 +31,9 @@ what does the server need for that? Everything here was run on
 4. **Mixtura's own Content-Security-Policy forbids the requests** today
    (`connect-src 'self'`); it has to be widened for sync.
 
-Following the task's rule, work stopped here; the adapter is not built
-until the owner chose among the [options](#options).
+Following the task's rule, work stopped here for the owner. The
+[stock sync decision](decisions/stock-sync.md) of the same day goes on
+with option A and the widened policy as assumptions.
 
 ## Setup
 

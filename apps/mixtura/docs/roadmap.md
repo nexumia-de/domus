@@ -35,6 +35,20 @@ The reasons are in [how bartenders work](bartender-practice.md) and
    and which one bottle unlocks the most.
 6. **Without alcohol.** Ingredient classes and templates for
    non-alcoholic and low-ABV drinks, shelf life of prepared ingredients.
-7. **Later.** Cost per drink, menus, curated affinities with sources,
-   and moving the general model into code shared with Culina
-   ([decision](decisions/two-apps-one-engine.md)).
+7. **Shared model in materia.** The general model moves out of the
+   engine into [materia](https://github.com/nexumia-de/materia)
+   ([decision](decisions/shared-model.md)); the engine depends on it at
+   an exact tag.
+   _Done when_: the engine's public API and every test are unchanged,
+   and no general module exists in both repositories.
+8. **Stock sync.** Stock per place; each place can be synced to a
+   WebDAV folder the user chose, encrypted with a passphrase per place;
+   several storages at once; a second person joins by invite link or QR
+   code ([decision](decisions/stock-sync.md)).
+   _Done when_: two browser profiles with two storages each share one
+   place, change stock on both sides while offline and converge without
+   losing a change; a second place on the other storage stays
+   independent; a local-only place sends no request. Mixtura and Culina
+   then become public.
+9. **Later.** Cost per drink, menus, curated affinities with sources,
+   further storage adapters.

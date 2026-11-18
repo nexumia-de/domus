@@ -41,7 +41,8 @@ links. Change history is in [log.md](log.md).
 - [Packaging for Android and Linux](decisions/packaging.md) - Proposal, needs decision: Capacitor APK on GitHub Releases after a device test, web apps on Linux first, Flatpak shell only if needed, no TWA.
 - [Hosting](decisions/hosting.md) - Proposed on the owner's direction: Cloudflare Workers static assets at mixtura.nexumia.de instead of GitHub Pages; real headers, correct caching, a preview per pull request.
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
-- [Where the shared model lives](decisions/shared-model.md) - Proposal, needs decision: a new repository with an npm package consumed by git tag and built by `prepare`; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
+- [Where the shared model lives](decisions/shared-model.md) - Accepted 2026-11-18: the repository nexumia-de/materia with an npm package consumed by git tag and built by `prepare`; no unit system in its first version; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
+- [Stock sync](decisions/stock-sync.md) - Stock per place, synced to WebDAV storage the user configured, encrypted per place in the browser, joined by invite link or QR code; general parts in materia; what the rule "no server" means now; the order of work.
 
 # Reference
 

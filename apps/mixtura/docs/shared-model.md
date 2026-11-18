@@ -262,6 +262,29 @@ Steps 1 to 7 change only Mixtura and are useful without Culina; step 8
 needs the [decision](decisions/shared-model.md) on where the package
 lives.
 
+## Decided on 2026-11-18
+
+The [decision](decisions/shared-model.md) is accepted: the package is
+`@nexumia-de/materia` in
+[nexumia-de/materia](https://github.com/nexumia-de/materia). It changes
+two steps:
+
+- **Step 6 becomes "cut the unit table out of the general modules"**
+  and is no longer "units as data". `amounts/` stays in Mixtura, with
+  `ingredients/unit-volumes.ts` and `templates/volume.ts`, which move to
+  the drink side; the general template types no longer name
+  `UnitOverrides`. materia carries no unit system until Culina needs
+  one.
+- **Step 8 moves** `ingredients/` (tree, properties, substitution, swap
+  candidates, prepared resolver), `templates/` (slots, matching,
+  variants), `specs/`, `stock/` and `shelf/` with their general vectors;
+  `amounts/` is not part of it. The volume names in general types
+  (`PreparedLine.ml`, `SlotFill.ml`, `MatchLine.topMl`, the volume
+  reasons of `UnmeasuredReason`) move as they are, because renaming
+  them would change Mixtura's public API; they are renamed when Culina
+  needs a mass measure.
+- Step 9 (exchange) stays as written: not now.
+
 [^code]: `packages/engine/src` at commit `b28e70e`, read 2026-11-17.
 
 [^engine]: [Engine](engine.md)
