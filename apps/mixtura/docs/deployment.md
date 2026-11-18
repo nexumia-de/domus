@@ -186,9 +186,7 @@ so the required checks do not change; the new job is not required.
    bindings[^cf-previews]). Account resources: include only the one account.
    No zone permission, no other account permission. Do not use the template
    "Edit Cloudflare Workers": it is broader. The owner's token was enough for
-   `wrangler deploy` on 2026-11-18; `wrangler preview` has not run yet (no pull
-   request since the secrets were set). If it reports a missing permission,
-   add the one it names and correct this file.
+   `wrangler deploy` and `wrangler preview` on 2026-11-18.
 2. **Secrets.** In the repository (Settings, Secrets and variables, Actions) or
    the organisation, add `CLOUDFLARE_API_TOKEN` (the token) and
    `CLOUDFLARE_ACCOUNT_ID` (Find account and zone IDs in the Cloudflare docs).
@@ -253,10 +251,8 @@ rule of `_headers` as listed above (including `no-cache`, the `307` of
 
 Verified on 2026-11-18 against Cloudflare: `wrangler deploy` with the owner's
 token, the smoke check, the custom domain and the headers at the edge (see
-the state above).
-
-**Unverified:** `wrangler preview` and its `deployment-url` output (no pull
-request has run with the secrets yet).
+the state above); `wrangler preview` for pull request #127 (run 44236640301),
+whose `deployment-url` passed the smoke check.
 
 [^cf-headers]: [Cloudflare, Headers](https://developers.cloudflare.com/workers/static-assets/headers/)
 

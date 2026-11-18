@@ -2,7 +2,8 @@
 
 ## 2026-11-18
 
-- **Live at mixtura.nexumia.de**: with the owner's Cloudflare secrets, `deploy-cloudflare` deployed on `main` and its smoke check passed; the owner attached the custom domain. Headers, caching, the `/index.html` redirect and the 404s checked at the edge; they match the local asset server. `wrangler preview` still unverified. See [deployment](deployment.md#state-on-2026-11-18).
+- **Pull request previews work**: `deploy-cloudflare` ran `wrangler preview` for #127 with the owner's token and the smoke check passed on its address; [deployment](deployment.md#verified-and-not-verified) updated.
+- **Live at mixtura.nexumia.de**: with the owner's Cloudflare secrets, `deploy-cloudflare` deployed on `main` and its smoke check passed; the owner attached the custom domain. Headers, caching, the `/index.html` redirect and the 404s checked at the edge; they match the local asset server. See [deployment](deployment.md#state-on-2026-11-18).
 - **GitHub Pages removed; README and docs name mixtura.nexumia.de**: every run of `pages.yml` had failed at `configure-pages` because Pages was never switched on, so the app was never at `nexumia-de.github.io/mixtura/` and no data has to move. Workflow deleted; [README](../README.md), [install](install.md) (address, data, the owner section replaced by a pointer to deployment), [deployment](deployment.md), [development](development.md#ci), [packaging](packaging.md) (asset links file now on its own origin) and the [hosting decision](decisions/hosting.md) updated.
 
 ## 2026-11-17
