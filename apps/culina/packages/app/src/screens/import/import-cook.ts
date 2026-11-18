@@ -8,10 +8,11 @@ import {
   buildCookModel,
   type CookModel,
 } from '../../exchange/cook-model';
-import { candidateComponents, candidateIngredients } from '../../exchange/candidates';
+import { candidateComponents, candidateIngredients, importFacts } from '../../exchange/candidates';
 import { undoImport } from '../../exchange/json-apply';
 import { saveCookImport } from '../../exchange/cook-save';
 import { listComponents } from '../../notebook';
+import type { IngredientRecord } from '../../records';
 import { hashFor } from '../../router';
 import { showToast } from '../../shell/toast';
 import { el } from '../../shell/el';
@@ -42,10 +43,13 @@ export function renderCookImport(
   source: string,
   fileName: string,
   status: HTMLElement,
+  /** The shipped catalogue's entries; undefined when it could not be loaded. */
+  catalogue?: readonly IngredientRecord[],
 ): void {
   const model = buildCookModel(source, fileName, {
-    ingredients: candidateIngredients(),
+    ingredients: candidateIngredients(catalogue),
     components: candidateComponents(),
+    facts: importFacts(catalogue),
   });
   if (model.lines.length === 0) {
     host.replaceChildren(el('p', 'note', text.cookNoLines));
@@ -61,6 +65,7 @@ export function renderCookImport(
     head.append(el('p', 'muted', text.cookExtras(count.cookware, count.timers, count.notes)));
   }
   if (count.locked > 0) head.append(el('p', 'muted', text.cookLocked(count.locked)));
+  if (catalogue === undefined) head.append(el('p', 'note-quiet', text.cookCatalogueUnavailable));
 
   const name = textField(text.cookNameField, model.title);
   const yieldField = textField(text.cookYieldField, model.yieldGrams, true);
@@ -153,6 +158,7 @@ export function renderCookImport(
       ...(typeof yielded === 'number' ? { yieldGrams: yielded } : {}),
       ...(base.control.value === '' ? {} : { percentBase: base.control.value }),
       ...(picked === undefined || picked === 'new' ? {} : { parent: picked }),
+      ...(catalogue === undefined ? {} : { catalogue: new Map(catalogue.map((e) => [e.id, e])) }),
     }).then((done) => {
       if (!done.ok) {
         save.disabled = false;

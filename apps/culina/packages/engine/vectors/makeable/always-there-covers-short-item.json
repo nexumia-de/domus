@@ -1,0 +1,109 @@
+{
+  "id": "always-there-covers-short-item",
+  "description": "An always-there item covers a line whose other items are too little",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat",
+        "roles": ["oil"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "salt"
+      },
+      {
+        "id": "sugar"
+      }
+    ],
+    "components": [
+      {
+        "id": "brine",
+        "name": "Brine",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salt"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "brine",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "salt"
+        },
+        "amount": {
+          "value": 10,
+          "unit": "g"
+        },
+        "useBy": "2026-11-20"
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "salt"
+        },
+        "alwaysThere": true
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "brine",
+        "complete": true,
+        "urgency": null,
+        "lines": [
+          {
+            "status": "have",
+            "items": ["s2"]
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}

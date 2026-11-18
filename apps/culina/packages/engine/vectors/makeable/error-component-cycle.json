@@ -1,0 +1,89 @@
+{
+  "id": "error-component-cycle",
+  "description": "Components that make each other are a cycle, with the path",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat",
+        "roles": ["oil"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "salt"
+      },
+      {
+        "id": "sugar"
+      }
+    ],
+    "components": [
+      {
+        "id": "a",
+        "name": "A",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "b"
+            }
+          }
+        ],
+        "version": {
+          "family": "a",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "b",
+        "name": "B",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "a"
+            }
+          }
+        ],
+        "version": {
+          "family": "b",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": []
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "b", "a"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}

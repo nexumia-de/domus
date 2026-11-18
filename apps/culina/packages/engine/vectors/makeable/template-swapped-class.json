@@ -1,0 +1,96 @@
+{
+  "id": "template-swapped-class",
+  "description": "A derivative that swapped a role to an ingredient class is satisfied by an ingredient in that class, not by the role alone",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "oil",
+        "roles": ["oil"]
+      },
+      {
+        "id": "olive-oil",
+        "parentId": "oil"
+      },
+      {
+        "id": "lemon",
+        "roles": ["acid"]
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      },
+      {
+        "id": "nut-oil",
+        "parentId": "oil"
+      },
+      {
+        "id": "walnut-oil",
+        "parentId": "nut-oil"
+      }
+    ],
+    "templates": [
+      {
+        "id": "vinaigrette-ratio",
+        "name": "Vinaigrette ratio",
+        "source": "user",
+        "anchor": "oil",
+        "parts": [
+          {
+            "role": "oil",
+            "parts": 3
+          },
+          {
+            "role": "acid",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "nut-vinaigrette",
+        "name": "Nut vinaigrette",
+        "source": "user",
+        "parentId": "vinaigrette-ratio",
+        "changes": [
+          {
+            "op": "swap",
+            "role": "oil",
+            "ingredientClass": "nut-oil"
+          }
+        ]
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "olive-oil"
+        }
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "lemon"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "vinaigrette-ratio",
+        "kind": "template",
+        "complete": true
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields and dates; amounts, dates and ingredients are made up and no kitchen figure is involved."
+}
