@@ -31,6 +31,7 @@ const scenes = [
   ['templates', '#/templates'],
   ['template', '#/templates/daiquiri'],
   ['stock', '#/stock'],
+  ['stock-places', '#/stock?sheet=places'],
   ['buy-next', '#/stock/buy-next'],
   ['settings', '#/settings'],
   ['data', '#/settings/data'],

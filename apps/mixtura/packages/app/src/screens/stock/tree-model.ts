@@ -26,6 +26,8 @@ export interface StockNode {
   prepared: boolean;
   /** Batches at hand (made-on dates), 0 for anything but a prepared ingredient at hand. */
   batches: number;
+  /** Names of the ticked places that have it present; empty unless more than one place counts. */
+  places: readonly string[];
   /** The synthetic group of top-level ingredients without children; it cannot be marked. */
   synthetic: boolean;
 }
@@ -40,6 +42,7 @@ export function buildStockTree(
   records: StockRecords,
   drinks: ReadonlyMap<string, number>,
   otherName: string,
+  presentAt: ReadonlyMap<string, readonly string[]> = new Map(),
 ): StockNode[] {
   const make = (id: string): StockNode => {
     const ingredient = tree.byId.get(id);
@@ -59,6 +62,7 @@ export function buildStockTree(
       drinks: drinks.get(id) ?? 0,
       prepared: ingredient?.prepared !== undefined,
       batches: ingredient?.prepared ? batchDates(record).length : 0,
+      places: presentAt.get(id) ?? [],
       synthetic: false,
     };
   };
@@ -78,6 +82,7 @@ export function buildStockTree(
       drinks: 0,
       prepared: false,
       batches: 0,
+      places: [],
       synthetic: true,
     });
   }

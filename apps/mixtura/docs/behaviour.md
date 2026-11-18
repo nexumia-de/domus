@@ -124,7 +124,7 @@ by the tests of the repository.
 | Versions        | `#/drinks/<spec id>/versions`, diff `…/versions?a=2&b=3`                                                               |
 | Family          | `#/drinks/<spec id>/family`                                                                                            |
 | Templates       | `#/templates`, detail `#/templates/<template id>`                                                                      |
-| Stock           | `#/stock`, search and show `#/stock?q=…&show=in`                                                                       |
+| Stock           | `#/stock`, search and show `#/stock?q=…&show=in`; sheets `?sheet=places`, `?sheet=batches&ing=<id>`                    |
 | Buy Next        | `#/stock/buy-next`, `?strict=1` without substitutes, `?open=<ingredient id>` for the unlocked drinks                   |
 | Settings        | `#/settings`, export and import `#/settings/data`                                                                      |
 | About           | `#/about`                                                                                                              |
