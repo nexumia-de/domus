@@ -23,7 +23,7 @@ export function rank(candidates: readonly MakeableCandidate[]): MakeableCandidat
  */
 export function useUpFirst(ctx: Context, ranked: readonly MakeableCandidate[]): MakeableUseUp[] {
   return ctx.items
-    .filter((i) => i.alwaysThere !== true && i.day !== undefined)
+    .filter((i) => i.always !== true && i.day !== undefined)
     .sort((a, b) => (a.day as number) - (b.day as number) || cmp(a.id, b.id))
     .map((i) => ({
       itemId: i.id,

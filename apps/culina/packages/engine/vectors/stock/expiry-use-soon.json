@@ -1,0 +1,25 @@
+{
+  "id": "expiry-use-soon",
+  "description": "Use by in two days: inside the use-soon window of two days",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-11-20"
+    },
+    "today": "2026-11-18"
+  },
+  "expected": {
+    "ok": true,
+    "status": "use-soon",
+    "useBy": "2026-11-20",
+    "daysLeft": 2,
+    "basis": "entered"
+  },
+  "tolerance": 0,
+  "source": "Synthetic; the window of two days is materia's USE_SOON_DAYS, an assumption of materia that no source backs."
+}

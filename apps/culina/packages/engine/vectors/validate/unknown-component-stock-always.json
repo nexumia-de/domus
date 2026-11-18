@@ -1,0 +1,33 @@
+{
+  "id": "unknown-component-stock-always",
+  "description": "An always-there stock item whose component does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "component",
+            "id": "broth"
+          },
+          "always": true
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-component",
+        "kind": "stock",
+        "id": "s",
+        "path": "ref",
+        "ref": "broth"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "expiry-own-window",
+  "description": "The caller may pass its own use-soon window",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-11-25"
+    },
+    "today": "2026-11-18",
+    "soonDays": 7
+  },
+  "expected": {
+    "ok": true,
+    "status": "use-soon",
+    "useBy": "2026-11-25",
+    "daysLeft": 7,
+    "basis": "entered"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: the use-by day is the last good day, so days left is the calendar distance from today to it (docs/engine-rules.md#stock)."
+}

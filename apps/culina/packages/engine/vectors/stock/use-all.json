@@ -1,0 +1,21 @@
+{
+  "id": "use-all",
+  "description": "Using exactly what there is leaves nothing",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 500,
+      "unit": "g"
+    },
+    "used": {
+      "value": 500,
+      "unit": "g"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

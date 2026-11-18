@@ -26,7 +26,7 @@ export interface MakeableStockItem {
   /** `YYYY-MM-DD`. */
   useBy?: string;
   /** Always there (salt, water): satisfies lines, never drives urgency. */
-  alwaysThere?: boolean;
+  always?: boolean;
 }
 
 /** A component line or dish slot, reduced to what the finder reads. */

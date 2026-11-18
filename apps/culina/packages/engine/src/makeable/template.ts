@@ -29,7 +29,7 @@ export function templateCandidates(
           ? isA(ctx.tree, i.refId, part.ingredientClass)
           : rolesOf(ctx, i.refId).includes(part.role));
       const fitting = ctx.items.filter(fits);
-      const chosen = byUseBy(fitting.filter((i) => !i.alwaysThere))[0] ?? fitting[0];
+      const chosen = byUseBy(fitting.filter((i) => !i.always))[0] ?? fitting[0];
       const base = { index, role: part.role, optional: false };
       if (chosen === undefined) {
         return {

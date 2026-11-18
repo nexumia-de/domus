@@ -1,0 +1,33 @@
+{
+  "id": "expiry-from-shelf-life-past",
+  "description": "The date from the shelf life can be past",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "component",
+        "id": "stock-1"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-11-10"
+    },
+    "today": "2026-11-18",
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "status": "past",
+    "useBy": "2026-11-15",
+    "daysLeft": -3,
+    "basis": "shelf-life"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example value, see expiry-from-shelf-life-future."
+}

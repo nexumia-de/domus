@@ -1,0 +1,23 @@
+{
+  "id": "suggest-none-recorded",
+  "description": "No shelf life recorded: no suggestion",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-11-16"
+    },
+    "shelfLife": []
+  },
+  "expected": {
+    "ok": true,
+    "suggestions": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example values written for this rule; no shelf life is a recommendation."
+}

@@ -2,13 +2,21 @@
 // opened and read once at startup (start.ts); writes go through the store first and only then
 // change the cache (actions.ts). Without a store the cache is the empty, read-only notebook.
 import type { ErrorCode, Store } from '../store';
-import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
+import type {
+  ComponentRecord,
+  DishRecord,
+  IngredientRecord,
+  StockRecord,
+  TastingRecord,
+} from '../records';
 
 export interface NotebookState {
   ingredients: IngredientRecord[];
   components: ComponentRecord[];
   dishes: DishRecord[];
   tastings: TastingRecord[];
+  /** What is there, in the order the store lists it; the screens sort. */
+  stock: StockRecord[];
   /** Undefined when the store could not be opened. */
   store: Store | undefined;
   /** Why the store could not be opened. */
@@ -22,6 +30,7 @@ export const state: NotebookState = {
   components: [],
   dishes: [],
   tastings: [],
+  stock: [],
   store: undefined,
   problem: undefined,
   now: () => new Date().toISOString(),
@@ -56,6 +65,7 @@ export const reset = (): void => {
   state.components = [];
   state.dishes = [];
   state.tastings = [];
+  state.stock = [];
   state.store = undefined;
   state.problem = undefined;
 };

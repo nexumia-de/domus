@@ -25,12 +25,13 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route                               | Today                                                                                                                                                               | Source                      |
-| ---------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| Ratios     | `#/ratios`, `#/ratios/<id>`         | The ratio list and the ratio cards ([below](#ratios)); the start screen                                                                                             | `src/screens/ratios.ts`     |
-| Components | `#/components`, `#/components/<id>` | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
-| Dishes     | `#/dishes`, `#/dishes/<id>`         | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
-| Settings   | `#/settings`                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen     | Route                                         | Today                                                                                                                                                               | Source                      |
+| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Ratios     | `#/ratios`, `#/ratios/<id>`                   | The ratio list and the ratio cards ([below](#ratios)); the start screen                                                                                             | `src/screens/ratios.ts`     |
+| Components | `#/components`, `#/components/<id>`           | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
+| Dishes     | `#/dishes`, `#/dishes/<id>`                   | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
+| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit` | What is there: the list, the quick entry and the detail of one item ([below](#stock))                                                                               | `src/screens/stock/`        |
+| Settings   | `#/settings`                                  | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
 An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
 `#/ratios` without a new history entry. **Test:** `test/router.test.ts`,
@@ -462,6 +463,54 @@ stored is ever written again ([data model](data-model.md#version)).
 Screenshots: [design](design.md#screenshots). Out of scope: merging
 branches, sharing versions between devices, comparing different recipes.
 
+# Stock
+
+What is there, with as little upkeep as possible
+([decision](decisions/recipe-book.md), points 4 and 5; data:
+[stock item](data-model.md#stock-item); rules:
+[engine rules](engine-rules.md#stock)). A fifth navigation entry, "Stock",
+between Dishes and Settings. Texts: `src/strings-stock.ts`.
+
+- **Tick what is there** (`#/stock/add`). A list to tick from: the
+  notebook's ingredients and components by name, then the catalogue by
+  search (the picker's catalogue section; choosing copies the entry and
+  its parents into the notebook and ticks it, with a toast and Undo).
+  Many ticks in a row without leaving the screen; each is saved at once and
+  stores nothing but `id` and `ref`. Ticking again unticks, with the toast
+  and Undo. "Always there" is a button on a ticked row (a check mark and a
+  bar as well as colour); that item counts as present until unticked.
+  Nothing is offered by default: no staples list is shipped; "Always there"
+  can be set on any item. A tick is a box with a check mark, not only a
+  colour. **Test:** `e2e/stock.mjs`, `test/stock-notebook.test.ts`.
+- **The list** (`#/stock`). Sorted by use by where one is known (nearest
+  first), then by name. A row shows the name and only what was entered
+  (amount, state, "always there") and the remaining days in plain words:
+  "2 days left", "1 day left", "use by today", "past use by". No alarm
+  colour and no judgement: the words carry the information, and all three
+  use the same text colour. The days come from the engine's `stockExpiry`
+  with today from the injected clock; an item without a use-by date shows
+  none, unless the ingredient's recorded shelf life gives exactly one date
+  for the item's state and date prepared. Remove acts at once with the toast
+  and Undo.
+- **Detail of one item** (`#/stock/<id>/edit`). Amount and unit, state,
+  date prepared (a native date field with a "Today" button from the
+  injected clock), use by (with "Clear"), always there, note: all optional,
+  an empty field says nothing. Where the ingredient has a recorded shelf
+  life with a source, the dates it allows are offered as buttons; nothing
+  is applied unless chosen. "Use some" subtracts an amount (any unit that
+  converts, else a quiet sentence) from the amount in stock at once; using
+  all of it removes the item with the toast and Undo. Saving changes a copy
+  of the stored record, so fields of another app (`x-...`) stay. Nothing is
+  focused on open.
+- **Prepared components** are stock items with `ref.kind` `component`.
+  Only an entered use by counts for them (components have no shelf life).
+- **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
+  least 44 px. The navigation entries are as wide as their labels need and
+  share the rest, so five labels fit on one line at 320 px.
+- **Offline.** The catalogue is precached; ticking, the list and the detail
+  work offline. **Test:** `e2e/stock.mjs` (also 320 and 1000 px, remaining
+  days at fixed dates, a field of another app surviving an edit).
+
 # Navigation
 
 - **One back stack: the browser history.** Every destination is a hash
@@ -473,7 +522,9 @@ branches, sharing versions between devices, comparing different recipes.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
   and label; from 720 px a side navigation ([design](design.md#layout-and-breakpoints)).
   Both are the same `<nav aria-label="Main">`, so the order and the
-  names are the same. **Test:** `e2e/smoke.mjs` at 360 and 1000 px.
+  names are the same. Entries are as wide as their labels need and share
+  the rest (`flex: 1 1 auto`), so five fit at 320 px. **Test:**
+  `e2e/smoke.mjs` at 320, 360 and 1000 px, `e2e/stock.mjs`.
 - **Landmarks:** one `<header>`, one `<nav>` with a label, one `<main>`;
   the current destination has `aria-current="page"`. A skip link ("Skip
   to content") is the first focusable element. The document title is

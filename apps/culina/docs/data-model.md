@@ -415,23 +415,57 @@ same time never lose one.
 
 ## Stock item
 
-What the user has. Schema: `stock.schema.json`.
+What the user has. Schema: `stock.schema.json`. An item can be nothing
+but "this ingredient (or prepared component) is there": only `id` and
+`ref` are required, and ticking in the app writes exactly that. The
+kitchen's detail stays in the model as optional fields and can be added
+to any item at any time. Items are stored; days left are derived.
 
-| Field        | Type   | Required | Meaning                            |
-| ------------ | ------ | -------- | ---------------------------------- |
-| `id`         | id     | yes      | See [ids](#ids)                    |
-| `ref`        | ref    | yes      | An ingredient or a component       |
-| `amount`     | amount | yes      | Mass, volume or count; not percent |
-| `state`      | state  | yes      | `raw`, `cooked` or `prepared`      |
-| `preparedOn` | date   | no       | When it was cooked or made         |
-| `useBy`      | date   | no       | The date the user entered          |
-| `note`       | string | no       | Free text                          |
+| Field        | Type    | Required | Meaning                                                                      |
+| ------------ | ------- | -------- | ---------------------------------------------------------------------------- |
+| `id`         | id      | yes      | See [ids](#ids)                                                              |
+| `ref`        | ref     | yes      | An ingredient or a component (a prepared item the user made)                 |
+| `amount`     | amount  | no       | Mass, volume or count; not percent                                           |
+| `state`      | state   | no       | `raw`, `cooked` or `prepared`                                                |
+| `always`     | boolean | no       | The user marks it as always there; it counts as present until it is unticked |
+| `preparedOn` | date    | no       | When it was cooked or made                                                   |
+| `useBy`      | date    | no       | The date the user entered                                                    |
+| `note`       | string  | no       | Free text                                                                    |
+
+Stored as, for presence only and with every detail:
+
+```json
+{ "id": "u-5c1d…", "ref": { "kind": "ingredient", "id": "carrot" } }
+```
+
+```json
+{
+  "id": "u-9a4e…",
+  "ref": { "kind": "component", "id": "u-77b2…" },
+  "amount": { "value": 400, "unit": "g" },
+  "state": "prepared",
+  "always": false,
+  "preparedOn": "2026-11-16",
+  "useBy": "2026-11-20",
+  "note": "second shelf"
+}
+```
+
+Shared with other apps: rows are materia's sync record (`{ key,
+updatedAt, value }` or `{ key, updatedAt, deleted }`), so stock can sync
+later and another app can add items. Fields starting with `x-` written
+by another app are kept: Culina changes a copy of the stored record and
+never rebuilds it from the fields it knows.
 
 Days left, "use soon" and "past", the limiting shelf life of a dish and
 "what can I make, ranked by what must go first" are derived. If `useBy`
 is absent, the engine may derive a date from `preparedOn` plus the shelf
-life of the ingredient or component for that state; it never writes it
-back.
+life of the ingredient for that state, only when the ingredient records
+exactly one value for the state; it never writes it back and invents no
+shelf life. With several storage places (pantry, fridge, freezer) the
+screen offers the dates as suggestions and the user chooses. Components
+have no shelf life of their own yet, so for them only an entered `useBy`
+counts.
 
 ## Affinity
 
@@ -460,20 +494,20 @@ refused by the schema. There is no role entity yet (open question 2).
 
 # Stored versus derived
 
-| Stored (user entry or seed)                    | Derived every time                                                      |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| Amounts as entered (value and unit)            | Grams, conversions, scaled amounts                                      |
-| Template parts and ranges                      | Percentages, shares, position against the range, family tree            |
-| Component lines, `percentBase`                 | Raw ingredients through any nesting depth, total and final formula      |
-| Component `yield` (weighed output)             | Loss, yield percent, portions weight                                    |
-| Ingredient `yields`                            | Purchased to edible and back; unknown stays unknown                     |
-| Ingredient density and unit weight             | Volume and count to mass                                                |
-| `version`                                      | Version number, head of a family, diff, variation tree                  |
-| Tasting notes (own records)                    | The notes of a version, the latest note of a family                     |
-| Stock `amount`, `state`, `preparedOn`, `useBy` | Days left, use soon, past, makeable, what must go first, what to buy    |
-| Ingredient `shelfLife`                         | Use-by date from `preparedOn`; a dish's limiting shelf life             |
-| Allergens as data (reserved)                   | Allergens of a dish: union over its expanded ingredients (issue 27)     |
-| (nothing)                                      | Cost per edible unit, nutrition per portion, hydration, salt percentage |
+| Stored (user entry or seed)                              | Derived every time                                                      |
+| -------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Amounts as entered (value and unit)                      | Grams, conversions, scaled amounts                                      |
+| Template parts and ranges                                | Percentages, shares, position against the range, family tree            |
+| Component lines, `percentBase`                           | Raw ingredients through any nesting depth, total and final formula      |
+| Component `yield` (weighed output)                       | Loss, yield percent, portions weight                                    |
+| Ingredient `yields`                                      | Purchased to edible and back; unknown stays unknown                     |
+| Ingredient density and unit weight                       | Volume and count to mass                                                |
+| `version`                                                | Version number, head of a family, diff, variation tree                  |
+| Tasting notes (own records)                              | The notes of a version, the latest note of a family                     |
+| Stock `always`, `amount`, `state`, `preparedOn`, `useBy` | Days left, use soon, past, makeable, what must go first, what to buy    |
+| Ingredient `shelfLife`                                   | Use-by date from `preparedOn`; a dish's limiting shelf life             |
+| Allergens as data (reserved)                             | Allergens of a dish: union over its expanded ingredients (issue 27)     |
+| (nothing)                                                | Cost per edible unit, nutrition per portion, hydration, salt percentage |
 
 A schema test refuses `totalMassG`, `lossPercent`, `daysLeft`, a stored
 `percent` on a template part and a stored ingredient `level`.

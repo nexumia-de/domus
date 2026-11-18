@@ -1,0 +1,25 @@
+{
+  "id": "use-part-other-unit-same-kind",
+  "description": "Using 250 g of 1 kg leaves 0.75 kg",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 1,
+      "unit": "kg"
+    },
+    "used": {
+      "value": 250,
+      "unit": "g"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": false,
+    "amount": {
+      "value": 0.75,
+      "unit": "kg"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

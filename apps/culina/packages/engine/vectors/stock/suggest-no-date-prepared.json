@@ -1,0 +1,28 @@
+{
+  "id": "suggest-no-date-prepared",
+  "description": "No date prepared: nothing to count from",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared"
+    },
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "suggestions": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example values written for this rule; no shelf life is a recommendation."
+}

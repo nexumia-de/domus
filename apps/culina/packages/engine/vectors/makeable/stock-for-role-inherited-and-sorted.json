@@ -54,7 +54,7 @@
           "id": "nut"
         },
         "useBy": "2026-11-20",
-        "alwaysThere": true
+        "always": true
       }
     ]
   },

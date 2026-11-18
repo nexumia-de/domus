@@ -31,7 +31,7 @@ function urgencyOf(ctx: Context, used: readonly string[]): MakeableUrgency | und
   let best: { id: string; day: number; useBy: string } | undefined;
   for (const id of used) {
     const item = ctx.items.find((i) => i.id === id);
-    if (item === undefined || item.alwaysThere === true || item.day === undefined) continue;
+    if (item === undefined || item.always === true || item.day === undefined) continue;
     if (best === undefined || item.day < best.day || (item.day === best.day && id < best.id)) {
       best = { id, day: item.day, useBy: item.useBy as string };
     }
@@ -53,7 +53,7 @@ export function summarize(
 ): MakeableCandidate | undefined {
   const lacking = lines.filter((l) => !l.optional && lacks(l.status)).length;
   if (lacking > maxMissing || !lines.some((l) => !l.optional && there(l))) return undefined;
-  const alwaysIds = new Set(ctx.items.filter((i) => i.alwaysThere === true).map((i) => i.id));
+  const alwaysIds = new Set(ctx.items.filter((i) => i.always === true).map((i) => i.id));
   const used = [...new Set(lines.flatMap(usedBy))].filter((id) => !alwaysIds.has(id)).sort();
   const urgency = urgencyOf(ctx, used);
   return {

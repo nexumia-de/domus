@@ -43,8 +43,8 @@ function resolveTier(
   need: Amount | undefined,
   askedId: string,
 ): Compared {
-  const normal = items.filter((i) => !i.alwaysThere);
-  const always = items.filter((i) => i.alwaysThere);
+  const normal = items.filter((i) => !i.always);
+  const always = items.filter((i) => i.always);
   if (normal.length > 0) {
     const compared = compareStock(ctx, normal, need, askedId);
     if (compared.status === 'have' || always.length === 0) return compared;

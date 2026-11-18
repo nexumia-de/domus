@@ -1,15 +1,22 @@
 // Writes: through the store first, the cache only after the store accepted the record. Every
 // write is validated by the store. Delete is a tombstone; undo puts the kept record again.
 import { fail, type Result } from '../store/types';
-import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
+import type {
+  ComponentRecord,
+  DishRecord,
+  IngredientRecord,
+  StockRecord,
+  TastingRecord,
+} from '../records';
 import { emit, sorted, state } from './state';
 
-export type WritableKind = 'ingredients' | 'components' | 'dishes' | 'tastings';
+export type WritableKind = 'ingredients' | 'components' | 'dishes' | 'tastings' | 'stock';
 type RecordOf = {
   ingredients: IngredientRecord;
   components: ComponentRecord;
   dishes: DishRecord;
   tastings: TastingRecord;
+  stock: StockRecord;
 };
 
 const cache = {
@@ -17,14 +24,19 @@ const cache = {
   components: () => state.components,
   dishes: () => state.dishes,
   tastings: () => state.tastings,
+  stock: () => state.stock,
 };
 
-const setList = (kind: WritableKind, list: { id: string; name: string }[]): void => {
+const setList = (kind: WritableKind, list: { id: string; name?: string }[]): void => {
   if (kind === 'tastings') {
     state.tastings = list as unknown as TastingRecord[];
     return;
   }
-  const next = sorted(list);
+  if (kind === 'stock') {
+    state.stock = list as unknown as StockRecord[];
+    return;
+  }
+  const next = sorted(list as { id: string; name: string }[]);
   if (kind === 'ingredients') state.ingredients = next as IngredientRecord[];
   else if (kind === 'components') state.components = next as ComponentRecord[];
   else state.dishes = next as DishRecord[];
@@ -48,10 +60,8 @@ export const saveRecord = async <K extends WritableKind>(
   }
   const written = await state.store.put(kind, record);
   if (!written.ok) return written;
-  const others = (cache[kind]() as { id: string; name: string }[]).filter(
-    (r) => r.id !== record.id,
-  );
-  setList(kind, [...others, record as unknown as { id: string; name: string }]);
+  const others = (cache[kind]() as { id: string }[]).filter((r) => r.id !== record.id);
+  setList(kind, [...others, record as unknown as { id: string }]);
   emit();
   return { ok: true };
 };

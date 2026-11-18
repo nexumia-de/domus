@@ -1,0 +1,18 @@
+{
+  "id": "use-volume-without-density",
+  "description": "A volume used from a mass without a density is not guessed",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 500,
+      "unit": "g"
+    },
+    "used": {
+      "value": 1,
+      "unit": "cup"
+    }
+  },
+  "error_code": "needs-density",
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

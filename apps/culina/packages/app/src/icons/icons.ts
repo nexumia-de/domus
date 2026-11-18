@@ -9,6 +9,9 @@ const PATHS: Record<Route, string> = {
   components: '<path d="M4 6h16v3H4zM4 11h16v3H4zM4 16h16v3H4z"/>',
   // A plate: rim and well.
   dishes: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/>',
+  // A shelf with a jar on it.
+  stock:
+    '<path d="M4 20h16M5 20V6h14v14M5 13h14"/><circle cx="10" cy="9.5" r="1.5"/><circle cx="14" cy="16.5" r="1.5"/>',
   // Two sliders.
   settings:
     '<path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/>',

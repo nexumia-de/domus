@@ -1,11 +1,12 @@
 // Smoke tests: shell, navigation, targets, theme, offline, no foreign requests.
 import { check, watch } from './harness.mjs';
 
-const ROUTES = ['ratios', 'components', 'dishes', 'settings'];
+const ROUTES = ['ratios', 'components', 'dishes', 'stock', 'settings'];
 const NAMES = {
   ratios: 'Ratios',
   components: 'Components',
   dishes: 'Dishes',
+  stock: 'Stock',
   settings: 'Settings',
 };
 

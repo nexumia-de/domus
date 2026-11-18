@@ -153,6 +153,23 @@ in the stored shape (only the fields the rule reads). Lines are written as
 | `variation_cycles` | `records`, `id`                              | `cycles` (lists of family ids), `parent` of `id` (`kind`, optional `id`)                                 |
 | `variations`       | `records`, `id`                              | `variations` (`family`, `head`), optional `parent` (`kind`, optional `id`)                               |
 
+## Kinds of stock (issue 20)
+
+Folder: `packages/engine/vectors/stock/`, plus four stock vectors in
+`vectors/validate/` (presence-only items with known and unknown
+references). Rules: [engine rules](engine-rules.md#stock). Items are inline
+in the stored shape; dates are `YYYY-MM-DD`; `tolerance` is 0. Error
+vectors carry `error_code` and `error_detail`.
+
+| `kind`          | Inputs                                                                         | Expected                                                                           |
+| --------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `stock_expiry`  | `item`, `today`, optional `shelfLife` (`state`, `storage`, `days`), `soonDays` | `ok`, `status` (`none`, `fresh`, `use-soon`, `past`), `useBy`, `daysLeft`, `basis` |
+| `stock_suggest` | `item`, `shelfLife`                                                            | `ok`, `suggestions` (`storage`, `days`, `useBy`), shortest first                   |
+| `stock_use`     | `stock` (amount), `used` (amount), optional `facts`                            | `ok`, then `usedUp` and the remaining `amount` unless used up                      |
+
+The shelf-life values in these vectors are examples written for the rule,
+not recommendations.
+
 ## Kinds of export, matching, merging and Cooklang (issue 18)
 
 Folders: `packages/engine/vectors/export/`, `match/`, `merge/` and

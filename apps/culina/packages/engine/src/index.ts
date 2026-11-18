@@ -109,6 +109,23 @@ export type {
 export { toEdible, toPurchased, yieldFor } from './yields/edible';
 export type { EdibleResult, IngredientYield, YieldError, YieldLookup } from './yields/edible';
 
+export { stockExpiry } from './stock/expiry';
+export { useBySuggestions } from './stock/suggest';
+export { useAmount } from './stock/use';
+export type { UseResult } from './stock/use';
+export type {
+  ExpiryBasis,
+  ShelfLifeEntry,
+  StockError,
+  StockExpiry,
+  StockExpiryResult,
+  StockItem,
+  StockStatus,
+  StoragePlace,
+  SuggestionsResult,
+  UseBySuggestion,
+} from './stock/types';
+
 export { validateModel } from './validate/model';
 export type {
   EntityKind,

@@ -12,7 +12,7 @@ import {
 
 test('every route round-trips through its hash', () => {
   for (const route of ROUTES) expect(routeFromHash(hashFor(route))).toBe(route);
-  expect(ROUTES).toEqual(['ratios', 'components', 'dishes', 'settings']);
+  expect(ROUTES).toEqual(['ratios', 'components', 'dishes', 'stock', 'settings']);
 });
 
 test('an empty or unknown hash is the default route, Ratios', () => {

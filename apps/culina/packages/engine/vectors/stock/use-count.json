@@ -1,0 +1,25 @@
+{
+  "id": "use-count",
+  "description": "Using 2 of 6 pieces leaves 4",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 6,
+      "unit": "count"
+    },
+    "used": {
+      "value": 2,
+      "unit": "count"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": false,
+    "amount": {
+      "value": 4,
+      "unit": "count"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

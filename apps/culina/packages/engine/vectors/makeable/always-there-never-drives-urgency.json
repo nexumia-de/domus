@@ -97,7 +97,7 @@
           "kind": "ingredient",
           "id": "salt"
         },
-        "alwaysThere": true,
+        "always": true,
         "useBy": "2026-11-19"
       }
     ]

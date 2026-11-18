@@ -57,6 +57,43 @@ const importing = (name, content, ready) => async (page) => {
 };
 const IMPORT_JSON = importing('export.json', EXPORT_FILE, 'Records that differ');
 const IMPORT_COOK = importing('sauce.cook', COOK_FILE, 'Complete the recipe');
+// Stock: items written through the store's test hook, then the page is read again.
+const STOCK_NOW = '&e2e-store&e2e-now=2026-11-18T08:00:00Z';
+const stockItems = [
+  {
+    id: 'u-s1',
+    ref: { kind: 'ingredient', id: 'onion' },
+    amount: { value: 500, unit: 'g' },
+    state: 'raw',
+    preparedOn: '2026-11-17',
+    useBy: '2026-11-20',
+  },
+  { id: 'u-s2', ref: { kind: 'ingredient', id: 'carrot' }, always: true },
+  { id: 'u-s3', ref: { kind: 'ingredient', id: 'salt' }, always: true },
+  {
+    id: 'u-s4',
+    ref: { kind: 'ingredient', id: 'butter' },
+    amount: { value: 250, unit: 'g' },
+    useBy: '2026-11-17',
+  },
+  {
+    id: 'u-s5',
+    ref: { kind: 'component', id: 'example-vegetable-stock' },
+    amount: { value: 400, unit: 'g' },
+    state: 'prepared',
+    preparedOn: '2026-11-16',
+    useBy: '2026-11-19',
+  },
+  { id: 'u-s6', ref: { kind: 'ingredient', id: 'flour' } },
+];
+const stocked = async (page) => {
+  await page.evaluate(async (items) => {
+    const opened = await globalThis.__culinaStore;
+    for (const item of items) await opened.store.put('stock', item);
+  }, stockItems);
+  await page.reload();
+  await page.getByRole('heading', { level: 1 }).waitFor();
+};
 const LATER = `&e2e-now=${new Date(Date.now() + 40 * 86_400_000).toISOString()}`;
 // [file, width, height, colour scheme, route, steps after load, whole page, with example data, extra query]
 const shots = [
@@ -153,6 +190,43 @@ const shots = [
   ['history-1000x700-light.png', 1000, 700, 'light', HISTORY, historyReady, true, true],
   ['version-old-360x720-light.png', 360, 720, 'light', OLD, oldReady, false, true],
   ['version-old-1000x700-light.png', 1000, 700, 'light', OLD, oldReady, false, true],
+  ['stock-360x720-light.png', 360, 720, 'light', 'stock', stocked, true, true, STOCK_NOW],
+  ['stock-360x720-dark.png', 360, 720, 'dark', 'stock', stocked, true, true, STOCK_NOW],
+  ['stock-1000x700-light.png', 1000, 700, 'light', 'stock', stocked, true, true, STOCK_NOW],
+  ['stock-add-360x720-light.png', 360, 720, 'light', 'stock/add', stocked, false, true, STOCK_NOW],
+  [
+    'stock-add-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'stock/add',
+    stocked,
+    false,
+    true,
+    STOCK_NOW,
+  ],
+  [
+    'stock-item-360x720-light.png',
+    360,
+    720,
+    'light',
+    'stock/u-s1/edit',
+    stocked,
+    true,
+    true,
+    STOCK_NOW,
+  ],
+  [
+    'stock-item-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'stock/u-s1/edit',
+    stocked,
+    true,
+    true,
+    STOCK_NOW,
+  ],
 ];
 
 buildApp();

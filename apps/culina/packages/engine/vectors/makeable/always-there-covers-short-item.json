@@ -85,7 +85,7 @@
           "kind": "ingredient",
           "id": "salt"
         },
-        "alwaysThere": true
+        "always": true
       }
     ]
   },
