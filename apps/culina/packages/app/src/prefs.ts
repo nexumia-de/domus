@@ -50,3 +50,60 @@ export const applyTheme = (root: AttributeTarget, theme: Theme): void => {
   if (theme === 'system') root.removeAttribute('data-theme');
   else root.setAttribute('data-theme', theme);
 };
+
+/** The filters of the finder, kept in localStorage like the theme: the role and how much may lack. */
+export const COOK_KEY = 'culina.cook';
+
+export const MAX_LACKING = 3;
+
+export interface CookFilters {
+  /** Only what covers this role; undefined: any. */
+  role?: string;
+  /** Lines that may be lacking, 0 to `MAX_LACKING`. */
+  lacking: number;
+}
+
+export const DEFAULT_COOK_FILTERS: CookFilters = { lacking: 1 };
+
+/** Anything unreadable is the default; a value out of range is the default for that field. */
+export const parseCookFilters = (value: unknown): CookFilters => {
+  let raw: unknown = value;
+  if (typeof value === 'string') {
+    try {
+      raw = JSON.parse(value);
+    } catch {
+      return { ...DEFAULT_COOK_FILTERS };
+    }
+  }
+  if (typeof raw !== 'object' || raw === null) return { ...DEFAULT_COOK_FILTERS };
+  const { role, lacking } = raw as { role?: unknown; lacking?: unknown };
+  return {
+    ...(typeof role === 'string' && role !== '' ? { role } : {}),
+    lacking:
+      typeof lacking === 'number' &&
+      Number.isInteger(lacking) &&
+      lacking >= 0 &&
+      lacking <= MAX_LACKING
+        ? lacking
+        : DEFAULT_COOK_FILTERS.lacking,
+  };
+};
+
+export const readCookFilters = (store: KeyValueStore | null): CookFilters => {
+  try {
+    return parseCookFilters(store?.getItem(COOK_KEY));
+  } catch {
+    return { ...DEFAULT_COOK_FILTERS };
+  }
+};
+
+/** False when the choice could not be kept (no storage, quota, private mode). */
+export const writeCookFilters = (store: KeyValueStore | null, filters: CookFilters): boolean => {
+  try {
+    if (!store) return false;
+    store.setItem(COOK_KEY, JSON.stringify(filters));
+    return true;
+  } catch {
+    return false;
+  }
+};

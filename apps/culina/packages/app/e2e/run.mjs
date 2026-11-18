@@ -2,6 +2,7 @@
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 import { catalogue } from './catalogue.mjs';
 import { components } from './components.mjs';
+import { cook } from './cook.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
 import { exportImport } from './export-import.mjs';
@@ -34,6 +35,7 @@ try {
   await versions(browser, server);
   await exportImport(browser, server);
   await stock(browser, server);
+  await cook(browser, server);
   await importCatalogue(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);

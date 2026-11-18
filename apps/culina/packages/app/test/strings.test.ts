@@ -27,11 +27,13 @@ test('the placeholder screens have the same parts: title, empty state, collapsib
   }
 });
 
-test('the navigation names its five destinations and the screens use them as titles', () => {
+test('the navigation names its five entries and the screens use them as titles', () => {
   expect(strings.nav.ratios).toBe(strings.screens.ratios.title);
   expect(strings.nav.components).toBe(strings.screens.components.title);
   expect(strings.nav.dishes).toBe(strings.screens.dishes.title);
-  expect(strings.nav.stock).toBe(strings.stock.title);
+  // The Stock entry became Cook; the stock list is a view of Cook, titled by its tab.
+  expect(strings.nav.cook).toBe(strings.cook.title);
+  expect(strings.stock.title).toBe(strings.cook.tabStock);
   expect(strings.nav.settings).toBe(strings.settings.title);
 });
 
@@ -49,6 +51,7 @@ test('no text says that a recipe or a ratio is wrong, invalid, failed or missing
   // Every strings file is scanned: the main one and the ones split off by area.
   const files = readdirSync(srcUrl('')).filter((name) => /^strings(-[a-z]+)?\.ts$/.test(name));
   expect(files).toContain('strings-stock.ts');
+  expect(files).toContain('strings-cook.ts');
   for (const file of files) {
     const source = readSrc(file)
       .replace(/\/\*[\s\S]*?\*\//g, '')

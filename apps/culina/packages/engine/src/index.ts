@@ -228,7 +228,13 @@ export type {
   Segment,
 } from './cooklang/types';
 
-export { DEFAULT_DISH_ROLES, makeable, openDishRoles, stockForRole } from './makeable';
+export {
+  DEFAULT_DISH_ROLES,
+  makeable,
+  openDishRoles,
+  stockForRole,
+  usesIngredient,
+} from './makeable';
 export type {
   MakeableCandidate,
   MakeableComponent,
@@ -248,4 +254,5 @@ export type {
   MakeableUseUp,
   RoleStockItem,
   StockForRoleResult,
+  UsesIngredientResult,
 } from './makeable';

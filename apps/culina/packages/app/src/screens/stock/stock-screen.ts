@@ -7,6 +7,7 @@ import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { stockRows, type StockRow } from '../../stock/rows';
 import { strings } from '../../strings';
+import { cookTabs } from '../cook/tabs';
 import { storeText } from '../editor/store-text';
 import { stockLookup } from './lookup';
 
@@ -53,7 +54,7 @@ const row = (r: StockRow): HTMLElement => {
 
 export const stockScreen = (): HTMLElement => {
   const section = el('section', 'screen stock-screen');
-  section.append(el('h1', undefined, t.title));
+  section.append(el('h1', undefined, t.title), cookTabs('stock'));
   const problem = storeProblem();
   if (problem !== undefined) {
     section.append(el('p', 'note-quiet', storeText(problem)));

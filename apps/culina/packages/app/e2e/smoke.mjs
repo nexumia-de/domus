@@ -1,14 +1,17 @@
 // Smoke tests: shell, navigation, targets, theme, offline, no foreign requests.
 import { check, watch } from './harness.mjs';
 
-const ROUTES = ['ratios', 'components', 'dishes', 'stock', 'settings'];
+// The stock screens are shown under the Cook entry, which is the one marked in the navigation.
+const ROUTES = ['ratios', 'components', 'dishes', 'cook', 'stock', 'settings'];
 const NAMES = {
   ratios: 'Ratios',
   components: 'Components',
   dishes: 'Dishes',
-  stock: 'Stock',
+  cook: 'Cook',
+  stock: 'Cook',
   settings: 'Settings',
 };
+const HEADINGS = { ...NAMES, cook: 'What can I cook', stock: 'What is there' };
 
 const measure = (page) =>
   page.evaluate(() => {
@@ -42,7 +45,7 @@ const shellAt = async (browser, origin, width, height) => {
 
   for (const route of ROUTES) {
     await page.goto(`${origin}/?no-sw#/${route}`);
-    await page.getByRole('heading', { level: 1, name: NAMES[route] }).waitFor();
+    await page.getByRole('heading', { level: 1, name: HEADINGS[route] }).waitFor();
     const m = await measure(page);
     check(
       m.scrollW <= m.clientW,

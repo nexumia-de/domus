@@ -1,11 +1,11 @@
 import { icon } from '../icons/icons';
-import { hashFor, ROUTES, type Route } from '../router';
+import { hashFor, NAV_ENTRIES, navEntryFor, type NavEntry, type Route } from '../router';
 import { strings } from '../strings';
 import { el } from './el';
 
 export interface Nav {
   element: HTMLElement;
-  /** Marks the active destination with aria-current="page". */
+  /** Marks the active destination with aria-current="page"; the stock screens mark Cook. */
   setCurrent(route: Route): void;
 }
 
@@ -14,8 +14,8 @@ export const createNav = (): Nav => {
   const nav = el('nav', 'app-nav');
   nav.setAttribute('aria-label', strings.nav.label);
   const list = el('ul', 'nav-list');
-  const links = new Map<Route, HTMLAnchorElement>();
-  for (const route of ROUTES) {
+  const links = new Map<NavEntry, HTMLAnchorElement>();
+  for (const route of NAV_ENTRIES) {
     const link = el('a', 'nav-link');
     link.href = hashFor(route);
     link.append(icon(route), el('span', 'nav-label', strings.nav[route]));
@@ -29,7 +29,7 @@ export const createNav = (): Nav => {
     element: nav,
     setCurrent(current) {
       for (const [route, link] of links) {
-        if (route === current) link.setAttribute('aria-current', 'page');
+        if (route === navEntryFor(current)) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');
       }
     },

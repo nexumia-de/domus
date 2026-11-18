@@ -196,10 +196,11 @@ Run by `test/makeable-vectors.test.ts` from `packages/engine/vectors/makeable/`.
 `expected` is a subset of the result: objects by field, arrays by position
 and length; `urgency: null` asserts no urgency.
 
-| `kind`           | `inputs`                                                                                                                                             | `expected`                                   |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `makeable`       | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
-| `stock_for_role` | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                       | `items` (`itemId`, `ingredientId`, `useBy`)  |
+| `kind`            | `inputs`                                                                                                                                             | `expected`                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
+| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                       | `items` (`itemId`, `ingredientId`, `useBy`)  |
+| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `options` (`siblingSubstitution`)                   | `records` (`kind`, `id`), exactly, in order  |
 
 Errors use `error_code` and `error_detail` as elsewhere (`invalid-tree`,
 `invalid-date`, `cycle`, `invalid-template`). Covered: exact match, a
@@ -213,7 +214,7 @@ component from stock and made (scaled, short, unscaled), family heads and a
 stock item of another version, the ranking (urgency beats roles, roles break
 an urgency tie, name then id, no use-by last, a date in the past),
 always-there items, empty stock, open roles, ratio templates (inherited
-roles, threshold, swapped class), use up first and the errors. Amounts,
+roles, threshold, swapped class), use up first, what uses an ingredient (itself, a class above, a sibling, through a component, head versions only, a generic item not standing for a specific line) and the errors. Amounts,
 dates and ingredients are synthetic and say so in `source`.
 
 # Worked examples

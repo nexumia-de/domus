@@ -1,0 +1,20 @@
+{
+  "id": "uses-ingredient-error-invalid-tree",
+  "description": "A tree with an unknown parent is the same error as for makeable",
+  "inputs": {
+    "kind": "uses_ingredient",
+    "ingredientId": "leek",
+    "today": "2026-11-18",
+    "stock": [],
+    "ingredients": [
+      {
+        "id": "leek",
+        "parentId": "nowhere"
+      }
+    ],
+    "components": []
+  },
+  "error_code": "invalid-tree",
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree; ingredients and recipes are made up and no kitchen figure is involved."
+}

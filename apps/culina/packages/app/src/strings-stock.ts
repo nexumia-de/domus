@@ -1,6 +1,6 @@
 // Texts of the Stock screens. Wording never judges: a date that has passed is information.
 export const stockStrings = {
-  title: 'Stock',
+  title: 'What is there',
   empty: 'Nothing is ticked yet. Tick what is there in the kitchen.',
   guidanceSummary: 'What belongs here',
   guidance:

@@ -17,6 +17,8 @@ import type {
 } from './types';
 
 export { stockForRole } from './for-role';
+export { usesIngredient } from './uses';
+export type { UsesIngredientResult } from './uses';
 export * from './types';
 
 /** The roles a dish is asked to fill; starch is often there but never invited. */

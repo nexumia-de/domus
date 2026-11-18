@@ -30,7 +30,8 @@ Mixtura[^mixtura].
 | Ratios     | `#/ratios`, `#/ratios/<id>`                   | The ratio list and the ratio cards ([below](#ratios)); the start screen                                                                                             | `src/screens/ratios.ts`     |
 | Components | `#/components`, `#/components/<id>`           | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
 | Dishes     | `#/dishes`, `#/dishes/<id>`                   | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
-| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit` | What is there: the list, the quick entry and the detail of one item ([below](#stock))                                                                               | `src/screens/stock/`        |
+| Cook       | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with` | What can I cook, use up first, and what uses one ingredient ([below](#cook))                                                                                        | `src/screens/cook/`         |
+| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit` | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                             | `src/screens/stock/`        |
 | Settings   | `#/settings`                                  | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
 An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
@@ -468,8 +469,10 @@ branches, sharing versions between devices, comparing different recipes.
 What is there, with as little upkeep as possible
 ([decision](decisions/recipe-book.md), points 4 and 5; data:
 [stock item](data-model.md#stock-item); rules:
-[engine rules](engine-rules.md#stock)). A fifth navigation entry, "Stock",
-between Dishes and Settings. Texts: `src/strings-stock.ts`.
+[engine rules](engine-rules.md#stock)). Not an entry of its own: the stock
+screens are the view "What is there" of [Cook](#cook), and the navigation
+entry Cook stays marked on them. The list's heading is "What is there".
+Texts: `src/strings-stock.ts`.
 
 - **Tick what is there** (`#/stock/add`). A list to tick from: the
   notebook's ingredients and components by name, then the catalogue by
@@ -511,6 +514,71 @@ between Dishes and Settings. Texts: `src/strings-stock.ts`.
   work offline. **Test:** `e2e/stock.mjs` (also 320 and 1000 px, remaining
   days at fixed dates, a field of another app surviving an edit).
 
+# Cook
+
+"I stand in the kitchen and do not know what to cook"
+([decision](decisions/recipe-book.md), issue 22; rules:
+[engine rules](engine-rules.md#what-the-stock-allows)). The navigation
+entry "Cook" (the old "Stock", between Dishes and Settings; no sixth
+entry) leads to `#/cook`. Three views, switched by links at the top of each
+(a group with `aria-current`, a bar and bold text for the current one, not
+a second navigation landmark): **What can I cook** (`#/cook`), **Use up
+first** (`#/cook/use-up`) and **What is there** (`#/stock`, the stock
+list with its "Tick what is there" action). Texts:
+`src/strings-cook.ts`. **Test:** `e2e/cook.mjs`, `test/cook-finder.test.ts`,
+`test/router-cook.test.ts`.
+
+- **One adapter.** `src/cook/input.ts` builds the engine's input from the
+  notebook cache: the ingredient tree (a `parentId` that names no
+  ingredient is left out), every version of components and dishes, the seed
+  templates, the stock as stored, the facts for conversion and today. No
+  arithmetic in the app: every number and status comes from `makeable`.
+  Today is the shell's injected clock (`?e2e-now=` in tests), read in
+  `src/cook/source.ts` only, and shown on the screen as "As of 18 Nov 2026".
+- **What can I cook.** The engine's candidates (own components and dishes,
+  ratio templates where the engine returns them) in the engine's exact
+  order; the filters only drop entries. "Complete only" is not a rule:
+  each entry shows "complete" or "lacks N" as text. Each entry is one link
+  to its recipe (a dish, a component or a ratio card) and shows: the
+  reason line, "uses the Leek with 1 day left; covers aromatic, sauce"
+  (the engine's urgency item and days, or "nothing it uses has a use-by
+  date", then the roles covered, or "no roles recorded"); "Lacks: Thyme,
+  Cream (100 g there, 200 g needed)"; the substitutes, "with Salted butter
+  in place of Unsalted butter"; items that are there with no known amount,
+  "Cream is there; how much is not known."; and for a dish the open roles
+  the stock can fill, "You could add a crunch: Walnut", only where the
+  stock has an ingredient or component with that role. The same offer is
+  shown on the dish screen beside "Open: add a crunch". Wording is neutral:
+  "lacks", "could add", never an alarm word or colour.
+- **Filters**, kept in `localStorage` (`culina.cook`, like the theme; no
+  storage means the defaults): "Show" is the engine's threshold, complete
+  only or lacking at most 1, 2 or 3 (default 1); "Covers the role" keeps
+  entries whose covered roles include the chosen one.
+- **Start from one ingredient** (`#/cook/<ingredientId>/with`, heading
+  "What uses Leek"): a section at the top lists the ticked ingredients and
+  a search over the notebook's ingredients by every name (English and
+  German, through `shared/names.ts`). The list keeps the engine's order and
+  only own components and dishes that use the ingredient or one it can
+  stand in for (`usesIngredient`); "Show everything" leaves it.
+- **Use up first.** The stock items that have a use-by date, nearest first
+  (the engine's `useUpFirst`), each with days left in words and links to
+  the components and dishes that use it, counted within the same "lacking
+  at most" choice; an item nothing uses says so. Tapping the item opens it
+  in the stock screen (`#/stock/<id>/edit`).
+- **Empty states**, each with the way forward: nothing ticked yet (link
+  "Tick what is there"); nothing in the notebook yet, when nothing is
+  found and there is no component or dish (links to add a component and to
+  import); nothing matches, with the three nearest candidates and what each
+  lacks (the engine at a wide threshold, fewest lacking first).
+- **Catalogue ingredients only.** Catalogue ingredients carry no roles, so
+  with no recipe of one's own there is nothing to rank and the screen shows
+  "Your notebook has no components or dishes yet." with its links. No
+  roles are invented.
+- **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
+  least 44 px, nothing focused on open. **Offline:** the finder reads the
+  local notebook. No "add to list": shopping lists are the planned sister
+  app's.
+
 # Navigation
 
 - **One back stack: the browser history.** Every destination is a hash
@@ -522,7 +590,7 @@ between Dishes and Settings. Texts: `src/strings-stock.ts`.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
   and label; from 720 px a side navigation ([design](design.md#layout-and-breakpoints)).
   Both are the same `<nav aria-label="Main">`, so the order and the
-  names are the same. Entries are as wide as their labels need and share
+  names are the same; the stock screens are shown under "Cook". Entries are as wide as their labels need and share
   the rest (`flex: 1 1 auto`), so five fit at 320 px. **Test:**
   `e2e/smoke.mjs` at 320, 360 and 1000 px, `e2e/stock.mjs`.
 - **Landmarks:** one `<header>`, one `<nav>` with a label, one `<main>`;

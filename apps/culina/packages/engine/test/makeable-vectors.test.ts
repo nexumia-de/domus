@@ -1,8 +1,8 @@
 // Runs every vector in vectors/makeable against the public entry (docs/vectors.md): what the
-// stock allows, ranked, and the stock that can play a role. The expected value is a subset of
+// stock allows, ranked, the stock that can play a role and what uses an ingredient. The expected value is a subset of
 // the result (arrays by position and length); `urgency: null` means no urgency.
 import { describe, expect, test } from 'vitest';
-import { makeable, stockForRole } from '../src/index';
+import { makeable, stockForRole, usesIngredient } from '../src/index';
 import type { MakeableInput } from '../src/index';
 import { expectError, loadVectors } from './vector-files';
 import type { Vector } from './vector-files';
@@ -24,7 +24,18 @@ function withoutUrgency(expected: Record<string, unknown>[], got: Record<string,
 }
 
 function run(vector: Vector): void {
-  const input = vector.inputs as unknown as MakeableInput & { kind: string; role?: string };
+  const input = vector.inputs as unknown as MakeableInput & {
+    kind: string;
+    role?: string;
+    ingredientId?: string;
+  };
+  if (input.kind === 'uses_ingredient') {
+    const result = usesIngredient(input, input.ingredientId as string);
+    if (vector.error_code !== undefined) return expectError(result as never, vector);
+    if (!result.ok) throw new Error(`${vector.id}: ${result.error.code}`);
+    expect(result.records).toEqual((vector.expected as { records: unknown[] }).records);
+    return;
+  }
   if (input.kind === 'stock_for_role') {
     const result = stockForRole(input, input.role as string);
     if (!result.ok) throw new Error(`${vector.id}: ${result.error.code}`);
