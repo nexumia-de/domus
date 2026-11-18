@@ -142,6 +142,17 @@ describe('invalid cases named by the issue', () => {
     expect(fails('export', (d: Doc) => (d.stock[0].state = 'frozen'))).toBe(true);
     expect(fails('export', (d: Doc) => (d.tastings[0].ref.kind = 'stock'))).toBe(true);
   });
+  test('ingredient names: language tag keys, a name and a source each, no unknown field', () => {
+    expect(fails('ingredient', (d: Doc) => (d.names.de.aliases = ['Zwiebel', 'Zwiebel']))).toBe(
+      true,
+    );
+    expect(fails('ingredient', (d: Doc) => delete d.names.de.source)).toBe(true);
+    expect(fails('ingredient', (d: Doc) => delete d.names.de.name)).toBe(true);
+    expect(fails('ingredient', (d: Doc) => (d.names.de.note = 'x'))).toBe(true);
+    expect(fails('ingredient', (d: Doc) => (d.names.German = d.names.de))).toBe(true);
+    expect(fails('ingredient', (d: Doc) => (d.names['pt-BR'] = d.names.de))).toBe(false);
+    expect(fails('ingredient', (d: Doc) => delete d.names)).toBe(false);
+  });
   test('catalogue: format 1 only, entries are ingredient records with sourced numbers', () => {
     expect(fails('catalogue', (d: Doc) => (d.formatVersion = 2))).toBe(true);
     expect(fails('catalogue', (d: Doc) => delete d.dataset.sha256)).toBe(true);

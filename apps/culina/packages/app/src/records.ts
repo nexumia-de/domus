@@ -8,11 +8,14 @@ import type {
   IngredientFacts,
   IngredientYield,
 } from '@culina/engine';
+import type { NamesByLanguage } from './shared/names';
 
 export interface IngredientRecord {
   id: string;
   name: string;
   parentId?: string;
+  /** Names in other languages by language tag; `name` stays the canonical English name. */
+  names?: NamesByLanguage;
   roles?: string[];
   yields?: IngredientYield[];
   shelfLife?: {

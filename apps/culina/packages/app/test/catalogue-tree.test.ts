@@ -75,6 +75,17 @@ describe('the search', () => {
     expect(must(found[0])).toMatchObject({ hit: false, below: 4 });
     expect(searchTree(roots, 'garlic', (e) => e.id !== 'f-garlic')).toEqual([]);
   });
+  test('a German name or alias is a match too, and a parent without one leads to it', () => {
+    const named = {
+      ...whole,
+      names: { de: { name: 'Vollkornmehl', aliases: ['Graham'], source: 'x' } },
+    };
+    const tree = catalogueTree([flour, white, bread, plain, named, garlic]);
+    const found = searchTree(tree, 'vollkorn', free);
+    expect(found.map((f) => [f.entry.id, f.hit])).toEqual([['g-flour', false]]);
+    expect(must(found[0]).children.map((f) => [f.entry.id, f.hit])).toEqual([['f-whole', true]]);
+    expect(searchTree(tree, 'graham', free)).toHaveLength(1);
+  });
   test('an empty text and a text nothing has give nothing', () => {
     expect(searchTree(roots, '  ', free)).toEqual([]);
     expect(searchTree(roots, 'zzz', free)).toEqual([]);

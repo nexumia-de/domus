@@ -9,6 +9,11 @@
   font-weight: 600;
 }
 
+.entry-alt {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
 .entry-meta {
   color: var(--text-muted);
   font-size: var(--fs-sm);

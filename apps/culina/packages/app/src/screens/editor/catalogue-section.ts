@@ -13,6 +13,7 @@ import {
   type Found,
 } from '../../catalogue/tree';
 import { getIngredient } from '../../notebook';
+import { foundThrough, startsWithAnyName } from '../../shared/names';
 import type { IngredientRecord } from '../../records';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -64,10 +65,17 @@ export const catalogueSection = (
     }
   };
   const choice = (entry: IngredientRecord, parent: IngredientRecord | undefined): HTMLElement => {
+    const other = foundThrough(entry, query());
     const button = el('button', 'entry-row row-link picker-choice');
     button.type = 'button';
     const about = meta(entry);
     button.append(el('span', 'entry-name', shortName(entry, parent)));
+    if (other !== undefined) {
+      // Found through a name in another language: that name stands beside the English one.
+      const alt = el('span', 'entry-alt', other.name);
+      alt.lang = other.lang;
+      button.append(alt);
+    }
     if (about !== undefined) button.append(el('span', 'entry-meta', about));
     // A variant shows only what follows its parent's name; the full name is its accessible name.
     if (parent !== undefined)
@@ -127,8 +135,7 @@ export const catalogueSection = (
     }
     const found = searchTree(roots, needle, (e) => getIngredient(e.id) === undefined);
     if (found.length === 0) return void body.append(quiet(t.catalogueNone));
-    const lower = needle.toLowerCase();
-    const starts = found.filter((f) => f.entry.name.toLowerCase().startsWith(lower));
+    const starts = found.filter((f) => startsWithAnyName(f.entry, needle));
     const shown = [...starts, ...found.filter((f) => !starts.includes(f))].slice(
       0,
       CATALOGUE_LIMIT,

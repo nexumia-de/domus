@@ -12,8 +12,10 @@ import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deriveDensity, deriveUnitWeight, isBasic, nameOf } from './derive.mjs';
 import { groupRows } from './group.mjs';
+import { germanNames } from './wikidata.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
+const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
   new URL('../../packages/app/data/ingredient-catalogue.json', import.meta.url),
@@ -44,9 +46,12 @@ const mlOf = (unit) => units[unit].toBase;
 
 /**
  * Rows for every selected food that has a density or a unit weight, sorted by id. `refuse` (from
- * readRefuse) adds the yields; without it the rows have none.
+ * readRefuse) adds the yields; without it the rows have none. `wikidata` (the parsed snapshot) adds
+ * the German names; without it the rows have none.
  */
-export const buildRows = (foods, release, refuse = new Map()) => {
+export const buildRows = (foods, release, refuse = new Map(), wikidata = undefined) => {
+  const german =
+    wikidata === undefined ? new Map() : germanNames(foods.filter(isBasic), wikidata).found;
   const where = `${DATASET}, release ${release}`;
   const rows = [];
   for (const food of foods) {
@@ -56,6 +61,8 @@ export const buildRows = (foods, release, refuse = new Map()) => {
     const piece = deriveUnitWeight(portions);
     if (density === undefined && piece === undefined) continue;
     const row = { id: `fdc-${food.fdcId}`, name: nameOf(food.description) };
+    const named = german.get(food.fdcId);
+    if (named !== undefined) row.names = named.names;
     if (density !== undefined) {
       row.densityGPerMl = {
         value: density.value,
@@ -70,7 +77,13 @@ export const buildRows = (foods, release, refuse = new Map()) => {
     }
     const yields = deriveYields(food, refuse);
     if (yields !== undefined) row.yields = yields;
-    row['x-fdc'] = { id: food.fdcId, description: food.description };
+    row['x-fdc'] = {
+      id: food.fdcId,
+      description: food.description,
+      ...(food.foodCategory?.description !== undefined
+        ? { category: food.foodCategory.description }
+        : {}),
+    };
     rows.push(row);
   }
   // A name that two rows share is made unique by its full description, then by its id.
@@ -88,8 +101,8 @@ export const buildRows = (foods, release, refuse = new Map()) => {
 };
 
 /** The catalogue entries: the food rows with their parent links, and the parents. */
-export const buildCatalogue = (foods, release, refuse = new Map()) =>
-  groupRows(buildRows(foods, release, refuse));
+export const buildCatalogue = (foods, release, refuse = new Map(), wikidata = undefined) =>
+  groupRows(buildRows(foods, release, refuse, wikidata));
 
 /** The file's text: the envelope with one ingredient per line, so diffs stay readable. */
 export const serialise = (envelope) => {
@@ -120,7 +133,14 @@ const main = () => {
   const release = releaseOf(file);
   const foods = JSON.parse(text.toString('utf8')).SRLegacyFoods;
   if (!Array.isArray(foods)) throw new Error('no SRLegacyFoods list in the file');
-  const ingredients = buildCatalogue(foods, release, readRefuse(refuseText.toString('latin1')));
+  const snapshotText = readFileSync(snapshotFile);
+  const wikidata = JSON.parse(snapshotText.toString('utf8'));
+  const ingredients = buildCatalogue(
+    foods,
+    release,
+    readRefuse(refuseText.toString('latin1')),
+    wikidata,
+  );
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,
@@ -137,6 +157,14 @@ const main = () => {
       sha256: createHash('sha256').update(refuseText).digest('hex'),
       licence: LICENCE,
     },
+    namesDataset: {
+      name: 'Wikidata, German labels and aliases by USDA NDB number (P1978)',
+      file: 'tools/catalogue/wikidata-de.json',
+      sha256: createHash('sha256').update(snapshotText).digest('hex'),
+      retrieved: wikidata.retrieved,
+      licence:
+        'CC0 1.0 Universal (public domain), as stated on https://www.wikidata.org/wiki/Wikidata:Licensing',
+    },
     generatedBy: 'tools/catalogue/build.mjs',
     ingredients,
   };
@@ -145,7 +173,7 @@ const main = () => {
   const groups = ingredients.filter((r) => r['x-group'] !== undefined);
   const count = (list, field) => list.filter((r) => r[field]).length;
   console.log(
-    `${ingredients.length} entries: ${foodRows.length} foods (${count(foodRows, 'densityGPerMl')} density, ${count(foodRows, 'unitWeightG')} unit weight, ${count(foodRows, 'yields')} yields), ${groups.length} parents (${count(groups, 'densityGPerMl')} density, ${count(groups, 'unitWeightG')} unit weight) -> ${out}`,
+    `${ingredients.length} entries: ${foodRows.length} foods (${count(foodRows, 'densityGPerMl')} density, ${count(foodRows, 'unitWeightG')} unit weight, ${count(foodRows, 'yields')} yields), ${groups.length} parents (${count(groups, 'densityGPerMl')} density, ${count(groups, 'unitWeightG')} unit weight); German names: ${count(foodRows, 'names')} foods, ${count(groups, 'names')} parents -> ${out}`,
   );
 };
 
