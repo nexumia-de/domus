@@ -3,7 +3,7 @@ type: Specification
 title: Local store
 description: The app's IndexedDB store - object stores and indexes, schema versions and migrations, seed data kept read-only beside user data with one catalog view, persistent-storage request, failure states and how it is tested.
 tags: [store, indexeddb, migrations, seed, persistence]
-generated: { by: claude-code/2.1.326, at: 2026-11-17 }
+generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
   - id: model
     title: Data model
@@ -20,22 +20,24 @@ sources:
 ([data model](data-model.md)). Seed data is shipped with the app and
 never written into the database. Built by issue #24.
 
-## Object stores (schema version 4)
+## Object stores (schema version 5)
 
 Defined as data in `store/schema.ts`; a test compares a freshly migrated
 database with that table.
 
-| Store         | Key                       | Indexes                                                                                 | Holds                                                                                                                             |
-| ------------- | ------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `specs`       | `id`                      | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each                                                                                 |
-| `ingredients` | `id`                      | `parentId`, `level`                                                                     | User ingredients, prepared ones included                                                                                          |
-| `templates`   | `id`                      | `parentId`                                                                              | User templates                                                                                                                    |
-| `affinities`  | `id`                      | none                                                                                    | User affinities                                                                                                                   |
-| `places`      | `id`                      | none                                                                                    | Places where ingredients are kept ([data model](data-model.md#place))                                                             |
-| `stock`       | `[placeId, ingredientId]` | `placeId`                                                                               | Stock records per place, tombstones included ([data model](data-model.md#stock))                                                  |
-| `settings`    | `key`                     | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup`, `places` (below) |
-| `meta`        | `key`                     | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                                            |
-| `drafts`      | `key`                     | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                                                |
+| Store         | Key                       | Indexes                                                                                 | Holds                                                                                                                                 |
+| ------------- | ------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `specs`       | `id`                      | `lineageId`, `lineage-version` (unique, `[lineageId, version]`), `templateId`, `status` | Every version of every user spec, one record each                                                                                     |
+| `ingredients` | `id`                      | `parentId`, `level`                                                                     | User ingredients, prepared ones included                                                                                              |
+| `templates`   | `id`                      | `parentId`                                                                              | User templates                                                                                                                        |
+| `affinities`  | `id`                      | none                                                                                    | User affinities                                                                                                                       |
+| `places`      | `id`                      | none                                                                                    | Places where ingredients are kept ([data model](data-model.md#place))                                                                 |
+| `stock`       | `[placeId, ingredientId]` | `placeId`                                                                               | Stock records per place, tombstones included ([data model](data-model.md#stock))                                                      |
+| `settings`    | `key`                     | none                                                                                    | Device settings: `theme`, `units`, `alcoholWithout`, `alcoholLow` (preset ids of the alcohol filters), `backup`, `places` (below)     |
+| `meta`        | `key`                     | none                                                                                    | Bookkeeping: `persist` (whether the browser was asked)                                                                                |
+| `drafts`      | `key`                     | none                                                                                    | Unsaved editor state, `draft/<id>`; never exported                                                                                    |
+| `storages`    | `id`                      | none                                                                                    | Storages the user configured for sync, credentials included; device-local, never exported ([below](#device-local-sync-configuration)) |
+| `bindings`    | `[unitKind, unitId]`      | `storageId`                                                                             | Which storage, folder and passphrase a synced unit uses; device-local, never exported                                                 |
 
 A stock record may carry `moreBatches` (the made-on dates of further batches of a prepared ingredient, [#101](screens-stock-settings.md#batches-near-their-date-and-more-than-one-batch-101)): the store holds whole records, so this needed no migration; the schema check on every put refuses a repeated or malformed date.
 
@@ -68,6 +70,7 @@ edited after release.
 | 2       | Copies the shell's interim `localStorage` preferences (`mixtura.prefs`) into `settings` once; no old value means nothing written. |
 | 3       | Creates `drafts`, empty.                                                                                                          |
 | 4       | Stock per place: makes the default place and moves all stock into it ([below](#migration-4-stock-per-place)).                     |
+| 5       | Creates `storages` and `bindings` (with the index `storageId`), empty ([below](#device-local-sync-configuration)).                |
 
 After opening, `data.ts` removes the old key. A copy of theme and units
 stays in `localStorage` (`mixtura.prefs-copy`, `prefs.ts`) only so the
@@ -83,6 +86,10 @@ version above the app's is refused untouched (`too-new`).
 ### Migration 4: stock per place
 
 IndexedDB cannot change a key path in place, so inside the one upgrade transaction the migration (1) reads all old stock rows with `getAll` (the read completes before anything is deleted), (2) deletes the `stock` store, (3) creates `places` and the new `stock` store with the key `[placeId, ingredientId]` and the index `placeId`, (4) writes one place named `Home` (`strings.places.home`), (5) writes every old row with that `placeId` and `updatedAt` set to the migration's instant, all other fields as they were, and (6) writes the setting `places` with that place as the only ticked and the entry place. A fresh install runs the same chain (version 1 creates the old empty `stock`), so it also gets `Home`. The clock, the id generator and the name come in through the migration context (`OpenOptions.clock`, `newId`, `placeName`); the pure helper `rowsInPlace` stamps the rows. Any failure aborts the upgrade and leaves version 3 with its stock; the test makes the clock throw to show it. A later migration that touches `stock` must queue its work after this one's read callback has run.
+
+## Device-local sync configuration
+
+Added by issue #133 (migration 5, `store/repo-sync.ts`, [sync backends](sync-backends.md#the-stores)). `storages` holds `{ id, label, type: 'webdav', baseUrl, username?, password? }`, `bindings` holds `{ unitKind: 'place', unitId, storageId, folder, passphrase, etag?, lastSyncAt?, lastError? }` with the key `[unitKind, unitId]`. Both are validated on every `put` against `engine/schemas/device/*.schema.json` and the id rule (`id`, `unitId` and `storageId` are user ids), but they are not entities: the schemas sit in their own folder, the export schema does not reference them, `exchange` never reads the two stores, and a write does not count for the backup reminder or ask for persistent storage. `store.storages.delete(id)` is refused with a `StoreError` of kind `in-use` while a binding refers to the storage (one transaction for check and delete). Nothing else reads or writes them yet: the sync cycle is #134, the screens #135.
 
 ## Reading: seed plus user data
 
@@ -167,6 +174,7 @@ Storage: not requested yet, kept, not guaranteed, or not supported
 | `quota`       | Device storage full                                                                  | The write fails; a setting is reverted, banner "Not saved"                                                                                                      |
 | `invalid`     | Schema or id rule broken                                                             | The write is refused                                                                                                                                            |
 | `seed`        | Built-in data did not load or is malformed                                           | Banner "Data could not be loaded"; user data is unaffected                                                                                                      |
+| `in-use`      | A storage still has bindings                                                         | The removal is refused; remove the bindings first (the screens are #135)                                                                                        |
 
 The texts are in [UI strings](ui-strings.md#errors-and-offline). The
 behaviour document asks for a full-screen status; the build shows the
@@ -195,6 +203,7 @@ Export and import: [export and import](export-format.md#tests).
   fresh install with the default place, newer database refused, no
   IndexedDB, blocked upgrade. `test/stock-places.test.ts`: combined view
   and entry place.
+- `test/store-sync-repos.test.ts`: migration 5 from a version 4 database with data, the repositories, schema and id refusals, the `in-use` refusal of a storage, no backup count, and that the export file, the export snapshot and the export schema hold no storage, binding or credential.
 - `test/store-persist.test.ts`, `test/store-seed.test.ts`,
   `test/store-references.test.ts` (references and drafts).
 - `e2e/store.mjs` in a real browser: settings survive a reload, a

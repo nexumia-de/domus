@@ -5,7 +5,7 @@
 import { committed, request } from './db';
 import { StoreError, toStoreError } from './errors';
 import { isUserId } from './ids';
-import type { EntityKind } from './types';
+import type { DeviceKind, EntityKind } from './types';
 import { validateEntity } from './validate';
 
 export interface RepoContext {
@@ -25,7 +25,9 @@ export interface Repo<T, K extends IDBValidKey = string> {
 
 export interface RepoOptions<T> {
   store: string;
-  kind: EntityKind;
+  kind: EntityKind | DeviceKind;
+  /** False for device-local records: a write is not an entity change (no backup count, no persist request). */
+  counted?: boolean;
   /** Fields of a record that must be user ids; stock checks only `placeId` (its ingredient may be a seed id). */
   userIdFields?: (keyof T & string)[];
 }
@@ -54,7 +56,10 @@ export function createRepo<T extends object, K extends IDBValidKey = string>(
   options: RepoOptions<T>,
 ): Repo<T, K> {
   const { db } = context;
-  const { store, kind, userIdFields = [] } = options;
+  const { store, kind, userIdFields = [], counted = true } = options;
+  const changed = (): void => {
+    if (counted) context.afterWrite();
+  };
   return {
     get: (key) => run(db, store, 'readonly', (s) => s.get(key)) as Promise<T | undefined>,
     list: () => run(db, store, 'readonly', (s) => s.getAll()) as Promise<T[]>,
@@ -71,11 +76,11 @@ export function createRepo<T extends object, K extends IDBValidKey = string>(
         }
       }
       await run(db, store, 'readwrite', (s) => s.put(value));
-      context.afterWrite();
+      changed();
     },
     async delete(key) {
       await run(db, store, 'readwrite', (s) => s.delete(key));
-      context.afterWrite();
+      changed();
     },
   };
 }

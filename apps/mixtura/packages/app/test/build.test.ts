@@ -128,8 +128,11 @@ test('no external URL appears in the built output', () => {
     // leaves the origin.
     const identifier =
       /^https?:\/\/(json-schema\.org\/|raw\.githubusercontent\.com\/ajv-validator\/)/;
+    // The two local addresses of `connect-src` are policy source expressions (a port wildcard),
+    // not addresses the app requests.
+    const policySource = /^http:\/\/(localhost|127\.0\.0\.1):\*;?$/;
     const urls = (read(file).match(/https?:\/\/[^\s"'<>)]+/g) ?? []).filter(
-      (u) => u !== namespace && !identifier.test(u),
+      (u) => u !== namespace && !identifier.test(u) && !policySource.test(u),
     );
     expect(urls, file).toEqual([]);
   }
@@ -174,7 +177,11 @@ test('strict policy: no dynamic code in the scripts, no inline script or style i
   expect(policy).toContain("script-src 'self'");
   expect(policy).toContain("object-src 'none'");
   expect(policy).toContain("base-uri 'none'");
-  expect(policy).not.toMatch(/unsafe-|https?:|\*/);
+  // Only `connect-src` may name hosts: the user's sync storage (docs/sync-backends.md#policy).
+  const connect = /(?:^|; )connect-src ([^;]*)/.exec(policy)?.[1];
+  expect(connect).toBe("'self' https: http://localhost:* http://127.0.0.1:*");
+  expect(policy.replace(/connect-src [^;]*/, '')).not.toMatch(/unsafe-|https?:|\*/);
+  expect(policy).not.toMatch(/unsafe-/);
 });
 
 test('the _headers file carries the page policy as a header, from the same source', () => {

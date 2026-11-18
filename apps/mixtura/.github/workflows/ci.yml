@@ -61,6 +61,44 @@ jobs:
       - run: npm run build
       - run: npm run e2e:slow -w @mixtura/app
 
+  # The WebDAV adapter against the real server of tools/webdav-server: the
+  # integration test in Node and e2e/webdav.mjs in a browser (docs/sync-backends.md).
+  # Not a required check unless the owner adds it to the ruleset.
+  webdav:
+    name: webdav
+    runs-on: ubuntu-24.04
+    env:
+      MIXTURA_WEBDAV_URL: http://127.0.0.1:8080
+      MIXTURA_WEBDAV_USER: mixtura
+      MIXTURA_WEBDAV_PASSWORD: ci-only-password
+      WEBDAV_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: docker compose up -d
+        working-directory: tools/webdav-server
+      - name: Wait for the server
+        run: curl -sS --retry 15 --retry-delay 2 --retry-connrefused -o /dev/null "$MIXTURA_WEBDAV_URL/"
+      - run: npm run build
+      - run: npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
+      - run: node e2e/webdav.mjs 360 720
+        working-directory: packages/app
+      - run: node e2e/webdav.mjs 1200 800
+        working-directory: packages/app
+      - name: Server log
+        if: failure()
+        run: docker compose logs --no-color
+        working-directory: tools/webdav-server
+      - run: docker compose down -v
+        if: always()
+        working-directory: tools/webdav-server
+
   # Needs the secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID. While
   # they are missing the job ends green and says so in its summary, so pull
   # requests stay green until the owner adds them. A separate job in this

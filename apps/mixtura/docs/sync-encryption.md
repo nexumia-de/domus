@@ -81,7 +81,7 @@ ciphertext.
 
 With the binding of the place on each device, in the browser's storage,
 readable there like the storage password. It is not in the export file.
-The binding store itself comes with #133. The local stock is not encrypted
+The binding store is `bindings` ([sync backends](sync-backends.md#the-stores)). The local stock is not encrypted
 on the device.
 
 ## A lost passphrase

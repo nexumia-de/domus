@@ -27,3 +27,8 @@ updates:
     directory: /tools/wrangler
     schedule:
       interval: weekly
+  # The WebDAV server image of the sync tests and the user setup (tools/webdav-server).
+  - package-ecosystem: docker-compose
+    directory: /tools/webdav-server
+    schedule:
+      interval: weekly

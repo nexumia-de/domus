@@ -14,13 +14,24 @@ import {
   templatesRepo,
   type SpecsRepo,
 } from './repo-entities';
+import { bindingsRepo, storagesRepo, type StoragesRepo } from './repo-sync';
 import { draftsRepo, type DraftsRepo } from './repo-drafts';
 import { withReferenceChecks } from './references';
 import { keyValueRepo, settingsRepo, type SettingsRepo } from './repo-settings';
 import type { Repo } from './repo';
 import { transactPlace, type PlaceContents, type PlaceWrite } from './sync-apply';
 import { resolveSelection, type PlaceSelection } from './places';
-import type { Affinity, Backup, Ingredient, Place, StockKey, StockRecord, Template } from './types';
+import type {
+  Affinity,
+  Backup,
+  Binding,
+  BindingKey,
+  Ingredient,
+  Place,
+  StockKey,
+  StockRecord,
+  Template,
+} from './types';
 
 export * from './backup';
 export * from './catalog';
@@ -48,6 +59,9 @@ export interface LocalStore {
   placeSelection(): Promise<PlaceSelection>;
   /** Reads one place and writes `work`'s answer in one transaction (the sync cycle's result). */
   transactPlace(placeId: string, work: (current: PlaceContents) => PlaceWrite): Promise<void>;
+  /** Device-local sync configuration: never exported, never in a sync file (docs/sync-backends.md#stores). */
+  storages: StoragesRepo;
+  bindings: Repo<Binding, BindingKey>;
   /** Unsaved editor state; not entities, not exported. */
   drafts: DraftsRepo;
   persistence: Persistence;
@@ -97,6 +111,8 @@ export async function openLocalStore(options: StoreOptions = {}): Promise<LocalS
     placeSelection: async () =>
       resolveSelection(await places.list(), (await settings.load()).places),
     transactPlace: (placeId, work) => transactPlace(db, placeId, work),
+    storages: storagesRepo(context),
+    bindings: bindingsRepo(context),
     drafts: draftsRepo(db),
     persistence,
     backup,

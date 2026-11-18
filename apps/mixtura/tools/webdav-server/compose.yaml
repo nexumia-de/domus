@@ -1,0 +1,23 @@
+# WebDAV server for Mixtura: tests and your own setup (README.md).
+#   WEBDAV_PASSWORD=... docker compose up -d
+services:
+  webdav:
+    # Docker Official Image httpd 2.4.71; the digest pins the content, the tag lets Dependabot update both.
+    image: httpd:2.4.71@sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9
+    entrypoint: ['/entrypoint.sh']
+    restart: unless-stopped
+    environment:
+      WEBDAV_USER: ${WEBDAV_USER:-mixtura}
+      WEBDAV_PASSWORD: ${WEBDAV_PASSWORD:?set WEBDAV_PASSWORD}
+      # Optional: a regular expression of the origins allowed to call the server.
+      ALLOWED_ORIGINS_REGEX: ${ALLOWED_ORIGINS_REGEX:-}
+    ports:
+      # Only this machine. Change the address to reach it from other devices (README.md).
+      - '127.0.0.1:${WEBDAV_PORT:-8080}:80'
+    volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+      - dav-data:/var/dav
+
+volumes:
+  dav-data:

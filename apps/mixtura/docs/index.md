@@ -53,6 +53,7 @@ links. Change history is in [log.md](log.md).
 
 - [Spike: WebDAV from the browser](webdav-spike.md) - A browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second; the app's CSP blocks other hosts; options for the owner.
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
+- [Sync backends](sync-backends.md) - What a storage must do to sync from a browser, the WebDAV adapter and its failure mapping and limits, the device-local storages and bindings, the Content-Security-Policy and the service worker rule, the Docker test server and the user setup.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
 
 # Behaviour and design

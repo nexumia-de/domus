@@ -68,6 +68,13 @@ expect(
   (await page.request.get(`${site.url}sw.js`)).headers()['cache-control'] === 'no-cache',
   'sw.js is served with no-cache',
 );
+// Hosts are allowed in `connect-src` only: the user's sync storage (docs/sync-backends.md#policy).
+expect(
+  /(?:^|; )connect-src 'self' https: http:\/\/localhost:\* http:\/\/127\.0\.0\.1:\*(?:;|$)/.test(
+    policy,
+  ) && !/https?:|\*/.test(policy.replace(/connect-src [^;]*/, '')),
+  'only connect-src names hosts: https and the local machine for the sync storage',
+);
 expect(
   /script-src 'self'/.test(policy) && !/unsafe-/.test(policy) && /object-src 'none'/.test(policy),
   'the page carries a policy without unsafe-inline and unsafe-eval',

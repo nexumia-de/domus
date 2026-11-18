@@ -94,7 +94,7 @@ const dump = (page, stores) =>
     'the unit setting survives a reload',
   );
   const data = await dump(page, ['settings', 'places', 'stock']);
-  expect(data.version === 4, 'a new database is at the current version');
+  expect(data.version === 5, 'a new database is at the current version');
   const byKey = Object.fromEntries(data.settings.map((r) => [r.key, r.value]));
   expect(byKey.theme === 'dark' && byKey.units === 'us', 'the settings are records of the store');
   expect(
@@ -171,7 +171,7 @@ const dump = (page, stores) =>
   await page.waitForFunction(() => localStorage.getItem('mixtura.prefs') === null);
   expect(true, 'the interim localStorage key is removed after the migration');
   const data = await dump(page, ['specs', 'stock', 'settings']);
-  expect(data.version === 4, 'the database was upgraded to the current version (4)');
+  expect(data.version === 5, 'the database was upgraded to the current version (5)');
   expect(
     data.specs.length === 1 && data.specs[0].name === 'Kept through the upgrade',
     'the spec survived the upgrade',
@@ -229,7 +229,7 @@ const dump = (page, stores) =>
   );
   expect(true, 'the Stock screen shows the two ingredients that were in stock');
   const data = await dump(page, ['places', 'stock', 'settings']);
-  expect(data.version === 4, 'the version 3 database was upgraded to 4');
+  expect(data.version === 5, 'the version 3 database was upgraded to 5');
   expect(data.places.length === 1 && data.places[0].name === 'Home', 'there is one default place');
   const place = data.places[0].id;
   expect(data.stock.length === rows.length, 'no stock row was lost');

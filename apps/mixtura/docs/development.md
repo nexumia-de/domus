@@ -49,18 +49,19 @@ npm ci
 The shell (#17) is plain TypeScript building DOM; no framework. Source in
 `packages/app/src/`:
 
-| File or folder                              | Job                                                                                             |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                |
-| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)          |
-| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                       |
-| `destinations.ts`                           | The four destinations with labels and icons                                                     |
-| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them               |
-| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                      |
-| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                 |
-| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md)) |
-| `sw.ts`, `sw-register.ts`                   | Service worker; registration and the update flow                                                |
-| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                            |
+| File or folder                              | Job                                                                                                  |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                     |
+| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)               |
+| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                            |
+| `destinations.ts`                           | The four destinations with labels and icons                                                          |
+| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                    |
+| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                           |
+| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                      |
+| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))      |
+| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                 |
+| `sync/`                                     | Sync file encryption, the WebDAV adapter and its connection test ([sync backends](sync-backends.md)) |
+| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                 |
 
 **Adding a screen (#18 to #20).** Make `screens/<name>/index.ts` that
 exports `screens: Screen[]` (`match(route)` and `view(context)` returning
@@ -106,7 +107,7 @@ built app from a local static server in a fresh Chromium profile at both
 sizes and checks the four destinations, back navigation, touch targets, no
 horizontal overflow, the theme, a reload and a deep link with the network
 off, no request outside the origin, and the update flow with a second
-"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/list-keys.mjs` covers the sort menu, the arrow keys, the shortcuts and the filters sheet's focus ([as built](screens-browse.md#as-built-75)); `e2e/alcohol.mjs` covers the alcohol filters and their presets ([screens](screens-browse.md#as-built-37-alcohol-filters)); `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)); `e2e/editor.mjs` covers the spec editor ([as built](screens-specs.md#as-built-25)); `e2e/versions.mjs` covers versions, notes, status, riffs, the family and their export and import ([as built](screens-specs.md#as-built-26)); `e2e/shelf-variants.mjs` covers batch dates (host clock set with Playwright's fixed time) and variant riffs ([as built](non-alcoholic.md#as-built-37)); `e2e/substitutes.mjs` covers substitutes, the in-stock mark and the storage text ([as built](screens-specs.md#as-built-89)); `e2e/places.mjs` covers the places line and sheet, row place names, the entry place, rename, remove and Undo ([places](screens-stock-settings.md#places-131)); `e2e/spec-stock.mjs` covers the stock panel on the spec screen ([as built](screens-browse.md#as-built-82-stock-panel-on-the-spec-screen)); `e2e/save-interrupt.mjs` cuts a save off at four points and checks that the edit survives ([as built](screens-specs.md#as-built-25)); `--throttle=N` (CPU slowed N times) and `--slow-frames=MS` (animation frames delayed) on `editor.mjs` and `exchange.mjs` show the races a fast machine hides. `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
+"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/list-keys.mjs` covers the sort menu, the arrow keys, the shortcuts and the filters sheet's focus ([as built](screens-browse.md#as-built-75)); `e2e/alcohol.mjs` covers the alcohol filters and their presets ([screens](screens-browse.md#as-built-37-alcohol-filters)); `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)); `e2e/editor.mjs` covers the spec editor ([as built](screens-specs.md#as-built-25)); `e2e/versions.mjs` covers versions, notes, status, riffs, the family and their export and import ([as built](screens-specs.md#as-built-26)); `e2e/shelf-variants.mjs` covers batch dates (host clock set with Playwright's fixed time) and variant riffs ([as built](non-alcoholic.md#as-built-37)); `e2e/substitutes.mjs` covers substitutes, the in-stock mark and the storage text ([as built](screens-specs.md#as-built-89)); `e2e/places.mjs` covers the places line and sheet, row place names, the entry place, rename, remove and Undo ([places](screens-stock-settings.md#places-131)); `e2e/spec-stock.mjs` covers the stock panel on the spec screen ([as built](screens-browse.md#as-built-82-stock-panel-on-the-spec-screen)); `e2e/webdav.mjs` runs the WebDAV adapter in the page against the Docker server and is skipped without `MIXTURA_WEBDAV_URL` ([sync backends](sync-backends.md#the-test-server)); `e2e/save-interrupt.mjs` cuts a save off at four points and checks that the edit survives ([as built](screens-specs.md#as-built-25)); `--throttle=N` (CPU slowed N times) and `--slow-frames=MS` (animation frames delayed) on `editor.mjs` and `exchange.mjs` show the races a fast machine hides. `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
 `docs/screenshots/` at scale 2. Playwright (pinned, see
 [dependencies](dependencies.md)) uses its own browser; where that is not
 installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its
@@ -149,7 +150,7 @@ so the rule cannot be removed silently
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
 requests and pushes to `main`. The job is named `check`; this is the
 required status check name for the branch-protection ruleset. A second
-job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below. Neither is required yet. Actions are
+job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below; a fourth, `webdav` (#133), starts the Docker server of `tools/webdav-server` and runs `test/sync-webdav-integration.test.ts` and `e2e/webdav.mjs` (360 x 720 and 1200 x 800) against it ([sync backends](sync-backends.md#the-test-server)). None of the three is required yet; if `webdav` should be, the owner adds the name to the ruleset (`.github/rulesets/main.json`) and re-imports it. Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
 The app uses only relative URLs, so the same build
@@ -192,15 +193,15 @@ the sub-path. `index.html` has a `description` meta tag.
 `mdn/content`, Ajv's `docs/standalone.md` in `ajv-validator/ajv`):
 
 ```
-default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'
+default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'
 ```
 
-No `unsafe-inline`, no `unsafe-eval`, no external host. What each part is
+No `unsafe-inline`, no `unsafe-eval`, and no host except in `connect-src`, which since #133 also allows any `https:` address and plain `http:` on `localhost` and `127.0.0.1`: the storage a user configured for stock sync has an address the policy cannot know ([decision](decisions/stock-sync.md#bring-your-own-backend), [sync backends](sync-backends.md#policy)). What each part is
 for: `script-src 'self'` covers `main.js`, `theme-init.js` and the ranking
 worker's script (`worker-src 'self'`); `style-src 'self'` is why the page
 has no inline style: `dom.ts` applies a `style` prop through the style
 object (CSSOM, not governed by the policy) instead of a style attribute;
-`connect-src 'self'` is the seed file; `manifest-src 'self'`; `img-src
+`connect-src 'self'` is the seed file, the rest the user's sync storage; `manifest-src 'self'`; `img-src
 'self'` (icons; no `data:` is used); `form-action 'none'`. The export
 download is a `blob:` link and needs no entry. A meta policy cannot carry
 `frame-ancestors`, `sandbox` or a report endpoint. On Cloudflare the same
@@ -208,7 +209,7 @@ policy is also sent as a header with `frame-ancestors 'none'`
 (`dist/_headers`, [deployment](deployment.md#headers-dist_headers)). Both come from one
 source, `packages/app/headers.mjs`: `build.mjs` replaces the placeholder
 `{{CSP}}` of `src/index.html` and writes `_headers`; the build test fails if the
-two differ apart from `frame-ancestors`, and `e2e/csp.mjs` checks the header on
+two differ apart from `frame-ancestors` (and pins the text of `connect-src`, allowing hosts nowhere else), and `e2e/csp.mjs` checks the header on
 the page and both workers (`e2e/serve.mjs` applies `dist/_headers` unless
 it is given a `cacheControl`). The meta tag stays so the app is protected on
 any host. To change the policy, edit `headers.mjs` only.

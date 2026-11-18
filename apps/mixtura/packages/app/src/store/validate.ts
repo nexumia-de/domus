@@ -4,14 +4,14 @@
 
 import { validators, type Validator } from './schema-validators.generated.mjs';
 import { StoreError } from './errors';
-import type { EntityKind } from './types';
+import type { DeviceKind, EntityKind } from './types';
 
-function validator(kind: EntityKind | 'export'): Validator | undefined {
+function validator(kind: EntityKind | DeviceKind | 'export'): Validator | undefined {
   return validators[kind];
 }
 
 /** Throws a StoreError of kind `invalid` that lists every problem. */
-export function validateEntity(kind: EntityKind, value: unknown): void {
+export function validateEntity(kind: EntityKind | DeviceKind, value: unknown): void {
   const check = validator(kind);
   if (!check) throw new StoreError('failed', `No schema for ${kind}`);
   if (check(value)) return;
