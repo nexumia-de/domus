@@ -348,3 +348,11 @@
   cursor: pointer;
   overflow-wrap: anywhere;
 }
+
+/* Long labels wrap inside the Places sheet at large text sizes (200 %, 360 px). */
+.place-actions .btn {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  text-align: start;
+}
