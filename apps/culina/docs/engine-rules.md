@@ -555,10 +555,10 @@ yield) and could move to materia later; nothing was moved. Vectors:
 `packages/engine/vectors/units/` (conversion for every unit pair,
 rounding, the three scalings), `vectors/percentages/` (baker's
 percentages, formulas, hydration, the zero-flour and the unequal-base
-errors), `vectors/templates/` (derivative resolution, nested
+errors), `vectors/ratios/templates/` (derivative resolution, nested
 derivatives, every error code, family queries, the range check in all
 three positions and on the bounds, a template without range, scaling from
-an anchor, percentages) `vectors/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions) in the format of [the vector format](vectors.md)[^vectors]. Each
+an anchor, percentages) `vectors/ratios/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions) in the format of [the vector format](vectors.md)[^vectors]. Each
 names its basis. Expected numbers are plain arithmetic written out in
 the vector's `source`; densities and unit weights in vectors are
 synthetic and say so. `test/units-vectors.test.ts` and

@@ -56,7 +56,7 @@ TypeScript, installed for that build only).
   validation: types, the entry `model.ts`, one file per kind with
   references, an id-only cycle walk, version references); `data/units.json` is the unit table and
   `data/templates.json` the seed templates; `vectors/units/`,
-  `vectors/percentages/`, `vectors/templates/`, `vectors/salt/`, `vectors/components/` and `vectors/validate/` hold
+  `vectors/percentages/`, `vectors/ratios/templates/`, `vectors/ratios/salt/`, `vectors/components/` and `vectors/validate/` hold
   the worked examples that `test/units-vectors.test.ts`,
   `test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts` and
   `test/salt-vectors.test.ts`, `test/components-vectors.test.ts` and `test/validate-vectors.test.ts` run;
