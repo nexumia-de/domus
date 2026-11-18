@@ -1,0 +1,65 @@
+{
+  "id": "resolve-set-anchor-role",
+  "description": "A set of the anchor role is allowed; the anchor stays",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "big-pie",
+        "name": "big-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "set",
+            "role": "flour",
+            "parts": 6
+          }
+        ]
+      }
+    ],
+    "id": "big-pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water"],
+    "parts": {
+      "flour": 6,
+      "fat": 2,
+      "water": 1
+    },
+    "lineage": ["pie", "big-pie"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      }
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "synthetic template numbers chosen for the arithmetic, not from a source"
+}

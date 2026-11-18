@@ -1,0 +1,25 @@
+{
+  "id": "percent-anchor-set-by-variation",
+  "description": "Percent of a variation that sets the anchor parts: flour 6, fat 2, water 1 on flour",
+  "inputs": {
+    "kind": "template_percent",
+    "template": {
+      "name": "big-pie",
+      "anchor": "flour",
+      "parts": {
+        "flour": 6,
+        "fat": 2,
+        "water": 1
+      }
+    }
+  },
+  "expected": {
+    "pct": {
+      "flour": 100,
+      "fat": 33.333333333333336,
+      "water": 16.666666666666668
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Parts as resolve-set-anchor-role (pie 3:2:1 with flour set to 6); 100 x 2 / 6 = 33.33 %, 100 x 1 / 6 = 16.67 %"
+}

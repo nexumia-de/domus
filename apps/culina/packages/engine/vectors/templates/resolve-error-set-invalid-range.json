@@ -1,0 +1,57 @@
+{
+  "id": "resolve-error-set-invalid-range",
+  "description": "A set with a range whose min is above its max",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "o",
+        "name": "o",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "set",
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 3,
+              "max": 1
+            }
+          }
+        ]
+      }
+    ],
+    "id": "o"
+  },
+  "error_code": "invalid-range",
+  "error_detail": {
+    "templateId": "o",
+    "role": "fat"
+  },
+  "source": "min must not exceed max; synthetic template numbers chosen for the arithmetic, not from a source"
+}

@@ -1,0 +1,74 @@
+{
+  "id": "resolve-add-with-range",
+  "description": "An add may carry a range",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "salty-pie",
+        "name": "salty-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "salt",
+            "parts": 0.1,
+            "range": {
+              "min": 0.05,
+              "max": 0.15
+            }
+          }
+        ]
+      }
+    ],
+    "id": "salty-pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water", "salt"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 1,
+      "salt": 0.1
+    },
+    "lineage": ["pie", "salty-pie"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      },
+      "salt": {
+        "min": 0.05,
+        "max": 0.15
+      }
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "synthetic template numbers chosen for the arithmetic, not from a source"
+}

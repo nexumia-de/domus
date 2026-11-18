@@ -134,14 +134,16 @@
   {
     "id": "roux-whole-butter",
     "name": "Roux with whole butter",
-    "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Roux (corrected, book p. 17 and PT94), 1 : 1 with whole butter for small amounts; Ruhlman, Ratio",
-    "parts": [
+    "parentId": "roux",
+    "changes": [
       {
+        "op": "set",
         "role": "flour",
         "parts": 1
       },
       {
+        "op": "set",
         "role": "fat",
         "parts": 1
       }
@@ -167,22 +169,26 @@
   {
     "id": "bread-dough-bakers-percent",
     "name": "Bread dough, baker's percentages",
-    "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Bread dough note (book PT14: 100 % flour, 60 % water, 3 % fresh yeast, 2 % salt); docs/ratios.md#bakers-percentages, row Bread salt (confirmed, book p. 43, range 1.8-2 %); Ruhlman, Ratio; Hamelman, Bread",
-    "parts": [
+    "parentId": "bread-dough-ratio",
+    "changes": [
       {
+        "op": "set",
         "role": "flour",
         "parts": 100
       },
       {
+        "op": "set",
         "role": "water",
         "parts": 60
       },
       {
+        "op": "add",
         "role": "yeast",
         "parts": 3
       },
       {
+        "op": "add",
         "role": "salt",
         "parts": 2,
         "range": {

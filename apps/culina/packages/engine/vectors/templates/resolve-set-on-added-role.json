@@ -1,0 +1,79 @@
+{
+  "id": "resolve-set-on-added-role",
+  "description": "A set on a role that a parent derivative added",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "sweet-pie",
+        "name": "sweet-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "sugar",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "sweeter-pie",
+        "name": "sweeter-pie",
+        "source": "user",
+        "parentId": "sweet-pie",
+        "changes": [
+          {
+            "op": "set",
+            "role": "sugar",
+            "parts": 2
+          }
+        ]
+      }
+    ],
+    "id": "sweeter-pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water", "sugar"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 1,
+      "sugar": 2
+    },
+    "lineage": ["pie", "sweet-pie", "sweeter-pie"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      }
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Sugar added with 1 part, then set to 2; synthetic template numbers chosen for the arithmetic, not from a source"
+}

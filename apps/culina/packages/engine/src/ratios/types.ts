@@ -15,8 +15,9 @@ export interface TemplatePart {
 
 /** A change a derivative makes to its parent's parts. */
 export type TemplateChange =
-  | { op: 'add'; role: string; parts: number }
+  | { op: 'add'; role: string; parts: number; range?: PartRange }
   | { op: 'remove'; role: string }
+  | { op: 'set'; role: string; parts: number; range?: PartRange }
   | { op: 'swap'; role: string; ingredientClass: string };
 
 /** A ratio template as stored (`template.schema.json`): a root or a derivative. */
