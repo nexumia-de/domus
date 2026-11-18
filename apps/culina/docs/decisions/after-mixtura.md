@@ -36,4 +36,6 @@ owner decided on two apps with Mixtura first[^two].
 
 ## Consequences
 
-Until then this repository holds research and plan only.
+Until then this repository holds research and plan only. Since
+2026-11-18 the general model is the package materia and engine work has
+started ([shared model](shared-model.md)).

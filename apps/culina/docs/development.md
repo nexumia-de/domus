@@ -8,9 +8,9 @@ generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 
 # Development
 
-Tooling mirrors the sister repository Mixtura; the packages hold only
-placeholders until the shared-model decision (issue #2) settles what the
-engine contains.
+Tooling mirrors the sister repository Mixtura. The engine gets the
+general model from materia ([decision](decisions/shared-model.md)); the
+kitchen rules and the app are added issue by issue.
 
 ## Setup
 
@@ -19,6 +19,10 @@ Node 22 (`.nvmrc`, `engines.node` `>=22.12.0`), then:
 ```sh
 npm ci
 ```
+
+`npm ci` fetches `@nexumia-de/materia` from `github.com` at the commit in
+the lockfile and builds it with its `prepare` script (esbuild and
+TypeScript, installed for that build only).
 
 ## Commands
 
@@ -34,9 +38,11 @@ npm ci
 ## Layout
 
 - `packages/engine` (`@culina/engine`): the pure engine. `src/index.ts` is
-  its only public entry and, for now, its source: the package exports the
-  TypeScript file directly, so there is no build step. Add one when the
-  app needs a bundle.
+  its only public entry; the package exports the TypeScript file
+  directly, so there is no build step. Add one when the app needs a
+  bundle. `src/model.ts` re-exports the general model from materia;
+  `test/model.test.ts` checks that the dependency is an exact version
+  tag and that the installed version is that one.
 - `packages/app` (`@culina/app`): the web app. It imports `@culina/engine`
   only; a lint rule fails any deep import.
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.

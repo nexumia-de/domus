@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-18
+
+- **Creation**: [shared model decision](decisions/shared-model.md) (issue #2): the general model comes from `nexumia-de/materia`; `@culina/engine` depends on `@nexumia-de/materia` at tag `v0.2.0` and re-exports the general functions through `src/model.ts`; a test checks the pin. The rule in `AGENTS.md` that held engine code back is replaced. [Dependencies](dependencies.md), [development](development.md), [roadmap](roadmap.md) and [After Mixtura](decisions/after-mixtura.md) updated. For later sync: every stored user entity gets `updatedAt` and removals stay representable.
+
 ## 2026-11-17
 
 - **Creation**: [deployment](deployment.md): not deployed yet (no app); planned at `culina.nexumia.de` on Cloudflare Workers static assets with Mixtura's setup, shared deploy code first; `culina.nexumia.de` has no DNS record yet.

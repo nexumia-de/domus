@@ -10,7 +10,7 @@ links. Change history is in [log.md](log.md).
 
 # Plan
 
-- [Roadmap](roadmap.md) - Goals and their order; Mixtura's engine exists; engine code waits for the shared-model decision.
+- [Roadmap](roadmap.md) - Goals and their order; the shared model comes from materia, engine work has started.
 - [Deployment](deployment.md) - Not deployed yet; planned at culina.nexumia.de on Cloudflare Workers static assets like Mixtura, and the owner steps then needed.
 
 # Research
@@ -30,6 +30,7 @@ links. Change history is in [log.md](log.md).
 
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Notebook.
 - [After Mixtura](decisions/after-mixtura.md) - Culina is the second app on the engine Mixtura builds first, as a PWA with own local data.
+- [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
 - [Cooklang](decisions/cooklang.md) - Needs decision: own JSON as the lossless format, Cooklang as a one-way export, no import and no schema.org export in the first version.
 
 # Development
