@@ -3,7 +3,9 @@
 // stored shape inside `components`, `component` and `yields`.
 import { describe, expect, test } from 'vitest';
 import {
+  componentLineGrams,
   componentYield,
+  convertComponentLines,
   expandComponent,
   portionsFromYield,
   portionWeight,
@@ -11,7 +13,7 @@ import {
   toPurchased,
   yieldFor,
 } from '../src/index';
-import type { Component, FactsByIngredient, IngredientYield } from '../src/index';
+import type { Component, ComponentLine, FactsByIngredient, IngredientYield } from '../src/index';
 import { expectError, loadVectors, near, nearRecord } from './vector-files';
 import type { Vector } from './vector-files';
 
@@ -137,6 +139,30 @@ function portions(vector: Vector): void {
   );
 }
 
+function convertLines(vector: Vector): void {
+  const i = vector.inputs;
+  const component = i.component as Component;
+  const facts = (i.facts_by_ingredient ?? {}) as FactsByIngredient;
+  const to = i.to as 'weight' | 'percent';
+  const result = convertComponentLines(component, to, facts);
+  if (vector.error_code !== undefined) return expectError(result, vector);
+  const got = ok(result, vector);
+  const e = vector.expected as { lines: { amount?: { value: number; unit: string } }[] };
+  expect(got.lines.length, 'lines').toBe(e.lines.length);
+  e.lines.forEach((want, n) => {
+    const have = (got.lines[n] as ComponentLine).amount;
+    expect(have?.unit, `lines[${n}].unit`).toBe(want.amount?.unit);
+    if (want.amount !== undefined)
+      near(have?.value ?? NaN, want.amount.value, vector.tolerance, `lines[${n}]`);
+  });
+  // The grams do not change by the conversion.
+  const before = ok(componentLineGrams(component, facts), vector);
+  const after = ok(componentLineGrams({ ...component, lines: got.lines }, facts), vector);
+  before.lines.forEach((line, n) =>
+    near((after.lines[n] as { g: number }).g, line.g, 1e-6, `grams of line ${n}`),
+  );
+}
+
 function run(vector: Vector): void {
   switch (vector.inputs.kind) {
     case 'expand_component':
@@ -147,6 +173,8 @@ function run(vector: Vector): void {
       return edible(vector);
     case 'portions':
       return portions(vector);
+    case 'convert_lines':
+      return convertLines(vector);
     default:
       throw new Error(`${vector.id}: unknown vector kind ${String(vector.inputs.kind)}`);
   }

@@ -385,6 +385,29 @@ and `inputG` (the sum of the measured lines).
 - A percent of 0 or less is `invalid-value`. Every error carries the
   `componentId`.
 
+## Converting lines between weight and percent
+
+`convertComponentLines(component, to, factsByIngredient)` rewrites the
+amounts of the lines for the other way of entry; the grams of every line
+stay the same, which the vectors check with `componentLineGrams` before
+and after. The editor switches between weight and percent with it, so no
+app code does that arithmetic.
+
+- `to: 'percent'`: every measured line that is not a base line (role =
+  `percentBase`) becomes percent of the summed base grams. Base lines keep
+  their amount in whatever mass unit it was entered (several flours add up
+  to 100 %), or become grams where they were percent. Without a
+  `percentBase`, or with a base that has no mass, it is `no-percent-base`.
+- `to: 'weight'`: every percent line becomes grams of the base; the other
+  lines are kept as entered, in their unit.
+- A line without amount stays without. Errors are those of
+  `componentLineGrams` (`cannot-convert` for a volume without density,
+  `component-needs-mass`, `invalid-value`).
+- The new numbers are trimmed to 10 significant digits, so converting
+  there and back does not collect binary noise; a number never becomes 0.
+
+Vectors: `convert-lines-*` in `packages/engine/vectors/components/`.
+
 ## Expansion
 
 `expandComponent(components, id, factsByIngredient, { outputG })` walks

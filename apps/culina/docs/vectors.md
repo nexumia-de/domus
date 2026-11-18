@@ -123,6 +123,7 @@ and say so in `source`. Error vectors carry `error_code` and
 | `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` (indexes)                         |
 | `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                        |
 | `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                   |
+| `convert_lines`    | `component`, `to` (`weight` or `percent`), optional `facts_by_ingredient`                                                | `lines`: the new `amount` (`value`, `unit`) per line in order, absent for a line without amount; the grams are checked equal  |
 
 ## Kind of cross-record validation (issue 36)
 
