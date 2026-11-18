@@ -33,7 +33,9 @@ TypeScript, installed for that build only).
 | `npm run format:check` | Prettier checks all files                                           |
 | `npm run lint`         | ESLint (flat config, typescript-eslint, purity rule for the engine) |
 | `npm run typecheck`    | `tsc --noEmit` in both packages                                     |
-| `npm test`             | vitest in both packages                                             |
+| `npm test`             | vitest in both packages (the app tests build `dist/` first)         |
+| `npm run build`        | esbuild writes `packages/app/dist/`                                 |
+| `npm run e2e`          | builds, serves `dist/` and runs the Playwright checks in Chromium   |
 
 ## Layout
 
@@ -62,8 +64,19 @@ TypeScript, installed for that build only).
   `test/components.test.ts` and `test/components-property.test.ts` those of
   components, `test/validate.test.ts` those of validation.
   Rules: [engine rules](engine-rules.md).
-- `packages/app` (`@culina/app`): the web app. It imports `@culina/engine`
-  only; a lint rule fails any deep import.
+- `packages/app` (`@culina/app`): the web app (PWA shell, [behaviour](behaviour.md),
+  [design](design.md)). It imports `@culina/engine` only; a lint rule fails any
+  deep import. Layout, one job per file: `build.mjs` (esbuild; writes `dist/`
+  with fixed names `index.html`, `main.js`, `theme-init.js`, `app.css`,
+  `manifest.webmanifest`, `icons/`, `sw.js`), `src/main.ts` (start),
+  `src/router.ts` (hash router), `src/prefs.ts` (theme in `localStorage`),
+  `src/theme-init.ts`, `src/sw-register.ts`, `src/sw.ts`, `src/strings.ts`
+  (all visible texts), `src/engine-info.ts` (the app's one use of the
+  engine), `src/shell/` (landmarks, navigation), `src/screens/` (one file per
+  screen), `src/styles/` (`tokens.css` and token-only stylesheets),
+  `src/icons/` (navigation icons), `src/assets/` (app icons: SVG and PNG),
+  `scripts/make-icons.mjs` (`npm run icons -w @culina/app`, rasterises the SVGs),
+  `test/` (vitest), `e2e/` (Playwright scripts, below).
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.
 - Every dependency is pinned exactly and equals Mixtura's version; see
   [dependencies](dependencies.md).
@@ -78,12 +91,44 @@ as input. ESLint enforces it in `eslint.config.js`;
 `packages/engine/test/purity.test.ts` lints sources that must fail, so
 the rule cannot be removed silently.
 
+## App build, service worker and tests
+
+`npm run build` bundles with esbuild (no framework). The build injects into
+`sw.js` the exact list of built files and a cache name `culina-<hash of
+their content>`; `activate` deletes the caches of other versions. Register
+only over http(s) and not with `?no-sw` on the page URL. Serve `dist/` from
+`localhost` (a service worker needs `localhost` or HTTPS): `npm run e2e`
+does it with `e2e/serve.mjs` (`node:http`, free port, optional sub-path).
+All URLs are relative, so a sub-path works.
+
+Unit tests (`npm test -w @culina/app`, in `npm run check`): router,
+preferences, tokens-only rule, contrast of every token pair in both
+themes (also compared with the table in [design](design.md)), strings,
+manifest and `index.html` (installability fields, strict Content
+Security Policy), build output, the service worker run against fake
+caches, service worker registration, and the engine entry point.
+
+`npm run e2e` is a separate script (it launches Chromium and takes
+longer). It builds, serves `dist/` twice (at `/` and under `/apps/cook/`)
+and runs `e2e/smoke.mjs` (shell at 320, 360 and 1000 px, navigation
+placement, no horizontal scroll on every screen, targets of at least 44 x
+44 px, landmarks and names, keyboard and focus, theme switch and reload,
+offline reload with the service worker controlling the page, no console
+error, no CSP violation, no request to another origin) and
+`e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check)).
+Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
+otherwise from Playwright (`npx playwright install chromium`).
+`npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
+
 ## CI
 
 `.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
-requests and pushes to `main`. The job is named `check`, as in Mixtura;
-this is the status check name for a branch-protection ruleset (the
-repository has no `.github/rulesets/` file yet). Actions are pinned to a
+requests and pushes to `main` in the job `check`, as in Mixtura. A second
+job, `e2e`, needs `check`, installs Chromium with
+`npx playwright install --with-deps chromium` and runs `npm run e2e`.
+`e2e` is a **second status check name** for a branch-protection ruleset:
+add it next to `check` when the ruleset is imported (the repository has
+no `.github/rulesets/` file yet). Actions are pinned to a
 commit SHA; Dependabot updates npm and GitHub Actions weekly
 (`.github/dependabot.yml`).
 

@@ -27,17 +27,31 @@ sets tags in materia); Dependabot does not follow git tags of this form.
 
 ## Development only
 
-| Package             | Version | Licence    | Use                                                                      |
-| ------------------- | ------- | ---------- | ------------------------------------------------------------------------ |
-| `typescript`        | 6.0.3   | Apache-2.0 | Type checking                                                            |
-| `vitest`            | 5.1.0   | MIT        | Tests                                                                    |
-| `eslint`            | 10.14.0 | MIT        | Lint                                                                     |
-| `@eslint/js`        | 10.0.1  | MIT        | Lint rules                                                               |
-| `typescript-eslint` | 8.72.2  | MIT        | Lint for TypeScript                                                      |
-| `globals`           | 17.14.0 | MIT        | Lint globals for scripts                                                 |
-| `ajv`               | 8.17.1  | MIT        | JSON Schema 2020-12 validation in schema tests (same version as Mixtura) |
-| `prettier`          | 3.9.10  | MIT        | Formatting                                                               |
-| `@types/node`       | 22.20.5 | MIT        | Types for tests (Node 22 in CI)                                          |
+| Package             | Version | Licence    | Use                                                                                                     |
+| ------------------- | ------- | ---------- | ------------------------------------------------------------------------------------------------------- |
+| `typescript`        | 6.0.3   | Apache-2.0 | Type checking                                                                                           |
+| `vitest`            | 5.1.0   | MIT        | Tests                                                                                                   |
+| `eslint`            | 10.14.0 | MIT        | Lint                                                                                                    |
+| `@eslint/js`        | 10.0.1  | MIT        | Lint rules                                                                                              |
+| `typescript-eslint` | 8.72.2  | MIT        | Lint for TypeScript                                                                                     |
+| `globals`           | 17.14.0 | MIT        | Lint globals for scripts                                                                                |
+| `ajv`               | 8.17.1  | MIT        | JSON Schema 2020-12 validation in schema tests (same version as Mixtura)                                |
+| `prettier`          | 3.9.10  | MIT        | Formatting                                                                                              |
+| `@types/node`       | 22.20.5 | MIT        | Types for tests (Node 22 in CI)                                                                         |
+| `esbuild`           | 0.28.2  | MIT        | Builds the app bundle, stylesheet and service worker (same version as Mixtura)                          |
+| `playwright`        | 1.65.0  | Apache-2.0 | Browser tests, screenshots and PNG icons; the library, not `@playwright/test` (same version as Mixtura) |
+
+Licences of `esbuild` and `playwright` read on 2026-11-18 from `node_modules`:
+`esbuild/package.json` says MIT and `LICENSE.md` is the MIT text;
+`playwright/package.json` and `playwright-core/package.json` say
+Apache-2.0 and `LICENSE` is the Apache License 2.0 text. `playwright-core`
+(same version, Apache-2.0) comes with `playwright`. Both are used for
+building and testing only; neither is shipped in the app. Playwright's
+browser is not an npm dependency: CI installs it with
+`npx playwright install --with-deps chromium`; in a container with a
+Chromium already present set `PLAYWRIGHT_CHROMIUM_PATH` to its binary.
+The app has no runtime dependency apart from the engine: no framework, no
+web font, no CDN.
 
 ## GitHub Actions
 
