@@ -6,9 +6,11 @@ tags: [engine, units, conversion, scaling, bakers-percentage, hydration, roundin
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: yardpound
-    title: 'International yard and pound agreement of 1959 (1 yard = 0.9144 m, 1 avoirdupois pound = 0.45359237 kg); not read in this session'
+    title: 'National Bureau of Standards: Refinement of values for the yard and the pound, Federal Register 24 (128), p. 5348, 1959-07-01 (F.R. Doc. 59-5442): "1 pound (avoirdupois) = 0.453 592 37 kilogram"; read 2026-11-18'
+    url: https://www.govinfo.gov/content/pkg/FR-1959-07-01/pdf/FR-1959-07-01.pdf
   - id: nist
-    title: 'NIST Handbook 44, Appendix C, and NIST SP 811 (US gallon = 231 cubic inches; 1 inch = 2.54 cm); not read in this session'
+    title: 'NIST Handbook 44 (2026), Appendix C, General Tables of Units of Measurement: 1 gallon = 231 cubic inches = 128 fluid ounces; 16 ounces = 1 pound; 1 inch = 2.54 centimeters (exactly); 1 cup, measuring = 8 fluid ounces (exactly); 1 tablespoon, measuring = 3 teaspoons (exactly) = 1/2 fluid ounce (exactly); read 2026-11-18'
+    url: https://www.nist.gov/system/files/documents/2025/12/30/appc-26-HB44-20251222.pdf
   - id: chef
     title: 'How chefs work, Operations: scaling goes by weight; cooking time and salt do not scale linearly'
     url: chef-practice.md#operations
@@ -46,10 +48,11 @@ The base of mass is the gram, of volume the millilitre.
 
 `cup`, `tbsp` and `tsp` are **US customary**, derived exactly from
 1 US gallon = 231 cubic inches and 1 inch = 2.54 cm; there is no metric
-cup. The two source documents could not be read in this session (the
-hosts are blocked, see [development](development.md)); the factors are
-the exact legal definitions, and `test/units.test.ts` recomputes the
-derived ones from them. The table has no densities and no unit weights:
+cup. Both source documents were read on 2026-11-18 (the definitions are
+quoted in the source list). The handbook's own millilitre figures for
+cup, tablespoon and teaspoon (237, 15, 5) are rounded to the nearest
+millilitre; the table here keeps the exact values that follow from the
+definitions, and `test/units.test.ts` recomputes them. The table has no densities and no unit weights:
 those belong to an ingredient and carry their own source.
 
 # Conversion and its errors

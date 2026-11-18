@@ -239,18 +239,16 @@ testing, as purchased and edible portion), `ajv.js.org`,
 ## Engine units (2026-11-18)
 
 Needed to read the unit definitions for [engine rules](engine-rules.md).
-Tested with `curl -sS -m 15 -o /dev/null https://<host>/`; blocked (proxy
-refused the tunnel):
+Blocked at first, allowed by the owner on 2026-11-18 and then read:
 
 ```
 www.nist.gov
-nvlpubs.nist.gov
 www.govinfo.gov
-www.federalregister.gov
-www.law.cornell.edu
-www.bipm.org
-physics.nist.gov
+doi.org
 ```
 
-`www.ecfr.gov` is reachable (302); a search for "avoirdupois pound" found
-only labelling rules, not the 1959 definition.
+Handbook 44 Appendix C is on `www.nist.gov`, the Federal Register of
+1959-07-01 on `www.govinfo.gov`. Also allowed and answering, not needed
+in the end: `nvlpubs.nist.gov`, `physics.nist.gov`, `www.law.cornell.edu`,
+`www.bipm.org`, `www.ecfr.gov`. `www.federalregister.gov` answers at its
+root but refused a document request (proxy 403).
