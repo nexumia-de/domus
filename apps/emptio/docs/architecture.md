@@ -213,7 +213,13 @@ By the owner on 2026-11-18:
    _sometime_.
 5. **Amounts are free text**; number and unit only where an entry comes
    from a recipe.
-6. **Planning without milestones**: each goal of the
+6. **Mixtura is fixed first**: places become `materia-unit` documents
+   that keep collections of other apps, before Mixtura's work on
+   libraries and the profile.
+7. **Neutral names** for the invite format and the folder on the
+   storage, accepted by all three apps; Mixtura still reads its present
+   ones.
+8. **Planning without milestones**: each goal of the
    [roadmap](roadmap.md) is an issue and its work items are sub-issues.
    This replaces the milestone rule of the shared agent rules for this
    repository.

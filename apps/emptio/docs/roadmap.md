@@ -13,7 +13,7 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 This file keeps the goals and their order. Each goal is an
 [issue](https://github.com/nexumia-de/emptio/issues) and its work items
 are sub-issues of it; there are no milestones
-([decision 6](architecture.md#decisions)). How the app is built:
+([decision 8](architecture.md#decisions)). How the app is built:
 [architecture](architecture.md).
 
 # Goals
