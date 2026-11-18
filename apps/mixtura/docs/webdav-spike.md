@@ -31,9 +31,8 @@ what does the server need for that? Everything here was run on
 4. **Mixtura's own Content-Security-Policy forbids the requests** today
    (`connect-src 'self'`); it has to be widened for sync.
 
-Following the task's rule, work stopped here for the owner. The
-[stock sync decision](decisions/stock-sync.md) of the same day goes on
-with option A and the widened policy as assumptions.
+Following the task's rule, work stopped here for the owner; the
+outcome is in [Decision](#decision).
 
 ## Setup
 
@@ -204,6 +203,36 @@ adapter once packaging is decided. A is the only option that keeps
 limit, that the storage's admin must add eight lines, is honest and
 testable. The task's example then holds when both Nextcloud instances
 carry the configuration.
+
+## Public share links, tested afterwards
+
+The owner does not administer the Nextcloud instances of the example,
+so option A does not serve that case. Tested on the same unmodified
+Nextcloud with curl, whether a public share link with edit rights is a
+way in:
+
+| Request                                                | Answer                            |
+| ------------------------------------------------------ | --------------------------------- |
+| `PUT /public.php/dav/files/<token>/s.json`, no account | 201, `ETag`                       |
+| `GET` of the same, no credentials                      | 200, `ETag`                       |
+| preflight `OPTIONS` of the same                        | 200, no `Access-Control-…` header |
+| preflight on the older `/public.php/webdav/s.json`     | 401                               |
+| preflight on OCS (`/ocs/v2.php/cloud/capabilities`)    | 405                               |
+
+The endpoint works without an account, but no answer carries a CORS
+header, so a browser page still cannot use it. From a browser nothing
+reaches a Nextcloud whose administrator does not add the headers. Not
+tested: `If-Match` on the public endpoint, a share password, an
+instance with public shares switched off.
+
+## Decision
+
+The owner chose "bring your own backend" on 2026-11-18
+([stock sync](decisions/stock-sync.md#bring-your-own-backend)): no relay
+and no storage of ours; the user brings a backend that answers CORS, and
+Mixtura documents how to set one up. Options B to D are not pursued; a
+native transport in a wrapped app (option C) and a Bar Assistant adapter
+stay possible later.
 
 ## Not verified
 

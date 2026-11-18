@@ -18,10 +18,10 @@ sources:
 
 # Stock sync over storage the user configured
 
-**Status: decided by the owner on 2026-11-18**, in two instructions (the
-task and a change of plan the same day). Points the agent chose are
-marked "agent"; two points are assumed and wait for the owner's word
-(see [Assumed](#assumed-not-yet-confirmed)).
+**Status: decided by the owner on 2026-11-18**, in the task, a change
+of plan and the answers to the spike the same day. Points the agent chose are
+marked "agent". What kind of storage is supported is in
+[Bring your own backend](#bring-your-own-backend).
 
 ## Context
 
@@ -167,20 +167,43 @@ Agent's choice of the scheme; the requirement is the owner's.
 - Whoever has the invite and access to the folder can read and change
   the place's stock. The screen says so where the invite is shown.
 
-## Assumed, not yet confirmed
+## Bring your own backend
 
-The spike[^spike] ended with two questions; the change of plan says to
-build sync and does not answer them in words. The work continues on
-these assumptions:
+Decided by the owner on 2026-11-18, after the spike[^spike] showed that
+a browser page cannot reach a Nextcloud whose administrator does not
+add CORS headers, and that the owner administers neither of the
+Nextcloud instances in the example.
 
-1. **Option A of the spike**: the storage must answer CORS requests
-   from the app's origin. Mixtura documents the web server
-   configuration and names a missing one in its own error message. An
-   unmodified Nextcloud does not work from the browser.
-2. **The Content-Security-Policy is widened** from `connect-src 'self'`
-   to `connect-src 'self' https:`. That requests go only to configured
-   storages then rests on the code and a test that records every
-   request, not on the browser.
+1. **The user brings the backend, Mixtura offers none.** No relay and
+   no storage of ours. What the user brings can be a WebDAV provider, a
+   WebDAV server of their own (for example in Docker), or a small
+   service they deploy themselves (for example a Cloudflare Worker in
+   their own account).
+2. **What a backend must do** to work with the app in a browser: keep
+   one file per place, answer `GET` and `PUT` with an `ETag`, honour
+   `If-Match`, and answer CORS requests from the app's origin
+   (`Access-Control-Allow-Origin`, the preflight without credentials,
+   `Access-Control-Expose-Headers: ETag`). An unmodified Nextcloud does
+   not; its public share links do not either (tested, see the spike).
+3. **Mixtura ships setup guides, not services**: the CORS configuration for
+   a web server in front of WebDAV, a Docker setup of a WebDAV server
+   that answers CORS (the one the tests use), and later a Worker the
+   user deploys in front of storage that does not answer CORS.
+4. **The Content-Security-Policy is widened** from `connect-src 'self'`
+   to `connect-src 'self' https:` plus `http://localhost:*` and
+   `http://127.0.0.1:*`, because the backend's address is the user's.
+   That requests go only to configured storages then rests on the code
+   and a test that records every request, not on the browser. A backend
+   in the local network without TLS stays unreachable from the hosted
+   app (mixed content); `localhost` is the exception browsers make.
+5. **Later, not in the first version**: a native transport in a wrapped
+   app (a Flatpak shell on Linux, an APK on Android), where CORS does
+   not apply and a plain Nextcloud works; a Bar Assistant adapter for
+   people who run one. Both are further adapters or transports behind
+   the same interface.
+
+Because the file is encrypted with the place's passphrase, a backend,
+whoever runs it, sees only ciphertext.
 
 ## Consequences
 
