@@ -58,7 +58,8 @@ ratio in short form in template order ("3 : 2 : 1", "flour : fat :
 water"). No match: one quiet line. Ratios are grouped by family (the root
 of the lineage, named after the root, root first, then variations in seed
 order); **a family of one member has no heading**, since it would repeat
-the row's name, so today the list looks flat. The search text stays when
+the row's name. The seed has two families with headings, "Bread dough,
+ratio" and "Roux"; the other templates are single rows. The search text stays when
 a card opens and when the user comes back. **Test:**
 `test/ratios-view.test.ts`, `e2e/ratios.mjs`.
 
@@ -66,11 +67,11 @@ a card opens and when the user comes back. **Test:**
 anchor from `templatePercent` where the template has one); the usual range
 as plain text beside the part ("usual 1.8-2", only where the template
 gives one); the source line (the template's `source`, small, wrapped);
-the family (parent and variations as links, no heading when there are
-none); the calculator; "Compare my amounts". On a phone (below 720 px) the
+the family (a "Variation of" link to the parent and a "Variations" list of
+links to the children, none where there are none); the calculator; "Compare my amounts". On a phone (below 720 px) the
 card is its own screen with a link back to the list; from 720 px the list
 stays in a column beside the card, the open card marked with
-`aria-current`. **Test:** `e2e/ratios.mjs` at 360 and 1000 px.
+`aria-current`. **Test:** `e2e/ratios.mjs` at 360 and 1000 px, `e2e/ratio-family.mjs` for the family links.
 
 **Calculator.** A radio group chooses what is entered:
 
@@ -126,13 +127,15 @@ compares the displayed amounts with those vectors (via
 `e2e/ratio-fixture.mjs`), and 500 g flour in pie dough 3:2:1 (500, 333.33...,
 166.66...; displayed 500 g, 333 g, 167 g).
 
-**Limit: variations.** All 12 seed templates are roots (derivatives cannot
-change parts and no sourced derivative exists), so no shipped card has a
-family section and every family has one member. Grouping and the
-parent/variation links are built generally and tested with fixture
-templates that have derivatives (`test/ratios-view.test.ts`); the browser
-test of "variation and back" goes from one card to another through the
-desktop list and back with the browser's back (`page.goBack()`).
+**Variations.** Derivatives may change parts (`set`, issue 51), so the seed
+has two families: `roux` with `roux-whole-butter`, and `bread-dough-ratio`
+with `bread-dough-bakers-percent`. The list shows them under headings and
+the cards link to each other. Grouping and links are unit-tested with
+fixture templates (`test/ratios-view.test.ts`); the seed itself is pinned
+by the engine's `test/seed-templates-pinned.test.ts`. The browser test
+`e2e/ratio-family.mjs` (called from `e2e/ratios.mjs`) checks the headings,
+the "Variations" and "Variation of" links and the way back with the
+browser's back (`page.goBack()`).
 
 # Components
 

@@ -21,12 +21,17 @@ nothing to put online and `culina.nexumia.de` does not answer.
 
 ## Plan
 
-Culina gets the setup Mixtura uses[^mixtura][^hosting]: Cloudflare Workers
+Culina starts on the host Mixtura uses[^mixtura][^hosting]: Cloudflare Workers
 static assets, worker `culina`, custom domain `culina.nexumia.de`, deployed by
-a CI job after `check` (`wrangler deploy` on `main`, `wrangler preview` per
-pull request). It is added together with the first app build that is worth
-showing. What both apps need for deploying (`wrangler.jsonc` shape, the job,
-the `_headers` file) moves into shared code first instead of being copied.
+a CI job after `check` and `e2e` (`wrangler deploy` on `main`, a preview per
+pull request). The job comes after the editor (issue 16), when the first build
+is worth showing.
+
+The host is an adapter, not a base ([hosting decision](decisions/hosting.md)):
+the product is the static folder `packages/app/dist/`, the configuration file
+and the job live in this repository and are not shared code, and no feature
+uses a host service. Another static host or a self-hosted web server with
+HTTPS can serve the same folder.
 
 ## State on 2026-11-17
 

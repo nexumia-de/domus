@@ -3,6 +3,7 @@ import { PIE_500, seed, shown, VECTOR_CASES } from './ratio-fixture.mjs';
 import { check, watch } from './harness.mjs';
 import { FORBIDDEN, overflow, smallTargets } from './measure.mjs';
 import { controlled } from './smoke.mjs';
+import { family } from './ratio-family.mjs';
 
 const open = async (page, origin, hash) => {
   await page.goto(`${origin}/?no-sw#/ratios${hash ?? ''}`);
@@ -42,7 +43,14 @@ const phone = async (browser, origin, label) => {
     `${label}: list shows the ${seed.length} seed templates by name`,
   );
   const heads = await page.locator('.family-group h2').allTextContents();
-  check(heads.length === 0, `${label}: families of one member have no heading (${heads.length})`);
+  check(
+    heads.join('|') === 'Bread dough, ratio|Roux',
+    `${label}: only the two families of the seed have a heading, named after the root (${heads.join('|')})`,
+  );
+  check(
+    (await page.locator('.family-group').count()) === seed.length - 2,
+    `${label}: a family of one member is one section with no heading`,
+  );
   const row = await page.locator('.ratio-row', { hasText: 'Pie dough' }).innerText();
   check(
     /3 : 2 : 1/.test(row) && /flour : fat : water/.test(row),
@@ -316,7 +324,8 @@ const phone = async (browser, origin, label) => {
     await page.locator('.calc input.field').fill('1234.5');
     await page.getByLabel('Unit', { exact: true }).selectOption('lb');
     await page.getByText('Compare my amounts').click();
-    for (const p of t.parts) await page.getByLabel(`${p.role} (g)`).fill('333');
+    const roles = await page.locator('.parts tbody th').allTextContents();
+    for (const role of roles) await page.getByLabel(`${role} (g)`).fill('333');
     const m = await overflow(page);
     if (m.scroll > 0 || m.wide.length > 0) bad.push(`${t.id} ${JSON.stringify(m)}`);
   }
@@ -422,6 +431,7 @@ const offline = async (browser, origin) => {
 
 export const ratios = async (browser, server) => {
   await phone(browser, server.origin, '360px');
+  await family(browser, server.origin);
   await desktop(browser, server.origin);
   await offline(browser, server.url);
 };

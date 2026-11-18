@@ -25,7 +25,7 @@ const child = (id: string, name: string, parentId: string, role = 'herb'): Ratio
   changes: [{ op: 'add', role, parts: 1 }],
 });
 
-// Fixtures with derivatives; the shipped seed has none (docs/behaviour.md).
+// Fixtures with derivatives; the shipped seed has only two small families (docs/behaviour.md).
 const FIXTURE = [
   root('dough', 'Dough'),
   root('custard', 'Custard'),
@@ -52,10 +52,15 @@ test('a template whose chain cannot be resolved is a family of its own', () => {
   expect(families.map((f) => f.rootId)).toEqual(['a', 'b']);
 });
 
-test('every seed template is the root of its own family, in seed order', () => {
+test('the seed has two families, the bread dough and the roux; every other template stands alone', () => {
   const families = groupFamilies(SEED_TEMPLATES);
-  expect(families.map((f) => f.rootId)).toEqual(SEED_TEMPLATES.map((t) => t.id));
-  expect(families.every((f) => f.members.length === 1)).toBe(true);
+  const roots = SEED_TEMPLATES.filter((t) => t.parentId === undefined).map((t) => t.id);
+  expect(families.map((f) => f.rootId)).toEqual(roots);
+  const larger = families.filter((f) => f.members.length > 1);
+  expect(larger.map((f) => [f.name, f.members.map((m) => m.id)])).toEqual([
+    ['Bread dough, ratio', ['bread-dough-ratio', 'bread-dough-bakers-percent']],
+    ['Roux', ['roux', 'roux-whole-butter']],
+  ]);
 });
 
 test('relatives: parent and direct variations with their ids, for the links of the card', () => {
@@ -66,6 +71,9 @@ test('relatives: parent and direct variations with their ids, for the links of t
   expect(relatives(FIXTURE, 'dough').children.map((c) => c.id)).toEqual(['dough-herb']);
   expect(relatives(FIXTURE, 'dough-herb-garlic').children).toEqual([]);
   expect(relatives(SEED_TEMPLATES, 'pie-dough')).toEqual({ children: [] });
+  const roux = relatives(SEED_TEMPLATES, 'roux');
+  expect([roux.parent, roux.children.map((c) => c.id)]).toEqual([undefined, ['roux-whole-butter']]);
+  expect(relatives(SEED_TEMPLATES, 'roux-whole-butter').parent?.id).toBe('roux');
   expect(relatives(FIXTURE, 'nope')).toEqual({ children: [] });
 });
 

@@ -18,7 +18,10 @@ export interface Vector {
 
 export const readVector = (id: string): Vector =>
   JSON.parse(
-    readFileSync(new URL(`../../engine/vectors/templates/${id}.json`, import.meta.url), 'utf8'),
+    readFileSync(
+      new URL(`../../engine/vectors/ratios/templates/${id}.json`, import.meta.url),
+      'utf8',
+    ),
   ) as Vector;
 
 /** The inline template of a vector as an effective template (roles in the vector's order). */

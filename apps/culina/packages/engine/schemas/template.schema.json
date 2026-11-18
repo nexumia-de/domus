@@ -7,6 +7,18 @@
   "required": ["id", "name", "source"],
   "additionalProperties": false,
   "patternProperties": { "^x-": true },
+  "$defs": {
+    "range": {
+      "description": "Usual range in the same parts as parts; min not above max is checked by the engine.",
+      "type": "object",
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number", "minimum": 0 },
+        "max": { "type": "number", "minimum": 0 }
+      }
+    }
+  },
   "properties": {
     "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
     "name": {
@@ -34,16 +46,7 @@
             "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
           },
           "parts": { "type": "number", "exclusiveMinimum": 0 },
-          "range": {
-            "description": "Usual range in the same parts as parts; min not above max is checked by the engine.",
-            "type": "object",
-            "required": ["min", "max"],
-            "additionalProperties": false,
-            "properties": {
-              "min": { "type": "number", "minimum": 0 },
-              "max": { "type": "number", "minimum": 0 }
-            }
-          }
+          "range": { "$ref": "#/$defs/range" }
         }
       }
     },
@@ -61,7 +64,21 @@
               "role": {
                 "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
               },
-              "parts": { "type": "number", "exclusiveMinimum": 0 }
+              "parts": { "type": "number", "exclusiveMinimum": 0 },
+              "range": { "$ref": "#/$defs/range" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["op", "role", "parts"],
+            "additionalProperties": false,
+            "properties": {
+              "op": { "const": "set" },
+              "role": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+              },
+              "parts": { "type": "number", "exclusiveMinimum": 0 },
+              "range": { "$ref": "#/$defs/range" }
             }
           },
           {

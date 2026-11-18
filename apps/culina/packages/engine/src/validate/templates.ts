@@ -13,12 +13,13 @@ import type { Finding } from './types';
 const lastIndex = (items: readonly { role: string }[], role: string | undefined): number =>
   items.reduce((at, item, i) => (item.role === role ? i : at), -1);
 
-/** Where the error's role sits: `parts[i]` (with `.range`) or `changes[i]`; the last match is the offending one. */
+/** Where the error's role sits: `parts[i]` or `changes[i]` (with `.range` for a range); the last match is the offending one. */
 function pathOf(t: RatioTemplate, role: string | undefined, field: string): string | undefined {
+  const suffix = field === 'range' ? '.range' : '';
   const inParts = lastIndex(t.parts ?? [], role);
-  if (inParts >= 0) return `parts[${inParts}]${field === 'range' ? '.range' : ''}`;
+  if (inParts >= 0) return `parts[${inParts}]${suffix}`;
   const inChanges = lastIndex(t.changes ?? [], role);
-  return inChanges >= 0 ? `changes[${inChanges}]` : undefined;
+  return inChanges >= 0 ? `changes[${inChanges}]${suffix}` : undefined;
 }
 
 function fromResolve(t: RatioTemplate, error: TemplateError): Finding | undefined {

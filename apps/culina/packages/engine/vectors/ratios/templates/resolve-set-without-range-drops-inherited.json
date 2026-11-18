@@ -1,0 +1,64 @@
+{
+  "id": "resolve-set-without-range-drops-inherited",
+  "description": "A set without a range drops the inherited range of that role only",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "wet",
+        "name": "wet",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3,
+            "range": {
+              "min": 2.5,
+              "max": 3.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "wetter",
+        "name": "wetter",
+        "source": "user",
+        "parentId": "wet",
+        "changes": [
+          {
+            "op": "set",
+            "role": "water",
+            "parts": 3
+          }
+        ]
+      }
+    ],
+    "id": "wetter"
+  },
+  "expected": {
+    "roles": ["flour", "water"],
+    "parts": {
+      "flour": 3,
+      "water": 3
+    },
+    "lineage": ["wet", "wetter"],
+    "anchor": "flour",
+    "ranges": {
+      "flour": {
+        "min": 2.5,
+        "max": 3.5
+      }
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "A range belongs to the parts it was sourced for; synthetic template numbers chosen for the arithmetic, not from a source"
+}
