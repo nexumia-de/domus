@@ -525,25 +525,3 @@ apps.nextcloud.com
 The first has the release archives (not needed, the image was enough);
 the second is the app store, needed to read whether a Nextcloud app can
 add CORS headers for WebDAV (option B of the spike).
-
-## The materia dependency
-
-`@mixtura/engine` depends on [materia](https://github.com/nexumia-de/materia)
-by git reference (`github:nexumia-de/materia#v<version>`), and npm builds it
-on install ([dependencies](dependencies.md#shared-code)). One thing has to be
-kept by hand: npm records the source in `package-lock.json` as
-`git+ssh://git@github.com/…`, and `npm ci` then needs an SSH key for GitHub,
-which CI and agent sessions do not have (first seen in pull request #139:
-"Permission denied (publickey)"). The lockfile therefore says
-`git+https://github.com/nexumia-de/materia.git#<commit>`. `npm ci` keeps it;
-any command that rewrites the lockfile (`npm install`, a version bump) puts
-`git+ssh` back. After such a command run:
-
-```sh
-sed -i 's#git+ssh://git@github.com/nexumia-de/materia.git#git+https://github.com/nexumia-de/materia.git#' package-lock.json
-```
-
-`packages/engine/test/materia.test.ts` fails when the lockfile says
-`git+ssh`. To bump materia: change the tag in
-`packages/engine/package.json`, run `npm install`, run the command above,
-then `npm run check`.
