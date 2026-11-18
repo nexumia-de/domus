@@ -110,7 +110,9 @@ State of Culina's catalogue on 2026-11-18, from its build session:
   ("Dairy and Egg Products", "Baked Products", ...) but does not write
   it. Writing it out is small; the table from USDA categories to shop
   categories has to be decided (issue 11).
-- German names are planned only (Culina issue 69).
+- German names are planned only (Culina issue 69). The owner decided
+  on 2026-11-18 to pull them forward, so that the search works in
+  German from the start.
 - Moving the generator into a package of its own is simple; it needs
   one unit table of Culina. Best done after or together with the German
   names.
