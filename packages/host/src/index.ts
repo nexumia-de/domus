@@ -11,6 +11,21 @@ export {
 } from './webdav-connection';
 export { fileUrl, folderUrls, pathSegments } from './webdav-url';
 
+// The GitHub storage and the registry of storage types (docs/github.md).
+export { createGithubAdapter, type GithubOptions } from './github';
+export {
+  DEFAULT_REPOSITORY_NAME,
+  findRepositories,
+  setupLinks,
+  testGithub,
+  type FindRepositoriesResult,
+  type GithubConnectionResult,
+  type GithubConnectionState,
+  type RepositoryEntry,
+  type SetupLinks,
+} from './github-connection';
+export { UnknownStorage, adapterFor, type StorageDeps } from './storage';
+
 // Spaces: the secret, the sealed file, the invite link, local data and the
 // sync cycle (docs/spaces.md).
 export { base64UrlToBytes, bytesToBase64Url } from './base64url';

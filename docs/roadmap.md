@@ -53,11 +53,14 @@ checks green. The apps' own goals are in their roadmaps
    run one. Tested with two simulated devices and a fake storage; not
    yet run in a browser or against a real storage, which comes with
    goals 4 to 6.
-4. **GitHub storage.** The adapter for a private repository with a
-   token, collecting writes, the invite that may carry the token. The
-   owner's storage, so it comes before the server.
-   The setup screen leads through it with filled-in links to GitHub
-   and finds the repository from the token.
+4. **GitHub storage.** The adapter is built (2026-11-19,
+   [github](../packages/host/docs/github.md)): reading and writing the
+   files of a space in one private repository with a token, conflicts
+   by the file's version, cheap polling, a connection test, finding the
+   repository from the token, the links for the setup screen. **Nothing
+   of it was run against GitHub**, and GitHub's documentation could not
+   be read from the session; what it assumes is listed in its document.
+   The first real use is the owner's, through the screens of goal 5.
    _Owner_: a private repository (created on 2026-11-19) and a
    fine-grained token for it.
 5. **Domus screens.** Storages, spaces, invites, joining by link and

@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Creation**: goal 4, the GitHub storage adapter in the host package, tested against a fake of the API only. [Roadmap](roadmap.md).
 - **Creation**: goal 3, spaces, in the model (rules and formats with vectors) and in the host package (key derivation, sealing, invite link, the shared database `domus`, the sync cycle, the loop). No app uses them yet. [Roadmap](roadmap.md).
 - **Update**: goal 2 of the [roadmap](roadmap.md) is done in part: `packages/host` (`@nexumia-de/hospes`) holds the sync cipher and the WebDAV adapter taken out of Mixtura, which uses them from there. Mixtura's store, cycle, scheduler, bindings and invites were not moved; they are rebuilt for spaces in goal 3.
 - **Update**: [decision](decisions/one-origin-spaces-storages.md#storages): setting up GitHub from the app is three guided steps with filled-in links, not one click, and why. The owner created the private repository for their data.
