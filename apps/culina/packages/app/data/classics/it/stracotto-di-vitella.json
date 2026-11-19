@@ -340,11 +340,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 11869-12015; amounts at 11976-11987). Not yet read by a second person."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 253, and the 1891 OCR (lines 11869-12015), read again by the second checker. Agreed: 250 to 300 g maccheroni, veal 500 g, carnesecca 50 g, butter 30 g, quarter onion, small carrot, two celery pieces, a pinch of flour, tomato, water little by little, sieve, salted water, sparing parmesan. Changed: the mushroom note says 'may be added', not 'optional'. Nothing unreadable."
   },
   "note": {
-    "en": "Artusi's recipe 161. The sauce is meant for pasta or for a risotto with sauce; the rice variant is not written here. Artusi says the dried mushrooms are optional for flavour; no amount is given, so they are not written. The cooking time is not stated. The pasta line is the source's own quantity for this sauce.",
-    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht geschrieben. Getrocknete Pilze sind laut Quelle für den Geschmack freigestellt; eine Menge fehlt, daher sind sie nicht geschrieben. Die Garzeit fehlt."
+    "en": "Artusi's recipe 161. The sauce is meant for pasta or for a risotto with sauce; the rice variant is not written here. Artusi says that dried mushrooms may be added for flavour; no amount is given, so they are not written. The cooking time is not stated. The pasta line is the source's own quantity for this sauce.",
+    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht geschrieben. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher sind sie nicht geschrieben. Eine Garzeit nennt die Quelle nicht."
   }
 }

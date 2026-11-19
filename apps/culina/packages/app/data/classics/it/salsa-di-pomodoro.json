@@ -40,8 +40,8 @@
             "original": "un quarto di cipolla"
           },
           "note": {
-            "en": "A quarter of an onion, read as a quarter of one piece (judgement).",
-            "de": "Ein Viertel einer Zwiebel, als Viertel eines Stücks gelesen (Urteil)."
+            "en": "A quarter of an onion, as the source gives it.",
+            "de": "Ein Viertel einer Zwiebel, wie die Quelle sie nennt."
           }
         },
         {
@@ -206,8 +206,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 7443-7481); a second person must compare the numbers and the steps with the text."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 125, and the 1891 OCR (lines 7443-7481), read again by the second checker. Agreed: a quarter onion (OCR 'quaiffo' is 'quarto' in 1985), one garlic clove, celery, basil, parsley, oil, salt, pepper, seven or eight tomatoes, the steps and the sieve. Changed: the onion note no longer calls the reading a judgement. No amount changed."
   },
   "note": {
     "en": "The base sauce of the book. The uses Artusi names (boiled meat, pasta, risotto) are not transcribed here. The source's amounts of onion, garlic and celery are counts of pieces.",

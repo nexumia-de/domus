@@ -171,7 +171,7 @@
         {
           "text": {
             "en": "Melt the butter in a water bath.",
-            "de": "Die Butter im Wasserbad schmelzen."
+            "de": "Die Butter über heißem Wasser schmelzen."
           },
           "technique": "water-bath",
           "uses": ["butter"]
@@ -260,8 +260,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 22482-22494 for the amounts, 22495-22611 for the method). Not yet read by a second person."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 577, and the 1891 OCR (lines 22482-22611), read again by the second checker. Agreed: flour, sugar and butter 170, 170 and 150 g; almonds and pine nuts 50 g together; one whole egg; four yolks; lemon peel by scent; the method; moderate oven; icing sugar. Not taken over: the 1985 text also dusts the tin with icing sugar; the dish keeps the 1891 wording. Changed: none."
   },
   "note": {
     "en": "Artusi's recipe 349. The source gives no tin size, no oven time and only moderate heat. Lemon zest and the dusting are without amounts. The number of persons is settled by us. Artusi's separate recipe 'Torta ricciolina' is not part of this file.",

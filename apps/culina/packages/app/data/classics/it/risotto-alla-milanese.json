@@ -200,11 +200,11 @@
   ],
   "settled": [],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 5907-5935; cooking method from lines 5809-5888); a second person must compare the numbers and the steps with the text."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 78, and the 1891 OCR (lines 5907-5935; cooking as in No. 50, lines 5809-5888), read again by the second checker. Agreed: rice, butter, onion, saffron, cooking as in No. 50 (hot water), five persons. Changed: none. Not changed: the source names broth for a richer result and for the saffron, without naming its kind; water is written, so the dish has no meat by our choice."
   },
   "note": {
-    "en": "The cooking is that of No. 50 as No. 52 refers to it; the peas and the cheese of No. 50 are not part of this dish. The source names hot water as the cooking liquid and offers broth only for a richer result; water is used, so the dish has no meat (judgement, not recorded in settled: the format needs a measured line for a settled entry). The persons statement is in No. 50 (five persons for the same 500 g of rice).",
-    "de": "Das Garen folgt Nr. 50, auf die Nr. 52 verweist; die Erbsen und der Käse von Nr. 50 gehören nicht zu diesem Gericht. Die Quelle nennt heißes Wasser als Garflüssigkeit und bietet Brühe nur für ein reicheres Ergebnis an; verwendet wird Wasser, daher ist das Gericht ohne Fleisch (Urteil, nicht in settled festgehalten, weil das Format dafür eine gemessene Zeile verlangt). Die Angabe der Personen steht in Nr. 50 (fünf Personen für dieselben 500 g Reis)."
+    "en": "The cooking is that of No. 50 as No. 52 refers to it; the peas and the cheese of No. 50 are not part of this dish. The source names hot water as the cooking liquid (No. 50). It asks for broth for a richer result and for dissolving the saffron, but does not name its kind; water is written, so the dish has no meat (our judgement). The persons statement is for five persons, in No. 50 (for the same 500 g of rice).",
+    "de": "Das Garen folgt Nr. 50, auf die Nr. 52 verweist; die Erbsen und der Käse von Nr. 50 gehören nicht zu diesem Gericht. Die Quelle nennt heißes Wasser als Garflüssigkeit (Nr. 50). Sie verlangt Brühe für ein reicheres Ergebnis und zum Auflösen des Safrans, nennt aber nicht deren Art; geschrieben ist Wasser, daher ist das Gericht ohne Fleisch (unser Urteil). Die Angabe für fünf Personen steht in Nr. 50 (für dieselben 500 g Reis)."
   }
 }

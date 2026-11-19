@@ -78,8 +78,8 @@
             "id": "fdc-171401"
           },
           "note": {
-            "en": "The source says 'tutino di lardone'; the amount is not legible in the scan, so no amount is written.",
-            "de": "Die Quelle sagt 'tutino di lardone'; die Menge ist im Scan nicht lesbar, daher steht keine Menge da."
+            "en": "The source says 'un battutino di lardone' (a small chopped piece, not sized); the 1891 scan reads 'tutino di lardone'. No amount is written.",
+            "de": "Die Quelle sagt 'un battutino di lardone' (ein kleines gehacktes Stück, nicht bemessen); der Scan von 1891 liest 'tutino di lardone'. Keine Menge steht da."
           }
         },
         {
@@ -99,8 +99,8 @@
         {
           "key": "tomato",
           "wanted": {
-            "en": "Ripe tomato",
-            "de": "Reife Tomate"
+            "en": "Tomato",
+            "de": "Tomate"
           },
           "note": {
             "en": "In pieces, seeds removed; no amount given.",
@@ -254,11 +254,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 12426-12481). The garbled OCR at lines 12430-12431 (the fat before the lard) and 12452 (broth or water) is not fully legible. Not yet read by a second person."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 263, and the 1891 OCR (lines 12426-12481), read again by the second checker. Agreed: chicken, rosemary, garlic, fat ('un battutino di lardone', not sized, so no amount), salt and pepper, tomato, potatoes, the butter option. Changed: the tomato is no longer called 'ripe', which the source does not say. Not in the source: the bird's weight and a cooking time."
   },
   "note": {
-    "en": "Artusi's recipe 166. The weight of the bird and the amount of lard are not legible in the scan; no cooking time is given. The source says that butter may replace the lard for a more delicate taste; the sentence is damaged in the scan, so the lard is written.",
-    "de": "Artusis Rezept Nr. 166. Das Gewicht des Huhns und die Menge des Schweinefetts sind im Scan nicht lesbar; eine Garzeit fehlt. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; der Satz ist im Scan beschädigt, daher ist das Schweinefett geschrieben."
+    "en": "Artusi's recipe 166 (1985 edition: No. 263). The source gives no weight for the bird and no cooking time. The source says that butter may replace the lard for a more delicate taste; the 1985 edition confirms the sentence, so the lard is written.",
+    "de": "Artusis Rezept Nr. 166 (Ausgabe 1985: Nr. 263). Die Quelle nennt kein Gewicht für das Huhn und keine Garzeit. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; die Ausgabe von 1985 bestätigt den Satz, daher ist das Schweinefett geschrieben."
   }
 }

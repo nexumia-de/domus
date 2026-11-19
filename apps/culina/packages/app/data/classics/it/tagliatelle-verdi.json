@@ -36,7 +36,7 @@
           },
           "note": {
             "en": "A handful of spinach; boiled first.",
-            "de": "Eine Hand voll Spinat; zuerst gekocht."
+            "de": "Eine Handvoll Spinat; zuerst gekocht."
           }
         },
         {
@@ -151,8 +151,8 @@
         },
         {
           "text": {
-            "en": "Bring the water to the boil and put the strips into it.",
-            "de": "Das Wasser zum Kochen bringen und die Streifen hineingeben."
+            "en": "Put the strips into the water as it comes to the boil.",
+            "de": "Die Streifen in das Wasser geben, während es zum Kochen kommt."
           },
           "technique": "cook-pasta",
           "uses": ["water"]
@@ -192,8 +192,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 5470-5513); a second person must compare the numbers and the steps with the text."
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 70, and the 1891 OCR (lines 5470-5513), read again by the second checker. Agreed: two eggs, a fist of spinach and flour as the dough takes (no amounts), boiling, squeezing, chopping, kneading, rolling, drying, cutting, cooking, cheese and butter, four or five persons. Changed: the cooking step follows the source's timing (as the boil rises), not a bring-to-boil step."
   },
   "note": {
     "en": "The source also offers the dressings of Nos. 58 and 44 (not transcribed); cheese and butter is the option named last. The source gives no weight for the flour or the spinach.",
