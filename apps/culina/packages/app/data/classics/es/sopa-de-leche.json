@@ -1,0 +1,188 @@
+{
+  "id": "sopa-de-leche",
+  "name": {
+    "en": "Milk soup with egg yolks (delicate form)",
+    "de": "Milchsuppe mit Eigelb (feine Form)"
+  },
+  "originalName": "Sopa de leche",
+  "country": "es",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina al alcance de todos (Tercera edición ilustrada con 240 grabados; Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "p. [117], section \"Sopas y potajes de vigilia\", second recipe \"Sopa de leche\" (the delicate form)",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "sopa-de-leche-soup",
+      "name": {
+        "en": "Milk soup",
+        "de": "Milchsuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "l",
+            "original": "dos litros de leche"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g",
+            "original": "300 gramos de azúcar"
+          }
+        },
+        {
+          "key": "lemon-peel",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "la corteza toda de un limón"
+          }
+        },
+        {
+          "key": "bay-leaf",
+          "wanted": {
+            "en": "Bay leaf",
+            "de": "Lorbeerblatt"
+          },
+          "amount": {
+            "value": 3,
+            "max": 4,
+            "unit": "count",
+            "original": "tres ó cuatro hojas de laurel"
+          }
+        },
+        {
+          "key": "cinnamon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171320"
+          },
+          "note": {
+            "en": "One small stick of cinnamon (una astillita de canela). The size is not read in the book, so the line has no amount.",
+            "de": "Ein kleines Stück Zimtstange (una astillita de canela). Die Größe steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "egg-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "seis yemas"
+          }
+        },
+        {
+          "key": "bread",
+          "wanted": {
+            "en": "Bread",
+            "de": "Brot"
+          },
+          "note": {
+            "en": "Bread cut into thin slices and put in the tureen (el pan cortado). The source gives no amount.",
+            "de": "Brot in dünne Scheiben geschnitten und in die Suppenschüssel gelegt (el pan cortado). Die Quelle gibt keine Menge an."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the bread, cut into thin slices, into the tureen.",
+            "de": "Das Brot in dünnen Scheiben in die Suppenschüssel legen."
+          },
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "Boil the milk with the sugar, the lemon peel, the bay leaves and the cinnamon stick.",
+            "de": "Die Milch mit dem Zucker, der Zitronenschale, den Lorbeerblättern und der Zimtstange kochen."
+          },
+          "technique": "boil",
+          "uses": ["milk", "sugar", "lemon-peel", "bay-leaf", "cinnamon"]
+        },
+        {
+          "text": {
+            "en": "Take a third of the cooked milk in another pot, off the heat, and dissolve the six egg yolks in it.",
+            "de": "Ein Drittel der gekochten Milch in einem anderen Topf abseits der Hitze mit den sechs Eigelb verrühren."
+          },
+          "uses": ["milk", "egg-yolk"]
+        },
+        {
+          "text": {
+            "en": "Heat it gently, stirring without stopping, until it thickens a little.",
+            "de": "Sanft erhitzen und ohne Pause rühren, bis es leicht andickt."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["egg-yolk"]
+        },
+        {
+          "text": {
+            "en": "Pour the rest of the milk over the bread in the tureen.",
+            "de": "Den Rest der Milch über das Brot in der Suppenschüssel gießen."
+          },
+          "uses": ["milk", "bread"]
+        },
+        {
+          "text": {
+            "en": "At serving, stir the thickened egg mixture into the soup.",
+            "de": "Beim Servieren die angedickte Eimischung in die Suppe rühren."
+          },
+          "uses": ["egg-yolk"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "sopa-de-leche-soup"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source names no number of persons; two litres of milk and six yolks are taken for six portions.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed from the plain text of the book (lines 6192-6236 of muro.txt) by the transcriber of this file; the page is bracketed because the running head is garbled, and a second reader compares it with the printed page."
+  },
+  "note": {
+    "en": "This is the delicate form the author gives after the plain one (the plain form pours milk over the bread with a pinch of salt and sugar). Only the delicate form is transcribed. The bread amount is not given.",
+    "de": "Dies ist die feine Form, die der Autor nach der einfachen angibt (die einfache gießt Milch mit einer Prise Salz und Zucker über das Brot). Übertragen ist nur die feine Form. Die Brotmenge gibt die Quelle nicht an."
+  }
+}
