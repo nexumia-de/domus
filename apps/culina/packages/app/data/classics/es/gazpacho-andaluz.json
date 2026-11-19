@@ -42,9 +42,9 @@
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato",
-            "de": "Tomate"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
           },
           "amount": {
             "value": 2,
@@ -61,9 +61,9 @@
         },
         {
           "key": "bread",
-          "wanted": {
-            "en": "Stale bread",
-            "de": "Altbackenes Brot"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
           },
           "note": {
             "en": "Crumb of half a loaf (miga de medio pan), soaked in water beforehand. The size of the half loaf is not read in the book, so the line has no amount.",

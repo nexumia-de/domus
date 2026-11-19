@@ -280,9 +280,19 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
 - `ref`: `{ "kind": "ingredient", "id": "<id of packages/app/data/ingredient-catalogue.json>" }`,
   or `{ "kind": "component", "id": "<a component of this file>" }`. Look the
   ingredient up in the catalogue; the validator refuses an id it does not have.
-- `wanted`: `{ en, de }`, **only while the catalogue lacks the ingredient**. A
-  later package replaces every `wanted` by a catalogue id until none is left; a
-  dish with one can be read but not yet copied into the notebook.
+- `wanted`: `{ en, de }`, **only while the catalogue lacks the ingredient**
+  (a food the USDA data does not have: meat, fish, bouquet garni, orange-flower
+  water, whole cloves ...). First look for the food in the catalogue by its
+  English and German names and in the group nodes of the tree; a food that
+  only the selection rule leaves out but the USDA data has is added through
+  [named foods](ingredient-catalogue.md#named-foods), not typed. A dish with a
+  `wanted` line can be read but not yet copied into the notebook. The finder
+  never counts such a line as lacking and names it apart; a line whose English
+  or German text is water ("Water", "Cold water", "Wasser") is not asked for at
+  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)). The
+  names that remain are an explicit, reviewed list in
+  `test/classics-wanted-list.test.ts`: a new unmatched line fails it until a
+  reviewer adds the name there.
 
 Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 **give one to every line that a step uses, or that is settled**), `role`,

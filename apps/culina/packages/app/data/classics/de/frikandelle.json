@@ -90,9 +90,9 @@
         },
         {
           "key": "crumbs",
-          "wanted": {
-            "en": "Grated wheat bread or cracker crumbs",
-            "de": "Geriebenes Weißbrot oder Cracker-Brösel"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174928"
           },
           "amount": {
             "value": 2,

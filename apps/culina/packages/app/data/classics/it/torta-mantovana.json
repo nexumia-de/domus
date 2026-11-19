@@ -132,9 +132,9 @@
         },
         {
           "key": "crumbs",
-          "wanted": {
-            "en": "Breadcrumbs",
-            "de": "Semmelbrösel"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174928"
           },
           "note": {
             "en": "For dusting the tin, as an alternative to flour.",

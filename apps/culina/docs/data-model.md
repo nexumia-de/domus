@@ -515,6 +515,24 @@ sauce, crunch, acid, garnish, starch). The seed list comes with the seed
 data; a role id nobody defined is reported as unknown by the engine, not
 refused by the schema. There is no role entity yet (open question 2).
 
+**The role table** (`packages/app/data/ingredient-roles.json`, read by
+`src/catalogue/roles.ts`) says which catalogue ingredients or groups fill a role
+of a ratio card (`flour`, `egg`, `fat`, `sugar`, `oil`, `acid`, `liquid`,
+`salt`) or of a dish (`crunch`, `garnish`). The ratio templates already carry
+what is needed on their side (each part has a `role`, and the finder matches an
+ingredient whose roles include it), and the finder's tree already lets a role
+on a group cover every food below it; what was missing is that the USDA data
+has no roles, so no catalogue ingredient could fill one. So no second table of
+slots was added: the table is only the ingredient side, 23 entries (a group or
+a food, its roles, and `basis`: every one is marked as a judgement, with the
+ratio card that uses the role). The app adds the roles when it reads the
+catalogue, so a copy in the notebook has them (an entry that already has roles
+keeps its own, and a copy made before has none). Water has no catalogue entry
+and no row; a stock item of water is marked always there. A test checks that
+every id is in the catalogue and every role is one a ratio card or a dish
+knows. The dish lines of the classics carry no role table of their own: a
+line's `role` is the slot's, as before.
+
 ## Technique
 
 A kitchen technique with the short note the helper shows beside a step.

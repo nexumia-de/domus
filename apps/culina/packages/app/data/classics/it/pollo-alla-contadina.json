@@ -46,9 +46,9 @@
         },
         {
           "key": "rosemary",
-          "wanted": {
-            "en": "Fresh rosemary",
-            "de": "Frischer Rosmarin"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173473"
           },
           "note": {
             "en": "'A few sprigs' (ciocchette); no amount.",
@@ -91,16 +91,16 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato",
-            "de": "Tomate"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
           },
           "note": {
             "en": "In pieces, seeds removed; no amount given.",

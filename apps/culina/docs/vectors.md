@@ -107,6 +107,22 @@ a range gives neither; the vector `ratio-check-no-range-reports-deviation`
 shows that. Ranges and parts in vectors are synthetic where the vector
 says so; vectors that use parts of a row of [ratios](ratios.md) name it.
 
+## Kind of the classics in the finder
+
+Run by `test/classics-makeable-vectors.test.ts` from
+`packages/engine/vectors/classics-makeable/`; `expected` is a subset of the
+result as for the finder, `urgency: null` asserts none.
+
+| `kind`              | `inputs`                                                                                                                     | `expected`                                                                                                                     |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `classics_makeable` | `today`, `ingredients`, `classics` (invented, in the stored shape), `stock`, optional `lang`, `portions`, `facts`, `options` | `candidates` (ranked): `id`, `kind`, `complete`, `lacking`, `country`, `vegetarian`, `notInCatalogue`, `roles`, `urgency`, ... |
+
+Errors: `error_code` is a `makeable` code or a `deriveClassic` one, and
+`error_detail.classic` names the classic. Covered: complete with water and a
+`wanted` line apart, one line lacking, beyond the threshold (not listed),
+German names with a sibling substitute, the ranking by urgency, a classic that
+does not derive.
+
 ## Kinds of components, yield and portions (issue 10)
 
 Folder: `packages/engine/vectors/components/`. Rules:

@@ -37,9 +37,9 @@
       "lines": [
         {
           "key": "beans",
-          "wanted": {
-            "en": "Green beans",
-            "de": "Grüne Bohnen"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169961"
           },
           "note": {
             "en": "Two kinds: long, fine green pods without visible seed, and fresh beans, shelled. A handful of each (\"un puñado de cada clase\"); a handful is not sized in the book, so no amount.",
@@ -82,9 +82,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -111,9 +111,9 @@
         },
         {
           "key": "lemon",
-          "wanted": {
-            "en": "Lemon juice",
-            "de": "Zitronensaft"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
           },
           "amount": {
             "value": 0.5,
@@ -123,9 +123,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "Chopped. The source says not to be sparing with it (\"no hay que escasear el perejil picado\"); no amount.",

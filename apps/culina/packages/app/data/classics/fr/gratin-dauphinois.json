@@ -60,9 +60,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -102,9 +102,9 @@
         },
         {
           "key": "gruyere",
-          "wanted": {
-            "en": "Gruyère cheese",
-            "de": "Gruyère"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171242"
           },
           "amount": {
             "value": 4,

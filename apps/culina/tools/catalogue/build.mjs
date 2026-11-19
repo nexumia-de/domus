@@ -15,6 +15,14 @@ import { groupRows } from './group.mjs';
 import { germanNames } from './wikidata.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
+const extrasFile = fileURLToPath(new URL('./extras.json', import.meta.url));
+/** The named foods by FDC id (extras.json). */
+export const EXTRAS = new Map(
+  JSON.parse(readFileSync(extrasFile, 'utf8')).foods.map((e) => [e.id, e]),
+);
+/** Whether the food is a row of the catalogue: selected by the rule or named in extras.json. */
+export const isSelected = (food) => isBasic(food) || EXTRAS.has(food.fdcId);
+
 const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
@@ -45,28 +53,30 @@ const units = JSON.parse(readFileSync(unitsFile, 'utf8'));
 const mlOf = (unit) => units[unit].toBase;
 
 /**
- * Rows for every selected food that has a density or a unit weight, sorted by id. `refuse` (from
+ * Rows for every selected food that has a density or a unit weight (and for every named food of
+ * extras.json, which may have neither), sorted by id. `refuse` (from
  * readRefuse) adds the yields; without it the rows have none. `wikidata` (the parsed snapshot) adds
  * the German names; without it the rows have none.
  */
 export const buildRows = (foods, release, refuse = new Map(), wikidata = undefined) => {
   const german =
-    wikidata === undefined ? new Map() : germanNames(foods.filter(isBasic), wikidata).found;
+    wikidata === undefined ? new Map() : germanNames(foods.filter(isSelected), wikidata).found;
   const where = `${DATASET}, release ${release}`;
   const rows = [];
   for (const food of foods) {
-    if (!isBasic(food)) continue;
+    if (!isSelected(food)) continue;
+    const extra = EXTRAS.get(food.fdcId);
     const portions = food.foodPortions ?? [];
-    const density = deriveDensity(portions, mlOf);
-    const piece = deriveUnitWeight(portions);
-    if (density === undefined && piece === undefined) continue;
+    const density = deriveDensity(portions, mlOf, extra);
+    const piece = deriveUnitWeight(portions, extra);
+    if (density === undefined && piece === undefined && extra === undefined) continue;
     const row = { id: `fdc-${food.fdcId}`, name: nameOf(food.description) };
     const named = german.get(food.fdcId);
     if (named !== undefined) row.names = named.names;
     if (density !== undefined) {
       row.densityGPerMl = {
         value: density.value,
-        source: `${where}, FDC ID ${food.fdcId}, portion: ${density.portion}; 1 ${density.unit} = ${mlOf(density.unit)} ml (US customary, engine units table)`,
+        source: `${where}, FDC ID ${food.fdcId}, portion: ${density.portion}${density.equals === undefined ? '' : `; ${density.equals}`}; 1 ${density.unit} = ${mlOf(density.unit)} ml (US customary, engine units table)`,
       };
     }
     if (piece !== undefined) {

@@ -59,9 +59,9 @@
         },
         {
           "key": "lemon-juice",
-          "wanted": {
-            "en": "Lemon juice",
-            "de": "Zitronensaft"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
           },
           "note": {
             "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice. The book does not state a size for it, so no amount is given.",
@@ -238,9 +238,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           },
           "amount": {
             "value": 2,
@@ -261,9 +261,9 @@
         },
         {
           "key": "wine",
-          "wanted": {
-            "en": "Red wine",
-            "de": "Rotwein"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173190"
           },
           "note": {
             "en": "\"3 décilitres de vin rouge\": the décilitre is 0.1 litre, so the amount is 300 ml.",

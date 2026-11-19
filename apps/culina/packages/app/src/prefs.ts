@@ -61,7 +61,15 @@ export interface CookFilters {
   role?: string;
   /** Lines that may be lacking, 0 to `MAX_LACKING`. */
   lacking: number;
+  /** Classics of this country only; undefined: all four. */
+  country?: ClassicCountry;
+  /** True: only classics without meat and fish. */
+  meatFree?: true;
 }
+
+/** The countries of the shipped classics (the filter's choices). */
+export const CLASSIC_COUNTRIES = ['de', 'it', 'fr', 'es'] as const;
+export type ClassicCountry = (typeof CLASSIC_COUNTRIES)[number];
 
 export const DEFAULT_COOK_FILTERS: CookFilters = { lacking: 1 };
 
@@ -76,9 +84,17 @@ export const parseCookFilters = (value: unknown): CookFilters => {
     }
   }
   if (typeof raw !== 'object' || raw === null) return { ...DEFAULT_COOK_FILTERS };
-  const { role, lacking } = raw as { role?: unknown; lacking?: unknown };
+  const { role, lacking, country, meatFree } = raw as {
+    role?: unknown;
+    lacking?: unknown;
+    country?: unknown;
+    meatFree?: unknown;
+  };
+  const chosen = CLASSIC_COUNTRIES.find((c) => c === country);
   return {
     ...(typeof role === 'string' && role !== '' ? { role } : {}),
+    ...(chosen === undefined ? {} : { country: chosen }),
+    ...(meatFree === true ? { meatFree: true as const } : {}),
     lacking:
       typeof lacking === 'number' &&
       Number.isInteger(lacking) &&

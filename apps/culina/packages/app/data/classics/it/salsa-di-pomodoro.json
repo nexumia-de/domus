@@ -78,9 +78,9 @@
         },
         {
           "key": "basil",
-          "wanted": {
-            "en": "Basil",
-            "de": "Basilikum"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172232"
           },
           "note": {
             "en": "A few leaves.",
@@ -89,9 +89,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "As much as needed; fresh parsley.",
@@ -118,16 +118,16 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomatoes",
-            "de": "Tomaten"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
           },
           "amount": {
             "value": 7,

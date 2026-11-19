@@ -116,9 +116,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "'A pinch'; the source gives no weight for it.",
@@ -187,9 +187,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {

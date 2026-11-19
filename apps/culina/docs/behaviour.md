@@ -554,7 +554,27 @@ list with its "Tick what is there" action). Texts:
 - **Filters**, kept in `localStorage` (`culina.cook`, like the theme; no
   storage means the defaults): "Show" is the engine's threshold, complete
   only or lacking at most 1, 2 or 3 (default 1); "Covers the role" keeps
-  entries whose covered roles include the chosen one.
+  entries whose covered roles include the chosen one. The same three choices
+  apply to the classics below; "Country" and "Meat and fish" are kept in the
+  same entry and belong to the classics only.
+- **Classic dishes**, a section below the own list ("Classic dishes",
+  `src/screens/cook/classics-section.ts`; not on the "uses an ingredient"
+  view). Each shipped classic is derived (`deriveClassic`, 2 portions) and
+  judged by the engine's finder on the stock (`classicsMakeable`,
+  [engine rules](engine-rules.md#the-shipped-classics-in-the-finder)); the
+  app only filters (country: Germany, Italy, France, Spain or all; "Without
+  meat and fish") and shows. The entry reads like an own dish (status,
+  reason, substitutes, unknown amounts) with the country and, where it
+  applies, "without meat and fish" in the kind line, and what is missing as
+  "Needs: Oil, Salt" (never "lacks"/"wrong"). Water is never asked for. A
+  line the catalogue has no ingredient for yet is not counted and is named
+  apart: "Not in the catalogue yet, so not counted: Bouquet garni". The
+  ingredient tree is the notebook's completed by the shipped catalogue (the
+  notebook wins on an id), loaded on the first draw and drawn again when it
+  is there; names are in the content language. Each entry is one link to
+  `#/classic/<id>`. With nothing that fits: "No classic fits these choices."
+  (or the quiet sentence for no stock) and the three nearest, "<name> needs
+  <list>". **Test:** `test/cook-classics.test.ts`, `e2e/classics-finder.mjs`.
 - **Start from one ingredient** (`#/cook/<ingredientId>/with`, heading
   "What uses Leek"): a section at the top lists the ticked ingredients and
   a search over the notebook's ingredients by every name (English and
@@ -571,10 +591,12 @@ list with its "Tick what is there" action). Texts:
   found and there is no component or dish (links to add a component and to
   import); nothing matches, with the three nearest candidates and what each
   lacks (the engine at a wide threshold, fewest lacking first).
-- **Catalogue ingredients only.** Catalogue ingredients carry no roles, so
-  with no recipe of one's own there is nothing to rank and the screen shows
-  "Your notebook has no components or dishes yet." with its links. No
-  roles are invented.
+- **Catalogue ingredients only.** The generated catalogue carries no roles;
+  the [role table](data-model.md#roles) adds a few when the catalogue is
+  read, so a ratio card is makeable from stock of catalogue foods. With no
+  recipe of one's own and no ratio card that fits there is nothing to rank
+  in the own list and the screen shows "Your notebook has no components or
+  dishes yet." with its links (the classics below are listed regardless).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
   least 44 px, nothing focused on open. **Offline:** the finder reads the
   local notebook. No "add to list": shopping lists are the planned sister
@@ -600,19 +622,21 @@ view logic is in `src/classics/` (no DOM), the screens in
   country without a dish says so quietly ("No dishes from here yet"); the
   app works with no dish at all. A dish id or a country that is not known gives
   one quiet sentence.
-- **Dish** (`#/classic/<id>`). Name, the original name, course and meat flag;
-  the source (author, title, year, place, a link) and the persons it states
-  (or, when the source names none, the number we took); a portions stepper,
-  default 2; "Cook step by step"; then the whole recipe on the screen: the
-  ingredient lines per component and for the dish, then the method. **The app
+- **Dish** (`#/classic/<id>`). In this order, so that the ingredients are on
+  the first screen at 360 x 720: the name, the original name, course and meat
+  flag, a note of the dish if it has one; a portions stepper, default 2; the
+  ingredient lines per component and for the dish; "Cook step by step"; the
+  whole method; then, each closed behind a tap (`<details>`), **Source**
+  (author, title, year, place, a link, and the persons it states or, when the
+  source names none, the number we took), **What we settled where the source is
+  vague**, and **Second check** (how the dish was read a second time). **The app
   does no arithmetic**: amounts come from `deriveClassic` and are only rounded
   for display with the shared helpers (`formatMass` for grams, `formatNumber`
   otherwise). A range is shown as "100 ml to 150 ml" (the source's range, not
   the middle the engine uses for copies); a line without an amount says "to
   taste" or "as needed" (the line's own note when it says so); the source's
   own wording is shown in brackets; a settled line is marked "settled by us".
-  Behind a tap, "What we settled where the source is vague" lists each
-  settled thing with its reason; the second check the dish had is named.
+  The settled list names each settled thing with its reason.
 - **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish). One
   step: "Step 3 of 8" as a heading, the component it belongs to, the text,
   the lines it uses with their amounts, time and temperature as the source

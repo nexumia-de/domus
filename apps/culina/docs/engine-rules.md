@@ -851,6 +851,39 @@ run by `test/makeable-vectors.test.ts`; `test/makeable.test.ts` holds the
 properties (a substitute never changes an amount, the stock order does not
 matter).
 
+## The shipped classics in the finder
+
+`classicsMakeable(input)` (`src/classics/makeable.ts`) judges the shipped
+classics on the stock with **the same finder**, not a second logic. For each
+classic it calls `deriveClassic` (portions default 2, `lang` default `en`),
+writes the dish out as slots (every classic component is expanded into its
+own lines, so the finder names the ingredient that lacks, not the component;
+a line takes the role of the slot that names its component; the line's state
+is not asked) and hands the dish to `makeable`. The input is `makeable`'s
+(`ingredients`, `stock`, `today`, `facts`, `options`) with `classics`,
+optional `portions` and `lang`; the app passes the notebook's tree completed
+by the catalogue. The result is `{ ok: true, candidates }` or
+`{ ok: false, error }` with the `makeable` or `deriveClassic` code and the
+`classic` id. A candidate is the finder's dish candidate with `kind: 'classic'`,
+`country`, `course`, `vegetarian` and `notInCatalogue`; the order is the
+finder's (urgency, roles covered, name, id) across all classics, and
+`maxMissing` (default 0) and "at least one line that is there" decide what is
+listed, as for an own dish.
+
+- **A `wanted` line** (no catalogue ingredient yet) is left out of the lines:
+  it never counts as lacking, and its name in `lang` is in `notInCatalogue`,
+  once each, in file order.
+- **Water** (`isWater`: a `wanted` text whose English or German begins with
+  water, cold water, ice-cold water, "Wasser", "kaltes Wasser") is neither
+  asked for nor named: a kitchen has it.
+- A line without an amount is only asked for by presence; an amount in a unit
+  the stock cannot be converted to is `have-amount-unknown`, as for any dish.
+- A component that names itself is expanded once.
+
+Vectors: `packages/engine/vectors/classics-makeable/`, kind
+`classics_makeable` ([vector format](vectors.md#kind-of-the-classics-in-the-finder)),
+run by `test/classics-makeable-vectors.test.ts`.
+
 # Techniques, steps and classics
 
 Issue 87 (work package 2 of the [helper plan](helper-plan.md)). Code:

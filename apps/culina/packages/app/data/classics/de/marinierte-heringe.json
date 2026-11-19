@@ -88,9 +88,9 @@
         },
         {
           "key": "shallot",
-          "wanted": {
-            "en": "Shallot",
-            "de": "Schalotte"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170499"
           },
           "amount": {
             "value": 8,
@@ -100,9 +100,9 @@
         },
         {
           "key": "peppercorn",
-          "wanted": {
-            "en": "White peppercorns",
-            "de": "Weiße Pfefferkörner"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170933"
           },
           "amount": {
             "value": 12,
@@ -123,9 +123,9 @@
         },
         {
           "key": "peppergrass",
-          "wanted": {
-            "en": "Peppergrass",
-            "de": "Kresse"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168407"
           },
           "note": {
             "en": "No amount given. The German name is our translation of the English word.",
@@ -156,9 +156,9 @@
         },
         {
           "key": "bay",
-          "wanted": {
-            "en": "Bay leaves",
-            "de": "Lorbeerblätter"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170917"
           },
           "note": {
             "en": "No amount given.",

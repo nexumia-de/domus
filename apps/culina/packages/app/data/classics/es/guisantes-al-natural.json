@@ -79,9 +79,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in. The size is not read in the book, so the line has no amount.",
@@ -101,9 +101,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {

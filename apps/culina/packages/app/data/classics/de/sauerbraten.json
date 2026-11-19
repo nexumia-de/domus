@@ -75,9 +75,9 @@
         },
         {
           "key": "bay",
-          "wanted": {
-            "en": "Bay leaves",
-            "de": "Lorbeerblätter"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170917"
           }
         },
         {
@@ -125,9 +125,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -199,9 +199,9 @@
         },
         {
           "key": "rye",
-          "wanted": {
-            "en": "Rye bread crust",
-            "de": "Roggenbrotkruste"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172684"
           },
           "note": {
             "en": "A piece of rye bread crust; the source gives no size.",

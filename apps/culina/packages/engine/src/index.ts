@@ -303,6 +303,13 @@ export { copyClassic } from './classics/copy';
 export type { CopiedComponent, CopiedDish, CopyOptions, CopyResult, Origin } from './classics/copy';
 export { resolveSourceUnit } from './classics/units';
 export type { UnitSize } from './classics/units';
+export { classicsMakeable, isWater } from './classics/makeable';
+export type {
+  ClassicCandidate,
+  ClassicsMakeableError,
+  ClassicsMakeableInput,
+  ClassicsMakeableResult,
+} from './classics/makeable';
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
 export type {

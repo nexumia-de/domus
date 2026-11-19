@@ -66,9 +66,9 @@
         },
         {
           "key": "bay-leaf",
-          "wanted": {
-            "en": "Bay leaf",
-            "de": "Lorbeerblatt"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170917"
           },
           "amount": {
             "value": 3,
@@ -102,9 +102,9 @@
         },
         {
           "key": "bread",
-          "wanted": {
-            "en": "Bread",
-            "de": "Brot"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
           },
           "note": {
             "en": "Bread cut into thin slices and put in the tureen (el pan cortado). The source gives no amount.",

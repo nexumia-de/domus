@@ -161,9 +161,9 @@
         },
         {
           "key": "parsnip",
-          "wanted": {
-            "en": "Parsnip",
-            "de": "Pastinake"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170417"
           },
           "amount": {
             "value": 25,

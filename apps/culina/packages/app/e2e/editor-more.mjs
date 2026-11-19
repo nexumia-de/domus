@@ -75,7 +75,7 @@ const dish = async (page, origin) => {
   await page.getByLabel(/^Role, /).selectOption('garnish');
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill('parsley');
-  await page.getByRole('button', { name: /Parsley/ }).click();
+  await page.getByRole('button', { name: 'Parsley', exact: true }).click();
   await layout(page, `${label} (two slots)`);
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'My plate' }).waitFor();

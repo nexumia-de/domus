@@ -54,9 +54,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "White pepper",
-            "de": "Weißer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170933"
           },
           "amount": {
             "value": 3,

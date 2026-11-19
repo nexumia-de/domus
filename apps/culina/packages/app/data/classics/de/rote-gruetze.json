@@ -73,9 +73,9 @@
         },
         {
           "key": "claret",
-          "wanted": {
-            "en": "Claret (red wine)",
-            "de": "Rotwein (Claret)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173190"
           },
           "amount": {
             "value": 1,
@@ -98,9 +98,9 @@
         },
         {
           "key": "starch",
-          "wanted": {
-            "en": "Potato flour",
-            "de": "Kartoffelmehl"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168446"
           },
           "amount": {
             "value": 4,

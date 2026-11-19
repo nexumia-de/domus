@@ -28,12 +28,10 @@
   text-decoration: none;
 }
 
-.source-block h2,
 .recipe-block h2 {
   margin: var(--sp-4) 0 var(--sp-2);
 }
 
-.source-block h3,
 .recipe-block h3 {
   margin: var(--sp-3) 0 var(--sp-1);
 }
@@ -83,13 +81,13 @@
   font-size: var(--fs-sm);
 }
 
-.settled-block,
+.foot-block,
 .technique-more,
 .cook-whole {
   margin: var(--sp-3) 0;
 }
 
-.settled-block summary,
+.foot-block summary,
 .technique-more summary,
 .cook-whole summary {
   display: flex;

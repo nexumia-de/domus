@@ -114,19 +114,24 @@ const round = (value, digits) => Number(value.toFixed(digits));
 /**
  * Density from the portions "1 cup", "1 tbsp", "1 tsp" (modifier exactly the unit word, any
  * amount). `mlOf` gives the millilitres of a unit. Returns undefined when there is none, when the
- * portions disagree, or when the result is outside DENSITY_BOUNDS.
+ * portions disagree, or when the result is outside DENSITY_BOUNDS. A named food (`extra.volume`,
+ * from extras.json) also accepts the listed modifiers, each as `unit` times `per`.
  */
-export const deriveDensity = (portions, mlOf) => {
+export const deriveDensity = (portions, mlOf, extra = {}) => {
   const found = [];
   for (const p of portions) {
-    const unit = VOLUME_UNITS[(p.modifier ?? '').trim()];
+    const text = (p.modifier ?? '').trim();
+    const named = (extra.volume ?? []).find((v) => v.modifier === text);
+    const unit = named === undefined ? VOLUME_UNITS[text] : named.unit;
     if (unit === undefined || !(p.amount > 0) || !(p.gramWeight > 0)) continue;
+    const per = named?.per ?? 1;
     found.push({
       unit,
-      text: p.modifier.trim(),
+      text,
+      per,
       amount: p.amount,
       grams: p.gramWeight,
-      density: p.gramWeight / (p.amount * mlOf(unit)),
+      density: p.gramWeight / (p.amount * per * mlOf(unit)),
     });
   }
   if (found.length === 0) return undefined;
@@ -135,18 +140,31 @@ export const deriveDensity = (portions, mlOf) => {
   const best = ['cup', 'tbsp', 'tsp'].map((u) => found.find((f) => f.unit === u)).find(Boolean);
   const value = round(best.density, 3);
   if (value < DENSITY_BOUNDS[0] || value > DENSITY_BOUNDS[1]) return undefined;
-  return { value, unit: best.unit, portion: `${best.amount} ${best.text} = ${best.grams} g` };
+  return {
+    value,
+    unit: best.unit,
+    portion: `${best.amount} ${best.text} = ${best.grams} g`,
+    ...(best.per === 1 ? {} : { equals: `1 ${best.text} = ${best.per} ${best.unit}` }),
+  };
 };
 
 /**
  * Weight of one piece from a portion of amount 1 whose modifier is "medium", else the only
  * small/medium/large portion, else the only portion whose modifier is one piece word (clove, each,
  * item, piece, fruit, head, leaf, pepper, pod, root, spear, stalk), with or without a size in
- * parentheses.
+ * parentheses. A named food (`extra.piece`) gives the exact modifier instead.
  */
-export const deriveUnitWeight = (portions) => {
+export const deriveUnitWeight = (portions, extra = {}) => {
   const one = portions.filter((p) => p.amount === 1 && p.gramWeight > 0);
   const named = (rule) => one.filter((p) => rule((p.modifier ?? '').trim()));
+  if (extra.piece !== undefined) {
+    const exact = named((m) => m === extra.piece);
+    if (exact.length !== 1) return undefined;
+    return {
+      value: round(exact[0].gramWeight, 3),
+      portion: `1 ${exact[0].modifier.trim()} = ${exact[0].gramWeight} g`,
+    };
+  }
   const medium = named((m) => m === 'medium' || m.startsWith('medium ('));
   const sizes = named((m) => SIZE.test(m));
   const words = named((m) => PIECE.test(m));

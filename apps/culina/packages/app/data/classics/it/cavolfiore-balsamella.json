@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "cauliflower",
-          "wanted": {
-            "en": "Cauliflower",
-            "de": "Blumenkohl"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169986"
           },
           "amount": {
             "value": 1,
@@ -75,9 +75,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {

@@ -121,6 +121,43 @@ exact portion text, for example `USDA FoodData Central, SR Legacy,
 release 2018-04, FDC ID 169230, portion: 1 clove = 3 g`. A density also
 names the unit's millilitres.
 
+## Named foods
+
+The selection rule leaves out foods that the shipped dishes still need: black
+and white pepper (the spice rows give "tsp, ground", not "tsp"), fresh parsley
+and rosemary (the vegetable rule wants "raw" in the name), lemon juice
+(`juice` is an excluded word), bay leaf, red and white table wine (a
+beverage), tomato, bread, dry breadcrumbs, fennel, cauliflower, parsnip,
+shallot, basil, Gruyere, potato flour, dry pasta and green beans. These are
+**named foods**: `tools/catalogue/extras.json` lists their FDC ids, each with
+the reason (the dish lines it serves). Nothing else about them is typed.
+A named food is a row like any other: the same name rule, parents, yields and
+German names (`build.mjs` selects `isBasic(food) || EXTRAS.has(id)`; the
+snapshot builder asks the same question). Where the general portion rule
+finds nothing, the entry may say which portions to read, by their exact
+modifier text: `volume` (a modifier such as `tbsp, ground` counts as a volume
+in the unit named, `fl oz` as 2 tbsp) and `piece` (the portion of amount 1 that
+is one piece, for example `slice`). Every number is read from the dataset and
+its `source` names the portion. A named food with no usable portion is a row
+for mass amounts only (the other rows must have a density or a unit weight; the
+shipped-file test lets named foods be the exception). **Adding one:** find the
+food in `sr.tsv` of the dataset, add the id and reason to `extras.json`,
+rebuild ([development](development.md#ingredient-catalogue)), then replace the
+dish line's `wanted` by its `ref`. What USDA does not have stays `wanted`:
+meat, fish, juniper, bouquet garni, soup vegetables, orange-flower water,
+whole cloves (the dataset has ground only), chicken blood, brandy, stock and
+sauces. A food the rule excludes and that is not named stays out.
+
+Judgements made when matching a line to a food: "Pepper" (no colour) is black
+pepper; "Peppergrass" is garden cress (the existing row); "Claret" and "Red
+wine" are table wine, red; breadcrumbs and "grated bread roll" are dry grated
+plain breadcrumbs; stale bread and a bread crumb are wheat bread, rye bread
+crust is rye bread. Savoy cabbage (the dataset's savoy row has only a shredded
+cup), "cacio" (a sheep's cheese: the dataset's Romano is not that), tarragon
+(only dried is in the dataset), white mustard seed (only ground), chocolate
+(the dataset's baking chocolate is unsweetened) and shallot-for-onion were not
+forced.
+
 ## Grouping rule
 
 USDA's descriptions are hierarchical by their commas: "Butter, salted" and
@@ -173,7 +210,7 @@ fewer than the name has).
    no number. A parent has no yields. The parent record carries
    `x-group: { rows }`, the number of food rows below it.
 
-Result for SR Legacy 2018-04: 539 food rows and 116 parents, 655 entries (a catalogue of 291 kB, 33 kB gzipped; 245 kB and 28 kB before the German names).
+Result for SR Legacy 2018-04: 560 food rows (539 by the rule, 21 [named foods](#named-foods)) and 121 parents, 681 entries (a catalogue of about 300 kB, 34 kB gzipped; 245 kB and 28 kB before the German names).
 380 food rows have a parent, 153 stand alone and 6 food rows are
 roots of a group. The tree has 6 levels (212 entries at the top, 283, 111,
 37, 10 and 2 below). 53 parents are at the top, 43, 16 and 4 at the next
@@ -289,9 +326,9 @@ each food row, the first that fails ends it (the counts are for the 539 rows):
    has a longer list than a cook needs the list stays long: nothing is
    chosen by hand.
 
-**Result.** 146 of 539 foods have a German name (72 through a class item
+**Result.** 146 of 539 foods (152 of 560 with the named foods) have a German name (72 through a class item
 with several NDB numbers), 83 of them also aliases. A name's `source` is
-"Wikidata Q..., label de and aliases, NDB ..., snapshot 2026-11-18".
+"Wikidata Q..., label de and aliases, NDB ..., snapshot 2026-11-18 or 2026-11-19".
 
 **Parents.** A generated parent takes a German name only when every food
 row below it has a German name, there are at least two rows, and all the names
@@ -352,8 +389,10 @@ row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
 ## What the catalogue does not have
 
 - No meat, fish, poultry, baked goods, beverages, soups, sauces, canned,
-  frozen, cooked or prepared foods, and no brand products.
-- No shelf life, roles, seasons, allergens or nutrition figures; yields only
+  frozen, cooked or prepared foods, and no brand products, apart from the
+  21 [named foods](#named-foods) (bread, breadcrumbs and wine among them).
+- No shelf life, seasons, allergens or nutrition figures, and no roles in the
+  file (the app's [role table](data-model.md#roles) adds a few when it reads it); yields only
   where SR28 gives a refuse percentage (153 foods), none for cooked states.
 - No density for foods whose only volume portion is a bulk form (chopped,
   sliced, shredded), no unit weight where the source gives several sizes
@@ -363,7 +402,7 @@ row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English as the canonical language; German names for 146 of 539 foods and 12 of 116
+- English as the canonical language; German names for 152 of 560 foods and 12 of 121
   parents ([German names](#german-names)), no other language; US customary portions
   only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added

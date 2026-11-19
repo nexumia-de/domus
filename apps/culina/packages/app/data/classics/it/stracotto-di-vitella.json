@@ -150,9 +150,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Black pepper",
-            "de": "Schwarzer Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -251,9 +251,9 @@
       "lines": [
         {
           "key": "pasta",
-          "wanted": {
-            "en": "Maccheroni",
-            "de": "Maccheroni"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168927"
           },
           "amount": {
             "value": 250,

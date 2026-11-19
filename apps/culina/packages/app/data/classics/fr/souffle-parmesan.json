@@ -68,9 +68,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {

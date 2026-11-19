@@ -1,0 +1,55 @@
+{
+  "note": "Foods that the selection rule leaves out but a shipped dish names, so that the dish line can point at the catalogue (docs/ingredient-catalogue.md#named-foods). Each is a USDA SR Legacy FDC id with the reason. `volume` lists portion modifiers (exact text) that count as a volume although the general rule does not accept them; `unit` is the generator's unit and `per` how many of it one portion is. `piece` is the exact modifier of the portion of amount 1 that is one piece. A named food without either is a row for mass amounts only. No number is written here: every number is read from the dataset.",
+  "foods": [
+    {
+      "id": 170931,
+      "why": "black pepper, 13 dish lines",
+      "volume": [
+        { "modifier": "tbsp, ground", "unit": "tbsp" },
+        { "modifier": "tsp, ground", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 170933,
+      "why": "white pepper, 2 dish lines",
+      "volume": [
+        { "modifier": "tbsp, ground", "unit": "tbsp" },
+        { "modifier": "tsp, ground", "unit": "tsp" }
+      ]
+    },
+    { "id": 170416, "why": "parsley, 6 dish lines" },
+    { "id": 167747, "why": "lemon juice, 5 dish lines" },
+    {
+      "id": 170917,
+      "why": "bay leaf, 4 dish lines",
+      "volume": [
+        { "modifier": "tbsp, crumbled", "unit": "tbsp" },
+        { "modifier": "tsp, crumbled", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 173190,
+      "why": "red wine, 4 dish lines",
+      "volume": [{ "modifier": "fl oz", "unit": "tbsp", "per": 2 }]
+    },
+    {
+      "id": 174837,
+      "why": "white wine, 1 dish line",
+      "volume": [{ "modifier": "fl oz", "unit": "tbsp", "per": 2 }]
+    },
+    { "id": 170457, "why": "tomato, 4 dish lines", "piece": "medium whole (2-3/5\" dia)" },
+    { "id": 172686, "why": "wheat bread, 5 dish lines", "piece": "slice" },
+    { "id": 172684, "why": "rye bread, 1 dish line", "piece": "slice, regular" },
+    { "id": 174928, "why": "dry grated breadcrumbs, 3 dish lines" },
+    { "id": 169385, "why": "fennel, 1 dish line", "piece": "bulb" },
+    { "id": 169986, "why": "cauliflower, 1 dish line", "piece": "head medium (5-6\" dia.)" },
+    { "id": 170417, "why": "parsnip, 1 dish line" },
+    { "id": 170499, "why": "shallot, 1 dish line" },
+    { "id": 172232, "why": "basil, 1 dish line" },
+    { "id": 173473, "why": "rosemary, 1 dish line" },
+    { "id": 171242, "why": "Gruyere cheese, 1 dish line" },
+    { "id": 168446, "why": "potato flour, 1 dish line" },
+    { "id": 168927, "why": "dry pasta (maccheroni), 1 dish line" },
+    { "id": 169961, "why": "green beans, 4 dish lines" }
+  ]
+}
