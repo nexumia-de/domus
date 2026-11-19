@@ -36,7 +36,10 @@ checks green. The apps' own goals are in their roadmaps
 4. **GitHub storage.** The adapter for a private repository with a
    token, collecting writes, the invite that may carry the token. The
    owner's storage, so it comes before the server.
-   _Owner_: a private repository and a fine-grained token for it.
+   The setup screen leads through it with filled-in links to GitHub
+   and finds the repository from the token.
+   _Owner_: a private repository (created on 2026-11-19) and a
+   fine-grained token for it.
 5. **Domus screens.** Storages, spaces, invites, joining by link and
    QR code, export and import, at the root address and reachable from
    every app; Domus installable after the test of goal 1.

@@ -154,6 +154,18 @@ Proposals to make the points above concrete.
   revoked token is reported as such. The token acts as the person who
   made it: whoever holds it can overwrite or delete that repository's
   content, and taking access away means a new token for everyone.
+- **Setting GitHub up from the app** is guided, not automatic. A token
+  that may create repositories would have to reach the whole account,
+  which is the opposite of a token for one repository; and signing in
+  to GitHub from a browser page needs an app registration and a server
+  for the token exchange, both ruled out. So the screen has three
+  steps: a link that opens GitHub's "new repository" form filled in
+  (name, private), a link that opens the "new token" form filled in
+  (name, contents read and write), and a field for the token. The app
+  then asks GitHub which repository the token reaches and uses it; the
+  person types no repository name. Whether GitHub's forms accept all of
+  these values by link, and whether a first write works in a repository
+  without any commit, is checked when the adapter is built.
 - Dropbox, Google Drive and OneDrive would sign in with OAuth and PKCE
   in the browser. Each needs a client id registered with the provider
   (the owner's point 5); the storage port leaves room for them.

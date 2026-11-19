@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Update**: [decision](decisions/one-origin-spaces-storages.md#storages): setting up GitHub from the app is three guided steps with filled-in links, not one click, and why. The owner created the private repository for their data.
 - **Update**: the owner installed the apps from `domus.nexumia.de` and they are separate apps; goal 1 of the [roadmap](roadmap.md) is done.
 - **Update**: `domus.nexumia.de` is live (first `site-deploy`). The apps' own deploys are replaced by `forward-old-addresses`: `mixtura.nexumia.de` and `culina.nexumia.de` redirect to the app's folder. [Deployment](deployment.md).
 - **Creation**: goal 1, one address. `npm run build:site` puts the root page (`apps/domus`), Mixtura and Culina under one address with one `_headers` file; `npm run e2e:site` checks that the apps stay apart; CI jobs `site-check` and `site-deploy` to `domus.nexumia.de`. Mixtura's service worker no longer deletes the caches of other apps. [Deployment](deployment.md).
