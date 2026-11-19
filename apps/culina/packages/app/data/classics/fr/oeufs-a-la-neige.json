@@ -20,7 +20,6 @@
     "value": 4,
     "basis": "settled"
   },
-  "units": {},
   "components": [
     {
       "id": "snow-eggs",
@@ -88,9 +87,14 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
+          "amount": {
+            "value": 100,
+            "unit": "g",
+            "original": "1 hecto de sucre en poudre (printed \"1 liecto\")"
+          },
           "note": {
-            "en": "1 hecto (printed \"1 liecto\") of powdered sugar. The book does not state the size of the hecto, so no amount is given.",
-            "de": "1 Hekto (gedruckt \"1 liecto\") Puderzucker. Das Buch nennt die Größe des Hektos nicht, daher steht hier keine Menge."
+            "en": "The hecto is a metric unit: 100 g.",
+            "de": "Das Hekto ist eine metrische Einheit: 100 g."
           }
         },
         {
@@ -130,8 +134,8 @@
         },
         {
           "text": {
-            "en": "Whisk the whites until very firm.",
-            "de": "Das Eiweiß sehr fest schlagen."
+            "en": "Whisk the whites until they are firm.",
+            "de": "Das Eiweiß schlagen, bis es fest ist."
           },
           "technique": "whip-egg-whites",
           "uses": ["egg-white"]
@@ -237,9 +241,14 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
+          "amount": {
+            "value": 0.5,
+            "unit": "l",
+            "original": "5 décilitres de lait"
+          },
           "note": {
-            "en": "\"5 décilitres de lait\". The book does not state the size of the décilitre, so no amount is given.",
-            "de": "\"5 décilitres de lait\". Das Buch nennt die Größe des Deziliters nicht, daher steht hier keine Menge."
+            "en": "The décilitre is a metric unit: 0.1 litre, so 5 décilitres are 0.5 litre.",
+            "de": "Der Dezilitre ist eine metrische Einheit: 0,1 Liter, also 5 Dezilitre gleich 0,5 Liter."
           }
         },
         {
@@ -325,11 +334,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second reader compares the amounts and the custard steps with gouffe.txt lines 15719-15752 and 15495-15508 (the rice cake custard, printed p. 290)."
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 15715-15752 and 15488-15508: all numbers agree; the hecto reads \"1 liecto\" in the first scan and \"1 becto\" in the second. Changed: hecto = 100 g, décilitres = 0.5 l; \"very firm\" became \"firm\"."
   },
   "note": {
-    "en": "Gouffé's snow eggs. The custard is the sauce of the rice cake (Gâteau de riz au citron, printed p. 290, gouffe.txt lines 15492-15508), made as the book says: six yolks, 80 g of sugar, one grating of lemon, 5 décilitres of milk. The snow eggs' recipe then adds 30 g of sugar to it. The book does not state the size of the hecto or the décilitre, so the sugar of the whites, the milk of the custard and the lemon grating have no amount. The printed text reads \"1 liecto\" for 1 hecto (OCR).",
-    "de": "Gouffés Eier im Schnee. Die Creme ist die Sauce des Reiskuchens (Gâteau de riz au citron, gedruckt S. 290, gouffe.txt Zeilen 15492-15508), wie das Buch sagt bereitet: sechs Eigelbe, 80 g Zucker, eine Reibung Zitrone, 5 Deziliter Milch. Das Rezept gibt danach 30 g Zucker zu. Das Buch nennt die Größe von Hekto und Deziliter nicht; daher haben der Zucker des Eischnees, die Milch der Creme und die Zitronenreibung keine Menge. Der Druck liest \"1 liecto\" für 1 Hekto (OCR)."
+    "en": "Gouffé's snow eggs. The custard is the sauce of the rice cake (Gâteau de riz au citron, printed p. 290, gouffe.txt lines 15492-15508), made as the book says: six yolks, 80 g of sugar, one grating of lemon, 5 décilitres of milk. The snow eggs' recipe then adds 30 g of sugar to it. The hecto and the décilitre are metric units (100 g and 0.1 litre), so the sugar of the whites is 100 g and the milk of the custard 0.5 litre; the lemon grating has no amount, as the book gives no size for it. The printed text reads \"1 liecto\" for 1 hecto (OCR).",
+    "de": "Gouffés Eier im Schnee. Die Creme ist die Sauce des Reiskuchens (Gâteau de riz au citron, gedruckt S. 290, gouffe.txt Zeilen 15492-15508), wie das Buch sagt bereitet: sechs Eigelbe, 80 g Zucker, eine Reibung Zitrone, 5 Deziliter Milch. Das Rezept gibt danach 30 g Zucker zu. Hekto und Dezilitre sind metrische Einheiten (100 g und 0,1 Liter); daher hat der Zucker des Eischnees 100 g, die Milch der Creme 0,5 Liter. Die Zitronenreibung hat keine Menge, da das Buch dafür keine Größe angibt. Der Druck liest \"1 liecto\" für 1 Hekto (OCR)."
   }
 }

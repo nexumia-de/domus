@@ -133,8 +133,8 @@
         },
         {
           "text": {
-            "en": "When the vinegar is absorbed, add the oil in a thin thread, stirring constantly.",
-            "de": "Wenn der Essig aufgenommen ist, das Öl in dünnem Faden zugeben und dabei ständig rühren."
+            "en": "When the vinegar is absorbed, add the oil in a thread, stirring constantly.",
+            "de": "Wenn der Essig aufgenommen ist, das Öl in einem Faden zugeben und dabei ständig rühren."
           },
           "technique": "cold-emulsion",
           "uses": ["oil", "vinegar"]
@@ -179,11 +179,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the France transcriber (fr1) from escoffier.txt lines 3345-3363; a second agent replaces this line."
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 126: yolks, salt, vinegar, oil, lemon, boiling water and cayenne all agree. Changed: the oil goes in \"in a thread\", not \"thin\". The pint, quart and tablespoonful have no size in the units table, so those lines have no amount (open: imperial sizes)."
   },
   "note": {
     "en": "The book's plain mayonnaise. Oil and vinegar are given in quart and pint, which the units table does not hold, so those lines have no amount; the source's wording is in the notes.",
-    "de": "Die einfache Mayonnaise wie im Buch. Öl und Essig stehen in Quart und Pint; diese Einheiten fehlen in der Einheitentabelle, daher haben die Zeilen keine Menge. Der Wortlaut der Quelle steht in den Notizen."
+    "de": "Die einfache Mayonnaise wie im Buch. Öl und Essig stehen in Quart und Pint; diese Einheiten kennt die Einheitentabelle nicht, daher haben die Zeilen keine Menge. Der Wortlaut der Quelle steht in den Notizen."
   }
 }

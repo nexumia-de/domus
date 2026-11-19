@@ -24,11 +24,6 @@
       "kind": "mass",
       "factor": 1,
       "read": "Gouffé's own statement in the first part, on the weights of the pinch and the prise: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2052-2055)."
-    },
-    "cuillerée à bouche": {
-      "kind": "mass",
-      "factor": 30,
-      "read": "Gouffé's own statement: \"30 grammes de farine (une cuillerée à bouche ordinaire)\" (gouffe.txt line 3085). The book gives this spoon for flour only; it is taken for all uses here. A judgement."
     }
   },
   "components": [
@@ -82,14 +77,9 @@
             "en": "Parsley",
             "de": "Petersilie"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "cuillerée à bouche",
-            "original": "1 demi-cuillerée à bouche de persil haché"
-          },
           "note": {
-            "en": "Chopped parsley. The title says fine herbes, but the text names only parsley.",
-            "de": "Gehackte Petersilie. Der Titel nennt fines herbes, der Text nur Petersilie."
+            "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount. The title says fine herbes, but the text names only parsley.",
+            "de": "Original: 1 demi-cuillerée à bouche de persil haché. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge. Der Titel nennt fines herbes, der Text nur Petersilie."
           }
         },
         {
@@ -188,8 +178,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from gouffe.txt lines 14702-14761 (1877 print, machine-read); the numbers are listed in the evidence file for the second reader."
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 14702-14761: all numbers agree. Changed: the parsley lost its amount, as the book sizes a spoon for flour only. The prise (1 g) is kept."
   },
   "note": {
     "en": "The source gives the omelette as a soft or set one: when a soft omelette is wanted, it is folded before the eggs are too firm, coloured briefly and served. The book's remarks on the omelette pan and on the number of eggs (lines 14762-14790) are not part of the recipe. The text names only parsley as herb.",

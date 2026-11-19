@@ -66,7 +66,7 @@
           },
           "note": {
             "en": "Grated nutmeg. The source gives no amount.",
-            "de": "Frisch gerieben. Die Quelle nennt keine Menge."
+            "de": "Gerieben. Die Quelle nennt keine Menge."
           }
         },
         {
@@ -212,8 +212,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the France transcriber (fr1) from escoffier.txt lines 38709-38733; a second agent replaces this line."
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 2222: two lbs of potatoes, one beaten egg (first scan \"Qgg\"), one and one-half pints of milk, four oz. of Gruyère (first scan \"freshj\"), forty to forty-five minutes, moderate oven: all agree. No change. The pints have no size in the units table, so the milk has no amount."
   },
   "note": {
     "en": "The oven is given only as moderate; no temperature is stated. Milk is given in pints, which the units table does not hold, so that line has no amount.",

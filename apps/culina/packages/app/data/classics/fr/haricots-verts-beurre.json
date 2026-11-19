@@ -19,18 +19,6 @@
     "value": 4,
     "basis": "settled"
   },
-  "units": {
-    "pincée": {
-      "kind": "mass",
-      "factor": 10,
-      "read": "Gouffé's own statement in the first part, on the weights of the pinch: \"comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2052-2055)."
-    },
-    "cuillerée à bouche": {
-      "kind": "mass",
-      "factor": 30,
-      "read": "Gouffé's own statement: \"30 grammes de farine (une cuillerée à bouche ordinaire)\" (gouffe.txt line 3085). The book gives this spoon for flour only; it is taken for all uses here. A judgement."
-    }
-  },
   "components": [
     {
       "id": "haricots-verts-boiled",
@@ -156,14 +144,9 @@
             "kind": "ingredient",
             "id": "fdc-173468"
           },
-          "amount": {
-            "value": 1,
-            "unit": "pincée",
-            "original": "1 petite pincée de sel"
-          },
           "note": {
-            "en": "The source says a small pinch (petite pincée); the book's pinch is read as 10 g.",
-            "de": "Die Quelle sagt eine kleine Prise (petite pincée); die Prise des Buches ist mit 10 g angesetzt."
+            "en": "Original: 1 petite pincée de sel (a small pinch). The book sizes a pinch, not a small one, so the line has no amount.",
+            "de": "Original: 1 petite pincée de sel (eine kleine Prise). Das Buch gibt die Größe einer Prise an, nicht die einer kleinen; daher keine Menge."
           }
         },
         {
@@ -172,10 +155,9 @@
             "en": "Parsley",
             "de": "Petersilie"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "cuillerée à bouche",
-            "original": "1 demi-cuillerée à bouche de persil haché"
+          "note": {
+            "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount.",
+            "de": "Original: 1 demi-cuillerée à bouche de persil haché. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge."
           }
         },
         {
@@ -244,8 +226,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from gouffe.txt lines 13671-13683 and 13623-13640 (1877 print, machine-read); the numbers are listed in the evidence file for the second reader."
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 13623-13640 and 13671-13683: all numbers agree. Changed: the petite pincée and the parsley lost their amounts; the book sizes a pinch (10 g) and a spoon for flour only."
   },
   "note": {
     "en": "The beans are cooked as in the preceding recipe, Haricots verts à la poulette, which the book gives as the cooking of this dish; the book's remark there is to cook them uncovered, in plenty of water, over high heat.",
