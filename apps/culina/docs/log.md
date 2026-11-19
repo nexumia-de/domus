@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Fix**: `npm run e2e` generates the validators, classics, techniques and substitutes first (`pree2e`). The browser scripts bundle the engine when they are imported, before the build runs, so a fresh checkout failed on the missing generated files; the CI job `culina-e2e` showed it. [Development](development.md).
 - **Update**: Culina moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
 
 ### State after the night's work, for the owner

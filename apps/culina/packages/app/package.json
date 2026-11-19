@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit -p .",
     "build": "node build.mjs",
     "icons": "node scripts/make-icons.mjs",
+    "pree2e": "node compile-schemas.mjs && node make-classics.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
     "e2e": "node e2e/run.mjs",
     "screenshots": "node e2e/screenshots.mjs"
   },

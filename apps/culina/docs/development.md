@@ -26,17 +26,17 @@ TypeScript, installed for that build only).
 
 ## Commands
 
-| Command                              | What it does                                                                                   |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                            |
-| `npm run format`                     | Prettier writes all files                                                                      |
-| `npm run format:check`               | Prettier checks all files                                                                      |
-| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                            |
-| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                |
-| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                    |
-| `npm run build`                      | esbuild writes `packages/app/dist/`                                                            |
-| `npm run e2e`                        | builds, serves `dist/` and runs the Playwright checks in Chromium                              |
-| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file)) |
+| Command                              | What it does                                                                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                                    |
+| `npm run format`                     | Prettier writes all files                                                                              |
+| `npm run format:check`               | Prettier checks all files                                                                              |
+| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                                    |
+| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                        |
+| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                            |
+| `npm run build`                      | esbuild writes `packages/app/dist/`                                                                    |
+| `npm run e2e`                        | generates what `npm test` generates, builds, serves `dist/` and runs the Playwright checks in Chromium |
+| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file))         |
 
 ## Layout
 
