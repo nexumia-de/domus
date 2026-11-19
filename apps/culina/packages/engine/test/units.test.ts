@@ -43,6 +43,11 @@ describe('the unit table', () => {
     relClose(unitFactor('cup'), cup);
     relClose(unitFactor('tbsp'), cup / 16);
     relClose(unitFactor('tsp'), cup / 16 / 3);
+    const gallon = 4546.09; // 4.546 09 dm3 (Weights and Measures Act 1985, Schedule 1)
+    relClose(unitFactor('imp-quart'), gallon / 4);
+    relClose(unitFactor('imp-pint'), gallon / 8);
+    relClose(unitFactor('imp-gill'), gallon / 32);
+    relClose(unitFactor('imp-floz'), gallon / 160);
     expect(unitFactor('kg')).toBe(1000);
     expect(unitFactor('l')).toBe(1000);
   });

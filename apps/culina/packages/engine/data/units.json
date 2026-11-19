@@ -36,6 +36,26 @@
     "toBase": 236.5882365,
     "source": "US customary cup = 1 US gallon / 16 = 231 * 2.54^3 / 16 ml = 236.5882365 ml exactly (1 gallon = 231 cubic inches = 128 fluid ounces, 1 inch = 2.54 centimeters exactly, cup = 8 fluid ounces, tablespoon = 1/2 fluid ounce = 3 teaspoons: NIST Handbook 44 (2026), Appendix C)."
   },
+  "imp-floz": {
+    "kind": "volume",
+    "toBase": 28.4130625,
+    "source": "Imperial fluid ounce = 1/20 pint = 1/160 gallon = 28.4130625 ml exactly (1 gallon = 4.546 09 cubic decimetres, quart = 1/4 gallon, pint = 1/2 quart, gill = 1/4 pint, fluid ounce = 1/20 pint: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+  },
+  "imp-gill": {
+    "kind": "volume",
+    "toBase": 142.0653125,
+    "source": "Imperial gill = 1/4 pint = 1/32 gallon = 142.0653125 ml exactly (1 gallon = 4.546 09 cubic decimetres, quart = 1/4 gallon, pint = 1/2 quart, gill = 1/4 pint, fluid ounce = 1/20 pint: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+  },
+  "imp-pint": {
+    "kind": "volume",
+    "toBase": 568.26125,
+    "source": "Imperial pint = 1/2 quart = 1/8 gallon = 568.26125 ml exactly (1 gallon = 4.546 09 cubic decimetres, quart = 1/4 gallon, pint = 1/2 quart, gill = 1/4 pint, fluid ounce = 1/20 pint: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+  },
+  "imp-quart": {
+    "kind": "volume",
+    "toBase": 1136.5225,
+    "source": "Imperial quart = 1/4 imperial gallon = 1136.5225 ml exactly (1 gallon = 4.546 09 cubic decimetres, quart = 1/4 gallon, pint = 1/2 quart, gill = 1/4 pint, fluid ounce = 1/20 pint: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+  },
   "count": {
     "kind": "count",
     "toBase": 1,

@@ -348,6 +348,10 @@ const flow = async (browser, origin, width) => {
 const empty = async (browser, origin) => {
   const label = 'classics with no dish';
   const { context, page, problems } = await fresh(browser, origin, 360);
+  // The shipped dishes are their own file: with an empty file the app has no dish at all.
+  await page.route('**/classics.json', (route) =>
+    route.fulfill({ contentType: 'application/json', body: '{}' }),
+  );
   await page.goto(`${origin}/?no-sw#/start`);
   await heading(page, START).waitFor();
   await page.getByRole('link', { name: /^Germany/ }).click();

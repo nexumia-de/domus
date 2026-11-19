@@ -291,8 +291,10 @@ entry of `settled`: `what`, `value` (text), `reason`, and `target`:
 - an amount: the line has `"settled": true` and a `key`, and the entry's
   target is `<component id>/<line key>` (`slots/<key>` for a slot).
 
-A settled line must have an `amount`; a line left without one is not settled,
-it is "to taste". The validator checks that both sides exist.
+A settled line or slot may have no `amount`: then the entry records a choice,
+not a number, and its `value` is free text ("water, not broth: the source says
+either"). A line left without amount and without `settled` is "to taste". The
+validator checks that both sides exist and does not ask for an amount.
 
 ## The second check
 
@@ -306,6 +308,10 @@ compared. It must be someone who did not transcribe the dish.
 ```sh
 npm run validate:content -- packages/app/data/classics/de/<id>.json
 ```
+
+The command first generates what it needs and git ignores (the compiled
+schemas, the technique and dish indexes), so it works in a fresh checkout
+after `npm ci`; nothing has to be built or tested before.
 
 For a technique: `npm run validate:content -- packages/engine/data/techniques/<id>.json`.
 The command checks the schema, the file name and folder, then the engine's

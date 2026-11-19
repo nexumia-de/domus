@@ -1,0 +1,17 @@
+{
+  "id": "convert-imp-gill-to-imp-floz",
+  "description": "2 imperial gills in imperial fluid ounces",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 2,
+      "unit": "imp-gill"
+    },
+    "to": "imp-floz"
+  },
+  "expected": {
+    "value": 10
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 2 imp-gill * 142.0653125 / 28.4130625 = 10 imp-floz (1 gill = 1/4 pint, 1 fluid ounce = 1/20 pint, so 1 gill = 5 fluid ounces). Unit factors: docs/engine-rules.md#units-and-factors (imperial capacity units: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+}

@@ -5,8 +5,6 @@ import type { Technique } from './types';
 /** The shipped techniques in file name order. The tests check each against its schema. */
 export const TECHNIQUES: readonly Technique[] = RAW_TECHNIQUES as readonly Technique[];
 
-const byId = new Map(TECHNIQUES.map((t) => [t.id, t]));
-
 /**
  * A shipped technique by id.
  *
@@ -14,5 +12,7 @@ const byId = new Map(TECHNIQUES.map((t) => [t.id, t]));
  * @returns The technique, or `undefined` when there is none.
  */
 export function techniqueById(id: string): Technique | undefined {
-  return byId.get(id);
+  // A scan, not a module-level map: the app does not use this list, and a map built at load time
+  // would keep every technique note in its main script.
+  return TECHNIQUES.find((t) => t.id === id);
 }

@@ -42,7 +42,22 @@
     "massUnit": { "enum": ["g", "kg", "oz", "lb"] },
     "amountUnit": {
       "description": "Mass units, volume units (need a density) and count (needs a unit weight). The conversion table is part of the engine rules.",
-      "enum": ["g", "kg", "oz", "lb", "ml", "l", "tsp", "tbsp", "cup", "count"]
+      "enum": [
+        "g",
+        "kg",
+        "oz",
+        "lb",
+        "ml",
+        "l",
+        "tsp",
+        "tbsp",
+        "cup",
+        "imp-floz",
+        "imp-gill",
+        "imp-pint",
+        "imp-quart",
+        "count"
+      ]
     },
     "massAmount": {
       "type": "object",

@@ -9,6 +9,9 @@ import { basename, dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { build } from 'esbuild';
+import { compileSchemas } from '../../packages/app/compile-schemas.mjs';
+import { makeClassics } from '../../packages/app/make-classics.mjs';
+import { makeTechniques } from '../../packages/engine/scripts/make-techniques.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const schemaDir = join(root, 'packages/engine/schemas/');
@@ -47,6 +50,12 @@ if (kind === 'classic' && basename(dirname(path)) !== doc.country) {
     `the file must be in the folder of its country (${doc.country}), not ${basename(dirname(path))}`,
   );
 }
+
+// The generated, git-ignored files (compiled schemas, the technique and dish indexes) that the
+// engine bundle needs: written first, so a fresh checkout works.
+compileSchemas();
+makeClassics();
+makeTechniques();
 
 const tmp = mkdtempSync(join(tmpdir(), 'culina-content-'));
 try {

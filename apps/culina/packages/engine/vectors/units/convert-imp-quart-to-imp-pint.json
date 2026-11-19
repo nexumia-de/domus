@@ -1,0 +1,17 @@
+{
+  "id": "convert-imp-quart-to-imp-pint",
+  "description": "3 imperial quarts in imperial pints",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 3,
+      "unit": "imp-quart"
+    },
+    "to": "imp-pint"
+  },
+  "expected": {
+    "value": 6
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 3 imp-quart * 1136.5225 / 568.26125 = 6 imp-pint (1 quart = 2 pints). Unit factors: docs/engine-rules.md#units-and-factors (imperial capacity units: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+}

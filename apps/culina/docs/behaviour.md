@@ -642,6 +642,14 @@ view logic is in `src/classics/` (no DOM), the screens in
   the app's own texts stay English for now. "Skills you marked as learned"
   lists each with "Teach again", which stores the mark taken back (the record
   stays) so the note shows again.
+- **Shipped content is its own file.** The build writes the dishes of
+  `data/classics/` and the technique notes of `packages/engine/data/techniques/`
+  to `dist/classics.json` (`format: culina-classics`); `src/main.ts` fetches it
+  at start together with the notebook (`loadContent` in
+  `src/classics/content.ts`), the service worker precaches it, so it works
+  offline, and `main.js` carries neither dishes nor notes. If the file is
+  missing or unreadable the lists are empty and the app works with zero dishes.
+  `test/build.test.ts` checks that no dish or technique id is in `main.js`.
 - **Test content.** `?e2e-content` lets the browser test hand the app fictional
   example dishes and an example technique
   (`test/fixtures/classics-example.json`) on `globalThis.__culinaContent`
@@ -850,7 +858,7 @@ another origin, on every run of the shell and the offline checks).
 
 Built by `packages/app/build.mjs`: it hashes all built files into a cache
 name `culina-<16 hex>` and gives `sw.js` the exact file list (every built
-file except `sw.js`, `catalogue.json` among them). On `install` it precaches the list and takes over
+file except `sw.js`, `catalogue.json` and `classics.json` among them). On `install` it precaches the list and takes over
 at once (`skipWaiting`); on `activate` it deletes every cache that starts
 with `culina-` and has another version, then claims the open pages. A
 `GET` request of its own origin is answered from the cache, a navigation

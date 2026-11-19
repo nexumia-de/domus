@@ -16,7 +16,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { compileSchemas } from './compile-schemas.mjs';
-import { makeClassics } from './make-classics.mjs';
+import { makeClassics, shippedContent } from './make-classics.mjs';
 import { makeTechniques } from '../engine/scripts/make-techniques.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -57,6 +57,9 @@ writeFileSync(
   join(dist, 'catalogue.json'),
   JSON.stringify(JSON.parse(readFileSync(join(root, 'data', 'ingredient-catalogue.json'), 'utf8'))),
 );
+// The shipped classics and technique notes, read from the data folders: its own file too, loaded
+// at start and precached; main.js carries neither.
+writeFileSync(join(dist, 'classics.json'), JSON.stringify(shippedContent()));
 for (const name of ['icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']) {
   cpSync(join(src, 'assets', name), join(dist, 'icons', name));
 }

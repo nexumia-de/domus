@@ -3,7 +3,21 @@
 // and never throws.
 
 /** A unit id; the same ids as `amountUnit` in `common.schema.json`. */
-export type UnitId = 'g' | 'kg' | 'oz' | 'lb' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'count';
+export type UnitId =
+  | 'g'
+  | 'kg'
+  | 'oz'
+  | 'lb'
+  | 'ml'
+  | 'l'
+  | 'tsp'
+  | 'tbsp'
+  | 'cup'
+  | 'imp-floz'
+  | 'imp-gill'
+  | 'imp-pint'
+  | 'imp-quart'
+  | 'count';
 
 /** What a unit measures. */
 export type UnitKind = 'mass' | 'volume' | 'count';
