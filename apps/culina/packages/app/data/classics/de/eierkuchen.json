@@ -4,26 +4,31 @@
     "en": "Egg pancake (omelette)",
     "de": "Eierkuchen (Omelette)"
   },
-  "originalName": "Omelette (Eierkuchen)",
+  "originalName": "Omelette, No. 1",
   "country": "de",
   "vegetarian": true,
   "course": "main",
   "source": {
     "author": "Henriette Davidis",
-    "title": "Praktisches Kochbuch, American edition (Milwaukee: C. N. Caspar & H. A. Zahn)",
-    "year": 1897,
-    "place": "chapter Pfannkuchen, Nr. 6",
-    "url": "https://archive.org/stream/henriettedavidis00davi/henriettedavidis00davi_djvu.txt"
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division K, No. 6",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
   },
   "persons": {
     "value": 4,
     "basis": "settled"
   },
   "units": {
-    "Eßlöffel": {
+    "tablespoonful": {
       "kind": "volume",
-      "factor": 14.7867,
-      "read": "The book gives no size for the Eßlöffel in this recipe. The preface (davidis.txt lines 318-320) says the German measures were converted into American ones; mapped to the US tablespoon of units.json (tbsp, 14.7867 ml)."
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    },
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
     }
   },
   "components": [
@@ -44,7 +49,7 @@
           "amount": {
             "value": 8,
             "unit": "count",
-            "original": "8 frische Eier"
+            "original": "8 fresh eggs"
           }
         },
         {
@@ -55,12 +60,12 @@
           },
           "amount": {
             "value": 1,
-            "unit": "Eßlöffel",
-            "original": "1 gehäufter Eßlöffel"
+            "unit": "tablespoonful",
+            "original": "1 heaping tablespoonful"
           },
           "note": {
-            "en": "Heaped. The source allows fine flour (feinstes Mehl) instead of starch.",
-            "de": "Gehäuft. Die Quelle lässt feinstes Mehl statt Stärke zu."
+            "en": "Heaping tablespoonful. The source allows fine flour or cornstarch.",
+            "de": "Gehäuft. Die Quelle lässt feinstes Mehl oder Stärke zu."
           }
         },
         {
@@ -69,9 +74,14 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 large cupful of warm milk"
+          },
           "note": {
-            "en": "The amount is not legible in either scan of the same American edition (1911 printing, where it reads \"At warme\"; the first scan reads \",t Qt\"). The 1897 scan of another book reads \"^ Quart\", not clear. Not yet settled.",
-            "de": "Die Menge ist in beiden Scans derselben amerikanischen Ausgabe nicht lesbar (Druck 1911: \"At warme\"; erster Scan: \",t Qt\"). Der Scan von 1897 aus einem anderen Buch liest \"^ Quart\", nicht eindeutig. Noch nicht festgelegt."
+            "en": "Large cupful of warm milk, mixed with a little water.",
+            "de": "Groß. Warme Milch, mit etwas Wasser verdünnt."
           }
         },
         {
@@ -156,8 +166,8 @@
         },
         {
           "text": {
-            "en": "Fold it over and slide it onto an oblong dish.",
-            "de": "Den Eierkuchen zusammenschlagen und auf eine längliche Schüssel schieben."
+            "en": "Put it on a plate and fold it.",
+            "de": "Auf einen Teller legen und zusammenschlagen."
           }
         }
       ]
@@ -182,7 +192,7 @@
   ],
   "check": {
     "method": "second-edition",
-    "note": "Second check by an agent that did not transcribe the dish, against the 1911 printing of the same American edition (henriettedavidis01davi, C. N. Caspar Company, Milwaukee; same preface and wording). Agreed: 8 eggs, 1 heaped Eßlöffel starch or fine flour, mace, salt, butter, sugar, cinnamon, the steps and the oblong dish. Not legible in this edition: the milk amount. Other scans (1897 Amerika book, 1897/1898 German editions) were compared only for wording and units, not as the same edition."
+    "note": "Second check against the German 1897 Milwaukee edition (scan davidis.txt, lines 29090-29099, recipe 6, Nr. 1). Agreed: 8 eggs, 1 heaped spoon of starch or fine flour, mace, salt, butter, sugar, cinnamon, the steps. Differs: the German says oblong dish (längliche Schüssel), the English plate; the English is used. Milk amount not legible in the German scan (\",t Qt\"); it rests on the English edition alone."
   },
   "note": {
     "en": "The plain version only; the variants with cranberries and smoked meat or tongue are not transcribed.",
