@@ -1,0 +1,32 @@
+{
+  "id": "caramelise-sugar",
+  "name": {
+    "en": "Caramelising sugar",
+    "de": "Zucker karamellisieren"
+  },
+  "watch": {
+    "en": "Heat the sugar until it melts and turns a deep brown.",
+    "de": "Den Zucker erhitzen, bis er schmilzt und tiefbraun wird."
+  },
+  "why": {
+    "en": "Heat acting on melting sugar changes it into a deep brown colour with new flavours.",
+    "de": "Hitze verwandelt schmelzenden Zucker in eine tiefbraune Masse mit neuen Aromen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BCcampus)",
+      "place": "chapter 2.5 The Application of Sugar",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/02%3A_Sweeteners_in_Baking/2.05%3A_The_Application_of_Sugar",
+      "licence": "CC BY 4.0",
+      "sentence": "At high temperatures, the chemical changes associated with melting sugars result in a deep brown colour and new flavours."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BCcampus)",
+      "place": "chapter 2.5 The Application of Sugar",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/02%3A_Sweeteners_in_Baking/2.05%3A_The_Application_of_Sugar",
+      "licence": "CC BY 4.0",
+      "sentence": "Caramelization results from the action of heat on sugars."
+    }
+  ]
+}

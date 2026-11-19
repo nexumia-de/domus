@@ -1,0 +1,46 @@
+{
+  "id": "whip-egg-whites",
+  "name": {
+    "en": "Whipping egg whites",
+    "de": "Eiweiß schlagen"
+  },
+  "watch": {
+    "en": "Keep yolk and any fat out of the whites and beat them to the stage the recipe names (soft or stiff peaks).",
+    "de": "Eigelb und jedes Fett von den Eiweißen fernhalten und sie bis zu der Stufe schlagen, die das Rezept nennt (weiche oder steife Spitzen)."
+  },
+  "why": {
+    "en": "Beating makes the proteins form a film around air bubbles; fat of any kind limits the foam.",
+    "de": "Beim Schlagen bilden die Eiweiße einen Film um Luftbläschen; jedes Fett begrenzt den Schaum."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.1 Introduction to Egg White Foams, section Egg White Foams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.1%3A_Introduction_to_Egg_White_Foams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Egg whites foam because proteins denature upon beating and form a film around air bubbles."
+    },
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.1 Introduction to Egg White Foams, section Egg White Foams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.1%3A_Introduction_to_Egg_White_Foams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Fat of any kind (from yolk or other sources) inhibits or limits foam formation."
+    },
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.1 Introduction to Egg White Foams, section Egg White Foams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.1%3A_Introduction_to_Egg_White_Foams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Then the egg whites are beaten to the stage listed in the recipe."
+    },
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.1 Introduction to Egg White Foams, section Egg White Foams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.1%3A_Introduction_to_Egg_White_Foams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Stiff peak: peaks hold shape and do not fold over, used in macaroons and hard meringues."
+    }
+  ]
+}

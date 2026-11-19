@@ -1,0 +1,46 @@
+{
+  "id": "thicken-with-starch",
+  "name": {
+    "en": "Thickening with starch",
+    "de": "Binden mit Stärke"
+  },
+  "watch": {
+    "en": "Stir the starch smooth in a little cool liquid, add it to the hot liquid and heat almost to the boil, stirring.",
+    "de": "Die Stärke in etwas kalter Flüssigkeit glatt rühren, zur heißen Flüssigkeit geben und unter Rühren fast zum Kochen bringen."
+  },
+  "why": {
+    "en": "The cool liquid keeps the starch grains apart so they do not lump; starch thickens once it is heated almost to boiling.",
+    "de": "Die kalte Flüssigkeit hält die Stärkekörner auseinander, damit sie nicht klumpen; Stärke bindet, sobald sie fast zum Kochen erhitzt ist."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Incorporating Cornstarch",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Cornstarch must be mixed with a cool liquid before it is introduced into a hot one."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Incorporating Cornstarch",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The cool liquid separates the grains of starch and allows them to begin absorbing liquid without lumping."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Starches",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Starches must be combined with liquid and heated almost to boiling to be effective."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Incorporating Cornstarch",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "it must be stirred continuously during incorporation."
+    }
+  ]
+}
