@@ -19,6 +19,18 @@
     "value": 4,
     "basis": "settled"
   },
+  "units": {
+    "pint": {
+      "kind": "volume",
+      "factor": 568.26125,
+      "read": "The source is the English edition printed in London (1907); its pint is taken as the imperial pint of units.json. A judgement."
+    },
+    "quart": {
+      "kind": "volume",
+      "factor": 1136.5225,
+      "read": "The source is the English edition printed in London (1907); its quart is taken as the imperial quart of units.json. A judgement."
+    }
+  },
   "components": [
     {
       "id": "mayonnaise-sauce",
@@ -69,9 +81,10 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "note": {
-            "en": "One-fifth pint of vinegar. The units table has no pint, so the line has no amount.",
-            "de": "Ein Fünftel Pint Essig. Die Einheitentabelle kennt kein Pint; die Zeile hat daher keine Menge."
+          "amount": {
+            "value": 0.2,
+            "unit": "pint",
+            "original": "one-fifth pint of vinegar"
           }
         },
         {
@@ -80,9 +93,10 @@
             "kind": "ingredient",
             "id": "fdc-group-oil"
           },
-          "note": {
-            "en": "One quart of oil. The units table has no quart, so the line has no amount.",
-            "de": "Ein Quart Öl. Die Einheitentabelle kennt kein Quart; die Zeile hat daher keine Menge."
+          "amount": {
+            "value": 1,
+            "unit": "quart",
+            "original": "one quart of oil"
           }
         },
         {
@@ -180,10 +194,10 @@
   ],
   "check": {
     "method": "second-edition",
-    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 126: yolks, salt, vinegar, oil, lemon, boiling water and cayenne all agree. Changed: the oil goes in \"in a thread\", not \"thin\". The pint, quart and tablespoonful have no size in the units table, so those lines have no amount (open: imperial sizes)."
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 126: yolks, salt, vinegar, oil, lemon, boiling water and cayenne all agree. Changed: the oil goes in \"in a thread\", not \"thin\". The tablespoonful has no size in the units table, so that line has no amount. Amounts in pints and quarts restored on 2026-11-19 after the imperial units were added, read again in the same text."
   },
   "note": {
-    "en": "The book's plain mayonnaise. Oil and vinegar are given in quart and pint, which the units table does not hold, so those lines have no amount; the source's wording is in the notes.",
-    "de": "Die einfache Mayonnaise wie im Buch. Öl und Essig stehen in Quart und Pint; diese Einheiten kennt die Einheitentabelle nicht, daher haben die Zeilen keine Menge. Der Wortlaut der Quelle steht in den Notizen."
+    "en": "The book's plain mayonnaise. The boiling water is given in tablespoonfuls, which the units table does not hold, so that line has no amount; the source's wording is in the notes.",
+    "de": "Die einfache Mayonnaise wie im Buch. Das kochende Wasser steht in Esslöffeln, deren Größe das Buch nicht nennt; die Zeile hat daher keine Menge. Der Wortlaut der Quelle steht in den Notizen."
   }
 }
