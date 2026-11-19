@@ -74,8 +74,8 @@ serves `./dist` the way Cloudflare does:
 - every app loads offline;
 - no console error and no request to another host.
 
-Not checked by a script: installing two apps on a phone or on Phosh and
-seeing two separate apps; `localStorage` keys (they are prefixed with
+Not checked by a script: installing two apps and seeing two separate
+apps (the owner did and they are, see [owner](#owner)); `localStorage` keys (they are prefixed with
 the app's name today, by reading the code, with no test); the storage
 quota, which the apps now share; "clear site data", which clears all
 apps together.
@@ -111,6 +111,5 @@ old address stays behind, as decided.
   set (2026-11-19).
 - The custom domain `domus.nexumia.de` was attached by the deploy
   itself; nothing to do in the dashboard.
-- **Test on your devices**: install Drink Builder and Cook's Notebook
-  from the new address on the phone and on Phosh and see that they are
-  two apps with their own windows.
+- The owner installed the apps from the new address and reports that
+  they are separate apps (2026-11-19; which devices is not recorded).
