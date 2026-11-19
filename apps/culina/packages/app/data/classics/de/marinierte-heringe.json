@@ -1,0 +1,259 @@
+{
+  "id": "marinierte-heringe",
+  "name": {
+    "en": "Marinated herring",
+    "de": "Marinierte Heringe"
+  },
+  "originalName": "Pickled Herring",
+  "country": "de",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Fish (Salt water fish), No. 73 (German Nr. 104); page 224",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "ounce": {
+      "kind": "mass",
+      "factor": 28.349523125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary (avoirdupois) ounce of units.json (28.349523125 g). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "herring-pickle",
+      "name": {
+        "en": "Marinated herring",
+        "de": "Marinierte Heringe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "herring",
+          "wanted": {
+            "en": "Herring",
+            "de": "Hering"
+          },
+          "amount": {
+            "value": 12,
+            "unit": "count",
+            "original": "for 12 herrings"
+          }
+        },
+        {
+          "key": "milt",
+          "wanted": {
+            "en": "Herring milt",
+            "de": "Heringsmilch"
+          },
+          "note": {
+            "en": "Taken out of the herring whole, then stirred with the vinegar.",
+            "de": "Unversehrt aus den Heringen genommen, dann mit dem Essig verrührt."
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "1 nutmeg"
+          }
+        },
+        {
+          "key": "mustard",
+          "wanted": {
+            "en": "White mustard seed",
+            "de": "Weiße Senfkörner"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "ounce",
+            "original": "1 ounce of white mustard seeds"
+          }
+        },
+        {
+          "key": "shallot",
+          "wanted": {
+            "en": "Shallot",
+            "de": "Schalotte"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "8 eschalots"
+          }
+        },
+        {
+          "key": "peppercorn",
+          "wanted": {
+            "en": "White peppercorns",
+            "de": "Weiße Pfefferkörner"
+          },
+          "amount": {
+            "value": 12,
+            "unit": "count",
+            "original": "12 white peppercorns"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "note": {
+            "en": "Small onions; no amount given.",
+            "de": "Kleine Zwiebeln; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "peppergrass",
+          "wanted": {
+            "en": "Peppergrass",
+            "de": "Kresse"
+          },
+          "note": {
+            "en": "No amount given. The German name is our translation of the English word.",
+            "de": "Keine Menge angegeben. Der deutsche Name ist unsere Übersetzung des englischen Wortes."
+          }
+        },
+        {
+          "key": "tarragon",
+          "wanted": {
+            "en": "Tarragon",
+            "de": "Estragon"
+          },
+          "note": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "thyme",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173470"
+          },
+          "note": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "bay",
+          "wanted": {
+            "en": "Bay leaves",
+            "de": "Lorbeerblätter"
+          },
+          "note": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "note": {
+            "en": "No volume given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "For freshening the herring; the source says milk or water, and water is chosen here.",
+            "de": "Zum Wässern der Heringe; die Quelle nennt Milch oder Wasser, hier wird Wasser gewählt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Clean the herring and take out the milt without opening the body.",
+            "de": "Die Heringe reinigen und die Milch herausnehmen, ohne den Körper zu öffnen."
+          },
+          "uses": ["herring", "milt"]
+        },
+        {
+          "text": {
+            "en": "Wash them carefully and lay them in water for two days to freshen them.",
+            "de": "Die Heringe sorgfältig waschen und zwei Tage in Wasser legen, damit sie frisch werden."
+          },
+          "uses": ["herring", "water"]
+        },
+        {
+          "text": {
+            "en": "Pound the nutmeg, the mustard seed, the shallots and the peppercorns very fine.",
+            "de": "Muskatnuss, Senfkörner, Schalotten und Pfefferkörner sehr fein stoßen."
+          },
+          "uses": ["nutmeg", "mustard", "shallot", "peppercorn"]
+        },
+        {
+          "text": {
+            "en": "Put part of this mixture into each herring.",
+            "de": "In jeden Hering einen Teil dieser Mischung geben."
+          },
+          "uses": ["herring", "nutmeg", "mustard", "shallot", "peppercorn"]
+        },
+        {
+          "text": {
+            "en": "Lay the herring in a jar in layers with the small onions, the peppergrass, the tarragon, the thyme and the bay leaves.",
+            "de": "Die Heringe lagenweise in ein Glas legen, dazwischen kleine Zwiebeln, Kresse, Estragon, Thymian und Lorbeerblätter geben."
+          },
+          "uses": ["herring", "onion", "peppergrass", "tarragon", "thyme", "bay"]
+        },
+        {
+          "text": {
+            "en": "Stir the milt with the vinegar and pour it into the jar.",
+            "de": "Die Milch mit dem Essig verrühren und in das Glas gießen."
+          },
+          "technique": "marinate",
+          "uses": ["milt", "vinegar"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "herring-pickle"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the 12 herrings are taken as 3 per person for 4 persons.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: a second agent who did not transcribe this file compares every amount and step with the English text, lines 17473-17489 of /home/user/sources/davidis-en.txt; the simpler form of the same recipe (no filling, milt stirred into a sauce) is not transcribed."
+  },
+  "note": {
+    "en": "The source gives amounts for the herring, nutmeg, mustard seed, shallots and peppercorns only. The milk-or-water soaking is the book's own choice; water is used here. Not transcribed: the simpler form in the same recipe (no filling, the milt stirred into a thick sauce with the vinegar).",
+    "de": "Die Quelle nennt Mengen nur für Heringe, Muskatnuss, Senfkörner, Schalotten und Pfefferkörner. Das Wässern in Milch oder Wasser steht im Buch; hier Wasser. Nicht übertragen: die einfachere Form im selben Rezept (ohne Füllung, die Milch mit dem Essig zu einer dicken Soße verrührt)."
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "id": "frikandelle",
+  "name": {
+    "en": "Pan-fried meat loaf (Frikandelle)",
+    "de": "Frikandelle"
+  },
+  "originalName": "Fried Meat Loaf made from fresh Meat",
+  "country": "de",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Meats (Division D), beef, No. 33 (German Nr. 40, first form); pages 109-110",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pound": {
+      "kind": "mass",
+      "factor": 453.59237,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary pound of units.json (453.59237 g). A judgement."
+    },
+    "ounce": {
+      "kind": "mass",
+      "factor": 28.349523125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary (avoirdupois) ounce of units.json (28.349523125 g). A judgement."
+    },
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    },
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "frikandelle-loaf",
+      "name": {
+        "en": "Pan-fried meat loaf (Frikandelle)",
+        "de": "Frikandelle"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beef",
+          "wanted": {
+            "en": "Beef, from the joint",
+            "de": "Rindfleisch aus dem Stück"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "pound",
+            "original": "1½ pounds of beef from the joint"
+          },
+          "note": {
+            "en": "The second form of No. 33, for when veal and pork are not to be had. The first form uses equal parts of beef, veal and medium fat pork and gives no total weight.",
+            "de": "Die zweite Form der Nr. 33, für den Fall, dass kein Kalb- und Schweinefleisch zu bekommen ist. Die erste Form nimmt gleiche Teile Rind, Kalb und Schwein und nennt kein Gesamtgewicht."
+          }
+        },
+        {
+          "key": "suet",
+          "wanted": {
+            "en": "Kidney suet",
+            "de": "Nierenfett"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "pound",
+            "original": "½ pound of kidney suet or fresh pork fat"
+          },
+          "note": {
+            "en": "Kidney suet or fresh pork fat; the source allows either.",
+            "de": "Nierenfett oder frisches Schweinefett; die Quelle lässt beides zu."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "4 whole eggs"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          }
+        },
+        {
+          "key": "crumbs",
+          "wanted": {
+            "en": "Grated wheat bread or cracker crumbs",
+            "de": "Geriebenes Weißbrot oder Cracker-Brösel"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "ounce",
+            "original": "2 ounces of grated wheat-bread or cracker crumbs"
+          },
+          "note": {
+            "en": "The same crumbs are used to dredge the loaf before baking.",
+            "de": "Dieselben Brösel dienen zum Wenden vor dem Backen."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water, cold",
+            "de": "Wasser, kalt"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 cupful of cold water"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tablespoonful",
+            "original": "3 tablespoonfuls of butter to each 1½ pounds of chopped meat"
+          },
+          "settled": true,
+          "note": {
+            "en": "The ratio is given for the first form, per 1½ pounds of chopped meat; the second form names only hot butter. Applied here to the 1½ pounds of beef.",
+            "de": "Das Verhältnis steht bei der ersten Form, je 1½ Pfund gehacktes Fleisch; die zweite Form nennt nur heiße Butter. Hier auf die 1½ Pfund Rindfleisch angewendet."
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cream"
+          },
+          "note": {
+            "en": "A few spoonfuls of thick cream, when possible; no amount given.",
+            "de": "Einige Löffel dicke Sahne, wenn möglich; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "juniper",
+          "wanted": {
+            "en": "Juniper berries",
+            "de": "Wacholderbeeren"
+          },
+          "note": {
+            "en": "Pulverised, sprinkled over the loaf before serving; the source says it can be done.",
+            "de": "Zerrieben, vor dem Servieren über das Fleisch gestreut; die Quelle sagt, es könne geschehen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the beef and the suet very fine together.",
+            "de": "Das Rindfleisch und das Fett zusammen sehr fein hacken."
+          },
+          "uses": ["beef", "suet"]
+        },
+        {
+          "text": {
+            "en": "Mix in the eggs, salt, nutmeg, the crumbs and the cold water.",
+            "de": "Eier, Salz, Muskat, die Brösel und das kalte Wasser gut untermischen."
+          },
+          "uses": ["egg", "salt", "nutmeg", "crumbs", "water"]
+        },
+        {
+          "text": {
+            "en": "Shape the mixture by hand into a smooth round or oblong loaf, dredge it with crumbs and crease the top with a knife.",
+            "de": "Die Masse mit den Händen zu einem glatten runden oder länglichen Laib formen, mit Bröseln bestreuen und die Oberfläche mit dem Messer einritzen."
+          },
+          "uses": ["crumbs"]
+        },
+        {
+          "text": {
+            "en": "Have hot butter ready and put the loaf into it.",
+            "de": "Heiße Butter bereitstellen und den Laib hineinlegen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "If the oven is not hot enough, first fry the loaf on the stove for half an hour with the pan covered. Do not turn it.",
+            "de": "Ist der Ofen nicht heiß genug, den Laib zuerst eine halbe Stunde auf dem Herd zugedeckt braten. Nicht wenden."
+          },
+          "technique": "pan-fry",
+          "time": { "value": 30, "unit": "min" },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Bake in the oven until light brown, basting often.",
+            "de": "Im Ofen hellbraun backen und oft mit dem Fett übergießen."
+          },
+          "technique": "bake",
+          "time": { "value": 0.5, "to": 1, "unit": "h" },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "While it bakes, pour a few spoonfuls of thick cream over the loaf from time to time, when possible.",
+            "de": "Während des Backens von Zeit zu Zeit einige Löffel dicke Sahne über den Laib gießen, wenn möglich."
+          },
+          "uses": ["cream"]
+        },
+        {
+          "text": {
+            "en": "Before serving, sprinkle the crushed juniper berries over the meat.",
+            "de": "Vor dem Servieren die zerriebenen Wacholderbeeren über das Fleisch streuen."
+          },
+          "uses": ["juniper"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "frikandelle-loaf"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the variant with 1½ pounds of beef and 4 eggs is taken for 4 persons.",
+      "target": "persons"
+    },
+    {
+      "what": "Amount of butter",
+      "value": "3 tablespoonfuls",
+      "reason": "Our judgement: the source gives 3 tablespoonfuls of butter for each 1½ pounds of chopped meat in its first form; the second form, used here, names no amount.",
+      "target": "frikandelle-loaf/butter"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: a second agent who did not transcribe this file compares every amount and step with the English text, lines 11675-11697 of /home/user/sources/davidis-en.txt, and checks the fractions (1½, ½, 1 hour); the readings of iy2, % and 1% are the uncertain ones."
+  },
+  "note": {
+    "en": "The second form of No. 33 (Fried Meat Loaf made from fresh Meat, No. 1) only; the book's Heat Loaf No. 2 is a different recipe and is not used. The German edition's Nr. 40 is the same loaf; the English edition numbers the beef recipes differently.",
+    "de": "Nur die zweite Form der Nr. 33 (Gebratener Fleischball aus frischem Fleisch, Nr. 1); der Hackbraten Nr. 2 des Buches ist ein anderes Rezept und nicht verwendet. Die deutsche Ausgabe hat dasselbe Gericht als Nr. 40; die englische Ausgabe nummeriert die Rindfleischrezepte anders."
+  }
+}
