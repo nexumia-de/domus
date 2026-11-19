@@ -59,7 +59,9 @@ sync[^emptio-plan].
 
 ## Not decided here
 
-Discussed in the same session and left open:
+Discussed in the same session and left open here; the first three were
+decided the same day in
+[one address, spaces, storages](one-origin-spaces-storages.md):
 
 - **One origin for all apps** (one address with a folder per app, so
   the apps share local data and sync is set up once). Today each app is
