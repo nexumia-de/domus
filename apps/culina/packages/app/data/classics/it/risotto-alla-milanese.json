@@ -1,0 +1,210 @@
+{
+  "id": "risotto-alla-milanese",
+  "name": {
+    "en": "Milanese saffron risotto",
+    "de": "Risotto alla milanese"
+  },
+  "originalName": "Risotto alla milanese",
+  "country": "it",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 52, cooking as in No. 50",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 5,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "saffron-risotto",
+      "name": {
+        "en": "Saffron risotto",
+        "de": "Safranrisotto"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168879"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "Riso, grammi 500"
+          },
+          "note": {
+            "en": "Do not wash the rice; wipe it in a cloth.",
+            "de": "Den Reis nicht waschen; mit einem Tuch abreiben."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "g",
+            "original": "Burro, grammi 80"
+          },
+          "note": {
+            "en": "Half for the onion, the rest at the end. No. 50 gives 100 g for its version with peas.",
+            "de": "Die Hälfte für die Zwiebel, der Rest am Ende. Nr. 50 nennt für seine Fassung mit Erbsen 100 g."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count",
+            "original": "Mezza cipolla di mediocre grossezza"
+          },
+          "note": {
+            "en": "Half an onion of medium size.",
+            "de": "Eine halbe Zwiebel mittlerer Größe."
+          }
+        },
+        {
+          "key": "saffron",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170934"
+          },
+          "note": {
+            "en": "As much as needed to make the rice a good yellow.",
+            "de": "So viel, dass der Reis schön gelb wird."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "As much as needed, grated; served with the rice.",
+            "de": "Nach Bedarf, gerieben; zum Reis dazu servieren."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Hot water, added a ladle at a time. A hard boil leaves the centre of the rice hard and breaks up its surface.",
+            "de": "Heißes Wasser, jeweils eine Schöpfkelle. Starkes Kochen lässt die Mitte des Reises hart und die Oberfläche zerfallen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wipe the rice clean in a cloth; do not wash it.",
+            "de": "Den Reis mit einem Tuch sauber reiben; nicht waschen."
+          },
+          "uses": ["rice"]
+        },
+        {
+          "text": {
+            "en": "Chop the onion very finely with a rocking knife.",
+            "de": "Die Zwiebel mit dem Wiegemesser sehr fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["onion"]
+        },
+        {
+          "text": {
+            "en": "Sweat the onion in half of the butter until it takes on colour.",
+            "de": "Die Zwiebel in der Hälfte der Butter dünsten, bis sie Farbe annimmt."
+          },
+          "technique": "sweat",
+          "uses": ["onion", "butter"]
+        },
+        {
+          "text": {
+            "en": "Add the rice and stir constantly until it has soaked up the butter and the onion.",
+            "de": "Den Reis dazugeben und ständig rühren, bis er die Butter und die Zwiebel aufgesogen hat."
+          },
+          "technique": "risotto",
+          "uses": ["rice", "butter", "onion"]
+        },
+        {
+          "text": {
+            "en": "Add hot water one ladle at a time.",
+            "de": "Heißes Wasser jeweils eine Schöpfkelle auf einmal zugeben."
+          },
+          "technique": "risotto",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Add the salt.",
+            "de": "Das Salz zugeben."
+          },
+          "uses": ["salt"]
+        },
+        {
+          "text": {
+            "en": "Crush the saffron finely and dissolve it in a drop of warm water before adding it to the rice.",
+            "de": "Den Safran fein zerreiben und in einem Tropfen warmen Wassers auflösen, bevor er in den Reis kommt."
+          },
+          "uses": ["saffron", "water", "rice"]
+        },
+        {
+          "text": {
+            "en": "Cook until the rice is dry, adding the rest of the butter.",
+            "de": "Garen, bis der Reis trocken ist, und den restlichen Teil der Butter dazugeben."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice", "butter", "water"]
+        },
+        {
+          "text": {
+            "en": "Before taking it off the heat, stir in the grated parmesan and serve with more parmesan.",
+            "de": "Vor dem Herd den geriebenen Parmesan unterrühren und mit mehr Parmesan servieren."
+          },
+          "uses": ["parmesan"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "saffron-risotto"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 5907-5935; cooking method from lines 5809-5888); a second person must compare the numbers and the steps with the text."
+  },
+  "note": {
+    "en": "The cooking is that of No. 50 as No. 52 refers to it; the peas and the cheese of No. 50 are not part of this dish. The source names hot water as the cooking liquid and offers broth only for a richer result; water is used, so the dish has no meat (judgement, not recorded in settled: the format needs a measured line for a settled entry). The persons statement is in No. 50 (five persons for the same 500 g of rice).",
+    "de": "Das Garen folgt Nr. 50, auf die Nr. 52 verweist; die Erbsen und der Käse von Nr. 50 gehören nicht zu diesem Gericht. Die Quelle nennt heißes Wasser als Garflüssigkeit und bietet Brühe nur für ein reicheres Ergebnis an; verwendet wird Wasser, daher ist das Gericht ohne Fleisch (Urteil, nicht in settled festgehalten, weil das Format dafür eine gemessene Zeile verlangt). Die Angabe der Personen steht in Nr. 50 (fünf Personen für dieselben 500 g Reis)."
+  }
+}

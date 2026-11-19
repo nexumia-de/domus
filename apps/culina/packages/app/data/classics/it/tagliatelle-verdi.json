@@ -1,0 +1,202 @@
+{
+  "id": "tagliatelle-verdi",
+  "name": {
+    "en": "Green tagliatelle",
+    "de": "Grüne Tagliatelle"
+  },
+  "originalName": "Tagliatelle verdi",
+  "country": "it",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 45",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "green-tagliatelle-dough",
+      "name": {
+        "en": "Green tagliatelle dough",
+        "de": "Grüner Tagliatelleteig"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "spinach",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168462"
+          },
+          "note": {
+            "en": "A handful of spinach; boiled first.",
+            "de": "Eine Hand voll Spinat; zuerst gekocht."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "due uova"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose-enriched"
+          },
+          "note": {
+            "en": "As much flour as the dough takes; the source gives no weight.",
+            "de": "So viel Mehl, wie der Teig aufnimmt; die Quelle nennt kein Gewicht."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          }
+        },
+        {
+          "key": "cheese",
+          "wanted": {
+            "en": "Cheese (cacio)",
+            "de": "Käse (Cacio)"
+          },
+          "note": {
+            "en": "Dressing: cheese and butter, as the source's simplest option.",
+            "de": "Zum Anrichten: Käse und Butter, die einfachste Möglichkeit der Quelle."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the spinach until it is cooked.",
+            "de": "Den Spinat kochen, bis er gar ist."
+          },
+          "technique": "boil",
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Squeeze the spinach well dry.",
+            "de": "Den Spinat gut ausdrücken."
+          },
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Chop the spinach finely with a rocking knife.",
+            "de": "Den Spinat mit dem Wiegemesser fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Knead the spinach with the two eggs and as much flour as the dough takes, until it is firm.",
+            "de": "Den Spinat mit den zwei Eiern und so viel Mehl kneten, bis der Teig fest ist."
+          },
+          "technique": "knead",
+          "uses": ["spinach", "egg", "flour"]
+        },
+        {
+          "text": {
+            "en": "Roll the dough out into a thin sheet with a rolling pin.",
+            "de": "Den Teig mit dem Nudelholz zu einer dünnen Platte ausrollen."
+          },
+          "technique": "fresh-pasta",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Dust the sheet lightly with flour when it starts to stick.",
+            "de": "Die Platte leicht mit Mehl bestäuben, wenn sie zu kleben beginnt."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Wrap the sheet in a cloth and let it dry.",
+            "de": "Die Platte in ein Tuch einschlagen und trocknen lassen."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Cut the sheet into strips a little wider than broth noodles.",
+            "de": "Die Platte in Streifen schneiden, etwas breiter als Suppennudeln."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Bring the water to the boil and put the strips into it.",
+            "de": "Das Wasser zum Kochen bringen und die Streifen hineingeben."
+          },
+          "technique": "cook-pasta",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "As soon as the water boils, lift the pasta out and drain it.",
+            "de": "Sobald das Wasser kocht, die Nudeln herausnehmen und abtropfen lassen."
+          },
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Dress the pasta with the cheese and the butter.",
+            "de": "Die Nudeln mit Käse und Butter anrichten."
+          },
+          "uses": ["cheese", "butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "green-tagliatelle-dough"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source says the dose is enough for four or five persons; we take the lower number.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 5470-5513); a second person must compare the numbers and the steps with the text."
+  },
+  "note": {
+    "en": "The source also offers the dressings of Nos. 58 and 44 (not transcribed); cheese and butter is the option named last. The source gives no weight for the flour or the spinach.",
+    "de": "Die Quelle nennt auch die Saucen der Nummern 58 und 44 (nicht übertragen); Käse und Butter ist die zuletzt genannte Möglichkeit. Die Quelle nennt kein Gewicht für Mehl oder Spinat."
+  }
+}
