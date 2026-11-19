@@ -17,15 +17,9 @@
   },
   "persons": {
     "value": 4,
-    "basis": "stated"
+    "basis": "settled"
   },
-  "units": {
-    "hecto": {
-      "kind": "mass",
-      "factor": 100,
-      "read": "Gouffé's book is metric throughout: grams and litres in the recipes; the pinch and the pinch-weight are set in grams (gouffe.txt lines 2052-2055). A hecto is the metric prefix for 100 units, so 1 hecto = 100 g. A judgement from the prefix; the book does not state this equivalence in the lines read."
-    }
-  },
+  "units": {},
   "components": [
     {
       "id": "pea-puree",
@@ -95,14 +89,9 @@
             "en": "Water (the cooking water of the peas)",
             "de": "Wasser (das Kochwasser der Erbsen)"
           },
-          "amount": {
-            "value": 2,
-            "unit": "l",
-            "original": "2 litres de consommé de volaille"
-          },
           "note": {
-            "en": "The purée of the gras version is moistened with 2 litres of chicken consommé. Here the cooking water of the peas takes its place, as the source says. The amount is that of the gras version.",
-            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet. Hier tritt das Kochwasser der Erbsen an seine Stelle, wie die Quelle sagt. Die Menge stammt aus der fetten Fassung."
+            "en": "The gras version moistens the purée with 2 litres of chicken consommé (gouffe.txt line 19440). The meatless text gives no amount for the cooking water of the peas.",
+            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet (gouffe.txt Zeile 19440). Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
           }
         }
       ],
@@ -172,8 +161,8 @@
             "id": "fdc-group-rice"
           },
           "amount": {
-            "value": 1,
-            "unit": "hecto",
+            "value": 100,
+            "unit": "g",
             "original": "1 hecto de riz"
           },
           "note": {
@@ -263,14 +252,20 @@
   ],
   "settled": [
     {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source gives no number of persons for this soup.",
+      "target": "persons"
+    },
+    {
       "what": "Liquid of the purée",
       "value": "The cooking water of the peas, in place of the chicken consommé",
       "reason": "The source says to replace the chicken consommé by the cooking water of the peas (gouffe.txt lines 19481-19495)."
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the France transcriber (fr1) from gouffe.txt lines 19481-19495, with the referred purée from lines 19431-19450 and the rice and butter of the gras version from lines 19448-19460; a second agent replaces this line."
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 19425-19500. Agreed: 2 litres of peas, 1 onion, 1 carrot, 5 g sugar, 2 litres of consommé, 1 hecto of rice, 60 g butter. Changed: the hecto is 100 g (metric), now written in g; the liquid line has no amount, as the meatless text names none."
   },
   "note": {
     "en": "Meatless green pea soup. The pea purée follows the gras version (Purée de pois verts au gras, p. 371), to which the text refers; there the chicken consommé is replaced by the cooking water of the peas. The amounts of the purée and the rice are those of the gras version. No meat and no meat stock occur in the meatless version as read.",

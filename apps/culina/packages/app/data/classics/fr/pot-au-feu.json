@@ -18,7 +18,7 @@
   },
   "persons": {
     "value": 4,
-    "basis": "stated"
+    "basis": "settled"
   },
   "units": {},
   "components": [
@@ -274,10 +274,10 @@
         },
         {
           "text": {
-            "en": "Keep the broth at a steady, even heat for three hours.",
-            "de": "Die Brühe drei Stunden lang bei gleichmäßiger, ruhiger Hitze halten."
+            "en": "Keep the broth at a steady, even boil for three hours.",
+            "de": "Die Brühe drei Stunden lang in gleichmäßigem, durchgehendem Sieden halten."
           },
-          "technique": "simmer",
+          "technique": "boil",
           "time": {
             "value": 3,
             "unit": "h"
@@ -322,6 +322,12 @@
   ],
   "settled": [
     {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "The source names four or five persons for the small pot (gouffe.txt lines 2290-2291). Four is our choice.",
+      "target": "persons"
+    },
+    {
       "what": "Amount of water",
       "value": "4 l in the ingredient list; 3 l in the method for the small pot",
       "reason": "Gouffé gives 4 litres of water for the small pot in the list of ingredients (gouffe.txt line 2224) and 3 litres in the method (line 2386). The list's amount is stored; the difference is recorded here for the owner's decision.",
@@ -329,11 +335,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second reader compares the amounts, the 4 and 3 litres of water, and the OCR digits (\"1 50 grammes\" = 150 g, \"1 0 grammes\" = 10 g) with gouffe.txt lines 2221-2252 and 2380-2435."
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html, Hachette title page) compared with gouffe.txt. Agreed: all list amounts, 6 and 3 litres of water in the method, 60 or 30 g salt, 3 and 1.5 decilitres of cold water, 5 and 3 hours; \"1 50\" reads 150 g in both. Changed: the broth is a steady boil (\"ébullition continue\"), not a simmer; persons four or five, so four is settled. The 4 and 3 litres stay as the list and the method give them."
   },
   "note": {
-    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two (gouffe.txt lines 2290-2297). The list gives 4 litres of water; the method gives 3 litres for the small pot (see settled). The cold water in the method is 1.5 decilitres for the small pot; the decilitre is not sized in the book, so the amount is in the step text only. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
-    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen (gouffe.txt Zeilen 2290-2297). Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf (siehe settled). Das kalte Wasser beim Abschäumen sind 1,5 Deziliter; das Deziliter ist im Buch nicht bemessen, daher steht die Menge nur im Schritt. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
+    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two (gouffe.txt lines 2290-2297). The list gives 4 litres of water; the method gives 3 litres for the small pot (see settled). The cold water added at the first boil is 1.5 decilitres (0.1 litre each) for the small pot; it stands in the step text, not as a line. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
+    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen (gouffe.txt Zeilen 2290-2297). Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf (siehe settled). Das kalte Wasser beim ersten Aufkochen sind 1,5 Deziliter (je 0,1 Liter) für den kleinen Topf; es steht im Schritt, nicht als Zeile. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
   }
 }

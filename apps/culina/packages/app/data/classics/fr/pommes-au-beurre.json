@@ -83,8 +83,8 @@
             "original": "40 grammes de beurre"
           },
           "note": {
-            "en": "Part of the butter is also used to grease the dish (a layer of about 3 millimetres).",
-            "de": "Ein Teil der Butter dient auch zum Einfetten der Form (eine Schicht von etwa 3 Millimetern)."
+            "en": "The book greases the dish with a layer of butter of 3 millimetres; the amount for the layer is not stated.",
+            "de": "Das Buch fettet die Form mit einer Butterschicht von 3 Millimetern; die Menge für die Schicht nennt es nicht."
           }
         }
       ],
@@ -162,8 +162,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second reader compares the amounts and the steps with gouffe.txt lines 15575-15590."
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 15575-15590. Agreed: 7 apples, 1 prise of cinnamon, 40 g butter, the 3 mm layer, the country oven with heat above and below, 20 minutes. Changed: the butter note no longer says part of the 40 g greases the dish; the source gives no amount for that layer."
   },
   "note": {
     "en": "Gouffé's apples baked in butter, with cinnamon and crushed sugar. The book gives no amount of sugar and no size for the country oven.",

@@ -19,13 +19,7 @@
     "value": 4,
     "basis": "settled"
   },
-  "units": {
-    "cuillerée à bouche": {
-      "kind": "mass",
-      "factor": 30,
-      "read": "Gouffé's own statement: \"30 grammes de farine (une cuillerée à bouche ordinaire)\" (gouffe.txt line 3085). The book gives this spoon for flour only; it is taken for all uses here. A judgement."
-    }
-  },
+  "units": {},
   "components": [
     {
       "id": "sauce-hollandaise-emulsion",
@@ -41,14 +35,9 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "amount": {
-            "value": 2,
-            "unit": "cuillerée à bouche",
-            "original": "2 cuillerées à bouche de vinaigre"
-          },
           "note": {
-            "en": "Reduced until one coffee spoon (cuillerée à café) is left; that coffee spoon is the result of the reduction, not an amount.",
-            "de": "Eingekocht, bis ein Kaffeelöffel (cuillerée à café) übrig ist; dieser Kaffeelöffel ist das Ergebnis des Einkochens, keine Menge."
+            "en": "The source gives 2 cuillerées à bouche of vinegar; the book gives no size for a tablespoon, so no amount is given. Reduced until one coffee spoon (cuillerée à café) is left; that coffee spoon is the result of the reduction, not an amount.",
+            "de": "Die Quelle nennt 2 cuillerées à bouche Essig; das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge. Eingekocht, bis ein Kaffeelöffel (cuillerée à café) übrig ist; dieser Kaffeelöffel ist das Ergebnis des Einkochens, keine Menge."
           }
         },
         {
@@ -81,10 +70,9 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "amount": {
-            "value": 2,
-            "unit": "cuillerée à bouche",
-            "original": "2 cuillerées à bouche d'eau froide"
+          "note": {
+            "en": "\"2 cuillerées à bouche d'eau froide\": the book gives no size for a tablespoon, so no amount is given.",
+            "de": "\"2 cuillerées à bouche d'eau froide\": das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge."
           }
         },
         {
@@ -121,14 +109,9 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "amount": {
-            "value": 1,
-            "unit": "cuillerée à bouche",
-            "original": "une cuillerée à bouche d'eau froide"
-          },
           "note": {
-            "en": "Added after the third part of the butter, so that the sauce does not turn.",
-            "de": "Nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt."
+            "en": "\"une cuillerée à bouche d'eau froide\", added after the third part of the butter, so that the sauce does not turn. No size is given for the spoon.",
+            "de": "\"une cuillerée à bouche d'eau froide\", nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt. Für den Löffel ist keine Größe angegeben."
           }
         },
         {
@@ -242,8 +225,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from gouffe.txt lines 4912-4970 (1877 print, machine-read); the numbers are listed in the evidence file for the second reader."
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 4912-4970. Agreed: 120 g butter, 5 g salt, 3 g white pepper, 2 yolks, 20 g portions, 3 mm, the coffee spoon. Changed: the tablespoon is sized by the book only for flour (line 3085), so the vinegar and water lines have no amount; wording kept in the notes."
   },
   "note": {
     "en": "Made with egg yolk and butter only. The book advises against adding flour or starch to a hollandaise, since the yolk and the butter alone are its base (gouffe.txt lines 4961-4968).",

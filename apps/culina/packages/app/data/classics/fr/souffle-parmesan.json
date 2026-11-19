@@ -219,10 +219,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check: transcribed by the France transcriber (fr1) from escoffier.txt lines 39558-39571; a second agent replaces this line."
+    "note": "Weak: no second scan or edition of Escoffier was named, so this is a second reading of the same English text (escoffier.txt lines 39550-39576). Agreed: 1 lb flour, 1 lb Parmesan, 3 oz butter, ten yolks, ten whites, 20 to 25 minutes. Unchanged: the milk (pints) stays without amount; the book names no oven temperature."
   },
   "note": {
-    "en": "Quantities for a restaurant, as the book gives them (one lb. of flour, one lb. of Parmesan). No oven temperature is stated, and the size of the silver timbale is not given. Milk is given in pints, so that line has no amount.",
+    "en": "Quantities as the book gives them (one lb. of flour, one lb. of Parmesan). No oven temperature is stated, and the size of the silver timbale is not given. Milk is given in pints, so that line has no amount.",
     "de": "Mengen für ein Restaurant, wie das Buch sie angibt (ein Pfund Mehl, ein Pfund Parmesan). Eine Ofentemperatur nennt die Quelle nicht; die Größe der Silbertimbale nennt das Buch ebenfalls nicht. Die Milch steht in Pint; diese Zeile hat daher keine Menge."
   }
 }
