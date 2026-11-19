@@ -1,0 +1,255 @@
+{
+  "id": "fritto-di-finocchi",
+  "name": {
+    "en": "Fried fennel",
+    "de": "Fenchel im Ausbackteig"
+  },
+  "originalName": "Fritto di finocchi",
+  "country": "it",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi, 1891)",
+    "year": 1891,
+    "place": "N. 107; batter N. 100",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "finocchi",
+      "name": {
+        "en": "Fennel",
+        "de": "Fenchel"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "fennel",
+          "wanted": {
+            "en": "Fennel",
+            "de": "Fenchel"
+          },
+          "note": {
+            "en": "No weight or number given in the source.",
+            "de": "Die Quelle nennt kein Gewicht und keine Anzahl."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Salted water for cooking; no amount given.",
+            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "For dusting the pieces; no amount given.",
+            "de": "Zum Bestäuben der Stücke; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "batter",
+          "ref": {
+            "kind": "component",
+            "id": "pastella"
+          },
+          "note": {
+            "en": "The batter of No. 100 of the book.",
+            "de": "Der Teig aus Nr. 100 des Buches."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the fennel into wedges.",
+            "de": "Den Fenchel in Spalten schneiden."
+          },
+          "uses": ["fennel"]
+        },
+        {
+          "text": {
+            "en": "Remove the hard outer leaves.",
+            "de": "Die harten äußeren Blätter entfernen."
+          },
+          "uses": ["fennel"]
+        },
+        {
+          "text": {
+            "en": "Boil the wedges in salted water.",
+            "de": "Die Spalten in Salzwasser kochen."
+          },
+          "technique": "boil",
+          "uses": ["fennel", "water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Dry the wedges.",
+            "de": "Die Spalten trocknen."
+          },
+          "uses": ["fennel"]
+        },
+        {
+          "text": {
+            "en": "Dust the wedges with flour.",
+            "de": "Die Spalten mit Mehl bestäuben."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Dip the wedges in the batter.",
+            "de": "Die Spalten in den Teig tauchen."
+          },
+          "technique": "batter",
+          "uses": ["batter"]
+        }
+      ]
+    },
+    {
+      "id": "pastella",
+      "name": {
+        "en": "Frying batter (pastella)",
+        "de": "Ausbackteig (Pastella)"
+      },
+      "role": "crunch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g",
+            "original": "Farina, grammi 100"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil-vegetable"
+          },
+          "note": {
+            "en": "Fine oil (olio fine), one spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
+            "de": "Feines Öl (olio fine), ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+          }
+        },
+        {
+          "key": "brandy",
+          "wanted": {
+            "en": "Fruit brandy (acquavite)",
+            "de": "Obstbrand (Acquavite)"
+          },
+          "note": {
+            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
+            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "Uova, N. 1"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "As much as needed (quanto occorre).",
+            "de": "So viel wie nötig (quanto occorre)."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Ice-cold water",
+            "de": "Eiskaltes Wasser"
+          },
+          "note": {
+            "en": "As much as needed (acqua diaccia quanto basta).",
+            "de": "So viel wie nötig (acqua diaccia quanto basta)."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour with the egg and the other ingredients, adding the water little by little, to a batter that is not too runny.",
+            "de": "Das Mehl mit dem Ei und den übrigen Zutaten mischen und das Wasser nach und nach zugeben, bis ein nicht zu dünner Teig entsteht."
+          },
+          "uses": ["flour", "egg", "oil", "brandy", "salt", "water"]
+        },
+        {
+          "text": {
+            "en": "Work it well with a spoon.",
+            "de": "Mit dem Löffel gut durcharbeiten."
+          }
+        },
+        {
+          "text": {
+            "en": "Let it rest for several hours.",
+            "de": "Mehrere Stunden ruhen lassen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "finocchi"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons and no weight of fennel; the batter of 100 g of flour is taken as a side for about four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 8789-8835 and 8476-8512); no second reader yet."
+  },
+  "note": {
+    "en": "The source's text for this recipe ends at dipping the wedges in the batter; the frying itself is not written in it, and the title reads 'Fritto'. The last addition to the batter before use (No. 100) is cut off in the OCR text read. Frying fat and temperature are not given.",
+    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet 'Fritto'. Die letzte Zugabe zum Teig vor dem Gebrauch (Nr. 100) ist im gelesenen OCR-Text abgeschnitten. Fett und Temperatur zum Ausbacken sind nicht angegeben."
+  }
+}

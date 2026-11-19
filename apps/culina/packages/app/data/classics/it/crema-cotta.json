@@ -1,0 +1,150 @@
+{
+  "id": "crema-cotta",
+  "name": {
+    "en": "Cooked custard cream (crema)",
+    "de": "Gekochte Vanillecreme (Crema)"
+  },
+  "originalName": "Crema",
+  "country": "it",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi, 1891)",
+    "year": 1891,
+    "place": "N. 418",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "crema",
+      "name": {
+        "en": "Custard cream",
+        "de": "Vanillecreme"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "Rossi d'uovo, N. 8"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g",
+            "original": "Zucchero, grammi 200"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "Latte, un litro"
+          }
+        },
+        {
+          "key": "vanilla",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173471"
+          },
+          "note": {
+            "en": "A scent of vanilla (odore di vainiglia); no amount given.",
+            "de": "Ein Hauch Vanille (odore di vainiglia); keine Menge angegeben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the egg yolks with the sugar.",
+            "de": "Die Eigelb mit dem Zucker verrühren."
+          },
+          "uses": ["yolk", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Pour in the milk little by little.",
+            "de": "Die Milch nach und nach zugießen."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "To speed up the cooking you may use a strong heat, but as soon as it starts to steam, lower the heat.",
+            "de": "Zum Beschleunigen darf die Hitze stark sein; sobald es dampft, die Hitze senken."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "If it curdles, pass the cream through a sieve.",
+            "de": "Gerinnt sie, die Creme durch ein Sieb passieren."
+          }
+        },
+        {
+          "text": {
+            "en": "Cook it, stirring all the time in one direction, until it sticks to the spoon.",
+            "de": "Unter ständigem Rühren in einer Richtung garen, bis sie am Löffel haften bleibt."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["milk", "yolk", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Add the vanilla shortly before taking it off the heat.",
+            "de": "Die Vanille kurz vor dem Vom-Herd-Nehmen zugeben."
+          },
+          "uses": ["vanilla"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "crema"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source names no number of persons; a litre of milk and eight yolks serve about six.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 27027-27067); no second reader yet."
+  },
+  "note": {
+    "en": "The plain custard only. The book adds that the cream serves for ice cream and for a liquid trifle with sponge fingers; those uses are not transcribed. No time and no temperature are given.",
+    "de": "Nur die einfache Creme. Das Buch merkt an, dass die Creme für Eiscreme und für eine flüssige Zuppa inglese mit Biskuit dient; diese Verwendungen sind nicht übertragen. Keine Zeit und keine Temperatur angegeben."
+  }
+}
