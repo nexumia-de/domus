@@ -26,9 +26,21 @@ checks green. The apps' own goals are in their roadmaps
    folder, a page at the root, the browser check that the apps stay
    apart, the deploy, the old addresses redirecting; the owner
    installed the apps from the new address and they are separate apps.
-2. **Host package.** `packages/host`: the local store, the cipher and
-   the sync cycle taken out of Mixtura, with their tests; Mixtura uses
-   them from there and behaves as before.
+2. **Host package.** Done on 2026-11-19, in part. `packages/host`
+   (`@nexumia-de/hospes`, TypeScript source, no build step) holds what
+   Mixtura's sync code has that does not depend on its store, state or
+   screens and that spaces still need: the cipher (`cipher.ts`,
+   `errors.ts`, `base64.ts`) and the WebDAV adapter (`webdav.ts`,
+   `webdav-url.ts`, `webdav-connection.ts`), moved with their tests and
+   history; Mixtura imports them from the package and behaves as before.
+   Not moved, on purpose: Mixtura's local store, sync cycle, scheduler,
+   bindings, invites, the passphrase and the screens. They are tied to
+   its place model (place, library and profile with a passphrase each),
+   which goal 3 replaces by spaces with one random secret; moving them
+   now would move code that is deleted next. They are rebuilt for spaces
+   in the host package in goal 3 and 6, not moved. The integration test
+   against the Docker server and the browser script `e2e/webdav.mjs`
+   stay in Mixtura.
 3. **Spaces.** In `packages/model`: the space document, the invite, the
    logical clock and the dropping of removal markers after 90 days,
    each with vectors. In `packages/host`: key derivation, the shared

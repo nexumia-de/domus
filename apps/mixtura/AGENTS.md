@@ -24,6 +24,11 @@ rules do not apply. Its sister app for cooking is
   repository; nothing drink-specific goes there, and a bug in it is
   fixed there ([decision](docs/decisions/shared-model.md),
   [one repository](../../docs/decisions/one-repository.md)).
+- **Shared host code lives in hospes.** The sync cipher and the WebDAV
+  adapter are in [packages/host](../../packages/host)
+  (`@nexumia-de/hospes`), used from this repository; the app imports
+  them from the package, nothing of Mixtura's store, state or screens
+  goes there, and a bug in them is fixed there.
 - **Derive, don't store.** What can be made, balance numbers, cost and
   "what unlocks the most" are computed from specs, ingredients and stock
   every time; only what the user entered is stored.

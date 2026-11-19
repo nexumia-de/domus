@@ -25,6 +25,7 @@ its own bundle. Change history is in [log.md](log.md).
 # Parts
 
 - [materia](../packages/model/docs/index.md) - The general model.
+- [hospes](../packages/host/docs/index.md) - The host code the apps share: sync cipher, WebDAV adapter.
 - [Mixtura](../apps/mixtura/docs/index.md) - Drinks.
 - [Culina](../apps/culina/docs/index.md) - Cooking.
 - [Emptio](../apps/emptio/docs/index.md) - Shopping list.

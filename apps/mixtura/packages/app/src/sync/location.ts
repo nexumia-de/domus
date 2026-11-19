@@ -3,7 +3,7 @@
 
 import type { StorageAdapter } from '@mixtura/engine';
 import type { Binding, Storage } from '../store';
-import { createWebdavAdapter } from './webdav';
+import { createWebdavAdapter } from '@nexumia-de/hospes';
 
 export const DEFAULT_FOLDER = 'mixtura';
 

@@ -253,7 +253,7 @@ requests with `curl` and from Chromium 153 (the e2e script).
 Consequences: against this server `If-Match` is strict (no lost update, as
 opposed to Nextcloud) at the price of false conflicts inside the second after
 a write; the adapter and the cycle treat both cases the same way
-([limits](sync-backends.md#limits)). Chromium: with the app's service worker
+([limits](../../../packages/host/docs/webdav.md#limits)). Chromium: with the app's service worker
 controlling the page every read after the first failed until the worker left
 cross-origin requests alone ([service worker](sync-backends.md#service-worker)).
 Not measured: Firefox, Safari, other servers, an `arm64` image (the image index

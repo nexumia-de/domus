@@ -192,8 +192,9 @@ with the format constants are the general parts of stock sync
 name, and so are materia's `StorageAdapter`, `ReadResult`, `WriteResult` and
 `AdapterFailure` (the WebDAV adapter implements the interface,
 [sync backends](sync-backends.md)). The app reaches them only through `@mixtura/engine`; the Web Crypto
-cipher that fills materia's `Cipher` port is app code
-([sync encryption](sync-encryption.md)).
+cipher that fills materia's `Cipher` port and the WebDAV adapter are in the host package `@nexumia-de/hospes`
+([packages/host](../../../packages/host), [cipher](../../../packages/host/docs/cipher.md),
+[WebDAV adapter](../../../packages/host/docs/webdav.md)); the app imports them from there.
 
 ## Export and import
 

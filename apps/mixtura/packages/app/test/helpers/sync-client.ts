@@ -2,7 +2,7 @@
 import type { Cipher, Envelope, Place } from '@mixtura/engine';
 import { syncPlace, type SyncOutcome } from '../../src/sync';
 import type { Ingredient, StockRecord } from '../../src/store';
-import { createCipher } from '../../src/sync/cipher';
+import { createCipher } from '@nexumia-de/hospes';
 import type { FakeStorage } from './fake-adapter';
 
 export const FAST_CIPHER: Cipher = createCipher({ iterations: 1000, minIterations: 1000 });

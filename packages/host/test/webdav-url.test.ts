@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { fileUrl, folderUrls, pathSegments } from '../src/sync/webdav-url';
+import { fileUrl, folderUrls, pathSegments } from '../src/webdav-url';
 
 test('a path is joined to the base with every segment encoded', () => {
   expect(fileUrl('https://dav.example/f', 'places/a b/stock.json')).toBe(

@@ -5,7 +5,7 @@
 // size is capped while reading, so a small payload cannot grow without end.
 
 import { MAX_FILE_BYTES } from '../store';
-import { base64ToBytes, bytesToBase64 } from '../sync/base64';
+import { base64ToBytes, bytesToBase64 } from '@nexumia-de/hospes';
 
 /** The first part of a payload; a payload with another version is refused. */
 export const LINK_VERSION = '1';

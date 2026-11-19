@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- bytes and matches are indexed at known positions */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { buildEnvelope, parseEnvelope, type Envelope } from '@mixtura/engine';
+import { buildEnvelope, parseEnvelope, type Envelope } from '@nexumia-de/materia';
 import { expect, test, vi } from 'vitest';
-import { base64ToBytes, bytesToBase64 } from '../src/sync/base64';
-import { createCipher } from '../src/sync/cipher';
-import { UnsupportedEnvelope, WrongPassphrase } from '../src/sync/errors';
+import { base64ToBytes, bytesToBase64 } from '../src/base64';
+import { createCipher } from '../src/cipher';
+import { UnsupportedEnvelope, WrongPassphrase } from '../src/errors';
 
 const FAST = { iterations: 1000, minIterations: 1000 };
 const PASS = '7K3M-9QXA-B2CD-EF4G-H5JK';
@@ -130,7 +130,7 @@ test('derived keys are cached per passphrase, salt and iterations', async () => 
 
 test('fixed vector: an envelope made with 600,000 iterations still opens', async () => {
   const text = readFileSync(
-    fileURLToPath(new URL('./fixtures/sync-envelope.json', import.meta.url)),
+    fileURLToPath(new URL('./fixtures/envelope.json', import.meta.url)),
     'utf8',
   );
   const parsed = parseEnvelope(text);

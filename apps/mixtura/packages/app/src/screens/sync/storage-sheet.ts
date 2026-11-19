@@ -2,11 +2,10 @@
 // one text per state, and Add Storage. Texts: docs/ui-strings.md#sync.
 
 import { h } from '../../dom';
+import { createWebdavAdapter, testConnection } from '@nexumia-de/hospes';
 import { type ScreenContext } from '../../screen';
 import { addStorage, checkStorage, type StorageRefusal } from '../../sync/storages';
 import { invalidateSync } from '../../sync/view';
-import { createWebdavAdapter } from '../../sync/webdav';
-import { testConnection } from '../../sync/webdav-connection';
 import { drafts } from './drafts';
 import { problemLine, showButton, textField } from './fields';
 import { closeSyncSheet } from './sheet-address';

@@ -49,19 +49,19 @@ npm ci
 The shell (#17) is plain TypeScript building DOM; no framework. Source in
 `packages/app/src/`:
 
-| File or folder                              | Job                                                                                                  |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                     |
-| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)               |
-| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                            |
-| `destinations.ts`                           | The four destinations with labels and icons                                                          |
-| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                    |
-| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                           |
-| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                      |
-| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))      |
-| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                 |
-| `sync/`                                     | Sync file encryption, the WebDAV adapter and its connection test ([sync backends](sync-backends.md)) |
-| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                 |
+| File or folder                              | Job                                                                                                                                            |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                                                               |
+| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)                                                         |
+| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                                                                      |
+| `destinations.ts`                           | The four destinations with labels and icons                                                                                                    |
+| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                                                              |
+| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                                                                     |
+| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                                                                |
+| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))                                                |
+| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                                                           |
+| `sync/`                                     | Sync cycle, bindings, invites and the passphrase; the cipher and the WebDAV adapter are in `packages/host` ([sync backends](sync-backends.md)) |
+| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                                                           |
 
 **Adding a screen (#18 to #20).** Make `screens/<name>/index.ts` that
 exports `screens: Screen[]` (`match(route)` and `view(context)` returning

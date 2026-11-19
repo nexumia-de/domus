@@ -1,7 +1,7 @@
 // The WebDAV adapter: materia's StorageAdapter on `fetch` only, for a browser
 // page. What a server must do for it, the mapping of answers to failures and
-// its limits: docs/sync-backends.md.
-import type { AdapterFailure, ReadResult, StorageAdapter, WriteResult } from '@mixtura/engine';
+// its limits: docs/webdav.md.
+import type { AdapterFailure, ReadResult, StorageAdapter, WriteResult } from '@nexumia-de/materia';
 import { bytesToBase64 } from './base64';
 import { fileUrl, folderUrls } from './webdav-url';
 
@@ -18,7 +18,7 @@ export interface WebdavOptions {
   delay?: (ms: number) => Promise<void>;
 }
 
-/** How long Apache keeps an ETag weak after a write, plus a margin (docs/sync-backends.md). */
+/** How long Apache keeps an ETag weak after a write, plus a margin (docs/webdav.md). */
 export const WEAK_ETAG_WAIT_MS = 1100;
 
 const isWeak = (etag: string): boolean => etag.startsWith('W/');

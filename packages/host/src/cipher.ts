@@ -1,7 +1,7 @@
 // The sync cipher on Web Crypto only: PBKDF2-HMAC-SHA-256 into a
 // non-extractable AES-256-GCM key, a fresh nonce per seal, the envelope's
-// format and version bound as additional data. See docs/sync-encryption.md.
-import { envelopeAad, type Cipher, type Envelope } from '@mixtura/engine';
+// format and version bound as additional data. See docs/cipher.md.
+import { envelopeAad, type Cipher, type Envelope } from '@nexumia-de/materia';
 import { base64ToBytes, bytesToBase64 } from './base64';
 import { UnsupportedEnvelope, WrongPassphrase } from './errors';
 

@@ -2,9 +2,11 @@
 # parts a pull request touches, so a change to one app does not run the
 # others. Pushes to main run everything.
 #
-# Parts: model (packages/model), mixtura, culina, emptio (apps/<name>).
-# Mixtura and Culina install the model from this repository, so a model
-# change runs them too. Emptio does not use the model yet.
+# Parts: model (packages/model), host (packages/host), mixtura, culina, emptio
+# (apps/<name>). Mixtura and Culina install the model from this repository, so
+# a model change runs them too; the host package uses the model and Mixtura
+# uses the host package, so a host change runs Mixtura and a model change runs
+# the host package. Emptio does not use the model yet.
 #
 # Deploys, on main only: site-deploy (every app under domus.nexumia.de) and
 # forward-old-addresses (the earlier addresses of the single apps answer with
@@ -28,6 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       model: ${{ steps.paths.outputs.model }}
+      host: ${{ steps.paths.outputs.host }}
       mixtura: ${{ steps.paths.outputs.mixtura }}
       culina: ${{ steps.paths.outputs.culina }}
       emptio: ${{ steps.paths.outputs.emptio }}
@@ -43,9 +46,9 @@ jobs:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          model=false; mixtura=false; culina=false; emptio=false
+          model=false; host=false; mixtura=false; culina=false; emptio=false
           if [ "$EVENT" != "pull_request" ]; then
-            model=true; mixtura=true; culina=true; emptio=true
+            model=true; host=true; mixtura=true; culina=true; emptio=true
           else
             # HEAD is the merge of the pull request into its base, so this
             # lists what the pull request changes.
@@ -56,14 +59,16 @@ jobs:
                 apps/mixtura/*) mixtura=true ;;
                 apps/culina/*) culina=true ;;
                 apps/emptio/*) emptio=true ;;
-                packages/model/*) model=true; mixtura=true; culina=true ;;
+                packages/host/*) host=true; mixtura=true ;;
+                packages/model/*) model=true; host=true; mixtura=true; culina=true ;;
                 LICENSE | *.md) ;;
-                *) model=true; mixtura=true; culina=true; emptio=true ;;
+                *) model=true; host=true; mixtura=true; culina=true; emptio=true ;;
               esac
             done < changed.txt
           fi
           {
             echo "model=$model"
+            echo "host=$host"
             echo "mixtura=$mixtura"
             echo "culina=$culina"
             echo "emptio=$emptio"
@@ -97,6 +102,20 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:model
+
+  host-check:
+    name: host-check
+    needs: changes
+    if: needs.changes.outputs.host == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check:host
 
   # What an app did when it installed the model from git: npm packs this
   # commit (running prepare) and installs the result into an empty project,

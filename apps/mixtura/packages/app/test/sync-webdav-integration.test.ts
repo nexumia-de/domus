@@ -2,8 +2,7 @@
 // Runs when MIXTURA_WEBDAV_URL is set (MIXTURA_WEBDAV_USER, default `mixtura`, and
 // MIXTURA_WEBDAV_PASSWORD with it); otherwise it is skipped, and says why.
 import { describe, expect, test } from 'vitest';
-import { createWebdavAdapter } from '../src/sync/webdav';
-import { testConnection } from '../src/sync/webdav-connection';
+import { createWebdavAdapter, testConnection } from '@nexumia-de/hospes';
 
 const url = process.env['MIXTURA_WEBDAV_URL'];
 const username = process.env['MIXTURA_WEBDAV_USER'] ?? 'mixtura';

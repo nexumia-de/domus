@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { base64ToBytes, bytesToBase64 } from '../src/sync/base64';
+import { base64ToBytes, bytesToBase64 } from '../src/base64';
 
 test('matches Buffer for every length from 0 to 40', () => {
   for (let n = 0; n <= 40; n++) {

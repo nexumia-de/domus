@@ -1,6 +1,6 @@
 // "Test Connection": one read of a probe file tells the user whether the
 // storage can be used. The file need not exist: a 404 is a working server.
-import type { StorageAdapter } from '@mixtura/engine';
+import type { StorageAdapter } from '@nexumia-de/materia';
 
 export type ConnectionState =
   /** The server answered and the page may read the answer. */

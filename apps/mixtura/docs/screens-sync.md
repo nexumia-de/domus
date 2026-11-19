@@ -225,7 +225,7 @@ via `shell/leave.ts`). A write or test that throws clears the busy state and say
 - The backup reminder's counter is not touched by anything that arrives by sync
   (`transactPlace` does not count); joining a place counts the one place record the
   user created.
-- Weak ETags of Apache are handled in the adapter ([sync backends](sync-backends.md#limits)).
+- Weak ETags of Apache are handled in the adapter ([sync backends](../../../packages/host/docs/webdav.md#limits)).
 - A place that is removed on a device takes its binding with it.
 - Not built: reading a QR code inside the app (no camera), sharing one library or
   profile, a way to rotate a passphrase.

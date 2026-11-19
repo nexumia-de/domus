@@ -28,7 +28,7 @@ links. Change history is in [log.md](log.md).
 - [What the stock allows](makeable.md) - Which specs the stock makes makeable (exact, hierarchy, prepared, substitutes, optional lines), missing one, and the unlock ranking with its tie-breaks, performance numbers and vectors.
 - [Units](units.md) - Every unit with exact value or convention, behaviour in balance, parsing grammar, display and rounding (pour precision for ml); table also in `packages/engine/data/units.json`.
 - [Templates](templates.md) - The six root templates as data, matching a spec to a template by roles and ratios with distance and a tie rule, the range check (within, below, above, unknown) and the evidence of every number (all assumptions).
-- [Sync file encryption](sync-encryption.md) - How a sync file is encrypted in the browser: PBKDF2 600,000 iterations into AES-256-GCM, envelope fields, what the storage sees, where the passphrase is kept, the generated passphrase and its entropy, a lost passphrase, the limits.
+- [Sync file encryption](sync-encryption.md) - The passphrase of a place: what the storage sees, where it is kept, the generated passphrase and its entropy, a lost passphrase. The cipher itself is in the [host package](../../../packages/host/docs/cipher.md).
 - [Sync cycle of a place](sync-cycle.md) - One attempt step by step against an adapter and a cipher, the checking read after a write, the outcomes and failure reasons, applying the result in one transaction, binding fields, moving a place, what is and is not guaranteed, the known limit for custom ingredients.
 - [Engine](engine.md) - The one public entry point of the engine package: purity, every exported function with signature and units, general model apart from drink-specific rules, vector folders, how to add a rule, executed examples, the build and its size.
 - [Engine amounts module](engine-amounts.md) - Parse, convert, scale and format amounts: files, error codes, options and the vector files.
@@ -54,7 +54,7 @@ links. Change history is in [log.md](log.md).
 
 - [Spike: WebDAV from the browser](webdav-spike.md) - A browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second; the app's CSP blocks other hosts; options for the owner.
 - [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
-- [Sync backends](sync-backends.md) - What a storage must do to sync from a browser, the WebDAV adapter and its failure mapping and limits, the device-local storages and bindings, the Content-Security-Policy and the service worker rule, the Docker test server and the user setup.
+- [Sync backends](sync-backends.md) - The device-local storages and bindings, the Content-Security-Policy and the service worker rule, the Docker test server and the user setup.
 - [Set up storage for sync](sync-setup.md) - The user guide: what a storage needs, the Docker server, nginx, Caddy or Apache in front of an existing WebDAV server, Nextcloud and its limits, what was tested, and one row per Sync problem text.
 - [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
 

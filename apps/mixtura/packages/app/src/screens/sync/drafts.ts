@@ -4,7 +4,7 @@
 // (sheet-drafts.ts). Passwords and passphrases live here and in the stores,
 // nowhere else.
 
-import type { ConnectionState } from '../../sync/webdav-connection';
+import type { ConnectionState } from '@nexumia-de/hospes';
 import { DEFAULT_FOLDER } from '../../sync/location';
 import { resetCopies } from './copy-row';
 import { resetInvite } from './invite-block';

@@ -1,8 +1,8 @@
 // The WebDAV adapter against a fake `fetch`: every mapping of an answer to a
 // result, the requests it sends and the failure of a request that gets no answer.
 import { expect, test } from 'vitest';
-import { createWebdavAdapter } from '../src/sync/webdav';
-import { PROBE_PATH, testConnection } from '../src/sync/webdav-connection';
+import { createWebdavAdapter } from '../src/webdav';
+import { PROBE_PATH, testConnection } from '../src/webdav-connection';
 
 interface Call {
   method: string;

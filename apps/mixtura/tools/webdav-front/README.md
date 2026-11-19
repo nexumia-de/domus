@@ -69,7 +69,7 @@ What the configurations do, for both:
   `204`, before and without any password;
 - send `Access-Control-Allow-Methods` `GET, PUT, MKCOL, OPTIONS` and
   `Access-Control-Allow-Headers` `Authorization, Content-Type, If-Match,
-If-None-Match`: the methods and headers `packages/app/src/sync/webdav.ts`
+If-None-Match`: the methods and headers `packages/host/src/webdav.ts`
   sends, and nothing else;
 - send `Access-Control-Expose-Headers: ETag`, and the same headers on the
   `401`, `404` and `412` answers the backend produces;

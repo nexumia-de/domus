@@ -8,14 +8,15 @@ The household apps and what they share, in one repository
 own `AGENTS.md`, which apply in addition to this file when you work
 there.
 
-| Folder           | What                                                     |
-| ---------------- | -------------------------------------------------------- |
-| `packages/model` | materia, the general model: pure, no domain, no host API |
-| `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks    |
-| `apps/culina`    | Culina (Cook's Notebook), a helper in the kitchen        |
-| `apps/emptio`    | Emptio (Shopping List), the household's shopping list    |
-| `apps/domus`     | the page at the root of the one address                  |
-| `scripts`        | checks and the site build that span the parts            |
+| Folder           | What                                                             |
+| ---------------- | ---------------------------------------------------------------- |
+| `packages/model` | materia, the general model: pure, no domain, no host API         |
+| `packages/host`  | hospes, the host code two apps need: sync cipher, WebDAV adapter |
+| `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks            |
+| `apps/culina`    | Culina (Cook's Notebook), a helper in the kitchen                |
+| `apps/emptio`    | Emptio (Shopping List), the household's shopping list            |
+| `apps/domus`     | the page at the root of the one address                          |
+| `scripts`        | checks and the site build that span the parts                    |
 
 These are web apps (PWA) and libraries, not GTK apps; the GTK rules do
 not apply.
@@ -38,7 +39,7 @@ not apply.
 ## Before committing
 
 1. From the root: `npm run check:<part>` for every part you changed
-   (`model`, `mixtura`, `culina`, `emptio`), and `npm run check` (all
+   (`model`, `host`, `mixtura`, `culina`, `emptio`), and `npm run check` (all
    parts, the boundaries and the root files) when you changed
    `packages/`, a root file or more than one part.
 2. `docs/` of the part updated in the same commit; a change that

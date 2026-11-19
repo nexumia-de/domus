@@ -17,6 +17,7 @@ sources:
 | Folder           | Workspace names                                     | Came from          |
 | ---------------- | --------------------------------------------------- | ------------------ |
 | `packages/model` | `@nexumia-de/materia`                               | nexumia-de/materia |
+| `packages/host`  | `@nexumia-de/hospes`                                | new                |
 | `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app`        | nexumia-de/mixtura |
 | `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`           | nexumia-de/culina  |
 | `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`           | nexumia-de/emptio  |
@@ -50,6 +51,7 @@ From the root:
 | `npm run format:check`  | Prettier on the root files (not `apps/`, not `packages/`)    |
 | `npm run boundaries`    | no app imports another app, no shared package imports an app |
 | `npm run check:model`   | materia: format, lint, typecheck, tests, build               |
+| `npm run check:host`    | hospes: format, lint, typecheck, tests                       |
 | `npm run check:mixtura` | Mixtura: format, lint, typecheck, tests, build               |
 | `npm run check:culina`  | Culina: format, lint, typecheck, tests                       |
 | `npm run check:emptio`  | Emptio: format, lint, typecheck, tests                       |

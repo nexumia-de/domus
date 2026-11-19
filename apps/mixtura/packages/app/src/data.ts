@@ -8,7 +8,7 @@ import { type AppState } from './app-state';
 import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
 import type { Cipher } from '@mixtura/engine';
-import { createCipher } from './sync/cipher';
+import { createCipher } from '@nexumia-de/hospes';
 import { createScheduler, type Scheduler } from './sync/scheduler';
 import { type Store } from './state';
 import { strings } from './strings';

@@ -2,7 +2,7 @@
 // Titles and buttons in header capitalisation, descriptions in sentence
 // capitalisation. The address of the setup document is kept here only.
 
-import type { ConnectionState } from '../../sync/webdav-connection';
+import type { ConnectionState } from '@nexumia-de/hospes';
 import type { SyncProblem } from '../../sync/status';
 import type { JoinProblem } from '../../sync/join';
 import type { InviteFailure } from '../../sync/invite';

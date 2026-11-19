@@ -12,7 +12,7 @@ import {
   type StorageAdapter,
 } from '@mixtura/engine';
 import type { Ingredient } from '../store';
-import { UnsupportedEnvelope, WrongPassphrase } from './errors';
+import { UnsupportedEnvelope, WrongPassphrase } from '@nexumia-de/hospes';
 import type { SyncFailure } from './outcome';
 import type { StockValue } from './records';
 

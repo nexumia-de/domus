@@ -32,7 +32,7 @@ const [width = 360, height = 720] = process.argv
 const app = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const bundle = await build({
   stdin: {
-    contents: "export * from './src/sync/webdav'; export * from './src/sync/webdav-connection';",
+    contents: "export * from '@nexumia-de/hospes';",
     resolveDir: app,
     loader: 'ts',
   },

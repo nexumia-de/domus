@@ -116,7 +116,7 @@ ETag within a second of a write, no ETag on `PUT`) are listed in the
 adapter's documented limits. Other servers (nginx with its DAV module,
 Caddy, SabreDAV, `rclone serve webdav`) were not run and are not ruled out;
 the adapter works against anything that meets the
-[list of requirements](sync-backends.md#what-a-backend-must-do).
+[list of requirements](../../../packages/host/docs/webdav.md#what-a-backend-must-do).
 
 The two reverse proxies of `tools/webdav-front/compose.yaml` (#141, [setup
 guide](sync-setup.md#a-web-server-in-front-of-your-webdav-server)) are pinned
