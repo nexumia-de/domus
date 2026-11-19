@@ -251,8 +251,8 @@
         },
         {
           "text": {
-            "en": "Bring the vinegar to the boil with the bay leaves, cloves, allspice and juniper berries, and pour it hot over the meat so that the juices stay in.",
-            "de": "Den Essig mit Lorbeerblättern, Nelken, Piment und Wacholderbeeren aufkochen und heiß über das Fleisch gießen, damit der Saft im Fleisch bleibt."
+            "en": "Bring the vinegar to the boil with the bay leaves, cloves, allspice and juniper berries; if the vinegar is very sharp, add a little water. Pour it hot over the meat so that the juices stay in.",
+            "de": "Den Essig mit Lorbeerblättern, Nelken, Piment und Wacholderbeeren aufkochen; ist der Essig sehr scharf, etwas Wasser zugeben. Heiß über das Fleisch gießen, damit der Saft im Fleisch bleibt."
           },
           "technique": "marinate",
           "uses": ["vinegar", "bay", "clove", "allspice", "juniper", "beef"]
@@ -327,7 +327,11 @@
             "de": "Den Topf fest verschließen und langsam schmoren, dabei das Fleisch wenden, etwa 2 bis 2,5 Stunden. Bei Bedarf etwas kochendes Wasser zugeben."
           },
           "technique": "braise",
-          "time": { "value": 2, "to": 2.5, "unit": "h" },
+          "time": {
+            "value": 2,
+            "to": 2.5,
+            "unit": "h"
+          },
           "uses": ["beef", "water"]
         },
         {
@@ -335,7 +339,10 @@
             "en": "In the last half hour of cooking, add the sweet cream.",
             "de": "In der letzten halben Stunde des Garens den süßen Rahm zugeben."
           },
-          "time": { "value": 30, "unit": "min" },
+          "time": {
+            "value": 30,
+            "unit": "min"
+          },
           "uses": ["cream"]
         },
         {
@@ -387,8 +394,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second agent who did not transcribe this file compares every amount and step with the English text, lines 11191-11252 of /home/user/sources/davidis-en.txt."
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 11, davidis.txt 14855-14946. Agreed: 5-6 Pfund, 3-4 and 8-10 days, 2 carrots, 3-4 onions, flour, cupful of sweet cream, milk, the steps. Time 2 to 2.5 h: the German '2-2!/s' (the book's half sign) confirms 2.5. Differs: lardoon spice is Nelkenpfeffer (German, usually allspice) against ground cloves; English kept. Added: water if the vinegar is very sharp. Nothing removed."
   },
   "note": {
     "en": "The basic form of No. 9 only. The variants of the same recipe (honeycake instead of carrots and onions, the roast in pork fat with sour cream and juniper) are not transcribed. The book's German number is Nr. 11; the English edition numbers the beef recipes differently.",

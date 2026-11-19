@@ -80,6 +80,10 @@
             "value": 1,
             "unit": "ounce",
             "original": "1 ounce of white mustard seeds"
+          },
+          "note": {
+            "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead.",
+            "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen."
           }
         },
         {
@@ -249,8 +253,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second agent who did not transcribe this file compares every amount and step with the English text, lines 17473-17489 of /home/user/sources/davidis-en.txt; the simpler form of the same recipe (no filling, milt stirred into a sauce) is not transcribed."
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 104, davidis.txt 25722-25752. Agreed: 12 herrings, nutmeg, 8 shallots, 12 peppercorns, onions, peppergrass, tarragon, thyme, bay, two days of soaking, milt with vinegar. Differs: German 3 Unzen white mustard seed, English 1 ounce; English kept, the lead decides. The simpler form is not transcribed."
   },
   "note": {
     "en": "The source gives amounts for the herring, nutmeg, mustard seed, shallots and peppercorns only. The milk-or-water soaking is the book's own choice; water is used here. Not transcribed: the simpler form in the same recipe (no filling, the milt stirred into a thick sauce with the vinegar).",

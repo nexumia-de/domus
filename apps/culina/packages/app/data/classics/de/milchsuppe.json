@@ -50,6 +50,10 @@
             "value": 1,
             "unit": "quart",
             "original": "1 quart of fresh milk"
+          },
+          "note": {
+            "en": "The second edition gives the quart only as a unit (Qt) without a legible number; the source's 1 quart is used.",
+            "de": "Die deutsche Ausgabe nennt die Einheit Qt ohne lesbare Zahl; verwendet wird das 1 Quart der Quelle."
           }
         },
         {
@@ -109,16 +113,16 @@
         },
         {
           "text": {
-            "en": "Stir constantly over a hot fire until the soup has thickened.",
-            "de": "Über starker Hitze ständig rühren, bis die Suppe eingedickt ist."
+            "en": "Stir constantly over a hot fire until it is cooked.",
+            "de": "Über starker Hitze ständig rühren, bis sie gar ist."
           },
           "technique": "thicken-with-starch",
           "uses": ["milk", "starch", "yolk"]
         },
         {
           "text": {
-            "en": "Pour the soup into the tureen at once.",
-            "de": "Die Suppe sofort in die Suppenschüssel gießen."
+            "en": "Pour the soup into the tureen.",
+            "de": "Die Suppe in die Suppenschüssel gießen."
           }
         }
       ]
@@ -171,8 +175,8 @@
         },
         {
           "text": {
-            "en": "Shape the froth into little balls with a spoon, lay them on the soup and sprinkle them with sugar.",
-            "de": "Den Schnee mit dem Löffel zu kleinen Klößchen formen, auf die Suppe legen und mit Zucker bestreuen."
+            "en": "Shape the froth into little balls, lay them on the soup and sprinkle them with sugar.",
+            "de": "Den Schnee zu kleinen Klößchen formen, auf die Suppe legen und mit Zucker bestreuen."
           },
           "uses": ["whites", "froth-sugar"]
         },
@@ -210,8 +214,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the English edition only: No. 68 at lines 8428-8466, the froth balls as directed under No. 56 at lines 8242-8260, the measures from the title page (lines 100-110) and the preface (lines 186-193). A second reader compares every amount and the froth balls."
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 74 (davidis.txt 9238-9250), froth balls as Nr. 64 (8930-8940). Agreed: 3 persons, 1 tablespoon starch, 2 yolks, sugar, lemon or vanilla, cooking over a hot fire, froth balls with sugar, covered. Weak: the milk reads 'Ot' (Qt) without a numeral; English 1 quart kept. Changed: 'until cooked'; 'at once' and 'with a spoon' removed."
   },
   "note": {
     "en": "The plain version: the cornstarch soup with yolks, sweetened and flavoured with lemon peel, with the egg-white balls. The source also allows mixing the froth with sugar and stirring it into the soup until it is frothy. The source's remark that the soup can be served cold in the hot season is not transcribed.",

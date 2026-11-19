@@ -67,8 +67,8 @@
             "original": "the juice of 1 quart of berries"
           },
           "note": {
-            "en": "Fresh fruit; the source names blackberries, and currant or raspberry juice in the main version.",
-            "de": "Frisches Obst; die Quelle nennt Brombeeren sowie Johannisbeer- oder Himbeersaft in der Hauptform."
+            "en": "Fresh fruit: the amount is the juice of 1 quart of berries. The source names blackberries, and currant or raspberry juice in the main version.",
+            "de": "Frisches Obst: die Menge ist der Saft von 1 Quart Beeren. Die Quelle nennt Brombeeren sowie Johannisbeer- oder Himbeersaft in der Hauptform."
           }
         },
         {
@@ -199,8 +199,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the English edition only: No. 9 with its fresh-berry variant at lines 21284-21305 of the plain text; the division heading at line 21211; the index entry \"Roter Reismehl-Pudding\" at line 32858. The German book's Nr. 6 (red fruit pudding with egg whites) is not in the English text and is not used. A second reader compares every amount and the order of the steps."
+    "method": "second-edition",
+    "note": "Second check (second agent). The closest German recipe, Nr. 6 Roter Frucht-Pudding (davidis.txt 32706-32745), is related but different: egg whites, 1 Qt red wine, 5 Uzn. starch, sugar 1 Pfd. (garbled). Juice reads '13 Dt.', not clearly one quart. Not comparable, so the amounts stand on the English alone and are kept. Changed: the note says the amount is the juice. Nothing removed."
   },
   "note": {
     "en": "The fresh-berry variant of the Red Rice Flour Pudding: a berry pudding thickened with starch and wine, turned out of a mould. The source's sauce of whipped cream or vanilla sauce is not transcribed; the sugared berries are added to the pudding, the source says only \"proceed as above\".",

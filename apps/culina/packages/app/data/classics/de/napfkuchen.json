@@ -63,14 +63,9 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "pound",
-            "original": "% pound of freshened butter"
-          },
           "note": {
-            "en": "The fraction is damaged in the machine-read text (\"%\"); read as one half. PENDING second check.",
-            "de": "Der Bruch ist im maschinell gelesenen Text verstümmelt (\"%\"); als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+            "en": "The source reads \"% pound of freshened butter\". The fraction is not legible in either text, so no amount is given.",
+            "de": "Die Quelle nennt \"% Pfund frisch gemachte Butter\". Der Bruch ist in beiden Texten nicht lesbar, daher keine Menge."
           }
         },
         {
@@ -79,14 +74,9 @@
             "kind": "ingredient",
             "id": "fdc-170568"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "pound",
-            "original": "% pound of coarsely pounded almonds"
-          },
           "note": {
-            "en": "Coarsely pounded. The fraction is read as one half, see the butter. PENDING second check.",
-            "de": "Grob gestoßen. Der Bruch ist wie bei der Butter als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+            "en": "Coarsely pounded. The source reads \"% pound\"; the fraction is not legible in either text (the German edition's \"4 Pfd.\" is not one half), so no amount is given.",
+            "de": "Grob gestoßen. Die Quelle nennt \"% Pfund\"; der Bruch ist in keinem der beiden Texte lesbar (die deutsche Ausgabe nennt \"4 Pfd.\"), daher keine Menge."
           }
         },
         {
@@ -95,14 +85,9 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "pound",
-            "original": "% pound of sugar"
-          },
           "note": {
-            "en": "The fraction is read as one half, see the butter. PENDING second check.",
-            "de": "Der Bruch ist wie bei der Butter als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+            "en": "The source reads \"% pound of sugar\"; the fraction is not legible in either text, so no amount is given.",
+            "de": "Die Quelle nennt \"% Pfund Zucker\"; der Bruch ist in keinem der beiden Texte lesbar, daher keine Menge."
           }
         },
         {
@@ -127,6 +112,10 @@
             "value": 1,
             "unit": "cupful",
             "original": "1 cupful of fresh warm milk"
+          },
+          "note": {
+            "en": "Fresh warm milk. The German edition's quantity is not clearly legible (\"d Dt.\"); the source's 1 cupful stands.",
+            "de": "Frische, warme Milch. Die Menge der deutschen Ausgabe ist nicht eindeutig lesbar (\"d Dt.\"); es gilt die 1 Tasse der Quelle."
           }
         },
         {
@@ -152,8 +141,8 @@
             "original": "% teaspoonful of salt"
           },
           "note": {
-            "en": "The fraction is read as one half. PENDING second check.",
-            "de": "Der Bruch ist als ein halber Teelöffel gelesen. Zweite Prüfung ausstehend."
+            "en": "Read as one half: the English text shows a damaged fraction (\"%\"), the German edition shows one half (\"½ Theelöffel\").",
+            "de": "Als ein halber Teelöffel gelesen: der englische Text zeigt einen verstümmelten Bruch, die deutsche Ausgabe ½ Theelöffel."
           }
         },
         {
@@ -163,8 +152,8 @@
             "id": "fdc-175043"
           },
           "note": {
-            "en": "The source gives no quantity; it is dissolved in the milk with a little sugar.",
-            "de": "Die Quelle nennt keine Menge; die Hefe wird in der Milch mit etwas Zucker gelöst."
+            "en": "The source gives no quantity; the yeast is dissolved before it goes into the dough.",
+            "de": "Die Quelle nennt keine Menge; die Hefe wird vor dem Einrühren aufgelöst."
           }
         },
         {
@@ -255,8 +244,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the English edition only: No. 90 at lines 26160-26171 of the plain text; the index entry \"Napfkuchen (Rodon-Kuchen)\" at line 33173; the rising as given under No. 1 in the General Directions at lines 24714-24731. The machine-read fractions (\"%\") are read as one half and must be checked against the page."
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 103 (davidis.txt 41356-41367); rising as Nr. 1 (41345: 1 1/2 h), English General Directions 24714-24731. Agreed: 1 pound flour, 9 eggs, 1 cupful warm milk, lemon, steps. Salt one half (German 1/2 Teeloeffel). Rising 1 1/2 to 2 hours. Removed, not legible in either text: butter, almonds, sugar. Milk number not clearly legible in German; English kept. German 1 Unze yeast not taken over. 3 of 7 main ingredients keep an amount."
   },
   "note": {
     "en": "The English edition's Sweet Cake, which its index names as the Napfkuchen. The text says to bake it in a buttered pan, not a mould. The source's remark that baking powder can replace the yeast is not transcribed. The German version with 15 eggs and citron is not in the English text and is not used.",

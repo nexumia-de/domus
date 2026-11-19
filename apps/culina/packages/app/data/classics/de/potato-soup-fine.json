@@ -52,8 +52,8 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "2 platefuls of sliced raw potatoes. The size of a plate is not stated in the source, so no amount is given.",
-            "de": "2 Teller voll rohe Kartoffelscheiben. Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge."
+            "en": "2 platefuls of sliced raw potatoes. The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
+            "de": "2 Teller voll rohe Kartoffelscheiben. Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
           }
         },
         {
@@ -243,8 +243,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed from the English edition by one agent; a second reader has to compare the amounts and the steps."
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 41 (davidis.txt 8325-8337). Agreed: one onion, 3 quarts water, vegetables 15 minutes, half an hour of cooking ('eine halbe Stunde' confirms the English fraction), 1 tablespoon flour, 2 tablespoons claret, toasted bread. Differs, English kept: German one plate of potatoes (English 2 platefuls); butter and beef extract in ounces with unclear numerals. Nothing removed."
   },
   "note": {
     "en": "The source's plain potato soup (No. 38) gives no quantity at all and is not used. The soup contains extract of beef, so it is not vegetarian; the source also names a version with water only and more vegetables, which is not transcribed.",
