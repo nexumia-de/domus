@@ -1,0 +1,20 @@
+{
+  "id": "example-substitute",
+  "from": "example-ingredient-a",
+  "to": "example-ingredient-b",
+  "factor": 0.5,
+  "changes": {
+    "en": "Example effect (fictional): say in one or two short sentences what changes.",
+    "de": "Beispielwirkung (erfunden): in ein bis zwei kurzen Sätzen sagen, was sich ändert."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}

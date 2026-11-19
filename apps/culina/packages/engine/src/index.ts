@@ -276,6 +276,12 @@ export type { HandlingContext } from './handling/validate';
 export { handlingRules } from './handling/rules';
 export type { HandlingOptions, HandlingResult, ShownRule, TreeNode } from './handling/rules';
 export type { HandlingLevel, HandlingRule, HandlingSource } from './handling/types';
+export { SUBSTITUTES, substituteById } from './substitutes/shipped';
+export { substituteEffects } from './substitutes/lookup';
+export { validateSubstitute, validateSubstitutes } from './substitutes/validate';
+export type { SubstituteChecks } from './substitutes/validate';
+export type { Substitute, SubstituteLevel, SubstituteSource } from './substitutes/types';
+
 export { learnedTechniques, skillId, skillRecord } from './skills/skill';
 export type { SkillRecord } from './skills/skill';
 

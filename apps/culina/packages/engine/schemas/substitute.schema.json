@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/substitute.schema.json",
+  "title": "Substitute effect",
+  "description": "What replaces an ingredient and what changes, shipped read-only, one file per substitute. Never stored. Every statement names what it rests on.",
+  "type": "object",
+  "required": ["id", "from", "to", "changes", "level", "sources"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "from": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "to": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "factor": { "type": "number", "exclusiveMinimum": 0 },
+    "changes": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+    },
+    "level": { "enum": ["studied", "textbook", "tradition"] },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "place", "url", "sentence"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "place": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "url": { "type": "string", "pattern": "^https?://\\S+$", "maxLength": 500 },
+          "licence": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "sentence": { "type": "string", "minLength": 1, "maxLength": 400 }
+        }
+      }
+    }
+  }
+}

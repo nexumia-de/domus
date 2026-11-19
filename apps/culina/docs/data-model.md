@@ -216,8 +216,10 @@ examples in `schemas/examples/`.
   parent ingredient ("butter") is satisfied by any descendant in stock; a
   line that names a leaf ingredient may, unless the rule is switched off,
   be satisfied by a sibling under the same parent, and the finder reports
-  that as a substitution naming the substitute. A substitute never changes
+  that as a substitution naming the substitute. A sibling never changes
   the amount of the line ([engine rules](engine-rules.md#what-the-stock-allows)).
+  What replaces an ingredient beyond its siblings, with what changes, is a
+  shipped [substitute effect](#substitute-effect).
   A line cannot name a class that is not a node of the tree; that would
   need a new field on lines and slots and is open.
 - **As purchased versus edible portion.** `yields` records, per state,
@@ -558,6 +560,36 @@ rule in `packages/engine/data/handling/<id>.json`, never stored. Schema:
   names it.
 - **No state.** What a user has learned is the [skill state](#skill-state); a
   rule has none of its own.
+
+## Substitute effect
+
+What replaces an ingredient and what changes: reference knowledge, always
+offered and never faded by the skills the user has learned
+([decision](decisions/mentor.md)). Shipped read-only, one JSON file per
+substitute in `packages/engine/data/substitutes/<id>.json`, never stored.
+Schema: `substitute.schema.json`; the guide for writing one is
+[classic format](classic-format.md#a-substitute-file). The finder extends its
+sibling rule with them ([engine rules](engine-rules.md#substitute-effects)).
+
+| Field     | Type            | Required | Meaning                                                                                |
+| --------- | --------------- | -------- | -------------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                                |
+| `from`    | string          | yes      | The catalogue ingredient or group id that is replaced; a group covers all below it     |
+| `to`      | string          | yes      | The catalogue ingredient or group id that replaces it; a group covers all below it     |
+| `factor`  | number          | no       | Amount of `to` per amount of `from`, in the same unit; only where the source gives one |
+| `changes` | text in 2 langs | yes      | What changes (taste, texture, amount, handling) in one or two short sentences          |
+| `level`   | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                               |
+| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence`          |
+
+- **One direction per file.** A replacement that the source states both ways
+  is two files (`flour-to-cornstarch`, `cornstarch-to-flour`); a reverse is
+  written only from what the source says, with a `factor` only if it names one.
+- **No factor, no scaling.** Without `factor` the amount of the line stays as
+  it is and `changes` says what the source says about amounts.
+- **Sentence.** As for a technique: at most 25 words per source, checked by the
+  engine; a level `studied` only where a study measured it.
+- **Catalogue ids.** `from` and `to` are ids of the catalogue; the app's tests
+  check that every shipped one is in it.
 
 ## Classic
 
@@ -992,7 +1024,7 @@ with `get`, `put`, `remove` and `list`.
 # Schemas and tests
 
 - `common`, `ingredient`, `template`, `component`, `dish`, `stock`,
-  `affinity`, `tasting`, `export`, `catalogue`, `technique`, `classic`, `skill` in `packages/engine/schemas/`, JSON Schema draft
+  `affinity`, `tasting`, `export`, `catalogue`, `technique`, `substitute`, `classic`, `skill` in `packages/engine/schemas/`, JSON Schema draft
   2020-12[^jsonschema]. Each has an absolute `$id`
   (`https://nexumia-de.github.io/culina/schemas/<name>.schema.json`; an
   identifier, not necessarily a place to download), shared types live in

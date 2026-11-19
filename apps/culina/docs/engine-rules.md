@@ -740,6 +740,19 @@ amount.
   is too little is `short` (test `makeable.test.ts` and vector
   `substitution-short-keeps-amount`). The effect on the result (taste,
   texture) is not computed.
+- **Declared substitution** (`input.substitutes`, default none): a line that
+  names an ingredient may take stock of the `to` of a shipped
+  [substitute effect](#substitute-effects) declared for it or for a group
+  above it. It is consulted last, only where the line's own tier, a component
+  made from its lines and the sibling rule all found nothing. The first
+  substitute with stock that fits wins (the ingredient itself before its
+  group, then by id); the report's `substitution` names `asked`, `substitute`
+  and `itemId` as for a sibling, plus `effect` (the substitute's id, for the
+  text of what changes) and, where the source gives one, `factor`. With a
+  `factor` the line needs `factor` times its amount in the same unit, and the
+  report's `need` is that amount of the substitute (a short substitute is
+  `short` against it); without one the amount is unchanged. Vectors
+  `declared-substitute-*`.
 - **State.** When line and item both have a state they must be equal; an
   item without a state fits; a raw item never stands for a component (a
   prepared thing).
@@ -934,6 +947,35 @@ way in the app (`packages/app/make-classics.mjs`).
 
 Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`, `vectors/handling/`
 ([vector format](vectors.md#kinds-of-techniques-classics-and-skills-issue-87)).
+
+# Substitute effects
+
+Work package 10 of the [helper plan](helper-plan.md) (issue 93). Code:
+`src/substitutes/` (`types.ts`, `validate.ts`, `lookup.ts`, `shipped.ts`). The
+format is in the [data model](data-model.md#substitute-effect); the guide for
+writers is [classic format](classic-format.md#a-substitute-file). Every
+function returns `{ ok: true, ... }` or `{ ok: false, error }` or a list and
+never throws; none reads a clock or a random number.
+
+- `validateSubstitute(substitute, { ingredientIds? })` and
+  `validateSubstitutes(list, { ingredientIds? })` return the findings of
+  [content](#techniques-steps-and-classics): `text-incomplete` (`changes` empty
+  in a language), `no-source`, `sentence-too-long` (more than 25 words),
+  `same-ingredient` (`from` equals `to`), `bad-range` (`factor` not a positive
+  number), `unknown-ingredient` (only with `ingredientIds`, the catalogue) and,
+  for a list, `duplicate-id`. The shape is checked by `substitute.schema.json`.
+- `substituteEffects(id, ingredients, list)` returns the substitutes that
+  replace an ingredient: those declared for it, then for its parent, and so on
+  up the tree (a group covers all below it), within a level by id.
+- `SUBSTITUTES` is every file of `data/substitutes/`, read through an index that
+  `scripts/make-substitutes.mjs` writes before tests and typecheck
+  (`substitutes.generated.ts`, not committed). `substituteById(id)` finds one.
+  The app ships them in `dist/classics.json` (key `substitutes`), not in `main.js`.
+- The finder uses them through `makeable`'s `substitutes` input
+  ([what the stock allows](#what-the-stock-allows)).
+
+Vectors: `vectors/substitutes/` and `vectors/makeable/declared-substitute-*`
+([vector format](vectors.md#kinds-of-substitute-effects-issue-93)).
 
 # Vectors
 

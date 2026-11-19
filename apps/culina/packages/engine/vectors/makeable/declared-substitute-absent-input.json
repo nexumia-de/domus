@@ -1,0 +1,121 @@
+{
+  "id": "declared-substitute-absent-input",
+  "description": "Without declared substitutes the finder behaves as before: the line is missing; a second line (oil) is in stock so the candidate is listed",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "starch"
+      },
+      {
+        "id": "cornstarch",
+        "parentId": "starch"
+      },
+      {
+        "id": "potato-starch",
+        "parentId": "starch"
+      },
+      {
+        "id": "wheat-flour",
+        "parentId": "flour"
+      },
+      {
+        "id": "sauce-thickener"
+      }
+    ],
+    "components": [
+      {
+        "id": "sauce",
+        "name": "Sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "wheat-flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "sauce",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "cornstarch"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "s9",
+        "ref": {
+          "kind": "ingredient",
+          "id": "oil"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      }
+    ],
+    "substitutes": [],
+    "options": {
+      "maxMissing": 1
+    }
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "sauce",
+        "complete": false,
+        "lacking": 1,
+        "lines": [
+          {
+            "status": "missing"
+          },
+          {
+            "status": "have"
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

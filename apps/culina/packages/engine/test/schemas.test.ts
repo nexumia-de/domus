@@ -35,6 +35,7 @@ const entities = [
   'catalogue',
   'technique',
   'handling',
+  'substitute',
   'classic',
   'skill',
 ];
@@ -180,6 +181,7 @@ describe('data-model.md and the schemas agree', () => {
     catalogue: 'Ingredient catalogue file',
     technique: 'Technique',
     handling: 'Handling rule',
+    substitute: 'Substitute effect',
     classic: 'Classic',
     skill: 'Skill state',
   };

@@ -11,4 +11,5 @@ coverage/
 .claude/worktrees/
 packages/app/src/store/validators.generated.*
 packages/engine/src/techniques/techniques.generated.ts
+packages/engine/src/substitutes/substitutes.generated.ts
 packages/app/src/classics/classics.generated.ts

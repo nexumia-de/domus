@@ -1,0 +1,34 @@
+{
+  "id": "spearmint-fresh-to-dried",
+  "from": "fdc-173475",
+  "to": "fdc-172239",
+  "factor": 0.5,
+  "changes": {
+    "en": "About half the amount. Dried herb has the stronger flavour and goes in at the start of cooking, because its flavour takes longer to develop.",
+    "de": "Etwa die halbe Menge. Getrocknetes Kraut schmeckt kräftiger und kommt zu Beginn des Kochens hinein, weil sich sein Aroma langsamer entfaltet."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 12.1 Herbs",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/12%3A_Spices_and_Other_Flavourings/12.01%3A_Herbs",
+      "licence": "CC BY 4.0",
+      "sentence": "Conversely, if a recipe calls for a certain amount of fresh herb, you would use about one-half of that amount of dry herb."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 12.1 Herbs",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/12%3A_Spices_and_Other_Flavourings/12.01%3A_Herbs",
+      "licence": "CC BY 4.0",
+      "sentence": "Herbs are available fresh or dried, with fresh herbs having a more subtle flavour than dried."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 12.1 Herbs",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/12%3A_Spices_and_Other_Flavourings/12.01%3A_Herbs",
+      "licence": "CC BY 4.0",
+      "sentence": "Dried herbs are usually added at the start of the cooking process as their flavour takes longer to develop than fresh herbs."
+    }
+  ]
+}

@@ -90,12 +90,13 @@ test('the catalogue is its own file, precached, and main.js does not carry it', 
   expect(main).toContain('catalogue.json');
 });
 
-test('the classics, technique notes and handling rules are their own file, precached, and main.js carries none', () => {
+test('the classics, technique notes, handling rules and substitutes are their own file, precached, and main.js carries none', () => {
   const content = JSON.parse(readFileSync(new URL('classics.json', dist), 'utf8')) as {
     format: string;
     classics: { id: string; country: string; originalName: string }[];
     techniques: { id: string; watch: { en: string } }[];
     handling: { id: string; text: { en: string } }[];
+    substitutes: { id: string; changes: { en: string } }[];
   };
   expect(content.format).toBe('culina-classics');
   const main = readFileSync(new URL('main.js', dist), 'utf8');
@@ -113,6 +114,11 @@ test('the classics, technique notes and handling rules are their own file, preca
   );
   expect(handlingFiles.length).toBeGreaterThan(0);
   expect(content.handling).toHaveLength(handlingFiles.length);
+  const substituteFiles = dataDir('../engine/data/substitutes/').filter((f) =>
+    String(f).endsWith('.json'),
+  );
+  expect(substituteFiles.length).toBeGreaterThan(0);
+  expect(content.substitutes).toHaveLength(substituteFiles.length);
   // An id may also name a ratio template (roux), so the probe is a text only the content has.
   for (const { id, originalName } of content.classics) {
     expect(main, id).not.toContain(JSON.stringify(originalName));
@@ -122,6 +128,9 @@ test('the classics, technique notes and handling rules are their own file, preca
   }
   for (const { id, text } of content.handling) {
     expect(main, id).not.toContain(JSON.stringify(text.en));
+  }
+  for (const { id, changes } of content.substitutes) {
+    expect(main, id).not.toContain(JSON.stringify(changes.en));
   }
 });
 

@@ -196,11 +196,11 @@ Run by `test/makeable-vectors.test.ts` from `packages/engine/vectors/makeable/`.
 `expected` is a subset of the result: objects by field, arrays by position
 and length; `urgency: null` asserts no urgency.
 
-| `kind`            | `inputs`                                                                                                                                             | `expected`                                   |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
-| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                       | `items` (`itemId`, `ingredientId`, `useBy`)  |
-| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `options` (`siblingSubstitution`)                   | `records` (`kind`, `id`), exactly, in order  |
+| `kind`            | `inputs`                                                                                                                                                                                          | `expected`                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `substitutes` (declared substitute effects), `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
+| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                                                                    | `items` (`itemId`, `ingredientId`, `useBy`)  |
+| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `options` (`siblingSubstitution`)                                                                | `records` (`kind`, `id`), exactly, in order  |
 
 Errors use `error_code` and `error_detail` as elsewhere (`invalid-tree`,
 `invalid-date`, `cycle`, `invalid-template`). Covered: exact match, a
@@ -238,8 +238,24 @@ derive and copy vectors compare `expected` deeply with the vector's
 | `classic_derive`          | `classic`, `lang`, optional `portions`                                                                  | `factor`, `dish`, `components`, `unmeasured`, `ranges`; or an error and `error_detail`      |
 | `classic_copy`            | `classic`, `lang`, `date`, `ids` (the ids `newId` gives in turn), optional `portions`, `ingredient_ids` | `dish`, `components`; or `error_code` (`wanted-ingredient` with `wanted`, or a derive code) |
 | `classic_wanted`          | `classic`                                                                                               | `wanted`: `path`, `en`, `de`                                                                |
-| `skill_record`            | `technique`, `learned`                                                                                  | the record                                                                                  |
-| `skill_learned`           | `records`                                                                                               | `learned`: the ids, sorted                                                                  |
+
+## Kinds of substitute effects (issue 93)
+
+Folder: `packages/engine/vectors/substitutes/`, run by
+`test/substitutes-vectors.test.ts`; the finder's vectors for declared substitutes
+are `declared-substitute-*` in `vectors/makeable/` (kind `makeable` with
+`substitutes`). Rules: [engine rules](engine-rules.md#substitute-effects). Every
+vector is **invented**: ingredients, factors, books and sentences are labelled
+as examples, and no real kitchen figure is in them. Validation vectors carry
+`error_code: invalid` and `error_detail.findings` as for techniques.
+
+| `kind`                     | Inputs                                                           | Expected                                    |
+| -------------------------- | ---------------------------------------------------------------- | ------------------------------------------- |
+| `substitute_validate`      | `substitute`, optional `ingredient_ids` (the catalogue)          | none (`ok`), or `error_code` and `findings` |
+| `substitute_list_validate` | `substitutes`, optional `ingredient_ids`                         | as above                                    |
+| `substitute_lookup`        | `ingredient_id`, `ingredients` (`id`, `parentId`), `substitutes` | `ids`: the substitute ids in order          |
+| `skill_record`             | `technique`, `learned`                                           | the record                                  |
+| `skill_learned`            | `records`                                                        | `learned`: the ids, sorted                  |
 
 Covered: a sentence of 25 and of 26 words, blank German text, no source,
 duplicate ids, the note at the first use only, a learned technique, order of

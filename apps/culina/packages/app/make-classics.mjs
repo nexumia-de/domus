@@ -10,6 +10,7 @@ const out = fileURLToPath(new URL('./src/classics/classics.generated.ts', import
 
 const techniqueDir = fileURLToPath(new URL('../engine/data/techniques/', import.meta.url));
 const handlingDir = fileURLToPath(new URL('../engine/data/handling/', import.meta.url));
+const substituteDir = fileURLToPath(new URL('../engine/data/substitutes/', import.meta.url));
 
 const classicFiles = () =>
   readdirSync(dataDir, { withFileTypes: true })
@@ -22,6 +23,7 @@ const classicFiles = () =>
     .sort();
 
 /** The content of dist/classics.json: every dish (path order), technique and handling rule (file name order). */
+/** The content of dist/classics.json: every dish (path order), technique and substitute (file name order). */
 export const shippedContent = () => ({
   format: 'culina-classics',
   formatVersion: 1,
@@ -34,6 +36,10 @@ export const shippedContent = () => ({
     .filter((f) => f.endsWith('.json'))
     .sort()
     .map((f) => JSON.parse(readFileSync(handlingDir + f, 'utf8'))),
+  substitutes: readdirSync(substituteDir)
+    .filter((f) => f.endsWith('.json'))
+    .sort()
+    .map((f) => JSON.parse(readFileSync(substituteDir + f, 'utf8'))),
 });
 
 export const makeClassics = () => {

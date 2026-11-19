@@ -25,10 +25,11 @@ checks is in [engine rules](engine-rules.md#techniques-steps-and-classics). This
 page is the guide for the one who writes a file. **The examples below are
 invented**: no real recipe and no real book. Do not copy them into a dish.
 
-| What      | Where                                            | File name   |
-| --------- | ------------------------------------------------ | ----------- |
-| Technique | `packages/engine/data/techniques/<id>.json`      | `<id>.json` |
-| Dish      | `packages/app/data/classics/<country>/<id>.json` | `<id>.json` |
+| What       | Where                                            | File name   |
+| ---------- | ------------------------------------------------ | ----------- |
+| Technique  | `packages/engine/data/techniques/<id>.json`      | `<id>.json` |
+| Substitute | `packages/engine/data/substitutes/<id>.json`     | `<id>.json` |
+| Dish       | `packages/app/data/classics/<country>/<id>.json` | `<id>.json` |
 
 The country folder is `de`, `it`, `fr` or `es`. An id is a lower-case slug
 (`pommes-puree`), unique among all dishes (or all techniques), equal to the file
@@ -384,3 +385,54 @@ two counts, as it should: its ingredient and its technique are not real.
   keep the range in their note.
 - All shipped dishes are bundled into the app's script; when there are many,
   they are loaded per country instead.
+
+# A substitute file
+
+A substitute says what replaces an ingredient and what changes. It is reference
+knowledge: the app always offers it and it does not fade when the user learns
+skills. **One direction per file**: `flour-to-cornstarch` and
+`cornstarch-to-flour` are two files, and the second is written only if the
+source says it. The shapes are in the [data model](data-model.md#substitute-effect);
+the engine rules are in [engine rules](engine-rules.md#substitute-effects). The
+example is invented.
+
+```json
+{
+  "id": "example-a-to-b",
+  "from": "example-ingredient-a",
+  "to": "example-ingredient-b",
+  "factor": 0.5,
+  "changes": {
+    "en": "Example effect (fictional): say in one or two short sentences what changes.",
+    "de": "Beispielwirkung (erfunden): in ein bis zwei kurzen Sätzen sagen, was sich ändert."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}
+```
+
+| Field     | What to write                                                                                                                                                                                                   |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                      |
+| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                 |
+| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                       |
+| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out. |
+| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**     |
+| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tradition` where kitchens' sources state it. No source: the file is not written.                                              |
+| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                      |
+
+How to write one: open a source first, find the sentence that states the
+replacement and its effect (and the factor), and only then write `changes`. A
+note that says more than its source is cut back. Wording never judges: say what
+changes, not whether it is good (a test scans `changes` for the words of
+[behaviour](behaviour.md)). The tests check the two languages, the sentence
+length, that the file name is the id and that `from` and `to` are in the
+catalogue.
