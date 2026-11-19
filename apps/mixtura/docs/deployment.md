@@ -39,6 +39,14 @@ sources:
 
 # Deployment
 
+**Replaced on 2026-11-19.** Mixtura is no longer deployed on its own. It
+is served from `domus.nexumia.de/mixtura/` together with the other apps,
+and `mixtura.nexumia.de` redirects there
+([deployment of the repository](../../../docs/deployment.md)). The
+headers file and the caching below still apply, inside the app's folder;
+the worker `mixtura`, its `wrangler.jsonc`, the previews per pull request
+and the owner's steps describe the time before.
+
 The app is static files (`npm run build` writes `packages/app/dist`), served by
 Cloudflare Workers static assets (worker `mixtura`) at
 <https://mixtura.nexumia.de/>, live since 2026-11-18 and deployed by the job

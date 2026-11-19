@@ -1,0 +1,9 @@
+{
+  // Replaces the worker that served the app at culina.nexumia.de; the custom
+  // domain stays attached to the worker of this name.
+  "name": "culina",
+  "main": "./forward.js",
+  "compatibility_date": "2026-11-18",
+  "vars": { "TARGET": "https://domus.nexumia.de/culina" },
+  "routes": [{ "pattern": "culina.nexumia.de", "custom_domain": true }],
+}

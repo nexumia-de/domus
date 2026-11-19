@@ -21,11 +21,11 @@ checks green. The apps' own goals are in their roadmaps
 
 0. **One repository.** Done on 2026-11-19
    ([decision](decisions/one-repository.md)).
-1. **One address.** Built on 2026-11-19, not yet confirmed live
+1. **One address.** Live since 2026-11-19
    ([deployment](deployment.md)): one build with every app in its
    folder, a page at the root, the browser check that the apps stay
-   apart, the deploy job. Open: the first deploy, the owner's test of
-   two installed apps, the old addresses forwarding.
+   apart, the deploy, the old addresses redirecting. Open: the owner's
+   test of two installed apps on their devices.
 2. **Host package.** `packages/host`: the local store, the cipher and
    the sync cycle taken out of Mixtura, with their tests; Mixtura uses
    them from there and behaves as before.

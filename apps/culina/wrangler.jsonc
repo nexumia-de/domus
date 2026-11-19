@@ -1,9 +1,0 @@
-// Cloudflare Workers static assets: the adapter for the first host
-// (docs/decisions/hosting.md). It serves the folder the build writes and
-// nothing else: no worker script, no binding. Another host needs none of this.
-{
-  "name": "culina",
-  "compatibility_date": "2026-11-18",
-  "assets": { "directory": "./packages/app/dist" },
-  "routes": [{ "pattern": "culina.nexumia.de", "custom_domain": true }],
-}
