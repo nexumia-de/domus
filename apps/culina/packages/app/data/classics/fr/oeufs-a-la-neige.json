@@ -1,0 +1,335 @@
+{
+  "id": "oeufs-a-la-neige",
+  "name": {
+    "en": "Snow eggs (poached meringue in custard)",
+    "de": "Eier im Schnee (pochierter Eischnee in Eiercreme)"
+  },
+  "originalName": "Œufs à la neige",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine, quatrième édition (Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Œufs à la neige\", printed p. 295; custard \"comme il est dit au gâteau de riz\", printed p. 290",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
+    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "snow-eggs",
+      "name": {
+        "en": "Snow eggs",
+        "de": "Eier im Schnee"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "1 litre de lait"
+          }
+        },
+        {
+          "key": "sugar-milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de sucre"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count",
+            "original": "la râpure d'un demi-citron"
+          },
+          "note": {
+            "en": "Grated zest of half a lemon, as the book states.",
+            "de": "Abgeriebene Schale einer halben Zitrone, wie das Buch angibt."
+          }
+        },
+        {
+          "key": "egg-white",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-white"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "6 œufs (les blancs)"
+          }
+        },
+        {
+          "key": "sugar-whites",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "1 hecto (printed \"1 liecto\") of powdered sugar. The book does not state the size of the hecto, so no amount is given.",
+            "de": "1 Hekto (gedruckt \"1 liecto\") Puderzucker. Das Buch nennt die Größe des Hektos nicht, daher steht hier keine Menge."
+          }
+        },
+        {
+          "key": "custard",
+          "ref": {
+            "kind": "component",
+            "id": "custard"
+          },
+          "note": {
+            "en": "The custard, made as in the book's rice cake (see the custard component).",
+            "de": "Die Creme, wie beim Reiskuchen des Buches bereitet (siehe Komponente Creme)."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the milk to the boil in a pan of two litres.",
+            "de": "Die Milch in einem Topf mit zwei Litern Inhalt zum Kochen bringen."
+          },
+          "technique": "boil",
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "Add the sugar and the grated lemon zest.",
+            "de": "Zucker und abgeriebene Zitronenschale zugeben."
+          },
+          "uses": ["sugar-milk", "lemon"]
+        },
+        {
+          "text": {
+            "en": "Separate the eggs. Keep the yolks for the custard.",
+            "de": "Die Eier trennen. Die Eigelbe für die Creme aufheben."
+          },
+          "uses": ["egg-white"]
+        },
+        {
+          "text": {
+            "en": "Whisk the whites until very firm.",
+            "de": "Das Eiweiß sehr fest schlagen."
+          },
+          "technique": "whip-egg-whites",
+          "uses": ["egg-white"]
+        },
+        {
+          "text": {
+            "en": "Add the sugar and mix it in.",
+            "de": "Den Zucker zugeben und unterrühren."
+          },
+          "uses": ["sugar-whites"]
+        },
+        {
+          "text": {
+            "en": "Put six portions of the whites into the boiling milk, each the size of an egg, not touching each other.",
+            "de": "Sechs Portionen Eischnee, je so groß wie ein Ei, in die kochende Milch geben; sie dürfen sich nicht berühren."
+          },
+          "uses": ["egg-white", "sugar-whites"]
+        },
+        {
+          "text": {
+            "en": "Set the pan on the edge of the stove and simmer for 4 minutes.",
+            "de": "Den Topf an den Herdrand stellen und 4 Minuten ziehen lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn the portions with a spoon so that they cook evenly. When they are firm, lift them onto a sieve to drain.",
+            "de": "Die Portionen mit dem Löffel wenden, damit sie gleichmäßig garen. Wenn sie fest sind, auf ein Sieb heben und abtropfen lassen."
+          }
+        },
+        {
+          "text": {
+            "en": "Repeat until all the whites are used.",
+            "de": "So weitermachen, bis aller Eischnee verbraucht ist."
+          }
+        },
+        {
+          "text": {
+            "en": "When the portions are cool, arrange them high on the dish.",
+            "de": "Wenn die Portionen abgekühlt sind, hoch auf die Platte setzen."
+          }
+        },
+        {
+          "text": {
+            "en": "Cover the portions with the custard, which must also be cool. Serve.",
+            "de": "Die Portionen mit der Creme bedecken; sie muss ebenfalls kalt sein. Servieren."
+          },
+          "uses": ["custard"]
+        }
+      ]
+    },
+    {
+      "id": "custard",
+      "name": {
+        "en": "Custard",
+        "de": "Eiercreme"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "6 jaunes d'œufs"
+          }
+        },
+        {
+          "key": "sugar-custard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "g",
+            "original": "80 grammes de sucre en poudre"
+          }
+        },
+        {
+          "key": "lemon-zest",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "note": {
+            "en": "\"I râpure de citron\": one grating of lemon. The book does not state its size, so no amount is given.",
+            "de": "\"I râpure de citron\": eine Reibung Zitrone. Das Buch nennt ihre Größe nicht, daher steht hier keine Menge."
+          }
+        },
+        {
+          "key": "milk-custard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "\"5 décilitres de lait\". The book does not state the size of the décilitre, so no amount is given.",
+            "de": "\"5 décilitres de lait\". Das Buch nennt die Größe des Deziliters nicht, daher steht hier keine Menge."
+          }
+        },
+        {
+          "key": "sugar-added",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de sucre"
+          },
+          "note": {
+            "en": "Added to the custard in the snow eggs recipe, on top of the 80 g of the rice cake.",
+            "de": "Im Rezept der Eier im Schnee zur Creme gegeben, zusätzlich zu den 80 g des Reiskuchens."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the yolks in a pan. Add the sugar, the lemon zest and the milk.",
+            "de": "Die Eigelbe in einen Topf geben. Zucker, Zitronenschale und Milch zugeben."
+          },
+          "uses": ["yolk", "sugar-custard", "lemon-zest", "milk-custard"]
+        },
+        {
+          "text": {
+            "en": "Stir over low heat until the mixture thickens and coats the back of the spoon.",
+            "de": "Bei schwacher Hitze rühren, bis die Masse bindet und den Löffelrücken überzieht."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["yolk", "sugar-custard", "lemon-zest", "milk-custard"]
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat and keep stirring for 5 minutes.",
+            "de": "Den Topf vom Herd nehmen und weitere 5 Minuten rühren."
+          },
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Strain through a fine sieve.",
+            "de": "Durch ein feines Spitzsieb streichen."
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the 30 g of sugar.",
+            "de": "Die 30 g Zucker einrühren."
+          },
+          "uses": ["sugar-added"]
+        },
+        {
+          "text": {
+            "en": "Let the custard cool.",
+            "de": "Die Creme abkühlen lassen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "snow-eggs"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source gives no number of persons; six snow eggs with one custard are judged for four persons.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: a second reader compares the amounts and the custard steps with gouffe.txt lines 15719-15752 and 15495-15508 (the rice cake custard, printed p. 290)."
+  },
+  "note": {
+    "en": "Gouffé's snow eggs. The custard is the sauce of the rice cake (Gâteau de riz au citron, printed p. 290, gouffe.txt lines 15492-15508), made as the book says: six yolks, 80 g of sugar, one grating of lemon, 5 décilitres of milk. The snow eggs' recipe then adds 30 g of sugar to it. The book does not state the size of the hecto or the décilitre, so the sugar of the whites, the milk of the custard and the lemon grating have no amount. The printed text reads \"1 liecto\" for 1 hecto (OCR).",
+    "de": "Gouffés Eier im Schnee. Die Creme ist die Sauce des Reiskuchens (Gâteau de riz au citron, gedruckt S. 290, gouffe.txt Zeilen 15492-15508), wie das Buch sagt bereitet: sechs Eigelbe, 80 g Zucker, eine Reibung Zitrone, 5 Deziliter Milch. Das Rezept gibt danach 30 g Zucker zu. Das Buch nennt die Größe von Hekto und Deziliter nicht; daher haben der Zucker des Eischnees, die Milch der Creme und die Zitronenreibung keine Menge. Der Druck liest \"1 liecto\" für 1 Hekto (OCR)."
+  }
+}
