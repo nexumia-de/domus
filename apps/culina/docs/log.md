@@ -2,6 +2,8 @@
 
 ## 2026-11-19
 
+- **Update**: Culina moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
+
 ### State after the night's work, for the owner
 
 The [helper build plan](helper-plan.md) was carried out on 2026-11-19 by one lead agent with subagents, without the owner. Pull requests 95 to 100 and the closing one were merged on the local checks (`npm run check`, e2e), because GitHub Actions has no minutes; **the live site is not updated by these merges**.

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-19
+
+- **Update**: Emptio moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
+
 ## 2026-11-18
 
 - **Update**: [categories](categories.md#from-the-food-catalogue-to-a-category): all 25 USDA food groups mapped to a category, read from the SR28 group file after the owner allowed the host.

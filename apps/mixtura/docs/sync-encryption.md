@@ -10,7 +10,7 @@ sources:
     url: decisions/stock-sync.md#encryption
   - id: materia
     title: 'materia, sync: envelope and the Cipher port'
-    url: https://github.com/nexumia-de/materia/blob/main/docs/sync.md
+    url: ../../../packages/model/docs/sync.md
   - id: owasp
     title: 'OWASP Password Storage Cheat Sheet: PBKDF2-HMAC-SHA-256 with 600,000 iterations'
     url: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html

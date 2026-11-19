@@ -7,7 +7,7 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: mixsync
     title: 'Mixtura: Stock sync over storage the user configured (three units, encryption, invites, bring your own backend)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/decisions/stock-sync.md
+    url: ../../../mixtura/docs/decisions/stock-sync.md
   - id: shared
     title: 'Decision: the shared model comes from materia'
     url: shared-model.md

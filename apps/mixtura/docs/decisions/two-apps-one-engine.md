@@ -19,7 +19,7 @@ yields and expiry dates.
 
 ## Decision
 
-1. **Two apps**: Mixtura for drinks, [Culina](https://github.com/nexumia-de/culina)
+1. **Two apps**: Mixtura for drinks, [Culina](../../../culina)
    for cooking. One app would bury each half under the other's concepts
    on a 360 px screen.
 2. **Not more than two.** Stock, pairing and calculators stay inside

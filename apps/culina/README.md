@@ -6,13 +6,13 @@ cook from what is there and what should be used up first, and keeps
 your versions with tasting notes.
 
 Status: research and plan only. Its sister app for drinks,
-[Mixtura](https://github.com/nexumia-de/mixtura), is built first and
+[Mixtura](../mixtura), is built first and
 Culina follows on the same engine. The plan is in
 [docs/roadmap.md](docs/roadmap.md).
 
 ## Licence
 
-AGPL-3.0-or-later, see [LICENSE](LICENSE).
+AGPL-3.0-or-later, see [LICENSE](../../LICENSE).
 
 ## Support
 

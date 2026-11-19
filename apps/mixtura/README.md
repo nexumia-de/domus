@@ -15,11 +15,11 @@ Status: early. The app is published at
 
 Mixtura is a web app that works offline and can be installed on
 Android and Linux. Its sister app for cooking is
-[Culina](https://github.com/nexumia-de/culina).
+[Culina](../culina).
 
 ## Licence
 
-AGPL-3.0-or-later, see [LICENSE](LICENSE).
+AGPL-3.0-or-later, see [LICENSE](../../LICENSE).
 
 ## Support
 

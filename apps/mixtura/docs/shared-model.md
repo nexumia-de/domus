@@ -16,13 +16,13 @@ sources:
     url: ../packages/engine/src/index.ts
   - id: chef
     title: 'Culina: How chefs work, at commit deccaf4'
-    url: https://github.com/nexumia-de/culina/blob/main/docs/chef-practice.md
+    url: ../../culina/docs/chef-practice.md
   - id: culina-roadmap
     title: 'Culina: Roadmap, at commit deccaf4'
-    url: https://github.com/nexumia-de/culina/blob/main/docs/roadmap.md
+    url: ../../culina/docs/roadmap.md
   - id: culina-after
     title: 'Culina: Culina follows Mixtura on the same engine, at commit deccaf4'
-    url: https://github.com/nexumia-de/culina/blob/main/docs/decisions/after-mixtura.md
+    url: ../../culina/docs/decisions/after-mixtura.md
 ---
 
 # Shared model inventory
@@ -267,7 +267,7 @@ lives.
 
 The [decision](decisions/shared-model.md) is accepted: the package is
 `@nexumia-de/materia` in
-[nexumia-de/materia](https://github.com/nexumia-de/materia). It changes
+[nexumia-de/materia](../../../packages/model). It changes
 two steps:
 
 - **Step 6 becomes "cut the unit table out of the general modules"**
@@ -312,8 +312,8 @@ its own copies.
 
 [^two-apps]: [Two apps, one engine](decisions/two-apps-one-engine.md)
 
-[^chef]: [Culina: How chefs work](https://github.com/nexumia-de/culina/blob/main/docs/chef-practice.md), sections Structures instead of recipes, Cooking from what is there, Operations, Data model that follows.
+[^chef]: [Culina: How chefs work](../../culina/docs/chef-practice.md), sections Structures instead of recipes, Cooking from what is there, Operations, Data model that follows.
 
-[^culina-roadmap]: [Culina: Roadmap](https://github.com/nexumia-de/culina/blob/main/docs/roadmap.md)
+[^culina-roadmap]: [Culina: Roadmap](../../culina/docs/roadmap.md)
 
-[^culina-after]: [Culina: Culina follows Mixtura on the same engine](https://github.com/nexumia-de/culina/blob/main/docs/decisions/after-mixtura.md)
+[^culina-after]: [Culina: Culina follows Mixtura on the same engine](../../culina/docs/decisions/after-mixtura.md)

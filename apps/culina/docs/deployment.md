@@ -13,7 +13,7 @@ sources:
     url: https://developers.cloudflare.com/workers/static-assets/get-started/
   - id: mixtura
     title: 'Mixtura, docs/deployment.md (the redirect of index.html and its effect on a service worker)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/deployment.md
+    url: ../../mixtura/docs/deployment.md
 ---
 
 # Deployment
@@ -116,4 +116,4 @@ Tried here: the browser tests serve `dist/` with the plain Node server in
 
 [^cf-assets]: [Cloudflare, Workers static assets](https://developers.cloudflare.com/workers/static-assets/get-started/)
 
-[^mixtura]: [Mixtura, Deployment](https://github.com/nexumia-de/mixtura/blob/main/docs/deployment.md)
+[^mixtura]: [Mixtura, Deployment](../../mixtura/docs/deployment.md)

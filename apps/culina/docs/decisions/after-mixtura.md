@@ -7,10 +7,10 @@ generated: { by: claude-code/2.1.326, at: 2026-11-16 }
 sources:
   - id: two
     title: 'Mixtura: Two apps, one engine, the bar app first'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/decisions/two-apps-one-engine.md
+    url: ../../../mixtura/docs/decisions/two-apps-one-engine.md
   - id: pwa
     title: 'Mixtura: A PWA with its own local data'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/decisions/pwa-own-data.md
+    url: ../../../mixtura/docs/decisions/pwa-own-data.md
 ---
 
 # Culina follows Mixtura on the same engine

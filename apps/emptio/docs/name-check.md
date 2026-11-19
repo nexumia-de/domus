@@ -26,7 +26,7 @@ sources:
 
 Done on 2026-11-18 by registry lookups, GitHub and Flathub searches and
 web search. It is not a full trademark search: only counts were read
-from the register. Mixtura's check ([there](https://github.com/nexumia-de/mixtura/blob/main/docs/name-check.md))
+from the register. Mixtura's check ([there](../../mixtura/docs/name-check.md))
 used the same method.
 
 # Short result

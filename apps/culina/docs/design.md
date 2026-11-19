@@ -10,7 +10,7 @@ sources:
     url: https://www.w3.org/TR/WCAG22/
   - id: mixtura
     title: "Mixtura's design document (docs/design.md in nexumia-de/mixtura), read for the shared conventions: token names, one breakpoint, 44 px targets, focus ring, theme blocks; its accent is Copper (#9A4A12 light, #F0A468 dark)"
-    url: https://github.com/nexumia-de/mixtura
+    url: ../../mixtura
 ---
 
 # Design
@@ -315,4 +315,4 @@ Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 
-[^mixtura]: Mixtura, `docs/design.md`, <https://github.com/nexumia-de/mixtura>, read 2026-11-18; no source code was read or copied.
+[^mixtura]: Mixtura, `docs/design.md`, [apps/mixtura](../../mixtura), read 2026-11-18; no source code was read or copied.

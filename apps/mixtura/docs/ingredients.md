@@ -16,7 +16,7 @@ sources:
 # Ingredients
 
 Engine side of the Ingredient entity of the [data model](data-model.md).
-Code: `src/ingredients/` in [materia](https://github.com/nexumia-de/materia) and the drink side in `packages/engine/src/drink-ingredients/`, one job per file. Every figure
+Code: `src/ingredients/` in [materia](../../../packages/model) and the drink side in `packages/engine/src/drink-ingredients/`, one job per file. Every figure
 in the vectors is either synthetic (stated in the vector) or an
 assumption of [balance](balance.md); no drink data is claimed.
 

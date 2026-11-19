@@ -1,8 +1,8 @@
 # materia
 
-The general model behind [Mixtura](https://github.com/nexumia-de/mixtura)
+The general model behind [Mixtura](../../apps/mixtura)
 (a workbench for mixed drinks) and
-[Culina](https://github.com/nexumia-de/culina) (a cook's notebook):
+[Culina](../../apps/culina) (a cook's notebook):
 ingredients in a tree with roles and substitutes, templates with role
 slots and ratio matching, versioned specs with diffs and families, what
 your stock allows, and shelf life. Pure TypeScript functions, no runtime
@@ -30,4 +30,4 @@ What is in it: [docs/modules.md](docs/modules.md). How to work on it:
 
 ## Licence
 
-AGPL-3.0-or-later, see [LICENSE](LICENSE).
+AGPL-3.0-or-later, see [LICENSE](../../LICENSE).

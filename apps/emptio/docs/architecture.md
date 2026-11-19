@@ -7,13 +7,13 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
   - id: materia-sync
     title: materia, docs/sync.md (record merge, unit documents, unknown collections are kept), version 0.3.0
-    url: https://github.com/nexumia-de/materia/blob/main/docs/sync.md
+    url: ../../../packages/model/docs/sync.md
   - id: culina-sync
     title: Culina, decision "Sync in three units, after stock" (a place is the same place in Mixtura and Culina)
-    url: https://github.com/nexumia-de/culina/blob/main/docs/decisions/sync.md
+    url: ../../culina/docs/decisions/sync.md
   - id: mixtura-backends
     title: Mixtura, docs/sync-backends.md (WebDAV adapter, CORS, user setup with Docker)
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/sync-backends.md
+    url: ../../mixtura/docs/sync-backends.md
 ---
 
 # How Emptio is built

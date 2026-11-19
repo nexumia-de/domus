@@ -10,7 +10,7 @@ sources:
     url: https://www.w3.org/TR/WCAG22/
   - id: mixtura
     title: "Mixtura's behaviour document (docs/behaviour.md in nexumia-de/mixtura), read for the shared conventions: one back stack, no focused field on open, 44 px targets, no data leaving the device"
-    url: https://github.com/nexumia-de/mixtura
+    url: ../../mixtura
 ---
 
 # Behaviour
@@ -998,4 +998,4 @@ launcher.
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 
-[^mixtura]: Mixtura, `docs/behaviour.md`, <https://github.com/nexumia-de/mixtura>, read 2026-11-18; no source code was read or copied.
+[^mixtura]: Mixtura, `docs/behaviour.md`, [apps/mixtura](../../mixtura), read 2026-11-18; no source code was read or copied.

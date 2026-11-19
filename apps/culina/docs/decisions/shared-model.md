@@ -7,10 +7,10 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: mixdecision
     title: 'Mixtura: Where the shared model lives (options weighed, accepted 2026-11-18)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/decisions/shared-model.md
+    url: ../../../mixtura/docs/decisions/shared-model.md
   - id: inventory
     title: 'Mixtura: Shared model inventory (general and drink-specific modules)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/shared-model.md
+    url: ../../../mixtura/docs/shared-model.md
   - id: modules
     title: 'materia: docs/modules.md and src/index.ts at tag v0.2.0 (commit 588d744)'
     url: https://github.com/nexumia-de/materia/blob/v0.2.0/docs/modules.md
@@ -26,10 +26,15 @@ sources:
 submodules) are weighed in Mixtura's record[^mixdecision] and not
 repeated here.
 
+**Changed on 2026-11-19:** materia is no longer installed from a git tag.
+It lives in this repository as `packages/model` and the apps use it from
+there ([one repository](../../../../docs/decisions/one-repository.md)).
+What is said below about tags and pins describes the time before.
+
 ## Decision
 
 1. The general model lives in
-   [nexumia-de/materia](https://github.com/nexumia-de/materia) (public,
+   [nexumia-de/materia](../../../../packages/model) (public,
    AGPL-3.0-or-later), one npm package `@nexumia-de/materia`.
 2. `@culina/engine` depends on it as a git dependency at an exact
    version tag, `github:nexumia-de/materia#v0.2.0`; the lockfile records

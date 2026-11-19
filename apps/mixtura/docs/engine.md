@@ -60,7 +60,7 @@ keeps drink rules apart from the general model, in two files that
 
 Since 2026-11-18 the general model, except amounts and the export
 exchange, is not in this repository: `model.ts` re-exports it from
-[materia](https://github.com/nexumia-de/materia), the package shared with Culina, which the engine installs from an
+[materia](../../../packages/model), the package shared with Culina, which the engine installs from an
 exact git tag ([shared model](shared-model.md#extraction-order),
 [decision](decisions/shared-model.md)). `drink.ts` and the drink folders
 import the generic functions from `@nexumia-de/materia` and pass the

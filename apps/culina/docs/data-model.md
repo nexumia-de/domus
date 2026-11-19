@@ -35,10 +35,10 @@ sources:
     url: existing-tools.md
   - id: mixmodel
     title: 'Mixtura: Data model (read for structure only; nothing copied)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/data-model.md
+    url: ../../mixtura/docs/data-model.md
   - id: mixshared
     title: 'Mixtura: Shared model inventory (which parts are general)'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/shared-model.md
+    url: ../../mixtura/docs/shared-model.md
   - id: ka
     title: "King Arthur Baking: What is baker's math (total formula, preferment, final mix; read 2026-11-17)"
     url: https://www.kingarthurbaking.com/blog/2022/04/28/what-is-bakers-math-and-how-can-i-use-it-in-my-everyday-bread-baking
@@ -94,7 +94,7 @@ source.
 
 # General model and kitchen-specific parts
 
-[Mixtura's shared model inventory](https://github.com/nexumia-de/mixtura/blob/main/docs/shared-model.md)[^mixshared]
+[Mixtura's shared model inventory](../../mixtura/docs/shared-model.md)[^mixshared]
 lists what is general and will move into shared code; where that code
 lives is still an owner decision (issue 2), so Culina holds no engine
 code and **copies nothing**: the schemas here are written for Culina's

@@ -16,7 +16,7 @@ sources:
     url: sync-setup.md
   - id: materia
     title: 'materia, sync: the StorageAdapter interface'
-    url: https://github.com/nexumia-de/materia
+    url: ../../../packages/model
 ---
 
 # Sync backends

@@ -7,7 +7,7 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
   - id: materia-sync
     title: materia, docs/sync.md (sync record, merge rules, unit documents)
-    url: https://github.com/nexumia-de/materia/blob/main/docs/sync.md
+    url: ../../../packages/model/docs/sync.md
 ---
 
 # Data model
@@ -106,4 +106,4 @@ Records merge by materia's rules: per key the later `updatedAt` wins.
 - A ticked entry removed on one device and un-ticked on another: the
   later write wins.
 
-[^materia-sync]: materia, docs/sync.md, https://github.com/nexumia-de/materia/blob/main/docs/sync.md
+[^materia-sync]: materia, docs/sync.md, ../../../packages/model/docs/sync.md

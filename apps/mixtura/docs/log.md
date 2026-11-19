@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-19
+
+- **Update**: Mixtura moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
+
 ## 2026-11-18
 
 - **Backend setup guides** (#141, without the Cloudflare Worker): [Set up storage for sync](sync-setup.md) is the guide for users (what sync needs, the Docker server with restricting the origin, HTTPS and backup, nginx, Caddy and Apache in front of an existing WebDAV server, Nextcloud and its limits, what was tested, one troubleshooting row per text the Sync page shows) and the new target of `SETUP_URL`. `tools/webdav-front/` has a minimal nginx and a Caddy reverse proxy that add CORS in front of a server that sends none (origin from `ALLOWED_ORIGINS_REGEX`, preflight answered without credentials, `ETag` exposed, no duplicate headers), a Compose file (`--profile nginx` on 8090, `--profile caddy` on 8091) and a README; `nginx:1.30.6` and `caddy:2.11.9` are pinned by digest and listed in [dependencies](dependencies.md#test-and-user-server), Dependabot has an entry for the folder. `tools/webdav-server` got `BACKEND_ONLY=1` (Apache with `-DNO_CORS`, the backend of the fronts); without it nothing changed. Tested with `curl` and the Node integration test (unchanged) against both fronts, which the CI job `webdav` now repeats; and with `e2e/webdav.mjs` in headless Chromium at both sizes against both fronts. The Worker a user deploys (last item of #141) is not part of this and is planned as its own issue. See [sync backends](sync-backends.md#fronts-nginx-and-caddy).

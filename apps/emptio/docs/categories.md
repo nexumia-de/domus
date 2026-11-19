@@ -16,7 +16,7 @@ sources:
     url: https://www.ars.usda.gov/ARSUserFiles/80400535/DATA/SR/sr28/dnload/sr28asc.zip
   - id: culina-catalogue
     title: Culina, tools/catalogue/derive.mjs at 7b0ed3e (USDA food categories read by the generator)
-    url: https://github.com/nexumia-de/culina/blob/main/tools/catalogue/derive.mjs
+    url: ../../culina/tools/catalogue/derive.mjs
 ---
 
 # Starting categories and household goods
@@ -152,6 +152,6 @@ needed while the categories are the project's own.
 
 [^off-categories]: Open Food Facts, https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/taxonomies/food/categories.txt
 
-[^culina-catalogue]: Culina, tools/catalogue/derive.mjs, https://github.com/nexumia-de/culina/blob/main/tools/catalogue/derive.mjs
+[^culina-catalogue]: Culina, tools/catalogue/derive.mjs, ../../culina/tools/catalogue/derive.mjs
 
 [^usda-groups]: USDA National Nutrient Database for Standard Reference, Release 28, file FD_GROUP.txt in sr28asc.zip, https://www.ars.usda.gov/ARSUserFiles/80400535/DATA/SR/sr28/dnload/sr28asc.zip

@@ -13,7 +13,7 @@ sources:
     url: webdav-spike.md
   - id: materia
     title: 'materia, sync: planSync, the document and the adapter port'
-    url: https://github.com/nexumia-de/materia/blob/main/docs/sync.md
+    url: ../../../packages/model/docs/sync.md
 ---
 
 # Sync cycle of a place

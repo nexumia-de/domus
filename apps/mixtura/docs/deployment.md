@@ -191,7 +191,7 @@ so the required checks do not change; the new job is not required.
    the organisation, add `CLOUDFLARE_API_TOKEN` (the token) and
    `CLOUDFLARE_ACCOUNT_ID` (Find account and zone IDs in the Cloudflare docs).
    As organisation secrets with access for the selected repositories they
-   also serve Culina later ([Culina deployment](https://github.com/nexumia-de/culina/blob/main/docs/deployment.md)).
+   also serve Culina later ([Culina deployment](../../culina/docs/deployment.md)).
    Re-run `deploy-cloudflare` of the last CI run on `main` or push to `main`.
 3. **First deploy.** The first push to `main` after step 2 creates the worker
    `mixtura` and its `workers.dev` address

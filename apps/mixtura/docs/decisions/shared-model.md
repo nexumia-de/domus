@@ -52,10 +52,15 @@ sources:
 **Status: accepted.** The owner chose option (a) on 2026-11-18. Second
 part of Mixtura issue #43 (Culina issue #2).
 
+**Changed on 2026-11-19:** materia is no longer installed from a git tag.
+It lives in this repository as `packages/model` and the apps use it from
+there ([one repository](../../../../docs/decisions/one-repository.md)).
+What is said below about tags and pins describes the time before.
+
 ## Decision
 
 1. The shared code lives in
-   [nexumia-de/materia](https://github.com/nexumia-de/materia): public,
+   [nexumia-de/materia](../../../../packages/model): public,
    AGPL-3.0-or-later, one npm package `@nexumia-de/materia`, consumed
    as a git dependency at an exact version tag
    (`github:nexumia-de/materia#v<semver>`) and built by its `prepare`

@@ -32,7 +32,7 @@ sources:
 # Templates
 
 Engine side of the Template entity of the [data model](data-model.md).
-Code: `src/templates/` in [materia](https://github.com/nexumia-de/materia), one job per file; data:
+Code: `src/templates/` in [materia](../../../packages/model), one job per file; data:
 `packages/engine/data/templates/*.json`, one file per template, validated
 against `schemas/template.schema.json`.
 
@@ -287,7 +287,7 @@ have several):
 Drinks with **no base line** (the Spritz family: aperitif, wine and soda;
 liqueur-only drinks) stay unmatched on purpose: matching measures every
 slot against the base slot, which is general code in
-[materia](https://github.com/nexumia-de/materia). 73 of the 320 unmatched
+[materia](../../../packages/model). 73 of the 320 unmatched
 specs have no base-role line and miss the base slot of every template
 (35 of them also at the nearest Highball). The rest of the gap: Moscow
 Mule, Paloma, Bloody Mary and similar drinks without a sweet line fail

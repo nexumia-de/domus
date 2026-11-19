@@ -36,7 +36,7 @@ The reasons are in [how bartenders work](bartender-practice.md) and
 6. **Without alcohol.** Ingredient classes and templates for
    non-alcoholic and low-ABV drinks, shelf life of prepared ingredients.
 7. **Shared model in materia.** The general model moves out of the
-   engine into [materia](https://github.com/nexumia-de/materia)
+   engine into [materia](../../../packages/model)
    ([decision](decisions/shared-model.md)); the engine depends on it at
    an exact tag.
    _Done when_: the engine's public API and every test are unchanged,

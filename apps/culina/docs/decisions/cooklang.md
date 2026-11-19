@@ -44,7 +44,7 @@ sources:
     url: https://unhead.unjs.io/schema-org/schema/recipe
   - id: mixexport
     title: 'Mixtura: Export and import'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/export-format.md
+    url: ../../../mixtura/docs/export-format.md
 ---
 
 # Whether Culina reads and writes Cooklang files

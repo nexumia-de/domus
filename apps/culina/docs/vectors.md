@@ -7,7 +7,7 @@ generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
   - id: mixtura
     title: 'Mixtura: Balance, vector file format'
-    url: https://github.com/nexumia-de/mixtura/blob/main/docs/balance.md#vector-file-format
+    url: ../../mixtura/docs/balance.md#vector-file-format
   - id: ratios
     title: Ratios and salt percentages checked against sources
     url: ratios.md
