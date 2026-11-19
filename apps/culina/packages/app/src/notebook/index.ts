@@ -3,6 +3,7 @@
 export * from './read';
 export { removeRecord, saveRecord } from './actions';
 export type { WritableKind } from './actions';
+export { learnedSkills, setLearned } from './skills';
 export { addExamples } from './examples';
 export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';

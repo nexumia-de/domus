@@ -136,7 +136,7 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
 `e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
-and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)).
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px; see [behaviour](behaviour.md#classics)).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.

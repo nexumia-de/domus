@@ -1,4 +1,5 @@
 /** Every visible text of the app, English. Screens and the shell import from here only. */
+import { classicsStrings } from './strings-classics';
 import { cookStrings } from './strings-cook';
 import { stockStrings } from './strings-stock';
 
@@ -8,6 +9,7 @@ export const strings = {
   skipToContent: 'Skip to content',
   nav: {
     label: 'Main',
+    start: 'Start',
     ratios: 'Ratios',
     components: 'Components',
     dishes: 'Dishes',
@@ -538,6 +540,7 @@ export const strings = {
   // The Stock screens and the finder, each in their own file.
   stock: stockStrings,
   cook: cookStrings,
+  classics: classicsStrings,
   // Texts for the store's error codes; the editing screens show them.
   store: {
     unavailable: 'This browser cannot keep data here. Private browsing can cause this.',
