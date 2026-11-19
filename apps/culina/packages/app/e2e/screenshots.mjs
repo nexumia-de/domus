@@ -276,6 +276,12 @@ const shots = [
 // The classics: the fictional example dishes of e2e/classics-fixture.mjs, handed to the page.
 const CLASSICS_QUERY = '&e2e-store&e2e-content';
 const noteOpen = (page) => page.locator('.technique-more summary').click();
+const insteadOpen = (page) =>
+  page.getByRole('button', { name: 'Instead of Butter, salted' }).click();
+const secondStep = async (page) => {
+  await page.getByRole('button', { name: 'Next' }).click();
+  await page.locator('.handling-note summary').click();
+};
 const cooking = `classic/${PAN.id}/cook`;
 const classicShots = [
   ['classics-start-360x720-light.png', 360, 720, 'light', 'start', undefined, true],
@@ -287,6 +293,9 @@ const classicShots = [
   ['classics-step-360x720-light.png', 360, 720, 'light', cooking, undefined, true],
   ['classics-step-360x720-dark.png', 360, 720, 'dark', cooking, noteOpen, true],
   ['classics-step-1000x700-light.png', 1000, 700, 'light', cooking, undefined, true],
+  ['classics-handling-360x720-light.png', 360, 720, 'light', cooking, secondStep, true],
+  ['classics-instead-360x720-light.png', 360, 720, 'light', `classic/${PAN.id}`, insteadOpen, true],
+  ['classics-instead-1000x700-dark.png', 1000, 700, 'dark', `classic/${PAN.id}`, insteadOpen, true],
 ].map((shot) => [...shot.slice(0, 5), shot[5], shot[6], false, CLASSICS_QUERY]);
 
 shots.push(...classicShots);

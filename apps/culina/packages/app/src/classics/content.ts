@@ -4,13 +4,14 @@
 // fit leaves the lists empty and the app works with zero dishes. A page opened with `?e2e-content`
 // may carry its own on `globalThis.__culinaContent` (set before the app loads), so the browser
 // tests run on a fictional example; without that query nothing is read from there.
-import type { Classic, Substitute, Technique } from '@culina/engine';
+import type { Classic, HandlingRule, Substitute, Technique } from '@culina/engine';
 
 const FORMAT = 'culina-classics';
 
 interface Content {
   classics?: readonly Classic[];
   techniques?: readonly Technique[];
+  handling?: readonly HandlingRule[];
   substitutes?: readonly Substitute[];
 }
 
@@ -28,7 +29,7 @@ const override = (): Content | undefined => {
 /** The lists of a classics file, or undefined if it is not one. Shape is checked at build time. */
 export const readContent = (file: unknown): Required<Content> | undefined => {
   if (typeof file !== 'object' || file === null) return undefined;
-  const { format, formatVersion, classics, techniques, substitutes } = file as Record<
+  const { format, formatVersion, classics, techniques, handling, substitutes } = file as Record<
     string,
     unknown
   >;
@@ -36,14 +37,16 @@ export const readContent = (file: unknown): Required<Content> | undefined => {
   if (!Array.isArray(classics) || !Array.isArray(techniques)) return undefined;
   // `substitutes` came later: a file without it is still a classics file, with none.
   if (substitutes !== undefined && !Array.isArray(substitutes)) return undefined;
+  if (handling !== undefined && !Array.isArray(handling)) return undefined;
   return {
     classics: classics as Classic[],
     techniques: techniques as Technique[],
+    handling: (handling ?? []) as HandlingRule[],
     substitutes: (substitutes ?? []) as Substitute[],
   };
 };
 
-let shipped: Required<Content> = { classics: [], techniques: [], substitutes: [] };
+let shipped: Required<Content> = { classics: [], techniques: [], handling: [], substitutes: [] };
 
 /** Loads classics.json once at start; any failure leaves the lists empty. */
 export const loadContent = async (
@@ -60,7 +63,7 @@ export const loadContent = async (
 
 /** Empties the loaded lists (for tests). */
 export const resetContent = (): void => {
-  shipped = { classics: [], techniques: [], substitutes: [] };
+  shipped = { classics: [], techniques: [], handling: [], substitutes: [] };
 };
 
 /** Every classic that is shown. */
@@ -68,6 +71,10 @@ export const classics = (): readonly Classic[] => override()?.classics ?? shippe
 
 /** Every technique the engine knows. */
 export const techniques = (): readonly Technique[] => override()?.techniques ?? shipped.techniques;
+
+/** Every handling rule: when an ingredient goes in and how it is treated. */
+export const handlingRulesList = (): readonly HandlingRule[] =>
+  override()?.handling ?? shipped.handling;
 
 /** Every substitute effect: what replaces an ingredient and what changes. */
 export const substitutes = (): readonly Substitute[] =>

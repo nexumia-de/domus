@@ -198,7 +198,7 @@ a two-column grid per line: the amount (bold, left) and the name, with the
 source's wording, notes and "settled by us" in muted text below; no colour
 carries a meaning. Cooking shows one step in `--fs-lg`, a progress bar in
 `--accent`, and Back and Next as 56 px buttons in a 1:2 grid; the technique note is a box with
-`--accent-soft` and a `--border` outline, its "why" behind a 44 px summary. The
+`--accent-soft` and a `--border` outline, its "why" behind a 44 px summary; a handling note is the same box under it, no louder. "Instead" is a quiet 44 px button in the second column of a line; its panel spans the line and holds one outlined card per replacement. The
 dish screen runs name, portions, ingredients, "Cook step by step", method, and
 then Source, What we settled and Second check, each a closed `<details>`
 (`.foot-block`, 44 px summary) so that the ingredients are on the first screen

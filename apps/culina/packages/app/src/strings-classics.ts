@@ -108,6 +108,20 @@ export const classicsStrings = {
   iKnowThis: 'I know this',
   learnedDone: (name: string): string =>
     `Marked as learned: ${name}. Its note is not shown again. Settings can bring it back.`,
+  // Handling note
+  handlingHeading: (name: string): string => `Handling: ${name}`,
+  // Substitutes
+  insteadButton: 'Instead',
+  insteadLabel: (name: string): string => `Instead of ${name}`,
+  factorQuarter: 'Amount: about a quarter',
+  factorThird: 'Amount: about a third',
+  factorHalf: 'Amount: about half',
+  factorTwoThirds: 'Amount: about two thirds',
+  factorThreeQuarters: 'Amount: about three quarters',
+  factorSame: 'Amount: the same',
+  factorOneAndHalf: 'Amount: about one and a half times',
+  factorTwice: 'Amount: about twice',
+  factorTimes: (n: string): string => `Amount: about ${n} times`,
   // End of cooking
   doneHeading: 'Done cooking',
   doneText: 'You can keep this dish in your notebook and change it as you like.',

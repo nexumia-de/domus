@@ -10,6 +10,8 @@ const t = strings.classics;
 /** One ingredient line as shown. `amount` is absent when the source gives none. */
 export interface LineView {
   key?: string;
+  /** The catalogue ingredient of the line; absent for a component or a wanted name. */
+  ingredient?: string;
   name: string;
   amount?: string;
   /** Written in place of an amount when there is none: "to taste". */
@@ -88,6 +90,7 @@ export function dishView(
     const amount = lineAmountText(line, rangeOf(derived.ranges, componentId, index));
     return {
       ...(line.key === undefined ? {} : { key: line.key }),
+      ...(line.ref?.kind === 'ingredient' ? { ingredient: line.ref.id } : {}),
       name: nameFor(line),
       ...(amount !== undefined
         ? { amount }

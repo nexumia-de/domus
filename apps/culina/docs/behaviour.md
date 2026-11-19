@@ -653,6 +653,25 @@ view logic is in `src/classics/` (no DOM), the screens in
   not shown again on any dish. Nothing is marked automatically. The write does not redraw the
   other screens, so the cook keeps the place and focus (focus goes to the
   status line "Marked as learned: ...").
+- **Handling rule beside a step.** The engine's `handlingRules` (ingredient or
+  group above it, the dish's techniques as `used`, learned skills left out)
+  says which rules apply; `src/classics/handling-view.ts` places them. A rule
+  shows once per dish, under the lines of the first step that uses its
+  ingredient: "Handling: <ingredient>", the rule in one or two sentences, and
+  behind a tap why, level and sources (the same card as the technique note).
+  At most two notes of any kind on a step, the technique note first; a rule
+  that does not fit waits for the next step that uses the same ingredient. It
+  fades with its skill: "I know this" on a rule stores the same skill record
+  as on the technique note, so both are gone on every dish, and "Teach again"
+  in Settings brings both back. Texts follow the content language.
+- **Substitutes ("Instead").** An ingredient line whose ingredient (or a group
+  above it) has substitutes (`substituteEffects`) gets a quiet "Instead"
+  button (44 px, `aria-expanded`). It opens, under the line, each replacement
+  with the factor in words when the source gives one ("Amount: about half",
+  from the data, no arithmetic in the app), what changes, and behind a tap the
+  level and sources. Offered on the dish screen, on the lines of a step and in
+  the whole recipe; reference knowledge, so it never fades and has no "I know
+  this".
 - **End of cooking.** "Done cooking" offers "Keep in my notebook": `copyClassic`
   makes the records (version 1 of a new dish and its components, with the
   source in `x-origin` and in the version's `change`), the app writes them

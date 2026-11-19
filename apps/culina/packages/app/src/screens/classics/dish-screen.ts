@@ -14,6 +14,7 @@ import { strings } from '../../strings';
 import { stepper } from '../stepper';
 import { checkDetails, sourceDetails } from './source-block';
 import { ingredientsBlock, methodBlock } from './recipe';
+import { insteadFor } from './substitute-block';
 
 const t = strings.classics;
 
@@ -56,7 +57,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
     }
     const method = steps.ok ? methodBlock(steps.steps) : undefined;
     results.replaceChildren(
-      ingredientsBlock(shown.view.components, shown.view.slots),
+      ingredientsBlock(shown.view.components, shown.view.slots, insteadFor(lang, nameOf)),
       cook,
       ...(method === undefined ? [] : [method]),
     );
