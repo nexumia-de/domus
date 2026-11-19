@@ -1,0 +1,43 @@
+{
+  "id": "validate-level-unknown",
+  "description": "A technique with a level that is not one of the five words is refused",
+  "inputs": {
+    "kind": "technique_validate",
+    "technique": {
+      "id": "melting",
+      "name": {
+        "en": "Melting fat",
+        "de": "Fett schmelzen"
+      },
+      "watch": {
+        "en": "Keep the heat low.",
+        "de": "Die Hitze niedrig halten."
+      },
+      "why": {
+        "en": "Fat that browns tastes bitter.",
+        "de": "Fett, das bräunt, schmeckt bitter."
+      },
+      "level": "folklore",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "Invented sentence for a test vector."
+        }
+      ]
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description.",
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "unknown-level",
+        "path": "level",
+        "value": "folklore"
+      }
+    ]
+  }
+}

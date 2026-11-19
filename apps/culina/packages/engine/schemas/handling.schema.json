@@ -29,7 +29,7 @@
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
     },
     "level": {
-      "enum": ["studied", "textbook", "tradition"]
+      "enum": ["studied", "textbook", "tested", "authority", "tradition"]
     },
     "sources": {
       "type": "array",
@@ -55,9 +55,10 @@
             "maxLength": 500
           },
           "licence": {
+            "description": "The licence of the work, as an SPDX identifier (CC-BY-NC-SA-4.0). Every shipped source has one; a build that leaves out what is non-commercial reads it.",
             "type": "string",
-            "minLength": 1,
-            "maxLength": 200
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$",
+            "maxLength": 100
           },
           "sentence": {
             "type": "string",

@@ -82,14 +82,14 @@ These come from the [helper plan](helper-plan.md#rules-for-content).
 }
 ```
 
-| Field     | What to write                                                                                                                                                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`      | The slug; the file name. Steps of dishes name it in `technique`.                                                                                                                                                            |
-| `name`    | `{ en, de }`: the technique as a cook says it ("Folding").                                                                                                                                                                  |
-| `watch`   | `{ en, de }`: **the short note** shown beside a step: what to watch. One short line.                                                                                                                                        |
-| `why`     | `{ en, de }`: why it matters, in one or two lines.                                                                                                                                                                          |
-| `level`   | `studied` (a study measured it), `textbook` (a textbook states it) or `tradition` (kitchens' sources state it, no study). A statement with no source at all is left out.                                                    |
-| `sources` | At least one. `title` and `place` (chapter, page, section) of the work, `url`, `licence` where one is stated, and `sentence`: the sentence of the source the note rests on, **at most 25 words**, in the source's language. |
+| Field     | What to write                                                                                                                                                                                                                                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug; the file name. Steps of dishes name it in `technique`.                                                                                                                                                                                                                                                                          |
+| `name`    | `{ en, de }`: the technique as a cook says it ("Folding").                                                                                                                                                                                                                                                                                |
+| `watch`   | `{ en, de }`: **the short note** shown beside a step: what to watch. One short line.                                                                                                                                                                                                                                                      |
+| `why`     | `{ en, de }`: why it matters, in one or two lines.                                                                                                                                                                                                                                                                                        |
+| `level`   | `studied` (a study measured it), `textbook` (a textbook states it), `tested` (the author ran an experiment and reports it), `authority` (an official body states it) or `tradition` (kitchens' sources state it, no study); see [evidence levels](data-model.md#evidence-levels). A statement with no source at all is left out.          |
+| `sources` | At least one. `title` and `place` (chapter, page, section) of the work, `url`, `licence` (an SPDX identifier such as `CC-BY-NC-SA-4.0`; every shipped source has one, see [sources licence](decisions/sources-licence.md)), and `sentence`: the sentence of the source the note rests on, **at most 25 words**, in the source's language. |
 
 A note that says more than its source is cut back by the lead. The tests check
 the two languages, the sentence length and that the file name is the id.
@@ -135,7 +135,7 @@ ingredient and fades when the user marks the technique as learned.
 | `text`      | `{ en, de }`: the rule in **one or two short sentences**: when it goes in, how it is treated. Own words, never the source's.                                                                                                              |
 | `why`       | `{ en, de }`: the reason, in one short sentence, from the same source.                                                                                                                                                                    |
 | `technique` | The id of one of the shipped techniques: the skill the rule belongs to. Choose the skill the cook practises while following the rule.                                                                                                     |
-| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tradition` when kitchens' sources state it.                                                                                           |
+| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tested` when the author ran the experiment, `authority` when an official body states it, `tradition` when kitchens' sources state it. |
 | `sources`   | At least one, shaped as for a technique: `title`, `place`, `url`, `licence`, `sentence` (at most 25 words, verbatim).                                                                                                                     |
 
 The order of work: open a source, find the sentence, then write the rule from
@@ -475,15 +475,15 @@ example is invented.
 }
 ```
 
-| Field     | What to write                                                                                                                                                                                                   |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                      |
-| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                 |
-| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                       |
-| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out. |
-| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**     |
-| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tradition` where kitchens' sources state it. No source: the file is not written.                                              |
-| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                      |
+| Field     | What to write                                                                                                                                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                                                                     |
+| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                                                                |
+| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                                                                      |
+| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out.                                                |
+| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**                                                    |
+| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tested` where the author ran the experiment; `authority` where an official body states it; `tradition` where kitchens' sources state it. No source: the file is not written. |
+| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                                                                     |
 
 How to write one: open a source first, find the sentence that states the
 replacement and its effect (and the factor), and only then write `changes`. A

@@ -8,13 +8,14 @@ import { openWith, PAN, TECHNIQUE } from './classics-fixture.mjs';
 
 const ROUTES = {
   start: ['Start', 'Was möchtest du kochen?'],
-  classics: ['Start', 'Klassiker nach Land'],
+  classics: ['Kochen', 'Klassiker nach Land'],
   ratios: ['Verhältnisse', 'Verhältnisse'],
-  components: ['Komponenten', 'Komponenten'],
-  dishes: ['Gerichte', 'Gerichte'],
+  components: ['Notizbuch', 'Komponenten'],
+  dishes: ['Notizbuch', 'Gerichte'],
   cook: ['Kochen', 'Was kann ich kochen'],
   stock: ['Kochen', 'Vorrat'],
-  settings: ['Einstellungen', 'Einstellungen'],
+  // Settings is the gear in the header on a phone: no entry of the bar is marked.
+  settings: [undefined, 'Einstellungen'],
 };
 const heading = (page, name) => page.getByRole('heading', { level: 1, name, exact: true });
 const step = (page, n, total) =>
@@ -26,14 +27,16 @@ const layout = async (page, label) => {
   const small = await smallTargets(page);
   check(small.length === 0, `${label}: targets at least 44 x 44 ${small.join('; ')}`);
   const nav = await page.evaluate(() =>
-    [...document.querySelectorAll('.nav-link')].map((link) => {
-      const label = link.querySelector('.nav-label').getBoundingClientRect();
-      const box = link.getBoundingClientRect();
-      return {
-        text: link.getAttribute('aria-label'),
-        cut: label.left < box.left - 1 || label.right > box.right + 1,
-      };
-    }),
+    [...document.querySelectorAll('.nav-link')]
+      .filter((link) => link.getBoundingClientRect().width > 0)
+      .map((link) => {
+        const label = link.querySelector('.nav-label').getBoundingClientRect();
+        const box = link.getBoundingClientRect();
+        return {
+          text: link.textContent,
+          cut: label.left < box.left - 1 || label.right > box.right + 1,
+        };
+      }),
   );
   check(
     nav.every((n) => !n.cut),
@@ -52,10 +55,15 @@ const walk = async (page, origin, label) => {
   for (const [route, [navName, title]] of Object.entries(ROUTES)) {
     await openWith(page, origin, route);
     await heading(page, title).waitFor();
-    const current = await page.locator('nav [aria-current="page"]').allTextContents();
+    const current = await page
+      .locator('nav .nav-link[aria-current="page"]:visible')
+      .allTextContents();
     check(
-      current.length === 1 && current[0].replaceAll('\u00AD', '').trim() === navName,
-      `${label} #/${route}: aria-current on ${navName}`,
+      navName === undefined
+        ? current.length === 0 &&
+            (await page.locator('header .settings-link').getAttribute('aria-current')) === 'page'
+        : current.length === 1 && current[0].trim() === navName,
+      `${label} #/${route}: aria-current on ${navName ?? 'the settings gear'}`,
     );
     await layout(page, `${label} #/${route}`);
   }

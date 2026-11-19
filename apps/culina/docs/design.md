@@ -113,14 +113,13 @@ each text node.
 System font stack `system-ui, -apple-system, 'Segoe UI', Roboto,
 'Helvetica Neue', Arial, sans-serif`; no web font, nothing loaded.
 
-| Token      | Size               | Use                                   |
-| ---------- | ------------------ | ------------------------------------- |
-| `--fs-xxs` | 0.675rem (10.8 px) | German navigation labels on the phone |
-| `--fs-xs`  | 0.75rem (12 px)    | Navigation labels on the phone        |
-| `--fs-sm`  | 0.875rem (14 px)   | Secondary text                        |
-| `--fs-md`  | 1rem (16 px)       | Body, side navigation, app name       |
-| `--fs-lg`  | 1.25rem (20 px)    | Screen headings                       |
-| `--fs-xl`  | 1.5rem (24 px)     | Reserved for a large empty headline   |
+| Token     | Size             | Use                                 |
+| --------- | ---------------- | ----------------------------------- |
+| `--fs-xs` | 0.75rem (12 px)  | Navigation labels on the phone      |
+| `--fs-sm` | 0.875rem (14 px) | Secondary text                      |
+| `--fs-md` | 1rem (16 px)     | Body, side navigation, app name     |
+| `--fs-lg` | 1.25rem (20 px)  | Screen headings                     |
+| `--fs-xl` | 1.5rem (24 px)   | Reserved for a large empty headline |
 
 Sizes are in `rem`, so the system's text size setting scales them.
 Weights: 400 body, 600 labels and summaries, 700 headings and the current
@@ -137,16 +136,27 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
   header, one pane, **bottom navigation** (icon above label, sticky, 64 px
-  high; six entries, each as wide as its label needs, the rest shared, so
-  "Components" stays on one line at 320 px with a narrow font). A label that does not fit
-  wraps onto a second line, the bar grows in height; it is never cut off, hidden or set smaller. A wide
-  system font (DejaVu Sans on many Linux devices and on the CI runner) is wider than Inter, so the
-  labels carry soft hyphens (`navWrap`, "Ver&shy;hält&shy;nis&shy;se", "Com&shy;po&shy;nents") and break at syllables;
-  nothing assumes a width. **Test:** `e2e/german.mjs` and `e2e/stock.mjs`, also with the wide font
-  ([development](development.md#browser-checks-with-a-wide-font)). From 720 px: **side navigation** (`--side-w` wide, icon beside
-  label) with the app name above it, content on the right at most
-  `--content-w` wide. **Test:** `e2e/smoke.mjs` (bottom bar at 360 px, side
-  column at 1000 px).
+  high). **Four destinations**, the usual three to five for a bottom bar:
+  Start, Cook, Notebook, Ratios (German Start, Kochen, Notizbuch,
+  Verhältnisse), each as wide as its one-word label needs, the rest shared.
+  Every label is on one line at 320 and 360 px, in the default font and in a
+  wide system font (DejaVu Sans on many Linux devices and on the CI runner), and is never cut
+  off, hidden, set smaller or wrapped; there are no soft hyphens (they were needed with six entries
+  and are gone with four). **Settings is a gear** at the right end of the
+  **header** (`--header-h` 56 px, the gear a `--target` square, named
+  "Settings" for assistive technology, marked `aria-current` on its screen), on
+  every screen. **Test:** `e2e/navigation.mjs` (also with the wide font,
+  [development](development.md#browser-checks-with-a-wide-font)), `e2e/german.mjs`.
+  From 720 px: **side navigation** (`--side-w` wide, icon beside
+  label) below the app name, with the same four destinations and Settings as its last
+  entry at the bottom of the rail (the header and the rail stay in view; the gear is
+  hidden there), content on the right at most `--content-w` wide. **Test:**
+  `e2e/smoke.mjs` (bottom bar at 360 px, side column at 1000 px), `e2e/navigation.mjs`.
+- **Parts of a destination.** Cook has two parts (with what I have, classics)
+  and the Notebook two (components, dishes), a row of equal links at the top of
+  their screens (`.section-tabs`, bordered, 44 px high); the current one is
+  tinted, bold and has a bar, not colour alone, and the row is a group, not a
+  second navigation landmark.
 - **Touch targets at least 44 x 44 px**: navigation links, summaries and
   radio rows. **Test:** `e2e/smoke.mjs` measures them on every screen.
 - **Visible focus.** Every focusable element shows a `--focus-width`
@@ -188,7 +198,8 @@ warning token, and none was added. Rules of use:
 # Cook screens
 
 `#/cook`, `#/cook/use-up`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook)).
-Three view links at the top (14 px, 44 px high, the current one with a
+The two parts of Cook (with what I have, classics) as a bordered row of two
+equal links at the top, then three view links (14 px, 44 px high, the current one with a
 4 px bar of `--accent` and bold text), two selects for the filters, an
 entry list in the `.rows` style: name, kind and status as text, then the
 reason and the notes in muted text. No alarm colour; `styles/cook.css`.
@@ -253,9 +264,10 @@ round caps and joins, `currentColor` (so they follow the theme), no fill,
 `aria-hidden="true"` and `focusable="false"` because the label is visible
 beside them. An icon-only button, when one is added, gets an `aria-label`
 (`e2e/smoke.mjs` fails on any link, button, input or summary without a
-name). Navigation icons are in `src/icons/icons.ts`: Ratios (a ratio
-sign), Components (three layers), Dishes (a plate), Settings (two
-sliders). App icons are in `src/assets/`: `icon.svg` (rounded square,
+name; the gear in the header is such a button-like link and has one).
+Navigation icons are in `src/icons/icons.ts`: Start (a bowl), Cook (a pot), Notebook (an open
+book), Ratios (a ratio sign) and Settings (a gear with eight teeth, in the header on a phone
+and at the bottom of the side rail). App icons are in `src/assets/`: `icon.svg` (rounded square,
 Beet with a notebook and a bookmark), `icon-maskable.svg` (full bleed,
 content inside the central 80 % safe zone); the PNGs (192, 512 and
 maskable 512) are made by `scripts/make-icons.mjs` with Playwright's

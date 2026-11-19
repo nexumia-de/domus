@@ -14,19 +14,10 @@ export const appStringsDe: typeof appStrings = {
   nav: {
     label: 'Hauptmenü',
     start: 'Start',
-    ratios: 'Verhältnisse',
-    components: 'Komponenten',
-    dishes: 'Gerichte',
     cook: 'Kochen',
+    notebook: 'Notizbuch',
+    ratios: 'Verhältnisse',
     settings: 'Einstellungen',
-  },
-  navWrap: {
-    start: 'Start',
-    ratios: 'Ver\u00ADhält\u00ADnis\u00ADse',
-    components: 'Kom\u00ADpo\u00ADnen\u00ADten',
-    dishes: 'Ge\u00ADrich\u00ADte',
-    cook: 'Ko\u00ADchen',
-    settings: 'Ein\u00ADstel\u00ADlun\u00ADgen',
   },
   screens: {
     ratios: {
@@ -79,6 +70,7 @@ export const appStringsDe: typeof appStrings = {
     starch: 'eine Stärkebeilage',
   },
   notebook: {
+    sectionsLabel: 'Teile des Notizbuchs',
     searchLabel: 'Nach Namen suchen',
     toTaste: 'nach Geschmack',
     invalidNumber: 'Gib eine Zahl über 0 ein.',

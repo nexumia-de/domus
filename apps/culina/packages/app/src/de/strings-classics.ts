@@ -104,6 +104,8 @@ export const classicsStringsDe: typeof classicsStrings = {
   noteLevel: {
     studied: 'Studie',
     textbook: 'Lehrbuch',
+    tested: 'Küchenversuch',
+    authority: 'Behörde',
     tradition: 'Überlieferung',
   },
   noteSources: 'Quellen',

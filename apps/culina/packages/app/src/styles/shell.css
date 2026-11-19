@@ -29,9 +29,32 @@
 
 .app-header {
   grid-area: header;
-  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: var(--header-h);
+  padding: 0 var(--sp-2) 0 var(--sp-4);
   background: var(--surface);
   border-bottom: 1px solid var(--divider);
+}
+
+/* Settings on a phone: a gear at the right end of the header, a 44 px target on every screen. */
+.settings-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--target);
+  height: var(--target);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+}
+
+.settings-link[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 calc(-1 * var(--sp-1)) 0 var(--accent);
 }
 
 .app-title {
@@ -56,6 +79,9 @@
   grid-area: nav;
   position: sticky;
   bottom: 0;
+  /* Above the content, which comes later in the page and has transformed parts (the chevron of a
+     "What belongs here" summary) that would be painted over the bar. */
+  z-index: 1;
   background: var(--surface);
   border-top: 1px solid var(--border);
 }
@@ -67,21 +93,20 @@
   list-style: none;
 }
 
-/* Each entry is as wide as its label needs and the rest is shared. An entry never shrinks below its
-   longest unbreakable piece (min-width auto), so short labels stay on one line. */
+/* Four entries, each as wide as its label needs and the rest shared. A label is one word and never
+   wraps, is truncated, hidden or set smaller: four entries fit at 320 px even in a wide system font
+   such as DejaVu Sans (`e2e/smoke.mjs` measures it at 320 and 360 px, default and wide font). */
 .nav-list li {
   flex: 1 1 auto;
 }
 
-/* A long label may take two lines. How wide a word gets depends on the system font of the device (a
-   wide font such as DejaVu Sans is wider than Inter), so no width is assumed: the strings carry soft
-   hyphens (`navWrap`), which also count in the entry's minimum width, so an entry shrinks only down to
-   its longest syllable. Never truncated, never hidden, never smaller type. `base.css` sets
-   `overflow-wrap: anywhere` for the whole page, which would let any label break between letters and
-   shrink every entry; here only the soft hyphens may break. */
+/* On a phone Settings is the gear in the header. */
+.nav-list .nav-settings {
+  display: none;
+}
+
 .nav-label {
-  hyphens: manual;
-  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 .nav-link {
@@ -98,15 +123,6 @@
   font-weight: 600;
   text-align: center;
   text-decoration: none;
-}
-
-/* German labels are longer (Verhältnisse, Komponenten, Einstellungen): on a phone they get a little
-   less type and padding, and wrap onto a second line where six entries do not fit at 360 px. */
-@media (max-width: 719px) {
-  :root[lang='de'] .nav-link {
-    padding-inline: 2px;
-    font-size: var(--fs-xxs);
-  }
 }
 
 .nav-link:focus-visible {
@@ -129,22 +145,49 @@
   }
 
   .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
     border-right: 1px solid var(--divider);
+  }
+
+  /* Settings is the last entry of the side rail; the gear of the header is for the phone. */
+  .settings-link {
+    display: none;
   }
 
   .app-main {
     padding: var(--sp-5);
   }
 
+  /* The rail stays in view below the header, so that Settings at its bottom is always there. */
   .app-nav {
-    position: static;
+    position: sticky;
+    top: var(--header-h);
+    align-self: start;
+    display: flex;
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
     border-top: 0;
     border-right: 1px solid var(--divider);
   }
 
   .nav-list {
+    flex: 1;
     flex-direction: column;
     padding: var(--sp-2);
+    overflow-y: auto;
+  }
+
+  .nav-list li {
+    flex: none;
+  }
+
+  .nav-list .nav-settings {
+    display: block;
+    margin-top: auto;
+    padding-top: var(--sp-2);
+    border-top: 1px solid var(--divider);
   }
 
   .nav-link {

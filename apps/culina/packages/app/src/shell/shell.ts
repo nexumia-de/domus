@@ -26,8 +26,8 @@ export const mountShell = (root: HTMLElement): Shell => {
     main.focus();
   });
   const header = el('header', 'app-header');
-  header.append(el('p', 'app-title', strings.appName));
   const nav = createNav();
+  header.append(el('p', 'app-title', strings.appName), nav.settingsLink);
   const main = el('main', 'app-main');
   main.id = 'main';
   main.tabIndex = -1;

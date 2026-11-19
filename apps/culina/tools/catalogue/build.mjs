@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { deriveDensity, deriveUnitWeight, isBasic, nameOf } from './derive.mjs';
 import { groupRows } from './group.mjs';
 import { nutritionOf } from './nutrition.mjs';
+import { mergeOwnNames, ownNamesDataset } from './own-names.mjs';
 import { germanNames } from './wikidata.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
@@ -25,6 +26,7 @@ export const EXTRAS = new Map(
 export const isSelected = (food) => isBasic(food) || EXTRAS.has(food.fdcId);
 
 const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
+const ownNamesFile = fileURLToPath(new URL('./names-de-own.json', import.meta.url));
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
   new URL('../../packages/app/data/ingredient-catalogue.json', import.meta.url),
@@ -148,12 +150,19 @@ const main = () => {
   if (!Array.isArray(foods)) throw new Error('no SRLegacyFoods list in the file');
   const snapshotText = readFileSync(snapshotFile);
   const wikidata = JSON.parse(snapshotText.toString('utf8'));
-  const ingredients = buildCatalogue(
+  const generated = buildCatalogue(
     foods,
     release,
     readRefuse(refuseText.toString('latin1')),
     wikidata,
   );
+  // The hand-kept German names fill what Wikidata left; a Wikidata name is never replaced.
+  const ownNamesText = readFileSync(ownNamesFile);
+  const ownNames = JSON.parse(ownNamesText.toString('utf8'));
+  const own = mergeOwnNames(generated, ownNames);
+  if (own.unknown.length > 0)
+    throw new Error(`names-de-own.json: unknown ids ${own.unknown.join(', ')}`);
+  const ingredients = own.ingredients;
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,
@@ -178,6 +187,10 @@ const main = () => {
       licence:
         'CC0 1.0 Universal (public domain), as stated on https://www.wikidata.org/wiki/Wikidata:Licensing',
     },
+    ownNamesDataset: ownNamesDataset(
+      ownNames,
+      createHash('sha256').update(ownNamesText).digest('hex'),
+    ),
     generatedBy: 'tools/catalogue/build.mjs',
     ingredients,
   };

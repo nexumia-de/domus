@@ -9,12 +9,13 @@ import { countryLinks } from './country-links';
 
 const t = strings.classics;
 
+// In the order of the navigation: Cook (with the stock it works from), the Notebook, the ratios.
 const TOOLS = [
-  ['ratios', t.tools.ratios],
-  ['components', t.tools.components],
-  ['dishes', t.tools.dishes],
   ['cook', t.tools.cook],
   ['stock', t.tools.stock],
+  ['components', t.tools.components],
+  ['dishes', t.tools.dishes],
+  ['ratios', t.tools.ratios],
 ] as const;
 
 export const startScreen = (): HTMLElement => {

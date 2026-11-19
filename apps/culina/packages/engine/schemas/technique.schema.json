@@ -18,7 +18,7 @@
     "why": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
     },
-    "level": { "enum": ["studied", "textbook", "tradition"] },
+    "level": { "enum": ["studied", "textbook", "tested", "authority", "tradition"] },
     "sources": {
       "type": "array",
       "minItems": 1,
@@ -30,7 +30,12 @@
           "title": { "type": "string", "minLength": 1, "maxLength": 300 },
           "place": { "type": "string", "minLength": 1, "maxLength": 200 },
           "url": { "type": "string", "pattern": "^https?://\\S+$", "maxLength": 500 },
-          "licence": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "licence": {
+            "description": "The licence of the work, as an SPDX identifier (CC-BY-NC-SA-4.0). Every shipped source has one; a build that leaves out what is non-commercial reads it.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$",
+            "maxLength": 100
+          },
           "sentence": { "type": "string", "minLength": 1, "maxLength": 400 }
         }
       }

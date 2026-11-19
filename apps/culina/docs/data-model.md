@@ -552,18 +552,44 @@ Shipped read-only, one JSON file per technique in
 `technique.schema.json`; the guide for writing one is
 [classic format](classic-format.md#a-technique-file).
 
-| Field     | Type            | Required | Meaning                                                                       |
-| --------- | --------------- | -------- | ----------------------------------------------------------------------------- |
-| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                       |
-| `name`    | text in 2 langs | yes      | Visible name                                                                  |
-| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                 |
-| `why`     | text in 2 langs | yes      | Why it matters                                                                |
-| `level`   | string          | yes      | `studied`, `textbook` or `tradition`: how well the statement is known         |
-| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` |
+| Field     | Type            | Required | Meaning                                                                                   |
+| --------- | --------------- | -------- | ----------------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                                   |
+| `name`    | text in 2 langs | yes      | Visible name                                                                              |
+| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                             |
+| `why`     | text in 2 langs | yes      | Why it matters                                                                            |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known           |
+| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, `licence` (an SPDX identifier), and the `sentence` |
 
 - **Sentence.** Every source carries the sentence the note rests on, at most
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).
+- **Licence.** The `licence` of every shipped source is an SPDX identifier
+  (`CC-BY-NC-SA-4.0`, `CC-BY-4.0`, `CC-BY-NC-4.0`), never free text; the
+  schemas refuse a value with spaces, and `test/source-licences.test.ts` holds
+  the shipped data to it and to the counts of
+  [the decision](decisions/sources-licence.md). A later build without what is
+  non-commercial reads it.
+
+## Evidence levels
+
+The `level` of a technique note, a handling rule and a substitute says how the
+statement is known, in five words (`TECHNIQUE_LEVELS` in the engine; the three
+schemas carry the same list and a test keeps them equal; the validators name
+any other word, `unknown-level`). The app shows the level as a short label in
+front of the source ("Textbook · title, place"):
+
+| Level       | English      | German        | Meaning                                                                                   |
+| ----------- | ------------ | ------------- | ----------------------------------------------------------------------------------------- |
+| `studied`   | Study        | Studie        | A study measured it; only where a paper was read                                          |
+| `textbook`  | Textbook     | Lehrbuch      | A textbook states it                                                                      |
+| `tested`    | Kitchen test | Küchenversuch | The author ran an experiment and reports it, for example a tested-kitchen book            |
+| `authority` | Authority    | Behörde       | An official body states it (food safety), cited from the authority of the user's language |
+| `tradition` | Tradition    | Überlieferung | Kitchens' sources state it, no study                                                      |
+
+`tested` and `authority` were added on 2026-11-19. No shipped note was
+re-labelled: all 64 are `textbook`. A level above `textbook` needs a source that
+someone read in the book or on the page ([source books](source-books.md)).
 
 ## Handling rule
 
@@ -580,7 +606,7 @@ rule in `packages/engine/data/handling/<id>.json`, never stored. Schema:
 | `text`      | text in 2 langs | yes      | The rule in one or two short sentences: when it goes in, how it is treated               |
 | `why`       | text in 2 langs | yes      | The reason                                                                               |
 | `technique` | id              | yes      | The skill the rule belongs to; the rule is not shown once that technique is learned      |
-| `level`     | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                                 |
+| `level`     | string          | yes      | One of the five [evidence levels](#evidence-levels), as for a technique                  |
 | `sources`   | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` (25 words) |
 
 - **Group targets.** A rule on a group shows for every ingredient below it in
@@ -607,7 +633,7 @@ sibling rule with them ([engine rules](engine-rules.md#substitute-effects)).
 | `to`      | string          | yes      | The catalogue ingredient or group id that replaces it; a group covers all below it     |
 | `factor`  | number          | no       | Amount of `to` per amount of `from`, in the same unit; only where the source gives one |
 | `changes` | text in 2 langs | yes      | What changes (taste, texture, amount, handling) in one or two short sentences          |
-| `level`   | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                               |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels), as for a technique                |
 | `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence`          |
 
 - **One direction per file.** A replacement that the source states both ways
@@ -732,15 +758,16 @@ export. One JSON file, generated by `tools/catalogue/build.mjs`
 ([ingredient catalogue](ingredient-catalogue.md)) and validated by
 `catalogue.schema.json`; the app serves it as `catalogue.json`.
 
-| Field           | Type     | Required | Meaning                                                                                              |
-| --------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `format`        | constant | yes      | `culina-ingredient-catalogue`                                                                        |
-| `formatVersion` | constant | yes      | `1`                                                                                                  |
-| `dataset`       | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                              |
-| `refuseDataset` | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from             |
-| `namesDataset`  | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from |
-| `generatedBy`   | string   | yes      | `tools/catalogue/build.mjs`                                                                          |
-| `ingredients`   | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                      |
+| Field             | Type     | Required | Meaning                                                                                              |
+| ----------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `format`          | constant | yes      | `culina-ingredient-catalogue`                                                                        |
+| `formatVersion`   | constant | yes      | `1`                                                                                                  |
+| `dataset`         | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                              |
+| `refuseDataset`   | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from             |
+| `namesDataset`    | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from |
+| `ownNamesDataset` | object   | no       | the same five fields for the project's own German names (`tools/catalogue/names-de-own.json`)        |
+| `generatedBy`     | string   | yes      | `tools/catalogue/build.mjs`                                                                          |
+| `ingredients`     | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                      |
 
 - **An entry is an ordinary ingredient record**: `id` (`fdc-<FDC id>`, a
   seed-style slug), `name`, optionally `densityGPerMl` and `unitWeightG`

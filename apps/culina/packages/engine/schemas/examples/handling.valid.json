@@ -16,7 +16,7 @@
       "title": "An Example Textbook (fictional, not a real book)",
       "place": "chapter 1, page 1",
       "url": "https://example.org/example-textbook",
-      "licence": "CC0-1.0 (invented for this example)",
+      "licence": "CC0-1.0",
       "sentence": "This sentence is invented for the example and rests on nothing."
     }
   ]

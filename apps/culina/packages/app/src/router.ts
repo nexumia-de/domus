@@ -20,13 +20,41 @@ export const ROUTES = [
 export type Route = (typeof ROUTES)[number];
 export const DEFAULT_ROUTE: Route = 'start';
 
-/** The entries of the navigation: the stock screens belong to Cook, so Stock has none of its own. */
-export const NAV_ENTRIES = ['start', 'ratios', 'components', 'dishes', 'cook', 'settings'] as const;
+/**
+ * The four destinations of the navigation. Settings is not one of them: it is the gear in the header
+ * (and the last entry of the side rail). The stock screens and the classics belong to Cook, the
+ * components and dishes to the Notebook.
+ */
+export const NAV_ENTRIES = ['start', 'cook', 'notebook', 'ratios'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
 
-/** The navigation entry a route is shown under: the classics belong to Start. */
-export const navEntryFor = (route: Route): NavEntry =>
-  route === 'stock' ? 'cook' : route === 'classics' || route === 'classic' ? 'start' : route;
+/** The route a navigation entry opens; the Notebook opens on its Components section. */
+export const NAV_ROUTE: Record<NavEntry, Route> = {
+  start: 'start',
+  cook: 'cook',
+  notebook: 'components',
+  ratios: 'ratios',
+};
+
+/** The destination a route is shown under; Settings (the gear) is none of them. */
+export const navEntryFor = (route: Route): NavEntry | undefined => {
+  switch (route) {
+    case 'start':
+      return 'start';
+    case 'cook':
+    case 'stock':
+    case 'classics':
+    case 'classic':
+      return 'cook';
+    case 'components':
+    case 'dishes':
+      return 'notebook';
+    case 'ratios':
+      return 'ratios';
+    case 'settings':
+      return undefined;
+  }
+};
 
 /** The second segment of the cook route that is a view, not an ingredient. */
 export const USE_UP = 'use-up';

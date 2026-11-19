@@ -269,6 +269,7 @@ export { TECHNIQUES, techniqueById } from './techniques/shipped';
 export { techniqueNotes } from './techniques/notes';
 export type { NotesResult, TechniqueNote } from './techniques/notes';
 export { MAX_SENTENCE_WORDS, validateTechnique, validateTechniques } from './techniques/validate';
+export { TECHNIQUE_LEVELS } from './techniques/types';
 export type { Technique, TechniqueLevel, TechniqueSource } from './techniques/types';
 
 export { validateHandlingRule, validateHandlingRules } from './handling/validate';

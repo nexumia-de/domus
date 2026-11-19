@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Ingredient catalogue
-description: The catalogue of basic ingredients shipped with the app, generated from USDA FoodData Central SR Legacy; why that dataset, the selection rule, how density and unit weight are derived, how the ingredient tree and the yields are built, where the German names (Wikidata) and USDA's food categories come from and by which rules, the file, and what the catalogue does not have.
+description: The catalogue of basic ingredients shipped with the app, generated from USDA FoodData Central SR Legacy; why that dataset, the selection rule, how density and unit weight are derived, how the ingredient tree and the yields are built, where the German names (Wikidata, and the project's own translation for the rest) and USDA's food categories come from and by which rules, the file, and what the catalogue does not have.
 tags:
   [
     catalogue,
@@ -275,12 +275,16 @@ SR28 ASCII archive of the same dataset, listed on the same download page[^sr28zi
 
 English stays the canonical language of the data and the code; German is
 supported on top, so a search for "Mehl" finds flour and a shopping list
-app can search the same file in German. The names come from Wikidata, whose
+app can search the same file in German. Every entry has a German name,
+from two sources that the entry's `source` tells apart: **Wikidata** for
+164 of 681 entries (this section up to [the result](#german-names-result)) and **the
+project's own translation** for the other 517 ([below](#own-translation)).
+The Wikidata names come from Wikidata, whose
 structured data is public domain: "All structured data (i.e. the main,
 Property, Lexeme, and EntitySchema namespaces) is released into the public
 domain under Creative Commons Zero", "All data in Wikidata has a CC0
-license" (Wikidata:Licensing, read 2026-11-18)[^wdlic]. Nothing is translated by hand
-or from memory: a food has a German name only when a Wikidata item carries
+license" (Wikidata:Licensing, read 2026-11-18)[^wdlic]. In the Wikidata part nothing is translated by hand
+or from memory: a food has a Wikidata name only when an item carries
 its USDA NDB number (property P1978) and the rules below accept the item.
 
 **The snapshot.** The generator never calls the network. Two SPARQL
@@ -339,7 +343,7 @@ each food row, the first that fails ends it (the counts are for the 539 rows):
    has a longer list than a cook needs the list stays long: nothing is
    chosen by hand.
 
-**Result.** 146 of 539 foods (152 of 560 with the named foods) have a German name (72 through a class item
+<a id="german-names-result"></a>**Result.** 146 of 539 foods (152 of 560 with the named foods) have a German name (72 through a class item
 with several NDB numbers), 83 of them also aliases. A name's `source` is
 "Wikidata Q..., label de and aliases, NDB ..., snapshot 2026-11-18 or 2026-11-19".
 
@@ -391,6 +395,75 @@ Wikidata's own label):
 Many aliases are regional or historical ("Rüeblí", "Schmer", "Fettbemme");
 they are kept because a search by them is right.
 
+### Own translation
+
+The 517 entries without a Wikidata name (foods 408, groups 109) have a
+German name that the project translated from the USDA description on
+2026-11-19. They are a hand-kept overlay,
+`tools/catalogue/names-de-own.json`: an id maps to `{ name, aliases? }`, the
+head names the data set (`Own German names for the catalogue: translation of
+the USDA description by the project`), its date and its licence
+(**AGPL-3.0-or-later**, the licence of this repository), and a list
+`uncertain` holds the ids whose word the translator was not sure of, with the
+reason. The catalogue's envelope repeats the head as `ownNamesDataset` with
+the SHA-256 of the overlay, and every merged entry has the `source`
+"Own translation of the USDA description by the project, 2026-11-19", so
+an own name is told from a Wikidata label by its source.
+
+**Rules of the translation.**
+
+- The everyday kitchen word of a home cook in Germany, not a literal
+  rendering of the USDA text: "Potatoes, white, flesh and skin" is
+  "Kartoffel" (alias "Kartoffel, mit Schale"), "Egg, whole" is "Ei", "Bread,
+  rye" is "Roggenbrot", "Cream, sour, reduced fat, cultured" is "Saure
+  Sahne, fettreduziert". The state "raw" is left out as in the English
+  names.
+- **No claim of equivalence that does not exist.** "Wheat flour, white,
+  all-purpose, enriched, bleached" is "Weizenmehl, Allzweck" with the aliases
+  "Weizenmehl" and "Mehl"; no German type number (405, 550) is named,
+  because the USDA class does not equal one (a test keeps "Type 405" out of
+  every name and alias). Risotto rice is not claimed for medium-grain rice.
+- **Distinctions of the catalogue stay.** Two entries do not get the same
+  primary name unless they share the English name, when they differ in
+  something a cook cares about: salted and unsalted, fat content, fresh and
+  dried, whole-grain and white. The qualifier follows after a comma ("Butter,
+  gesalzen", "Butter, ungesalzen", "Milch, 2 % Fett, ..."). Plural words give
+  the groups a name of their own ("Äpfel" beside the Wikidata "Apfel"); a
+  group also takes the plain word where the classics use the group
+  ("Milch", "Essig", "Weizenmehl").
+- **US-only products keep an explanatory name** ("Pancake-Sirup", "Maisgrieß,
+  weiß, selbsttreibend, gebeutelt, pur, angereichert", "Muscle Milk,
+  Proteinpulver auf Milchbasis (Markenprodukt)").
+- **Aliases** are common synonyms and regional words that help a search:
+  Sahne, Rahm, Obers; Möhre, Karotte; Lauch, Porree; Zwiebel,
+  Speisezwiebel.
+- A Wikidata name is never overwritten, even where it is poor. Three
+  plain words are therefore shared with a Wikidata name on purpose: the
+  groups "Milch", "Essig" and "Weizenmehl" (the Wikidata label of the
+  whole-grain flour is "Weizenmehl"; eleven milks carry "Milch", three vinegars
+  "Essig"). `test/catalogue-german-own.test.ts` lists them.
+- The labels of the groups (the tree in the picker, "Spices" and so on) are
+  translated the same way: "Gewürze", "Nüsse", "Samen und Kerne".
+
+**How it is merged, and how to rerun it.** `tools/catalogue/own-names.mjs`
+holds the merge (pure): it adds the overlay's name to every entry that has
+no German name from another source, replaces an earlier own name with the
+overlay's current one, never touches a Wikidata name and reports an id the
+catalogue does not have. Two places call it:
+
+1. `tools/catalogue/build.mjs` merges the overlay after it has built the
+   rows and the Wikidata names, so a regeneration from the USDA data keeps
+   the own names.
+2. `node tools/catalogue/merge-own-names.mjs` merges the overlay into the
+   catalogue file as it is, offline (no USDA data, no network). Run it after
+   every edit of the overlay; it is idempotent, and the test compares its
+   result with the shipped file.
+
+Order when everything changes: refresh the Wikidata snapshot, run `build.mjs`
+(which merges the overlay); the catalogue file is not formatted by
+Prettier. When only the overlay changes: edit it, run
+`merge-own-names.mjs`, run the tests.
+
 ## Food category
 
 USDA's `foodCategory.description` of the SR Legacy JSON (for example "Dairy
@@ -439,8 +512,7 @@ line that names such a parent has no nutrition and is reported as not counted.
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English as the canonical language; German names for 152 of 560 foods and 12 of 121
-  parents ([German names](#german-names)), no other language; US customary portions
+- English as the canonical language; a German name for every entry, 164 from Wikidata and 517 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
   only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added
   vitamins, margarines, oils); the source's variants are kept, and the
@@ -462,7 +534,7 @@ tests the grouping rule on a second excerpt (with `food-des-excerpt.txt`
 for the yields) and on synthetic names, the parents' numbers and ids, the
 yields, the input-order independence of the bytes, and runs the shipped
 file through `validateModel` (no `cycle`, no `unknown-parent`) and
-`buildTree`. `packages/app/test/catalogue-nutrition.test.ts` tests the nutrition rules on synthetic foods, the parents' agreement, that the fixture figures are the dataset's and the shipped file against the schema. `packages/app/test/catalogue-names.test.ts` tests the German names: the NDB join,
+`buildTree`. `packages/app/test/catalogue-nutrition.test.ts` tests the nutrition rules on synthetic foods, the parents' agreement, that the fixture figures are the dataset's and the shipped file against the schema. `packages/app/test/catalogue-german-own.test.ts` tests the own names (every entry has one, they are marked, the overlay and the file agree, names stay apart, a search for "Zwiebel" finds the onion). `packages/app/test/catalogue-names.test.ts` tests the Wikidata German names: the NDB join,
 the tie, label and taxon rules on small excerpts, the parents' names and categories, the
 snapshot builder, that every shipped name cites an item of the committed snapshot with that
 label, and the bytes. The catalogue schema and its examples

@@ -481,6 +481,7 @@ const flow = async (browser, origin, width) => {
   await page.getByRole('button', { name: `Teach again: ${TECHNIQUE.name.en}` }).click();
   await page.getByText(`The note for ${TECHNIQUE.name.en} is shown again.`).waitFor();
   await openWith(page, origin, `classic/${PAN.id}/cook`);
+  await step(page, 1, 3).waitFor();
   check(
     (await page.locator('.handling-note').count()) === 1,
     `${label}: Teach again brings the rule back`,

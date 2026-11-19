@@ -25,15 +25,14 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route                                                                                    | Today                                                                                                                                                               | Source                      |
-| ---------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| Start      | `#/start`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | What do you want to cook: the classics by country, the dish and cooking step by step ([below](#classics)); the start screen                                         | `src/screens/classics/`     |
-| Ratios     | `#/ratios`, `#/ratios/<id>`                                                              | The ratio list and the ratio cards ([below](#ratios))                                                                                                               | `src/screens/ratios.ts`     |
-| Components | `#/components`, `#/components/<id>`                                                      | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
-| Dishes     | `#/dishes`, `#/dishes/<id>`                                                              | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
-| Cook       | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`                                            | What can I cook, use up first, and what uses one ingredient ([below](#cook))                                                                                        | `src/screens/cook/`         |
-| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                            | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                             | `src/screens/stock/`        |
-| Settings   | `#/settings`                                                                             | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen   | Route                                                                                                                        | Today                                                                                                                                                                                                           | Source                                               |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Start    | `#/start`                                                                                                                    | What do you want to cook: the classics by country and the way into every tool ([below](#classics)); the start screen                                                                                            | `src/screens/classics/`                              |
+| Ratios   | `#/ratios`, `#/ratios/<id>`                                                                                                  | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                           | `src/screens/ratios.ts`                              |
+| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`                                                             | Two parts, Components and Dishes: the lists and the screens of one entry ([components](#components), [dishes](#dishes))                                                                                         | `src/screens/components.ts`, `src/screens/dishes.ts` |
+| Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics by country with their dishes and cooking step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`         |
+| Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                                                                | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                         | `src/screens/stock/`                                 |
+| Settings | `#/settings` (the gear in the header)                                                                                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                             | `src/screens/settings.ts`                            |
 
 An unknown route (`#/nope`, empty) shows Start and rewrites the URL to
 `#/start` without a new history entry. **Test:** `test/router.test.ts`,
@@ -504,7 +503,7 @@ What is there, with as little upkeep as possible
 [stock item](data-model.md#stock-item); rules:
 [engine rules](engine-rules.md#stock)). Not an entry of its own: the stock
 screens are the view "What is there" of [Cook](#cook), and the navigation
-entry Cook stays marked on them. The list's heading is "What is there".
+entry Cook stays marked on them. Start and Cook both offer it, so it is two taps from every screen. The list's heading is "What is there".
 Texts: `src/strings-stock.ts`.
 
 - **Tick what is there** (`#/stock/add`). A list to tick from: the
@@ -541,9 +540,8 @@ Texts: `src/strings-stock.ts`.
 - **Prepared components** are stock items with `ref.kind` `component`.
   Only an entered use by counts for them (components have no shelf life).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
-  least 44 px. The navigation entries are as wide as their labels need and
-  share the rest, so the labels fit on one line at 320 px with a narrow font; with a wider font the
-  longer ones wrap onto two lines ([design](design.md#layout-and-breakpoints)).
+  least 44 px. The navigation has four entries, each label on one line at 320 px
+  also in a wide font ([design](design.md#layout-and-breakpoints)).
 - **Offline.** The catalogue is precached; ticking, the list and the detail
   work offline. **Test:** `e2e/stock.mjs` (also 320 and 1000 px, remaining
   days at fixed dates, a field of another app surviving an edit).
@@ -553,12 +551,16 @@ Texts: `src/strings-stock.ts`.
 "I stand in the kitchen and do not know what to cook"
 ([decision](decisions/recipe-book.md), issue 22; rules:
 [engine rules](engine-rules.md#what-the-stock-allows)). The navigation
-entry "Cook" (the old "Stock", between Dishes and Settings; no sixth
-entry) leads to `#/cook`. Three views, switched by links at the top of each
-(a group with `aria-current`, a bar and bold text for the current one, not
-a second navigation landmark): **What can I cook** (`#/cook`), **Use up
-first** (`#/cook/use-up`) and **What is there** (`#/stock`, the stock
-list with its "Tick what is there" action). Texts:
+entry "Cook" (German "Kochen", the second of four) leads to `#/cook`. At the top of
+each of its screens are two parts, a row of two equal links ("With what I
+have", "Classics"; German "Mit meinem Vorrat", "Klassiker"): the second is the
+[classics by country](#classics) (`#/classics`, the country lists, the dish
+and cooking step by step, which the navigation marks as Cook too). Under the
+first part three views, switched by links below it (a group with
+`aria-current`, a bar and bold text for the current one, not a second
+navigation landmark): **What can I cook** (`#/cook`), **Use up first**
+(`#/cook/use-up`) and **What is there** (`#/stock`, the stock list with its
+"Tick what is there" action). Texts:
 `src/strings-cook.ts`. **Test:** `e2e/cook.mjs`, `test/cook-finder.test.ts`,
 `test/router-cook.test.ts`.
 
@@ -647,9 +649,10 @@ view logic is in `src/classics/` (no DOM), the screens in
 - **Start** (`#/start`, the screen the app opens on and the first navigation
   entry, "Start"). The heading asks "What do you want to cook?". The first
   choice is "Classics by country": Germany, Italy, France and Spain, each with
-  its number of dishes. Behind it, "Your tools" links to Ratios, Components,
-  Dishes, What can I cook and What is there, as before; nothing was removed.
-  The classics screens are shown under the Start entry.
+  its number of dishes. Behind it, "Your tools" links to What can I cook, What
+  is there (the stock), Components, Dishes and Ratios, as before; nothing was
+  removed. The classics screens are shown under the Cook entry, in its
+  second part "Classics".
 - **List** (`#/classics/<country>`). Each dish with its name in the content
   language, its course and "Without meat and fish" or "With meat or fish". A
   country without a dish says so quietly ("No dishes from here yet"); the
@@ -726,7 +729,7 @@ view logic is in `src/classics/` (no DOM), the screens in
 - **Technique note.** The engine's `techniqueNotes` says where a note shows
   (first step that uses a technique not marked as learned). The note shows
   `watch` in one or two sentences; behind a tap `why`, the level (studied,
-  textbook, tradition, in words) and the sources with a link. "I know this"
+  textbook, kitchen test, authority, tradition, in words) and the sources with a link. "I know this"
   stores a skill record (`skills` kind, `skill-<technique>`) and the note is
   not shown again on any dish. Nothing is marked automatically. The write does not redraw the
   other screens, so the cook keeps the place and focus (focus goes to the
@@ -811,10 +814,9 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
 - **Example data.** "Add example data" stores the texts of the examples in the language the app speaks
   (`demo/german.ts`: names, notes, the source of a made-up figure, the example method); the example
   ingredients carry their German names as `names.de` with the source "Example data, not a source".
-- **Layout.** German labels are longer; on a phone the six navigation labels get the type size
-  `--fs-xxs` and 2 px side padding when `lang` is `de`, and a label that still does not fit wraps at
-  its soft hyphens (`navWrap` in the strings; the link keeps the plain word as `aria-label`) onto a
-  second line, so the page never scrolls sideways, also with a wide system font such as DejaVu Sans.
+- **Layout.** German labels are longer (Verhältnisse, Notizbuch), and with four entries
+  every label is one line at 320 and 360 px, also with a wide system font such as DejaVu Sans; no
+  soft hyphens, no smaller type, no second line (`e2e/navigation.mjs`).
 - **Test:** `e2e/german.mjs` chooses German through the setting, walks the main screens and the
   classics flow at 360 x 720 (no horizontal scroll, targets at least 44 x 44, navigation labels
   inside their entries, no console error), chooses English again, and repeats the walk with the
@@ -828,12 +830,31 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   There is no second stack and no in-app back button at this level.
   **Test:** `test/router.test.ts`, `e2e/smoke.mjs` (back returns to
   Ratios).
+- **Four destinations** (the usual guidance for a bottom bar is three to
+  five): **Start**, **Cook** (German Kochen), **Notebook** (Notizbuch) and
+  **Ratios** (Verhältnisse), in that order. A route belongs to one of them
+  (`navEntryFor` in `src/router.ts`): Cook holds the finder, the stock and the
+  classics with their cooking mode; the Notebook holds Components and Dishes,
+  two parts shown as a row of two equal links at the top of their lists
+  (`src/screens/section-tabs.ts`). The old routes (`#/components`, `#/dishes`,
+  `#/classics`, `#/cook`, `#/stock`, `#/settings`) work as before, links,
+  bookmarks and tests included, and the navigation marks the destination
+  they belong to. The Notebook entry opens on Components.
+- **Settings is the gear** at the right end of the header, a 44 px target
+  named for assistive technology ("Settings", "Einstellungen") and marked
+  `aria-current` on the Settings screen; it is the first stop after the skip link.
+  It is there on every screen of a phone. From 720 px it is not in the header:
+  Settings is the last entry of the side rail.
+- **Every former destination is at most two taps from Start**: Ratios, Cook
+  and Settings one, Components one, Dishes, Classics, Use up first and the
+  stock two (Start also has an entry for each tool); the stock is two taps
+  from every screen (Cook, then "What is there"). **Test:** `e2e/navigation.mjs`.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
-  and label; from 720 px a side navigation ([design](design.md#layout-and-breakpoints)).
-  Both are the same `<nav aria-label="Main">`, so the order and the
-  names are the same; the stock screens are shown under "Cook". Entries are as wide as their labels need and share
-  the rest (`flex: 1 1 auto`), so six (Start first) fit at 320 px. **Test:**
-  `e2e/smoke.mjs` at 320, 360 and 1000 px, `e2e/stock.mjs`.
+  and label; from 720 px a side navigation with the same four destinations and
+  Settings at its bottom ([design](design.md#layout-and-breakpoints)).
+  Both are the same `<nav aria-label="Main">`. Each label is one word on one
+  line at 320 and 360 px, in the default and in a wide font. **Test:**
+  `e2e/smoke.mjs` at 320, 360 and 1000 px, `e2e/navigation.mjs`.
 - **Landmarks:** one `<header>`, one `<nav>` with a label, one `<main>`;
   the current destination has `aria-current="page"`. A skip link ("Skip
   to content") is the first focusable element. The document title is
@@ -859,7 +880,7 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   always visible ([design](design.md#layout-and-breakpoints)); focus order
   and visible focus are WCAG 2.4.3 and 2.4.7[^wcag].
   **Test:** `e2e/smoke.mjs` (Tab to the skip link, ring on the
-  navigation, Enter navigates and focuses the heading).
+  first stop, which is the gear on a phone, Enter navigates and focuses the heading).
 - **Names.** Every link, button, input and summary has an accessible
   name; icons are decorative. **Test:** `e2e/smoke.mjs`.
 - **Texts for the experienced cook.** Short, no tutorials; guidance only

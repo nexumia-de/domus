@@ -1,7 +1,7 @@
 // Stock in a browser: tick several (an own ingredient, a catalogue ingredient, a component) without
 // leaving the screen, untick with Undo, always there, optional detail, use up part of an amount,
 // reload keeps it all, remaining days from a fixed date (`?e2e-now=`), a field of another app
-// survives an edit, offline, the navigation at 320 and 360 px, targets, no console error.
+// survives an edit, offline, targets, no console error (the navigation is in navigation.mjs).
 import { check, watch } from './harness.mjs';
 import { layout, listStore, putStore } from './editor-helpers.mjs';
 import { overflow, smallTargets } from './measure.mjs';
@@ -38,47 +38,6 @@ const rowText = async (page, name) =>
   ).replace(/\s+/g, ' ');
 const stockRows = (page) => listStore(page, 'stock');
 const byRef = (rows, id) => rows.filter((r) => r.ref.id === id);
-
-const navigation = async (browser, origin, width) => {
-  const context = await browser.newContext({ viewport: { width, height: 640 } });
-  const page = await context.newPage();
-  await openAt(page, origin, 'stock');
-  const links = await page.evaluate(() =>
-    [...document.querySelectorAll('.nav-link')].map((a) => {
-      const text = a.querySelector('.nav-label');
-      const box = a.getBoundingClientRect();
-      return {
-        name: text.textContent.replaceAll('\u00AD', ''),
-        w: box.width,
-        h: box.height,
-        lines: Math.round(
-          text.getBoundingClientRect().height /
-            parseFloat(getComputedStyle(text).lineHeight || '16'),
-        ),
-        clipped: text.scrollWidth > text.clientWidth,
-        right: box.right,
-      };
-    }),
-  );
-  check(
-    links.length === 6 &&
-      links.map((l) => l.name).join() === 'Start,Ratios,Components,Dishes,Cook,Settings',
-    `${width}px: the navigation has Start first and Cook between Dishes and Settings`,
-  );
-  check(
-    links.every((l) => l.w >= 44 && l.h >= 44 && !l.clipped && l.right <= width + 0.5),
-    `${width}px: bottom navigation fits with targets of 44 px and no clipped label ${JSON.stringify(links.map((l) => [l.name, Math.round(l.w), Math.round(l.h)]))}`,
-  );
-  const heights = await page.evaluate(() =>
-    [...document.querySelectorAll('.nav-label')].map((n) => n.getBoundingClientRect().height),
-  );
-  // A label that does not fit the system font wraps at a soft hyphen: one or two lines, never more.
-  check(
-    heights.every((h) => h <= 2 * Math.min(...heights) + 1),
-    `${width}px: every navigation label takes one or two lines (${heights})`,
-  );
-  await context.close();
-};
 
 const ticking = async (browser, origin) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
@@ -169,8 +128,8 @@ const ticking = async (browser, origin) => {
   );
   // Going to another screen ends the toast.
   await page.waitForTimeout(700);
-  await page.getByRole('link', { name: 'Dishes' }).click();
-  await page.getByRole('heading', { level: 1, name: 'Dishes', exact: true }).waitFor();
+  await page.getByRole('link', { name: 'Ratios' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Ratios', exact: true }).waitFor();
   check(
     (await page.locator('.toast').count()) === 0 &&
       (await page.evaluate(() =>
@@ -458,8 +417,6 @@ const desktop = async (browser, origin) => {
 
 export const stock = async (browser, server) => {
   const origin = server.origin;
-  await navigation(browser, origin, 320);
-  await navigation(browser, origin, 360);
   await desktop(browser, origin);
   const problems = [
     ...(await ticking(browser, origin)),

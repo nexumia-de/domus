@@ -44,15 +44,19 @@ test.each([
   ['German', stringsDe],
 ])('the %s navigation names its entries and the screens use them as titles', (_, set) => {
   expect(set.nav.ratios).toBe(set.screens.ratios.title);
-  expect(set.nav.components).toBe(set.screens.components.title);
-  expect(set.nav.dishes).toBe(set.screens.dishes.title);
   // The Stock entry became Cook; the stock list is a view of Cook, titled by its tab.
   expect(set.nav.cook).toBe(set.cook.title);
   expect(set.stock.title).toBe(set.cook.tabStock);
   expect(set.nav.settings).toBe(set.settings.title);
-  // The drawn labels are the same words, only with soft hyphens where they may wrap.
-  for (const [entry, drawn] of Object.entries(set.navWrap)) {
-    expect(drawn.replaceAll('\u00AD', '')).toBe(set.nav[entry as keyof typeof set.navWrap]);
+  // The parts of the Notebook are titled like the screens they open.
+  expect(set.screens.components.title).not.toBe(set.screens.dishes.title);
+  // Four destinations, one word each: nothing in the labels to break at.
+  expect(Object.keys(set.nav).sort()).toEqual(
+    ['cook', 'label', 'notebook', 'ratios', 'settings', 'start'].sort(),
+  );
+  for (const key of ['start', 'cook', 'notebook', 'ratios'] as const) {
+    expect(set.nav[key]).toMatch(/^\S+$/);
+    expect(set.nav[key]).not.toContain('\u00AD');
   }
 });
 

@@ -209,7 +209,7 @@ describe('the routes of the classics', () => {
     expect(actionFromHash('#/classic/example-pan-dish')).toBeUndefined();
     expect(hashFor('classic', 'example-pan-dish', 'cook')).toBe('#/classic/example-pan-dish/cook');
     expect(hashFor('classics', 'de')).toBe('#/classics/de');
-    expect(navEntryFor('classics')).toBe('start');
-    expect(navEntryFor('classic')).toBe('start');
+    expect(navEntryFor('classics')).toBe('cook');
+    expect(navEntryFor('classic')).toBe('cook');
   });
 });

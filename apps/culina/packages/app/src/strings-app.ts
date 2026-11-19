@@ -11,21 +11,10 @@ export const appStrings = {
   nav: {
     label: 'Main',
     start: 'Start',
-    ratios: 'Ratios',
-    components: 'Components',
-    dishes: 'Dishes',
     cook: 'Cook',
+    notebook: 'Notebook',
+    ratios: 'Ratios',
     settings: 'Settings',
-  },
-  /** The labels as drawn in the bottom navigation: the same words, with soft hyphens (U+00AD) where a
-   *  label may break on a phone. `test/strings.test.ts` checks that removing them gives `nav`. */
-  navWrap: {
-    start: 'Start',
-    ratios: 'Ratios',
-    components: 'Com\u00ADpo\u00ADnents',
-    dishes: 'Dishes',
-    cook: 'Cook',
-    settings: 'Set\u00ADtings',
   },
   screens: {
     ratios: {
@@ -75,6 +64,7 @@ export const appStrings = {
     starch: 'a starch',
   },
   notebook: {
+    sectionsLabel: 'Parts of the Notebook',
     searchLabel: 'Search by name',
     toTaste: 'to taste',
     invalidNumber: 'Enter a number above 0.',

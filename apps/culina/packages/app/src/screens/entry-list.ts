@@ -49,6 +49,8 @@ export const entryList = (
     asHeading: boolean;
     current?: string;
     note?: string;
+    /** The parts of the Notebook, right under the title. */
+    tabs?: Node;
     /** Shown under the title: the way to add one. */
     actions?: Node[];
     /** Shown with the empty state: example data. */
@@ -58,6 +60,7 @@ export const entryList = (
   const pane = el('section', 'entry-list split-list');
   if (options.asHeading) pane.append(el('h1', undefined, text.title));
   else pane.setAttribute('aria-label', text.listLabel);
+  if (options.tabs !== undefined) pane.append(options.tabs);
   if (options.note !== undefined) pane.append(el('p', 'note-quiet', options.note));
   if (options.actions !== undefined) pane.append(...options.actions);
 

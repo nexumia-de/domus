@@ -104,6 +104,8 @@ export const classicsStrings = {
   noteLevel: {
     studied: 'Study',
     textbook: 'Textbook',
+    tested: 'Kitchen test',
+    authority: 'Authority',
     tradition: 'Tradition',
   } satisfies Record<TechniqueLevel, string>,
   noteSources: 'Sources',

@@ -6,16 +6,15 @@ import { currentLang } from '../../classics/lang';
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import { cookTabs } from '../cook/tabs';
 import { countryLinks } from './country-links';
 
 const t = strings.classics;
 
 export const classicsScreen = (param?: string): HTMLElement => {
   const section = el('section', 'screen classics-screen');
-  const back = el('a', 'family-link', t.backToStart);
-  back.href = hashFor('start');
   if (param === undefined || !isCountry(param)) {
-    section.append(back, el('h1', undefined, t.classicsHeading));
+    section.append(el('h1', undefined, t.classicsHeading), cookTabs('classics'));
     if (param !== undefined) section.append(el('p', 'note-quiet', t.unknownCountry));
     section.append(countryLinks(countryChoices(classics())));
     return section;
@@ -23,7 +22,7 @@ export const classicsScreen = (param?: string): HTMLElement => {
   const country = t.countries[param];
   const all = el('a', 'family-link', t.classicsHeading);
   all.href = hashFor('classics');
-  section.append(all, el('h1', undefined, country));
+  section.append(all, el('h1', undefined, country), cookTabs('classics'));
   const rows = classicRows(classics(), param, currentLang());
   if (rows.length === 0) {
     section.append(el('p', 'note-quiet empty-country', t.emptyCountry));

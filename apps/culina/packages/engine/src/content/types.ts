@@ -7,6 +7,7 @@ export type ContentFindingCode =
   | 'text-incomplete'
   | 'sentence-too-long'
   | 'no-source'
+  | 'unknown-level'
   | 'duplicate-id'
   | 'duplicate-key'
   | 'unknown-technique'
