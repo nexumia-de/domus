@@ -30,7 +30,7 @@ const layout = async (page, label) => {
       const label = link.querySelector('.nav-label').getBoundingClientRect();
       const box = link.getBoundingClientRect();
       return {
-        text: link.textContent.trim(),
+        text: link.getAttribute('aria-label'),
         cut: label.left < box.left - 1 || label.right > box.right + 1,
       };
     }),
@@ -54,7 +54,7 @@ const walk = async (page, origin, label) => {
     await heading(page, title).waitFor();
     const current = await page.locator('nav [aria-current="page"]').allTextContents();
     check(
-      current.length === 1 && current[0].trim() === navName,
+      current.length === 1 && current[0].replaceAll('\u00AD', '').trim() === navName,
       `${label} #/${route}: aria-current on ${navName}`,
     );
     await layout(page, `${label} #/${route}`);

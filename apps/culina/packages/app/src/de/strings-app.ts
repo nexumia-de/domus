@@ -20,6 +20,14 @@ export const appStringsDe: typeof appStrings = {
     cook: 'Kochen',
     settings: 'Einstellungen',
   },
+  navWrap: {
+    start: 'Start',
+    ratios: 'Ver\u00ADhält\u00ADnis\u00ADse',
+    components: 'Kom\u00ADpo\u00ADnen\u00ADten',
+    dishes: 'Ge\u00ADrich\u00ADte',
+    cook: 'Ko\u00ADchen',
+    settings: 'Ein\u00ADstel\u00ADlun\u00ADgen',
+  },
   screens: {
     ratios: {
       title: 'Verhältnisse',

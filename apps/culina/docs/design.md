@@ -137,8 +137,13 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
   header, one pane, **bottom navigation** (icon above label, sticky, 64 px
-  high; five entries, each as wide as its label needs, the rest shared, so
-  "Components" stays on one line at 320 px). From 720 px: **side navigation** (`--side-w` wide, icon beside
+  high; six entries, each as wide as its label needs, the rest shared, so
+  "Components" stays on one line at 320 px with a narrow font). A label that does not fit
+  wraps onto a second line, the bar grows in height; it is never cut off, hidden or set smaller. A wide
+  system font (DejaVu Sans on many Linux devices and on the CI runner) is wider than Inter, so the
+  labels carry soft hyphens (`navWrap`, "Ver&shy;hält&shy;nis&shy;se", "Com&shy;po&shy;nents") and break at syllables;
+  nothing assumes a width. **Test:** `e2e/german.mjs` and `e2e/stock.mjs`, also with the wide font
+  ([development](development.md#browser-checks-with-a-wide-font)). From 720 px: **side navigation** (`--side-w` wide, icon beside
   label) with the app name above it, content on the right at most
   `--content-w` wide. **Test:** `e2e/smoke.mjs` (bottom bar at 360 px, side
   column at 1000 px).

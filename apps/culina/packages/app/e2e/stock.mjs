@@ -48,7 +48,7 @@ const navigation = async (browser, origin, width) => {
       const text = a.querySelector('.nav-label');
       const box = a.getBoundingClientRect();
       return {
-        name: text.textContent,
+        name: text.textContent.replaceAll('\u00AD', ''),
         w: box.width,
         h: box.height,
         lines: Math.round(
@@ -72,9 +72,10 @@ const navigation = async (browser, origin, width) => {
   const heights = await page.evaluate(() =>
     [...document.querySelectorAll('.nav-label')].map((n) => n.getBoundingClientRect().height),
   );
+  // A label that does not fit the system font wraps at a soft hyphen: one or two lines, never more.
   check(
-    new Set(heights).size === 1,
-    `${width}px: every navigation label is on one line (${heights})`,
+    heights.every((h) => h <= 2 * Math.min(...heights) + 1),
+    `${width}px: every navigation label takes one or two lines (${heights})`,
   );
   await context.close();
 };

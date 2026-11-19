@@ -50,6 +50,10 @@ test.each([
   expect(set.nav.cook).toBe(set.cook.title);
   expect(set.stock.title).toBe(set.cook.tabStock);
   expect(set.nav.settings).toBe(set.settings.title);
+  // The drawn labels are the same words, only with soft hyphens where they may wrap.
+  for (const [entry, drawn] of Object.entries(set.navWrap)) {
+    expect(drawn.replaceAll('\u00AD', '')).toBe(set.nav[entry as keyof typeof set.navWrap]);
+  }
 });
 
 test('the two texts in index.html are the ones in strings', () => {

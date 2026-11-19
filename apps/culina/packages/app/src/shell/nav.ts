@@ -18,7 +18,10 @@ export const createNav = (): Nav => {
   for (const route of NAV_ENTRIES) {
     const link = el('a', 'nav-link');
     link.href = hashFor(route);
-    link.append(icon(route), el('span', 'nav-label', strings.nav[route]));
+    // The drawn label may carry soft hyphens so that it can wrap on a phone; the accessible name stays
+    // the plain word, whatever a screen reader does with U+00AD.
+    link.setAttribute('aria-label', strings.nav[route]);
+    link.append(icon(route), el('span', 'nav-label', strings.navWrap[route]));
     const item = el('li');
     item.append(link);
     list.append(item);

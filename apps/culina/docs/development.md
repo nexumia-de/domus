@@ -26,17 +26,18 @@ TypeScript, installed for that build only).
 
 ## Commands
 
-| Command                              | What it does                                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                                    |
-| `npm run format`                     | Prettier writes all files                                                                              |
-| `npm run format:check`               | Prettier checks all files                                                                              |
-| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                                    |
-| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                        |
-| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                            |
-| `npm run build`                      | esbuild writes `packages/app/dist/`                                                                    |
-| `npm run e2e`                        | generates what `npm test` generates, builds, serves `dist/` and runs the Playwright checks in Chromium |
-| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file))         |
+| Command                              | What it does                                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                                          |
+| `npm run format`                     | Prettier writes all files                                                                                    |
+| `npm run format:check`               | Prettier checks all files                                                                                    |
+| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                                          |
+| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                              |
+| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                                  |
+| `npm run build`                      | esbuild writes `packages/app/dist/`                                                                          |
+| `npm run e2e`                        | generates what `npm test` generates, builds, serves `dist/` and runs the Playwright checks in Chromium       |
+| `E2E_WIDE_FONT=1 npm run e2e`        | the same with DejaVu Sans as the system font, like the CI runner ([below](#browser-checks-with-a-wide-font)) |
+| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file))               |
 
 ## Layout
 
@@ -140,6 +141,20 @@ and `e2e/store.mjs` (records survive a reload and a service worker update, no fo
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
+
+### Browser checks with a wide font
+
+The default sans font of a machine decides how wide a label gets: on a developer machine with Inter the
+navigation fitted at 360 px, on the CI runner (ubuntu, DejaVu Sans as the fallback) it did not, and the
+page scrolled sideways. `E2E_WIDE_FONT=1 npm run e2e` starts Chromium with a temporary fontconfig file
+(`e2e/harness.mjs`) that makes DejaVu Sans the `sans-serif` and `system-ui` font; it needs the package
+`fonts-dejavu-core` and fails with a message when the font is missing. No font is added to the
+repository. Run both before a change to the shell, the navigation or the type sizes:
+
+```
+npm run e2e -w culina
+E2E_WIDE_FONT=1 npm run e2e -w culina
+```
 
 ## Ingredient catalogue
 

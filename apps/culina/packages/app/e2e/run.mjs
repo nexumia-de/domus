@@ -1,5 +1,6 @@
 // `npm run e2e`: build, serve dist/, run the browser checks. Exit code 1 on any failure.
-// Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
+// Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own. E2E_WIDE_FONT=1: DejaVu Sans
+// as the system font (see harness.mjs).
 import { catalogue } from './catalogue.mjs';
 import { classics } from './classics.mjs';
 import { classicsFinder } from './classics-finder.mjs';

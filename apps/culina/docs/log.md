@@ -2,6 +2,8 @@
 
 ## 2026-11-19
 
+- **Update**: Culina is served from `domus.nexumia.de/culina/`; `culina.nexumia.de` redirects there. Its own worker configuration, wrangler pin and deploy job are gone. [Deployment](deployment.md) says so at the top; the rest of that document describes the time before.
+- **Fix**: the bottom navigation no longer scrolls the page sideways with a wide system font. The German labels (Verhältnisse, Komponenten, Einstellungen) did not fit at 360 px in DejaVu Sans, the default on the CI runner, so `culina-e2e` failed on every German screen while it passed locally with Inter. A label that does not fit now wraps onto a second line at its soft hyphens (`navWrap`; the link keeps the plain word as `aria-label`); no truncation, no hidden label, no smaller type, desktop unchanged. `E2E_WIDE_FONT=1 npm run e2e` reproduces the runner's font locally. [Design](design.md#layout-and-breakpoints), [development](development.md#browser-checks-with-a-wide-font).
 - **Fix**: `npm run e2e` generates the validators, classics, techniques and substitutes first (`pree2e`). The browser scripts bundle the engine when they are imported, before the build runs, so a fresh checkout failed on the missing generated files; the CI job `culina-e2e` showed it. [Development](development.md).
 - **Update**: Culina moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
 

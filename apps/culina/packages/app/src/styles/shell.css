@@ -65,14 +65,21 @@
   list-style: none;
 }
 
-/* Each entry is as wide as its label needs and the rest is shared, so five labels fit at 320 px. */
+/* Each entry is as wide as its label needs and the rest is shared. An entry never shrinks below its
+   longest unbreakable piece (min-width auto), so short labels stay on one line. */
 .nav-list li {
   flex: 1 1 auto;
-  min-width: 0;
 }
 
+/* A long label may take two lines. How wide a word gets depends on the system font of the device (a
+   wide font such as DejaVu Sans is wider than Inter), so no width is assumed: the strings carry soft
+   hyphens (`navWrap`), which also count in the entry's minimum width, so an entry shrinks only down to
+   its longest syllable. Never truncated, never hidden, never smaller type. `base.css` sets
+   `overflow-wrap: anywhere` for the whole page, which would let any label break between letters and
+   shrink every entry; here only the soft hyphens may break. */
 .nav-label {
-  white-space: nowrap;
+  hyphens: manual;
+  overflow-wrap: normal;
 }
 
 .nav-link {
@@ -92,7 +99,7 @@
 }
 
 /* German labels are longer (Verhältnisse, Komponenten, Einstellungen): on a phone they get a little
-   less type and padding so that all six entries fit at 360 px. */
+   less type and padding, and wrap onto a second line where six entries do not fit at 360 px. */
 @media (max-width: 719px) {
   :root[lang='de'] .nav-link {
     padding-inline: 2px;

@@ -36,7 +36,7 @@ const measure = (page) =>
       main: box('main'),
       targets: [...document.querySelectorAll('nav a, summary, .choice')].map((n) => {
         const r = n.getBoundingClientRect();
-        return { name: n.textContent.trim(), w: r.width, h: r.height };
+        return { name: n.textContent.replaceAll('\u00AD', '').trim(), w: r.width, h: r.height };
       }),
     };
   });
@@ -71,7 +71,7 @@ const shellAt = async (browser, origin, width, height) => {
     );
     const current = await page.locator('nav [aria-current="page"]').allTextContents();
     check(
-      current.length === 1 && current[0].trim() === NAMES[route],
+      current.length === 1 && current[0].replaceAll('\u00AD', '').trim() === NAMES[route],
       `${width}px #/${route}: aria-current on ${NAMES[route]}`,
     );
   }

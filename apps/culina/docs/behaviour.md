@@ -514,7 +514,8 @@ Texts: `src/strings-stock.ts`.
   Only an entered use by counts for them (components have no shelf life).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
   least 44 px. The navigation entries are as wide as their labels need and
-  share the rest, so five labels fit on one line at 320 px.
+  share the rest, so the labels fit on one line at 320 px with a narrow font; with a wider font the
+  longer ones wrap onto two lines ([design](design.md#layout-and-breakpoints)).
 - **Offline.** The catalogue is precached; ticking, the list and the detail
   work offline. **Test:** `e2e/stock.mjs` (also 320 and 1000 px, remaining
   days at fixed dates, a field of another app surviving an edit).
@@ -747,7 +748,9 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   in `shared/locale.ts`); the engine never formats and knows no language. **Test:**
   `test/locale.test.ts`.
 - **Layout.** German labels are longer; on a phone the six navigation labels get the type size
-  `--fs-xxs` and 2 px side padding when `lang` is `de`, so they fit at 360 px.
+  `--fs-xxs` and 2 px side padding when `lang` is `de`, and a label that still does not fit wraps at
+  its soft hyphens (`navWrap` in the strings; the link keeps the plain word as `aria-label`) onto a
+  second line, so the page never scrolls sideways, also with a wide system font such as DejaVu Sans.
 - **Test:** `e2e/german.mjs` chooses German through the setting, walks the main screens and the
   classics flow at 360 x 720 (no horizontal scroll, targets at least 44 x 44, navigation labels
   inside their entries, no console error), chooses English again, and repeats the walk with the
