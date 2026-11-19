@@ -1,0 +1,30 @@
+{
+  "id": "salt-pasta-water",
+  "target": "fdc-173468",
+  "text": {
+    "en": "Put the salt into the pasta cooking water, not onto the cooked pasta.",
+    "de": "Das Salz ins Nudelkochwasser geben, nicht erst auf die gekochten Nudeln."
+  },
+  "why": {
+    "en": "The pasta takes up water and salt while it cooks; salt added afterwards does not season the same way.",
+    "de": "Die Nudeln nehmen beim Garen Wasser und Salz auf; später zugegebenes Salz würzt nicht auf dieselbe Weise."
+  },
+  "technique": "cook-pasta",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6 Pasta, section 6.2 Purchasing, Storing and Cooking Pasta Products",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Salt should be added to the water. Pasta absorbs water and salt during cooking."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6 Pasta, section 6.2 Purchasing, Storing and Cooking Pasta Products",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Adding salt to the pasta after it is cooked will not provide the same seasoning effect."
+    }
+  ]
+}

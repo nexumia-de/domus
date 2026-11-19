@@ -1,0 +1,17 @@
+SELECT ?item ?ndb
+  (SAMPLE(?deL) AS ?de) (SAMPLE(?enL) AS ?en)
+  (GROUP_CONCAT(DISTINCT ?deA; separator="¦") AS ?deAliases)
+  (GROUP_CONCAT(DISTINCT ?cls; separator="¦") AS ?classes)
+WHERE {
+  ?item wdt:P1978 ?ndb .
+  OPTIONAL { ?item rdfs:label ?deL . FILTER(LANG(?deL) = "de") }
+  OPTIONAL { ?item rdfs:label ?enL . FILTER(LANG(?enL) = "en") }
+  OPTIONAL { ?item skos:altLabel ?deA . FILTER(LANG(?deA) = "de") }
+  OPTIONAL {
+    { ?item wdt:P31 ?c . BIND(CONCAT("i:", STRAFTER(STR(?c), "entity/")) AS ?cls) }
+    UNION
+    { ?item wdt:P279 ?c . BIND(CONCAT("s:", STRAFTER(STR(?c), "entity/")) AS ?cls) }
+  }
+}
+GROUP BY ?item ?ndb
+ORDER BY ?item ?ndb

@@ -1,0 +1,17 @@
+{
+  "id": "portions-remainder",
+  "description": "A yield with a remainder",
+  "inputs": {
+    "kind": "portions",
+    "operation": "portions_from_yield",
+    "yield_g": 1000,
+    "portion_g": 300
+  },
+  "expected": {
+    "portions": 3.333333,
+    "whole_portions": 3,
+    "remainder_g": 100
+  },
+  "tolerance": 0.000001,
+  "source": "1000 / 300 = 3.333333; whole 3; remainder 1000 - 3 x 300 = 100 g."
+}

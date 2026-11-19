@@ -1,0 +1,236 @@
+{
+  "id": "haricots-verts-beurre",
+  "name": {
+    "en": "Green beans sautéed in butter",
+    "de": "Grüne Bohnen in Butter sautiert"
+  },
+  "originalName": "Haricots verts sautés au beurre",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Haricots verts sautés au beurre\", p. 235; gouffe.txt lines 13671-13683. The cooking is that of the preceding recipe, \"Haricots verts à la poulette\", lines 13623-13640",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "haricots-verts-boiled",
+      "name": {
+        "en": "Boiled green beans",
+        "de": "Gekochte grüne Bohnen"
+      },
+      "lines": [
+        {
+          "key": "beans",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169961"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "500 grammes de haricots verts"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "l",
+            "original": "3 litres d'eau"
+          },
+          "note": {
+            "en": "Boiled in a pan that holds 4 litres.",
+            "de": "In einem Topf mit 4 Litern Inhalt gekocht."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g",
+            "original": "10 grammes de sel"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Top and tail the beans, removing about half a centimetre at each end, and wash them.",
+            "de": "Die Bohnen an beiden Enden etwa einen halben Zentimeter abschneiden und waschen."
+          },
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Bring the water to the boil in a pan of 4 litres.",
+            "de": "Das Wasser in einem Topf mit 4 Litern Inhalt zum Kochen bringen."
+          },
+          "technique": "boil",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Add the salt and put the beans into the boiling water, uncovered.",
+            "de": "Das Salz zugeben und die Bohnen unbedeckt ins kochende Wasser geben."
+          },
+          "uses": ["salt", "beans"]
+        },
+        {
+          "text": {
+            "en": "Cook until the beans are done: press one between the fingers, it should bend without crushing.",
+            "de": "Garen, bis die Bohnen gar sind: eine zwischen den Fingern drücken, sie soll sich biegen lassen, ohne zu zerdrücken."
+          },
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Drain the beans.",
+            "de": "Die Bohnen abgießen."
+          },
+          "uses": ["beans"]
+        }
+      ]
+    },
+    {
+      "id": "haricots-verts-beurre",
+      "name": {
+        "en": "Green beans sautéed in butter",
+        "de": "Grüne Bohnen in Butter sautiert"
+      },
+      "lines": [
+        {
+          "key": "beans",
+          "ref": {
+            "kind": "component",
+            "id": "haricots-verts-boiled"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "500 grammes de haricots verts"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "50 grammes de beurre"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "Original: 1 petite pincée de sel (a small pinch). The book sizes a pinch, not a small one, so the line has no amount.",
+            "de": "Original: 1 petite pincée de sel (eine kleine Prise). Das Buch gibt die Größe einer Prise an, nicht die einer kleinen; daher keine Menge."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount.",
+            "de": "Original: 1 demi-cuillerée à bouche de persil haché. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "note": {
+            "en": "Original: 1 cuillerée à café de jus de citron. The book gives no size for a coffee spoon, so no amount.",
+            "de": "Original: 1 cuillerée à café de jus de citron. Das Buch gibt für den Kaffeelöffel keine Größe an, daher keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the butter into the sauté pan and melt it.",
+            "de": "Die Butter in die Sautierpfanne geben und schmelzen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Add the beans and sauté them over high heat for 8 minutes.",
+            "de": "Die Bohnen zugeben und bei starker Hitze 8 Minuten sautieren."
+          },
+          "technique": "saute",
+          "uses": ["beans"],
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the salt, the parsley and the lemon juice.",
+            "de": "Salz, Petersilie und Zitronensaft zugeben."
+          },
+          "uses": ["salt", "parsley", "lemon"]
+        },
+        {
+          "text": {
+            "en": "Mix everything well and serve.",
+            "de": "Alles gut vermischen und servieren."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "haricots-verts-beurre"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 500 g of beans is taken as a side dish for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 13623-13640 and 13671-13683: all numbers agree. Changed: the petite pincée and the parsley lost their amounts; the book sizes a pinch (10 g) and a spoon for flour only."
+  },
+  "note": {
+    "en": "The beans are cooked as in the preceding recipe, Haricots verts à la poulette, which the book gives as the cooking of this dish; the book's remark there is to cook them uncovered, in plenty of water, over high heat.",
+    "de": "Die Bohnen werden wie im vorangehenden Rezept Haricots verts à la poulette gegart, auf das dieses Rezept verweist; das Buch rät dort, unbedeckt, in viel Wasser und bei starker Hitze zu garen."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "rows": {
+    "ingredients": [
+      {
+        "key": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+        "updatedAt": "2026-11-16T09:00:00.000Z",
+        "value": {
+          "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+          "name": "Onion",
+          "parentId": "alliums",
+          "x-note": "from the garden, sweet in October"
+        }
+      },
+      {
+        "key": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee9",
+        "updatedAt": "2026-11-17T10:00:00.000Z",
+        "deleted": true
+      }
+    ],
+    "stock": [
+      {
+        "key": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+        "updatedAt": "2026-11-16T12:30:00.000Z",
+        "value": {
+          "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+          "ref": { "kind": "ingredient", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1" },
+          "amount": { "value": 400, "unit": "g" },
+          "state": "raw",
+          "x-note": "bought at the market"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "id": "resolve-nested-derivatives",
+  "description": "A grandchild applies the changes of its parent and then its own, root first; the range is inherited with the part",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "grand",
+        "name": "grand",
+        "source": "user",
+        "parentId": "child",
+        "changes": [
+          {
+            "op": "remove",
+            "role": "water"
+          },
+          {
+            "op": "add",
+            "role": "egg",
+            "parts": 1
+          },
+          {
+            "op": "swap",
+            "role": "sugar",
+            "ingredientClass": "honey"
+          }
+        ]
+      },
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "child",
+        "name": "child",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "sugar",
+            "parts": 1
+          },
+          {
+            "op": "swap",
+            "role": "fat",
+            "ingredientClass": "butter"
+          }
+        ]
+      }
+    ],
+    "id": "grand"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "sugar", "egg"],
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "sugar": 1,
+      "egg": 1
+    },
+    "lineage": ["pie", "child", "grand"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      }
+    },
+    "ingredient_classes": {
+      "fat": "butter",
+      "sugar": "honey"
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "Order: parent 3:2:1; child adds sugar 1; grand removes water, adds egg 1; templates deliberately out of order in the input; synthetic template numbers chosen for the arithmetic, not from a source"
+}

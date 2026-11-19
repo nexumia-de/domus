@@ -1,0 +1,49 @@
+{
+  "id": "unknown-parent-version-dish",
+  "description": "A dish version whose parent record does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d1",
+          "name": "d1",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18",
+            "parent": "d0"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-parent",
+        "kind": "dish",
+        "id": "d1",
+        "path": "version.parent",
+        "ref": "d0"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

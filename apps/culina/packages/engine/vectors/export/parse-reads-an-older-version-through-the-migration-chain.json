@@ -1,0 +1,28 @@
+{
+  "id": "parse-reads-an-older-version-through-the-migration-chain",
+  "description": "Version 1 read by a reader at version 3: two test migrations run in order (rename of a field, then a marker) and the record validates",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 1,
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour"
+        }
+      ]
+    },
+    "current": 3,
+    "migrations": "test:rename-then-mark"
+  },
+  "expected": {
+    "ok": true,
+    "counts": {
+      "ingredients": 1
+    },
+    "formatVersion": 3
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the migration chain is proven with test-only steps defined in the runner, as the store does."
+}

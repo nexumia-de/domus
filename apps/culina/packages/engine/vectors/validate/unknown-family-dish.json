@@ -1,0 +1,48 @@
+{
+  "id": "unknown-family-dish",
+  "description": "The family of a dish is a dish that must exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d2",
+          "name": "d2",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-family",
+        "kind": "dish",
+        "id": "d2",
+        "path": "version.family",
+        "ref": "d1"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

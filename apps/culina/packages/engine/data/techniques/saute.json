@@ -1,0 +1,39 @@
+{
+  "id": "saute",
+  "name": {
+    "en": "Sautéing",
+    "de": "Sautieren"
+  },
+  "watch": {
+    "en": "Have everything cut and ready before you start: the cooking goes fast.",
+    "de": "Alles vor dem Start geschnitten und bereitstellen: das Garen geht schnell."
+  },
+  "why": {
+    "en": "Sautéing cooks in a little fat in a shallow pan over high heat, and small or thin pieces cook quickly.",
+    "de": "Beim Sautieren gart man in wenig Fett in einer flachen Pfanne bei hoher Hitze, und kleine oder dünne Stücke garen schnell."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Selecting and Preparing Vegetables to Sauté",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "When sautéing vegetables, all preparation must be complete before cooking begins because timing is important and cooking progresses rapidly."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 1.5 The Cooking Techniques - Saute",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/01%3A_Professionalism_and_Saute/1.05%3A_The_Cooking_Techniques_-_Saute",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "It is a dry method of cooking that uses a relatively small amount of oil or fat in a shallow pan over relatively high heat."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 1.5 The Cooking Techniques - Saute",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/01%3A_Professionalism_and_Saute/1.05%3A_The_Cooking_Techniques_-_Saute",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Ingredients for sautéing are usually cut into pieces or thinly sliced to facilitate fast cooking."
+    }
+  ]
+}

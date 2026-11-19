@@ -1,0 +1,17 @@
+{
+  "id": "conventions-servings-and-yield-metadata",
+  "description": "Canonical metadata keys: servings and yield as number%unit, also a list",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "---\nservings: 2\nyield: [500%ml, 350%g]\n---\n"
+  },
+  "expected": {
+    "metadata": {
+      "servings": "2",
+      "yield": ["500%ml", "350%g"]
+    },
+    "steps": []
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, conventions.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/conventions.md, MIT), section Canonical metadata"
+}

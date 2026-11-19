@@ -1,0 +1,55 @@
+{
+  "id": "resolve-error-duplicate-id",
+  "description": "Two templates share an id",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      }
+    ],
+    "id": "pie"
+  },
+  "error_code": "duplicate-id",
+  "error_detail": {
+    "templateId": "pie"
+  },
+  "source": "pie twice; synthetic template numbers chosen for the arithmetic, not from a source"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "convert-oz-to-ml",
+  "description": "1 oz in ml",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "oz"
+    },
+    "to": "ml",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 56.699046
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 oz -> grams -> ml with the synthetic facts {\"densityGPerMl\":0.5}: grams = 28.349523, result 56.699046 ml. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

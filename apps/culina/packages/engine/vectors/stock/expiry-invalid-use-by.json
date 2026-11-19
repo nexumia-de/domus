@@ -1,0 +1,22 @@
+{
+  "id": "expiry-invalid-use-by",
+  "description": "A use-by that is not a real date",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-02-30"
+    },
+    "today": "2026-11-18"
+  },
+  "error_code": "invalid-date",
+  "error_detail": {
+    "field": "useBy"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: a date that is not a real calendar date is an error, never a guess."
+}

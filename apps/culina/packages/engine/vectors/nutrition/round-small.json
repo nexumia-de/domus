@@ -1,0 +1,29 @@
+{
+  "id": "round-small",
+  "description": "Small values: 49 kcal up to 50 to the nearest 5 = 50; kJ 4 = 0; protein 0.49 below 0.5 g = 0; fat 4.74 below 5 g to the nearest 0.5 = 4.5; carbohydrate 0.5 = 1; fibre 0.2 = 0; salt 1.2 mg below 5 mg = 0",
+  "inputs": {
+    "kind": "nutrition_round",
+    "figures": {
+      "kcal": 49,
+      "kJ": 4,
+      "proteinG": 0.49,
+      "fatG": 4.74,
+      "carbohydrateG": 0.5,
+      "fibreG": 0.2,
+      "saltG": 0.0012
+    }
+  },
+  "expected": {
+    "rounded": {
+      "kcal": 50,
+      "kJ": 0,
+      "proteinG": 0,
+      "fatG": 4.5,
+      "carbohydrateG": 1,
+      "fibreG": 0,
+      "saltG": 0
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

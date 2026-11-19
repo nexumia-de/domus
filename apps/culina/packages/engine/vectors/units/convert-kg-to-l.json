@@ -1,0 +1,20 @@
+{
+  "id": "convert-kg-to-l",
+  "description": "1 kg in l",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "kg"
+    },
+    "to": "l",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 2
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 kg -> grams -> l with the synthetic facts {\"densityGPerMl\":0.5}: grams = 1000, result 2 l. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

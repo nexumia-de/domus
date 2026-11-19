@@ -1,0 +1,224 @@
+{
+  "id": "milchsuppe",
+  "name": {
+    "en": "Fine milk soup",
+    "de": "Feine Milchsuppe"
+  },
+  "originalName": "Fine Milk Soups served either warm or cold, No. 68",
+  "country": "de",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division B (Soups), No. 68",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 3,
+    "basis": "stated"
+  },
+  "units": {
+    "quart": {
+      "kind": "volume",
+      "factor": 946.352946,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"; preface: the German metrical measures \"have been changed to conform to those in vogue\" in the United States); taken as the US customary quart, four cups of units.json (946.352946 ml). A judgement."
+    },
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "milchsuppe-soup",
+      "name": {
+        "en": "Fine milk soup",
+        "de": "Feine Milchsuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "quart",
+            "original": "1 quart of fresh milk"
+          },
+          "note": {
+            "en": "The second edition gives the quart only as a unit (Qt) without a legible number; the source's 1 quart is used.",
+            "de": "Die deutsche Ausgabe nennt die Einheit Qt ohne lesbare Zahl; verwendet wird das 1 Quart der Quelle."
+          }
+        },
+        {
+          "key": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tablespoonful",
+            "original": "1 tablespoonful of cornstarch"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "the yolks of 2 eggs"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "No quantity given: to taste.",
+            "de": "Keine Menge angegeben: nach Geschmack."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "note": {
+            "en": "Lemon peel. The source also allows a little vanilla or a few pounded bitter almonds; lemon peel is used here. No quantity given.",
+            "de": "Zitronenschale. Die Quelle erlaubt auch etwas Vanille oder einige gestoßene bittere Mandeln; hier wird Zitronenschale verwendet. Keine Menge angegeben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the milk, the cornstarch, the egg yolks, the sugar and the lemon peel into a pot.",
+            "de": "Milch, Stärke, Eigelb, Zucker und Zitronenschale in einen Topf geben."
+          },
+          "uses": ["milk", "starch", "yolk", "sugar", "lemon"]
+        },
+        {
+          "text": {
+            "en": "Stir constantly over a hot fire until it is cooked.",
+            "de": "Über starker Hitze ständig rühren, bis sie gar ist."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["milk", "starch", "yolk"]
+        },
+        {
+          "text": {
+            "en": "Pour the soup into the tureen.",
+            "de": "Die Suppe in die Suppenschüssel gießen."
+          }
+        }
+      ]
+    },
+    {
+      "id": "milchsuppe-froth",
+      "name": {
+        "en": "Egg-white froth balls",
+        "de": "Eischnee-Klößchen"
+      },
+      "role": "garnish",
+      "lines": [
+        {
+          "key": "whites",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-white"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "the whites of eggs"
+          },
+          "settled": true,
+          "note": {
+            "en": "The source gives no number for the whites; they come from the 2 eggs of the yolks.",
+            "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern der Eigelb."
+          }
+        },
+        {
+          "key": "froth-sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "To sprinkle; no quantity given.",
+            "de": "Zum Bestreuen; keine Menge angegeben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the egg whites to a stiff froth.",
+            "de": "Das Eiweiß zu steifem Schnee schlagen."
+          },
+          "technique": "whip-egg-whites",
+          "uses": ["whites"]
+        },
+        {
+          "text": {
+            "en": "Shape the froth into little balls, lay them on the soup and sprinkle them with sugar.",
+            "de": "Den Schnee zu kleinen Klößchen formen, auf die Suppe legen und mit Zucker bestreuen."
+          },
+          "uses": ["whites", "froth-sugar"]
+        },
+        {
+          "text": {
+            "en": "Cover the tureen; the balls are done in a few minutes.",
+            "de": "Die Suppenschüssel zudecken; die Klößchen sind in wenigen Minuten gar."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "milchsuppe-soup"
+      }
+    },
+    {
+      "role": "garnish",
+      "ref": {
+        "kind": "component",
+        "id": "milchsuppe-froth"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of egg whites",
+      "value": "2",
+      "reason": "Our judgement: the source says \"the whites of eggs\" without a number; they belong to the 2 eggs whose yolks are used.",
+      "target": "milchsuppe-froth/whites"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 74 (davidis.txt 9238-9250), froth balls as Nr. 64 (8930-8940). Agreed: 3 persons, 1 tablespoon starch, 2 yolks, sugar, lemon or vanilla, cooking over a hot fire, froth balls with sugar, covered. Weak: the milk reads 'Ot' (Qt) without a numeral; English 1 quart kept. Changed: 'until cooked'; 'at once' and 'with a spoon' removed."
+  },
+  "note": {
+    "en": "The plain version: the cornstarch soup with yolks, sweetened and flavoured with lemon peel, with the egg-white balls. The source also allows mixing the froth with sugar and stirring it into the soup until it is frothy. The source's remark that the soup can be served cold in the hot season is not transcribed.",
+    "de": "Die einfache Form: die Stärkesuppe mit Eigelb, gesüßt und mit Zitronenschale gewürzt, dazu die Eischnee-Klößchen. Die Quelle erlaubt auch, den Schnee mit Zucker zu mischen und in die Suppe zu rühren, bis sie schaumig ist. Der Hinweis, die Suppe in der heißen Jahreszeit kalt zu geben, ist nicht übertragen."
+  }
+}

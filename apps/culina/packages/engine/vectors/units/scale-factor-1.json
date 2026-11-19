@@ -1,0 +1,64 @@
+{
+  "id": "scale-factor-1",
+  "description": "Factor 1 leaves everything and flags nothing",
+  "inputs": {
+    "kind": "scale_factor",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 200,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "butter",
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "salt",
+        "amount": {
+          "value": 4,
+          "unit": "g"
+        },
+        "role": "salt"
+      },
+      {
+        "id": "pepper"
+      },
+      {
+        "id": "hydration",
+        "amount": {
+          "value": 50,
+          "unit": "percent"
+        }
+      }
+    ],
+    "factor": 1
+  },
+  "expected": {
+    "factor": 1,
+    "values": {
+      "flour": 200,
+      "butter": 100,
+      "salt": 4,
+      "hydration": 50
+    },
+    "unscaled": [
+      {
+        "id": "pepper",
+        "reason": "no-amount"
+      },
+      {
+        "id": "hydration",
+        "reason": "percent"
+      }
+    ],
+    "cautions": []
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: factor 1 changes nothing, so there is nothing to flag."
+}

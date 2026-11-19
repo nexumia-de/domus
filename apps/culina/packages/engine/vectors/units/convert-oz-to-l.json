@@ -1,0 +1,20 @@
+{
+  "id": "convert-oz-to-l",
+  "description": "100 oz in l",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "oz"
+    },
+    "to": "l",
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "value": 5.669905
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 oz -> grams -> l with the synthetic facts {\"densityGPerMl\":0.5}: grams = 2834.952313, result 5.669905 l. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

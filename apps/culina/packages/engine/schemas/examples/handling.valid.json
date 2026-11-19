@@ -1,0 +1,23 @@
+{
+  "id": "example-handling-rule",
+  "target": "fdc-group-butter",
+  "text": {
+    "en": "Example rule (fictional): say in one or two short sentences when the ingredient goes in and how it is treated.",
+    "de": "Beispielregel (erfunden): in ein bis zwei kurzen Sätzen sagen, wann die Zutat hineinkommt und wie sie behandelt wird."
+  },
+  "why": {
+    "en": "Example reason: say in one or two lines why.",
+    "de": "Beispielgrund: in ein bis zwei Zeilen sagen, warum."
+  },
+  "technique": "example-technique",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}

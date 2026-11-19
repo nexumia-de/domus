@@ -1,0 +1,23 @@
+{
+  "id": "edible-error-invalid-percent",
+  "description": "A percent of 0",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_purchased",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 0,
+        "source": "synthetic"
+      }
+    ],
+    "state": "raw",
+    "g": 100
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "percent"
+  },
+  "tolerance": 0.000001,
+  "source": "Dividing by 0 percent is undefined."
+}

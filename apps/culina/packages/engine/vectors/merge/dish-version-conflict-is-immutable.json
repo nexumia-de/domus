@@ -1,0 +1,62 @@
+{
+  "id": "dish-version-conflict-is-immutable",
+  "description": "Dish versions are version records too",
+  "inputs": {
+    "kind": "merge_plan",
+    "mine": {
+      "dishes": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000014",
+          "name": "Plate",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-000000000014",
+            "date": "2026-11-01"
+          }
+        }
+      ]
+    },
+    "file": {
+      "dishes": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000014",
+          "name": "Plate 2",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-000000000014",
+            "date": "2026-11-01"
+          }
+        }
+      ]
+    },
+    "choices": {
+      "dishes/u-00000000-0000-4000-8000-000000000014": "theirs"
+    }
+  },
+  "expected": {
+    "add": {},
+    "same": {},
+    "conflicts": ["dishes/u-00000000-0000-4000-8000-000000000014"],
+    "immutable": ["dishes/u-00000000-0000-4000-8000-000000000014"],
+    "skippedNotes": [],
+    "writes": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is by id and by content, no kitchen figure is involved."
+}

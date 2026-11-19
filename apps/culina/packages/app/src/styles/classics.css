@@ -1,0 +1,222 @@
+/* The classics: the start screen, the lists, the dish, cooking step by step, the settings rows. */
+.start-block {
+  margin: 0 0 var(--sp-5);
+}
+
+.start-block h2,
+.skills-section h2 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: var(--fs-md);
+}
+
+.country-list .row-link,
+.start-tools .row-link,
+.classic-link {
+  align-items: center;
+  min-height: var(--target);
+  font-weight: 600;
+}
+
+.classic-link {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--sp-3);
+}
+
+.classic-card .cook-start {
+  margin: var(--sp-3) 0;
+  text-decoration: none;
+}
+
+.recipe-block h2 {
+  margin: var(--sp-4) 0 var(--sp-2);
+}
+
+.recipe-block h3 {
+  margin: var(--sp-3) 0 var(--sp-1);
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.recipe-lines,
+.recipe-steps,
+.settled-list,
+.technique-sources,
+.handling-sources,
+.substitute-sources {
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.recipe-steps {
+  padding-inline-start: var(--sp-5);
+  list-style: decimal;
+}
+
+.recipe-steps li {
+  padding: var(--sp-1) 0;
+}
+
+.recipe-line {
+  display: grid;
+  grid-template-columns: minmax(5rem, 8rem) minmax(0, 1fr);
+  gap: 0 var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--divider);
+  overflow-wrap: anywhere;
+}
+
+.recipe-amount {
+  text-align: start;
+  font-weight: 600;
+}
+
+.recipe-extra {
+  grid-column: 2;
+  font-size: var(--fs-sm);
+}
+
+.foot-block,
+.technique-more,
+.handling-more,
+.substitute-more,
+.cook-whole {
+  margin: var(--sp-3) 0;
+}
+
+.foot-block summary,
+.technique-more summary,
+.handling-more summary,
+.substitute-more summary,
+.cook-whole summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cook-progress {
+  display: block;
+  width: 100%;
+  height: var(--sp-2);
+  margin: var(--sp-2) 0 var(--sp-3);
+  accent-color: var(--accent);
+}
+
+.cook-step-heading {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-lg);
+}
+
+.cook-step-text {
+  margin: var(--sp-2) 0 var(--sp-3);
+  font-size: var(--fs-lg);
+}
+
+.cook-facts {
+  font-weight: 600;
+}
+
+.cook-buttons {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+}
+
+.cook-buttons .btn {
+  min-height: calc(var(--target) + var(--sp-3));
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.cook-buttons .cook-next[hidden] {
+  display: none;
+}
+
+.technique-note,
+.handling-note {
+  margin: var(--sp-4) 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+}
+
+.technique-note h3,
+.handling-note h3,
+.substitute-note h3 {
+  margin: 0 0 var(--sp-1);
+  font-size: var(--fs-md);
+}
+
+.technique-note h4,
+.handling-note h4,
+.substitute-note h4 {
+  margin: var(--sp-2) 0 var(--sp-1);
+  font-size: var(--fs-sm);
+}
+
+.technique-sources a,
+.handling-sources a,
+.substitute-sources a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+}
+
+.classic-finish {
+  margin: var(--sp-4) 0;
+}
+
+.classic-finish .keep-button {
+  margin: var(--sp-2) 0;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
+}
+
+.skill-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.line-instead {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.substitute-panel {
+  grid-column: 1 / -1;
+}
+
+.substitute-panel[hidden] {
+  display: none;
+}
+
+.substitute-note {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.note-lead {
+  margin: 0 0 var(--sp-1);
+  font-weight: 600;
+}

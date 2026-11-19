@@ -1,0 +1,19 @@
+/* The nutrition section of a dish: a plain list of names and numbers, no colour that carries meaning. */
+.nutrition-list {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-1) var(--sp-3);
+  margin: var(--sp-2) 0;
+}
+
+.nutrition-list dt,
+.nutrition-list dd {
+  margin: 0;
+  padding: var(--sp-1) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.nutrition-list dd {
+  text-align: end;
+  font-weight: 600;
+}

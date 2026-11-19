@@ -1,0 +1,82 @@
+{
+  "format": "culina-ingredient-catalogue",
+  "formatVersion": 1,
+  "dataset": {
+    "name": "USDA FoodData Central, SR Legacy",
+    "release": "2018-04",
+    "file": "FoodData_Central_sr_legacy_food_json_2018-04.json",
+    "sha256": "70d4235ae3a2bdf48a7b9eaa1286a83fa67b6f3270436c9ce8b008213f500129",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://fdc.nal.usda.gov/ (section Licensing)"
+  },
+  "generatedBy": "tools/catalogue/build.mjs",
+  "ingredients": [
+    {
+      "id": "fdc-169230",
+      "name": "Garlic",
+      "names": { "de": { "name": "Knoblauch", "source": "user" } },
+      "densityGPerMl": {
+        "value": 0.575,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 cup = 136 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
+      },
+      "unitWeightG": {
+        "value": 3,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 169230, portion: 1 clove = 3 g"
+      },
+      "yields": [
+        {
+          "state": "raw",
+          "percent": 87,
+          "source": "USDA FoodData Central, SR Legacy archive SR28 (sr28asc.zip), FOOD_DES.txt, NDB_No 11215 (FDC ID 169230): Refuse 13 %, Ref_desc \"Knob and skin\"; yield = 100 - 13"
+        }
+      ],
+      "x-fdc": {
+        "id": 169230,
+        "description": "Garlic, raw"
+      }
+    },
+    {
+      "id": "fdc-173410",
+      "name": "Butter, salted",
+      "parentId": "fdc-group-butter",
+      "densityGPerMl": {
+        "value": 0.959,
+        "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 173410, portion: 1 cup = 227 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
+      },
+      "x-nutrition": {
+        "per100g": {
+          "kcal": 717,
+          "kJ": 3000,
+          "proteinG": 0.85,
+          "fatG": 81.1,
+          "carbohydrateG": 0.06,
+          "fibreG": 0,
+          "sodiumMg": 643
+        }
+      },
+      "x-fdc": {
+        "id": 173410,
+        "description": "Butter, salted"
+      }
+    },
+    {
+      "id": "fdc-group-butter",
+      "name": "Butter",
+      "x-group": {
+        "rows": 5
+      }
+    }
+  ],
+  "refuseDataset": {
+    "name": "USDA FoodData Central, SR Legacy archive SR28 (sr28asc.zip), FOOD_DES.txt",
+    "file": "FOOD_DES.txt",
+    "sha256": "bb2047218cdad1d830da69e760386409fde3b7afabceae604c5479f280d4fa2e",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://fdc.nal.usda.gov/ (section Licensing)"
+  },
+  "namesDataset": {
+    "name": "Wikidata, German labels and aliases by USDA NDB number (P1978)",
+    "file": "tools/catalogue/wikidata-de.json",
+    "sha256": "bb2047218cdad1d830da69e760386409fde3b7afabceae604c5479f280d4fa2e",
+    "retrieved": "2026-11-18",
+    "licence": "CC0 1.0 Universal (public domain), as stated on https://www.wikidata.org/wiki/Wikidata:Licensing"
+  }
+}

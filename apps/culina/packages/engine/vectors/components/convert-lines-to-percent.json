@@ -1,0 +1,76 @@
+{
+  "id": "convert-lines-to-percent",
+  "description": "Weights to percent of the flour; the flour keeps its grams, a line without amount stays without",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "percent",
+    "component": {
+      "id": "dough",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "wheat"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "pepper"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "300 / 500 = 60 %, 10 / 500 = 2 %. Synthetic amounts.",
+  "expected": {
+    "lines": [
+      {
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "amount": {
+          "value": 60,
+          "unit": "percent"
+        }
+      },
+      {
+        "amount": {
+          "value": 2,
+          "unit": "percent"
+        }
+      },
+      {}
+    ]
+  }
+}

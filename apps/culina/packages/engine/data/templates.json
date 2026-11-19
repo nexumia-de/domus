@@ -1,0 +1,248 @@
+[
+  {
+    "id": "bread-dough-ratio",
+    "name": "Bread dough, ratio",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Bread dough (confirmed, book p. 17); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 5
+      },
+      {
+        "role": "water",
+        "parts": 3
+      }
+    ],
+    "note": "By weight, plus yeast and salt; see bread-dough-bakers-percent for those."
+  },
+  {
+    "id": "pasta-dough",
+    "name": "Pasta dough",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Pasta dough (confirmed, book p. 17); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 3
+      },
+      {
+        "role": "egg",
+        "parts": 2
+      }
+    ],
+    "note": "The egg is weighed, not counted."
+  },
+  {
+    "id": "pie-dough",
+    "name": "Pie dough",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Pie dough (confirmed, book p. 17 and page); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 3
+      },
+      {
+        "role": "fat",
+        "parts": 2
+      },
+      {
+        "role": "water",
+        "parts": 1
+      }
+    ]
+  },
+  {
+    "id": "cookie-dough",
+    "name": "Cookie dough",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Cookie dough (confirmed, book PT36 and p. 17); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 3
+      },
+      {
+        "role": "fat",
+        "parts": 2
+      },
+      {
+        "role": "sugar",
+        "parts": 1
+      }
+    ]
+  },
+  {
+    "id": "pound-cake",
+    "name": "Pound cake",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Pound cake (confirmed, book PT54); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 1
+      },
+      {
+        "role": "fat",
+        "parts": 1
+      },
+      {
+        "role": "sugar",
+        "parts": 1
+      },
+      {
+        "role": "egg",
+        "parts": 1
+      }
+    ],
+    "note": "The source names butter as the fat."
+  },
+  {
+    "id": "vinaigrette",
+    "name": "Vinaigrette",
+    "anchor": "oil",
+    "source": "docs/ratios.md#ratios-by-weight, row Vinaigrette (confirmed, book PT140); Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "oil",
+        "parts": 3
+      },
+      {
+        "role": "acid",
+        "parts": 1
+      }
+    ]
+  },
+  {
+    "id": "roux",
+    "name": "Roux",
+    "anchor": "flour",
+    "source": "docs/ratios.md#ratios-by-weight, row Roux (corrected, book p. 17 and PT94), 3 flour : 2 clarified butter; Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 3
+      },
+      {
+        "role": "fat",
+        "parts": 2
+      }
+    ],
+    "note": "The source names clarified butter as the fat."
+  },
+  {
+    "id": "roux-whole-butter",
+    "name": "Roux with whole butter",
+    "source": "docs/ratios.md#ratios-by-weight, row Roux (corrected, book p. 17 and PT94), 1 : 1 with whole butter for small amounts; Ruhlman, Ratio",
+    "parentId": "roux",
+    "changes": [
+      {
+        "op": "set",
+        "role": "flour",
+        "parts": 1
+      },
+      {
+        "op": "set",
+        "role": "fat",
+        "parts": 1
+      }
+    ],
+    "note": "The source names whole butter as the fat."
+  },
+  {
+    "id": "free-standing-custard",
+    "name": "Free-standing custard",
+    "anchor": "egg",
+    "source": "docs/ratios.md#ratios-by-weight, row Custard (confirmed, book PT253), free-standing custard; Ruhlman, Ratio",
+    "parts": [
+      {
+        "role": "liquid",
+        "parts": 2
+      },
+      {
+        "role": "egg",
+        "parts": 1
+      }
+    ]
+  },
+  {
+    "id": "bread-dough-bakers-percent",
+    "name": "Bread dough, baker's percentages",
+    "source": "docs/ratios.md#ratios-by-weight, row Bread dough note (book PT14: 100 % flour, 60 % water, 3 % fresh yeast, 2 % salt); docs/ratios.md#bakers-percentages, row Bread salt (confirmed, book p. 43, range 1.8-2 %); Ruhlman, Ratio; Hamelman, Bread",
+    "parentId": "bread-dough-ratio",
+    "changes": [
+      {
+        "op": "set",
+        "role": "flour",
+        "parts": 100
+      },
+      {
+        "op": "set",
+        "role": "water",
+        "parts": 60
+      },
+      {
+        "op": "add",
+        "role": "yeast",
+        "parts": 3
+      },
+      {
+        "op": "add",
+        "role": "salt",
+        "parts": 2,
+        "range": {
+          "min": 1.8,
+          "max": 2
+        }
+      }
+    ],
+    "note": "Yeast is fresh yeast. Only the salt has a range."
+  },
+  {
+    "id": "neapolitan-pizza-dough",
+    "name": "Neapolitan pizza dough",
+    "anchor": "flour",
+    "source": "docs/ratios.md#bakers-percentages, rows Pizza hydration (corrected, page: 1000 / 1800 = 55.6 %) and Pizza salt (page: 2.8-3.1 %); Regulation (EU) 97/2010, TSG Pizza Napoletana",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 100
+      },
+      {
+        "role": "water",
+        "parts": 55.6
+      },
+      {
+        "role": "salt",
+        "parts": 2.95,
+        "range": {
+          "min": 2.8,
+          "max": 3.1
+        }
+      }
+    ],
+    "note": "Salt parts are the midpoint of the sourced range 2.8-3.1; the range is the source figure."
+  },
+  {
+    "id": "ciabatta-stiff-biga",
+    "name": "Ciabatta with stiff biga",
+    "anchor": "flour",
+    "source": "docs/ratios.md#bakers-percentages, row Ciabatta hydration (corrected, book: water 73 %, salt 2 %); Hamelman, Bread, p. 93",
+    "parts": [
+      {
+        "role": "flour",
+        "parts": 100
+      },
+      {
+        "role": "water",
+        "parts": 73
+      },
+      {
+        "role": "salt",
+        "parts": 2
+      }
+    ],
+    "note": "No range: the upper figure 76 % of the row is excerpt-only."
+  }
+]

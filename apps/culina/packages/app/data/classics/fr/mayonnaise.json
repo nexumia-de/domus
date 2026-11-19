@@ -1,0 +1,203 @@
+{
+  "id": "mayonnaise",
+  "name": {
+    "en": "Mayonnaise",
+    "de": "Mayonnaise"
+  },
+  "originalName": "Mayonnaise Sauce",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Auguste Escoffier",
+    "title": "A Guide to Modern Cookery (London: William Heinemann, 1907)",
+    "year": 1907,
+    "place": "No. 126",
+    "url": "https://archive.org/stream/cu31924000610117/cu31924000610117_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pint": {
+      "kind": "volume",
+      "factor": 568.26125,
+      "read": "The source is the English edition printed in London (1907); its pint is taken as the imperial pint of units.json. A judgement."
+    },
+    "quart": {
+      "kind": "volume",
+      "factor": 1136.5225,
+      "read": "The source is the English edition printed in London (1907); its quart is taken as the imperial quart of units.json. A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "mayonnaise-sauce",
+      "name": {
+        "en": "Mayonnaise",
+        "de": "Mayonnaise"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "egg-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "the yolks of six raw eggs"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "oz",
+            "original": "one-half oz. of table-salt"
+          }
+        },
+        {
+          "key": "cayenne",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170932"
+          },
+          "note": {
+            "en": "A little cayenne pepper. The source gives no amount.",
+            "de": "Ein wenig Cayennepfeffer. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "amount": {
+            "value": 0.2,
+            "unit": "pint",
+            "original": "one-fifth pint of vinegar"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "quart",
+            "original": "one quart of oil"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "the juice of a lemon"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Three tablespoonfuls of boiling water. The units table holds only US tablespoons, and the book does not state its size, so the line has no amount.",
+            "de": "Drei Esslöffel kochendes Wasser. Die Einheitentabelle enthält nur US-Esslöffel, und das Buch nennt seine Größe nicht; die Zeile hat daher keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the yolks of six raw eggs in a basin, after removing the cores.",
+            "de": "Die Dotter von sechs rohen Eiern in eine Schüssel geben, vorher die Hagelschnüre entfernen."
+          },
+          "uses": ["egg-yolk"]
+        },
+        {
+          "text": {
+            "en": "Season the yolks with the salt and a little cayenne.",
+            "de": "Die Dotter mit Salz und ein wenig Cayennepfeffer würzen."
+          },
+          "uses": ["egg-yolk", "salt", "cayenne"]
+        },
+        {
+          "text": {
+            "en": "Whisk briskly while you pour in the vinegar, gradually.",
+            "de": "Kräftig schlagen und dabei den Essig nach und nach zugießen."
+          },
+          "uses": ["egg-yolk", "vinegar"]
+        },
+        {
+          "text": {
+            "en": "When the vinegar is absorbed, add the oil in a thread, stirring constantly.",
+            "de": "Wenn der Essig aufgenommen ist, das Öl in einem Faden zugeben und dabei ständig rühren."
+          },
+          "technique": "cold-emulsion",
+          "uses": ["oil", "vinegar"]
+        },
+        {
+          "text": {
+            "en": "Finish with the lemon juice and the boiling water.",
+            "de": "Mit dem Zitronensaft und dem kochenden Wasser fertigstellen."
+          },
+          "uses": ["lemon", "water"]
+        },
+        {
+          "text": {
+            "en": "Leave it to rest for a few hours; it thickens while it stands.",
+            "de": "Einige Stunden ruhen lassen; sie wird beim Stehen dicker."
+          }
+        },
+        {
+          "text": {
+            "en": "Cover it to keep the dust away.",
+            "de": "Abdecken, damit kein Staub hineinkommt."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "mayonnaise-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; four, as in the pilot.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 126: yolks, salt, vinegar, oil, lemon, boiling water and cayenne all agree. Changed: the oil goes in \"in a thread\", not \"thin\". The tablespoonful has no size in the units table, so that line has no amount. Amounts in pints and quarts restored on 2026-11-19 after the imperial units were added, read again in the same text."
+  },
+  "note": {
+    "en": "The book's plain mayonnaise. The boiling water is given in tablespoonfuls, which the units table does not hold, so that line has no amount; the source's wording is in the notes.",
+    "de": "Die einfache Mayonnaise wie im Buch. Das kochende Wasser steht in Esslöffeln, deren Größe das Buch nicht nennt; die Zeile hat daher keine Menge. Der Wortlaut der Quelle steht in den Notizen."
+  }
+}

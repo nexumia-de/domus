@@ -1,0 +1,12 @@
+{
+  "id": "salt-error-brine-100",
+  "description": "A brine of 100 % salt has no water to find",
+  "inputs": {
+    "kind": "salt_percent",
+    "water_g": 1000,
+    "pct": 100,
+    "basis": "brine"
+  },
+  "error_code": "pct-out-of-range",
+  "source": "100 - pct is 0, the formula divides by 0"
+}

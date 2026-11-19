@@ -1,0 +1,32 @@
+{
+  "id": "fold-in",
+  "name": {
+    "en": "Folding in",
+    "de": "Unterheben"
+  },
+  "watch": {
+    "en": "Fold gently: first about a quarter of the foam into the mixture, then the rest, until blended.",
+    "de": "Behutsam unterheben: zuerst etwa ein Viertel des Schaums in die Masse, dann den Rest, bis alles vermengt ist."
+  },
+  "why": {
+    "en": "Folding mixes the foam in without breaking it down.",
+    "de": "Unterheben mischt den Schaum ein, ohne ihn zusammenfallen zu lassen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.1 Introduction to Egg White Foams, section Egg White Foams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.1%3A_Introduction_to_Egg_White_Foams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Folding is a gentle mixing step that allows egg white foam to be incorporated into recipes without breaking down the foam"
+    },
+    {
+      "title": "Food Preparation Lab Manual (Beirman and Gilbert)",
+      "place": "chapter 9.3 Foam Products - Souffles, cheese souffle recipe",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/09%3A_Egg_White_Foams_in_Angel_Food_Cake_and_Souffles/9.3%3A_Foam_Products_-_Souffles",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Fold about one-fourth of the foam into the cheese mixture; spread the cheese mixture over the remaining egg white foam"
+    }
+  ]
+}

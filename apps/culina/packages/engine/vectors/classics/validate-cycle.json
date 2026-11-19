@@ -1,0 +1,196 @@
+{
+  "id": "validate-cycle",
+  "description": "Two components that use each other",
+  "inputs": {
+    "kind": "classic_validate",
+    "classic": {
+      "id": "example-dish",
+      "name": {
+        "en": "Example dish",
+        "de": "Beispielgericht"
+      },
+      "originalName": "Example dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      },
+      "persons": {
+        "value": 4,
+        "basis": "stated"
+      },
+      "units": {
+        "measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this vector: 1 measure = 100 g."
+        }
+      },
+      "components": [
+        {
+          "id": "sauce",
+          "name": {
+            "en": "Example sauce",
+            "de": "Beispielsauce"
+          },
+          "role": "sauce",
+          "lines": [
+            {
+              "key": "fat",
+              "wanted": {
+                "en": "Example fat",
+                "de": "Beispielfett"
+              },
+              "amount": {
+                "value": 2,
+                "unit": "measure",
+                "original": "2 measures"
+              }
+            },
+            {
+              "key": "liquid",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-liquid"
+              },
+              "amount": {
+                "value": 250,
+                "max": 300,
+                "unit": "ml"
+              }
+            },
+            {
+              "key": "salt",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-salt"
+              }
+            },
+            {
+              "ref": {
+                "kind": "component",
+                "id": "mix"
+              },
+              "amount": {
+                "value": 10,
+                "unit": "g"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat.",
+                "de": "Das Fett schmelzen."
+              },
+              "technique": "melting",
+              "uses": ["fat"],
+              "time": {
+                "value": 5,
+                "unit": "min"
+              }
+            },
+            {
+              "text": {
+                "en": "Add the liquid.",
+                "de": "Die Flüssigkeit zugeben."
+              },
+              "uses": ["liquid"],
+              "temperature": {
+                "value": 180,
+                "unit": "C"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mix",
+          "name": {
+            "en": "Mix",
+            "de": "Mischung"
+          },
+          "lines": [
+            {
+              "ref": {
+                "kind": "component",
+                "id": "sauce"
+              },
+              "amount": {
+                "value": 10,
+                "unit": "g"
+              }
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Invented for this vector."
+      }
+    },
+    "techniques": [
+      {
+        "id": "melting",
+        "name": {
+          "en": "Melting fat",
+          "de": "Fett schmelzen"
+        },
+        "watch": {
+          "en": "Keep the heat low.",
+          "de": "Die Hitze niedrig halten."
+        },
+        "why": {
+          "en": "Fat that browns tastes bitter.",
+          "de": "Fett, das bräunt, schmeckt bitter."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "cycle",
+        "path": "components",
+        "value": "mix>sauce>mix"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

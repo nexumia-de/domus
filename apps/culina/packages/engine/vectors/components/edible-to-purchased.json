@@ -1,0 +1,22 @@
+{
+  "id": "edible-to-purchased",
+  "description": "Edible back to purchased",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_purchased",
+    "yields": [
+      {
+        "state": "prepared",
+        "percent": 62.5,
+        "source": "synthetic"
+      }
+    ],
+    "state": "prepared",
+    "g": 500
+  },
+  "expected": {
+    "g": 800
+  },
+  "tolerance": 0.000001,
+  "source": "Purchased = 500 x 100 / 62.5 = 800 g. Yield 62.5 % is synthetic."
+}

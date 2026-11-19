@@ -1,0 +1,23 @@
+{
+  "id": "milk-scald",
+  "target": "fdc-group-milk",
+  "text": {
+    "en": "Heat milk to just below the boil (scald it) rather than to a full boil.",
+    "de": "Milch bis knapp unter den Siedepunkt erhitzen (abbrühen) und nicht voll aufkochen."
+  },
+  "why": {
+    "en": "Boiling can make milk curdle.",
+    "de": "Beim Kochen kann Milch gerinnen."
+  },
+  "technique": "simmer",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.5 Bechamel Based Sauces, definition Scalded Milk",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.05%3A_Bechamel_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "to heat a liquid, usually milk, to just below boiling point. Boiling can cause the milk to curdle, which is not particularly appetizing."
+    }
+  ]
+}

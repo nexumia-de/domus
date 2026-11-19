@@ -1,0 +1,32 @@
+{
+  "id": "sweat",
+  "name": {
+    "en": "Sweating",
+    "de": "Anschwitzen"
+  },
+  "watch": {
+    "en": "Sweat the vegetables in butter or fat first, then add the liquid.",
+    "de": "Das Gemüse zuerst in Butter oder Fett anschwitzen, dann die Flüssigkeit zugeben."
+  },
+  "why": {
+    "en": "Hard vegetables are usually sweated in butter without letting them take on colour before the liquid goes in.",
+    "de": "Festes Gemüse wird meist in Butter angeschwitzt, ohne dass es Farbe annimmt, bevor die Flüssigkeit dazukommt."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.10 Soups, section Soup Procedures",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.10%3A_Soups",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Sweat long -cooking vegetables in butter or fat. Add the appropriate stock or broth and bring to a simmer."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.10 Soups, section Cream Soups",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.10%3A_Soups",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Hard vegetables are usually sweated in butter without browning before the liquid is incorporated."
+    }
+  ]
+}

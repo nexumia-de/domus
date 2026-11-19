@@ -1,0 +1,6 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+  "ref": { "kind": "ingredient", "id": "carrot" },
+  "amount": { "value": 400 },
+  "state": "raw"
+}

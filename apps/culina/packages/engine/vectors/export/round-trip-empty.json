@@ -1,0 +1,16 @@
+{
+  "id": "round-trip-empty",
+  "description": "An empty notebook exports only the header and parses to no records",
+  "inputs": {
+    "kind": "export_round_trip",
+    "records": {},
+    "exportedAt": "2026-11-18T08:00:00Z"
+  },
+  "expected": {
+    "kinds": [],
+    "counts": {},
+    "fileName": "cooks-notebook-2026-11-18.json"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (ids, schema, version), no kitchen figure is involved."
+}

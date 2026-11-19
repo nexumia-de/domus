@@ -1,0 +1,32 @@
+{
+  "id": "unknown-ingredient-stock-presence-only",
+  "description": "A presence-only stock item whose ingredient does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "milk"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-ingredient",
+        "kind": "stock",
+        "id": "s",
+        "path": "ref",
+        "ref": "milk"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

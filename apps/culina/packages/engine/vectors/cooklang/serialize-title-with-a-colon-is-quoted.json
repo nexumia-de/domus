@@ -1,0 +1,48 @@
+{
+  "id": "serialize-title-with-a-colon-is-quoted",
+  "description": "A title with a colon is quoted so the front matter stays readable; one line gives \"Combine @x{}.\"",
+  "inputs": {
+    "kind": "cooklang_serialize",
+    "component": {
+      "id": "u-00000000-0000-4000-8000-00000000003e",
+      "name": "Mom's: sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000001"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-00000000003e",
+        "date": "2026-11-01"
+      }
+    },
+    "names": {
+      "ingredients": {
+        "u-00000000-0000-4000-8000-000000000001": "Flour",
+        "u-00000000-0000-4000-8000-000000000002": "Butter",
+        "u-00000000-0000-4000-8000-000000000003": "Salt",
+        "u-00000000-0000-4000-8000-000000000004": "Water",
+        "u-00000000-0000-4000-8000-000000000005": "Egg",
+        "u-00000000-0000-4000-8000-000000000006": "Milk"
+      },
+      "components": {
+        "u-00000000-0000-4000-8000-00000000000a": "Pan sauce"
+      }
+    },
+    "facts": {}
+  },
+  "expected": {
+    "text": "---\ntitle: \"Mom's: sauce\"\n---\n\nCombine @Flour{10%g}.\n",
+    "fileName": "Mom's-sauce.cook",
+    "lost": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the output follows the specification's syntax (README: ingredients, notes, front matter); the amounts are made up."
+}

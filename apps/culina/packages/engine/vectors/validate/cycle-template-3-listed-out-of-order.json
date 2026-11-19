@@ -1,0 +1,64 @@
+{
+  "id": "cycle-template-3-listed-out-of-order",
+  "description": "A template cycle is reported with the record of the smallest id, and no resolve error repeats it",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "n2",
+          "name": "n2",
+          "source": "user",
+          "parentId": "n3",
+          "changes": [
+            {
+              "op": "add",
+              "role": "sugar",
+              "parts": 1
+            }
+          ]
+        },
+        {
+          "id": "n3",
+          "name": "n3",
+          "source": "user",
+          "parentId": "n1",
+          "changes": [
+            {
+              "op": "add",
+              "role": "egg",
+              "parts": 1
+            }
+          ]
+        },
+        {
+          "id": "n1",
+          "name": "n1",
+          "source": "user",
+          "parentId": "n2",
+          "changes": [
+            {
+              "op": "add",
+              "role": "milk",
+              "parts": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "template",
+        "id": "n1",
+        "path": "parentId",
+        "ids": ["n1", "n2", "n3", "n1"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

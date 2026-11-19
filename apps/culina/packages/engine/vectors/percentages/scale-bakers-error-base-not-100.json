@@ -1,0 +1,26 @@
+{
+  "id": "scale-bakers-error-base-not-100",
+  "description": "Flour lines add up to 120",
+  "inputs": {
+    "kind": "scale_bakers",
+    "formula": [
+      {
+        "name": "white",
+        "pct": 100,
+        "is_flour": true
+      },
+      {
+        "name": "rye",
+        "pct": 20,
+        "is_flour": true
+      },
+      {
+        "name": "water",
+        "pct": 70
+      }
+    ],
+    "target_dough_g": 1000
+  },
+  "error_code": "base-not-100",
+  "source": "Basis: the flour lines must add up to 100; 100 + 20 = 120."
+}

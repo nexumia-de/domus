@@ -1,0 +1,28 @@
+{
+  "id": "resolve-error-self-parent",
+  "description": "A template that is its own parent",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "a",
+        "name": "a",
+        "source": "user",
+        "parentId": "a",
+        "changes": [
+          {
+            "op": "add",
+            "role": "x",
+            "parts": 1
+          }
+        ]
+      }
+    ],
+    "id": "a"
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "a"]
+  },
+  "source": "a has parent a; synthetic template numbers chosen for the arithmetic, not from a source"
+}

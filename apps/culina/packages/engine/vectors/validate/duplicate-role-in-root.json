@@ -1,0 +1,44 @@
+{
+  "id": "duplicate-role-in-root",
+  "description": "A root lists a role twice; the second entry is named",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "dough",
+          "name": "dough",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 1
+            },
+            {
+              "role": "water",
+              "parts": 1
+            },
+            {
+              "role": "flour",
+              "parts": 2
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "duplicate-role",
+        "kind": "template",
+        "id": "dough",
+        "path": "parts[2]",
+        "role": "flour"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

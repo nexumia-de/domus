@@ -1,0 +1,30 @@
+{
+  "id": "cornstarch-cool-liquid",
+  "target": "fdc-169698",
+  "text": {
+    "en": "Stir cornstarch smooth in a cool liquid first, then add it to the hot liquid.",
+    "de": "Speisestärke zuerst in kalter Flüssigkeit glatt rühren, dann in die heiße Flüssigkeit geben."
+  },
+  "why": {
+    "en": "The cool liquid keeps the starch grains apart so they do not clump.",
+    "de": "Die kalte Flüssigkeit hält die Stärkekörner auseinander, sodass sie nicht klumpen."
+  },
+  "technique": "thicken-with-starch",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Cornstarch must be mixed with a cool liquid before it is introduced into a hot one."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The cool liquid separates the grains of starch and allows them to begin absorbing liquid without lumping."
+    }
+  ]
+}

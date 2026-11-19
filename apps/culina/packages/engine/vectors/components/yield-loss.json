@@ -1,0 +1,58 @@
+{
+  "id": "yield-loss",
+  "description": "A sauce that loses weight when cooked",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 700,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "oil"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ],
+      "yield": {
+        "amount": {
+          "value": 800,
+          "unit": "g"
+        },
+        "source": "user (synthetic)"
+      }
+    }
+  },
+  "expected": {
+    "input_g": 1000,
+    "known": true,
+    "output_g": 800,
+    "loss_g": 200,
+    "yield_pct": 80
+  },
+  "tolerance": 0.000001,
+  "source": "Input 700 + 200 + 100 = 1000 g; output 800 g; loss 1000 - 800 = 200 g; yield 100 x 800 / 1000 = 80 %. Synthetic yield."
+}

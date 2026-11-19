@@ -1,0 +1,91 @@
+{
+  "id": "diff-component-ingredient-added",
+  "description": "A new line is added",
+  "inputs": {
+    "kind": "diff_component",
+    "before": {
+      "id": "a1",
+      "name": "Example sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "a1",
+        "date": "2026-11-01"
+      }
+    },
+    "after": {
+      "id": "a2",
+      "name": "Example sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "basil"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "a1",
+        "date": "2026-11-08",
+        "parent": "a1"
+      }
+    }
+  },
+  "expected": {
+    "empty": false,
+    "changes": [
+      {
+        "type": "line",
+        "kind": "added",
+        "fields": [],
+        "after": "ingredient:basil 10 g"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}

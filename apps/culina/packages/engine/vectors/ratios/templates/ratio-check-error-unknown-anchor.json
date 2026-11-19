@@ -1,0 +1,27 @@
+{
+  "id": "ratio-check-error-unknown-anchor",
+  "description": "The anchor is not a role of the template",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      }
+    ],
+    "anchor": "sugar"
+  },
+  "error_code": "unknown-anchor",
+  "error_detail": {
+    "role": "sugar"
+  },
+  "source": "sugar is not in 3:2:1"
+}

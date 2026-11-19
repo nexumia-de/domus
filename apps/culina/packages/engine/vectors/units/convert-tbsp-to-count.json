@@ -1,0 +1,21 @@
+{
+  "id": "convert-tbsp-to-count",
+  "description": "10 tbsp in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 10,
+      "unit": "tbsp"
+    },
+    "to": "count",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 1.478676
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 10 tbsp -> grams -> count with the synthetic facts {\"densityGPerMl\":0.5,\"unitWeightG\":50}: grams = 73.933824, result 1.478676 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

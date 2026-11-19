@@ -1,0 +1,35 @@
+{
+  "id": "cycle-ingredient-2",
+  "description": "Ingredient parents that run around a cycle of length 2",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "n1",
+          "name": "n1",
+          "parentId": "n2"
+        },
+        {
+          "id": "n2",
+          "name": "n2",
+          "parentId": "n1"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "cycle",
+        "kind": "ingredient",
+        "id": "n1",
+        "path": "parentId",
+        "ids": ["n1", "n2", "n1"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

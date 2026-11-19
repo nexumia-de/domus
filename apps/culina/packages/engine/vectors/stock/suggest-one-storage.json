@@ -1,0 +1,35 @@
+{
+  "id": "suggest-one-storage",
+  "description": "One recorded value gives one suggestion",
+  "inputs": {
+    "kind": "stock_suggest",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-11-16"
+    },
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "suggestions": [
+      {
+        "storage": "fridge",
+        "days": 5,
+        "useBy": "2026-11-21"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example values written for this rule; no shelf life is a recommendation."
+}

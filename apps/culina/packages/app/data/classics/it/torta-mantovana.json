@@ -1,0 +1,270 @@
+{
+  "id": "torta-mantovana",
+  "name": {
+    "en": "Mantua cake",
+    "de": "Mantuaner Kuchen"
+  },
+  "originalName": "Torta mantovana",
+  "country": "it",
+  "vegetarian": true,
+  "course": "baking",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "N. 349",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 8,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "torta-mantovana-cake",
+      "name": {
+        "en": "Mantua cake",
+        "de": "Mantuaner Kuchen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "Uova intere, N. 1"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "Rossi d'uovo, N. 4"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 170,
+            "unit": "g",
+            "original": "Zucchero, grammi 170"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose"
+          },
+          "amount": {
+            "value": 170,
+            "unit": "g",
+            "original": "Farina, grammi 170"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "Burro, grammi 150"
+          },
+          "note": {
+            "en": "The source also uses butter to grease the tin; no amount is given for that.",
+            "de": "Die Quelle nimmt Butter auch zum Ausfetten der Form; dafür steht keine Menge."
+          }
+        },
+        {
+          "key": "almond",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170568"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "Mandorle dolci e pinoli, grammi 50"
+          },
+          "note": {
+            "en": "One amount of 50 g for sweet almonds and pine nuts together; the source gives no split.",
+            "de": "Eine Menge von 50 g für süße Mandeln und Pinienkerne zusammen; die Quelle gibt keine Aufteilung an."
+          }
+        },
+        {
+          "key": "pine-nut",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170591"
+          },
+          "note": {
+            "en": "Part of the 50 g given with the almonds.",
+            "de": "Teil der 50 g, die mit den Mandeln angegeben sind."
+          }
+        },
+        {
+          "key": "lemon-zest",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "note": {
+            "en": "Only a scent of lemon peel is named; no amount.",
+            "de": "Nur ein Hauch Zitronenschale ist genannt; keine Menge."
+          }
+        },
+        {
+          "key": "crumbs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174928"
+          },
+          "note": {
+            "en": "For dusting the tin, as an alternative to flour.",
+            "de": "Zum Ausstreuen der Form, alternativ zu Mehl."
+          }
+        },
+        {
+          "key": "icing-sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169656"
+          },
+          "note": {
+            "en": "For dusting the finished cake; no amount.",
+            "de": "Zum Bestäuben des fertigen Kuchens; keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the eggs and the sugar thoroughly with a ladle in a bowl.",
+            "de": "Eier und Zucker in einer Schüssel gründlich mit einer Kelle schlagen."
+          },
+          "uses": ["egg", "yolk", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Add the flour little by little, working it in.",
+            "de": "Das Mehl nach und nach einarbeiten."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter in a water bath.",
+            "de": "Die Butter über heißem Wasser schmelzen."
+          },
+          "technique": "water-bath",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Add the melted butter last.",
+            "de": "Zuletzt die flüssige Butter dazugeben."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Butter a copper tin, dust it with flour or breadcrumbs, and pour the mixture in.",
+            "de": "Eine Kupferform buttern, mit Mehl oder Semmelbröseln ausstreuen und die Masse hineingeben."
+          },
+          "uses": ["butter", "flour", "crumbs"]
+        },
+        {
+          "text": {
+            "en": "Blanch the almonds in hot water and peel them.",
+            "de": "Die Mandeln in heißem Wasser überbrühen und häuten."
+          },
+          "technique": "blanch",
+          "uses": ["almond"]
+        },
+        {
+          "text": {
+            "en": "Split the almonds lengthwise, then cut each half across into four or five pieces.",
+            "de": "Die Mandeln der Länge nach spalten und jede Hälfte quer in vier oder fünf Stücke schneiden."
+          },
+          "uses": ["almond"]
+        },
+        {
+          "text": {
+            "en": "Cut the pine nuts in half across.",
+            "de": "Die Pinienkerne quer halbieren."
+          },
+          "uses": ["pine-nut"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle the almonds and the pine nuts over the top.",
+            "de": "Mandeln und Pinienkerne oben darüberstreuen."
+          },
+          "uses": ["almond", "pine-nut"]
+        },
+        {
+          "text": {
+            "en": "Spread the mixture so the cake is no thicker than a finger and a half, at most two fingers.",
+            "de": "Die Masse so verteilen, dass der Kuchen höchstens eineinhalb, notfalls zwei Finger dick wird."
+          }
+        },
+        {
+          "text": {
+            "en": "Bake it in an oven at moderate heat, so that it dries well inside.",
+            "de": "Bei mäßiger Hitze im Ofen backen, damit er innen gut durchtrocknet."
+          },
+          "technique": "bake"
+        },
+        {
+          "text": {
+            "en": "Dust it with icing sugar and serve it cool.",
+            "de": "Mit Puderzucker bestäuben und kühl servieren."
+          },
+          "uses": ["icing-sugar"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "torta-mantovana-cake"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "8",
+      "reason": "Our judgement: the source names no number of persons; the amounts fill one round tin, which we take as eight portions.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 577, and the 1891 OCR (lines 22482-22611), read again by the second checker. Agreed: flour, sugar and butter 170, 170 and 150 g; almonds and pine nuts 50 g together; one whole egg; four yolks; lemon peel by scent; the method; moderate oven; icing sugar. Not taken over: the 1985 text also dusts the tin with icing sugar; the dish keeps the 1891 wording. Changed: none."
+  },
+  "note": {
+    "en": "Artusi's recipe 349. The source gives no tin size, no oven time and only moderate heat. Lemon zest and the dusting are without amounts. The number of persons is settled by us. Artusi's separate recipe 'Torta ricciolina' is not part of this file.",
+    "de": "Artusis Rezept Nr. 349. Die Quelle gibt keine Formgröße, keine Backzeit und nur mäßige Hitze an. Zitronenschale und das Ausstreuen haben keine Menge. Die Personenzahl haben wir festgelegt. Artusis eigenes Rezept 'Torta ricciolina' gehört nicht zu dieser Datei."
+  }
+}

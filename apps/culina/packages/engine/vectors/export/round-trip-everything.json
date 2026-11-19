@@ -1,0 +1,223 @@
+{
+  "id": "round-trip-everything",
+  "description": "Three versions of a component, a variation, a dish, stock, ingredients and two tasting notes survive build, text and parse unchanged",
+  "inputs": {
+    "kind": "export_round_trip",
+    "records": {
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour",
+          "roles": ["flour"],
+          "densityGPerMl": {
+            "value": 0.53,
+            "source": "user"
+          }
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-000000000002",
+          "name": "Butter",
+          "parentId": "dairy",
+          "unitWeightG": {
+            "value": 250,
+            "source": "user"
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000a",
+          "name": "Pan sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              },
+              "amount": {
+                "value": 30,
+                "unit": "g"
+              },
+              "role": "flour"
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000002"
+              },
+              "amount": {
+                "value": 40,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "date": "2026-11-01"
+          }
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000b",
+          "name": "Pan sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              },
+              "amount": {
+                "value": 35,
+                "unit": "g"
+              },
+              "role": "flour"
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000002"
+              },
+              "amount": {
+                "value": 40,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "parent": "u-00000000-0000-4000-8000-00000000000a",
+            "date": "2026-11-05",
+            "change": "More flour",
+            "reason": "Thicker"
+          }
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000c",
+          "name": "Pan sauce",
+          "yield": {
+            "amount": {
+              "value": 70,
+              "unit": "g"
+            },
+            "source": "user"
+          },
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000001"
+              },
+              "amount": {
+                "value": 35,
+                "unit": "g"
+              },
+              "role": "flour"
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000002"
+              },
+              "amount": {
+                "value": 45,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000a",
+            "parent": "u-00000000-0000-4000-8000-00000000000b",
+            "date": "2026-11-09"
+          }
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-00000000000d",
+          "name": "Brown pan sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "u-00000000-0000-4000-8000-000000000002"
+              },
+              "amount": {
+                "value": 45,
+                "unit": "g"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-00000000000d",
+            "parent": "u-00000000-0000-4000-8000-00000000000b",
+            "date": "2026-11-12"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000014",
+          "name": "Steak plate",
+          "slots": [
+            {
+              "role": "sauce",
+              "ref": {
+                "kind": "component",
+                "id": "u-00000000-0000-4000-8000-00000000000a"
+              }
+            }
+          ],
+          "version": {
+            "family": "u-00000000-0000-4000-8000-000000000014",
+            "date": "2026-11-10"
+          }
+        }
+      ],
+      "stock": [
+        {
+          "id": "u-00000000-0000-4000-8000-00000000001e",
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000001"
+          },
+          "amount": {
+            "value": 1000,
+            "unit": "g"
+          },
+          "state": "raw"
+        }
+      ],
+      "tastings": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000028",
+          "ref": {
+            "kind": "component",
+            "id": "u-00000000-0000-4000-8000-00000000000b"
+          },
+          "date": "2026-11-06",
+          "text": "Thick enough"
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-000000000029",
+          "ref": {
+            "kind": "component",
+            "id": "u-00000000-0000-4000-8000-00000000000c"
+          },
+          "date": "2026-11-10",
+          "text": "Glossy"
+        }
+      ]
+    },
+    "exportedAt": "2026-11-18T08:00:00Z"
+  },
+  "expected": {
+    "kinds": ["ingredients", "components", "dishes", "stock", "tastings"],
+    "counts": {
+      "ingredients": 2,
+      "components": 4,
+      "dishes": 1,
+      "stock": 1,
+      "tastings": 2
+    },
+    "fileName": "cooks-notebook-2026-11-18.json"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (ids, schema, version), no kitchen figure is involved."
+}

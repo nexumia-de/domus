@@ -1,0 +1,15 @@
+{
+  "id": "edible-lookup-unknown",
+  "description": "No yield recorded: unknown, never 100 %",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "lookup",
+    "yields": [],
+    "state": "raw"
+  },
+  "expected": {
+    "known": false
+  },
+  "tolerance": 0.000001,
+  "source": "The list is empty, so the answer is unknown."
+}

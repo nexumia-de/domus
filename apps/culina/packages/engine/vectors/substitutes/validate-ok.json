@@ -1,0 +1,31 @@
+{
+  "id": "validate-ok",
+  "description": "A substitute with both texts, a source and a factor passes",
+  "inputs": {
+    "kind": "substitute_validate",
+    "substitute": {
+      "id": "thicken-a",
+      "from": "starch-a",
+      "to": "starch-b",
+      "factor": 0.5,
+      "changes": {
+        "en": "Invented effect for a test vector.",
+        "de": "Erfundene Wirkung für einen Testvektor."
+      },
+      "level": "textbook",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "Invented sentence for a test vector."
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

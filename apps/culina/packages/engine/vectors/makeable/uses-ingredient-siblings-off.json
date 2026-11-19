@@ -1,0 +1,155 @@
+{
+  "id": "uses-ingredient-siblings-off",
+  "description": "With sibling substitution off only the ingredient itself and a class line above it use it",
+  "inputs": {
+    "kind": "uses_ingredient",
+    "ingredientId": "leek",
+    "today": "2026-11-18",
+    "stock": [],
+    "ingredients": [
+      {
+        "id": "veg"
+      },
+      {
+        "id": "allium",
+        "parentId": "veg"
+      },
+      {
+        "id": "leek",
+        "parentId": "allium"
+      },
+      {
+        "id": "onion",
+        "parentId": "allium"
+      },
+      {
+        "id": "carrot"
+      },
+      {
+        "id": "butter"
+      }
+    ],
+    "components": [
+      {
+        "id": "leek-soup",
+        "name": "Leek soup",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "leek"
+            }
+          }
+        ],
+        "version": {
+          "family": "leek-soup",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "onion-jam",
+        "name": "Onion jam",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            }
+          }
+        ],
+        "version": {
+          "family": "onion-jam",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "allium-stew",
+        "name": "Allium stew",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "allium"
+            }
+          }
+        ],
+        "version": {
+          "family": "allium-stew",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "carrot-cake",
+        "name": "Carrot cake",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "carrot"
+            }
+          }
+        ],
+        "version": {
+          "family": "carrot-cake",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "butter-sauce",
+        "name": "Butter sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            }
+          }
+        ],
+        "version": {
+          "family": "butter-sauce",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "dishes": [
+      {
+        "id": "soup-plate",
+        "name": "Soup plate",
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "leek-soup"
+            }
+          }
+        ],
+        "version": {
+          "family": "soup-plate",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "options": {
+      "siblingSubstitution": false
+    }
+  },
+  "expected": {
+    "records": [
+      {
+        "kind": "component",
+        "id": "allium-stew"
+      },
+      {
+        "kind": "component",
+        "id": "leek-soup"
+      },
+      {
+        "kind": "dish",
+        "id": "soup-plate"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree; ingredients and recipes are made up and no kitchen figure is involved."
+}

@@ -1,0 +1,26 @@
+{
+  "id": "spec-comment-to-end-of-line",
+  "description": "-- comments run to the end of the line, also a whole line",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "-- Don't burn the roux!\n\nMash @potato{2%kg} until smooth -- alternatively, boil 'em first, then mash 'em, then stick 'em in a stew."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "potato",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "2",
+          "locked": false,
+          "value": 2,
+          "unit": "kg"
+        }
+      }
+    ],
+    "steps": ["Mash potato until smooth"]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Comments"
+}

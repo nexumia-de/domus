@@ -1,0 +1,55 @@
+{
+  "id": "anchor-own-overrides-inherited",
+  "description": "A derivative anchor replaces the inherited one, so removing the old anchor role is fine",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            },
+            {
+              "role": "fat",
+              "parts": 2
+            },
+            {
+              "role": "water",
+              "parts": 1
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "fat-pie",
+          "name": "fat-pie",
+          "source": "user",
+          "parentId": "pie",
+          "changes": [
+            {
+              "op": "remove",
+              "role": "flour"
+            },
+            {
+              "op": "add",
+              "role": "oil",
+              "parts": 1
+            }
+          ],
+          "anchor": "fat"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

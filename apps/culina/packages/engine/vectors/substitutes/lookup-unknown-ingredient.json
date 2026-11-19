@@ -1,0 +1,71 @@
+{
+  "id": "lookup-unknown-ingredient",
+  "description": "An id that is not in the tree gets its own substitutes only",
+  "inputs": {
+    "kind": "substitute_lookup",
+    "ingredient_id": "starch-q",
+    "ingredients": [
+      {
+        "id": "starch"
+      },
+      {
+        "id": "starch-a",
+        "parentId": "starch"
+      },
+      {
+        "id": "starch-a1",
+        "parentId": "starch-a"
+      },
+      {
+        "id": "starch-b",
+        "parentId": "starch"
+      },
+      {
+        "id": "other"
+      }
+    ],
+    "substitutes": [
+      {
+        "id": "own",
+        "from": "starch-q",
+        "to": "other",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "group",
+        "from": "starch",
+        "to": "other",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "ids": ["own"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

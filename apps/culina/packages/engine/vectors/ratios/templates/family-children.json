@@ -1,0 +1,91 @@
+{
+  "id": "family-children",
+  "description": "Children of a root in input order, not the grandchild",
+  "inputs": {
+    "kind": "template_family",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "sweet-pie",
+        "name": "sweet-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "sugar",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "pasta",
+        "name": "pasta",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "egg",
+            "parts": 2
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "savoury-pie",
+        "name": "savoury-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "cheese",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "sweet-pie-egg",
+        "name": "sweet-pie-egg",
+        "source": "user",
+        "parentId": "sweet-pie",
+        "changes": [
+          {
+            "op": "add",
+            "role": "egg",
+            "parts": 1
+          }
+        ]
+      }
+    ],
+    "id": "pie",
+    "query": "children"
+  },
+  "expected": {
+    "ids": ["sweet-pie", "savoury-pie"]
+  },
+  "tolerance": 0,
+  "source": "family of pie (children sweet-pie and savoury-pie, grandchild sweet-pie-egg) and the unrelated root pasta, in this input order; synthetic template numbers chosen for the arithmetic, not from a source"
+}

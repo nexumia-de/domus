@@ -1,0 +1,43 @@
+{
+  "id": "expand-error-no-percent-base",
+  "description": "A percent line without percent base",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dough",
+    "components": [
+      {
+        "id": "dough",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 1000,
+              "unit": "g"
+            },
+            "role": "flour"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "water"
+            },
+            "amount": {
+              "value": 70,
+              "unit": "percent"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "no-percent-base",
+  "error_detail": {
+    "componentId": "dough",
+    "index": 1
+  },
+  "tolerance": 0.000001,
+  "source": "The component names no percentBase, so 70 percent has nothing to be a percent of."
+}

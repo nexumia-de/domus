@@ -1,0 +1,53 @@
+{
+  "id": "resolve-derivative-remove",
+  "description": "A derivative removes a role of its parent",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "dry-pie",
+        "name": "dry-pie",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "remove",
+            "role": "water"
+          }
+        ]
+      }
+    ],
+    "id": "dry-pie"
+  },
+  "expected": {
+    "roles": ["flour", "fat"],
+    "parts": {
+      "flour": 3,
+      "fat": 2
+    },
+    "lineage": ["pie", "dry-pie"],
+    "anchor": "flour"
+  },
+  "tolerance": 1e-6,
+  "source": "Parent 3:2:1 without water; synthetic template numbers chosen for the arithmetic, not from a source"
+}

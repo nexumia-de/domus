@@ -1,0 +1,8 @@
+{
+  "id": "carrot-hazelnut",
+  "a": "carrot",
+  "b": "hazelnut",
+  "strength": 5,
+  "source": "user",
+  "confidence": "low"
+}

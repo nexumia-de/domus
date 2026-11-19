@@ -1,0 +1,14 @@
+{
+  "id": "round-custom-step",
+  "description": "137 g at step 5 g",
+  "inputs": {
+    "kind": "round",
+    "g": 137,
+    "step_g": 5
+  },
+  "expected": {
+    "g": 135
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. 137 / 5 = 27.4, rounds to 27 steps = 135 g; the caller supplies the step."
+}

@@ -1,0 +1,11 @@
+{
+  "id": "neapolitan-pizza-dough",
+  "name": "Neapolitan pizza dough",
+  "anchor": "flour",
+  "source": "ratios.md, Regulation (EU) 97/2010 (TSG Pizza Napoletana)",
+  "parts": [
+    { "role": "flour", "parts": 100 },
+    { "role": "water", "parts": 56 },
+    { "role": "salt", "parts": 3, "range": { "min": 2.8, "max": 3.1 } }
+  ]
+}

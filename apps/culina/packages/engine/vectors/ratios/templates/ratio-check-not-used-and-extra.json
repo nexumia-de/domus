@@ -1,0 +1,56 @@
+{
+  "id": "ratio-check-not-used-and-extra",
+  "description": "A template role without an amount has 0 parts and is listed in not_used; a role the template lacks is listed in extra and counts in the shares",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      },
+      {
+        "name": "fat",
+        "g": 200
+      },
+      {
+        "name": "sugar",
+        "g": 20
+      }
+    ],
+    "anchor": "flour"
+  },
+  "expected": {
+    "parts": {
+      "flour": 3,
+      "fat": 2,
+      "water": 0
+    },
+    "share_pct": {
+      "flour": 57.692308,
+      "fat": 38.461538,
+      "water": 0
+    },
+    "template_share_pct": {
+      "flour": 50,
+      "fat": 33.333333,
+      "water": 16.666667
+    },
+    "delta_parts": {
+      "flour": 0,
+      "fat": 0,
+      "water": -1
+    },
+    "not_used": ["water"],
+    "extra": ["sugar"]
+  },
+  "tolerance": 1e-6,
+  "source": "Parts: fat 200 x 3 / 300 = 2, water 0; total 300 + 200 + 20 = 520 g, shares 100 x g / 520. Template 3:2:1 from docs/ratios.md; amounts synthetic"
+}

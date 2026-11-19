@@ -1,0 +1,30 @@
+{
+  "id": "spinach-late-in-soup",
+  "target": "fdc-168462",
+  "text": {
+    "en": "In a soup, add spinach after the liquid has come to the boil.",
+    "de": "In einer Suppe den Spinat zugeben, nachdem die Flüssigkeit aufgekocht ist."
+  },
+  "why": {
+    "en": "Soft and leafy vegetables usually go in after the liquid has come to the boil.",
+    "de": "Weiches und Blattgemüse kommt üblicherweise erst dazu, wenn die Flüssigkeit kocht."
+  },
+  "technique": "boil",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.10 Soups, section Cream Soups",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.10%3A_Soups",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Soft and leafy vegetables are usually added to the soup after the liquid is brought to a boil."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.10 Soups, section Cream Soups",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.10%3A_Soups",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Both hard vegetables (for example, celery and squash) and soft or leafy vegetables (for example, spinach, corn, broccoli and asparagus) are used for cream soups."
+    }
+  ]
+}

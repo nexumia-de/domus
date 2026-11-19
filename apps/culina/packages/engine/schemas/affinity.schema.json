@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/affinity.schema.json",
+  "title": "Affinity",
+  "description": "Later extension: two ingredients that go together, with strength, context, source and confidence. No code and no data yet.",
+  "type": "object",
+  "required": ["id", "a", "b", "strength", "source", "confidence"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "a": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "b": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "strength": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cuisine": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        },
+        "season": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "technique": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        }
+      }
+    },
+    "source": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+    },
+    "confidence": { "enum": ["low", "medium", "high"] }
+  }
+}

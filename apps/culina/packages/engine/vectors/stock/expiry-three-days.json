@@ -1,0 +1,25 @@
+{
+  "id": "expiry-three-days",
+  "description": "Use by in three days is outside the window of two days",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-11-21"
+    },
+    "today": "2026-11-18"
+  },
+  "expected": {
+    "ok": true,
+    "status": "fresh",
+    "useBy": "2026-11-21",
+    "daysLeft": 3,
+    "basis": "entered"
+  },
+  "tolerance": 0,
+  "source": "Synthetic; the window of two days is materia's USE_SOON_DAYS."
+}

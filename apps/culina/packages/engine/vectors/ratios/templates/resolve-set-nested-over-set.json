@@ -1,0 +1,83 @@
+{
+  "id": "resolve-set-nested-over-set",
+  "description": "A set over a set: the nearest change wins",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "pie",
+        "name": "pie",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 1.5,
+              "max": 2.5
+            }
+          },
+          {
+            "role": "water",
+            "parts": 1
+          }
+        ],
+        "anchor": "flour"
+      },
+      {
+        "id": "a",
+        "name": "a",
+        "source": "user",
+        "parentId": "pie",
+        "changes": [
+          {
+            "op": "set",
+            "role": "water",
+            "parts": 2
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "name": "b",
+        "source": "user",
+        "parentId": "a",
+        "changes": [
+          {
+            "op": "set",
+            "role": "water",
+            "parts": 4
+          },
+          {
+            "op": "set",
+            "role": "flour",
+            "parts": 5
+          }
+        ]
+      }
+    ],
+    "id": "b"
+  },
+  "expected": {
+    "roles": ["flour", "fat", "water"],
+    "parts": {
+      "flour": 5,
+      "fat": 2,
+      "water": 4
+    },
+    "lineage": ["pie", "a", "b"],
+    "anchor": "flour",
+    "ranges": {
+      "fat": {
+        "min": 1.5,
+        "max": 2.5
+      }
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "water 1 -> 2 -> 4, flour 3 -> 5; synthetic template numbers chosen for the arithmetic, not from a source"
+}

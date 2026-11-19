@@ -1,0 +1,56 @@
+{
+  "id": "ratio-check-no-range-reports-deviation",
+  "description": "A template without ranges reports the deviation only: no position, no distance",
+  "inputs": {
+    "kind": "ratio_check",
+    "template": {
+      "name": "pie dough",
+      "parts": {
+        "flour": 3,
+        "fat": 2,
+        "water": 1
+      }
+    },
+    "lines": [
+      {
+        "name": "flour",
+        "g": 300
+      },
+      {
+        "name": "fat",
+        "g": 150
+      },
+      {
+        "name": "water",
+        "g": 100
+      }
+    ],
+    "anchor": "flour"
+  },
+  "expected": {
+    "parts": {
+      "flour": 3,
+      "fat": 1.5,
+      "water": 1
+    },
+    "share_pct": {
+      "flour": 54.545455,
+      "fat": 27.272727,
+      "water": 18.181818
+    },
+    "template_share_pct": {
+      "flour": 50,
+      "fat": 33.333333,
+      "water": 16.666667
+    },
+    "delta_parts": {
+      "flour": 0,
+      "fat": -0.5,
+      "water": 0
+    },
+    "position": {},
+    "distance": {}
+  },
+  "tolerance": 1e-6,
+  "source": "Parts: fat 150 x 3 / 300 = 1.5, water 100 x 3 / 300 = 1; deltas -0.5 and 0; total 550 g. Template 3:2:1 as the Pie dough row of docs/ratios.md; amounts synthetic"
+}

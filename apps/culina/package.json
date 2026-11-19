@@ -1,0 +1,38 @@
+{
+  "name": "culina",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A cook's notebook: ratios, templates and your own versions",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "npm test -w @culina/engine && npm test -w @culina/app",
+    "typecheck": "npm run typecheck -w @culina/engine && npm run typecheck -w @culina/app",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "build": "npm run build -w @culina/app",
+    "e2e": "npm run e2e -w @culina/app",
+    "validate:content": "node tools/content/validate-file.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "ajv": "8.17.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.14.0",
+    "globals": "17.14.0",
+    "playwright": "1.65.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}

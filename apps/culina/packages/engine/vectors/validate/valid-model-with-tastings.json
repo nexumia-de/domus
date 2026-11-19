@@ -1,0 +1,113 @@
+{
+  "id": "valid-model-with-tastings",
+  "description": "Notes on different versions of a component and a dish, and two notes on one version, give no findings",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "components": [
+        {
+          "id": "c1",
+          "name": "c1",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c1",
+            "date": "2026-11-18"
+          }
+        },
+        {
+          "id": "c2",
+          "name": "c2",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "c1",
+            "parent": "c1",
+            "date": "2026-11-19"
+          }
+        }
+      ],
+      "dishes": [
+        {
+          "id": "d1",
+          "name": "d1",
+          "slots": [
+            {
+              "role": "main",
+              "ref": {
+                "kind": "ingredient",
+                "id": "salt"
+              }
+            }
+          ],
+          "version": {
+            "family": "d1",
+            "date": "2026-11-18"
+          }
+        }
+      ],
+      "tastings": [
+        {
+          "id": "n1",
+          "ref": {
+            "kind": "component",
+            "id": "c1"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n2",
+          "ref": {
+            "kind": "component",
+            "id": "c2"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n3",
+          "ref": {
+            "kind": "component",
+            "id": "c2"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        },
+        {
+          "id": "n4",
+          "ref": {
+            "kind": "dish",
+            "id": "d1"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

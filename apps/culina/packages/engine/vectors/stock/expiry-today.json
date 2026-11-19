@@ -1,0 +1,25 @@
+{
+  "id": "expiry-today",
+  "description": "Use by today: zero days left, still within the date",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "useBy": "2026-11-18"
+    },
+    "today": "2026-11-18"
+  },
+  "expected": {
+    "ok": true,
+    "status": "use-soon",
+    "useBy": "2026-11-18",
+    "daysLeft": 0,
+    "basis": "entered"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: the use-by day is the last good day, so days left is the calendar distance from today to it (docs/engine-rules.md#stock)."
+}

@@ -1,0 +1,259 @@
+{
+  "id": "cavolfiore-balsamella",
+  "name": {
+    "en": "Cauliflower with béchamel",
+    "de": "Blumenkohl mit Béchamelsauce"
+  },
+  "originalName": "Cavolfiore colla balsamella",
+  "country": "it",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi, 1891)",
+    "year": 1891,
+    "place": "N. 270; béchamel N. 89",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "cavolfiore",
+      "name": {
+        "en": "Cauliflower",
+        "de": "Blumenkohl"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "cauliflower",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169986"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "una grossa palla di cavolfiore"
+          },
+          "note": {
+            "en": "One large head (una grossa palla); the source gives no weight.",
+            "de": "Ein großer Kopf (una grossa palla); die Quelle nennt kein Gewicht."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Salted water for cooking; no amount given.",
+            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "A scant pinch (un pizzico scarso); the size of a pinch is not given in the book.",
+            "de": "Eine knappe Prise (un pizzico scarso); die Größe einer Prise ist im Buch nicht angegeben."
+          }
+        },
+        {
+          "key": "bechamel",
+          "ref": {
+            "kind": "component",
+            "id": "balsamella"
+          },
+          "note": {
+            "en": "The béchamel of No. 89 of the book.",
+            "de": "Die Béchamelsauce aus Nr. 89 des Buches."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Remove the leaves and the green ribs. Cut a deep cross into the stalk.",
+            "de": "Blätter und grüne Rippen entfernen. Den Strunk tief kreuzweise einschneiden."
+          },
+          "uses": ["cauliflower"]
+        },
+        {
+          "text": {
+            "en": "Boil the cauliflower in salted water.",
+            "de": "Den Blumenkohl in Salzwasser kochen."
+          },
+          "technique": "boil",
+          "uses": ["cauliflower", "water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Cut it into small pieces.",
+            "de": "In kleine Stücke schneiden."
+          },
+          "uses": ["cauliflower"]
+        },
+        {
+          "text": {
+            "en": "Season it with butter, salt and pepper.",
+            "de": "Mit Butter, Salz und Pfeffer würzen."
+          },
+          "uses": ["butter", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Put it in a dish that withstands heat and sprinkle with the parmesan.",
+            "de": "In eine feuerfeste Platte geben und mit dem Parmesan bestreuen."
+          },
+          "uses": ["parmesan"]
+        },
+        {
+          "text": {
+            "en": "Cover it all with the béchamel.",
+            "de": "Alles mit der Béchamelsauce bedecken."
+          },
+          "uses": ["bechamel"]
+        },
+        {
+          "text": {
+            "en": "Brown the surface.",
+            "de": "Die Oberfläche bräunen."
+          },
+          "technique": "gratinate"
+        },
+        {
+          "text": {
+            "en": "Serve it hot.",
+            "de": "Heiß servieren."
+          }
+        }
+      ]
+    },
+    {
+      "id": "balsamella",
+      "name": {
+        "en": "Béchamel (balsamella)",
+        "de": "Béchamelsauce (Balsamella)"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "A piece the size of an egg (del volume di un uovo); the book gives no weight, so no amount.",
+            "de": "Ein Stück von der Größe eines Eis (del volume di un uovo); das Buch nennt kein Gewicht, daher keine Menge."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'; the sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
+            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'; der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "l",
+            "original": "mezzo litro di latte del migliore"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Melt the butter in a pan and stir in the flour until it turns hazelnut-coloured.",
+            "de": "Die Butter in einer Pfanne schmelzen und das Mehl einrühren, bis es haselnussbraun wird."
+          },
+          "technique": "roux",
+          "uses": ["butter", "flour"]
+        },
+        {
+          "text": {
+            "en": "Add the milk little by little, stirring all the time, until it is a thick, milky cream.",
+            "de": "Die Milch nach und nach unter ständigem Rühren zugeben, bis eine dicke, milchfarbene Creme entsteht."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "If it is stiff, add milk. If it is runny, return it to the heat with a little butter kneaded with flour.",
+            "de": "Ist sie fest, Milch zugeben. Ist sie dünnflüssig, mit etwas mit Mehl verkneteter Butter erneut auf den Herd stellen."
+          },
+          "uses": ["milk", "butter", "flour"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "cavolfiore"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; one large head of cauliflower and half a litre of milk serve about four side portions.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed., 35th edition text): cauliflower No. 431, béchamel No. 137. Agreed: one large head, boiling in salted water, butter, salt, pepper, a scant pinch of parmesan, the béchamel, browning, serving hot; the béchamel's half litre of milk, one spoonful of flour, butter the size of an egg. Changed: 'florets' to 'small pieces' (spicchiettini); 'dish' for vassoio. No amount added."
+  },
+  "note": {
+    "en": "The book serves this as an entremet or with a meat stew. The béchamel is No. 89 in the 1891 first edition (the OCR prints '80' as its heading); the 1985 edition numbers the cauliflower No. 431 and the béchamel No. 137. No time and no oven temperature are given. The source's text for the browning says only 'rosolatene la superficie'.",
+    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift '80'); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur 'die Oberfläche bräunen'."
+  }
+}

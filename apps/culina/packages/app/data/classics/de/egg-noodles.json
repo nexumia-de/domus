@@ -1,0 +1,215 @@
+{
+  "id": "egg-noodles",
+  "name": {
+    "en": "Egg noodles",
+    "de": "Eiernudeln"
+  },
+  "originalName": "Noodles",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division L, No. 24",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 8,
+    "basis": "settled"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The American edition: its preface says the German weights and measures \"have been changed to conform to those in vogue and best understood in this country\"; taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "noodle-dough",
+      "name": {
+        "en": "Egg noodles",
+        "de": "Eiernudeln"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "As much flour as the eggs and milk take up. The source gives no amount.",
+            "de": "So viel Mehl, wie Eier und Milch aufnehmen. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "4 whole eggs"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tablespoonful",
+            "original": "4 tablespoonfuls of milk"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Plenty of boiling water for cooking and for pouring over the noodles.",
+            "de": "Reichlich kochendes Wasser zum Kochen und zum Übergießen der Nudeln."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "Browned butter for serving. The source gives no amount.",
+            "de": "Gebräunte Butter zum Servieren. Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the flour into a dish and make a hollow in the middle.",
+            "de": "Das Mehl in eine Schüssel geben und in der Mitte eine Mulde formen."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Add the eggs and the milk and stir with a knife to a light dough.",
+            "de": "Eier und Milch zugeben und mit einem Messer zu einem lockeren Teig rühren."
+          },
+          "uses": ["egg", "milk", "flour"]
+        },
+        {
+          "text": {
+            "en": "Knead the dough with the hands until it is smooth. The longer it is kneaded, the better the noodles.",
+            "de": "Den Teig mit den Händen glatt kneten. Je länger er geknetet wird, desto besser werden die Nudeln."
+          },
+          "technique": "knead",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Cut the dough into four parts and roll each part as thin as paper.",
+            "de": "Den Teig in vier Teile schneiden und jedes Teil so dünn wie Papier ausrollen."
+          },
+          "technique": "roll-dough",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Set the sheets aside to dry.",
+            "de": "Die Teigplatten zum Trocknen beiseitelegen."
+          }
+        },
+        {
+          "text": {
+            "en": "Dust the first sheet with flour, cut it in two and roll each piece.",
+            "de": "Die erste Platte mit Mehl bestäuben, halbieren und jedes Stück ausrollen."
+          },
+          "technique": "roll-dough",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Cut each piece into narrow strips.",
+            "de": "Jedes Stück in schmale Streifen schneiden."
+          },
+          "technique": "fresh-pasta"
+        },
+        {
+          "text": {
+            "en": "Let the strips dry, or use them at once.",
+            "de": "Die Streifen trocknen lassen oder sofort verwenden."
+          }
+        },
+        {
+          "text": {
+            "en": "Cook the noodles in plenty of boiling salted water for about half an hour.",
+            "de": "Die Nudeln etwa eine halbe Stunde in reichlich kochendem Salzwasser garen."
+          },
+          "technique": "cook-pasta",
+          "time": {
+            "value": 0.5,
+            "unit": "h"
+          },
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Drain the noodles in a colander and pour boiling water through them.",
+            "de": "Die Nudeln in einem Sieb abtropfen lassen und mit kochendem Wasser übergießen."
+          },
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Serve with browned butter.",
+            "de": "Mit gebräunter Butter servieren."
+          },
+          "uses": ["butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "noodle-dough"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "8",
+      "reason": "Our choice: the source gives 8 to 10 persons; the lower number is entered.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 27, Gute Nudeln) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 4 eggs, 4 tablespoonfuls of milk, 8 to 10 persons, method, boiling salted water, browned butter. Time: English %, davidis.txt garbled, second scan 1.2 (one half): half an hour kept, confirmed by the second scan only. Changed: persons settled to 8 (the source gives 8 to 10). Not legible: none."
+  },
+  "note": {
+    "en": "The plain noodles only. The source names roast veal or dried prunes as companions and gives serving variants with crisp noodles or crumbs, which are not transcribed. The source gives 8 to 10 persons; 8 is entered.",
+    "de": "Nur die einfachen Nudeln. Die Quelle nennt Kalbsbraten oder gedörrte Pflaumen als Beilage und Varianten mit knusprigen Nudeln oder Bröseln; sie sind nicht übertragen. Die Quelle nennt 8 bis 10 Personen; 8 steht hier."
+  }
+}

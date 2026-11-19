@@ -1,0 +1,23 @@
+{
+  "id": "edible-round-trip",
+  "description": "Purchased to edible and back gives the purchased weight",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "round_trip",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 80,
+        "source": "synthetic"
+      }
+    ],
+    "state": "raw",
+    "g": 1234.5
+  },
+  "expected": {
+    "edible_g": 987.6,
+    "purchased_g": 1234.5
+  },
+  "tolerance": 0.000001,
+  "source": "Edible = 1234.5 x 80 / 100 = 987.6; back 987.6 x 100 / 80 = 1234.5 g. Yield 80 % is synthetic."
+}

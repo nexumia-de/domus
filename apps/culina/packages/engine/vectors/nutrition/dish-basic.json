@@ -1,0 +1,109 @@
+{
+  "id": "dish-basic",
+  "description": "Mass, volume by density (100 ml x 0.9 = 90 g) and count by unit weight (2 x 50 g = 100 g) for 2 portions: sums 1470 kcal, 6090 kJ, 32 g protein, 93 g fat, 121 g carbohydrate, 6 g fibre, 144 mg sodium = 0.36 g salt; halved",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 2,
+        "slots": [
+          {
+            "role": "base",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-flour"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "role": "fat",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "ml"
+            }
+          },
+          {
+            "role": "binder",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-egg"
+            },
+            "amount": {
+              "value": 2,
+              "unit": "count"
+            }
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": {
+      "inv-oil": {
+        "densityGPerMl": 0.9
+      },
+      "inv-egg": {
+        "unitWeightG": 50
+      }
+    },
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-oil": {
+        "kcal": 800,
+        "kJ": 3300,
+        "proteinG": 0,
+        "fatG": 90,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 0
+      },
+      "inv-egg": {
+        "kcal": 150,
+        "kJ": 620,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      }
+    }
+  },
+  "expected": {
+    "portions": 2,
+    "perPortion": {
+      "kcal": 735,
+      "kJ": 3045,
+      "proteinG": 16,
+      "fatG": 46.5,
+      "carbohydrateG": 60.5,
+      "fibreG": 3,
+      "saltG": 0.18
+    },
+    "countedGPerPortion": 195,
+    "coverage": {
+      "counted": 3,
+      "total": 3,
+      "massShare": 1,
+      "notCounted": []
+    },
+    "notReported": []
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

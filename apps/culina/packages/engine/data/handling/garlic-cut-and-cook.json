@@ -1,0 +1,30 @@
+{
+  "id": "garlic-cut-and-cook",
+  "target": "fdc-169230",
+  "text": {
+    "en": "The finer garlic is cut, the stronger it tastes; the longer it is cooked, the milder it gets.",
+    "de": "Je feiner Knoblauch geschnitten wird, desto kräftiger schmeckt er; je länger er gart, desto milder wird er."
+  },
+  "why": {
+    "en": "Crushing frees more of its flavour, and heat takes away its pungency.",
+    "de": "Zerdrücken setzt mehr Aroma frei, und Hitze nimmt ihm die Schärfe."
+  },
+  "technique": "knife-cuts",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3 Vegetables, section 3.7 Mushrooms, Truffles and Onions",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.07%3A_Mushrooms_Truffles_and_Onions",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "When using garlic, remember that the more finely the cloves are crushed, the stronger the flavor will be."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3 Vegetables, section 3.7 Mushrooms, Truffles and Onions",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.07%3A_Mushrooms_Truffles_and_Onions",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Cooking reduces garlic's pungency; the longer it is cooked, the milder it becomes."
+    }
+  ]
+}

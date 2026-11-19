@@ -1,0 +1,26 @@
+{
+  "id": "conventions-locked-quantity",
+  "description": "= in front of a quantity locks it against scaling; the reader notes it and Culina has no such lock",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Season with @salt{=1%tsp} to taste."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "salt",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": true,
+          "value": 1,
+          "unit": "tsp"
+        }
+      }
+    ],
+    "steps": ["Season with salt to taste."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, conventions.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/conventions.md, MIT), section Scaling and Servings (Fixed Quantities)"
+}

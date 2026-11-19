@@ -1,0 +1,17 @@
+{
+  "id": "convert-kg-to-lb",
+  "description": "1 kg in lb",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "kg"
+    },
+    "to": "lb"
+  },
+  "expected": {
+    "value": 2.204623
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 kg * 1000 / 453.59237 = 2.204623 lb (factors: base g per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

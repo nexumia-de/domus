@@ -1,0 +1,48 @@
+{
+  "id": "yield-gain",
+  "description": "A component that gains weight, so the loss is negative",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "grain",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "grain"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          }
+        }
+      ],
+      "yield": {
+        "amount": {
+          "value": 1000,
+          "unit": "g"
+        },
+        "source": "user (synthetic)"
+      }
+    }
+  },
+  "expected": {
+    "input_g": 900,
+    "known": true,
+    "output_g": 1000,
+    "loss_g": -100,
+    "yield_pct": 111.111111
+  },
+  "tolerance": 0.000001,
+  "source": "Input 300 + 600 = 900 g; output 1000 g; loss 900 - 1000 = -100 g; yield 100 x 1000 / 900 = 111.111111 %. Synthetic."
+}

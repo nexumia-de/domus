@@ -1,0 +1,25 @@
+{
+  "id": "parse-refuses-a-field-of-a-newer-record-shape",
+  "description": "A record field the closed schema does not know is refused (a new field needs a new formatVersion)",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 1,
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour",
+          "calories": 3
+        }
+      ]
+    }
+  },
+  "error_code": "invalid-record",
+  "error_detail": {
+    "kind": "ingredients",
+    "index": 0
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (ids, schema, version), no kitchen figure is involved."
+}

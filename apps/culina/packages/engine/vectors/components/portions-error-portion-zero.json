@@ -1,0 +1,16 @@
+{
+  "id": "portions-error-portion-zero",
+  "description": "A portion of 0 g",
+  "inputs": {
+    "kind": "portions",
+    "operation": "portions_from_yield",
+    "yield_g": 900,
+    "portion_g": 0
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "portionG"
+  },
+  "tolerance": 0.000001,
+  "source": "Division by 0 g is undefined."
+}

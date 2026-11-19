@@ -1,0 +1,34 @@
+{
+  "id": "validate-sentence-25-words-ok",
+  "description": "A sentence of 25 words passes",
+  "inputs": {
+    "kind": "handling_validate",
+    "rule": {
+      "id": "r",
+      "target": "butter",
+      "text": {
+        "en": "Put it in early.",
+        "de": "Früh zugeben."
+      },
+      "why": {
+        "en": "The flavour needs time.",
+        "de": "Der Geschmack braucht Zeit."
+      },
+      "technique": "melting",
+      "level": "textbook",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "word word word word word word word word word word word word word word word word word word word word word word word word word"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

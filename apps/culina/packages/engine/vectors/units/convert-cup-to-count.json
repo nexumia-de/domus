@@ -1,0 +1,21 @@
+{
+  "id": "convert-cup-to-count",
+  "description": "1 cup in count",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "cup"
+    },
+    "to": "count",
+    "facts": {
+      "densityGPerMl": 0.5,
+      "unitWeightG": 50
+    }
+  },
+  "expected": {
+    "value": 2.365882
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 1 cup -> grams -> count with the synthetic facts {\"densityGPerMl\":0.5,\"unitWeightG\":50}: grams = 118.294118, result 2.365882 count. Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

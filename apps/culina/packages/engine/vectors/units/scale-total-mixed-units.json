@@ -1,0 +1,59 @@
+{
+  "id": "scale-total-mixed-units",
+  "description": "Mixed units scaled to 250 g",
+  "inputs": {
+    "kind": "scale_total",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 300,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "milk",
+        "amount": {
+          "value": 200,
+          "unit": "ml"
+        }
+      },
+      {
+        "id": "egg",
+        "amount": {
+          "value": 2,
+          "unit": "count"
+        }
+      },
+      {
+        "id": "pepper"
+      }
+    ],
+    "target_g": 250,
+    "facts_by_id": {
+      "milk": {
+        "densityGPerMl": 0.5
+      },
+      "egg": {
+        "unitWeightG": 50
+      }
+    }
+  },
+  "expected": {
+    "factor": 0.5,
+    "values": {
+      "flour": 150,
+      "milk": 100,
+      "egg": 1
+    },
+    "unscaled": [
+      {
+        "id": "pepper",
+        "reason": "no-amount"
+      }
+    ],
+    "cautions": ["time-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. Total = 300 + 200 * 0.5 + 2 * 50 = 500 g; factor 250 / 500 = 0.5; 150 g, 100 ml, 1 count. Facts are synthetic (chosen for the arithmetic, not real ingredients)."
+}

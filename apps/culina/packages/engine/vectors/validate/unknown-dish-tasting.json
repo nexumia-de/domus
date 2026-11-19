@@ -1,0 +1,34 @@
+{
+  "id": "unknown-dish-tasting",
+  "description": "A tasting note on a dish version that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "tastings": [
+        {
+          "id": "n1",
+          "ref": {
+            "kind": "dish",
+            "id": "soup-2"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-dish",
+        "kind": "tasting",
+        "id": "n1",
+        "path": "ref",
+        "ref": "soup-2"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

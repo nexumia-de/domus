@@ -1,0 +1,37 @@
+{
+  "id": "spec-optional-ingredient-and-cookware",
+  "description": "? right after the sigil makes an item optional; the ? is not part of the name",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Season with @salt and @?chilli flakes{1%pinch}.\n\nUse a #?splatter guard{} if you have one."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "salt",
+        "optional": false,
+        "reference": false
+      },
+      {
+        "name": "chilli flakes",
+        "optional": true,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": false,
+          "value": 1,
+          "unit": "pinch"
+        }
+      }
+    ],
+    "cookware": [
+      {
+        "name": "splatter guard",
+        "optional": true
+      }
+    ],
+    "steps": ["Season with salt and chilli flakes.", "Use a splatter guard if you have one."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Optional ingredients and cookware"
+}

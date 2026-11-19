@@ -1,0 +1,39 @@
+{
+  "id": "scale-line-other-unit",
+  "description": "1 lb of flour on hand against a recipe in grams",
+  "inputs": {
+    "kind": "scale_line",
+    "lines": [
+      {
+        "id": "flour",
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "water",
+        "amount": {
+          "value": 300,
+          "unit": "g"
+        }
+      }
+    ],
+    "line_id": "flour",
+    "have": {
+      "value": 1,
+      "unit": "lb"
+    }
+  },
+  "expected": {
+    "factor": 0.90718474,
+    "values": {
+      "flour": 453.59237,
+      "water": 272.155422
+    },
+    "unscaled": [],
+    "cautions": ["time-not-linear"]
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams. 1 lb = 453.59237 g; factor 453.59237 / 500 = 0.90718474; water 300 * 0.90718474 = 272.155422."
+}

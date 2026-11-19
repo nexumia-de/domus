@@ -1,0 +1,228 @@
+{
+  "id": "pure-de-patatas",
+  "name": {
+    "en": "Mashed potatoes with butter and egg yolk",
+    "de": "Kartoffelpüree mit Butter und Eigelb"
+  },
+  "originalName": "Puré de patatas",
+  "country": "es",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "pp. 680–682, section Patatas, recipe 'Puré de patatas'; lines 30656–30712",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "cuartillo": {
+      "kind": "volume",
+      "factor": 500,
+      "read": "Muro p. 356, lines 16336–16339, on kitchen vessels: 'se suple con vasos de á cuartillo, ó de medio cuartillo, que miden medio litro y un cuarto de litro cabales, cada uno, respectivamente'. The book states that a cuartillo vessel measures half a litre (taken as the size of the unit; a judgement)."
+    }
+  },
+  "components": [
+    {
+      "id": "pure",
+      "name": {
+        "en": "Mashed potatoes",
+        "de": "Kartoffelpüree"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "Floury potatoes (\"de clase farinácea\"). The book gives one cuartillo of water for each two libras of potatoes; the libra is not sized in the book, so no amount.",
+            "de": "Mehligkochende Kartoffeln (\"de clase farinácea\"). Das Buch gibt einen Cuartillo Wasser je zwei Libras Kartoffeln; die Libra ist im Buch nicht bemessen, daher keine Menge."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Salted water for cooking the potato paste. Source wording: \"[unreadable] cuartillo de agua salada para cada dos libras de patatas\". The word before 'cuartillo' is not legible in the scan, so the line has no amount.",
+            "de": "Gesalzenes Wasser zum Garen der Kartoffelmasse. Quellenwortlaut: \"[unleserlich] cuartillo de agua salada para cada dos libras de patatas\". Das Wort vor 'cuartillo' ist im Scan nicht lesbar, daher ohne Menge."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "cuartillo",
+            "original": "hasta medio cuartillo de leche de vacas"
+          },
+          "note": {
+            "en": "Cow's milk, boiled beforehand, added up to half a cuartillo.",
+            "de": "Kuhmilch, vorher gekocht, bis zu einem halben Cuartillo zugegeben."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g",
+            "original": "dos onzas ó 60 gramos de manteca muy fresca de vacas"
+          },
+          "note": {
+            "en": "Very fresh cow's butter (\"manteca muy fresca de vacas\"); the book gives two onzas or 60 grams.",
+            "de": "Sehr frische Kuhbutter (\"manteca muy fresca de vacas\"); das Buch nennt zwei Onzas oder 60 Gramm."
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "una yema de huevo"
+          }
+        },
+        {
+          "key": "milk-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "Two spoonfuls of milk, to beat the yolk (\"dos cucharadas de leche\"). The spoon is not sized in the book, so no amount.",
+            "de": "Zwei Löffel Milch, um das Eigelb zu schlagen (\"dos cucharadas de leche\"). Der Löffel ist im Buch nicht bemessen, daher keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Steam the floury potatoes. If they are large, cut them into pieces the size of walnuts.",
+            "de": "Die mehligkochenden Kartoffeln dämpfen. Sind sie groß, in walnussgroße Stücke schneiden."
+          },
+          "technique": "steam",
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "While they are still hot, press the potatoes through a ricer and a sieve onto a plate. Keep the fine paste apart.",
+            "de": "Solange sie noch heiß sind, die Kartoffeln durch eine Kartoffelpresse und ein Sieb auf einen Teller drücken. Die feine Masse beiseitestellen."
+          },
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Boil the milk beforehand.",
+            "de": "Die Milch vorher aufkochen."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "Put the pot with the salted water on high heat.",
+            "de": "Den Topf mit dem gesalzenen Wasser auf starke Hitze stellen."
+          },
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Stir the potato paste into the water. Then add the milk little by little, stirring hard with a wooden spatula.",
+            "de": "Die Kartoffelmasse in das Wasser rühren. Dann die Milch nach und nach zugießen und dabei kräftig mit einem Holzspatel rühren."
+          },
+          "uses": ["potato", "water", "milk"]
+        },
+        {
+          "text": {
+            "en": "Keep stirring until the purée thickens and boils with large bubbles.",
+            "de": "Weiterrühren, bis das Püree dick wird und in großen Blasen kocht."
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the strong heat and move it to the side of the stove. Let the purée simmer gently for a quarter of an hour, taking care that it does not stick.",
+            "de": "Den Topf von der starken Hitze nehmen und an den Rand des Herdes stellen. Das Püree eine Viertelstunde sanft köcheln lassen und darauf achten, dass nichts ansetzt."
+          },
+          "technique": "simmer",
+          "uses": ["potato"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Just before serving, take the pot off the heat and stir in the butter, moving the purée well.",
+            "de": "Kurz vor dem Servieren den Topf vom Herd nehmen und die Butter unterrühren, das Püree dabei gut bewegen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Beat the yolk with two spoonfuls of milk. Stir it into the purée to bind it, and season with salt and pepper as needed.",
+            "de": "Das Eigelb mit zwei Löffeln Milch verquirlen. Unter das Püree rühren, um es zu binden, und nach Bedarf mit Salz und Pfeffer würzen."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["yolk", "milk-yolk", "salt", "pepper"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "pure"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the water is given for each two libras of potatoes and the butter and milk are small quantities for a side dish for about four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reading of the same scan (same OCR; weak). Compared the recipe (muro.txt 30656-30712, pp. 681-682). Changed: the water has no amount (the word before 'cuartillo' is not legible in the scan, the OCR is the same); steamed, then cut; milk boiled beforehand; water on high heat with no boiling stated. Kept: 60 g butter (the asterisk in 'gramo*' garbles the last letter; the figure agrees with two onzas and the onza of 30 g at muro.txt line 4040); half a cuartillo of milk."
+  },
+  "note": {
+    "en": "Replaces Ángel Muro's 'Patatas á lo pobre' (no amounts in the source; see the transcription evidence file). Mashed potatoes from the same chapter, with the book's own quantities. The book does not size the libra, so the potato weight has no amount.",
+    "de": "Ersetzt Ángel Muros 'Patatas á lo pobre' (keine Mengen in der Quelle; siehe Belegdatei). Kartoffelpüree aus demselben Kapitel mit den Mengen des Buches. Das Buch bemisst die Libra nicht, daher hat das Kartoffelgewicht keine Menge."
+  }
+}

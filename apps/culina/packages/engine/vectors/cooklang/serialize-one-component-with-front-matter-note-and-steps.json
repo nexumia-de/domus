@@ -1,0 +1,78 @@
+{
+  "id": "serialize-one-component-with-front-matter-note-and-steps",
+  "description": "Front matter with title and yield, the tasting note as a > note, one step that lists the lines with their amounts and preparation, then the method; roles, template and version history are lost, and @ in a step is dropped",
+  "inputs": {
+    "kind": "cooklang_serialize",
+    "component": {
+      "id": "u-00000000-0000-4000-8000-00000000000a",
+      "name": "Pan sauce",
+      "templateId": "roux",
+      "yield": {
+        "amount": {
+          "value": 70,
+          "unit": "g"
+        },
+        "source": "user"
+      },
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000001"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000002"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000003"
+          },
+          "note": "to taste"
+        }
+      ],
+      "method": ["Melt the butter.", "Whisk in the flour @ low heat."],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-00000000000a",
+        "parent": "u-00000000-0000-4000-8000-000000000009",
+        "date": "2026-11-05",
+        "change": "More flour"
+      }
+    },
+    "names": {
+      "ingredients": {
+        "u-00000000-0000-4000-8000-000000000001": "Flour",
+        "u-00000000-0000-4000-8000-000000000002": "Butter",
+        "u-00000000-0000-4000-8000-000000000003": "Salt",
+        "u-00000000-0000-4000-8000-000000000004": "Water",
+        "u-00000000-0000-4000-8000-000000000005": "Egg",
+        "u-00000000-0000-4000-8000-000000000006": "Milk"
+      },
+      "components": {
+        "u-00000000-0000-4000-8000-00000000000a": "Pan sauce"
+      }
+    },
+    "facts": {},
+    "tasting": "Thick enough"
+  },
+  "expected": {
+    "text": "---\ntitle: Pan sauce\nyield: 70%g\n---\n\n> Thick enough\n\nCombine @Flour{30%g}, @Butter{40%g} and @Salt{}(to taste).\n\nMelt the butter.\n\nWhisk in the flour low heat.\n",
+    "fileName": "Pan-sauce.cook",
+    "lost": ["characters", "ratios", "roles", "versions"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the output follows the specification's syntax (README: ingredients, notes, front matter); the amounts are made up."
+}

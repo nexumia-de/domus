@@ -1,0 +1,22 @@
+{
+  "id": "example-technique",
+  "name": { "en": "Example technique (fictional)", "de": "Beispieltechnik (erfunden)" },
+  "watch": {
+    "en": "Example note: say in one short line what to watch.",
+    "de": "Beispielnotiz: in einer kurzen Zeile sagen, worauf zu achten ist."
+  },
+  "why": {
+    "en": "Example reason: say in one or two lines why it matters.",
+    "de": "Beispielgrund: in ein bis zwei Zeilen sagen, warum es wichtig ist."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}

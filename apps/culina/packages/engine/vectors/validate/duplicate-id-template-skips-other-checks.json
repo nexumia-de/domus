@@ -1,0 +1,54 @@
+{
+  "id": "duplicate-id-template-skips-other-checks",
+  "description": "A duplicate template gets only duplicate-id, even with a swap to an unknown ingredient",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "flour",
+          "name": "flour"
+        }
+      ],
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parentId": "ghost",
+          "changes": [
+            {
+              "op": "swap",
+              "role": "flour",
+              "ingredientClass": "nothing"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "kind": "template",
+        "id": "pie"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

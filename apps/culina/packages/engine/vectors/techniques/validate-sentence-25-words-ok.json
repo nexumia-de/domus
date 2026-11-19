@@ -1,0 +1,36 @@
+{
+  "id": "validate-sentence-25-words-ok",
+  "description": "A sentence of exactly 25 words is allowed",
+  "inputs": {
+    "kind": "technique_validate",
+    "technique": {
+      "id": "melting",
+      "name": {
+        "en": "Melting fat",
+        "de": "Fett schmelzen"
+      },
+      "watch": {
+        "en": "Keep the heat low.",
+        "de": "Die Hitze niedrig halten."
+      },
+      "why": {
+        "en": "Fat that browns tastes bitter.",
+        "de": "Fett, das bräunt, schmeckt bitter."
+      },
+      "level": "textbook",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "word word word word word word word word word word word word word word word word word word word word word word word word word"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

@@ -1,0 +1,55 @@
+{
+  "id": "unknown-ingredient-affinity-both-ends",
+  "description": "Both ends of an affinity are checked, a before b",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "salt",
+          "name": "salt"
+        }
+      ],
+      "affinities": [
+        {
+          "id": "f1",
+          "a": "carrot",
+          "b": "hazelnut"
+        },
+        {
+          "id": "f2",
+          "a": "salt",
+          "b": "lime"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-ingredient",
+        "kind": "affinity",
+        "id": "f1",
+        "path": "a",
+        "ref": "carrot"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "affinity",
+        "id": "f1",
+        "path": "b",
+        "ref": "hazelnut"
+      },
+      {
+        "code": "unknown-ingredient",
+        "kind": "affinity",
+        "id": "f2",
+        "path": "b",
+        "ref": "lime"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "expiry-entered-wins-over-shelf-life",
+  "description": "An entered use-by is used, not the shelf life",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-11-16",
+      "useBy": "2026-11-30"
+    },
+    "today": "2026-11-18",
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "expected": {
+    "ok": true,
+    "status": "fresh",
+    "useBy": "2026-11-30",
+    "daysLeft": 12,
+    "basis": "entered"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example value, see expiry-from-shelf-life-future."
+}

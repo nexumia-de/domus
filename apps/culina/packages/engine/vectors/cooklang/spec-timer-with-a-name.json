@@ -1,0 +1,36 @@
+{
+  "id": "spec-timer-with-a-name",
+  "description": "A named timer",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Boil @eggs{2} for ~eggs{3%minutes}."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "eggs",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "2",
+          "locked": false,
+          "value": 2
+        }
+      }
+    ],
+    "timers": [
+      {
+        "name": "eggs",
+        "quantity": {
+          "text": "3",
+          "value": 3,
+          "unit": "minutes",
+          "locked": false
+        }
+      }
+    ],
+    "steps": ["Boil eggs for 3 minutes."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Timer (name)"
+}

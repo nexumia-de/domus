@@ -1,0 +1,8 @@
+{
+  "id": "example-substitute",
+  "from": "example-ingredient-a",
+  "factor": 0,
+  "changes": { "en": "Example effect." },
+  "level": "folklore",
+  "sources": []
+}

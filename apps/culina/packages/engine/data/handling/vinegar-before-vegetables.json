@@ -1,0 +1,37 @@
+{
+  "id": "vinegar-before-vegetables",
+  "target": "fdc-group-vinegar",
+  "text": {
+    "en": "When vinegar or another acid goes into the cooking water of vegetables, add it before the vegetables.",
+    "de": "Kommt Essig oder eine andere Säure ins Kochwasser von Gemüse, sie vor dem Gemüse zugeben."
+  },
+  "why": {
+    "en": "Acid keeps vegetables from softening, so they need longer, and it turns green ones olive-drab.",
+    "de": "Säure hält Gemüse vom Weichwerden ab, es braucht dann länger, und grünes Gemüse wird olivgrau."
+  },
+  "technique": "boil",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3 Vegetables, section 3.10, Boiling and Acid/Alkali Reactions",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "if so, they should be added to the liquid before the vegetables."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3 Vegetables, section 3.10, Acid/Alkali Reactions",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "the vegetable will resist softening and will require a longer cooking time."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3 Vegetables, section 3.10, Acid/Alkali Reactions",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Acids will gradually turn green vegetables an olive-drab color"
+    }
+  ]
+}

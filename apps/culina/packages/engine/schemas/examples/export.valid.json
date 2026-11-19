@@ -1,0 +1,119 @@
+{
+  "format": "culina-export",
+  "formatVersion": 1,
+  "exportedAt": "2026-11-17T12:00:00Z",
+  "seedVersion": "0",
+  "ingredients": [
+    {
+      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+      "name": "Onion",
+      "parentId": "alliums",
+      "roles": ["aromatic"],
+      "season": { "months": [8, 9, 10], "region": "own garden", "source": "user" },
+      "allergens": [],
+      "yields": [{ "state": "raw", "percent": 90, "source": "user" }],
+      "shelfLife": [{ "state": "raw", "storage": "pantry", "days": 30, "source": "user" }],
+      "densityGPerMl": { "value": 0.6, "source": "user" },
+      "unitWeightG": { "value": 150, "source": "user" }
+    }
+  ],
+  "templates": [
+    {
+      "id": "neapolitan-pizza-dough",
+      "name": "Neapolitan pizza dough",
+      "anchor": "flour",
+      "source": "ratios.md, Regulation (EU) 97/2010 (TSG Pizza Napoletana)",
+      "parts": [
+        { "role": "flour", "parts": 100 },
+        { "role": "water", "parts": 56 },
+        { "role": "salt", "parts": 3, "range": { "min": 2.8, "max": 3.1 } }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+      "name": "Bread dough",
+      "role": "starch",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": { "kind": "ingredient", "id": "wheat-flour" },
+          "amount": { "value": 100, "unit": "percent" },
+          "role": "flour"
+        },
+        {
+          "ref": { "kind": "ingredient", "id": "water" },
+          "amount": { "value": 60, "unit": "percent" },
+          "role": "water"
+        },
+        {
+          "ref": { "kind": "ingredient", "id": "salt" },
+          "amount": { "value": 2, "unit": "percent" }
+        },
+        {
+          "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" },
+          "amount": { "value": 200, "unit": "g" }
+        }
+      ],
+      "yield": { "amount": { "value": 1.7, "unit": "kg" }, "source": "user" },
+      "method": ["Mix, rest, fold, shape, bake."],
+      "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" }
+    }
+  ],
+  "dishes": [
+    {
+      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+      "name": "Roast carrots with yoghurt sauce",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": { "kind": "ingredient", "id": "carrot" },
+          "amount": { "value": 600, "unit": "g" }
+        },
+        {
+          "role": "sauce",
+          "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" }
+        },
+        { "role": "crunch", "ref": { "kind": "ingredient", "id": "hazelnut" }, "optional": true }
+      ],
+      "version": {
+        "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+        "parent": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+        "date": "2026-11-17",
+        "change": "Added hazelnuts",
+        "reason": "Plate was soft all over"
+      }
+    }
+  ],
+  "stock": [
+    {
+      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" },
+      "amount": { "value": 400, "unit": "g" },
+      "state": "prepared",
+      "preparedOn": "2026-11-16",
+      "useBy": "2026-11-20"
+    }
+  ],
+  "affinities": [
+    {
+      "id": "carrot-hazelnut",
+      "a": "carrot",
+      "b": "hazelnut",
+      "strength": 2,
+      "context": { "technique": "roasting" },
+      "source": "user",
+      "confidence": "low"
+    }
+  ],
+  "tastings": [
+    {
+      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee5",
+      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2" },
+      "date": "2026-11-18",
+      "text": "Crumb open, crust good, needs a little more salt."
+    }
+  ]
+}

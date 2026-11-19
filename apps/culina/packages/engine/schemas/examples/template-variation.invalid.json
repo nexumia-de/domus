@@ -1,0 +1,7 @@
+{
+  "id": "bread-dough-bakers-percent",
+  "name": "Bread dough, baker's percentages",
+  "source": "ratios.md",
+  "parentId": "bread-dough-ratio",
+  "changes": [{ "op": "set", "role": "flour", "parts": 0 }]
+}

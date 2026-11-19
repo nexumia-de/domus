@@ -1,0 +1,253 @@
+{
+  "id": "potato-soup-fine",
+  "name": {
+    "en": "Very fine potato soup",
+    "de": "Sehr feine Kartoffelsuppe"
+  },
+  "originalName": "A Very Fine Potato Soup",
+  "country": "de",
+  "vegetarian": false,
+  "course": "soup",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division B, No. 39",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The American edition: its preface says the German weights and measures \"have been changed to conform to those in vogue and best understood in this country\"; taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    },
+    "quart": {
+      "kind": "volume",
+      "factor": 946.352946,
+      "read": "The American edition (see the tablespoonful above); taken as the US customary quart of units.json (4 cups = 946.352946 ml). A judgement."
+    },
+    "teaspoonful": {
+      "kind": "volume",
+      "factor": 4.92892159375,
+      "read": "The American edition (see the tablespoonful above); taken as the US customary teaspoon of units.json (4.92892159375 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "potato-soup",
+      "name": {
+        "en": "Very fine potato soup",
+        "de": "Sehr feine Kartoffelsuppe"
+      },
+      "role": "soup",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "2 platefuls of sliced raw potatoes. The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
+            "de": "2 Teller voll rohe Kartoffelscheiben. Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "a chopped onion"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tablespoonful",
+            "original": "2 even tablespoonfuls of butter"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "quart",
+            "original": "3 quarts of boiling water"
+          }
+        },
+        {
+          "key": "vegetables",
+          "wanted": {
+            "en": "Soup vegetables",
+            "de": "Suppengemüse"
+          },
+          "note": {
+            "en": "Some soup vegetables. The source gives no amount.",
+            "de": "Etwas Suppengemüse. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tablespoonful",
+            "original": "1 tablespoonful of flour"
+          }
+        },
+        {
+          "key": "beef",
+          "wanted": {
+            "en": "Beef extract",
+            "de": "Fleischextrakt"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "teaspoonful",
+            "original": "a small teaspoonful of extract of beef"
+          },
+          "note": {
+            "en": "Extract of beef is a meat product; this recipe is not vegetarian.",
+            "de": "Fleischextrakt ist ein Fleischprodukt; dieses Rezept ist nicht vegetarisch."
+          }
+        },
+        {
+          "key": "claret",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173190"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tablespoonful",
+            "original": "2 tablespoonfuls of claret"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Fry the sliced raw potatoes with the chopped onion in the butter until light brown and nearly done.",
+            "de": "Die rohen Kartoffelscheiben mit der gehackten Zwiebel in der Butter hellbraun und fast gar braten."
+          },
+          "technique": "pan-fry",
+          "uses": ["potatoes", "onion", "butter"]
+        },
+        {
+          "text": {
+            "en": "Cook the soup vegetables in the boiling water for 15 minutes.",
+            "de": "Das Suppengemüse 15 Minuten im kochenden Wasser garen."
+          },
+          "time": {
+            "value": 15,
+            "unit": "min"
+          },
+          "uses": ["vegetables", "water"]
+        },
+        {
+          "text": {
+            "en": "Add the fried potatoes, without the butter, and the salt.",
+            "de": "Die gebratenen Kartoffeln ohne die Butter und das Salz zugeben."
+          },
+          "uses": ["potatoes", "salt"]
+        },
+        {
+          "text": {
+            "en": "Cook the soup for half an hour.",
+            "de": "Die Suppe eine halbe Stunde kochen."
+          },
+          "time": {
+            "value": 0.5,
+            "unit": "h"
+          }
+        },
+        {
+          "text": {
+            "en": "Pass the soup through a sieve.",
+            "de": "Die Suppe durch ein Sieb streichen."
+          }
+        },
+        {
+          "text": {
+            "en": "Brown the flour in the fat left from frying the potatoes.",
+            "de": "Das Mehl im Bratfett der Kartoffeln bräunen."
+          },
+          "technique": "roux",
+          "uses": ["flour", "butter"]
+        },
+        {
+          "text": {
+            "en": "Add the browned flour to the soup.",
+            "de": "Das gebräunte Mehl in die Suppe geben."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Stir in the beef extract and the claret and let the soup come to a boil.",
+            "de": "Fleischextrakt und Rotwein einrühren und die Suppe einmal aufkochen lassen."
+          },
+          "uses": ["beef", "claret"]
+        },
+        {
+          "text": {
+            "en": "Serve with toasted bits of bread.",
+            "de": "Mit gerösteten Brotwürfeln servieren."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "potato-soup"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source names no number of persons; 3 quarts of soup serve about six at one pint each.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check (second agent) against the German edition, Nr. 41 (davidis.txt 8325-8337). Agreed: one onion, 3 quarts water, vegetables 15 minutes, half an hour of cooking ('eine halbe Stunde' confirms the English fraction), 1 tablespoon flour, 2 tablespoons claret, toasted bread. Differs, English kept: German one plate of potatoes (English 2 platefuls); butter and beef extract in ounces with unclear numerals. Nothing removed."
+  },
+  "note": {
+    "en": "The source's plain potato soup (No. 38) gives no quantity at all and is not used. The soup contains extract of beef, so it is not vegetarian; the source also names a version with water only and more vegetables, which is not transcribed.",
+    "de": "Die einfache Kartoffelsuppe der Quelle (Nr. 38) gibt keine Menge an und wird nicht verwendet. Die Suppe enthält Fleischextrakt und ist daher nicht vegetarisch. Die Quelle nennt auch eine Form nur mit Wasser und mehr Gemüse; sie ist nicht übertragen."
+  }
+}

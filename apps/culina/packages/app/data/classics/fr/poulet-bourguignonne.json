@@ -1,0 +1,476 @@
+{
+  "id": "poulet-bourguignonne",
+  "name": {
+    "en": "Chicken Burgundy style",
+    "de": "Huhn nach Burgunderart"
+  },
+  "originalName": "Poulet à la bourguignonne",
+  "country": "fr",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine, quatrième édition (Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Volailles\", \"Poulet à la bourguignonne\", printed pp. 180-181",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
+    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, Préface, \"Pincées de sel et de poivre\": \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2052-2055, printed p. 36)."
+    },
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, same passage: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2052-2055, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "turned-mushrooms",
+      "name": {
+        "en": "Turned mushrooms",
+        "de": "Gedrehte Champignons"
+      },
+      "role": "garnish",
+      "lines": [
+        {
+          "key": "mushroom",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-mushrooms"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "count",
+            "original": "le jus de 15 champignons"
+          },
+          "note": {
+            "en": "The poulet uses the juice of 15 mushrooms, prepared as in the book's turned mushrooms (printed p. 71).",
+            "de": "Das Huhn nimmt den Saft von 15 Champignons, zubereitet wie die gedrehten Champignons des Buches (gedruckt S. 71)."
+          }
+        },
+        {
+          "key": "lemon-juice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "note": {
+            "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice. The book does not state a size for it, so no amount is given.",
+            "de": "\"1 cuillerée à bouche de jus de citron\": ein Esslöffel Zitronensaft. Das Buch gibt dafür keine Größe an, daher steht hier keine Menge."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "\"même quantité d'eau\": the same amount of water as the lemon juice.",
+            "de": "\"même quantité d'eau\": dieselbe Menge Wasser wie Zitronensaft."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g",
+            "original": "5 grammes de sel"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de beurre"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the earthy part off the stalks with a knife.",
+            "de": "Den erdigen Teil der Stiele mit dem Messer abschneiden."
+          },
+          "uses": ["mushroom"]
+        },
+        {
+          "text": {
+            "en": "Rinse the mushrooms quickly in fresh water, then dry them at once on a cloth. Mushrooms that stay long in water lose taste and colour.",
+            "de": "Die Champignons kurz in frischem Wasser waschen und sofort auf einem Tuch trocknen. Pilze, die lange im Wasser liegen, verlieren Geschmack und Farbe."
+          },
+          "uses": ["mushroom"]
+        },
+        {
+          "text": {
+            "en": "Put the lemon juice, the same amount of water and the salt into a pan of two litres.",
+            "de": "Zitronensaft, dieselbe Menge Wasser und das Salz in einen Topf mit zwei Litern Inhalt geben."
+          },
+          "uses": ["lemon-juice", "water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Turn each mushroom with a small knife and let it drop into the pan.",
+            "de": "Jeden Pilz mit einem kleinen Messer drehen und in den Topf fallen lassen."
+          },
+          "technique": "knife-cuts",
+          "uses": ["mushroom"]
+        },
+        {
+          "text": {
+            "en": "Toss the mushrooms in the pan so that they take up the lemon and the salt.",
+            "de": "Die Pilze im Topf schwenken, damit sie Zitrone und Salz aufnehmen."
+          },
+          "uses": ["mushroom", "lemon-juice", "salt"]
+        },
+        {
+          "text": {
+            "en": "Set the pan on high heat and add the butter.",
+            "de": "Den Topf auf starke Hitze stellen und die Butter zugeben."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Boil for five minutes, shaking the pan so that the mushrooms cook evenly.",
+            "de": "Fünf Minuten kochen lassen; dabei den Topf schütteln, damit die Pilze gleichmäßig garen."
+          },
+          "technique": "boil",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          },
+          "uses": ["mushroom"]
+        },
+        {
+          "text": {
+            "en": "Put the mushrooms into a bowl and cover them with a round of paper.",
+            "de": "Die Pilze in eine Schüssel geben und mit einem runden Papier abdecken."
+          },
+          "uses": ["mushroom"]
+        }
+      ]
+    },
+    {
+      "id": "chicken-in-wine",
+      "name": {
+        "en": "Chicken in red wine sauce",
+        "de": "Huhn in Rotweinsoße"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chicken",
+          "wanted": {
+            "en": "Chicken",
+            "de": "Huhn"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "un poulet"
+          }
+        },
+        {
+          "key": "blood",
+          "wanted": {
+            "en": "Chicken blood",
+            "de": "Hühnerblut"
+          },
+          "note": {
+            "en": "The blood of the bird, kept while it is bled. The book gives no amount.",
+            "de": "Das Blut des Huhns, beim Ausbluten aufgefangen. Das Buch gibt keine Menge an."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de beurre"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "40 grammes de farine"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "pincée",
+            "original": "3 pincées de sel"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "prise",
+            "original": "2 prises de poivre"
+          }
+        },
+        {
+          "key": "stock",
+          "wanted": {
+            "en": "Meat stock",
+            "de": "Fleischbrühe"
+          },
+          "note": {
+            "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given.",
+            "de": "\"0 décilitres de bouillon\" im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Die Quelle nennt eine lesbare Menge nicht; daher steht hier keine Menge."
+          }
+        },
+        {
+          "key": "wine",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173190"
+          },
+          "note": {
+            "en": "\"3 décilitres de vin rouge\": the décilitre is 0.1 litre, so the amount is 300 ml.",
+            "de": "\"3 décilitres de vin rouge\": das Deziliter ist 0,1 Liter; die Menge ist daher 300 ml."
+          },
+          "amount": {
+            "value": 300,
+            "unit": "ml",
+            "original": "3 décilitres de vin rouge"
+          }
+        },
+        {
+          "key": "bouquet",
+          "wanted": {
+            "en": "Bouquet garni",
+            "de": "Bouquet garni"
+          },
+          "note": {
+            "en": "\"1 bouquet garni\": the book gives no size for the bouquet.",
+            "de": "\"1 bouquet garni\": das Buch gibt keine Größe für das Bouquet an."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g",
+            "original": "400 grammes de petits oignons"
+          },
+          "note": {
+            "en": "Small onions, blanched and fried in a pan.",
+            "de": "Kleine Zwiebeln, blanchiert und in der Pfanne angebraten."
+          }
+        },
+        {
+          "key": "mushrooms",
+          "ref": {
+            "kind": "component",
+            "id": "turned-mushrooms"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bleed the chicken into a bowl. Stir the blood for two minutes with a wooden spoon so that it does not clot.",
+            "de": "Das Huhn ausbluten lassen. Das Blut zwei Minuten mit einem Holzlöffel rühren, damit es nicht gerinnt."
+          },
+          "uses": ["chicken", "blood"]
+        },
+        {
+          "text": {
+            "en": "Pluck the chicken, remove the pin feathers, draw it and singe it.",
+            "de": "Das Huhn rupfen, die Kiele entfernen, ausnehmen und absengen."
+          },
+          "uses": ["chicken"]
+        },
+        {
+          "text": {
+            "en": "Cut the chicken into pieces, as the book's fricassée does; the book illustrates the cut in two figures.",
+            "de": "Das Huhn wie bei der Fricassée des Buches in Stücke schneiden; das Buch zeigt den Schnitt in zwei Abbildungen."
+          },
+          "uses": ["chicken"]
+        },
+        {
+          "text": {
+            "en": "Put the butter into the sauté pan and melt it.",
+            "de": "Die Butter in die Sauteuse geben und schmelzen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Place the chicken pieces in the melted butter, not on top of each other.",
+            "de": "Die Hühnerteile in die geschmolzene Butter legen, ohne dass sie übereinanderliegen."
+          },
+          "uses": ["chicken"]
+        },
+        {
+          "text": {
+            "en": "Season with the salt and the pepper.",
+            "de": "Mit Salz und Pfeffer würzen."
+          },
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Brown the pieces on both sides.",
+            "de": "Die Stücke auf beiden Seiten anbraten."
+          },
+          "technique": "saute",
+          "uses": ["chicken"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle the flour over the pieces.",
+            "de": "Das Mehl über die Stücke streuen."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Stir for 3 minutes.",
+            "de": "3 Minuten rühren."
+          },
+          "time": {
+            "value": 3,
+            "unit": "min"
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Add the stock, the red wine and the bouquet garni.",
+            "de": "Brühe, Rotwein und das Bouquet garni zugeben."
+          },
+          "uses": ["stock", "wine", "bouquet"]
+        },
+        {
+          "text": {
+            "en": "Add the small onions, blanched and fried in a pan.",
+            "de": "Die kleinen Zwiebeln zugeben, blanchiert und in der Pfanne angebraten."
+          },
+          "uses": ["onion"]
+        },
+        {
+          "text": {
+            "en": "Add the juice of the turned mushrooms.",
+            "de": "Den Saft der gedrehten Champignons zugeben."
+          },
+          "uses": ["mushrooms"]
+        },
+        {
+          "text": {
+            "en": "Simmer gently for half an hour.",
+            "de": "Eine halbe Stunde bei schwacher Hitze köcheln lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Check the cooking and the seasoning.",
+            "de": "Garzeit und Würze prüfen."
+          }
+        },
+        {
+          "text": {
+            "en": "Add the turned mushrooms to the sauce.",
+            "de": "Die gedrehten Champignons in die Sauce geben."
+          },
+          "uses": ["mushrooms"]
+        },
+        {
+          "text": {
+            "en": "Mix the blood with a little of the sauce. Stir it into the pan until the first boil.",
+            "de": "Das Blut mit etwas Sauce mischen. In den Topf rühren, bis es einmal aufkocht."
+          },
+          "uses": ["blood"]
+        },
+        {
+          "text": {
+            "en": "Arrange the pieces on the dish: the two back pieces in the middle, the two legs on them, the two neck pieces on the legs, the two wing tips on the necks. Lean the two wings and the two thighs against this tall square, and put the two breast pieces on top.",
+            "de": "Die Stücke auf der Platte anordnen: die zwei Rückenstücke in die Mitte, darauf die zwei Beine, auf den Beinen die zwei Halsstücke, auf den Hälsen die zwei Flügelspitzen. Die zwei Flügel und die zwei Schenkel an dieses hohe Viereck lehnen; oben darauf die zwei Brustteile legen."
+          },
+          "uses": ["chicken"]
+        },
+        {
+          "text": {
+            "en": "Pour the sauce over the pieces and set the mushrooms in the four corners.",
+            "de": "Die Sauce über die Stücke gießen und die Champignons in die vier Ecken setzen."
+          },
+          "uses": ["mushrooms"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "chicken-in-wine"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source gives no number of persons; one chicken, 400 g of small onions and 15 mushrooms are judged for four persons.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 9550-9604 and 3728-3790. Agreed: blood, 30 g butter, 3 pincées, 2 prises, 40 g flour, 3 minutes, 3 décilitres of wine, 400 g onions, juice of 15 mushrooms, half an hour; the arrangement. Changed: red wine now 300 ml; the arrangement names legs, wing tips, wings and thighs as the fricassée does. Unreadable: the stock (\"0 décilitres\"; a G in the second scan), so no amount."
+  },
+  "note": {
+    "en": "Gouffé's chicken in the Burgundy style. Not sized in the book: the stock (printed \"0 décilitres\"; the first digit is not legible in either scan), the blood, the bouquet garni and the lemon juice of the mushrooms (one tablespoon). The red wine is 3 décilitres, which is 300 ml. The cutting and the dressing follow the book's fricassée (gouffe.txt lines 9492-9503; the cut is illustrated in two figures). The mushrooms follow the book's turned mushrooms (printed p. 71, gouffe.txt lines 3728-3790). The blood binding follows the book's Liaison au sang (printed p. 89, gouffe.txt lines 4714-4721).",
+    "de": "Gouffés Huhn nach Burgunderart. Im Buch nicht bemessen: die Brühe (gedruckt \"0 décilitres\"; die erste Ziffer ist in beiden Scans nicht lesbar), das Blut, das Bouquet garni und der Zitronensaft für die Pilze (ein Esslöffel). Der Rotwein sind 3 Deziliter, also 300 ml. Das Zerlegen und das Anrichten folgen der Fricassée des Buches (gouffe.txt Zeilen 9492-9503; der Schnitt steht in zwei Abbildungen). Die Pilze folgen den gedrehten Champignons des Buches (gedruckt S. 71, gouffe.txt Zeilen 3728-3790). Die Bindung mit Blut folgt der Liaison au sang des Buches (gedruckt S. 89, gouffe.txt Zeilen 4714-4721)."
+  }
+}

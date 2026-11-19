@@ -1,0 +1,155 @@
+/* Phone first: header, main, bottom navigation. From 720 px: side navigation. */
+.app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 'header' 'main' 'nav';
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-2);
+  top: var(--sp-2);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  padding: 0 var(--sp-4);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  transform: translateY(-300%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.app-header {
+  grid-area: header;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+}
+
+.app-title {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.app-main {
+  grid-area: main;
+  min-width: 0;
+  padding: var(--sp-4);
+}
+
+.app-main:focus {
+  outline: none;
+}
+
+.app-nav {
+  grid-area: nav;
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.nav-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each entry is as wide as its label needs and the rest is shared, so five labels fit at 320 px. */
+.nav-list li {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.nav-label {
+  white-space: nowrap;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-width: var(--target);
+  min-height: var(--nav-h);
+  padding: var(--sp-2) var(--sp-1);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* German labels are longer (Verhältnisse, Komponenten, Einstellungen): on a phone they get a little
+   less type and padding so that all six entries fit at 360 px. */
+@media (max-width: 719px) {
+  :root[lang='de'] .nav-link {
+    padding-inline: 2px;
+    font-size: var(--fs-xxs);
+  }
+}
+
+.nav-link:focus-visible {
+  outline-offset: calc(-1 * var(--focus-width));
+}
+
+/* The current destination: colour, a bar and bold text, never colour alone. */
+.nav-link[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+  box-shadow: inset 0 var(--sp-1) 0 var(--accent);
+}
+
+@media (min-width: 720px) {
+  .app {
+    grid-template-columns: var(--side-w) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'header main' 'nav main';
+  }
+
+  .app-header {
+    border-right: 1px solid var(--divider);
+  }
+
+  .app-main {
+    padding: var(--sp-5);
+  }
+
+  .app-nav {
+    position: static;
+    border-top: 0;
+    border-right: 1px solid var(--divider);
+  }
+
+  .nav-list {
+    flex-direction: column;
+    padding: var(--sp-2);
+  }
+
+  .nav-link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--sp-3);
+    min-height: var(--target);
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-md);
+    text-align: start;
+  }
+
+  .nav-link[aria-current='page'] {
+    box-shadow: inset var(--sp-1) 0 0 var(--accent);
+  }
+}

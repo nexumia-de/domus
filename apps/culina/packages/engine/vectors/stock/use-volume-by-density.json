@@ -1,0 +1,28 @@
+{
+  "id": "use-volume-by-density",
+  "description": "A cup used from 500 g needs the density: 1 cup of 0.5 g/ml is 118.294118 g",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 500,
+      "unit": "g"
+    },
+    "used": {
+      "value": 1,
+      "unit": "cup"
+    },
+    "facts": {
+      "densityGPerMl": 0.5
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": false,
+    "amount": {
+      "value": 381.705882,
+      "unit": "g"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic; US customary cup of 236.588237 ml as in data/units.json."
+}

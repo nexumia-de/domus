@@ -1,0 +1,13 @@
+{
+  "id": "round-default-step-large",
+  "description": "1234.5 g with the default step",
+  "inputs": {
+    "kind": "round",
+    "g": 1234.5
+  },
+  "expected": {
+    "g": 1235
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: grams. From 10 g the default step is 1 g (assumption, unverified); 1234.5 is a tie, away from zero: 1235."
+}

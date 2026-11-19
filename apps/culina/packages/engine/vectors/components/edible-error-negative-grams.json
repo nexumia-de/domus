@@ -1,0 +1,23 @@
+{
+  "id": "edible-error-negative-grams",
+  "description": "A negative weight",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_edible",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 80,
+        "source": "synthetic"
+      }
+    ],
+    "state": "raw",
+    "g": -1
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "g"
+  },
+  "tolerance": 0.000001,
+  "source": "Weights are not negative."
+}

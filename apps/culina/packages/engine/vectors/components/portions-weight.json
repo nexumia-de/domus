@@ -1,0 +1,15 @@
+{
+  "id": "portions-weight",
+  "description": "Weight of one portion",
+  "inputs": {
+    "kind": "portions",
+    "operation": "portion_weight",
+    "yield_g": 900,
+    "count": 6
+  },
+  "expected": {
+    "portion_g": 150
+  },
+  "tolerance": 0.000001,
+  "source": "900 / 6 = 150 g."
+}

@@ -1,0 +1,11 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+  "name": "Bread dough",
+  "lines": [
+    {
+      "ref": { "kind": "ingredient", "id": "wheat-flour" },
+      "amount": { "value": -100, "unit": "g" }
+    }
+  ],
+  "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" }
+}

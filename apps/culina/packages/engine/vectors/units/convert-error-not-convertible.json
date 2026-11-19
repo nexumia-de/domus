@@ -1,0 +1,14 @@
+{
+  "id": "convert-error-not-convertible",
+  "description": "1 count to ml without any facts",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 1,
+      "unit": "count"
+    },
+    "to": "ml"
+  },
+  "error_code": "not-convertible",
+  "source": "Basis: pieces to millilitres goes through mass and needs density and unit weight; both are missing."
+}

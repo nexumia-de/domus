@@ -1,0 +1,30 @@
+{
+  "id": "expiry-invalid-prepared-on",
+  "description": "A date prepared that is not a real date",
+  "inputs": {
+    "kind": "stock_expiry",
+    "item": {
+      "id": "s",
+      "ref": {
+        "kind": "ingredient",
+        "id": "carrot"
+      },
+      "state": "prepared",
+      "preparedOn": "2026-02-30"
+    },
+    "today": "2026-11-18",
+    "shelfLife": [
+      {
+        "state": "prepared",
+        "storage": "fridge",
+        "days": 5
+      }
+    ]
+  },
+  "error_code": "invalid-date",
+  "error_detail": {
+    "field": "preparedOn"
+  },
+  "tolerance": 0,
+  "source": "Synthetic: a date that is not a real calendar date is an error, never a guess."
+}

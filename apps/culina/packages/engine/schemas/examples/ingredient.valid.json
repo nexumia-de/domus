@@ -1,0 +1,13 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
+  "name": "Onion",
+  "parentId": "alliums",
+  "names": { "de": { "name": "Zwiebel", "aliases": ["Küchenzwiebel"], "source": "user" } },
+  "roles": ["aromatic"],
+  "season": { "months": [8, 9, 10], "region": "own garden", "source": "user" },
+  "allergens": [],
+  "yields": [{ "state": "raw", "percent": 90, "source": "user" }],
+  "shelfLife": [{ "state": "raw", "storage": "pantry", "days": 30, "source": "user" }],
+  "densityGPerMl": { "value": 0.6, "source": "user" },
+  "unitWeightG": { "value": 150, "source": "user" }
+}

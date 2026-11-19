@@ -1,0 +1,30 @@
+{
+  "id": "stock-presence-only-known-ingredient",
+  "description": "A presence-only stock item of a known ingredient has no finding",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "ingredients": [
+        {
+          "id": "carrot",
+          "name": "Carrot"
+        }
+      ],
+      "stock": [
+        {
+          "id": "s",
+          "ref": {
+            "kind": "ingredient",
+            "id": "carrot"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "findings": []
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

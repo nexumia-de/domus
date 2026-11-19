@@ -1,0 +1,64 @@
+{
+  "id": "exact-ignores-plural",
+  "description": "tomato and Tomatoes are the same; the same name in the catalogue comes second, as a close match",
+  "inputs": {
+    "kind": "match_names",
+    "names": ["tomato"],
+    "candidates": [
+      {
+        "id": "alliums",
+        "name": "Alliums",
+        "origin": "notebook"
+      },
+      {
+        "id": "u-onion",
+        "name": "Onion",
+        "origin": "notebook",
+        "parentId": "alliums"
+      },
+      {
+        "id": "red-onion",
+        "name": "Red onion",
+        "origin": "notebook",
+        "parentId": "u-onion"
+      },
+      {
+        "id": "tomato",
+        "name": "Tomatoes",
+        "origin": "notebook"
+      },
+      {
+        "id": "cat-tomato",
+        "name": "Tomato",
+        "origin": "catalogue"
+      },
+      {
+        "id": "berry",
+        "name": "Berry",
+        "origin": "notebook"
+      },
+      {
+        "id": "olive-oil",
+        "name": "Olive oil",
+        "origin": "notebook"
+      },
+      {
+        "id": "sunflower-oil",
+        "name": "Sunflower oil",
+        "origin": "notebook"
+      }
+    ]
+  },
+  "expected": {
+    "matches": [
+      {
+        "name": "tomato",
+        "exact": "tomato",
+        "close": ["cat-tomato"],
+        "classes": []
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of words, no kitchen figure is involved."
+}

@@ -1,0 +1,78 @@
+.screen {
+  max-width: var(--content-w);
+}
+
+.empty {
+  color: var(--text-muted);
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.guidance summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.guidance summary::before {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-end: var(--sp-3);
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.guidance[open] summary::before {
+  transform: rotate(45deg);
+}
+
+.guidance summary::-webkit-details-marker {
+  display: none;
+}
+
+.guidance p {
+  color: var(--text-muted);
+}
+
+.choices {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-2) var(--sp-4) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.choices legend {
+  padding: 0 var(--sp-2);
+  font-weight: 600;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--target);
+  cursor: pointer;
+}
+
+.choice input {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.note {
+  color: var(--text);
+}

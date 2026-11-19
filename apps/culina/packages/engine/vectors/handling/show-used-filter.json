@@ -1,0 +1,86 @@
+{
+  "id": "show-used-filter",
+  "description": "With the techniques of the dish given, a rule on another technique stays away",
+  "inputs": {
+    "kind": "handling_show",
+    "ingredients": ["butter", "salt"],
+    "rules": [
+      {
+        "id": "r-a",
+        "target": "butter",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "r-b",
+        "target": "salt",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "folding",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "tree": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "butter-salted",
+        "parentId": "butter"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "salt"
+      }
+    ],
+    "learned": [],
+    "used": ["folding"]
+  },
+  "expected": {
+    "rules": [
+      {
+        "rule": "r-b",
+        "ingredient": "salt"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

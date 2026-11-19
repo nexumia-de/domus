@@ -1,0 +1,225 @@
+{
+  "id": "guisantes-al-natural",
+  "name": {
+    "en": "Peas with butter, onion and egg yolk",
+    "de": "Erbsen mit Butter, Zwiebel und Eigelb"
+  },
+  "originalName": "Guisantes al natural",
+  "country": "es",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina al alcance de todos (Tercera edición ilustrada con 240 grabados; Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "pp. [737-738], chapter Legumbres, section Guisantes, recipe \"Guisantes al natural\"",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "guisantes-al-natural-peas",
+      "name": {
+        "en": "Peas with butter and egg yolk",
+        "de": "Erbsen mit Butter und Eigelb"
+      },
+      "role": "side",
+      "lines": [
+        {
+          "key": "peas",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-peas"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "un litro de guisantes mondados"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 gramos de manteca de vacas"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 2,
+            "max": 3,
+            "unit": "count",
+            "original": "dos ó tres cebollas"
+          }
+        },
+        {
+          "key": "lettuce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-lettuce"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "un par de cogollos de lechuga"
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in. The size is not read in the book, so the line has no amount.",
+            "de": "Ein Bund Petersilie (ramillete de perejil), vor Butter und Mehl wieder herausgenommen. Die Größe steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "Good seasoning of salt and pepper (una buena sazón de sal y pimienta). The source gives no amount.",
+            "de": "Gut gewürzt mit Salz und Pfeffer (una buena sazón de sal y pimienta). Die Quelle gibt keine Menge an."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          }
+        },
+        {
+          "key": "butter-flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 125,
+            "unit": "g",
+            "original": "125 gramos de manteca de vacas"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "One spoonful (una cucharada de harina), kneaded into the butter. The size of the spoon is not read in the book, so the line has no amount.",
+            "de": "Ein Löffel (una cucharada de harina), in die Butter geknetet. Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "egg-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "dos yemas de huevo"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Half a glass (medio vaso) to dissolve the yolks. The size of the glass is not read in the book, so the line has no amount.",
+            "de": "Ein halbes Glas (medio vaso) zum Auflösen des Eigelbs. Die Größe des Glases steht nicht im Buch, daher ohne Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the peas, the onions, the lettuce hearts, the parsley bouquet, the butter, the salt and the pepper in a pot. Cook over low heat, stirring often with a wooden spatula so that the peas do not stick.",
+            "de": "Die Erbsen, die Zwiebeln, die Salatherzen, den Petersilienstrauß, die Butter, Salz und Pfeffer in einen Topf geben. Bei schwacher Hitze garen und oft mit einem Holzspatel rühren, damit die Erbsen nicht ansetzen."
+          },
+          "uses": ["peas", "onion", "lettuce", "parsley", "butter", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Take out the parsley and the lettuce. Leave the onions in the pot.",
+            "de": "Petersilie und Salat herausnehmen. Die Zwiebeln im Topf lassen."
+          },
+          "uses": ["parsley", "lettuce", "onion"]
+        },
+        {
+          "text": {
+            "en": "Add the butter kneaded with the flour, and stir hard for two minutes.",
+            "de": "Die mit dem Mehl verknetete Butter dazugeben und zwei Minuten kräftig rühren."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["butter-flour", "flour"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat and pour the sauce over the peas.",
+            "de": "Den Topf von der Hitze nehmen und die Sauce über die Erbsen gießen."
+          },
+          "uses": ["peas"]
+        },
+        {
+          "text": {
+            "en": "At serving, dissolve the two egg yolks in the water and add them.",
+            "de": "Beim Servieren die zwei Eigelb im Wasser auflösen und dazugeben."
+          },
+          "uses": ["egg-yolk", "water"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "side",
+      "ref": {
+        "kind": "component",
+        "id": "guisantes-al-natural-peas"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; a litre of peas is taken for four portions.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reading of the same scan (the only Muro edition on archive.org; djvu text and HTML page with the same OCR; weak). Compared every line of the recipe (muro.txt 33176-33216): amounts, units and times agreed. Changed: wooden spatula (espátula de boj), not spoon; the yolks are added at serving, without a thickening technique the book does not name. Nothing unreadable."
+  },
+  "note": {
+    "en": "A replacement: the first choice of the selection (Zucchini in pisto) gives no amounts in the book, so it is not transcribed. The source gives the butter and flour as a sauce poured over the peas.",
+    "de": "Ein Ersatz: Die erste Wahl der Auswahl (Zucchini im Pisto) nennt im Buch keine Mengen und ist daher nicht übertragen. Die Quelle gibt Butter und Mehl als Sauce, die über die Erbsen gegossen wird."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "convert-tbsp-to-cup",
+  "description": "100 tbsp in cup",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 100,
+      "unit": "tbsp"
+    },
+    "to": "cup"
+  },
+  "expected": {
+    "value": 6.25
+  },
+  "tolerance": 0.000001,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 100 tbsp * 14.78676478125 / 236.5882365 = 6.25 cup (factors: base ml per unit). Unit factors: docs/engine-rules.md#units-and-factors; density 0.5 g/ml and unit weight 50 g are synthetic, chosen for the arithmetic, not real ingredients."
+}

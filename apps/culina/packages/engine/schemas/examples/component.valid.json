@@ -1,0 +1,26 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+  "name": "Bread dough",
+  "role": "starch",
+  "percentBase": "flour",
+  "lines": [
+    {
+      "ref": { "kind": "ingredient", "id": "wheat-flour" },
+      "amount": { "value": 100, "unit": "percent" },
+      "role": "flour"
+    },
+    {
+      "ref": { "kind": "ingredient", "id": "water" },
+      "amount": { "value": 60, "unit": "percent" },
+      "role": "water"
+    },
+    { "ref": { "kind": "ingredient", "id": "salt" }, "amount": { "value": 2, "unit": "percent" } },
+    {
+      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" },
+      "amount": { "value": 200, "unit": "g" }
+    }
+  ],
+  "yield": { "amount": { "value": 1.7, "unit": "kg" }, "source": "user" },
+  "method": ["Mix, rest, fold, shape, bake."],
+  "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" }
+}

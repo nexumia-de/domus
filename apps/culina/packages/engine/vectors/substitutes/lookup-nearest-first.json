@@ -1,0 +1,125 @@
+{
+  "id": "lookup-nearest-first",
+  "description": "For a leaf, its own substitutes come first (by id), then those of its parent, then of the group above; unrelated ones are left out",
+  "inputs": {
+    "kind": "substitute_lookup",
+    "ingredient_id": "starch-a1",
+    "ingredients": [
+      {
+        "id": "starch"
+      },
+      {
+        "id": "starch-a",
+        "parentId": "starch"
+      },
+      {
+        "id": "starch-a1",
+        "parentId": "starch-a"
+      },
+      {
+        "id": "starch-b",
+        "parentId": "starch"
+      },
+      {
+        "id": "other"
+      }
+    ],
+    "substitutes": [
+      {
+        "id": "by-group",
+        "from": "starch",
+        "to": "other",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "by-parent",
+        "from": "starch-a",
+        "to": "starch-b",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "by-leaf-z",
+        "from": "starch-a1",
+        "to": "other",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "by-leaf-a",
+        "from": "starch-a1",
+        "to": "starch-b",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "unrelated",
+        "from": "other",
+        "to": "starch-b",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "ids": ["by-leaf-a", "by-leaf-z", "by-parent", "by-group"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

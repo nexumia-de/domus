@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/component.schema.json",
+  "title": "Component",
+  "description": "A made item with its own output weight: a sauce, a dough, a preferment. Lines may refer to other components. One stored record is one version.",
+  "type": "object",
+  "required": ["id", "name", "lines", "version"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "name": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/name"
+    },
+    "role": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+    },
+    "templateId": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
+    "percentBase": {
+      "description": "Role whose summed mass is 100 percent for lines given in percent.",
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+    },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["ref"],
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref"
+          },
+          "amount": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineAmount"
+          },
+          "role": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+          },
+          "state": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
+          },
+          "note": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+          },
+          "key": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
+          }
+        }
+      }
+    },
+    "yield": {
+      "description": "Output weight as weighed by the user; the loss is derived from it.",
+      "type": "object",
+      "required": ["amount", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/massAmount"
+        },
+        "source": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+        }
+      }
+    },
+    "method": {
+      "type": "array",
+      "items": {
+        "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+      }
+    },
+    "steps": {
+      "description": "Steps with bilingual text, optional technique and the lines used (by line key). method stays valid beside it.",
+      "type": "array",
+      "items": {
+        "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
+      }
+    },
+    "version": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/version"
+    }
+  }
+}

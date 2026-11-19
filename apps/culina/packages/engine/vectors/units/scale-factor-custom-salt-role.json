@@ -1,0 +1,29 @@
+{
+  "id": "scale-factor-custom-salt-role",
+  "description": "Salt role chosen by the caller",
+  "inputs": {
+    "kind": "scale_factor",
+    "lines": [
+      {
+        "id": "fish-sauce",
+        "amount": {
+          "value": 30,
+          "unit": "g"
+        },
+        "role": "seasoning"
+      }
+    ],
+    "factor": 2,
+    "salt_roles": ["seasoning"]
+  },
+  "expected": {
+    "factor": 2,
+    "values": {
+      "fish-sauce": 60
+    },
+    "unscaled": [],
+    "cautions": ["time-not-linear", "salt-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: 30 * 2 = 60 g; the role seasoning is in the caller salt roles."
+}

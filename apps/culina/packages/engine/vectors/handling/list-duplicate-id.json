@@ -1,0 +1,87 @@
+{
+  "id": "list-duplicate-id",
+  "description": "The later of two rules with one id is reported, with its index",
+  "inputs": {
+    "kind": "handling_list_validate",
+    "rules": [
+      {
+        "id": "a",
+        "target": "butter",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "target": "butter",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "a",
+        "target": "salt",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "path": "[2].id",
+        "value": "a"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

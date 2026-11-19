@@ -1,0 +1,20 @@
+{
+  "id": "round-error-negative",
+  "description": "A negative figure is refused and names the field",
+  "inputs": {
+    "kind": "nutrition_round",
+    "figures": {
+      "kcal": -1,
+      "kJ": 1,
+      "proteinG": 1,
+      "fatG": 1,
+      "carbohydrateG": 1
+    }
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "kcal"
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

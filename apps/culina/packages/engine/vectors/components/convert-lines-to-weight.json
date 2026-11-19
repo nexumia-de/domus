@@ -1,0 +1,69 @@
+{
+  "id": "convert-lines-to-weight",
+  "description": "Percent lines to grams of the flour",
+  "inputs": {
+    "kind": "convert_lines",
+    "to": "weight",
+    "component": {
+      "id": "dough",
+      "percentBase": "flour",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "wheat"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "role": "flour"
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "percent"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "percent"
+          }
+        }
+      ]
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "60 % of 500 = 300, 2 % of 500 = 10. Synthetic amounts.",
+  "expected": {
+    "lines": [
+      {
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "amount": {
+          "value": 300,
+          "unit": "g"
+        }
+      },
+      {
+        "amount": {
+          "value": 10,
+          "unit": "g"
+        }
+      }
+    ]
+  }
+}

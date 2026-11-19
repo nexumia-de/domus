@@ -1,0 +1,153 @@
+{
+  "id": "alioli",
+  "name": {
+    "en": "Alioli (garlic emulsion sauce)",
+    "de": "Alioli (Knoblauch-Emulsionssauce)"
+  },
+  "originalName": "Salsa ayoli (ali-oli)",
+  "country": "es",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "p. 173, section Salsas, recipe 'Salsa ayoli ó ayoli' (running head garbled in the OCR); lines 8196–8215",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "alioli-sauce",
+      "name": {
+        "en": "Alioli",
+        "de": "Alioli"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "dos cabezas de ajo"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "una yema de huevo crudo"
+          }
+        },
+        {
+          "key": "bread",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
+          },
+          "note": {
+            "en": "A crumb of bread the size of a walnut (\"del tamaño de una nuez\"), soaked. The size is a comparison, not a measure, so the line has no amount. Original: \"un migón de pan del tamaño de una nuez\".",
+            "de": "Eine Brotkrume von der Größe einer Walnuss (\"del tamaño de una nuez\"), eingeweicht. Das ist ein Vergleich, kein Maß, daher keine Menge. Quelle: \"un migón de pan del tamaño de una nuez\"."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "note": {
+            "en": "Six or seven spoons (\"seis ó siete cucharadas de aceite\"), added drop by drop. The book does not give the size of the spoon, so the line has no amount.",
+            "de": "Sechs oder sieben Löffel (\"seis ó siete cucharadas de aceite\"), tropfenweise zugegeben. Das Buch nennt keine Größe des Löffels, daher keine Menge."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "For soaking the bread and for thinning the sauce. The source gives water or seasoned milk for soaking; water is chosen.",
+            "de": "Zum Einweichen des Brotes und zum Verdünnen der Sauce. Die Quelle nennt zum Einweichen Wasser oder gesalzene, gepfefferte Milch; gewählt ist Wasser."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Pound the garlic in a mortar.",
+            "de": "Den Knoblauch im Mörser zerstoßen."
+          },
+          "uses": ["garlic"]
+        },
+        {
+          "text": {
+            "en": "Add the yolk and the bread soaked in water. Keep pounding and mixing.",
+            "de": "Das Eigelb und das in Wasser eingeweichte Brot zugeben. Weiter zerstoßen und vermischen."
+          },
+          "uses": ["yolk", "bread", "water"]
+        },
+        {
+          "text": {
+            "en": "Add the oil drop by drop while you keep pounding and stirring.",
+            "de": "Das Öl tropfenweise zugeben und dabei weiter zerstoßen und rühren."
+          },
+          "technique": "cold-emulsion",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "If the sauce is thick, thin it with water.",
+            "de": "Ist die Sauce dick, mit Wasser verdünnen."
+          },
+          "uses": ["water"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "alioli-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; two heads of garlic, one yolk and six or seven spoons of oil make a sauce for about four.",
+      "target": "persons"
+    },
+    {
+      "what": "Liquid for soaking the bread",
+      "value": "water",
+      "reason": "The source gives water or seasoned milk; water is chosen, as the simpler of the two."
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical to the local text). Compared lines 8196-8215: 2 heads of garlic, 1 yolk (OCR 'dfí' read as 'de'), bread and oil without amount, water. Agreed. Changed: step 1 trimmed to 'pound in a mortar'; step 4 'thick' for 'espeso' (was 'firm'). Nothing unreadable."
+  },
+  "note": {
+    "en": "Muro's own formula, which he calls a Mediterranean sauce derived from mayonnaise. The garlic is pounded, the bread soaked, and the oil added drop by drop. Two lines have no amount because the source gives a comparison (the bread) or a spoon of unknown size (the oil).",
+    "de": "Muros eigene Formel; er nennt sie eine mittelmeerische Sauce aus der Mayonnaise. Der Knoblauch wird zerstoßen, das Brot eingeweicht und das Öl tropfenweise zugegeben. Zwei Zeilen haben keine Menge, weil die Quelle beim Brot einen Vergleich und beim Öl einen Löffel unbekannter Größe angibt."
+  }
+}

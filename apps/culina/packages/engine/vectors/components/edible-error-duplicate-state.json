@@ -1,0 +1,28 @@
+{
+  "id": "edible-error-duplicate-state",
+  "description": "Two entries for one state",
+  "inputs": {
+    "kind": "edible_portion",
+    "operation": "to_edible",
+    "yields": [
+      {
+        "state": "raw",
+        "percent": 80,
+        "source": "synthetic"
+      },
+      {
+        "state": "raw",
+        "percent": 70,
+        "source": "synthetic"
+      }
+    ],
+    "state": "raw",
+    "g": 100
+  },
+  "error_code": "duplicate-state",
+  "error_detail": {
+    "state": "raw"
+  },
+  "tolerance": 0.000001,
+  "source": "Which of 80 and 70 applies is not decided by the engine."
+}

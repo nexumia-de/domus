@@ -1,0 +1,28 @@
+{
+  "id": "resolve-error-invalid-parts",
+  "description": "A root with parts 0",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "flat",
+        "name": "flat",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 0
+          }
+        ],
+        "anchor": "flour"
+      }
+    ],
+    "id": "flat"
+  },
+  "error_code": "invalid-parts",
+  "error_detail": {
+    "templateId": "flat",
+    "role": "flour"
+  },
+  "source": "parts must be above 0; synthetic template numbers chosen for the arithmetic, not from a source"
+}

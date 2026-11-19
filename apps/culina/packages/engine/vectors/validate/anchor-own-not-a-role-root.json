@@ -1,0 +1,41 @@
+{
+  "id": "anchor-own-not-a-role-root",
+  "description": "The anchor of a root names a role that is not among its parts",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "dough",
+          "name": "dough",
+          "source": "user",
+          "parts": [
+            {
+              "role": "water",
+              "parts": 56
+            },
+            {
+              "role": "salt",
+              "parts": 3
+            }
+          ],
+          "anchor": "flour"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "anchor-not-a-role",
+        "kind": "template",
+        "id": "dough",
+        "path": "anchor",
+        "role": "flour"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

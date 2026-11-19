@@ -1,0 +1,166 @@
+{
+  "id": "potaje-espinacas-garbanzos",
+  "name": {
+    "en": "Chickpea and spinach stew, Spanish style (Lenten)",
+    "de": "Kichererbsen-Spinat-Eintopf, spanische Art (Fastenessen)"
+  },
+  "originalName": "Potaje de espinacas á la española",
+  "country": "es",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina al alcance de todos (Tercera edición ilustrada con 240 grabados; Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "p. 701, chapter Legumbres, section Espinacas",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "potaje-espinacas-garbanzos-stew",
+      "name": {
+        "en": "Chickpea and spinach stew",
+        "de": "Kichererbsen-Spinat-Eintopf"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chickpeas",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173756"
+          },
+          "note": {
+            "en": "The quantity and the cooking time are not given in the book.",
+            "de": "Menge und Kochzeit stehen nicht im Buch."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Salted water for the chickpeas and water to dissolve the egg yolk.",
+            "de": "Gesalzenes Wasser für die Kichererbsen und Wasser zum Auflösen des Eigelbs."
+          }
+        },
+        {
+          "key": "spinach",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168462"
+          },
+          "note": {
+            "en": "A handful of spinach (un puñado), cut roughly. The size of a handful is not read in the book, so the line has no amount.",
+            "de": "Eine Hand voll Spinat (un puñado), grob geschnitten. Die Größe einer Hand voll steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "note": {
+            "en": "Oil (aceite), the kind is not named and no quantity is given.",
+            "de": "Öl (aceite), die Sorte ist nicht genannt, keine Menge angegeben."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "One spoonful (una cucharada) of flour. The size of the spoon is not read in the book, so the line has no amount.",
+            "de": "Ein Löffel (una cucharada) Mehl. Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "egg-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "una yema de huevo"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the chickpeas in salted water.",
+            "de": "Die Kichererbsen in gesalzenem Wasser kochen."
+          },
+          "technique": "boil",
+          "uses": ["chickpeas", "salt", "water"]
+        },
+        {
+          "text": {
+            "en": "Cut the spinach roughly. Cook it apart, or together with the chickpeas.",
+            "de": "Den Spinat grob schneiden. Getrennt oder zusammen mit den Kichererbsen garen."
+          },
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil, sauté the flour in it and stir it into the pot.",
+            "de": "Das Öl erhitzen, das Mehl darin anschwitzen und in den Topf einrühren."
+          },
+          "technique": "saute",
+          "uses": ["oil", "flour"]
+        },
+        {
+          "text": {
+            "en": "Just before serving, dissolve the egg yolk in water and stir it in to bind the stew.",
+            "de": "Kurz vor dem Servieren das Eigelb in Wasser auflösen und unterrühren, um den Eintopf zu binden."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["egg-yolk", "water"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "potaje-espinacas-garbanzos-stew"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the source gives no chickpea quantity, so four portions are settled for a stew of this kind.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reading of the same scan (same OCR; weak). Compared the recipe (muro.txt 31544-31551, p. 701): chickpeas cooked in seasoned water, a handful of spinach, one spoonful of flour browned in the oil, a yolk dissolved in water at serving. Changed: the flour is sautéed, not 'lightly'. The book gives no amount for chickpeas, spinach, oil or flour. Nothing unreadable."
+  },
+  "note": {
+    "en": "A dish for the days of abstinence, as the source states. The chickpeas are cooked as a separate step; the source gives no recipe for them and no quantity.",
+    "de": "Ein Gericht für die Fasttage, wie die Quelle sagt. Die Kichererbsen werden als eigener Schritt gegart; die Quelle gibt dafür kein Rezept und keine Menge."
+  }
+}

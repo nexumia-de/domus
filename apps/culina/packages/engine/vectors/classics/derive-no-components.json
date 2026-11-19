@@ -1,0 +1,104 @@
+{
+  "id": "derive-no-components",
+  "description": "A dish of ingredient slots only: 300 g x 0.5 = 150 g",
+  "inputs": {
+    "kind": "classic_derive",
+    "classic": {
+      "id": "example-dish",
+      "name": {
+        "en": "Example dish",
+        "de": "Beispielgericht"
+      },
+      "originalName": "Example dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      },
+      "persons": {
+        "value": 4,
+        "basis": "stated"
+      },
+      "units": {
+        "measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this vector: 1 measure = 100 g."
+        }
+      },
+      "components": [],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-pasta"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Invented for this vector."
+      }
+    },
+    "lang": "en"
+  },
+  "expected": {
+    "factor": 0.5,
+    "dish": {
+      "id": "example-dish",
+      "name": "Example dish",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-pasta"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 7.393382391,
+            "unit": "ml"
+          }
+        }
+      ]
+    },
+    "components": [],
+    "unmeasured": [],
+    "ranges": []
+  },
+  "tolerance": 1e-9,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

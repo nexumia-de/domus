@@ -1,0 +1,57 @@
+{
+  "id": "unknown-role-remove",
+  "description": "A derivative removes a role its parent does not have",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "templates": [
+        {
+          "id": "pie",
+          "name": "pie",
+          "source": "user",
+          "parts": [
+            {
+              "role": "flour",
+              "parts": 3
+            },
+            {
+              "role": "fat",
+              "parts": 2
+            },
+            {
+              "role": "water",
+              "parts": 1
+            }
+          ],
+          "anchor": "flour"
+        },
+        {
+          "id": "no-sugar",
+          "name": "no-sugar",
+          "source": "user",
+          "parentId": "pie",
+          "changes": [
+            {
+              "op": "remove",
+              "role": "sugar"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-role",
+        "kind": "template",
+        "id": "no-sugar",
+        "path": "changes[0]",
+        "role": "sugar"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

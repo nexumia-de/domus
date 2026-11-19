@@ -1,0 +1,38 @@
+{
+  "id": "spec-shorthand-preparation",
+  "description": "A short preparation in ( ) after the ingredient",
+  "inputs": {
+    "kind": "cooklang_parse",
+    "text": "Mix @onion{1}(peeled and finely chopped) and @garlic{2%cloves}(peeled and minced) into paste."
+  },
+  "expected": {
+    "ingredients": [
+      {
+        "name": "onion",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "1",
+          "locked": false,
+          "value": 1
+        },
+        "note": "peeled and finely chopped"
+      },
+      {
+        "name": "garlic",
+        "optional": false,
+        "reference": false,
+        "quantity": {
+          "text": "2",
+          "locked": false,
+          "value": 2,
+          "unit": "cloves"
+        },
+        "note": "peeled and minced"
+      }
+    ],
+    "steps": ["Mix onion and garlic into paste."]
+  },
+  "tolerance": 0,
+  "source": "cooklang/spec, README.md (read 2026-11-18 at raw.githubusercontent.com/cooklang/spec/main/README.md, MIT), section Short-hand preparations"
+}

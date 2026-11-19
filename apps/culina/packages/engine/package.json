@@ -1,0 +1,20 @@
+{
+  "name": "@culina/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Culina's pure engine: the shared model from materia plus the kitchen rules",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "pretest": "node scripts/make-techniques.mjs && node scripts/make-substitutes.mjs",
+    "test": "vitest run",
+    "pretypecheck": "node scripts/make-techniques.mjs && node scripts/make-substitutes.mjs",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@nexumia-de/materia": "github:nexumia-de/materia#v0.2.0"
+  }
+}

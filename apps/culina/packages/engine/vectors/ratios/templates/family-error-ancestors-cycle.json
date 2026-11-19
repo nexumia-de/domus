@@ -1,0 +1,42 @@
+{
+  "id": "family-error-ancestors-cycle",
+  "description": "Ancestors of a template in a cycle",
+  "inputs": {
+    "kind": "template_family",
+    "templates": [
+      {
+        "id": "a",
+        "name": "a",
+        "source": "user",
+        "parentId": "b",
+        "changes": [
+          {
+            "op": "add",
+            "role": "x",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "name": "b",
+        "source": "user",
+        "parentId": "a",
+        "changes": [
+          {
+            "op": "add",
+            "role": "y",
+            "parts": 1
+          }
+        ]
+      }
+    ],
+    "id": "a",
+    "query": "ancestors"
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "b", "a"]
+  },
+  "source": "a has parent b and b has parent a; synthetic template numbers chosen for the arithmetic, not from a source"
+}

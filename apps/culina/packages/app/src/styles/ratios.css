@@ -1,0 +1,74 @@
+/* Ratio list and card (panes, fields, rows and tables are in common.css). */
+.ratio-name {
+  flex: 1 1 100%;
+  font-weight: 600;
+}
+
+.ratio-short {
+  font-variant-numeric: tabular-nums;
+}
+
+.ratio-roles {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.range {
+  display: inline-block;
+  margin-inline-start: var(--sp-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.source {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+}
+
+.links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Calculator */
+.entry-row {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.entry-row .field-wrap:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.entry-row .field-wrap:last-child {
+  flex: none;
+}
+
+.results .amounts {
+  margin-bottom: var(--sp-3);
+}
+
+.notes p {
+  margin-bottom: var(--sp-1);
+}
+
+.compare {
+  margin-top: var(--sp-5);
+  border-top: 1px solid var(--divider);
+}
+
+.compare-table {
+  margin-top: var(--sp-2);
+}
+
+.compare-table tr:has(+ .phrase-row) > * {
+  border-bottom: 0;
+}
+
+.phrase {
+  padding-top: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}

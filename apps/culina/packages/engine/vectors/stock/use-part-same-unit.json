@@ -1,0 +1,25 @@
+{
+  "id": "use-part-same-unit",
+  "description": "Using 120 g of 500 g leaves 380 g",
+  "inputs": {
+    "kind": "stock_use",
+    "stock": {
+      "value": 500,
+      "unit": "g"
+    },
+    "used": {
+      "value": 120,
+      "unit": "g"
+    }
+  },
+  "expected": {
+    "ok": true,
+    "usedUp": false,
+    "amount": {
+      "value": 380,
+      "unit": "g"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic; exact unit factors are in data/units.json."
+}

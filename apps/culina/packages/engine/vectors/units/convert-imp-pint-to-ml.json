@@ -1,0 +1,17 @@
+{
+  "id": "convert-imp-pint-to-ml",
+  "description": "2 imperial pints in ml",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 2,
+      "unit": "imp-pint"
+    },
+    "to": "ml"
+  },
+  "expected": {
+    "value": 1136.5225
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 2 imp-pint * 568.26125 = 1136.5225 ml (1 imperial pint = 1/8 imperial gallon = 4546.09 ml / 8). Unit factors: docs/engine-rules.md#units-and-factors (imperial capacity units: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+}

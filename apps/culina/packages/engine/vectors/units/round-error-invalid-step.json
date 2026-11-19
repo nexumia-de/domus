@@ -1,0 +1,11 @@
+{
+  "id": "round-error-invalid-step",
+  "description": "Step 0",
+  "inputs": {
+    "kind": "round",
+    "g": 5,
+    "step_g": 0
+  },
+  "error_code": "invalid-step",
+  "source": "Basis: grams. A step must be greater than zero."
+}

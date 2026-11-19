@@ -1,0 +1,2927 @@
+{
+  "format": "culina-wikidata-de-snapshot",
+  "formatVersion": 1,
+  "source": "Wikidata, https://query.wikidata.org/sparql (CC0 1.0 Universal)",
+  "retrieved": "2026-11-19",
+  "property": "P1978 (USDA NDB number)",
+  "query": "SELECT ?item ?ndb\n  (SAMPLE(?deL) AS ?de) (SAMPLE(?enL) AS ?en)\n  (GROUP_CONCAT(DISTINCT ?deA; separator=\"¦\") AS ?deAliases)\n  (GROUP_CONCAT(DISTINCT ?cls; separator=\"¦\") AS ?classes)\nWHERE {\n  ?item wdt:P1978 ?ndb .\n  OPTIONAL { ?item rdfs:label ?deL . FILTER(LANG(?deL) = \"de\") }\n  OPTIONAL { ?item rdfs:label ?enL . FILTER(LANG(?enL) = \"en\") }\n  OPTIONAL { ?item skos:altLabel ?deA . FILTER(LANG(?deA) = \"de\") }\n  OPTIONAL {\n    { ?item wdt:P31 ?c . BIND(CONCAT(\"i:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n    UNION\n    { ?item wdt:P279 ?c . BIND(CONCAT(\"s:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n  }\n}\nGROUP BY ?item ?ndb\nORDER BY ?item ?ndb",
+  "classesQuery": "SELECT ?c ?l WHERE { VALUES ?c { <the class ids of the P31 values of the first response> } ?c rdfs:label ?l . FILTER(LANG(?l) = \"en\") }",
+  "taxonClasses": {
+    "Q136343650": "hybrid taxon",
+    "Q16521": "taxon"
+  },
+  "responseRows": 1470,
+  "keptRows": 303,
+  "items": [
+    {
+      "item": "Q16701410",
+      "ndb": "01003",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "spread butter",
+      "instanceOf": []
+    },
+    {
+      "item": "Q131480",
+      "ndb": "01007",
+      "ndbCount": 1,
+      "de": "Camembert",
+      "deAliases": [],
+      "en": "Camembert",
+      "instanceOf": []
+    },
+    {
+      "item": "Q426337",
+      "ndb": "01017",
+      "ndbCount": 1,
+      "de": "Doppelrahmkäse",
+      "deAliases": ["Doppelrahmstufe"],
+      "en": "cream cheese",
+      "instanceOf": []
+    },
+    {
+      "item": "Q2376488",
+      "ndb": "01023",
+      "ndbCount": 1,
+      "de": "Greyerzer",
+      "deAliases": ["Gruyère"],
+      "en": "Gruyère",
+      "instanceOf": []
+    },
+    {
+      "item": "Q776025",
+      "ndb": "01024",
+      "ndbCount": 1,
+      "de": "Limburger",
+      "deAliases": [],
+      "en": "Limburger",
+      "instanceOf": ["Q10943"]
+    },
+    {
+      "item": "Q216781",
+      "ndb": "01036",
+      "ndbCount": 2,
+      "de": "Ricotta",
+      "deAliases": [],
+      "en": "ricotta",
+      "instanceOf": []
+    },
+    {
+      "item": "Q216781",
+      "ndb": "01037",
+      "ndbCount": 2,
+      "de": "Ricotta",
+      "deAliases": [],
+      "en": "ricotta",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13228",
+      "ndb": "01049",
+      "ndbCount": 5,
+      "de": "Sahne",
+      "deAliases": ["Nidel", "Obers", "Rahm"],
+      "en": "cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13228",
+      "ndb": "01050",
+      "ndbCount": 5,
+      "de": "Sahne",
+      "deAliases": ["Nidel", "Obers", "Rahm"],
+      "en": "cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13228",
+      "ndb": "01052",
+      "ndbCount": 5,
+      "de": "Sahne",
+      "deAliases": ["Nidel", "Obers", "Rahm"],
+      "en": "cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13228",
+      "ndb": "01053",
+      "ndbCount": 5,
+      "de": "Sahne",
+      "deAliases": ["Nidel", "Obers", "Rahm"],
+      "en": "cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q840171",
+      "ndb": "01055",
+      "ndbCount": 7,
+      "de": "saure Sahne",
+      "deAliases": ["Sauerrahm"],
+      "en": "sour cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q477374",
+      "ndb": "01057",
+      "ndbCount": 1,
+      "de": "Eggnog",
+      "deAliases": [],
+      "en": "eggnog",
+      "instanceOf": []
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01077",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01078",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01079",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01080",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01081",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01082",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01083",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01084",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01085",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01086",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01087",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q8495",
+      "ndb": "01089",
+      "ndbCount": 14,
+      "de": "Milch",
+      "deAliases": [],
+      "en": "milk",
+      "instanceOf": ["Q112826905"]
+    },
+    {
+      "item": "Q496696",
+      "ndb": "01090",
+      "ndbCount": 8,
+      "de": "Milchpulver",
+      "deAliases": [
+        "Magermilchpulver",
+        "Milchkonserve",
+        "Schoppenpulver",
+        "Trockenmilch",
+        "Vollmilchpulver"
+      ],
+      "en": "milk powder",
+      "instanceOf": ["Q189567"]
+    },
+    {
+      "item": "Q496696",
+      "ndb": "01092",
+      "ndbCount": 8,
+      "de": "Milchpulver",
+      "deAliases": [
+        "Magermilchpulver",
+        "Milchkonserve",
+        "Schoppenpulver",
+        "Trockenmilch",
+        "Vollmilchpulver"
+      ],
+      "en": "milk powder",
+      "instanceOf": ["Q189567"]
+    },
+    {
+      "item": "Q13253",
+      "ndb": "01104",
+      "ndbCount": 4,
+      "de": "Schokomilch",
+      "deAliases": [],
+      "en": "chocolate milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1418287",
+      "ndb": "01106",
+      "ndbCount": 1,
+      "de": "Ziegenmilch",
+      "deAliases": [],
+      "en": "goat milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q483745",
+      "ndb": "01107",
+      "ndbCount": 1,
+      "de": "Leucin",
+      "deAliases": ["Isobutylglycin", "Leuzin"],
+      "en": "L-leucine",
+      "instanceOf": ["Q113145171"]
+    },
+    {
+      "item": "Q7224064",
+      "ndb": "01108",
+      "ndbCount": 1,
+      "de": "Wasserbüffelmilch",
+      "deAliases": [],
+      "en": "water buffalo milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q2736146",
+      "ndb": "01109",
+      "ndbCount": 1,
+      "de": "Schafmilch",
+      "deAliases": ["Schafsmilch"],
+      "en": "sheep milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q93189",
+      "ndb": "01123",
+      "ndbCount": 1,
+      "de": "Ei",
+      "deAliases": [],
+      "en": "egg as food",
+      "instanceOf": ["Q207961", "Q25403900", "Q4764984"]
+    },
+    {
+      "item": "Q796758",
+      "ndb": "01124",
+      "ndbCount": 3,
+      "de": "Eiweiß",
+      "deAliases": ["Albumen", "Deutolecith", "Eiklar", "Weißei"],
+      "en": "egg white",
+      "instanceOf": ["Q112826905", "Q25403900"]
+    },
+    {
+      "item": "Q844606",
+      "ndb": "01133",
+      "ndbCount": 7,
+      "de": "Eipulver",
+      "deAliases": ["Trockenei", "Volleipulver"],
+      "en": "powdered eggs",
+      "instanceOf": []
+    },
+    {
+      "item": "Q844606",
+      "ndb": "01134",
+      "ndbCount": 7,
+      "de": "Eipulver",
+      "deAliases": ["Trockenei", "Volleipulver"],
+      "en": "powdered eggs",
+      "instanceOf": []
+    },
+    {
+      "item": "Q844606",
+      "ndb": "01136",
+      "ndbCount": 7,
+      "de": "Eipulver",
+      "deAliases": ["Trockenei", "Volleipulver"],
+      "en": "powdered eggs",
+      "instanceOf": []
+    },
+    {
+      "item": "Q844606",
+      "ndb": "01137",
+      "ndbCount": 7,
+      "de": "Eipulver",
+      "deAliases": ["Trockenei", "Volleipulver"],
+      "en": "powdered eggs",
+      "instanceOf": []
+    },
+    {
+      "item": "Q155922",
+      "ndb": "01146",
+      "ndbCount": 4,
+      "de": "Parmesan",
+      "deAliases": ["Parmesankäse", "Parmigiano", "Parmigiano Reggiano", "Parmigiano-Reggiano"],
+      "en": "Parmesan",
+      "instanceOf": ["Q10943", "Q3546121"]
+    },
+    {
+      "item": "Q10988133",
+      "ndb": "01151",
+      "ndbCount": 5,
+      "de": "Kuhmilch",
+      "deAliases": ["Milch"],
+      "en": "cow's milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10988133",
+      "ndb": "01152",
+      "ndbCount": 5,
+      "de": "Kuhmilch",
+      "deAliases": ["Milch"],
+      "en": "cow's milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q496696",
+      "ndb": "01154",
+      "ndbCount": 8,
+      "de": "Milchpulver",
+      "deAliases": [
+        "Magermilchpulver",
+        "Milchkonserve",
+        "Schoppenpulver",
+        "Trockenmilch",
+        "Vollmilchpulver"
+      ],
+      "en": "milk powder",
+      "instanceOf": ["Q189567"]
+    },
+    {
+      "item": "Q496696",
+      "ndb": "01155",
+      "ndbCount": 8,
+      "de": "Milchpulver",
+      "deAliases": [
+        "Magermilchpulver",
+        "Milchkonserve",
+        "Schoppenpulver",
+        "Trockenmilch",
+        "Vollmilchpulver"
+      ],
+      "en": "milk powder",
+      "instanceOf": ["Q189567"]
+    },
+    {
+      "item": "Q10988133",
+      "ndb": "01174",
+      "ndbCount": 5,
+      "de": "Kuhmilch",
+      "deAliases": ["Milch"],
+      "en": "cow's milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10988133",
+      "ndb": "01175",
+      "ndbCount": 5,
+      "de": "Kuhmilch",
+      "deAliases": ["Milch"],
+      "en": "cow's milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q3323634",
+      "ndb": "01186",
+      "ndbCount": 1,
+      "de": "Frischkäse",
+      "deAliases": [],
+      "en": "fresh cheese",
+      "instanceOf": ["Q1246687", "Q27926484", "Q3546121"]
+    },
+    {
+      "item": "Q13228",
+      "ndb": "01199",
+      "ndbCount": 5,
+      "de": "Sahne",
+      "deAliases": ["Nidel", "Obers", "Rahm"],
+      "en": "cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q5414737",
+      "ndb": "01209",
+      "ndbCount": 2,
+      "deAliases": [],
+      "en": "hebra cheese",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10988133",
+      "ndb": "01211",
+      "ndbCount": 5,
+      "de": "Kuhmilch",
+      "deAliases": ["Milch"],
+      "en": "cow's milk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q496696",
+      "ndb": "01212",
+      "ndbCount": 8,
+      "de": "Milchpulver",
+      "deAliases": [
+        "Magermilchpulver",
+        "Milchkonserve",
+        "Schoppenpulver",
+        "Trockenmilch",
+        "Vollmilchpulver"
+      ],
+      "en": "milk powder",
+      "instanceOf": ["Q189567"]
+    },
+    { "item": "Q134970551", "ndb": "01223", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q917761",
+      "ndb": "01225",
+      "ndbCount": 1,
+      "de": "Dulce de leche",
+      "deAliases": ["Confiture de lait"],
+      "en": "dulce de leche",
+      "instanceOf": []
+    },
+    {
+      "item": "Q106612",
+      "ndb": "01230",
+      "ndbCount": 2,
+      "de": "Buttermilch",
+      "deAliases": ["Kaenemaelk", "Kærnemælk", "Kārmelk", "Schlegelmilch"],
+      "en": "buttermilk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1397211",
+      "ndb": "01236",
+      "ndbCount": 2,
+      "de": "Softeis",
+      "deAliases": [],
+      "en": "soft serve",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13233",
+      "ndb": "01243",
+      "ndbCount": 2,
+      "de": "Speiseeis",
+      "deAliases": ["Eis", "Eiscreme", "Gefrorenes"],
+      "en": "ice cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q844606",
+      "ndb": "01258",
+      "ndbCount": 7,
+      "de": "Eipulver",
+      "deAliases": ["Trockenei", "Volleipulver"],
+      "en": "powdered eggs",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1397211",
+      "ndb": "01263",
+      "ndbCount": 2,
+      "de": "Softeis",
+      "deAliases": [],
+      "en": "soft serve",
+      "instanceOf": []
+    },
+    {
+      "item": "Q2718594",
+      "ndb": "01267",
+      "ndbCount": 1,
+      "de": "Cotija-Käse",
+      "deAliases": [],
+      "en": "Cotija cheese",
+      "instanceOf": []
+    },
+    {
+      "item": "Q14088",
+      "ndb": "01271",
+      "ndbCount": 5,
+      "de": "Mozzarella",
+      "deAliases": ["Fior di latte"],
+      "en": "mozzarella",
+      "instanceOf": ["Q10943"]
+    },
+    {
+      "item": "Q1963621",
+      "ndb": "02001",
+      "ndbCount": 1,
+      "de": "Piment",
+      "deAliases": ["Nelkenpfeffer"],
+      "en": "allspice",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q2370943",
+      "ndb": "02004",
+      "ndbCount": 1,
+      "de": "Lorbeerblatt",
+      "deAliases": ["Lorbeer"],
+      "en": "bay leaf",
+      "instanceOf": ["Q42527"]
+    },
+    {
+      "item": "Q21155816",
+      "ndb": "02005",
+      "ndbCount": 1,
+      "de": "Kümmel",
+      "deAliases": ["Kümmelsamen"],
+      "en": "caraway seeds",
+      "instanceOf": ["Q1364", "Q25403900", "Q42527", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q102256772",
+      "ndb": "02007",
+      "ndbCount": 1,
+      "de": "Selleriesamen",
+      "deAliases": [],
+      "en": "celery seed",
+      "instanceOf": ["Q25403900", "Q40763"]
+    },
+    {
+      "item": "Q218462",
+      "ndb": "02008",
+      "ndbCount": 1,
+      "de": "Echter Kerbel",
+      "deAliases": ["Garten-Kerbel", "Gartenkerbel", "Kerbel"],
+      "en": "garden chervil",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q1072946",
+      "ndb": "02009",
+      "ndbCount": 1,
+      "de": "Chilipulver",
+      "deAliases": ["Chili Mix", "Chili Powder", "Chili-Pulver", "Chilipfeffer"],
+      "en": "chili powder",
+      "instanceOf": []
+    },
+    {
+      "item": "Q28165",
+      "ndb": "02010",
+      "ndbCount": 1,
+      "de": "Zimt",
+      "deAliases": ["Kaneel"],
+      "en": "cinnamon",
+      "instanceOf": ["Q25403900", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q15622897",
+      "ndb": "02011",
+      "ndbCount": 1,
+      "de": "Nelke",
+      "deAliases": ["Nelken"],
+      "en": "clove",
+      "instanceOf": ["Q25403900", "Q4100298", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q65523167",
+      "ndb": "02012",
+      "ndbCount": 1,
+      "de": "Korianderblätter",
+      "deAliases": ["Koriander", "Koriandergrün"],
+      "en": "cilantro",
+      "instanceOf": ["Q207123", "Q42527"]
+    },
+    {
+      "item": "Q20856764",
+      "ndb": "02013",
+      "ndbCount": 1,
+      "de": "Korianderkörner",
+      "deAliases": ["Koriander ganz", "Koriandersamen"],
+      "en": "coriander seed",
+      "instanceOf": ["Q1364", "Q42527"]
+    },
+    {
+      "item": "Q41611",
+      "ndb": "02013",
+      "ndbCount": 1,
+      "de": "Echter Koriander",
+      "deAliases": ["Coriander", "Coriandrum sativum", "Gartenkoriander", "Koriander"],
+      "en": "Coriandrum sativum",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q1144935",
+      "ndb": "02015",
+      "ndbCount": 1,
+      "de": "Currypulver",
+      "deAliases": ["Curry", "Currygewürz", "Currymischung"],
+      "en": "curry powder",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q26686",
+      "ndb": "02016",
+      "ndbCount": 3,
+      "de": "Dill",
+      "deAliases": ["Anethum graveolens", "Dille", "Dillkraut", "Dillöl", "Gurkenkraut"],
+      "en": "Anethum graveolens",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q26686",
+      "ndb": "02017",
+      "ndbCount": 3,
+      "de": "Dill",
+      "deAliases": ["Anethum graveolens", "Dille", "Dillkraut", "Dillöl", "Gurkenkraut"],
+      "en": "Anethum graveolens",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q59659860",
+      "ndb": "02017",
+      "ndbCount": 1,
+      "de": "Dill",
+      "deAliases": [],
+      "en": "dill",
+      "instanceOf": []
+    },
+    {
+      "item": "Q57659978",
+      "ndb": "02019",
+      "ndbCount": 1,
+      "de": "Bockshornsamen",
+      "deAliases": [],
+      "en": "fenugreek seed",
+      "instanceOf": ["Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q10716334",
+      "ndb": "02020",
+      "ndbCount": 1,
+      "de": "Knoblauchpulver",
+      "deAliases": ["getrockneter Knoblauch"],
+      "en": "garlic powder",
+      "instanceOf": ["Q25403900", "Q42527"]
+    },
+    {
+      "item": "Q15046077",
+      "ndb": "02021",
+      "ndbCount": 1,
+      "de": "Ingwer",
+      "deAliases": ["Ingwerwurzel"],
+      "en": "ginger",
+      "instanceOf": []
+    },
+    {
+      "item": "Q83165",
+      "ndb": "02022",
+      "ndbCount": 2,
+      "de": "Muskatnuss",
+      "deAliases": ["Muskat"],
+      "en": "nutmeg",
+      "instanceOf": ["Q25403900", "Q42527", "Q847705"]
+    },
+    {
+      "item": "Q22694",
+      "ndb": "02023",
+      "ndbCount": 1,
+      "de": "Majoran",
+      "deAliases": ["Origanum majorana", "Wurstkraut"],
+      "en": "marjoram",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q96181239",
+      "ndb": "02023",
+      "ndbCount": 1,
+      "de": "Majoran",
+      "deAliases": ["Majorankraut"],
+      "en": "marjoram",
+      "instanceOf": ["Q207123", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q1937700",
+      "ndb": "02024",
+      "ndbCount": 1,
+      "de": "Senfkorn",
+      "deAliases": ["Senfkörner", "Senfsaat", "Senfsaaten", "Senfsamen", "Senfschrot"],
+      "en": "mustard seed",
+      "instanceOf": ["Q25403900", "Q42527"]
+    },
+    {
+      "item": "Q83165",
+      "ndb": "02025",
+      "ndbCount": 2,
+      "de": "Muskatnuss",
+      "deAliases": ["Muskat"],
+      "en": "nutmeg",
+      "instanceOf": ["Q25403900", "Q42527", "Q847705"]
+    },
+    {
+      "item": "Q7093931",
+      "ndb": "02026",
+      "ndbCount": 1,
+      "de": "Zwiebelpulver",
+      "deAliases": [],
+      "en": "onion powder",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q3127593",
+      "ndb": "02028",
+      "ndbCount": 1,
+      "de": "Paprika",
+      "deAliases": ["Paprikapulver"],
+      "en": "paprika",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q25284",
+      "ndb": "02029",
+      "ndbCount": 1,
+      "de": "Petersilie",
+      "deAliases": ["Petergrün", "Peterling", "Petersil", "Petroselinum crispum"],
+      "en": "parsley",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q65522500",
+      "ndb": "02029",
+      "ndbCount": 1,
+      "de": "Petersilie",
+      "deAliases": [],
+      "en": "parsley",
+      "instanceOf": ["Q42527"]
+    },
+    {
+      "item": "Q22915010",
+      "ndb": "02030",
+      "ndbCount": 1,
+      "de": "schwarzes Pfefferkorn",
+      "deAliases": ["schwarze Pfefferkörner", "schwarzer Pfeffer"],
+      "en": "black pepper",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q52075540",
+      "ndb": "02031",
+      "ndbCount": 1,
+      "de": "Cayennepfeffer",
+      "deAliases": ["Paprika rosenscharf"],
+      "en": "cayenne pepper",
+      "instanceOf": []
+    },
+    {
+      "item": "Q744814",
+      "ndb": "02032",
+      "ndbCount": 1,
+      "de": "weißer Pfeffer",
+      "deAliases": [],
+      "en": "white pepper",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q7995190",
+      "ndb": "02032",
+      "ndbCount": 1,
+      "de": "White Pepper",
+      "deAliases": [],
+      "en": "White Pepper",
+      "instanceOf": ["Q482994"]
+    },
+    {
+      "item": "Q2007388",
+      "ndb": "02033",
+      "ndbCount": 1,
+      "de": "Mohnsaat",
+      "deAliases": ["Mohn", "Mohnsamen"],
+      "en": "poppy seed",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1521067",
+      "ndb": "02034",
+      "ndbCount": 5,
+      "de": "Gewürzmischung",
+      "deAliases": [],
+      "en": "spice mix",
+      "instanceOf": []
+    },
+    {
+      "item": "Q2623066",
+      "ndb": "02035",
+      "ndbCount": 1,
+      "de": "Kürbiskuchen-Gewürz",
+      "deAliases": ["Kürbiskuchengewürz"],
+      "en": "pumpkin pie spice",
+      "instanceOf": []
+    },
+    {
+      "item": "Q122679",
+      "ndb": "02036",
+      "ndbCount": 2,
+      "de": "Rosmarinus officinalis",
+      "deAliases": [],
+      "en": "Rosmarinus officinalis",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q68315046",
+      "ndb": "02036",
+      "ndbCount": 1,
+      "de": "Rosmarin",
+      "deAliases": [],
+      "en": "rosemary",
+      "instanceOf": ["Q42527"]
+    },
+    {
+      "item": "Q25434",
+      "ndb": "02037",
+      "ndbCount": 1,
+      "de": "Safran",
+      "deAliases": [],
+      "en": "saffron",
+      "instanceOf": []
+    },
+    {
+      "item": "Q96110429",
+      "ndb": "02038",
+      "ndbCount": 1,
+      "de": "Salbeiblätter",
+      "deAliases": [],
+      "en": "sage leaf",
+      "instanceOf": ["Q1259977", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q19787919",
+      "ndb": "02039",
+      "ndbCount": 1,
+      "de": "Bohnenkraut",
+      "deAliases": [],
+      "en": "savory",
+      "instanceOf": []
+    },
+    {
+      "item": "Q22858",
+      "ndb": "02039",
+      "ndbCount": 1,
+      "de": "Bohnenkräuter",
+      "deAliases": ["Beizkraut", "Bohnenkraut", "Satureja"],
+      "en": "Satureja",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q20730193",
+      "ndb": "02043",
+      "ndbCount": 1,
+      "de": "Kurkuma",
+      "deAliases": [],
+      "en": "turmeric",
+      "instanceOf": []
+    },
+    {
+      "item": "Q38859",
+      "ndb": "02044",
+      "ndbCount": 2,
+      "de": "Basilikum",
+      "deAliases": ["Basilie", "Basilienkraut", "Hirnkraut", "Königskraut", "Ocimum basilicum"],
+      "en": "basil",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q11254",
+      "ndb": "02047",
+      "ndbCount": 1,
+      "de": "Speisesalz",
+      "deAliases": ["Kochsalz", "Salz", "Tafelsalz"],
+      "en": "table salt",
+      "instanceOf": ["Q10675206", "Q169336"]
+    },
+    {
+      "item": "Q41354",
+      "ndb": "02048",
+      "ndbCount": 3,
+      "de": "Essig",
+      "deAliases": [
+        "Acetum",
+        "Essiggärung",
+        "Orleans-Verfahren",
+        "Orleansverfahren",
+        "Orléans-Verfahren",
+        "Orléansverfahren",
+        "Schnellessigverfahren",
+        "Speiseessig"
+      ],
+      "en": "vinegar",
+      "instanceOf": ["Q906356"]
+    },
+    {
+      "item": "Q3215980",
+      "ndb": "02049",
+      "ndbCount": 2,
+      "de": "Thymiankraut",
+      "deAliases": ["Thymian"],
+      "en": "thyme",
+      "instanceOf": ["Q207123", "Q2095", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q10749869",
+      "ndb": "02050",
+      "ndbCount": 3,
+      "de": "Vanilleextrakt",
+      "deAliases": ["Vanille-Extrakt"],
+      "en": "vanilla extract",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q41354",
+      "ndb": "02053",
+      "ndbCount": 3,
+      "de": "Essig",
+      "deAliases": [
+        "Acetum",
+        "Essiggärung",
+        "Orleans-Verfahren",
+        "Orleansverfahren",
+        "Orléans-Verfahren",
+        "Orléansverfahren",
+        "Schnellessigverfahren",
+        "Speiseessig"
+      ],
+      "en": "vinegar",
+      "instanceOf": ["Q906356"]
+    },
+    {
+      "item": "Q122679",
+      "ndb": "02063",
+      "ndbCount": 2,
+      "de": "Rosmarinus officinalis",
+      "deAliases": [],
+      "en": "Rosmarinus officinalis",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q156037",
+      "ndb": "02064",
+      "ndbCount": 1,
+      "de": "Pfefferminze",
+      "deAliases": [
+        "Mentha piperita",
+        "Mentha x piperita",
+        "Mentha × piperita",
+        "Pfeffer-Minze",
+        "Pfefferminz",
+        "Pfefferminztee"
+      ],
+      "en": "Mentha × piperita",
+      "instanceOf": ["Q136343650"]
+    },
+    {
+      "item": "Q160114",
+      "ndb": "02065",
+      "ndbCount": 2,
+      "de": "Grüne Minze",
+      "deAliases": [
+        "Krause Minze",
+        "Mentha spicata",
+        "Menthe Verte",
+        "Spearmint",
+        "Speer-Minze",
+        "Wald-Minze",
+        "Waldminze",
+        "Ähren-Minze",
+        "Ährige Minze"
+      ],
+      "en": "Mentha spicata",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q160114",
+      "ndb": "02066",
+      "ndbCount": 2,
+      "de": "Grüne Minze",
+      "deAliases": [
+        "Krause Minze",
+        "Mentha spicata",
+        "Menthe Verte",
+        "Spearmint",
+        "Speer-Minze",
+        "Wald-Minze",
+        "Waldminze",
+        "Ähren-Minze",
+        "Ährige Minze"
+      ],
+      "en": "Mentha spicata",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q41354",
+      "ndb": "02068",
+      "ndbCount": 3,
+      "de": "Essig",
+      "deAliases": [
+        "Acetum",
+        "Essiggärung",
+        "Orleans-Verfahren",
+        "Orleansverfahren",
+        "Orléans-Verfahren",
+        "Orléansverfahren",
+        "Schnellessigverfahren",
+        "Speiseessig"
+      ],
+      "en": "vinegar",
+      "instanceOf": ["Q906356"]
+    },
+    {
+      "item": "Q170037",
+      "ndb": "02069",
+      "ndbCount": 1,
+      "de": "Aceto balsamico",
+      "deAliases": ["Balsamessig", "Balsamico", "Balsamico Essig", "Balsamico-Essig"],
+      "en": "balsamic vinegar",
+      "instanceOf": ["Q2596997"]
+    },
+    {
+      "item": "Q863266",
+      "ndb": "04001",
+      "ndbCount": 2,
+      "de": "Talg",
+      "deAliases": ["Eingeweidefett", "Fett", "Inschelt", "Inselt", "Ungel", "Unschlitt", "Unselt"],
+      "en": "tallow",
+      "instanceOf": []
+    },
+    {
+      "item": "Q72827",
+      "ndb": "04002",
+      "ndbCount": 1,
+      "de": "Schweineschmalz",
+      "deAliases": ["Fettbemme", "Schmer", "Schweinsschmalz"],
+      "en": "lard",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04031",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q926892",
+      "ndb": "04034",
+      "ndbCount": 13,
+      "de": "Sojaöl",
+      "deAliases": ["Oleum sojae", "Sojabohnenöl"],
+      "en": "soybean oil",
+      "instanceOf": ["Q10675206", "Q317088", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q175933",
+      "ndb": "04037",
+      "ndbCount": 1,
+      "de": "Reisöl",
+      "deAliases": ["Reiskeimöl"],
+      "en": "rice bran oil",
+      "instanceOf": ["Q7048902"]
+    },
+    {
+      "item": "Q720761",
+      "ndb": "04038",
+      "ndbCount": 1,
+      "de": "Weizenkeimöl",
+      "deAliases": [],
+      "en": "wheat germ oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q265878",
+      "ndb": "04042",
+      "ndbCount": 1,
+      "de": "Erdnussöl",
+      "deAliases": [],
+      "en": "peanut oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q926892",
+      "ndb": "04044",
+      "ndbCount": 13,
+      "de": "Sojaöl",
+      "deAliases": ["Oleum sojae", "Sojabohnenöl"],
+      "en": "soybean oil",
+      "instanceOf": ["Q10675206", "Q317088", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q216235",
+      "ndb": "04047",
+      "ndbCount": 4,
+      "de": "Kokosöl",
+      "deAliases": ["Kokosfett", "Kokosnussöl", "Oleum cocos"],
+      "en": "coconut oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q93165",
+      "ndb": "04053",
+      "ndbCount": 1,
+      "de": "Olivenöl",
+      "deAliases": ["Baumöl", "Blume des Öls", "Flor de Aceite"],
+      "en": "olive oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q231458",
+      "ndb": "04055",
+      "ndbCount": 1,
+      "de": "Palmöl",
+      "deAliases": ["Palmbutter", "Palmenöl", "Palmfett", "Palmkernöl"],
+      "en": "palm oil",
+      "instanceOf": ["Q169336", "Q25403900"]
+    },
+    {
+      "item": "Q212317",
+      "ndb": "04058",
+      "ndbCount": 1,
+      "de": "Sesamöl",
+      "deAliases": [],
+      "en": "sesame oil",
+      "instanceOf": ["Q4739805"]
+    },
+    {
+      "item": "Q94787",
+      "ndb": "04060",
+      "ndbCount": 4,
+      "de": "Sonnenblumenöl",
+      "deAliases": [],
+      "en": "sunflower oil",
+      "instanceOf": ["Q25403900", "Q4739805"]
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04073",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q251106",
+      "ndb": "04501",
+      "ndbCount": 1,
+      "de": "Kakaobutter",
+      "deAliases": ["Kakaofett"],
+      "en": "cocoa butter",
+      "instanceOf": []
+    },
+    {
+      "item": "Q811663",
+      "ndb": "04502",
+      "ndbCount": 2,
+      "de": "Baumwollsamenöl",
+      "deAliases": ["Baumwollsaatöl", "Baumwollöl"],
+      "en": "cottonseed oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q94787",
+      "ndb": "04506",
+      "ndbCount": 4,
+      "de": "Sonnenblumenöl",
+      "deAliases": [],
+      "en": "sunflower oil",
+      "instanceOf": ["Q25403900", "Q4739805"]
+    },
+    {
+      "item": "Q156625",
+      "ndb": "04510",
+      "ndbCount": 2,
+      "de": "Färberdistel",
+      "deAliases": [
+        "Carthamus tinctorius",
+        "Falscher Safran",
+        "Färbedistel",
+        "Färbersaflor",
+        "Safflor",
+        "Saflor",
+        "Öldistel"
+      ],
+      "en": "Carthamus tinctorius",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q156625",
+      "ndb": "04511",
+      "ndbCount": 2,
+      "de": "Färberdistel",
+      "deAliases": [
+        "Carthamus tinctorius",
+        "Falscher Safran",
+        "Färbedistel",
+        "Färbersaflor",
+        "Safflor",
+        "Saflor",
+        "Öldistel"
+      ],
+      "en": "Carthamus tinctorius",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q1960534",
+      "ndb": "04513",
+      "ndbCount": 7,
+      "de": "Palmkernöl",
+      "deAliases": ["Palmkern", "Palmkernfett"],
+      "en": "palm kernel oil",
+      "instanceOf": ["Q42962"]
+    },
+    {
+      "item": "Q1757003",
+      "ndb": "04514",
+      "ndbCount": 1,
+      "de": "Mohnöl",
+      "deAliases": [],
+      "en": "poppy seed oil",
+      "instanceOf": ["Q3300034", "Q7445643"]
+    },
+    {
+      "item": "Q7818568",
+      "ndb": "04515",
+      "ndbCount": 1,
+      "de": "Tomatenkernöl",
+      "deAliases": ["Tomatensaatöl", "Tomatensamenöl"],
+      "en": "tomato seed oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1722927",
+      "ndb": "04516",
+      "ndbCount": 1,
+      "de": "Kamelienöl",
+      "deAliases": ["Teesamenöl"],
+      "en": "tea seed oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q898982",
+      "ndb": "04517",
+      "ndbCount": 1,
+      "de": "Traubenkernöl",
+      "deAliases": ["Traubenkerne"],
+      "en": "grape seed oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1434098",
+      "ndb": "04528",
+      "ndbCount": 1,
+      "de": "Walnussöl",
+      "deAliases": [],
+      "en": "walnut oil",
+      "instanceOf": ["Q2549301", "Q3300034"]
+    },
+    {
+      "item": "Q1164590",
+      "ndb": "04529",
+      "ndbCount": 1,
+      "de": "Mandelöl",
+      "deAliases": [],
+      "en": "almond oil",
+      "instanceOf": ["Q7048902"]
+    },
+    {
+      "item": "Q621880",
+      "ndb": "04530",
+      "ndbCount": 1,
+      "de": "Aprikosenkernöl",
+      "deAliases": [],
+      "en": "apricot oil",
+      "instanceOf": ["Q4739805"]
+    },
+    { "item": "Q134970561", "ndb": "04531", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q1112606",
+      "ndb": "04532",
+      "ndbCount": 1,
+      "de": "Haselnussöl",
+      "deAliases": [],
+      "en": "hazelnut oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q797592",
+      "ndb": "04534",
+      "ndbCount": 1,
+      "de": "Babassuöl",
+      "deAliases": ["Babassunuss", "Orbignya oleifera"],
+      "en": "babassu oil",
+      "instanceOf": ["Q7048902"]
+    },
+    { "item": "Q134970562", "ndb": "04536", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    { "item": "Q134970563", "ndb": "04541", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q5096296",
+      "ndb": "04542",
+      "ndbCount": 1,
+      "de": "Hühnerfett",
+      "deAliases": ["Pouletfett"],
+      "en": "chicken fat",
+      "instanceOf": []
+    },
+    {
+      "item": "Q926892",
+      "ndb": "04543",
+      "ndbCount": 13,
+      "de": "Sojaöl",
+      "deAliases": ["Oleum sojae", "Sojabohnenöl"],
+      "en": "soybean oil",
+      "instanceOf": ["Q10675206", "Q317088", "Q735160", "Q95997873"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04544",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04545",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04546",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04548",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04550",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04551",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04556",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04559",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04560",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04570",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    { "item": "Q134970564", "ndb": "04572", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    { "item": "Q134970565", "ndb": "04572", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    { "item": "Q134970566", "ndb": "04573", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q102318348",
+      "ndb": "04575",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "turkey fat",
+      "instanceOf": ["Q1423543"]
+    },
+    {
+      "item": "Q1129838",
+      "ndb": "04576",
+      "ndbCount": 1,
+      "de": "Gänsefett",
+      "deAliases": ["Gänseschmalz"],
+      "en": "goose fat",
+      "instanceOf": ["Q2424752"]
+    },
+    {
+      "item": "Q2918735",
+      "ndb": "04581",
+      "ndbCount": 1,
+      "de": "Avocadoöl",
+      "deAliases": [],
+      "en": "avocado oil",
+      "instanceOf": ["Q169336"]
+    },
+    {
+      "item": "Q177932",
+      "ndb": "04582",
+      "ndbCount": 1,
+      "de": "Raps",
+      "deAliases": [
+        "Brassica napus",
+        "Brassica napus ssp. oleifera",
+        "Colza",
+        "Doppel-Null-Raps",
+        "Doppelnull-Raps",
+        "Kohlraps",
+        "Kohlsaat",
+        "Rapsfeld",
+        "Reps",
+        "Sommerraps",
+        "Winterraps"
+      ],
+      "en": "Brassica napus",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q1790872",
+      "ndb": "04582",
+      "ndbCount": 6,
+      "de": "0-Raps",
+      "deAliases": ["Canola"],
+      "en": "canola",
+      "instanceOf": ["Q1363241"]
+    },
+    {
+      "item": "Q910958",
+      "ndb": "04583",
+      "ndbCount": 1,
+      "de": "Senföl",
+      "deAliases": ["Senfsaatöl", "Senföle"],
+      "en": "mustard oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q94787",
+      "ndb": "04584",
+      "ndbCount": 4,
+      "de": "Sonnenblumenöl",
+      "deAliases": [],
+      "en": "sunflower oil",
+      "instanceOf": ["Q25403900", "Q4739805"]
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04585",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04587",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q20650151",
+      "ndb": "04588",
+      "ndbCount": 1,
+      "de": "Haferöl",
+      "deAliases": [],
+      "en": "Oat Oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q748786",
+      "ndb": "04589",
+      "ndbCount": 1,
+      "de": "Lebertran",
+      "deAliases": ["Fabriktran", "Fischleberöl", "Oleum jecoris Aselli", "Oleum morrhuae"],
+      "en": "cod liver oil",
+      "instanceOf": ["Q104188376", "Q28885102"]
+    },
+    {
+      "item": "Q20650153",
+      "ndb": "04590",
+      "ndbCount": 1,
+      "de": "Heringsöl",
+      "deAliases": [],
+      "en": "herring oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1786125",
+      "ndb": "04591",
+      "ndbCount": 3,
+      "de": "Fischöl",
+      "deAliases": ["Fischfett", "Fischtran", "Tran"],
+      "en": "fish oil",
+      "instanceOf": ["Q12140"]
+    },
+    {
+      "item": "Q1786125",
+      "ndb": "04592",
+      "ndbCount": 3,
+      "de": "Fischöl",
+      "deAliases": ["Fischfett", "Fischtran", "Tran"],
+      "en": "fish oil",
+      "instanceOf": ["Q12140"]
+    },
+    {
+      "item": "Q1233250",
+      "ndb": "04593",
+      "ndbCount": 1,
+      "de": "Lachsöl",
+      "deAliases": [],
+      "en": "salmon oil",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1786125",
+      "ndb": "04594",
+      "ndbCount": 3,
+      "de": "Fischöl",
+      "deAliases": ["Fischfett", "Fischtran", "Tran"],
+      "en": "fish oil",
+      "instanceOf": ["Q12140"]
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04595",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    { "item": "Q134970568", "ndb": "04609", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q4287",
+      "ndb": "04610",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04611",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1194601",
+      "ndb": "04615",
+      "ndbCount": 21,
+      "de": "Shortening",
+      "deAliases": ["Ungehärtetes Pflanzenfett"],
+      "en": "shortening",
+      "instanceOf": ["Q63981612"]
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04617",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04618",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04628",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    { "item": "Q134970569", "ndb": "04669", "ndbCount": 1, "deAliases": [], "instanceOf": [] },
+    {
+      "item": "Q1790872",
+      "ndb": "04678",
+      "ndbCount": 6,
+      "de": "0-Raps",
+      "deAliases": ["Canola"],
+      "en": "canola",
+      "instanceOf": ["Q1363241"]
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04692",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q4287",
+      "ndb": "04696",
+      "ndbCount": 39,
+      "de": "Margarine",
+      "deAliases": [
+        "Backstolz",
+        "Butterersatz",
+        "Kunstbutter",
+        "Spezial-Backfett",
+        "Ziehmargarine"
+      ],
+      "en": "margarine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q818405",
+      "ndb": "04707",
+      "ndbCount": 1,
+      "de": "Leinöl",
+      "deAliases": ["Leinsaat", "Leinsamenöl", "Rohleinöl"],
+      "en": "linseed oil",
+      "instanceOf": ["Q7445643"]
+    },
+    {
+      "item": "Q167893",
+      "ndb": "04708",
+      "ndbCount": 2,
+      "de": "Mayonnaise",
+      "deAliases": ["Majo", "Majonaise", "Majonäse", "Mayo"],
+      "en": "mayonnaise",
+      "instanceOf": ["Q2596997"]
+    },
+    {
+      "item": "Q15362022",
+      "ndb": "09001",
+      "ndbCount": 2,
+      "de": "Malpighia emarginata",
+      "deAliases": [],
+      "en": "Malpighia emarginata",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q89",
+      "ndb": "09003",
+      "ndbCount": 13,
+      "de": "Apfel",
+      "deAliases": [],
+      "en": "apple",
+      "instanceOf": ["Q140646522"]
+    },
+    {
+      "item": "Q89",
+      "ndb": "09004",
+      "ndbCount": 13,
+      "de": "Apfel",
+      "deAliases": [],
+      "en": "apple",
+      "instanceOf": ["Q140646522"]
+    },
+    {
+      "item": "Q503",
+      "ndb": "09040",
+      "ndbCount": 4,
+      "de": "Banane",
+      "deAliases": [],
+      "en": "banana",
+      "instanceOf": ["Q140646522"]
+    },
+    {
+      "item": "Q19842373",
+      "ndb": "09042",
+      "ndbCount": 4,
+      "de": "Brombeere",
+      "deAliases": [],
+      "en": "blackberry",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q13178",
+      "ndb": "09050",
+      "ndbCount": 1,
+      "de": "Vaccinium sect. Cyanococcus",
+      "deAliases": ["Blaubeere"],
+      "en": "blueberry",
+      "instanceOf": ["Q16521", "Q2095", "Q3314483", "Q55983715"]
+    },
+    {
+      "item": "Q5869893",
+      "ndb": "09059",
+      "ndbCount": 3,
+      "de": "Brotfrucht",
+      "deAliases": ["Brotfrucht (Artocarpus)"],
+      "en": "breadfruit",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q181560",
+      "ndb": "09060",
+      "ndbCount": 1,
+      "de": "Karambole",
+      "deAliases": ["Carambola", "Karambole"],
+      "en": "carambola",
+      "instanceOf": []
+    },
+    {
+      "item": "Q146604",
+      "ndb": "09083",
+      "ndbCount": 1,
+      "de": "Schwarze Johannisbeere",
+      "deAliases": ["Aalbeere", "Ahlbeere", "Cassis", "Kakelbeere", "Ribes nigrum"],
+      "en": "Ribes nigrum",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2941309",
+      "ndb": "09083",
+      "ndbCount": 1,
+      "de": "schwarze Johannisbeere",
+      "deAliases": ["schwarze Ribisel"],
+      "en": "blackcurrant",
+      "instanceOf": ["Q13184", "Q2095"]
+    },
+    {
+      "item": "Q22691",
+      "ndb": "09084",
+      "ndbCount": 1,
+      "de": "Johannisbeeren",
+      "deAliases": [
+        "Aalbeere",
+        "Bocksbeere",
+        "Gichtbeere",
+        "Johannisbeere",
+        "Kanztraube",
+        "Ribisel",
+        "Ribiseln",
+        "Ribisl",
+        "Stachelbeergewächse",
+        "Träuble",
+        "Wanzenbeere"
+      ],
+      "en": "Ribes",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q131448",
+      "ndb": "09088",
+      "ndbCount": 1,
+      "de": "Holunder",
+      "deAliases": ["Holderbusch", "Hollerbeere", "Holunderbeere", "Sambucus"],
+      "en": "Sambucus",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2746643",
+      "ndb": "09089",
+      "ndbCount": 1,
+      "de": "Feige",
+      "deAliases": [],
+      "en": "fig",
+      "instanceOf": ["Q140646522"]
+    },
+    {
+      "item": "Q17638951",
+      "ndb": "09107",
+      "ndbCount": 2,
+      "de": "Stachelbeere",
+      "deAliases": [],
+      "en": "gooseberry",
+      "instanceOf": ["Q2095"]
+    },
+    {
+      "item": "Q10978",
+      "ndb": "09131",
+      "ndbCount": 2,
+      "de": "Weintraube",
+      "deAliases": ["Traube", "Weinbeere", "🍇"],
+      "en": "grape",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q10978",
+      "ndb": "09132",
+      "ndbCount": 2,
+      "de": "Weintraube",
+      "deAliases": ["Traube", "Weinbeere", "🍇"],
+      "en": "grape",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q1898118",
+      "ndb": "09132",
+      "ndbCount": 3,
+      "de": "Sultana",
+      "deAliases": ["Banati", "Cekirdeksiz Sultani", "Kishmish Safet", "Thompson Seedless"],
+      "en": "sultana",
+      "instanceOf": ["Q958314"]
+    },
+    {
+      "item": "Q165227",
+      "ndb": "09138",
+      "ndbCount": 1,
+      "de": "Kapstachelbeere",
+      "deAliases": [
+        "Andenbeere",
+        "Andenkirsche",
+        "Judenkirsche",
+        "Kapbeere",
+        "Peruanische Blasenkirsche",
+        "Physalis",
+        "Physalis peruviana"
+      ],
+      "en": "Physalis peruviana",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q3181909",
+      "ndb": "09139",
+      "ndbCount": 3,
+      "de": "Guaven",
+      "deAliases": [],
+      "en": "guava",
+      "instanceOf": []
+    },
+    {
+      "item": "Q3181909",
+      "ndb": "09140",
+      "ndbCount": 3,
+      "de": "Guaven",
+      "deAliases": [],
+      "en": "guava",
+      "instanceOf": []
+    },
+    {
+      "item": "Q232571",
+      "ndb": "09145",
+      "ndbCount": 1,
+      "de": "Syzygium cumini",
+      "deAliases": ["Jambulbaum"],
+      "en": "Syzygium cumini",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q794969",
+      "ndb": "09145",
+      "ndbCount": 1,
+      "de": "Spondias mombin",
+      "deAliases": [],
+      "en": "Spondias mombin",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q13194",
+      "ndb": "09148",
+      "ndbCount": 2,
+      "de": "Kiwifrucht",
+      "deAliases": ["Chinesische Stachelbeere", "Kiwi"],
+      "en": "kiwifruit",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1375049",
+      "ndb": "09152",
+      "ndbCount": 3,
+      "de": "Zitronensaft",
+      "deAliases": ["Citronensaft"],
+      "en": "lemon juice",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1093742",
+      "ndb": "09156",
+      "ndbCount": 2,
+      "de": "Zitrone",
+      "deAliases": ["Limone"],
+      "en": "lemon",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q13195",
+      "ndb": "09159",
+      "ndbCount": 3,
+      "de": "Limette",
+      "deAliases": ["Süße Zitrone"],
+      "en": "lime",
+      "instanceOf": ["Q502895"]
+    },
+    {
+      "item": "Q13182",
+      "ndb": "09164",
+      "ndbCount": 2,
+      "de": "Litschibaum",
+      "deAliases": [],
+      "en": "Litchi chinensis",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q41505",
+      "ndb": "09174",
+      "ndbCount": 1,
+      "de": "Japanische Wollmispel",
+      "deAliases": ["Eriobotrya japonica", "Japanische Mispel", "Loquat", "Nespuli", "Nispero"],
+      "en": "Eriobotrya japonica",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q44789",
+      "ndb": "09190",
+      "ndbCount": 1,
+      "de": "Maulbeere",
+      "deAliases": ["Maulbeerbaum", "Maulbeerbäume", "Maulbeeren", "Morus"],
+      "en": "Morus",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q841156",
+      "ndb": "09191",
+      "ndbCount": 1,
+      "de": "Nektarine",
+      "deAliases": ["Nektarinen"],
+      "en": "nectarine",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q2081166",
+      "ndb": "09192",
+      "ndbCount": 1,
+      "de": "Vaccinium reticulatum",
+      "deAliases": [],
+      "en": "Vaccinium reticulatum",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q13191",
+      "ndb": "09201",
+      "ndbCount": 7,
+      "de": "Orange",
+      "deAliases": ["Apfelsine"],
+      "en": "orange",
+      "instanceOf": ["Q3314483", "Q502895"]
+    },
+    {
+      "item": "Q13191",
+      "ndb": "09202",
+      "ndbCount": 7,
+      "de": "Orange",
+      "deAliases": ["Apfelsine"],
+      "en": "orange",
+      "instanceOf": ["Q3314483", "Q502895"]
+    },
+    {
+      "item": "Q13191",
+      "ndb": "09205",
+      "ndbCount": 7,
+      "de": "Orange",
+      "deAliases": ["Apfelsine"],
+      "en": "orange",
+      "instanceOf": ["Q3314483", "Q502895"]
+    },
+    {
+      "item": "Q13191",
+      "ndb": "09216",
+      "ndbCount": 7,
+      "de": "Orange",
+      "deAliases": ["Apfelsine"],
+      "en": "orange",
+      "instanceOf": ["Q3314483", "Q502895"]
+    },
+    {
+      "item": "Q516494",
+      "ndb": "09218",
+      "ndbCount": 6,
+      "de": "Citrus ×tangerina",
+      "deAliases": [],
+      "en": "tangerine",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q156790",
+      "ndb": "09231",
+      "ndbCount": 1,
+      "de": "Passiflora edulis",
+      "deAliases": [
+        "Gelbe Granadilla",
+        "Maracuja",
+        "Maracujá",
+        "Maracuya",
+        "Marakuja",
+        "Passionsfrucht",
+        "Purpurgranadilla"
+      ],
+      "en": "Passiflora edulis",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2224510",
+      "ndb": "09231",
+      "ndbCount": 3,
+      "de": "Passionsfrucht",
+      "deAliases": ["Maracuja"],
+      "en": "passionfruit",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13202263",
+      "ndb": "09236",
+      "ndbCount": 17,
+      "de": "Pfirsich",
+      "deAliases": ["Nektarine"],
+      "en": "peach",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13099586",
+      "ndb": "09252",
+      "ndbCount": 15,
+      "de": "Birne",
+      "deAliases": [],
+      "en": "pear",
+      "instanceOf": []
+    },
+    {
+      "item": "Q29526",
+      "ndb": "09263",
+      "ndbCount": 3,
+      "de": "Kaki",
+      "deAliases": ["Kakifrucht", "Persimon"],
+      "en": "persimmon",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10817602",
+      "ndb": "09266",
+      "ndbCount": 11,
+      "de": "Ananas",
+      "deAliases": [],
+      "en": "pineapple",
+      "instanceOf": []
+    },
+    {
+      "item": "Q306504",
+      "ndb": "09276",
+      "ndbCount": 1,
+      "de": "Surinamkirsche",
+      "deAliases": ["Eugenia uniflora", "Kirschmyrte"],
+      "en": "Eugenia uniflora",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q12372598",
+      "ndb": "09279",
+      "ndbCount": 7,
+      "de": "Pflaumen",
+      "deAliases": ["Pflaume", "Quetsche"],
+      "en": "plum",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q144412",
+      "ndb": "09287",
+      "ndbCount": 1,
+      "de": "Opuntia ficus-indica",
+      "deAliases": ["Cactus ficus-indica"],
+      "en": "Opuntia ficus-indica",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q13179",
+      "ndb": "09302",
+      "ndbCount": 4,
+      "de": "Himbeere",
+      "deAliases": [],
+      "en": "raspberry",
+      "instanceOf": ["Q29957571", "Q3314483"]
+    },
+    {
+      "item": "Q20767168",
+      "ndb": "09307",
+      "ndbCount": 3,
+      "de": "Rhabarber",
+      "deAliases": [],
+      "en": "rhubarb",
+      "instanceOf": []
+    },
+    {
+      "item": "Q192147",
+      "ndb": "09315",
+      "ndbCount": 2,
+      "de": "Stachelannone",
+      "deAliases": ["Corossol", "Graviola", "Guanábana"],
+      "en": "soursop",
+      "instanceOf": []
+    },
+    {
+      "item": "Q14458220",
+      "ndb": "09316",
+      "ndbCount": 5,
+      "de": "Erdbeere",
+      "deAliases": [],
+      "en": "strawberry",
+      "instanceOf": ["Q3314483"]
+    },
+    {
+      "item": "Q6648683",
+      "ndb": "09321",
+      "ndbCount": 2,
+      "de": "Zimtapfel",
+      "deAliases": [],
+      "en": "sugar-apple",
+      "instanceOf": []
+    },
+    {
+      "item": "Q80235",
+      "ndb": "09322",
+      "ndbCount": 2,
+      "de": "Tamarindenbaum",
+      "deAliases": ["Tamarinden-Baum", "Tamarindus indica"],
+      "en": "Tamarindus indica",
+      "instanceOf": ["Q16521", "Q25403900"]
+    },
+    {
+      "item": "Q498862",
+      "ndb": "09412",
+      "ndbCount": 1,
+      "de": "Williams Christ",
+      "deAliases": ["Williams Christbirne", "Williamsbirne"],
+      "en": "Williams' bon chrétien",
+      "instanceOf": ["Q16521", "Q20898395"]
+    },
+    {
+      "item": "Q13099586",
+      "ndb": "09413",
+      "ndbCount": 15,
+      "de": "Birne",
+      "deAliases": [],
+      "en": "pear",
+      "instanceOf": []
+    },
+    {
+      "item": "Q894405",
+      "ndb": "09414",
+      "ndbCount": 1,
+      "de": "Boscs Flaschenbirne",
+      "deAliases": [
+        "Alexanderbirne",
+        "Humbolds Butterbirne",
+        "Kaiser Alexander",
+        "Kaiserbirne",
+        "Kaiserkrone"
+      ],
+      "en": "Bosc pear",
+      "instanceOf": ["Q20898395"]
+    },
+    {
+      "item": "Q13099586",
+      "ndb": "09415",
+      "ndbCount": 15,
+      "de": "Birne",
+      "deAliases": [],
+      "en": "pear",
+      "instanceOf": []
+    },
+    {
+      "item": "Q311133",
+      "ndb": "09427",
+      "ndbCount": 1,
+      "de": "Crateva religiosa",
+      "deAliases": [],
+      "en": "Crateva religiosa",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q974608",
+      "ndb": "09428",
+      "ndbCount": 1,
+      "de": "Keluak",
+      "deAliases": [],
+      "en": "Pangium edule",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q10817602",
+      "ndb": "09429",
+      "ndbCount": 11,
+      "de": "Ananas",
+      "deAliases": [],
+      "en": "pineapple",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10817602",
+      "ndb": "09430",
+      "ndbCount": 11,
+      "de": "Ananas",
+      "deAliases": [],
+      "en": "pineapple",
+      "instanceOf": []
+    },
+    {
+      "item": "Q460517",
+      "ndb": "09433",
+      "ndbCount": 1,
+      "de": "Clementine",
+      "deAliases": ["Citrus clementina"],
+      "en": "Citrinos × clementina",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2117265",
+      "ndb": "09500",
+      "ndbCount": 1,
+      "de": "Red Delicious",
+      "deAliases": ["Roter Delicious"],
+      "en": "Red Delicious",
+      "instanceOf": ["Q15731356"]
+    },
+    {
+      "item": "Q201996",
+      "ndb": "09501",
+      "ndbCount": 1,
+      "de": "Golden Delicious",
+      "deAliases": [],
+      "en": "Golden Delicious",
+      "instanceOf": ["Q15731356"]
+    },
+    {
+      "item": "Q506040",
+      "ndb": "09502",
+      "ndbCount": 1,
+      "de": "Granny Smith",
+      "deAliases": [],
+      "en": "Malus domestica 'Granny Smith'",
+      "instanceOf": ["Q16521", "Q186657"]
+    },
+    {
+      "item": "Q494259",
+      "ndb": "09503",
+      "ndbCount": 1,
+      "de": "Gala",
+      "deAliases": [],
+      "en": "Gala",
+      "instanceOf": ["Q15731356"]
+    },
+    {
+      "item": "Q504893",
+      "ndb": "09504",
+      "ndbCount": 1,
+      "de": "Fuji",
+      "deAliases": [],
+      "en": "Fuji",
+      "instanceOf": ["Q15731356"]
+    },
+    {
+      "item": "Q106612",
+      "ndb": "1088",
+      "ndbCount": 2,
+      "de": "Buttermilch",
+      "deAliases": ["Kaenemaelk", "Kærnemælk", "Kārmelk", "Schlegelmilch"],
+      "en": "buttermilk",
+      "instanceOf": []
+    },
+    {
+      "item": "Q117038409",
+      "ndb": "11003",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "amaranth leaf",
+      "instanceOf": []
+    },
+    {
+      "item": "Q165437",
+      "ndb": "11080",
+      "ndbCount": 2,
+      "de": "Rote Bete",
+      "deAliases": [
+        "Beete",
+        "Beta vulgaris subsp. rapacea var. conditiva",
+        "Beta vulgaris subsp. vulgaris var. conditiva",
+        "Gelbe Bete",
+        "Rahne",
+        "Rande",
+        "Rohnen",
+        "Rosa Bete",
+        "Rote Beete",
+        "Rote Rübe",
+        "Roude Rahna",
+        "Rätech",
+        "Salatrunkel",
+        "Salatrübe"
+      ],
+      "en": "beet",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q150463",
+      "ndb": "11098",
+      "ndbCount": 1,
+      "de": "Rosenkohl",
+      "deAliases": [
+        "Brassica oleracea var. gemmifera",
+        "Brüsseler Kohl",
+        "Brüsseler Sprossen",
+        "Kohlsprosse",
+        "Kohlsprossen",
+        "Rosenköhlchen",
+        "Sprossenkohl"
+      ],
+      "en": "Brussels sprouts",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q35051",
+      "ndb": "11109",
+      "ndbCount": 1,
+      "de": "Kopfkohl",
+      "deAliases": [
+        "Brassica oleracea var. capitata f. alba",
+        "Kabis",
+        "Weisskabis",
+        "Weisskohl",
+        "Weißkohl",
+        "Weißkraut"
+      ],
+      "en": "Brassica oleracea var. capitata",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q263203",
+      "ndb": "11112",
+      "ndbCount": 1,
+      "de": "Rotkohl",
+      "deAliases": ["Brassica oleracea convar. capitata var. rubra", "Rotkraut"],
+      "en": "red cabbage",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q81",
+      "ndb": "11124",
+      "ndbCount": 2,
+      "de": "Karotte",
+      "deAliases": [
+        "Gelbe Rübe",
+        "Gelbrübe",
+        "Karottenwurzel",
+        "Mohrrübe",
+        "Möhre",
+        "Riebli",
+        "Rüebli",
+        "Wurzel"
+      ],
+      "en": "carrot",
+      "instanceOf": ["Q140358161", "Q31839438"]
+    },
+    {
+      "item": "Q43304555",
+      "ndb": "11134",
+      "ndbCount": 1,
+      "de": "Maniokwurzel",
+      "deAliases": [],
+      "en": "cassava root",
+      "instanceOf": []
+    },
+    {
+      "item": "Q23900272",
+      "ndb": "11135",
+      "ndbCount": 1,
+      "de": "Blumenkohl",
+      "deAliases": [],
+      "en": "cauliflower",
+      "instanceOf": []
+    },
+    {
+      "item": "Q103765549",
+      "ndb": "11141",
+      "ndbCount": 1,
+      "de": "Selleriewurzel",
+      "deAliases": [],
+      "en": "celeriac root",
+      "instanceOf": []
+    },
+    {
+      "item": "Q28298",
+      "ndb": "11143",
+      "ndbCount": 1,
+      "de": "Echter Sellerie",
+      "deAliases": ["Apium graveolens", "Sellerie", "Staudensellerie"],
+      "en": "Apium graveolens",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q574172",
+      "ndb": "11145",
+      "ndbCount": 1,
+      "de": "Lactuca sativa var. angustana",
+      "deAliases": [],
+      "en": "celtuce",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q36823285",
+      "ndb": "11147",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "chard",
+      "instanceOf": []
+    },
+    {
+      "item": "Q498940",
+      "ndb": "11191",
+      "ndbCount": 1,
+      "de": "Augenbohne",
+      "deAliases": [
+        "Kuhbohne",
+        "Schwarzaugenbohne",
+        "Vigna unguiculata",
+        "Vigna unguiculata subsp. unguiculata"
+      ],
+      "en": "Vigna unguiculata",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q27033",
+      "ndb": "11203",
+      "ndbCount": 1,
+      "de": "Gartenkresse",
+      "deAliases": ["Lepidium sativum", "řeřicha setá"],
+      "en": "Lepidium sativum",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2735883",
+      "ndb": "11206",
+      "ndbCount": 2,
+      "de": "Gurke",
+      "deAliases": [],
+      "en": "cucumber",
+      "instanceOf": ["Q140358161"]
+    },
+    {
+      "item": "Q178547",
+      "ndb": "11213",
+      "ndbCount": 1,
+      "de": "Endivie",
+      "deAliases": ["Cichorium endivia"],
+      "en": "Cichorium endivia",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q28604477",
+      "ndb": "11213",
+      "ndbCount": 1,
+      "de": "Endiviensalat",
+      "deAliases": ["Eskariol"],
+      "en": "endive",
+      "instanceOf": ["Q502895"]
+    },
+    {
+      "item": "Q422067",
+      "ndb": "11233",
+      "ndbCount": 1,
+      "de": "Lutein",
+      "deAliases": ["E 161b", "E161b"],
+      "en": "lutein",
+      "instanceOf": ["Q113145171"]
+    },
+    {
+      "item": "Q147202",
+      "ndb": "11241",
+      "ndbCount": 1,
+      "de": "Kohlrabi",
+      "deAliases": [
+        "Brassica oleracea convar. acephala var. gongylodes",
+        "Kohlrübe",
+        "Oberkohlrabi",
+        "Oberrübe",
+        "Rübkohl",
+        "Stängelrübe"
+      ],
+      "en": "kohlrabi",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q181409",
+      "ndb": "1125",
+      "ndbCount": 4,
+      "de": "Dotter",
+      "deAliases": ["Dottersubstanzen", "Eidotter", "Eigelb", "Vitellin"],
+      "en": "egg yolk",
+      "instanceOf": ["Q25403900", "Q5058355"]
+    },
+    {
+      "item": "Q133698441",
+      "ndb": "1137",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "dried chicken egg yolk",
+      "instanceOf": ["Q2095"]
+    },
+    {
+      "item": "Q3066930",
+      "ndb": "11413",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "potato flour",
+      "instanceOf": []
+    },
+    {
+      "item": "Q36814998",
+      "ndb": "11457",
+      "ndbCount": 1,
+      "de": "Blattspinat",
+      "deAliases": ["Spinat"],
+      "en": "spinach",
+      "instanceOf": []
+    },
+    {
+      "item": "Q37937",
+      "ndb": "11505",
+      "ndbCount": 2,
+      "de": "Süßkartoffel",
+      "deAliases": [
+        "Batate",
+        "Bataten",
+        "Ipomoea batatas",
+        "Kūmara",
+        "Suesskartoffel",
+        "Sweet potato",
+        "Süsskartoffel"
+      ],
+      "en": "sweet potato",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q156884",
+      "ndb": "11959",
+      "ndbCount": 1,
+      "de": "Garten-Senfrauke",
+      "deAliases": ["Eruca sativa", "Eruca vesicaria subsp. sativa", "Raukelkohl", "Rucola"],
+      "en": "Eruca vesicaria subsp. sativa",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q7992569",
+      "ndb": "12013",
+      "ndbCount": 1,
+      "de": "Lotossamen",
+      "deAliases": ["Lilienknospe"],
+      "en": "lotus seed",
+      "instanceOf": []
+    },
+    {
+      "item": "Q13187",
+      "ndb": "12104",
+      "ndbCount": 1,
+      "de": "Kokospalme",
+      "deAliases": ["Cocos nucifera"],
+      "en": "Cocos nucifera",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q142788",
+      "ndb": "12130",
+      "ndbCount": 1,
+      "de": "Hickory",
+      "deAliases": ["Carya"],
+      "en": "Carya",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q14959225",
+      "ndb": "12151",
+      "ndbCount": 2,
+      "de": "Pistazie",
+      "deAliases": [],
+      "en": "pistachio nut",
+      "instanceOf": []
+    },
+    {
+      "item": "Q383389",
+      "ndb": "12698",
+      "ndbCount": 1,
+      "de": "Tahina",
+      "deAliases": ["Goma", "Tahin", "Tahini", "Techina"],
+      "en": "tehina",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10987",
+      "ndb": "19296",
+      "ndbCount": 1,
+      "de": "Honig",
+      "deAliases": ["Bienenhonig"],
+      "en": "honey",
+      "instanceOf": ["Q1783121", "Q25403900"]
+    },
+    {
+      "item": "Q154389",
+      "ndb": "19304",
+      "ndbCount": 1,
+      "de": "Melasse",
+      "deAliases": [
+        "Rohrmelasse",
+        "Rübenmelasse",
+        "Zuckerablaufsirup",
+        "Zuckerrohrmelasse",
+        "Zuckerrübenmelasse"
+      ],
+      "en": "molasses",
+      "instanceOf": ["Q12812139", "Q169336"]
+    },
+    {
+      "item": "Q123425472",
+      "ndb": "19335",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "granulated sugar",
+      "instanceOf": ["Q2908004"]
+    },
+    {
+      "item": "Q106923082",
+      "ndb": "20003",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "arrowroot flour",
+      "instanceOf": ["Q36465"]
+    },
+    {
+      "item": "Q4536337",
+      "ndb": "20008",
+      "ndbCount": 1,
+      "de": "Buchweizen",
+      "deAliases": [],
+      "en": "buckwheat seed",
+      "instanceOf": []
+    },
+    {
+      "item": "Q3393961",
+      "ndb": "20027",
+      "ndbCount": 1,
+      "de": "Maisstärke",
+      "deAliases": ["Speisestärke"],
+      "en": "corn starch",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q1066624",
+      "ndb": "20036",
+      "ndbCount": 1,
+      "de": "brauner Reis",
+      "deAliases": [],
+      "en": "brown rice",
+      "instanceOf": []
+    },
+    {
+      "item": "Q34041491",
+      "ndb": "20060",
+      "ndbCount": 1,
+      "de": "Reiskleie",
+      "deAliases": [],
+      "en": "rice bran",
+      "instanceOf": []
+    },
+    {
+      "item": "Q61670635",
+      "ndb": "20062",
+      "ndbCount": 1,
+      "de": "Roggen",
+      "deAliases": [],
+      "en": "rye",
+      "instanceOf": ["Q506139"]
+    },
+    {
+      "item": "Q12099",
+      "ndb": "20065",
+      "ndbCount": 1,
+      "de": "Roggen",
+      "deAliases": ["Secale cereale"],
+      "en": "Secale cereale",
+      "instanceOf": ["Q113976623", "Q16521"]
+    },
+    {
+      "item": "Q105549747",
+      "ndb": "20067",
+      "ndbCount": 1,
+      "de": "Sorghumkorn",
+      "deAliases": [],
+      "en": "sorghum grain",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q380329",
+      "ndb": "20069",
+      "ndbCount": 1,
+      "de": "Triticale",
+      "deAliases": ["Quadrotriticale", "Triticosecale", "Tritikale"],
+      "en": "×Triticale",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2249305",
+      "ndb": "20080",
+      "ndbCount": 2,
+      "de": "Weizenmehl",
+      "deAliases": [],
+      "en": "wheat flour",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q25323983",
+      "ndb": "20130",
+      "ndbCount": 1,
+      "de": "Gerstenmehl",
+      "deAliases": [],
+      "en": "barley flour",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1006089",
+      "ndb": "20317",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "masa",
+      "instanceOf": []
+    },
+    {
+      "item": "Q10286140",
+      "ndb": "20322",
+      "ndbCount": 1,
+      "de": "Maisgrieß",
+      "deAliases": [],
+      "en": "cornmeal",
+      "instanceOf": []
+    },
+    {
+      "item": "Q1136498",
+      "ndb": "42040",
+      "ndbCount": 1,
+      "de": "Grenadine",
+      "deAliases": ["Granatapfelsirup", "Grenadinensirup"],
+      "en": "grenadine",
+      "instanceOf": []
+    },
+    {
+      "item": "Q42962",
+      "ndb": "44005",
+      "ndbCount": 1,
+      "de": "Öle",
+      "deAliases": ["Süßöl", "Öl"],
+      "en": "oil",
+      "instanceOf": ["Q2424752", "Q317088"]
+    }
+  ]
+}

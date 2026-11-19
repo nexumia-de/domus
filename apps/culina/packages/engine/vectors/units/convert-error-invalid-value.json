@@ -1,0 +1,14 @@
+{
+  "id": "convert-error-invalid-value",
+  "description": "0 g to kg",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 0,
+      "unit": "g"
+    },
+    "to": "kg"
+  },
+  "error_code": "invalid-value",
+  "source": "Basis: an amount is greater than zero (docs/data-model.md#units-and-dates)."
+}

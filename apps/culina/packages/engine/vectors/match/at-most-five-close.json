@@ -1,0 +1,52 @@
+{
+  "id": "at-most-five-close",
+  "description": "Six candidates hold the word; five are offered",
+  "inputs": {
+    "kind": "match_names",
+    "names": ["salt"],
+    "candidates": [
+      {
+        "id": "s0",
+        "name": "Salt a",
+        "origin": "notebook"
+      },
+      {
+        "id": "s1",
+        "name": "Salt b",
+        "origin": "notebook"
+      },
+      {
+        "id": "s2",
+        "name": "Salt c",
+        "origin": "notebook"
+      },
+      {
+        "id": "s3",
+        "name": "Salt d",
+        "origin": "notebook"
+      },
+      {
+        "id": "s4",
+        "name": "Salt e",
+        "origin": "notebook"
+      },
+      {
+        "id": "s5",
+        "name": "Salt f",
+        "origin": "notebook"
+      }
+    ]
+  },
+  "expected": {
+    "matches": [
+      {
+        "name": "salt",
+        "exact": null,
+        "close": ["s0", "s1", "s2", "s3", "s4"],
+        "classes": []
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of words, no kitchen figure is involved."
+}

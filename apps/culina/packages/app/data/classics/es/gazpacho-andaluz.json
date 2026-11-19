@@ -1,0 +1,176 @@
+{
+  "id": "gazpacho-andaluz",
+  "name": {
+    "en": "Gazpacho, Andalusian cold soup",
+    "de": "Gazpacho, andalusische kalte Suppe"
+  },
+  "originalName": "Gazpacho andaluz",
+  "country": "es",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina al alcance de todos (Tercera edición ilustrada con 240 grabados; Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "p. 133, section \"Sopa fría española\", the recipe sent from Andújar",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "gazpacho-andaluz-soup",
+      "name": {
+        "en": "Gazpacho, Andalusian cold soup",
+        "de": "Gazpacho, andalusische kalte Suppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-peppers-sweet"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "un pimiento crudo"
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "dos tomates de buen color y tamaño"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "bread",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
+          },
+          "note": {
+            "en": "Crumb of half a loaf (miga de medio pan), soaked in water beforehand. The size of the half loaf is not read in the book, so the line has no amount.",
+            "de": "Krume von einem halben Brot (miga de medio pan), vorher in Wasser eingeweicht. Die Größe des halben Brots steht nicht im Buch, daher ohne Menge."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "note": {
+            "en": "A small cup of raw oil (una pequeña taza de aceite crudo). The size of the cup is not read in the book, so the line has no amount. The kind of oil is not named.",
+            "de": "Eine kleine Tasse rohes Öl (una pequeña taza de aceite crudo). Die Größe der Tasse steht nicht im Buch, daher ohne Menge. Die Ölsorte ist nicht genannt."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "note": {
+            "en": "To taste (al gusto).",
+            "de": "Nach Geschmack (al gusto)."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "To taste (al gusto).",
+            "de": "Nach Geschmack (al gusto)."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Pound the salt, the sweet pepper and the two tomatoes thoroughly in a mortar.",
+            "de": "Salz, die Paprikaschote und die zwei Tomaten im Mörser gründlich zerstoßen."
+          },
+          "uses": ["pepper", "tomato", "salt"]
+        },
+        {
+          "text": {
+            "en": "Add the bread crumb that has soaked in water, and pound everything together.",
+            "de": "Die in Wasser eingeweichte Brotkrume dazugeben und alles zusammen zerstoßen."
+          },
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "Work in the oil as for mayonnaise, until it binds well: at least a quarter of an hour.",
+            "de": "Das Öl wie für Mayonnaise einarbeiten, bis alles gut bindet: mindestens eine Viertelstunde."
+          },
+          "technique": "cold-emulsion",
+          "uses": ["oil"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the vinegar and the water to taste.",
+            "de": "Essig und Wasser nach Geschmack dazugeben."
+          },
+          "uses": ["vinegar", "water"]
+        },
+        {
+          "text": {
+            "en": "Pass it through a sieve. Put small pieces of bread into the thick liquid.",
+            "de": "Durch ein Sieb streichen. In die dicke Flüssigkeit kleine Brotstücke geben."
+          },
+          "uses": ["bread"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "gazpacho-andaluz-soup"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the quoted recipe uses one sweet pepper and two tomatoes, taken for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared lines 6446-6526 line by line: pepper 1, tomatoes 2 (OCR '<3os', read as 'dos': a reading, not clear), salt, half a loaf of crumb, small cup of oil, a quarter hour, vinegar and water to taste. Agreed. Changed: 'until smooth' is 'thoroughly' (machacándose perfectamente). No fraction is garbled here."
+  },
+  "note": {
+    "en": "Served cold; the source says it is eaten in summer, in the hot hours. Only the Andalusian recipe sent from Andújar is transcribed; the Granada and Extremadura versions are not. Garlic and onion are named in the section's introduction but not in this recipe, so they are not in the lines.",
+    "de": "Kalt serviert; die Quelle sagt, man esse es im Sommer, zu den heißesten Stunden. Übertragen ist nur das andalusische Rezept aus Andújar; die Granada- und die Extremadura-Form nicht. Knoblauch und Zwiebel nennt die Einleitung des Abschnitts, nicht dieses Rezept; daher stehen sie nicht in den Zeilen."
+  }
+}

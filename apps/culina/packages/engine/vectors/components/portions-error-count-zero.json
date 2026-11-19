@@ -1,0 +1,16 @@
+{
+  "id": "portions-error-count-zero",
+  "description": "Zero portions",
+  "inputs": {
+    "kind": "portions",
+    "operation": "portion_weight",
+    "yield_g": 900,
+    "count": 0
+  },
+  "error_code": "invalid-value",
+  "error_detail": {
+    "field": "count"
+  },
+  "tolerance": 0.000001,
+  "source": "Division by 0 portions is undefined."
+}

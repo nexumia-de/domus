@@ -1,0 +1,8 @@
+{
+  "id": "example-technique",
+  "name": { "en": "Example technique (fictional)" },
+  "watch": { "en": "Example note.", "de": "Beispielnotiz." },
+  "why": { "en": "Example reason.", "de": "Beispielgrund." },
+  "level": "folklore",
+  "sources": []
+}

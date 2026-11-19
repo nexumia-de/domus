@@ -1,0 +1,72 @@
+{
+  "id": "import-count-as-given-and-component-target",
+  "description": "A count stays a count; a line can mean a component of the notebook",
+  "inputs": {
+    "kind": "cooklang_import",
+    "text": "Use @egg{2} and @./sauces/Pan sauce{150%g}.",
+    "decisions": [
+      {
+        "target": {
+          "kind": "ingredient",
+          "id": "u-00000000-0000-4000-8000-000000000005"
+        },
+        "amount": {
+          "mode": "given"
+        }
+      },
+      {
+        "target": {
+          "kind": "component",
+          "id": "u-00000000-0000-4000-8000-00000000000a"
+        },
+        "amount": {
+          "mode": "given"
+        }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000046",
+      "name": "Bread",
+      "date": "2026-11-18",
+      "change": "Imported from bread.cook"
+    },
+    "facts": {}
+  },
+  "expected": {
+    "component": {
+      "id": "u-00000000-0000-4000-8000-000000000046",
+      "name": "Bread",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "u-00000000-0000-4000-8000-000000000005"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "ref": {
+            "kind": "component",
+            "id": "u-00000000-0000-4000-8000-00000000000a"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          }
+        }
+      ],
+      "method": ["Use egg and Pan sauce."],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000046",
+        "date": "2026-11-18",
+        "change": "Imported from bread.cook"
+      }
+    },
+    "unmeasured": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the file uses the specification's syntax (README); the decisions are the user's, the densities made up for the vector."
+}

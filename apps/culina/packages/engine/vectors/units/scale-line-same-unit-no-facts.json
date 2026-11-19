@@ -1,0 +1,39 @@
+{
+  "id": "scale-line-same-unit-no-facts",
+  "description": "3 cup on hand against 2 cup, no density needed",
+  "inputs": {
+    "kind": "scale_line",
+    "lines": [
+      {
+        "id": "milk",
+        "amount": {
+          "value": 2,
+          "unit": "cup"
+        }
+      },
+      {
+        "id": "flour",
+        "amount": {
+          "value": 250,
+          "unit": "g"
+        }
+      }
+    ],
+    "line_id": "milk",
+    "have": {
+      "value": 3,
+      "unit": "cup"
+    }
+  },
+  "expected": {
+    "factor": 1.5,
+    "values": {
+      "milk": 3,
+      "flour": 375
+    },
+    "unscaled": [],
+    "cautions": ["time-not-linear"]
+  },
+  "tolerance": 1e-9,
+  "source": "Basis: same unit, so the plain ratio 3 / 2 = 1.5 is used and no density is needed; 250 * 1.5 = 375 g."
+}

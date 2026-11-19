@@ -1,0 +1,27 @@
+{
+  "id": "modes-offered-for-each-kind-of-quantity",
+  "description": "Mass can be taken as given; a volume or count only through facts the ingredient has; an unknown unit or no quantity only weighed or left open",
+  "inputs": {
+    "kind": "cooklang_modes",
+    "text": "Add @flour{200%g}, @water{1%cup}, @egg{2}, @garlic{2%cloves} and @salt.",
+    "facts": {
+      "water": {
+        "densityGPerMl": 1
+      },
+      "egg": {
+        "unitWeightG": 50
+      }
+    }
+  },
+  "expected": {
+    "modes": [
+      ["given", "grams", "open"],
+      ["given", "facts", "grams", "open"],
+      ["given", "facts", "grams", "open"],
+      ["grams", "open"],
+      ["grams", "open"]
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the file uses the specification's syntax (README); the decisions are the user's, the densities made up for the vector."
+}

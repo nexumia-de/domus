@@ -1,0 +1,127 @@
+{
+  "id": "declared-substitute-factor-scales-need",
+  "description": "A declared substitute with a factor stands in: the line needs the factor times its amount, the report names the substitute and the effect",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "starch"
+      },
+      {
+        "id": "cornstarch",
+        "parentId": "starch"
+      },
+      {
+        "id": "potato-starch",
+        "parentId": "starch"
+      },
+      {
+        "id": "wheat-flour",
+        "parentId": "flour"
+      },
+      {
+        "id": "sauce-thickener"
+      }
+    ],
+    "components": [
+      {
+        "id": "sauce",
+        "name": "Sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "wheat-flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "sauce",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "cornstarch"
+        },
+        "amount": {
+          "value": 60,
+          "unit": "g"
+        }
+      }
+    ],
+    "substitutes": [
+      {
+        "id": "flour-to-cornstarch",
+        "from": "wheat-flour",
+        "to": "cornstarch",
+        "factor": 0.5,
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "sauce",
+        "complete": true,
+        "lacking": 0,
+        "substitutions": [
+          {
+            "asked": "wheat-flour",
+            "substitute": "cornstarch",
+            "itemId": "s1",
+            "effect": "flour-to-cornstarch",
+            "factor": 0.5
+          }
+        ],
+        "lines": [
+          {
+            "status": "have-by-substitution",
+            "need": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 1e-9,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

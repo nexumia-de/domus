@@ -1,0 +1,33 @@
+{
+  "id": "hydration-milk-as-water-role",
+  "description": "The caller gives milk a water role",
+  "inputs": {
+    "kind": "hydration",
+    "lines": [
+      {
+        "id": "flour",
+        "g": 500,
+        "role": "flour"
+      },
+      {
+        "id": "water",
+        "g": 100,
+        "role": "water"
+      },
+      {
+        "id": "milk",
+        "g": 200,
+        "role": "dairy"
+      }
+    ],
+    "water_roles": ["water", "dairy"]
+  },
+  "expected": {
+    "hydration_pct": 60,
+    "flour_g": 500,
+    "water_g": 300,
+    "not_counted": []
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: water over flour. Water roles water and dairy: 100 + 200 = 300 g; 100 * 300 / 500 = 60 %."
+}

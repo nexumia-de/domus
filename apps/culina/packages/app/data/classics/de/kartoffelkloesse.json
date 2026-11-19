@@ -1,0 +1,189 @@
+{
+  "id": "kartoffelkloesse",
+  "name": {
+    "en": "Fine potato dumplings",
+    "de": "Feine Kartoffelklöße"
+  },
+  "originalName": "Nice Potato Dumplings, No. 26",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division O (Dumplings), No. 26",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "kartoffelkloesse-dough",
+      "name": {
+        "en": "Potato dumplings",
+        "de": "Kartoffelklöße"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "2 soupplatefuls of grated potatoes, boiled the day before in their jackets. The book does not size a soupplateful: no amount.",
+            "de": "2 Suppenteller geriebene Kartoffeln, am Vortag in der Schale gekocht. Das Buch gibt die Größe eines Suppentellers nicht an: keine Menge."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "note": {
+            "en": "4 basting spoonfuls of flour. The book does not size a basting spoonful: no amount.",
+            "de": "4 Bratlöffel Mehl. Das Buch gibt die Größe eines Bratlöffels nicht an: keine Menge."
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "fat",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 cupful of melted butter or lard"
+          },
+          "settled": true,
+          "note": {
+            "en": "Melted butter is used; the source allows lard as the alternative.",
+            "de": "Zerlassene Butter wird verwendet; die Quelle erlaubt Schmalz als Alternative."
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "6 eggs, the whites beaten to a froth"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "The day before, boil the potatoes in their skins and grate them.",
+            "de": "Am Vortag die Kartoffeln in der Schale kochen und reiben."
+          },
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Beat the egg whites to a froth.",
+            "de": "Das Eiweiß zu Schaum schlagen."
+          },
+          "technique": "whip-egg-whites",
+          "uses": ["eggs"]
+        },
+        {
+          "text": {
+            "en": "Stir the potatoes with the flour, the nutmeg, the salt, the melted butter and the eggs until well mixed.",
+            "de": "Die Kartoffeln mit Mehl, Muskatnuss, Salz, der zerlassenen Butter und den Eiern gut verrühren."
+          },
+          "uses": ["potatoes", "flour", "nutmeg", "salt", "fat", "eggs"]
+        },
+        {
+          "text": {
+            "en": "Stir in the beaten egg whites.",
+            "de": "Den steifen Eierschaum unterrühren."
+          },
+          "uses": ["eggs"]
+        },
+        {
+          "text": {
+            "en": "Shape the mixture into dumplings with a spoon.",
+            "de": "Die Masse mit einem Löffel zu Klößen formen."
+          },
+          "technique": "shape-dumplings",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Cook the dumplings in boiling salted water. The source gives a fraction of an hour that is not legible in the scans.",
+            "de": "Die Klöße in kochendem Salzwasser garen. Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
+          }
+        },
+        {
+          "text": {
+            "en": "Serve with browned butter.",
+            "de": "Mit gebräunter Butter servieren."
+          },
+          "uses": ["fat"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "kartoffelkloesse-dough"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for 6 eggs and 1 cupful of fat.",
+      "target": "persons"
+    },
+    {
+      "what": "Fat",
+      "value": "butter",
+      "reason": "Our choice: the source gives melted butter or lard; butter is used, so the dish contains no lard.",
+      "target": "kartoffelkloesse-dough/fat"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 29, Feine Kartoffelklöße) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 6 eggs, whites beaten, 4 spoonfuls of flour, 1 cup of melted butter or fat, nutmeg, salt, potatoes boiled the day before, shaped with a spoon, browned butter. Changed: cooking time removed (English garbled, German readings differ); 'fold in' is now 'stir in', as the source says stir all together. Not legible: the cooking time."
+  },
+  "note": {
+    "en": "Serve with currant juice instead of browned butter if liked; the source gives it as an alternative and it is not transcribed. The source sizes the potatoes and the flour only in soupplates and basting spoons, which are not given in units: they are written without amount. The book's version No. 20, with butter, egg yolks and bread, is not used.",
+    "de": "Statt gebräunter Butter kann man auch Johannisbeersaft dazu reichen; die Quelle nennt ihn als Alternative, er ist hier nicht übertragen. Kartoffeln und Mehl sind nur in Suppentellern und Bratlöffeln angegeben, die sich nicht in Mengen umrechnen lassen: sie stehen ohne Menge."
+  }
+}

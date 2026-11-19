@@ -1,0 +1,46 @@
+{
+  "id": "expand-error-duplicate-id",
+  "description": "Two components with one id",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "a",
+    "components": [
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "x"
+            },
+            "amount": {
+              "value": 1,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "a",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "y"
+            },
+            "amount": {
+              "value": 1,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "duplicate-id",
+  "error_detail": {
+    "componentId": "a"
+  },
+  "tolerance": 0.000001,
+  "source": "The id a is used twice."
+}

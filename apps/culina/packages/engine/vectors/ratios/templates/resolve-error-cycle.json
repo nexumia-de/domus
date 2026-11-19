@@ -1,0 +1,54 @@
+{
+  "id": "resolve-error-cycle",
+  "description": "Three templates that name each other as parent",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "a",
+        "name": "a",
+        "source": "user",
+        "parentId": "c",
+        "changes": [
+          {
+            "op": "add",
+            "role": "x",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "name": "b",
+        "source": "user",
+        "parentId": "a",
+        "changes": [
+          {
+            "op": "add",
+            "role": "y",
+            "parts": 1
+          }
+        ]
+      },
+      {
+        "id": "c",
+        "name": "c",
+        "source": "user",
+        "parentId": "b",
+        "changes": [
+          {
+            "op": "add",
+            "role": "z",
+            "parts": 1
+          }
+        ]
+      }
+    ],
+    "id": "a"
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "path": ["a", "c", "b", "a"]
+  },
+  "source": "a has parent c, c has b, b has a: walking up from a gives a, c, b and then a again; synthetic template numbers chosen for the arithmetic, not from a source"
+}

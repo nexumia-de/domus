@@ -1,0 +1,34 @@
+{
+  "id": "unknown-component-tasting",
+  "description": "A tasting note on a component version that does not exist",
+  "inputs": {
+    "kind": "validate_model",
+    "model": {
+      "tastings": [
+        {
+          "id": "n1",
+          "ref": {
+            "kind": "component",
+            "id": "bread-2"
+          },
+          "date": "2026-11-18",
+          "text": "t"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": false,
+    "findings": [
+      {
+        "code": "unknown-component",
+        "kind": "tasting",
+        "id": "n1",
+        "path": "ref",
+        "ref": "bread-2"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#cross-record-validation; synthetic records written for this rule, ids chosen for readability"
+}

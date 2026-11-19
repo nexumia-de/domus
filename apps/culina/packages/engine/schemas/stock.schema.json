@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/stock.schema.json",
+  "title": "Stock item",
+  "description": "What the user has: at least that an ingredient or component is there. Amount, state, dates and 'always there' are optional detail. Days left and makeable dishes are derived.",
+  "type": "object",
+  "required": ["id", "ref"],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": true
+  },
+  "properties": {
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
+    "ref": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref"
+    },
+    "amount": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/amount"
+    },
+    "state": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
+    },
+    "preparedOn": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    },
+    "useBy": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    },
+    "note": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+    },
+    "always": {
+      "description": "The user marks it as always there: it counts as present until it is unticked.",
+      "type": "boolean"
+    }
+  }
+}

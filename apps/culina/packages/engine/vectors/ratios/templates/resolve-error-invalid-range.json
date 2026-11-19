@@ -1,0 +1,36 @@
+{
+  "id": "resolve-error-invalid-range",
+  "description": "A range whose min is above its max",
+  "inputs": {
+    "kind": "resolve_template",
+    "templates": [
+      {
+        "id": "odd",
+        "name": "odd",
+        "source": "user",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "fat",
+            "parts": 2,
+            "range": {
+              "min": 3,
+              "max": 1
+            }
+          }
+        ],
+        "anchor": "flour"
+      }
+    ],
+    "id": "odd"
+  },
+  "error_code": "invalid-range",
+  "error_detail": {
+    "templateId": "odd",
+    "role": "fat"
+  },
+  "source": "min 3 is above max 1; synthetic template numbers chosen for the arithmetic, not from a source"
+}

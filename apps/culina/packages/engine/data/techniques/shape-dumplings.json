@@ -1,0 +1,39 @@
+{
+  "id": "shape-dumplings",
+  "name": {
+    "en": "Shaping dumplings",
+    "de": "Klöße formen"
+  },
+  "watch": {
+    "en": "Add a little flour to the surface when the dough gets sticky.",
+    "de": "Etwas Mehl auf die Arbeitsfläche geben, wenn der Teig klebt."
+  },
+  "why": {
+    "en": "Cook the dumplings in one layer with room around them, until they float.",
+    "de": "Die Klöße in einer Lage mit Platz ringsum garen, bis sie oben schwimmen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 4.4 Potatoe Recipes, Gnocchi al Pesto",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.04%3A_Potatoe_Recipes",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Add a little flour to surface if the dough gets too sticky."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 4.4 Potatoe Recipes, Gnocchi al Pesto",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.04%3A_Potatoe_Recipes",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Only place enough dumplings to make one layer of gnocchi."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 4.4 Potatoe Recipes, Gnocchi al Pesto",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.04%3A_Potatoe_Recipes",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Boil (in the reserved water) gnocchi until it floats to the top (about 1 minute)."
+    }
+  ]
+}

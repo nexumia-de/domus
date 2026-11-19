@@ -1,0 +1,46 @@
+{
+  "id": "bake",
+  "name": {
+    "en": "Baking",
+    "de": "Backen"
+  },
+  "watch": {
+    "en": "Preheat the oven and keep the door shut while the batter rises and sets.",
+    "de": "Den Ofen vorheizen und die Tür geschlossen halten, solange der Teig aufgeht und stockt."
+  },
+  "why": {
+    "en": "A very hot oven sets the top before the batter has risen, and heat left in the food keeps cooking the centre after it comes out.",
+    "de": "Ein sehr heißer Ofen lässt die Oberfläche stocken, bevor der Teig aufgegangen ist, und die Restwärme gart die Mitte nach dem Herausnehmen weiter."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.7 Cake and Buttercreams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.07%3A_Cake_and_Buttercreams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Always preheat your oven."
+    },
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.7 Cake and Buttercreams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.07%3A_Cake_and_Buttercreams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Too high a temperature will cause the top to set before it is risen enough."
+    },
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.7 Cake and Buttercreams",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.07%3A_Cake_and_Buttercreams",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Do not open the oven until the cake has fully risen and the structure has set."
+    },
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.6 Custards, section Baked Custards",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.06%3A_Custards",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Therefore, if the center is set but not completely it will finish cooking once out of the oven."
+    }
+  ]
+}

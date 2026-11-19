@@ -1,0 +1,33 @@
+{
+  "id": "butter-to-shortening",
+  "from": "fdc-group-butter",
+  "to": "fdc-group-shortening",
+  "changes": {
+    "en": "Close to 100 % fat against about 80 % in butter, with less water, so it spatters less in frying. It has a higher smoke point than butter.",
+    "de": "Fast 100 % Fett gegenüber etwa 80 % in Butter, mit weniger Wasser; es spritzt beim Braten weniger. Der Rauchpunkt liegt höher als bei Butter."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 3.3 Major Fats and Oils Used in Bakeries, section Shortening",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/03%3A_Fats_and_Oils/3.03%3A_Major_Fats_and_Oils_Used_in_Bakeries",
+      "licence": "CC BY 4.0",
+      "sentence": "Lard and shortening have a higher fat content (close to 100%) compared to about 80% for butter and margarine."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 3.3 Major Fats and Oils Used in Bakeries, section Shortening",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/03%3A_Fats_and_Oils/3.03%3A_Major_Fats_and_Oils_Used_in_Bakeries",
+      "licence": "CC BY 4.0",
+      "sentence": "Vegetable shortening shares many properties with lard: both are semi-solid fats with a higher smoke point than butter and margarine."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 3.3 Major Fats and Oils Used in Bakeries, section Shortening",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/03%3A_Fats_and_Oils/3.03%3A_Major_Fats_and_Oils_Used_in_Bakeries",
+      "licence": "CC BY 4.0",
+      "sentence": "They contain less water and are thus less prone to splattering, making them safer for frying."
+    }
+  ]
+}

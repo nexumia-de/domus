@@ -1,0 +1,39 @@
+{
+  "id": "cook-rice",
+  "name": {
+    "en": "Cooking rice",
+    "de": "Reis kochen"
+  },
+  "watch": {
+    "en": "The rice is done when tunnel-like holes appear between the grains and almost all the liquid is absorbed.",
+    "de": "Der Reis ist gar, wenn tunnelartige Löcher zwischen den Körnern erscheinen und fast alle Flüssigkeit aufgenommen ist."
+  },
+  "why": {
+    "en": "Standing covered off the heat lets the grains take up the last moisture without burning.",
+    "de": "Abgedeckt neben dem Herd stehend nehmen die Körner die letzte Feuchtigkeit auf, ohne anzubrennen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 5.2 Purchasing, Storing and Cooking Grains",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/05%3A_Grains/5.02%3A_Purchasing_Storing_and_Cooking_Grains",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "This is indicated by the appearance of tunnel-like holes between the grains."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 5.2 Purchasing, Storing and Cooking Grains",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/05%3A_Grains/5.02%3A_Purchasing_Storing_and_Cooking_Grains",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "This allows the cooked grains to absorb the remaining moisture without burning."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 5.2 Purchasing, Storing and Cooking Grains",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/05%3A_Grains/5.02%3A_Purchasing_Storing_and_Cooking_Grains",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "When the liquid returns to a boil, lower the heat, cover and simmer until the liquid is absorbed and the grains are tender."
+    }
+  ]
+}
