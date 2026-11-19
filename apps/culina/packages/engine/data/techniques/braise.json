@@ -1,0 +1,39 @@
+{
+  "id": "braise",
+  "name": {
+    "en": "Braising",
+    "de": "Schmoren"
+  },
+  "watch": {
+    "en": "Cover the pot and cook at a very low simmer, with the liquid reaching one third to one half of the food.",
+    "de": "Den Topf zudecken und bei ganz schwacher Hitze köcheln lassen; die Flüssigkeit reicht bis zu einem Drittel bis zur Hälfte des Garguts."
+  },
+  "why": {
+    "en": "Heat, time and moisture break down the tough connective tissue of the meat until a fork cuts it.",
+    "de": "Hitze, Zeit und Feuchtigkeit bauen das zähe Bindegewebe des Fleisches ab, bis es sich mit der Gabel schneiden lässt."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 2.2 The Cooking Techniques - Braising",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/02%3A_Recipe_conversions_and_Braising/2.02%3A_The_Cooking_Techniques_-_Braising",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "the braising liquid will cover one-third to one-half of the food in the pan."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 2.2 The Cooking Techniques - Braising",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/02%3A_Recipe_conversions_and_Braising/2.02%3A_The_Cooking_Techniques_-_Braising",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The dish is then covered and cooked at a very low simmer until the meat becomes so tender"
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 2.2 The Cooking Techniques - Braising",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/02%3A_Recipe_conversions_and_Braising/2.02%3A_The_Cooking_Techniques_-_Braising",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Braising relies on heat, time, and moisture to break down the tough connective tissue (collagen) that binds together the muscle fibers"
+    }
+  ]
+}

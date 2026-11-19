@@ -1,0 +1,25 @@
+{
+  "id": "bake",
+  "name": {
+    "en": "Baking",
+    "de": "Backen"
+  },
+  "watch": {
+    "en": "Baste the food from time to time with butter, lard or oil.",
+    "de": "Das Gargut zwischendurch mit Butter, Schmalz oder Öl begießen."
+  },
+  "why": {
+    "en": "Basting keeps the surface from losing moisture by evaporation.",
+    "de": "Das Begießen verringert den Feuchtigkeitsverlust der Oberfläche durch Verdunstung."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 10.3 The Cooking Techniques - Roasting",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.03%3A_The_Cooking_Techniques_-_Roasting",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "During roasting, meats and vegetables are frequently basted on the surface with butter, lard, or oil to reduce the loss of moisture by evaporation."
+    }
+  ]
+}

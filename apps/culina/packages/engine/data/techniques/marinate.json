@@ -1,0 +1,32 @@
+{
+  "id": "marinate",
+  "name": {
+    "en": "Marinating",
+    "de": "Marinieren"
+  },
+  "watch": {
+    "en": "Acid in the marinade, such as lemon or lime juice, turns fish from translucent to white.",
+    "de": "Säure in der Marinade, etwa Zitronen- oder Limettensaft, macht Fisch von glasig zu weiß."
+  },
+  "why": {
+    "en": "The acid changes the protein into a form that is in many cases edible.",
+    "de": "Die Säure verändert das Eiweiß in eine Form, die in vielen Fällen essbar ist."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Garde Manger: A Guide to the Cold Kitchen (Thibodeaux)",
+      "place": "chapter 1.3 Curing, Brining and Smoking",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Garde_Manger%3A_A_Guide_to_the_Cold_Kitchen_(Thibodeaux)/01%3A_Chapters/1.03%3A_Curing_Brining_and_Smoking",
+      "licence": "CC BY-NC 4.0",
+      "sentence": "Did you notice the protein turn from a translucent color to a white opaque color?"
+    },
+    {
+      "title": "Garde Manger: A Guide to the Cold Kitchen (Thibodeaux)",
+      "place": "chapter 1.3 Curing, Brining and Smoking",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Garde_Manger%3A_A_Guide_to_the_Cold_Kitchen_(Thibodeaux)/01%3A_Chapters/1.03%3A_Curing_Brining_and_Smoking",
+      "licence": "CC BY-NC 4.0",
+      "sentence": "In the simplest form, it means that the acid is changing the protein into a form that in many cases is edible."
+    }
+  ]
+}
