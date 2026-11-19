@@ -255,6 +255,20 @@ derive and copy vectors compare `expected` deeply with the vector's
 | `classic_copy`            | `classic`, `lang`, `date`, `ids` (the ids `newId` gives in turn), optional `portions`, `ingredient_ids` | `dish`, `components`; or `error_code` (`wanted-ingredient` with `wanted`, or a derive code) |
 | `classic_wanted`          | `classic`                                                                                               | `wanted`: `path`, `en`, `de`                                                                |
 
+## Kinds of nutrition (issue 94)
+
+Folder: `packages/engine/vectors/nutrition/`, run by
+`test/nutrition-vectors.test.ts`. Rules: [engine rules](engine-rules.md#nutrition).
+Every vector is invented: the nutrients per 100 g are made up and describe no real
+food (the shipped numbers are read from USDA by the generator, never typed);
+expected values are computed by hand. `expected` is compared deeply with the
+vector's `tolerance`.
+
+| `kind`            | Inputs                                                                                                            | Expected                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `nutrition_dish`  | `derived` (`dish` with `portions` and `slots`, `components`, as `deriveClassic` gives them), `facts`, `nutrition` | `portions`, `perPortion`, `countedGPerPortion`, `coverage`, `notReported`; or `error_code` |
+| `nutrition_round` | `figures` (a `PortionNutrients`)                                                                                  | `rounded`; or `error_code` `invalid-value` with `error_detail.field`                       |
+
 ## Kinds of substitute effects (issue 93)
 
 Folder: `packages/engine/vectors/substitutes/`, run by

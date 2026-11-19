@@ -65,6 +65,9 @@ sources:
   - id: fici
     title: 'Regulation (EU) No 1169/2011, Annex I (definitions, salt = sodium × 2.5), as adopted (legislation.gov.uk)'
     url: https://www.legislation.gov.uk/eur/2011/1169/annex/I/adopted
+  - id: cfr1019
+    title: 'Code of Federal Regulations, Title 21, section 101.9 (nutrition labelling of food), paragraph (c) (rounding of declared amounts), eCFR, read 2026-11-19'
+    url: https://www.ecfr.gov/current/title-21/part-101/section-101.9
   - id: ficxiv
     title: 'Regulation (EU) No 1169/2011, Annex XIV (energy conversion factors), as adopted (legislation.gov.uk)'
     url: https://www.legislation.gov.uk/eur/2011/1169/annex/XIV/adopted
@@ -255,3 +258,60 @@ yes, no diary, hand-over to a tracker, no backend). The sources add two
 points it did not have: only USDA FoodData Central is cleared for
 bundling so far, and figures stay at energy, macronutrients and salt
 until retention factors can be sourced.
+
+# What was built
+
+Work package 11 of the [helper plan](helper-plan.md) (issue 94). It follows the
+recommendation above: figures are derived, never stored, never a verdict.
+
+- **Data.** The catalogue generator reads from the same USDA SR Legacy file
+  energy (kcal and kJ), protein, fat, carbohydrate, fibre and sodium per 100 g
+  of every food row (`x-nutrition`, [catalogue](ingredient-catalogue.md#nutrition)).
+  No number is typed by hand. Foods with no fibre or sodium figure have none
+  (unknown, not zero).
+- **Salt** is computed, not stored: sodium x 2.5, the formula of Annex I,
+  point 11 of Regulation (EU) No 1169/2011, read in the adopted text[^fici]
+  ("`salt` means the salt equivalent content calculated using the formula:
+  salt = sodium x 2,5").
+- **Engine.** `dishNutrition` sums the lines of a derived dish by weight
+  (mass directly, volume by density, count by unit weight) and divides by the
+  portions; `roundNutrition` rounds for display
+  ([engine rules](engine-rules.md#nutrition)). Amounts are used as the recipe
+  gives them (raw, as bought): no yield, edible portion or cooking loss is
+  applied, because the dish data does not say which state an amount is in. The
+  raw composition overstates grilled or roasted food, as the sources above
+  show; the section says so in one line.
+- **Coverage.** A line that cannot be turned into grams, has no amount, is
+  not in the catalogue yet, is optional or has no nutrient data is left out
+  and named, with the count "counted 6 of 9" and, where every line left out
+  has a known weight, the share of the weight the figures rest on. Fibre and
+  salt are shown only when every counted line has the figure.
+- **Rounding** follows 21 CFR 101.9(c)[^cfr1019], the only rounding rule that
+  could be read: the European Commission's guidance on tolerances and
+  rounding for nutrition declarations was not readable in this session (its
+  hosts `food.ec.europa.eu` and `ec.europa.eu` were refused by the proxy,
+  `eur-lex.europa.eu` answered an empty body). The US steps are used as a
+  display convention and the screen names them; they are not claimed to be
+  the EU rule. Where the US rule is silent (kJ, salt) the choice is Culina's
+  and is marked as such.
+- **Screen.** On the dish of a classic, "Nutrition per portion", closed behind
+  a tap: the rounded figures, the coverage in words, the method, the rounding
+  rule, the data source and one line that this is not a food label (the EU
+  rules above apply to anyone who sells food). No colour, no daily value, no
+  judgement.
+- **Portion reference per course: none shipped.** The reference must come
+  from a source read in this session. The open cook textbooks on
+  workforce.libretexts.org (Garde Manger, Flavors of the Saucier, Introduction
+  to Food Production and Service) and PubMed Central searches gave recipe
+  yields and examples but no statement of portion sizes per course or food
+  group; `food.ec.europa.eu`, `www.health.gov`, `www.dge.de` and
+  `www.nutrition.org.uk` were refused by the proxy. So figures are per
+  portion of the dish as the recipe defines it, with no reference, and the
+  section does not compare them with one.
+- **Hosts tested on 2026-11-19.** Answered: `fdc.nal.usda.gov` (200),
+  `www.legislation.gov.uk` (200), `www.ecfr.gov` (200),
+  `workforce.libretexts.org` (200), `eutils.ncbi.nlm.nih.gov` (200),
+  `pmc.ncbi.nlm.nih.gov` (200). Refused (403 from the proxy):
+  `food.ec.europa.eu`, `ec.europa.eu`, `assets.publishing.service.gov.uk`,
+  `www.fao.org`, `www.dge.de`, `www.nutrition.org.uk`, `www.health.gov`;
+  `eur-lex.europa.eu` answered 202 with an empty body.

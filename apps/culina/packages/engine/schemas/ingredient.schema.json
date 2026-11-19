@@ -133,6 +133,31 @@
     "unitWeightG": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/sourcedNumber"
     },
+    "x-nutrition": {
+      "description": "Nutrients per 100 g of the food, read from the dataset the catalogue is generated from; never typed by hand. A nutrient that is not there is unknown, not zero. `source` is present on a generated parent, which takes a nutrient only when all rows below agree.",
+      "type": "object",
+      "required": ["per100g"],
+      "additionalProperties": false,
+      "properties": {
+        "per100g": {
+          "type": "object",
+          "required": ["kcal", "kJ", "proteinG", "fatG", "carbohydrateG"],
+          "additionalProperties": false,
+          "properties": {
+            "kcal": { "type": "number", "minimum": 0 },
+            "kJ": { "type": "number", "minimum": 0 },
+            "proteinG": { "type": "number", "minimum": 0 },
+            "fatG": { "type": "number", "minimum": 0 },
+            "carbohydrateG": { "type": "number", "minimum": 0 },
+            "fibreG": { "type": "number", "minimum": 0 },
+            "sodiumMg": { "type": "number", "minimum": 0 }
+          }
+        },
+        "source": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+        }
+      }
+    },
     "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
   }
 }

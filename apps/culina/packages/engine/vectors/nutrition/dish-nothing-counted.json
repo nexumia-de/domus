@@ -1,0 +1,82 @@
+{
+  "id": "dish-nothing-counted",
+  "description": "Only a wanted line: nothing is counted, the figures are zero, coverage says 0 of 1; fibre and salt are not marked as not reported because nothing was counted",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 2,
+        "slots": [
+          {
+            "role": "liquid",
+            "wanted": "Water",
+            "amount": {
+              "value": 200,
+              "unit": "ml"
+            }
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-oil": {
+        "kcal": 800,
+        "kJ": 3300,
+        "proteinG": 0,
+        "fatG": 90,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 0
+      },
+      "inv-egg": {
+        "kcal": 150,
+        "kJ": 620,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      }
+    }
+  },
+  "expected": {
+    "portions": 2,
+    "perPortion": {
+      "kcal": 0,
+      "kJ": 0,
+      "proteinG": 0,
+      "fatG": 0,
+      "carbohydrateG": 0,
+      "fibreG": 0,
+      "saltG": 0
+    },
+    "countedGPerPortion": 0,
+    "coverage": {
+      "counted": 0,
+      "total": 1,
+      "notCounted": [
+        {
+          "index": 0,
+          "wanted": "Water",
+          "reason": "wanted"
+        }
+      ]
+    },
+    "notReported": []
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

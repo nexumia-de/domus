@@ -1010,6 +1010,60 @@ never throws; none reads a clock or a random number.
 Vectors: `vectors/substitutes/` and `vectors/makeable/declared-substitute-*`
 ([vector format](vectors.md#kinds-of-substitute-effects-issue-93)).
 
+# Nutrition
+
+Work package 11 of the [helper plan](helper-plan.md) (issue 94). Code:
+`src/nutrition/` (`types.ts`, `dish.ts`, `round.ts`). Both functions return
+`{ ok: true, ... }` or `{ ok: false, error }`, never throw, and read no clock or
+random number. The data is the catalogue's `x-nutrition`
+([data model](data-model.md#ingredient), [catalogue](ingredient-catalogue.md#nutrition)).
+
+- `dishNutrition(derived, { facts, nutrition })` takes the `dish` and
+  `components` of a `deriveClassic` result, the density and unit weight per
+  ingredient id and the nutrients per 100 g per id. A component named by a slot
+  (or by a line) is written out into its lines and its own amount is not used,
+  as in [the finder](#the-shipped-classics-in-the-finder). Each ingredient line
+  with an amount is turned into grams by `toGrams` (mass directly, volume by
+  the density, count by the unit weight; a range is its middle, as `deriveClassic`
+  gives it), multiplied by the figures per 100 g, summed per nutrient and divided
+  by the dish's portions. Salt is sodium x 2.5 (`SALT_PER_SODIUM`, Annex I
+  point 11 of Regulation (EU) No 1169/2011). Nothing is rounded beyond 12
+  significant digits.
+- **Coverage.** A line is counted or left out with a reason: `wanted` (not in the
+  catalogue yet), `no-amount`, `cannot-convert` (with `missing`: `densityGPerMl`
+  or `unitWeightG`), `no-nutrition`, `optional` (an optional slot is not
+  counted), `unknown-component` (a component the dish does not have, or one
+  that names itself). `coverage` has `counted`, `total` (all lines, components
+  written out), `notCounted` (component id, index, ref or wanted name, reason)
+  and `massShare`: counted grams over the grams of all lines whose weight is
+  known, present only when every line left out has a known weight (otherwise
+  the share cannot be stated and is absent).
+- **Fibre and salt** are in `perPortion` only when every counted line has the
+  figure; otherwise they are absent and named in `notReported`. When nothing is
+  counted the figures are zero and `coverage.counted` is 0; the caller says that
+  there are no figures.
+- **Edible portion and cooking loss are not applied.** The amounts of a dish are
+  taken as given (raw, as bought). The [edible portion](#edible-portion) needs the
+  state of each amount, which the shipped dishes do not state, and the catalogue
+  has refuse yields only for 162 foods and none for cooked states. The docs
+  and the screen say so ([evaluation](nutrition-evaluation.md#what-was-built)).
+- **Errors.** `invalid-portions` (portions not above zero),
+  `invalid-nutrition` (with `ingredient`: a used figure is negative or not a number).
+- `roundNutrition(figures)` is the display step and the only place nutrition is
+  rounded. The steps are those of 21 CFR 101.9(c), read at www.ecfr.gov
+  (`ROUNDING_SOURCE`): calories to the nearest 5 up to and including 50, the nearest 10
+  above (below 2.5 is 0); protein, carbohydrate and fibre to the nearest gram
+  (below 0.5 g is 0); fat to the nearest 0.5 g below 5 g, the nearest gram from
+  5 g (below 0.5 g is 0); sodium to the nearest 5 mg up to 140 mg and the
+  nearest 10 mg above (below 5 mg is 0). Halves round away from zero (`roundMass`).
+  **Culina's choices where the rule is silent:** kJ to the nearest 10, and the
+  sodium steps applied to the salt equivalent (in mg, shown in g). The EU
+  Commission's guidance on rounding could not be read (host refused), so the
+  US rule is a display convention, not the EU rule. A negative or non-finite
+  figure is `invalid-value` with the `field`.
+
+Vectors: `vectors/nutrition/` ([vector format](vectors.md#kinds-of-nutrition-issue-94)).
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

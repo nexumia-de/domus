@@ -1,0 +1,27 @@
+{
+  "id": "round-boundaries",
+  "description": "Boundaries: 50.4 kcal is above 50 so the nearest 10 = 50; 2.4 kcal = 0; fat 5 = 5; protein 5.5 = 6; carbohydrate 99.5 = 100; salt 0.146 g = 146 mg above 140 to the nearest 10 = 150 mg = 0.15 g",
+  "inputs": {
+    "kind": "nutrition_round",
+    "figures": {
+      "kcal": 50.4,
+      "kJ": 2.4,
+      "proteinG": 5.5,
+      "fatG": 5,
+      "carbohydrateG": 99.5,
+      "saltG": 0.146
+    }
+  },
+  "expected": {
+    "rounded": {
+      "kcal": 50,
+      "kJ": 0,
+      "proteinG": 6,
+      "fatG": 5,
+      "carbohydrateG": 100,
+      "saltG": 0.15
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

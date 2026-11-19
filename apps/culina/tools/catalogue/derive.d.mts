@@ -9,6 +9,7 @@ export interface Food {
   description: string;
   foodCategory?: { description: string };
   foodPortions?: Portion[];
+  foodNutrients?: { nutrient: { number: string; unitName: string }; amount?: number }[];
 }
 export interface Derived {
   value: number;

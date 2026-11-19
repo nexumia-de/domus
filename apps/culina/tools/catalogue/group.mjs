@@ -3,6 +3,7 @@
 // are stated in docs/ingredient-catalogue.md (Grouping rule); change both together.
 import { createHash } from 'node:crypto';
 import { agreedCategory, agreedNames } from './group-names.mjs';
+import { agreedNutrition } from './nutrition.mjs';
 
 /** A parent has at least this many food rows below it (itself not counted). */
 export const MIN_ROWS_BELOW = 2;
@@ -129,6 +130,8 @@ export const groupRows = (foodRows) => {
     const piece = agreed(members, 'unitWeightG', 'unit weight');
     if (density !== undefined) group.densityGPerMl = density;
     if (piece !== undefined) group.unitWeightG = piece;
+    const nutrition = agreedNutrition(members);
+    if (nutrition !== undefined) group['x-nutrition'] = nutrition;
     const category = agreedCategory(members);
     group['x-group'] = { rows: members.length, ...(category !== undefined ? { category } : {}) };
     out.push(group);

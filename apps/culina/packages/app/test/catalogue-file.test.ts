@@ -84,6 +84,7 @@ describe('the shipped file', () => {
       'yields',
       'x-fdc',
       'x-group',
+      'x-nutrition',
     ];
     for (const row of shipped.ingredients) {
       expect(Object.keys(row).filter((k) => !allowed.includes(k))).toEqual([]);

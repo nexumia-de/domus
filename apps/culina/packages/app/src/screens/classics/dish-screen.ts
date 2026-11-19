@@ -12,6 +12,7 @@ import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { stepper } from '../stepper';
+import { nutritionDetails } from './nutrition-block';
 import { checkDetails, sourceDetails } from './source-block';
 import { ingredientsBlock, methodBlock } from './recipe';
 import { insteadFor } from './substitute-block';
@@ -44,10 +45,12 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   const back = el('a', 'family-link', t.backToCountry(t.countries[classic.country]));
   back.href = hashFor('classics', classic.country);
   const results = el('div', 'classic-results');
+  const nutrition = nutritionDetails(classic);
   const cook = el('a', 'btn primary cook-start', t.cookButton);
   cook.href = hashFor('classic', classic.id, 'cook');
   cook.addEventListener('click', () => setStep(classic.id, 0));
   const draw = (portions: number): void => {
+    nutrition.draw(portions);
     const nameOf = (ingredient: string): string => ingredientLabel(ingredient, lang);
     const shown = dishView(classic, portions, lang, nameOf);
     const steps = cookView(classic, portions, lang, nameOf, techniques(), learnedSkills());
@@ -86,7 +89,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
       draw(n);
     },
   );
-  card.append(control.wrap, results);
+  card.append(control.wrap, results, nutrition.element);
   if (first.ok)
     card.append(sourceDetails(first.view), settledBlock(first.view), checkDetails(first.view));
   draw(portionsOf(classic.id));

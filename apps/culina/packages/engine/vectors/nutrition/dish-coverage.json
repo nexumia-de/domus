@@ -1,0 +1,199 @@
+{
+  "id": "dish-coverage",
+  "description": "A component slot is written out; its lines are counted when they have an amount, grams and figures. Left out: no amount, tablespoon without density, no figures, wanted line, optional line. Counted 100 g flour + 4 x 50 g egg = 600 kcal, 2490 kJ, 34 g protein, 21 g fat, 62 g carbohydrate, 3 g fibre, 282 mg sodium = 0.705 g salt; divided by 4. No mass share: three lines left out have no known mass",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 4,
+        "slots": [
+          {
+            "role": "sauce",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          },
+          {
+            "role": "binder",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-egg"
+            },
+            "amount": {
+              "value": 4,
+              "unit": "count"
+            }
+          },
+          {
+            "role": "liquid",
+            "wanted": "Water",
+            "amount": {
+              "value": 200,
+              "unit": "ml"
+            }
+          },
+          {
+            "role": "base",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-flour"
+            },
+            "amount": {
+              "value": 10,
+              "unit": "g"
+            },
+            "optional": true
+          }
+        ]
+      },
+      "components": [
+        {
+          "id": "sauce",
+          "name": "Sauce",
+          "lines": [
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "inv-flour"
+              },
+              "amount": {
+                "value": 100,
+                "unit": "g"
+              }
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "inv-spice"
+              }
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "inv-herb"
+              },
+              "amount": {
+                "value": 2,
+                "unit": "tbsp"
+              }
+            },
+            {
+              "ref": {
+                "kind": "ingredient",
+                "id": "inv-mystery"
+              },
+              "amount": {
+                "value": 50,
+                "unit": "g"
+              }
+            }
+          ],
+          "steps": []
+        }
+      ]
+    },
+    "facts": {
+      "inv-oil": {
+        "densityGPerMl": 0.9
+      },
+      "inv-egg": {
+        "unitWeightG": 50
+      }
+    },
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-oil": {
+        "kcal": 800,
+        "kJ": 3300,
+        "proteinG": 0,
+        "fatG": 90,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 0
+      },
+      "inv-egg": {
+        "kcal": 150,
+        "kJ": 620,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      }
+    }
+  },
+  "expected": {
+    "portions": 4,
+    "perPortion": {
+      "kcal": 150,
+      "kJ": 622.5,
+      "proteinG": 8.5,
+      "fatG": 5.25,
+      "carbohydrateG": 15.5,
+      "fibreG": 0.75,
+      "saltG": 0.17625
+    },
+    "countedGPerPortion": 75,
+    "coverage": {
+      "counted": 2,
+      "total": 7,
+      "notCounted": [
+        {
+          "componentId": "sauce",
+          "index": 1,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-spice"
+          },
+          "reason": "no-amount"
+        },
+        {
+          "componentId": "sauce",
+          "index": 2,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-herb"
+          },
+          "reason": "cannot-convert",
+          "missing": ["densityGPerMl"]
+        },
+        {
+          "componentId": "sauce",
+          "index": 3,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-mystery"
+          },
+          "reason": "no-nutrition"
+        },
+        {
+          "index": 2,
+          "wanted": "Water",
+          "reason": "wanted"
+        },
+        {
+          "index": 3,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-flour"
+          },
+          "reason": "optional"
+        }
+      ]
+    },
+    "notReported": []
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

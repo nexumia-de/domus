@@ -28,6 +28,57 @@
           "modifier": "tbsp",
           "gramWeight": 14.2
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 643
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 717
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 3000.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 81.1
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 0.06
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.85
+        }
       ]
     },
     {
@@ -57,6 +108,57 @@
           "amount": 1,
           "modifier": "cup",
           "gramWeight": 227
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 717
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 3000.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 81.1
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 0.06
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.85
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 11.0
         }
       ]
     },
@@ -88,6 +190,57 @@
           "modifier": "stick",
           "gramWeight": 76
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 78.3
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 583
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.49
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 731
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 3060.0
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        }
       ]
     },
     {
@@ -102,6 +255,57 @@
           "amount": 1,
           "modifier": "cup",
           "gramWeight": 125
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 1520.0
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.7
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 2.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 10.3
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.98
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 76.3
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 364
         }
       ]
     },
@@ -118,6 +322,57 @@
           "modifier": "cup",
           "gramWeight": 125
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.98
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 76.3
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 364
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.7
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 2.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 10.3
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 1520.0
+        }
       ]
     },
     {
@@ -132,6 +387,57 @@
           "amount": 1,
           "modifier": "cup",
           "gramWeight": 125
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.7
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 1190.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.97
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 74.2
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 354
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 9.89
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 1480.0
         }
       ]
     },
@@ -162,6 +468,57 @@
           "amount": 1,
           "modifier": "cup",
           "gramWeight": 136
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 33.1
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 149
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 623
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.1
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 17.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 6.36
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.5
         }
       ]
     },
@@ -213,6 +570,57 @@
           "modifier": "head, small (about 4-1/2\" dia)",
           "gramWeight": 714
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.1
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 5.8
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 25.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 1.28
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 103
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.5
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 18.0
+        }
       ]
     },
     {
@@ -253,6 +661,57 @@
           "modifier": "head, small (4\" dia)",
           "gramWeight": 567
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 7.37
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 31.0
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.1
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 130
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.16
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 1.43
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 27.0
+        }
       ]
     },
     {
@@ -282,6 +741,57 @@
           "amount": 1,
           "modifier": "quart",
           "gramWeight": 976
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 3.25
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 4.8
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 61.0
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 43.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 3.15
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 254
         }
       ]
     },
@@ -313,6 +823,57 @@
           "modifier": "cup",
           "gramWeight": 244
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 256
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 4.78
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 61.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 3.27
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 43.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 3.15
+        }
       ]
     },
     {
@@ -333,6 +894,57 @@
           "modifier": "tbsp",
           "gramWeight": 6.7
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 14.6
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 49.9
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 333
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 17.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 19.8
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 38.0
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 1390.0
+        }
       ]
     },
     {
@@ -352,6 +964,57 @@
           "amount": 1,
           "modifier": "oz",
           "gramWeight": 28.35
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 2460.0
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 15.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 17.6
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 49.4
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 27.6
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 587
         }
       ]
     },
@@ -377,6 +1040,57 @@
           "amount": 1,
           "modifier": "tsp",
           "gramWeight": 4.5
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 100
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 884
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.0
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 3700.0
         }
       ]
     },
@@ -423,6 +1137,57 @@
           "modifier": "large (3-1/4\" dia)",
           "gramWeight": 223
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 13.8
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 52.0
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 218
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.17
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 2.4
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 1.0
+        },
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.26
+        }
       ]
     },
     {
@@ -453,6 +1218,57 @@
           "modifier": "medium",
           "gramWeight": 177
         }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.39
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 264
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 3.1
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 1.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.16
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 15.0
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 63.0
+        }
       ]
     },
     {
@@ -482,6 +1298,57 @@
           "amount": 1,
           "modifier": "medium",
           "gramWeight": 179
+        }
+      ],
+      "foodNutrients": [
+        {
+          "nutrient": {
+            "number": "203",
+            "unitName": "g"
+          },
+          "amount": 0.36
+        },
+        {
+          "nutrient": {
+            "number": "268",
+            "unitName": "kJ"
+          },
+          "amount": 279
+        },
+        {
+          "nutrient": {
+            "number": "291",
+            "unitName": "g"
+          },
+          "amount": 3.1
+        },
+        {
+          "nutrient": {
+            "number": "307",
+            "unitName": "mg"
+          },
+          "amount": 1.0
+        },
+        {
+          "nutrient": {
+            "number": "204",
+            "unitName": "g"
+          },
+          "amount": 0.09
+        },
+        {
+          "nutrient": {
+            "number": "205",
+            "unitName": "g"
+          },
+          "amount": 16.1
+        },
+        {
+          "nutrient": {
+            "number": "208",
+            "unitName": "kcal"
+          },
+          "amount": 67.0
         }
       ]
     }

@@ -12,6 +12,7 @@ import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deriveDensity, deriveUnitWeight, isBasic, nameOf } from './derive.mjs';
 import { groupRows } from './group.mjs';
+import { nutritionOf } from './nutrition.mjs';
 import { germanNames } from './wikidata.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
@@ -87,6 +88,8 @@ export const buildRows = (foods, release, refuse = new Map(), wikidata = undefin
     }
     const yields = deriveYields(food, refuse);
     if (yields !== undefined) row.yields = yields;
+    const nutrition = nutritionOf(food);
+    if (nutrition !== undefined) row['x-nutrition'] = nutrition;
     row['x-fdc'] = {
       id: food.fdcId,
       description: food.description,
@@ -183,7 +186,7 @@ const main = () => {
   const groups = ingredients.filter((r) => r['x-group'] !== undefined);
   const count = (list, field) => list.filter((r) => r[field]).length;
   console.log(
-    `${ingredients.length} entries: ${foodRows.length} foods (${count(foodRows, 'densityGPerMl')} density, ${count(foodRows, 'unitWeightG')} unit weight, ${count(foodRows, 'yields')} yields), ${groups.length} parents (${count(groups, 'densityGPerMl')} density, ${count(groups, 'unitWeightG')} unit weight); German names: ${count(foodRows, 'names')} foods, ${count(groups, 'names')} parents -> ${out}`,
+    `${ingredients.length} entries: ${foodRows.length} foods (${count(foodRows, 'densityGPerMl')} density, ${count(foodRows, 'unitWeightG')} unit weight, ${count(foodRows, 'yields')} yields, ${count(foodRows, 'x-nutrition')} nutrition), ${groups.length} parents (${count(groups, 'densityGPerMl')} density, ${count(groups, 'unitWeightG')} unit weight, ${count(groups, 'x-nutrition')} nutrition); German names: ${count(foodRows, 'names')} foods, ${count(groups, 'names')} parents -> ${out}`,
   );
 };
 

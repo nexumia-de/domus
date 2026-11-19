@@ -14,6 +14,7 @@ import {
   SUB_BUTTER,
   TECHNIQUE,
 } from './classics-fixture.mjs';
+import { nutritionSection } from './classics-nutrition.mjs';
 
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
 const START = 'What do you want to cook?';
@@ -199,6 +200,7 @@ const flow = async (browser, origin, width) => {
       (await sub.locator('.substitute-sources a').count()) === 1,
     `${label}: level and source behind a tap`,
   );
+  await nutritionSection(page, PAN, label);
   await layout(page, `${label} dish`);
   await instead.click();
   check(!(await sub.isVisible()), `${label}: a second tap closes the substitutes`);

@@ -7,6 +7,7 @@ import type {
   FoodState,
   IngredientFacts,
   IngredientYield,
+  NutrientsPer100g,
 } from '@culina/engine';
 import type { NamesByLanguage } from './shared/names';
 
@@ -26,6 +27,8 @@ export interface IngredientRecord {
   }[];
   densityGPerMl?: { value: number; source: string };
   unitWeightG?: { value: number; source: string };
+  /** Nutrients per 100 g, read from the dataset the catalogue is generated from. */
+  'x-nutrition'?: { per100g: NutrientsPer100g; source?: string };
   note?: string;
 }
 
