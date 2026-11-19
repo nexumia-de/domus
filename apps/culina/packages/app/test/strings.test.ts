@@ -63,10 +63,11 @@ test('no text says that a recipe or a ratio is wrong, invalid, failed or missing
   expect('an invalid ratio'.match(FORBIDDEN)).not.toBeNull();
 });
 
-test('no text of a technique or a classic judges a dish, in English or in German', () => {
+test('no text of a technique, a handling rule or a classic judges a dish, in English or in German', () => {
   // The shipped texts, and the fictional examples so that the scan is never empty.
   const texts = [...shippedTexts(), ...textsOf(EXAMPLE_FILES)];
   expect(texts.length).toBeGreaterThan(10);
+  expect(texts.some((t) => t.where.startsWith('handling/'))).toBe(true);
   for (const { where, en, de } of texts) {
     expect(en.match(FORBIDDEN), `${where} (en)`).toBeNull();
     expect(de.match(FORBIDDEN_DE), `${where} (de)`).toBeNull();

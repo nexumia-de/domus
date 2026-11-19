@@ -534,6 +534,31 @@ Shipped read-only, one JSON file per technique in
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).
 
+## Handling rule
+
+When an ingredient goes into a dish and how it is treated, with the reason
+([mentor](decisions/mentor.md), point 8). Shipped read-only, one JSON file per
+rule in `packages/engine/data/handling/<id>.json`, never stored. Schema:
+`handling.schema.json`; the guide for writing one is
+[classic format](classic-format.md#a-handling-rule-file).
+
+| Field       | Type            | Required | Meaning                                                                                  |
+| ----------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `id`        | id              | yes      | See [ids](#ids); equal to the file name                                                  |
+| `target`    | string          | yes      | A catalogue ingredient id, or a catalogue group id (applies to everything under it)      |
+| `text`      | text in 2 langs | yes      | The rule in one or two short sentences: when it goes in, how it is treated               |
+| `why`       | text in 2 langs | yes      | The reason                                                                               |
+| `technique` | id              | yes      | The skill the rule belongs to; the rule is not shown once that technique is learned      |
+| `level`     | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                                 |
+| `sources`   | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` (25 words) |
+
+- **Group targets.** A rule on a group shows for every ingredient below it in
+  the catalogue tree (`parentId`), so it shows on every shipped or own dish that
+  uses one. An ingredient the catalogue does not know matches only a rule that
+  names it.
+- **No state.** What a user has learned is the [skill state](#skill-state); a
+  rule has none of its own.
+
 ## Classic
 
 A shipped dish of one named source, one JSON file per dish in

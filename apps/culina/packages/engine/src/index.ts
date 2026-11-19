@@ -271,6 +271,11 @@ export type { NotesResult, TechniqueNote } from './techniques/notes';
 export { MAX_SENTENCE_WORDS, validateTechnique, validateTechniques } from './techniques/validate';
 export type { Technique, TechniqueLevel, TechniqueSource } from './techniques/types';
 
+export { validateHandlingRule, validateHandlingRules } from './handling/validate';
+export type { HandlingContext } from './handling/validate';
+export { handlingRules } from './handling/rules';
+export type { HandlingOptions, HandlingResult, ShownRule, TreeNode } from './handling/rules';
+export type { HandlingLevel, HandlingRule, HandlingSource } from './handling/types';
 export { learnedTechniques, skillId, skillRecord } from './skills/skill';
 export type { SkillRecord } from './skills/skill';
 

@@ -36,6 +36,7 @@ export const envelopeValidator = compile('export');
 /** Shipped content and its example: the schemas of techniques, classics and skill state. */
 export const contentValidators = {
   technique: compile('technique'),
+  handling: compile('handling'),
   classic: compile('classic'),
   skill: compile('skill'),
   component: compile('component'),

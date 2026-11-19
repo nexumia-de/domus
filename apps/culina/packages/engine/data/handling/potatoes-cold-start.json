@@ -1,0 +1,23 @@
+{
+  "id": "potatoes-cold-start",
+  "target": "fdc-170028",
+  "text": {
+    "en": "Put potatoes into cold liquid and heat it with them, instead of adding them to boiling liquid.",
+    "de": "Kartoffeln in kalte Flüssigkeit geben und mit ihr zusammen erhitzen, statt sie in kochende Flüssigkeit zu legen."
+  },
+  "why": {
+    "en": "Starting cold cooks them evenly.",
+    "de": "Der kalte Start gart sie gleichmäßig."
+  },
+  "technique": "boil",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 4 Potatoes, section 4.2 Purchasing, Storing and Preparing Potatoes",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.02%3A_Purchasing_storing_and_preparing_potatoes",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Always begin cooking potatoes in cold liquid to ensure even cooking."
+    }
+  ]
+}

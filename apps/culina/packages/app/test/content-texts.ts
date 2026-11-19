@@ -29,11 +29,13 @@ export function jsonFiles(dir: string): string[] {
 
 /** The folders of shipped content. */
 export const TECHNIQUE_DIR = engine('data/techniques');
+export const HANDLING_DIR = engine('data/handling');
 export const CLASSIC_DIR = app('data/classics');
 /** The fictional examples: always present, so the scan is never empty. */
 export const EXAMPLE_FILES = [
   engine('schemas/examples/technique.valid.json'),
   engine('schemas/examples/classic.valid.json'),
+  engine('schemas/examples/handling.valid.json'),
 ];
 
 function walk(value: unknown, where: string, out: ContentText[]): void {
@@ -55,6 +57,6 @@ export function textsOf(files: readonly string[]): ContentText[] {
   return out;
 }
 
-/** The texts of every shipped technique and classic. */
+/** The texts of every shipped technique, handling rule and classic. */
 export const shippedTexts = (): ContentText[] =>
-  textsOf([...jsonFiles(TECHNIQUE_DIR), ...jsonFiles(CLASSIC_DIR)]);
+  textsOf([...jsonFiles(TECHNIQUE_DIR), ...jsonFiles(HANDLING_DIR), ...jsonFiles(CLASSIC_DIR)]);

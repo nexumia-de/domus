@@ -1,8 +1,8 @@
 ---
 type: Specification
-title: Classic and technique file format
-description: The guide a transcriber follows to write one dish file and one technique file, field by field, with an invented example, the rules for amounts as the source gives them, source unit words, settled values and the second check, and the command that validates one file.
-tags: [classics, techniques, format, transcription, helper]
+title: Classic, technique and handling rule file format
+description: The guide a transcriber follows to write one dish file, one technique file and one handling rule file, field by field, with an invented example, the rules for amounts as the source gives them, source unit words, settled values and the second check, and the command that validates one file.
+tags: [classics, techniques, handling, format, transcription, helper]
 generated: { by: claude-code/2.1.326, at: 2026-11-19 }
 sources:
   - id: plan
@@ -92,6 +92,60 @@ These come from the [helper plan](helper-plan.md#rules-for-content).
 
 A note that says more than its source is cut back by the lead. The tests check
 the two languages, the sentence length and that the file name is the id.
+
+# A handling rule file
+
+One file per rule in `packages/engine/data/handling/<id>.json`: when an
+ingredient goes into a dish and how it is treated, with the reason
+([mentor](decisions/mentor.md), point 8). It hangs on an ingredient or a group
+of the catalogue and on one technique, so it shows on every dish that uses the
+ingredient and fades when the user marks the technique as learned.
+
+```json
+{
+  "id": "example-handling-rule",
+  "target": "fdc-group-butter",
+  "text": {
+    "en": "Example rule (fictional): say in one or two short sentences when the ingredient goes in and how it is treated.",
+    "de": "Beispielregel (erfunden): in ein bis zwei kurzen Sätzen sagen, wann die Zutat hineinkommt und wie sie behandelt wird."
+  },
+  "why": {
+    "en": "Example reason: say in one or two lines why.",
+    "de": "Beispielgrund: in ein bis zwei Zeilen sagen, warum."
+  },
+  "technique": "example-technique",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}
+```
+
+| Field       | What to write                                                                                                                                                                                                                             |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | The slug; the file name. Say what and which ingredient (`potatoes-cold-start`).                                                                                                                                                           |
+| `target`    | A catalogue ingredient id (`fdc-173468`) or a catalogue group id (`fdc-group-butter`): the rule then shows for everything under the group. Use the group when the source speaks of the kind, the single id when it speaks of one product. |
+| `text`      | `{ en, de }`: the rule in **one or two short sentences**: when it goes in, how it is treated. Own words, never the source's.                                                                                                              |
+| `why`       | `{ en, de }`: the reason, in one short sentence, from the same source.                                                                                                                                                                    |
+| `technique` | The id of one of the shipped techniques: the skill the rule belongs to. Choose the skill the cook practises while following the rule.                                                                                                     |
+| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tradition` when kitchens' sources state it.                                                                                           |
+| `sources`   | At least one, shaped as for a technique: `title`, `place`, `url`, `licence`, `sentence` (at most 25 words, verbatim).                                                                                                                     |
+
+The order of work: open a source, find the sentence, then write the rule from
+it. **No source, no rule**; the owner's own examples are examples of the kind,
+not data. Wording never judges (no wrong, error, mistake, bad, too much, too
+little, missing and their German counterparts); the wording test covers these
+texts. The tests check the schema, the two languages, the sentence length, the
+file name, a known technique and a target in the catalogue. Check one file with
+`npm run validate:content -- packages/engine/data/handling/<id>.json`. The
+build writes every rule into `dist/classics.json` (key `handling`), not into
+`main.js`.
 
 # A dish file
 
@@ -313,7 +367,7 @@ The command first generates what it needs and git ignores (the compiled
 schemas, the technique and dish indexes), so it works in a fresh checkout
 after `npm ci`; nothing has to be built or tested before.
 
-For a technique: `npm run validate:content -- packages/engine/data/techniques/<id>.json`.
+For a technique or a handling rule: `npm run validate:content -- packages/engine/data/techniques/<id>.json` or `.../data/handling/<id>.json`.
 The command checks the schema, the file name and folder, then the engine's
 rules against the shipped techniques and the catalogue, and derives the dish
 for two portions; it prints what is wrong and exits with 1, or prints `ok`. It

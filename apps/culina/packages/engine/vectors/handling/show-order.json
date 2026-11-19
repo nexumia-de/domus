@@ -1,0 +1,115 @@
+{
+  "id": "show-order",
+  "description": "Rules come ordered by ingredient in list order, then by rule order",
+  "inputs": {
+    "kind": "handling_show",
+    "ingredients": ["salt", "butter"],
+    "rules": [
+      {
+        "id": "r-fat",
+        "target": "fat",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "r-salt",
+        "target": "salt",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "r-butter",
+        "target": "butter",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "tree": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "butter-salted",
+        "parentId": "butter"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "salt"
+      }
+    ],
+    "learned": []
+  },
+  "expected": {
+    "rules": [
+      {
+        "rule": "r-salt",
+        "ingredient": "salt"
+      },
+      {
+        "rule": "r-fat",
+        "ingredient": "butter"
+      },
+      {
+        "rule": "r-butter",
+        "ingredient": "butter"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

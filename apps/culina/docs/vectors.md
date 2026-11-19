@@ -248,6 +248,25 @@ with a scaled mass, a range, a table unit, a count unit word, German names,
 slots only, and the three errors; the copy with origin, with an adopted
 ingredient and the two refusals; the skill record and the learned set.
 
+## Kinds of handling rules
+
+Folder: `packages/engine/vectors/handling/`. Rules:
+[engine rules](engine-rules.md#techniques-steps-and-classics). Invented and
+labelled as examples, like the technique vectors.
+
+| `kind`                   | Inputs                                                                           | Expected                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `handling_validate`      | `rule`, optional `technique_ids`, `ingredient_ids`                               | none (`ok`), or `error_code` and `findings`                                         |
+| `handling_list_validate` | `rules`, optional `technique_ids`, `ingredient_ids`                              | as above                                                                            |
+| `handling_show`          | `ingredients`, `rules`, `tree`, `learned` (ids), optional `used` (technique ids) | `rules`: `rule` id and `ingredient` id, in order; or `error_code` `cycle` with `id` |
+
+Covered: the validation findings (blank text, no source, sentences of 25 and
+26 words, unknown technique, unknown target, duplicate id, the index in a
+list); a rule on an ingredient, on a group two levels up, not on a sibling or
+on the group above a child; a learned technique; one showing for two matching
+ingredients; the order; the `used` filter (also empty); an ingredient outside
+the tree; no ingredients; a loop in the tree.
+
 # Worked examples
 
 All numbers by hand. The input numbers are chosen for the arithmetic;

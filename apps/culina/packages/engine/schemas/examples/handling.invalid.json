@@ -1,0 +1,8 @@
+{
+  "id": "example-handling-rule",
+  "text": { "en": "Example rule (fictional).", "de": "Beispielregel (erfunden)." },
+  "why": { "en": "Example reason.", "de": "Beispielgrund." },
+  "technique": "example-technique",
+  "level": "folklore",
+  "sources": []
+}
