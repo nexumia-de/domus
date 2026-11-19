@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-19
+
+- **Creation**: [selection of the classics](classic-selection.md) (issue #89, package 5 of the [helper build plan](helper-plan.md)): 12 dishes per country chosen by four agents from Davidis and Prato, Artusi, Escoffier and Gouffé, Muro and one Wikibooks page, each read in its source; without meat and fish: Germany 8, Italy 9, France 10, Spain 12. Found: the Davidis scan is the American edition with Pfund, Unze and Quart, and the machine-read text damages fractions; `eur-lex.europa.eu` answered 202 with an empty body, so Pizza Napoletana is not in the list. Decided by the agent, for the owner's review: the lists; a dish with too few amounts may be replaced in package 6 by another recipe of the same book. The work is tracked in epic #83 with one sub-issue per package (#84 to #94, and #74 for the German texts).
+
 ## 2026-11-18
 
 - **Creation**: [helper build plan](helper-plan.md) and three more points in the [helper decision](decisions/mentor.md), by the owner: four stages (follow, understand, vary, free) with rules against overload; dishes from old books, institutions and one good modern recipe each, the rule against scraping called obsolete (no copied text and no bulk import stay, `AGENTS.md` changed); content in English and German, 2 portions, mostly vegetarian, 12 dishes per country, nutrition per portion. The plan has 13 work packages with their order, the model for each and the checks; it ends when the classics of four countries can be cooked step by step with their techniques described.
