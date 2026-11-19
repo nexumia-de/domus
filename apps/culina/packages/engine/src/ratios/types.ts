@@ -24,8 +24,10 @@ export type TemplateChange =
 export interface RatioTemplate {
   id: string;
   name: string;
-  /** A row of docs/ratios.md or `user`. */
+  /** A row of docs/ratios.md or `user`: a pointer into the repository, never shown. */
   source: string;
+  /** What the card shows as the source: author, title and the page where the data has it. */
+  references?: { author: string; title: string; page?: string }[];
   /** Derivatives only: the template this one changes. */
   parentId?: string;
   /** The role whose parts are 100 percent; inherited from the nearest ancestor that has one. */

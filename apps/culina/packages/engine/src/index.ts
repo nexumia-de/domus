@@ -313,6 +313,7 @@ export type {
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
 export type {
+  AmountWord,
   Classic,
   ClassicComponent,
   ClassicLine,

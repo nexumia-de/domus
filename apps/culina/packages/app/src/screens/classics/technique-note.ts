@@ -29,11 +29,15 @@ export const noteCard = (kind: string, content: NoteContent): HTMLElement => {
   const more = el('details', `${kind}-more note-more`);
   more.append(el('summary', undefined, t.noteMore));
   if (content.why !== undefined) more.append(el('p', undefined, content.why));
-  more.append(el('p', 'muted', t.noteLevel[content.level]), el('h4', undefined, t.noteSources));
+  more.append(el('h4', undefined, t.noteSources));
   const sources = el('ul', `${kind}-sources note-sources`);
   for (const source of content.sources) {
     const item = el('li');
-    const link = el('a', undefined, t.noteSource(source.title, source.place));
+    const link = el(
+      'a',
+      undefined,
+      t.noteSource(t.noteLevel[content.level], source.title, source.place),
+    );
     link.href = source.url;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';

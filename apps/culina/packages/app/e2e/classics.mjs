@@ -3,7 +3,7 @@
 // keep in the notebook. At 360 x 720 and at desktop size: no horizontal scroll, targets of at least
 // 44 x 44, no console error, nothing focused when a screen opens, focus moves on a step change.
 import { check, watch } from './harness.mjs';
-import { overflow, smallTargets } from './measure.mjs';
+import { brokenWords, overflow, smallTargets } from './measure.mjs';
 import {
   engineGrams,
   openWith,
@@ -33,6 +33,8 @@ const layout = async (page, label) => {
   check(o.scroll <= 0 && o.wide.length === 0, `${label}: no horizontal scroll ${o.wide.join(',')}`);
   const small = await smallTargets(page);
   check(small.length === 0, `${label}: targets at least 44 x 44 ${small.join('; ')}`);
+  const broken = await brokenWords(page, '.recipe-amount, td.num, th.num');
+  check(broken.length === 0, `${label}: no amount breaks inside a word ${broken}`);
 };
 const focused = (page) =>
   page.evaluate(() => `${document.activeElement?.tagName}:${document.activeElement?.textContent}`);
@@ -40,6 +42,21 @@ const skills = (page) =>
   page.evaluate(async () => (await (await globalThis.__culinaStore).store.list('skills')).records);
 const stored = (page, kind) =>
   page.evaluate(async (k) => (await (await globalThis.__culinaStore).store.list(k)).records, kind);
+/** Back and Next are on the screen without scrolling, above the bottom navigation, 44 px and up. */
+const cookBar = async (page, label) => {
+  await page.evaluate(() => scrollTo(0, 0));
+  const view = await page.evaluate(() => ({ h: innerHeight, scroll: scrollY }));
+  const nav = await page.locator('.app-nav').boundingBox();
+  const next = await page.getByRole('button', { name: /^(Next|Finish)$/ }).boundingBox();
+  const prev = await page.getByRole('button', { name: 'Back', exact: true }).boundingBox();
+  const inView = (b) =>
+    b !== null && b.y >= 0 && b.y + b.height <= view.h && b.height >= 44 && b.width >= 44;
+  const abovePhoneNav = nav === null || nav.y < 100 || next.y + next.height <= nav.y + 1;
+  check(
+    view.scroll === 0 && inView(next) && inView(prev) && abovePhoneNav,
+    `${label}: Back and Next are on the screen without scrolling, above the navigation (${JSON.stringify({ next, prev, nav: nav?.y })})`,
+  );
+};
 const step = (page, n, total) =>
   page.getByRole('heading', { level: 2, name: `Step ${n} of ${total}` });
 
@@ -93,15 +110,23 @@ const flow = async (browser, origin, width) => {
     await page.getByText(`Original name: ${PAN.originalName}`).isVisible(),
     `${label}: the original name`,
   );
-  // The source and the second check are closed behind a tap, below the method.
-  for (const name of ['Source', 'Second check']) {
-    const summary = page.locator('.foot-block summary', { hasText: new RegExp(`^${name}$`) });
-    check(
-      (await summary.locator('..').getAttribute('open')) === null,
-      `${label}: ${name} is behind a tap`,
-    );
-    await summary.click();
-  }
+  // The source (with how it was checked and our remarks about it) is closed behind a tap, below the
+  // method. What we settled and the second check have no disclosure of their own any more.
+  const sourceSummary = page.locator('.foot-block summary', { hasText: /^Source$/ });
+  check(
+    (await sourceSummary.locator('..').getAttribute('open')) === null,
+    `${label}: Source is behind a tap`,
+  );
+  check(
+    (await page.locator('.settled-block, .check-block').count()) === 0,
+    `${label}: no disclosure holds only maintainer texts (settled reasons, check notes)`,
+  );
+  const lineText = (await page.locator('.recipe-block').first().innerText()).replace(/\s+/g, ' ');
+  check(
+    !lineText.includes('Example-measures') && !lineText.includes('Invented example'),
+    `${label}: the source's own wording and the remarks about the source are not in the lines`,
+  );
+  await sourceSummary.click();
   const text = await page.locator('.classic-card').innerText();
   check(
     text.includes(PAN.source.author) &&
@@ -138,33 +163,32 @@ const flow = async (browser, origin, width) => {
   const flat = lines.map((l) => l.replace(/\s+/g, ' '));
   check(
     flat.some((l) => l.includes('to taste')),
-    `${label}: a line without an amount says "to taste"`,
+    `${label}: a line without an amount says "to taste" where the data says so`,
   );
   check(
     flat.some((l) => l.includes('100 ml to 150 ml') && l.includes('settled by us')),
     `${label}: a range, marked as settled`,
   );
   check(
-    flat.some((l) => l.includes('(2 Example-measures)')),
-    `${label}: the source's own wording`,
+    !flat.some((l) => l.includes('(2 Example-measures)')),
+    `${label}: the source's own wording is not in the line (it is in the source section)`,
   );
   check(
     await page.getByText('Melt the fat over low heat. · 5 min').isVisible(),
     `${label}: the whole recipe is on this screen`,
   );
-  const settled = page.locator('.settled-block');
+  const sourceText = (await page.locator('.source-block').innerText()).replace(/\s+/g, ' ');
   check(
-    !((await settled.getAttribute('open')) !== null),
-    `${label}: what we settled is behind a tap`,
-  );
-  await settled.locator('summary').click();
-  check(
-    await settled.getByText('Amount of oil: 200 to 300 ml').isVisible(),
-    `${label}: the settled entry opens`,
+    sourceText.includes('Remarks on the source') &&
+      sourceText.includes('“2 Example-measures”') &&
+      sourceText.includes('Invented example: the source says to taste.'),
+    `${label}: the source section holds the source's own wording and the remarks about it`,
   );
   check(
-    await page.getByText('A second person read the same text.').isVisible(),
-    `${label}: the second check`,
+    sourceText.includes('A second person read the same text.') &&
+      !sourceText.includes('Example only: a real file says who read the page') &&
+      !sourceText.includes('the source says some'),
+    `${label}: how it was checked is one sentence; the maintainer texts are not shown`,
   );
   // Substitutes: a quiet button on a line that has some, opened under the line.
   const instead = page.getByRole('button', { name: 'Instead of Butter, salted' });
@@ -261,6 +285,14 @@ const flow = async (browser, origin, width) => {
     `${label}: the rule's level and source`,
   );
   await layout(page, `${label} step 1`);
+  await cookBar(page, `${label} step 1 (two notes make it tall)`);
+  const cookText = (await page.locator('.cook-steps').innerText()).replace(/\s+/g, ' ');
+  check(
+    !cookText.includes('Example-measures') &&
+      !cookText.includes('Invented example') &&
+      !cookText.includes('Remarks on the source'),
+    `${label}: no remark about the source and no original wording in cooking mode`,
+  );
   await page.getByRole('button', { name: 'Next' }).click();
   await step(page, 2, 3).waitFor();
   check(
@@ -293,6 +325,7 @@ const flow = async (browser, origin, width) => {
     `${label}: a substitute without a factor shows only what the source says`,
   );
   await layout(page, `${label} step 2`);
+  await cookBar(page, label);
   const box = await page.getByRole('button', { name: 'Next' }).boundingBox();
   check(
     box.height >= 44 && box.width >= 100,
@@ -463,6 +496,11 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${PAN.id}`);
   await heading(page, PAN.name.de).waitFor();
+  check(
+    !(await page.getByText('Ein erfundenes Beispiel, kein Rezept.').isVisible()),
+    `${label}: the note on the dish is not among the ingredients (it is in the source section)`,
+  );
+  await page.locator('.source-block summary').click();
   check(
     await page.getByText('Ein erfundenes Beispiel, kein Rezept.').isVisible(),
     `${label}: dish texts follow the content language`,

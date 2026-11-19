@@ -39,7 +39,7 @@
             "unit": "g",
             "original": "Carne magra di vitella, grammi 500"
           },
-          "note": {
+          "sourceNote": {
             "en": "Including the bone or the trimmings, as the source says.",
             "de": "Mit Knochen oder Abschnitten, wie die Quelle sagt."
           }
@@ -56,8 +56,12 @@
             "original": "Carnesecca, grammi 50"
           },
           "note": {
-            "en": "Cut into small dice. The source says it may replace the Tuscan oil in whole or in part; no oil amount is given, so no oil line is written.",
-            "de": "In kleine Würfel geschnitten. Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen; eine Ölmenge steht nicht da, daher ist keine Ölzeile geschrieben."
+            "en": "Cut into small dice.",
+            "de": "In kleine Würfel geschnitten."
+          },
+          "sourceNote": {
+            "en": "The source says it may replace the Tuscan oil in whole or in part. No oil amount is given, so no oil line is written.",
+            "de": "Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen. Eine Ölmenge steht nicht da, daher ist keine Ölzeile geschrieben."
           }
         },
         {
@@ -115,8 +119,12 @@
             "id": "fdc-group-wheat-flour-white-all-purpose"
           },
           "note": {
-            "en": "'A pinch' of flour; the source gives no weight. It binds the sauce and must not burn.",
-            "de": "'Ein Pizzico' Mehl; die Quelle gibt kein Gewicht an. Es bindet die Sauce und darf nicht anbrennen."
+            "en": "'A pinch' of flour. It binds the sauce and must not burn.",
+            "de": "'Ein Pizzico' Mehl. Es bindet die Sauce und darf nicht anbrennen."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle gibt kein Gewicht an."
           }
         },
         {
@@ -125,7 +133,7 @@
             "en": "Tomato sauce or paste",
             "de": "Tomatensauce oder Tomatenmark"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -137,8 +145,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Added little by little; no amount given.",
-            "de": "Nach und nach zugegeben; keine Menge angegeben."
+            "en": "Added little by little.",
+            "de": "Nach und nach zugegeben."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -162,8 +174,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'Sparingly'; more can be added at the table. No amount.",
-            "de": "'Sparsam'; bei Tisch kann mehr nachgegeben werden. Keine Menge."
+            "en": "'Sparingly'. More can be added at the table.",
+            "de": "'Sparsam'. Bei Tisch kann mehr nachgegeben werden."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],
@@ -261,7 +277,7 @@
             "unit": "g",
             "original": "250 a 300 grammi di maccheroni"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source gives the sauce for this amount of pasta.",
             "de": "Die Quelle gibt die Sauce für diese Menge Nudeln an."
           }
@@ -273,8 +289,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "For dressing the pasta; no amount given.",
-            "de": "Zum Anmachen der Nudeln; keine Menge angegeben."
+            "en": "For dressing the pasta.",
+            "de": "Zum Anmachen der Nudeln."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -284,8 +304,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'Sparingly'; no amount.",
-            "de": "'Sparsam'; keine Menge."
+            "en": "'Sparingly'.",
+            "de": "'Sparsam'."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],

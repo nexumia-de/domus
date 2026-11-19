@@ -1,6 +1,7 @@
 // "Compare my amounts": a collapsible section; the range display in neutral words.
 import type { EffectiveTemplate } from '@culina/engine';
 import { compareAmounts, referenceRole } from '../ratios/compare';
+import { ratioRole } from '../ratios/names';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import { nextId, numberField } from './fields';
@@ -8,7 +9,7 @@ import { nextId, numberField } from './fields';
 export const compareSection = (template: EffectiveTemplate): HTMLElement => {
   const details = el('details', 'guidance compare');
   details.append(el('summary', undefined, strings.ratios.compareSummary));
-  details.append(el('p', 'muted', strings.ratios.compareIntro(referenceRole(template))));
+  details.append(el('p', 'muted', strings.ratios.compareIntro(ratioRole(referenceRole(template)))));
 
   const texts: Record<string, string> = {};
   const hint = el('p', 'hint');
@@ -24,7 +25,7 @@ export const compareSection = (template: EffectiveTemplate): HTMLElement => {
       view.state === 'invalid'
         ? strings.ratios.invalidNumber
         : view.state === 'needs-anchor'
-          ? strings.ratios.compareNeedsAnchor(view.anchor)
+          ? strings.ratios.compareNeedsAnchor(ratioRole(view.anchor))
           : '';
     if (view.state !== 'ok') return;
     const cols = strings.ratios.compareColumns;
@@ -46,7 +47,7 @@ export const compareSection = (template: EffectiveTemplate): HTMLElement => {
     const body = el('tbody');
     for (const row of view.rows) {
       const tr = el('tr');
-      const name = el('th', undefined, row.role);
+      const name = el('th', undefined, ratioRole(row.role));
       name.scope = 'row';
       tr.append(
         name,
@@ -68,7 +69,7 @@ export const compareSection = (template: EffectiveTemplate): HTMLElement => {
   };
 
   for (const part of template.parts) {
-    const field = numberField(strings.ratios.compareField(part.role));
+    const field = numberField(strings.ratios.compareField(ratioRole(part.role)));
     field.control.setAttribute('aria-describedby', hint.id);
     field.control.addEventListener('input', () => {
       texts[part.role] = field.control.value;

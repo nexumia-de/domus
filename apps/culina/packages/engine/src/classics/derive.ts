@@ -6,7 +6,7 @@ import type { ComponentRef, FoodState } from '../components/types';
 import type { Step } from '../steps/types';
 import { pickText } from '../text/i18n';
 import type { Lang } from '../text/i18n';
-import type { Classic, ClassicLine, ClassicSlot, SourceAmount } from './types';
+import type { AmountWord, Classic, ClassicLine, ClassicSlot, SourceAmount } from './types';
 import { resolveSourceUnit } from './units';
 
 /** Portions of a dish when the user asks for none (helper plan: two). */
@@ -25,11 +25,14 @@ export interface DerivedLine {
   ref?: ComponentRef;
   /** The name of an ingredient the catalogue lacks. */
   wanted?: string;
-  /** Absent when the source gives none: shown as "to taste" or "as needed". */
+  /** Absent when the source gives none; then `amountWord` says "to taste" or "as needed" where the source does, else nothing is shown. */
   amount?: Amount;
+  amountWord?: AmountWord;
   role?: string;
   state?: FoodState;
   note?: string;
+  /** A remark about the source, for the source section only. */
+  sourceNote?: string;
   /** The source's own wording, when the classic gives it. */
   original?: string;
 }
@@ -178,6 +181,8 @@ export function deriveClassic(classic: Classic, options: DeriveOptions): DeriveR
         ...(line.role === undefined ? {} : { role: line.role }),
         ...(line.state === undefined ? {} : { state: line.state }),
         ...(line.note === undefined ? {} : { note: text(line.note) }),
+        ...(line.sourceNote === undefined ? {} : { sourceNote: text(line.sourceNote) }),
+        ...(line.amountWord === undefined ? {} : { amountWord: line.amountWord }),
       });
     }
     components.push({

@@ -40,8 +40,12 @@
             "original": "Patate grosse e gialle, grammi 400"
           },
           "note": {
-            "en": "Large yellow potatoes; the catalogue has white potatoes.",
-            "de": "Große gelbe Kartoffeln; der Katalog führt weiße Kartoffeln."
+            "en": "Large yellow potatoes.",
+            "de": "Große gelbe Kartoffeln."
+          },
+          "sourceNote": {
+            "en": "The catalogue has white potatoes.",
+            "de": "Der Katalog führt weiße Kartoffeln."
           }
         },
         {

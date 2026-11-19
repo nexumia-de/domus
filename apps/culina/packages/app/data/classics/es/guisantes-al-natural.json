@@ -84,8 +84,12 @@
             "id": "fdc-170416"
           },
           "note": {
-            "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in. The size is not read in the book, so the line has no amount.",
-            "de": "Ein Bund Petersilie (ramillete de perejil), vor Butter und Mehl wieder herausgenommen. Die Größe steht nicht im Buch, daher ohne Menge."
+            "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in.",
+            "de": "Ein Bund Petersilie (ramillete de perejil), vor Butter und Mehl wieder herausgenommen."
+          },
+          "sourceNote": {
+            "en": "The size is not read in the book, so the line has no amount.",
+            "de": "Die Größe steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -95,8 +99,12 @@
             "id": "fdc-173468"
           },
           "note": {
-            "en": "Good seasoning of salt and pepper (una buena sazón de sal y pimienta). The source gives no amount.",
-            "de": "Gut gewürzt mit Salz und Pfeffer (una buena sazón de sal y pimienta). Die Quelle gibt keine Menge an."
+            "en": "Good seasoning of salt and pepper (una buena sazón de sal y pimienta).",
+            "de": "Gut gewürzt mit Salz und Pfeffer (una buena sazón de sal y pimienta)."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         },
         {
@@ -125,8 +133,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucharada de harina), kneaded into the butter. The size of the spoon is not read in the book, so the line has no amount.",
-            "de": "Ein Löffel (una cucharada de harina), in die Butter geknetet. Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
+            "en": "One spoonful (una cucharada de harina), kneaded into the butter.",
+            "de": "Ein Löffel (una cucharada de harina), in die Butter geknetet."
+          },
+          "sourceNote": {
+            "en": "The size of the spoon is not read in the book, so the line has no amount.",
+            "de": "Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -148,8 +160,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Half a glass (medio vaso) to dissolve the yolks. The size of the glass is not read in the book, so the line has no amount.",
-            "de": "Ein halbes Glas (medio vaso) zum Auflösen des Eigelbs. Die Größe des Glases steht nicht im Buch, daher ohne Menge."
+            "en": "Half a glass (medio vaso) to dissolve the yolks.",
+            "de": "Ein halbes Glas (medio vaso) zum Auflösen des Eigelbs."
+          },
+          "sourceNote": {
+            "en": "The size of the glass is not read in the book, so the line has no amount.",
+            "de": "Die Größe des Glases steht nicht im Buch, daher ohne Menge."
           }
         }
       ],

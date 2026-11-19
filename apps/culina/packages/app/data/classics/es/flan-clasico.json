@@ -83,8 +83,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Enough water to make a very thick dough; no amount given.",
-            "de": "So viel Wasser, dass ein sehr fester Teig entsteht; keine Menge angegeben."
+            "en": "Enough water to make a very thick dough.",
+            "de": "So viel Wasser, dass ein sehr fester Teig entsteht."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         }
       ],
@@ -180,7 +184,7 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source gives the figure as '20<>' in the scan text; the figure is not legible in the text, so no amount is written.",
             "de": "Die Quelle nennt die Menge im Scan-Text als '20<>'; die Zahl ist im Text nicht lesbar, daher keine Menge."
           }
@@ -192,8 +196,12 @@
             "de": "Orangenblütenwasser"
           },
           "note": {
-            "en": "One tablespoon (cucharada sopera); the source gives no size for the spoon.",
-            "de": "Ein Esslöffel (cucharada sopera); die Quelle nennt keine Größe für den Löffel."
+            "en": "One tablespoon (cucharada sopera).",
+            "de": "Ein Esslöffel (cucharada sopera)."
+          },
+          "sourceNote": {
+            "en": "The source gives no size for the spoon.",
+            "de": "Die Quelle nennt keine Größe für den Löffel."
           }
         },
         {
@@ -214,14 +222,14 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
-          "note": {
-            "en": "One cuartillo, which the book sizes as half a litre (p. 356).",
-            "de": "Ein Cuartillo; das Buch bestimmt ihn als einen halben Liter (S. 356)."
-          },
           "amount": {
             "value": 0.5,
             "unit": "cuartillo",
             "original": "un cuartillo de leche"
+          },
+          "sourceNote": {
+            "en": "One cuartillo, which the book sizes as half a litre (p. 356).",
+            "de": "Ein Cuartillo; das Buch bestimmt ihn als einen halben Liter (S. 356)."
           }
         }
       ],

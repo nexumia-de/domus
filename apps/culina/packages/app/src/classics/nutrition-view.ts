@@ -32,6 +32,8 @@ export interface NutritionView {
   portions: number;
   /** Nothing could be counted: no rows. */
   none: boolean;
+  /** Too few ingredients are counted for figures worth showing (judgement: none, one, or under a quarter of them): no rows. */
+  tooFew: boolean;
   rows: NutritionRow[];
   /** Fibre and salt notes for a figure that is not shown. */
   notShown: string[];
@@ -45,6 +47,10 @@ export interface NutritionView {
 export type NutritionViewResult = { ok: true; view: NutritionView } | { ok: false; code: string };
 
 const MAX_DEPTH = 12;
+
+/** Figures are shown from two counted ingredients and a quarter of all (a judgement, not a source). */
+const MIN_COUNTED = 2;
+const MIN_SHARE = 0.25;
 
 /** Density and unit weight of an ingredient; a variety without its own takes its parent's. */
 const factsOf = (id: string, lookup: Lookup): IngredientFacts => {
@@ -130,13 +136,18 @@ export function nutritionView(
   const rounded = roundNutrition(result.perPortion);
   if (!rounded.ok) return { ok: false, code: rounded.error.code };
   const none = coverage.counted === 0;
+  const tooFew =
+    none || coverage.counted < MIN_COUNTED || coverage.counted < coverage.total * MIN_SHARE;
   return {
     ok: true,
     view: {
       portions: result.portions,
       none,
-      rows: none ? [] : rowsOf(rounded.rounded),
-      notShown: result.notReported.map((k) => (k === 'fibreG' ? t.fibreNotShown : t.saltNotShown)),
+      tooFew,
+      rows: tooFew ? [] : rowsOf(rounded.rounded),
+      notShown: tooFew
+        ? []
+        : result.notReported.map((k) => (k === 'fibreG' ? t.fibreNotShown : t.saltNotShown)),
       coverage:
         left.length === 0
           ? t.coverageAll(coverage.total)

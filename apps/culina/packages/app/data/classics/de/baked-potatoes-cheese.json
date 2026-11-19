@@ -42,8 +42,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "Boiled potatoes, cut into slices. The source gives no quantity.",
-            "de": "Gekochte Kartoffeln, in Scheiben geschnitten. Die Quelle nennt keine Menge."
+            "en": "Boiled potatoes, cut into slices.",
+            "de": "Gekochte Kartoffeln, in Scheiben geschnitten."
+          },
+          "sourceNote": {
+            "en": "The source gives no quantity.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -53,8 +57,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "For the buttered pan. The source gives no amount.",
-            "de": "Für die gebutterte Form. Die Quelle nennt keine Menge."
+            "en": "For the buttered pan.",
+            "de": "Für die gebutterte Form."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -64,8 +72,12 @@
             "id": "fdc-171256"
           },
           "note": {
-            "en": "Sour cream, used for the sauce. The English gives 1 pint of cream; the German edition reads 3 Dt. in both scans. The amount is not confirmed, so none is given.",
-            "de": "Saure Sahne für die Sauce. Die englische Ausgabe nennt 1 Pint Sahne; die deutsche Ausgabe liest in beiden Scans 3 Dt. Die Menge ist nicht bestätigt und steht deshalb nicht da."
+            "en": "Sour cream, used for the sauce.",
+            "de": "Saure Sahne für die Sauce."
+          },
+          "sourceNote": {
+            "en": "The English gives 1 pint of cream. The German edition reads 3 Dt. in both scans. The amount is not confirmed, so none is given.",
+            "de": "Die englische Ausgabe nennt 1 Pint Sahne. Die deutsche Ausgabe liest in beiden Scans 3 Dt. Die Menge ist nicht bestätigt und steht deshalb nicht da."
           }
         },
         {
@@ -124,8 +136,12 @@
         },
         {
           "text": {
-            "en": "Bake in the oven. The source gives the time as a fraction of an hour that is not legible in the scans.",
-            "de": "Im Ofen backen. Die Quelle nennt die Zeit als Bruchteil einer Stunde; der Bruch ist in den Scans nicht lesbar."
+            "en": "Bake in the oven.",
+            "de": "Im Ofen backen."
+          },
+          "sourceNote": {
+            "en": "The source gives the time as a fraction of an hour that is not legible in the scans.",
+            "de": "Die Quelle nennt die Zeit als Bruchteil einer Stunde; der Bruch ist in den Scans nicht lesbar."
           },
           "technique": "bake"
         },

@@ -254,16 +254,17 @@ A named formula by mass: parts per role, an anchor role, optional usual
 ranges, and derivatives that change a parent. Schema:
 `template.schema.json`.
 
-| Field      | Type            | Required | Meaning                                                                                                                                           |
-| ---------- | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                                                                                                   |
-| `name`     | string          | yes      | Visible name                                                                                                                                      |
-| `source`   | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`                                                                                                     |
-| `parentId` | id              | no       | The template this one derives from; with `changes`, instead of `parts`                                                                            |
-| `anchor`   | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages                                                                    |
-| `parts`    | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                                                                            |
-| `changes`  | array of object | no       | Derivatives only: `add` (role, parts, optional `range`), `set` (role, parts, optional `range`), `remove` (role), `swap` (role, `ingredientClass`) |
-| `note`     | string          | no       | Free text                                                                                                                                         |
+| Field        | Type            | Required | Meaning                                                                                                                                           |
+| ------------ | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | id              | yes      | See [ids](#ids)                                                                                                                                   |
+| `name`       | string          | yes      | Visible name                                                                                                                                      |
+| `source`     | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`: a pointer into the repository, never shown                                                         |
+| `references` | array of object | no       | What the ratio card shows as its source: `author`, `title`, optional `page`                                                                       |
+| `parentId`   | id              | no       | The template this one derives from; with `changes`, instead of `parts`                                                                            |
+| `anchor`     | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages                                                                    |
+| `parts`      | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                                                                            |
+| `changes`    | array of object | no       | Derivatives only: `add` (role, parts, optional `range`), `set` (role, parts, optional `range`), `remove` (role), `swap` (role, `ingredientClass`) |
+| `note`       | string          | no       | Free text                                                                                                                                         |
 
 - **Root or derivative, not both**: a template has `parts` and no
   `parentId`, or `parentId` and `changes` and no `parts` (checked by the
@@ -657,8 +658,12 @@ guide is [classic format](classic-format.md).
 - **Lines** have `ref` (an ingredient of the catalogue, or a component of the
   same dish) **or** `wanted` (`{ en, de }`, while the catalogue lacks the
   ingredient; a later package brings these to zero), an optional `amount`
-  (none: shown as "to taste" or "as needed"), `role`, `state`, `note`
-  (a text in 2 langs), `key` and `settled`.
+  (none: the line shows its name alone), `amountWord` (only on a line
+  without `amount`, and only where the source says it: `to-taste` or
+  `as-needed`), `role`, `state`, `note` (cooking help, a text in 2 langs),
+  `sourceNote` (a remark about the source, a text in 2 langs, shown only in
+  the dish's source section), `key` and `settled`. A step may have a
+  `sourceNote` too.
 - **Settled.** A value we settled where the source is vague is an entry in
   `settled`. A line or slot whose amount we settled has `settled: true` and a
   `key`, and the entry's `target` is `<component id>/<key>` (`slots/<key>` for

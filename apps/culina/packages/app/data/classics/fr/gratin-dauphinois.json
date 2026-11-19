@@ -46,7 +46,7 @@
             "unit": "lb",
             "original": "two lbs. of fair-sized Dutch potatoes"
           },
-          "note": {
+          "sourceNote": {
             "en": "Fair-sized Dutch potatoes, as the source names them.",
             "de": "Mittelgroße Holländische Kartoffeln, wie die Quelle sie nennt."
           }
@@ -72,8 +72,12 @@
             "id": "fdc-171326"
           },
           "note": {
-            "en": "Grated nutmeg. The source gives no amount.",
-            "de": "Gerieben. Die Quelle nennt keine Menge."
+            "en": "Grated nutmeg.",
+            "de": "Gerieben."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -112,8 +116,12 @@
             "original": "four oz. of fresh grated Gruyère"
           },
           "note": {
-            "en": "Some more is sprinkled over the top; the source gives no amount for it.",
-            "de": "Oben kommt noch mehr darüber; die Quelle nennt dafür keine Menge."
+            "en": "Some more is sprinkled over the top.",
+            "de": "Oben kommt noch mehr darüber."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount for it.",
+            "de": "Die Quelle nennt dafür keine Menge."
           }
         },
         {
@@ -123,8 +131,12 @@
             "id": "fdc-169230"
           },
           "note": {
-            "en": "For rubbing the dishes. The source gives no amount.",
-            "de": "Zum Einreiben der Formen. Die Quelle nennt keine Menge."
+            "en": "For rubbing the dishes.",
+            "de": "Zum Einreiben der Formen."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -134,8 +146,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "For buttering the dishes and a few pieces on top. The source gives no amount.",
-            "de": "Zum Ausbuttern der Formen und einige Stücke obenauf. Die Quelle nennt keine Menge."
+            "en": "For buttering the dishes and a few pieces on top.",
+            "de": "Zum Ausbuttern der Formen und einige Stücke obenauf."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         }
       ],

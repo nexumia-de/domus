@@ -68,7 +68,7 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "note": {
+          "sourceNote": {
             "en": "No volume given; the source says vinegar in the marinade and spiced vinegar for the gravy.",
             "de": "Keine Menge angegeben; die Quelle nennt Essig für die Beize und gewürzten Essig für die Soße."
           }
@@ -101,8 +101,12 @@
             "de": "Wacholderbeeren"
           },
           "note": {
-            "en": "Perhaps a few; the source says it is optional.",
-            "de": "Vielleicht einige; die Quelle sagt, es sei freigestellt."
+            "en": "Perhaps a few.",
+            "de": "Vielleicht einige."
+          },
+          "sourceNote": {
+            "en": "The source says it is optional.",
+            "de": "Die Quelle sagt, es sei freigestellt."
           }
         },
         {
@@ -136,7 +140,7 @@
             "kind": "ingredient",
             "id": "fdc-group-fat"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source says good fat; no kind is named.",
             "de": "Die Quelle sagt gutes Fett; welche Sorte, steht nicht da."
           }
@@ -204,8 +208,12 @@
             "id": "fdc-172684"
           },
           "note": {
-            "en": "A piece of rye bread crust; the source gives no size.",
-            "de": "Ein Stück Roggenbrotkruste; die Quelle nennt keine Größe."
+            "en": "A piece of rye bread crust.",
+            "de": "Ein Stück Roggenbrotkruste."
+          },
+          "sourceNote": {
+            "en": "The source gives no size.",
+            "de": "Die Quelle nennt keine Größe."
           }
         },
         {
@@ -220,8 +228,12 @@
             "original": "a cupful of sweet cream"
           },
           "note": {
-            "en": "Put in during the last half hour; the source says it greatly improves the gravy.",
-            "de": "In der letzten halben Stunde zugeben; die Quelle sagt, es verbessert die Soße sehr."
+            "en": "Put in during the last half hour.",
+            "de": "In der letzten halben Stunde zugeben."
+          },
+          "sourceNote": {
+            "en": "The source says it greatly improves the gravy.",
+            "de": "Die Quelle sagt, es verbessert die Soße sehr."
           }
         },
         {

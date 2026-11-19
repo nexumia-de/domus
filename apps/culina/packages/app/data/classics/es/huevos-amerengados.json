@@ -59,8 +59,12 @@
             "de": "Orangenblütenwasser"
           },
           "note": {
-            "en": "One spoonful for the whites and two spoonfuls for the cream. The source gives no size for the spoon.",
-            "de": "Ein Löffel für den Eischnee und zwei Löffel für die Sahne. Die Quelle nennt keine Größe für den Löffel."
+            "en": "One spoonful for the whites and two spoonfuls for the cream.",
+            "de": "Ein Löffel für den Eischnee und zwei Löffel für die Sahne."
+          },
+          "sourceNote": {
+            "en": "The source gives no size for the spoon.",
+            "de": "Die Quelle nennt keine Größe für den Löffel."
           }
         },
         {
@@ -81,11 +85,11 @@
             "unit": "l",
             "original": "un litro de crema"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The source gives cream first. Without cream it allows two litres of milk, reduced by half; cream is used here.",
             "de": "Die Quelle nennt zuerst Sahne. Ohne Sahne lässt sie zwei Liter Milch zu, auf die Hälfte eingekocht; hier wird Sahne verwendet."
-          }
+          },
+          "settled": true
         },
         {
           "key": "sugar-cream",
@@ -123,8 +127,12 @@
             "original": "cuatro yemas"
           },
           "note": {
-            "en": "Four yolks, stirred in at the end. The source does not say whether they come from the six eggs.",
-            "de": "Vier Eigelb, am Ende eingerührt. Die Quelle sagt nicht, ob sie von den sechs Eiern stammen."
+            "en": "Four yolks, stirred in at the end.",
+            "de": "Vier Eigelb, am Ende eingerührt."
+          },
+          "sourceNote": {
+            "en": "The source does not say whether they come from the six eggs.",
+            "de": "Die Quelle sagt nicht, ob sie von den sechs Eiern stammen."
           }
         }
       ],

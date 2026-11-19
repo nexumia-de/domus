@@ -210,7 +210,7 @@ const lackingFlow = async (browser, origin, width) => {
     `${label}: the entry opens #/classic/${PAN.id}`,
   );
 
-  // The dish view in its order: name, course, portions, ingredients, button, method, then the closed blocks.
+  // The dish view in its order: name, course, portions, ingredients, button, method, then the closed blocks (nutrition, source).
   const tops = await page.evaluate(() => {
     const top = (node) => (node === null ? null : node.getBoundingClientRect().top + scrollY);
     const heading = (text) =>
@@ -231,8 +231,6 @@ const lackingFlow = async (browser, origin, width) => {
       method: top(heading('Method') ?? heading('Steps')),
       nutrition: top(heading('Nutrition per portion')),
       source: top(heading('Source')),
-      settled: top(heading('What we settled where the source is vague')),
-      check: top(heading('Second check')),
       open: [...document.querySelectorAll('.foot-block')].map((d) => d.open),
       blocks: document.querySelectorAll('.foot-block').length,
       view: innerHeight,
@@ -247,17 +245,15 @@ const lackingFlow = async (browser, origin, width) => {
     'method',
     'nutrition',
     'source',
-    'settled',
-    'check',
   ];
   const present = order.filter((k) => tops[k] !== null && tops[k] !== undefined);
   check(
-    present.length >= 9 && present.every((k, i) => i === 0 || tops[k] > tops[present[i - 1]]),
-    `${label}: name, portions, ingredients, button, method, then nutrition, source, settled, check (${present.map((k) => `${k}:${Math.round(tops[k])}`).join(' ')})`,
+    present.length >= 7 && present.every((k, i) => i === 0 || tops[k] > tops[present[i - 1]]),
+    `${label}: name, portions, ingredients, button, method, then nutrition and source (${present.map((k) => `${k}:${Math.round(tops[k])}`).join(' ')})`,
   );
   check(
-    tops.blocks === 4 && tops.open.every((o) => o === false),
-    `${label}: nutrition, source, settled and second check are each closed behind a tap`,
+    tops.blocks === 2 && tops.open.every((o) => o === false),
+    `${label}: nutrition and source are each closed behind a tap (what we settled and the second check have no disclosure of their own)`,
   );
   check(
     tops.firstLine < tops.view,

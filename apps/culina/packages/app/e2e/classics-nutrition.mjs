@@ -35,7 +35,7 @@ export const expectedNutrition = (classic, portions) => {
 /** Opens the section on the dish screen and checks it; leaves it open for the layout checks. */
 export const nutritionSection = async (page, classic, label) => {
   const block = page.locator('.nutrition-block');
-  const summary = block.locator('summary');
+  const summary = block.locator('summary').first();
   check((await summary.innerText()) === 'Nutrition per portion', `${label}: the section is named`);
   check(
     (await block.getAttribute('open')) === null,
@@ -61,6 +61,14 @@ export const nutritionSection = async (page, classic, label) => {
   );
   if (r.fibreG !== undefined) check(valueOf('Fibre') === `${r.fibreG} g`, `${label}: fibre`);
   if (r.saltG !== undefined) check(valueOf('Salt') === `${r.saltG} g`, `${label}: salt`);
+  const more = block.locator('.nutrition-more');
+  check(
+    (await more.getAttribute('open')) === null &&
+      !(await block.innerText()).includes('Not counted:') &&
+      !(await block.innerText()).includes('21 CFR'),
+    `${label}: what was not counted and the rounding rule are behind a second tap`,
+  );
+  await more.locator('summary').click();
   const text = (await block.innerText()).replace(/\s+/g, ' ');
   check(
     text.includes(`Counted ${coverage.counted} of ${coverage.total} ingredients.`) &&

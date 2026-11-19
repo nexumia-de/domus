@@ -54,6 +54,16 @@ export const appStrings = {
     acid: 'Acid',
     garnish: 'Garnish',
     starch: 'Starch',
+    // The roles of the ratio cards.
+    flour: 'Flour',
+    water: 'Water',
+    egg: 'Egg',
+    fat: 'Fat',
+    sugar: 'Sugar',
+    oil: 'Oil',
+    liquid: 'Liquid',
+    yeast: 'Yeast',
+    salt: 'Salt',
   },
   /** "Open: add ..." for a role the dish does not fill yet. */
   roleInvite: {
@@ -155,7 +165,34 @@ export const appStrings = {
     colParts: 'Parts',
     colPercent: (anchor: string): string => `% of ${anchor}`,
     usualRange: (min: string, max: string): string => `usual ${min}\u2013${max}`,
-    sourceLabel: 'Source',
+    sourceLine: (list: string): string => `Source: ${list}`,
+    /** One reference of a ratio card: "Michael Ruhlman, Ratio, p. 17". */
+    reference: (author: string, title: string, page?: string): string =>
+      page === undefined ? `${author}, ${title}` : `${author}, ${title}, p. ${page}`,
+    /** The shipped ratios as the cook reads them; a ratio of the user's own is shown as typed. */
+    seed: {
+      'bread-dough-ratio': { name: 'Bread dough, ratio', note: 'By weight, plus yeast and salt.' },
+      'pasta-dough': { name: 'Pasta dough', note: 'The egg is weighed, not counted.' },
+      'pie-dough': { name: 'Pie dough' },
+      'cookie-dough': { name: 'Cookie dough' },
+      'pound-cake': { name: 'Pound cake', note: 'The source names butter as the fat.' },
+      vinaigrette: { name: 'Vinaigrette' },
+      roux: { name: 'Roux', note: 'The source names clarified butter as the fat.' },
+      'roux-whole-butter': {
+        name: 'Roux with whole butter',
+        note: 'The source names whole butter as the fat.',
+      },
+      'free-standing-custard': { name: 'Free-standing custard' },
+      'bread-dough-bakers-percent': {
+        name: "Bread dough, baker's percentages",
+        note: 'Yeast is fresh yeast. Only the salt has a range.',
+      },
+      'neapolitan-pizza-dough': {
+        name: 'Neapolitan pizza dough',
+        note: 'The salt is the midpoint of the range 2.8 to 3.1 the source gives; the range is the source’s figure.',
+      },
+      'ciabatta-stiff-biga': { name: 'Ciabatta with stiff biga' },
+    } as Record<string, { name: string; note?: string }>,
     familyHeading: 'Family',
     parentLabel: 'Variation of',
     variationsLabel: 'Variations',
@@ -327,6 +364,7 @@ export const appStrings = {
       `Made from the ratio ${name}. Usual ranges are on its card.`,
     prefillNote: 'Amounts come from the calculator. Choose an ingredient for each line.',
     needs: {
+      summary: 'Check the fields marked above to save.',
       name: 'Give it a name to save it.',
       noLines: 'Add at least one line to save it.',
       noSlots: 'Add at least one slot to save it.',

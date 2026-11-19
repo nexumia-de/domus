@@ -64,7 +64,7 @@
             "unit": "count",
             "original": "la râpure d'un demi-citron"
           },
-          "note": {
+          "sourceNote": {
             "en": "Grated zest of half a lemon, as the book states.",
             "de": "Abgeriebene Schale einer halben Zitrone, wie das Buch angibt."
           }
@@ -103,7 +103,7 @@
             "kind": "component",
             "id": "custard"
           },
-          "note": {
+          "sourceNote": {
             "en": "The custard, made as in the book's rice cake (see the custard component).",
             "de": "Die Creme, wie beim Reiskuchen des Buches bereitet (siehe Komponente Creme)."
           }
@@ -231,8 +231,12 @@
             "id": "fdc-167749"
           },
           "note": {
-            "en": "\"I râpure de citron\": one grating of lemon. The book does not state its size, so no amount is given.",
-            "de": "\"I râpure de citron\": eine Reibung Zitrone. Das Buch nennt ihre Größe nicht, daher steht hier keine Menge."
+            "en": "\"I râpure de citron\": one grating of lemon.",
+            "de": "\"I râpure de citron\": eine Reibung Zitrone."
+          },
+          "sourceNote": {
+            "en": "The book does not state its size, so no amount is given.",
+            "de": "Das Buch nennt ihre Größe nicht, daher steht hier keine Menge."
           }
         },
         {

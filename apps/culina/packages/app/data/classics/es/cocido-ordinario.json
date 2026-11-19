@@ -40,8 +40,12 @@
             "original": "750 gramos de carne"
           },
           "note": {
-            "en": "The beef must be very fresh (p. 59). The source names no cut for this pot; the forequarter pieces and the hind-quarter pieces are both named there.",
-            "de": "Das Fleisch muss ganz frisch sein (S. 59). Die Quelle nennt für diesen Topf kein Stück; Teile aus dem Vorder- und dem Hinterviertel werden dort genannt."
+            "en": "The beef must be very fresh.",
+            "de": "Das Fleisch muss ganz frisch sein."
+          },
+          "sourceNote": {
+            "en": "Page 59. The source names no cut for this pot; the forequarter pieces and the hind-quarter pieces are both named there.",
+            "de": "Seite 59. Die Quelle nennt für diesen Topf kein Stück; Teile aus dem Vorder- und dem Hinterviertel werden dort genannt."
           }
         },
         {
@@ -67,11 +71,11 @@
             "unit": "l",
             "original": "4 litros de agua"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot (p. 60). The list is used.",
             "de": "Die Zutatenliste nennt 4 Liter; der Ablauf nennt für den kleinen Topf 3 Liter (S. 60). Es gilt die Liste."
-          }
+          },
+          "settled": true
         },
         {
           "key": "cold-water",
@@ -161,8 +165,12 @@
             "original": "1 clavo de especia"
           },
           "note": {
-            "en": "A whole clove, stuck into the onion. The catalogue has only ground cloves.",
-            "de": "Eine ganze Nelke, in die Zwiebel gesteckt. Der Katalog führt nur gemahlene Nelken."
+            "en": "A whole clove, stuck into the onion.",
+            "de": "Eine ganze Nelke, in die Zwiebel gesteckt."
+          },
+          "sourceNote": {
+            "en": "The catalogue has only ground cloves.",
+            "de": "Der Katalog führt nur gemahlene Nelken."
           }
         },
         {

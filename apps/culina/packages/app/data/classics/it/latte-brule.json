@@ -51,7 +51,7 @@
             "unit": "g",
             "original": "100 grammi del detto zucchero"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source's total is 180 g: 100 g for the milk and 80 g for the caramel.",
             "de": "Die Gesamtmenge der Quelle beträgt 180 g: 100 g für die Milch und 80 g für den Karamell."
           }
@@ -99,8 +99,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "A ladle of water (un ramaiuolino d'acqua) to stop the caramel; no amount.",
-            "de": "Eine Kelle Wasser (un ramaiuolino d'acqua), um den Karamell zu stoppen; keine Menge."
+            "en": "A ladle of water (un ramaiuolino d'acqua) to stop the caramel.",
+            "de": "Eine Kelle Wasser (un ramaiuolino d'acqua), um den Karamell zu stoppen."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],

@@ -22,4 +22,6 @@ export interface Step {
   uses?: readonly string[];
   time?: StepTime;
   temperature?: StepTemperature;
+  /** A remark about the source for this step (a time that is not legible); shown only in the dish's source section. */
+  sourceNote?: I18nText;
 }

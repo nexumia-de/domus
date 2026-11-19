@@ -58,6 +58,16 @@ export const appStringsDe: typeof appStrings = {
     acid: 'Säure',
     garnish: 'Garnitur',
     starch: 'Stärke',
+    // Die Rollen der Verhältniskarten.
+    flour: 'Mehl',
+    water: 'Wasser',
+    egg: 'Ei',
+    fat: 'Fett',
+    sugar: 'Zucker',
+    oil: 'Öl',
+    liquid: 'Flüssigkeit',
+    yeast: 'Hefe',
+    salt: 'Salz',
   },
   /** "Offen: ... ergänzen" for a role the dish does not fill yet (accusative). */
   roleInvite: {
@@ -161,7 +171,35 @@ export const appStringsDe: typeof appStrings = {
     colParts: 'Teile',
     colPercent: (anchor: string): string => `% von ${anchor}`,
     usualRange: (min: string, max: string): string => `üblich ${min}–${max}`,
-    sourceLabel: 'Quelle',
+    sourceLine: (list: string): string => `Quelle: ${list}`,
+    reference: (author: string, title: string, page?: string): string =>
+      page === undefined ? `${author}, ${title}` : `${author}, ${title}, S. ${page}`,
+    seed: {
+      'bread-dough-ratio': {
+        name: 'Brotteig, Verhältnis',
+        note: 'Nach Gewicht, dazu Hefe und Salz.',
+      },
+      'pasta-dough': { name: 'Nudelteig', note: 'Das Ei wird gewogen, nicht gezählt.' },
+      'pie-dough': { name: 'Pie-Teig' },
+      'cookie-dough': { name: 'Keksteig' },
+      'pound-cake': { name: 'Sandkuchen', note: 'Die Quelle nennt Butter als Fett.' },
+      vinaigrette: { name: 'Vinaigrette' },
+      roux: { name: 'Mehlschwitze', note: 'Die Quelle nennt geklärte Butter als Fett.' },
+      'roux-whole-butter': {
+        name: 'Mehlschwitze mit ganzer Butter',
+        note: 'Die Quelle nennt ganze Butter als Fett.',
+      },
+      'free-standing-custard': { name: 'Frei stehende Eiercreme' },
+      'bread-dough-bakers-percent': {
+        name: 'Brotteig, Bäckerprozente',
+        note: 'Hefe ist Frischhefe. Nur das Salz hat einen Bereich.',
+      },
+      'neapolitan-pizza-dough': {
+        name: 'Neapolitanischer Pizzateig',
+        note: 'Das Salz ist die Mitte des Bereichs 2,8 bis 3,1 aus der Quelle; der Bereich ist die Angabe der Quelle.',
+      },
+      'ciabatta-stiff-biga': { name: 'Ciabatta mit fester Biga' },
+    },
     familyHeading: 'Familie',
     parentLabel: 'Abwandlung von',
     variationsLabel: 'Abwandlungen',
@@ -338,6 +376,7 @@ export const appStringsDe: typeof appStrings = {
       `Aus dem Verhältnis ${name} gemacht. Die üblichen Spannen stehen auf seiner Karte.`,
     prefillNote: 'Die Mengen stammen aus dem Rechner. Wähle für jede Zeile eine Zutat.',
     needs: {
+      summary: 'Prüfe die markierten Felder, um zu speichern.',
       name: 'Gib einen Namen ein, um zu speichern.',
       noLines: 'Füge mindestens eine Zeile hinzu, um zu speichern.',
       noSlots: 'Füge mindestens eine Rolle hinzu, um zu speichern.',

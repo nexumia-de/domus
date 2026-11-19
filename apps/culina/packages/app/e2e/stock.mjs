@@ -158,6 +158,32 @@ const ticking = async (browser, origin) => {
     `${label}: unticking removes the item at once`,
   );
   await layout(page, `${label} (toast)`);
+  // The page has room under its last row while the toast shows, so the toast never covers it.
+  const room = await page.evaluate(() => ({
+    padding: parseFloat(getComputedStyle(document.querySelector('.app-main')).paddingBottom),
+    toast: document.querySelector('.toast').getBoundingClientRect().height,
+  }));
+  check(
+    room.padding >= room.toast + 12,
+    `${label}: the page keeps room under its last row for the toast (${JSON.stringify(room)})`,
+  );
+  // Going to another screen ends the toast.
+  await page.waitForTimeout(700);
+  await page.getByRole('link', { name: 'Dishes' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Dishes', exact: true }).waitFor();
+  check(
+    (await page.locator('.toast').count()) === 0 &&
+      (await page.evaluate(() =>
+        document.documentElement.style.getPropertyValue('--toast-space'),
+      )) === '',
+    `${label}: the toast does not follow the user to another screen`,
+  );
+  await page.goBack();
+  await isTicked(page, 'Onion', false);
+  await tickBox(page, 'Onion').click();
+  await isTicked(page, 'Onion');
+  await tickBox(page, 'Onion').click();
+  await page.getByText('Onion is no longer in stock.').waitFor();
   await page.getByRole('button', { name: 'Undo' }).click();
   await isTicked(page, 'Onion');
   check(

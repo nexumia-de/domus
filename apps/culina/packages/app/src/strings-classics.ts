@@ -67,11 +67,13 @@ export const classicsStrings = {
   amountRange: (a: string, b: string): string => `${a} to ${b}`,
   pieces: (n: string): string => `${n} pcs`,
   optional: 'optional',
-  settledSummary: 'What we settled where the source is vague',
-  settledNone: 'Nothing was settled: every amount is the source’s.',
-  settledEntry: (what: string, value: string, reason: string): string =>
-    `${what}: ${value}. ${reason}`,
-  checkHeading: 'Second check',
+  remarksHeading: 'Remarks on the source',
+  remarkLine: (name: string, original?: string, remark?: string): string =>
+    [`${name}:`, original === undefined ? undefined : `“${original}”`, remark]
+      .filter((x) => x !== undefined)
+      .join(' '),
+  remarkDish: (note: string): string => `Dish: ${note}`,
+  remarkStep: (n: number, remark: string): string => `Step ${n}: ${remark}`,
   checkMethod: {
     'page-image': 'The numbers were compared with the page image.',
     'second-edition': 'The numbers were compared with a second edition or scan.',
@@ -86,11 +88,11 @@ export const classicsStrings = {
   usesHeading: 'You use',
   timeLabel: (text: string): string => `Time: ${text}`,
   temperatureLabel: (text: string): string => `Temperature: ${text}`,
-  minutes: (a: number, b?: number): string => (b === undefined ? `${a} min` : `${a} to ${b} min`),
-  seconds: (a: number, b?: number): string => (b === undefined ? `${a} s` : `${a} to ${b} s`),
-  hours: (a: number, b?: number): string => (b === undefined ? `${a} h` : `${a} to ${b} h`),
-  celsius: (a: number, b?: number): string => (b === undefined ? `${a} °C` : `${a} to ${b} °C`),
-  fahrenheit: (a: number, b?: number): string => (b === undefined ? `${a} °F` : `${a} to ${b} °F`),
+  minutes: (a: string, b?: string): string => (b === undefined ? `${a} min` : `${a} to ${b} min`),
+  seconds: (a: string, b?: string): string => (b === undefined ? `${a} s` : `${a} to ${b} s`),
+  hours: (a: string, b?: string): string => (b === undefined ? `${a} h` : `${a} to ${b} h`),
+  celsius: (a: string, b?: string): string => (b === undefined ? `${a} °C` : `${a} to ${b} °C`),
+  fahrenheit: (a: string, b?: string): string => (b === undefined ? `${a} °F` : `${a} to ${b} °F`),
   back: 'Back',
   next: 'Next',
   finish: 'Finish',
@@ -98,13 +100,15 @@ export const classicsStrings = {
   // Technique note
   noteHeading: (name: string): string => `Technique: ${name}`,
   noteMore: 'Why, and where it comes from',
+  /** A short label in front of the source's title; the level is not a sentence. */
   noteLevel: {
-    studied: 'Studied: a peer-reviewed paper measured it.',
-    textbook: 'Textbook: a textbook of cooking states it.',
-    tradition: 'Tradition: kitchens do it; no test was found.',
+    studied: 'Study',
+    textbook: 'Textbook',
+    tradition: 'Tradition',
   } satisfies Record<TechniqueLevel, string>,
   noteSources: 'Sources',
-  noteSource: (title: string, place: string): string => `${title}, ${place}`,
+  noteSource: (level: string, title: string, place: string): string =>
+    `${level} · ${title}, ${place}`,
   iKnowThis: 'I know this',
   learnedDone: (name: string): string =>
     `Marked as learned: ${name}. Its note is not shown again. Settings can bring it back.`,

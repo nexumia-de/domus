@@ -66,8 +66,12 @@
             "original": "2 cups olive oil"
           },
           "note": {
-            "en": "For frying the potatoes. The page does not say how much of it remains.",
-            "de": "Zum Braten der Kartoffeln. Die Quelle sagt nicht, wie viel davon übrig bleibt."
+            "en": "For frying the potatoes.",
+            "de": "Zum Braten der Kartoffeln."
+          },
+          "sourceNote": {
+            "en": "The page does not say how much of it remains.",
+            "de": "Die Quelle sagt nicht, wie viel davon übrig bleibt."
           }
         },
         {

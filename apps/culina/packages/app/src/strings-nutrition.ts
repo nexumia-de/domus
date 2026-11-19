@@ -25,7 +25,8 @@ export const nutritionStrings = {
   notCounted: (list: string): string => `Not counted: ${list}.`,
   massShare: (percent: string): string =>
     `The counted ingredients make up ${percent} % of the weight where it is known.`,
-  noneCounted: 'No ingredient could be counted, so there are no figures.',
+  tooFew: 'Nutrition cannot be worked out: too few ingredients have an amount and nutrient data.',
+  moreSummary: 'What was left out, and how it is counted',
   reasons: {
     wanted: 'not in the catalogue yet',
     'no-amount': 'no amount',

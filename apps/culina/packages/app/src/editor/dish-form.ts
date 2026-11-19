@@ -1,6 +1,7 @@
 // The dish editor's form state (also the draft) and its translations to and from a record.
 import type { ComponentRef } from '@culina/engine';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
+import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
 import type { VersionNote } from './version-save';
 import type { AmountUnit } from './units';
@@ -52,7 +53,7 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   slots: dish.slots.map((s) => ({
     role: s.role,
     ref: s.ref,
-    amount: s.amount === undefined ? '' : String(s.amount.value),
+    amount: s.amount === undefined ? '' : withDecimalMark(String(s.amount.value), appLang),
     unit: (s.amount?.unit ?? 'g') as AmountUnit,
     ...(s.optional === true ? { optional: true } : {}),
   })),

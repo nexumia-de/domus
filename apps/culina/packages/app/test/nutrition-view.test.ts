@@ -93,9 +93,24 @@ describe('the coverage', () => {
     expect(shown.coverage).toBe('Counted 1 of 3 ingredients.');
     expect(shown.notCounted).toContain('name of fdc-173410 (no nutrient data)');
   });
+  test('too few counted (none, one, or under a quarter): one short line instead of figures', () => {
+    // One of three is counted: the engine's figures exist, but they stand for one ingredient only.
+    const one: Lookup = (id) => (id === 'fdc-173410' ? byId.get(id) : undefined);
+    const few = view(PAN_DISH, 2, one);
+    expect(few.tooFew).toBe(true);
+    expect(few.rows).toEqual([]);
+    expect(few.notShown).toEqual([]);
+    expect(few.notCounted).toContain('(');
+    expect(view(PAN_DISH, 2).tooFew).toBe(false);
+    expect(view(PAN_DISH, 2).rows.length).toBeGreaterThan(0);
+    expect(strings.nutrition.tooFew).toBe(
+      'Nutrition cannot be worked out: too few ingredients have an amount and nutrient data.',
+    );
+  });
   test('nothing counted: no rows and no figures', () => {
     const none = view(PAN_DISH, 2, () => undefined);
     expect(none.none).toBe(true);
+    expect(none.tooFew).toBe(true);
     expect(none.rows).toEqual([]);
     expect(none.coverage).toBe('Counted 0 of 3 ingredients.');
   });

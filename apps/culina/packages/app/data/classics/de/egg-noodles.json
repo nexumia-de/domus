@@ -42,8 +42,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "As much flour as the eggs and milk take up. The source gives no amount.",
-            "de": "So viel Mehl, wie Eier und Milch aufnehmen. Die Quelle nennt keine Menge."
+            "en": "As much flour as the eggs and milk take up.",
+            "de": "So viel Mehl, wie Eier und Milch aufnehmen."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -95,8 +99,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "Browned butter for serving. The source gives no amount.",
-            "de": "Gebräunte Butter zum Servieren. Die Quelle nennt keine Menge."
+            "en": "Browned butter for serving.",
+            "de": "Gebräunte Butter zum Servieren."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         }
       ],

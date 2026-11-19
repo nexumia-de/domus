@@ -176,8 +176,10 @@ its own. Rules of use: [behaviour](behaviour.md#ratios).
 # Component and dish screens
 
 Shared pieces (panes, fields, list rows, cards, tables, `num`) live in
-`common.css`; `notebook.css` adds the line, slot and raw tables (fixed
-layout, number columns of 5 to 6 rem), the small "component" tag (an outline,
+`common.css`; `notebook.css` adds the line, slot and raw tables (the number columns are as
+wide as their longest word needs, `width: 1%` in an auto layout, and never break
+inside a word, so "nach Geschmack" wraps between its words and a number stays with its unit at 320 and
+360 px; the name column takes the rest), the small "component" tag (an outline,
 no fill), the yield figures, the 44 px portion buttons and the open slot: a
 dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
@@ -200,15 +202,21 @@ Screenshots: `docs/screenshots/cook-*`.
 `#/start`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook`
 ([behaviour](behaviour.md#classics)). The navigation icon for Start is a bowl
 with a line of steam. Lists use the `.rows` style with 44 px rows. The recipe is
-a two-column grid per line: the amount (bold, left) and the name, with the
-source's wording, notes and "settled by us" in muted text below; no colour
+a two-column grid per line: the amount (bold, left, as wide as its longest word, at most 8 rem) and the name, with the
+cooking note and "settled by us" in muted text below; a line without an amount is its
+name alone from the left edge (`.recipe-line-bare`); the source's wording and the remarks about the
+source are not in the line (they are in Source); no colour
 carries a meaning. Cooking shows one step in `--fs-lg`, a progress bar in
-`--accent`, and Back and Next as 56 px buttons in a 1:2 grid; the technique note is a box with
+`--accent`, and Back and Next as 56 px buttons in a 1:2 grid **on a bar that
+sticks above the bottom navigation** (`.cook-buttons`: `--surface`, a `--border` line on top,
+`bottom: var(--nav-real-h)`, `--nav-real-h` being the measured height of the bar, which grows with
+two-line German labels); the technique note is a box with
 `--accent-soft` and a `--border` outline, its "why" behind a 44 px summary; a handling note is the same box under it, no louder. "Instead" is a quiet 44 px button in the second column of a line; its panel spans the line and holds one outlined card per replacement. The
 dish screen runs name, portions, ingredients, "Cook step by step", method, and
-then Nutrition per portion, Source, What we settled and Second check, each a closed `<details>`
+then Nutrition per portion and Source, each a closed `<details>`
 (`.foot-block`, 44 px summary) so that the ingredients are on the first screen
-at 360 x 720. The whole recipe is a `<details>` too. Nutrition is a two-column list (names left, numbers right, bold, a `--divider` line between rows) in plain text colour: no colour, bar or icon carries a meaning. Tokens only, in
+at 360 x 720; Source holds the one-line citation, the link, how it was checked and "Remarks on the source" as a
+plain list. What was left out of the nutrition is a second `<details>` inside it. The whole recipe is a `<details>` too. Nutrition is a two-column list (names left, numbers right, bold, a `--divider` line between rows) in plain text colour: no colour, bar or icon carries a meaning. Tokens only, in
 `styles/classics.css` and `styles/nutrition.css`. Screenshots: `docs/screenshots/classics-*`.
 
 # Stock screens
@@ -228,9 +236,13 @@ others `--surface` with a `--border` outline. A line or slot of the editor is
 a bordered card of the list-row family; the picker opens inside it. Percent
 lines show their unit as a fixed muted "%", with the grams they come to in
 `--text-muted` below. A value that cannot be stored gets the dashed outline
-of the number fields and a quiet sentence next to Save, never an alarm
-colour. The toast is a bordered `--surface` box with the accent bar, above the
-bottom navigation on a phone and in the corner from 720 px. No new token.
+of the number fields and a quiet sentence **at that field** (`.hint.field-error`, the left
+bar of the hint style, announced as an alert), never an alarm colour. Save and
+Discard are a bar that sticks above the bottom navigation (`.editor-bar`, `--surface`, a `--border`
+line on top, side by side at 360 px). The toast is a bordered `--surface` box with the accent bar, above the
+bottom navigation on a phone and in the corner from 720 px; it ends by itself after 10 s and when
+the user goes to another screen, and the page keeps room under its last row while it shows
+([behaviour](behaviour.md#toast-and-undo)). No new token.
 Rules of use: [behaviour](behaviour.md#editor).
 
 # Icons

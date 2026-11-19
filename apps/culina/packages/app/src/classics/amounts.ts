@@ -25,9 +25,14 @@ export const lineAmountText = (
 const TIME = { s: t.seconds, min: t.minutes, h: t.hours } as const;
 const TEMPERATURE = { C: t.celsius, F: t.fahrenheit } as const;
 
+/** A number of a time or temperature in the user's language: "2,5" in German. */
+const figure = (n: number | undefined): string | undefined =>
+  n === undefined ? undefined : formatNumber(n, 2);
+
 /** Time as the source gives it. */
-export const timeText = (time: StepTime): string => TIME[time.unit](time.value, time.to);
+export const timeText = (time: StepTime): string =>
+  TIME[time.unit](figure(time.value) as string, figure(time.to));
 
 /** Temperature as the source gives it. */
 export const temperatureText = (temperature: StepTemperature): string =>
-  TEMPERATURE[temperature.unit](temperature.value, temperature.to);
+  TEMPERATURE[temperature.unit](figure(temperature.value) as string, figure(temperature.to));

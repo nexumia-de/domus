@@ -51,7 +51,7 @@
             "unit": "quart",
             "original": "1 quart of fresh milk"
           },
-          "note": {
+          "sourceNote": {
             "en": "The second edition gives the quart only as a unit (Qt) without a legible number; the source's 1 quart is used.",
             "de": "Die deutsche Ausgabe nennt die Einheit Qt ohne lesbare Zahl; verwendet wird das 1 Quart der Quelle."
           }
@@ -86,10 +86,11 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "note": {
+          "sourceNote": {
             "en": "No quantity given: to taste.",
             "de": "Keine Menge angegeben: nach Geschmack."
-          }
+          },
+          "amountWord": "to-taste"
         },
         {
           "key": "lemon",
@@ -98,8 +99,12 @@
             "id": "fdc-167749"
           },
           "note": {
-            "en": "Lemon peel. The source also allows a little vanilla or a few pounded bitter almonds; lemon peel is used here. No quantity given.",
-            "de": "Zitronenschale. Die Quelle erlaubt auch etwas Vanille oder einige gestoßene bittere Mandeln; hier wird Zitronenschale verwendet. Keine Menge angegeben."
+            "en": "Lemon peel.",
+            "de": "Zitronenschale."
+          },
+          "sourceNote": {
+            "en": "The source also allows a little vanilla or a few pounded bitter almonds. Lemon peel is used here. No quantity given.",
+            "de": "Die Quelle erlaubt auch etwas Vanille oder einige gestoßene bittere Mandeln. Hier wird Zitronenschale verwendet. Keine Menge angegeben."
           }
         }
       ],
@@ -146,11 +151,11 @@
             "unit": "count",
             "original": "the whites of eggs"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The source gives no number for the whites; they come from the 2 eggs of the yolks.",
             "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern der Eigelb."
-          }
+          },
+          "settled": true
         },
         {
           "key": "froth-sugar",
@@ -159,8 +164,12 @@
             "id": "fdc-group-sugars"
           },
           "note": {
-            "en": "To sprinkle; no quantity given.",
-            "de": "Zum Bestreuen; keine Menge angegeben."
+            "en": "To sprinkle.",
+            "de": "Zum Bestreuen."
+          },
+          "sourceNote": {
+            "en": "No quantity given.",
+            "de": "Keine Menge angegeben."
           }
         }
       ],

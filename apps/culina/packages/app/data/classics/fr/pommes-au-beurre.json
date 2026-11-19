@@ -67,8 +67,12 @@
             "id": "fdc-group-sugars"
           },
           "note": {
-            "en": "\"sucre pilé\", crushed sugar. The book gives no amount.",
-            "de": "\"sucre pilé\", gestoßener Zucker. Das Buch gibt keine Menge an."
+            "en": "\"sucre pilé\", crushed sugar.",
+            "de": "\"sucre pilé\", gestoßener Zucker."
+          },
+          "sourceNote": {
+            "en": "The book gives no amount.",
+            "de": "Das Buch gibt keine Menge an."
           }
         },
         {
@@ -82,7 +86,7 @@
             "unit": "g",
             "original": "40 grammes de beurre"
           },
-          "note": {
+          "sourceNote": {
             "en": "The book greases the dish with a layer of butter of 3 millimetres; the amount for the layer is not stated.",
             "de": "Das Buch fettet die Form mit einer Butterschicht von 3 Millimetern; die Menge für die Schicht nennt es nicht."
           }

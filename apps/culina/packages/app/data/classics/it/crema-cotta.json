@@ -71,8 +71,12 @@
             "id": "fdc-173471"
           },
           "note": {
-            "en": "A scent of vanilla (odore di vainiglia); no amount given.",
-            "de": "Ein Hauch Vanille (odore di vainiglia); keine Menge angegeben."
+            "en": "A scent of vanilla (odore di vainiglia).",
+            "de": "Ein Hauch Vanille (odore di vainiglia)."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         }
       ],

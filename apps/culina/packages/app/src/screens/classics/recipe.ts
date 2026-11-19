@@ -9,12 +9,13 @@ import type { LineExtra } from './substitute-block';
 const t = strings.classics;
 
 export const lineItem = (line: LineView, extra?: LineExtra): HTMLElement => {
-  const item = el('li', 'recipe-line');
-  const amount = el('span', 'recipe-amount num', line.amount ?? line.unmeasured ?? '');
+  const written = line.amount ?? line.amountWord;
+  // A line without an amount shows its name alone: nothing is made up for it.
+  const item = el('li', written === undefined ? 'recipe-line recipe-line-bare' : 'recipe-line');
   const name = el('span', 'recipe-name', line.name);
-  item.append(amount, name);
+  if (written === undefined) item.append(name);
+  else item.append(el('span', 'recipe-amount num', written), name);
   const extras = [
-    line.original === undefined ? undefined : `(${line.original})`,
     line.note,
     line.optional ? t.optional : undefined,
     line.settled ? t.settledMark : undefined,

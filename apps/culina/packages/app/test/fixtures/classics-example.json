@@ -69,9 +69,10 @@
                 "kind": "ingredient",
                 "id": "fdc-173468"
               },
-              "note": {
-                "en": "to taste",
-                "de": "nach Geschmack"
+              "amountWord": "to-taste",
+              "sourceNote": {
+                "en": "Invented example: the source says to taste.",
+                "de": "Erfundenes Beispiel: die Quelle sagt nach Geschmack."
               }
             }
           ],
@@ -105,7 +106,12 @@
                 "en": "Season with the salt.",
                 "de": "Mit dem Salz abschmecken."
               },
-              "uses": ["salt"]
+              "uses": ["salt"],
+              "time": { "value": 1.5, "to": 2.5, "unit": "h" },
+              "sourceNote": {
+                "en": "Invented example: the time is a range the source gives.",
+                "de": "Erfundenes Beispiel: die Zeit ist eine Spanne der Quelle."
+              }
             }
           ]
         }

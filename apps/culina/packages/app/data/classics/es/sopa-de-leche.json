@@ -84,8 +84,12 @@
             "id": "fdc-171320"
           },
           "note": {
-            "en": "One small stick of cinnamon (una astillita de canela). The size is not read in the book, so the line has no amount.",
-            "de": "Ein kleines Stück Zimtstange (una astillita de canela). Die Größe steht nicht im Buch, daher ohne Menge."
+            "en": "One small stick of cinnamon (una astillita de canela).",
+            "de": "Ein kleines Stück Zimtstange (una astillita de canela)."
+          },
+          "sourceNote": {
+            "en": "The size is not read in the book, so the line has no amount.",
+            "de": "Die Größe steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -107,8 +111,12 @@
             "id": "fdc-172686"
           },
           "note": {
-            "en": "Bread cut into thin slices and put in the tureen (el pan cortado). The source gives no amount.",
-            "de": "Brot in dünne Scheiben geschnitten und in die Suppenschüssel gelegt (el pan cortado). Die Quelle gibt keine Menge an."
+            "en": "Bread cut into thin slices and put in the tureen (el pan cortado).",
+            "de": "Brot in dünne Scheiben geschnitten und in die Suppenschüssel gelegt (el pan cortado)."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         }
       ],

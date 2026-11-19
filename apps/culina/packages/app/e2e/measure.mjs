@@ -14,6 +14,25 @@ export const overflow = (page) =>
     };
   });
 
+/** Words that break in the middle at some place: a word with text rects on more than one line. */
+export const brokenWords = (page, selector) =>
+  page.evaluate((sel) => {
+    const out = [];
+    for (const node of document.querySelectorAll(sel)) {
+      const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+      for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+        for (const m of t.textContent.matchAll(/\S+/g)) {
+          const range = document.createRange();
+          range.setStart(t, m.index);
+          range.setEnd(t, m.index + m[0].length);
+          const lines = new Set([...range.getClientRects()].map((r) => Math.round(r.top)));
+          if (lines.size > 1) out.push(m[0]);
+        }
+      }
+    }
+    return out;
+  }, selector);
+
 export const smallTargets = (page) =>
   page.evaluate(() =>
     [

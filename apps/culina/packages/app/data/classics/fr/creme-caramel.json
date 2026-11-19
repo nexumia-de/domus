@@ -45,7 +45,7 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: la contenance d'un petit pot (the content of one small pot). The book gives no size for the small pot, so no amount.",
             "de": "Original: la contenance d'un petit pot (der Inhalt eines kleinen Topfes). Das Buch gibt die Größe des kleinen Topfes nicht an, daher keine Menge."
           }
@@ -82,7 +82,7 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: une quantité de lait égale à la contenance de 3 des petits pots (as much milk as 3 small pots hold). The book gives no size for the small pot, so no amount.",
             "de": "Original: une quantité de lait égale à la contenance de 3 des petits pots (so viel Milch, wie 3 kleine Töpfe fassen). Das Buch gibt die Größe des kleinen Topfes nicht an, daher keine Menge."
           }
@@ -117,7 +117,7 @@
             "kind": "component",
             "id": "caramel"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: un pot de caramel (one small pot of caramel). The caramel takes the place of the coffee of the book's coffee custard.",
             "de": "Original: un pot de caramel (ein kleiner Topf Karamell). Das Karamell tritt an die Stelle des Kaffees der Kaffeecreme im Buch."
           }

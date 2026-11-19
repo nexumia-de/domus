@@ -44,6 +44,8 @@
   grid-area: main;
   min-width: 0;
   padding: var(--sp-4);
+  /* While a toast shows, the last row can be scrolled above it. */
+  padding-bottom: calc(var(--sp-4) + var(--toast-space, 0px));
 }
 
 .app-main:focus {

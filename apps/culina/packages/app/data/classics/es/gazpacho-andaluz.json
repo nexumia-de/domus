@@ -66,8 +66,12 @@
             "id": "fdc-172686"
           },
           "note": {
-            "en": "Crumb of half a loaf (miga de medio pan), soaked in water beforehand. The size of the half loaf is not read in the book, so the line has no amount.",
-            "de": "Krume von einem halben Brot (miga de medio pan), vorher in Wasser eingeweicht. Die Größe des halben Brots steht nicht im Buch, daher ohne Menge."
+            "en": "Crumb of half a loaf (miga de medio pan), soaked in water beforehand.",
+            "de": "Krume von einem halben Brot (miga de medio pan), vorher in Wasser eingeweicht."
+          },
+          "sourceNote": {
+            "en": "The size of the half loaf is not read in the book, so the line has no amount.",
+            "de": "Die Größe des halben Brots steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -77,8 +81,12 @@
             "id": "fdc-group-oil"
           },
           "note": {
-            "en": "A small cup of raw oil (una pequeña taza de aceite crudo). The size of the cup is not read in the book, so the line has no amount. The kind of oil is not named.",
-            "de": "Eine kleine Tasse rohes Öl (una pequeña taza de aceite crudo). Die Größe der Tasse steht nicht im Buch, daher ohne Menge. Die Ölsorte ist nicht genannt."
+            "en": "A small cup of raw oil (una pequeña taza de aceite crudo).",
+            "de": "Eine kleine Tasse rohes Öl (una pequeña taza de aceite crudo)."
+          },
+          "sourceNote": {
+            "en": "The size of the cup is not read in the book, so the line has no amount. The kind of oil is not named.",
+            "de": "Die Größe der Tasse steht nicht im Buch, daher ohne Menge. Die Ölsorte ist nicht genannt."
           }
         },
         {
@@ -87,9 +95,10 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "note": {
-            "en": "To taste (al gusto).",
-            "de": "Nach Geschmack (al gusto)."
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Source wording: \"al gusto\".",
+            "de": "Quellenwortlaut: \"al gusto\"."
           }
         },
         {
@@ -98,9 +107,10 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "note": {
-            "en": "To taste (al gusto).",
-            "de": "Nach Geschmack (al gusto)."
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Source wording: \"al gusto\".",
+            "de": "Quellenwortlaut: \"al gusto\"."
           }
         }
       ],

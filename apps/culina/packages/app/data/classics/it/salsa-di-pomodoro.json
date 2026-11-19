@@ -39,7 +39,7 @@
             "unit": "count",
             "original": "un quarto di cipolla"
           },
-          "note": {
+          "sourceNote": {
             "en": "A quarter of an onion, as the source gives it.",
             "de": "Ein Viertel einer Zwiebel, wie die Quelle sie nennt."
           }
@@ -55,7 +55,7 @@
             "unit": "count",
             "original": "uno spicchio d'aglio"
           },
-          "note": {
+          "sourceNote": {
             "en": "One clove, read as one piece (judgement).",
             "de": "Eine Zehe, als ein Stück gelesen (Urteil)."
           }
@@ -93,9 +93,10 @@
             "kind": "ingredient",
             "id": "fdc-170416"
           },
+          "amountWord": "as-needed",
           "note": {
-            "en": "As much as needed; fresh parsley.",
-            "de": "Nach Bedarf; frische Petersilie."
+            "en": "Fresh parsley.",
+            "de": "Frische Petersilie."
           }
         },
         {

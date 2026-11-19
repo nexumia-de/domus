@@ -35,8 +35,12 @@
             "de": "Gekochtes Fleisch (Lesso)"
           },
           "note": {
-            "en": "'The usual boiled meat'. The source gives neither kind nor weight.",
-            "de": "'Das übliche Lesso'. Die Quelle nennt weder Sorte noch Gewicht."
+            "en": "'The usual boiled meat'.",
+            "de": "'Das übliche Lesso'."
+          },
+          "sourceNote": {
+            "en": "The source gives neither kind nor weight.",
+            "de": "Die Quelle nennt weder Sorte noch Gewicht."
           }
         },
         {
@@ -46,8 +50,12 @@
             "de": "Fleischbrühe"
           },
           "note": {
-            "en": "The beans and the soup are cooked in broth; no amount is given.",
-            "de": "Bohnen und Suppe werden in Brühe gegart; keine Menge angegeben."
+            "en": "The beans and the soup are cooked in broth.",
+            "de": "Bohnen und Suppe werden in Brühe gegart."
+          },
+          "sourceNote": {
+            "en": "No amount is given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -57,8 +65,12 @@
             "de": "Frische Bohnen (ausgelöst)"
           },
           "note": {
-            "en": "'A handful' of shelled fresh beans; the source gives no weight and no size of the handful.",
-            "de": "'Eine Handvoll' ausgelöste frische Bohnen; die Quelle gibt weder Gewicht noch die Größe der Handvoll an."
+            "en": "'A handful' of shelled fresh beans.",
+            "de": "'Eine Handvoll' ausgelöste frische Bohnen."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight and no size of the handful.",
+            "de": "Die Quelle gibt weder Gewicht noch die Größe der Handvoll an."
           }
         },
         {
@@ -68,8 +80,12 @@
             "de": "Wirsingkohl"
           },
           "note": {
-            "en": "Cut into thin strips; no amount.",
-            "de": "In dünne Streifen geschnitten; keine Menge."
+            "en": "Cut into thin strips.",
+            "de": "In dünne Streifen geschnitten."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -86,8 +102,12 @@
             "id": "fdc-169991"
           },
           "note": {
-            "en": "'A little' chard; no amount.",
-            "de": "'Wenig' Mangold; keine Menge."
+            "en": "'A little' chard.",
+            "de": "'Wenig' Mangold."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -121,8 +141,12 @@
             "id": "fdc-170416"
           },
           "note": {
-            "en": "'A pinch'; the source gives no weight for it.",
-            "de": "'Ein Pizzico'; die Quelle gibt dafür kein Gewicht an."
+            "en": "'A pinch'.",
+            "de": "'Ein Pizzico'."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight for it.",
+            "de": "Die Quelle gibt dafür kein Gewicht an."
           }
         },
         {
@@ -170,8 +194,12 @@
             "id": "fdc-170000"
           },
           "note": {
-            "en": "'Very little' onion; no amount.",
-            "de": "'Ganz wenig' Zwiebel; keine Menge."
+            "en": "'Very little' onion.",
+            "de": "'Ganz wenig' Zwiebel."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -181,8 +209,12 @@
             "de": "Tomatensauce oder Tomatenmark"
           },
           "note": {
-            "en": "'A little'; the source gives no amount.",
-            "de": "'Ein wenig'; die Quelle gibt keine Menge an."
+            "en": "'A little'.",
+            "de": "'Ein wenig'."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         },
         {
@@ -206,8 +238,12 @@
             "id": "fdc-group-rice-white"
           },
           "note": {
-            "en": "'Enough' rice to make the soup nearly dry; no amount.",
-            "de": "'Reichlich' Reis, bis die Suppe fast trocken ist; keine Menge."
+            "en": "'Enough' rice to make the soup nearly dry.",
+            "de": "'Reichlich' Reis, bis die Suppe fast trocken ist."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -217,8 +253,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'A good pinch'; no amount.",
-            "de": "'Ein guter Pizzico'; keine Menge."
+            "en": "'A good pinch'.",
+            "de": "'Ein guter Pizzico'."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],

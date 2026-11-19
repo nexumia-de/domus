@@ -13,7 +13,8 @@ import {
   type Found,
 } from '../../catalogue/tree';
 import { getIngredient } from '../../notebook';
-import { foundThrough, startsWithAnyName } from '../../shared/names';
+import { appLang } from '../../shared/locale';
+import { displayName, foundThrough, startsWithAnyName } from '../../shared/names';
 import type { IngredientRecord } from '../../records';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -69,17 +70,22 @@ export const catalogueSection = (
     const button = el('button', 'entry-row row-link picker-choice');
     button.type = 'button';
     const about = meta(entry);
-    button.append(el('span', 'entry-name', shortName(entry, parent)));
-    if (other !== undefined) {
-      // Found through a name in another language: that name stands beside the English one.
-      const alt = el('span', 'entry-alt', other.name);
-      alt.lang = other.lang;
-      button.append(alt);
+    // In German the German name leads when the entry has one, and the English name stands beside
+    // it; without one the English name is shown as it is. In English it is the other way round: a
+    // name found in another language stands beside the English one.
+    const german = appLang === 'de' ? entry.names?.['de']?.name : undefined;
+    const shown = german ?? shortName(entry, parent);
+    button.append(el('span', 'entry-name', shown));
+    const alt = german !== undefined ? entry.name : other?.name;
+    if (alt !== undefined && alt !== shown) {
+      const note = el('span', 'entry-alt', alt);
+      note.lang = german !== undefined ? 'en' : (other?.lang ?? 'en');
+      button.append(note);
     }
     if (about !== undefined) button.append(el('span', 'entry-meta', about));
     // A variant shows only what follows its parent's name; the full name is its accessible name.
-    if (parent !== undefined)
-      button.setAttribute('aria-label', [entry.name, about].join(' ').trim());
+    if (parent !== undefined || german !== undefined)
+      button.setAttribute('aria-label', [german ?? entry.name, about].join(' ').trim());
     button.addEventListener('click', () => void choose(entry));
     return button;
   };
@@ -95,7 +101,10 @@ export const catalogueSection = (
     const toggle = el('button', 'picker-toggle');
     toggle.type = 'button';
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', (open ? t.catalogueHide : t.catalogueShow)(found.entry.name));
+    toggle.setAttribute(
+      'aria-label',
+      (open ? t.catalogueHide : t.catalogueShow)(displayName(found.entry, appLang)),
+    );
     toggle.append(
       el('span', 'picker-chevron', open ? '▾' : '▸'),
       el('span', 'picker-count', t.catalogueVariants(found.below)),

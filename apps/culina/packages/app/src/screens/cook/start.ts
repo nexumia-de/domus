@@ -79,7 +79,9 @@ export const startSection = (
             return {
               id: i.id,
               name: displayName(i, appLang),
-              ...(through ? { note: t.startFoundThrough(through.name) } : {}),
+              ...(through && through.name !== displayName(i, appLang)
+                ? { note: t.startFoundThrough(through.name) }
+                : {}),
             };
           }),
       ),

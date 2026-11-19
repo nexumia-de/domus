@@ -144,7 +144,7 @@
             "kind": "ingredient",
             "id": "fdc-173468"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: 1 petite pincée de sel (a small pinch). The book sizes a pinch, not a small one, so the line has no amount.",
             "de": "Original: 1 petite pincée de sel (eine kleine Prise). Das Buch gibt die Größe einer Prise an, nicht die einer kleinen; daher keine Menge."
           }
@@ -155,7 +155,7 @@
             "kind": "ingredient",
             "id": "fdc-170416"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount.",
             "de": "Original: 1 demi-cuillerée à bouche de persil haché. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge."
           }
@@ -166,7 +166,7 @@
             "kind": "ingredient",
             "id": "fdc-167747"
           },
-          "note": {
+          "sourceNote": {
             "en": "Original: 1 cuillerée à café de jus de citron. The book gives no size for a coffee spoon, so no amount.",
             "de": "Original: 1 cuillerée à café de jus de citron. Das Buch gibt für den Kaffeelöffel keine Größe an, daher keine Menge."
           }

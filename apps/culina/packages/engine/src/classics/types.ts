@@ -36,10 +36,18 @@ interface Ingredient {
   settled?: true;
 }
 
+/** What a line without an amount says, where the source says it: "to taste" or "as needed". */
+export type AmountWord = 'to-taste' | 'as-needed';
+
 export interface ClassicLine extends Ingredient {
   role?: string;
   state?: FoodState;
+  /** Cooking help for the line, shown with it and when cooking. */
   note?: I18nText;
+  /** A remark about the source (no amount, an unreadable scan, a choice we made); shown only in the dish's source section. */
+  sourceNote?: I18nText;
+  /** Only on a line without `amount`, and only where the source says "to taste" or "as needed". */
+  amountWord?: AmountWord;
 }
 
 export interface ClassicSlot extends Ingredient {

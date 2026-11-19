@@ -63,7 +63,7 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source reads \"% pound of freshened butter\". The fraction is not legible in either text, so no amount is given.",
             "de": "Die Quelle nennt \"% Pfund frisch gemachte Butter\". Der Bruch ist in beiden Texten nicht lesbar, daher keine Menge."
           }
@@ -75,8 +75,12 @@
             "id": "fdc-170568"
           },
           "note": {
-            "en": "Coarsely pounded. The source reads \"% pound\"; the fraction is not legible in either text (the German edition's \"4 Pfd.\" is not one half), so no amount is given.",
-            "de": "Grob gestoßen. Die Quelle nennt \"% Pfund\"; der Bruch ist in keinem der beiden Texte lesbar (die deutsche Ausgabe nennt \"4 Pfd.\"), daher keine Menge."
+            "en": "Coarsely pounded.",
+            "de": "Grob gestoßen."
+          },
+          "sourceNote": {
+            "en": "The source reads \"% pound\". The fraction is not legible in either text (the German edition's \"4 Pfd.\" is not one half), so no amount is given.",
+            "de": "Die Quelle nennt \"% Pfund\". Der Bruch ist in keinem der beiden Texte lesbar (die deutsche Ausgabe nennt \"4 Pfd.\"), daher keine Menge."
           }
         },
         {
@@ -85,7 +89,7 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source reads \"% pound of sugar\"; the fraction is not legible in either text, so no amount is given.",
             "de": "Die Quelle nennt \"% Pfund Zucker\"; der Bruch ist in keinem der beiden Texte lesbar, daher keine Menge."
           }
@@ -114,8 +118,12 @@
             "original": "1 cupful of fresh warm milk"
           },
           "note": {
-            "en": "Fresh warm milk. The German edition's quantity is not clearly legible (\"d Dt.\"); the source's 1 cupful stands.",
-            "de": "Frische, warme Milch. Die Menge der deutschen Ausgabe ist nicht eindeutig lesbar (\"d Dt.\"); es gilt die 1 Tasse der Quelle."
+            "en": "Fresh warm milk.",
+            "de": "Frische, warme Milch."
+          },
+          "sourceNote": {
+            "en": "The German edition's quantity is not clearly legible (\"d Dt.\"). The source's 1 cupful stands.",
+            "de": "Die Menge der deutschen Ausgabe ist nicht eindeutig lesbar (\"d Dt.\"). Es gilt die 1 Tasse der Quelle."
           }
         },
         {
@@ -140,7 +148,7 @@
             "unit": "teaspoonful",
             "original": "% teaspoonful of salt"
           },
-          "note": {
+          "sourceNote": {
             "en": "Read as one half: the English text shows a damaged fraction (\"%\"), the German edition shows one half (\"½ Theelöffel\").",
             "de": "Als ein halber Teelöffel gelesen: der englische Text zeigt einen verstümmelten Bruch, die deutsche Ausgabe ½ Theelöffel."
           }
@@ -152,8 +160,12 @@
             "id": "fdc-175043"
           },
           "note": {
-            "en": "The source gives no quantity; the yeast is dissolved before it goes into the dough.",
-            "de": "Die Quelle nennt keine Menge; die Hefe wird vor dem Einrühren aufgelöst."
+            "en": "The yeast is dissolved before it goes into the dough.",
+            "de": "Die Hefe wird vor dem Einrühren aufgelöst."
+          },
+          "sourceNote": {
+            "en": "The source gives no quantity.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -163,8 +175,12 @@
             "id": "fdc-174928"
           },
           "note": {
-            "en": "To sprinkle into the buttered pan; no quantity given.",
-            "de": "Zum Ausstreuen der gefetteten Form; keine Menge angegeben."
+            "en": "To sprinkle into the buttered pan.",
+            "de": "Zum Ausstreuen der gefetteten Form."
+          },
+          "sourceNote": {
+            "en": "No quantity given.",
+            "de": "Keine Menge angegeben."
           }
         }
       ],

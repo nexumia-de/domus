@@ -77,7 +77,7 @@
             "kind": "ingredient",
             "id": "fdc-group-cream-fluid"
           },
-          "note": {
+          "sourceNote": {
             "en": "Un poco de nata: a little cream, no amount given.",
             "de": "Un poco de nata: etwas Sahne, keine Menge angegeben."
           }

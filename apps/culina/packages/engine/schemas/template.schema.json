@@ -27,6 +27,20 @@
     "source": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
     },
+    "references": {
+      "description": "What the ratio card shows as its source: author, title and, where the data has it, the page. `source` stays the pointer into the repository and is not shown.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["author", "title"],
+        "additionalProperties": false,
+        "properties": {
+          "author": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "page": { "type": "string", "minLength": 1, "maxLength": 30 }
+        }
+      }
+    },
     "parentId": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
     },

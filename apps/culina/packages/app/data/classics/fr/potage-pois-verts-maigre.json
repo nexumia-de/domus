@@ -89,7 +89,7 @@
             "en": "Water (the cooking water of the peas)",
             "de": "Wasser (das Kochwasser der Erbsen)"
           },
-          "note": {
+          "sourceNote": {
             "en": "The gras version moistens the purée with 2 litres of chicken consommé (gouffe.txt line 19440). The meatless text gives no amount for the cooking water of the peas.",
             "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet (gouffe.txt Zeile 19440). Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
           }
@@ -165,7 +165,7 @@
             "unit": "g",
             "original": "1 hecto de riz"
           },
-          "note": {
+          "sourceNote": {
             "en": "The amount is that of the gras version, where the rice is blanched first; the meatless version gives only the cooking method.",
             "de": "Die Menge stammt aus der fetten Fassung, wo der Reis zuerst blanchiert wird; die fleischlose Fassung nennt nur die Garweise."
           }
@@ -177,8 +177,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "For cooking the rice. The source gives no amount.",
-            "de": "Zum Garen des Reises. Die Quelle nennt keine Menge."
+            "en": "For cooking the rice.",
+            "de": "Zum Garen des Reises."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -188,8 +192,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "Butter for cooking the rice. The source gives no amount.",
-            "de": "Butter zum Garen des Reises. Die Quelle nennt keine Menge."
+            "en": "Butter for cooking the rice.",
+            "de": "Butter zum Garen des Reises."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -204,8 +212,12 @@
             "original": "60 grammes de beurre"
           },
           "note": {
-            "en": "Added at the end; the meatless version says to finish as the gras soup.",
-            "de": "Am Ende zugegeben; die fleischlose Fassung sagt, man fertige wie die fette Suppe."
+            "en": "Added at the end.",
+            "de": "Am Ende zugegeben."
+          },
+          "sourceNote": {
+            "en": "The meatless version says to finish as the gras soup.",
+            "de": "Die fleischlose Fassung sagt, man fertige wie die fette Suppe."
           }
         }
       ],

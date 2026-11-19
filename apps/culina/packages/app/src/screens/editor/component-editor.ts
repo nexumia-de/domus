@@ -28,6 +28,7 @@ import {
   today,
 } from '../../notebook';
 import { hashFor } from '../../router';
+import { parseEntry } from '../../shared/parse';
 import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { strings } from '../../strings';
@@ -35,7 +36,16 @@ import { linesEditor } from './component-lines-editor';
 import { removeWithUndo } from './delete';
 import { draftSession } from './draft-session';
 import { editorActions } from './editor-actions';
-import { areaField, bareSelect, button, mark, textField } from './form-bits';
+import {
+  areaField,
+  bareSelect,
+  button,
+  fieldError,
+  focusFirstError,
+  mark,
+  textField,
+  type RowProblem,
+} from './form-bits';
 import { ratioInfo } from './ratio-info';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
@@ -110,8 +120,10 @@ const build = (
   };
 
   const name = textField(t.nameLabel, form.name);
+  const nameError = fieldError(name.control);
   name.control.addEventListener('input', () => {
     form.name = name.control.value;
+    if (form.name.trim() !== '') nameError.clear();
     changed();
   });
   const role = bareSelect(
@@ -198,6 +210,8 @@ const build = (
     button(t.addIngredient, 'quiet', () => lines.add('ingredient')),
     button(t.addSubComponent, 'quiet', () => lines.add('component')),
   );
+  // What concerns the lines as a whole (none yet, a cycle) stands under the buttons that fix it.
+  const linesError = fieldError(addRow.querySelector('button') ?? undefined);
 
   const yieldAmount = textField(t.yieldLabel, form.yieldAmount, true);
   const yieldUnit = bareSelect(
@@ -205,9 +219,11 @@ const build = (
     MASS_ONLY.map((u) => ({ value: u, label: u })),
     form.yieldUnit,
   );
+  const yieldError = fieldError(yieldAmount.control);
   yieldAmount.control.addEventListener('input', () => {
     form.yieldAmount = yieldAmount.control.value;
     delete form.yieldSource;
+    if (parseEntry(form.yieldAmount).kind !== 'invalid') yieldError.clear();
     changed();
   });
   yieldUnit.addEventListener('change', () => {
@@ -251,6 +267,28 @@ const build = (
     status,
   });
 
+  /** Each problem at the field it concerns; the bar says only that there is something to check. */
+  const showProblems = (problems: readonly Problem[]): void => {
+    nameError.clear();
+    linesError.clear();
+    yieldError.clear();
+    const rows = new Map<number, RowProblem[]>();
+    const lineProblems: string[] = [];
+    for (const p of problems) {
+      if (p.code === 'name') nameError.show(needsText(p));
+      else if (p.code === 'yield') yieldError.show(needsText(p));
+      else if (p.code === 'ingredient' || p.code === 'amount') {
+        const at = rows.get(p.index) ?? [];
+        at.push({ target: p.code === 'ingredient' ? 'pick' : 'amount', text: needsText(p) });
+        rows.set(p.index, at);
+      } else lineProblems.push(needsText(p));
+    }
+    if (lineProblems.length > 0) linesError.show(lineProblems.join(' '));
+    lines.showProblems(rows);
+    status.textContent = t.needs.summary;
+    focusFirstError(screen);
+  };
+
   const save = async (): Promise<void> => {
     const built = formToRecord(form, today());
     const problems: Problem[] = built.ok ? [] : built.problems;
@@ -264,9 +302,10 @@ const build = (
       problems.push({ code: 'cycle' });
     }
     if (!built.ok || problems.length > 0) {
-      status.textContent = problems.map(needsText).join(' ');
+      showProblems(problems);
       return;
     }
+    status.textContent = '';
     const record = asNextVersion(
       built.record,
       form.isNew,
@@ -300,6 +339,7 @@ const build = (
 
   screen.append(
     name.wrap,
+    nameError.node,
     roleWrap,
     entry,
     referenceWrap,
@@ -307,8 +347,10 @@ const build = (
     el('h2', undefined, t.linesHeading),
     lines.element,
     addRow,
+    linesError.node,
     el('h2', undefined, t.yieldHeading),
     yieldRow,
+    yieldError.node,
     el('p', 'muted', t.yieldHelp),
     notes.wrap,
   );

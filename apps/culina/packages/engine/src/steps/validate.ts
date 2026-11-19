@@ -29,6 +29,9 @@ export function stepFindings(
   (owner.steps ?? []).forEach((step, i) => {
     const at = `${base}.steps[${i}]`;
     if (!isI18nText(step.text)) out.push(found('text-incomplete', `${at}.text`));
+    if (step.sourceNote !== undefined && !isI18nText(step.sourceNote)) {
+      out.push(found('text-incomplete', `${at}.sourceNote`));
+    }
     if (step.technique !== undefined && !techniqueIds.has(step.technique)) {
       out.push(found('unknown-technique', `${at}.technique`, step.technique));
     }

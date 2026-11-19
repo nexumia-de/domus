@@ -56,8 +56,12 @@
             "original": "Burro, grammi 80"
           },
           "note": {
-            "en": "Half for the onion, the rest at the end. No. 50 gives 100 g for its version with peas.",
-            "de": "Die Hälfte für die Zwiebel, der Rest am Ende. Nr. 50 nennt für seine Fassung mit Erbsen 100 g."
+            "en": "Half for the onion, the rest at the end.",
+            "de": "Die Hälfte für die Zwiebel, der Rest am Ende."
+          },
+          "sourceNote": {
+            "en": "No. 50 gives 100 g for its version with peas.",
+            "de": "Nr. 50 nennt für seine Fassung mit Erbsen 100 g."
           }
         },
         {
@@ -82,9 +86,10 @@
             "kind": "ingredient",
             "id": "fdc-170934"
           },
+          "amountWord": "as-needed",
           "note": {
-            "en": "As much as needed to make the rice a good yellow.",
-            "de": "So viel, dass der Reis schön gelb wird."
+            "en": "To make the rice a good yellow.",
+            "de": "Damit der Reis schön gelb wird."
           }
         },
         {
@@ -93,9 +98,10 @@
             "kind": "ingredient",
             "id": "fdc-group-cheese-parmesan"
           },
+          "amountWord": "as-needed",
           "note": {
-            "en": "As much as needed, grated; served with the rice.",
-            "de": "Nach Bedarf, gerieben; zum Reis dazu servieren."
+            "en": "Grated; served with the rice.",
+            "de": "Gerieben; zum Reis dazu servieren."
           }
         },
         {

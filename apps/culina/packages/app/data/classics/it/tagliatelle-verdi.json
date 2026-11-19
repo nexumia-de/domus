@@ -58,8 +58,12 @@
             "id": "fdc-group-wheat-flour-white-all-purpose-enriched"
           },
           "note": {
-            "en": "As much flour as the dough takes; the source gives no weight.",
-            "de": "So viel Mehl, wie der Teig aufnimmt; die Quelle nennt kein Gewicht."
+            "en": "As much flour as the dough takes.",
+            "de": "So viel Mehl, wie der Teig aufnimmt."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle nennt kein Gewicht."
           }
         },
         {
@@ -75,7 +79,7 @@
             "en": "Cheese (cacio)",
             "de": "Käse (Cacio)"
           },
-          "note": {
+          "sourceNote": {
             "en": "Dressing: cheese and butter, as the source's simplest option.",
             "de": "Zum Anrichten: Käse und Butter, die einfachste Möglichkeit der Quelle."
           }

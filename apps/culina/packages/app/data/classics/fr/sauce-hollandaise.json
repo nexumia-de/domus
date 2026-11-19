@@ -36,8 +36,12 @@
             "id": "fdc-group-vinegar"
           },
           "note": {
-            "en": "The source gives 2 cuillerées à bouche of vinegar; the book gives no size for a tablespoon, so no amount is given. Reduced until one coffee spoon (cuillerée à café) is left; that coffee spoon is the result of the reduction, not an amount.",
-            "de": "Die Quelle nennt 2 cuillerées à bouche Essig; das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge. Eingekocht, bis ein Kaffeelöffel (cuillerée à café) übrig ist; dieser Kaffeelöffel ist das Ergebnis des Einkochens, keine Menge."
+            "en": "Reduced until one coffee spoon (cuillerée à café) is left. That coffee spoon is the result of the reduction, not an amount.",
+            "de": "Eingekocht, bis ein Kaffeelöffel (cuillerée à café) übrig ist. Dieser Kaffeelöffel ist das Ergebnis des Einkochens, keine Menge."
+          },
+          "sourceNote": {
+            "en": "The source gives 2 cuillerées à bouche of vinegar. The book gives no size for a tablespoon, so no amount is given.",
+            "de": "Die Quelle nennt 2 cuillerées à bouche Essig. Das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge."
           }
         },
         {
@@ -70,7 +74,7 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "note": {
+          "sourceNote": {
             "en": "\"2 cuillerées à bouche d'eau froide\": the book gives no size for a tablespoon, so no amount is given.",
             "de": "\"2 cuillerées à bouche d'eau froide\": das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge."
           }
@@ -110,8 +114,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "\"une cuillerée à bouche d'eau froide\", added after the third part of the butter, so that the sauce does not turn. No size is given for the spoon.",
-            "de": "\"une cuillerée à bouche d'eau froide\", nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt. Für den Löffel ist keine Größe angegeben."
+            "en": "\"une cuillerée à bouche d'eau froide\", added after the third part of the butter, so that the sauce does not turn.",
+            "de": "\"une cuillerée à bouche d'eau froide\", nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt."
+          },
+          "sourceNote": {
+            "en": "No size is given for the spoon.",
+            "de": "Für den Löffel ist keine Größe angegeben."
           }
         },
         {
@@ -121,8 +129,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Original: une cuillerée d'eau (one spoon of water, no size given). Added when all the butter is in. A third spoon of cold water is added only if the sauce is still thick.",
-            "de": "Original: une cuillerée d'eau (ein Löffel Wasser, ohne Größenangabe). Zugegeben, wenn alle Butter drin ist. Ein dritter Löffel kaltes Wasser nur, wenn die Sauce noch zu dick ist."
+            "en": "Added when all the butter is in. A third spoon of cold water is added only if the sauce is still thick.",
+            "de": "Zugegeben, wenn alle Butter drin ist. Ein dritter Löffel kaltes Wasser nur, wenn die Sauce noch zu dick ist."
+          },
+          "sourceNote": {
+            "en": "Original: une cuillerée d'eau (one spoon of water, no size given).",
+            "de": "Original: une cuillerée d'eau (ein Löffel Wasser, ohne Größenangabe)."
           }
         }
       ],

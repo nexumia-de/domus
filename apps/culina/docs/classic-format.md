@@ -191,13 +191,21 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
           "ref": { "kind": "ingredient", "id": "example-liquid" },
           "amount": { "value": 250, "max": 300, "unit": "ml" }
         },
-        { "key": "salt", "wanted": { "en": "Example salt", "de": "Beispielsalz" } },
+        {
+          "key": "salt",
+          "wanted": { "en": "Example salt", "de": "Beispielsalz" },
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Invented example: the source says to taste.",
+            "de": "Erfundenes Beispiel: die Quelle sagt nach Geschmack."
+          }
+        },
         {
           "key": "spice",
           "wanted": { "en": "Example spice", "de": "Beispielgewürz" },
           "amount": { "value": 1, "unit": "tsp" },
           "settled": true,
-          "note": { "en": "to taste", "de": "nach Geschmack" }
+          "note": { "en": "Stirred in last.", "de": "Zuletzt eingerührt." }
         }
       ],
       "steps": [
@@ -208,7 +216,11 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
           },
           "technique": "example-technique",
           "uses": ["fat"],
-          "time": { "value": 5, "unit": "min" }
+          "time": { "value": 5, "unit": "min" },
+          "sourceNote": {
+            "en": "Invented example: the source gives the time as a fraction that is not legible.",
+            "de": "Erfundenes Beispiel: die Quelle nennt die Zeit als Bruch, der nicht lesbar ist."
+          }
         },
         {
           "text": {
@@ -271,7 +283,7 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
 | `slots`        | The dish's role slots, each filled by a component of this file (`ref` kind `component`) or by an ingredient. `role` is `main`, `sauce`, `starch`, `crunch`, `acid`, `garnish` ... |
 | `settled`      | Everything we settled; an empty list when nothing.                                                                                                                                |
 | `check`        | The second check (below).                                                                                                                                                         |
-| `note`         | Optional `{ en, de }` note on the dish.                                                                                                                                           |
+| `note`         | Optional `{ en, de }` note on the dish: the transcriber's note on what was left out of the source; shown in Source ("Remarks on the source"), not at the top of the dish.         |
 
 ## Lines and slots
 
@@ -296,8 +308,26 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
 
 Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 **give one to every line that a step uses, or that is settled**), `role`,
-`state` (`raw`, `cooked`, `prepared`), `note` (`{ en, de }`, lines only) and
-`optional` (slots).
+`state` (`raw`, `cooked`, `prepared`), `note`, `sourceNote` and `amountWord`
+(lines only, below) and `optional` (slots).
+
+### Cooking help and remarks about the source are two fields
+
+A line has two texts, each `{ en, de }`, and they are shown in different places:
+
+| Field        | What it holds                                                                                                                                                                                                                                     | Where the app shows it                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `note`       | **Cooking help**: what the cook needs to know about this ingredient ("Boiled potatoes, cut into slices.", "For the buttered pan.", "Added only when cooking starts, as onions harden in vinegar.").                                               | With the line, and when cooking.                                                          |
+| `sourceNote` | **A remark about the source**: that the source gives no amount, that a number is not legible in a scan, what a second edition reads, which of the source's alternatives we chose, where a sentence is from. Our own words, with what it rests on. | Only inside **Source** at the foot of the dish, never in the line and never when cooking. |
+
+The test is one question: _would a cook standing at the stove want this?_ If it
+is about the book, the scan, the edition or our choice, it is a `sourceNote`. A
+sentence that says both is split in two. A step may have a `sourceNote` as well
+(a time that is not legible); its `text` is only the method. The wording test
+scans both. Nothing of the provenance is dropped: a remark is moved, not deleted.
+The maintainer texts `settled[].reason` and `check.note` are neither: they are
+written for the next transcriber, in English, may name files, and are **not
+shown in the app** at all.
 
 ## Amounts as the source gives them
 
@@ -307,9 +337,19 @@ Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 - `unit` is an id of `units.json` (`g`, `kg`, `oz`, `lb`, `ml`, `l`, `tsp`,
   `tbsp`, `cup`, `count`) or a word defined in the file's `units`.
 - `original` (optional) is the short original wording, for example the
-  source's own "1 Pfund"; it is shown beside the converted amount.
-- **No amount in the source** ("salt", "some butter"): write the line **without**
-  `amount`; the app shows "to taste" or "as needed". Or settle a number (see below).
+  source's own "1 Pfund" or "a piece weighing from 5 to 6 pounds"; it is shown
+  **only inside Source** ("Remarks on the source"), in quotation marks, not
+  beside the amount.
+- **No amount in the source** ("salt", "some butter", "a spoonful of an unknown
+  size"): write the line **without** `amount`; the app then shows the **name
+  alone**, and says nothing about the missing amount in the line. Put the reason
+  in `sourceNote` ("The source gives no amount."). Or settle a number (see below).
+- **"To taste" and "as needed"** are said only where the source says them, and
+  then with `amountWord`: `"to-taste"` (al gusto, nach Geschmack) or `"as-needed"`
+  (quanto basta, nach Bedarf). `amountWord` is only for a line without `amount`
+  (the schema and the validator refuse both: `amount-word`). Do not use it for a
+  line whose source gives no amount: that is a missing amount, not "to taste".
+  The source's own words go into `sourceNote` ('Source wording: "al gusto".').
 - Never write a fraction as text ("1 1/2"): write `1.5`.
 
 ### Source unit words
@@ -342,7 +382,9 @@ is reported.
 }
 ```
 
-`technique` names a technique file that exists; `uses` the `key`s of the lines
+`technique` names a technique file that exists; `sourceNote` (optional,
+`{ en, de }`) a remark about the source for this step, shown only in Source;
+`uses` the `key`s of the lines
 the step uses; `time` (`s`, `min`, `h`) and `temperature` (`C`, `F`) **as the
 source gives them**, one number or a range with `to`. A word ("moderate oven")
 or another scale goes into the text.
@@ -358,15 +400,19 @@ entry of `settled`: `what`, `value` (text), `reason`, and `target`:
 
 A settled line or slot may have no `amount`: then the entry records a choice,
 not a number, and its `value` is free text ("water, not broth: the source says
-either"). A line left without amount and without `settled` is "to taste". The
-validator checks that both sides exist and does not ask for an amount.
+either"). A line left without amount and without `settled` shows its name alone.
+The validator checks that both sides exist and does not ask for an amount. What
+the app shows of `settled`: only the mark "settled by us" on the line and, for
+persons, the sentence "The source names no number; we took 6 persons." in
+Source; the `reason` texts are not shown.
 
 ## The second check
 
 `check.method`: `page-image` (the numbers were compared with the opened page
 image), `second-edition` (with a second scan or edition) or `second-reader`
 (a second person read the same text). `check.note` says by whom and what was
-compared. It must be someone who did not transcribe the dish.
+compared. It must be someone who did not transcribe the dish. The app shows
+one sentence for the method inside Source; the note stays in the file.
 
 # Validating one file
 

@@ -71,8 +71,12 @@
             "id": "fdc-170932"
           },
           "note": {
-            "en": "A little cayenne pepper. The source gives no amount.",
-            "de": "Ein wenig Cayennepfeffer. Die Quelle nennt keine Menge."
+            "en": "A little cayenne pepper.",
+            "de": "Ein wenig Cayennepfeffer."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -118,8 +122,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Three tablespoonfuls of boiling water. The units table holds only US tablespoons, and the book does not state its size, so the line has no amount.",
-            "de": "Drei Esslöffel kochendes Wasser. Die Einheitentabelle enthält nur US-Esslöffel, und das Buch nennt seine Größe nicht; die Zeile hat daher keine Menge."
+            "en": "Three tablespoonfuls of boiling water.",
+            "de": "Drei Esslöffel kochendes Wasser."
+          },
+          "sourceNote": {
+            "en": "The units table holds only US tablespoons, and the book does not state its size, so the line has no amount.",
+            "de": "Die Einheitentabelle enthält nur US-Esslöffel, und das Buch nennt seine Größe nicht; die Zeile hat daher keine Menge."
           }
         }
       ],

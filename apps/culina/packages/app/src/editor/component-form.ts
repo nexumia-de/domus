@@ -2,6 +2,7 @@
 // translations: from a stored record to the form, and from the form to a record.
 import type { ComponentLine, ComponentRef, FoodState } from '@culina/engine';
 import type { ComponentRecord, VersionInfo } from '../records';
+import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
 import type { VersionNote } from './version-save';
 import type { EntryUnit, MassUnit } from './units';
@@ -61,7 +62,7 @@ export const newComponentForm = (id: string): ComponentForm => ({
   method: '',
 });
 
-const text = (n: number): string => String(n);
+const text = (n: number): string => withDecimalMark(String(n), appLang);
 
 export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
   id: record.id,

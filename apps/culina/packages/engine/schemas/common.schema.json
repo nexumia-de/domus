@@ -145,7 +145,11 @@
           "items": { "$ref": "#/$defs/lineKey" }
         },
         "time": { "$ref": "#/$defs/stepTime" },
-        "temperature": { "$ref": "#/$defs/stepTemperature" }
+        "temperature": { "$ref": "#/$defs/stepTemperature" },
+        "sourceNote": {
+          "description": "A remark about the source for this step (a time that is not legible): shown only in the dish's source section.",
+          "$ref": "#/$defs/i18nText"
+        }
       }
     },
     "sourcedNumber": {

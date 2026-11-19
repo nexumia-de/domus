@@ -87,7 +87,7 @@
             "unit": "g",
             "original": "Burro, grammi 150"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source also uses butter to grease the tin; no amount is given for that.",
             "de": "Die Quelle nimmt Butter auch zum Ausfetten der Form; dafür steht keine Menge."
           }
@@ -104,8 +104,12 @@
             "original": "Mandorle dolci e pinoli, grammi 50"
           },
           "note": {
-            "en": "One amount of 50 g for sweet almonds and pine nuts together; the source gives no split.",
-            "de": "Eine Menge von 50 g für süße Mandeln und Pinienkerne zusammen; die Quelle gibt keine Aufteilung an."
+            "en": "One amount of 50 g for sweet almonds and pine nuts together.",
+            "de": "Eine Menge von 50 g für süße Mandeln und Pinienkerne zusammen."
+          },
+          "sourceNote": {
+            "en": "The source gives no split.",
+            "de": "Die Quelle gibt keine Aufteilung an."
           }
         },
         {
@@ -126,8 +130,12 @@
             "id": "fdc-167749"
           },
           "note": {
-            "en": "Only a scent of lemon peel is named; no amount.",
-            "de": "Nur ein Hauch Zitronenschale ist genannt; keine Menge."
+            "en": "Only a scent of lemon peel is named.",
+            "de": "Nur ein Hauch Zitronenschale ist genannt."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -148,8 +156,12 @@
             "id": "fdc-169656"
           },
           "note": {
-            "en": "For dusting the finished cake; no amount.",
-            "de": "Zum Bestäuben des fertigen Kuchens; keine Menge."
+            "en": "For dusting the finished cake.",
+            "de": "Zum Bestäuben des fertigen Kuchens."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],

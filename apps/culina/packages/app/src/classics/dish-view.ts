@@ -14,9 +14,13 @@ export interface LineView {
   ingredient?: string;
   name: string;
   amount?: string;
-  /** Written in place of an amount when there is none: "to taste". */
-  unmeasured?: string;
+  /** Written in place of an amount only where the source says "to taste" or "as needed"; a line without an amount and without it shows its name alone. */
+  amountWord?: string;
+  /** Cooking help: shown with the line and when cooking. */
   note?: string;
+  /** A remark about the source: shown only in the dish's source section. */
+  sourceNote?: string;
+  /** The source's own wording of the amount: shown only in the dish's source section. */
   original?: string;
   settled: boolean;
   optional: boolean;
@@ -26,6 +30,12 @@ export interface ComponentView {
   id: string;
   name: string;
   lines: LineView[];
+}
+
+/** What the source section lists apart from the one-line source: remarks about lines and steps. */
+export interface SourceRemarks {
+  lines: { name: string; original?: string; remark?: string }[];
+  steps: { number: number; remark: string }[];
 }
 
 export interface DishView {
@@ -39,8 +49,8 @@ export interface DishView {
   components: ComponentView[];
   /** The slots of the dish itself (what goes with the components). */
   slots: LineView[];
-  settled: { what: string; value: string; reason: string }[];
   check: Classic['check'];
+  sourceRemarks: SourceRemarks;
   note?: string;
 }
 
@@ -51,11 +61,6 @@ export type NameOf = (id: string) => string;
 
 const rangeOf = (ranges: readonly DerivedRange[], componentId: string | undefined, index: number) =>
   ranges.find((r) => r.componentId === componentId && r.index === index);
-
-/** A note that only says what "no amount" already says is not shown twice. */
-const SAYS_NO_AMOUNT = /^(to taste|nach geschmack|as needed|nach bedarf)$/i;
-const unmeasuredText = (note: string | undefined): string =>
-  note !== undefined && /^(as needed|nach bedarf)$/i.test(note.trim()) ? t.asNeeded : t.toTaste;
 
 /**
  * The view of a classic for some portions in a language.
@@ -92,14 +97,12 @@ export function dishView(
       ...(line.key === undefined ? {} : { key: line.key }),
       ...(line.ref?.kind === 'ingredient' ? { ingredient: line.ref.id } : {}),
       name: nameFor(line),
-      ...(amount !== undefined
-        ? { amount }
-        : line.ref?.kind === 'component'
-          ? {}
-          : { unmeasured: unmeasuredText(line.note) }),
-      ...(line.note === undefined || SAYS_NO_AMOUNT.test(line.note.trim())
+      ...(amount !== undefined || line.amountWord === undefined
         ? {}
-        : { note: line.note }),
+        : { amountWord: line.amountWord === 'as-needed' ? t.asNeeded : t.toTaste }),
+      ...(amount === undefined ? {} : { amount }),
+      ...(line.note === undefined ? {} : { note: line.note }),
+      ...(line.sourceNote === undefined ? {} : { sourceNote: line.sourceNote }),
       ...(line.original === undefined ? {} : { original: line.original }),
       settled,
       optional,
@@ -118,6 +121,22 @@ export function dishView(
   const slots = derived.dish.slots.map((slot, i) =>
     lineView(slot, undefined, i, classic.slots[i]?.settled === true, slot.optional === true),
   );
+  const remarks: SourceRemarks = {
+    lines: [...components.flatMap((c) => c.lines), ...slots]
+      .filter((l) => l.original !== undefined || l.sourceNote !== undefined)
+      .map((l) => ({
+        name: l.name,
+        ...(l.original === undefined ? {} : { original: l.original }),
+        ...(l.sourceNote === undefined ? {} : { remark: l.sourceNote }),
+      })),
+    steps: derived.components
+      .flatMap((c) => c.steps)
+      .flatMap((step, i) =>
+        step.sourceNote === undefined
+          ? []
+          : [{ number: i + 1, remark: pickText(step.sourceNote, lang) }],
+      ),
+  };
   return {
     ok: true,
     view: {
@@ -130,8 +149,8 @@ export function dishView(
       portions: derived.dish.portions,
       components,
       slots,
-      settled: classic.settled.map(({ what, value, reason }) => ({ what, value, reason })),
       check: classic.check,
+      sourceRemarks: remarks,
       ...(classic.note === undefined ? {} : { note: pickText(classic.note, lang) }),
     },
   };

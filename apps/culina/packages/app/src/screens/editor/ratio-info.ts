@@ -5,6 +5,7 @@ import { lineFigures } from '../../editor/figures';
 import type { ComponentForm } from '../../editor/component-form';
 import { notebook } from '../../notebook';
 import { compareAmounts } from '../../ratios/compare';
+import { ratioRole, templateName } from '../../ratios/names';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
@@ -18,7 +19,7 @@ export const ratioInfo = (
   if (template === undefined || resolved === undefined || !resolved.ok) return undefined;
   const box = el('section', 'ratio-info');
   box.append(el('h2', undefined, strings.editor.rangeHeading));
-  box.append(el('p', 'muted', strings.editor.rangeInfo(template.name)));
+  box.append(el('p', 'muted', strings.editor.rangeInfo(templateName(template))));
   const list = el('ul', 'plain-list');
   list.setAttribute('aria-live', 'polite');
   box.append(list);
@@ -36,7 +37,8 @@ export const ratioInfo = (
       list.replaceChildren();
       if (view.state !== 'ok') return;
       for (const row of view.rows) {
-        if (row.phrase !== '') list.append(el('li', undefined, `${row.role}: ${row.phrase}`));
+        if (row.phrase !== '')
+          list.append(el('li', undefined, `${ratioRole(row.role)}: ${row.phrase}`));
       }
     },
   };

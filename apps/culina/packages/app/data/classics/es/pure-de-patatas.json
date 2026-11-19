@@ -42,8 +42,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "Floury potatoes (\"de clase farinácea\"). The book gives one cuartillo of water for each two libras of potatoes; the libra is not sized in the book, so no amount.",
-            "de": "Mehligkochende Kartoffeln (\"de clase farinácea\"). Das Buch gibt einen Cuartillo Wasser je zwei Libras Kartoffeln; die Libra ist im Buch nicht bemessen, daher keine Menge."
+            "en": "Floury potatoes (\"de clase farinácea\").",
+            "de": "Mehligkochende Kartoffeln (\"de clase farinácea\")."
+          },
+          "sourceNote": {
+            "en": "The book gives one cuartillo of water for each two libras of potatoes. The libra is not sized in the book, so no amount.",
+            "de": "Das Buch gibt einen Cuartillo Wasser je zwei Libras Kartoffeln. Die Libra ist im Buch nicht bemessen, daher keine Menge."
           }
         },
         {
@@ -53,8 +57,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Salted water for cooking the potato paste. Source wording: \"[unreadable] cuartillo de agua salada para cada dos libras de patatas\". The word before 'cuartillo' is not legible in the scan, so the line has no amount.",
-            "de": "Gesalzenes Wasser zum Garen der Kartoffelmasse. Quellenwortlaut: \"[unleserlich] cuartillo de agua salada para cada dos libras de patatas\". Das Wort vor 'cuartillo' ist im Scan nicht lesbar, daher ohne Menge."
+            "en": "Salted water for cooking the potato paste.",
+            "de": "Gesalzenes Wasser zum Garen der Kartoffelmasse."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"[unreadable] cuartillo de agua salada para cada dos libras de patatas\". The word before 'cuartillo' is not legible in the scan, so the line has no amount.",
+            "de": "Quellenwortlaut: \"[unleserlich] cuartillo de agua salada para cada dos libras de patatas\". Das Wort vor 'cuartillo' ist im Scan nicht lesbar, daher ohne Menge."
           }
         },
         {
@@ -85,8 +93,12 @@
             "original": "dos onzas ó 60 gramos de manteca muy fresca de vacas"
           },
           "note": {
-            "en": "Very fresh cow's butter (\"manteca muy fresca de vacas\"); the book gives two onzas or 60 grams.",
-            "de": "Sehr frische Kuhbutter (\"manteca muy fresca de vacas\"); das Buch nennt zwei Onzas oder 60 Gramm."
+            "en": "Very fresh cow's butter (\"manteca muy fresca de vacas\").",
+            "de": "Sehr frische Kuhbutter (\"manteca muy fresca de vacas\")."
+          },
+          "sourceNote": {
+            "en": "The book gives two onzas or 60 grams.",
+            "de": "Das Buch nennt zwei Onzas oder 60 Gramm."
           }
         },
         {
@@ -108,8 +120,12 @@
             "id": "fdc-group-milk"
           },
           "note": {
-            "en": "Two spoonfuls of milk, to beat the yolk (\"dos cucharadas de leche\"). The spoon is not sized in the book, so no amount.",
-            "de": "Zwei Löffel Milch, um das Eigelb zu schlagen (\"dos cucharadas de leche\"). Der Löffel ist im Buch nicht bemessen, daher keine Menge."
+            "en": "Two spoonfuls of milk, to beat the yolk (\"dos cucharadas de leche\").",
+            "de": "Zwei Löffel Milch, um das Eigelb zu schlagen (\"dos cucharadas de leche\")."
+          },
+          "sourceNote": {
+            "en": "The spoon is not sized in the book, so no amount.",
+            "de": "Der Löffel ist im Buch nicht bemessen, daher keine Menge."
           }
         },
         {

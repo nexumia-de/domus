@@ -42,8 +42,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "2 soupplatefuls of grated potatoes, boiled the day before in their jackets. The book does not size a soupplateful: no amount.",
-            "de": "2 Suppenteller geriebene Kartoffeln, am Vortag in der Schale gekocht. Das Buch gibt die Größe eines Suppentellers nicht an: keine Menge."
+            "en": "2 soupplatefuls of grated potatoes, boiled the day before in their jackets.",
+            "de": "2 Suppenteller geriebene Kartoffeln, am Vortag in der Schale gekocht."
+          },
+          "sourceNote": {
+            "en": "The book does not size a soupplateful: no amount.",
+            "de": "Das Buch gibt die Größe eines Suppentellers nicht an: keine Menge."
           }
         },
         {
@@ -53,8 +57,12 @@
             "id": "fdc-group-wheat-flour-white"
           },
           "note": {
-            "en": "4 basting spoonfuls of flour. The book does not size a basting spoonful: no amount.",
-            "de": "4 Bratlöffel Mehl. Das Buch gibt die Größe eines Bratlöffels nicht an: keine Menge."
+            "en": "4 basting spoonfuls of flour.",
+            "de": "4 Bratlöffel Mehl."
+          },
+          "sourceNote": {
+            "en": "The book does not size a basting spoonful: no amount.",
+            "de": "Das Buch gibt die Größe eines Bratlöffels nicht an: keine Menge."
           }
         },
         {
@@ -84,8 +92,12 @@
           },
           "settled": true,
           "note": {
-            "en": "Melted butter is used; the source allows lard as the alternative.",
-            "de": "Zerlassene Butter wird verwendet; die Quelle erlaubt Schmalz als Alternative."
+            "en": "Melted butter is used.",
+            "de": "Zerlassene Butter wird verwendet."
+          },
+          "sourceNote": {
+            "en": "The source allows lard as the alternative.",
+            "de": "Die Quelle erlaubt Schmalz als Alternative."
           }
         },
         {
@@ -141,8 +153,12 @@
         },
         {
           "text": {
-            "en": "Cook the dumplings in boiling salted water. The source gives a fraction of an hour that is not legible in the scans.",
-            "de": "Die Klöße in kochendem Salzwasser garen. Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
+            "en": "Cook the dumplings in boiling salted water.",
+            "de": "Die Klöße in kochendem Salzwasser garen."
+          },
+          "sourceNote": {
+            "en": "The source gives a fraction of an hour that is not legible in the scans.",
+            "de": "Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
           }
         },
         {

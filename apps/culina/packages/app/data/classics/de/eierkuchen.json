@@ -64,8 +64,12 @@
             "original": "1 heaping tablespoonful"
           },
           "note": {
-            "en": "Heaping tablespoonful. The source allows fine flour or cornstarch.",
-            "de": "Gehäuft. Die Quelle lässt feinstes Mehl oder Stärke zu."
+            "en": "Heaping tablespoonful.",
+            "de": "Gehäuft."
+          },
+          "sourceNote": {
+            "en": "The source allows fine flour or cornstarch.",
+            "de": "Die Quelle lässt feinstes Mehl oder Stärke zu."
           }
         },
         {

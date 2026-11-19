@@ -40,8 +40,12 @@
             "original": "una grossa palla di cavolfiore"
           },
           "note": {
-            "en": "One large head (una grossa palla); the source gives no weight.",
-            "de": "Ein großer Kopf (una grossa palla); die Quelle nennt kein Gewicht."
+            "en": "One large head (una grossa palla).",
+            "de": "Ein großer Kopf (una grossa palla)."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle nennt kein Gewicht."
           }
         },
         {
@@ -51,8 +55,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Salted water for cooking; no amount given.",
-            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+            "en": "Salted water for cooking.",
+            "de": "Salzwasser zum Kochen."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -68,7 +76,7 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -87,8 +95,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "A scant pinch (un pizzico scarso); the size of a pinch is not given in the book.",
-            "de": "Eine knappe Prise (un pizzico scarso); die Größe einer Prise ist im Buch nicht angegeben."
+            "en": "A scant pinch (un pizzico scarso).",
+            "de": "Eine knappe Prise (un pizzico scarso)."
+          },
+          "sourceNote": {
+            "en": "The size of a pinch is not given in the book.",
+            "de": "Die Größe einer Prise ist im Buch nicht angegeben."
           }
         },
         {
@@ -97,7 +109,7 @@
             "kind": "component",
             "id": "balsamella"
           },
-          "note": {
+          "sourceNote": {
             "en": "The béchamel of No. 89 of the book.",
             "de": "Die Béchamelsauce aus Nr. 89 des Buches."
           }
@@ -177,8 +189,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "A piece the size of an egg (del volume di un uovo); the book gives no weight, so no amount.",
-            "de": "Ein Stück von der Größe eines Eis (del volume di un uovo); das Buch nennt kein Gewicht, daher keine Menge."
+            "en": "A piece the size of an egg (del volume di un uovo).",
+            "de": "Ein Stück von der Größe eines Eis (del volume di un uovo)."
+          },
+          "sourceNote": {
+            "en": "The book gives no weight, so no amount.",
+            "de": "Das Buch nennt kein Gewicht, daher keine Menge."
           }
         },
         {
@@ -188,8 +204,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'; the sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
-            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'; der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
+            "en": "One spoonful (una cucchiaiata).",
+            "de": "Ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'. The sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'. Der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
           }
         },
         {

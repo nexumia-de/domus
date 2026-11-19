@@ -26,7 +26,8 @@ export const nutritionStringsDe: typeof nutritionStrings = {
   notCounted: (list: string): string => `Nicht gezählt: ${list}.`,
   massShare: (percent: string): string =>
     `Die gezählten Zutaten machen ${percent} % des Gewichts aus, soweit es bekannt ist.`,
-  noneCounted: 'Keine Zutat konnte gezählt werden, deshalb gibt es keine Werte.',
+  tooFew: 'Nährwerte nicht berechenbar: zu wenige Zutaten mit Menge und Nährwertdaten.',
+  moreSummary: 'Was nicht gezählt ist und wie gezählt wird',
   reasons: {
     wanted: 'noch nicht im Katalog',
     'no-amount': 'ohne Menge',

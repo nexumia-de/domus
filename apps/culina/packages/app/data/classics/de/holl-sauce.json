@@ -66,8 +66,12 @@
             "id": "fdc-174837"
           },
           "note": {
-            "en": "White wine and water, half and half. The source gives no volume.",
-            "de": "Weißwein und Wasser zu gleichen Teilen. Die Quelle nennt keine Menge."
+            "en": "White wine and water, half and half.",
+            "de": "Weißwein und Wasser zu gleichen Teilen."
+          },
+          "sourceNote": {
+            "en": "The source gives no volume.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -77,8 +81,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Half of the liquid with the wine. The source gives no volume.",
-            "de": "Die Hälfte der Flüssigkeit zusammen mit dem Wein. Die Quelle nennt keine Menge."
+            "en": "Half of the liquid with the wine.",
+            "de": "Die Hälfte der Flüssigkeit zusammen mit dem Wein."
+          },
+          "sourceNote": {
+            "en": "The source gives no volume.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -94,7 +102,7 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "note": {
+          "sourceNote": {
             "en": "The English prints the fraction as a percent sign (%); the German edition reads 4 Pfd. (davidis.txt) and 8 Pfd. (second scan). The amount is not confirmed, so none is given.",
             "de": "Die englische Ausgabe druckt den Bruch als Prozentzeichen (%); die deutsche Ausgabe liest 4 Pfd. (davidis.txt) und 8 Pfd. (zweiter Scan). Die Menge ist nicht bestätigt und steht deshalb nicht da."
           }
@@ -106,8 +114,12 @@
             "id": "fdc-167747"
           },
           "note": {
-            "en": "A few drops. The source gives no amount.",
-            "de": "Einige Tropfen. Die Quelle nennt keine Menge."
+            "en": "A few drops.",
+            "de": "Einige Tropfen."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         }
       ],

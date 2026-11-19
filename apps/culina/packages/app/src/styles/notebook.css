@@ -32,29 +32,29 @@
   overflow-wrap: anywhere;
 }
 
-/* Fixed layout: the number columns keep their width and a long name wraps inside its cell. */
+/* The number columns are as wide as their longest word needs (a number and its unit stay together,
+   "to taste" may wrap between the words) and never break inside a word; the name column takes the
+   rest and wraps inside its cell. */
 .lines-table,
 .slots-table,
 .raw-table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 .lines-table th.num,
+.slots-table th.num,
 .raw-table th.num {
-  width: 6rem;
+  width: 1%;
 }
 
-.slots-table th.num {
-  width: 5rem;
-}
-
-/* A very long number wraps inside its cell instead of widening the page. */
 .lines-table .num,
 .slots-table .num,
 .raw-table .num {
   padding-inline: var(--sp-2);
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .lines-table th.pct {

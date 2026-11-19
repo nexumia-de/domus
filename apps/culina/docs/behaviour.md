@@ -58,7 +58,10 @@ list.") and keeps the URL. Back is the browser history. **Test:**
 case-insensitive substring of the name, trimmed; an empty search shows
 all. Every ratio is one link, at least 44 px high, with the name and the
 ratio in short form in template order ("3 : 2 : 1", "flour : fat :
-water"). No match: one quiet line. Ratios are grouped by family (the root
+water"). The names and the role words are the user's language (the shipped ratios have their names and
+notes in `strings.ratios.seed`, the role words in `strings.roles`, so German shows "Brotteig, Verhältnis" and
+"Mehl : Wasser"); a ratio of the user's own is shown as typed. The search finds a ratio by the name shown.
+No match: one quiet line. Ratios are grouped by family (the root
 of the lineage, named after the root, root first, then variations in seed
 order); **a family of one member has no heading**, since it would repeat
 the row's name. The seed has two families with headings, "Bread dough,
@@ -69,7 +72,10 @@ a card opens and when the user comes back. **Test:**
 **Card.** Name; table of parts (ingredient role, parts, percent of the
 anchor from `templatePercent` where the template has one); the usual range
 as plain text beside the part ("usual 1.8-2", only where the template
-gives one); the source line (the template's `source`, small, wrapped);
+gives one); the source line (author, title and page of the template's `references`, for example "Source:
+Michael Ruhlman, Ratio, p. 17"; the template's `source` is a pointer into the repository and is never
+shown; a ratio without references has no source line); a short note where one is worth showing (a
+cross-reference by id is not shown as text);
 the family (a "Variation of" link to the parent and a "Variations" list of
 links to the children, none where there are none); the calculator; "Compare my amounts". On a phone (below 720 px) the
 card is its own screen with a link back to the list; from 720 px the list
@@ -286,7 +292,7 @@ and are not added twice. **Test:** `test/notebook.test.ts`, `e2e/components.mjs`
 and sub-components with amount and unit (every unit of the schemas; a
 sub-component takes a mass), the yield as weighed (left empty until then;
 the source is `user`), and method and notes (one per line, stored as
-`method`). A line without an amount is kept ("to taste"). The state and
+`method`). A line without an amount is kept ("to taste" in the component view). The state and
 note of an existing line are kept as they are.
 
 - **Weight or percent.** The two radio buttons switch at any time. In
@@ -327,10 +333,15 @@ note of an existing line are kept as they are.
   (German: a search for "Mehl" finds the flours), ignoring case, accents and
   umlauts ("kase" finds "Käse") and sharp s as ss; one predicate
   (`shared/names.ts`: all searchable names of a record) that the import matcher
-  and the stock entry can use later. A row found through another language shows
-  that name beside the English one, marked with its `lang`, so "Rosenkohl"
-  gives "Brussels sprouts Rosenkohl by volume"; a row found by its English name
-  shows no second name. The rows of the catalogue stay in the English tree (variants are shown
+  and the stock entry can use later. In the English app a row found through
+  another language shows that name beside the English one, marked with its
+  `lang`, so "Rosenkohl" gives "Brussels sprouts Rosenkohl by volume"; a row
+  found by its English name shows no second name. **In the German app the
+  German name leads and the English name stands beside it** (marked `lang="en"`):
+  "Rosenkohl" with "Brussels sprouts" below it, however it was found; an entry
+  without a German name shows its English name as it is, with nothing beside
+  it. The German names come from the catalogue's `names.de` and are not
+  invented; the classics' ingredient ids without one are listed for the owner. The rows of the catalogue stay in the English tree (variants are shown
   by what follows the parent's name); the names of the user's own ingredients follow the language
   setting. Those
   that start with the text in any name come first, at most 25 top-level results at
@@ -403,8 +414,9 @@ removes the draft; "Discard changes" removes it and shows the stored record
 **Delete.** "Delete" on a component or dish, and in its editor, acts at once:
 every version record of the component or dish and every tasting note on one
 is tombstoned in the store (the user's delete of the whole thing, not a
-rewrite of history) and a toast offers "Undo" for 10 seconds; there is no
-confirmation dialog. Undo writes all kept records again.
+rewrite of history) and a toast offers "Undo" for 10 seconds (it goes by itself
+then, and also when the user goes to another screen: see
+[Toast](#toast-and-undo)); there is no confirmation dialog. Undo writes all kept records again.
 **Test:** `e2e/editor.mjs`, `e2e/editor-more.mjs`.
 
 **Form behaviour.** No field is focused when an editor opens. A field that
@@ -414,6 +426,22 @@ px. Lines and slots are reordered with "Move up" and "Move down" buttons
 (focus follows the moved line); there is no drag-only interaction. The
 screens fit 360 px without horizontal scroll. **Test:** `e2e/editor.mjs`
 (`layout`), `e2e/editor-more.mjs`.
+
+**Save stays on the screen; a message is at its field.** Save, Discard
+changes and (for a stored record) Delete are a bar that sticks above the
+bottom navigation (`.editor-bar`), so Save is on the screen however long the
+form is; Save and Discard sit side by side at 360 px. What cannot be saved is
+said **at the field it concerns**, not only at the end: under the Name field
+(no name), under the add buttons (no lines, a cycle), at the line or slot whose
+ingredient or filling is not chosen or whose amount is not a number, under
+Portions and under the yield. Each message is a quiet line (dashed outline, no
+alarm colour) with `role="alert"` so it is announced when it appears, the
+field it concerns points at it (`aria-describedby`, `aria-invalid` on inputs),
+and the first such field takes the focus, which also scrolls it into view. The
+message goes when the field is changed. The bar itself says only "Check the
+fields marked above to save." (`strings.editor.needs.summary`); a refusal of
+the store, which is no field's, stays there in words. **Test:**
+`e2e/editor.mjs`.
 
 # Versions, history and variations
 
@@ -629,20 +657,34 @@ view logic is in `src/classics/` (no DOM), the screens in
   one quiet sentence.
 - **Dish** (`#/classic/<id>`). In this order, so that the ingredients are on
   the first screen at 360 x 720: the name, the original name, course and meat
-  flag, a note of the dish if it has one; a portions stepper, default 2; the
-  ingredient lines per component and for the dish; "Cook step by step"; the
-  whole method; then, each closed behind a tap (`<details>`), **Nutrition per
-  portion** (below), **Source**
-  (author, title, year, place, a link, and the persons it states or, when the
-  source names none, the number we took), **What we settled where the source is
-  vague**, and **Second check** (how the dish was read a second time). **The app
-  does no arithmetic**: amounts come from `deriveClassic` and are only rounded
-  for display with the shared helpers (`formatMass` for grams, `formatNumber`
-  otherwise). A range is shown as "100 ml to 150 ml" (the source's range, not
-  the middle the engine uses for copies); a line without an amount says "to
-  taste" or "as needed" (the line's own note when it says so); the source's
-  own wording is shown in brackets; a settled line is marked "settled by us".
-  The settled list names each settled thing with its reason.
+  flag; a portions stepper, default 2; the ingredient lines per component and
+  for the dish; "Cook step by step"; the whole method; then, each closed behind
+  a tap (`<details>`), **Nutrition per portion** (below) and **Source**. **The
+  app does no arithmetic**: amounts come from `deriveClassic` and are only
+  rounded for display with the shared helpers (`formatMass` for grams,
+  `formatNumber` otherwise). A range is shown as "100 ml to 150 ml" (the
+  source's range, not the middle the engine uses for copies); a settled line is
+  marked "settled by us".
+- **What a line shows and what is behind the Source tap.** Running text is
+  what helps the cook: the name, the amount, the line's cooking `note`
+  ("Boiled potatoes, cut into slices."), "optional" and the settled mark. **A
+  line without an amount shows its name alone**: "to taste" or "as needed"
+  stands in the amount place only where the data says so (`amountWord`, set
+  only where the source's own words say it), never as a stand-in for missing
+  data. Everything that is about the source and not about cooking is **only**
+  inside **Source** at the foot of the dish, never in a line, never when
+  cooking: one line in the user's language (author, title, year), the place,
+  the licence where there is one, a link, the persons the source states or,
+  where it names none, the number we took ("The source names no number; we took
+  6 persons."), one sentence on how it was checked (page image, second edition
+  or second reader), and "Remarks on the source": the transcriber's note on the
+  dish, each line's `sourceNote` and the source's own wording of an amount
+  (`amount.original`, in the source's language and in quotation marks), and
+  each step's `sourceNote`. The maintainer texts `settled[].reason` and
+  `check.note` are English, name files and say who read what; they stay in the
+  data and in the [classic format](classic-format.md) but **are not shown in
+  the app**, and no disclosure holds only them. The source section is drawn
+  again when the catalogue's names arrive and keeps being open.
 - **Nutrition per portion** (closed `<details>` on the dish, first of the closed
   sections; `src/screens/classics/nutrition-block.ts`, view logic
   `src/classics/nutrition-view.ts`, texts `src/strings-nutrition.ts`). Shows the
@@ -650,13 +692,18 @@ view logic is in `src/classics/` (no DOM), the screens in
   energy (kcal and kJ), protein, fat, carbohydrate and, when every counted
   ingredient has the figure, fibre and salt, **rounded by the engine**
   (`roundNutrition`); the app does no arithmetic. Then the coverage in words
-  ("Counted 2 of 3 ingredients." and "Not counted: name (no amount)."), the
-  share of the weight the figures rest on where it can be stated, that amounts
-  are raw and as the recipe gives them, the rounding rule, the data source
-  (USDA FoodData Central, SR Legacy) and that it is not a food label. An
-  ingredient is found in the notebook first, then in the catalogue; a variety
-  without its own density or unit weight takes its parent's. With no
-  ingredient countable it says so and shows no figures. **It never judges**: no
+  ("Counted 2 of 3 ingredients."), the data source (USDA FoodData Central, SR
+  Legacy) and that it is not a food label. **A second tap** ("What was left
+  out, and how it is counted", `.nutrition-more`) holds the list of what was
+  not counted ("Not counted: name (no amount)."), the share of the weight the
+  figures rest on where it can be stated, that amounts are raw and as the recipe
+  gives them, and the rounding rule. An ingredient is found in the notebook
+  first, then in the catalogue; a variety without its own density or unit
+  weight takes its parent's. **With too few ingredients counted** (none, one,
+  or fewer than a quarter of them; a judgement, `MIN_COUNTED` and `MIN_SHARE`
+  in `nutrition-view.ts`) there are no figures, only one short line
+  ("Nutrition cannot be worked out: too few ingredients have an amount and
+  nutrient data."), and everything else is behind the second tap. **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be
   read, [evaluation](nutrition-evaluation.md#what-was-built)); the wording test
@@ -666,7 +713,13 @@ view logic is in `src/classics/` (no DOM), the screens in
   step: "Step 3 of 8" as a heading, the component it belongs to, the text,
   the lines it uses with their amounts, time and temperature as the source
   gives them, a progress bar. "Back" and "Next" are 56 px high ("Finish" on the
-  last step). On a step change focus moves to the step heading. "Whole
+  last step) and **stay on the screen**: they are a bar that sticks above the
+  bottom navigation (`position: sticky`, `bottom: var(--nav-real-h)`), so they
+  are reachable without scrolling at 360 x 720 however long the step is; the
+  step and the whole recipe scroll under it. Only the cooking `note` of a line
+  is shown here, never a remark about the source or the source's wording (those
+  are in the Source section of the dish). On a step change focus moves to the
+  step heading. **Test:** `e2e/classics.mjs`, `e2e/german.mjs`. "Whole
   recipe" opens the whole recipe in place. The screen is kept awake with the
   Wake Lock API where the browser has it (`src/shell/wake-lock.ts`); where it
   has not, or refuses, nothing happens and nothing is shown.
@@ -741,12 +794,23 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   navigation equals titles, in both sets).
 - **Ingredient names.** `displayName` in `shared/names.ts`: the German name when the language is
   German and the record has one, else the canonical English name. Used for the notebook's
-  ingredient names, the stock lists, the finder, the pickers of the editors and the classics.
-  Search still finds a record by any of its names. **Test:** `test/locale.test.ts`.
+  ingredient names, the stock lists, the finder, the pickers of the editors (also the catalogue
+  section, where the German name leads and the English one stands beside it) and the classics.
+  Where the catalogue has no German name the English name is shown as it is; names are never
+  invented. Search still finds a record by any of its names. **Test:** `test/locale.test.ts`.
 - **Numbers.** Input accepts `2.5` and `2,5` in both languages (`shared/parse.ts`). Output has a
-  decimal comma in German (`formatNumber`, `formatMass`, prefilled input fields; `withDecimalMark`
-  in `shared/locale.ts`); the engine never formats and knows no language. **Test:**
-  `test/locale.test.ts`.
+  decimal comma in German (`formatNumber`, `formatMass`, prefilled input fields, the time and the
+  temperature of a step: "1,5 bis 2,5 Std."; `withDecimalMark` in `shared/locale.ts`); the engine never
+  formats and knows no language. The strings that build a time or a temperature take the number as
+  text already formatted, so a new text cannot print a decimal point by itself. **Test:**
+  `test/locale.test.ts`, `e2e/german.mjs`.
+- **Ratios.** The names and notes of the shipped ratios are in `strings.ratios.seed` and the role words
+  ("flour", "water", ...) in `strings.roles`, English and German with the same keys
+  (`test/ratios-view.test.ts` checks that every shipped ratio and role has both); the table columns, the
+  calculator's choices and the comparison use them. Nothing of a ratio card is English in German mode.
+- **Example data.** "Add example data" stores the texts of the examples in the language the app speaks
+  (`demo/german.ts`: names, notes, the source of a made-up figure, the example method); the example
+  ingredients carry their German names as `names.de` with the source "Example data, not a source".
 - **Layout.** German labels are longer; on a phone the six navigation labels get the type size
   `--fs-xxs` and 2 px side padding when `lang` is `de`, and a label that still does not fit wraps at
   its soft hyphens (`navWrap` in the strings; the link keeps the plain word as `aria-label`) onto a
@@ -805,6 +869,18 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   applied before the first paint on the next visit
   ([design](design.md#themes)). **Test:** `e2e/smoke.mjs`,
   `test/prefs.test.ts`.
+
+## Toast and Undo
+
+One quiet message at a time (`src/shell/toast.ts`), above the bottom navigation on a
+phone and in the corner from 720 px, with an optional action such as "Undo". **It goes by
+itself after 10 seconds**, which is long enough to use Undo, **and when the user goes to
+another screen** (the shell dismisses it on every navigation; a navigation within half a second of
+the toast belongs to the action that showed it, such as Save followed by the opened record, and
+keeps it). Undo after that is gone, as the [import](#the-import-screen) text says for a
+reload. While a toast shows, the page has room under its last row (`--toast-space` on the
+root, the bottom padding of the main area), so the toast never covers the last row of a list.
+**Test:** `e2e/stock.mjs`.
 
 # States
 

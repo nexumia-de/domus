@@ -76,6 +76,12 @@ export type CopyResult =
         | { code: 'wanted-ingredient'; wanted: string[] };
     };
 
+/** The source's remark about a step stays with the classic; the copy is the cook's own. */
+const withoutSourceNote = (step: Step): Step => {
+  const { sourceNote, ...rest } = step;
+  return sourceNote === undefined ? step : rest;
+};
+
 const noteOf = (
   note: string | undefined,
   line: DerivedLine,
@@ -144,7 +150,7 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
           ...(note === undefined ? {} : { note }),
         };
       }),
-      ...(c.steps.length === 0 ? {} : { steps: c.steps }),
+      ...(c.steps.length === 0 ? {} : { steps: c.steps.map(withoutSourceNote) }),
       version: version(id),
       'x-origin': origin,
     };

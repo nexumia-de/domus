@@ -52,7 +52,7 @@
             "unit": "count",
             "original": "le jus de 15 champignons"
           },
-          "note": {
+          "sourceNote": {
             "en": "The poulet uses the juice of 15 mushrooms, prepared as in the book's turned mushrooms (printed p. 71).",
             "de": "Das Huhn nimmt den Saft von 15 Champignons, zubereitet wie die gedrehten Champignons des Buches (gedruckt S. 71)."
           }
@@ -64,8 +64,12 @@
             "id": "fdc-167747"
           },
           "note": {
-            "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice. The book does not state a size for it, so no amount is given.",
-            "de": "\"1 cuillerée à bouche de jus de citron\": ein Esslöffel Zitronensaft. Das Buch gibt dafür keine Größe an, daher steht hier keine Menge."
+            "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice.",
+            "de": "\"1 cuillerée à bouche de jus de citron\": ein Esslöffel Zitronensaft."
+          },
+          "sourceNote": {
+            "en": "The book does not state a size for it, so no amount is given.",
+            "de": "Das Buch gibt dafür keine Größe an, daher steht hier keine Menge."
           }
         },
         {
@@ -196,8 +200,12 @@
             "de": "Hühnerblut"
           },
           "note": {
-            "en": "The blood of the bird, kept while it is bled. The book gives no amount.",
-            "de": "Das Blut des Huhns, beim Ausbluten aufgefangen. Das Buch gibt keine Menge an."
+            "en": "The blood of the bird, kept while it is bled.",
+            "de": "Das Blut des Huhns, beim Ausbluten aufgefangen."
+          },
+          "sourceNote": {
+            "en": "The book gives no amount.",
+            "de": "Das Buch gibt keine Menge an."
           }
         },
         {
@@ -254,7 +262,7 @@
             "en": "Meat stock",
             "de": "Fleischbrühe"
           },
-          "note": {
+          "sourceNote": {
             "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given.",
             "de": "\"0 décilitres de bouillon\" im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Die Quelle nennt eine lesbare Menge nicht; daher steht hier keine Menge."
           }
@@ -281,7 +289,7 @@
             "en": "Bouquet garni",
             "de": "Bouquet garni"
           },
-          "note": {
+          "sourceNote": {
             "en": "\"1 bouquet garni\": the book gives no size for the bouquet.",
             "de": "\"1 bouquet garni\": das Buch gibt keine Größe für das Bouquet an."
           }

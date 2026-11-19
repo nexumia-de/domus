@@ -41,7 +41,7 @@
             "unit": "g",
             "original": "750 grammes de viande"
           },
-          "note": {
+          "sourceNote": {
             "en": "The book names the cuts: tranche, tranche au petit os, gîte à la noix, culotte; also paleron and talon de collier.",
             "de": "Das Buch nennt die Stücke: Tranche, Tranche au petit os, Gîte à la noix, Culotte; außerdem Paleron und Talon de collier."
           }
@@ -69,11 +69,11 @@
             "unit": "l",
             "original": "4 litres d'eau"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot. The list's amount is stored; see settled.",
             "de": "Die Zutatenliste nennt 4 Liter; die Zubereitung nennt 3 Liter für den kleinen Topf. Gespeichert ist die Menge der Zutatenliste; siehe settled."
-          }
+          },
+          "settled": true
         },
         {
           "key": "salt",

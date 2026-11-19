@@ -81,7 +81,7 @@
             "unit": "ounce",
             "original": "1 ounce of white mustard seeds"
           },
-          "note": {
+          "sourceNote": {
             "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead.",
             "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen."
           }
@@ -117,8 +117,12 @@
             "id": "fdc-170000"
           },
           "note": {
-            "en": "Small onions; no amount given.",
-            "de": "Kleine Zwiebeln; keine Menge angegeben."
+            "en": "Small onions.",
+            "de": "Kleine Zwiebeln."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -127,7 +131,7 @@
             "kind": "ingredient",
             "id": "fdc-168407"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given. The German name is our translation of the English word.",
             "de": "Keine Menge angegeben. Der deutsche Name ist unsere Übersetzung des englischen Wortes."
           }
@@ -138,7 +142,7 @@
             "en": "Tarragon",
             "de": "Estragon"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -149,7 +153,7 @@
             "kind": "ingredient",
             "id": "fdc-173470"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -160,7 +164,7 @@
             "kind": "ingredient",
             "id": "fdc-170917"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -171,7 +175,7 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "note": {
+          "sourceNote": {
             "en": "No volume given.",
             "de": "Keine Menge angegeben."
           }
@@ -183,8 +187,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "For freshening the herring; the source says milk or water, and water is chosen here.",
-            "de": "Zum Wässern der Heringe; die Quelle nennt Milch oder Wasser, hier wird Wasser gewählt."
+            "en": "For freshening the herring.",
+            "de": "Zum Wässern der Heringe."
+          },
+          "sourceNote": {
+            "en": "The source says milk or water, and water is chosen here.",
+            "de": "Die Quelle nennt Milch oder Wasser, hier wird Wasser gewählt."
           }
         }
       ],

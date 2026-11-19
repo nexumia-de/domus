@@ -3,7 +3,7 @@
 // horizontal scroll, targets of at least 44 x 44, nothing cut off in the navigation, no console
 // error). A second visit follows the browser locale `de` with the setting on Follow device.
 import { check, watch } from './harness.mjs';
-import { overflow, smallTargets } from './measure.mjs';
+import { brokenWords, overflow, smallTargets } from './measure.mjs';
 import { openWith, PAN, TECHNIQUE } from './classics-fixture.mjs';
 
 const ROUTES = {
@@ -61,6 +61,68 @@ const walk = async (page, origin, label) => {
   }
 };
 
+/** The ratios in German: names, role words, table columns, compare labels, source line: no English left. */
+const ratiosGerman = async (page, origin, label) => {
+  await openWith(page, origin, 'ratios');
+  await heading(page, 'Verhältnisse').waitFor();
+  const list = await page.locator('.ratio-list').innerText();
+  check(
+    list.includes('Brotteig, Verhältnis') &&
+      list.includes('Mehl : Fett : Wasser') &&
+      !/\b(flour|water|fat|dough|bread|egg|sugar)\b/i.test(list),
+    `${label}: the ratio list has German names and German role words`,
+  );
+  await openWith(page, origin, 'ratios/pie-dough');
+  await heading(page, 'Pie-Teig').waitFor();
+  const heads = await page.locator('.parts thead th').allTextContents();
+  const roles = await page.locator('.parts tbody th').allTextContents();
+  check(
+    heads.join('|') === 'Zutat|Teile|% von Mehl' && roles.join('|') === 'Mehl|Fett|Wasser',
+    `${label}: table columns and roles are German (${heads.join('|')} / ${roles.join('|')})`,
+  );
+  check(
+    (await page.locator('.source').innerText()) === 'Quelle: Michael Ruhlman, Ratio, S. 17',
+    `${label}: the source is author, title and page, not a repository path`,
+  );
+  await page.locator('.calc input.field').fill('500,5');
+  await page.getByText('Meine Mengen vergleichen').click();
+  await page.getByLabel('Mehl (g)').fill('500');
+  const card = await page.locator('main').innerText();
+  check(
+    !/\b(flour|water|fat)\b/i.test(card) && !card.includes('docs/'),
+    `${label}: the card, the calculator and the comparison have no English role word and no path`,
+  );
+  const options = await page.locator('.calc select').first().locator('option').allTextContents();
+  check(options.join('|') === 'Mehl|Fett|Wasser', `${label}: the calculator offers German roles`);
+};
+
+/** At 320 and 360 px the amounts in the dish, component and dish-of-the-notebook views never break inside a word. */
+const narrow = async (browser, origin) => {
+  for (const width of [320, 360]) {
+    const label = `German ${width}px`;
+    const context = await browser.newContext({ viewport: { width, height: 700 }, locale: 'de' });
+    await context.addInitScript(() => localStorage.setItem('culina.lang', 'de'));
+    const page = await context.newPage();
+    await page.goto(`${origin}/?no-sw#/settings`);
+    await page.getByRole('button', { name: 'Beispieldaten hinzufügen' }).click();
+    await page.getByText('Beispieleinträge wurden deinem Notizbuch hinzugefügt.').waitFor();
+    for (const [hash, title] of [
+      ['components/example-pan-sauce', 'Beispiel: Pfannensoße mit Brühe als Grundlage'],
+      ['components/example-flat-dough', 'Beispiel: Fladenteig'],
+      ['dishes/example-flat-dough-with-sauce', 'Beispiel: Fladen mit Pfannensoße'],
+      ['classic/sauerbraten', 'Sauerbraten'],
+    ]) {
+      await page.goto(`${origin}/?no-sw#/${hash}`);
+      await heading(page, title).waitFor();
+      const broken = await brokenWords(page, 'td.num, th.num, .recipe-amount');
+      check(broken.length === 0, `${label} #/${hash}: no amount breaks inside a word ${broken}`);
+      const o = await overflow(page);
+      check(o.scroll <= 0, `${label} #/${hash}: no horizontal scroll ${o.wide.join(',')}`);
+    }
+    await context.close();
+  }
+};
+
 const classicsFlow = async (page, origin, label) => {
   await openWith(page, origin, 'start');
   await heading(page, 'Was möchtest du kochen?').waitFor();
@@ -108,6 +170,20 @@ const classicsFlow = async (page, origin, label) => {
   await page.getByRole('button', { name: 'Weiter' }).click();
   await page.getByRole('button', { name: 'Weiter' }).click();
   await step(page, 3, 3).waitFor();
+  check(
+    await page.getByText('Zeit: 1,5 bis 2,5 Std.').isVisible(),
+    `${label}: a range of hours has the German decimal comma (1,5 bis 2,5 Std.)`,
+  );
+  check(
+    !/\d\.\d/.test(await page.locator('.cook-steps').innerText()),
+    `${label}: no decimal point in cooking mode`,
+  );
+  const nextBox = await page.getByRole('button', { name: 'Fertig' }).boundingBox();
+  const navBox = await page.locator('.app-nav').boundingBox();
+  check(
+    nextBox !== null && navBox !== null && nextBox.y + nextBox.height <= navBox.y + 1,
+    `${label}: Fertig sits above the navigation, which is taller with two-line labels`,
+  );
   await page.getByRole('button', { name: 'Fertig' }).click();
   await page.getByRole('heading', { level: 2, name: 'Fertig gekocht' }).waitFor();
   await layout(page, `${label} done`);
@@ -141,6 +217,8 @@ export const german = async (browser, server) => {
     'German: the radio shows the kept choice',
   );
   await walk(a.page, origin, 'German');
+  await narrow(browser, origin);
+  await ratiosGerman(a.page, origin, 'German');
   await classicsFlow(a.page, origin, 'German');
   await openWith(a.page, origin, 'settings');
   await a.page.getByLabel('English').click();

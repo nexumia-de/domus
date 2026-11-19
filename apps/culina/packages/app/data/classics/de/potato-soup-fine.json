@@ -52,8 +52,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "2 platefuls of sliced raw potatoes. The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
-            "de": "2 Teller voll rohe Kartoffelscheiben. Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
+            "en": "2 platefuls of sliced raw potatoes.",
+            "de": "2 Teller voll rohe Kartoffelscheiben."
+          },
+          "sourceNote": {
+            "en": "The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
+            "de": "Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
           }
         },
         {
@@ -99,8 +103,12 @@
             "de": "Suppengemüse"
           },
           "note": {
-            "en": "Some soup vegetables. The source gives no amount.",
-            "de": "Etwas Suppengemüse. Die Quelle nennt keine Menge."
+            "en": "Some soup vegetables.",
+            "de": "Etwas Suppengemüse."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {

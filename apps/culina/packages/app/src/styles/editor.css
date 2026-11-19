@@ -225,6 +225,44 @@
   margin-top: var(--sp-5);
 }
 
+/* Save and Discard stay on the screen above the bottom navigation while the form is long. */
+.editor-bar {
+  position: sticky;
+  bottom: var(--nav-real-h, var(--nav-h));
+  z-index: 2;
+  margin: var(--sp-4) calc(-1 * var(--sp-4)) 0;
+  padding: var(--sp-2) var(--sp-4);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.editor-bar .actions {
+  flex-wrap: nowrap;
+  margin: 0;
+}
+
+/* Save and Discard side by side at 360 px; a third button (Delete) wraps below them. */
+.editor-bar .btn {
+  padding-inline: var(--sp-3);
+}
+
+.editor-bar .actions:has(> :nth-child(3)) {
+  flex-wrap: wrap;
+}
+
+.editor-bar .hint:not(:empty) {
+  margin-top: var(--sp-2);
+  margin-bottom: 0;
+}
+
+@media (min-width: 720px) {
+  .editor-bar {
+    bottom: 0;
+    margin-inline: calc(-1 * var(--sp-5));
+    padding-inline: var(--sp-5);
+  }
+}
+
 .ratio-info {
   margin-top: var(--sp-4);
 }
@@ -233,7 +271,7 @@
 .toast-host {
   position: fixed;
   right: var(--sp-4);
-  bottom: calc(var(--nav-h) + var(--sp-3));
+  bottom: calc(var(--nav-real-h, var(--nav-h)) + var(--sp-3));
   left: var(--sp-4);
   z-index: 3;
   pointer-events: none;

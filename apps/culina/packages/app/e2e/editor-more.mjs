@@ -49,7 +49,7 @@ const fromRatio = async (page, origin) => {
   await page.getByLabel('Name', { exact: true }).fill('From a ratio');
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   check(
-    (await page.locator('.editor-end .hint').innerText()).includes(
+    (await page.locator('.line-edit .field-error').first().innerText()).includes(
       'Choose an ingredient for line 1 to save it.',
     ),
     `${label}: saving says quietly that each line needs its ingredient`,

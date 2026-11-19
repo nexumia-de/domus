@@ -33,7 +33,18 @@ import { strings } from '../../strings';
 import { removeWithUndo } from './delete';
 import { draftSession } from './draft-session';
 import { editorActions } from './editor-actions';
-import { areaField, bareSelect, button, mark, textField } from './form-bits';
+import {
+  areaField,
+  bareSelect,
+  button,
+  clearRowProblems,
+  fieldError,
+  focusFirstError,
+  mark,
+  showRowProblems,
+  textField,
+  type RowProblem,
+} from './form-bits';
 import { picker } from './picker';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
@@ -98,16 +109,21 @@ const build = (
   if (dirty) session.change();
   let open: number | undefined;
   let focusAfter: string[] | undefined;
+  let rowProblems: ReadonlyMap<number, readonly RowProblem[]> = new Map();
   const changed = (): void => session.change();
 
   const name = textField(t.nameLabel, form.name);
+  const nameError = fieldError(name.control);
   name.control.addEventListener('input', () => {
     form.name = name.control.value;
+    if (form.name.trim() !== '') nameError.clear();
     changed();
   });
   const portions = textField(t.portionsLabel, form.portions, true);
+  const portionsError = fieldError(portions.control);
   portions.control.addEventListener('input', () => {
     form.portions = portions.control.value;
+    portionsError.clear();
     changed();
   });
   const note = areaField(t.noteLabel, form.note);
@@ -170,6 +186,7 @@ const build = (
     amount.control.setAttribute('aria-label', `${t.slotAmount}, ${label}`);
     amount.control.addEventListener('input', () => {
       slot.amount = amount.control.value;
+      clearRowProblems(li, 'amount', amount.control);
       mark(amount.control, parseEntry(slot.amount).kind === 'invalid');
       changed();
     });
@@ -195,6 +212,7 @@ const build = (
           const moved = form.slots.splice(index, 1)[0];
           if (moved === undefined) return;
           form.slots.splice(index + by, 0, moved);
+          rowProblems = new Map();
           open = undefined;
           focusAfter = [
             `[data-${attr}="${index + by}"]`,
@@ -221,6 +239,7 @@ const build = (
         'quiet',
         () => {
           form.slots.splice(index, 1);
+          rowProblems = new Map();
           open = undefined;
           changed();
           draw();
@@ -229,6 +248,7 @@ const build = (
       ),
     );
     li.append(el('span', 'field-label', t.slotRole), role, pick, amounts, actions);
+    showRowProblems(li, rowProblems.get(index) ?? [], { pick, amount: amount.control });
     if (open === index) {
       li.append(
         picker({
@@ -238,6 +258,12 @@ const build = (
           catalogue: true,
           onPick(ref) {
             slot.ref = ref;
+            rowProblems = new Map(
+              [...rowProblems].map(([i, ps]) => [
+                i,
+                i === index ? ps.filter((q) => q.target !== 'pick') : ps,
+              ]),
+            );
             if (ref.kind === 'component' && !(MASS_ONLY as readonly string[]).includes(slot.unit)) {
               slot.unit = 'g';
             }
@@ -279,12 +305,37 @@ const build = (
     draw();
   });
 
+  const slotsError = fieldError(addSlot);
+
+  /** Each problem at the field it concerns; the bar says only that there is something to check. */
+  const showProblems = (problems: readonly DishProblem[]): void => {
+    nameError.clear();
+    portionsError.clear();
+    slotsError.clear();
+    const rows = new Map<number, RowProblem[]>();
+    for (const p of problems) {
+      if (p.code === 'name') nameError.show(needsText(p));
+      else if (p.code === 'portions') portionsError.show(needsText(p));
+      else if (p.code === 'no-slots') slotsError.show(needsText(p));
+      else {
+        const at = rows.get(p.index) ?? [];
+        at.push({ target: p.code === 'filling' ? 'pick' : 'amount', text: needsText(p) });
+        rows.set(p.index, at);
+      }
+    }
+    rowProblems = rows;
+    draw();
+    status.textContent = t.needs.summary;
+    focusFirstError(screen);
+  };
+
   const save = async (): Promise<void> => {
     const built = dishFormToRecord(form, today());
     if (!built.ok) {
-      status.textContent = built.problems.map(needsText).join(' ');
+      showProblems(built.problems);
       return;
     }
+    status.textContent = '';
     const record = asNextVersion(
       built.record,
       form.isNew,
@@ -313,11 +364,14 @@ const build = (
 
   screen.append(
     name.wrap,
+    nameError.node,
     portions.wrap,
+    portionsError.node,
     note.wrap,
     el('h2', undefined, t.slotsHeading),
     list,
     addSlot,
+    slotsError.node,
     versionFields(form, changed),
     editorActions({
       isNew: form.isNew,

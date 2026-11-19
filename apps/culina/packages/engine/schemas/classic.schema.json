@@ -182,6 +182,7 @@
       "type": "object",
       "additionalProperties": false,
       "oneOf": [{ "required": ["ref"] }, { "required": ["wanted"] }],
+      "not": { "required": ["amount", "amountWord"] },
       "properties": {
         "key": {
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
@@ -200,7 +201,16 @@
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
         },
         "note": {
+          "description": "Cooking help for the line: shown with it and when cooking.",
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "sourceNote": {
+          "description": "A remark about the source (no amount, an unreadable scan, a choice we made): shown only in the dish's source section, never in the line or when cooking.",
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "amountWord": {
+          "description": "Only on a line without an amount, and only where the source says so: to taste or as needed. Without it a line without an amount shows its name alone.",
+          "enum": ["to-taste", "as-needed"]
         },
         "settled": { "const": true }
       }

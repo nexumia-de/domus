@@ -34,7 +34,7 @@
             "kind": "ingredient",
             "id": "fdc-169385"
           },
-          "note": {
+          "sourceNote": {
             "en": "No weight or number given in the source.",
             "de": "Die Quelle nennt kein Gewicht und keine Anzahl."
           }
@@ -46,8 +46,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Salted water for cooking; no amount given.",
-            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+            "en": "Salted water for cooking.",
+            "de": "Salzwasser zum Kochen."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -64,8 +68,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "For dusting the pieces; no amount given.",
-            "de": "Zum Bestäuben der Stücke; keine Menge angegeben."
+            "en": "For dusting the pieces.",
+            "de": "Zum Bestäuben der Stücke."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -74,7 +82,7 @@
             "kind": "component",
             "id": "pastella"
           },
-          "note": {
+          "sourceNote": {
             "en": "The batter of No. 100 of the book.",
             "de": "Der Teig aus Nr. 100 des Buches."
           }
@@ -154,8 +162,12 @@
             "id": "fdc-group-oil-vegetable"
           },
           "note": {
-            "en": "Fine oil (olio fine), one spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
-            "de": "Feines Öl (olio fine), ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+            "en": "Fine oil (olio fine), one spoonful (una cucchiaiata).",
+            "de": "Feines Öl (olio fine), ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge."
           }
         },
         {
@@ -165,8 +177,12 @@
             "de": "Obstbrand (Acquavite)"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
-            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+            "en": "One spoonful (una cucchiaiata).",
+            "de": "Ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge."
           }
         },
         {
@@ -191,9 +207,10 @@
             "kind": "ingredient",
             "id": "fdc-173468"
           },
-          "note": {
-            "en": "As much as needed (quanto occorre).",
-            "de": "So viel wie nötig (quanto occorre)."
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: \"quanto occorre\".",
+            "de": "Quellenwortlaut: \"quanto occorre\"."
           }
         },
         {
@@ -202,9 +219,10 @@
             "en": "Ice-cold water",
             "de": "Eiskaltes Wasser"
           },
-          "note": {
-            "en": "As much as needed (acqua diaccia quanto basta).",
-            "de": "So viel wie nötig (acqua diaccia quanto basta)."
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: \"acqua diaccia quanto basta\".",
+            "de": "Quellenwortlaut: \"acqua diaccia quanto basta\"."
           }
         }
       ],

@@ -1,21 +1,17 @@
-// The source a classic follows and the second check the dish had, each closed behind a tap at the
-// foot of the dish screen: the ingredients and the method come first.
+// The source a classic follows, closed behind a tap at the foot of the dish screen: the ingredients
+// and the method come first. One short line (author, title, year) and the link, in the user's
+// language; then, only here, what the source says in its own words and our remarks about it.
 import type { DishView } from '../../classics/dish-view';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 const t = strings.classics;
 
-const closed = (className: string, summary: string): HTMLDetailsElement => {
-  const details = el('details', `${className} foot-block`);
-  details.append(el('summary', undefined, summary));
-  return details;
-};
-
-/** Author, title, year, place, a link and the persons the source states. */
-export const sourceDetails = (view: DishView): HTMLElement => {
-  const { source, persons } = view;
-  const block = closed('source-block', t.sourceHeading);
+/** Author, title, year, place, a link, the persons the source states, how it was checked and the remarks about the source. */
+export const sourceDetails = (view: DishView): HTMLDetailsElement => {
+  const { source, persons, sourceRemarks, note } = view;
+  const block = el('details', 'source-block foot-block');
+  block.append(el('summary', undefined, t.sourceHeading));
   block.append(
     el('p', undefined, t.sourceLine(source.author, source.title, source.year)),
     el('p', 'muted', t.sourcePlace(source.place)),
@@ -32,16 +28,18 @@ export const sourceDetails = (view: DishView): HTMLElement => {
       'muted',
       persons.basis === 'stated' ? t.personsStated(persons.value) : t.personsSettled(persons.value),
     ),
-  );
-  return block;
-};
-
-/** How the dish was read a second time. */
-export const checkDetails = (view: DishView): HTMLElement => {
-  const block = closed('check-block', t.checkHeading);
-  block.append(
     el('p', 'muted', t.checkMethod[view.check.method]),
-    el('p', 'muted', view.check.note),
   );
+  if (note !== undefined || sourceRemarks.lines.length > 0 || sourceRemarks.steps.length > 0) {
+    block.append(el('h3', undefined, t.remarksHeading));
+    // The transcriber's note on the dish (what was left out of the source, what it gives no size for).
+    if (note !== undefined) block.append(el('p', undefined, t.remarkDish(note)));
+    const list = el('ul', 'source-remarks');
+    for (const line of sourceRemarks.lines)
+      list.append(el('li', undefined, t.remarkLine(line.name, line.original, line.remark)));
+    for (const step of sourceRemarks.steps)
+      list.append(el('li', undefined, t.remarkStep(step.number, step.remark)));
+    block.append(list);
+  }
   return block;
 };

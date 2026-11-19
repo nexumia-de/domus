@@ -1,6 +1,7 @@
 // Families of ratio templates: grouping by the root of the lineage, and the relatives of one template.
 import { resolveTemplate, templateAncestors, templateChildren } from '@culina/engine';
 import type { RatioTemplate } from '@culina/engine';
+import { templateName } from './names';
 
 export interface Family {
   rootId: string;
@@ -26,7 +27,7 @@ export const groupFamilies = (templates: readonly RatioTemplate[]): Family[] => 
   }
   return [...groups].map(([rootId, members]) => ({
     rootId,
-    name: byId.get(rootId)?.name ?? members[0]?.name ?? rootId,
+    name: templateName(byId.get(rootId) ?? members[0] ?? { id: rootId, name: rootId }),
     members: [...members.filter((m) => m.id === rootId), ...members.filter((m) => m.id !== rootId)],
   }));
 };

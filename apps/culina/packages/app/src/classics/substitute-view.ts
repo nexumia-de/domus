@@ -3,6 +3,7 @@
 // words here, never used to compute an amount. Pure: no DOM.
 import { pickText, substituteEffects } from '@culina/engine';
 import type { Lang, Substitute } from '@culina/engine';
+import { formatNumber } from '../shared/mass';
 import { strings } from '../strings';
 import type { NameOf } from './dish-view';
 import type { TreeEntry } from './tree';
@@ -23,7 +24,8 @@ const WORDS: readonly [number, string][] = [
 
 /** The factor in words: "about half the amount". */
 export const factorText = (factor: number): string =>
-  WORDS.find(([value]) => Math.abs(value - factor) < 1e-9)?.[1] ?? t.factorTimes(String(factor));
+  WORDS.find(([value]) => Math.abs(value - factor) < 1e-9)?.[1] ??
+  t.factorTimes(formatNumber(factor, 2));
 
 export interface SubstituteItem {
   id: string;

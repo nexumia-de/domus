@@ -84,6 +84,12 @@ export function validateClassic(classic: Classic, context: ClassicContext): Cont
     c.lines.forEach((line, j) => {
       item(`components[${i}].lines[${j}]`, line);
       if (line.note !== undefined) text(`components[${i}].lines[${j}].note`, line.note);
+      if (line.sourceNote !== undefined) {
+        text(`components[${i}].lines[${j}].sourceNote`, line.sourceNote);
+      }
+      if (line.amountWord !== undefined && line.amount !== undefined) {
+        out.push(found('amount-word', `components[${i}].lines[${j}].amountWord`));
+      }
     });
     out.push(...stepFindings(`components[${i}]`, c, techniqueIds));
   });

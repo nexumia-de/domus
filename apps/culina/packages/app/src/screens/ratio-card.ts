@@ -2,6 +2,7 @@
 import { templatePercent } from '@culina/engine';
 import type { EffectiveTemplate, RatioTemplate } from '@culina/engine';
 import { relatives } from '../ratios/families';
+import { ratioRole, templateName, templateNote, templateSource } from '../ratios/names';
 import { formatNumber } from '../shared/mass';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
@@ -11,7 +12,7 @@ import { compareSection } from './ratio-compare';
 
 const link = (template: RatioTemplate): HTMLLIElement => {
   const item = el('li');
-  const a = el('a', 'family-link', template.name);
+  const a = el('a', 'family-link', templateName(template));
   a.href = hashFor('ratios', template.id);
   item.append(a);
   return item;
@@ -25,7 +26,8 @@ const partsTable = (resolved: EffectiveTemplate): HTMLTableElement => {
     [strings.ratios.colRole, undefined],
     [strings.ratios.colParts, 'num'],
   ];
-  if (percent.ok) columns.push([strings.ratios.colPercent(resolved.anchor ?? ''), 'num']);
+  if (percent.ok)
+    columns.push([strings.ratios.colPercent(ratioRole(resolved.anchor ?? '')), 'num']);
   for (const [text, cls] of columns) {
     const th = el('th', cls, text);
     th.scope = 'col';
@@ -37,7 +39,7 @@ const partsTable = (resolved: EffectiveTemplate): HTMLTableElement => {
   const body = el('tbody');
   for (const part of resolved.parts) {
     const tr = el('tr');
-    const name = el('th', undefined, part.role);
+    const name = el('th', undefined, ratioRole(part.role));
     name.scope = 'row';
     const parts = el('td', 'num', formatNumber(part.parts));
     if (part.range !== undefined) {
@@ -87,9 +89,11 @@ export const ratioCard = (
   const card = el('article', 'card');
   const back = el('a', 'back-link', strings.ratios.back);
   back.href = hashFor('ratios');
-  card.append(back, el('h1', undefined, template.name), partsTable(resolved));
-  if (template.note !== undefined) card.append(el('p', 'muted', template.note));
-  card.append(el('p', 'source muted', `${strings.ratios.sourceLabel}: ${template.source}`));
+  card.append(back, el('h1', undefined, templateName(template)), partsTable(resolved));
+  const note = templateNote(template);
+  if (note !== undefined) card.append(el('p', 'muted', note));
+  const source = templateSource(template);
+  if (source !== undefined) card.append(el('p', 'source muted', source));
   const family = familySection(templates, template.id);
   if (family) card.append(family);
   card.append(calculatorSection(resolved), compareSection(resolved));
