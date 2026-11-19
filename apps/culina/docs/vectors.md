@@ -217,6 +217,37 @@ always-there items, empty stock, open roles, ratio templates (inherited
 roles, threshold, swapped class), use up first, what uses an ingredient (itself, a class above, a sibling, through a component, head versions only, a generic item not standing for a specific line) and the errors. Amounts,
 dates and ingredients are synthetic and say so in `source`.
 
+## Kinds of techniques, classics and skills (issue 87)
+
+Folders: `packages/engine/vectors/techniques/`, `classics/` and `skills/`.
+Rules: [engine rules](engine-rules.md#techniques-steps-and-classics). Every
+vector is self-contained and **invented**: units, amounts, books and
+ingredients are labelled as examples, and no real recipe or historical unit
+size is in them (a source unit word is defined inline in the classic, as in a
+real file). Validation vectors carry `error_code: invalid` and
+`error_detail.findings` (compared in order, each a subset of the finding);
+derive and copy vectors compare `expected` deeply with the vector's
+`tolerance` on numbers.
+
+| `kind`                    | Inputs                                                                                                  | Expected                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `technique_validate`      | `technique`                                                                                             | none (`ok`), or `error_code` and `findings`                                                 |
+| `technique_list_validate` | `techniques`                                                                                            | as above                                                                                    |
+| `technique_notes`         | `steps`, `techniques`, `learned` (ids)                                                                  | `notes`: `step` index and `technique` id; or `error_code` `unknown-technique`               |
+| `classic_validate`        | `classic`, `techniques`, optional `ingredient_ids`                                                      | none (`ok`), or `error_code` and `findings`                                                 |
+| `classic_derive`          | `classic`, `lang`, optional `portions`                                                                  | `factor`, `dish`, `components`, `unmeasured`, `ranges`; or an error and `error_detail`      |
+| `classic_copy`            | `classic`, `lang`, `date`, `ids` (the ids `newId` gives in turn), optional `portions`, `ingredient_ids` | `dish`, `components`; or `error_code` (`wanted-ingredient` with `wanted`, or a derive code) |
+| `classic_wanted`          | `classic`                                                                                               | `wanted`: `path`, `en`, `de`                                                                |
+| `skill_record`            | `technique`, `learned`                                                                                  | the record                                                                                  |
+| `skill_learned`           | `records`                                                                                               | `learned`: the ids, sorted                                                                  |
+
+Covered: a sentence of 25 and of 26 words, blank German text, no source,
+duplicate ids, the note at the first use only, a learned technique, order of
+notes, an unknown technique; every finding code of `validateClassic`; derive
+with a scaled mass, a range, a table unit, a count unit word, German names,
+slots only, and the three errors; the copy with origin, with an adopted
+ingredient and the two refusals; the skill record and the learned set.
+
 # Worked examples
 
 All numbers by hand. The input numbers are chosen for the arithmetic;

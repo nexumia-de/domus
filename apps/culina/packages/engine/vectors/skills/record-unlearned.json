@@ -1,0 +1,16 @@
+{
+  "id": "record-unlearned",
+  "description": "Taking the mark back keeps the record with learned false",
+  "inputs": {
+    "kind": "skill_record",
+    "technique": "melting",
+    "learned": false
+  },
+  "expected": {
+    "id": "skill-melting",
+    "technique": "melting",
+    "learned": false
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

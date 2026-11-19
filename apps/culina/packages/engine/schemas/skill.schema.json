@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/skill.schema.json",
+  "title": "Skill state",
+  "description": "Whether the user marked one technique as learned. A stored personal record; its id is skill- plus the technique id, so there is one record per technique.",
+  "type": "object",
+  "required": ["id", "technique", "learned"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "pattern": "^skill-"
+    },
+    "technique": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "maxLength": 74
+    },
+    "learned": { "type": "boolean" }
+  }
+}

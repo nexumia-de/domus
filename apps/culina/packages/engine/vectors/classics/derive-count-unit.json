@@ -1,0 +1,253 @@
+{
+  "id": "derive-count-unit",
+  "description": "Count unit word: 0.5 dozen x 12 = 6 pieces; source for 6 persons, 2 portions: factor 1/3 = 0.3333333333 (10 digits) so 2 pieces; 2 measures x 100 g x 0.3333333333 = 66.66666666 g",
+  "inputs": {
+    "kind": "classic_derive",
+    "classic": {
+      "id": "example-dish",
+      "name": {
+        "en": "Example dish",
+        "de": "Beispielgericht"
+      },
+      "originalName": "Example dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      },
+      "persons": {
+        "value": 6,
+        "basis": "stated"
+      },
+      "units": {
+        "measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this vector: 1 measure = 100 g."
+        },
+        "dozen": {
+          "kind": "count",
+          "factor": 12,
+          "read": "Invented for this vector: 1 dozen = 12 pieces."
+        }
+      },
+      "components": [
+        {
+          "id": "sauce",
+          "name": {
+            "en": "Example sauce",
+            "de": "Beispielsauce"
+          },
+          "role": "sauce",
+          "lines": [
+            {
+              "key": "fat",
+              "wanted": {
+                "en": "Example fat",
+                "de": "Beispielfett"
+              },
+              "amount": {
+                "value": 2,
+                "unit": "measure",
+                "original": "2 measures"
+              }
+            },
+            {
+              "key": "liquid",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-liquid"
+              },
+              "amount": {
+                "value": 250,
+                "max": 300,
+                "unit": "ml"
+              }
+            },
+            {
+              "key": "salt",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-egg"
+              },
+              "amount": {
+                "value": 0.5,
+                "unit": "dozen"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat.",
+                "de": "Das Fett schmelzen."
+              },
+              "technique": "melting",
+              "uses": ["fat"],
+              "time": {
+                "value": 5,
+                "unit": "min"
+              }
+            },
+            {
+              "text": {
+                "en": "Add the liquid.",
+                "de": "Die Flüssigkeit zugeben."
+              },
+              "uses": ["liquid"],
+              "temperature": {
+                "value": 180,
+                "unit": "C"
+              }
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Invented for this vector."
+      }
+    },
+    "lang": "en"
+  },
+  "expected": {
+    "factor": 0.3333333333,
+    "dish": {
+      "id": "example-dish",
+      "name": "Example dish",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 4.928921594,
+            "unit": "ml"
+          }
+        }
+      ]
+    },
+    "components": [
+      {
+        "id": "sauce",
+        "name": "Example sauce",
+        "role": "sauce",
+        "lines": [
+          {
+            "key": "fat",
+            "wanted": "Example fat",
+            "amount": {
+              "value": 66.66666666,
+              "unit": "g"
+            },
+            "original": "2 measures"
+          },
+          {
+            "key": "liquid",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-liquid"
+            },
+            "amount": {
+              "value": 91.66666666,
+              "unit": "ml"
+            }
+          },
+          {
+            "key": "salt",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-egg"
+            },
+            "amount": {
+              "value": 1.999999999,
+              "unit": "count"
+            }
+          }
+        ],
+        "steps": [
+          {
+            "text": {
+              "en": "Melt the fat.",
+              "de": "Das Fett schmelzen."
+            },
+            "technique": "melting",
+            "uses": ["fat"],
+            "time": {
+              "value": 5,
+              "unit": "min"
+            }
+          },
+          {
+            "text": {
+              "en": "Add the liquid.",
+              "de": "Die Flüssigkeit zugeben."
+            },
+            "uses": ["liquid"],
+            "temperature": {
+              "value": 180,
+              "unit": "C"
+            }
+          }
+        ]
+      }
+    ],
+    "unmeasured": [
+      {
+        "index": 0
+      }
+    ],
+    "ranges": [
+      {
+        "componentId": "sauce",
+        "index": 1,
+        "min": {
+          "value": 83.33333332,
+          "unit": "ml"
+        },
+        "max": {
+          "value": 99.99999999,
+          "unit": "ml"
+        }
+      }
+    ]
+  },
+  "tolerance": 1e-6,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

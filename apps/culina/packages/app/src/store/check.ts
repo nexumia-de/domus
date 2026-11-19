@@ -13,6 +13,8 @@ export const checkStore = async (
 ): Promise<Result<{ findings: readonly Finding[] }>> => {
   const model: Record<string, unknown[]> = {};
   for (const kind of KINDS) {
+    // Skill state has no cross-record rule; the model knows no such collection.
+    if (kind === 'skills') continue;
     const listed = await store.list(kind);
     if (!listed.ok) return fail(listed.error);
     model[kind] = [...((seed[kind] as unknown[] | undefined) ?? []), ...listed.records];

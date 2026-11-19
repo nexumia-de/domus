@@ -9,7 +9,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "pretest": "node scripts/make-techniques.mjs",
     "test": "vitest run",
+    "pretypecheck": "node scripts/make-techniques.mjs",
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {

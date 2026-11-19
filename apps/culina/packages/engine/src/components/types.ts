@@ -3,6 +3,7 @@
 // component record can be passed as is: these types are a subset of it.
 import type { Amount, ConvertError, IngredientFacts } from '../amounts/types';
 import type { PercentAmount } from '../scale/types';
+import type { Step } from '../steps/types';
 
 /** A reference to an ingredient or to another component. */
 export interface ComponentRef {
@@ -20,6 +21,8 @@ export interface ComponentLine {
   role?: string;
   state?: FoodState;
   note?: string;
+  /** Names the line so a step can use it; unique in the component. */
+  key?: string;
 }
 
 /** A component: lines, the weighed output and the role whose mass is 100 percent. */
@@ -28,6 +31,8 @@ export interface Component {
   /** Role whose summed mass (lines not in percent) is 100 percent for percent lines. */
   percentBase?: string;
   lines: readonly ComponentLine[];
+  /** Steps with bilingual text; the stored `method` text stays valid beside them. */
+  steps?: readonly Step[];
   /** The output weight as weighed; absent when unknown. There is no default. */
   yield?: { amount: { value: number; unit: 'g' | 'kg' | 'oz' | 'lb' }; source: string };
 }

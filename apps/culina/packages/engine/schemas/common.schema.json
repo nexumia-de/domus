@@ -77,6 +77,62 @@
         }
       ]
     },
+    "i18nText": {
+      "description": "A text in both languages, English canonical and German; both are required and not empty.",
+      "type": "object",
+      "required": ["en", "de"],
+      "additionalProperties": false,
+      "properties": {
+        "en": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "de": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      }
+    },
+    "lineKey": {
+      "description": "Names a line inside its component so a step can point at it; unique in the component.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "stepTime": {
+      "description": "Time as the source gives it: one value, or a range from value to to.",
+      "type": "object",
+      "required": ["value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "to": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "enum": ["s", "min", "h"] }
+      }
+    },
+    "stepTemperature": {
+      "description": "Temperature as the source gives it: one value, or a range from value to to. Another scale or a word (moderate oven) goes into the step text.",
+      "type": "object",
+      "required": ["value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number" },
+        "to": { "type": "number" },
+        "unit": { "enum": ["C", "F"] }
+      }
+    },
+    "step": {
+      "description": "One step of a method: bilingual text, optionally the technique it teaches, the lines it uses (by line key), and time and temperature as given.",
+      "type": "object",
+      "required": ["text"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "$ref": "#/$defs/i18nText" },
+        "technique": { "$ref": "#/$defs/id" },
+        "uses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/lineKey" }
+        },
+        "time": { "$ref": "#/$defs/stepTime" },
+        "temperature": { "$ref": "#/$defs/stepTemperature" }
+      }
+    },
     "sourcedNumber": {
       "type": "object",
       "required": ["value", "source"],

@@ -4,7 +4,15 @@ import { nextUpdatedAt } from './clock';
 import { failed, run } from './idb';
 import { storeLog } from './log';
 import { schemaIssues } from './validate';
-import { fail, KINDS, type Kind, type Result, type Row, type StoredRecord } from './types';
+import {
+  fail,
+  KINDS,
+  type ExportedKind,
+  type Kind,
+  type Result,
+  type Row,
+  type StoredRecord,
+} from './types';
 
 export interface Entry {
   kind: Kind;
@@ -15,11 +23,11 @@ export interface Bulk {
   /** Validates every entry, then writes them all (newer `updatedAt` each) or none. */
   putMany(entries: readonly Entry[]): Promise<Result<{ count: number }>>;
   /**
-   * Makes the live records of every kind exactly `records`: those given are written, live
+   * Makes the live records of every exported kind exactly `records`: those given are written, live
    * records that are not given get a tombstone (so a later sync knows they were removed).
-   * Validated first; one transaction.
+   * Kinds that are not exported (skills) are left as they are. Validated first; one transaction.
    */
-  replaceAll(records: Readonly<Record<Kind, readonly unknown[]>>): Promise<Result>;
+  replaceAll(records: Readonly<Record<ExportedKind, readonly unknown[]>>): Promise<Result>;
   /**
    * Undo of an import: each change puts `before` back (a newer `updatedAt`), or, when the
    * record did not exist before, tombstones it. One transaction; the notebook is as it was for
@@ -83,12 +91,13 @@ export const bulkStore = (db: IDBDatabase, now: () => string): Bulk => ({
   },
 
   async replaceAll(records) {
-    const entries = KINDS.flatMap((kind) => records[kind].map((record) => ({ kind, record })));
+    const kinds = KINDS.filter((kind): kind is ExportedKind => kind !== 'skills');
+    const entries = kinds.flatMap((kind) => records[kind].map((record) => ({ kind, record })));
     const problem = firstProblem(entries);
     if (problem) return problem;
     try {
-      await run(db, [...KINDS], 'readwrite', (tx, abort) => {
-        for (const kind of KINDS) {
+      await run(db, kinds, 'readwrite', (tx, abort) => {
+        for (const kind of kinds) {
           const store = tx.objectStore(kind);
           const given = new Map(records[kind].map((r) => [idOf(r) as string, r]));
           const all = store.getAll();

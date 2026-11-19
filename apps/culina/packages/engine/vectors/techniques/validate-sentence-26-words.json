@@ -1,0 +1,42 @@
+{
+  "id": "validate-sentence-26-words",
+  "description": "A sentence of 26 words is too long",
+  "inputs": {
+    "kind": "technique_validate",
+    "technique": {
+      "id": "melting",
+      "name": {
+        "en": "Melting fat",
+        "de": "Fett schmelzen"
+      },
+      "watch": {
+        "en": "Keep the heat low.",
+        "de": "Die Hitze niedrig halten."
+      },
+      "why": {
+        "en": "Fat that browns tastes bitter.",
+        "de": "Fett, das bräunt, schmeckt bitter."
+      },
+      "level": "textbook",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "word word word word word word word word word word word word word word word word word word word word word word word word word word"
+        }
+      ]
+    }
+  },
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "sentence-too-long",
+        "path": "sources[0].sentence"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

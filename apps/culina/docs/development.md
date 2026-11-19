@@ -26,16 +26,17 @@ TypeScript, installed for that build only).
 
 ## Commands
 
-| Command                | What it does                                                        |
-| ---------------------- | ------------------------------------------------------------------- |
-| `npm run check`        | format check, lint, typecheck, tests, in that order; stops at error |
-| `npm run format`       | Prettier writes all files                                           |
-| `npm run format:check` | Prettier checks all files                                           |
-| `npm run lint`         | ESLint (flat config, typescript-eslint, purity rule for the engine) |
-| `npm run typecheck`    | `tsc --noEmit` in both packages                                     |
-| `npm test`             | vitest in both packages (the app tests build `dist/` first)         |
-| `npm run build`        | esbuild writes `packages/app/dist/`                                 |
-| `npm run e2e`          | builds, serves `dist/` and runs the Playwright checks in Chromium   |
+| Command                              | What it does                                                                                   |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                            |
+| `npm run format`                     | Prettier writes all files                                                                      |
+| `npm run format:check`               | Prettier checks all files                                                                      |
+| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                            |
+| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                |
+| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                    |
+| `npm run build`                      | esbuild writes `packages/app/dist/`                                                            |
+| `npm run e2e`                        | builds, serves `dist/` and runs the Playwright checks in Chromium                              |
+| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file)) |
 
 ## Layout
 
@@ -60,6 +61,7 @@ TypeScript, installed for that build only).
   the worked examples that `test/units-vectors.test.ts`,
   `test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts` and
   `test/salt-vectors.test.ts`, `test/components-vectors.test.ts` and `test/validate-vectors.test.ts` run;
+  `src/text/`, `src/content/`, `src/steps/`, `src/techniques/`, `src/classics/` and `src/skills/` (techniques, steps, classics and skill state, issue 87; `data/techniques/` has one JSON file per technique and `src/techniques/techniques.generated.ts`, git-ignored, indexes them: `scripts/make-techniques.mjs` writes it in the engine's and the app's `pretest` and `pretypecheck` and in the build, so run `npm test` or `npm run typecheck`, not `vitest` alone, in a fresh checkout; the app does the same for `data/classics/<country>/` with `make-classics.mjs`) with `vectors/techniques/`, `vectors/classics/` and `vectors/skills/` run by `test/techniques-vectors.test.ts`, `test/classics-vectors.test.ts` and `test/skills-vectors.test.ts`, and `test/content.test.ts`;
   `test/ratios.test.ts` has the unit tests and the seed checks,
   `test/components.test.ts` and `test/components-property.test.ts` those of
   components, `test/validate.test.ts` those of validation.
