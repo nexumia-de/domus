@@ -1,6 +1,7 @@
 // `npm run e2e`: build, serve dist/, run the browser checks. Exit code 1 on any failure.
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 import { catalogue } from './catalogue.mjs';
+import { classics } from './classics.mjs';
 import { components } from './components.mjs';
 import { cook } from './cook.mjs';
 import { editor } from './editor.mjs';
@@ -36,6 +37,7 @@ try {
   await exportImport(browser, server);
   await stock(browser, server);
   await cook(browser, server);
+  await classics(browser, server);
   await importCatalogue(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);

@@ -186,6 +186,19 @@ entry list in the `.rows` style: name, kind and status as text, then the
 reason and the notes in muted text. No alarm colour; `styles/cook.css`.
 Screenshots: `docs/screenshots/cook-*`.
 
+# Classics screens
+
+`#/start`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook`
+([behaviour](behaviour.md#classics)). The navigation icon for Start is a bowl
+with a line of steam. Lists use the `.rows` style with 44 px rows. The recipe is
+a two-column grid per line: the amount (bold, left) and the name, with the
+source's wording, notes and "settled by us" in muted text below; no colour
+carries a meaning. Cooking shows one step in `--fs-lg`, a progress bar in
+`--accent`, and Back and Next as 56 px buttons in a 1:2 grid; the technique note is a box with
+`--accent-soft` and a `--border` outline, its "why" behind a 44 px summary. The
+settled list and the whole recipe are `<details>`. Tokens only, in
+`styles/classics.css`. Screenshots: `docs/screenshots/classics-*`.
+
 # Stock screens
 
 `#/stock`, `#/stock/add`, `#/stock/<id>/edit` ([behaviour](behaviour.md#stock)).

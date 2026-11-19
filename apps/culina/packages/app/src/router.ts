@@ -1,30 +1,49 @@
 /**
- * Hash router: #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
+ * Hash router: the start screen #/start, the classics #/classics/<country> and #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
  * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, and the
  * history screens #/components/<id>/history, #/dishes/<id>/history, the import screen
  * #/settings/import, the stock screens #/stock, #/stock/add and #/stock/<id>/edit, and the
  * finder #/cook, #/cook/use-up and #/cook/<ingredientId>/with. The back stack is the browser
  * history.
  */
-export const ROUTES = ['ratios', 'components', 'dishes', 'cook', 'stock', 'settings'] as const;
+export const ROUTES = [
+  'start',
+  'classics',
+  'classic',
+  'ratios',
+  'components',
+  'dishes',
+  'cook',
+  'stock',
+  'settings',
+] as const;
 export type Route = (typeof ROUTES)[number];
-export const DEFAULT_ROUTE: Route = 'ratios';
+export const DEFAULT_ROUTE: Route = 'start';
 
 /** The entries of the navigation: the stock screens belong to Cook, so Stock has none of its own. */
-export const NAV_ENTRIES = ['ratios', 'components', 'dishes', 'cook', 'settings'] as const;
+export const NAV_ENTRIES = ['start', 'ratios', 'components', 'dishes', 'cook', 'settings'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
 
-/** The navigation entry a route is shown under. */
-export const navEntryFor = (route: Route): NavEntry => (route === 'stock' ? 'cook' : route);
+/** The navigation entry a route is shown under: the classics belong to Start. */
+export const navEntryFor = (route: Route): NavEntry =>
+  route === 'stock' ? 'cook' : route === 'classics' || route === 'classic' ? 'start' : route;
 
 /** The second segment of the cook route that is a view, not an ingredient. */
 export const USE_UP = 'use-up';
 
 /** Routes whose hash may carry one more segment (a template, component or dish id). */
-const WITH_PARAM: readonly Route[] = ['ratios', 'components', 'dishes', 'stock', 'cook'];
+const WITH_PARAM: readonly Route[] = [
+  'ratios',
+  'components',
+  'dishes',
+  'stock',
+  'cook',
+  'classics',
+  'classic',
+];
 
 /** The editors: a new record, or the record in `param` edited; `with`: the finder from one ingredient. */
-export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with';
+export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with' | 'cook';
 const WITH_ACTION: readonly Route[] = ['components', 'dishes'];
 
 export const hashFor = (route: Route, param?: string, action?: Action): string => {
@@ -33,7 +52,7 @@ export const hashFor = (route: Route, param?: string, action?: Action): string =
   if (action === 'add') return `#/${route}/add`;
   if (!param) return `#/${route}`;
   const base = `#/${route}/${encodeURIComponent(param)}`;
-  return action === 'edit' || action === 'history' || action === 'with'
+  return action === 'edit' || action === 'history' || action === 'with' || action === 'cook'
     ? `${base}/${action}`
     : base;
 };
@@ -52,6 +71,11 @@ export const actionFromHash = (hash: string): Action | undefined => {
   if (routeFromHash(hash) === 'settings') {
     const [, second, third] = segments(hash);
     return second === 'import' && third === undefined ? 'import' : undefined;
+  }
+  if (routeFromHash(hash) === 'classic') {
+    // #/classic/<id>/cook: the step-by-step view of one classic.
+    const [, second, third] = segments(hash);
+    return second && third === 'cook' ? 'cook' : undefined;
   }
   if (routeFromHash(hash) === 'cook') {
     // #/cook/<ingredientId>/with; #/cook/use-up is a view of its own.

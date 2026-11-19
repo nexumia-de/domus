@@ -2,6 +2,7 @@
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { store as storeCookFixture } from './cook-fixture.mjs';
+import { content as classicsContent, PAN } from './classics-fixture.mjs';
 import { buildApp, distDir, launch } from './harness.mjs';
 import { seed } from './seed.mjs';
 import { serve } from './serve.mjs';
@@ -272,6 +273,23 @@ const shots = [
     STOCK_NOW,
   ],
 ];
+// The classics: the fictional example dishes of e2e/classics-fixture.mjs, handed to the page.
+const CLASSICS_QUERY = '&e2e-store&e2e-content';
+const noteOpen = (page) => page.locator('.technique-more summary').click();
+const cooking = `classic/${PAN.id}/cook`;
+const classicShots = [
+  ['classics-start-360x720-light.png', 360, 720, 'light', 'start', undefined, true],
+  ['classics-start-360x720-dark.png', 360, 720, 'dark', 'start', undefined, true],
+  ['classics-start-1000x700-light.png', 1000, 700, 'light', 'start', undefined, true],
+  ['classics-country-360x720-light.png', 360, 720, 'light', 'classics/de', undefined, true],
+  ['classics-dish-360x720-light.png', 360, 720, 'light', `classic/${PAN.id}`, undefined, true],
+  ['classics-dish-1000x700-light.png', 1000, 700, 'light', `classic/${PAN.id}`, undefined, true],
+  ['classics-step-360x720-light.png', 360, 720, 'light', cooking, undefined, true],
+  ['classics-step-360x720-dark.png', 360, 720, 'dark', cooking, noteOpen, true],
+  ['classics-step-1000x700-light.png', 1000, 700, 'light', cooking, undefined, true],
+].map((shot) => [...shot.slice(0, 5), shot[5], shot[6], false, CLASSICS_QUERY]);
+
+shots.push(...classicShots);
 
 buildApp();
 mkdirSync(out, { recursive: true });
@@ -295,6 +313,11 @@ for (const [
   });
   const page = await context.newPage();
   if (withExamples) await seed(page, server.url);
+  if (query?.includes('e2e-content')) {
+    await page.addInitScript((data) => {
+      globalThis.__culinaContent = data;
+    }, classicsContent);
+  }
   await page.goto('about:blank');
   await page.goto(`${server.url}?no-sw${query ?? ''}#/${route}`);
   await page.getByRole('heading', { level: 1 }).waitFor();
