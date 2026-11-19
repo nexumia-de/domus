@@ -1,0 +1,32 @@
+{
+  "id": "steam",
+  "name": {
+    "en": "Steaming",
+    "de": "Dämpfen"
+  },
+  "watch": {
+    "en": "Keep the bottom of the steamer basket above the simmering water.",
+    "de": "Den Boden des Dämpfeinsatzes über dem köchelnden Wasser halten."
+  },
+  "why": {
+    "en": "The food is not submerged, so nutrients are not lost to the water.",
+    "de": "Das Gargut liegt nicht im Wasser, daher gehen keine Nährstoffe ins Wasser über."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 5.2 The Cooking techniques - Steaming, section Steaming Vegetables",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/05%3A_Emulsions_and_Steaming/5.02%3A_The_Cooking_techniques_-_Steaming",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "It is important that the bottom of the steamer basket does not touch the simmering water"
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 5.2 The Cooking techniques - Steaming, section Steaming",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/05%3A_Emulsions_and_Steaming/5.02%3A_The_Cooking_techniques_-_Steaming",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Because it doesn't require the food to be submerged, it avoids the loss of nutrients through leaching."
+    }
+  ]
+}

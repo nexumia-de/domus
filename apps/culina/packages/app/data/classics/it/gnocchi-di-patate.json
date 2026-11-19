@@ -1,0 +1,200 @@
+{
+  "id": "gnocchi-di-patate",
+  "name": {
+    "en": "Potato gnocchi",
+    "de": "Kartoffelgnocchi"
+  },
+  "originalName": "Gnocchi di patate",
+  "country": "it",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 59",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "potato-gnocchi-dough",
+      "name": {
+        "en": "Potato gnocchi dough",
+        "de": "Kartoffelgnocchi-Teig"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g",
+            "original": "Patate grosse e gialle, grammi 400"
+          },
+          "note": {
+            "en": "Large yellow potatoes; the catalogue has white potatoes.",
+            "de": "Große gelbe Kartoffeln; der Katalog führt weiße Kartoffeln."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose-enriched"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "Farina di grano, grammi 150"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "cheese",
+          "wanted": {
+            "en": "Cheese (cacio)",
+            "de": "Käse (Cacio)"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          }
+        },
+        {
+          "key": "tomato-sauce",
+          "wanted": {
+            "en": "Tomato sauce",
+            "de": "Tomatensauce"
+          },
+          "note": {
+            "en": "Optional, as you like.",
+            "de": "Optional, nach Belieben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook the potatoes, better in steam than in water.",
+            "de": "Die Kartoffeln garen, besser im Dampf als im Wasser."
+          },
+          "technique": "steam",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Peel the potatoes while they are still hot and pass them through a sieve.",
+            "de": "Die Kartoffeln heiß schälen und durch ein Sieb streichen."
+          },
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Mix in the flour and work the dough briefly with the hands.",
+            "de": "Das Mehl einarbeiten und den Teig kurz mit den Händen kneten."
+          },
+          "technique": "knead",
+          "uses": ["flour", "potatoes"]
+        },
+        {
+          "text": {
+            "en": "Roll the dough into a thin cylinder.",
+            "de": "Den Teig zu einer dünnen Rolle formen."
+          },
+          "technique": "roll-dough",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Cut the cylinder into pieces about three centimetres long.",
+            "de": "Die Rolle in Stücke von etwa drei Zentimetern Länge schneiden."
+          },
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Dust the pieces lightly with flour.",
+            "de": "Die Stücke leicht mit Mehl bestäuben."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Take one piece at a time and press a hollow into it with the thumb, over the back of a grater.",
+            "de": "Ein Stück nach dem anderen nehmen und mit dem Daumen über die Rückseite einer Reibe eine Mulde eindrücken."
+          },
+          "technique": "shape-dumplings",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Cook them in salted water for ten minutes.",
+            "de": "Zehn Minuten in Salzwasser garen."
+          },
+          "technique": "boil",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          },
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Lift them out drained and dress them with the cheese, the butter and, as you like, the tomato sauce.",
+            "de": "Die Gnocchi abgetropft herausnehmen und mit Käse, Butter und nach Belieben Tomatensauce anrichten."
+          },
+          "uses": ["cheese", "butter", "tomato-sauce"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "potato-gnocchi-dough"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 400 g of potatoes and 150 g of flour make a main dish for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.), No. 89: 400 g large yellow potatoes, 150 g flour, steam or water, hot peeling and sieving, cylinders of about three centimetres, flouring, thumb on a grater, ten minutes in salted water, cacio, butter, tomato sauce. All numbers and steps agree; no change. The 1891 heading reads 39 in the OCR; 59 is the first edition's order and is not confirmed by the 1985 text."
+  },
+  "note": {
+    "en": "The source also cooks the gnocchi in milk, without draining, for a more delicate dish; that variant is not transcribed. The printed heading reads 39 in the OCR; the number 59 is taken from the book's order and the selection.",
+    "de": "Die Quelle garte die Gnocchi auch in Milch, ohne sie abzugießen, für ein zarteres Gericht; diese Variante ist nicht übertragen. Die Überschrift ist in der OCR als 39 gelesen; die Nummer 59 folgt der Reihenfolge des Buches und der Auswahl."
+  }
+}

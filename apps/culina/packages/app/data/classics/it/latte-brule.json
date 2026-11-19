@@ -1,0 +1,258 @@
+{
+  "id": "latte-brule",
+  "name": {
+    "en": "Burnt-sugar milk pudding (latte brulé)",
+    "de": "Milchpudding mit gebranntem Zucker (Latte brulé)"
+  },
+  "originalName": "Latte brulé",
+  "country": "it",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi, 1891)",
+    "year": 1891,
+    "place": "N. 423",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 10,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "latte-brule",
+      "name": {
+        "en": "Burnt-sugar milk pudding",
+        "de": "Milchpudding mit gebranntem Zucker"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "Latte, litri 1"
+          }
+        },
+        {
+          "key": "sugar-milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g",
+            "original": "100 grammi del detto zucchero"
+          },
+          "note": {
+            "en": "The source's total is 180 g: 100 g for the milk and 80 g for the caramel.",
+            "de": "Die Gesamtmenge der Quelle beträgt 180 g: 100 g für die Milch und 80 g für den Karamell."
+          }
+        },
+        {
+          "key": "sugar-caramel",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "g",
+            "original": "gli 80 grammi di zucchero che resta"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "Rossi d'uovo N. 8"
+          }
+        },
+        {
+          "key": "white",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-white"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "due chiare"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "A ladle of water (un ramaiuolino d'acqua) to stop the caramel; no amount.",
+            "de": "Eine Kelle Wasser (un ramaiuolino d'acqua), um den Karamell zu stoppen; keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the milk with the 100 g of sugar for one full hour.",
+            "de": "Die Milch mit den 100 g Zucker eine volle Stunde kochen."
+          },
+          "technique": "boil",
+          "time": {
+            "value": 60,
+            "unit": "min"
+          },
+          "uses": ["milk", "sugar-milk"]
+        },
+        {
+          "text": {
+            "en": "Take the milk off the heat and let it cool.",
+            "de": "Die Milch vom Herd nehmen und abkühlen lassen."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "Melt the 80 g of sugar in a pan on its own.",
+            "de": "Die 80 g Zucker in einer Pfanne für sich schmelzen."
+          },
+          "uses": ["sugar-caramel"]
+        },
+        {
+          "text": {
+            "en": "Pour some of the melted sugar into a plain mould, so that it covers the bottom as a thin film.",
+            "de": "Etwas vom geschmolzenen Zucker in eine schlichte Form gießen, sodass der Boden dünn bedeckt ist."
+          },
+          "uses": ["sugar-caramel"]
+        },
+        {
+          "text": {
+            "en": "Keep the rest in the pan on the heat until it turns black.",
+            "de": "Den Rest in der Pfanne auf der Hitze lassen, bis er schwarz wird."
+          },
+          "technique": "caramelise-sugar",
+          "uses": ["sugar-caramel"]
+        },
+        {
+          "text": {
+            "en": "Stop it with a ladle of water: you will hear it hiss and clump. Keep stirring over the heat until it is a thick, dark liquid.",
+            "de": "Mit einer Kelle Wasser stoppen: man hört es zischen und sich zusammenballen. Auf der Hitze weiter rühren, bis eine dicke, dunkle Flüssigkeit entsteht."
+          },
+          "uses": ["water", "sugar-caramel"]
+        },
+        {
+          "text": {
+            "en": "Set the dark syrup aside.",
+            "de": "Den dunklen Sirup beiseitestellen."
+          }
+        },
+        {
+          "text": {
+            "en": "Beat the eggs in a pan.",
+            "de": "Die Eier in einem Topf verquirlen."
+          },
+          "uses": ["yolk", "white"]
+        },
+        {
+          "text": {
+            "en": "Mix the milk, the eggs and the dark syrup.",
+            "de": "Milch, Eier und den dunklen Sirup vermischen."
+          },
+          "uses": ["milk", "yolk", "white", "sugar-caramel"]
+        },
+        {
+          "text": {
+            "en": "Taste it for sweetness.",
+            "de": "Die Süße abschmecken."
+          }
+        },
+        {
+          "text": {
+            "en": "Pass it through a tin sieve that is not very fine.",
+            "de": "Durch ein nicht zu feines Sieb aus Blech passieren."
+          }
+        },
+        {
+          "text": {
+            "en": "Pour it into the prepared mould.",
+            "de": "In die vorbereitete Form gießen."
+          }
+        },
+        {
+          "text": {
+            "en": "Cook it in a water bath, with fire also above it.",
+            "de": "Im Wasserbad garen, mit Hitze auch von oben."
+          },
+          "technique": "water-bath"
+        },
+        {
+          "text": {
+            "en": "When the top begins to colour, put a sheet greased with butter under the lid.",
+            "de": "Sobald die Oberseite Farbe annimmt, ein mit Butter gefettetes Blatt unter den Deckel legen."
+          }
+        },
+        {
+          "text": {
+            "en": "It is done when a thin skewer comes out clean and dry.",
+            "de": "Fertig, wenn ein dünnes Stäbchen sauber und trocken herauskommt."
+          }
+        },
+        {
+          "text": {
+            "en": "Let it cool well.",
+            "de": "Gut abkühlen lassen."
+          }
+        },
+        {
+          "text": {
+            "en": "Loosen the edge all round with a thin knife.",
+            "de": "Den Rand ringsum mit einem dünnen Messer lösen."
+          }
+        },
+        {
+          "text": {
+            "en": "In summer, before turning it out, you may chill it with ice.",
+            "de": "Im Sommer kann man es vor dem Stürzen mit Eis kühlen."
+          }
+        },
+        {
+          "text": {
+            "en": "Turn it out onto a dish, with or without a cloth.",
+            "de": "Auf eine Platte stürzen, mit oder ohne Tuch."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "latte-brule"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.), No. 692: one litre of milk, 180 g sugar (100 g with the milk, 80 g for the caramel), eight yolks and two whites, one hour of boiling, the caramel, the water, the hissing, the water bath, the skewer test, ice in summer. Changed: 'dark brown' to 'black' (nero); added the hissing, 'with or without a cloth', the ice in summer, the mould's rim (in the note)."
+  },
+  "note": {
+    "en": "The book's own dose is for ten persons. Both the 1891 first edition (No. 423) and the 1985 edition (No. 692) give the same amounts. The 'stecchino' test is written in the source as a skewer of 'granata'; read here as a thin skewer. The book prefers an oval mould with a rim about a finger wide, so that the water does not splash in while it boils. No oven temperature is given; the cooking is on the stove in a water bath.",
+    "de": "Das Buch gibt die Dosis für zehn Personen an. Die Erstausgabe von 1891 (Nr. 423) und die Ausgabe von 1985 (Nr. 692) nennen dieselben Mengen. Die Stäbchenprobe steht in der Quelle als Stäbchen aus 'granata'; hier als dünnes Stäbchen übersetzt. Das Buch bevorzugt eine ovale Form mit einem etwa fingerbreiten Rand, damit beim Kochen kein Wasser hineinspritzt. Keine Ofentemperatur angegeben; gegart wird auf dem Herd im Wasserbad."
+  }
+}

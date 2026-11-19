@@ -1,4 +1,5 @@
 // What we settled: every settled line and the number of persons has an entry, and every entry points at something.
+// A settled line or slot needs no amount: without one the entry records a choice ("water, not broth").
 import { found } from '../content/types';
 import type { ContentFinding } from '../content/types';
 import type { Classic } from './types';
@@ -11,13 +12,8 @@ const target = (owner: string, key: string | undefined): string | undefined =>
 export function settledFindings(classic: Classic): ContentFinding[] {
   const out: ContentFinding[] = [];
   const marked = new Set<string>();
-  const check = (
-    path: string,
-    owner: string,
-    item: { key?: string; settled?: true; amount?: unknown },
-  ): void => {
+  const check = (path: string, owner: string, item: { key?: string; settled?: true }): void => {
     if (item.settled !== true) return;
-    if (item.amount === undefined) out.push(found('settled-without-amount', path));
     const name = target(owner, item.key);
     if (name !== undefined) marked.add(name);
     const entry = name !== undefined && classic.settled.some((s) => s.target === name);

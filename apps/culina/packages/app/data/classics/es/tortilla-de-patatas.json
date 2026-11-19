@@ -1,0 +1,186 @@
+{
+  "id": "tortilla-de-patatas",
+  "name": {
+    "en": "Spanish potato omelette",
+    "de": "Spanisches Kartoffelomelett (Tortilla)"
+  },
+  "originalName": "Tortilla de patatas",
+  "country": "es",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Wikibooks contributors",
+    "title": "Cookbook:Tortilla de Patatas (Wikibooks; revision oldid 4517810; licence CC BY-SA 4.0)",
+    "year": 2025,
+    "place": "Ingredients and method (the page has no numbered recipes); revision 4517810, last edited 21 June 2025",
+    "url": "https://en.wikibooks.org/wiki/Cookbook:Tortilla_de_Patatas",
+    "licence": "CC BY-SA 4.0 (the page footer: Creative Commons Attribution-ShareAlike License)"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "tortilla",
+      "name": {
+        "en": "Potato omelette",
+        "de": "Kartoffelomelett"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "lb",
+            "original": "3 lb (1200 g) potatoes"
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "4 eggs"
+          }
+        },
+        {
+          "key": "oil-frying",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "cup",
+            "original": "2 cups olive oil"
+          },
+          "note": {
+            "en": "For frying the potatoes. The page does not say how much of it remains.",
+            "de": "Zum Braten der Kartoffeln. Die Quelle sagt nicht, wie viel davon übrig bleibt."
+          }
+        },
+        {
+          "key": "oil-omelette",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp",
+            "original": "1 tablespoon of the olive oil"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the potatoes and cut them into small cubes or thin round slices. Sprinkle them with salt and let the excess water drain off.",
+            "de": "Die Kartoffeln schälen und in kleine Würfel oder dünne Scheiben schneiden. Mit Salz bestreuen und das überschüssige Wasser abtropfen lassen."
+          },
+          "uses": ["potato", "salt"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a large frying pan to around 350 °F (177 °C).",
+            "de": "Das Öl in einer großen Pfanne auf etwa 350 °F (177 °C) erhitzen."
+          },
+          "uses": ["oil-frying"],
+          "temperature": {
+            "value": 350,
+            "unit": "F"
+          }
+        },
+        {
+          "text": {
+            "en": "Fry the potatoes until they are only very slightly golden. The more golden they get, the juicier the omelette. For a drier, thicker omelette, turn the heat down and cook them gently until they are tender and soft.",
+            "de": "Die Kartoffeln braten, bis sie nur ganz leicht gold sind. Je goldener sie werden, desto saftiger das Omelett. Für ein trockeneres, dickeres Omelett die Hitze senken und sie sanft weich garen."
+          },
+          "technique": "pan-fry",
+          "uses": ["potato", "oil-frying"]
+        },
+        {
+          "text": {
+            "en": "Take the potatoes out of the oil and let them drain.",
+            "de": "Die Kartoffeln aus dem Öl nehmen und abtropfen lassen."
+          },
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Beat the eggs, add salt to taste and mix them with the potatoes. Let the mixture soak for 10 minutes.",
+            "de": "Die Eier verquirlen, mit Salz nach Geschmack würzen und mit den Kartoffeln mischen. Die Masse 10 Minuten ziehen lassen."
+          },
+          "uses": ["egg", "salt", "potato"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat 1 tablespoon of the oil in a frying pan until it is smoking hot. Pour in the potato and egg mixture and shake the pan so it does not stick or burn. Use a smaller frying pan for a thicker omelette.",
+            "de": "Einen Esslöffel des Öls in einer Pfanne sehr heiß werden lassen. Die Kartoffel-Ei-Masse hineingeben und die Pfanne schütteln, damit nichts ansetzt oder anbrennt. Für ein dickeres Omelett eine kleinere Pfanne nehmen."
+          },
+          "technique": "pan-fry",
+          "uses": ["oil-omelette", "egg", "potato"]
+        },
+        {
+          "text": {
+            "en": "After a few minutes, turn the omelette with a lid or a large plate and cook it until it is golden on the other side.",
+            "de": "Nach einigen Minuten das Omelett mit einem Deckel oder einem großen Teller wenden und auf der anderen Seite goldgelb garen."
+          }
+        },
+        {
+          "text": {
+            "en": "Serve it hot or cold, with a salad.",
+            "de": "Heiß oder kalt servieren, mit einem Salat."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "tortilla"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the page names no number of servings; four eggs and three pounds of potatoes.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reading of the same page (revision oldid 4517810, fetched again 2026-11-19; the same text, weak). Amounts agreed: 3 lb (1200 g) potatoes, 4 eggs, 2 cups oil, 1 tablespoon oil, 350 °F (177 °C), 10 minutes soaking. Changed in wording: 'thin round slices', 'around 350 °F', a frying pan with a smaller pan as the option, 'or burn'."
+  },
+  "note": {
+    "en": "A wiki page in English, with the page's own measures (pounds, cups, tablespoon, degrees Fahrenheit). No servings are stated; the frying oil is the page's amount.",
+    "de": "Eine Wiki-Seite auf Englisch mit den Maßen der Seite (Pfund, Cups, Esslöffel, Grad Fahrenheit). Keine Portionen angegeben; das Frittieröl ist die Angabe der Seite."
+  }
+}

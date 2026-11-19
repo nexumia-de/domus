@@ -74,6 +74,7 @@ test('the build writes the page, one script, one stylesheet, the manifest, icons
     'app.css',
     'manifest.webmanifest',
     'catalogue.json',
+    'classics.json',
     'sw.js',
   ]) {
     expect(files, file).toContain(file);
@@ -87,6 +88,32 @@ test('the catalogue is its own file, precached, and main.js does not carry it', 
   const main = readFileSync(new URL('main.js', dist), 'utf8');
   expect(main).not.toContain('fdc-169230');
   expect(main).toContain('catalogue.json');
+});
+
+test('the classics and technique notes are their own file, precached, and main.js carries neither', () => {
+  const content = JSON.parse(readFileSync(new URL('classics.json', dist), 'utf8')) as {
+    format: string;
+    classics: { id: string; country: string; originalName: string }[];
+    techniques: { id: string; watch: { en: string } }[];
+  };
+  expect(content.format).toBe('culina-classics');
+  const main = readFileSync(new URL('main.js', dist), 'utf8');
+  expect(main).toContain('classics.json');
+  // Every shipped dish and technique is in the file and its id is nowhere in the script.
+  const dataDir = (path: string) => readdirSync(new URL(path, app), { recursive: true });
+  const dishFiles = dataDir('data/classics/').filter((f) => String(f).endsWith('.json'));
+  const techniqueFiles = dataDir('../engine/data/techniques/').filter((f) =>
+    String(f).endsWith('.json'),
+  );
+  expect(content.classics).toHaveLength(dishFiles.length);
+  expect(content.techniques).toHaveLength(techniqueFiles.length);
+  // An id may also name a ratio template (roux), so the probe is a text only the content has.
+  for (const { id, originalName } of content.classics) {
+    expect(main, id).not.toContain(JSON.stringify(originalName));
+  }
+  for (const { id, watch } of content.techniques) {
+    expect(main, id).not.toContain(JSON.stringify(watch.en));
+  }
 });
 
 test('built URLs are relative', () => {

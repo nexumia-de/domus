@@ -1,0 +1,350 @@
+{
+  "id": "stracotto-di-vitella",
+  "name": {
+    "en": "Florentine braised veal (stracotto)",
+    "de": "Florentiner Schmorfleisch (Stracotto vom Kalb)"
+  },
+  "originalName": "Stracotto di vitella",
+  "country": "it",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "N. 161",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "stracotto-sauce",
+      "name": {
+        "en": "Braised veal sauce",
+        "de": "Schmorsauce vom Kalb"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "veal",
+          "wanted": {
+            "en": "Lean veal, with bone or trimmings",
+            "de": "Mageres Kalbfleisch, mit Knochen oder Abschnitten"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "Carne magra di vitella, grammi 500"
+          },
+          "note": {
+            "en": "Including the bone or the trimmings, as the source says.",
+            "de": "Mit Knochen oder Abschnitten, wie die Quelle sagt."
+          }
+        },
+        {
+          "key": "carnesecca",
+          "wanted": {
+            "en": "Carnesecca (dry-cured pork)",
+            "de": "Carnesecca (luftgetrockneter Schweinespeck)"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "Carnesecca, grammi 50"
+          },
+          "note": {
+            "en": "Cut into small dice. The source says it may replace the Tuscan oil in whole or in part; no oil amount is given, so no oil line is written.",
+            "de": "In kleine Würfel geschnitten. Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen; eine Ölmenge steht nicht da, daher ist keine Ölzeile geschrieben."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "Burro, grammi 30"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "count",
+            "original": "Un quarto di una cipolla grossa"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "Una piccola carota"
+          }
+        },
+        {
+          "key": "celery",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169988"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "Due pezzi di sedano"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose"
+          },
+          "note": {
+            "en": "'A pinch' of flour; the source gives no weight. It binds the sauce and must not burn.",
+            "de": "'Ein Pizzico' Mehl; die Quelle gibt kein Gewicht an. Es bindet die Sauce und darf nicht anbrennen."
+          }
+        },
+        {
+          "key": "tomato",
+          "wanted": {
+            "en": "Tomato sauce or paste",
+            "de": "Tomatensauce oder Tomatenmark"
+          },
+          "note": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Added little by little; no amount given.",
+            "de": "Nach und nach zugegeben; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Black pepper",
+            "de": "Schwarzer Pfeffer"
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "'Sparingly'; more can be added at the table. No amount.",
+            "de": "'Sparsam'; bei Tisch kann mehr nachgegeben werden. Keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the onion, the carrot and the celery roughly.",
+            "de": "Zwiebel, Karotte und Sellerie grob schneiden."
+          },
+          "uses": ["onion", "carrot", "celery"]
+        },
+        {
+          "text": {
+            "en": "Cut the carnesecca into small dice.",
+            "de": "Die Carnesecca in kleine Würfel schneiden."
+          },
+          "uses": ["carnesecca"]
+        },
+        {
+          "text": {
+            "en": "Put everything on the heat together.",
+            "de": "Alles zusammen auf den Herd stellen."
+          },
+          "uses": ["veal", "carnesecca", "butter", "onion", "carrot", "celery"]
+        },
+        {
+          "text": {
+            "en": "Season with salt and pepper.",
+            "de": "Mit Salz und Pfeffer würzen."
+          },
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Turn the meat often until it is browned.",
+            "de": "Das Fleisch oft wenden, bis es angebräunt ist."
+          },
+          "technique": "sear",
+          "uses": ["veal"]
+        },
+        {
+          "text": {
+            "en": "Dust the meat with a pinch of flour.",
+            "de": "Das Fleisch mit einem Pizzico Mehl bestäuben."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Stir so that the flour does not burn.",
+            "de": "Umrühren, damit das Mehl nicht anbrennt."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Pour tomato sauce or paste over the meat.",
+            "de": "Tomatensauce oder Tomatenmark über das Fleisch gießen."
+          },
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "Cook the meat to tenderness, adding water little by little.",
+            "de": "Das Fleisch weich garen und dabei nach und nach Wasser zugeben."
+          },
+          "technique": "braise",
+          "uses": ["veal", "water"]
+        },
+        {
+          "text": {
+            "en": "Pass the sauce through a sieve.",
+            "de": "Die Sauce durch ein Sieb streichen."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stracotto-maccheroni",
+      "name": {
+        "en": "Maccheroni",
+        "de": "Maccheroni"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "pasta",
+          "wanted": {
+            "en": "Maccheroni",
+            "de": "Maccheroni"
+          },
+          "amount": {
+            "value": 250,
+            "max": 300,
+            "unit": "g",
+            "original": "250 a 300 grammi di maccheroni"
+          },
+          "note": {
+            "en": "The source gives the sauce for this amount of pasta.",
+            "de": "Die Quelle gibt die Sauce für diese Menge Nudeln an."
+          }
+        },
+        {
+          "key": "butter-dressing",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "For dressing the pasta; no amount given.",
+            "de": "Zum Anmachen der Nudeln; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "parmesan-dressing",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "'Sparingly'; no amount.",
+            "de": "'Sparsam'; keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook the pasta in salted water.",
+            "de": "Die Nudeln in Salzwasser kochen."
+          },
+          "technique": "cook-pasta",
+          "uses": ["pasta"]
+        },
+        {
+          "text": {
+            "en": "Drain them well and keep them for a moment in the sauce near the heat.",
+            "de": "Gut abgießen und kurz in der Sauce bei Hitze warm halten."
+          },
+          "uses": ["pasta"]
+        },
+        {
+          "text": {
+            "en": "Dress them with butter and a little parmesan; more parmesan can be added at the table.",
+            "de": "Mit Butter und etwas Parmesan anmachen; bei Tisch kann mehr Parmesan dazugegeben werden."
+          },
+          "uses": ["butter-dressing", "parmesan-dressing"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "stracotto-sauce"
+      }
+    },
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "stracotto-maccheroni"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; it gives the sauce for 250 to 300 g of pasta, which we take as four servings.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 253, and the 1891 OCR (lines 11869-12015), read again by the second checker. Agreed: 250 to 300 g maccheroni, veal 500 g, carnesecca 50 g, butter 30 g, quarter onion, small carrot, two celery pieces, a pinch of flour, tomato, water little by little, sieve, salted water, sparing parmesan. Changed: the mushroom note says 'may be added', not 'optional'. Nothing unreadable."
+  },
+  "note": {
+    "en": "Artusi's recipe 161. The sauce is meant for pasta or for a risotto with sauce; the rice variant is not written here. Artusi says that dried mushrooms may be added for flavour; no amount is given, so they are not written. The cooking time is not stated. The pasta line is the source's own quantity for this sauce.",
+    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht geschrieben. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher sind sie nicht geschrieben. Eine Garzeit nennt die Quelle nicht."
+  }
+}

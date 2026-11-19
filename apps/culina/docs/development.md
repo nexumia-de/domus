@@ -61,7 +61,7 @@ TypeScript, installed for that build only).
   the worked examples that `test/units-vectors.test.ts`,
   `test/percentages-vectors.test.ts`, `test/templates-vectors.test.ts` and
   `test/salt-vectors.test.ts`, `test/components-vectors.test.ts` and `test/validate-vectors.test.ts` run;
-  `src/text/`, `src/content/`, `src/steps/`, `src/techniques/`, `src/classics/` and `src/skills/` (techniques, steps, classics and skill state, issue 87; `data/techniques/` has one JSON file per technique and `src/techniques/techniques.generated.ts`, git-ignored, indexes them: `scripts/make-techniques.mjs` writes it in the engine's and the app's `pretest` and `pretypecheck` and in the build, so run `npm test` or `npm run typecheck`, not `vitest` alone, in a fresh checkout; the app does the same for `data/classics/<country>/` with `make-classics.mjs`) with `vectors/techniques/`, `vectors/classics/` and `vectors/skills/` run by `test/techniques-vectors.test.ts`, `test/classics-vectors.test.ts` and `test/skills-vectors.test.ts`, and `test/content.test.ts`;
+  `src/text/`, `src/content/`, `src/steps/`, `src/techniques/`, `src/classics/` and `src/skills/` (techniques, steps, classics and skill state, issue 87; `data/techniques/` has one JSON file per technique and `src/techniques/techniques.generated.ts`, git-ignored, indexes them: `scripts/make-techniques.mjs` writes it in the engine's and the app's `pretest` and `pretypecheck` and in the build, so run `npm test` or `npm run typecheck`, not `vitest` alone, in a fresh checkout; the app does the same for `data/classics/<country>/` with `make-classics.mjs`, whose index only the tests import: the app gets its dishes from `dist/classics.json`; `techniqueById` scans the list instead of keeping a map, so the bundler drops the notes from `main.js`) with `vectors/techniques/`, `vectors/classics/` and `vectors/skills/` run by `test/techniques-vectors.test.ts`, `test/classics-vectors.test.ts` and `test/skills-vectors.test.ts`, and `test/content.test.ts`;
   `test/ratios.test.ts` has the unit tests and the seed checks,
   `test/components.test.ts` and `test/components-property.test.ts` those of
   components, `test/validate.test.ts` those of validation.
@@ -70,7 +70,7 @@ TypeScript, installed for that build only).
   [design](design.md)). It imports `@culina/engine` only; a lint rule fails any
   deep import. Layout, one job per file: `build.mjs` (esbuild; writes `dist/`
   with fixed names `index.html`, `main.js`, `theme-init.js`, `app.css`,
-  `manifest.webmanifest`, `icons/`, `sw.js`), `src/main.ts` (start),
+  `manifest.webmanifest`, `catalogue.json`, `classics.json` (the dishes and technique notes read from the data folders by `make-classics.mjs`; fetched at start, precached, not in `main.js`), `icons/`, `sw.js`), `src/main.ts` (start),
   `src/router.ts` (hash router), `src/prefs.ts` (theme in `localStorage`),
   `src/theme-init.ts`, `src/sw-register.ts`, `src/sw.ts`, `src/strings.ts`
   (all visible texts), `src/engine-info.ts` (the app's one use of the
@@ -136,7 +136,7 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
 `e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
-and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)).
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px; see [behaviour](behaviour.md#classics)).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.

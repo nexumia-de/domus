@@ -1,0 +1,159 @@
+{
+  "id": "baked-potatoes-cheese",
+  "name": {
+    "en": "Baked potatoes with cheese",
+    "de": "Überbackene Kartoffeln mit Käse"
+  },
+  "originalName": "Baked Potatoes with Cheese",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division C, No. 12",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "units": {
+    "ounce": {
+      "kind": "mass",
+      "factor": 28.349523125,
+      "read": "The American edition (see the pint above); taken as the avoirdupois ounce of units.json (28.349523125 g). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "baked-potatoes",
+      "name": {
+        "en": "Baked potatoes with cheese",
+        "de": "Überbackene Kartoffeln mit Käse"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "Boiled potatoes, cut into slices. The source gives no quantity.",
+            "de": "Gekochte Kartoffeln, in Scheiben geschnitten. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "For the buttered pan. The source gives no amount.",
+            "de": "Für die gebutterte Form. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171256"
+          },
+          "note": {
+            "en": "Sour cream, used for the sauce. The English gives 1 pint of cream; the German edition reads 3 Dt. in both scans. The amount is not confirmed, so none is given.",
+            "de": "Saure Sahne für die Sauce. Die englische Ausgabe nennt 1 Pint Sahne; die deutsche Ausgabe liest in beiden Scans 3 Dt. Die Menge ist nicht bestätigt und steht deshalb nicht da."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "4 eggs"
+          }
+        },
+        {
+          "key": "cheese",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "ounce",
+            "original": "about 3 ounces of cheese"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the boiled potatoes into slices.",
+            "de": "Die gekochten Kartoffeln in Scheiben schneiden."
+          },
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Put the potato slices in layers into a buttered pan.",
+            "de": "Die Kartoffelscheiben in Schichten in eine butterbestrichene Form legen."
+          },
+          "uses": ["butter", "potatoes"]
+        },
+        {
+          "text": {
+            "en": "Mix the sour cream, the eggs and the Parmesan cheese into a sauce.",
+            "de": "Saure Sahne, Eier und Parmesan zu einer Sauce verrühren."
+          },
+          "uses": ["cream", "egg", "cheese"]
+        },
+        {
+          "text": {
+            "en": "Cover each layer with the sauce and fill the dish in this way.",
+            "de": "Jede Lage mit der Sauce bedecken und so die Form füllen."
+          },
+          "uses": ["cream", "egg", "cheese"]
+        },
+        {
+          "text": {
+            "en": "Bake in the oven. The source gives the time as a fraction of an hour that is not legible in the scans.",
+            "de": "Im Ofen backen. Die Quelle nennt die Zeit als Bruchteil einer Stunde; der Bruch ist in den Scans nicht lesbar."
+          },
+          "technique": "bake"
+        },
+        {
+          "text": {
+            "en": "Serve as a side dish.",
+            "de": "Als Beilage servieren."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "baked-potatoes"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German American edition, No. 18) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 4 persons, 4 eggs, layers, sour cream, eggs and Parmesan, about 3 ounces of cheese (the second scan; davidis.txt reads 8), serve with ham and beefsteak. Changed: cream amount removed (English 1 pint; both German scans 3 Dt.); pint unit removed; baking time removed (English %, German Ya and Us: no clear fraction). Not legible: the baking time."
+  },
+  "note": {
+    "en": "The source names ham and beefsteak as companions; the recipe itself does not use them. The source names Parmesan cheese and no meat, fish or stock.",
+    "de": "Die Quelle nennt Schinken und Beefsteak als Beilagen; das Rezept selbst verwendet sie nicht. Die Quelle nennt Parmesan und kein Fleisch, keinen Fisch und keine Brühe."
+  }
+}

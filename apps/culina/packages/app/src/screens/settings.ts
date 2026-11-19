@@ -5,6 +5,7 @@ import { el } from '../shell/el';
 import { persistenceState, type PersistenceState } from '../store/persistence';
 import { strings } from '../strings';
 import { storeText } from './editor/store-text';
+import { classicsSettings } from './settings-classics';
 import { dataSection } from './settings-data';
 
 const STORAGE: Record<PersistenceState, string> = {
@@ -69,6 +70,7 @@ export const settingsScreen = (): HTMLElement => {
     el('h1', undefined, strings.settings.title),
     group,
     note,
+    ...classicsSettings(),
     dataSection(problem === undefined),
     examples,
     el('p', 'muted', strings.settings.privacy),

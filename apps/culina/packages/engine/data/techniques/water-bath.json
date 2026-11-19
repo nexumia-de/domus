@@ -1,0 +1,32 @@
+{
+  "id": "water-bath",
+  "name": {
+    "en": "Water bath",
+    "de": "Wasserbad"
+  },
+  "watch": {
+    "en": "Set the custard in a water bath.",
+    "de": "Die Creme im Wasserbad garen."
+  },
+  "why": {
+    "en": "The edges then cook at the same pace as the middle, which gives a smooth finish.",
+    "de": "So garen die Ränder im gleichen Tempo wie die Mitte, und die Creme wird glatt."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.6 Custards, section Baked Custards",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.06%3A_Custards",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The outside edges cook evenly with the middle of the custard."
+    },
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.6 Custards, section Baked Custards",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.06%3A_Custards",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Even cooking is need to produce a smooth finish once cooked."
+    }
+  ]
+}

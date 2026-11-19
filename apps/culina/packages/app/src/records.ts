@@ -63,7 +63,21 @@ export interface SlotRecord {
   ref: { kind: 'ingredient' | 'component'; id: string };
   amount?: {
     value: number;
-    unit: 'g' | 'kg' | 'oz' | 'lb' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'count';
+    unit:
+      | 'g'
+      | 'kg'
+      | 'oz'
+      | 'lb'
+      | 'ml'
+      | 'l'
+      | 'tsp'
+      | 'tbsp'
+      | 'cup'
+      | 'imp-floz'
+      | 'imp-gill'
+      | 'imp-pint'
+      | 'imp-quart'
+      | 'count';
   };
   optional?: boolean;
 }

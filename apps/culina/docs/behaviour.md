@@ -25,17 +25,18 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen     | Route                                         | Today                                                                                                                                                               | Source                      |
-| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| Ratios     | `#/ratios`, `#/ratios/<id>`                   | The ratio list and the ratio cards ([below](#ratios)); the start screen                                                                                             | `src/screens/ratios.ts`     |
-| Components | `#/components`, `#/components/<id>`           | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
-| Dishes     | `#/dishes`, `#/dishes/<id>`                   | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
-| Cook       | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with` | What can I cook, use up first, and what uses one ingredient ([below](#cook))                                                                                        | `src/screens/cook/`         |
-| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit` | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                             | `src/screens/stock/`        |
-| Settings   | `#/settings`                                  | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
+| Screen     | Route                                                                                    | Today                                                                                                                                                               | Source                      |
+| ---------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Start      | `#/start`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | What do you want to cook: the classics by country, the dish and cooking step by step ([below](#classics)); the start screen                                         | `src/screens/classics/`     |
+| Ratios     | `#/ratios`, `#/ratios/<id>`                                                              | The ratio list and the ratio cards ([below](#ratios))                                                                                                               | `src/screens/ratios.ts`     |
+| Components | `#/components`, `#/components/<id>`                                                      | The component list and the component screen ([below](#components))                                                                                                  | `src/screens/components.ts` |
+| Dishes     | `#/dishes`, `#/dishes/<id>`                                                              | The dish list and the dish screen with role slots ([below](#dishes))                                                                                                | `src/screens/dishes.ts`     |
+| Cook       | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`                                            | What can I cook, use up first, and what uses one ingredient ([below](#cook))                                                                                        | `src/screens/cook/`         |
+| Stock      | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                            | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                             | `src/screens/stock/`        |
+| Settings   | `#/settings`                                                                             | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name | `src/screens/settings.ts`   |
 
-An unknown route (`#/nope`, empty) shows Ratios and rewrites the URL to
-`#/ratios` without a new history entry. **Test:** `test/router.test.ts`,
+An unknown route (`#/nope`, empty) shows Start and rewrites the URL to
+`#/start` without a new history entry. **Test:** `test/router.test.ts`,
 `e2e/smoke.mjs`.
 
 # Ratios
@@ -579,6 +580,82 @@ list with its "Tick what is there" action). Texts:
   local notebook. No "add to list": shopping lists are the planned sister
   app's.
 
+# Classics
+
+The first stage of the [helper](helper-plan.md#stages-of-the-app): pick a
+shipped classic and cook it step by step. The app proposes and never decides;
+one thing is on the screen at a time. Texts: `src/strings-classics.ts`; the
+view logic is in `src/classics/` (no DOM), the screens in
+`src/screens/classics/`. **Test:** `test/classics-view.test.ts`,
+`test/classics-notebook.test.ts`, `e2e/classics.mjs`.
+
+- **Start** (`#/start`, the screen the app opens on and the first navigation
+  entry, "Start"). The heading asks "What do you want to cook?". The first
+  choice is "Classics by country": Germany, Italy, France and Spain, each with
+  its number of dishes. Behind it, "Your tools" links to Ratios, Components,
+  Dishes, What can I cook and What is there, as before; nothing was removed.
+  The classics screens are shown under the Start entry.
+- **List** (`#/classics/<country>`). Each dish with its name in the content
+  language, its course and "Without meat and fish" or "With meat or fish". A
+  country without a dish says so quietly ("No dishes from here yet"); the
+  app works with no dish at all. A dish id or a country that is not known gives
+  one quiet sentence.
+- **Dish** (`#/classic/<id>`). Name, the original name, course and meat flag;
+  the source (author, title, year, place, a link) and the persons it states
+  (or, when the source names none, the number we took); a portions stepper,
+  default 2; "Cook step by step"; then the whole recipe on the screen: the
+  ingredient lines per component and for the dish, then the method. **The app
+  does no arithmetic**: amounts come from `deriveClassic` and are only rounded
+  for display with the shared helpers (`formatMass` for grams, `formatNumber`
+  otherwise). A range is shown as "100 ml to 150 ml" (the source's range, not
+  the middle the engine uses for copies); a line without an amount says "to
+  taste" or "as needed" (the line's own note when it says so); the source's
+  own wording is shown in brackets; a settled line is marked "settled by us".
+  Behind a tap, "What we settled where the source is vague" lists each
+  settled thing with its reason; the second check the dish had is named.
+- **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish). One
+  step: "Step 3 of 8" as a heading, the component it belongs to, the text,
+  the lines it uses with their amounts, time and temperature as the source
+  gives them, a progress bar. "Back" and "Next" are 56 px high ("Finish" on the
+  last step). On a step change focus moves to the step heading. "Whole
+  recipe" opens the whole recipe in place. The screen is kept awake with the
+  Wake Lock API where the browser has it (`src/shell/wake-lock.ts`); where it
+  has not, or refuses, nothing happens and nothing is shown.
+- **Technique note.** The engine's `techniqueNotes` says where a note shows
+  (first step that uses a technique not marked as learned). The note shows
+  `watch` in one or two sentences; behind a tap `why`, the level (studied,
+  textbook, tradition, in words) and the sources with a link. "I know this"
+  stores a skill record (`skills` kind, `skill-<technique>`) and the note is
+  not shown again on any dish. Nothing is marked automatically. The write does not redraw the
+  other screens, so the cook keeps the place and focus (focus goes to the
+  status line "Marked as learned: ...").
+- **End of cooking.** "Done cooking" offers "Keep in my notebook": `copyClassic`
+  makes the records (version 1 of a new dish and its components, with the
+  source in `x-origin` and in the version's `change`), the app writes them
+  (the catalogue ingredients first, as the picker does) and opens the new
+  dish. A classic with a `wanted` ingredient is refused by the engine; the
+  offer is then replaced by one neutral sentence naming the ingredient. A
+  classic itself is never written to the store.
+- **Settings.** "Language of dishes and notes": Follow device (German when the
+  device's first language is German, else English), English, Deutsch, kept in
+  `localStorage` (`culina.lang`) like the theme. All content texts follow it;
+  the app's own texts stay English for now. "Skills you marked as learned"
+  lists each with "Teach again", which stores the mark taken back (the record
+  stays) so the note shows again.
+- **Shipped content is its own file.** The build writes the dishes of
+  `data/classics/` and the technique notes of `packages/engine/data/techniques/`
+  to `dist/classics.json` (`format: culina-classics`); `src/main.ts` fetches it
+  at start together with the notebook (`loadContent` in
+  `src/classics/content.ts`), the service worker precaches it, so it works
+  offline, and `main.js` carries neither dishes nor notes. If the file is
+  missing or unreadable the lists are empty and the app works with zero dishes.
+  `test/build.test.ts` checks that no dish or technique id is in `main.js`.
+- **Test content.** `?e2e-content` lets the browser test hand the app fictional
+  example dishes and an example technique
+  (`test/fixtures/classics-example.json`) on `globalThis.__culinaContent`
+  before it loads (`src/classics/content.ts`); without that query nothing is
+  read from there.
+
 # Navigation
 
 - **One back stack: the browser history.** Every destination is a hash
@@ -591,7 +668,7 @@ list with its "Tick what is there" action). Texts:
   and label; from 720 px a side navigation ([design](design.md#layout-and-breakpoints)).
   Both are the same `<nav aria-label="Main">`, so the order and the
   names are the same; the stock screens are shown under "Cook". Entries are as wide as their labels need and share
-  the rest (`flex: 1 1 auto`), so five fit at 320 px. **Test:**
+  the rest (`flex: 1 1 auto`), so six (Start first) fit at 320 px. **Test:**
   `e2e/smoke.mjs` at 320, 360 and 1000 px, `e2e/stock.mjs`.
 - **Landmarks:** one `<header>`, one `<nav>` with a label, one `<main>`;
   the current destination has `aria-current="page"`. A skip link ("Skip
@@ -781,7 +858,7 @@ another origin, on every run of the shell and the offline checks).
 
 Built by `packages/app/build.mjs`: it hashes all built files into a cache
 name `culina-<16 hex>` and gives `sw.js` the exact file list (every built
-file except `sw.js`, `catalogue.json` among them). On `install` it precaches the list and takes over
+file except `sw.js`, `catalogue.json` and `classics.json` among them). On `install` it precaches the list and takes over
 at once (`skipWaiting`); on `activate` it deletes every cache that starts
 with `culina-` and has another version, then claims the open pages. A
 `GET` request of its own origin is answered from the cache, a navigation

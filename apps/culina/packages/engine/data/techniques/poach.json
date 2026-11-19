@@ -1,0 +1,32 @@
+{
+  "id": "poach",
+  "name": {
+    "en": "Poaching",
+    "de": "Pochieren"
+  },
+  "watch": {
+    "en": "Keep the liquid gently moving, with no bubbles at all.",
+    "de": "Die Flüssigkeit sanft in Bewegung halten, ganz ohne Blasen."
+  },
+  "why": {
+    "en": "Slow heating lets the proteins set without squeezing out moisture.",
+    "de": "Langsames Erhitzen lässt das Eiweiß stocken, ohne dass Feuchtigkeit herausgepresst wird."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 7.2 The Cooking Techniques - Poaching, section Poaching is Ideally Done",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/07%3A_The_Menu_and_Poaching/7.02%3A_The_Cooking_Techniques_-_Poaching",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The liquid should be gently moving, but it should not be bubbling at all."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 7.2 The Cooking Techniques - Poaching, section Poaching is Patience",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/07%3A_The_Menu_and_Poaching/7.02%3A_The_Cooking_Techniques_-_Poaching",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Poaching allows the proteins in foods to uncoil, or denature, slowly, without squeezing out moisture."
+    }
+  ]
+}

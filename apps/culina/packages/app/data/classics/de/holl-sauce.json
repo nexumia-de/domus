@@ -1,0 +1,179 @@
+{
+  "id": "holl-sauce",
+  "name": {
+    "en": "Hollandaise sauce with wine",
+    "de": "Holländische Sauce mit Wein"
+  },
+  "originalName": "Hollandaise Sauce with Wine",
+  "country": "de",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division R, No. 20",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "teaspoonful": {
+      "kind": "volume",
+      "factor": 4.92892159375,
+      "read": "The American edition (see the pound above); taken as the US customary teaspoon of units.json (4.92892159375 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "hollandaise",
+      "name": {
+        "en": "Hollandaise sauce with wine",
+        "de": "Holländische Sauce mit Wein"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count",
+            "original": "the yolks of 3 eggs"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "teaspoonful",
+            "original": "1 teaspoonful of flour"
+          }
+        },
+        {
+          "key": "wine",
+          "wanted": {
+            "en": "White wine",
+            "de": "Weißwein"
+          },
+          "note": {
+            "en": "White wine and water, half and half. The source gives no volume.",
+            "de": "Weißwein und Wasser zu gleichen Teilen. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Half of the liquid with the wine. The source gives no volume.",
+            "de": "Die Hälfte der Flüssigkeit zusammen mit dem Wein. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "mace",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170927"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "The English prints the fraction as a percent sign (%); the German edition reads 4 Pfd. (davidis.txt) and 8 Pfd. (second scan). The amount is not confirmed, so none is given.",
+            "de": "Die englische Ausgabe druckt den Bruch als Prozentzeichen (%); die deutsche Ausgabe liest 4 Pfd. (davidis.txt) und 8 Pfd. (zweiter Scan). Die Menge ist nicht bestätigt und steht deshalb nicht da."
+          }
+        },
+        {
+          "key": "lemon",
+          "wanted": {
+            "en": "Lemon juice",
+            "de": "Zitronensaft"
+          },
+          "note": {
+            "en": "A few drops. The source gives no amount.",
+            "de": "Einige Tropfen. Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the yolks and the flour smooth with the wine and the water.",
+            "de": "Eigelb und Mehl mit Wein und Wasser glatt rühren."
+          },
+          "uses": ["yolk", "flour", "wine", "water"]
+        },
+        {
+          "text": {
+            "en": "Add the mace and stir until the sauce comes to a boil.",
+            "de": "Muskatblüte zugeben und rühren, bis die Sauce aufkocht."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["mace", "flour"]
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat.",
+            "de": "Die Pfanne vom Feuer nehmen."
+          }
+        },
+        {
+          "text": {
+            "en": "Stir the butter into the sauce.",
+            "de": "Die Butter in die Sauce rühren."
+          },
+          "technique": "warm-emulsion",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Add a few drops of lemon juice.",
+            "de": "Einige Tropfen Zitronensaft zugeben."
+          },
+          "uses": ["lemon"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "hollandaise"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for the yolks of 3 eggs and half a pound of butter.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 23, Holländische Sauce mit Wein) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 3 yolks, 1 teaspoonful of flour, half water and half white wine, mace, stir to the boil, off the heat, a few drops of lemon juice, artichokes, mushrooms, fish, tongue. Changed: butter amount removed (English %; German 4 Pfd. and 8 Pfd.: not clear); pound unit removed. Not legible: the butter amount."
+  },
+  "note": {
+    "en": "The source suggests serving with artichokes, mushrooms, fish or tongue; the recipe itself does not say more than the sauce. The wine and water have no volume in the source.",
+    "de": "Die Quelle schlägt Artischocken, Champignons, Fisch oder Zunge als Beilage vor; das Rezept selbst sagt zur Sauce nicht mehr. Wein und Wasser haben in der Quelle keine Menge."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "convert-imp-floz-to-ml",
+  "description": "10 imperial fluid ounces in ml",
+  "inputs": {
+    "kind": "convert",
+    "amount": {
+      "value": 10,
+      "unit": "imp-floz"
+    },
+    "to": "ml"
+  },
+  "expected": {
+    "value": 284.130625
+  },
+  "tolerance": 1e-6,
+  "source": "Basis: grams (mass), millilitres (volume), pieces (count). 10 imp-floz * 28.4130625 = 284.130625 ml (1 imperial fluid ounce = 1/160 imperial gallon). Unit factors: docs/engine-rules.md#units-and-factors (imperial capacity units: Weights and Measures Act 1985, Schedule 1, Part IV, legislation.gov.uk, read 2026-11-19)."
+}

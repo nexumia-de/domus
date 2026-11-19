@@ -1,0 +1,253 @@
+{
+  "comment": "Fictional example content for tests. Not a recipe, not a real source.",
+  "classics": [
+    {
+      "id": "example-pan-dish",
+      "name": {
+        "en": "Example pan dish (fictional)",
+        "de": "Beispiel-Pfannengericht (erfunden)"
+      },
+      "originalName": "Example pan dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "An Example Cookbook (fictional, not a real book)",
+        "year": 1900,
+        "place": "page 1, recipe 1",
+        "url": "https://example.org/example-cookbook"
+      },
+      "persons": {
+        "value": 4,
+        "basis": "stated"
+      },
+      "units": {
+        "Example-measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this example: 1 Example-measure = 100 g."
+        }
+      },
+      "components": [
+        {
+          "id": "example-sauce",
+          "name": {
+            "en": "Example sauce",
+            "de": "Beispielsauce"
+          },
+          "role": "sauce",
+          "lines": [
+            {
+              "key": "fat",
+              "ref": {
+                "kind": "ingredient",
+                "id": "fdc-173410"
+              },
+              "amount": {
+                "value": 2,
+                "unit": "Example-measure",
+                "original": "2 Example-measures"
+              }
+            },
+            {
+              "key": "liquid",
+              "ref": {
+                "kind": "ingredient",
+                "id": "fdc-171413"
+              },
+              "amount": {
+                "value": 200,
+                "max": 300,
+                "unit": "ml"
+              },
+              "settled": true
+            },
+            {
+              "key": "salt",
+              "ref": {
+                "kind": "ingredient",
+                "id": "fdc-173468"
+              },
+              "note": {
+                "en": "to taste",
+                "de": "nach Geschmack"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat over low heat.",
+                "de": "Das Fett bei schwacher Hitze schmelzen."
+              },
+              "technique": "example-technique",
+              "uses": ["fat"],
+              "time": {
+                "value": 5,
+                "unit": "min"
+              }
+            },
+            {
+              "text": {
+                "en": "Stir in the oil.",
+                "de": "Das Öl einrühren."
+              },
+              "uses": ["liquid"],
+              "temperature": {
+                "value": 170,
+                "to": 180,
+                "unit": "C"
+              }
+            },
+            {
+              "text": {
+                "en": "Season with the salt.",
+                "de": "Mit dem Salz abschmecken."
+              },
+              "uses": ["salt"]
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "example-sauce"
+          }
+        }
+      ],
+      "settled": [
+        {
+          "what": "Amount of oil",
+          "value": "200 to 300 ml",
+          "reason": "Invented example: the source says some.",
+          "target": "example-sauce/liquid"
+        }
+      ],
+      "check": {
+        "method": "second-reader",
+        "note": "Example only: a real file says who read the page."
+      },
+      "note": {
+        "en": "An invented example, not a recipe.",
+        "de": "Ein erfundenes Beispiel, kein Rezept."
+      }
+    },
+    {
+      "id": "example-second-dish",
+      "name": {
+        "en": "Example second dish (fictional)",
+        "de": "Zweites Beispielgericht (erfunden)"
+      },
+      "originalName": "Secondo esempio",
+      "country": "it",
+      "vegetarian": false,
+      "course": "soup",
+      "source": {
+        "author": "Example Author",
+        "title": "An Example Cookbook (fictional, not a real book)",
+        "year": 1900,
+        "place": "page 1, recipe 1",
+        "url": "https://example.org/example-cookbook"
+      },
+      "persons": {
+        "value": 2,
+        "basis": "stated"
+      },
+      "components": [
+        {
+          "id": "example-broth",
+          "name": {
+            "en": "Example broth",
+            "de": "Beispielbrühe"
+          },
+          "lines": [
+            {
+              "key": "stock",
+              "wanted": {
+                "en": "Example broth stock",
+                "de": "Beispielbrühgrundlage"
+              },
+              "amount": {
+                "value": 500,
+                "unit": "ml"
+              }
+            },
+            {
+              "key": "fat",
+              "ref": {
+                "kind": "ingredient",
+                "id": "fdc-173410"
+              },
+              "amount": {
+                "value": 20,
+                "unit": "g"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat over low heat.",
+                "de": "Das Fett bei schwacher Hitze schmelzen."
+              },
+              "technique": "example-technique",
+              "uses": ["fat"]
+            },
+            {
+              "text": {
+                "en": "Add the stock and warm it.",
+                "de": "Die Grundlage zugeben und erwärmen."
+              },
+              "uses": ["stock"]
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "example-broth"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Example only: a real file says who read the page."
+      }
+    }
+  ],
+  "techniques": [
+    {
+      "id": "example-technique",
+      "name": {
+        "en": "Example technique (fictional)",
+        "de": "Beispieltechnik (erfunden)"
+      },
+      "watch": {
+        "en": "Example note: say in one short line what to watch.",
+        "de": "Beispielnotiz: in einer kurzen Zeile sagen, worauf zu achten ist."
+      },
+      "why": {
+        "en": "Example reason: say in one or two lines why it matters.",
+        "de": "Beispielgrund: in ein bis zwei Zeilen sagen, warum es wichtig ist."
+      },
+      "level": "textbook",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 1, page 1",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    }
+  ]
+}

@@ -29,8 +29,8 @@ test('an ingredient id with a space or slash survives the round trip', () => {
   expect(actionFromHash(hash)).toBe('with');
 });
 
-test('the navigation has five entries; the stock screens are shown under Cook', () => {
-  expect(NAV_ENTRIES).toEqual(['ratios', 'components', 'dishes', 'cook', 'settings']);
+test('the navigation has Start and five entries; the stock screens are shown under Cook', () => {
+  expect(NAV_ENTRIES).toEqual(['start', 'ratios', 'components', 'dishes', 'cook', 'settings']);
   for (const route of ROUTES) expect(NAV_ENTRIES).toContain(navEntryFor(route));
   expect(navEntryFor('stock')).toBe('cook');
   expect(navEntryFor('cook')).toBe('cook');

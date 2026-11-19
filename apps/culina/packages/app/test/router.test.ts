@@ -12,14 +12,24 @@ import {
 
 test('every route round-trips through its hash', () => {
   for (const route of ROUTES) expect(routeFromHash(hashFor(route))).toBe(route);
-  // Cook is the sixth route; the stock screens stay routes of their own under the Cook entry.
-  expect(ROUTES).toEqual(['ratios', 'components', 'dishes', 'cook', 'stock', 'settings']);
+  // Start and the classics lead the routes; the stock screens stay routes of their own under Cook.
+  expect(ROUTES).toEqual([
+    'start',
+    'classics',
+    'classic',
+    'ratios',
+    'components',
+    'dishes',
+    'cook',
+    'stock',
+    'settings',
+  ]);
 });
 
-test('an empty or unknown hash is the default route, Ratios', () => {
-  expect(DEFAULT_ROUTE).toBe('ratios');
+test('an empty or unknown hash is the default route, Start', () => {
+  expect(DEFAULT_ROUTE).toBe('start');
   for (const hash of ['', '#', '#/', '#/nope', '#nope', '#/Ratios', '#/ratio']) {
-    expect(routeFromHash(hash)).toBe('ratios');
+    expect(routeFromHash(hash)).toBe('start');
   }
 });
 
@@ -59,9 +69,9 @@ test('an unknown hash is rewritten without a new history entry', () => {
   const { host } = fakeHost('#/nope');
   const seen: string[] = [];
   startRouter(host, ({ route }) => seen.push(route));
-  expect(seen).toEqual(['ratios']);
-  expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/ratios');
-  expect(host.location.hash).toBe('#/ratios');
+  expect(seen).toEqual(['start']);
+  expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/start');
+  expect(host.location.hash).toBe('#/start');
 });
 
 test('a ratio card route carries the template id; other routes carry none', () => {

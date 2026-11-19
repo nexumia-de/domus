@@ -1,0 +1,46 @@
+{
+  "id": "warm-emulsion",
+  "name": {
+    "en": "Warm emulsion sauce (hollandaise kind)",
+    "de": "Warme Emulsionssauce (Art Hollandaise)"
+  },
+  "watch": {
+    "en": "Add the warm butter a few drops at a time while whisking all the time; once the sauce binds, add it faster.",
+    "de": "Die warme Butter tropfenweise unter ständigem Schlagen zugeben; sobald die Sauce bindet, darf es schneller gehen."
+  },
+  "why": {
+    "en": "The yolk holds the fat droplets in the liquid. Eggs that are even slightly cooked lose this ability, so keep the heat gentle.",
+    "de": "Das Eigelb hält die Fetttröpfchen in der Flüssigkeit. Schon leicht gegarte Eier verlieren diese Fähigkeit, darum die Hitze sanft halten."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.8 Hollandaise Based Sauces, section Hollandaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.08%3A_Hollandaise_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Begin to add the warm clarified butter to the egg yolk mixture a few drops at a time, while constantly whipping the mixture"
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.8 Hollandaise Based Sauces, section Hollandaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.08%3A_Hollandaise_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Once the emulsion is started, the butter may be added more quickly."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.8 Hollandaise Based Sauces, section Hollandaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.08%3A_Hollandaise_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Do not overheat this mixture, because even slightly cooked eggs lose their ability to emulsify."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.8 Hollandaise Based Sauces, section Hollandaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.08%3A_Hollandaise_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "the lecithin coats the individual fat droplets and holds them in suspension in the liquid."
+    }
+  ]
+}

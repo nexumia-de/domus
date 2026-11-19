@@ -1,0 +1,172 @@
+{
+  "id": "pommes-au-beurre",
+  "name": {
+    "en": "Apples baked in butter",
+    "de": "Äpfel mit Butter gebacken"
+  },
+  "originalName": "Pommes au beurre",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine, quatrième édition (Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Pommes au beurre\", printed p. 292",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
+    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, Préface, \"Pincées de sel et de poivre\": \"J'ai adopté, comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2052-2055, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "baked-apples",
+      "name": {
+        "en": "Baked apples",
+        "de": "Gebackene Äpfel"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "apple",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-apples"
+          },
+          "amount": {
+            "value": 7,
+            "unit": "count",
+            "original": "7 pommes de reinette"
+          }
+        },
+        {
+          "key": "cinnamon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171320"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "prise",
+            "original": "1 prise de cannelle en poudre"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "\"sucre pilé\", crushed sugar. The book gives no amount.",
+            "de": "\"sucre pilé\", gestoßener Zucker. Das Buch gibt keine Menge an."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "40 grammes de beurre"
+          },
+          "note": {
+            "en": "The book greases the dish with a layer of butter of 3 millimetres; the amount for the layer is not stated.",
+            "de": "Das Buch fettet die Form mit einer Butterschicht von 3 Millimetern; die Menge für die Schicht nennt es nicht."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Take out the cores and the pips with an apple corer.",
+            "de": "Kerngehäuse und Kerne mit dem Apfelausstecher entfernen."
+          },
+          "uses": ["apple"]
+        },
+        {
+          "text": {
+            "en": "Peel the apples, but keep them whole.",
+            "de": "Die Äpfel schälen, aber ganz lassen."
+          },
+          "uses": ["apple"]
+        },
+        {
+          "text": {
+            "en": "Butter a round tinned iron dish with a layer of butter about 3 millimetres thick.",
+            "de": "Eine runde Form aus verzinntem Eisen mit einer etwa 3 Millimeter dicken Butterschicht einfetten."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle the cinnamon over the apples and fill the hole of each apple with crushed sugar.",
+            "de": "Den Zimt über die Äpfel streuen und das Loch jedes Apfels mit gestoßenem Zucker füllen."
+          },
+          "uses": ["cinnamon", "sugar", "apple"]
+        },
+        {
+          "text": {
+            "en": "Melt 40 g of butter and pour it over the apples.",
+            "de": "40 g Butter schmelzen und über die Äpfel gießen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Bake in a country oven, with heat from above and below.",
+            "de": "Im Bauernofen mit Hitze von oben und unten backen."
+          },
+          "technique": "bake"
+        },
+        {
+          "text": {
+            "en": "After 20 minutes, check that the apples are cooked, then serve.",
+            "de": "Nach 20 Minuten prüfen, ob die Äpfel gar sind, dann servieren."
+          },
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "baked-apples"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source gives no number of persons; seven apples are judged for four persons.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 15575-15590. Agreed: 7 apples, 1 prise of cinnamon, 40 g butter, the 3 mm layer, the country oven with heat above and below, 20 minutes. Changed: the butter note no longer says part of the 40 g greases the dish; the source gives no amount for that layer."
+  },
+  "note": {
+    "en": "Gouffé's apples baked in butter, with cinnamon and crushed sugar. The book gives no amount of sugar and no size for the country oven.",
+    "de": "Gouffés mit Butter gebackene Äpfel, mit Zimt und gestoßenem Zucker. Das Buch gibt keine Menge Zucker an und keine Größe für den Bauernofen."
+  }
+}

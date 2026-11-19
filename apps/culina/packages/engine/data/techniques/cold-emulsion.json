@@ -1,0 +1,46 @@
+{
+  "id": "cold-emulsion",
+  "name": {
+    "en": "Cold emulsion (mayonnaise, alioli kind)",
+    "de": "Kalte Emulsion (Art Mayonnaise, Alioli)"
+  },
+  "watch": {
+    "en": "Whisk yolk, acid and seasoning until an emulsion starts, then drizzle in the oil slowly while whisking.",
+    "de": "Eigelb, Säure und Würze verrühren, bis eine Emulsion beginnt, dann das Öl langsam einträufeln und dabei weiterrühren."
+  },
+  "why": {
+    "en": "Oil and vinegar do not blend alone; an emulsifier such as the lecithin in egg yolk helps them mix.",
+    "de": "Öl und Essig vermischen sich nicht von selbst; ein Emulgator wie das Lecithin im Eigelb hilft ihnen dabei."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Garde Manger: A Guide to the Cold Kitchen (Thibodeaux)",
+      "place": "chapter 1.6 Cold Sauces, section Making Mayonnaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Garde_Manger%3A_A_Guide_to_the_Cold_Kitchen_(Thibodeaux)/01%3A_Chapters/1.06%3A_Cold_Sauces_Salads_and_Sandwiches",
+      "licence": "CC BY-NC 4.0",
+      "sentence": "Whisk this until an emulsion starts."
+    },
+    {
+      "title": "Garde Manger: A Guide to the Cold Kitchen (Thibodeaux)",
+      "place": "chapter 1.6 Cold Sauces, section Making Mayonnaise",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Garde_Manger%3A_A_Guide_to_the_Cold_Kitchen_(Thibodeaux)/01%3A_Chapters/1.06%3A_Cold_Sauces_Salads_and_Sandwiches",
+      "licence": "CC BY-NC 4.0",
+      "sentence": "Slowly drizzle the oil as you whisk."
+    },
+    {
+      "title": "Garde Manger: A Guide to the Cold Kitchen (Thibodeaux)",
+      "place": "chapter 1.6 Cold Sauces, section Cold Emulsion Sauces",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Garde_Manger%3A_A_Guide_to_the_Cold_Kitchen_(Thibodeaux)/01%3A_Chapters/1.06%3A_Cold_Sauces_Salads_and_Sandwiches",
+      "licence": "CC BY-NC 4.0",
+      "sentence": "We need something to stabilize the two so that they can mix."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Emulsification",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Usually an emulsifying agent such as the lecithin found in egg yolks must be present to aid in the process."
+    }
+  ]
+}

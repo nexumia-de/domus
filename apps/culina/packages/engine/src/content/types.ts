@@ -21,7 +21,6 @@ export type ContentFindingCode =
   | 'unused-component'
   | 'reserved-id'
   | 'cycle'
-  | 'settled-without-amount'
   | 'settled-without-entry'
   | 'settled-target'
   | 'persons-unsettled'

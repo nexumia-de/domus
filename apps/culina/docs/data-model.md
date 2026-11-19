@@ -140,16 +140,16 @@ always mass), and units are a table, not code.
 
 # Units and dates
 
-| Quantity         | Stored as                                   | Note                                                                                     |
-| ---------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Mass             | number plus `g`, `kg`, `oz`, `lb`           | As entered. Grams are canonical for every computation; conversion is derived             |
-| Volume           | number plus `ml`, `l`, `tsp`, `tbsp`, `cup` | Only convertible to mass with the ingredient's `densityGPerMl`; otherwise an error       |
-| Count            | number plus `count`                         | Only convertible with the ingredient's `unitWeightG` (an egg, a clove)                   |
-| Percent of base  | number plus `percent`                       | Component lines only: percent of the summed mass of the `percentBase` role (flour = 100) |
-| Yield of an item | percent of the weight as purchased          | Above 100 is possible (cooked rice, pasta)                                               |
-| Shelf life       | whole days                                  | Per state and storage                                                                    |
-| Date             | `YYYY-MM-DD`                                | Entered by the user or supplied by the host                                              |
-| Instant          | ISO 8601 UTC with `Z`                       | Only `exportedAt`, supplied by the host                                                  |
+| Quantity         | Stored as                                                                                    | Note                                                                                     |
+| ---------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Mass             | number plus `g`, `kg`, `oz`, `lb`                                                            | As entered. Grams are canonical for every computation; conversion is derived             |
+| Volume           | number plus `ml`, `l`, `tsp`, `tbsp`, `cup`, `imp-floz`, `imp-gill`, `imp-pint`, `imp-quart` | Only convertible to mass with the ingredient's `densityGPerMl`; otherwise an error       |
+| Count            | number plus `count`                                                                          | Only convertible with the ingredient's `unitWeightG` (an egg, a clove)                   |
+| Percent of base  | number plus `percent`                                                                        | Component lines only: percent of the summed mass of the `percentBase` role (flour = 100) |
+| Yield of an item | percent of the weight as purchased                                                           | Above 100 is possible (cooked rice, pasta)                                               |
+| Shelf life       | whole days                                                                                   | Per state and storage                                                                    |
+| Date             | `YYYY-MM-DD`                                                                                 | Entered by the user or supplied by the host                                              |
+| Instant          | ISO 8601 UTC with `Z`                                                                        | Only `exportedAt`, supplied by the host                                                  |
 
 Rules:
 
@@ -577,7 +577,8 @@ guide is [classic format](classic-format.md).
 - **Settled.** A value we settled where the source is vague is an entry in
   `settled`. A line or slot whose amount we settled has `settled: true` and a
   `key`, and the entry's `target` is `<component id>/<key>` (`slots/<key>` for
-  a slot); settled persons (`basis: settled`) have an entry with target
+  a slot); the line or slot may have no `amount`, and the entry then records a
+  choice (its `value` is free text) instead of a number; settled persons (`basis: settled`) have an entry with target
   `persons`. The engine checks that both sides exist.
 - **No `version`, no `yield`.** A classic is not a stored record, and the
   output weight is something only the cook who weighs it can know.

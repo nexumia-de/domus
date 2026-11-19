@@ -1,0 +1,305 @@
+{
+  "id": "flan-clasico",
+  "name": {
+    "en": "Flan (baked custard in a pastry case)",
+    "de": "Flan (gebackene Eiercreme im Teigmantel)"
+  },
+  "originalName": "Flan",
+  "country": "es",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (tercera edición, Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "p. 844, Flan; pastry p. 836, Masa doblada, ó en hojas, ó hojaldre",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "units": {
+    "onza": {
+      "kind": "mass",
+      "factor": 30,
+      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g. See /home/user/briefs/muro-units.md."
+    },
+    "cuartillo": {
+      "kind": "volume",
+      "factor": 500,
+      "read": "Muro, p. 356, lines 16332-16340: 'vasos de á cuartillo ... que miden medio litro'. A cuartillo is half a litre. See /home/user/briefs/muro-units.md."
+    }
+  },
+  "components": [
+    {
+      "id": "flan-pastry",
+      "name": {
+        "en": "Puff pastry (folded dough)",
+        "de": "Blätterteig (Masa doblada)"
+      },
+      "role": "crunch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168894"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "para un litro de harina"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "40 gramos de manteca de vacas"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "onza",
+            "original": "una onza de sal"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Enough water to make a very thick dough; no amount given.",
+            "de": "So viel Wasser, dass ein sehr fester Teig entsteht; keine Menge angegeben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Spread the flour on the table and make a well in the middle.",
+            "de": "Das Mehl auf dem Tisch verteilen und in der Mitte eine Mulde formen."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Put the butter in small pieces into the well, with the salt.",
+            "de": "Die Butter in kleinen Stücken mit dem Salz in die Mulde geben."
+          },
+          "uses": ["butter", "salt"]
+        },
+        {
+          "text": {
+            "en": "Add enough water to make a very thick dough, mixing it in small portions.",
+            "de": "So viel Wasser zugeben, dass ein sehr fester Teig entsteht, und in kleinen Portionen einarbeiten."
+          },
+          "uses": ["water", "flour"]
+        },
+        {
+          "text": {
+            "en": "Knead the dough hard.",
+            "de": "Den Teig kräftig kneten."
+          },
+          "technique": "knead"
+        },
+        {
+          "text": {
+            "en": "Do not use the dough until two hours after making it.",
+            "de": "Den Teig erst zwei Stunden nach dem Zubereiten verwenden."
+          },
+          "technique": "rest-dough",
+          "time": {
+            "value": 2,
+            "unit": "h"
+          }
+        }
+      ]
+    },
+    {
+      "id": "flan-custard",
+      "name": {
+        "en": "Flan custard",
+        "de": "Flan-Eiercreme"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168894"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g",
+            "original": "60 gramos de harina"
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "un huevo entero"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "seis yemas"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "The source gives the figure as '20<>' in the scan text; the figure is not legible in the text, so no amount is written.",
+            "de": "Die Quelle nennt die Menge im Scan-Text als '20<>'; die Zahl ist im Text nicht lesbar, daher keine Menge."
+          }
+        },
+        {
+          "key": "orange-water",
+          "wanted": {
+            "en": "Orange-flower water",
+            "de": "Orangenblütenwasser"
+          },
+          "note": {
+            "en": "One tablespoon (cucharada sopera); the source gives no size for the spoon.",
+            "de": "Ein Esslöffel (cucharada sopera); die Quelle nennt keine Größe für den Löffel."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "la corteza de un limón"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "One cuartillo, which the book sizes as half a litre (p. 356).",
+            "de": "Ein Cuartillo; das Buch bestimmt ihn als einen halben Liter (S. 356)."
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "cuartillo",
+            "original": "un cuartillo de leche"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stir the flour into the whole egg in a pan until smooth.",
+            "de": "Das Mehl in einem Topf mit dem ganzen Ei glatt verrühren."
+          },
+          "uses": ["flour", "egg"]
+        },
+        {
+          "text": {
+            "en": "Add the six yolks, the sugar, the orange-flower water, the lemon peel and the milk.",
+            "de": "Die sechs Eigelb, den Zucker, das Orangenblütenwasser, die Zitronenschale und die Milch zugeben."
+          },
+          "uses": ["yolk", "sugar", "orange-water", "lemon", "milk"]
+        },
+        {
+          "text": {
+            "en": "Line the inside of a plain mould, not high, with a good layer of the pastry.",
+            "de": "Eine glatte, nicht hohe Form innen mit einer guten Schicht des Teigs auslegen."
+          }
+        },
+        {
+          "text": {
+            "en": "Pour the custard into the lined mould.",
+            "de": "Die Creme in die ausgelegte Form füllen."
+          },
+          "uses": ["flour", "egg", "yolk", "sugar", "orange-water", "lemon", "milk"]
+        },
+        {
+          "text": {
+            "en": "Bake it in a camp oven with heat from above and below.",
+            "de": "In einem Feldofen mit Hitze von oben und unten backen."
+          },
+          "technique": "bake"
+        },
+        {
+          "text": {
+            "en": "When it is cold, take it out of the mould and sprinkle it with sugar.",
+            "de": "Wenn es kalt ist, aus der Form lösen und mit Zucker bestreuen."
+          },
+          "uses": ["sugar"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "flan-custard"
+      }
+    },
+    {
+      "role": "crunch",
+      "ref": {
+        "kind": "component",
+        "id": "flan-pastry"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source names no number of persons; the custard takes six yolks and one whole egg.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared flan p. 844 (lines 37800-37816) and pastry p. 836 (37459-37475). Agreed: 60 g flour, egg, 6 yolks, lemon peel, 1 onza salt (30 g), 40 g butter, 1 l flour. Changed: sugar '20<>' is not legible in either copy, amount removed; milk 1 cuartillo = 0.5 l (book's own size); 'until set' removed; rest step worded as the source."
+  },
+  "note": {
+    "en": "The pastry is the book's own recipe for the lining, 'masa doblada, ó en hojas, ó hojaldre' (p. 836), taken as the book gives it. The sugar figure is not legible in the text, so no amount is written.",
+    "de": "Der Teig ist das eigene Rezept des Buches für die Auskleidung, 'masa doblada, ó en hojas, ó hojaldre' (S. 836), so übernommen, wie das Buch es angibt. Die Zuckermenge ist im Text nicht lesbar, daher steht keine Menge dabei."
+  }
+}

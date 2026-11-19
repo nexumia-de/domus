@@ -9,6 +9,10 @@ export const AMOUNT_UNITS = [
   'tsp',
   'tbsp',
   'cup',
+  'imp-floz',
+  'imp-gill',
+  'imp-pint',
+  'imp-quart',
   'count',
 ] as const;
 export const MASS_ONLY = ['g', 'kg', 'oz', 'lb'] as const;

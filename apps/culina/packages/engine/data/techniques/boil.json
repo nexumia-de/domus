@@ -1,0 +1,46 @@
+{
+  "id": "boil",
+  "name": {
+    "en": "Boiling",
+    "de": "Kochen in sprudelndem Wasser"
+  },
+  "watch": {
+    "en": "Boil green vegetables and pasta quickly in plenty of water; simmer starchy roots such as potatoes slowly.",
+    "de": "Grünes Gemüse und Nudeln zügig in reichlich Wasser kochen; stärkereiche Wurzeln wie Kartoffeln langsam simmern lassen."
+  },
+  "why": {
+    "en": "Plenty of water keeps released starch from making pasta sticky and keeps the colour and flavour of greens; a slow simmer lets the heat reach the middle and cook evenly.",
+    "de": "Reichlich Wasser verhindert, dass frei werdende Stärke die Nudeln klebrig macht, und erhält Farbe und Geschmack von Grünem; sanftes Köcheln lässt die Hitze bis in die Mitte dringen und gleichmäßig garen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Green vegetables should be boiled quickly in a large amount of water in order to retain their color and flavor."
+    },
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Starchy root vegetables are generally not boiled but rather simmered slowly so that the heat penetrates to their interiors and cooks them evenly."
+    },
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The secret to boiling pasta successfully is to use ample water."
+    },
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "otherwise, the starch released by the dough will make the pasta gummy and sticky."
+    }
+  ]
+}

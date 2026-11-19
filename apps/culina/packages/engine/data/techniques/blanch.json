@@ -1,0 +1,32 @@
+{
+  "id": "blanch",
+  "name": {
+    "en": "Blanching",
+    "de": "Blanchieren"
+  },
+  "watch": {
+    "en": "Cook only a few seconds in a large amount of boiling water.",
+    "de": "Nur wenige Sekunden in reichlich kochendem Wasser garen."
+  },
+  "why": {
+    "en": "It softens firm foods, sets colours and loosens skins for peeling.",
+    "de": "Es macht festes Gargut weicher, fixiert Farben und löst Häute zum Schälen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Blanching and Parboiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Blanching is the partial cooking of foods in a large amount of boiling water for a very short time, usually only a few seconds."
+    },
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Blanching and Parboiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "blanching is used to remove strong or bitter flavors, soften firm foods, set colors or loosen skins for peeling."
+    }
+  ]
+}

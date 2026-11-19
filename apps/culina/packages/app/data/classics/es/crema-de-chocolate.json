@@ -1,0 +1,163 @@
+{
+  "id": "crema-de-chocolate",
+  "name": {
+    "en": "Chocolate cream",
+    "de": "Schokoladencreme"
+  },
+  "originalName": "Crema de chocolate",
+  "country": "es",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (tercera edición, Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "pp. 795-796, Crema de chocolate; the mixing and cooking follow Crema de café, p. 795",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "onza": {
+      "kind": "mass",
+      "factor": 30,
+      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g. See /home/user/briefs/muro-units.md."
+    }
+  },
+  "components": [
+    {
+      "id": "chocolate-cream",
+      "name": {
+        "en": "Chocolate cream",
+        "de": "Schokoladencreme"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chocolate",
+          "wanted": {
+            "en": "Chocolate",
+            "de": "Schokolade"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "onza",
+            "original": "dos onzas de chocolate"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "onza",
+            "original": "otras dos onzas de azúcar molido"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "l",
+            "original": "un cuarto de litro de leche"
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cream-fluid"
+          },
+          "note": {
+            "en": "Un poco de nata: a little cream, no amount given.",
+            "de": "Un poco de nata: etwas Sahne, keine Menge angegeben."
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "count",
+            "original": "cinco yemas de huevo"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Grind the chocolate to a powder.",
+            "de": "Die Schokolade zu Pulver zerreiben."
+          },
+          "uses": ["chocolate"]
+        },
+        {
+          "text": {
+            "en": "Put the chocolate, the sugar, the milk and a little cream in a pan and cook until it has reduced by a third.",
+            "de": "Schokolade, Zucker, Milch und etwas Sahne in einen Topf geben und kochen, bis die Masse um ein Drittel eingekocht ist."
+          },
+          "technique": "reduce",
+          "uses": ["chocolate", "sugar", "milk", "cream"]
+        },
+        {
+          "text": {
+            "en": "When it is cold or nearly cold, beat in the five yolks a little at a time, thinning with the mixture, as in the coffee cream on the previous page.",
+            "de": "Wenn die Masse kalt oder fast kalt ist, die fünf Eigelb nach und nach einschlagen und dabei mit der Masse verdünnen, wie bei der Kaffeecreme auf der Vorseite."
+          },
+          "uses": ["yolk"]
+        },
+        {
+          "text": {
+            "en": "Pass the mixture through a sieve.",
+            "de": "Die Masse durch ein Sieb streichen."
+          },
+          "uses": ["chocolate", "sugar", "milk", "yolk"]
+        },
+        {
+          "text": {
+            "en": "Pour it into a deep dish, or into moulds caramelised inside, and set it in a water bath, as for the coffee cream.",
+            "de": "In eine tiefe Schale oder in innen karamellisierte Förmchen füllen und im Wasserbad stocken lassen, wie bei der Kaffeecreme."
+          },
+          "technique": "water-bath"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "chocolate-cream"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for two onzas of chocolate and five yolks.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared lines 35654-35700: 2 onzas chocolate, 2 onzas sugar, 1/4 l milk, a little cream (no amount), 5 yolks, the reduction by a third, the water bath. Agreed. Changed: 'simmer' is 'cook' (cocer); moulds caramelised inside, as in the coffee cream (acaramelados por dentro). Unreadable: none in these lines."
+  },
+  "note": {
+    "en": "The source says the operation finishes as for the coffee cream on the previous page (p. 795); its steps are written out here. The coffee cream beats its yolks with a little flour; the chocolate text names no flour, so none is written. The milk and the chocolate have no further size in the text; the cream has no amount.",
+    "de": "Die Quelle sagt, die Arbeit wird wie bei der Kaffeecreme auf der Vorseite (S. 795) beendet; die Schritte stehen hier ausgeschrieben. Die Kaffeecreme schlägt ihre Eigelb mit etwas Mehl; der Schokoladentext nennt kein Mehl, daher steht keines dabei. Milch und Schokolade haben im Text keine weitere Größe; die Sahne hat keine Menge."
+  }
+}

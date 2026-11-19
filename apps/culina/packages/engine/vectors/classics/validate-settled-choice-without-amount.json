@@ -1,6 +1,6 @@
 {
-  "id": "validate-settled-without-amount",
-  "description": "A line marked settled that has no amount",
+  "id": "validate-settled-choice-without-amount",
+  "description": "A settled line without amount, whose entry records a choice (sea salt, not rock salt), passes",
   "inputs": {
     "kind": "classic_validate",
     "classic": {
@@ -122,9 +122,9 @@
       ],
       "settled": [
         {
-          "what": "Salt",
-          "value": "1 g",
-          "reason": "Invented.",
+          "what": "Kind of salt",
+          "value": "sea salt, not rock salt",
+          "reason": "Invented: the source says sea or rock salt; sea salt is used.",
           "target": "sauce/salt"
         }
       ],
@@ -160,15 +160,9 @@
       }
     ]
   },
-  "error_code": "invalid",
-  "error_detail": {
-    "findings": [
-      {
-        "code": "settled-without-amount",
-        "path": "components[0].lines[2]"
-      }
-    ]
-  },
   "tolerance": 0,
-  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description.",
+  "expected": {
+    "ok": true
+  }
 }

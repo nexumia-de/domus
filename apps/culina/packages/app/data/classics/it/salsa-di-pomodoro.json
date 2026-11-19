@@ -1,0 +1,216 @@
+{
+  "id": "salsa-di-pomodoro",
+  "name": {
+    "en": "Tomato sauce",
+    "de": "Tomatensauce"
+  },
+  "originalName": "Salsa di pomodoro",
+  "country": "it",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 80",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "tomato-sauce",
+      "name": {
+        "en": "Tomato sauce",
+        "de": "Tomatensauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "count",
+            "original": "un quarto di cipolla"
+          },
+          "note": {
+            "en": "A quarter of an onion, as the source gives it.",
+            "de": "Ein Viertel einer Zwiebel, wie die Quelle sie nennt."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "uno spicchio d'aglio"
+          },
+          "note": {
+            "en": "One clove, read as one piece (judgement).",
+            "de": "Eine Zehe, als ein Stück gelesen (Urteil)."
+          }
+        },
+        {
+          "key": "celery",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169988"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "un pezzo di sedano lungo un dito"
+          },
+          "note": {
+            "en": "A piece of celery about a finger long.",
+            "de": "Ein Stück Sellerie, etwa einen Finger lang."
+          }
+        },
+        {
+          "key": "basil",
+          "wanted": {
+            "en": "Basil",
+            "de": "Basilikum"
+          },
+          "note": {
+            "en": "A few leaves.",
+            "de": "Einige Blätter."
+          }
+        },
+        {
+          "key": "parsley",
+          "wanted": {
+            "en": "Parsley",
+            "de": "Petersilie"
+          },
+          "note": {
+            "en": "As much as needed; fresh parsley.",
+            "de": "Nach Bedarf; frische Petersilie."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "note": {
+            "en": "A little.",
+            "de": "Ein wenig."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Black pepper",
+            "de": "Schwarzer Pfeffer"
+          }
+        },
+        {
+          "key": "tomato",
+          "wanted": {
+            "en": "Tomatoes",
+            "de": "Tomaten"
+          },
+          "amount": {
+            "value": 7,
+            "max": 8,
+            "unit": "count",
+            "original": "sette o otto pomodori"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the onion, the garlic, the celery, the basil and the parsley finely.",
+            "de": "Zwiebel, Knoblauch, Sellerie, Basilikum und Petersilie fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["onion", "garlic", "celery", "basil", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Season the chopped mixture with a little oil, salt and pepper.",
+            "de": "Die gehackte Mischung mit etwas Öl, Salz und Pfeffer würzen."
+          },
+          "uses": ["oil", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Break up the tomatoes and put everything on the heat together.",
+            "de": "Die Tomaten zerteilen und alles zusammen auf den Herd stellen."
+          },
+          "uses": [
+            "tomato",
+            "onion",
+            "garlic",
+            "celery",
+            "basil",
+            "parsley",
+            "oil",
+            "salt",
+            "pepper"
+          ]
+        },
+        {
+          "text": {
+            "en": "Stir now and then until the juice has thickened to a liquid cream.",
+            "de": "Ab und zu rühren, bis der Saft zu einer flüssigen Creme eingedickt ist."
+          },
+          "technique": "reduce",
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "Pass the sauce through a sieve.",
+            "de": "Die Sauce durch ein Sieb streichen."
+          },
+          "uses": ["tomato"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "tomato-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; seven or eight tomatoes make one sauce for a dish of pasta or rice.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Compared with the Einaudi edition of 1985 (Camporesi, 3rd ed., Liber Liber e-text), No. 125, and the 1891 OCR (lines 7443-7481), read again by the second checker. Agreed: a quarter onion (OCR 'quaiffo' is 'quarto' in 1985), one garlic clove, celery, basil, parsley, oil, salt, pepper, seven or eight tomatoes, the steps and the sieve. Changed: the onion note no longer calls the reading a judgement. No amount changed."
+  },
+  "note": {
+    "en": "The base sauce of the book. The uses Artusi names (boiled meat, pasta, risotto) are not transcribed here. The source's amounts of onion, garlic and celery are counts of pieces.",
+    "de": "Die Grundsauce des Buches. Die genannten Verwendungen (gekochtes Fleisch, Pasta, Risotto) sind hier nicht übertragen. Die Mengen von Zwiebel, Knoblauch und Sellerie sind Stückzahlen."
+  }
+}

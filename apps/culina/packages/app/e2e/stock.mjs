@@ -61,9 +61,9 @@ const navigation = async (browser, origin, width) => {
     }),
   );
   check(
-    links.length === 5 &&
-      links.map((l) => l.name).join() === 'Ratios,Components,Dishes,Cook,Settings',
-    `${width}px: the navigation has five entries, Cook between Dishes and Settings`,
+    links.length === 6 &&
+      links.map((l) => l.name).join() === 'Start,Ratios,Components,Dishes,Cook,Settings',
+    `${width}px: the navigation has Start first and Cook between Dishes and Settings`,
   );
   check(
     links.every((l) => l.w >= 44 && l.h >= 44 && !l.clipped && l.right <= width + 0.5),

@@ -1,0 +1,188 @@
+{
+  "id": "omelette-fines-herbes",
+  "name": {
+    "en": "Herb omelette",
+    "de": "Kräuteromelett"
+  },
+  "originalName": "Omelette aux fines herbes",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Omelette aux fines herbes\", pp. 273-274; gouffe.txt lines 14702-14761",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 2,
+    "basis": "settled"
+  },
+  "units": {
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé's own statement in the first part, on the weights of the pinch and the prise: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2052-2055)."
+    }
+  },
+  "components": [
+    {
+      "id": "omelette-herbes",
+      "name": {
+        "en": "Herb omelette",
+        "de": "Kräuteromelett"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "6 œufs"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "prise",
+            "original": "5 prises de sel"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Pepper",
+            "de": "Pfeffer"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "prise",
+            "original": "3 prises de poivre"
+          }
+        },
+        {
+          "key": "parsley",
+          "wanted": {
+            "en": "Parsley",
+            "de": "Petersilie"
+          },
+          "note": {
+            "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount. The title says fine herbes, but the text names only parsley.",
+            "de": "Original: 1 demi-cuillerée à bouche de persil haché. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge. Der Titel nennt fines herbes, der Text nur Petersilie."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 90,
+            "unit": "g",
+            "original": "90 grammes de beurre"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Break the eggs into a bowl.",
+            "de": "Die Eier in eine Schüssel aufschlagen."
+          },
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Add the salt, the pepper and the chopped parsley.",
+            "de": "Salz, Pfeffer und die gehackte Petersilie hinzufügen."
+          },
+          "uses": ["salt", "pepper", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Beat with a fork for about one minute, until the whites are broken and mixed with the yolks. Beating longer makes the eggs watery and the omelette less soft.",
+            "de": "Etwa eine Minute mit der Gabel schlagen, bis das Eiweiß zerteilt und mit dem Eigelb vermischt ist. Länger schlagen macht die Eier wässrig und die Omelette weniger weich."
+          },
+          "uses": ["egg", "salt", "pepper", "parsley"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Melt the butter in the omelette pan over high heat, without letting it colour.",
+            "de": "Die Butter in der Omelettepfanne bei starker Hitze schmelzen, ohne dass sie Farbe nimmt."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "When the butter is hot, pour in the eggs and stir them with the fork so they cook evenly.",
+            "de": "Wenn die Butter heiß ist, die Eier hineingießen und mit der Gabel rühren, damit sie gleichmäßig garen."
+          },
+          "technique": "pan-fry",
+          "uses": ["egg", "salt", "pepper", "parsley", "butter"]
+        },
+        {
+          "text": {
+            "en": "When the eggs begin to set, move the pan in circles.",
+            "de": "Sobald die Eier zu stocken beginnen, die Pfanne im Kreis bewegen."
+          },
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Fold both edges of the omelette over itself to give it an oval shape.",
+            "de": "Beide Ränder der Omelette über sich selbst falten, damit sie oval wird."
+          },
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Toss it lightly over the heat so that it colours, then turn it out onto the plate.",
+            "de": "Kurz über der Hitze schwenken, damit sie Farbe nimmt, dann auf den Teller stürzen."
+          },
+          "uses": ["egg"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "omelette-herbes"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "2",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for 6 eggs, about 3 eggs per person.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 14702-14761: all numbers agree. Changed: the parsley lost its amount, as the book sizes a spoon for flour only. The prise (1 g) is kept."
+  },
+  "note": {
+    "en": "The source gives the omelette as a soft or set one: when a soft omelette is wanted, it is folded before the eggs are too firm, coloured briefly and served. The book's remarks on the omelette pan and on the number of eggs (lines 14762-14790) are not part of the recipe. The text names only parsley as herb.",
+    "de": "Das Buch nennt zwei Arten: eine weiche Omelette, die man faltet, bevor die Eier zu fest sind, kurz bräunt und serviert, und eine gar gestockte. Die Hinweise des Buches zur Pfanne und zur Zahl der Eier stehen nicht im Rezept. Im Text ist nur Petersilie als Kraut genannt."
+  }
+}

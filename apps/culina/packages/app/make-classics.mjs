@@ -1,14 +1,17 @@
-// Writes src/classics/classics.generated.ts: one import per dish file of data/classics/<country>/.
+// Writes src/classics/classics.generated.ts: one import per dish file of data/classics/<country>/
+// (read by the tests only; the app gets its dishes from dist/classics.json, see shippedContent).
 // One file per dish keeps the work of many people free of merge conflicts, and this index is not
 // committed. Runs before tests, typecheck and build.
-import { readdirSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const dataDir = fileURLToPath(new URL('./data/classics/', import.meta.url));
 const out = fileURLToPath(new URL('./src/classics/classics.generated.ts', import.meta.url));
 
-export const makeClassics = () => {
-  const files = readdirSync(dataDir, { withFileTypes: true })
+const techniqueDir = fileURLToPath(new URL('../engine/data/techniques/', import.meta.url));
+
+const classicFiles = () =>
+  readdirSync(dataDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .flatMap((dir) =>
       readdirSync(dataDir + dir.name)
@@ -16,6 +19,20 @@ export const makeClassics = () => {
         .map((f) => `${dir.name}/${f}`),
     )
     .sort();
+
+/** The content of dist/classics.json: every dish (path order) and technique (file name order). */
+export const shippedContent = () => ({
+  format: 'culina-classics',
+  formatVersion: 1,
+  classics: classicFiles().map((f) => JSON.parse(readFileSync(dataDir + f, 'utf8'))),
+  techniques: readdirSync(techniqueDir)
+    .filter((f) => f.endsWith('.json'))
+    .sort()
+    .map((f) => JSON.parse(readFileSync(techniqueDir + f, 'utf8'))),
+});
+
+export const makeClassics = () => {
+  const files = classicFiles();
   const imports = files.map((f, i) => `import c${i} from '../../data/classics/${f}';`);
   const list = files.map((_, i) => `  c${i},`);
   writeFileSync(

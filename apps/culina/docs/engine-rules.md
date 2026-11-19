@@ -30,6 +30,9 @@ sources:
   - id: nist
     title: 'NIST Handbook 44 (2026), Appendix C, General Tables of Units of Measurement: 1 gallon = 231 cubic inches = 128 fluid ounces; 16 ounces = 1 pound; 1 inch = 2.54 centimeters (exactly); 1 cup, measuring = 8 fluid ounces (exactly); 1 tablespoon, measuring = 3 teaspoons (exactly) = 1/2 fluid ounce (exactly); read 2026-11-18'
     url: https://www.nist.gov/system/files/documents/2025/12/30/appc-26-HB44-20251222.pdf
+  - id: wm1985
+    title: 'Weights and Measures Act 1985 (c. 72), Schedule 1, Part IV, Measurement of Capacity, imperial units: "Gallon = 4.546 09 cubic decimetres. Quart = 1/4 gallon. Pint = 1/2 quart. Gill = 1/4 pint. Fluid ounce = 1/20 pint."; read 2026-11-19'
+    url: https://www.legislation.gov.uk/ukpga/1985/72/schedule/1
   - id: chef
     title: 'How chefs work, Operations: scaling goes by weight; cooking time and salt do not scale linearly'
     url: chef-practice.md#operations
@@ -61,18 +64,22 @@ The table is data: `packages/engine/data/units.json`. Its ids are those
 of `amountUnit` in `common.schema.json`; a test fails if they differ.
 The base of mass is the gram, of volume the millilitre.
 
-| Unit    | Kind   | Factor to base | Definition                                          |
-| ------- | ------ | -------------- | --------------------------------------------------- |
-| `g`     | mass   | 1              | canonical                                           |
-| `kg`    | mass   | 1000           | SI prefix                                           |
-| `lb`    | mass   | 453.59237      | 0.45359237 kg exactly[^yardpound]                   |
-| `oz`    | mass   | 28.349523125   | lb / 16                                             |
-| `ml`    | volume | 1              | canonical                                           |
-| `l`     | volume | 1000           | SI                                                  |
-| `cup`   | volume | 236.5882365    | 231 · 2.54³ / 16 ml: US gallon / 16[^nist]          |
-| `tbsp`  | volume | 14.78676478125 | cup / 16                                            |
-| `tsp`   | volume | 4.92892159375  | tbsp / 3                                            |
-| `count` | count  | 1              | a piece; its mass is the ingredient's `unitWeightG` |
+| Unit        | Kind   | Factor to base | Definition                                          |
+| ----------- | ------ | -------------- | --------------------------------------------------- |
+| `g`         | mass   | 1              | canonical                                           |
+| `kg`        | mass   | 1000           | SI prefix                                           |
+| `lb`        | mass   | 453.59237      | 0.45359237 kg exactly[^yardpound]                   |
+| `oz`        | mass   | 28.349523125   | lb / 16                                             |
+| `ml`        | volume | 1              | canonical                                           |
+| `l`         | volume | 1000           | SI                                                  |
+| `cup`       | volume | 236.5882365    | 231 · 2.54³ / 16 ml: US gallon / 16[^nist]          |
+| `tbsp`      | volume | 14.78676478125 | cup / 16                                            |
+| `tsp`       | volume | 4.92892159375  | tbsp / 3                                            |
+| `imp-quart` | volume | 1136.5225      | imperial gallon / 4[^wm1985]                        |
+| `imp-pint`  | volume | 568.26125      | imperial quart / 2                                  |
+| `imp-gill`  | volume | 142.0653125    | imperial pint / 4                                   |
+| `imp-floz`  | volume | 28.4130625     | imperial pint / 20                                  |
+| `count`     | count  | 1              | a piece; its mass is the ingredient's `unitWeightG` |
 
 `cup`, `tbsp` and `tsp` are **US customary**, derived exactly from
 1 US gallon = 231 cubic inches and 1 inch = 2.54 cm; there is no metric
@@ -80,7 +87,17 @@ cup. Both source documents were read on 2026-11-18 (the definitions are
 quoted in the source list). The handbook's own millilitre figures for
 cup, tablespoon and teaspoon (237, 15, 5) are rounded to the nearest
 millilitre; the table here keeps the exact values that follow from the
-definitions, and `test/units.test.ts` recomputes them. The table has no densities and no unit weights:
+definitions, and `test/units.test.ts` recomputes them.
+
+`imp-quart`, `imp-pint`, `imp-gill` and `imp-floz` are the **imperial (UK)**
+units of capacity, from 1 imperial gallon = 4.546 09 cubic decimetres, quart
+= 1/4 gallon, pint = 1/2 quart, gill = 1/4 pint, fluid ounce = 1/20 pint
+(Weights and Measures Act 1985, Schedule 1, Part IV, read 2026-11-19). They
+have their own ids so that they never clash with the US `cup`, `tbsp` and
+`tsp`, and `oz` stays the mass. There is no imperial tablespoon: the Act does
+not define one. Imperial pint and fluid ounce are not the US ones (a US pint is
+two cups, 473.176473 ml); a dish that follows an English source uses these
+ids. The table has no densities and no unit weights:
 those belong to an ingredient and carry their own source.
 
 # Conversion and its errors
@@ -836,11 +853,11 @@ records. A validator returns `{ ok: true }` or
 `{ ok: false, error: { code: 'invalid', findings } }`, every finding a
 `code`, a `path` and where it helps a `value`.
 
-| Function                                  | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `validateTechnique`, `validateTechniques` | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `validateSteps`                           | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `validateClassic`                         | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (`settled-without-entry`, `settled-without-amount`, `settled-target`, `persons-unsettled`, `persons-entry`) |
+| Function                                  | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validateTechnique`, `validateTechniques` | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `validateSteps`                           | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `validateClassic`                         | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (a settled line or slot may have no amount: its entry then records a choice) (`settled-without-entry`, `settled-target`, `persons-unsettled`, `persons-entry`) |
 
 **Deriving a classic.** `deriveClassic(classic, { portions?, lang })`
 returns the dish and the components in the shapes the model has, so the app

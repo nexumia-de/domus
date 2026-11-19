@@ -1,0 +1,32 @@
+{
+  "id": "roll-dough",
+  "name": {
+    "en": "Rolling dough",
+    "de": "Teig ausrollen"
+  },
+  "watch": {
+    "en": "Roll the dough into a thin, flat sheet; a little flour on the surface helps when it sticks.",
+    "de": "Den Teig zu einer dünnen, flachen Platte ausrollen; etwas Mehl auf der Arbeitsfläche hilft, wenn er klebt."
+  },
+  "why": {
+    "en": "A thin, flat sheet can be cut into ribbons, circles or squares.",
+    "de": "Eine dünne, flache Teigplatte lässt sich in Bänder, Kreise oder Quadrate schneiden."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The basic form is the sfoglia, a thin, flat sheet of dough that is cut into ribbons, circles or squares."
+    },
+    {
+      "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 4.4 Potatoe Recipes, Gnocchi al Pesto",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.04%3A_Potatoe_Recipes",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Add a little flour to surface if the dough gets too sticky."
+    }
+  ]
+}
