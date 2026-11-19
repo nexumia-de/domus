@@ -1,0 +1,175 @@
+{
+  "id": "arlequin-de-judias",
+  "name": {
+    "en": "Harlequin green beans with butter",
+    "de": "Arlequín-Bohnen mit Butter"
+  },
+  "originalName": "Arlequín de judías",
+  "country": "es",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "p. 733, section 'Arlequín de judías'; lines 32958–32978",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "onza": {
+      "kind": "mass",
+      "factor": 30,
+      "read": "Muro p. 682, line 30706 (OCR: 'dos onzas ó 60 gramo*'): the book states two onzas as 60 grams, so one onza is 30 grams. Taken from the book's own equivalence (a judgement)."
+    }
+  },
+  "components": [
+    {
+      "id": "judias",
+      "name": {
+        "en": "Green beans",
+        "de": "Grüne Bohnen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beans",
+          "wanted": {
+            "en": "Green beans",
+            "de": "Grüne Bohnen"
+          },
+          "note": {
+            "en": "Two kinds: long, fine green pods without visible seed, and fresh beans, shelled. A handful of each (\"un puñado de cada clase\"); a handful is not sized in the book, so no amount.",
+            "de": "Zwei Sorten: lange, feine grüne Schoten ohne sichtbare Kerne und frische, ausgepalte Bohnen. Je eine Handvoll (\"un puñado de cada clase\"); eine Handvoll ist im Buch nicht bemessen, daher keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "onza",
+            "original": "dos onzas de manteca de vacas"
+          },
+          "note": {
+            "en": "Fresh cow's butter, for one libra of beans in the book's words (\"para una libra del manjar\"); the libra is not sized in the book.",
+            "de": "Frische Kuhbutter, nach dem Buch für eine Libra Bohnen (\"para una libra del manjar\"); die Libra ist im Buch nicht bemessen."
+          }
+        },
+        {
+          "key": "herbs",
+          "wanted": {
+            "en": "Fine herbs",
+            "de": "Feine Kräuter"
+          },
+          "note": {
+            "en": "Finely chopped (\"finas hierbas recortadas\"); no amount.",
+            "de": "Fein geschnitten (\"finas hierbas recortadas\"); keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Black pepper",
+            "de": "Schwarzer Pfeffer"
+          }
+        },
+        {
+          "key": "clove",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171321"
+          },
+          "note": {
+            "en": "A pinch (\"una chispa de clavo\"); no amount.",
+            "de": "Eine Prise (\"una chispa de clavo\"); keine Menge."
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "note": {
+            "en": "Grated (\"nuez moscada rallada\"); no amount.",
+            "de": "Gerieben (\"nuez moscada rallada\"); keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook both kinds of beans together in boiling water with salt and a little pepper.",
+            "de": "Beide Sorten Bohnen zusammen in kochendem Wasser mit Salz und etwas Pfeffer garen."
+          },
+          "technique": "boil",
+          "uses": ["beans", "salt", "pepper"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "After the cooking time, take the beans out and drain them.",
+            "de": "Nach der Garzeit die Bohnen herausnehmen und abtropfen lassen."
+          },
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Keep the beans hot. Put them in a warm vegetable dish with the butter, the fine herbs, salt, pepper, a pinch of clove and the grated nutmeg.",
+            "de": "Die Bohnen warm halten. In einer vorgewärmten Gemüseschüssel mit der Butter, den feinen Kräutern, Salz, Pfeffer, einer Prise Gewürznelke und der geriebenen Muskatnuss anrichten."
+          },
+          "uses": ["beans", "butter", "herbs", "salt", "pepper", "clove", "nutmeg"]
+        },
+        {
+          "text": {
+            "en": "Cover the dish with a lid and shake it in the air so that the beans mix well with the melting butter.",
+            "de": "Die Schüssel mit einem Deckel abdecken und schwenken, damit sich die Bohnen gut mit der schmelzenden Butter vermischen."
+          },
+          "uses": ["beans", "butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "judias"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; one libra of beans with two onzas of butter is a side dish for about four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed from the old print (OCR of Muro, lines 32958–32978); the numbers 'un puñado', 'dos onzas' and 'quince minutos' need a second reader on the scan."
+  },
+  "note": {
+    "en": "Replaces Ángel Muro's 'Ensalada de pimientos' (no amounts in the source; see the transcription evidence file). Only the butter is measured, and the book gives the beans as handfuls. The fifteen minutes are the book's cooking time for the beans.",
+    "de": "Ersetzt Ángel Muros 'Ensalada de pimientos' (keine Mengen in der Quelle; siehe Belegdatei). Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
+  }
+}
