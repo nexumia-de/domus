@@ -1,5 +1,3 @@
-@../phosh-toolkit/agents/core.md
-
 # Culina
 
 A helper in the kitchen that teaches until it is no longer needed
@@ -12,15 +10,17 @@ of this repository: [docs/index.md](docs/index.md).
 
 Culina is a web app (PWA) that is also installed on Android and Linux,
 not a GTK app; the GTK rules do not apply. Its sister app for drinks,
-[Mixtura](https://github.com/nexumia-de/mixtura), is built first
-([decision](docs/decisions/after-mixtura.md)).
+[Mixtura](../mixtura), is built first
+([decision](docs/decisions/after-mixtura.md)). The rules of the
+[root](../../AGENTS.md) apply too.
 
 ## Rules
 
-- **The general model comes from materia**, pinned to an exact version
-  tag ([decision](docs/decisions/shared-model.md)). Culina's engine adds
-  the kitchen rules (mass, baker's percentages, yields); what Mixtura
-  needs too moves to materia by a pull request there.
+- **The general model comes from materia**, used from this repository
+  ([decision](docs/decisions/shared-model.md),
+  [one repository](../../docs/decisions/one-repository.md)). Culina's
+  engine adds the kitchen rules (mass, baker's percentages, yields);
+  what Mixtura needs too moves to materia.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
 - **Recipes**: classics shipped by country, each following one named
@@ -41,5 +41,6 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
 
 ## Before committing
 
-1. `npm run check` passes (format, lint, typecheck, tests).
+1. From the root, `npm run check:culina` passes (format, lint,
+   typecheck, tests).
 2. `docs/` updated in the same commit.

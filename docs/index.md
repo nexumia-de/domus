@@ -1,0 +1,24 @@
+---
+okf_version: '0.2'
+---
+
+# Domus knowledge bundle
+
+[Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
+(OKF v0.2) bundle for what concerns the whole repository. Each part has
+its own bundle. Change history is in [log.md](log.md).
+
+# Decisions
+
+- [One repository](decisions/one-repository.md) - Why the apps and the shared model are in one repository, what replaces version tags, what keeps the parts apart, what was not decided.
+
+# Reference
+
+- [Development](development.md) - The layout, the one workspace, the checks from the root, how the histories were imported, what still points at the old repositories.
+
+# Parts
+
+- [materia](../packages/model/docs/index.md) - The general model.
+- [Mixtura](../apps/mixtura/docs/index.md) - Drinks.
+- [Culina](../apps/culina/docs/index.md) - Cooking.
+- [Emptio](../apps/emptio/docs/index.md) - Shopping list.

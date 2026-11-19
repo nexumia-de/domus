@@ -1,7 +1,8 @@
 // The general model lives in materia (docs/decisions/shared-model.md): its
-// folders must not come back into the engine, and the engine names the
-// package by an exact git reference, never a branch.
-import { existsSync, readFileSync } from 'node:fs';
+// folders must not come back into the engine, and the engine takes the
+// package from this repository (packages/model).
+import { existsSync, realpathSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
 
@@ -14,9 +15,7 @@ test.each(['ingredients', 'templates', 'specs', 'stock', 'shelf'])(
   },
 );
 
-test('materia is pinned to a version tag or a commit', () => {
-  const pkg = JSON.parse(readFileSync(`${root}package.json`, 'utf8'));
-  expect(pkg.dependencies['@nexumia-de/materia']).toMatch(
-    /^github:nexumia-de\/materia#(v\d+\.\d+\.\d+|[0-9a-f]{40})$/,
-  );
+test('materia is the package of this repository', () => {
+  const entry = realpathSync(createRequire(import.meta.url).resolve('@nexumia-de/materia'));
+  expect(entry.replaceAll('\\', '/')).toMatch(/\/packages\/model\/dist\/[^/]+$/);
 });

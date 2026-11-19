@@ -1,0 +1,29 @@
+# Domus
+
+The household apps of one author and what they share, in one
+repository:
+
+- [Mixtura](apps/mixtura) (Drink Builder): a workbench for mixed drinks.
+- [Culina](apps/culina) (Cook's Notebook): a helper in the kitchen.
+- [Emptio](apps/emptio) (Shopping List): the household's shopping list.
+- [materia](packages/model): the general model the apps share.
+
+Free software, offline first, no account and no server of ours. Why one
+repository: [docs/decisions/one-repository.md](docs/decisions/one-repository.md).
+
+## Development
+
+```sh
+npm ci
+```
+
+```sh
+npm run check
+```
+
+`npm run check:mixtura` (or `:culina`, `:emptio`, `:model`) checks one
+part. More in [docs/development.md](docs/development.md).
+
+## Licence
+
+AGPL-3.0-or-later, see [LICENSE](LICENSE).

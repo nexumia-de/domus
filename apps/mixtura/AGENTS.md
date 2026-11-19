@@ -1,5 +1,3 @@
-@../phosh-toolkit/agents/core.md
-
 # Mixtura
 
 A workbench for mixed drinks, with and without alcohol, for people who
@@ -12,7 +10,7 @@ allow. Visible name: **Drink Builder**
 Mixtura is a web app (PWA) that is also installed on Android and Linux,
 not a GTK app ([decision](docs/decisions/pwa-own-data.md)); the GTK
 rules do not apply. Its sister app for cooking is
-[Culina](https://github.com/nexumia-de/culina).
+[Culina](../culina). The rules of the [root](../../AGENTS.md) apply too.
 
 ## Architecture rules
 
@@ -22,9 +20,10 @@ rules do not apply. Its sister app for cooking is
   binding sends none, and local data works offline as before
   ([decision](docs/decisions/stock-sync.md)).
 - **Shared code lives in materia.** The general model and the general
-  parts of sync are in [materia](https://github.com/nexumia-de/materia),
-  pinned to an exact tag; nothing drink-specific goes there, and a bug
-  in it is fixed there ([decision](docs/decisions/shared-model.md)).
+  parts of sync are in [materia](../../packages/model), used from this
+  repository; nothing drink-specific goes there, and a bug in it is
+  fixed there ([decision](docs/decisions/shared-model.md),
+  [one repository](../../docs/decisions/one-repository.md)).
 - **Derive, don't store.** What can be made, balance numbers, cost and
   "what unlocks the most" are computed from specs, ingredients and stock
   every time; only what the user entered is stored.
@@ -39,5 +38,6 @@ rules do not apply. Its sister app for cooking is
 
 ## Before committing
 
-1. Build and tests pass (once there is code).
+1. From the root, `npm run check:mixtura` passes (format, lint,
+   typecheck, tests, build).
 2. `docs/` updated in the same commit.

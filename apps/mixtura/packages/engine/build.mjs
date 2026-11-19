@@ -3,6 +3,7 @@
 // bundle has no DOM or Node-only reference. MIXTURA_ENGINE_OUT changes dist.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, rmSync, statSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { build } from 'esbuild';
 import { checkDist } from './check-dist.mjs';
@@ -21,7 +22,7 @@ await build({
   logLevel: 'info',
 });
 
-const tsc = join(import.meta.dirname, '../../node_modules/typescript/bin/tsc');
+const tsc = createRequire(import.meta.url).resolve('typescript/bin/tsc');
 execFileSync(process.execPath, [tsc, '-p', 'tsconfig.build.json', '--outDir', out], {
   stdio: 'inherit',
 });

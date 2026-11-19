@@ -15,6 +15,6 @@
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {
-    "@nexumia-de/materia": "github:nexumia-de/materia#v0.2.0"
+    "@nexumia-de/materia": "0.3.0"
   }
 }
