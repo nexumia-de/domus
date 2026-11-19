@@ -1,0 +1,208 @@
+---
+type: Specification
+title: Spaces on the host
+description: The host side of sync on spaces - the secret and the HKDF derivation of id, content key and access token, the sealed file, the invite link, the Store port and the shared IndexedDB database, one sync cycle step by step with its guarantees, the sync loop, and the limits.
+tags: [spaces, sync, hkdf, aes-gcm, indexeddb, invite, cycle]
+generated: { by: claude-code, at: 2026-11-19 }
+sources:
+  - id: decision
+    title: 'Decision: one address, spaces, and the storages on offer'
+    url: ../../../docs/decisions/one-origin-spaces-storages.md
+  - id: materia
+    title: 'materia, sync: Spaces (the pure rules this builds on)'
+    url: ../../model/docs/sync.md#spaces
+  - id: hkdf
+    title: 'RFC 5869: HMAC-based Extract-and-Expand Key Derivation Function'
+    url: https://www.rfc-editor.org/rfc/rfc5869
+---
+
+# Spaces on the host
+
+Roadmap goal 3, host side: from a space's secret to a finished sync
+cycle for one collection against any `StorageAdapter`, with local data in
+one IndexedDB database shared by all apps on the address. The pure rules
+(stamp, pruning, collection document, plan, sealed file, invite) are in
+[materia](../../model/docs/sync.md#spaces); this part does what touches
+the browser. There are no screens here, and no storage adapter beyond
+[WebDAV](webdav.md); GitHub and the sync server are later goals. Every
+external effect is a function the caller can replace: the clock, the
+randomness, the timers.
+
+## The secret and what is derived (`space.ts`)
+
+`newSecret(random?)` gives 32 random bytes as base64url without padding
+(43 characters), the form the invite carries.
+
+`deriveSpace(secret)` runs HKDF-SHA-256 with an empty salt over the 32
+bytes, once per label:
+
+| Label                   | Output                                         | Becomes                                 |
+| ----------------------- | ---------------------------------------------- | --------------------------------------- |
+| `domus/space/id/1`      | 16 bytes, lowercase hex (32 characters)        | `id`: the folder name in a storage      |
+| `domus/space/content/1` | AES-256-GCM key, non-extractable `CryptoKey`   | `key`: encrypts and decrypts the files  |
+| `domus/space/access/1`  | 32 bytes, base64url without padding (43 chars) | `access`: what a sync server will check |
+
+A secret that is not 43 base64url characters throws `BadSecret`. The
+last character of 43 carries two unused bits; they are ignored, so two
+spellings of one secret give one space (harmless). The server sees id
+and access token, never the secret or the key; they cannot be turned
+back into each other.
+
+Fixed vector (secret = bytes 0 to 31, `AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8`):
+id `cfa6a5e7daf2bdd14b468c61b095f608`, access token
+`AByoHAamt55eSMz4zBip8hfzUNKn62X_FjoT3lQdwRk`. The test checks both
+against Node's `hkdfSync` and checks that the content key decrypts with
+`node:crypto` using `hkdfSync(..., 'domus/space/content/1', 32)`.
+
+## The sealed file (`seal.ts`)
+
+`sealCollection(space, document, random?)` builds the collection text
+(`buildCollection`), encrypts it with AES-256-GCM under `space.key`, a
+fresh random 12-byte nonce and the additional data
+`sealedAad(space.id, collection)` (`materia-sync/2/<space>/<collection>`),
+and returns `buildSealed` text with `cipher.name` `AES-256-GCM`.
+
+`openCollection(space, collection, text)` never throws for a bad file; it
+returns `{ ok: true, document }` or `{ ok: false, error, detail? }`:
+
+| Error              | Meaning                                                                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `not-sealed`       | not a version 2 file: not JSON, another format, version 1, a broken frame, another cipher name, a nonce that is not 12 bytes; `detail` says which |
+| `newer-version`    | the sealed file or the document inside is of a newer version than this build reads                                                                |
+| `wrong-key`        | authentication failed: a wrong secret, a changed file, or a file of another collection or space put in its place. These cannot be told apart.     |
+| `bad-document`     | decrypted, but not a collection document; `detail` is the parse error (or `not text`)                                                             |
+| `other-space`      | a valid document of another space (sealed with the right key and data, so only a bug or a copy by a key holder gives it)                          |
+| `other-collection` | likewise for the collection                                                                                                                       |
+
+## The invite as a link (`invite-link.ts`)
+
+`inviteToFragment(invite)` is `buildInvite`, compact JSON, UTF-8,
+base64url: `#/join/<data>`. `inviteFromFragment(fragment)` reverses it
+(with or without the `#`) through `parseInvite` and returns the invite or
+one of the parse errors, or `not-a-link` (another fragment, or data that
+is not base64url) or `not-json`. `inviteUrl(base, invite)` is a full link
+under a base address; a fragment on the base is replaced. The secret is
+in the fragment because a browser never sends the fragment in a request
+line, so the server that serves the page does not see it.
+
+## Local data (`store.ts`, `memory-store.ts`, `idb-store.ts`)
+
+The `Store` port is small and async:
+
+- `listSpaces`, `getSpace(id)`, `putSpace({ id, secret, name?, storage })`,
+  `removeSpace(id)`; `storage` is `{ type, address, access? }` as in the
+  invite.
+- `readCollection(space, name)` gives `{ records, syncedAt?, etag? }`
+  (empty records when unknown); `writeCollection` replaces that state
+  atomically.
+- `changeRecords(space, name, fn)` is an atomic read-modify-write: `fn`
+  takes the current state and returns the new one, synchronously. It is
+  what keeps a change made by the user while a cycle runs.
+
+`createMemoryStore()` is in memory, copies what it takes and gives, and
+is for tests (also the apps').
+
+`createIdbStore({ factory?, name? })` is IndexedDB: database `domus`,
+version 1, shared by all apps on the address (an app keeps what only it
+knows in a database of its own). Object stores: `spaces` (key path `id`)
+and `collections` (key path `[space, name]`, rows
+`{ space, name, records, syncedAt?, etag? }`). Every method is one
+transaction; `changeRecords` and `writeCollection` are readwrite
+transactions, and a `fn` that throws aborts it and its error reaches the
+caller. `removeSpace` deletes the space and all its collection rows in
+one transaction. A database that cannot be opened rejects with
+`StoreOpenError` (the next call tries again), one blocked by another tab
+with `StoreBlocked`; there is no fallback to memory. When another tab
+asks for a newer version the store closes its connection and reopens on
+the next call. `close()` closes it. One test suite runs against both
+implementations.
+
+## One cycle (`cycle.ts`)
+
+`syncCollection({ space, collection, adapter, store, now, horizonDays = 90, attempts = 3 })`:
+
+1. Read the local state; remember its records as the base.
+2. `adapter.read('<space id>/<collection>.json')`. Missing: no remote. A
+   failure is returned as it came (`failure`, `detail`).
+3. `openCollection`. An error is returned and nothing is written: a file
+   that cannot be read (wrong key, damaged, newer version) is never
+   overwritten.
+4. `planCollectionSync` with `now()` and the horizon (the stale device
+   rule, merge, pruning are materia's).
+5. If the plan has a document to write: seal it and
+   `adapter.write(path, text, etag)`, with the etag that was read, or
+   `null` when the file was missing. `conflict`: start again at step 1,
+   at most `attempts` times, then return `conflict`. Other failures are
+   returned. Nothing local is stored before a needed write succeeded;
+   a cycle that needs no write stores at once.
+6. Store the plan's records, `syncedAt` and the etag through
+   `changeRecords`. A record the user changed or added since step 1 (it
+   differs from the base) is merged over the plan's result with
+   `mergeRecords`, so the newer stamp wins and the change is not lost;
+   `syncedAt` and etag are stored all the same and the result says
+   `pending: true`: the remote file does not have that change yet, run
+   another cycle soon.
+7. The result is `{ ok: true, changed, wrote, expired, pruned, rejected,
+pending }` or `{ ok: false, failure, detail? }`; `failure` is an adapter
+   failure (`conflict`, `unauthorised`, `not-found`, `unreachable`,
+   `blocked`, `server`), an open error, or `bad-now`.
+
+`localChange(store, space id, collection, now, edit)` is what an app calls
+for a change by the user. Inside `changeRecords` it takes the stamp
+`nextStamp(now(), latestStamp(records))`, so it is later than everything
+in the collection even with a clock set to the past, and lets
+`edit(records)` return `{ put: [{ key, value }], remove: [key] }`.
+Removals become tombstones (a key that is absent or already removed is
+skipped; a key in both lists is put). It returns the stamp, and throws
+`BadClock` when `now()` is not a timestamp.
+
+Guarantees: a failed cycle leaves local data as it was; a concurrent
+change by the user is never lost; two devices that both cycle converge on
+the same records; a second cycle with nothing new writes nothing.
+
+## The loop (`watch.ts`)
+
+`createSyncLoop({ run, adapter?, path?, intervalMs = 20000, setTimer?, clearTimer?, isVisible?, isOnline? })`
+decides when `run()` (one cycle, typically `syncCollection`) is called; it
+has no screen and no framework in it.
+
+- `start()` runs a cycle now, then one every `intervalMs`.
+- With `adapter.watch` (and a `path`) a change signal runs a cycle, and
+  the interval becomes a safety net of 5 minutes.
+- Never two cycles at once: a request during a run (a tick, a signal,
+  `syncNow()`) is remembered and runs once after it.
+- `poke()` asks for a cycle in 2 seconds; more pokes inside that time
+  push it back, so several changes make one write (a GitHub storage makes
+  a commit per write). A result with `pending: true` pokes by itself.
+- A failed run (`ok: false` or a throw) backs the interval off, doubling
+  up to 5 minutes; a success resets it. After a failure a remembered
+  request does not run at once; the back-off decides.
+- `isOnline() === false`: nothing runs, the interval tries again.
+  `isVisible() === false`: interval and watch signals are skipped, while
+  `start`, `poke` and `syncNow` still run.
+- `stop()` cancels timers and the watch; a run in flight finishes and
+  nothing follows.
+
+## Limits
+
+- **The secret is stored in clear on the device** (the `spaces` store),
+  as the earlier passphrase was. Whoever can read the browser's data of
+  this address can read every space and its files.
+- **Whoever has an invite reads and writes everything** in the space,
+  and the invite may carry the storage access (a token). Removing a
+  person means a new space with a new secret.
+- A **conflict storm** (another device writing again and again) can end
+  in `conflict` after the attempts; nothing is lost, the next cycle tries
+  again.
+- `syncedAt` and the removal horizon use the **device clock**. A clock
+  far in the future prunes markers early; stamps of records are protected
+  by `nextStamp`, `syncedAt` is not.
+- The record data is not validated beyond materia's rules; one collection
+  is one file, read and written whole.
+- The loop's visibility and online rules are options; wiring them to
+  `document.visibilityState` and `navigator.onLine` is the app's.
+- **Not tested**: a real browser's IndexedDB (only `fake-indexeddb`, which
+  cannot produce a real blocked upgrade; that case is tested with a
+  factory that fires the event), another tab's `versionchange`, a real
+  WebDAV server or GitHub with this cycle, a push `watch` adapter (a fake
+  one is used), and timing on a real device.

@@ -10,3 +10,65 @@ export {
   type ConnectionState,
 } from './webdav-connection';
 export { fileUrl, folderUrls, pathSegments } from './webdav-url';
+
+// Spaces: the secret, the sealed file, the invite link, local data and the
+// sync cycle (docs/spaces.md).
+export { base64UrlToBytes, bytesToBase64Url } from './base64url';
+export {
+  BadSecret,
+  SPACE_LABELS,
+  deriveSpace,
+  newSecret,
+  type RandomBytes,
+  type Space,
+} from './space';
+export {
+  SEAL_CIPHER,
+  openCollection,
+  sealCollection,
+  type OpenError,
+  type OpenResult,
+} from './seal';
+export {
+  inviteFromFragment,
+  inviteToFragment,
+  inviteUrl,
+  type InviteLinkError,
+  type InviteLinkResult,
+} from './invite-link';
+export {
+  copyState,
+  emptyState,
+  type CollectionState,
+  type Store,
+  type StoredSpace,
+  type StoredStorage,
+} from './store';
+export { createMemoryStore } from './memory-store';
+export {
+  DB_NAME,
+  DB_VERSION,
+  StoreBlocked,
+  StoreOpenError,
+  createIdbStore,
+  type IdbStoreOptions,
+} from './idb-store';
+export {
+  BadClock,
+  collectionPath,
+  localChange,
+  syncCollection,
+  type CycleFailure,
+  type CycleResult,
+  type LocalEdit,
+  type SyncOptions,
+} from './cycle';
+export {
+  DEFAULT_INTERVAL_MS,
+  MAX_BACKOFF_MS,
+  POKE_DELAY_MS,
+  WATCH_SAFETY_MS,
+  createSyncLoop,
+  type SyncLoop,
+  type SyncLoopOptions,
+} from './watch';

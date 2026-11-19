@@ -41,10 +41,18 @@ checks green. The apps' own goals are in their roadmaps
    in the host package in goal 3 and 6, not moved. The integration test
    against the Docker server and the browser script `e2e/webdav.mjs`
    stay in Mixtura.
-3. **Spaces.** In `packages/model`: the space document, the invite, the
-   logical clock and the dropping of removal markers after 90 days,
-   each with vectors. In `packages/host`: key derivation, the shared
-   database, the storage port with `watch`.
+3. **Spaces.** Done on 2026-11-19, as libraries without a user yet. In
+   `packages/model` ([sync](../packages/model/docs/sync.md)): the
+   collection document, the sealed file, the invite, stamps that never
+   go backwards, dropping removal markers after 90 days and the rule
+   for a device that was away longer, each with vectors. In
+   `packages/host` ([spaces](../packages/host/docs/spaces.md)): the
+   secret and what is derived from it, sealing and opening a file, the
+   invite as a link, the shared database `domus`, one sync cycle for a
+   collection against any storage, and the loop that decides when to
+   run one. Tested with two simulated devices and a fake storage; not
+   yet run in a browser or against a real storage, which comes with
+   goals 4 to 6.
 4. **GitHub storage.** The adapter for a private repository with a
    token, collecting writes, the invite that may carry the token. The
    owner's storage, so it comes before the server.

@@ -13,13 +13,17 @@ package is [materia](../model), the pure model.
 ## Rules
 
 - **Host code that two apps need.** What touches the browser (`fetch`,
-  Web Crypto, the online flag) and is not specific to one app. Nothing of
+  Web Crypto, IndexedDB, the online flag) and is not specific to one app. Nothing of
   one app's domain, store, state or screens; the package imports no app,
   and `npm run boundaries` checks it.
 - **Every external effect sits behind an injectable function.** The
   WebDAV adapter takes `fetch`, `online` and `delay` as options, so a
   test runs without a network and without waiting. New code does the
   same; no global is read where an option could carry it.
+- **One database `domus`, shared by all apps.** Spaces and the state of
+  the shared collections live in the IndexedDB database `domus` of this
+  package; an app keeps what only it knows in a database of its own. A
+  change to its layout needs a new database version and a line in the log.
 - **No runtime dependency** except
   [materia](../model), for the types and helpers of the envelope and the
   storage port. Development tools come from the root.
