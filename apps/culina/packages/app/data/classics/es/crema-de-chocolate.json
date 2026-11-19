@@ -23,7 +23,7 @@
     "onza": {
       "kind": "mass",
       "factor": 30,
-      "read": "Muro, p. 77, line 4040 of the text: \"se disuelve media onza ó 15 gramos\", so one onza is read as 30 g (half an onza is 15 g). A judgement from that statement."
+      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g. See /home/user/briefs/muro-units.md."
     }
   },
   "components": [
@@ -105,8 +105,8 @@
         },
         {
           "text": {
-            "en": "Put the chocolate, the sugar, the milk and a little cream in a pan and simmer until it has reduced by a third.",
-            "de": "Schokolade, Zucker, Milch und etwas Sahne in einen Topf geben und köcheln lassen, bis die Masse um ein Drittel eingekocht ist."
+            "en": "Put the chocolate, the sugar, the milk and a little cream in a pan and cook until it has reduced by a third.",
+            "de": "Schokolade, Zucker, Milch und etwas Sahne in einen Topf geben und kochen, bis die Masse um ein Drittel eingekocht ist."
           },
           "technique": "reduce",
           "uses": ["chocolate", "sugar", "milk", "cream"]
@@ -127,8 +127,8 @@
         },
         {
           "text": {
-            "en": "Pour it into a deep dish or into moulds and set them in a water bath, as for the coffee cream.",
-            "de": "In eine tiefe Schale oder in Förmchen füllen und im Wasserbad stocken lassen, wie bei der Kaffeecreme."
+            "en": "Pour it into a deep dish, or into moulds caramelised inside, and set it in a water bath, as for the coffee cream.",
+            "de": "In eine tiefe Schale oder in innen karamellisierte Förmchen füllen und im Wasserbad stocken lassen, wie bei der Kaffeecreme."
           },
           "technique": "water-bath"
         }
@@ -154,10 +154,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the Claude agent from /home/user/sources/muro.txt, lines 35676-35700; no second reader yet."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared lines 35654-35700: 2 onzas chocolate, 2 onzas sugar, 1/4 l milk, a little cream (no amount), 5 yolks, the reduction by a third, the water bath. Agreed. Changed: 'simmer' is 'cook' (cocer); moulds caramelised inside, as in the coffee cream (acaramelados por dentro). Unreadable: none in these lines."
   },
   "note": {
-    "en": "The source says the operation finishes as for the coffee cream on the previous page (p. 795); its steps are written out here. The milk and the chocolate have no further size in the text; the cream has no amount.",
-    "de": "Die Quelle sagt, die Arbeit wird wie bei der Kaffeecreme auf der Vorseite (S. 795) beendet; die Schritte stehen hier ausgeschrieben. Milch und Schokolade haben im Text keine weitere Größe; die Sahne hat keine Menge."
+    "en": "The source says the operation finishes as for the coffee cream on the previous page (p. 795); its steps are written out here. The coffee cream beats its yolks with a little flour; the chocolate text names no flour, so none is written. The milk and the chocolate have no further size in the text; the cream has no amount.",
+    "de": "Die Quelle sagt, die Arbeit wird wie bei der Kaffeecreme auf der Vorseite (S. 795) beendet; die Schritte stehen hier ausgeschrieben. Die Kaffeecreme schlägt ihre Eigelb mit etwas Mehl; der Schokoladentext nennt kein Mehl, daher steht keines dabei. Milch und Schokolade haben im Text keine weitere Größe; die Sahne hat keine Menge."
   }
 }

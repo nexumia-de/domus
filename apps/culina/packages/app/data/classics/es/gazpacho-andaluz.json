@@ -107,7 +107,7 @@
       "steps": [
         {
           "text": {
-            "en": "Pound the salt, the sweet pepper and the two tomatoes in a mortar until smooth.",
+            "en": "Pound the salt, the sweet pepper and the two tomatoes thoroughly in a mortar.",
             "de": "Salz, die Paprikaschote und die zwei Tomaten im Mörser gründlich zerstoßen."
           },
           "uses": ["pepper", "tomato", "salt"]
@@ -126,7 +126,10 @@
           },
           "technique": "cold-emulsion",
           "uses": ["oil"],
-          "time": { "value": 15, "unit": "min" }
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
         },
         {
           "text": {
@@ -164,7 +167,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the plain text of the book (lines 6446-6526 of muro.txt) by the transcriber of this file; a second reader compares it with the printed page 133."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared lines 6446-6526 line by line: pepper 1, tomatoes 2 (OCR '<3os', read as 'dos': a reading, not clear), salt, half a loaf of crumb, small cup of oil, a quarter hour, vinegar and water to taste. Agreed. Changed: 'until smooth' is 'thoroughly' (machacándose perfectamente). No fraction is garbled here."
   },
   "note": {
     "en": "Served cold; the source says it is eaten in summer, in the hot hours. Only the Andalusian recipe sent from Andújar is transcribed; the Granada and Extremadura versions are not. Garlic and onion are named in the section's introduction but not in this recipe, so they are not in the lines.",

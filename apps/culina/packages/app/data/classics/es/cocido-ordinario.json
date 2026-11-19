@@ -74,6 +74,22 @@
           }
         },
         {
+          "key": "cold-water",
+          "wanted": {
+            "en": "Cold water",
+            "de": "Kaltes Wasser"
+          },
+          "amount": {
+            "value": 0.15,
+            "unit": "l",
+            "original": "un decilitro y medio de agua fría"
+          },
+          "note": {
+            "en": "Added when the foam rises, for the small pot: one decilitre and a half (a decilitre is 0.1 litre). The large pot gets three decilitres.",
+            "de": "Zugegeben, sobald der Schaum steigt, für den kleinen Topf: eineinhalb Deziliter (ein Deziliter sind 0,1 Liter). Der große Topf bekommt drei Deziliter."
+          }
+        },
+        {
           "key": "salt",
           "ref": {
             "kind": "ingredient",
@@ -172,8 +188,8 @@
         },
         {
           "text": {
-            "en": "Put the bones in the pot first, the meat on top, and pour in the water.",
-            "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf, dann das Wasser eingießen."
+            "en": "Put the bones in the pot first, the meat on top, and pour in the water, which should be very clear or filtered.",
+            "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf, dann das Wasser eingießen; es soll sehr klar oder gefiltert sein."
           },
           "uses": ["beef", "bone", "water"]
         },
@@ -186,11 +202,11 @@
         },
         {
           "text": {
-            "en": "Bring it to the boil. As soon as foam rises, add a little cold water and skim the foam off with a perforated ladle.",
-            "de": "Zum Kochen bringen. Sobald Schaum aufsteigt, etwas kaltes Wasser zugeben und den Schaum mit einer Schaumkelle abnehmen."
+            "en": "Bring it to the boil. As soon as foam rises, add 1.5 decilitres of cold water and skim the foam off with a perforated ladle.",
+            "de": "Zum Kochen bringen. Sobald Schaum aufsteigt, 1,5 Deziliter kaltes Wasser zugeben und den Schaum mit einer Schaumkelle abnehmen."
           },
           "technique": "skim",
-          "uses": ["water"]
+          "uses": ["cold-water"]
         },
         {
           "text": {
@@ -208,10 +224,10 @@
         },
         {
           "text": {
-            "en": "Keep it at an even simmer for three hours, with the lid slightly open.",
-            "de": "Drei Stunden gleichmäßig leicht sieden lassen, mit leicht geöffnetem Deckel."
+            "en": "Keep the pot boiling as evenly and continuously as possible for three hours, with a third of its base over the fire and the rest of the fire covered with ash.",
+            "de": "Den Topf drei Stunden möglichst gleichmäßig und ununterbrochen kochen lassen: nur ein Drittel des Bodens über dem Feuer, den Rest der Glut mit Asche bedecken."
           },
-          "technique": "simmer",
+          "technique": "boil",
           "time": {
             "value": 3,
             "unit": "h"
@@ -219,8 +235,8 @@
         },
         {
           "text": {
-            "en": "Take the meat out and put it on a dish. Taste the broth; keep it a little light on salt, as it is salted again later.",
-            "de": "Das Fleisch herausnehmen und auf eine Platte legen. Die Brühe probieren; sie soll noch etwas schwach gesalzen bleiben, da später nachgesalzen wird."
+            "en": "Take the meat out and put it on a dish. Taste the broth to see that it is well seasoned for the soup; add more salt only in the tureen. The broth should always be a little low in salt, as it is salted again when reheated.",
+            "de": "Das Fleisch herausnehmen und auf eine Platte legen. Die Brühe probieren, sie soll für die Suppe gut gesalzen sein; mehr Salz nur in der Suppenschüssel zugeben. Die Brühe soll immer etwas salzarm sein, da sie beim Wiedererwärmen nachgesalzen wird."
           },
           "uses": ["beef"]
         },
@@ -246,7 +262,7 @@
     {
       "what": "Number of persons",
       "value": "2",
-      "reason": "Our judgement from the text: the small pot is for the ordinary meal of small households, and the book names two persons as its smallest case (p. 58). No number is stated for this pot.",
+      "reason": "Our judgement: the book's proportions for the small pot are said to hold 'aun en las casas en que no hay más que dos personas' (p. 58, line 3099-3100); the amounts are taken for two persons. The list gives no number of persons.",
       "target": "persons"
     },
     {
@@ -258,10 +274,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the Claude agent from /home/user/sources/muro.txt, lines 3027-3044 (list) and 3189-3240 (method); no second reader yet."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared the list (lines 3027-3044) and the method (3189-3262). Agreed: meat, bone, 30 g salt, vegetables, clove, turnip, 3 h. Book conflict: water 4 l in the list, 3 l for the small pot in the method; list kept (settled). Changed: cold water 0.15 l added; 'lid slightly open' removed; 'simmer' is a continuous boil. Nothing unreadable."
   },
   "note": {
-    "en": "The broth is served first, the meat on its own dish. The method gives cold water for the small pot as 1.5 decilitres; no amount is written because the book does not size the decilitre.",
-    "de": "Die Brühe wird zuerst, das Fleisch auf einer eigenen Platte serviert. Der Ablauf nennt für den kleinen Topf 1,5 Deziliter kaltes Wasser; keine Menge steht dabei, weil das Buch den Deziliter nicht bestimmt."
+    "en": "The small pot of Muro's two puchero sizes, for the ordinary meal. The method gives the cold water for the small pot as 1.5 decilitres (0.15 litre).",
+    "de": "Der kleine der beiden Puchero-Töpfe Muros, für die gewöhnliche Mahlzeit. Der Ablauf nennt für den kleinen Topf 1,5 Deziliter (0,15 Liter) kaltes Wasser."
   }
 }

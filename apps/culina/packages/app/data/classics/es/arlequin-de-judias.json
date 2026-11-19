@@ -23,7 +23,7 @@
     "onza": {
       "kind": "mass",
       "factor": 30,
-      "read": "Muro p. 682, line 30706 (OCR: 'dos onzas ó 60 gramo*'): the book states two onzas as 60 grams, so one onza is 30 grams. Taken from the book's own equivalence (a judgement)."
+      "read": "Muro p. 77, line 4040 (clean print): 'media onza ó 15 gramos', so one onza is 30 grams; confirmed by p. 682, line 30706 ('dos onzas ó 60 gramo*', last character garbled). See /home/user/briefs/muro-units.md."
     }
   },
   "components": [
@@ -69,8 +69,8 @@
             "de": "Feine Kräuter"
           },
           "note": {
-            "en": "Finely chopped (\"finas hierbas recortadas\"); no amount.",
-            "de": "Fein geschnitten (\"finas hierbas recortadas\"); keine Menge."
+            "en": "Finely chopped (\"finas hierbas recortadas\"); the book does not size them, so no amount.",
+            "de": "Fein geschnitten (\"finas hierbas recortadas\"); das Buch gibt keine Menge an."
           }
         },
         {
@@ -108,6 +108,29 @@
             "en": "Grated (\"nuez moscada rallada\"); no amount.",
             "de": "Gerieben (\"nuez moscada rallada\"); keine Menge."
           }
+        },
+        {
+          "key": "lemon",
+          "wanted": {
+            "en": "Lemon juice",
+            "de": "Zitronensaft"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count",
+            "original": "el zumo de medio limón"
+          }
+        },
+        {
+          "key": "parsley",
+          "wanted": {
+            "en": "Parsley",
+            "de": "Petersilie"
+          },
+          "note": {
+            "en": "Chopped. The source says not to be sparing with it (\"no hay que escasear el perejil picado\"); no amount.",
+            "de": "Fein gehackt. Die Quelle sagt, man solle nicht sparen (\"no hay que escasear el perejil picado\"); keine Menge."
+          }
         }
       ],
       "steps": [
@@ -133,7 +156,7 @@
         {
           "text": {
             "en": "Keep the beans hot. Put them in a warm vegetable dish with the butter, the fine herbs, salt, pepper, a pinch of clove and the grated nutmeg.",
-            "de": "Die Bohnen warm halten. In einer vorgewärmten Gemüseschüssel mit der Butter, den feinen Kräutern, Salz, Pfeffer, einer Prise Gewürznelke und der geriebenen Muskatnuss anrichten."
+            "de": "Die Bohnen warm halten. In einer warmen Gemüseschüssel mit der Butter, den feinen Kräutern, Salz, Pfeffer, einer Prise Gewürznelke und der geriebenen Muskatnuss anrichten."
           },
           "uses": ["beans", "butter", "herbs", "salt", "pepper", "clove", "nutmeg"]
         },
@@ -143,6 +166,13 @@
             "de": "Die Schüssel mit einem Deckel abdecken und schwenken, damit sich die Bohnen gut mit der schmelzenden Butter vermischen."
           },
           "uses": ["beans", "butter"]
+        },
+        {
+          "text": {
+            "en": "At serving, squeeze the juice of half a lemon over the beans. Use plenty of chopped parsley.",
+            "de": "Beim Anrichten den Saft einer halben Zitrone über die Bohnen träufeln. Reichlich gehackte Petersilie verwenden."
+          },
+          "uses": ["beans", "lemon", "parsley"]
         }
       ]
     }
@@ -166,10 +196,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the old print (OCR of Muro, lines 32958–32978); the numbers 'un puñado', 'dos onzas' and 'quince minutos' need a second reader on the scan."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical to the local text). Compared every line with lines 32958-32996: handful of each kind (no amount), 15 min, two onzas of butter (onza 30 g, line 4040), herbs, salt, pepper, clove, nutmeg. Changed: added half a lemon's juice at serving and chopped parsley (no amount); dropped 'preheated'. Nothing unreadable."
   },
   "note": {
-    "en": "Replaces Ángel Muro's 'Ensalada de pimientos' (no amounts in the source; see the transcription evidence file). Only the butter is measured, and the book gives the beans as handfuls. The fifteen minutes are the book's cooking time for the beans.",
-    "de": "Ersetzt Ángel Muros 'Ensalada de pimientos' (keine Mengen in der Quelle; siehe Belegdatei). Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
+    "en": "Replaces Ángel Muro's 'Ensalada de pimientos', which has no amounts in the source. Only the butter is measured, and the book gives the beans as handfuls. The fifteen minutes are the book's cooking time for the beans.",
+    "de": "Ersetzt Ángel Muros 'Ensalada de pimientos', die in der Quelle keine Mengen hat. Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
   }
 }

@@ -23,7 +23,12 @@
     "onza": {
       "kind": "mass",
       "factor": 30,
-      "read": "Muro, p. 77, line 4040 of the text: \"se disuelve media onza ó 15 gramos\", so one onza is read as 30 g (half an onza is 15 g). A judgement from that statement."
+      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g. See /home/user/briefs/muro-units.md."
+    },
+    "cuartillo": {
+      "kind": "volume",
+      "factor": 500,
+      "read": "Muro, p. 356, lines 16332-16340: 'vasos de á cuartillo ... que miden medio litro'. A cuartillo is half a litre. See /home/user/briefs/muro-units.md."
     }
   },
   "components": [
@@ -114,8 +119,8 @@
         },
         {
           "text": {
-            "en": "Let the dough rest for two hours before using it.",
-            "de": "Den Teig vor der Verwendung zwei Stunden ruhen lassen."
+            "en": "Do not use the dough until two hours after making it.",
+            "de": "Den Teig erst zwei Stunden nach dem Zubereiten verwenden."
           },
           "technique": "rest-dough",
           "time": {
@@ -175,15 +180,9 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "amount": {
-            "value": 200,
-            "max": 250,
-            "unit": "g",
-            "original": "20<> gramos de azúcar molido"
-          },
           "note": {
-            "en": "The old print reads \"20<>\"; the figure is 200 or 250 grams. Written as a range; to be checked on the page image.",
-            "de": "Der alte Druck liest \"20<>\"; die Zahl ist 200 oder 250 Gramm. Als Bereich geschrieben; am Seitenbild zu prüfen."
+            "en": "The source gives the figure as '20<>' in the scan text; the figure is not legible in the text, so no amount is written.",
+            "de": "Die Quelle nennt die Menge im Scan-Text als '20<>'; die Zahl ist im Text nicht lesbar, daher keine Menge."
           }
         },
         {
@@ -216,8 +215,13 @@
             "id": "fdc-group-milk"
           },
           "note": {
-            "en": "One cuartillo of milk; the source does not give the size of a cuartillo, so no amount is written.",
-            "de": "Ein Cuartillo Milch; die Quelle gibt die Größe eines Cuartillo nicht an, daher steht keine Menge dabei."
+            "en": "One cuartillo, which the book sizes as half a litre (p. 356).",
+            "de": "Ein Cuartillo; das Buch bestimmt ihn als einen halben Liter (S. 356)."
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "cuartillo",
+            "original": "un cuartillo de leche"
           }
         }
       ],
@@ -238,8 +242,8 @@
         },
         {
           "text": {
-            "en": "Line the inside of a plain mould, not high, with a thick layer of the pastry.",
-            "de": "Eine glatte, nicht hohe Form innen mit einer dicken Schicht des Teigs auslegen."
+            "en": "Line the inside of a plain mould, not high, with a good layer of the pastry.",
+            "de": "Eine glatte, nicht hohe Form innen mit einer guten Schicht des Teigs auslegen."
           }
         },
         {
@@ -251,8 +255,8 @@
         },
         {
           "text": {
-            "en": "Bake it in a camp oven with heat from above and below until it is set.",
-            "de": "In einem Feldofen mit Hitze von oben und unten backen, bis die Masse fest ist."
+            "en": "Bake it in a camp oven with heat from above and below.",
+            "de": "In einem Feldofen mit Hitze von oben und unten backen."
           },
           "technique": "bake"
         },
@@ -292,10 +296,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the Claude agent from /home/user/sources/muro.txt, lines 37800-37816 (flan) and 37460-37475 (pastry); no second reader yet. The sugar figure is an OCR reading (\"20<>\"), see the line note."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical). Compared flan p. 844 (lines 37800-37816) and pastry p. 836 (37459-37475). Agreed: 60 g flour, egg, 6 yolks, lemon peel, 1 onza salt (30 g), 40 g butter, 1 l flour. Changed: sugar '20<>' is not legible in either copy, amount removed; milk 1 cuartillo = 0.5 l (book's own size); 'until set' removed; rest step worded as the source."
   },
   "note": {
-    "en": "The pastry is the book's own recipe for the lining (p. 836), read as the source gives it; the source does not describe folding and the method above is what it states. The sugar figure in the old print is unclear and written as 200 to 250 g.",
-    "de": "Der Teig ist das eigene Rezept des Buches für die Auskleidung (S. 836), so übernommen, wie die Quelle es angibt; die Quelle beschreibt kein Falten, der Ablauf oben ist, was sie angibt. Die Zuckerzahl im alten Druck ist unklar und als 200 bis 250 g geschrieben."
+    "en": "The pastry is the book's own recipe for the lining, 'masa doblada, ó en hojas, ó hojaldre' (p. 836), taken as the book gives it. The sugar figure is not legible in the text, so no amount is written.",
+    "de": "Der Teig ist das eigene Rezept des Buches für die Auskleidung, 'masa doblada, ó en hojas, ó hojaldre' (S. 836), so übernommen, wie das Buch es angibt. Die Zuckermenge ist im Text nicht lesbar, daher steht keine Menge dabei."
   }
 }

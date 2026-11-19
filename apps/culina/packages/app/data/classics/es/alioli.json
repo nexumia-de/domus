@@ -90,8 +90,8 @@
       "steps": [
         {
           "text": {
-            "en": "Pound the garlic in a mortar until it is a smooth paste.",
-            "de": "Den Knoblauch im Mörser zu einer glatten Paste zerstoßen."
+            "en": "Pound the garlic in a mortar.",
+            "de": "Den Knoblauch im Mörser zerstoßen."
           },
           "uses": ["garlic"]
         },
@@ -112,8 +112,8 @@
         },
         {
           "text": {
-            "en": "If the sauce is firm, thin it with water.",
-            "de": "Ist die Sauce fest, mit Wasser verdünnen."
+            "en": "If the sauce is thick, thin it with water.",
+            "de": "Ist die Sauce dick, mit Wasser verdünnen."
           },
           "uses": ["water"]
         }
@@ -144,7 +144,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the old print (OCR of Muro, lines 8196–8215): the numbers 'dos cabezas', 'una yema' and 'seis ó siete' need a second reader on the scan."
+    "note": "Second reader of the same text (no second edition; the archive.org copy is byte-identical to the local text). Compared lines 8196-8215: 2 heads of garlic, 1 yolk (OCR 'dfí' read as 'de'), bread and oil without amount, water. Agreed. Changed: step 1 trimmed to 'pound in a mortar'; step 4 'thick' for 'espeso' (was 'firm'). Nothing unreadable."
   },
   "note": {
     "en": "Muro's own formula, which he calls a Mediterranean sauce derived from mayonnaise. The garlic is pounded, the bread soaked, and the oil added drop by drop. Two lines have no amount because the source gives a comparison (the bread) or a spoon of unknown size (the oil).",
