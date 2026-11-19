@@ -1,0 +1,31 @@
+{
+  "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee9",
+  "name": "Example sauce",
+  "lines": [
+    {
+      "key": "fat",
+      "ref": { "kind": "ingredient", "id": "example-fat" },
+      "amount": { "value": 50, "unit": "g" }
+    },
+    {
+      "key": "liquid",
+      "ref": { "kind": "ingredient", "id": "example-liquid" },
+      "amount": { "value": 250, "unit": "ml" }
+    }
+  ],
+  "method": ["Melt the fat, add the liquid."],
+  "steps": [
+    {
+      "text": { "en": "Melt the fat.", "de": "Das Fett schmelzen." },
+      "technique": "example-technique",
+      "uses": ["fat"],
+      "time": { "value": 5, "unit": "min" }
+    },
+    {
+      "text": { "en": "Add the liquid.", "de": "Die Flüssigkeit zugeben." },
+      "uses": ["liquid"],
+      "temperature": { "value": 180, "unit": "C" }
+    }
+  ],
+  "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee9", "date": "2026-11-19" }
+}

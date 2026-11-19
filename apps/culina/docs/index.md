@@ -26,6 +26,8 @@ links. Change history is in [log.md](log.md).
 
 - [Test vector format](vectors.md) - JSON shape of the engine's worked examples for ratio checks, baker's percentages, scaling by weight and salt, with five vectors computed by hand and the kinds the engine now runs, now including ratio templates, salt, components and cross-record validation.
 
+- [Classic format](classic-format.md) - The guide a transcriber follows to write one dish file and one technique file, field by field, with an invented example, the units and settled values, the second check and the command that validates one file.
+
 - [Engine rules](engine-rules.md) - Unit table with exact factors (US customary cup, tablespoon, teaspoon), conversion and its errors, the explicit rounding step, scaling by weight with time and salt cautions, baker's percentages and hydration, ratio templates with derivatives, family queries, the range check (numbers, no verdicts) and the seed templates, salt by basis, and components with nesting, yield and loss, edible portion and portions, and cross-record validation of the model (references, cycles, anchors, ranges), versions with head, variations and the diff of two versions, stock (days left, use-by suggestions, using up); vectors in `packages/engine/vectors/`.
 
 - [Data model](data-model.md) - Every stored entity (tasting notes are records of their own) with fields, ids, units, stored versus derived, general versus kitchen-specific, export envelope, Cooklang compatibility and open questions; JSON Schemas in `packages/engine/schemas/`; storage and migrations of the local store (IndexedDB database, sync-ready rows with `updatedAt` and tombstones, the clock rule, migration procedure and failure behaviour, persistence, logging, the drafts store).

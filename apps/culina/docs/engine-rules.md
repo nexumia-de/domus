@@ -821,6 +821,82 @@ run by `test/makeable-vectors.test.ts`; `test/makeable.test.ts` holds the
 properties (a substitute never changes an amount, the stock order does not
 matter).
 
+# Techniques, steps and classics
+
+Issue 87 (work package 2 of the [helper plan](helper-plan.md)). Code:
+`src/text/` (the text in two languages), `src/content/` (findings),
+`src/steps/`, `src/techniques/`, `src/classics/` and `src/skills/`. The
+formats are in the [data model](data-model.md#technique); the guide for writers
+is [classic format](classic-format.md). Every function returns
+`{ ok: true, ... }` or `{ ok: false, error }` and never throws; none reads a
+clock or a random number.
+
+**Validation.** The JSON Schemas check the shape; these rules span fields and
+records. A validator returns `{ ok: true }` or
+`{ ok: false, error: { code: 'invalid', findings } }`, every finding a
+`code`, a `path` and where it helps a `value`.
+
+| Function                                  | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validateTechnique`, `validateTechniques` | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `validateSteps`                           | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `validateClassic`                         | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (`settled-without-entry`, `settled-without-amount`, `settled-target`, `persons-unsettled`, `persons-entry`) |
+
+**Deriving a classic.** `deriveClassic(classic, { portions?, lang })`
+returns the dish and the components in the shapes the model has, so the app
+does no arithmetic:
+
+- The unit of an amount is looked up in the unit table first, then in the
+  classic's `units`. Mass goes to grams, volume to millilitres, count to
+  count: the table's own factors for `tsp`, `tbsp` and `cup` (US customary),
+  the classic's `factor` for its words. Nothing is converted between kinds:
+  that still needs the ingredient's density or unit weight, as always.
+- Scaling: `factor = portions / persons`, default 2 portions. Every amount
+  is multiplied by the factor and trimmed to 10 significant digits; there is
+  no other rounding (rounding is the display's explicit step).
+- A range keeps its middle in `amount` and is listed in `ranges` with `min` and
+  `max`, so the app can show "2 to 3" and the arithmetic uses one number.
+- A line without an amount stays without one and is listed in `unmeasured`
+  (shown as "to taste" or "as needed"); a `wanted` line is carried with its
+  name in the language asked and without a `ref`.
+- Names and notes come in `lang`; steps keep both languages. Errors:
+  `invalid-portions`, `unknown-unit` (with `unit`), `invalid-amount`, each with
+  the `path` of the amount.
+
+**Technique notes.** `techniqueNotes(steps, techniques, learned)` gives the
+notes to show along the steps of a dish: **at the first step that uses a
+technique the user has not marked as learned**, not at every use. The same
+note at each fold or each sear would become noise, and the cook can open the
+technique again from any step that names it; a learned technique gives none.
+The steps are all components' steps in cooking order. An unknown technique id
+is `unknown-technique` with the step index.
+
+**Copying into the notebook.** `copyClassic(classic, { portions?, lang, date,
+newId, ingredientIds? })` returns the records the app writes: one component
+record per component and the dish, each version 1 of a new family (`family` is
+its own id), with the source named in `version.change` and in the vendor field
+`x-origin`. Amounts are the derived ones; a component's `ref` points at the new
+component ids, an ingredient `ref` at `ingredientIds[id]` where the ingredient
+was adopted under another id, else at the catalogue id. The source's own
+wording and a range go into the line's note (`(1 Pfund)`, `(125-150 ml)`), a
+slot's range shows as its middle only. The ids come from `newId` and the day from
+`date`, so the function is pure. A classic with a `wanted` line cannot be
+copied (`wanted-ingredient`, listing the names): the notebook has no
+ingredient for it. `wantedLines(classic)` lists them.
+
+**Skill state.** `skillRecord(technique, learned)` is the record
+(`skill-<technique>`), `learnedTechniques(records)` the set of learned ids; a
+record whose id is not the id of its technique is ignored.
+
+**The shipped lists.** `TECHNIQUES` is every file of `data/techniques/`, read
+through an index that `scripts/make-techniques.mjs` writes before tests and
+typecheck (`techniques.generated.ts`, not committed), so adding a technique is
+adding one file and touches no shared file. The classics are indexed the same
+way in the app (`packages/app/make-classics.mjs`).
+
+Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`
+([vector format](vectors.md#kinds-of-techniques-classics-and-skills-issue-87)).
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/classic.schema.json",
+  "title": "Classic",
+  "description": "A shipped dish of one named source, one file per dish. Never stored. Amounts are as the source gives them (its own unit words); the engine derives grams and portions. Where the source is vague, what we settled is listed.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "originalName",
+    "country",
+    "vegetarian",
+    "course",
+    "source",
+    "persons",
+    "slots",
+    "settled",
+    "check"
+  ],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "name": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+    },
+    "originalName": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "country": { "enum": ["de", "it", "fr", "es"] },
+    "vegetarian": { "type": "boolean" },
+    "course": {
+      "enum": [
+        "starter",
+        "soup",
+        "main",
+        "side",
+        "dessert",
+        "baking",
+        "sauce",
+        "breakfast",
+        "snack"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": ["author", "title", "year", "place", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "author": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "year": { "type": "integer", "minimum": 1400, "maximum": 2100 },
+        "place": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "url": { "type": "string", "pattern": "^https?://\\S+$", "maxLength": 500 },
+        "licence": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "persons": {
+      "description": "The number of persons the source's amounts are for; basis settled needs an entry in settled with target persons.",
+      "type": "object",
+      "required": ["value", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "basis": { "enum": ["stated", "settled"] }
+      }
+    },
+    "units": {
+      "description": "Source unit words that are not in the engine's unit table, each with its size and where that equivalence was read.",
+      "type": "object",
+      "propertyNames": { "minLength": 1, "maxLength": 30, "pattern": "^\\S(.*\\S)?$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["kind", "factor", "read"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": { "enum": ["mass", "volume", "count"] },
+          "factor": { "type": "number", "exclusiveMinimum": 0 },
+          "read": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "lines"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+          },
+          "name": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+          },
+          "role": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+          },
+          "lines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/line" } },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
+            }
+          }
+        }
+      }
+    },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["role"],
+        "additionalProperties": false,
+        "oneOf": [{ "required": ["ref"] }, { "required": ["wanted"] }],
+        "properties": {
+          "key": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
+          },
+          "role": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+          },
+          "ref": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref"
+          },
+          "wanted": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+          },
+          "amount": { "$ref": "#/$defs/amount" },
+          "optional": { "type": "boolean" },
+          "settled": { "const": true }
+        }
+      }
+    },
+    "settled": {
+      "description": "Everything we settled where the source is vague: the number of persons, an amount, a missing instruction.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["what", "value", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "what": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "value": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "target": {
+            "type": "string",
+            "pattern": "^(persons|[a-z0-9-]+/[a-z0-9-]+)$",
+            "maxLength": 100
+          }
+        }
+      }
+    },
+    "check": {
+      "description": "The second check the dish had, by someone who did not transcribe it.",
+      "type": "object",
+      "required": ["method", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "method": { "enum": ["page-image", "second-edition", "second-reader"] },
+        "note": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    },
+    "note": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+    }
+  },
+  "$defs": {
+    "amount": {
+      "description": "An amount as the source gives it: a number or, with max, a range from value to max; the unit is an id of the engine's unit table or a word defined in units.",
+      "type": "object",
+      "required": ["value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "max": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 30, "pattern": "^\\S(.*\\S)?$" },
+        "original": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "line": {
+      "description": "A line of a component: an ingredient of the catalogue or a component of the dish (ref), or, while the catalogue lacks it, a wanted name; an amount as the source gives it or none.",
+      "type": "object",
+      "additionalProperties": false,
+      "oneOf": [{ "required": ["ref"] }, { "required": ["wanted"] }],
+      "properties": {
+        "key": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
+        },
+        "ref": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/ref"
+        },
+        "wanted": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "amount": { "$ref": "#/$defs/amount" },
+        "role": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
+        },
+        "state": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
+        },
+        "note": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "settled": { "const": true }
+      }
+    }
+  }
+}

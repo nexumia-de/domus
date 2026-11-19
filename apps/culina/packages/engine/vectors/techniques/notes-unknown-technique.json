@@ -1,0 +1,57 @@
+{
+  "id": "notes-unknown-technique",
+  "description": "A step that names a technique not in the list is an error with its index",
+  "inputs": {
+    "kind": "technique_notes",
+    "techniques": [
+      {
+        "id": "melting",
+        "name": {
+          "en": "Melting fat",
+          "de": "Fett schmelzen"
+        },
+        "watch": {
+          "en": "Keep the heat low.",
+          "de": "Die Hitze niedrig halten."
+        },
+        "why": {
+          "en": "Fat that browns tastes bitter.",
+          "de": "Fett, das bräunt, schmeckt bitter."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "learned": [],
+    "steps": [
+      {
+        "text": {
+          "en": "A step.",
+          "de": "Ein Schritt."
+        },
+        "technique": "melting"
+      },
+      {
+        "text": {
+          "en": "A step.",
+          "de": "Ein Schritt."
+        },
+        "technique": "searing"
+      }
+    ]
+  },
+  "error_code": "unknown-technique",
+  "error_detail": {
+    "step": 1,
+    "id": "searing"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

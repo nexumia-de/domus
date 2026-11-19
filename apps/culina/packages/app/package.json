@@ -9,9 +9,9 @@
     "@culina/engine": "0.0.0"
   },
   "scripts": {
-    "pretest": "node compile-schemas.mjs",
+    "pretest": "node compile-schemas.mjs && node make-classics.mjs && node ../engine/scripts/make-techniques.mjs",
     "test": "vitest run",
-    "pretypecheck": "node compile-schemas.mjs",
+    "pretypecheck": "node compile-schemas.mjs && node make-classics.mjs && node ../engine/scripts/make-techniques.mjs",
     "typecheck": "tsc --noEmit -p .",
     "build": "node build.mjs",
     "icons": "node scripts/make-icons.mjs",

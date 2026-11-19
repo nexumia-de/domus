@@ -1,0 +1,18 @@
+{
+  "id": "example-dish",
+  "name": { "en": "Example dish (fictional)", "de": "Beispielgericht (erfunden)" },
+  "originalName": "Example dish",
+  "country": "uk",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Example Author",
+    "title": "Example",
+    "year": 1900,
+    "place": "page 1",
+    "url": "https://example.org/x"
+  },
+  "persons": { "value": 4, "basis": "stated" },
+  "slots": [{ "role": "main" }],
+  "settled": []
+}

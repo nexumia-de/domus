@@ -126,7 +126,7 @@ test('a store from a newer app is refused, never crashes', async () => {
   if (!first.ok) throw new Error('open');
   first.store.close();
   await new Promise<void>((resolve) => {
-    const open = factory.open('culina', 3);
+    const open = factory.open('culina', 4);
     open.onsuccess = () => {
       const tx = open.result.transaction('meta', 'readwrite');
       tx.objectStore('meta').put({ key: 'schemaVersion', value: 99 });

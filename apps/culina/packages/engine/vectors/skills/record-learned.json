@@ -1,0 +1,16 @@
+{
+  "id": "record-learned",
+  "description": "The record for a learned technique has the id skill- plus the technique id",
+  "inputs": {
+    "kind": "skill_record",
+    "technique": "melting",
+    "learned": true
+  },
+  "expected": {
+    "id": "skill-melting",
+    "technique": "melting",
+    "learned": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

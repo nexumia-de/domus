@@ -1,0 +1,99 @@
+{
+  "id": "example-dish",
+  "name": { "en": "Example dish (fictional)", "de": "Beispielgericht (erfunden)" },
+  "originalName": "Example dish",
+  "country": "de",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Example Author",
+    "title": "An Example Cookbook (fictional, not a real book)",
+    "year": 1900,
+    "place": "page 1, recipe 1",
+    "url": "https://example.org/example-cookbook"
+  },
+  "persons": { "value": 4, "basis": "settled" },
+  "units": {
+    "Example-measure": {
+      "kind": "mass",
+      "factor": 100,
+      "read": "Invented for this example: 1 Example-measure = 100 g. A real file names the page or table where the equivalence was read."
+    }
+  },
+  "components": [
+    {
+      "id": "example-sauce",
+      "name": { "en": "Example sauce", "de": "Beispielsauce" },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "fat",
+          "wanted": { "en": "Example fat", "de": "Beispielfett" },
+          "amount": { "value": 2, "unit": "Example-measure", "original": "2 Example-measures" }
+        },
+        {
+          "key": "liquid",
+          "ref": { "kind": "ingredient", "id": "example-liquid" },
+          "amount": { "value": 250, "max": 300, "unit": "ml" }
+        },
+        { "key": "salt", "wanted": { "en": "Example salt", "de": "Beispielsalz" } },
+        {
+          "key": "spice",
+          "wanted": { "en": "Example spice", "de": "Beispielgewürz" },
+          "amount": { "value": 1, "unit": "tsp" },
+          "settled": true,
+          "note": { "en": "to taste", "de": "nach Geschmack" }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Melt the fat over low heat.",
+            "de": "Das Fett bei schwacher Hitze schmelzen."
+          },
+          "technique": "example-technique",
+          "uses": ["fat"],
+          "time": { "value": 5, "unit": "min" }
+        },
+        {
+          "text": {
+            "en": "Stir in the liquid and the spice.",
+            "de": "Flüssigkeit und Gewürz einrühren."
+          },
+          "uses": ["liquid", "spice"],
+          "temperature": { "value": 170, "to": 180, "unit": "C" }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    { "role": "main", "ref": { "kind": "component", "id": "example-sauce" } },
+    {
+      "role": "starch",
+      "wanted": { "en": "Example starch", "de": "Beispielstärke" },
+      "amount": { "value": 1, "unit": "Example-measure" }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Invented example: the source names no number.",
+      "target": "persons"
+    },
+    {
+      "what": "Amount of spice",
+      "value": "1 tsp",
+      "reason": "Invented example: the source says some.",
+      "target": "example-sauce/spice"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "Example only: a real file says who read the page and what was compared."
+  },
+  "note": {
+    "en": "An invented example, not a recipe.",
+    "de": "Ein erfundenes Beispiel, kein Rezept."
+  }
+}

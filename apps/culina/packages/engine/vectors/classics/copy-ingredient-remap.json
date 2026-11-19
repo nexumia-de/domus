@@ -1,0 +1,255 @@
+{
+  "id": "copy-ingredient-remap",
+  "description": "An ingredient adopted under another notebook id is referenced by that id",
+  "inputs": {
+    "kind": "classic_copy",
+    "classic": {
+      "id": "example-dish",
+      "name": {
+        "en": "Example dish",
+        "de": "Beispielgericht"
+      },
+      "originalName": "Example dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      },
+      "persons": {
+        "value": 4,
+        "basis": "stated"
+      },
+      "units": {
+        "measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this vector: 1 measure = 100 g."
+        }
+      },
+      "components": [
+        {
+          "id": "sauce",
+          "name": {
+            "en": "Example sauce",
+            "de": "Beispielsauce"
+          },
+          "role": "sauce",
+          "lines": [
+            {
+              "key": "fat",
+              "amount": {
+                "value": 2,
+                "unit": "measure",
+                "original": "2 measures"
+              },
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-fat"
+              }
+            },
+            {
+              "key": "liquid",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-liquid"
+              },
+              "amount": {
+                "value": 250,
+                "max": 300,
+                "unit": "ml"
+              }
+            },
+            {
+              "key": "salt",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-salt"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat.",
+                "de": "Das Fett schmelzen."
+              },
+              "technique": "melting",
+              "uses": ["fat"],
+              "time": {
+                "value": 5,
+                "unit": "min"
+              }
+            },
+            {
+              "text": {
+                "en": "Add the liquid.",
+                "de": "Die Flüssigkeit zugeben."
+              },
+              "uses": ["liquid"],
+              "temperature": {
+                "value": 180,
+                "unit": "C"
+              }
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Invented for this vector."
+      }
+    },
+    "lang": "en",
+    "date": "2026-11-19",
+    "ids": ["u-00000000-0000-4000-8000-000000000001", "u-00000000-0000-4000-8000-000000000002"],
+    "ingredient_ids": {
+      "example-fat": "u-aaaaaaaa-0000-4000-8000-000000000009"
+    }
+  },
+  "expected": {
+    "components": [
+      {
+        "id": "u-00000000-0000-4000-8000-000000000001",
+        "name": "Example sauce",
+        "role": "sauce",
+        "lines": [
+          {
+            "key": "fat",
+            "ref": {
+              "kind": "ingredient",
+              "id": "u-aaaaaaaa-0000-4000-8000-000000000009"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            },
+            "note": "(2 measures)"
+          },
+          {
+            "key": "liquid",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-liquid"
+            },
+            "amount": {
+              "value": 137.5,
+              "unit": "ml"
+            },
+            "note": "(125-150 ml)"
+          },
+          {
+            "key": "salt",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-salt"
+            }
+          }
+        ],
+        "steps": [
+          {
+            "text": {
+              "en": "Melt the fat.",
+              "de": "Das Fett schmelzen."
+            },
+            "technique": "melting",
+            "uses": ["fat"],
+            "time": {
+              "value": 5,
+              "unit": "min"
+            }
+          },
+          {
+            "text": {
+              "en": "Add the liquid.",
+              "de": "Die Flüssigkeit zugeben."
+            },
+            "uses": ["liquid"],
+            "temperature": {
+              "value": 180,
+              "unit": "C"
+            }
+          }
+        ],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000001",
+          "date": "2026-11-19",
+          "change": "Copied from the classic \"Example dish\" (Example Author, Example Cookbook (fictional), 1900)."
+        },
+        "x-origin": {
+          "classic": "example-dish",
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        }
+      }
+    ],
+    "dish": {
+      "id": "u-00000000-0000-4000-8000-000000000002",
+      "name": "Example dish",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "u-00000000-0000-4000-8000-000000000001"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 7.393382391,
+            "unit": "ml"
+          }
+        }
+      ],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000002",
+        "date": "2026-11-19",
+        "change": "Copied from the classic \"Example dish\" (Example Author, Example Cookbook (fictional), 1900)."
+      },
+      "x-origin": {
+        "classic": "example-dish",
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      }
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

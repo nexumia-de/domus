@@ -1,0 +1,244 @@
+{
+  "id": "derive-base-default-portions",
+  "description": "Source for 4 persons, default 2 portions: factor 0.5. 2 measures x 100 g x 0.5 = 100 g; range 250 to 300 ml x 0.5 = 125 to 150 ml, middle 137.5 ml; 1 tbsp = 14.78676478125 ml x 0.5 = 7.393382391 ml (10 digits); the line without amount and the component slot are listed",
+  "inputs": {
+    "kind": "classic_derive",
+    "classic": {
+      "id": "example-dish",
+      "name": {
+        "en": "Example dish",
+        "de": "Beispielgericht"
+      },
+      "originalName": "Example dish",
+      "country": "de",
+      "vegetarian": true,
+      "course": "main",
+      "source": {
+        "author": "Example Author",
+        "title": "Example Cookbook (fictional)",
+        "year": 1900,
+        "place": "page 1",
+        "url": "https://example.org/book"
+      },
+      "persons": {
+        "value": 4,
+        "basis": "stated"
+      },
+      "units": {
+        "measure": {
+          "kind": "mass",
+          "factor": 100,
+          "read": "Invented for this vector: 1 measure = 100 g."
+        }
+      },
+      "components": [
+        {
+          "id": "sauce",
+          "name": {
+            "en": "Example sauce",
+            "de": "Beispielsauce"
+          },
+          "role": "sauce",
+          "lines": [
+            {
+              "key": "fat",
+              "wanted": {
+                "en": "Example fat",
+                "de": "Beispielfett"
+              },
+              "amount": {
+                "value": 2,
+                "unit": "measure",
+                "original": "2 measures"
+              }
+            },
+            {
+              "key": "liquid",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-liquid"
+              },
+              "amount": {
+                "value": 250,
+                "max": 300,
+                "unit": "ml"
+              }
+            },
+            {
+              "key": "salt",
+              "ref": {
+                "kind": "ingredient",
+                "id": "example-salt"
+              }
+            }
+          ],
+          "steps": [
+            {
+              "text": {
+                "en": "Melt the fat.",
+                "de": "Das Fett schmelzen."
+              },
+              "technique": "melting",
+              "uses": ["fat"],
+              "time": {
+                "value": 5,
+                "unit": "min"
+              }
+            },
+            {
+              "text": {
+                "en": "Add the liquid.",
+                "de": "Die Flüssigkeit zugeben."
+              },
+              "uses": ["liquid"],
+              "temperature": {
+                "value": 180,
+                "unit": "C"
+              }
+            }
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "settled": [],
+      "check": {
+        "method": "second-reader",
+        "note": "Invented for this vector."
+      }
+    },
+    "lang": "en"
+  },
+  "expected": {
+    "factor": 0.5,
+    "dish": {
+      "id": "example-dish",
+      "name": "Example dish",
+      "portions": 2,
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "component",
+            "id": "sauce"
+          }
+        },
+        {
+          "role": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "example-starch"
+          },
+          "amount": {
+            "value": 7.393382391,
+            "unit": "ml"
+          }
+        }
+      ]
+    },
+    "components": [
+      {
+        "id": "sauce",
+        "name": "Example sauce",
+        "role": "sauce",
+        "lines": [
+          {
+            "key": "fat",
+            "wanted": "Example fat",
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            },
+            "original": "2 measures"
+          },
+          {
+            "key": "liquid",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-liquid"
+            },
+            "amount": {
+              "value": 137.5,
+              "unit": "ml"
+            }
+          },
+          {
+            "key": "salt",
+            "ref": {
+              "kind": "ingredient",
+              "id": "example-salt"
+            }
+          }
+        ],
+        "steps": [
+          {
+            "text": {
+              "en": "Melt the fat.",
+              "de": "Das Fett schmelzen."
+            },
+            "technique": "melting",
+            "uses": ["fat"],
+            "time": {
+              "value": 5,
+              "unit": "min"
+            }
+          },
+          {
+            "text": {
+              "en": "Add the liquid.",
+              "de": "Die Flüssigkeit zugeben."
+            },
+            "uses": ["liquid"],
+            "temperature": {
+              "value": 180,
+              "unit": "C"
+            }
+          }
+        ]
+      }
+    ],
+    "unmeasured": [
+      {
+        "componentId": "sauce",
+        "index": 2
+      },
+      {
+        "index": 0
+      }
+    ],
+    "ranges": [
+      {
+        "componentId": "sauce",
+        "index": 1,
+        "min": {
+          "value": 125,
+          "unit": "ml"
+        },
+        "max": {
+          "value": 150,
+          "unit": "ml"
+        }
+      }
+    ]
+  },
+  "tolerance": 1e-9,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

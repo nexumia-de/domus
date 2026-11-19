@@ -9,8 +9,16 @@ export const KINDS = [
   'stock',
   'affinities',
   'tastings',
+  'skills',
 ] as const;
 export type Kind = (typeof KINDS)[number];
+
+/**
+ * The kinds that are in the export file and in a backup. `skills` (which techniques the user has
+ * learned) is personal state of this device's notebook and is stored and synced but not exported yet
+ * (docs/data-model.md, Skill state).
+ */
+export type ExportedKind = Exclude<Kind, 'skills'>;
 
 export const isKind = (value: unknown): value is Kind => KINDS.some((kind) => kind === value);
 
@@ -38,6 +46,7 @@ export const emptyRows = (): Rows => ({
   stock: [],
   affinities: [],
   tastings: [],
+  skills: [],
 });
 
 export type ErrorCode =
