@@ -1,0 +1,36 @@
+{
+  "id": "pan-fry",
+  "name": { "en": "Pan-frying", "de": "Braten in der Pfanne" },
+  "watch": {
+    "en": "Heat the butter until it just starts to sizzle, then cook over medium-low heat.",
+    "de": "Die Butter erhitzen, bis sie gerade zu zischen beginnt, dann bei mittlerer bis niedriger Hitze garen."
+  },
+  "why": {
+    "en": "Eggs in a batter give a darker crust, which may or may not be what you want.",
+    "de": "Eier im Teig machen die Kruste dunkler, was man wollen kann oder nicht."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 10.1 Eggs, section Pan-Frying",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.01%3A_Eggs",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Add a small amount of clarified butter and heat until the fat just begins to sizzle."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 8.1 Frying Methods, section Batters and Breading",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/08%3A_Frying/8.01%3A_Frying_Methods",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Adding eggs or sugar to a batter will result in a darker crust, which may or may not be desirable."
+    },
+    {
+      "title": "Culinary Foundations (Cheramie and Thibodeaux)",
+      "place": "chapter 10.1 Eggs, section Pan-Frying",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.01%3A_Eggs",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Continue cooking over medium-low heat until the eggs reach the appropriate degree of firmness."
+    }
+  ]
+}
