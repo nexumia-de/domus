@@ -111,7 +111,10 @@
             "de": "Die Milch mit den 100 g Zucker eine volle Stunde kochen."
           },
           "technique": "boil",
-          "time": { "value": 60, "unit": "min" },
+          "time": {
+            "value": 60,
+            "unit": "min"
+          },
           "uses": ["milk", "sugar-milk"]
         },
         {
@@ -137,16 +140,16 @@
         },
         {
           "text": {
-            "en": "Keep the rest in the pan on the heat until it turns dark brown.",
-            "de": "Den Rest in der Pfanne auf der Hitze lassen, bis er dunkelbraun wird."
+            "en": "Keep the rest in the pan on the heat until it turns black.",
+            "de": "Den Rest in der Pfanne auf der Hitze lassen, bis er schwarz wird."
           },
           "technique": "caramelise-sugar",
           "uses": ["sugar-caramel"]
         },
         {
           "text": {
-            "en": "Stop it with a ladle of water and keep stirring over the heat until it is a thick, dark liquid.",
-            "de": "Mit einer Kelle Wasser stoppen und unter Rühren auf der Hitze weitergaren, bis eine dicke, dunkle Flüssigkeit entsteht."
+            "en": "Stop it with a ladle of water: you will hear it hiss and clump. Keep stirring over the heat until it is a thick, dark liquid.",
+            "de": "Mit einer Kelle Wasser stoppen: man hört es zischen und sich zusammenballen. Auf der Hitze weiter rühren, bis eine dicke, dunkle Flüssigkeit entsteht."
           },
           "uses": ["water", "sugar-caramel"]
         },
@@ -215,8 +218,20 @@
         },
         {
           "text": {
-            "en": "Loosen the edge all round with a thin knife, then turn it out onto a dish.",
-            "de": "Den Rand ringsum mit einem dünnen Messer lösen und auf eine Platte stürzen."
+            "en": "Loosen the edge all round with a thin knife.",
+            "de": "Den Rand ringsum mit einem dünnen Messer lösen."
+          }
+        },
+        {
+          "text": {
+            "en": "In summer, before turning it out, you may chill it with ice.",
+            "de": "Im Sommer kann man es vor dem Stürzen mit Eis kühlen."
+          }
+        },
+        {
+          "text": {
+            "en": "Turn it out onto a dish, with or without a cloth.",
+            "de": "Auf eine Platte stürzen, mit oder ohne Tuch."
           }
         }
       ]
@@ -233,11 +248,11 @@
   ],
   "settled": [],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 27398-27487); no second reader yet. The heading reads 'Latte hrfdé' in the OCR, read as 'Latte brulé' (index entry 'Latte brulé, 423', line 32011)."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.), No. 692: one litre of milk, 180 g sugar (100 g with the milk, 80 g for the caramel), eight yolks and two whites, one hour of boiling, the caramel, the water, the hissing, the water bath, the skewer test, ice in summer. Changed: 'dark brown' to 'black' (nero); added the hissing, 'with or without a cloth', the ice in summer, the mould's rim (in the note)."
   },
   "note": {
-    "en": "The book's own dose is for ten persons. The OCR gives the number 'N. 8' for the yolks and 'due chiare' for the whites; both are legible. The 'stecchino' test is written in the source as a skewer of 'granata'; read here as a thin skewer. No oven temperature is given; the cooking is on the stove in a water bath.",
-    "de": "Das Buch gibt die Dosis für zehn Personen an. Die Eigelb-Zahl 'N. 8' und 'due chiare' für das Eiweiß sind lesbar. Die Stäbchenprobe steht in der Quelle als Stäbchen aus 'granata'; hier als dünnes Stäbchen übersetzt. Keine Ofentemperatur angegeben; gegart wird auf dem Herd im Wasserbad."
+    "en": "The book's own dose is for ten persons. Both the 1891 first edition (No. 423) and the 1985 edition (No. 692) give the same amounts. The 'stecchino' test is written in the source as a skewer of 'granata'; read here as a thin skewer. The book prefers an oval mould with a rim about a finger wide, so that the water does not splash in while it boils. No oven temperature is given; the cooking is on the stove in a water bath.",
+    "de": "Das Buch gibt die Dosis für zehn Personen an. Die Erstausgabe von 1891 (Nr. 423) und die Ausgabe von 1985 (Nr. 692) nennen dieselben Mengen. Die Stäbchenprobe steht in der Quelle als Stäbchen aus 'granata'; hier als dünnes Stäbchen übersetzt. Das Buch bevorzugt eine ovale Form mit einem etwa fingerbreiten Rand, damit beim Kochen kein Wasser hineinspritzt. Keine Ofentemperatur angegeben; gegart wird auf dem Herd im Wasserbad."
   }
 }

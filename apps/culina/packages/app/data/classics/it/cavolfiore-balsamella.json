@@ -40,8 +40,8 @@
             "original": "una grossa palla di cavolfiore"
           },
           "note": {
-            "en": "One large head; the source gives no weight.",
-            "de": "Ein großer Kopf; die Quelle nennt kein Gewicht."
+            "en": "One large head (una grossa palla); the source gives no weight.",
+            "de": "Ein großer Kopf (una grossa palla); die Quelle nennt kein Gewicht."
           }
         },
         {
@@ -121,8 +121,8 @@
         },
         {
           "text": {
-            "en": "Cut it into small florets.",
-            "de": "In kleine Röschen schneiden."
+            "en": "Cut it into small pieces.",
+            "de": "In kleine Stücke schneiden."
           },
           "uses": ["cauliflower"]
         },
@@ -136,7 +136,7 @@
         {
           "text": {
             "en": "Put it in a dish that withstands heat and sprinkle with the parmesan.",
-            "de": "In eine feuerfeste Form geben und mit dem Parmesan bestreuen."
+            "de": "In eine feuerfeste Platte geben und mit dem Parmesan bestreuen."
           },
           "uses": ["parmesan"]
         },
@@ -188,8 +188,8 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount. The OCR text reads 'tanna' for the word, the sense is flour (farina).",
-            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'; the sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
+            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'; der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
           }
         },
         {
@@ -249,11 +249,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 17712-17801 and 7810-7839); no second reader yet."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed., 35th edition text): cauliflower No. 431, béchamel No. 137. Agreed: one large head, boiling in salted water, butter, salt, pepper, a scant pinch of parmesan, the béchamel, browning, serving hot; the béchamel's half litre of milk, one spoonful of flour, butter the size of an egg. Changed: 'florets' to 'small pieces' (spicchiettini); 'dish' for vassoio. No amount added."
   },
   "note": {
-    "en": "The book serves this as an entremet or with a meat stew; the béchamel is No. 89 (the OCR prints '80' as its heading, between Nos. 88 and 90). No time and no oven temperature are given. The source's text for the browning says only 'rosolatene la superficie'.",
-    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout; die Béchamelsauce ist Nr. 89 (die OCR druckt als Überschrift '80', zwischen Nr. 88 und 90). Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur 'die Oberfläche bräunen'."
+    "en": "The book serves this as an entremet or with a meat stew. The béchamel is No. 89 in the 1891 first edition (the OCR prints '80' as its heading); the 1985 edition numbers the cauliflower No. 431 and the béchamel No. 137. No time and no oven temperature are given. The source's text for the browning says only 'rosolatene la superficie'.",
+    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift '80'); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur 'die Oberfläche bräunen'."
   }
 }

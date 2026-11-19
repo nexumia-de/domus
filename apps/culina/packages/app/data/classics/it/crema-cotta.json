@@ -106,8 +106,8 @@
         },
         {
           "text": {
-            "en": "Cook it, stirring all the time in one direction, until it sticks to the spoon.",
-            "de": "Unter ständigem Rühren in einer Richtung garen, bis sie am Löffel haften bleibt."
+            "en": "Cook it, stirring all the time in circles, until it sticks to the spoon.",
+            "de": "Unter ständigem Rühren im Kreis garen, bis sie am Löffel haften bleibt."
           },
           "technique": "thicken-with-egg",
           "uses": ["milk", "yolk", "sugar"]
@@ -140,8 +140,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 27027-27067); no second reader yet."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed., 35th edition text), No. 685: one litre of milk, 200 g of sugar, eight yolks, vanilla at the end, the steps, cooking until it sticks to the spoon. Changed: 'in one direction' to 'in circles' (all'ingiro). No time or temperature in either text."
   },
   "note": {
     "en": "The plain custard only. The book adds that the cream serves for ice cream and for a liquid trifle with sponge fingers; those uses are not transcribed. No time and no temperature are given.",

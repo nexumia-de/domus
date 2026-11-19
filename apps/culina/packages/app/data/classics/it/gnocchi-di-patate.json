@@ -156,7 +156,10 @@
             "de": "Zehn Minuten in Salzwasser garen."
           },
           "technique": "boil",
-          "time": { "value": 10, "unit": "min" },
+          "time": {
+            "value": 10,
+            "unit": "min"
+          },
           "uses": ["water", "salt"]
         },
         {
@@ -187,8 +190,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by an agent from the OCR text of the source (lines 6390-6479); a second person must compare the numbers and the steps with the text."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.), No. 89: 400 g large yellow potatoes, 150 g flour, steam or water, hot peeling and sieving, cylinders of about three centimetres, flouring, thumb on a grater, ten minutes in salted water, cacio, butter, tomato sauce. All numbers and steps agree; no change. The 1891 heading reads 39 in the OCR; 59 is the first edition's order and is not confirmed by the 1985 text."
   },
   "note": {
     "en": "The source also cooks the gnocchi in milk, without draining, for a more delicate dish; that variant is not transcribed. The printed heading reads 39 in the OCR; the number 59 is taken from the book's order and the selection.",

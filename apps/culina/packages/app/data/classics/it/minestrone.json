@@ -17,7 +17,7 @@
   },
   "persons": {
     "value": 4,
-    "basis": "stated"
+    "basis": "settled"
   },
   "components": [
     {
@@ -351,13 +351,20 @@
       }
     }
   ],
-  "settled": [],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source says the soup is for four or five persons; we take the lower number.",
+      "target": "persons"
+    }
+  ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 4831-4898). The number 'quattro o cinque' in line 4881 is read from the same text. Not yet read by a second person."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.), No. 47: all amounts agree (40 g ham, one garlic clove, one potato, one zucchino, pinch of parsley, very little onion, enough rice, a good pinch of parmesan), the steps and 'four or five persons'. Changed: four persons is a settled choice (the source says four or five), not a stated number. The 1985 pork rind is not in the 1891 text."
   },
   "note": {
-    "en": "Artusi's recipe 33, the minestrone of his own taste. The source says it is for four or five persons; four is written. The source gives no amount for the boiled meat, the broth, the beans, the greens, most vegetables, the rice or the cheese. The cooking time is not stated. Artusi also says the soup is heavy for weak stomachs; that remark is not part of the method.",
-    "de": "Artusis Rezept Nr. 33, der Minestrone nach seinem eigenen Geschmack. Die Quelle nennt vier oder fünf Personen; geschrieben sind vier. Die Quelle gibt keine Menge für das gekochte Fleisch, die Brühe, die Bohnen, das Grüne, die meisten Gemüse, den Reis oder den Käse an. Die Garzeit fehlt."
+    "en": "Artusi's recipe 33, the minestrone of his own taste. The source says it is for four or five persons; we take four. The source gives no amount for the boiled meat, the broth, the beans, the greens, most vegetables, the rice or the cheese. The cooking time is not stated. Artusi also says the soup is heavy for weak stomachs; that remark is not part of the method. The 1985 edition adds an optional pork rind; it is not in the 1891 text and not transcribed.",
+    "de": "Artusis Rezept Nr. 33, der Minestrone nach seinem eigenen Geschmack. Die Quelle nennt vier oder fünf Personen; wir nehmen vier. Die Quelle gibt keine Menge für das gekochte Fleisch, die Brühe, die Bohnen, das Grüne, die meisten Gemüse, den Reis oder den Käse an. Die Quelle nennt keine Garzeit. Artusi merkt außerdem an, die Suppe sei für schwache Mägen schwer; diese Bemerkung gehört nicht zur Zubereitung. Die Ausgabe von 1985 nennt eine optionale Schweineschwarte; sie steht nicht im Text von 1891 und ist nicht übernommen."
   }
 }

@@ -179,6 +179,10 @@
             "value": 1,
             "unit": "count",
             "original": "Uova, N. 1"
+          },
+          "note": {
+            "en": "One egg (uova, N. 1): the yolk goes into the batter, the white is beaten and added just before use.",
+            "de": "Ein Ei (Uova, N. 1): das Eigelb kommt in den Teig, das Eiweiß wird geschlagen und kurz vor dem Gebrauch zugegeben."
           }
         },
         {
@@ -207,15 +211,15 @@
       "steps": [
         {
           "text": {
-            "en": "Mix the flour with the egg and the other ingredients, adding the water little by little, to a batter that is not too runny.",
-            "de": "Das Mehl mit dem Ei und den übrigen Zutaten mischen und das Wasser nach und nach zugeben, bis ein nicht zu dünner Teig entsteht."
+            "en": "Mix the flour with the egg yolk and the other ingredients, adding the water little by little, to a batter that is not too runny.",
+            "de": "Das Mehl mit dem Eigelb und den übrigen Zutaten mischen und das Wasser nach und nach zugeben, bis ein nicht zu dünner Teig entsteht."
           },
           "uses": ["flour", "egg", "oil", "brandy", "salt", "water"]
         },
         {
           "text": {
-            "en": "Work it well with a spoon.",
-            "de": "Mit dem Löffel gut durcharbeiten."
+            "en": "Work it well with a ladle.",
+            "de": "Mit der Kelle gut durcharbeiten."
           }
         },
         {
@@ -223,6 +227,13 @@
             "en": "Let it rest for several hours.",
             "de": "Mehrere Stunden ruhen lassen."
           }
+        },
+        {
+          "text": {
+            "en": "Just before using it, add the beaten egg white.",
+            "de": "Kurz vor dem Gebrauch das geschlagene Eiweiß zugeben."
+          },
+          "uses": ["egg"]
         }
       ]
     }
@@ -245,11 +256,11 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed by the agent from the OCR text of the 1891 first edition (artusi.txt, lines 8789-8835 and 8476-8512); no second reader yet."
+    "method": "second-edition",
+    "note": "Second check by a second reader against the Einaudi 1985 edition (Camporesi ed.): fennel No. 167, batter No. 156. Agreed: 100 g flour, spoonful of oil and of brandy (no size), one egg, salt and water as needed, mixing, several hours' rest, wedges, hard leaves, boiling, drying, flouring. Added: the batter's last addition, the beaten egg white, cut off in the 1891 OCR, from the 1985 text. No frying step in either text."
   },
   "note": {
-    "en": "The source's text for this recipe ends at dipping the wedges in the batter; the frying itself is not written in it, and the title reads 'Fritto'. The last addition to the batter before use (No. 100) is cut off in the OCR text read. Frying fat and temperature are not given.",
-    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet 'Fritto'. Die letzte Zugabe zum Teig vor dem Gebrauch (Nr. 100) ist im gelesenen OCR-Text abgeschnitten. Fett und Temperatur zum Ausbacken sind nicht angegeben."
+    "en": "The source's text for this recipe ends at dipping the wedges in the batter; the frying itself is not written in it, and the title reads 'Fritto'. The batter's last addition, the beaten egg white, is cut off in the 1891 OCR and is taken from the 1985 edition (No. 156). Frying fat and temperature are not given.",
+    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet 'Fritto'. Die letzte Zugabe zum Teig, das geschlagene Eiweiß, ist in der OCR der Ausgabe von 1891 abgeschnitten und stammt aus der Ausgabe von 1985 (Nr. 156). Fett und Temperatur zum Ausbacken sind nicht angegeben."
   }
 }
