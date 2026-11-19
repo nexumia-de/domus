@@ -1,0 +1,107 @@
+/*
+ * Design tokens: the only file with colours, sizes and radii. Every other stylesheet uses
+ * var(--...). Light set on :root, the dark set twice: the system preference (unless the person
+ * chose Light) and the explicit Dark choice. The two dark blocks must stay identical.
+ */
+:root {
+  color-scheme: light dark;
+
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-2: #f1eee8;
+  --text: #1d1a17;
+  --text-muted: #5a544d;
+  --border: #857e75;
+  --divider: #e3ded5;
+  --accent: #1a5c8a;
+  --on-accent: #ffffff;
+  --accent-soft: #e2eef6;
+  --danger: #a5282c;
+  --on-danger: #ffffff;
+  --ok-bg: #e4f1e6;
+  --ok-text: #1b4d27;
+  --warn-bg: #fbefd3;
+  --warn-text: #5d4208;
+  --error-bg: #f9e1e1;
+  --error-text: #7a1a1d;
+  --info-bg: #e2eef6;
+  --info-text: #17455f;
+  --focus: #1d1a17;
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  --target: 44px;
+  --content-w: 36rem;
+  --focus-width: 3px;
+  --focus-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #151311;
+    --surface: #1f1c19;
+    --surface-2: #2a2623;
+    --text: #f3efea;
+    --text-muted: #b7afa6;
+    --border: #8a8279;
+    --divider: #38332e;
+    --accent: #8cc4ea;
+    --on-accent: #0d2433;
+    --accent-soft: #1b2e3b;
+    --danger: #f08f92;
+    --on-danger: #3a0a0c;
+    --ok-bg: #1b3022;
+    --ok-text: #b9e3c3;
+    --warn-bg: #3a2f12;
+    --warn-text: #f0d896;
+    --error-bg: #3b1c1d;
+    --error-text: #f5b9bb;
+    --info-bg: #1b2e3b;
+    --info-text: #b8d9ee;
+    --focus: #f3efea;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #151311;
+  --surface: #1f1c19;
+  --surface-2: #2a2623;
+  --text: #f3efea;
+  --text-muted: #b7afa6;
+  --border: #8a8279;
+  --divider: #38332e;
+  --accent: #8cc4ea;
+  --on-accent: #0d2433;
+  --accent-soft: #1b2e3b;
+  --danger: #f08f92;
+  --on-danger: #3a0a0c;
+  --ok-bg: #1b3022;
+  --ok-text: #b9e3c3;
+  --warn-bg: #3a2f12;
+  --warn-text: #f0d896;
+  --error-bg: #3b1c1d;
+  --error-text: #f5b9bb;
+  --info-bg: #1b2e3b;
+  --info-text: #b8d9ee;
+  --focus: #f3efea;
+}

@@ -14,6 +14,12 @@ export class UnknownStorage extends Error {
 }
 
 export interface StorageDeps {
+  /**
+   * Base of GitHub's REST API for a `github` storage; default `https://api.github.com`. A
+   * build fixes it (the apps compile it in); it is never part of a stored space or an invite,
+   * so a link cannot send a token to another host.
+   */
+  apiBase?: string;
   fetch?: typeof fetch;
   online?: () => boolean;
   delay?: (ms: number) => Promise<void>;
@@ -24,7 +30,7 @@ export interface StorageDeps {
  * @throws RangeError for a GitHub storage without a token or with a bad address.
  */
 export function adapterFor(storage: StoredStorage, deps: StorageDeps = {}): StorageAdapter {
-  const { fetch, online, delay } = deps;
+  const { fetch, online, delay, apiBase } = deps;
   switch (storage.type) {
     case 'github': {
       const token = storage.access?.token;
@@ -33,6 +39,7 @@ export function adapterFor(storage: StoredStorage, deps: StorageDeps = {}): Stor
       return createGithubAdapter({
         repository: storage.address,
         token,
+        ...(apiBase !== undefined ? { apiBase } : {}),
         ...(fetch ? { fetch } : {}),
         ...(online ? { online } : {}),
       });

@@ -142,7 +142,8 @@ content is sealed).
 `adapterFor(storage, { fetch?, online?, delay? })` takes the
 `{ type, address, access? }` that a space stores and is the one place that knows
 the types: `github` (address `owner/name`, `access.token`; a missing token or a
-bad address throws a `RangeError`) and `webdav` (address the base URL,
+bad address throws a `RangeError`; the API base is the optional `apiBase` of the deps, never part of
+the stored storage) and `webdav` (address the base URL,
 `access.username` and `access.password` optional). Another type throws
 `UnknownStorage`.
 

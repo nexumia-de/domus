@@ -1,0 +1,363 @@
+/* Layout */
+.app-header,
+.app-main,
+.app-footer {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding-left: var(--sp-4);
+  padding-right: var(--sp-4);
+}
+
+.app-header {
+  padding-top: var(--sp-2);
+}
+
+.app-title {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-main {
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-5);
+}
+
+.app-footer {
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-6);
+  border-top: 1px solid var(--divider);
+}
+
+.display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.field.inline {
+  flex: 1 1 10rem;
+  margin: 0;
+}
+
+.lead {
+  color: var(--text-muted);
+}
+
+.muted,
+.hint,
+.step-of {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.center {
+  text-align: center;
+}
+
+/* The apps and the spaces: tappable cards */
+.apps,
+.space-list,
+.choices {
+  display: grid;
+  gap: var(--sp-3);
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+  list-style: none;
+}
+
+.apps a,
+.space-card,
+.choice {
+  display: block;
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.name {
+  display: block;
+  font-weight: 600;
+}
+
+.what {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.status {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+}
+
+.status p {
+  margin: 0;
+}
+
+.status.failed .status-line {
+  color: var(--error-text);
+  font-weight: 600;
+}
+
+.status-reason {
+  color: var(--text-muted);
+}
+
+.sync {
+  margin-top: var(--sp-5);
+}
+
+.empty {
+  margin-bottom: var(--sp-4);
+}
+
+/* Buttons */
+.button,
+button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--target);
+  min-width: var(--target);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.button.quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent);
+}
+
+.button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.confirm .button.danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+}
+
+/* Fields */
+.field {
+  margin: 0 0 var(--sp-4);
+}
+
+.field label,
+.label {
+  display: block;
+  margin-bottom: var(--sp-1);
+  font-weight: 600;
+}
+
+.field .hint {
+  margin-bottom: var(--sp-2);
+}
+
+input[type='text'],
+input[type='password'],
+select,
+textarea {
+  display: block;
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+textarea.link {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: var(--fs-sm);
+  resize: vertical;
+}
+
+.input-row {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: stretch;
+}
+
+.input-row .button {
+  flex: none;
+  white-space: nowrap;
+}
+
+.access-form {
+  margin-top: var(--sp-4);
+}
+
+.join-form {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--divider);
+}
+
+.input-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.field-error {
+  margin: 0 0 var(--sp-3);
+  color: var(--error-text);
+  font-weight: 600;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--target);
+  font-weight: 600;
+}
+
+.check input {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  flex: none;
+}
+
+/* Messages */
+.notice {
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+}
+
+.notice.info {
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+
+.notice.ok {
+  background: var(--ok-bg);
+  color: var(--ok-text);
+}
+
+.notice.warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.notice.error {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+.card,
+.confirm {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card h2,
+.confirm h2 {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-md);
+}
+
+.confirm[hidden] {
+  display: none;
+}
+
+.summary {
+  margin: 0 0 var(--sp-4);
+}
+
+.summary dt {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.summary dd {
+  margin: 0 0 var(--sp-3);
+  font-weight: 600;
+}
+
+/* The guided steps */
+.guide-step {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-1) var(--sp-4) var(--sp-3);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.steps {
+  margin: 0 0 var(--sp-3);
+  padding-left: var(--sp-5);
+}
+
+.steps li {
+  margin-bottom: var(--sp-2);
+}
+
+/* The invite */
+.qr-box {
+  display: flex;
+  justify-content: center;
+  margin: var(--sp-4) 0 var(--sp-2);
+}
+
+.qr {
+  display: block;
+  width: min(100%, 20rem);
+  height: auto;
+  border: 1px solid var(--divider);
+}
+
+.feedback {
+  min-height: 1.5em;
+  color: var(--text-muted);
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@domus/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Household: where sync is set up once for all apps on the address (spaces, storages, invites)",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@nexumia-de/hospes": "0.1.0",
+    "@nexumia-de/materia": "0.3.0",
+    "qrcode-generator": "2.0.4"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "e2e": "node e2e/run.mjs"
+  }
+}

@@ -2,34 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      The page connects to itself and to GitHub's API. `https:` is there because a WebDAV
+      storage is a server of the household's own choosing, at an address nobody can list here
+      (as in Mixtura's policy); plain http is not allowed. Nothing else is loaded: no
+      inline script or style, images only from the page itself (the QR code is an inline SVG).
+    -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.github.com https:; base-uri 'none'; form-action 'none'"
     />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#151311" media="(prefers-color-scheme: dark)" />
+    <meta name="referrer" content="no-referrer" />
     <title>Household</title>
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="home.css" />
+    <script src="theme-init.js"></script>
+    <link rel="stylesheet" href="app.css" />
+    <script type="module" src="main.js"></script>
   </head>
   <body>
-    <main>
-      <h1>Household</h1>
-      <p>Apps that keep their data on this device. Each one installs on its own.</p>
-      <ul class="apps">
-        <li>
-          <a href="mixtura/">
-            <span class="name">Drink Builder</span>
-            <span class="what">A workbench for mixed drinks</span>
-          </a>
-        </li>
-        <li>
-          <a href="culina/">
-            <span class="name">Cook's Notebook</span>
-            <span class="what">A helper in the kitchen</span>
-          </a>
-        </li>
-      </ul>
-    </main>
+    <div id="app"></div>
+    <noscript>Household needs JavaScript.</noscript>
   </body>
 </html>

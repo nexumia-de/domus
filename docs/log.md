@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Creation**: goal 5, the Household app (`apps/domus`, `@domus/app`) replaces the static root page: spaces, GitHub and WebDAV storages, invite with QR code, join, change access, every failure in words, English and German. The site's root now comes from its build (`scripts/site.mjs`, `build-site.mjs`: every root file gets the baseline headers and `no-cache`), `scripts/site-e2e.mjs` also checks that the root app loads, lists both apps, has no manifest and no service worker; root `check` includes `check:domus`; CI has `domus-check`, `domus-e2e` and a path filter for it (a change to the host package or the model runs it, a change to it runs `site-check`). `adapterFor` in the host package takes an optional `apiBase`. Not installable; nothing run against the real GitHub. [Roadmap](roadmap.md), [screens](../apps/domus/docs/screens.md).
 - **Creation**: goal 4, the GitHub storage adapter in the host package, tested against a fake of the API only. [Roadmap](roadmap.md).
 - **Creation**: goal 3, spaces, in the model (rules and formats with vectors) and in the host package (key derivation, sealing, invite link, the shared database `domus`, the sync cycle, the loop). No app uses them yet. [Roadmap](roadmap.md).
 - **Update**: goal 2 of the [roadmap](roadmap.md) is done in part: `packages/host` (`@nexumia-de/hospes`) holds the sync cipher and the WebDAV adapter taken out of Mixtura, which uses them from there. Mixtura's store, cycle, scheduler, bindings and invites were not moved; they are rebuilt for spaces in goal 3.

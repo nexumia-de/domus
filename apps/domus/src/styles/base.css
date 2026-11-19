@@ -1,0 +1,87 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font);
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-xl);
+  line-height: 1.25;
+}
+
+h2 {
+  margin: var(--sp-5) 0 var(--sp-2);
+  font-size: var(--fs-lg);
+  line-height: 1.3;
+}
+
+h3 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: var(--fs-md);
+}
+
+p {
+  margin: 0 0 var(--sp-3);
+}
+
+a {
+  color: var(--accent);
+}
+
+hr {
+  margin: var(--sp-5) 0;
+  border: 0;
+  border-top: 1px solid var(--divider);
+}
+
+h1:focus,
+h2:focus,
+main:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-2);
+  top: -100px;
+  z-index: 10;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.skip-link:focus {
+  top: var(--sp-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

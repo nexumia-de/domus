@@ -63,9 +63,22 @@ checks green. The apps' own goals are in their roadmaps
    The first real use is the owner's, through the screens of goal 5.
    _Owner_: a private repository (created on 2026-11-19) and a
    fine-grained token for it.
-5. **Domus screens.** Storages, spaces, invites, joining by link and
-   QR code, export and import, at the root address and reachable from
-   every app; Domus installable after the test of goal 1.
+5. **Domus screens.** First usable version built on 2026-11-19: the
+   Household app at the root of the address ([screens](../apps/domus/docs/screens.md)).
+   Home with the apps and the spaces on the device; create a space (name,
+   GitHub with the three guided steps, or WebDAV, create with a cycle on its
+   own collection `space`); a space (rename, Sync now, remove from this
+   device); invite by link and QR code with the storage access as an option
+   that is off by default; join by link; change the storage access; every
+   failure in words, English and German, phone first. Tested by unit tests and
+   by browser checks with two devices against a fake of GitHub's REST API.
+   **Not done**: it is **not installable** (no manifest or service worker
+   until the scope test of [deployment](deployment.md)); **the apps do not
+   link to it** and keep their own sync screens; **export and import are
+   not built**; **nothing was run against the real GitHub** (the first real
+   use is the owner's) and WebDAV only against a fake; **no collection of the
+   apps is synced** (only `space` with the space's name), no sync loop runs
+   and the code was not scanned with a camera.
 6. **Mixtura on spaces.** Stock as a shared collection; the earlier
    sync code and screens removed.
 7. **Emptio on spaces.** Its goals 1 and 2 (the list, shared) on the

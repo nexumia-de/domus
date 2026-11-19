@@ -25,6 +25,20 @@ test('github: the address is owner/name and the token goes in the header', async
   expect(s.calls[0]?.url).toBe('https://api.github.com/repos/me/store/contents/a.json');
   expect(s.calls[0]?.headers.Authorization).toBe('Bearer t0k');
 });
+test('github: the api base comes from the caller, never from the stored storage', async () => {
+  const s = spy(404);
+  const adapter = adapterFor(
+    // Extra fields on a stored storage are not read.
+    {
+      type: 'github',
+      address: 'me/store',
+      access: { token: 't0k', apiBase: 'https://evil.example' },
+    },
+    { fetch: s.fetch, online: () => true, apiBase: 'http://127.0.0.1:9999' },
+  );
+  await adapter.read('a.json');
+  expect(s.calls[0]?.url).toBe('http://127.0.0.1:9999/repos/me/store/contents/a.json');
+});
 test('github without a token or with a bad address throws', () => {
   expect(() => adapterFor({ type: 'github', address: 'me/store' })).toThrow(RangeError);
   expect(() => adapterFor({ type: 'github', address: 'nope', access: { token: 't' } })).toThrow(

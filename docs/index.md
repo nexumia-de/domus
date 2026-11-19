@@ -10,7 +10,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 # Plan
 
-- [Roadmap](roadmap.md) - The goals for the whole repository in order: one address, host package, spaces, GitHub storage, Domus screens, the apps on spaces, sync server, further storages; what each needs from the owner.
+- [Roadmap](roadmap.md) - The goals for the whole repository in order: one address, host package, spaces, GitHub storage, Domus screens (first version built), the apps on spaces, sync server, further storages; what each needs from the owner.
 
 # Decisions
 
@@ -29,3 +29,4 @@ its own bundle. Change history is in [log.md](log.md).
 - [Mixtura](../apps/mixtura/docs/index.md) - Drinks.
 - [Culina](../apps/culina/docs/index.md) - Cooking.
 - [Emptio](../apps/emptio/docs/index.md) - Shopping list.
+- [Household](../apps/domus/docs/index.md) - The app at the root of the address: spaces, storages, invites, join.

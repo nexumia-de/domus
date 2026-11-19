@@ -32,28 +32,40 @@ looked at it in a browser yet.
 
 `npm run build:site` builds every app and writes `./dist`:
 
-| Path        | From                                      |
-| ----------- | ----------------------------------------- |
-| `/`         | `apps/domus` (a page that lists the apps) |
-| `/mixtura/` | `apps/mixtura/packages/app/dist`          |
-| `/culina/`  | `apps/culina/packages/app/dist`           |
+| Path        | From                                  |
+| ----------- | ------------------------------------- |
+| `/`         | `apps/domus/dist` (Household, an app) |
+| `/mixtura/` | `apps/mixtura/packages/app/dist`      |
+| `/culina/`  | `apps/culina/packages/app/dist`       |
 
 The list is `scripts/site.mjs`. Emptio is added there when it has a
 build. Both apps already used relative addresses for every file, their
 manifest (`id`, `scope`, `start_url` are `./`) and their service worker,
 so each is a PWA of its own in its folder and installs alone.
 
-**The root page has no manifest and no service worker.** An installable
-page at `/` would have a scope that covers the apps' folders; whether
-the browsers the owner uses keep such an app apart from the apps below
-it is not tested. Domus becomes installable with its screens (goal 5),
-after that test.
+**The root page is the Household app** (`apps/domus`, built by
+`npm run build -w @domus/app` like the others): the list of the apps and the
+screens where sync is set up ([screens](../apps/domus/docs/screens.md)). It
+still has **no manifest and no service worker**. An installable page at `/`
+would have a scope that covers the apps' folders; whether the browsers the
+owner uses keep such an app apart from the apps below it is not tested. Until
+that is tested on the owner's devices Household is not installable, and it
+loads from the network (it is small; the apps work offline in their folders).
+`npm run e2e:site` and `apps/domus`'s `test/build.test.ts` keep it so: no
+`<link rel="manifest">`, no `/manifest.webmanifest`, no `/sw.js`, no service
+worker registered by the root page, and one worker scope per app and none
+above them. Household becomes installable once that scope test is done (roadmap goal 5).
 
 **Headers.** `scripts/build-site.mjs` writes one `_headers` file. An
 app's own `_headers` (Mixtura) is taken with every path moved into its
-folder; a folder without one (Culina) and the root page get a baseline
+folder; a folder without one (Culina) and the root app get a baseline
 (`frame-ancestors 'none'`, `nosniff`, `no-referrer`, same-origin opener
-policy) and `no-cache` for the files with fixed names. The rules of two
+policy); `no-cache` goes to the files with fixed names, and for the root
+app that is every file (`/`, `index.html`, `main.js`, `app.css`,
+`theme-init.js`, `icon.svg`: none has a hashed name). The page's own
+Content-Security-Policy is a meta tag (`connect-src` names the page, GitHub's API
+and `https:` for the household's WebDAV server); the header adds
+`frame-ancestors`. The rules of two
 folders never overlap, because Cloudflare joins the values when two
 rules set the same header.
 
@@ -72,7 +84,11 @@ serves `./dist` the way Cloudflare does:
   named `mixtura-…`;
 - the database names differ (`mixtura`, `culina`);
 - every app loads offline;
-- no console error and no request to another host.
+- no console error and no request to another host;
+- the root app loads, lists both apps, has no manifest and registers no
+  service worker, and its files have the baseline and `no-cache` in
+  `_headers`; its database `domus` differs from the apps' (the apps'
+  `mixtura` and `culina`).
 
 Not checked by a script: installing two apps and seeing two separate
 apps (the owner did and they are, see [owner](#owner)); `localStorage` keys (they are prefixed with
