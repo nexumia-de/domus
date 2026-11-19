@@ -1,0 +1,28 @@
+{
+  "id": "classify-bitters-two-dashes-default",
+  "kind": "classify-spec",
+  "description": "60 ml tea stirred with 2 dashes of Angostura (2 x 0.92 ml = 1.84 ml, 44.7 %): ethanol 1.84 x 0.447 = 0.82248 ml; volume (60 + 1.84) x 1.2 = 74.208 ml; ABV 1.1083 %: above 0.5 %, so low, not none.",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "tea",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 2,
+      "unit": "dash"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.5,
+    "withoutBound": "below",
+    "lowPct": 10
+  },
+  "expected": {
+    "class": "low",
+    "abvPct": 1.1083
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

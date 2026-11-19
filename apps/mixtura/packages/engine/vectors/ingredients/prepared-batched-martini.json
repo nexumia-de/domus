@@ -1,0 +1,89 @@
+{
+  "id": "prepared-batched-martini",
+  "kind": "prepared",
+  "description": "Batched martini with added water, no yield given so volumes add: 60 ml gin 40 %, 30 ml dry vermouth 16 % (docs/balance.md assumptions), 10 ml added water. V = 100 ml; E = 60 * 0.40 + 30 * 0.16 = 24 + 4.8 = 28.8 ml; ABV = 100 * 28.8 / 100 = 28.8 %. Sugar and acid 0.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "batched-martini",
+      "name": "batched-martini",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "batched-martini",
+        "yield": {
+          "amount": 100,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "batched-martini": {
+      "lines": [
+        {
+          "ingredientId": "gin",
+          "ml": 60
+        },
+        {
+          "ingredientId": "dry-vermouth",
+          "ml": 30
+        }
+      ],
+      "addedWaterMl": 10
+    }
+  },
+  "query": "batched-martini",
+  "expected": {
+    "volume_ml": 100,
+    "sugar_g_per_100ml": 0,
+    "abv_pct": 28.8,
+    "acid_pct": 0
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; ABVs are assumptions, unverified"
+}

@@ -1,0 +1,40 @@
+{
+  "id": "balance-built-highball",
+  "description": "Built highball, 60 ml whisky over ice, 150 ml soda water, build fraction 0.10",
+  "inputs": {
+    "kind": "balance",
+    "method": "build",
+    "dilution_fraction": 0.1,
+    "lines": [
+      {
+        "name": "whisky",
+        "ml": 60,
+        "abv_pct": 40,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      {
+        "name": "soda water",
+        "ml": 150,
+        "abv_pct": 0,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    ]
+  },
+  "expected": {
+    "volume_before_ml": 210,
+    "ethanol_ml": 24,
+    "abv_before_pct": 11.428571,
+    "volume_after_ml": 231,
+    "abv_after_pct": 10.38961,
+    "sugar_g": 0,
+    "sugar_g_per_100ml": 0,
+    "acid_g": 0,
+    "acid_pct": 0,
+    "sugar_acid_ratio": null,
+    "uk_units": 2.4
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#worked-examples; ingredient properties and the dilution fraction are assumptions (see the document)"
+}

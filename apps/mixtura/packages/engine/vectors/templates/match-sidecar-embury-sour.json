@@ -1,0 +1,41 @@
+{
+  "id": "match-sidecar-embury-sour",
+  "kind": "match",
+  "description": "Embury sour 8 : 2 : 1 with a liqueur as the sweet part: 80 ml cognac, 20 ml lemon juice, 10 ml triple sec. Working: acid 2 x 20 / 80 = 0.5 parts, inside 0.38 to 1.5; liqueur 2 x 10 / 80 = 0.25 parts, inside 0.25 to 1.5 (it was below the old minimum 0.38); distance 0.",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 80,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 20,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 10,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates; the band edge is sourced as stated in docs/templates.md#evidence"
+}

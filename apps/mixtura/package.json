@@ -1,0 +1,38 @@
+{
+  "name": "mixtura",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A workbench for mixed drinks: templates, balance numbers, your own specs",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "npm run build -w @mixtura/engine && npm run build -w @mixtura/app",
+    "test": "npm test -w @mixtura/engine && npm test -w @mixtura/app",
+    "typecheck": "npm run typecheck -w @mixtura/engine && npm run typecheck -w @mixtura/app",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
+    "e2e": "npm run build && npm run e2e -w @mixtura/app",
+    "seed": "node scripts/seed/run.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "ajv": "8.17.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.14.0",
+    "globals": "17.14.0",
+    "playwright": "1.65.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "na-sour",
+  "name": "Non-alcoholic sour",
+  "parentId": "daiquiri",
+  "alcohol": "none",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "tea, tisane or a non-alcoholic distillate in place of the spirit"
+    },
+    {
+      "id": "acid",
+      "role": "sour",
+      "minParts": 0.38,
+      "maxParts": 1.5,
+      "note": "citrus juice, verjus or an acid solution"
+    },
+    {
+      "id": "sweet",
+      "role": "sweet",
+      "minParts": 0.38,
+      "maxParts": 1.5,
+      "note": "syrup"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "sugar": {
+      "min": 10.4,
+      "max": 11.2
+    },
+    "acid": {
+      "min": 0.75,
+      "max": 0.82
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/non-alcoholic.md, Proposed templates and variants; slots and ratios are those of the parent template, ranges are computed from its nominal spec with the base replaced volume for volume by a drink without ethanol",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no source says that these ratios or ranges fit a drink without ethanol; see docs/templates.md#variants-by-alcohol-class."
+  },
+  "notes": "A variant, not an own root: its slots equal the Daiquiri's, and the engine offers it only for the class none (docs/templates.md#variants-by-alcohol-class). No ABV range: ethanol is classified by classifyAlcohol, not range-checked. Sugar and acid equal the Daiquiri's because the nominal spec swaps the spirit for tea volume for volume (tea sugar 0 is an assumption)."
+}

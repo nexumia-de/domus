@@ -1,0 +1,29 @@
+{
+  "id": "classify-unknown-distillate",
+  "kind": "classify-spec",
+  "description": "60 ml of a non-alcoholic distillate with no label ABV entered: unknown.",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "na-spirit",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 5,
+      "unit": "ml"
+    }
+  ],
+  "thresholds": {
+    "withoutPct": 0.5,
+    "withoutBound": "below",
+    "lowPct": 10
+  },
+  "expected": {
+    "class": "unknown",
+    "reason": "unknown-abv",
+    "ids": ["na-spirit"]
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

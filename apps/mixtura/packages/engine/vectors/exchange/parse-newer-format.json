@@ -1,0 +1,22 @@
+{
+  "id": "parse-newer-format",
+  "kind": "parse",
+  "title": "A newer format is refused with both versions",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 3,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "newer",
+    "found": 3,
+    "supported": 2
+  }
+}

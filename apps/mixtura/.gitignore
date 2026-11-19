@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.log
+*.tsbuildinfo
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.sw?
+.DS_Store
+.claude/worktrees/
+packages/app/src/store/schema-validators.generated.mjs

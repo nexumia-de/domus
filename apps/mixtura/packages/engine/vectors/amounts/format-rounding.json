@@ -1,0 +1,298 @@
+{
+  "id": "format-rounding",
+  "description": "Rounding steps per unit, boundaries, half up, and refinement so nothing shows as 0",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "0.49 oz_us us",
+      "input": {
+        "value": 0.49,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "½ oz"
+      }
+    },
+    {
+      "name": "2.6 oz_us us",
+      "input": {
+        "value": 2.6,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2½ oz"
+      }
+    },
+    {
+      "name": "2.63 oz_us us",
+      "input": {
+        "value": 2.63,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2¾ oz"
+      }
+    },
+    {
+      "name": "2.625 oz_us us",
+      "input": {
+        "value": 2.625,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2¾ oz"
+      }
+    },
+    {
+      "name": "1.125 oz_us us",
+      "input": {
+        "value": 1.125,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1¼ oz"
+      }
+    },
+    {
+      "name": "0.4 oz_us us",
+      "input": {
+        "value": 0.4,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "⅜ oz"
+      }
+    },
+    {
+      "name": "0.5 oz_us us",
+      "input": {
+        "value": 0.5,
+        "unit": "oz_us",
+        "system": "us"
+      },
+      "expected": {
+        "text": "½ oz"
+      }
+    },
+    {
+      "name": "1 ml us",
+      "input": {
+        "value": 1,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1/16 oz"
+      }
+    },
+    {
+      "name": "0.5 ml us",
+      "input": {
+        "value": 0.5,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1/32 oz"
+      }
+    },
+    {
+      "name": "0.005 oz_us metric",
+      "input": {
+        "value": 0.005,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "0.1 ml"
+      }
+    },
+    {
+      "name": "0.001 oz_us metric",
+      "input": {
+        "value": 0.001,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "0.03 ml"
+      }
+    },
+    {
+      "name": "0.01 oz_us metric",
+      "input": {
+        "value": 0.01,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "0.5 ml"
+      }
+    },
+    {
+      "name": "0.1 oz_us metric",
+      "input": {
+        "value": 0.1,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "3 ml"
+      }
+    },
+    {
+      "name": "4.6 ml metric",
+      "input": {
+        "value": 4.6,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "4.5 ml"
+      }
+    },
+    {
+      "name": "4.75 ml metric",
+      "input": {
+        "value": 4.75,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "5 ml"
+      }
+    },
+    {
+      "name": "5 ml metric",
+      "input": {
+        "value": 5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "5 ml"
+      }
+    },
+    {
+      "name": "5.5 ml metric",
+      "input": {
+        "value": 5.5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "5.5 ml"
+      }
+    },
+    {
+      "name": "0.04 cl metric",
+      "input": {
+        "value": 0.04,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "0.04 cl"
+      }
+    },
+    {
+      "name": "0.04 g metric",
+      "input": {
+        "value": 0.04,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "0.04 g"
+      }
+    },
+    {
+      "name": "9.96 g metric",
+      "input": {
+        "value": 9.96,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "10.0 g"
+      }
+    },
+    {
+      "name": "0.5 dash metric",
+      "input": {
+        "value": 0.5,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "1 dash"
+      }
+    },
+    {
+      "name": "1.4 dash metric",
+      "input": {
+        "value": 1.4,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "1 dash"
+      }
+    },
+    {
+      "name": "2.5 dash metric",
+      "input": {
+        "value": 2.5,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "3 dashes"
+      }
+    },
+    {
+      "name": "0.3 tsp metric",
+      "input": {
+        "value": 0.3,
+        "unit": "tsp"
+      },
+      "expected": {
+        "text": "¼ tsp"
+      }
+    },
+    {
+      "name": "0.1 tsp metric",
+      "input": {
+        "value": 0.1,
+        "unit": "tsp"
+      },
+      "expected": {
+        "text": "⅛ tsp"
+      }
+    },
+    {
+      "name": "1.1 tbsp metric",
+      "input": {
+        "value": 1.1,
+        "unit": "tbsp"
+      },
+      "expected": {
+        "text": "1 tbsp"
+      }
+    },
+    {
+      "name": "0.02 tsp metric",
+      "input": {
+        "value": 0.02,
+        "unit": "tsp"
+      },
+      "expected": {
+        "text": "1/32 tsp"
+      }
+    },
+    {
+      "name": "negative amount",
+      "input": {
+        "value": -1,
+        "unit": "ml"
+      },
+      "expected": {
+        "error": "invalid_value"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding; half up is the engine's choice"
+}

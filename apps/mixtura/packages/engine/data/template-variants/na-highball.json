@@ -1,0 +1,49 @@
+{
+  "id": "na-highball",
+  "name": "Non-alcoholic highball or spritz",
+  "parentId": "highball",
+  "alcohol": "none",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "tea, tisane or a non-alcoholic distillate"
+    },
+    {
+      "id": "bitter",
+      "role": "bitter",
+      "minParts": 0.25,
+      "maxParts": 2,
+      "optional": true,
+      "note": "non-alcoholic aperitif: the spritz; the band is chosen, not sourced"
+    },
+    {
+      "id": "mixer",
+      "role": "lengthener",
+      "minParts": 4,
+      "maxParts": 6,
+      "note": "soda, tonic, ginger beer; a ferment adds ethanol"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "build",
+  "usual": {
+    "sugar": {
+      "min": 0,
+      "max": 0
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "docs/non-alcoholic.md, Proposed templates and variants; slots and ratios are those of the parent template, ranges are computed from its nominal spec with the base replaced volume for volume by a drink without ethanol",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified: no source says that these ratios or ranges fit a drink without ethanol; see docs/templates.md#variants-by-alcohol-class."
+  },
+  "notes": "Highball with an optional bitter slot, so that a spritz (aperitif plus lengthener) and a shrub drink (the shrub as base) match without a template of their own. No ABV range. A ferment as lengthener raises the ABV (kombucha 0 to 3.62 % observed, docs/non-alcoholic.md), so such a drink is classified by its computed ABV."
+}

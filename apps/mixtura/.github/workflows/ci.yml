@@ -1,0 +1,227 @@
+# Checks every pull request and every push to main: format, lint,
+# typecheck, tests and build (npm run check). The job deploy-cloudflare then
+# deploys that build to Cloudflare Workers static assets (docs/deployment.md):
+# push to main = production, pull request from this repository = preview.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      # The build of this commit, for the deploy job below.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: packages/app/dist
+          retention-days: 3
+          if-no-files-found: error
+
+  e2e:
+    name: e2e
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+
+  # The same scripts on a slow device: CPU slowed 4 times, animation frames
+  # delayed by 100 ms (docs/development.md#slow-device-pass). Not a required check.
+  e2e-slow:
+    name: e2e-slow
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run e2e:slow -w @mixtura/app
+
+  # The WebDAV adapter against the real server of tools/webdav-server: the
+  # integration test in Node, e2e/webdav.mjs and, with a second server, e2e/sync.mjs in a
+  # browser (docs/sync-backends.md). The same Node test also runs against the nginx and Caddy
+  # fronts of tools/webdav-front (docs/sync-setup.md).
+  # Not a required check unless the owner adds it to the ruleset.
+  webdav:
+    name: webdav
+    runs-on: ubuntu-24.04
+    env:
+      MIXTURA_WEBDAV_URL: http://127.0.0.1:8080
+      MIXTURA_WEBDAV_URL_2: http://127.0.0.1:8081
+      MIXTURA_WEBDAV_USER: mixtura
+      MIXTURA_WEBDAV_PASSWORD: ci-only-password
+      WEBDAV_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: docker compose --profile second up -d
+        working-directory: tools/webdav-server
+      - name: Wait for the servers
+        run: |
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL/"
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null "$MIXTURA_WEBDAV_URL_2/"
+      - run: npm run build
+      - run: npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
+      - run: node e2e/webdav.mjs 360 720
+        working-directory: packages/app
+      - run: node e2e/webdav.mjs 1200 800
+        working-directory: packages/app
+      - run: node e2e/sync.mjs 360 720
+        working-directory: packages/app
+      - run: node e2e/sync.mjs 1200 800
+        working-directory: packages/app
+      - run: docker compose --profile nginx --profile caddy up -d
+        working-directory: tools/webdav-front
+      - name: Wait for the fronts
+        run: |
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8090/
+          curl -sS --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors -o /dev/null http://127.0.0.1:8091/
+      - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8090 npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
+      - run: MIXTURA_WEBDAV_URL=http://127.0.0.1:8091 npx vitest run test/sync-webdav-integration.test.ts
+        working-directory: packages/app
+      - name: Server log
+        if: failure()
+        run: docker compose --profile second logs --no-color
+        working-directory: tools/webdav-server
+      - name: Front log
+        if: failure()
+        run: docker compose --profile nginx --profile caddy logs --no-color
+        working-directory: tools/webdav-front
+      - run: docker compose --profile second down -v
+        if: always()
+        working-directory: tools/webdav-server
+      - run: docker compose --profile nginx --profile caddy down -v
+        if: always()
+        working-directory: tools/webdav-front
+
+  # Needs the secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID. While
+  # they are missing the job ends green and says so in its summary, so pull
+  # requests stay green until the owner adds them. A separate job in this
+  # workflow (not a new workflow) so it deploys the artifact of the same run
+  # and starts only after `check` passed; no existing job or check name changes.
+  deploy-cloudflare:
+    name: deploy-cloudflare
+    needs: check
+    # Fork pull requests and Dependabot get no secrets: skip instead of failing.
+    if: (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: deploy-cloudflare-${{ github.event_name == 'push' && 'main' || github.event.pull_request.number }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: packages/app/dist
+
+      - name: Check for Cloudflare secrets
+        id: secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Cloudflare secrets are not set, deploy skipped"
+            {
+              echo "### Cloudflare secrets are not set, deploy skipped"
+              echo
+              echo "Add the repository secrets \`CLOUDFLARE_API_TOKEN\` and \`CLOUDFLARE_ACCOUNT_ID\` (docs/deployment.md, owner steps)."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Read pinned wrangler version
+        if: steps.secrets.outputs.configured == 'true'
+        id: wrangler
+        run: echo "version=$(node -p "require('./tools/wrangler/package.json').devDependencies.wrangler")" >> "$GITHUB_OUTPUT"
+
+      # `deploy` on main; a Preview named pr-<number> on a pull request
+      # (the pull request merge ref has no branch name to default to).
+      - name: Deploy to Cloudflare
+        if: steps.secrets.outputs.configured == 'true'
+        id: cloudflare
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        env:
+          # The action installs wrangler at the repository root, which would run the
+          # install scripts of every workspace dependency; deploying needs none of them.
+          npm_config_ignore_scripts: 'true'
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: ${{ steps.wrangler.outputs.version }}
+          command: ${{ github.event_name == 'push' && 'deploy' || format('preview --name pr-{0}', github.event.pull_request.number) }}
+
+      # A broken deploy fails here instead of going unnoticed: the address must
+      # answer with the app and the Content-Security-Policy header.
+      - name: Check deployed app
+        if: steps.secrets.outputs.configured == 'true'
+        env:
+          DEPLOYMENT_URL: ${{ steps.cloudflare.outputs.deployment-url }}
+        run: |
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "::error::wrangler printed no deployment address"
+            exit 1
+          fi
+          # A descriptive User-Agent: workers.dev refuses default library ones (error 1010).
+          agent="mixtura-deploy-check (+https://github.com/nexumia-de/mixtura)"
+          curl -fsS -A "$agent" --retry 6 --retry-delay 5 --retry-all-errors -D headers.txt -o page.html "$DEPLOYMENT_URL"
+          grep -q 'id="app"' page.html || { echo "::error::no app root at $DEPLOYMENT_URL"; exit 1; }
+          grep -qi "^content-security-policy:.*frame-ancestors 'none'" headers.txt || { echo "::error::no Content-Security-Policy header at $DEPLOYMENT_URL"; exit 1; }
+          echo "deployed app answers at $DEPLOYMENT_URL"
+          {
+            echo "### Deployed to Cloudflare"
+            echo
+            echo "${{ github.event_name == 'push' && 'Production' || 'Preview' }}: $DEPLOYMENT_URL"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Information only: the custom domain is attached by the owner in the
+      # Cloudflare dashboard (docs/deployment.md), so it may not answer yet.
+      - name: Check custom domain
+        if: steps.secrets.outputs.configured == 'true' && github.event_name == 'push'
+        continue-on-error: true
+        run: |
+          if curl -fsS -A "mixtura-deploy-check (+https://github.com/nexumia-de/mixtura)" -m 20 -o /dev/null https://mixtura.nexumia.de/; then
+            echo "- https://mixtura.nexumia.de answers" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- https://mixtura.nexumia.de does not answer yet: attach the custom domain (docs/deployment.md)" >> "$GITHUB_STEP_SUMMARY"
+          fi

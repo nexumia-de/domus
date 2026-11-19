@@ -1,0 +1,61 @@
+{
+  "id": "plan-replace-stock-key",
+  "kind": "plan",
+  "title": "Stock records are keyed by place and ingredient",
+  "mode": "replace",
+  "current": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      },
+      {
+        "placeId": "p1",
+        "ingredientId": "lime",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      },
+      {
+        "placeId": "p2",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "incoming": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": false
+      },
+      {
+        "placeId": "p2",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "expected": {
+    "replaced": {
+      "stock": 1
+    },
+    "skipped": {
+      "stock": 1
+    },
+    "removed": {
+      "stock": 1
+    },
+    "writes": {
+      "stock": ["p1/lemon"]
+    },
+    "deletes": {
+      "stock": ["p1/lime"]
+    }
+  }
+}

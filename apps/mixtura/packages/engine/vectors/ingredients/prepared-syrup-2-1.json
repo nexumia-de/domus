@@ -1,0 +1,90 @@
+{
+  "id": "prepared-syrup-2-1",
+  "kind": "prepared",
+  "description": "Syrup 2:1 by mass: 200 g solid sugar and 100 ml water. The yield 225 ml is a made-up example of what a user measured, not a claim about real syrup. sugar = 100 * 200 g / 225 ml = 88.888889 g per 100 ml, ABV 0, acid 0.",
+  "ingredients": [
+    {
+      "id": "prepared",
+      "name": "Prepared",
+      "level": "category"
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "syrup-2-1",
+      "name": "syrup-2-1",
+      "level": "product",
+      "parentId": "prepared",
+      "prepared": {
+        "specId": "syrup-2-1",
+        "yield": {
+          "amount": 225,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "syrup-2-1": {
+      "lines": [
+        {
+          "ingredientId": "sugar",
+          "ml": 0,
+          "sugarG": 200
+        },
+        {
+          "ingredientId": "water",
+          "ml": 100
+        }
+      ],
+      "yieldMl": 225
+    }
+  },
+  "query": "syrup-2-1",
+  "expected": {
+    "volume_ml": 225,
+    "sugar_g_per_100ml": 88.888889,
+    "abv_pct": 0,
+    "acid_pct": 0
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; the yield is a synthetic input"
+}

@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spec editor - Mixtura mock-up</title>
+    <link rel="stylesheet" href="mockup.css" />
+  </head>
+  <body>
+    <div class="app app--pushed">
+      <nav class="nav" aria-label="Main">
+        <a href="#" aria-current="page"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 4h14l-7 9zM12 13v7M8 20h8" /></svg></span
+          >Drinks</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="7" height="7" />
+              <rect x="13" y="4" width="7" height="7" />
+              <rect x="4" y="13" width="7" height="7" />
+              <rect x="13" y="13" width="7" height="7" /></svg></span
+          >Templates</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8" /></svg></span
+          >Stock</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"
+              /></svg></span
+          >Settings</a
+        >
+      </nav>
+      <main class="panes" data-phone="detail">
+        <section class="pane list" aria-label="Drinks">
+          <header class="appbar">
+            <h1>Drinks</h1>
+            <a class="btn btn--icon" href="#" aria-label="New drink"
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" /></svg
+            ></a>
+          </header>
+          <div class="pane-scroll" style="gap: var(--sp-3)">
+            <div class="search">
+              <div class="input">
+                <span style="color: var(--text-muted)">Search drinks</span
+                ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="M16 16l5 5" />
+                </svg>
+              </div>
+              <a class="btn" href="#" aria-label="Filters, 2 active"
+                ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16M7 12h10M10 18h4" /></svg
+                >2</a
+              >
+            </div>
+            <div class="chips">
+              <span class="chip" aria-pressed="true"
+                >Makeable now
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" /></svg></span
+              ><span class="chip" aria-pressed="true"
+                >Daiquiri template
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" /></svg
+              ></span>
+            </div>
+            <ul class="rows" style="margin: 0 calc(-1 * var(--sp-4))">
+              <li>
+                <a class="row" href="#" aria-current="true"
+                  ><span class="row-main"
+                    ><span class="row-title">Daiquiri</span
+                    ><span class="row-sub">Daiquiri · 18 % ABV</span></span
+                  ><span class="tag tag--strong"
+                    ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" /></svg
+                    >Makeable</span
+                  ></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Gimlet</span
+                    ><span class="row-sub">Daiquiri · 19 % ABV</span></span
+                  ><span class="tag tag--strong"
+                    ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" /></svg
+                    >Makeable</span
+                  ></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Margarita</span
+                    ><span class="row-sub">Sidecar · 21 % ABV</span></span
+                  ><span class="tag">Missing Triple sec</span></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Manhattan</span
+                    ><span class="row-sub">Martini · 29 % ABV</span></span
+                  ><span class="tag tag--strong"
+                    ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" /></svg
+                    >Makeable</span
+                  ></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Negroni</span
+                    ><span class="row-sub">Martini · 24 % ABV</span></span
+                  ><span class="tag">Missing Campari</span></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Old Fashioned</span
+                    ><span class="row-sub">Old-Fashioned · 33 % ABV</span></span
+                  ><span class="tag tag--strong"
+                    ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" /></svg
+                    >Makeable</span
+                  ></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Sidecar</span
+                    ><span class="row-sub">Sidecar · 25 % ABV</span></span
+                  ><span class="tag">Missing Cognac</span></a
+                >
+              </li>
+              <li>
+                <a class="row" href="#"
+                  ><span class="row-main"
+                    ><span class="row-title">Whiskey Sour</span
+                    ><span class="row-sub">Daiquiri · 16 % ABV</span></span
+                  ><span class="tag tag--strong"
+                    ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" /></svg
+                    >Makeable</span
+                  ></a
+                >
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section class="pane detail" aria-label="Edit Daiquiri">
+          <header class="appbar">
+            <a class="btn btn--icon" href="#" aria-label="Back"
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" /></svg
+            ></a>
+            <h1>Edit Daiquiri</h1>
+            <span class="tag" style="margin-right: var(--sp-2)">Draft kept</span>
+          </header>
+          <div class="pane-scroll">
+            <div class="field">
+              <label>Name</label>
+              <div class="input">Daiquiri</div>
+            </div>
+            <div class="field">
+              <label>Template</label>
+              <div class="input">
+                Daiquiri
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 9l7 7 7-7" />
+                </svg>
+              </div>
+            </div>
+            <div class="two-col" style="gap: var(--sp-3)">
+              <div style="display: flex; flex-direction: column; gap: var(--sp-3)">
+                <h2 class="section-title">Ingredients</h2>
+                <div class="edit-line">
+                  <div class="field">
+                    <div class="input" aria-label="Ingredient">
+                      <span>White rum</span><span class="tag">Base</span>
+                    </div>
+                  </div>
+                  <div class="r2">
+                    <div class="field w-amount">
+                      <div class="input num" aria-label="Amount">60</div>
+                    </div>
+                    <div class="field w-unit">
+                      <div class="input" aria-label="Unit">
+                        ml<svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 9l7 7 7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <span class="grow"></span
+                    ><a
+                      class="btn btn--icon"
+                      href="#"
+                      aria-label="More for this line: move, optional, remove"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="19" r="1" /></svg
+                    ></a>
+                  </div>
+                </div>
+                <div class="edit-line">
+                  <div class="field">
+                    <div class="input" aria-label="Ingredient">
+                      <span>Lime juice</span><span class="tag">Sour</span>
+                    </div>
+                  </div>
+                  <div class="r2">
+                    <div class="field w-amount">
+                      <div class="input num" aria-label="Amount">22.5</div>
+                    </div>
+                    <div class="field w-unit">
+                      <div class="input" aria-label="Unit">
+                        ml<svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 9l7 7 7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <span class="grow"></span
+                    ><a
+                      class="btn btn--icon"
+                      href="#"
+                      aria-label="More for this line: move, optional, remove"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="19" r="1" /></svg
+                    ></a>
+                  </div>
+                </div>
+                <div class="edit-line">
+                  <div class="field">
+                    <div class="input" aria-label="Ingredient">
+                      <span>1:1 simple syrup</span><span class="tag">Sweet</span>
+                    </div>
+                  </div>
+                  <div class="r2">
+                    <div class="field w-amount">
+                      <div class="input num" aria-label="Amount">¾</div>
+                    </div>
+                    <div class="field w-unit">
+                      <div class="input" aria-label="Unit">
+                        oz<svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 9l7 7 7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <span class="hint grow">= 22 ml, kept as entered</span
+                    ><a
+                      class="btn btn--icon"
+                      href="#"
+                      aria-label="More for this line: move, optional, remove"
+                      ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="19" r="1" /></svg
+                    ></a>
+                  </div>
+                </div>
+                <a class="btn" href="#"
+                  ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" /></svg
+                  >Add Ingredient</a
+                >
+              </div>
+              <div style="display: flex; flex-direction: column; gap: var(--sp-3)">
+                <div class="field">
+                  <label>Method</label>
+                  <div class="input">
+                    Shake, strain
+                    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 9l7 7 7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Glass</label>
+                  <div class="input">
+                    Coupe
+                    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 9l7 7 7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Garnish</label>
+                  <div class="input">Lime wheel</div>
+                </div>
+                <div class="field">
+                  <label>Notes</label>
+                  <div class="input input--area">Fresh lime only; syrup 1:1 by volume.</div>
+                </div>
+                <div class="field">
+                  <label>Status</label>
+                  <div class="segmented" role="group" aria-label="Status">
+                    <span>Draft</span><span aria-current="true">On menu</span><span>Retired</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="compact-balance" role="status" aria-label="Balance preview">
+            <strong>Balance</strong>
+            <span>ABV 18.3 % within</span>
+            <span>Sugar 10.7 g/100 ml within</span>
+            <span>Acid 1.03 % within</span>
+          </div>
+          <div class="actionbar">
+            <a class="btn" href="#">Cancel</a
+            ><a class="btn btn--primary" href="#"
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12l5 5 9-10" /></svg
+              >Save Version</a
+            >
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

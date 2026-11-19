@@ -1,0 +1,11 @@
+{
+  "id": "parse-too-large-by-bytes",
+  "kind": "parse",
+  "title": "The reported size above the limit is refused before parsing",
+  "document": "{",
+  "bytes": 11534336,
+  "expected": {
+    "ok": false,
+    "failure": "too-large"
+  }
+}

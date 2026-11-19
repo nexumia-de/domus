@@ -1,0 +1,18 @@
+{
+  "id": "range-martini-lower-end",
+  "kind": "range",
+  "description": "The lower end of a range is within.",
+  "template": "martini",
+  "after": {
+    "abvPct": 25.6,
+    "sugarPer100Ml": 0,
+    "acidPct": 0
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [25.6, 27.8]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

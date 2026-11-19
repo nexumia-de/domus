@@ -1,0 +1,36 @@
+{
+  "id": "plan-merge-newer-by-milliseconds",
+  "kind": "plan",
+  "title": "The order of updatedAt counts fractions of a second",
+  "mode": "merge",
+  "current": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "updatedAt": "2026-06-01T00:00:00.250Z"
+      }
+    ]
+  },
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "updatedAt": "2026-06-01T00:00:00.750Z"
+      }
+    ]
+  },
+  "expected": {
+    "replaced": {
+      "specs": 1
+    },
+    "writes": {
+      "specs": ["u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"]
+    }
+  }
+}

@@ -1,0 +1,180 @@
+/* Try a Swap: tappable lines, changed marks, the change row of the balance
+   panel, the compact bar and the line sheet (docs/screens-browse.md#swap-mode). */
+
+.swap-banner {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  margin-bottom: var(--sp-3);
+}
+
+.line--swap {
+  display: block;
+  padding: 0;
+}
+
+.line-hit {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: start;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-2) 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.line-hit:hover {
+  background: var(--surface-2);
+}
+
+.line--swap .line-volume {
+  padding-bottom: var(--sp-2);
+}
+
+.line.is-changed {
+  border-left: 4px solid var(--accent);
+  padding-left: var(--sp-2);
+}
+
+.line-changed {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.line-changed::before {
+  content: '\2260  ';
+}
+
+.metric-change {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.was {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 20px;
+  border-left: 2px dotted var(--text-muted);
+}
+
+.swap-template {
+  margin: 0;
+  font-weight: 600;
+}
+
+.compact-balance {
+  position: sticky;
+  bottom: calc(-1 * var(--sp-4));
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-4);
+  margin: 0 calc(-1 * var(--sp-4)) calc(-1 * var(--sp-4));
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--surface-2);
+  border-top: 1px solid var(--divider);
+  font-size: var(--fs-sm);
+  z-index: 2;
+}
+
+.compact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.compact-item svg.i {
+  width: 16px;
+  height: 16px;
+}
+
+@container (min-width: 640px) {
+  .compact-balance {
+    display: none;
+  }
+}
+
+/* The line sheet. The backdrop leaves room for an on-screen keyboard
+   (--kb-inset, set from the visual viewport in keyboard-inset.ts). */
+.swap-backdrop {
+  padding-bottom: var(--kb-inset, 0px);
+}
+
+.swap-sheet .sheet-scroll {
+  overscroll-behavior: contain;
+}
+
+.swap-amount {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.swap-amount .input {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.swap-understood {
+  margin: 0;
+}
+
+.swap-now {
+  margin: 0;
+  font-weight: 600;
+}
+
+.offer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-2);
+  border: 0;
+  border-bottom: 1px solid var(--divider);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.offer:hover {
+  background: var(--surface-2);
+}
+
+.offer.is-selected {
+  border-left: 4px solid var(--accent);
+  font-weight: 700;
+}
+
+.offer-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.offer-path {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.offer-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-sm);
+  flex: none;
+}

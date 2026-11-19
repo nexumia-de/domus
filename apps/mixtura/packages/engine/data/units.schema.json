@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixtura unit table",
+  "description": "The conversion table of docs/units.md. value is millilitres for volume, grams for mass; null for kinds fill and count (no volume of their own).",
+  "type": "object",
+  "required": ["version", "units"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "units": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "symbols", "kind", "value", "status", "evidence", "overridable"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z_]*$" },
+          "symbols": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "kind": { "enum": ["volume", "mass", "fill", "count"] },
+          "value": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+          "status": { "enum": ["exact", "convention"] },
+          "evidence": { "enum": ["derived", "secondary", "assumption"] },
+          "overridable": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

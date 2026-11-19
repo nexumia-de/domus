@@ -1,0 +1,29 @@
+{
+  "id": "range-unknown-figure",
+  "kind": "range",
+  "description": "A figure that balance reports as unknown stays unknown, with the ingredient ids; the other figures are still compared.",
+  "template": "daiquiri",
+  "after": {
+    "abvPct": 18,
+    "sugarPer100Ml": {
+      "unknown": ["mystery-syrup"]
+    },
+    "acidPct": 0.8
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [17.6, 19.0]
+    },
+    "sugar": {
+      "status": "unknown",
+      "range": [10.4, 11.2],
+      "missingIds": ["mystery-syrup"]
+    },
+    "acid": {
+      "status": "within",
+      "range": [0.75, 0.82]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

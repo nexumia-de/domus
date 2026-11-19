@@ -1,0 +1,35 @@
+{
+  "id": "explicit-template-kept",
+  "kind": "match",
+  "description": "A Martini spec that names the Daiquiri keeps the Daiquiri: no suggestion replaces it; only that template is analysed.",
+  "templateId": "daiquiri",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "explicit",
+      "known": true
+    },
+    "order": ["daiquiri"],
+    "candidates": {
+      "daiquiri": {
+        "fits": false,
+        "distance": 2,
+        "emptyRequired": ["acid", "sweet"],
+        "unassigned": []
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

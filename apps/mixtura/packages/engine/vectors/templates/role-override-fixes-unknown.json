@@ -1,0 +1,45 @@
+{
+  "id": "role-override-fixes-unknown",
+  "kind": "match",
+  "description": "The unknown bottle gets the role sweet on its line: it shares the sweet slot with the syrup (15 + 7.5 ml, 0.75 parts) and the Daiquiri fits.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "mystery-bottle",
+      "amount": 7.5,
+      "unit": "ml",
+      "role": "sweet"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    },
+    "candidates": {
+      "daiquiri": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "sweet": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

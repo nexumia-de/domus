@@ -1,0 +1,38 @@
+{
+  "id": "range-template-without-range",
+  "kind": "range",
+  "description": "A template without `usual` has no range: unknown, no range, no evidence.",
+  "template": "bare-template",
+  "after": {
+    "abvPct": 20,
+    "sugarPer100Ml": 5,
+    "acidPct": 1
+  },
+  "expected": {
+    "abv": {
+      "status": "unknown"
+    },
+    "sugar": {
+      "status": "unknown"
+    },
+    "acid": {
+      "status": "unknown"
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)",
+  "templates": [
+    {
+      "id": "bare-template",
+      "name": "Bare",
+      "slots": [
+        {
+          "id": "spirit",
+          "role": "base",
+          "minParts": 2,
+          "maxParts": 2
+        }
+      ],
+      "method": "stir"
+    }
+  ]
+}

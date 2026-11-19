@@ -1,0 +1,63 @@
+{
+  "id": "cosmopolitan",
+  "name": "Cosmopolitan",
+  "why": "Vodka, orange liqueur, lime and cranberry juice: Sidecar by its optional mixer slot (the book files it there); acid of cranberry juice unknown",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "vodka",
+      "amount": 40,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "cointreau",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "cranberry-juice",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec cosmopolitan (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values of data/ingredient-properties.json (juice acid read from a source, the rest assumptions)",
+  "properties": {
+    "vodka": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    "cointreau": {
+      "role": "modifier",
+      "abv": 40,
+      "sugar": 23.3,
+      "acid": 0
+    },
+    "lime-juice": {
+      "role": "sour",
+      "abv": 0,
+      "sugar": 1.7,
+      "acid": 4.58
+    },
+    "cranberry-juice": {
+      "role": "lengthener",
+      "abv": 0,
+      "sugar": 12
+    }
+  },
+  "expected": {
+    "templateId": "sidecar",
+    "volumeAfterMl": 125.0,
+    "abvPct": 17.6,
+    "sugarPer100Ml": 5.88,
+    "acidPct": "unknown",
+    "acidPctMissingIds": ["cranberry-juice"]
+  },
+  "tolerance": 0.0001
+}

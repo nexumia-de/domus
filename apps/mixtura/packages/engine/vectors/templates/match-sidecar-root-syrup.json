@@ -1,0 +1,51 @@
+{
+  "id": "match-sidecar-root-syrup",
+  "kind": "match",
+  "description": "The book's root Sidecar: the same plus 1 tsp (5 ml) of simple syrup, 0.22 parts. The optional sugar slot (0.05 - 0.75) takes it; the Daiquiri's sweet slot starts at 0.25, so the syrup is below it there.",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within",
+          "sugar": "within"
+        }
+      },
+      "daiquiri": {
+        "fits": false,
+        "distance": 0.11111
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

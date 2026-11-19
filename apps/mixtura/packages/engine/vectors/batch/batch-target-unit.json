@@ -1,0 +1,73 @@
+{
+  "id": "batch-target-unit",
+  "description": "Lines entered in fluid ounces scaled by 4 and given in ml with the target unit option",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 90
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 2,
+        "unit": "oz_us"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 1,
+        "unit": "oz_us"
+      }
+    ]
+  },
+  "options": {
+    "target_unit": "ml"
+  },
+  "cases": [
+    {
+      "servings": 4,
+      "water_ml": 70.976471,
+      "total_volume_ml": 425.858826,
+      "pour_per_serving_ml": 106.464706,
+      "rounded_lines": {
+        "gin": [237, "ml", 0.411764],
+        "dry-vermouth": [118, "ml", -0.294118]
+      },
+      "rounded_water_ml": 71,
+      "rounded_total_ml": 426,
+      "drink": {
+        "abv_after_pct": 26.666667,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 26.685446,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    }
+  ],
+  "shelf_life": {
+    "days": 90,
+    "limiting_id": "dry-vermouth"
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

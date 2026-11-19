@@ -1,0 +1,47 @@
+{
+  "id": "balance-shaken-daiquiri",
+  "description": "Shaken Daiquiri, 60 ml rum, 22.5 ml lime juice, 22.5 ml 1:1 simple syrup, shake fraction 0.25",
+  "inputs": {
+    "kind": "balance",
+    "method": "shake",
+    "dilution_fraction": 0.25,
+    "lines": [
+      {
+        "name": "white rum",
+        "ml": 60,
+        "abv_pct": 40,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      {
+        "name": "lime juice",
+        "ml": 22.5,
+        "abv_pct": 0,
+        "sugar_g_per_100ml": 1.5,
+        "acid_pct": 6
+      },
+      {
+        "name": "simple syrup 1:1",
+        "ml": 22.5,
+        "abv_pct": 0,
+        "sugar_g_per_100ml": 61.48,
+        "acid_pct": 0
+      }
+    ]
+  },
+  "expected": {
+    "volume_before_ml": 105,
+    "ethanol_ml": 24,
+    "abv_before_pct": 22.857143,
+    "volume_after_ml": 131.25,
+    "abv_after_pct": 18.285714,
+    "sugar_g": 14.1705,
+    "sugar_g_per_100ml": 10.796571,
+    "acid_g": 1.35,
+    "acid_pct": 1.028571,
+    "sugar_acid_ratio": 10.496667,
+    "uk_units": 2.4
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#worked-examples; ingredient properties and the dilution fraction are assumptions (see the document)"
+}

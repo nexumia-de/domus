@@ -1,0 +1,80 @@
+{
+  "id": "daiquiri",
+  "name": "Daiquiri",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2
+    },
+    {
+      "id": "acid",
+      "role": "sour",
+      "minParts": 0.38,
+      "maxParts": 1.5,
+      "note": "3/4 oz citrus juice"
+    },
+    {
+      "id": "sweet",
+      "role": "sweet",
+      "minParts": 0.25,
+      "maxParts": 1.5,
+      "note": "3/4 oz syrup; down to 0.25 parts for Embury's 8 : 2 : 1 sour"
+    },
+    {
+      "id": "liqueur",
+      "role": "modifier",
+      "minParts": 0.1,
+      "maxParts": 1.5,
+      "optional": true,
+      "note": "a little liqueur or a second syrup-like modifier beside the sweet slot (Mai Tai style sours; a second line of role sweet adds into the sweet slot instead). Band chosen here, not from a source."
+    },
+    {
+      "id": "mixer",
+      "role": "lengthener",
+      "minParts": 0.5,
+      "maxParts": 6,
+      "optional": true,
+      "note": "soda, ginger beer or sparkling wine that lengthens the sour (Collins, Fizz, Mule, French 75); Band chosen here, not from a source."
+    },
+    {
+      "id": "bitters",
+      "role": "bitter",
+      "minParts": 0.02,
+      "maxParts": 0.25,
+      "optional": true,
+      "note": "dashes of bitters; Band chosen here, not from a source."
+    },
+    {
+      "id": "accent",
+      "role": "accent",
+      "minParts": 0.001,
+      "maxParts": 1,
+      "optional": true,
+      "note": "seasoning or garnish that is muddled or added (mint, a fruit slice, a brine, drops of a salt solution); a counted line without a known volume (leaves, sprigs) fills the slot and adds no ratio, a measured one (dashes, ml) is compared with the band; Band chosen here, not from a source."
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "abv": {
+      "min": 17.6,
+      "max": 19.0
+    },
+    "sugar": {
+      "min": 10.4,
+      "max": 11.2
+    },
+    "acid": {
+      "min": 0.75,
+      "max": 0.82
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapter 3, Daiquiri; quantities read by the lead on 2026-11-18 from the owner's copy and cited as facts, no text copied. docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified for the bands and the usual ranges; the schema has one evidence field per template, so slotEvidence and usual.evidence stay assumption although the nominal ratio was read. Read: classic 2 oz rum, 3/4 oz lime juice, 3/4 oz simple syrup; root recipe 2 oz rum (1 3/4 + 1/4), 1 oz lime juice, 3/4 oz simple syrup. The nominal spec (60 : 22.5 : 22.5 ml) is the classic recipe; the root's 1 oz of lime (1.0 parts) lies inside the band. The book files Collins, Mule, Mojito, French 75, Whiskey Sour, Southside and Mai Tai under this template; the optional slots after the sweet slot are chosen here and no ratio of those drinks was read. The lower edge of the sweet slot (0.25) is Embury's 1 part sweet to 8 parts base as cited on Wikipedia (secondary). See docs/templates.md#evidence."
+  }
+}

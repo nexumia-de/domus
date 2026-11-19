@@ -1,0 +1,10 @@
+{
+  "id": "u-7a0d6c1e-2b4f-4f0a-8e55-91a3c4d5e6f7",
+  "name": "Example syrup",
+  "level": "product",
+  "abv": 0,
+  "prepared": {
+    "specId": "u-0b9e8d7c-6a5b-4c3d-8e2f-1a0b9c8d7e6f",
+    "yield": { "amount": 300, "unit": "ml" }
+  }
+}

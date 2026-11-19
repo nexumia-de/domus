@@ -1,0 +1,3 @@
+import { buildTree } from '../../engine/src/ingredients/tree';
+
+export const build = buildTree;

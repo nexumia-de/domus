@@ -1,0 +1,16 @@
+{
+  "id": "none-egg-only",
+  "kind": "match",
+  "description": "No template is a normal outcome: one egg line fits nothing.",
+  "lines": [
+    {
+      "ingredientId": "egg",
+      "amount": 45,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": null
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

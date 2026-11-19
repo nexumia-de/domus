@@ -1,0 +1,35 @@
+{
+  "id": "near-flip-little-egg",
+  "kind": "match",
+  "description": "Near miss: 15 ml egg is 0.5 parts, below 0.75: distance 0.25 / 0.75.",
+  "lines": [
+    {
+      "ingredientId": "brandy",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "egg",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["flip"],
+    "candidates": {
+      "flip": {
+        "fits": false,
+        "distance": 0.333333,
+        "ratios": {
+          "egg": "below"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,174 @@
+{
+  "id": "scale",
+  "description": "Scaling multiplies the value and keeps the unit; the factor must be above zero",
+  "kind": "scale",
+  "cases": [
+    {
+      "name": "1.5 oz_us x 2",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us",
+        "factor": 2
+      },
+      "expected": {
+        "value": 3,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "0.75 oz_us x 0.5",
+      "input": {
+        "value": 0.75,
+        "unit": "oz_us",
+        "factor": 0.5
+      },
+      "expected": {
+        "value": 0.375,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "2 dash x 1.5",
+      "input": {
+        "value": 2,
+        "unit": "dash",
+        "factor": 1.5
+      },
+      "expected": {
+        "value": 3,
+        "unit": "dash"
+      }
+    },
+    {
+      "name": "45 ml x 4",
+      "input": {
+        "value": 45,
+        "unit": "ml",
+        "factor": 4
+      },
+      "expected": {
+        "value": 180,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "1 barspoon x 3",
+      "input": {
+        "value": 1,
+        "unit": "barspoon",
+        "factor": 3
+      },
+      "expected": {
+        "value": 3,
+        "unit": "barspoon"
+      }
+    },
+    {
+      "name": "2 g x 0.25",
+      "input": {
+        "value": 2,
+        "unit": "g",
+        "factor": 0.25
+      },
+      "expected": {
+        "value": 0.5,
+        "unit": "g"
+      }
+    },
+    {
+      "name": "factor zero",
+      "input": {
+        "value": 1,
+        "unit": "ml",
+        "factor": 0
+      },
+      "expected": {
+        "error": "invalid_factor"
+      }
+    },
+    {
+      "name": "negative factor",
+      "input": {
+        "value": 1,
+        "unit": "ml",
+        "factor": -2
+      },
+      "expected": {
+        "error": "invalid_factor"
+      }
+    },
+    {
+      "name": "negative amount",
+      "input": {
+        "value": -1,
+        "unit": "ml",
+        "factor": 2
+      },
+      "expected": {
+        "error": "invalid_value"
+      }
+    },
+    {
+      "name": "top keeps its unit",
+      "input": {
+        "value": 1,
+        "unit": "top",
+        "factor": 2
+      },
+      "expected": {
+        "value": 2,
+        "unit": "top"
+      }
+    },
+    {
+      "name": "1 whole x 3",
+      "input": {
+        "value": 1,
+        "unit": "whole",
+        "factor": 3
+      },
+      "expected": {
+        "value": 3,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "0.5 whole x 3",
+      "input": {
+        "value": 0.5,
+        "unit": "whole",
+        "factor": 3
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "whole"
+      }
+    },
+    {
+      "name": "8 leaf x 0.25",
+      "input": {
+        "value": 8,
+        "unit": "leaf",
+        "factor": 0.25
+      },
+      "expected": {
+        "value": 2,
+        "unit": "leaf"
+      }
+    },
+    {
+      "name": "1 pinch x 2.5",
+      "input": {
+        "value": 1,
+        "unit": "pinch",
+        "factor": 2.5
+      },
+      "expected": {
+        "value": 2.5,
+        "unit": "pinch"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/decisions/units-and-display.md, Consequences"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "parse-duplicate-stock",
+  "kind": "parse",
+  "title": "Two stock records for one ingredient are refused",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "stock": [
+      {
+        "ingredientId": "lemon",
+        "present": true
+      },
+      {
+        "ingredientId": "lemon",
+        "present": false
+      }
+    ],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "invalid",
+    "problem": "/stock/1 repeats an earlier record"
+  }
+}

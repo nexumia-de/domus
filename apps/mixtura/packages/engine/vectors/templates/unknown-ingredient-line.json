@@ -1,0 +1,43 @@
+{
+  "id": "unknown-ingredient-line",
+  "kind": "match",
+  "description": "A line whose ingredient is not in the tree has no role.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "not-in-tree",
+      "amount": 5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["daiquiri"],
+    "candidates": {
+      "daiquiri": {
+        "fits": false,
+        "distance": 1,
+        "unassigned": [
+          {
+            "index": 3,
+            "reason": "unknown-ingredient"
+          }
+        ]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

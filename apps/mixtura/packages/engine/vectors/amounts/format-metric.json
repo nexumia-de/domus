@@ -1,0 +1,437 @@
+{
+  "id": "format-metric",
+  "description": "Display system metric: ounces become ml in 2.5 ml steps up to 100 ml and 5 ml steps above, an ml, cl or g amount on the pour grid (0.5 ml, 0.05 cl, 0.5 g) is shown exactly, convention units are kept",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "1.5 oz_us metric",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "45 ml"
+      }
+    },
+    {
+      "name": "0.75 oz_us metric",
+      "input": {
+        "value": 0.75,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "2 oz_us metric",
+      "input": {
+        "value": 2,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "text": "60 ml"
+      }
+    },
+    {
+      "name": "1.5 oz_imp metric",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_imp"
+      },
+      "expected": {
+        "text": "42.5 ml"
+      }
+    },
+    {
+      "name": "45 ml metric",
+      "input": {
+        "value": 45,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "45 ml"
+      }
+    },
+    {
+      "name": "4.5 cl metric",
+      "input": {
+        "value": 4.5,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "4.5 cl"
+      }
+    },
+    {
+      "name": "2.345 cl metric",
+      "input": {
+        "value": 2.345,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "2.3 cl"
+      }
+    },
+    {
+      "name": "12.4 g metric",
+      "input": {
+        "value": 12.4,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "12 g"
+      }
+    },
+    {
+      "name": "5 g metric",
+      "input": {
+        "value": 5,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "5 g"
+      }
+    },
+    {
+      "name": "1 oz_mass metric",
+      "input": {
+        "value": 1,
+        "unit": "oz_mass"
+      },
+      "expected": {
+        "text": "28 g"
+      }
+    },
+    {
+      "name": "2 dash metric",
+      "input": {
+        "value": 2,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "2 dashes"
+      }
+    },
+    {
+      "name": "1 dash metric",
+      "input": {
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "text": "1 dash"
+      }
+    },
+    {
+      "name": "3 drop metric",
+      "input": {
+        "value": 3,
+        "unit": "drop"
+      },
+      "expected": {
+        "text": "3 drops"
+      }
+    },
+    {
+      "name": "1 splash metric",
+      "input": {
+        "value": 1,
+        "unit": "splash"
+      },
+      "expected": {
+        "text": "1 splash"
+      }
+    },
+    {
+      "name": "2 splash metric",
+      "input": {
+        "value": 2,
+        "unit": "splash"
+      },
+      "expected": {
+        "text": "2 splashes"
+      }
+    },
+    {
+      "name": "1 barspoon metric",
+      "input": {
+        "value": 1,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "1 bar spoon"
+      }
+    },
+    {
+      "name": "2 barspoon metric",
+      "input": {
+        "value": 2,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "2 bar spoons"
+      }
+    },
+    {
+      "name": "1.5 barspoon metric",
+      "input": {
+        "value": 1.5,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "text": "1½ bar spoons"
+      }
+    },
+    {
+      "name": "2 tsp metric",
+      "input": {
+        "value": 2,
+        "unit": "tsp"
+      },
+      "expected": {
+        "text": "2 tsp"
+      }
+    },
+    {
+      "name": "1.2 tbsp metric",
+      "input": {
+        "value": 1.2,
+        "unit": "tbsp"
+      },
+      "expected": {
+        "text": "1¼ tbsp"
+      }
+    },
+    {
+      "name": "1 top metric",
+      "input": {
+        "value": 1,
+        "unit": "top"
+      },
+      "expected": {
+        "text": "1 top"
+      }
+    },
+    {
+      "name": "0 ml metric",
+      "input": {
+        "value": 0,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "0 ml"
+      }
+    },
+    {
+      "name": "stored 22.5 ml is shown as 22.5 ml",
+      "input": {
+        "value": 22.5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "stored 7.5 ml is shown as 7.5 ml",
+      "input": {
+        "value": 7.5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "7.5 ml"
+      }
+    },
+    {
+      "name": "stored 15 ml is shown as 15 ml",
+      "input": {
+        "value": 15,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "15 ml"
+      }
+    },
+    {
+      "name": "stored 157.5 ml is shown as 157.5 ml",
+      "input": {
+        "value": 157.5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "157.5 ml"
+      }
+    },
+    {
+      "name": "stored 2.5 ml is shown as 2.5 ml",
+      "input": {
+        "value": 2.5,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "2.5 ml"
+      }
+    },
+    {
+      "name": "stored 4.25 cl is shown as 4.25 cl",
+      "input": {
+        "value": 4.25,
+        "unit": "cl"
+      },
+      "expected": {
+        "text": "4.25 cl"
+      }
+    },
+    {
+      "name": "stored 22.5 g is shown as 22.5 g",
+      "input": {
+        "value": 22.5,
+        "unit": "g"
+      },
+      "expected": {
+        "text": "22.5 g"
+      }
+    },
+    {
+      "name": "stored 22.3 ml off the pour grid rounds to 22.5 ml",
+      "input": {
+        "value": 22.3,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "stored 23.1 ml off the pour grid rounds to 22.5 ml",
+      "input": {
+        "value": 23.1,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "stored 24.3 ml off the pour grid rounds to 25 ml",
+      "input": {
+        "value": 24.3,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "25 ml"
+      }
+    },
+    {
+      "name": "stored 101.3 ml off the pour grid rounds to 100 ml",
+      "input": {
+        "value": 101.3,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "100 ml"
+      }
+    },
+    {
+      "name": "stored 103.2 ml off the pour grid rounds to 105 ml",
+      "input": {
+        "value": 103.2,
+        "unit": "ml"
+      },
+      "expected": {
+        "text": "105 ml"
+      }
+    },
+    {
+      "name": "3/4 oz converted to ml is 22.5 ml",
+      "input": {
+        "value": 0.75,
+        "unit": "oz_us",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "1 oz converted to ml is 30 ml",
+      "input": {
+        "value": 1,
+        "unit": "oz_us",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "30 ml"
+      }
+    },
+    {
+      "name": "1/2 oz converted to ml is 15 ml",
+      "input": {
+        "value": 0.5,
+        "unit": "oz_us",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "15 ml"
+      }
+    },
+    {
+      "name": "2 oz converted to ml is 60 ml",
+      "input": {
+        "value": 2,
+        "unit": "oz_us",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "60 ml"
+      }
+    },
+    {
+      "name": "4 oz converted to ml rounds in 5 ml steps",
+      "input": {
+        "value": 4,
+        "unit": "oz_us",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "120 ml"
+      }
+    },
+    {
+      "name": "stored 22.5 ml shown in US is 3/4 oz",
+      "input": {
+        "value": 22.5,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "¾ oz"
+      }
+    },
+    {
+      "name": "stored 45 ml shown in US is 1½ oz",
+      "input": {
+        "value": 45,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1½ oz"
+      }
+    },
+    {
+      "name": "stored 7.5 ml shown in US is 1/4 oz",
+      "input": {
+        "value": 7.5,
+        "unit": "ml",
+        "system": "us"
+      },
+      "expected": {
+        "text": "¼ oz"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding; decision units-and-display, point 2"
+}

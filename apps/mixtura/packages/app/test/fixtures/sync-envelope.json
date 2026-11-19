@@ -1,0 +1,12 @@
+{
+  "format": "materia-sync",
+  "version": 1,
+  "kdf": {
+    "name": "PBKDF2",
+    "hash": "SHA-256",
+    "iterations": 600000,
+    "salt": "pI8KKcdUl0k5eK45699gYA=="
+  },
+  "cipher": { "name": "AES-GCM", "nonce": "SR9QQQRTvIzbFyww" },
+  "data": "KrRvARo0Ix2UcV4BUAwXuPqZ3wGuZMQZOxecZzYSb3KrHTixjYF/wpEgiokBaG8hSLzvucfn"
+}

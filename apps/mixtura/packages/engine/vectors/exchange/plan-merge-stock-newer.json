@@ -1,0 +1,34 @@
+{
+  "id": "plan-merge-stock-newer",
+  "kind": "plan",
+  "title": "Merge replaces a stock record whose file copy has a newer updatedAt",
+  "mode": "merge",
+  "current": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "incoming": {
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-06-01T00:00:00Z",
+        "present": false
+      }
+    ]
+  },
+  "expected": {
+    "replaced": {
+      "stock": 1
+    },
+    "writes": {
+      "stock": ["p1/lemon"]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "near-old-fashioned-no-bitters",
+  "kind": "match",
+  "description": "Near miss: whiskey and syrup but no bitters; the required bitter slot is empty and the Daiquiri-shaped templates miss their sour slot too.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 1,
+      "unit": "tsp"
+    }
+  ],
+  "expected": {
+    "order": ["old-fashioned"],
+    "candidates": {
+      "old-fashioned": {
+        "fits": false,
+        "distance": 1,
+        "emptyRequired": ["bitters"]
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

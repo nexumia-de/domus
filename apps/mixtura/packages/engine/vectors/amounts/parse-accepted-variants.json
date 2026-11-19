@@ -1,0 +1,229 @@
+{
+  "id": "parse-accepted-variants",
+  "description": "Further accepted spellings: symbols and plurals from units.json, glyph fractions, case",
+  "kind": "parse",
+  "cases": [
+    {
+      "name": "0,125 oz",
+      "input": {
+        "text": "0,125 oz"
+      },
+      "expected": {
+        "value": 0.125,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1 fl oz",
+      "input": {
+        "text": "1 fl oz"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "2 Tbsp",
+      "input": {
+        "text": "2 Tbsp"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "1 tablespoon",
+      "input": {
+        "text": "1 tablespoon"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "tbsp"
+      }
+    },
+    {
+      "name": "2 bar spoons",
+      "input": {
+        "text": "2 bar spoons"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "barspoon"
+      }
+    },
+    {
+      "name": "1 BSP",
+      "input": {
+        "text": "1 BSP"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "barspoon"
+      }
+    },
+    {
+      "name": "1 imp oz",
+      "input": {
+        "text": "1 imp oz"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_imp"
+      }
+    },
+    {
+      "name": "3 tsps",
+      "input": {
+        "text": "3 tsps"
+      },
+      "expected": {
+        "value": 3,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "2 splashes",
+      "input": {
+        "text": "2 splashes"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "splash"
+      }
+    },
+    {
+      "name": "1 top",
+      "input": {
+        "text": "1 top"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "top"
+      }
+    },
+    {
+      "name": "1 top up",
+      "input": {
+        "text": "1 top up"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "top"
+      }
+    },
+    {
+      "name": "2 oz av",
+      "input": {
+        "text": "2 oz av"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "oz_mass"
+      }
+    },
+    {
+      "name": "1 ⅓ oz",
+      "input": {
+        "text": "1 ⅓ oz"
+      },
+      "expected": {
+        "value": 1.3333333333333333,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "2/3 oz",
+      "input": {
+        "text": "2/3 oz"
+      },
+      "expected": {
+        "value": 0.6666666666666666,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "⅔ oz",
+      "input": {
+        "text": "⅔ oz"
+      },
+      "expected": {
+        "value": 0.6666666666666666,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1.0 oz",
+      "input": {
+        "text": "1.0 oz"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "10 ML",
+      "input": {
+        "text": "10 ML"
+      },
+      "expected": {
+        "value": 10,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "1 1/3 oz",
+      "input": {
+        "text": "1 1/3 oz"
+      },
+      "expected": {
+        "value": 1.3333333333333333,
+        "unit": "oz_us"
+      }
+    },
+    {
+      "name": "1 Dash",
+      "input": {
+        "text": "1 Dash"
+      },
+      "expected": {
+        "value": 1,
+        "unit": "dash"
+      }
+    },
+    {
+      "name": "0 ml",
+      "input": {
+        "text": "0 ml"
+      },
+      "expected": {
+        "value": 0,
+        "unit": "ml"
+      }
+    },
+    {
+      "name": "1.5 teaspoons",
+      "input": {
+        "text": "1.5 teaspoons"
+      },
+      "expected": {
+        "value": 1.5,
+        "unit": "tsp"
+      }
+    },
+    {
+      "name": "2 DROPS",
+      "input": {
+        "text": "2 DROPS"
+      },
+      "expected": {
+        "value": 2,
+        "unit": "drop"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#parsing-grammar rules; units.json symbols"
+}

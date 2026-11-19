@@ -1,0 +1,7 @@
+{
+  "id": "citrus-juice",
+  "name": "Citrus juice",
+  "level": "type",
+  "parentId": "juice",
+  "role": "sour"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "plan-merge-twice-same-slot",
+  "kind": "plan",
+  "title": "Two file specs for one new slot: the first is added, the second skipped",
+  "mode": "merge",
+  "current": {},
+  "incoming": {
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      },
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "expected": {
+    "added": {
+      "specs": 1
+    },
+    "skipped": {
+      "specs": 1
+    },
+    "writes": {
+      "specs": ["u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"]
+    }
+  }
+}

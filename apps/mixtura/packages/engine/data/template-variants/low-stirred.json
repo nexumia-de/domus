@@ -1,0 +1,33 @@
+{
+  "id": "low-stirred",
+  "name": "Low-ABV stirred drink",
+  "parentId": "martini",
+  "alcohol": "low",
+  "slots": [
+    {
+      "id": "base",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "fortified or aromatised wine at its label ABV; set the line role to base"
+    },
+    {
+      "id": "modifier",
+      "role": "modifier",
+      "minParts": 0.5,
+      "maxParts": 2,
+      "optional": true
+    },
+    {
+      "id": "bitter",
+      "role": "bitter",
+      "minParts": 0.03,
+      "maxParts": 2,
+      "optional": true,
+      "note": "the lower end lets two dashes of bitters fit; the band is chosen, not sourced"
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "stir",
+  "notes": "Martini whose base is a fortified or aromatised wine, so the drink has ethanol and is shown with its computed ABV. No usual ranges: no source and no class value for fortified wine ABV (docs/non-alcoholic.md, Low-ABV drinks)."
+}

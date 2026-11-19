@@ -1,0 +1,11 @@
+{
+  "id": "parse-not-json",
+  "kind": "parse",
+  "title": "Text that is not JSON is unreadable",
+  "document": "{nope",
+  "bytes": 5,
+  "expected": {
+    "ok": false,
+    "failure": "unreadable"
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "id": "./",
+  "name": "Drink Builder",
+  "short_name": "Drink Builder",
+  "description": "A workbench for mixed drinks: templates, balance numbers, your own specs.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#faf8f5",
+  "background_color": "#faf8f5",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-monochrome-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "monochrome"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["food", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "New Drink",
+      "short_name": "New Drink",
+      "description": "Start a new drink spec",
+      "url": "./#/drinks/new",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "short_name": "Stock",
+      "description": "Mark the bottles you have",
+      "url": "./#/stock",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Buy Next",
+      "short_name": "Buy Next",
+      "description": "What to buy next to make more drinks",
+      "url": "./#/stock/buy-next",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/drinks-360x720.png",
+      "sizes": "720x1440",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "The drinks list"
+    },
+    {
+      "src": "screenshots/spec-360x720.png",
+      "sizes": "720x1440",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "A drink with its balance numbers"
+    },
+    {
+      "src": "screenshots/drinks-1200x800.png",
+      "sizes": "2400x1600",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "The drinks list"
+    },
+    {
+      "src": "screenshots/spec-1200x800.png",
+      "sizes": "2400x1600",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A drink with its balance numbers"
+    }
+  ]
+}

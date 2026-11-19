@@ -1,0 +1,35 @@
+{
+  "id": "match-highball-iba-screwdriver-ratio",
+  "kind": "match",
+  "description": "IBA Screwdriver proportion 1 : 2 (50 ml spirit, 100 ml mixer). Working: mixer 2 x 100 / 50 = 4 parts, inside 2 to 6; distance 0.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 100,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "highball",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "mixer": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates; the band edge is sourced as stated in docs/templates.md#evidence"
+}

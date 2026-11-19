@@ -1,0 +1,116 @@
+{
+  "id": "balance-prepared-ingredient",
+  "description": "Shaken daiquiri whose syrup is a prepared ingredient (100 g sugar and 100 ml water, yield 162.654522 ml, so 61.48 g sugar per 100 ml), computed from its spec",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "syrup-1-1",
+      "name": "Syrup 1:1",
+      "level": "product",
+      "prepared": {
+        "specId": "syrup-1-1",
+        "yield": {
+          "amount": 162.654522,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "syrup-1-1": {
+      "lines": [
+        {
+          "ingredientId": "sugar",
+          "ml": 0,
+          "sugarG": 100
+        },
+        {
+          "ingredientId": "water",
+          "ml": 100
+        }
+      ],
+      "yieldMl": 162.654522
+    }
+  },
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "lime-juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "syrup-1-1",
+        "amount": 22.5,
+        "unit": "ml"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 105,
+      "ethanol_ml": 24,
+      "abv_before_pct": 22.857143,
+      "sugar_g": 14.1705,
+      "acid_g": 1.35,
+      "sugar_before_g_per_100ml": 13.495714,
+      "acid_before_pct": 1.285714,
+      "volume_after_ml": 131.25,
+      "water_ml": 26.25,
+      "abv_after_pct": 18.285714,
+      "sugar_g_per_100ml": 10.796571,
+      "acid_pct": 1.028571,
+      "sugar_acid_ratio": 10.496667,
+      "uk_units": 2.4
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "shake",
+        "bound": "default",
+        "fraction": 0.25,
+        "basis": "sourced",
+        "evidence": "secondary"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

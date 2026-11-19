@@ -1,0 +1,316 @@
+{
+  "id": "batch-scale-shaken",
+  "description": "Shaken daiquiri with 2 dashes of bitters scaled to 1 to 10 servings: the unit is kept, rounding per the display rules, shake fraction 0.25 from the table; shelf life synthetic (lime juice 1 day)",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6,
+      "shelfLifeDays": 1
+    },
+    {
+      "id": "syrup",
+      "name": "Simple syrup 1:1",
+      "level": "product",
+      "abv": 0,
+      "sugar": 61.48,
+      "acid": 0,
+      "shelfLifeDays": 30
+    },
+    {
+      "id": "bitters",
+      "name": "Aromatic bitters",
+      "level": "product",
+      "abv": 45,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    }
+  ],
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "lime-juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "syrup",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 1,
+      "water_ml": 26.71,
+      "total_volume_ml": 133.55,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [60, "ml", 0],
+        "lime-juice": [23, "ml", 0.5],
+        "syrup": [23, "ml", 0.5],
+        "bitters": [2, "dash", 0]
+      },
+      "rounded_water_ml": 27,
+      "rounded_total_ml": 134.84,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.412934,
+        "sugar_g_per_100ml": 10.742658,
+        "acid_pct": 1.023435
+      }
+    },
+    {
+      "servings": 2,
+      "water_ml": 53.42,
+      "total_volume_ml": 267.1,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [120, "ml", 0],
+        "lime-juice": [45, "ml", 0],
+        "syrup": [45, "ml", 0],
+        "bitters": [4, "dash", 0]
+      },
+      "rounded_water_ml": 53,
+      "rounded_total_ml": 266.68,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.620069,
+        "sugar_g_per_100ml": 10.627344,
+        "acid_pct": 1.012449
+      }
+    },
+    {
+      "servings": 3,
+      "water_ml": 80.13,
+      "total_volume_ml": 400.65,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [180, "ml", 0],
+        "lime-juice": [68, "ml", 0.5],
+        "syrup": [68, "ml", 0.5],
+        "bitters": [6, "dash", 0]
+      },
+      "rounded_water_ml": 80,
+      "rounded_total_ml": 401.52,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.550508,
+        "sugar_g_per_100ml": 10.666069,
+        "acid_pct": 1.016139
+      }
+    },
+    {
+      "servings": 4,
+      "water_ml": 106.84,
+      "total_volume_ml": 534.2,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [240, "ml", 0],
+        "lime-juice": [90, "ml", 0],
+        "syrup": [90, "ml", 0],
+        "bitters": [8, "dash", 0]
+      },
+      "rounded_water_ml": 107,
+      "rounded_total_ml": 534.36,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.585223,
+        "sugar_g_per_100ml": 10.607456,
+        "acid_pct": 1.010555
+      }
+    },
+    {
+      "servings": 5,
+      "water_ml": 133.55,
+      "total_volume_ml": 667.75,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [300, "ml", 0],
+        "lime-juice": [113, "ml", 0.5],
+        "syrup": [113, "ml", 0.5],
+        "bitters": [10, "dash", 0]
+      },
+      "rounded_water_ml": 134,
+      "rounded_total_ml": 669.2,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.550508,
+        "sugar_g_per_100ml": 10.634698,
+        "acid_pct": 1.01315
+      }
+    },
+    {
+      "servings": 6,
+      "water_ml": 160.26,
+      "total_volume_ml": 801.3,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [360, "ml", 0],
+        "lime-juice": [135, "ml", 0],
+        "syrup": [135, "ml", 0],
+        "bitters": [12, "dash", 0]
+      },
+      "rounded_water_ml": 160,
+      "rounded_total_ml": 801.04,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.596824,
+        "sugar_g_per_100ml": 10.614077,
+        "acid_pct": 1.011185
+      }
+    },
+    {
+      "servings": 7,
+      "water_ml": 186.97,
+      "total_volume_ml": 934.85,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [420, "ml", 0],
+        "lime-juice": [158, "ml", 0.5],
+        "syrup": [158, "ml", 0.5],
+        "bitters": [14, "dash", 0]
+      },
+      "rounded_water_ml": 187,
+      "rounded_total_ml": 935.88,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.57033,
+        "sugar_g_per_100ml": 10.632602,
+        "acid_pct": 1.01295
+      }
+    },
+    {
+      "servings": 8,
+      "water_ml": 213.68,
+      "total_volume_ml": 1068.4,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [480, "ml", 0],
+        "lime-juice": [180, "ml", 0],
+        "syrup": [180, "ml", 0],
+        "bitters": [16, "dash", 0]
+      },
+      "rounded_water_ml": 214,
+      "rounded_total_ml": 1068.72,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.585223,
+        "sugar_g_per_100ml": 10.607456,
+        "acid_pct": 1.010555
+      }
+    },
+    {
+      "servings": 9,
+      "water_ml": 240.39,
+      "total_volume_ml": 1201.95,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [540, "ml", 0],
+        "lime-juice": [203, "ml", 0.5],
+        "syrup": [203, "ml", 0.5],
+        "bitters": [18, "dash", 0]
+      },
+      "rounded_water_ml": 240,
+      "rounded_total_ml": 1202.56,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.58136,
+        "sugar_g_per_100ml": 10.631436,
+        "acid_pct": 1.012839
+      }
+    },
+    {
+      "servings": 10,
+      "water_ml": 267.1,
+      "total_volume_ml": 1335.5,
+      "pour_per_serving_ml": 133.55,
+      "rounded_lines": {
+        "rum": [600, "ml", 0],
+        "lime-juice": [225, "ml", 0],
+        "syrup": [225, "ml", 0],
+        "bitters": [20, "dash", 0]
+      },
+      "rounded_water_ml": 267,
+      "rounded_total_ml": 1335.4,
+      "drink": {
+        "abv_after_pct": 18.59079,
+        "sugar_g_per_100ml": 10.610633,
+        "acid_pct": 1.010857
+      },
+      "made": {
+        "abv_after_pct": 18.592182,
+        "sugar_g_per_100ml": 10.611427,
+        "acid_pct": 1.010933
+      }
+    }
+  ],
+  "shelf_life": {
+    "days": 1,
+    "limiting_id": "lime-juice"
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

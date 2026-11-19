@@ -1,0 +1,80 @@
+{
+  "id": "balance-units-cl-oz",
+  "description": "Lines in cl and fluid ounces convert exactly: 6 cl rum, 1 oz lime juice (29.5735295625 ml), 0.75 oz syrup",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "syrup",
+      "name": "Simple syrup 1:1",
+      "level": "product",
+      "abv": 0,
+      "sugar": 61.48,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 6,
+        "unit": "cl"
+      },
+      {
+        "ingredientId": "lime-juice",
+        "amount": 1,
+        "unit": "oz_us"
+      },
+      {
+        "ingredientId": "syrup",
+        "amount": 0.75,
+        "unit": "oz_us"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 111.753677,
+      "ethanol_ml": 24,
+      "abv_before_pct": 21.475803,
+      "sugar_g": 14.079957,
+      "acid_g": 1.774412,
+      "sugar_before_g_per_100ml": 12.5991,
+      "acid_before_pct": 1.587788,
+      "volume_after_ml": 139.692096,
+      "water_ml": 27.938419,
+      "abv_after_pct": 17.180643,
+      "sugar_g_per_100ml": 10.07928,
+      "acid_pct": 1.270231,
+      "sugar_acid_ratio": 7.935,
+      "uk_units": 2.4
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "shake",
+        "bound": "default",
+        "fraction": 0.25,
+        "basis": "sourced",
+        "evidence": "secondary"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

@@ -1,0 +1,56 @@
+{
+  "id": "balance-unknown-method",
+  "description": "A method id that is not in the dilution table: figures before dilution only, flagged, never a default fraction",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "flambe",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 90,
+      "ethanol_ml": 28.8,
+      "abv_before_pct": 32,
+      "sugar_g": 0,
+      "acid_g": 0,
+      "sugar_before_g_per_100ml": 0,
+      "acid_before_pct": 0,
+      "sugar_acid_ratio": null,
+      "uk_units": 2.88
+    },
+    "flags": {
+      "diluted": false,
+      "dilution_unavailable": "unknown-method"
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

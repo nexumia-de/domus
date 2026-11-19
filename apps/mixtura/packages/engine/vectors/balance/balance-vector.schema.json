@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mixtura balance vector",
+  "description": "A spec over a small ingredient tree and the figures the balance module must produce. A figure is a number, null (undefined by definition) or { unknown: [ids] }. Tolerance is absolute and applies to every number.",
+  "type": "object",
+  "required": ["id", "description", "ingredients", "spec", "expected", "tolerance", "source"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "description": { "type": "string" },
+    "ingredients": { "type": "array", "items": { "type": "object" } },
+    "specs": {
+      "description": "Specs of prepared ingredients by spec id (lines in ml, as in the ingredient vectors).",
+      "type": "object"
+    },
+    "spec": {
+      "type": "object",
+      "required": ["lines"],
+      "additionalProperties": false,
+      "properties": {
+        "method": { "type": "string" },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["ingredientId", "amount", "unit"],
+            "additionalProperties": false,
+            "properties": {
+              "ingredientId": { "type": "string" },
+              "amount": { "type": "number", "minimum": 0 },
+              "unit": { "type": "string" },
+              "topMl": { "type": "number", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unit_overrides": { "type": "object", "additionalProperties": { "type": "number" } },
+        "dilution": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fraction": { "type": "number", "minimum": 0 },
+            "bound": { "enum": ["low", "default", "high"] },
+            "table": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "fraction_low", "fraction_default", "fraction_high", "evidence"],
+                "additionalProperties": false,
+                "properties": {
+                  "id": { "type": "string" },
+                  "fraction_low": { "type": "number" },
+                  "fraction_default": { "type": "number" },
+                  "fraction_high": { "type": "number" },
+                  "evidence": { "enum": ["derived", "secondary", "assumption"] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "required": ["figures", "flags"],
+      "additionalProperties": false,
+      "properties": {
+        "figures": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              { "type": ["number", "null"] },
+              {
+                "type": "object",
+                "required": ["unknown"],
+                "additionalProperties": false,
+                "properties": { "unknown": { "type": "array", "items": { "type": "string" } } }
+              }
+            ]
+          }
+        },
+        "flags": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "diluted": { "type": "boolean" },
+            "dilution_unavailable": { "enum": ["no-method", "unknown-method"] },
+            "estimated": { "type": "boolean" },
+            "estimated_ids": { "type": "array", "items": { "type": "string" } },
+            "excluded_ids": { "type": "array", "items": { "type": "string" } },
+            "excluded_reasons": {
+              "type": "array",
+              "items": { "enum": ["top-without-volume", "counted-without-volume"] }
+            },
+            "dilution": {
+              "type": "object",
+              "required": ["method", "bound", "fraction", "basis", "evidence"],
+              "additionalProperties": false,
+              "properties": {
+                "method": { "type": "string" },
+                "bound": { "enum": ["low", "default", "high"] },
+                "fraction": { "type": "number" },
+                "basis": { "enum": ["sourced", "assumption", "override"] },
+                "evidence": { "enum": ["derived", "secondary", "assumption", "override"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tolerance": { "type": "number", "exclusiveMinimum": 0 },
+    "source": { "type": "string" }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "plan-replace-empty-file",
+  "kind": "plan",
+  "title": "Replace with an empty file removes everything",
+  "mode": "replace",
+  "current": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x"
+      }
+    ],
+    "specs": [
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "L1",
+        "version": 1,
+        "name": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      }
+    ]
+  },
+  "incoming": {},
+  "expected": {
+    "removed": {
+      "ingredients": 1,
+      "specs": 1
+    },
+    "deletes": {
+      "ingredients": ["u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"],
+      "specs": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"]
+    }
+  }
+}

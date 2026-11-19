@@ -1,0 +1,116 @@
+{
+  "id": "classify-boundaries",
+  "kind": "classify-figures",
+  "description": "Each end of a threshold: 'below' excludes the line, 'upTo' includes it; low includes its line; 0 with upTo is exactly 0.",
+  "cases": [
+    {
+      "abvPct": 0,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 10
+      },
+      "class": "none"
+    },
+    {
+      "abvPct": 0.4999,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 10
+      },
+      "class": "none"
+    },
+    {
+      "abvPct": 0.5,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 10
+      },
+      "class": "low"
+    },
+    {
+      "abvPct": 10,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 10
+      },
+      "class": "low"
+    },
+    {
+      "abvPct": 10.0001,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 10
+      },
+      "class": "standard"
+    },
+    {
+      "abvPct": 0.05,
+      "thresholds": {
+        "withoutPct": 0.05,
+        "withoutBound": "upTo",
+        "lowPct": 1.2
+      },
+      "class": "none"
+    },
+    {
+      "abvPct": 0.0500001,
+      "thresholds": {
+        "withoutPct": 0.05,
+        "withoutBound": "upTo",
+        "lowPct": 1.2
+      },
+      "class": "low"
+    },
+    {
+      "abvPct": 1.2,
+      "thresholds": {
+        "withoutPct": 0.05,
+        "withoutBound": "upTo",
+        "lowPct": 1.2
+      },
+      "class": "low"
+    },
+    {
+      "abvPct": 1.2001,
+      "thresholds": {
+        "withoutPct": 0.05,
+        "withoutBound": "upTo",
+        "lowPct": 1.2
+      },
+      "class": "standard"
+    },
+    {
+      "abvPct": 0,
+      "thresholds": {
+        "withoutPct": 0,
+        "withoutBound": "upTo",
+        "lowPct": 10
+      },
+      "class": "none"
+    },
+    {
+      "abvPct": 0.0001,
+      "thresholds": {
+        "withoutPct": 0,
+        "withoutBound": "upTo",
+        "lowPct": 10
+      },
+      "class": "low"
+    },
+    {
+      "abvPct": 5,
+      "thresholds": {
+        "withoutPct": 0.5,
+        "withoutBound": "below",
+        "lowPct": 0.5
+      },
+      "class": "standard"
+    }
+  ],
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

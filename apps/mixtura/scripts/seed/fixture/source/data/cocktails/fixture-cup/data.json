@@ -1,0 +1,45 @@
+{
+  "_id": "fixture-cup",
+  "name": "Fixture Cup",
+  "instructions": "Invented for the converter test.",
+  "created_at": null,
+  "updated_at": null,
+  "description": "Invented.",
+  "source": null,
+  "garnish": "A garnish text that must not be shipped.",
+  "abv": null,
+  "tags": [],
+  "glass": "Highball",
+  "method": "Build",
+  "utensils": [],
+  "parent_cocktail_id": null,
+  "year": null,
+  "author": null,
+  "images": [],
+  "ingredients": [
+    {
+      "_id": "tea",
+      "name": "Tea",
+      "sort": 1,
+      "amount": 1,
+      "units": "cup",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    },
+    {
+      "_id": "gin",
+      "name": "Gin",
+      "sort": 2,
+      "amount": 0,
+      "units": "ml",
+      "optional": false,
+      "is_specified": false,
+      "amount_max": null,
+      "note": null,
+      "substitutes": []
+    }
+  ]
+}

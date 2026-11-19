@@ -1,0 +1,273 @@
+{
+  "id": "format-counted",
+  "description": "Counted units are shown to the nearest half (refined by an eighth so a count never shows as 0), as a mixed number, the same in every display system; plural for anything but 1",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "1 whole metric",
+      "input": {
+        "value": 1,
+        "unit": "whole",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "1 whole"
+      }
+    },
+    {
+      "name": "1 whole us",
+      "input": {
+        "value": 1,
+        "unit": "whole",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1 whole"
+      }
+    },
+    {
+      "name": "2 whole metric",
+      "input": {
+        "value": 2,
+        "unit": "whole",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "2 whole"
+      }
+    },
+    {
+      "name": "2 whole us",
+      "input": {
+        "value": 2,
+        "unit": "whole",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2 whole"
+      }
+    },
+    {
+      "name": "1.5 whole metric",
+      "input": {
+        "value": 1.5,
+        "unit": "whole",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "1\u00bd whole"
+      }
+    },
+    {
+      "name": "1.5 whole us",
+      "input": {
+        "value": 1.5,
+        "unit": "whole",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1\u00bd whole"
+      }
+    },
+    {
+      "name": "0.5 slice metric",
+      "input": {
+        "value": 0.5,
+        "unit": "slice",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "\u00bd slice"
+      }
+    },
+    {
+      "name": "0.5 slice us",
+      "input": {
+        "value": 0.5,
+        "unit": "slice",
+        "system": "us"
+      },
+      "expected": {
+        "text": "\u00bd slice"
+      }
+    },
+    {
+      "name": "0.3 leaf metric",
+      "input": {
+        "value": 0.3,
+        "unit": "leaf",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "\u00bd leaf"
+      }
+    },
+    {
+      "name": "0.3 leaf us",
+      "input": {
+        "value": 0.3,
+        "unit": "leaf",
+        "system": "us"
+      },
+      "expected": {
+        "text": "\u00bd leaf"
+      }
+    },
+    {
+      "name": "0.1 wedge metric",
+      "input": {
+        "value": 0.1,
+        "unit": "wedge",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "\u215b wedge"
+      }
+    },
+    {
+      "name": "0.1 wedge us",
+      "input": {
+        "value": 0.1,
+        "unit": "wedge",
+        "system": "us"
+      },
+      "expected": {
+        "text": "\u215b wedge"
+      }
+    },
+    {
+      "name": "8 leaf metric",
+      "input": {
+        "value": 8,
+        "unit": "leaf",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "8 leaves"
+      }
+    },
+    {
+      "name": "8 leaf us",
+      "input": {
+        "value": 8,
+        "unit": "leaf",
+        "system": "us"
+      },
+      "expected": {
+        "text": "8 leaves"
+      }
+    },
+    {
+      "name": "1 leaf metric",
+      "input": {
+        "value": 1,
+        "unit": "leaf",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "1 leaf"
+      }
+    },
+    {
+      "name": "1 leaf us",
+      "input": {
+        "value": 1,
+        "unit": "leaf",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1 leaf"
+      }
+    },
+    {
+      "name": "2.74 sprig metric",
+      "input": {
+        "value": 2.74,
+        "unit": "sprig",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "2\u00bd sprigs"
+      }
+    },
+    {
+      "name": "2.74 sprig us",
+      "input": {
+        "value": 2.74,
+        "unit": "sprig",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2\u00bd sprigs"
+      }
+    },
+    {
+      "name": "2.75 sprig metric",
+      "input": {
+        "value": 2.75,
+        "unit": "sprig",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "3 sprigs"
+      }
+    },
+    {
+      "name": "2.75 sprig us",
+      "input": {
+        "value": 2.75,
+        "unit": "sprig",
+        "system": "us"
+      },
+      "expected": {
+        "text": "3 sprigs"
+      }
+    },
+    {
+      "name": "1 pinch metric",
+      "input": {
+        "value": 1,
+        "unit": "pinch",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "1 pinch"
+      }
+    },
+    {
+      "name": "1 pinch us",
+      "input": {
+        "value": 1,
+        "unit": "pinch",
+        "system": "us"
+      },
+      "expected": {
+        "text": "1 pinch"
+      }
+    },
+    {
+      "name": "2 pinch metric",
+      "input": {
+        "value": 2,
+        "unit": "pinch",
+        "system": "metric"
+      },
+      "expected": {
+        "text": "2 pinches"
+      }
+    },
+    {
+      "name": "2 pinch us",
+      "input": {
+        "value": 2,
+        "unit": "pinch",
+        "system": "us"
+      },
+      "expected": {
+        "text": "2 pinches"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#counted-units; rounding rule of the document (half up, nearest 1/2)"
+}

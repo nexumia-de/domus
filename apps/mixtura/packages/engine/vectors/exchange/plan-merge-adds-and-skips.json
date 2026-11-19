@@ -1,0 +1,47 @@
+{
+  "id": "plan-merge-adds-and-skips",
+  "kind": "plan",
+  "title": "Merge adds new records and keeps the existing one for the same id",
+  "mode": "merge",
+  "current": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "Mine"
+      }
+    ]
+  },
+  "incoming": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "Theirs"
+      },
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "name": "x"
+      }
+    ],
+    "stock": [
+      {
+        "placeId": "p1",
+        "ingredientId": "lemon",
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "present": true
+      }
+    ]
+  },
+  "expected": {
+    "added": {
+      "ingredients": 1,
+      "stock": 1
+    },
+    "skipped": {
+      "ingredients": 1
+    },
+    "writes": {
+      "ingredients": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"],
+      "stock": ["p1/lemon"]
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "id": "sidecar",
+  "name": "Sidecar",
+  "parentId": "daiquiri",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2
+    },
+    {
+      "id": "acid",
+      "role": "sour",
+      "minParts": 0.38,
+      "maxParts": 2.0,
+      "note": "1 oz citrus juice (1.0 parts at the book's ratio); lower edge 0.38 as before, upper edge twice the nominal"
+    },
+    {
+      "id": "liqueur",
+      "role": "modifier",
+      "minParts": 0.25,
+      "maxParts": 2.67,
+      "note": "1 oz orange liqueur (1.33 parts at the book's ratio, 1 1/2 oz base : 1 oz liqueur : 3/4 oz juice); lower edge 0.25 as in Embury's 8 : 2 : 1 sour, upper edge twice the nominal"
+    },
+    {
+      "id": "sugar",
+      "role": "sweet",
+      "minParts": 0.05,
+      "maxParts": 0.75,
+      "optional": true,
+      "note": "the teaspoon of simple syrup of the book's root recipe, or a larger dash of syrup; Band chosen here, not from a source."
+    },
+    {
+      "id": "liqueur-2",
+      "role": "modifier",
+      "minParts": 0.25,
+      "maxParts": 2.67,
+      "optional": true,
+      "note": "a second liqueur or fortified wine (equal-parts sours such as Corpse Reviver No. 2, Last Word); Band chosen here, not from a source."
+    },
+    {
+      "id": "bitters",
+      "role": "bitter",
+      "minParts": 0.02,
+      "maxParts": 0.25,
+      "optional": true,
+      "note": "dashes of bitters; Band chosen here, not from a source."
+    },
+    {
+      "id": "mixer",
+      "role": "lengthener",
+      "minParts": 0.5,
+      "maxParts": 6,
+      "optional": true,
+      "note": "juice or soda that lengthens the sour (Cosmopolitan: cranberry juice; the book files it under the Sidecar). Band chosen here, not from a source."
+    },
+    {
+      "id": "accent",
+      "role": "accent",
+      "minParts": 0.001,
+      "maxParts": 1,
+      "optional": true,
+      "note": "seasoning or garnish that is muddled or added (mint, a fruit slice, a brine, drops of a salt solution); a counted line without a known volume (leaves, sprigs) fills the slot and adds no ratio, a measured one (dashes, ml) is compared with the band; Band chosen here, not from a source."
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "shake",
+  "usual": {
+    "abv": {
+      "min": 23.7,
+      "max": 25.6
+    },
+    "sugar": {
+      "min": 6.2,
+      "max": 6.7
+    },
+    "acid": {
+      "min": 0.85,
+      "max": 0.92
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapter 4, Sidecar; quantities read by the lead on 2026-11-18 from the owner's copy and cited as facts, no text copied. docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified for the bands and the usual ranges; the schema has one evidence field per template, so slotEvidence and usual.evidence stay assumption although the nominal ratio was read. Read: classic 1 1/2 oz Cognac, 1 oz orange liqueur, 3/4 oz lemon juice; root recipe the same plus 1 tsp simple syrup. The nominal spec (60 : 40 : 30 ml, liqueur 1.33 and acid 1.0 parts at base 2) is that recipe; before 2026-11-18 it was 2 : 3/4 : 3/4, which the book files as a variation. The lower edges (acid 0.38, liqueur 0.25) are sourced as before (Embury's 8 : 2 : 1 sour as cited on Wikipedia, secondary); the upper edges are twice the nominal. The book files Margarita, Cosmopolitan and Last Word under this template; the optional slots are chosen here. See docs/templates.md#evidence."
+  }
+}

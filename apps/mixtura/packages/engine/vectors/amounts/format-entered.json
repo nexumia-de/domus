@@ -1,0 +1,93 @@
+{
+  "id": "format-entered",
+  "description": "Where the entered unit equals the display unit and the value still matches, the entered text is shown unchanged",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "entered 1.5oz in us",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us",
+        "system": "us",
+        "entered": "1.5oz"
+      },
+      "expected": {
+        "text": "1.5oz"
+      }
+    },
+    {
+      "name": "entered mixed number in us",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_us",
+        "system": "us",
+        "entered": "1 1/2 oz"
+      },
+      "expected": {
+        "text": "1 1/2 oz"
+      }
+    },
+    {
+      "name": "entered 45ml in metric",
+      "input": {
+        "value": 45,
+        "unit": "ml",
+        "system": "metric",
+        "entered": "45ml"
+      },
+      "expected": {
+        "text": "45ml"
+      }
+    },
+    {
+      "name": "entered decimal comma",
+      "input": {
+        "value": 4.5,
+        "unit": "cl",
+        "system": "metric",
+        "entered": "4,5 cl"
+      },
+      "expected": {
+        "text": "4,5 cl"
+      }
+    },
+    {
+      "name": "scaled amount: entered text is stale",
+      "input": {
+        "value": 3,
+        "unit": "oz_us",
+        "system": "us",
+        "entered": "1.5oz"
+      },
+      "expected": {
+        "text": "3 oz"
+      }
+    },
+    {
+      "name": "entered oz shown in ml",
+      "input": {
+        "value": 0.75,
+        "unit": "oz_us",
+        "system": "metric",
+        "entered": "3/4 oz"
+      },
+      "expected": {
+        "text": "22.5 ml"
+      }
+    },
+    {
+      "name": "entered text is trimmed",
+      "input": {
+        "value": 2,
+        "unit": "dash",
+        "system": "us",
+        "entered": " 2 dashes "
+      },
+      "expected": {
+        "text": "2 dashes"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding, last bullet"
+}

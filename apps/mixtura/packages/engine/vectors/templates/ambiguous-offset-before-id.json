@@ -1,0 +1,76 @@
+{
+  "id": "ambiguous-offset-before-id",
+  "kind": "match",
+  "description": "Both fit; the second template's band is centred on the spec's ratio (4 parts), so its offset is 0 and it wins before the id order is consulted.",
+  "templates": [
+    {
+      "id": "wide",
+      "name": "wide",
+      "slots": [
+        {
+          "id": "spirit",
+          "role": "base",
+          "minParts": 2,
+          "maxParts": 2
+        },
+        {
+          "id": "mixer",
+          "role": "lengthener",
+          "minParts": 2,
+          "maxParts": 10
+        }
+      ],
+      "method": "build"
+    },
+    {
+      "id": "centred",
+      "name": "centred",
+      "slots": [
+        {
+          "id": "spirit",
+          "role": "base",
+          "minParts": 2,
+          "maxParts": 2
+        },
+        {
+          "id": "mixer",
+          "role": "lengthener",
+          "minParts": 3.9,
+          "maxParts": 4.1
+        }
+      ],
+      "method": "build"
+    }
+  ],
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 120,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "centred",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["centred", "wide"],
+    "candidates": {
+      "wide": {
+        "fits": true,
+        "distance": 0
+      },
+      "centred": {
+        "fits": true,
+        "distance": 0
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "match-old-fashioned-classic",
+  "kind": "match",
+  "description": "Classic: 60 ml whiskey, 4.2 g sugar (a mass has no volume, so its ratio is unmeasured), 2 dashes bitters (1.84 ml, 0.061 parts).",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sugar",
+      "amount": 4.2,
+      "unit": "g"
+    },
+    {
+      "ingredientId": "angostura",
+      "amount": 2,
+      "unit": "dash"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "old-fashioned",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["old-fashioned"],
+    "candidates": {
+      "old-fashioned": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "spirit": "reference",
+          "sugar": "unmeasured",
+          "bitters": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

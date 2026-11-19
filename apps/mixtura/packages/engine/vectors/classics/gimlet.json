@@ -1,0 +1,52 @@
+{
+  "id": "gimlet",
+  "name": "Gimlet",
+  "why": "Daiquiri template, gin and lime with syrup",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec gimlet (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values of data/ingredient-properties.json (juice acid read from a source, the rest assumptions)",
+  "properties": {
+    "gin": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    "lime-juice": {
+      "role": "sour",
+      "abv": 0,
+      "sugar": 1.7,
+      "acid": 4.58
+    },
+    "simple-syrup": {
+      "role": "sweet",
+      "abv": 0,
+      "sugar": 60,
+      "acid": 0
+    }
+  },
+  "expected": {
+    "templateId": "daiquiri",
+    "volumeAfterMl": 112.5,
+    "abvPct": 21.333333,
+    "sugarPer100Ml": 8.226667,
+    "acidPct": 0.610667
+  },
+  "tolerance": 0.0001
+}

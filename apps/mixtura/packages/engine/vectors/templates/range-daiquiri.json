@@ -1,0 +1,26 @@
+{
+  "id": "range-daiquiri",
+  "kind": "range",
+  "description": "Daiquiri 17.6 - 19.0 %, 10.4 - 11.2 g, 0.75 - 0.82 %: within, below, above.",
+  "template": "daiquiri",
+  "after": {
+    "abvPct": 18,
+    "sugarPer100Ml": 8,
+    "acidPct": 1.2
+  },
+  "expected": {
+    "abv": {
+      "status": "within",
+      "range": [17.6, 19.0]
+    },
+    "sugar": {
+      "status": "below",
+      "range": [10.4, 11.2]
+    },
+    "acid": {
+      "status": "above",
+      "range": [0.75, 0.82]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

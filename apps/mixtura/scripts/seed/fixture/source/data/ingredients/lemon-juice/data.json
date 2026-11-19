@@ -1,0 +1,25 @@
+{
+  "_id": "lemon-juice",
+  "_parent_id": "juices",
+  "name": "Lemon Juice",
+  "strength": 0,
+  "description": "Invented for the converter test.",
+  "origin": null,
+  "color": null,
+  "category": null,
+  "created_at": null,
+  "updated_at": null,
+  "images": [],
+  "ingredient_parts": [
+    {
+      "_id": "lemon",
+      "name": "Lemon"
+    }
+  ],
+  "prices": [],
+  "calculator_id": null,
+  "sugar_g_per_ml": 25,
+  "acidity": null,
+  "distillery": null,
+  "units": "ml"
+}

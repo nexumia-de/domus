@@ -1,0 +1,27 @@
+{
+  "id": "match-na-sour-without-class",
+  "kind": "match",
+  "description": "The same spec without a class: the Daiquiri as before, the variant is not offered.",
+  "lines": [
+    {
+      "ingredientId": "tea",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": "daiquiri",
+    "notCandidates": ["na-sour"]
+  },
+  "source": "docs/non-alcoholic.md and docs/engine.md; expected values worked out by hand (arithmetic in the description) from the ingredient properties of tree.json and the dilution fractions of data/dilution.json (stir 0.2, shake 0.25, build 0.1)"
+}

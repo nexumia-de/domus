@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "default": {
+    "without": "below-0.5",
+    "low": "up-to-10"
+  },
+  "presets": {
+    "without": [
+      {
+        "id": "below-0.5",
+        "maxPct": 0.5,
+        "bound": "below",
+        "evidence": "read",
+        "basis": "docs/non-alcoholic.md, Terms and thresholds: 0.5 % is the line of EU de-alcoholised wine, UK de-alcoholised and US malt non-alcoholic; 'below' follows the US wording. Which preset is the default needs the owner's decision."
+      },
+      {
+        "id": "up-to-0.05",
+        "maxPct": 0.05,
+        "bound": "upTo",
+        "evidence": "read",
+        "basis": "docs/non-alcoholic.md: the UK guidance line for 'alcohol free' (no more than 0.05 % ABV), as quoted in the 2023 consultation paper."
+      },
+      {
+        "id": "none",
+        "maxPct": 0,
+        "bound": "upTo",
+        "evidence": "read",
+        "basis": "docs/non-alcoholic.md: no alcohol at all, the US condition for 'alcohol free' and '0.0 percent' (27 CFR 7.65)."
+      }
+    ],
+    "low": [
+      {
+        "id": "up-to-1.2",
+        "maxPct": 1.2,
+        "evidence": "read",
+        "basis": "docs/non-alcoholic.md: the UK 'low alcohol' line (1.2 % ABV or below), as quoted by gov.uk."
+      },
+      {
+        "id": "up-to-10",
+        "maxPct": 10,
+        "evidence": "assumption, unverified",
+        "basis": "docs/non-alcoholic.md: the bar sense of low ABV (a vermouth or sherry drink); no source read defines low ABV for a cocktail. Adjustable."
+      },
+      {
+        "id": "up-to-15",
+        "maxPct": 15,
+        "evidence": "assumption, unverified",
+        "basis": "docs/non-alcoholic.md: a third line for drinks built on fortified or aromatised wine, which sit around 14 to 15 % ABV after dilution (the nominal sherry and vermouth drink computes to 14.44 %); no source read defines low ABV for a cocktail. Adjustable."
+      }
+    ]
+  }
+}

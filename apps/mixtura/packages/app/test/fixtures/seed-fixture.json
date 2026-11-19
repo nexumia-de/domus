@@ -1,0 +1,39 @@
+{
+  "seedVersion": "fixture-1",
+  "ingredients": [
+    { "id": "spirit", "name": "Spirit", "level": "category", "role": "base" },
+    { "id": "rum", "name": "Rum", "level": "type", "parentId": "spirit" },
+    { "id": "gin", "name": "Gin", "level": "type", "parentId": "spirit" },
+    { "id": "lime-juice", "name": "Lime juice", "level": "type", "role": "sour" },
+    { "id": "simple-syrup", "name": "Simple syrup", "level": "type", "role": "sweet" }
+  ],
+  "templates": [],
+  "specs": [
+    {
+      "id": "fixture-rum-sour",
+      "lineageId": "fixture-rum-sour",
+      "version": 1,
+      "name": "Fixture rum sour",
+      "lines": [
+        { "ingredientId": "rum", "amount": 2, "unit": "oz" },
+        { "ingredientId": "lime-juice", "amount": 1, "unit": "oz" },
+        { "ingredientId": "simple-syrup", "amount": 0.5, "unit": "oz" }
+      ],
+      "notes": "Test fixture, not a recipe.",
+      "status": "on-menu"
+    },
+    {
+      "id": "fixture-gin-sour",
+      "lineageId": "fixture-gin-sour",
+      "version": 1,
+      "name": "Fixture gin sour",
+      "lines": [
+        { "ingredientId": "gin", "amount": 2, "unit": "oz" },
+        { "ingredientId": "lime-juice", "amount": 1, "unit": "oz" }
+      ],
+      "notes": "Test fixture, not a recipe.",
+      "status": "on-menu"
+    }
+  ],
+  "affinities": []
+}

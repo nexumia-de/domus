@@ -1,0 +1,80 @@
+{
+  "id": "balance-no-alcohol",
+  "description": "A drink without alcohol: ABV 0 and units 0, not unknown",
+  "ingredients": [
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6
+    },
+    {
+      "id": "syrup",
+      "name": "Simple syrup 1:1",
+      "level": "product",
+      "abv": 0,
+      "sugar": 61.48,
+      "acid": 0
+    },
+    {
+      "id": "soda",
+      "name": "Soda water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "lime-juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "syrup",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "soda",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ]
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 120,
+      "ethanol_ml": 0,
+      "abv_before_pct": 0,
+      "sugar_g": 18.894,
+      "acid_g": 1.8,
+      "sugar_before_g_per_100ml": 15.745,
+      "acid_before_pct": 1.5,
+      "volume_after_ml": 150,
+      "water_ml": 30,
+      "abv_after_pct": 0,
+      "sugar_g_per_100ml": 12.596,
+      "acid_pct": 1.2,
+      "sugar_acid_ratio": 10.496667,
+      "uk_units": 0
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "shake",
+        "bound": "default",
+        "fraction": 0.25,
+        "basis": "sourced",
+        "evidence": "secondary"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

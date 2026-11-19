@@ -1,0 +1,36 @@
+{
+  "id": "parse-riff-loop",
+  "kind": "parse",
+  "title": "Riffs that are their own ancestors are refused, naming the drinks",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "lineageId": "u-11111111-1111-4111-8111-111111111111",
+        "version": 1,
+        "name": "Alpha",
+        "parentId": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+      },
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "lineageId": "u-22222222-2222-4222-8222-222222222222",
+        "version": 1,
+        "name": "Beta",
+        "parentId": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "invalid",
+    "problem": "/specs: these drinks are riffs of each other in a loop: Alpha, Beta"
+  }
+}

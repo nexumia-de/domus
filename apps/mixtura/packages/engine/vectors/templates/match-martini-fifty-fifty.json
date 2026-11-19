@@ -1,0 +1,34 @@
+{
+  "id": "match-martini-fifty-fifty",
+  "kind": "match",
+  "description": "Edge of the band: equal parts gin and vermouth is 2 parts, the upper end.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "dry-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "martini",
+      "basis": "suggested",
+      "known": true
+    },
+    "candidates": {
+      "martini": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "fortified": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "parse-version-not-a-number",
+  "kind": "parse",
+  "title": "The format version must be a whole number from 1",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": "one",
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "invalid"
+  }
+}

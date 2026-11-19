@@ -1,0 +1,30 @@
+{
+  "attribution": {
+    "source": "Mixtura",
+    "holder": "Mixtura contributors",
+    "licence": "AGPL-3.0-or-later",
+    "notice": "Parent corrections of the ingredient tree: Mixtura's own judgement of drink categories, written for Drink Builder; the Bar Assistant data stays as published and is overridden only here."
+  },
+  "corrections": [
+    {
+      "id": "cocchi-aperitivo-americano",
+      "was": "dry-vermouth",
+      "parentId": "fortified-wine",
+      "note": "Cocchi Americano is an aromatised wine flavoured with cinchona and gentian, a quinquina like Lillet, which sits directly under fortified wine; it is not a dry vermouth, so a recipe that names dry vermouth must not count it.",
+      "evidence": {
+        "status": "assumption, unverified",
+        "source": "Own knowledge of the category; no source read (the host that was meant to be read, en.wikipedia.org, is outside the session's network). To verify: producer page or a reference on aromatised wines."
+      }
+    },
+    {
+      "id": "tequila",
+      "was": "mezcal",
+      "parentId": "spirits",
+      "note": "Tequila and mezcal are separate agave spirits with separate designations of origin; a recipe that names mezcal asks for its character and tequila does not stand in for it. Tequila keeps its four ageing children.",
+      "evidence": {
+        "status": "assumption, unverified",
+        "source": "Own knowledge of the two designations; no source read (host blocked). To verify: the Mexican standards NOM-006-SCFI (tequila) and NOM-070-SCFI (mezcal)."
+      }
+    }
+  ]
+}

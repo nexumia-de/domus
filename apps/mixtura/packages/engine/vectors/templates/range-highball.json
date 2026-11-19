@@ -1,0 +1,26 @@
+{
+  "id": "range-highball",
+  "kind": "range",
+  "description": "Highball 9.1 - 12.1 % (120 to 180 ml of mixer).",
+  "template": "highball",
+  "after": {
+    "abvPct": 14,
+    "sugarPer100Ml": 0,
+    "acidPct": 0
+  },
+  "expected": {
+    "abv": {
+      "status": "above",
+      "range": [9.1, 12.1]
+    },
+    "sugar": {
+      "status": "within",
+      "range": [0, 0]
+    },
+    "acid": {
+      "status": "within",
+      "range": [0, 0]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

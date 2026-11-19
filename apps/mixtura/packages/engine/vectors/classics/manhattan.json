@@ -1,0 +1,52 @@
+{
+  "id": "manhattan",
+  "name": "Manhattan",
+  "why": "Stirred whiskey and vermouth with aromatic bitters: fits the Martini template since the bitter slot reads 0.02 to 2 parts (two dashes are 0.061 parts)",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "rye-whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "angostura-aromatic-bitters",
+      "amount": 2,
+      "unit": "dash"
+    }
+  ],
+  "source": "Lines of the seed spec manhattan (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "properties": {
+    "rye-whiskey": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    "sweet-vermouth": {
+      "role": "modifier",
+      "abv": 18,
+      "sugar": 15,
+      "acid": 0
+    },
+    "angostura-aromatic-bitters": {
+      "role": "bitter",
+      "abv": 44.7,
+      "sugar": 0.3,
+      "acid": 0
+    }
+  },
+  "expected": {
+    "templateId": "martini",
+    "volumeAfterMl": 110.208,
+    "abvPct": 27.423127,
+    "sugarPer100Ml": 4.088197,
+    "acidPct": 0.0
+  },
+  "tolerance": 0.0001
+}

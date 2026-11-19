@@ -1,0 +1,65 @@
+{
+  "id": "old-fashioned",
+  "name": "Old-Fashioned",
+  "slots": [
+    {
+      "id": "spirit",
+      "role": "base",
+      "minParts": 2,
+      "maxParts": 2,
+      "note": "2 oz spirit"
+    },
+    {
+      "id": "sugar",
+      "role": "sweet",
+      "minParts": 0.08,
+      "maxParts": 0.33,
+      "note": "about 1 tsp (5 ml) of syrup or sugar; solid sugar in grams is not measured against the ratio"
+    },
+    {
+      "id": "bitters",
+      "role": "bitter",
+      "minParts": 0.03,
+      "maxParts": 0.12,
+      "note": "2 dashes (1.8 ml)"
+    },
+    {
+      "id": "modifier",
+      "role": "modifier",
+      "minParts": 0.02,
+      "maxParts": 0.5,
+      "optional": true,
+      "note": "a rinse or a little liqueur (Sazerac) or a splash of fortified wine; Band chosen here, not from a source."
+    },
+    {
+      "id": "accent",
+      "role": "accent",
+      "minParts": 0.001,
+      "maxParts": 1,
+      "optional": true,
+      "note": "seasoning or garnish that is muddled or added (mint, a fruit slice, a brine, drops of a salt solution); a counted line without a known volume (leaves, sprigs) fills the slot and adds no ratio, a measured one (dashes, ml) is compared with the band; Band chosen here, not from a source."
+    }
+  ],
+  "slotEvidence": "assumption",
+  "method": "stir",
+  "usual": {
+    "abv": {
+      "min": 32.1,
+      "max": 34.9
+    },
+    "sugar": {
+      "min": 5.4,
+      "max": 5.9
+    },
+    "acid": {
+      "min": 0,
+      "max": 0
+    },
+    "evidence": "assumption"
+  },
+  "source": {
+    "name": "Alex Day, Nick Fauchald, David Kaplan: Cocktail Codex (Ten Speed Press, 2018), chapter 1, Old-Fashioned; quantities read by the lead on 2026-11-18 from the owner's copy and cited as facts, no text copied. docs/balance.md, Usual ranges per template (computed from the nominal spec with assumed ingredient properties and the adjustable dilution table)",
+    "licence": "AGPL-3.0-or-later",
+    "note": "Assumption, unverified for the bands and the usual ranges; the schema has one evidence field per template, so slotEvidence and usual.evidence stay assumption although the nominal ratio was read. Read: classic 2 oz bourbon, 1 sugar cube, 2 dashes bitters; root recipe 2 oz spirit, 1 tsp syrup, 2 + 1 dashes bitters. The nominal spec (60 ml, 4.2 g sugar, 1.8 ml bitters) is the classic recipe; the root's teaspoon of syrup (0.17 parts) and 3 dashes (0.09 parts) lie inside the bands. Slots after the bitters are chosen here: the book files the Sazerac and the Mint Julep under this template, but no ratio for them was read. See docs/templates.md#evidence."
+  }
+}

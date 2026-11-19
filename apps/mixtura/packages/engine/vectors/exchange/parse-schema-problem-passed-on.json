@@ -1,0 +1,24 @@
+{
+  "id": "parse-schema-problem-passed-on",
+  "kind": "parse",
+  "title": "Problems from the host schema check become an invalid refusal",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "stock": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": false,
+    "failure": "invalid",
+    "problem": "/x is wrong"
+  },
+  "options": {
+    "schemaProblems": ["/x is wrong"]
+  }
+}

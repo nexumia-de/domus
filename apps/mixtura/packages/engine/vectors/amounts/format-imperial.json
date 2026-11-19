@@ -1,0 +1,64 @@
+{
+  "id": "format-imperial",
+  "description": "Display system imperial: volumes become imperial fluid ounces",
+  "kind": "format",
+  "cases": [
+    {
+      "name": "45 ml imperial",
+      "input": {
+        "value": 45,
+        "unit": "ml",
+        "system": "imperial"
+      },
+      "expected": {
+        "text": "1½ imp oz"
+      }
+    },
+    {
+      "name": "1 oz_us imperial",
+      "input": {
+        "value": 1,
+        "unit": "oz_us",
+        "system": "imperial"
+      },
+      "expected": {
+        "text": "1 imp oz"
+      }
+    },
+    {
+      "name": "1.5 oz_imp imperial",
+      "input": {
+        "value": 1.5,
+        "unit": "oz_imp",
+        "system": "imperial"
+      },
+      "expected": {
+        "text": "1½ imp oz"
+      }
+    },
+    {
+      "name": "4.5 cl imperial",
+      "input": {
+        "value": 4.5,
+        "unit": "cl",
+        "system": "imperial"
+      },
+      "expected": {
+        "text": "1½ imp oz"
+      }
+    },
+    {
+      "name": "2 dash imperial",
+      "input": {
+        "value": 2,
+        "unit": "dash",
+        "system": "imperial"
+      },
+      "expected": {
+        "text": "2 dashes"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#display-and-rounding"
+}

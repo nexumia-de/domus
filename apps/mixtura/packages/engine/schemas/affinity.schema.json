@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mixtura:affinity",
+  "title": "Affinity",
+  "description": "Two ingredients that go together, with strength, kind and the source that says so.",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "urn:mixtura:common#/$defs/id" },
+    "ingredients": {
+      "description": "The two ingredient ids; the pair is unordered.",
+      "type": "array",
+      "items": { "$ref": "urn:mixtura:common#/$defs/id" },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "strength": { "enum": [1, 2, 3] },
+    "kind": { "enum": ["classic", "complement", "contrast", "shared-aroma"] },
+    "source": { "$ref": "urn:mixtura:common#/$defs/source" },
+    "notes": { "type": "string" }
+  },
+  "required": ["id", "ingredients", "strength", "kind", "source"],
+  "additionalProperties": false
+}

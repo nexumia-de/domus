@@ -1,0 +1,68 @@
+{
+  "id": "batch-shelf-unknown",
+  "description": "Vermouth without a shelf life: the batch shelf life is unknown and names it, no number is guessed",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 2,
+      "water_ml": 36,
+      "total_volume_ml": 216,
+      "pour_per_serving_ml": 108,
+      "rounded_lines": {
+        "gin": [120, "ml", 0],
+        "dry-vermouth": [60, "ml", 0]
+      },
+      "rounded_water_ml": 36,
+      "rounded_total_ml": 216,
+      "drink": {
+        "abv_after_pct": 26.666667,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 26.666667,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    }
+  ],
+  "shelf_life": {
+    "unknown": ["dry-vermouth"]
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

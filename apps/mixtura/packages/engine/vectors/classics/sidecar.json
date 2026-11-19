@@ -1,0 +1,52 @@
+{
+  "id": "sidecar",
+  "name": "Sidecar",
+  "why": "Sidecar template, the reference",
+  "method": "shake",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 50,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 20,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 20,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec sidecar (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values of data/ingredient-properties.json (juice acid read from a source, the rest assumptions)",
+  "properties": {
+    "cognac": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0.2,
+      "acid": 0
+    },
+    "triple-sec": {
+      "role": "modifier",
+      "abv": 40,
+      "sugar": 25,
+      "acid": 0
+    },
+    "lemon-juice": {
+      "role": "sour",
+      "abv": 0,
+      "sugar": 2.5,
+      "acid": 4.8
+    }
+  },
+  "expected": {
+    "templateId": "sidecar",
+    "volumeAfterMl": 112.5,
+    "abvPct": 24.888889,
+    "sugarPer100Ml": 4.977778,
+    "acidPct": 0.853333
+  },
+  "tolerance": 0.0001
+}

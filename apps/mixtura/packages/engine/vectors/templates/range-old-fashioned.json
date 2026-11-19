@@ -1,0 +1,26 @@
+{
+  "id": "range-old-fashioned",
+  "kind": "range",
+  "description": "Old-Fashioned 32.1 - 34.9 %, 5.4 - 5.9 g, 0 %: ABV below, sugar above, acid within.",
+  "template": "old-fashioned",
+  "after": {
+    "abvPct": 30,
+    "sugarPer100Ml": 6.5,
+    "acidPct": 0
+  },
+  "expected": {
+    "abv": {
+      "status": "below",
+      "range": [32.1, 34.9]
+    },
+    "sugar": {
+      "status": "above",
+      "range": [5.4, 5.9]
+    },
+    "acid": {
+      "status": "within",
+      "range": [0, 0]
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

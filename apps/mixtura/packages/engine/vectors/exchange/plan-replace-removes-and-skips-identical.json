@@ -1,0 +1,61 @@
+{
+  "id": "plan-replace-removes-and-skips-identical",
+  "kind": "plan",
+  "title": "Replace writes what differs, skips identical records and deletes the rest",
+  "mode": "replace",
+  "current": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x"
+      },
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "name": "Old"
+      },
+      {
+        "id": "u-cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "name": "x"
+      }
+    ]
+  },
+  "incoming": {
+    "ingredients": [
+      {
+        "id": "u-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "name": "x"
+      },
+      {
+        "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "name": "New"
+      },
+      {
+        "id": "u-dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "name": "x"
+      }
+    ]
+  },
+  "expected": {
+    "added": {
+      "ingredients": 1
+    },
+    "replaced": {
+      "ingredients": 1
+    },
+    "skipped": {
+      "ingredients": 1
+    },
+    "removed": {
+      "ingredients": 1
+    },
+    "writes": {
+      "ingredients": [
+        "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "u-dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+      ]
+    },
+    "deletes": {
+      "ingredients": ["u-cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
+    }
+  }
+}

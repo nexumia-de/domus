@@ -1,0 +1,123 @@
+{
+  "id": "batch-prepared-ingredient",
+  "description": "Daiquiri batch for 4 servings whose syrup is a prepared ingredient; its own shelf life (30 days, synthetic) counts, not that of its parts",
+  "ingredients": [
+    {
+      "id": "rum",
+      "name": "Rum",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "lime-juice",
+      "name": "Lime juice",
+      "level": "product",
+      "abv": 0,
+      "sugar": 1.5,
+      "acid": 6,
+      "shelfLifeDays": 1
+    },
+    {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "level": "product",
+      "abv": 0,
+      "sugar": 100,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "syrup-1-1",
+      "name": "Syrup 1:1",
+      "level": "product",
+      "shelfLifeDays": 30,
+      "prepared": {
+        "specId": "syrup-1-1",
+        "yield": {
+          "amount": 162.654522,
+          "unit": "ml"
+        }
+      }
+    }
+  ],
+  "specs": {
+    "syrup-1-1": {
+      "lines": [
+        {
+          "ingredientId": "sugar",
+          "ml": 0,
+          "sugarG": 100
+        },
+        {
+          "ingredientId": "water",
+          "ml": 100
+        }
+      ],
+      "yieldMl": 162.654522
+    }
+  },
+  "spec": {
+    "method": "shake",
+    "lines": [
+      {
+        "ingredientId": "rum",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "lime-juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "syrup-1-1",
+        "amount": 22.5,
+        "unit": "ml"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 4,
+      "water_ml": 105,
+      "total_volume_ml": 525,
+      "pour_per_serving_ml": 131.25,
+      "rounded_lines": {
+        "rum": [240, "ml", 0],
+        "lime-juice": [90, "ml", 0],
+        "syrup-1-1": [90, "ml", 0]
+      },
+      "rounded_water_ml": 105,
+      "rounded_total_ml": 525,
+      "drink": {
+        "abv_after_pct": 18.285714,
+        "sugar_g_per_100ml": 10.796571,
+        "acid_pct": 1.028571
+      },
+      "made": {
+        "abv_after_pct": 18.285714,
+        "sugar_g_per_100ml": 10.796571,
+        "acid_pct": 1.028571
+      }
+    }
+  ],
+  "shelf_life": {
+    "days": 1,
+    "limiting_id": "lime-juice"
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

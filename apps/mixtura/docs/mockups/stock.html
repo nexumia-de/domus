@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stock - Mixtura mock-up</title>
+    <link rel="stylesheet" href="mockup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <nav class="nav" aria-label="Main">
+        <a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 4h14l-7 9zM12 13v7M8 20h8" /></svg></span
+          >Drinks</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="7" height="7" />
+              <rect x="13" y="4" width="7" height="7" />
+              <rect x="4" y="13" width="7" height="7" />
+              <rect x="13" y="13" width="7" height="7" /></svg></span
+          >Templates</a
+        ><a href="#" aria-current="page"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8" /></svg></span
+          >Stock</a
+        ><a href="#"
+          ><span class="nav-pill"
+            ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"
+              /></svg></span
+          >Settings</a
+        >
+      </nav>
+      <main class="panes" data-phone="detail">
+        <section class="pane solo detail" aria-label="Stock">
+          <header class="appbar">
+            <h1>Stock</h1>
+            <a class="btn btn--icon" href="#" aria-label="Search stock"
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6" />
+                <path d="M16 16l5 5" /></svg
+            ></a>
+          </header>
+          <div class="pane-scroll" style="gap: var(--sp-3)">
+            <div class="segmented" role="tablist" aria-label="Stock views">
+              <a href="#" aria-current="true">Stock</a><a href="#">Buy Next</a>
+            </div>
+            <div class="card" style="gap: var(--sp-1)">
+              <strong>34 in stock</strong
+              ><span class="row-sub">12 drinks makeable now, 5 missing one ingredient</span>
+            </div>
+            <div class="input">
+              <span style="color: var(--text-muted)">Add by name, for example Campari</span
+              ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </div>
+            <div
+              style="
+                border: 1px solid var(--divider);
+                border-radius: var(--radius);
+                overflow: hidden;
+                background: var(--surface);
+              "
+            >
+              <h2 class="group-title">Spirits · 11 of 18</h2>
+              <ul class="rows">
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class="on"
+                        role="checkbox"
+                        aria-checked="true"
+                        aria-label="Rum, in stock"
+                        ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" /></svg></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Rum</span
+                      ><span class="row-sub">Type · 3 of 5 products in stock</span></span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class="on"
+                        role="checkbox"
+                        aria-checked="true"
+                        aria-label="White rum, in stock"
+                        ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" /></svg></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">White rum</span
+                      ><span class="row-sub">Opened 2026-09-02</span></span
+                    ><span class="tag">In 14 drinks</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class=""
+                        role="checkbox"
+                        aria-checked="false"
+                        aria-label="Aged rum, in stock"
+                      ></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Aged rum</span
+                      ><span class="row-sub">Not tracked</span></span
+                    ><span class="tag">In 6 drinks</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class="on"
+                        role="checkbox"
+                        aria-checked="true"
+                        aria-label="Gin, in stock"
+                        ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" /></svg></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Gin</span
+                      ><span class="row-sub">Type · 2 of 3 products in stock</span></span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class="on"
+                        role="checkbox"
+                        aria-checked="true"
+                        aria-label="London dry gin, in stock"
+                        ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" /></svg></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">London dry gin</span
+                      ><span class="row-sub">Opened 2026-10-11</span></span
+                    ><span class="tag">In 17 drinks</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class=""
+                        role="checkbox"
+                        aria-checked="false"
+                        aria-label="Cognac, in stock"
+                      ></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Cognac</span><span class="row-sub">Out</span></span
+                    ><span class="tag">In 4 drinks</span>
+                  </div>
+                </li>
+              </ul>
+              <h2 class="group-title">Modifiers · 6 of 12</h2>
+              <ul class="rows">
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class="on"
+                        role="checkbox"
+                        aria-checked="true"
+                        aria-label="Dry vermouth, in stock"
+                        ><svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" /></svg></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Dry vermouth</span
+                      ><span class="row-sub">Best before 2026-12-01</span></span
+                    ><span class="tag">In 9 drinks</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class=""
+                        role="checkbox"
+                        aria-checked="false"
+                        aria-label="Triple sec, in stock"
+                      ></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Triple sec</span
+                      ><span class="row-sub">Out</span></span
+                    ><span class="tag">In 5 drinks</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <span class="check"
+                      ><span
+                        class=""
+                        role="checkbox"
+                        aria-checked="false"
+                        aria-label="Campari, in stock"
+                      ></span></span
+                    ><span class="row-main"
+                      ><span class="row-title">Campari</span><span class="row-sub">Out</span></span
+                    ><span class="tag">In 3 drinks</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

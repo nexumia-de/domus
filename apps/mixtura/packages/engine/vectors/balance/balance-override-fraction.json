@@ -1,0 +1,72 @@
+{
+  "id": "balance-override-fraction",
+  "description": "An explicit dilution fraction of 0.3 replaces the method value; basis is override",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ]
+  },
+  "options": {
+    "dilution": {
+      "fraction": 0.3
+    }
+  },
+  "expected": {
+    "figures": {
+      "volume_before_ml": 90,
+      "ethanol_ml": 28.8,
+      "abv_before_pct": 32,
+      "sugar_g": 0,
+      "acid_g": 0,
+      "sugar_before_g_per_100ml": 0,
+      "acid_before_pct": 0,
+      "volume_after_ml": 117,
+      "water_ml": 27,
+      "abv_after_pct": 24.615385,
+      "sugar_g_per_100ml": 0,
+      "acid_pct": 0,
+      "sugar_acid_ratio": null,
+      "uk_units": 2.88
+    },
+    "flags": {
+      "diluted": true,
+      "dilution": {
+        "method": "stir",
+        "bound": "default",
+        "fraction": 0.3,
+        "basis": "override",
+        "evidence": "override"
+      }
+    }
+  },
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#formulas; expected values computed by hand-written formulas, not by the engine; ingredient properties and dilution fractions are assumptions (see the document)"
+}

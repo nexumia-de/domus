@@ -1,0 +1,41 @@
+{
+  "id": "match-sidecar-book-ratio",
+  "kind": "match",
+  "description": "The book's Sidecar: 45 ml cognac, 30 ml orange liqueur, 22.5 ml lemon, that is 2 : 1.33 : 1.0 parts (Cocktail Codex, chapter 4: 1 1/2 oz : 1 oz : 3/4 oz).",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

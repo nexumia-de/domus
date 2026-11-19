@@ -1,0 +1,455 @@
+{
+  "id": "convert-to-base",
+  "description": "Every row of the conversion table to ml or g, and the fill and mass errors; counted units have no volume of their own (not_measurable)",
+  "kind": "convert",
+  "cases": [
+    {
+      "name": "1 ml",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "ml"
+      },
+      "expected": {
+        "base": 1,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 cl",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "cl"
+      },
+      "expected": {
+        "base": 10,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 oz_us",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "base": 29.5735295625,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 oz_imp",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "oz_imp"
+      },
+      "expected": {
+        "base": 28.4130625,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 tsp",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "tsp"
+      },
+      "expected": {
+        "base": 5,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 tbsp",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "tbsp"
+      },
+      "expected": {
+        "base": 15,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 barspoon",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "base": 5,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 dash",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "dash"
+      },
+      "expected": {
+        "base": 0.92,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 drop",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "drop"
+      },
+      "expected": {
+        "base": 0.05,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 splash",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "splash"
+      },
+      "expected": {
+        "base": 5,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "1 g",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "g"
+      },
+      "expected": {
+        "base": 1,
+        "kind": "mass"
+      }
+    },
+    {
+      "name": "1 oz_mass",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "oz_mass"
+      },
+      "expected": {
+        "base": 28.349523125,
+        "kind": "mass"
+      }
+    },
+    {
+      "name": "1 top",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "top"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1.5 oz_us",
+      "input": {
+        "op": "base",
+        "value": 1.5,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "base": 44.36029434375,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "3 dash",
+      "input": {
+        "op": "base",
+        "value": 3,
+        "unit": "dash"
+      },
+      "expected": {
+        "base": 2.7600000000000002,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "0.75 oz_us",
+      "input": {
+        "op": "base",
+        "value": 0.75,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "base": 22.180147171875,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "2 barspoon",
+      "input": {
+        "op": "base",
+        "value": 2,
+        "unit": "barspoon"
+      },
+      "expected": {
+        "base": 10,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "12 drop",
+      "input": {
+        "op": "base",
+        "value": 12,
+        "unit": "drop"
+      },
+      "expected": {
+        "base": 0.6000000000000001,
+        "kind": "volume"
+      }
+    },
+    {
+      "name": "-1 ml",
+      "input": {
+        "op": "base",
+        "value": -1,
+        "unit": "ml"
+      },
+      "expected": {
+        "error": "invalid_value"
+      }
+    },
+    {
+      "name": "1 g as ml",
+      "input": {
+        "op": "ml",
+        "value": 1,
+        "unit": "g"
+      },
+      "expected": {
+        "error": "not_a_volume"
+      }
+    },
+    {
+      "name": "1 ml as g",
+      "input": {
+        "op": "grams",
+        "value": 1,
+        "unit": "ml"
+      },
+      "expected": {
+        "error": "not_a_mass"
+      }
+    },
+    {
+      "name": "2 oz_mass as g",
+      "input": {
+        "op": "grams",
+        "value": 2,
+        "unit": "oz_mass"
+      },
+      "expected": {
+        "base": 56.69904625
+      }
+    },
+    {
+      "name": "2 oz_us as ml",
+      "input": {
+        "op": "ml",
+        "value": 2,
+        "unit": "oz_us"
+      },
+      "expected": {
+        "base": 59.147059125
+      }
+    },
+    {
+      "name": "1 whole",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "whole"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 slice",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "slice"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 leaf",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "leaf"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 sprig",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "sprig"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 wedge",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "wedge"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 piece",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "piece"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 pinch",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "pinch"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 cube",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "cube"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 peel",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "peel"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 stalk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "stalk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 scoop",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "scoop"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 chunk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "chunk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 yolk",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "yolk"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 stick",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "stick"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 bean",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "bean"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    },
+    {
+      "name": "1 capsule",
+      "input": {
+        "op": "base",
+        "value": 1,
+        "unit": "capsule"
+      },
+      "expected": {
+        "error": "not_measurable"
+      }
+    }
+  ],
+  "tolerance": 1e-9,
+  "source": "docs/units.md#conversion-table"
+}

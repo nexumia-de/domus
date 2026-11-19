@@ -1,0 +1,33 @@
+{
+  "name": "@mixtura/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Mixtura's pure engine: templates, balance numbers and specs, derived from what the user entered",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/engine.mjs"
+    },
+    "./seed/ingredients.json": "./data/seed/ingredients.json",
+    "./seed/specs.json": "./data/seed/specs.json",
+    "./seed/vocabulary.json": "./data/seed/vocabulary.json",
+    "./seed/LICENSE-bar-assistant.txt": "./data/seed/LICENSE-bar-assistant.txt"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "devDependencies": {
+    "ajv": "8.17.1"
+  },
+  "files": [
+    "dist",
+    "data/seed"
+  ],
+  "dependencies": {
+    "@nexumia-de/materia": "github:nexumia-de/materia#v0.2.0"
+  }
+}

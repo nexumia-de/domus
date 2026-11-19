@@ -1,0 +1,137 @@
+{
+  "attribution": {
+    "source": "Mixtura",
+    "holder": "Mixtura contributors",
+    "licence": "AGPL-3.0-or-later",
+    "notice": "Non-alcoholic ingredient classes and nominal example drinks: written for Drink Builder from docs/non-alcoholic.md, AGPL-3.0-or-later. Every ABV, sugar, acid and shelf-life value carries its evidence status; values without a source stay absent."
+  },
+  "specs": [
+    {
+      "id": "nominal-low-stirred",
+      "lineageId": "nominal-low-stirred",
+      "version": 1,
+      "name": "Nominal low-ABV stirred drink (example)",
+      "templateId": "low-stirred",
+      "method": "stir",
+      "glass": "coupe",
+      "lines": [
+        {
+          "ingredientId": "sherry",
+          "amount": 60,
+          "unit": "ml",
+          "role": "base"
+        },
+        {
+          "ingredientId": "dry-vermouth",
+          "amount": 30,
+          "unit": "ml"
+        }
+      ],
+      "tags": ["nominal-example"],
+      "status": "draft",
+      "notes": "Nominal example of the template low-stirred: 2 parts fortified wine (line role base) to 1 part vermouth, the Martini's nominal ratio. Under the default thresholds its calculated ABV is above 10 %, so it counts as standard, not low; the class is computed, see docs/non-alcoholic.md.",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "Nominal example of a template variant (docs/seed-data.md, Mixtura's own additions): built from the template's nominal ratios, not a classic and not a tested recipe."
+      }
+    },
+    {
+      "id": "nominal-na-foamed",
+      "lineageId": "nominal-na-foamed",
+      "version": 1,
+      "name": "Nominal non-alcoholic foamed drink (example)",
+      "templateId": "na-foamed",
+      "method": "shake",
+      "glass": "coupe",
+      "lines": [
+        {
+          "ingredientId": "black-tea-brewed",
+          "amount": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "simple-syrup",
+          "amount": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "aquafaba",
+          "amount": 45,
+          "unit": "ml"
+        }
+      ],
+      "tags": ["nominal-example"],
+      "status": "draft",
+      "notes": "Nominal example of the template na-foamed: the Flip's nominal volumes (60 base, 15 syrup, 45 foam) with brewed tea and aquafaba.",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "Nominal example of a template variant (docs/seed-data.md, Mixtura's own additions): built from the template's nominal ratios, not a classic and not a tested recipe."
+      }
+    },
+    {
+      "id": "nominal-na-highball",
+      "lineageId": "nominal-na-highball",
+      "version": 1,
+      "name": "Nominal non-alcoholic highball (example)",
+      "templateId": "na-highball",
+      "method": "build",
+      "glass": "highball",
+      "lines": [
+        {
+          "ingredientId": "rooibos-brewed",
+          "amount": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "club-soda",
+          "amount": 150,
+          "unit": "ml"
+        }
+      ],
+      "tags": ["nominal-example"],
+      "status": "draft",
+      "notes": "Nominal example of the template na-highball: 2 parts base to 5 parts soda, the Highball's nominal ratio with brewed rooibos as the base.",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "Nominal example of a template variant (docs/seed-data.md, Mixtura's own additions): built from the template's nominal ratios, not a classic and not a tested recipe."
+      }
+    },
+    {
+      "id": "nominal-na-sour",
+      "lineageId": "nominal-na-sour",
+      "version": 1,
+      "name": "Nominal non-alcoholic sour (example)",
+      "templateId": "na-sour",
+      "method": "shake",
+      "glass": "coupe",
+      "lines": [
+        {
+          "ingredientId": "black-tea-brewed",
+          "amount": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "lime-juice",
+          "amount": 22.5,
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "simple-syrup",
+          "amount": 22.5,
+          "unit": "ml"
+        }
+      ],
+      "tags": ["nominal-example"],
+      "status": "draft",
+      "notes": "Nominal example of the template na-sour: 2 : 0.75 : 0.75 parts, the Daiquiri's nominal ratio with brewed tea as the base.",
+      "source": {
+        "name": "Mixtura",
+        "licence": "AGPL-3.0-or-later",
+        "note": "Nominal example of a template variant (docs/seed-data.md, Mixtura's own additions): built from the template's nominal ratios, not a classic and not a tested recipe."
+      }
+    }
+  ]
+}

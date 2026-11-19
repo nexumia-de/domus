@@ -1,0 +1,43 @@
+{
+  "id": "batch-invalid-servings",
+  "description": "Zero, negative servings are errors that name no ingredient",
+  "ingredients": [
+    {
+      "id": "gin",
+      "name": "Gin",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "dry-vermouth",
+      "name": "Dry vermouth",
+      "level": "product",
+      "abv": 16,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 90
+    }
+  ],
+  "spec": {
+    "method": "stir",
+    "lines": [
+      {
+        "ingredientId": "gin",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "dry-vermouth",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ]
+  },
+  "error_servings": [0, -2],
+  "error_code": "invalid-servings",
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

@@ -1,0 +1,46 @@
+{
+  "id": "variants-two-bases",
+  "kind": "variants",
+  "description": "Rum 30, cognac 30, lime 22.5, syrup 22.5: both base lines are replaced by the one open base slot.",
+  "source": "docs/templates.md#variants-by-alcohol-class and data/template-variants/*.json; the lines to replace and keep follow from the roles in tree.json (role base is replaced, every other line is carried over); open slots are the variant's slots whose role no carried line has, optional ones left out except the base; slot ratios and notes are the variant data's, assumptions",
+  "lines": [
+    {
+      "ingredientId": "light-rum",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "cognac",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 22.5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "templateId": "daiquiri",
+    "suggestions": [
+      {
+        "templateId": "na-sour",
+        "alcohol": "none",
+        "replacedLines": [0, 1],
+        "keptLines": [2, 3],
+        "openSlots": [
+          {
+            "slotId": "spirit",
+            "role": "base",
+            "note": "tea, tisane or a non-alcoholic distillate in place of the spirit"
+          }
+        ]
+      }
+    ]
+  }
+}

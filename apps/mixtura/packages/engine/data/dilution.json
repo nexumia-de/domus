@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "methods": [
+    {
+      "id": "none",
+      "fraction_low": 0,
+      "fraction_default": 0,
+      "fraction_high": 0,
+      "evidence": "derived"
+    },
+    {
+      "id": "stir",
+      "fraction_low": 0.15,
+      "fraction_default": 0.2,
+      "fraction_high": 0.25,
+      "evidence": "secondary"
+    },
+    {
+      "id": "shake",
+      "fraction_low": 0.2,
+      "fraction_default": 0.25,
+      "fraction_high": 0.3,
+      "evidence": "secondary"
+    },
+    {
+      "id": "build",
+      "fraction_low": 0.05,
+      "fraction_default": 0.1,
+      "fraction_high": 0.15,
+      "evidence": "assumption"
+    },
+    {
+      "id": "blend",
+      "fraction_low": 0.75,
+      "fraction_default": 1,
+      "fraction_high": 1.5,
+      "evidence": "assumption"
+    }
+  ]
+}

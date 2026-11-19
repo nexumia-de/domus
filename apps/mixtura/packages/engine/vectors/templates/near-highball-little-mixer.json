@@ -1,0 +1,30 @@
+{
+  "id": "near-highball-little-mixer",
+  "kind": "match",
+  "description": "Near miss: 60 ml spirit with 30 ml soda is 1 part, below 2: distance (2 - 1) / 2 = 0.5.",
+  "lines": [
+    {
+      "ingredientId": "whiskey",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "soda",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["highball"],
+    "candidates": {
+      "highball": {
+        "fits": false,
+        "distance": 0.5,
+        "ratios": {
+          "mixer": "below"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

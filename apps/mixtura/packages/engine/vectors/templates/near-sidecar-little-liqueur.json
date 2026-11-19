@@ -1,0 +1,35 @@
+{
+  "id": "near-sidecar-little-liqueur",
+  "kind": "match",
+  "description": "Near miss: 5 ml triple sec is 0.1667 parts, below 0.25: distance (0.25 - 0.16667) / 0.25 = 0.333333.",
+  "lines": [
+    {
+      "ingredientId": "cognac",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 5,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": false,
+        "distance": 0.333333,
+        "ratios": {
+          "liqueur": "below"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

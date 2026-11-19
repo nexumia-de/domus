@@ -1,0 +1,5 @@
+{
+"attribution":{"source":"Fixture data","repository":"https://example.invalid/fixture","commit":"fixture","licence":"MIT","holder":"Nobody","notice":"Recipes and ingredient data: Fixture data (https://example.invalid/fixture), MIT License, Copyright (c) 2026 Nobody. Changed by Drink Builder: units, roles and balance figures added, some entries rewritten."},
+"glasses":[{"id":"coupe","name":"Coupe"},{"id":"highball","name":"Highball"},{"id":"nick-and-nora","name":"Nick and Nora"}],
+"methods":[{"id":"build","name":"Build"},{"id":"shake","name":"Shake"},{"id":"stir","name":"Stir"}]
+}

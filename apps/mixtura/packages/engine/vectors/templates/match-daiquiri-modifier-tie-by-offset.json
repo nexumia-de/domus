@@ -1,0 +1,56 @@
+{
+  "id": "match-daiquiri-modifier-tie-by-offset",
+  "kind": "match",
+  "description": "Sour with a little liqueur: 60 ml rum, 22.5 ml lime (0.75), 15 ml syrup (0.5), 15 ml triple sec (0.5). It fits the Daiquiri (optional modifier slot 0.1 - 1.5) and the Sidecar (liqueur slot, optional sugar slot 0.05 - 0.75) at distance 0; the Daiquiri has the smaller offset (sum of the distances from the band middles 1.0 against 1.28), so it wins without the id rule, as the book files such drinks under the Daiquiri.",
+  "lines": [
+    {
+      "ingredientId": "rum",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 15,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["daiquiri", "sidecar"],
+    "candidates": {
+      "daiquiri": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "sweet": "within",
+          "liqueur": "within"
+        }
+      },
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within",
+          "sugar": "within"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

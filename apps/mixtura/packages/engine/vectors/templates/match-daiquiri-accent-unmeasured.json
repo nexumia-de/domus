@@ -1,0 +1,47 @@
+{
+  "id": "match-daiquiri-accent-unmeasured",
+  "kind": "match",
+  "description": "Southside: 60 ml gin, 22.5 ml lemon, 15 ml syrup, 5 mint leaves. The leaves are a counted line without a known volume: they fill the optional accent slot, the ratio is unmeasured and adds nothing to the distance.",
+  "lines": [
+    {
+      "ingredientId": "gin",
+      "amount": 60,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lemon-juice",
+      "amount": 22.5,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "simple-syrup",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "mint",
+      "amount": 5,
+      "unit": "leaf"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "daiquiri",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["daiquiri"],
+    "candidates": {
+      "daiquiri": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "sweet": "within",
+          "accent": "unmeasured"
+        }
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

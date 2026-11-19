@@ -1,0 +1,69 @@
+{
+  "id": "batch-top-line",
+  "description": "Highball with a top line: the top is served at the glass, the batch holds the whisky and its dilution (build 0.10)",
+  "ingredients": [
+    {
+      "id": "whisky",
+      "name": "Whisky",
+      "level": "product",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 3650
+    },
+    {
+      "id": "soda",
+      "name": "Soda water",
+      "level": "product",
+      "abv": 0,
+      "sugar": 0,
+      "acid": 0,
+      "shelfLifeDays": 365
+    }
+  ],
+  "spec": {
+    "method": "build",
+    "lines": [
+      {
+        "ingredientId": "whisky",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ingredientId": "soda",
+        "amount": 1,
+        "unit": "top"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "servings": 6,
+      "water_ml": 36,
+      "total_volume_ml": 396,
+      "pour_per_serving_ml": 66,
+      "rounded_lines": {
+        "whisky": [360, "ml", 0]
+      },
+      "rounded_water_ml": 36,
+      "rounded_total_ml": 396,
+      "drink": {
+        "abv_after_pct": 36.363636,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      },
+      "made": {
+        "abv_after_pct": 36.363636,
+        "sugar_g_per_100ml": 0,
+        "acid_pct": 0
+      }
+    }
+  ],
+  "shelf_life": {
+    "days": 3650,
+    "limiting_id": "whisky"
+  },
+  "made_tolerance": 0.3,
+  "tolerance": 0.0001,
+  "source": "docs/balance.md#batching; expected values computed by hand-written formulas, not by the engine; ingredient properties, dilution fractions and shelf lives are synthetic or assumptions, not drink data"
+}

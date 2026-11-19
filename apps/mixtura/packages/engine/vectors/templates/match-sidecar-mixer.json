@@ -1,0 +1,51 @@
+{
+  "id": "match-sidecar-mixer",
+  "kind": "match",
+  "description": "Cosmopolitan: 40 ml vodka, 15 ml orange liqueur (0.75 parts), 15 ml lime (0.75), 30 ml cranberry juice (1.5, role lengthener). The optional mixer slot of the Sidecar (0.5 - 6) takes the juice; the Daiquiri has no sweet line and fails. The book files the Cosmopolitan under the Sidecar.",
+  "lines": [
+    {
+      "ingredientId": "vodka",
+      "amount": 40,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "triple-sec",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "lime-juice",
+      "amount": 15,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "cranberry-juice",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "expected": {
+    "chosen": {
+      "templateId": "sidecar",
+      "basis": "suggested",
+      "known": true
+    },
+    "order": ["sidecar"],
+    "candidates": {
+      "sidecar": {
+        "fits": true,
+        "distance": 0,
+        "ratios": {
+          "acid": "within",
+          "liqueur": "within",
+          "mixer": "within"
+        }
+      },
+      "daiquiri": {
+        "fits": false,
+        "distance": 1
+      }
+    }
+  },
+  "source": "docs/templates.md#vectors; expected values worked out by hand from the slot bands in data/templates (assumptions, see the document)"
+}

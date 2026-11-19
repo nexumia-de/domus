@@ -1,0 +1,52 @@
+{
+  "id": "boulevardier",
+  "name": "Boulevardier",
+  "why": "Martini template, whiskey in place of gin",
+  "method": "stir",
+  "lines": [
+    {
+      "ingredientId": "bourbon-whiskey",
+      "amount": 45,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "campari",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "ingredientId": "sweet-vermouth",
+      "amount": 30,
+      "unit": "ml"
+    }
+  ],
+  "source": "Lines of the seed spec boulevardier (Bar Assistant public data, commit 5a504d474614494119882eb91a8ffdc5491a483f, MIT, Copyright (c) 2026 Bar Assistant); optional lines left out; ingredient properties from the seed plus the curated classics values (assumptions) of data/ingredient-properties.json",
+  "properties": {
+    "bourbon-whiskey": {
+      "role": "base",
+      "abv": 40,
+      "sugar": 0,
+      "acid": 0
+    },
+    "campari": {
+      "role": "bitter",
+      "abv": 25,
+      "sugar": 24.9,
+      "acid": 0
+    },
+    "sweet-vermouth": {
+      "role": "modifier",
+      "abv": 18,
+      "sugar": 15,
+      "acid": 0
+    }
+  },
+  "expected": {
+    "templateId": "martini",
+    "volumeAfterMl": 126.0,
+    "abvPct": 24.52381,
+    "sugarPer100Ml": 9.5,
+    "acidPct": 0.0
+  },
+  "tolerance": 0.0001
+}
