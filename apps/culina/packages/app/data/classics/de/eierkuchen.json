@@ -1,6 +1,9 @@
 {
   "id": "eierkuchen",
-  "name": { "en": "Thin egg pancake", "de": "Dünner Eierkuchen" },
+  "name": {
+    "en": "Egg pancake (omelette)",
+    "de": "Eierkuchen (Omelette)"
+  },
   "originalName": "Omelette (Eierkuchen)",
   "country": "de",
   "vegetarian": true,
@@ -12,7 +15,10 @@
     "place": "chapter Pfannkuchen, Nr. 6",
     "url": "https://archive.org/stream/henriettedavidis00davi/henriettedavidis00davi_djvu.txt"
   },
-  "persons": { "value": 4, "basis": "settled" },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
   "units": {
     "Eßlöffel": {
       "kind": "volume",
@@ -23,18 +29,35 @@
   "components": [
     {
       "id": "eierkuchen-batter",
-      "name": { "en": "Thin egg pancake", "de": "Dünner Eierkuchen" },
+      "name": {
+        "en": "Egg pancake (omelette)",
+        "de": "Eierkuchen (Omelette)"
+      },
       "role": "main",
       "lines": [
         {
           "key": "egg",
-          "ref": { "kind": "ingredient", "id": "fdc-group-egg-whole" },
-          "amount": { "value": 8, "unit": "count", "original": "8 frische Eier" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "8 frische Eier"
+          }
         },
         {
           "key": "starch",
-          "ref": { "kind": "ingredient", "id": "fdc-169698" },
-          "amount": { "value": 1, "unit": "Eßlöffel", "original": "1 gehäufter Eßlöffel" },
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "Eßlöffel",
+            "original": "1 gehäufter Eßlöffel"
+          },
           "note": {
             "en": "Heaped. The source allows fine flour (feinstes Mehl) instead of starch.",
             "de": "Gehäuft. Die Quelle lässt feinstes Mehl statt Stärke zu."
@@ -42,35 +65,56 @@
         },
         {
           "key": "milk",
-          "ref": { "kind": "ingredient", "id": "fdc-group-milk" },
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
           "note": {
-            "en": "The amount is not legible in the scan; not yet settled.",
-            "de": "Die Menge ist im Scan nicht lesbar; noch nicht festgelegt."
+            "en": "The amount is not legible in either scan of the same American edition (1911 printing, where it reads \"At warme\"; the first scan reads \",t Qt\"). The 1897 scan of another book reads \"^ Quart\", not clear. Not yet settled.",
+            "de": "Die Menge ist in beiden Scans derselben amerikanischen Ausgabe nicht lesbar (Druck 1911: \"At warme\"; erster Scan: \",t Qt\"). Der Scan von 1897 aus einem anderen Buch liest \"^ Quart\", nicht eindeutig. Noch nicht festgelegt."
           }
         },
         {
           "key": "water",
-          "wanted": { "en": "Water", "de": "Wasser" }
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          }
         },
         {
           "key": "mace",
-          "ref": { "kind": "ingredient", "id": "fdc-170927" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170927"
+          }
         },
         {
           "key": "salt",
-          "ref": { "kind": "ingredient", "id": "fdc-173468" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
         },
         {
           "key": "butter",
-          "ref": { "kind": "ingredient", "id": "fdc-group-butter" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          }
         },
         {
           "key": "sugar",
-          "ref": { "kind": "ingredient", "id": "fdc-group-sugars" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          }
         },
         {
           "key": "cinnamon",
-          "ref": { "kind": "ingredient", "id": "fdc-171320" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171320"
+          }
         }
       ],
       "steps": [
@@ -119,7 +163,15 @@
       ]
     }
   ],
-  "slots": [{ "role": "main", "ref": { "kind": "component", "id": "eierkuchen-batter" } }],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "eierkuchen-batter"
+      }
+    }
+  ],
   "settled": [
     {
       "what": "Number of persons",
@@ -129,8 +181,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING: no second reader has compared this dish with the scan yet. Do not read this as a completed check; a second agent fills it in."
+    "method": "second-edition",
+    "note": "Second check by an agent that did not transcribe the dish, against the 1911 printing of the same American edition (henriettedavidis01davi, C. N. Caspar Company, Milwaukee; same preface and wording). Agreed: 8 eggs, 1 heaped Eßlöffel starch or fine flour, mace, salt, butter, sugar, cinnamon, the steps and the oblong dish. Not legible in this edition: the milk amount. Other scans (1897 Amerika book, 1897/1898 German editions) were compared only for wording and units, not as the same edition."
   },
   "note": {
     "en": "The plain version only; the variants with cranberries and smoked meat or tongue are not transcribed.",
