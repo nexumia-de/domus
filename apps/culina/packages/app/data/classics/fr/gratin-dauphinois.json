@@ -1,0 +1,222 @@
+{
+  "id": "gratin-dauphinois",
+  "name": {
+    "en": "Potato gratin, Dauphiné style",
+    "de": "Kartoffelgratin nach Dauphiné-Art"
+  },
+  "originalName": "Gratin de pommes de terre à la dauphinoise",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Auguste Escoffier",
+    "title": "A Guide to Modern Cookery (London: William Heinemann, 1907)",
+    "year": 1907,
+    "place": "No. 2222",
+    "url": "https://archive.org/stream/cu31924000610117/cu31924000610117_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "gratin-dauphinois-potatoes",
+      "name": {
+        "en": "Potato gratin",
+        "de": "Kartoffelgratin"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "lb",
+            "original": "two lbs. of fair-sized Dutch potatoes"
+          },
+          "note": {
+            "en": "Fair-sized Dutch potatoes, as the source names them.",
+            "de": "Mittelgroße Holländische Kartoffeln, wie die Quelle sie nennt."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Pepper",
+            "de": "Pfeffer"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "note": {
+            "en": "Grated nutmeg. The source gives no amount.",
+            "de": "Frisch gerieben. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "one beaten egg"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "One and one-half pints of boiled milk. The units table has no pint, so the line has no amount.",
+            "de": "Eineinhalb Pint gekochte Milch. Die Einheitentabelle kennt kein Pint; die Zeile hat daher keine Menge."
+          }
+        },
+        {
+          "key": "gruyere",
+          "wanted": {
+            "en": "Gruyère cheese",
+            "de": "Gruyère"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "oz",
+            "original": "four oz. of fresh grated Gruyère"
+          },
+          "note": {
+            "en": "Some more is sprinkled over the top; the source gives no amount for it.",
+            "de": "Oben kommt noch mehr darüber; die Quelle nennt dafür keine Menge."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "note": {
+            "en": "For rubbing the dishes. The source gives no amount.",
+            "de": "Zum Einreiben der Formen. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "For buttering the dishes and a few pieces on top. The source gives no amount.",
+            "de": "Zum Ausbuttern der Formen und einige Stücke obenauf. Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Slice the potatoes finely.",
+            "de": "Die Kartoffeln fein schneiden."
+          },
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Put them in a bowl and add the salt, the pepper, the nutmeg, the beaten egg, the boiled milk and the cheese.",
+            "de": "In eine Schüssel geben und Salz, Pfeffer, Muskat, das verquirlte Ei, die gekochte Milch und den Käse dazugeben."
+          },
+          "uses": ["potato", "salt", "pepper", "nutmeg", "egg", "milk", "gruyere"]
+        },
+        {
+          "text": {
+            "en": "Mix everything thoroughly.",
+            "de": "Alles gründlich vermischen."
+          }
+        },
+        {
+          "text": {
+            "en": "Rub the earthenware dishes with garlic and butter them well.",
+            "de": "Die Auflaufformen aus Steingut mit Knoblauch einreiben und gut ausbuttern."
+          },
+          "uses": ["garlic", "butter"]
+        },
+        {
+          "text": {
+            "en": "Pour the mixture into the dishes.",
+            "de": "Die Masse in die Formen füllen."
+          }
+        },
+        {
+          "text": {
+            "en": "Sprinkle generously with the cheese.",
+            "de": "Reichlich mit Käse bestreuen."
+          },
+          "uses": ["gruyere"]
+        },
+        {
+          "text": {
+            "en": "Add a few pieces of butter on top.",
+            "de": "Einige Butterstücke obenauf verteilen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Bake in a moderate oven for 40 to 45 minutes.",
+            "de": "Im mäßig heißen Ofen 40 bis 45 Minuten backen."
+          },
+          "technique": "bake",
+          "time": {
+            "value": 40,
+            "to": 45,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "gratin-dauphinois-potatoes"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; four, as in the pilot.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: transcribed by the France transcriber (fr1) from escoffier.txt lines 38709-38733; a second agent replaces this line."
+  },
+  "note": {
+    "en": "The oven is given only as moderate; no temperature is stated. Milk is given in pints, which the units table does not hold, so that line has no amount.",
+    "de": "Der Ofen wird nur als mäßig heiß angegeben; eine Temperatur nennt die Quelle nicht. Die Milch steht in Pint, das die Einheitentabelle nicht kennt; diese Zeile hat daher keine Menge."
+  }
+}

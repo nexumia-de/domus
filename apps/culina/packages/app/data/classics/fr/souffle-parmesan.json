@@ -1,0 +1,228 @@
+{
+  "id": "souffle-parmesan",
+  "name": {
+    "en": "Parmesan soufflé",
+    "de": "Parmesan-Soufflé"
+  },
+  "originalName": "Soufflé au Parmesan",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Auguste Escoffier",
+    "title": "A Guide to Modern Cookery (London: William Heinemann, 1907)",
+    "year": 1907,
+    "place": "No. 2295a",
+    "url": "https://archive.org/stream/cu31924000610117/cu31924000610117_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "souffle-parmesan-base",
+      "name": {
+        "en": "Parmesan soufflé",
+        "de": "Parmesan-Soufflé"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "lb",
+            "original": "one lb. of flour"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "Two and one-half pints of milk. The units table has no pint, so the line has no amount.",
+            "de": "Zweieinhalb Pint Milch. Die Einheitentabelle kennt kein Pint; die Zeile hat daher keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Pepper",
+            "de": "Pfeffer"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "lb",
+            "original": "one lb. of grated Parmesan"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "oz",
+            "original": "three oz. of butter"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "count",
+            "original": "ten egg-yolks"
+          }
+        },
+        {
+          "key": "white",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-white"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "count",
+            "original": "the whites of ten eggs"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour and the milk in a saucepan.",
+            "de": "Mehl und Milch in einem Topf verrühren."
+          },
+          "uses": ["flour", "milk"]
+        },
+        {
+          "text": {
+            "en": "Add a little salt, pepper and nutmeg.",
+            "de": "Ein wenig Salz, Pfeffer und Muskat zugeben."
+          },
+          "uses": ["salt", "pepper", "nutmeg"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil over the heat, stirring constantly.",
+            "de": "Auf dem Herd unter ständigem Rühren aufkochen lassen."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["flour", "milk"]
+        },
+        {
+          "text": {
+            "en": "Take the saucepan off the heat.",
+            "de": "Den Topf vom Herd nehmen."
+          }
+        },
+        {
+          "text": {
+            "en": "Add the Parmesan, the butter and the ten egg yolks.",
+            "de": "Parmesan, Butter und die zehn Eigelb einrühren."
+          },
+          "uses": ["parmesan", "butter", "yolk"]
+        },
+        {
+          "text": {
+            "en": "Press the whole through a fine cloth sieve.",
+            "de": "Die Masse durch ein feines Tuchsieb streichen."
+          }
+        },
+        {
+          "text": {
+            "en": "Whisk the ten egg whites to a stiff froth.",
+            "de": "Die zehn Eiweiß zu steifem Schaum schlagen."
+          },
+          "technique": "whip-egg-whites",
+          "uses": ["white"]
+        },
+        {
+          "text": {
+            "en": "Combine the whites with the mixture.",
+            "de": "Den Eischnee unter die Masse heben."
+          },
+          "technique": "fold-in",
+          "uses": ["white"]
+        },
+        {
+          "text": {
+            "en": "Fill a silver timbale whose sides are lined with a strip of buttered paper.",
+            "de": "Eine Silbertimbale, deren Rand mit einem Streifen gebutterten Papiers ausgelegt ist, füllen."
+          }
+        },
+        {
+          "text": {
+            "en": "Bake in the oven for 20 to 25 minutes.",
+            "de": "Im Ofen 20 bis 25 Minuten backen."
+          },
+          "technique": "bake",
+          "time": {
+            "value": 20,
+            "to": 25,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "souffle-parmesan-base"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; four, as in the pilot.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: transcribed by the France transcriber (fr1) from escoffier.txt lines 39558-39571; a second agent replaces this line."
+  },
+  "note": {
+    "en": "Quantities for a restaurant, as the book gives them (one lb. of flour, one lb. of Parmesan). No oven temperature is stated, and the size of the silver timbale is not given. Milk is given in pints, so that line has no amount.",
+    "de": "Mengen für ein Restaurant, wie das Buch sie angibt (ein Pfund Mehl, ein Pfund Parmesan). Eine Ofentemperatur nennt die Quelle nicht; die Größe der Silbertimbale nennt das Buch ebenfalls nicht. Die Milch steht in Pint; diese Zeile hat daher keine Menge."
+  }
+}

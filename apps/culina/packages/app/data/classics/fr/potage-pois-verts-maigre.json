@@ -1,0 +1,279 @@
+{
+  "id": "potage-pois-verts-maigre",
+  "name": {
+    "en": "Green pea soup, meatless",
+    "de": "Grüne-Erbsen-Suppe, fleischlos"
+  },
+  "originalName": "Potage de pois verts au maigre",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (Paris: Librairie Hachette, 1877; quatrième édition)",
+    "year": 1877,
+    "place": "Deuxième partie, p. 372, Potage de pois verts au maigre (refers to Purée de pois verts au gras, p. 371)",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "units": {
+    "hecto": {
+      "kind": "mass",
+      "factor": 100,
+      "read": "Gouffé's book is metric throughout: grams and litres in the recipes; the pinch and the pinch-weight are set in grams (gouffe.txt lines 2052-2055). A hecto is the metric prefix for 100 units, so 1 hecto = 100 g. A judgement from the prefix; the book does not state this equivalence in the lines read."
+    }
+  },
+  "components": [
+    {
+      "id": "pea-puree",
+      "name": {
+        "en": "Green pea purée",
+        "de": "Erbsenpüree"
+      },
+      "lines": [
+        {
+          "key": "peas",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170419"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "l",
+            "original": "2 litres de pois"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "1 oignon"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "1 carotte"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g",
+            "original": "5 grammes de sucre"
+          }
+        },
+        {
+          "key": "liquid",
+          "wanted": {
+            "en": "Water (the cooking water of the peas)",
+            "de": "Wasser (das Kochwasser der Erbsen)"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "l",
+            "original": "2 litres de consommé de volaille"
+          },
+          "note": {
+            "en": "The purée of the gras version is moistened with 2 litres of chicken consommé. Here the cooking water of the peas takes its place, as the source says. The amount is that of the gras version.",
+            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet. Hier tritt das Kochwasser der Erbsen an seine Stelle, wie die Quelle sagt. Die Menge stammt aus der fetten Fassung."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook the peas in plenty of water.",
+            "de": "Die Erbsen in reichlich Wasser kochen."
+          },
+          "technique": "boil",
+          "uses": ["peas"]
+        },
+        {
+          "text": {
+            "en": "Add salt, the onion and the carrot.",
+            "de": "Salz, die Zwiebel und die Karotte zugeben."
+          },
+          "uses": ["salt", "onion", "carrot"]
+        },
+        {
+          "text": {
+            "en": "Take out the carrot and press the rest through a fine cloth sieve.",
+            "de": "Die Karotte herausnehmen und den Rest durch ein feines Tuchsieb streichen."
+          },
+          "uses": ["carrot"]
+        },
+        {
+          "text": {
+            "en": "Put the purée in a pan with the sugar and moisten it with the cooking water of the peas.",
+            "de": "Das Püree mit dem Zucker in einen Topf geben und mit dem Kochwasser der Erbsen angießen."
+          },
+          "uses": ["sugar", "liquid"]
+        },
+        {
+          "text": {
+            "en": "Stir over the heat so that the purée does not stick.",
+            "de": "Auf dem Herd rühren, damit das Püree nicht ansetzt."
+          }
+        },
+        {
+          "text": {
+            "en": "At the first boil, move the pan to the side of the stove.",
+            "de": "Beim ersten Aufkochen den Topf an den Rand des Herdes stellen."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pea-soup-maigre",
+      "name": {
+        "en": "Green pea soup",
+        "de": "Grüne-Erbsen-Suppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "puree",
+          "ref": {
+            "kind": "component",
+            "id": "pea-puree"
+          }
+        },
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-rice"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "hecto",
+            "original": "1 hecto de riz"
+          },
+          "note": {
+            "en": "The amount is that of the gras version, where the rice is blanched first; the meatless version gives only the cooking method.",
+            "de": "Die Menge stammt aus der fetten Fassung, wo der Reis zuerst blanchiert wird; die fleischlose Fassung nennt nur die Garweise."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "For cooking the rice. The source gives no amount.",
+            "de": "Zum Garen des Reises. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "butter-rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "Butter for cooking the rice. The source gives no amount.",
+            "de": "Butter zum Garen des Reises. Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g",
+            "original": "60 grammes de beurre"
+          },
+          "note": {
+            "en": "Added at the end; the meatless version says to finish as the gras soup.",
+            "de": "Am Ende zugegeben; die fleischlose Fassung sagt, man fertige wie die fette Suppe."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook the rice in water and butter.",
+            "de": "Den Reis in Wasser und Butter garen."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice", "water", "butter-rice"]
+        },
+        {
+          "text": {
+            "en": "Drain the rice and put it in the tureen with the purée.",
+            "de": "Den Reis abgießen und mit dem Püree in die Suppenschüssel geben."
+          },
+          "uses": ["rice", "puree"]
+        },
+        {
+          "text": {
+            "en": "Add the butter and stir well until it has melted.",
+            "de": "Die Butter zugeben und gut unterrühren, bis sie geschmolzen ist."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Serve.",
+            "de": "Servieren."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "pea-soup-maigre"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Liquid of the purée",
+      "value": "The cooking water of the peas, in place of the chicken consommé",
+      "reason": "The source says to replace the chicken consommé by the cooking water of the peas (gouffe.txt lines 19481-19495)."
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: transcribed by the France transcriber (fr1) from gouffe.txt lines 19481-19495, with the referred purée from lines 19431-19450 and the rice and butter of the gras version from lines 19448-19460; a second agent replaces this line."
+  },
+  "note": {
+    "en": "Meatless green pea soup. The pea purée follows the gras version (Purée de pois verts au gras, p. 371), to which the text refers; there the chicken consommé is replaced by the cooking water of the peas. The amounts of the purée and the rice are those of the gras version. No meat and no meat stock occur in the meatless version as read.",
+    "de": "Grüne-Erbsen-Suppe ohne Fleisch. Das Erbsenpüree folgt der fetten Fassung (Purée de pois verts au gras, S. 371), auf die der Text verweist; dort wird die Hühnerkonsommé durch das Kochwasser der Erbsen ersetzt. Die Mengen für Püree und Reis stammen aus der fetten Fassung. In der fleischlosen Fassung kommen laut Lektüre weder Fleisch noch Fleischbrühe vor."
+  }
+}
