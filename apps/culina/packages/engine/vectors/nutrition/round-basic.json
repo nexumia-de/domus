@@ -1,0 +1,29 @@
+{
+  "id": "round-basic",
+  "description": "21 CFR 101.9(c) steps: 734.6 kcal above 50 to the nearest 10 = 730; kJ nearest 10 (Culina) 3045 = 3050; protein 16.04 = 16; fat 46.5 above 5 to the nearest gram = 47; carbohydrate 60.5 = 61; fibre 2.95 = 3; salt 0.18 g = 180 mg above 140 to the nearest 10 = 0.18",
+  "inputs": {
+    "kind": "nutrition_round",
+    "figures": {
+      "kcal": 734.6,
+      "kJ": 3045,
+      "proteinG": 16.04,
+      "fatG": 46.5,
+      "carbohydrateG": 60.5,
+      "fibreG": 2.95,
+      "saltG": 0.18
+    }
+  },
+  "expected": {
+    "rounded": {
+      "kcal": 730,
+      "kJ": 3050,
+      "proteinG": 16,
+      "fatG": 47,
+      "carbohydrateG": 61,
+      "fibreG": 3,
+      "saltG": 0.18
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

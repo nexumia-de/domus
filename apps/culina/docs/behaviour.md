@@ -626,7 +626,8 @@ view logic is in `src/classics/` (no DOM), the screens in
   the first screen at 360 x 720: the name, the original name, course and meat
   flag, a note of the dish if it has one; a portions stepper, default 2; the
   ingredient lines per component and for the dish; "Cook step by step"; the
-  whole method; then, each closed behind a tap (`<details>`), **Source**
+  whole method; then, each closed behind a tap (`<details>`), **Nutrition per
+  portion** (below), **Source**
   (author, title, year, place, a link, and the persons it states or, when the
   source names none, the number we took), **What we settled where the source is
   vague**, and **Second check** (how the dish was read a second time). **The app
@@ -637,6 +638,25 @@ view logic is in `src/classics/` (no DOM), the screens in
   taste" or "as needed" (the line's own note when it says so); the source's
   own wording is shown in brackets; a settled line is marked "settled by us".
   The settled list names each settled thing with its reason.
+- **Nutrition per portion** (closed `<details>` on the dish, first of the closed
+  sections; `src/screens/classics/nutrition-block.ts`, view logic
+  `src/classics/nutrition-view.ts`, texts `src/strings-nutrition.ts`). Shows the
+  figures of one portion for the chosen portions, drawn again when they change:
+  energy (kcal and kJ), protein, fat, carbohydrate and, when every counted
+  ingredient has the figure, fibre and salt, **rounded by the engine**
+  (`roundNutrition`); the app does no arithmetic. Then the coverage in words
+  ("Counted 2 of 3 ingredients." and "Not counted: name (no amount)."), the
+  share of the weight the figures rest on where it can be stated, that amounts
+  are raw and as the recipe gives them, the rounding rule, the data source
+  (USDA FoodData Central, SR Legacy) and that it is not a food label. An
+  ingredient is found in the notebook first, then in the catalogue; a variety
+  without its own density or unit weight takes its parent's. With no
+  ingredient countable it says so and shows no figures. **It never judges**: no
+  "healthy", "high" or "low", no colour, no traffic light, no comparison with a
+  daily value, no portion reference (none was found in a source that could be
+  read, [evaluation](nutrition-evaluation.md#what-was-built)); the wording test
+  scans `strings-nutrition.ts` and a test lists the words it must not contain.
+  **Tests:** `test/nutrition-view.test.ts`, `e2e/classics-nutrition.mjs`.
 - **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish). One
   step: "Step 3 of 8" as a heading, the component it belongs to, the text,
   the lines it uses with their amounts, time and temperature as the source
@@ -653,6 +673,25 @@ view logic is in `src/classics/` (no DOM), the screens in
   not shown again on any dish. Nothing is marked automatically. The write does not redraw the
   other screens, so the cook keeps the place and focus (focus goes to the
   status line "Marked as learned: ...").
+- **Handling rule beside a step.** The engine's `handlingRules` (ingredient or
+  group above it, the dish's techniques as `used`, learned skills left out)
+  says which rules apply; `src/classics/handling-view.ts` places them. A rule
+  shows once per dish, under the lines of the first step that uses its
+  ingredient: "Handling: <ingredient>", the rule in one or two sentences, and
+  behind a tap why, level and sources (the same card as the technique note).
+  At most two notes of any kind on a step, the technique note first; a rule
+  that does not fit waits for the next step that uses the same ingredient. It
+  fades with its skill: "I know this" on a rule stores the same skill record
+  as on the technique note, so both are gone on every dish, and "Teach again"
+  in Settings brings both back. Texts follow the content language.
+- **Substitutes ("Instead").** An ingredient line whose ingredient (or a group
+  above it) has substitutes (`substituteEffects`) gets a quiet "Instead"
+  button (44 px, `aria-expanded`). It opens, under the line, each replacement
+  with the factor in words when the source gives one ("Amount: about half",
+  from the data, no arithmetic in the app), what changes, and behind a tap the
+  level and sources. Offered on the dish screen, on the lines of a step and in
+  the whole recipe; reference knowledge, so it never fades and has no "I know
+  this".
 - **End of cooking.** "Done cooking" offers "Keep in my notebook": `copyClassic`
   makes the records (version 1 of a new dish and its components, with the
   source in `x-origin` and in the version's `change`), the app writes them

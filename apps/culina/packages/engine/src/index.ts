@@ -323,3 +323,19 @@ export type {
   Settled,
   SourceAmount,
 } from './classics/types';
+
+export { SALT_PER_SODIUM, dishNutrition } from './nutrition/dish';
+export type { DishNutritionInput } from './nutrition/dish';
+export { ROUNDING_SOURCE, roundNutrition } from './nutrition/round';
+export type {
+  NotCountedLine,
+  NotCountedReason,
+  NutrientsPer100g,
+  NutritionById,
+  NutritionCoverage,
+  NutritionError,
+  NutritionErrorCode,
+  NutritionResult,
+  PortionNutrients,
+  RoundNutritionResult,
+} from './nutrition/types';

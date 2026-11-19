@@ -1,0 +1,44 @@
+{
+  "id": "dish-error-nutrition",
+  "description": "A negative figure of a used ingredient is refused and names the ingredient",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 1,
+        "slots": [
+          {
+            "role": "base",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-bad"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-bad": {
+        "kcal": -1,
+        "kJ": 1,
+        "proteinG": 1,
+        "fatG": 1,
+        "carbohydrateG": 1
+      }
+    }
+  },
+  "error_code": "invalid-nutrition",
+  "error_detail": {
+    "ingredient": "inv-bad"
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

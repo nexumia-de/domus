@@ -229,6 +229,7 @@ const lackingFlow = async (browser, origin, width) => {
       firstLine: top(document.querySelector('.recipe-line')),
       cook: top(document.querySelector('.cook-start')),
       method: top(heading('Method') ?? heading('Steps')),
+      nutrition: top(heading('Nutrition per portion')),
       source: top(heading('Source')),
       settled: top(heading('What we settled where the source is vague')),
       check: top(heading('Second check')),
@@ -244,18 +245,19 @@ const lackingFlow = async (browser, origin, width) => {
     'ingredients',
     'cook',
     'method',
+    'nutrition',
     'source',
     'settled',
     'check',
   ];
   const present = order.filter((k) => tops[k] !== null && tops[k] !== undefined);
   check(
-    present.length >= 8 && present.every((k, i) => i === 0 || tops[k] > tops[present[i - 1]]),
-    `${label}: name, portions, ingredients, button, method, then source, settled, check (${present.map((k) => `${k}:${Math.round(tops[k])}`).join(' ')})`,
+    present.length >= 9 && present.every((k, i) => i === 0 || tops[k] > tops[present[i - 1]]),
+    `${label}: name, portions, ingredients, button, method, then nutrition, source, settled, check (${present.map((k) => `${k}:${Math.round(tops[k])}`).join(' ')})`,
   );
   check(
-    tops.blocks === 3 && tops.open.every((o) => o === false),
-    `${label}: source, settled and second check are each closed behind a tap`,
+    tops.blocks === 4 && tops.open.every((o) => o === false),
+    `${label}: nutrition, source, settled and second check are each closed behind a tap`,
   );
   check(
     tops.firstLine < tops.view,

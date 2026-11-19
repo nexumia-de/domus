@@ -4,10 +4,11 @@ import type { ComponentView, LineView } from '../../classics/dish-view';
 import type { StepView } from '../../classics/cook-view';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import type { LineExtra } from './substitute-block';
 
 const t = strings.classics;
 
-export const lineItem = (line: LineView): HTMLElement => {
+export const lineItem = (line: LineView, extra?: LineExtra): HTMLElement => {
   const item = el('li', 'recipe-line');
   const amount = el('span', 'recipe-amount num', line.amount ?? line.unmeasured ?? '');
   const name = el('span', 'recipe-name', line.name);
@@ -19,13 +20,18 @@ export const lineItem = (line: LineView): HTMLElement => {
     line.settled ? t.settledMark : undefined,
   ].filter((x): x is string => x !== undefined);
   if (extras.length > 0) item.append(el('span', 'recipe-extra muted', extras.join(' · ')));
+  if (extra !== undefined) item.append(...extra(line));
   return item;
 };
 
-export const lineList = (lines: readonly LineView[], label: string): HTMLElement => {
+export const lineList = (
+  lines: readonly LineView[],
+  label: string,
+  extra?: LineExtra,
+): HTMLElement => {
   const list = el('ul', 'recipe-lines');
   list.setAttribute('aria-label', label);
-  list.append(...lines.map(lineItem));
+  list.append(...lines.map((line) => lineItem(line, extra)));
   return list;
 };
 
@@ -33,15 +39,16 @@ export const lineList = (lines: readonly LineView[], label: string): HTMLElement
 export const ingredientsBlock = (
   components: readonly ComponentView[],
   slots: readonly LineView[],
+  extra?: LineExtra,
 ): HTMLElement => {
   const block = el('section', 'recipe-block');
   block.append(el('h2', undefined, t.ingredientsHeading));
   for (const c of components) {
     if (c.lines.length === 0) continue;
-    block.append(el('h3', undefined, c.name), lineList(c.lines, c.name));
+    block.append(el('h3', undefined, c.name), lineList(c.lines, c.name, extra));
   }
   if (slots.length > 0)
-    block.append(el('h3', undefined, t.dishHeading), lineList(slots, t.dishHeading));
+    block.append(el('h3', undefined, t.dishHeading), lineList(slots, t.dishHeading, extra));
   return block;
 };
 

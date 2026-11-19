@@ -2,7 +2,20 @@
 type: Specification
 title: Ingredient catalogue
 description: The catalogue of basic ingredients shipped with the app, generated from USDA FoodData Central SR Legacy; why that dataset, the selection rule, how density and unit weight are derived, how the ingredient tree and the yields are built, where the German names (Wikidata) and USDA's food categories come from and by which rules, the file, and what the catalogue does not have.
-tags: [catalogue, ingredients, data, usda, wikidata, german, licences, generator, tree, yields]
+tags:
+  [
+    catalogue,
+    ingredients,
+    data,
+    usda,
+    wikidata,
+    german,
+    licences,
+    generator,
+    tree,
+    yields,
+    nutrition,
+  ]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
   - id: fdc
@@ -386,12 +399,36 @@ row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
 `x-group.category` only when every food row below it has the same one
 (107 of 116 parents). It is not mapped to shop aisles or anything else.
 
+## Nutrition
+
+Work package 11 ([helper plan](helper-plan.md), [evaluation](nutrition-evaluation.md#what-was-built)).
+The generator (`tools/catalogue/nutrition.mjs`) reads the nutrients from the
+`foodNutrients` of the same SR Legacy food a row comes from, per 100 g, and
+writes them as `x-nutrition.per100g`: `kcal` (FDC nutrient 208), `kJ` (268),
+`proteinG` (203), `fatG` (204), `carbohydrateG` (205), `fibreG` (291) and
+`sodiumMg` (307). No number is typed or computed. The unit the dataset states is
+checked (kcal, kJ, g, mg); a food whose five core nutrients are not all there
+in those units gets no `x-nutrition`, and fibre or sodium are left out where the
+dataset has none (unknown, not zero). A food row has no `source` of its own: its
+`x-fdc.id` and the envelope's `dataset` say where the numbers come from.
+
+A parent takes the nutrition of the food rows below it only when energy,
+protein, fat and carbohydrate each agree in all of them: the largest is at most
+1.05 times the smallest, or they differ by at most 5 kcal, 20 kJ or 0.5 g (the
+display steps of the [rounding](engine-rules.md#nutrition)); fibre and sodium
+likewise, each on its own, and only when every row has them. The value is the
+median, and the parent's `source` names the rule. Many parents do not agree
+(milk holds skimmed, dry and human milk; eggs hold fresh and dried), so a dish
+line that names such a parent has no nutrition and is reported as not counted.
+36 of 121 parents and all 560 foods carry nutrition.
+
 ## What the catalogue does not have
 
 - No meat, fish, poultry, baked goods, beverages, soups, sauces, canned,
   frozen, cooked or prepared foods, and no brand products, apart from the
   21 [named foods](#named-foods) (bread, breadcrumbs and wine among them).
-- No shelf life, seasons, allergens or nutrition figures, and no roles in the
+- No shelf life, seasons or allergens, no nutrition beyond the seven
+  [nutrients](#nutrition) above (no vitamins or minerals), and no roles in the
   file (the app's [role table](data-model.md#roles) adds a few when it reads it); yields only
   where SR28 gives a refuse percentage (153 foods), none for cooked states.
 - No density for foods whose only volume portion is a bulk form (chopped,
@@ -425,7 +462,7 @@ tests the grouping rule on a second excerpt (with `food-des-excerpt.txt`
 for the yields) and on synthetic names, the parents' numbers and ids, the
 yields, the input-order independence of the bytes, and runs the shipped
 file through `validateModel` (no `cycle`, no `unknown-parent`) and
-`buildTree`. `packages/app/test/catalogue-names.test.ts` tests the German names: the NDB join,
+`buildTree`. `packages/app/test/catalogue-nutrition.test.ts` tests the nutrition rules on synthetic foods, the parents' agreement, that the fixture figures are the dataset's and the shipped file against the schema. `packages/app/test/catalogue-names.test.ts` tests the German names: the NDB join,
 the tie, label and taxon rules on small excerpts, the parents' names and categories, the
 snapshot builder, that every shipped name cites an item of the committed snapshot with that
 label, and the bytes. The catalogue schema and its examples

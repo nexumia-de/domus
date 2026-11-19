@@ -1,0 +1,98 @@
+{
+  "id": "dish-no-fibre-figure",
+  "description": "A counted ingredient without a fibre figure: fibre is not reported (unknown is not zero); sodium is: 100 g of each of the two, 2 mg sodium = 0.005 g salt",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 1,
+        "slots": [
+          {
+            "role": "base",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "role": "extra",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-nofibre"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-oil": {
+        "kcal": 800,
+        "kJ": 3300,
+        "proteinG": 0,
+        "fatG": 90,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 0
+      },
+      "inv-egg": {
+        "kcal": 150,
+        "kJ": 620,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      },
+      "inv-nofibre": {
+        "kcal": 100,
+        "kJ": 420,
+        "proteinG": 1,
+        "fatG": 1,
+        "carbohydrateG": 20,
+        "sodiumMg": 0
+      }
+    }
+  },
+  "expected": {
+    "portions": 1,
+    "perPortion": {
+      "kcal": 400,
+      "kJ": 1670,
+      "proteinG": 11,
+      "fatG": 2,
+      "carbohydrateG": 80,
+      "saltG": 0.005
+    },
+    "countedGPerPortion": 200,
+    "coverage": {
+      "counted": 2,
+      "total": 2,
+      "massShare": 1,
+      "notCounted": []
+    },
+    "notReported": ["fibreG"]
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

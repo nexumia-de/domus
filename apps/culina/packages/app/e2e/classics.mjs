@@ -4,7 +4,17 @@
 // 44 x 44, no console error, nothing focused when a screen opens, focus moves on a step change.
 import { check, watch } from './harness.mjs';
 import { overflow, smallTargets } from './measure.mjs';
-import { engineGrams, openWith, PAN, SECOND, TECHNIQUE } from './classics-fixture.mjs';
+import {
+  engineGrams,
+  openWith,
+  PAN,
+  RULE_BUTTER,
+  RULE_OIL,
+  SECOND,
+  SUB_BUTTER,
+  TECHNIQUE,
+} from './classics-fixture.mjs';
+import { nutritionSection } from './classics-nutrition.mjs';
 
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
 const START = 'What do you want to cook?';
@@ -156,7 +166,44 @@ const flow = async (browser, origin, width) => {
     await page.getByText('A second person read the same text.').isVisible(),
     `${label}: the second check`,
   );
+  // Substitutes: a quiet button on a line that has some, opened under the line.
+  const instead = page.getByRole('button', { name: 'Instead of Butter, salted' });
+  check((await instead.count()) === 1, `${label}: the butter line offers substitutes`);
+  check(
+    (await page.getByRole('button', { name: 'Instead of Salt, table' }).count()) === 0,
+    `${label}: a line without substitutes has no button`,
+  );
+  check(
+    (await instead.getAttribute('aria-expanded')) === 'false' &&
+      !(await page.locator('.substitute-note').first().isVisible()),
+    `${label}: the substitutes are behind a tap`,
+  );
+  await instead.click();
+  const sub = page
+    .locator('.recipe-line', { hasText: 'Butter, salted' })
+    .locator('.substitute-note');
+  check(
+    (await sub.count()) === 1 &&
+      (await sub.isVisible()) &&
+      (await sub.innerText()).includes('Oil') &&
+      (await sub.innerText()).includes('Amount: about half') &&
+      (await sub.innerText()).includes(SUB_BUTTER.changes.en),
+    `${label}: the replacement, the amount in words and what changes`,
+  );
+  check(
+    (await sub.getByRole('button', { name: 'I know this' }).count()) === 0,
+    `${label}: a substitute has no "I know this"`,
+  );
+  await sub.locator('.substitute-more summary').click();
+  check(
+    (await sub.locator('.substitute-more').innerText()).includes('Tradition') &&
+      (await sub.locator('.substitute-sources a').count()) === 1,
+    `${label}: level and source behind a tap`,
+  );
   await layout(page, `${label} dish`);
+  await instead.click();
+  check(!(await sub.isVisible()), `${label}: a second tap closes the substitutes`);
+  await nutritionSection(page, PAN, label);
 
   // Step by step.
   await page.getByRole('link', { name: 'Cook step by step' }).click();
@@ -190,6 +237,29 @@ const flow = async (browser, origin, width) => {
     `${label}: why, the level and the source`,
   );
   check((await skills(page)).length === 0, `${label}: nothing is marked as learned automatically`);
+  check(
+    (await page.locator('.handling-note').count()) === 1 &&
+      (await page.getByRole('heading', { name: 'Handling: Butter, salted' }).isVisible()) &&
+      (await page.locator('.handling-note p').first().innerText()) === RULE_BUTTER.text.en,
+    `${label}: the handling rule shows at the first step that uses its ingredient`,
+  );
+  check(
+    (await page.locator('.cook-step aside').count()) === 2 &&
+      (await page.locator('.cook-step aside').first().getAttribute('class')).includes(
+        'technique-note',
+      ),
+    `${label}: two notes at most on a step, the technique note first`,
+  );
+  check(
+    (await page.locator('.handling-more').getAttribute('open')) === null,
+    `${label}: the rule's why, level and sources are behind a tap`,
+  );
+  await page.locator('.handling-more summary').click();
+  check(
+    (await page.locator('.handling-more').innerText()).includes('Tradition') &&
+      (await page.locator('.handling-sources a').count()) === 1,
+    `${label}: the rule's level and source`,
+  );
   await layout(page, `${label} step 1`);
   await page.getByRole('button', { name: 'Next' }).click();
   await step(page, 2, 3).waitFor();
@@ -205,6 +275,24 @@ const flow = async (browser, origin, width) => {
     (await page.getByRole('heading', { name: NOTE }).count()) === 0,
     `${label}: the note is shown once, at the first step that uses the technique`,
   );
+  check(
+    (await page.getByRole('heading', { name: 'Handling: Butter, salted' }).count()) === 0 &&
+      (await page.getByRole('heading', { name: 'Handling: Oil' }).count()) === 1 &&
+      (await page.locator('.handling-note p').first().innerText()) === RULE_OIL.text.en,
+    `${label}: a rule shows once; the next ingredient's rule shows at its step`,
+  );
+  check(
+    (await page
+      .getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' })
+      .count()) === 1,
+    `${label}: the step's lines offer substitutes too`,
+  );
+  await page.getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' }).click();
+  check(
+    (await page.locator('.cook-step .substitute-note').innerText()).includes('without a factor'),
+    `${label}: a substitute without a factor shows only what the source says`,
+  );
+  await layout(page, `${label} step 2`);
   const box = await page.getByRole('button', { name: 'Next' }).boundingBox();
   check(
     box.height >= 44 && box.width >= 100,
@@ -221,11 +309,15 @@ const flow = async (browser, origin, width) => {
   await page.locator('.cook-whole summary').click();
 
   // I know this.
-  await page.getByRole('button', { name: 'I know this' }).click();
+  await page.locator('.technique-note').getByRole('button', { name: 'I know this' }).click();
   await page.getByText('Marked as learned: Example technique (fictional).').waitFor();
   check(
     (await page.getByRole('heading', { name: NOTE }).count()) === 0,
     `${label}: the note is gone after "I know this"`,
+  );
+  check(
+    (await page.locator('.handling-note').count()) === 0,
+    `${label}: the rules of that skill are gone with it`,
   );
   const marked = await skills(page);
   check(
@@ -320,6 +412,46 @@ const flow = async (browser, origin, width) => {
     (await page.getByRole('heading', { name: NOTE }).count()) === 1,
     `${label}: the note shows again after Teach again`,
   );
+  check(
+    (await page.locator('.handling-note').count()) === 1,
+    `${label}: the handling rule shows again after Teach again`,
+  );
+
+  // "I know this" on a rule marks the same skill; it is gone on every dish.
+  await page.locator('.handling-note').getByRole('button', { name: 'I know this' }).click();
+  await page.getByText('Marked as learned: Example technique (fictional).').waitFor();
+  const byRule = await skills(page);
+  check(
+    byRule.length === 1 && byRule[0].id === 'skill-example-technique' && byRule[0].learned === true,
+    `${label}: "I know this" on a rule stores the same skill record`,
+  );
+  check(
+    (await page.locator('.handling-note').count()) === 0 &&
+      (await page.getByRole('heading', { name: NOTE }).count()) === 0,
+    `${label}: the rule and the technique note are gone`,
+  );
+  await openWith(page, origin, `classic/${PAN.id}/cook`);
+  await step(page, 1, 3).waitFor();
+  check(
+    (await page.locator('.handling-note').count()) === 0,
+    `${label}: the rule is gone on another dish too`,
+  );
+  await page.getByRole('button', { name: 'Next' }).click();
+  check(
+    (await page.locator('.handling-note').count()) === 0 &&
+      (await page
+        .getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' })
+        .count()) === 1,
+    `${label}: substitutes do not fade with the skill`,
+  );
+  await openWith(page, origin, 'settings');
+  await page.getByRole('button', { name: `Teach again: ${TECHNIQUE.name.en}` }).click();
+  await page.getByText(`The note for ${TECHNIQUE.name.en} is shown again.`).waitFor();
+  await openWith(page, origin, `classic/${PAN.id}/cook`);
+  check(
+    (await page.locator('.handling-note').count()) === 1,
+    `${label}: Teach again brings the rule back`,
+  );
 
   // Content language.
   await openWith(page, origin, 'settings');
@@ -337,6 +469,11 @@ const flow = async (browser, origin, width) => {
   check(
     (await page.locator('.recipe-block').first().innerText()).includes('Example'),
     `${label}: the app's own texts stay English`,
+  );
+  await openWith(page, origin, `classic/${PAN.id}/cook`);
+  check(
+    (await page.locator('.handling-note p').first().innerText()) === RULE_BUTTER.text.de,
+    `${label}: the handling rule follows the content language`,
   );
   await openWith(page, origin, 'settings');
   await page.getByLabel('Follow device').check();

@@ -1,0 +1,27 @@
+{
+  "id": "round-salt-small-step",
+  "description": "Salt 52 mg to the nearest 5 mg = 50 mg = 0.05 g; kcal 2.4 = 0",
+  "inputs": {
+    "kind": "nutrition_round",
+    "figures": {
+      "kcal": 2.4,
+      "kJ": 10,
+      "proteinG": 1,
+      "fatG": 1,
+      "carbohydrateG": 1,
+      "saltG": 0.052
+    }
+  },
+  "expected": {
+    "rounded": {
+      "kcal": 0,
+      "kJ": 10,
+      "proteinG": 1,
+      "fatG": 1,
+      "carbohydrateG": 1,
+      "saltG": 0.05
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

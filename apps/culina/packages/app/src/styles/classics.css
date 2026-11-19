@@ -47,7 +47,9 @@
 .recipe-lines,
 .recipe-steps,
 .settled-list,
-.technique-sources {
+.technique-sources,
+.handling-sources,
+.substitute-sources {
   margin: 0 0 var(--sp-3);
   padding: 0;
   list-style: none;
@@ -83,12 +85,16 @@
 
 .foot-block,
 .technique-more,
+.handling-more,
+.substitute-more,
 .cook-whole {
   margin: var(--sp-3) 0;
 }
 
 .foot-block summary,
 .technique-more summary,
+.handling-more summary,
+.substitute-more summary,
 .cook-whole summary {
   display: flex;
   align-items: center;
@@ -137,7 +143,8 @@
   display: none;
 }
 
-.technique-note {
+.technique-note,
+.handling-note {
   margin: var(--sp-4) 0;
   padding: var(--sp-3);
   border: 1px solid var(--border);
@@ -145,17 +152,23 @@
   background: var(--accent-soft);
 }
 
-.technique-note h3 {
+.technique-note h3,
+.handling-note h3,
+.substitute-note h3 {
   margin: 0 0 var(--sp-1);
   font-size: var(--fs-md);
 }
 
-.technique-note h4 {
+.technique-note h4,
+.handling-note h4,
+.substitute-note h4 {
   margin: var(--sp-2) 0 var(--sp-1);
   font-size: var(--fs-sm);
 }
 
-.technique-sources a {
+.technique-sources a,
+.handling-sources a,
+.substitute-sources a {
   display: inline-flex;
   align-items: center;
   min-height: var(--target);
@@ -181,4 +194,29 @@
 .skill-name {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.line-instead {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.substitute-panel {
+  grid-column: 1 / -1;
+}
+
+.substitute-panel[hidden] {
+  display: none;
+}
+
+.substitute-note {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.note-lead {
+  margin: 0 0 var(--sp-1);
+  font-weight: 600;
 }

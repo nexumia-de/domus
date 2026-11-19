@@ -28,6 +28,9 @@ test('a file without substitutes has none; one with them keeps them; a bad list 
   expect(readContent(file)?.substitutes).toEqual([]);
   expect(readContent({ ...file, substitutes: [{ id: 's' }] })?.substitutes).toHaveLength(1);
   expect(readContent({ ...file, substitutes: 'x' })).toBeUndefined();
+  expect(readContent(file)?.handling).toEqual([]);
+  expect(readContent({ ...file, handling: [{ id: 'h' }] })?.handling).toHaveLength(1);
+  expect(readContent({ ...file, handling: 'x' })).toBeUndefined();
 });
 
 test('loading fills the lists; a failed load leaves the app with zero dishes', async () => {

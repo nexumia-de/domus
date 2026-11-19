@@ -13,6 +13,8 @@ export interface CatalogueRow {
   densityGPerMl?: SourcedNumber;
   unitWeightG?: SourcedNumber;
   yields?: { state: string; percent: number; source: string }[];
+  /** Nutrients per 100 g; on food rows with the core nutrients, and on parents whose rows agree. */
+  'x-nutrition'?: { per100g: Record<string, number>; source?: string };
   /** Present on food rows. */
   'x-fdc'?: { id: number; description: string; category?: string };
   /** Present on generated parents; `rows` is how many food rows are below. */

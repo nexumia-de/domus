@@ -249,5 +249,117 @@
         }
       ]
     }
+  ],
+  "handling": [
+    {
+      "id": "example-rule-butter",
+      "target": "fdc-group-butter",
+      "text": {
+        "en": "Example rule: say in one line when the butter goes in.",
+        "de": "Beispielregel: in einer Zeile sagen, wann die Butter hineinkommt."
+      },
+      "why": {
+        "en": "Example reason for example-rule-butter: invented, rests on nothing.",
+        "de": "Beispielgrund für example-rule-butter: erfunden, ohne Grundlage."
+      },
+      "technique": "example-technique",
+      "level": "tradition",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 2, page 2",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    },
+    {
+      "id": "example-rule-oil",
+      "target": "fdc-171413",
+      "text": {
+        "en": "Example rule: say in one line how the oil is treated.",
+        "de": "Beispielregel: in einer Zeile sagen, wie das Öl behandelt wird."
+      },
+      "why": {
+        "en": "Example reason for example-rule-oil: invented, rests on nothing.",
+        "de": "Beispielgrund für example-rule-oil: erfunden, ohne Grundlage."
+      },
+      "technique": "example-technique",
+      "level": "tradition",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 2, page 2",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    },
+    {
+      "id": "example-rule-salt",
+      "target": "fdc-173468",
+      "text": {
+        "en": "Example rule: say in one line when the salt goes in.",
+        "de": "Beispielregel: in einer Zeile sagen, wann das Salz hineinkommt."
+      },
+      "why": {
+        "en": "Example reason for example-rule-salt: invented, rests on nothing.",
+        "de": "Beispielgrund für example-rule-salt: erfunden, ohne Grundlage."
+      },
+      "technique": "example-technique",
+      "level": "tradition",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 2, page 2",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    }
+  ],
+  "substitutes": [
+    {
+      "id": "example-butter-to-oil",
+      "from": "fdc-group-butter",
+      "to": "fdc-group-oil",
+      "factor": 0.5,
+      "changes": {
+        "en": "Example change: say in one line what changes, for example the taste.",
+        "de": "Beispieländerung: in einer Zeile sagen, was sich ändert, zum Beispiel der Geschmack."
+      },
+      "level": "tradition",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 2, page 2",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    },
+    {
+      "id": "example-oil-to-butter",
+      "from": "fdc-group-oil",
+      "to": "fdc-group-butter",
+      "changes": {
+        "en": "Example change without a factor: the line says what the source says about amounts.",
+        "de": "Beispieländerung ohne Faktor: die Zeile sagt, was die Quelle zur Menge sagt."
+      },
+      "level": "tradition",
+      "sources": [
+        {
+          "title": "An Example Textbook (fictional, not a real book)",
+          "place": "chapter 2, page 2",
+          "url": "https://example.org/example-textbook",
+          "licence": "CC0-1.0 (invented for this example)",
+          "sentence": "This sentence is invented for the example and rests on nothing."
+        }
+      ]
+    }
   ]
 }

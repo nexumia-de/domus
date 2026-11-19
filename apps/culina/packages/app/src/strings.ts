@@ -1,6 +1,7 @@
 /** Every visible text of the app, English. Screens and the shell import from here only. */
 import { classicsStrings } from './strings-classics';
 import { cookStrings } from './strings-cook';
+import { nutritionStrings } from './strings-nutrition';
 import { stockStrings } from './strings-stock';
 
 export const strings = {
@@ -541,6 +542,7 @@ export const strings = {
   stock: stockStrings,
   cook: cookStrings,
   classics: classicsStrings,
+  nutrition: nutritionStrings,
   // Texts for the store's error codes; the editing screens show them.
   store: {
     unavailable: 'This browser cannot keep data here. Private browsing can cause this.',

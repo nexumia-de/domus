@@ -10,6 +10,8 @@ export const content = JSON.parse(
 );
 export const [PAN, SECOND] = content.classics;
 export const [TECHNIQUE] = content.techniques;
+export const [RULE_BUTTER, RULE_OIL] = content.handling;
+export const [SUB_BUTTER] = content.substitutes;
 
 /** The engine's amount of the line `key` of the first component, for some portions, in grams. */
 export const engineGrams = (classic, key, portions) => {

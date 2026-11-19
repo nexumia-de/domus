@@ -170,7 +170,7 @@ Run the first four in a scratch folder outside the repository (the raw
 datasets, 210 MB unzipped for the JSON, are never committed) and give the
 fifth their paths; `--refuse` is the refuse file for the yields. The generator reads the folder or the `.json` file, writes the
 file above (or `--out <file>`), and a rerun on the same dataset gives
-identical bytes; it prints the number of entries, parents and yields. `npm run build` copies the
+identical bytes; it prints the number of entries, parents, yields and nutrition rows. `npm run build` copies the
 file, minified, to `dist/catalogue.json` (the app fetches it on first use of
 the picker and the service worker precaches it; `main.js` does not carry
 it). Prettier ignores the generated

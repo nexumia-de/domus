@@ -52,6 +52,7 @@ test('no text says that a recipe or a ratio is wrong, invalid, failed or missing
   expect(files).toContain('strings-stock.ts');
   expect(files).toContain('strings-cook.ts');
   expect(files).toContain('strings-classics.ts');
+  expect(files).toContain('strings-nutrition.ts');
   for (const file of files) {
     const source = readSrc(file)
       .replace(/\/\*[\s\S]*?\*\//g, '')

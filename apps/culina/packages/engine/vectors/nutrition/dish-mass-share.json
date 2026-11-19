@@ -1,0 +1,100 @@
+{
+  "id": "dish-mass-share",
+  "description": "The mass share is stated when every line left out has a known mass: 100 g flour counted, 100 g of an ingredient without figures left out: share 0.5",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dish",
+        "name": "Example dish",
+        "portions": 1,
+        "slots": [
+          {
+            "role": "base",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-flour"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "role": "extra",
+            "ref": {
+              "kind": "ingredient",
+              "id": "inv-mystery"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-oil": {
+        "kcal": 800,
+        "kJ": 3300,
+        "proteinG": 0,
+        "fatG": 90,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 0
+      },
+      "inv-egg": {
+        "kcal": 150,
+        "kJ": 620,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      }
+    }
+  },
+  "expected": {
+    "portions": 1,
+    "perPortion": {
+      "kcal": 300,
+      "kJ": 1250,
+      "proteinG": 10,
+      "fatG": 1,
+      "carbohydrateG": 60,
+      "fibreG": 3,
+      "saltG": 0.005
+    },
+    "countedGPerPortion": 100,
+    "coverage": {
+      "counted": 1,
+      "total": 2,
+      "massShare": 0.5,
+      "notCounted": [
+        {
+          "index": 1,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-mystery"
+          },
+          "reason": "no-nutrition"
+        }
+      ]
+    },
+    "notReported": []
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

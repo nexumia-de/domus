@@ -42,6 +42,17 @@
         "value": 0.959,
         "source": "USDA FoodData Central, SR Legacy, release 2018-04, FDC ID 173410, portion: 1 cup = 227 g; 1 cup = 236.5882365 ml (US customary, engine units table)"
       },
+      "x-nutrition": {
+        "per100g": {
+          "kcal": 717,
+          "kJ": 3000,
+          "proteinG": 0.85,
+          "fatG": 81.1,
+          "carbohydrateG": 0.06,
+          "fibreG": 0,
+          "sodiumMg": 643
+        }
+      },
       "x-fdc": {
         "id": 173410,
         "description": "Butter, salted"
