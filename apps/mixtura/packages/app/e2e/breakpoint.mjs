@@ -39,7 +39,13 @@ for (const width of [839, 840]) {
       .locator('.pane h1:visible', { hasText: new RegExp(`^${name}$`) })
       .last()
       .waitFor();
-    const box = await page.locator('nav.nav').boundingBox();
+    // A screen may draw the shell again once its data is there, so the bar can be gone for a
+    // moment: wait until it is laid out before measuring it.
+    let box = null;
+    for (let tries = 0; box === null && tries < 50; tries++) {
+      await page.locator('nav.nav').waitFor();
+      box = await page.locator('nav.nav').boundingBox();
+    }
     expect(
       rail ? box.x === 0 && box.width === 88 : box.y > 360 && box.width === width,
       `${width}: ${name} with the ${rail ? 'rail' : 'bottom bar'}`,

@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Fix**: `e2e/breakpoint.mjs` waits until the navigation bar is laid out before it measures it. On the CI runner the bar was gone for a moment after opening Stock and the script stopped on a missing box; the check itself is unchanged.
 - **Update**: the cipher (`cipher.ts`, `base64.ts`, `errors.ts`) and the WebDAV adapter (`webdav.ts`, `webdav-url.ts`, `webdav-connection.ts`) with their tests and the cipher's fixed vector moved to the shared host package `packages/host` (`@nexumia-de/hospes`), because the other apps will need them too; Mixtura imports them from there and behaves as before. The descriptions moved with them: [WebDAV adapter](../../../packages/host/docs/webdav.md) and [sync cipher](../../../packages/host/docs/cipher.md); [sync backends](sync-backends.md) and [sync encryption](sync-encryption.md) keep what is Mixtura's and link there. The passphrase, the store, the cycle, the scheduler, bindings, invites and screens stay.
 - **Update**: Mixtura is served from `domus.nexumia.de/mixtura/`; `mixtura.nexumia.de` redirects there. Its own worker configuration, wrangler pin, deploy job and previews are gone. [Deployment](deployment.md) says so at the top; the rest of that document describes the time before.
 - **Fix**: the service worker deletes only caches named `mixtura-…` on activation. It deleted every cache but its own, which would remove the offline copy of another app served from the same address; found by the site check of the repository ([deployment](../../../docs/deployment.md)). [Development](development.md).
