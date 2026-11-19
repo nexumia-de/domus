@@ -200,10 +200,10 @@ const flow = async (browser, origin, width) => {
       (await sub.locator('.substitute-sources a').count()) === 1,
     `${label}: level and source behind a tap`,
   );
-  await nutritionSection(page, PAN, label);
   await layout(page, `${label} dish`);
   await instead.click();
   check(!(await sub.isVisible()), `${label}: a second tap closes the substitutes`);
+  await nutritionSection(page, PAN, label);
 
   // Step by step.
   await page.getByRole('link', { name: 'Cook step by step' }).click();
