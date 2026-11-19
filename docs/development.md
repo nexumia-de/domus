@@ -14,13 +14,14 @@ sources:
 
 ## Layout
 
-| Folder           | Workspace names                              | Came from          |
-| ---------------- | -------------------------------------------- | ------------------ |
-| `packages/model` | `@nexumia-de/materia`                        | nexumia-de/materia |
-| `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app` | nexumia-de/mixtura |
-| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`    | nexumia-de/culina  |
-| `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`    | nexumia-de/emptio  |
-| `scripts`        | none; checks that span the parts             | new                |
+| Folder           | Workspace names                                     | Came from          |
+| ---------------- | --------------------------------------------------- | ------------------ |
+| `packages/model` | `@nexumia-de/materia`                               | nexumia-de/materia |
+| `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app`        | nexumia-de/mixtura |
+| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`           | nexumia-de/culina  |
+| `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`           | nexumia-de/emptio  |
+| `apps/domus`     | none; the static page at the root of the address    | new                |
+| `scripts`        | none; checks and the site build that span the parts | new                |
 
 Each part keeps its own `docs/`, `AGENTS.md`, ESLint and Prettier
 configuration and TypeScript base, as it had them
@@ -52,6 +53,9 @@ From the root:
 | `npm run check:mixtura` | Mixtura: format, lint, typecheck, tests, build               |
 | `npm run check:culina`  | Culina: format, lint, typecheck, tests                       |
 | `npm run check:emptio`  | Emptio: format, lint, typecheck, tests                       |
+
+`npm run build:site` and `npm run e2e:site` build and check the whole
+address ([deployment](deployment.md)).
 
 Other scripts of a part run with `-w`, for example
 `npm run e2e -w mixtura` or `npm run build -w culina`. What they do is

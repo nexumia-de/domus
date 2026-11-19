@@ -23,6 +23,12 @@ updates:
     groups:
       actions:
         patterns: ['*']
+  # The wrangler version the site deploy job uses.
+  - package-ecosystem: npm
+    directory: /tools/wrangler
+    schedule:
+      interval: weekly
+    versioning-strategy: increase
   # The wrangler version the Mixtura deploy job uses.
   - package-ecosystem: npm
     directory: /apps/mixtura/tools/wrangler

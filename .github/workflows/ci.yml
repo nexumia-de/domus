@@ -407,3 +407,76 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:emptio
+
+  # The whole address as it is deployed: every app in its folder. The browser
+  # run checks that the apps stay apart (service workers, caches, databases).
+  site-check:
+    name: site-check
+    needs: changes
+    if: needs.changes.outputs.mixtura == 'true' || needs.changes.outputs.culina == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e:site
+
+  # domus.nexumia.de (docs/deployment.md). Only on main; without the secrets
+  # the job says so and stays green, as the app deploys do.
+  site-deploy:
+    name: site-deploy
+    needs: [site-check, mixtura-check, culina-check]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: site-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Check for Cloudflare secrets
+        id: secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Cloudflare secrets are not set, deploy skipped"
+          fi
+      - if: steps.secrets.outputs.configured == 'true'
+        run: npm ci
+      - if: steps.secrets.outputs.configured == 'true'
+        run: npm run build:site
+      - name: Read the pinned wrangler version
+        if: steps.secrets.outputs.configured == 'true'
+        id: wrangler
+        run: echo "version=$(node -p "require('./tools/wrangler/package.json').devDependencies.wrangler")" >> "$GITHUB_OUTPUT"
+      - name: Deploy to Cloudflare
+        if: steps.secrets.outputs.configured == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: npx --yes "wrangler@${{ steps.wrangler.outputs.version }}" deploy
+      # The address must answer with the root page and every app.
+      - name: Check the address
+        if: steps.secrets.outputs.configured == 'true'
+        run: |
+          agent="domus-deploy-check"
+          for path in / /mixtura/ /culina/; do
+            curl -fsS -A "$agent" --retry 6 --retry-delay 10 --retry-all-errors -o /dev/null "https://domus.nexumia.de$path"
+            echo "https://domus.nexumia.de$path answers"
+          done

@@ -2,6 +2,7 @@
 
 ## 2026-11-19
 
+- **Fix**: the service worker deletes only caches named `mixtura-…` on activation. It deleted every cache but its own, which would remove the offline copy of another app served from the same address; found by the site check of the repository ([deployment](../../../docs/deployment.md)). [Development](development.md).
 - **Update**: Mixtura moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
 
 ## 2026-11-18

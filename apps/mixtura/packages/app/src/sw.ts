@@ -8,6 +8,9 @@
 declare const APP_FILES: readonly string[];
 declare const APP_CACHE: string;
 
+/** Every cache name of this app starts with it (build.mjs names them `mixtura-<hash>`). */
+const CACHE_PREFIX = 'mixtura-';
+
 interface WaitEvent extends Event {
   waitUntil(work: Promise<unknown>): void;
 }
@@ -42,7 +45,12 @@ worker.addEventListener('activate', (event) => {
     caches
       .keys()
       .then((names) =>
-        Promise.all(names.filter((name) => name !== APP_CACHE).map((name) => caches.delete(name))),
+        // Only this app's caches: other apps on the same address keep theirs here too.
+        Promise.all(
+          names
+            .filter((name) => name.startsWith(CACHE_PREFIX) && name !== APP_CACHE)
+            .map((name) => caches.delete(name)),
+        ),
       )
       .then(() => worker.clients.claim()),
   );

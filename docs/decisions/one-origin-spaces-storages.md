@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: One address, spaces, and the storages on offer
-description: Decided by the owner on 2026-11-19. All apps are served from domus.nexumia.de with a folder per app and stay separately installable; sync is rebuilt on spaces (one random secret, one invite, one file per collection) without reading the earlier format; the household's own sync server (Worker and container, with push) and WebDAV are joined by S3, GitHub, Dropbox, Google Drive and OneDrive; no existing data has to be carried over.
+description: Decided by the owner on 2026-11-19. All apps are served from domus.nexumia.de with a folder per app and stay separately installable; sync is rebuilt on spaces (one random secret, one invite, one file per collection) without reading the earlier format; the household's own sync server (Worker and container, with push) and WebDAV are joined by S3 and GitHub; a private GitHub repository shared by a token is the owner's storage and comes first; an invite may carry the storage access; the sign-in storages are left to others; removal markers go after 90 days; no existing data has to be carried over.
 tags: [decision, origin, pwa, sync, spaces, storage, server, adapters]
 generated: { by: claude-code, at: 2026-11-19 }
 sources:
@@ -22,7 +22,7 @@ sources:
 # One address, spaces, and the storages on offer
 
 **Status: decided by the owner on 2026-11-19**, as answers to four
-questions of the agent after the repositories were joined[^one-repo].
+questions of the agent, and to three more the same day, after the repositories were joined[^one-repo].
 What the owner chose is in the numbered points; everything under
 "Agent's choices" is a proposal that the owner can change, and nothing
 of it is built yet. The order of work is the [roadmap](../roadmap.md).
@@ -52,9 +52,17 @@ is the same thing in all apps.
 3. **Storages on offer.** The household's own sync server (one code
    base, run as a Cloudflare Worker or as a container, with push) and
    WebDAV were given; added by the owner: S3 (Cloudflare R2, Backblaze
-   B2), GitHub (a private repository), and Dropbox, Google Drive and
-   OneDrive.
-4. **Nothing has to be carried over.** The owner is the only user and
+   B2) and GitHub (a private repository). **GitHub is the storage the
+   owner will use** and is built first: a private repository, shared
+   with the household by a token for that one repository.
+4. **An invite may carry the storage access**, when the person who
+   invites chooses so: the token of the repository travels with the
+   space's secret, and the second person needs no account.
+5. **Dropbox, Google Drive and OneDrive are not built by the owner.**
+   They need an app registration with each provider, which the owner
+   does not want to hold. Someone else may add them.
+6. **Removal markers are dropped after 90 days.**
+7. **Nothing has to be carried over.** The owner is the only user and
    the existing data does not matter: no migration of local data to the
    new address, no reading of existing sync files.
 
@@ -86,8 +94,11 @@ Proposals to make the points above concrete.
   space id, and the access token for the sync server. The server sees
   id and token, never the secret. PBKDF2 is no longer needed because
   the secret is not chosen by a person.
-- **Invite**: storage type, address and the secret; for storages that
-  need an account, the person signs in to it themselves. Whoever holds
+- **Invite**: storage type, address and the secret. For a storage that
+  needs an account or a token, the invite carries it only when the
+  inviting person ticks "include access"; the screen then says what
+  that access allows (for GitHub: read and write in that one
+  repository). Otherwise the second person enters their own. Whoever holds
   an invite reads and writes everything in the space; removing a person
   means a new secret and new invites.
 - **Kinds**: a shared space (a household) and a personal one (a
@@ -100,8 +111,8 @@ Proposals to make the points above concrete.
 - **Merge** stays per record and pure, with vectors. Two additions:
   a logical clock beside the wall clock, so a device with a wrong clock
   does not win every conflict; and removal markers older than 90 days
-  are dropped, with the stated risk that a device offline for longer
-  brings an entry back.
+  are dropped (the owner's point 6), with the stated risk that a device
+  offline for longer brings an entry back.
 - **Freshness**: sync when an app opens or comes to the front and every
   15 to 30 seconds while a shared collection is on screen, reading with
   `If-None-Match`; a storage that can push (`watch`) replaces the
@@ -125,21 +136,27 @@ Proposals to make the points above concrete.
 
 ### Storages
 
-| Storage                  | Shares with other people                | Push | Needs                              |
-| ------------------------ | --------------------------------------- | ---- | ---------------------------------- |
-| Sync server              | yes, by invite alone                    | yes  | the household deploys it once      |
-| WebDAV                   | only with an account on the same server | no   | a server that answers CORS         |
-| S3 (R2, B2)              | only with a key for the bucket          | no   | a bucket with a CORS rule          |
-| GitHub                   | only with access to the repository      | no   | a token for one repository         |
-| Dropbox, Drive, OneDrive | only through a folder both can open     | no   | sign-in; an app registration by us |
+| Storage                  | Shares with other people                | Push | Needs                                |
+| ------------------------ | --------------------------------------- | ---- | ------------------------------------ |
+| Sync server              | yes, by invite alone                    | yes  | the household deploys it once        |
+| WebDAV                   | only with an account on the same server | no   | a server that answers CORS           |
+| S3 (R2, B2)              | only with a key for the bucket          | no   | a bucket with a CORS rule            |
+| GitHub                   | yes, when the invite carries the token  | no   | a token for one repository           |
+| Dropbox, Drive, OneDrive | only through a folder both can open     | no   | an app registration; not built by us |
 
 - The adapters are in the shared host package; an app does not know
   which storage a space uses.
-- Dropbox, Google Drive and OneDrive sign in with OAuth and PKCE in
-  the browser, without a server. Each needs a client id that the owner
-  registers with the provider; until one exists, that storage is not
-  offered. This is an account of the project with the provider, not of
-  the user with us.
+- **GitHub**: the Contents API of one private repository from the
+  browser, with a fine-grained token limited to that repository
+  (contents, read and write). A write names the version it replaces, so
+  a conflict is noticed. Every write is a commit: the app collects
+  changes for a few seconds before it writes. No push; an expired or
+  revoked token is reported as such. The token acts as the person who
+  made it: whoever holds it can overwrite or delete that repository's
+  content, and taking access away means a new token for everyone.
+- Dropbox, Google Drive and OneDrive would sign in with OAuth and PKCE
+  in the browser. Each needs a client id registered with the provider
+  (the owner's point 5); the storage port leaves room for them.
 
 ## Consequences
 

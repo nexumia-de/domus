@@ -84,7 +84,7 @@ answers every GET from the cache (cache first, `index.html` for
 navigations), never from the network. A new build installs in the
 background and waits; the page shows the banner "Update available"; only
 the Update button sends `skip-waiting`, and the page reloads when the new
-worker takes over. The old cache is deleted on activation. The install
+worker takes over. The app's old caches (named `mixtura-…`) are deleted on activation; caches of other apps on the same address are left alone. The install
 fetches every file with `cache: 'reload'` (`new Request(file, { cache:
 'reload' })`), so a host that serves the fixed names with `max-age` (GitHub
 Pages: 600 s) cannot hand the new worker an old file to store under the

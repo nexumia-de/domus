@@ -21,7 +21,9 @@
     "check:mixtura": "npm run check -w mixtura",
     "check:culina": "npm run check -w culina",
     "check:emptio": "npm run check -w emptio",
-    "check": "npm run format:check && npm run boundaries && npm run check:model && npm run check:mixtura && npm run check:culina && npm run check:emptio"
+    "check": "npm run format:check && npm run boundaries && npm run check:model && npm run check:mixtura && npm run check:culina && npm run check:emptio",
+    "build:site": "node scripts/build-site.mjs",
+    "e2e:site": "npm run build:site && node scripts/site-e2e.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

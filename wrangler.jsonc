@@ -1,0 +1,14 @@
+{
+  // Cloudflare Workers static assets: every app in its folder under one
+  // address, no worker script (docs/deployment.md). `npm run build:site`
+  // writes ./dist.
+  "name": "domus",
+  "compatibility_date": "2026-11-18",
+  "assets": {
+    "directory": "./dist",
+    // The apps are hash routers: a path that is no file is a mistake and
+    // answers 404 instead of a page.
+    "not_found_handling": "none",
+  },
+  "routes": [{ "pattern": "domus.nexumia.de", "custom_domain": true }],
+}

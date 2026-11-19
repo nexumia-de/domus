@@ -14,7 +14,8 @@ there.
 | `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks    |
 | `apps/culina`    | Culina (Cook's Notebook), a helper in the kitchen        |
 | `apps/emptio`    | Emptio (Shopping List), the household's shopping list    |
-| `scripts`        | checks that span the parts                               |
+| `apps/domus`     | the page at the root of the one address                  |
+| `scripts`        | checks and the site build that span the parts            |
 
 These are web apps (PWA) and libraries, not GTK apps; the GTK rules do
 not apply.

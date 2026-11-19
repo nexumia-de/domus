@@ -1,3 +1,6 @@
-apps/
+apps/mixtura/
+apps/culina/
+apps/emptio/
 packages/
 package-lock.json
+dist/
