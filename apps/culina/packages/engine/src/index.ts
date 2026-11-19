@@ -256,3 +256,52 @@ export type {
   StockForRoleResult,
   UsesIngredientResult,
 } from './makeable';
+
+export { LANGS, isI18nText, pickText } from './text/i18n';
+export type { I18nText, Lang } from './text/i18n';
+export { contentResult } from './content/types';
+export type { ContentFinding, ContentFindingCode, ContentResult } from './content/types';
+export { validateSteps } from './steps/validate';
+export type { StepsOwner } from './steps/validate';
+export type { Step, StepTemperature, StepTime } from './steps/types';
+
+export { TECHNIQUES, techniqueById } from './techniques/shipped';
+export { techniqueNotes } from './techniques/notes';
+export type { NotesResult, TechniqueNote } from './techniques/notes';
+export { MAX_SENTENCE_WORDS, validateTechnique, validateTechniques } from './techniques/validate';
+export type { Technique, TechniqueLevel, TechniqueSource } from './techniques/types';
+
+export { learnedTechniques, skillId, skillRecord } from './skills/skill';
+export type { SkillRecord } from './skills/skill';
+
+export { validateClassic } from './classics/validate';
+export type { ClassicContext } from './classics/validate';
+export { DEFAULT_PORTIONS, deriveClassic } from './classics/derive';
+export type {
+  DeriveErrorCode,
+  DeriveOptions,
+  DeriveResult,
+  DerivedComponent,
+  DerivedDish,
+  DerivedLine,
+  DerivedRange,
+  DerivedSlot,
+  Unmeasured,
+} from './classics/derive';
+export { copyClassic } from './classics/copy';
+export type { CopiedComponent, CopiedDish, CopyOptions, CopyResult, Origin } from './classics/copy';
+export { resolveSourceUnit } from './classics/units';
+export type { UnitSize } from './classics/units';
+export { wantedLines } from './classics/wanted';
+export type { WantedLine } from './classics/wanted';
+export type {
+  Classic,
+  ClassicComponent,
+  ClassicLine,
+  ClassicSlot,
+  ClassicUnit,
+  Country,
+  Course,
+  Settled,
+  SourceAmount,
+} from './classics/types';

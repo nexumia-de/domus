@@ -3,7 +3,14 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['**/dist/', '.claude/', 'packages/app/src/store/validators.generated.*'] },
+  {
+    ignores: [
+      '**/dist/',
+      '.claude/',
+      'packages/app/src/store/validators.generated.*',
+      'packages/*/src/**/*.generated.ts',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.strict,
   {

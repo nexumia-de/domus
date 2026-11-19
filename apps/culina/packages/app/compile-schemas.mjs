@@ -18,6 +18,7 @@ export const KINDS = {
   stock: 'stock',
   affinities: 'affinity',
   tastings: 'tasting',
+  skills: 'skill',
 };
 
 export const compileSchemas = () => {

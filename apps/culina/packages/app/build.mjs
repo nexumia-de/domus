@@ -16,6 +16,8 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { compileSchemas } from './compile-schemas.mjs';
+import { makeClassics } from './make-classics.mjs';
+import { makeTechniques } from '../engine/scripts/make-techniques.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const src = join(root, 'src');
@@ -29,6 +31,8 @@ const listFiles = (dir) =>
     .sort();
 
 compileSchemas();
+makeClassics();
+makeTechniques();
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(join(dist, 'icons'), { recursive: true });
 

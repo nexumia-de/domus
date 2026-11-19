@@ -19,7 +19,8 @@
     "format:check": "prettier --check .",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
     "build": "npm run build -w @culina/app",
-    "e2e": "npm run e2e -w @culina/app"
+    "e2e": "npm run e2e -w @culina/app",
+    "validate:content": "node tools/content/validate-file.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

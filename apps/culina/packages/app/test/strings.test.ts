@@ -2,6 +2,8 @@ import { readdirSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { strings } from '../src/strings';
 import { readSrc, srcUrl } from './css';
+import { EXAMPLE_FILES, shippedTexts, textsOf } from './content-texts';
+import { FORBIDDEN, FORBIDDEN_DE } from './wording';
 
 const leaves = (value: unknown, path = 'strings'): [string, string][] =>
   typeof value === 'string'
@@ -44,9 +46,6 @@ test('the two texts in index.html are the ones in strings', () => {
 });
 
 // No wording says a recipe or a ratio is wrong (docs/behaviour.md). Comments are left out of the scan.
-const FORBIDDEN =
-  /\b(wrong|errors?|invalid|incorrect|mistakes?|failed|fail|too much|too little|missing|bad)\b/i;
-
 test('no text says that a recipe or a ratio is wrong, invalid, failed or missing', () => {
   // Every strings file is scanned: the main one and the ones split off by area.
   const files = readdirSync(srcUrl('')).filter((name) => /^strings(-[a-z]+)?\.ts$/.test(name));
@@ -61,4 +60,17 @@ test('no text says that a recipe or a ratio is wrong, invalid, failed or missing
   }
   expect('That is too much salt'.match(FORBIDDEN)).not.toBeNull();
   expect('an invalid ratio'.match(FORBIDDEN)).not.toBeNull();
+});
+
+test('no text of a technique or a classic judges a dish, in English or in German', () => {
+  // The shipped texts, and the fictional examples so that the scan is never empty.
+  const texts = [...shippedTexts(), ...textsOf(EXAMPLE_FILES)];
+  expect(texts.length).toBeGreaterThan(10);
+  for (const { where, en, de } of texts) {
+    expect(en.match(FORBIDDEN), `${where} (en)`).toBeNull();
+    expect(de.match(FORBIDDEN_DE), `${where} (de)`).toBeNull();
+  }
+  expect('Das Rezept ist falsch'.match(FORBIDDEN_DE)).not.toBeNull();
+  expect('Zu viel Salz'.match(FORBIDDEN_DE)).not.toBeNull();
+  expect('Ein Fehler im Teig'.match(FORBIDDEN_DE)).not.toBeNull();
 });

@@ -1,0 +1,34 @@
+{
+  "id": "learned-set",
+  "description": "Only records marked learned count; a record whose id is not skill- plus its technique is ignored",
+  "inputs": {
+    "kind": "skill_learned",
+    "records": [
+      {
+        "id": "skill-melting",
+        "technique": "melting",
+        "learned": true
+      },
+      {
+        "id": "skill-folding",
+        "technique": "folding",
+        "learned": false
+      },
+      {
+        "id": "skill-other",
+        "technique": "searing",
+        "learned": true
+      },
+      {
+        "id": "skill-braising",
+        "technique": "braising",
+        "learned": true
+      }
+    ]
+  },
+  "expected": {
+    "learned": ["braising", "melting"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

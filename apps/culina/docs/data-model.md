@@ -299,9 +299,10 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `lines`       | array of object | yes      | `ref` (ingredient or component), optional `amount`, `role`, `state`, `note` |
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
+| `steps`       | array of object | no       | Steps with bilingual text, technique and lines used; see [Steps](#steps)    |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
 
-- **Lines.** An amount is mass, volume or count, or `percent` of the
+- **Lines.** A line may carry a `key`, a short slug that is unique in the component, so that a step can name it (see [Steps](#steps)). An amount is mass, volume or count, or `percent` of the
   `percentBase` mass. A line without an amount ("salt to taste") is kept
   and reported as unmeasured by anything derived.
 - **Nesting.** A line may refer to another component by mass of its
@@ -330,6 +331,26 @@ nesting. Schema: `component.schema.json`. One stored record is one
   quantities, yield, portion size and sub-recipes in one record. Only the
   yield part is in the source: "Professional recipes should always state
   a yield"[^yield].
+
+### Steps
+
+`steps` is the method for the helper: an ordered array, and `method`
+(plain text) stays valid beside it for the user's own recipes. A step is
+`{ text, technique?, uses?, time?, temperature? }`:
+
+- `text` is [a text in both languages](#text-in-two-languages).
+- `technique` is the id of a [technique](#technique), which the helper
+  explains once ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- `uses` lists the `key`s of the lines the step uses. **Why keys, not line
+  numbers:** the plan says "the lines the step uses", and an index shifts
+  as soon as a line is added or moved in the editor, so a step would point
+  at the wrong ingredient without any error. A key stays with its line. A
+  line without a key can only be unused by steps.
+- `time` is `{ value, to?, unit }` with `unit` `s`, `min` or `h`, and
+  `temperature` is `{ value, to?, unit }` with `unit` `C` or `F`: one
+  number or a range from `value` to `to`, **as the source gives it**,
+  never converted. A word ("moderate oven") or another scale goes into
+  the text.
 
 ## Dish
 
@@ -491,6 +512,105 @@ ratio roles flour, water, egg, sugar, oil, liquid) and dish roles (main,
 sauce, crunch, acid, garnish, starch). The seed list comes with the seed
 data; a role id nobody defined is reported as unknown by the engine, not
 refused by the schema. There is no role entity yet (open question 2).
+
+## Technique
+
+A kitchen technique with the short note the helper shows beside a step.
+Shipped read-only, one JSON file per technique in
+`packages/engine/data/techniques/<id>.json`, never stored. Schema:
+`technique.schema.json`; the guide for writing one is
+[classic format](classic-format.md#a-technique-file).
+
+| Field     | Type            | Required | Meaning                                                                       |
+| --------- | --------------- | -------- | ----------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                       |
+| `name`    | text in 2 langs | yes      | Visible name                                                                  |
+| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                 |
+| `why`     | text in 2 langs | yes      | Why it matters                                                                |
+| `level`   | string          | yes      | `studied`, `textbook` or `tradition`: how well the statement is known         |
+| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` |
+
+- **Sentence.** Every source carries the sentence the note rests on, at most
+  25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
+  The engine counts the words (`sentence-too-long`).
+
+## Classic
+
+A shipped dish of one named source, one JSON file per dish in
+`packages/app/data/classics/<country>/<id>.json` (`de`, `it`, `fr`, `es`),
+never written to the store. Schema: `classic.schema.json`; the field-by-field
+guide is [classic format](classic-format.md).
+
+| Field          | Type            | Required | Meaning                                                                                  |
+| -------------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `id`           | id              | yes      | See [ids](#ids); equal to the file name                                                  |
+| `name`         | text in 2 langs | yes      | Visible name                                                                             |
+| `originalName` | string          | yes      | The name in the source's language                                                        |
+| `country`      | string          | yes      | `de`, `it`, `fr` or `es`; the folder                                                     |
+| `vegetarian`   | boolean         | yes      | Without meat and fish                                                                    |
+| `course`       | string          | yes      | `starter`, `soup`, `main`, `side`, `dessert`, `baking`, `sauce`, `breakfast` or `snack`  |
+| `source`       | object          | yes      | `author`, `title`, `year`, `place`, `url`, optional `licence`: the one source it follows |
+| `persons`      | object          | yes      | `value` (the persons the amounts are for) and `basis` (`stated` or `settled`)            |
+| `units`        | object          | no       | Source unit words that are not in the unit table: `kind`, `factor`, `read`               |
+| `components`   | array of object | no       | `id`, `name`, optional `role`, `lines`, optional `steps`                                 |
+| `slots`        | array of object | yes      | The dish's role slots, as in [Dish](#dish) but with the source's amounts                 |
+| `settled`      | array of object | yes      | What we settled: `what`, `value`, `reason`, optional `target`; may be empty              |
+| `check`        | object          | yes      | The second check: `method` (`page-image`, `second-edition`, `second-reader`) and `note`  |
+| `note`         | text in 2 langs | no       | A short note on the dish                                                                 |
+
+- **Amounts as the source gives them.** A line's `amount` is
+  `{ value, max?, unit, original? }`: a number, or a range from `value` to
+  `max`; `unit` is an id of the unit table or a word of the classic's `units`;
+  `original` is the short original wording ("1 Pfund"). **Why not the
+  stored amount shape:** the stored `amount` allows only table units and a
+  single number, which cannot carry "2 to 3" or a word the table lacks.
+  The engine derives the stored shape ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- **A unit word of the source** that is not in `data/units.json` is defined
+  in the classic's `units`: `kind` (`mass`, `volume`, `count`), `factor`
+  (grams, millilitres or pieces in one unit) and `read`, where that equivalence was read.
+  Nothing historical is in the engine's table.
+- **Lines** have `ref` (an ingredient of the catalogue, or a component of the
+  same dish) **or** `wanted` (`{ en, de }`, while the catalogue lacks the
+  ingredient; a later package brings these to zero), an optional `amount`
+  (none: shown as "to taste" or "as needed"), `role`, `state`, `note`
+  (a text in 2 langs), `key` and `settled`.
+- **Settled.** A value we settled where the source is vague is an entry in
+  `settled`. A line or slot whose amount we settled has `settled: true` and a
+  `key`, and the entry's `target` is `<component id>/<key>` (`slots/<key>` for
+  a slot); settled persons (`basis: settled`) have an entry with target
+  `persons`. The engine checks that both sides exist.
+- **No `version`, no `yield`.** A classic is not a stored record, and the
+  output weight is something only the cook who weighs it can know.
+
+## Skill state
+
+Whether the user marked one technique as learned: a stored personal record in
+the store kind `skills`. Schema: `skill.schema.json`.
+
+| Field       | Type    | Required | Meaning                                           |
+| ----------- | ------- | -------- | ------------------------------------------------- |
+| `id`        | id      | yes      | `skill-` plus the technique id                    |
+| `technique` | id      | yes      | The technique                                     |
+| `learned`   | boolean | yes      | True when the user marked it; false takes it back |
+
+- **One record per technique.** The id is derived from the technique, so two
+  devices that mark the same technique write the same row and sync merges by
+  `updatedAt`, instead of creating two records that disagree. Taking the mark
+  back writes `learned: false` and keeps the record.
+- Nothing else is stored; which notes show follows from it
+  ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- **Not in the export file yet.** The export format is version 1 and a
+  reader refuses unknown collections; the store keeps `skills` apart from the
+  exported kinds (replace-all and the backup reminder ignore it). Whether the
+  export gets a `skills` collection is open.
+
+## Text in two languages
+
+Shipped helper content is written in English (canonical) and German as
+`{ "en": "...", "de": "..." }` (`i18nText` in `common.schema.json`). Both are
+required and not empty; the engine also refuses a text of white space only.
+A user's own recipe keeps plain strings; only steps are in two languages
+because a derived or copied classic keeps its steps as they are.
 
 # Stored versus derived
 
@@ -713,7 +833,7 @@ in [Stored versus derived](#stored-versus-derived) is computed.
 **Database.** One IndexedDB database `culina`. One object store per entity
 kind, named like the collections of the [export file](#export-file):
 `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
-`tastings`, each with the key path `key`. Two more: `meta` (`key` to `value`; today
+`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. Two more: `meta` (`key` to `value`; today
 only `schemaVersion`, an integer that starts at 1) and `backup` (empty
 except during a migration). No device id yet; sync adds it to `meta`
 without a migration.
@@ -779,12 +899,12 @@ rolled back when a data migration fails, so it only serves to create the
 object stores (`onupgradeneeded`), which creates every store that is
 missing and touches no row. IndexedDB's version is 1 for the first six
 kinds plus `meta` and `backup` and **2** since `tastings` was added
-(issue 50) and **3** since `drafts` was added (issue 16, see [drafts](#drafts)): a browser that already holds version 1 of the database gets the
+(issue 50), **3** since `drafts` was added (issue 16, see [drafts](#drafts)) and **4** since `skills` was added (issue 87): a browser that already holds version 1 of the database gets the
 new store on the next open and keeps its rows (`test/store-tastings.test.ts`
 builds the old layout and opens it). Migrations are an ordered list
 `{ from: n, to: n + 1, migrate(rows) }` of pure functions over plain data
 (`src/store/migrations/`); the schema version is 1 plus the number of
-migrations. There is none yet, and none was written for tasting notes:
+migrations. There is none yet, and none was written for tasting notes or for skills (a new store changes no row):
 the data schema version stays 1 because nothing is released. A record stored by the commit before issue 50 could still hold
 a `tastings` list inside a component or dish, since the old schema allowed
 it; such a record is neither migrated nor validated on read (only `put`
@@ -846,7 +966,7 @@ with `get`, `put`, `remove` and `list`.
 # Schemas and tests
 
 - `common`, `ingredient`, `template`, `component`, `dish`, `stock`,
-  `affinity`, `tasting`, `export` in `packages/engine/schemas/`, JSON Schema draft
+  `affinity`, `tasting`, `export`, `catalogue`, `technique`, `classic`, `skill` in `packages/engine/schemas/`, JSON Schema draft
   2020-12[^jsonschema]. Each has an absolute `$id`
   (`https://nexumia-de.github.io/culina/schemas/<name>.schema.json`; an
   identifier, not necessarily a place to download), shared types live in

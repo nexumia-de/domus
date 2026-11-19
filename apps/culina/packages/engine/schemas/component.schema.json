@@ -44,6 +44,9 @@
           },
           "note": {
             "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+          },
+          "key": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
           }
         }
       }
@@ -66,6 +69,13 @@
       "type": "array",
       "items": {
         "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+      }
+    },
+    "steps": {
+      "description": "Steps with bilingual text, optional technique and the lines used (by line key). method stays valid beside it.",
+      "type": "array",
+      "items": {
+        "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
       }
     },
     "version": {

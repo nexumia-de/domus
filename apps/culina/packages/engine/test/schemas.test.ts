@@ -33,6 +33,9 @@ const entities = [
   'tasting',
   'export',
   'catalogue',
+  'technique',
+  'classic',
+  'skill',
 ];
 
 describe('every schema has one valid and one invalid example', () => {
@@ -174,6 +177,9 @@ describe('data-model.md and the schemas agree', () => {
     tasting: 'Tasting note',
     export: 'Export file',
     catalogue: 'Ingredient catalogue file',
+    technique: 'Technique',
+    classic: 'Classic',
+    skill: 'Skill state',
   };
   const table = (title: string): Map<string, boolean> => {
     const start = doc.indexOf(`\n## ${title}\n`);

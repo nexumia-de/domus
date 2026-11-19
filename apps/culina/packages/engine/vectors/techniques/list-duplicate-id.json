@@ -1,0 +1,93 @@
+{
+  "id": "list-duplicate-id",
+  "description": "The later of two techniques with one id is reported",
+  "inputs": {
+    "kind": "technique_list_validate",
+    "techniques": [
+      {
+        "id": "melting",
+        "name": {
+          "en": "Melting fat",
+          "de": "Fett schmelzen"
+        },
+        "watch": {
+          "en": "Keep the heat low.",
+          "de": "Die Hitze niedrig halten."
+        },
+        "why": {
+          "en": "Fat that browns tastes bitter.",
+          "de": "Fett, das bräunt, schmeckt bitter."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "folding",
+        "name": {
+          "en": "Folding",
+          "de": "Unterheben"
+        },
+        "watch": {
+          "en": "Keep the heat low.",
+          "de": "Die Hitze niedrig halten."
+        },
+        "why": {
+          "en": "Fat that browns tastes bitter.",
+          "de": "Fett, das bräunt, schmeckt bitter."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "melting",
+        "name": {
+          "en": "Melting fat",
+          "de": "Fett schmelzen"
+        },
+        "watch": {
+          "en": "Keep the heat low.",
+          "de": "Die Hitze niedrig halten."
+        },
+        "why": {
+          "en": "Fat that browns tastes bitter.",
+          "de": "Fett, das bräunt, schmeckt bitter."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "path": "[2].id",
+        "value": "melting"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}
