@@ -1,5 +1,5 @@
-// Settings for the classics: the language of dishes and notes, and the skills marked as learned,
-// each with "Teach again".
+// Settings for the classics: the language of the whole app (its texts, the dishes and the notes),
+// and the skills marked as learned, each with "Teach again".
 import { pickText } from '@culina/engine';
 import { techniques } from '../classics/content';
 import {
@@ -36,7 +36,9 @@ const languageGroup = (): HTMLElement => {
     input.value = choice;
     input.checked = choice === readLangChoice(store);
     input.addEventListener('change', () => {
-      note.textContent = writeLangChoice(store, choice) ? '' : t.contentNotSaved;
+      // The app's own texts are chosen at start, so a kept choice reloads the app (strings.ts).
+      if (writeLangChoice(store, choice)) window.location.reload();
+      else note.textContent = t.contentNotSaved;
     });
     const label = el('label', 'choice');
     label.append(input, el('span', undefined, LABELS[choice]));

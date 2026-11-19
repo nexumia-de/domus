@@ -1,6 +1,7 @@
 // Names for references and roles, and the plain-words reasons for engine errors.
 import type { ComponentError, ComponentRef } from '@culina/engine';
 import type { Notebook } from '../records';
+import { appLang } from '../shared/locale';
 import { strings } from '../strings';
 
 /** The visible name of an ingredient or component; the id itself when the record is not there. */
@@ -15,9 +16,10 @@ const capitalised = (id: string): string => id.charAt(0).toUpperCase() + id.slic
 export const roleLabel = (role: string): string =>
   (strings.roles as Record<string, string | undefined>)[role] ?? capitalised(role);
 
-/** "a sauce", "an acid"; an unknown role id gets "a". */
+/** "a sauce", "an acid", "eine Soße"; an unknown role id gets "a" ("ein" in German). */
 export const roleInvite = (role: string): string =>
-  (strings.roleInvite as Record<string, string | undefined>)[role] ?? `a ${role}`;
+  (strings.roleInvite as Record<string, string | undefined>)[role] ??
+  `${appLang === 'de' ? 'ein' : 'a'} ${role}`;
 
 const componentName = (nb: Notebook, id: string | undefined): string =>
   id === undefined ? '' : refName(nb, { kind: 'component', id });

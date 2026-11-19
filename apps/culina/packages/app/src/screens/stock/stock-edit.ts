@@ -6,6 +6,7 @@ import type { FoodState, UnitId } from '@culina/engine';
 import { AMOUNT_UNITS } from '../../editor/units';
 import { getStockItem, saveStockItem, stockName, today } from '../../notebook';
 import { hashFor } from '../../router';
+import { appLang, withDecimalMark } from '../../shared/locale';
 import { el } from '../../shell/el';
 import { applyForm, formOf, type StockForm } from '../../stock/form';
 import { strings } from '../../strings';
@@ -176,7 +177,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
   );
   section.append(form);
   const use = useSome(item.id, name, (left) => {
-    amount.control.value = left === undefined ? '' : String(left.value);
+    amount.control.value = left === undefined ? '' : withDecimalMark(String(left.value), appLang);
     if (left !== undefined) unit.value = left.unit;
   });
   if (use !== undefined) section.append(use);

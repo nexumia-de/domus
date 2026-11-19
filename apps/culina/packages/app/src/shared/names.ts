@@ -2,6 +2,8 @@
 // language, the `names` entries (a name and aliases). One predicate for every search over records
 // (the picker's catalogue section now; the import matcher and the stock entry later). Pure.
 
+import type { Lang } from '@culina/engine';
+
 /** The language entries of a record, as the ingredient schema defines them. */
 export type NamesByLanguage = Record<string, { name: string; aliases?: string[] }>;
 
@@ -9,6 +11,10 @@ export interface Named {
   name: string;
   names?: NamesByLanguage;
 }
+
+/** The name to show: the German one when the language is German and the record has one, else the canonical name. */
+export const displayName = (record: Named, lang: Lang): string =>
+  lang === 'de' ? (record.names?.['de']?.name ?? record.name) : record.name;
 
 /** One name of a record: the language tag (`en` for the canonical name) and the text. */
 export interface NameOf {

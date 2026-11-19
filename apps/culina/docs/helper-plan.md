@@ -15,6 +15,9 @@ described, and a dish can be cooked from the app step by step**, in
 English and German, at 360 × 720 and at desktop size. The extras below
 follow only after that.
 
+**State (2026-11-19):** carried out; what is done, what is not and what
+the agent decided is at the top of the [log](log.md).
+
 # The owner's answers (2026-11-18)
 
 | Question              | Answer                                                                                                  |

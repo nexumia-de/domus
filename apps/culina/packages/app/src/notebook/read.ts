@@ -1,6 +1,8 @@
 // What the screens read: the same functions the example data module had.
 import type { FactsByIngredient } from '@culina/engine';
 import type { ComponentRecord, DishRecord, IngredientRecord, Notebook } from '../records';
+import { appLang } from '../shared/locale';
+import { displayName } from '../shared/names';
 import { buildNotebook, factsOf } from './build';
 import { state } from './state';
 import { headsOf, versionRecord } from './versions';
@@ -16,7 +18,10 @@ export const getIngredient = (id: string): IngredientRecord | undefined =>
   state.ingredients.find((i) => i.id === id);
 
 /** The name of an ingredient; the id itself when the record is not there. */
-export const ingredientName = (id: string): string => getIngredient(id)?.name ?? id;
+export const ingredientName = (id: string): string => {
+  const record = getIngredient(id);
+  return record === undefined ? id : displayName(record, appLang);
+};
 
 export const factsByIngredient = (): FactsByIngredient => factsOf(state.ingredients);
 

@@ -28,7 +28,10 @@ in [how chefs work](chef-practice.md) and
    notes, export and import.
 4. **Stock.** What is there with state and use-by date; what it allows,
    ranked by urgency and role.
-5. **Helper.** Culina teaches until it is no longer needed
+5. **Helper.** Built on 2026-11-19 after the
+   [helper build plan](helper-plan.md), state at the top of the
+   [log](log.md); the correction checklist and suggestions from a
+   tasting check are still open. Culina teaches until it is no longer needed
    ([decision](decisions/mentor.md)): skills with scripted questions
    and cautions from research and textbooks, a learned skill no longer
    taught; substitutes with their effect and handling rules per

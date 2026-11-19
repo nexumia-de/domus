@@ -91,6 +91,15 @@
   text-decoration: none;
 }
 
+/* German labels are longer (Verhältnisse, Komponenten, Einstellungen): on a phone they get a little
+   less type and padding so that all six entries fit at 360 px. */
+@media (max-width: 719px) {
+  :root[lang='de'] .nav-link {
+    padding-inline: 2px;
+    font-size: var(--fs-xxs);
+  }
+}
+
 .nav-link:focus-visible {
   outline-offset: calc(-1 * var(--focus-width));
 }

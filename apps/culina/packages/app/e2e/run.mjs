@@ -8,6 +8,7 @@ import { cook } from './cook.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
 import { exportImport } from './export-import.mjs';
+import { german } from './german.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
 import { importCatalogue } from './import-catalogue.mjs';
@@ -41,6 +42,7 @@ try {
   await classics(browser, server);
   await classicsFinder(browser, server);
   await importCatalogue(browser, server);
+  await german(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);
 } finally {

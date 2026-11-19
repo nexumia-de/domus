@@ -1,9 +1,15 @@
 import { loadContent } from './classics/content';
+import { currentLang } from './classics/lang';
 import { startNotebook, subscribe } from './notebook';
 import { e2eNow } from './store/e2e-clock';
 import { startRouter } from './router';
 import { mountShell } from './shell/shell';
+import { strings } from './strings';
 import { registerServiceWorker } from './sw-register';
+
+// The language of the app's own texts is chosen once, when it starts (strings.ts).
+document.documentElement.lang = currentLang();
+document.title = strings.appName;
 
 const root = document.getElementById('app');
 if (root) {

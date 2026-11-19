@@ -66,4 +66,4 @@ export const stockStrings = {
   left: (amount: string): string => `${amount} left.`,
   // Quick entry beside the list
   notFound: 'That item is no longer in stock.',
-} as const;
+};

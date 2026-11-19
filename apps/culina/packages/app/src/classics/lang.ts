@@ -1,5 +1,6 @@
-// The language of the content (dishes and notes): follow the device, English or German. Kept in
-// localStorage like the theme; the app's own texts stay English.
+// The one language setting: follow the device, English or German. It decides the app's own texts
+// (strings.ts), the names of ingredients and the content of dishes and notes. Kept in localStorage
+// like the theme.
 import type { Lang } from '@culina/engine';
 import { browserStore, type KeyValueStore } from '../prefs';
 

@@ -118,7 +118,9 @@ entered". No red, no warning icon. **Test:** `test/ratios-compare.test.ts`
 **The wording rule.** No text says that a recipe or a ratio is wrong,
 invalid, failed or missing, and none says too much or too little (the only
 word about the entry itself is the number hint above). **Test:**
-`test/strings.test.ts` scans `strings.ts` for those words;
+`test/strings.test.ts` scans every `strings-*.ts` and, with the German words
+(falsch, Fehler, fehlt, zu viel, zu wenig, schlecht, ungültig and their forms), every file in
+`src/de/`;
 `e2e/ratios.mjs` scans the rendered card.
 
 **Calculator output equals the engine vectors.** `test/ratios-calc.test.ts`
@@ -328,7 +330,9 @@ note of an existing line are kept as they are.
   and the stock entry can use later. A row found through another language shows
   that name beside the English one, marked with its `lang`, so "Rosenkohl"
   gives "Brussels sprouts Rosenkohl by volume"; a row found by its English name
-  shows no second name. The display language otherwise stays English. Those
+  shows no second name. The rows of the catalogue stay in the English tree (variants are shown
+  by what follows the parent's name); the names of the user's own ingredients follow the language
+  setting. Those
   that start with the text in any name come first, at most 25 top-level results at
   once with a quiet line "Showing 25 of N" for the rest. Each row shows the
   name and "by volume", "by piece" or both (a parent without numbers shows just
@@ -699,10 +703,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   dish. A classic with a `wanted` ingredient is refused by the engine; the
   offer is then replaced by one neutral sentence naming the ingredient. A
   classic itself is never written to the store.
-- **Settings.** "Language of dishes and notes": Follow device (German when the
-  device's first language is German, else English), English, Deutsch, kept in
-  `localStorage` (`culina.lang`) like the theme. All content texts follow it;
-  the app's own texts stay English for now. "Skills you marked as learned"
+- **Settings.** "Language" (see [Language](#language)). "Skills you marked as learned"
   lists each with "Teach again", which stores the mark taken back (the record
   stays) so the note shows again.
 - **Shipped content is its own file.** The build writes the dishes of
@@ -718,6 +719,39 @@ view logic is in `src/classics/` (no DOM), the screens in
   (`test/fixtures/classics-example.json`) on `globalThis.__culinaContent`
   before it loads (`src/classics/content.ts`); without that query nothing is
   read from there.
+
+# Language
+
+One setting decides the language of the whole app: "Language" in Settings, with Follow device
+(German when the device's first language is German, otherwise English), English and Deutsch,
+kept in `localStorage` (`culina.lang`) like the theme. English is canonical, German is supported.
+
+- **Own texts.** `src/strings.ts` picks `stringsEn` or `stringsDe` once, when the app starts, so
+  screens keep importing `strings` as before and module-level constants stay valid. Changing the
+  setting stores the choice and reloads the app (`location.reload()`; the hash stays, so the same
+  screen opens in the new language); a choice that cannot be stored is not applied and says so.
+  `<html lang>` is set at start from the same setting; the manifest and the `<noscript>` text in
+  `index.html` stay English because they are read before any script runs.
+- **Same keys.** The German set is `src/de/strings-app.ts`, `strings-stock.ts`, `strings-cook.ts`,
+  `strings-classics.ts`, `strings-nutrition.ts`, each typed as the English object (`typeof`), so a
+  missing key or a different function signature does not compile. **Test:**
+  `test/strings-de.test.ts` (equal keys, equal kind of value, equal number of arguments, every
+  argument used in both, no judging word in German), `test/strings.test.ts` (trimmed, short,
+  navigation equals titles, in both sets).
+- **Ingredient names.** `displayName` in `shared/names.ts`: the German name when the language is
+  German and the record has one, else the canonical English name. Used for the notebook's
+  ingredient names, the stock lists, the finder, the pickers of the editors and the classics.
+  Search still finds a record by any of its names. **Test:** `test/locale.test.ts`.
+- **Numbers.** Input accepts `2.5` and `2,5` in both languages (`shared/parse.ts`). Output has a
+  decimal comma in German (`formatNumber`, `formatMass`, prefilled input fields; `withDecimalMark`
+  in `shared/locale.ts`); the engine never formats and knows no language. **Test:**
+  `test/locale.test.ts`.
+- **Layout.** German labels are longer; on a phone the six navigation labels get the type size
+  `--fs-xxs` and 2 px side padding when `lang` is `de`, so they fit at 360 px.
+- **Test:** `e2e/german.mjs` chooses German through the setting, walks the main screens and the
+  classics flow at 360 x 720 (no horizontal scroll, targets at least 44 x 44, navigation labels
+  inside their entries, no console error), chooses English again, and repeats the walk with the
+  browser locale `de` and the setting on Follow device.
 
 # Navigation
 

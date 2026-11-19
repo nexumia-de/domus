@@ -4,6 +4,8 @@
 import type { ComponentRef } from '@culina/engine';
 import type { Result } from '../store/types';
 import type { StockRecord } from '../records';
+import { appLang } from '../shared/locale';
+import { displayName } from '../shared/names';
 import { removeRecord, saveRecord } from './actions';
 import { getIngredient } from './read';
 import { newId } from './ids';
@@ -26,10 +28,15 @@ const keyOf = (ref: ComponentRef): string =>
 export const stockOf = (ref: ComponentRef): StockRecord[] =>
   state.stock.filter((s) => keyOf(s.ref) === keyOf(ref));
 
+const ingredientNameOrUndefined = (id: string): string | undefined => {
+  const record = getIngredient(id);
+  return record === undefined ? undefined : displayName(record, appLang);
+};
+
 /** The name an item is shown by; undefined when the ingredient or component is no longer there. */
 export const stockName = (item: { ref: ComponentRef }): string | undefined =>
   item.ref.kind === 'ingredient'
-    ? getIngredient(item.ref.id)?.name
+    ? ingredientNameOrUndefined(item.ref.id)
     : headOfFamily('components', item.ref.id)?.name;
 
 /** Ticks: says that this is there, with nothing else. Does nothing if it already is. */

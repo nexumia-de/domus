@@ -133,12 +133,11 @@ export const classicsStrings = {
   keepProblem: 'The dish could not be kept this time. The recipe is unchanged.',
   backToRecipe: 'Back to the recipe',
   // Settings
-  contentLegend: 'Language of dishes and notes',
+  contentLegend: 'Language',
   contentDevice: 'Follow device',
   contentEn: 'English',
   contentDe: 'Deutsch',
-  contentNotSaved:
-    'The choice could not be saved on this device. It applies until the app is closed.',
+  contentNotSaved: 'The choice could not be saved on this device, so it does not apply.',
   skillsHeading: 'Skills you marked as learned',
   skillsNone: 'None yet. Mark a technique with “I know this” while cooking.',
   skillsListLabel: 'Learned skills',

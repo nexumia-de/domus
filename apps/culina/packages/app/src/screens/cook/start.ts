@@ -3,7 +3,8 @@
 // #/cook/<id>/with, so the back button returns to the list.
 import type { IngredientRecord } from '../../records';
 import { hashFor } from '../../router';
-import { foundThrough, matchesAnyName } from '../../shared/names';
+import { appLang } from '../../shared/locale';
+import { displayName, foundThrough, matchesAnyName } from '../../shared/names';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { nextId } from '../fields';
@@ -44,7 +45,13 @@ export const startSection = (
   details.append(el('h2', 'cook-start-heading', t.startStock));
   const stocked = ingredients.filter((i) => ticked.has(i.id)).sort(byName);
   if (stocked.length === 0) details.append(el('p', 'muted', t.startNoStock));
-  else details.append(links(t.startStock, stocked));
+  else
+    details.append(
+      links(
+        t.startStock,
+        stocked.map((i) => ({ id: i.id, name: displayName(i, appLang) })),
+      ),
+    );
 
   const search = el('input', 'field');
   search.type = 'search';
@@ -71,7 +78,7 @@ export const startSection = (
             const through = foundThrough(i, text);
             return {
               id: i.id,
-              name: i.name,
+              name: displayName(i, appLang),
               ...(through ? { note: t.startFoundThrough(through.name) } : {}),
             };
           }),
