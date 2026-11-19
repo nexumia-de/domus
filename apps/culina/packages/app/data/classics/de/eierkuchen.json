@@ -1,0 +1,201 @@
+{
+  "id": "eierkuchen",
+  "name": {
+    "en": "Egg pancake (omelette)",
+    "de": "Eierkuchen (Omelette)"
+  },
+  "originalName": "Omelette, No. 1",
+  "country": "de",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division K, No. 6",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    },
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "eierkuchen-batter",
+      "name": {
+        "en": "Egg pancake (omelette)",
+        "de": "Eierkuchen (Omelette)"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "8 fresh eggs"
+          }
+        },
+        {
+          "key": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tablespoonful",
+            "original": "1 heaping tablespoonful"
+          },
+          "note": {
+            "en": "Heaping tablespoonful. The source allows fine flour or cornstarch.",
+            "de": "Gehäuft. Die Quelle lässt feinstes Mehl oder Stärke zu."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 large cupful of warm milk"
+          },
+          "note": {
+            "en": "Large cupful of warm milk, mixed with a little water.",
+            "de": "Groß. Warme Milch, mit etwas Wasser verdünnt."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          }
+        },
+        {
+          "key": "mace",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170927"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          }
+        },
+        {
+          "key": "cinnamon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171320"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the eggs, the starch, the milk with a little water, the mace and the salt thoroughly.",
+            "de": "Eier, Stärke, Milch mit etwas Wasser, Muskatblüte und Salz gründlich schlagen."
+          },
+          "uses": ["egg", "starch", "milk", "water", "mace", "salt"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter in the pan over low heat.",
+            "de": "Die Butter bei schwacher Hitze in der Pfanne schmelzen."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Pour in the batter and spread it with a spoon.",
+            "de": "Den Teig in die Pfanne gießen und mit dem Löffel verteilen."
+          },
+          "uses": ["egg", "starch", "milk", "water", "mace", "salt"]
+        },
+        {
+          "text": {
+            "en": "Cook over low heat until the top is dry and the edge has come away from the pan. It stays very soft: do not turn it.",
+            "de": "Bei schwacher Hitze garen, bis die Oberseite trocken ist und sich am Rand von der Pfanne löst. Sie bleibt ganz weich: nicht wenden."
+          },
+          "technique": "pan-fry",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle sugar and cinnamon over it.",
+            "de": "Zucker und Zimt darüberstreuen."
+          },
+          "uses": ["sugar", "cinnamon"]
+        },
+        {
+          "text": {
+            "en": "Put it on a plate and fold it.",
+            "de": "Auf einen Teller legen und zusammenschlagen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "eierkuchen-batter"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for 8 eggs.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-edition",
+    "note": "Second check against the German 1897 Milwaukee edition (scan davidis.txt, lines 29090-29099, recipe 6, Nr. 1). Agreed: 8 eggs, 1 heaped spoon of starch or fine flour, mace, salt, butter, sugar, cinnamon, the steps. Differs: the German says oblong dish (längliche Schüssel), the English plate; the English is used. Milk amount not legible in the German scan (\",t Qt\"); it rests on the English edition alone."
+  },
+  "note": {
+    "en": "The plain version only; the variants with cranberries and smoked meat or tongue are not transcribed.",
+    "de": "Nur die einfache Form; die Varianten mit Preiselbeeren sowie Rauchfleisch oder Zunge sind nicht übertragen."
+  }
+}
