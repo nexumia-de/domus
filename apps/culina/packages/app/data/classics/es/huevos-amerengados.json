@@ -1,0 +1,160 @@
+{
+  "id": "huevos-amerengados",
+  "name": {
+    "en": "Snow eggs in cream",
+    "de": "Schneeeier in Sahne"
+  },
+  "originalName": "Huevos amerengados",
+  "country": "es",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (tercera edición, Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "p. 789, Huevos amerengados",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "snow-eggs",
+      "name": {
+        "en": "Snow eggs in cream",
+        "de": "Schneeeier in Sahne"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": { "kind": "ingredient", "id": "fdc-group-egg-whole" },
+          "amount": { "value": 6, "unit": "count", "original": "seis huevos" }
+        },
+        {
+          "key": "sugar-whites",
+          "ref": { "kind": "ingredient", "id": "fdc-group-sugars" },
+          "amount": { "value": 30, "unit": "g", "original": "30 gramos de azúcar molido" }
+        },
+        {
+          "key": "orange-water",
+          "wanted": { "en": "Orange-flower water", "de": "Orangenblütenwasser" },
+          "note": {
+            "en": "One spoonful for the whites and two spoonfuls for the cream. The source gives no size for the spoon.",
+            "de": "Ein Löffel für den Eischnee und zwei Löffel für die Sahne. Die Quelle nennt keine Größe für den Löffel."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": { "kind": "ingredient", "id": "fdc-173468" }
+        },
+        {
+          "key": "cream",
+          "ref": { "kind": "ingredient", "id": "fdc-group-cream-fluid" },
+          "amount": { "value": 1, "unit": "l", "original": "un litro de crema" },
+          "settled": true,
+          "note": {
+            "en": "The source gives cream first. Without cream it allows two litres of milk, reduced by half; cream is used here.",
+            "de": "Die Quelle nennt zuerst Sahne. Ohne Sahne lässt sie zwei Liter Milch zu, auf die Hälfte eingekocht; hier wird Sahne verwendet."
+          }
+        },
+        {
+          "key": "sugar-cream",
+          "ref": { "kind": "ingredient", "id": "fdc-group-sugars" },
+          "amount": { "value": 100, "unit": "g", "original": "cien gramos de azúcar" }
+        },
+        {
+          "key": "lemon",
+          "ref": { "kind": "ingredient", "id": "fdc-167749" },
+          "amount": { "value": 1, "unit": "count", "original": "la cáscara de un limón" }
+        },
+        {
+          "key": "yolk",
+          "ref": { "kind": "ingredient", "id": "fdc-group-egg-yolk" },
+          "note": {
+            "en": "Four yolks, added at the end. The source does not say whether they come from the six eggs, so no amount is written.",
+            "de": "Vier Eigelb, am Ende zugegeben. Die Quelle sagt nicht, ob sie von den sechs Eiern stammen; daher steht keine Menge dabei."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Separate the whites from the yolks. Beat the whites to a foam, then add a little salt, the sugar and the orange-flower water, and keep beating.",
+            "de": "Eiweiß von den Eigelb trennen. Das Eiweiß zu Schaum schlagen, dann etwas Salz, den Zucker und das Orangenblütenwasser zugeben und weiterschlagen."
+          },
+          "technique": "whip-egg-whites",
+          "uses": ["egg", "salt", "sugar-whites", "orange-water"]
+        },
+        {
+          "text": {
+            "en": "Reduce a litre of cream by a quarter over low heat, with the lemon peel, 100 g of sugar and two spoonfuls of orange-flower water.",
+            "de": "Einen Liter Sahne bei schwacher Hitze um ein Viertel einkochen, mit der Zitronenschale, 100 g Zucker und zwei Löffeln Orangenblütenwasser."
+          },
+          "technique": "reduce",
+          "uses": ["cream", "lemon", "sugar-cream", "orange-water"]
+        },
+        {
+          "text": {
+            "en": "When the cream boils, drop in spoonfuls of the beaten whites shaped into balls, and poach them, turning them so that they cook evenly.",
+            "de": "Sobald die Sahne kocht, Löffel voll des geschlagenen Eiweißes zu Kugeln formen, einlegen und gar ziehen; dabei wenden, damit sie gleichmäßig garen."
+          },
+          "technique": "poach",
+          "uses": ["egg", "cream"]
+        },
+        {
+          "text": {
+            "en": "Lift the balls out as they set and drain them on a sieve.",
+            "de": "Die Kugeln herausnehmen, sobald sie fest sind, und auf einem Sieb abtropfen lassen."
+          },
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Take the cream off the heat and stir in the four yolks quickly, so that it thickens without curdling.",
+            "de": "Die Sahne vom Herd nehmen und die vier Eigelb rasch einrühren, damit sie dick wird, ohne zu gerinnen."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["yolk", "cream"]
+        },
+        {
+          "text": {
+            "en": "Arrange the balls in a pyramid on a dish and pour the cream over them.",
+            "de": "Die Kugeln pyramidenförmig auf eine Platte legen und die Sahne darübergießen."
+          },
+          "uses": ["egg", "cream"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": { "kind": "component", "id": "snow-eggs" }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for six eggs.",
+      "target": "persons"
+    },
+    {
+      "what": "Cream or milk",
+      "value": "1 litre of cream",
+      "reason": "The source gives cream first and milk only as a substitute; the first choice is used.",
+      "target": "snow-eggs/cream"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by the Claude agent from /home/user/sources/muro.txt, lines 35369-35410; no second reader yet."
+  },
+  "note": {
+    "en": "The source also allows colouring the balls pink and green; not transcribed. The source gives no size for the spoon.",
+    "de": "Die Quelle erlaubt auch, die Kugeln rosa und grün zu färben; nicht übernommen. Die Quelle nennt keine Größe für den Löffel."
+  }
+}

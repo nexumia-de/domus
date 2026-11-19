@@ -1,0 +1,267 @@
+{
+  "id": "cocido-ordinario",
+  "name": {
+    "en": "Ordinary cocido (boiled beef and vegetables)",
+    "de": "Gewöhnlicher Cocido (Rindfleisch mit Gemüse)"
+  },
+  "originalName": "Cocido ordinario",
+  "country": "es",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (tercera edición, Madrid: Librería de Miguel Guijarro, editor, 1894)",
+    "year": 1894,
+    "place": "pp. 57-61, El cocido ordinario (amounts p. 57, method pp. 60-61)",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 2,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "cocido-pot",
+      "name": {
+        "en": "Ordinary cocido",
+        "de": "Gewöhnlicher Cocido"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beef",
+          "wanted": {
+            "en": "Beef for the pot (lean and fat)",
+            "de": "Rindfleisch für den Topf (mager und mit Fett)"
+          },
+          "amount": {
+            "value": 750,
+            "unit": "g",
+            "original": "750 gramos de carne"
+          },
+          "note": {
+            "en": "The beef must be very fresh (p. 59). The source names no cut for this pot; the forequarter pieces and the hind-quarter pieces are both named there.",
+            "de": "Das Fleisch muss ganz frisch sein (S. 59). Die Quelle nennt für diesen Topf kein Stück; Teile aus dem Vorder- und dem Hinterviertel werden dort genannt."
+          }
+        },
+        {
+          "key": "bone",
+          "wanted": {
+            "en": "Beef bone",
+            "de": "Rinderknochen"
+          },
+          "amount": {
+            "value": 125,
+            "unit": "g",
+            "original": "125 gramos de hueso"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "l",
+            "original": "4 litros de agua"
+          },
+          "settled": true,
+          "note": {
+            "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot (p. 60). The list is used.",
+            "de": "Die Zutatenliste nennt 4 Liter; der Ablauf nennt für den kleinen Topf 3 Liter (S. 60). Es gilt die Liste."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 gramos de sal"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "150 gramos de zanahorias"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "150 gramos de cebolla"
+          }
+        },
+        {
+          "key": "leek",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169246"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g",
+            "original": "200 gramos de puerros"
+          }
+        },
+        {
+          "key": "celery",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169988"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g",
+            "original": "10 gramos de apio"
+          }
+        },
+        {
+          "key": "clove",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171321"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "1 clavo de especia"
+          },
+          "note": {
+            "en": "A whole clove, stuck into the onion. The catalogue has only ground cloves.",
+            "de": "Eine ganze Nelke, in die Zwiebel gesteckt. Der Katalog führt nur gemahlene Nelken."
+          }
+        },
+        {
+          "key": "turnip",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170465"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "150 gramos de nabos"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Take the bones out of the meat, tie the meat with string, and break the bones.",
+            "de": "Die Knochen aus dem Fleisch lösen, das Fleisch mit Küchengarn binden und die Knochen zerbrechen."
+          },
+          "uses": ["beef", "bone"]
+        },
+        {
+          "text": {
+            "en": "Put the bones in the pot first, the meat on top, and pour in the water.",
+            "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf, dann das Wasser eingießen."
+          },
+          "uses": ["beef", "bone", "water"]
+        },
+        {
+          "text": {
+            "en": "Set the pot on the fire and add the salt.",
+            "de": "Den Topf aufs Feuer stellen und das Salz zugeben."
+          },
+          "uses": ["salt"]
+        },
+        {
+          "text": {
+            "en": "Bring it to the boil. As soon as foam rises, add a little cold water and skim the foam off with a perforated ladle.",
+            "de": "Zum Kochen bringen. Sobald Schaum aufsteigt, etwas kaltes Wasser zugeben und den Schaum mit einer Schaumkelle abnehmen."
+          },
+          "technique": "skim",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Let it boil up three times, skimming after each time.",
+            "de": "Dreimal aufkochen lassen und nach jedem Aufkochen abschäumen."
+          },
+          "technique": "skim"
+        },
+        {
+          "text": {
+            "en": "Wipe the rim of the pot, add the vegetables, and let it boil again.",
+            "de": "Den Topfrand abwischen, das Gemüse zugeben und wieder aufkochen lassen."
+          },
+          "uses": ["carrot", "onion", "leek", "celery", "clove", "turnip"]
+        },
+        {
+          "text": {
+            "en": "Keep it at an even simmer for three hours, with the lid slightly open.",
+            "de": "Drei Stunden gleichmäßig leicht sieden lassen, mit leicht geöffnetem Deckel."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 3,
+            "unit": "h"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the meat out and put it on a dish. Taste the broth; keep it a little light on salt, as it is salted again later.",
+            "de": "Das Fleisch herausnehmen und auf eine Platte legen. Die Brühe probieren; sie soll noch etwas schwach gesalzen bleiben, da später nachgesalzen wird."
+          },
+          "uses": ["beef"]
+        },
+        {
+          "text": {
+            "en": "Skim the fat off the hot broth with the ladle, taking as little broth as possible.",
+            "de": "Das Fett mit der Kelle von der heißen Brühe abnehmen und dabei möglichst wenig Brühe mitnehmen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "cocido-pot"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "2",
+      "reason": "Our judgement from the text: the small pot is for the ordinary meal of small households, and the book names two persons as its smallest case (p. 58). No number is stated for this pot.",
+      "target": "persons"
+    },
+    {
+      "what": "Water",
+      "value": "4 litres",
+      "reason": "The ingredient list (p. 57) gives 4 litres; the method (p. 60) gives 3 litres for the small pot. The list is used.",
+      "target": "cocido-pot/water"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed by the Claude agent from /home/user/sources/muro.txt, lines 3027-3044 (list) and 3189-3240 (method); no second reader yet."
+  },
+  "note": {
+    "en": "The broth is served first, the meat on its own dish. The method gives cold water for the small pot as 1.5 decilitres; no amount is written because the book does not size the decilitre.",
+    "de": "Die Brühe wird zuerst, das Fleisch auf einer eigenen Platte serviert. Der Ablauf nennt für den kleinen Topf 1,5 Deziliter kaltes Wasser; keine Menge steht dabei, weil das Buch den Deziliter nicht bestimmt."
+  }
+}
