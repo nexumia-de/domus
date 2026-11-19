@@ -43,7 +43,7 @@ export const cookStrings = {
   listLabel: 'What the stock allows',
   complete: 'complete',
   lacks: (n: number): string => `lacks ${n}`,
-  kind: { component: 'component', dish: 'dish', template: 'ratio' },
+  kind: { component: 'component', dish: 'dish', template: 'ratio', classic: 'classic' },
   daysLeft: (days: number): string => (days === 1 ? '1 day left' : `${days} days left`),
   useByToday: 'use by today',
   pastUseBy: 'past use by',
@@ -66,6 +66,25 @@ export const cookStrings = {
   offer: (invite: string, names: string): string => `You could add ${invite}: ${names}`,
   /** The entry's whole link, for a screen reader. */
   openLabel: (name: string): string => `Open ${name}`,
+  // The shipped classics, beside the notebook's own dishes
+  classicsHeading: 'Classic dishes',
+  classicsIntro: 'The shipped classics, judged against what is there by the same rules.',
+  classicsFiltersLabel: 'Filters for the classics',
+  countryLabel: 'Country',
+  countryAny: 'All countries',
+  meatLabel: 'Meat and fish',
+  meatAny: 'With or without',
+  meatFree: 'Without meat and fish',
+  classicsListLabel: 'What the stock allows for the classics',
+  needsHeading: 'Needs',
+  withoutMeatMark: 'without meat and fish',
+  /** The lines the catalogue has no ingredient for yet; they are not counted. */
+  notInCatalogue: (names: string): string => `Not in the catalogue yet, so not counted: ${names}`,
+  classicsEmptyNothingTicked:
+    'Nothing is ticked yet, so no classic can be matched to what is there.',
+  classicsEmpty: 'No classic fits these choices.',
+  classicsNearestHeading: 'The nearest classics',
+  classicsNearest: (name: string, needs: string): string => `${name} needs ${needs}`,
   // Start from one ingredient
   startSummary: 'Start from one ingredient',
   startHint: 'Own components and dishes that use it, or something it can stand in for.',

@@ -1,0 +1,167 @@
+{
+  "id": "german-names-and-substitute",
+  "description": "The names come in the language asked; a sibling in stock stands in for the line and is reported",
+  "inputs": {
+    "kind": "classics_makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "nuts",
+        "roles": ["crunch"]
+      }
+    ],
+    "classics": [
+      {
+        "id": "dish",
+        "name": {
+          "en": "Example dish",
+          "de": "Beispiel dish"
+        },
+        "originalName": "Example dish",
+        "country": "de",
+        "vegetarian": true,
+        "course": "main",
+        "source": {
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        },
+        "persons": {
+          "value": 2,
+          "basis": "stated"
+        },
+        "settled": [],
+        "check": {
+          "method": "second-reader",
+          "note": "Invented for this vector."
+        },
+        "components": [
+          {
+            "id": "sauce",
+            "name": {
+              "en": "Example sauce",
+              "de": "Beispielsauce"
+            },
+            "role": "sauce",
+            "lines": [
+              {
+                "key": "butter",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "butter"
+                },
+                "amount": {
+                  "value": 50,
+                  "unit": "g"
+                }
+              },
+              {
+                "key": "flour",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "flour"
+                },
+                "amount": {
+                  "value": 30,
+                  "unit": "g"
+                }
+              },
+              {
+                "key": "water",
+                "wanted": {
+                  "en": "Water",
+                  "de": "Wasser"
+                },
+                "amount": {
+                  "value": 200,
+                  "unit": "ml"
+                }
+              },
+              {
+                "key": "spice",
+                "wanted": {
+                  "en": "Example spice",
+                  "de": "Beispielgewürz"
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          },
+          {
+            "role": "crunch",
+            "ref": {
+              "kind": "ingredient",
+              "id": "nuts"
+            },
+            "amount": {
+              "value": 20,
+              "unit": "g"
+            },
+            "optional": true
+          }
+        ]
+      }
+    ],
+    "lang": "de",
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "ghee"
+        }
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "dish",
+        "name": "Beispiel dish",
+        "complete": true,
+        "lacking": 0,
+        "notInCatalogue": ["Beispielgewürz"],
+        "substitutions": [
+          {
+            "asked": "butter",
+            "substitute": "ghee",
+            "itemId": "s1"
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the rules are in docs/engine-rules.md#what-the-stock-allows."
+}

@@ -1,0 +1,122 @@
+{
+  "format": "culina-ingredient-roles",
+  "formatVersion": 1,
+  "note": "Which catalogue ingredients or groups fill a role of a ratio card (flour, water, egg, fat, sugar, oil, acid, liquid, salt: packages/engine/data/templates.json) or a role of a dish (crunch, garnish). A role on a group covers every food below it. Every entry is a judgement of the person who wrote it, stated in `basis`; none comes from the USDA data, which carries no roles. Water has no catalogue entry and is no row here: a stock item of water is marked always there.",
+  "entries": [
+    {
+      "id": "fdc-group-wheat-flour",
+      "roles": ["flour"],
+      "basis": "Wheat flour is the flour of every flour-anchored ratio card (bread, pasta, pie, cookie, pound cake, roux)."
+    },
+    {
+      "id": "fdc-group-rye-flour",
+      "roles": ["flour"],
+      "basis": "Rye flour stands for flour in a bread ratio; judgement."
+    },
+    {
+      "id": "fdc-group-egg-whole",
+      "roles": ["egg"],
+      "basis": "Whole eggs are the egg of the pasta and pound cake cards; judgement."
+    },
+    {
+      "id": "fdc-group-butter",
+      "roles": ["fat"],
+      "basis": "Butter is the fat of the pie, cookie, pound cake and roux cards; judgement."
+    },
+    {
+      "id": "fdc-171401",
+      "roles": ["fat"],
+      "basis": "Lard is a classic fat of pie dough; judgement."
+    },
+    {
+      "id": "fdc-group-shortening",
+      "roles": ["fat"],
+      "basis": "Shortening is a solid fat for dough; judgement."
+    },
+    {
+      "id": "fdc-group-margarine",
+      "roles": ["fat"],
+      "basis": "Margarine is a solid fat for dough; judgement."
+    },
+    {
+      "id": "fdc-group-fat",
+      "roles": ["fat"],
+      "basis": "Poultry and beef fat are cooking fats; judgement."
+    },
+    {
+      "id": "fdc-171413",
+      "roles": ["oil"],
+      "basis": "Olive oil is the oil of the vinaigrette card; judgement."
+    },
+    {
+      "id": "fdc-group-oil-vegetable",
+      "roles": ["oil"],
+      "basis": "Vegetable oil is a neutral oil for the vinaigrette card; judgement."
+    },
+    {
+      "id": "fdc-group-oil-sunflower",
+      "roles": ["oil"],
+      "basis": "Sunflower oil is a neutral oil for the vinaigrette card; judgement."
+    },
+    {
+      "id": "fdc-group-oil-safflower-salad-or-cooking",
+      "roles": ["oil"],
+      "basis": "Safflower oil is a neutral oil for the vinaigrette card; judgement."
+    },
+    {
+      "id": "fdc-group-sugars",
+      "roles": ["sugar"],
+      "basis": "Sugars are the sugar of the cookie and pound cake cards."
+    },
+    {
+      "id": "fdc-group-vinegar",
+      "roles": ["acid"],
+      "basis": "Vinegar is the acid of the vinaigrette card."
+    },
+    {
+      "id": "fdc-167747",
+      "roles": ["acid"],
+      "basis": "Lemon juice is the other acid of a vinaigrette; judgement."
+    },
+    {
+      "id": "fdc-group-milk",
+      "roles": ["liquid"],
+      "basis": "Milk is the liquid of a custard card."
+    },
+    {
+      "id": "fdc-group-cream",
+      "roles": ["liquid"],
+      "basis": "Cream is a liquid of a custard card; judgement."
+    },
+    {
+      "id": "fdc-173468",
+      "roles": ["salt"],
+      "basis": "Table salt is the salt of the bread cards."
+    },
+    {
+      "id": "fdc-group-nuts",
+      "roles": ["crunch"],
+      "basis": "Nuts give a dish its crunch; judgement."
+    },
+    {
+      "id": "fdc-group-seeds",
+      "roles": ["crunch"],
+      "basis": "Seeds give a dish its crunch; judgement."
+    },
+    {
+      "id": "fdc-170416",
+      "roles": ["garnish"],
+      "basis": "Fresh parsley is the usual garnish; judgement."
+    },
+    {
+      "id": "fdc-172232",
+      "roles": ["garnish"],
+      "basis": "Fresh basil is a usual garnish; judgement."
+    },
+    {
+      "id": "fdc-173470",
+      "roles": ["garnish"],
+      "basis": "Fresh thyme is a usual garnish; judgement."
+    }
+  ]
+}

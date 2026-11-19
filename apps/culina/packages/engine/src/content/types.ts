@@ -17,6 +17,7 @@ export type ContentFindingCode =
   | 'unit-kind'
   | 'bad-range'
   | 'unknown-ingredient'
+  | 'same-ingredient'
   | 'unknown-component'
   | 'unused-component'
   | 'reserved-id'

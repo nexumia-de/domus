@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/handling.schema.json",
+  "title": "Handling rule",
+  "description": "When an ingredient goes into a dish and how it is treated, with the reason: shipped read-only, one file per rule. Hangs on one catalogue ingredient or group and on one technique (a skill, so the rule fades when it is learned). Never stored. Every statement names what it rests on.",
+  "type": "object",
+  "required": ["id", "target", "text", "why", "technique", "level", "sources"],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": true
+  },
+  "properties": {
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
+    "target": {
+      "description": "A catalogue ingredient id, or a catalogue group id: the rule then applies to every ingredient under the group.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "text": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+    },
+    "why": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+    },
+    "technique": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
+    "level": {
+      "enum": ["studied", "textbook", "tradition"]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "place", "url", "sentence"],
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "place": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https?://\\S+$",
+            "maxLength": 500
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "sentence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          }
+        }
+      }
+    }
+  }
+}

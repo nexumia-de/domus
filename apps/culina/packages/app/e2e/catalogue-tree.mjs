@@ -144,13 +144,16 @@ export const catalogueTree = async (browser, origin) => {
 
   const stored = await listStore(page, 'ingredients');
   check(
-    stored.every((r) =>
-      same(
+    // The role table adds `roles` to some entries when the catalogue is read; nothing else changes.
+    stored.every((record) => {
+      const r = { ...record };
+      delete r.roles;
+      return same(
         r,
         file.ingredients.find((x) => x.id === r.id),
-      ),
-    ),
-    `${label}: every stored record is its catalogue entry, unchanged (parent link included)`,
+      );
+    }),
+    `${label}: every stored record is its catalogue entry, unchanged (parent link included; roles come from the role table)`,
   );
   const model = engine.validateModel({ ingredients: stored });
   check(

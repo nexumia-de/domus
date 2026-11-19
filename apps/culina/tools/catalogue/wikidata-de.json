@@ -2,7 +2,7 @@
   "format": "culina-wikidata-de-snapshot",
   "formatVersion": 1,
   "source": "Wikidata, https://query.wikidata.org/sparql (CC0 1.0 Universal)",
-  "retrieved": "2026-11-18",
+  "retrieved": "2026-11-19",
   "property": "P1978 (USDA NDB number)",
   "query": "SELECT ?item ?ndb\n  (SAMPLE(?deL) AS ?de) (SAMPLE(?enL) AS ?en)\n  (GROUP_CONCAT(DISTINCT ?deA; separator=\"¦\") AS ?deAliases)\n  (GROUP_CONCAT(DISTINCT ?cls; separator=\"¦\") AS ?classes)\nWHERE {\n  ?item wdt:P1978 ?ndb .\n  OPTIONAL { ?item rdfs:label ?deL . FILTER(LANG(?deL) = \"de\") }\n  OPTIONAL { ?item rdfs:label ?enL . FILTER(LANG(?enL) = \"en\") }\n  OPTIONAL { ?item skos:altLabel ?deA . FILTER(LANG(?deA) = \"de\") }\n  OPTIONAL {\n    { ?item wdt:P31 ?c . BIND(CONCAT(\"i:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n    UNION\n    { ?item wdt:P279 ?c . BIND(CONCAT(\"s:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n  }\n}\nGROUP BY ?item ?ndb\nORDER BY ?item ?ndb",
   "classesQuery": "SELECT ?c ?l WHERE { VALUES ?c { <the class ids of the P31 values of the first response> } ?c rdfs:label ?l . FILTER(LANG(?l) = \"en\") }",
@@ -11,7 +11,7 @@
     "Q16521": "taxon"
   },
   "responseRows": 1470,
-  "keptRows": 293,
+  "keptRows": 303,
   "items": [
     {
       "item": "Q16701410",
@@ -37,6 +37,15 @@
       "de": "Doppelrahmkäse",
       "deAliases": ["Doppelrahmstufe"],
       "en": "cream cheese",
+      "instanceOf": []
+    },
+    {
+      "item": "Q2376488",
+      "ndb": "01023",
+      "ndbCount": 1,
+      "de": "Greyerzer",
+      "deAliases": ["Gruyère"],
+      "en": "Gruyère",
       "instanceOf": []
     },
     {
@@ -565,6 +574,15 @@
       "instanceOf": ["Q25403900"]
     },
     {
+      "item": "Q2370943",
+      "ndb": "02004",
+      "ndbCount": 1,
+      "de": "Lorbeerblatt",
+      "deAliases": ["Lorbeer"],
+      "en": "bay leaf",
+      "instanceOf": ["Q42527"]
+    },
+    {
       "item": "Q21155816",
       "ndb": "02005",
       "ndbCount": 1,
@@ -790,6 +808,15 @@
       "instanceOf": ["Q42527"]
     },
     {
+      "item": "Q22915010",
+      "ndb": "02030",
+      "ndbCount": 1,
+      "de": "schwarzes Pfefferkorn",
+      "deAliases": ["schwarze Pfefferkörner", "schwarzer Pfeffer"],
+      "en": "black pepper",
+      "instanceOf": ["Q25403900"]
+    },
+    {
       "item": "Q52075540",
       "ndb": "02031",
       "ndbCount": 1,
@@ -797,6 +824,24 @@
       "deAliases": ["Paprika rosenscharf"],
       "en": "cayenne pepper",
       "instanceOf": []
+    },
+    {
+      "item": "Q744814",
+      "ndb": "02032",
+      "ndbCount": 1,
+      "de": "weißer Pfeffer",
+      "deAliases": [],
+      "en": "white pepper",
+      "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q7995190",
+      "ndb": "02032",
+      "ndbCount": 1,
+      "de": "White Pepper",
+      "deAliases": [],
+      "en": "White Pepper",
+      "instanceOf": ["Q482994"]
     },
     {
       "item": "Q2007388",
@@ -889,6 +934,15 @@
       "instanceOf": []
     },
     {
+      "item": "Q38859",
+      "ndb": "02044",
+      "ndbCount": 2,
+      "de": "Basilikum",
+      "deAliases": ["Basilie", "Basilienkraut", "Hirnkraut", "Königskraut", "Ocimum basilicum"],
+      "en": "basil",
+      "instanceOf": ["Q16521"]
+    },
+    {
       "item": "Q11254",
       "ndb": "02047",
       "ndbCount": 1,
@@ -950,6 +1004,15 @@
       ],
       "en": "vinegar",
       "instanceOf": ["Q906356"]
+    },
+    {
+      "item": "Q122679",
+      "ndb": "02063",
+      "ndbCount": 2,
+      "de": "Rosmarinus officinalis",
+      "deAliases": [],
+      "en": "Rosmarinus officinalis",
+      "instanceOf": ["Q16521"]
     },
     {
       "item": "Q156037",
@@ -1258,7 +1321,7 @@
       "ndbCount": 1,
       "de": "Kamelienöl",
       "deAliases": ["Teesamenöl"],
-      "en": "Tea seed oil",
+      "en": "tea seed oil",
       "instanceOf": []
     },
     {
@@ -1970,6 +2033,15 @@
       "instanceOf": []
     },
     {
+      "item": "Q1375049",
+      "ndb": "09152",
+      "ndbCount": 3,
+      "de": "Zitronensaft",
+      "deAliases": ["Citronensaft"],
+      "en": "lemon juice",
+      "instanceOf": []
+    },
+    {
       "item": "Q1093742",
       "ndb": "09156",
       "ndbCount": 2,
@@ -2463,6 +2535,15 @@
       "instanceOf": []
     },
     {
+      "item": "Q23900272",
+      "ndb": "11135",
+      "ndbCount": 1,
+      "de": "Blumenkohl",
+      "deAliases": [],
+      "en": "cauliflower",
+      "instanceOf": []
+    },
+    {
       "item": "Q103765549",
       "ndb": "11141",
       "ndbCount": 1,
@@ -2588,6 +2669,14 @@
       "deAliases": [],
       "en": "dried chicken egg yolk",
       "instanceOf": ["Q2095"]
+    },
+    {
+      "item": "Q3066930",
+      "ndb": "11413",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "potato flour",
+      "instanceOf": []
     },
     {
       "item": "Q36814998",

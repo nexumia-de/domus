@@ -1,0 +1,57 @@
+{
+  "id": "list-duplicate-id",
+  "description": "The second substitute with an id is reported as duplicate-id",
+  "inputs": {
+    "kind": "substitute_list_validate",
+    "substitutes": [
+      {
+        "id": "a-to-b",
+        "from": "starch-a",
+        "to": "starch-b",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "a-to-b",
+        "from": "starch-b",
+        "to": "starch-a",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "duplicate-id",
+        "path": "[1].id",
+        "value": "a-to-b"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

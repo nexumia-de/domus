@@ -1,6 +1,8 @@
 // Which stock items can satisfy a line: the tree is the class mechanism (a line naming a parent
 // takes any descendant), the state must fit, and, as a separate and reported tier, a sibling.
 import { isA } from '../model';
+import { substitutesByParent } from '../substitutes/lookup';
+import type { Substitute } from '../substitutes/types';
 import type { ComponentRef, FoodState } from '../components/types';
 import { byUseBy } from './context';
 import type { Context, Item } from './context';
@@ -73,4 +75,41 @@ export function siblingItems(
   const first = fitting[0];
   if (first === undefined) return undefined;
   return { substitute: first.refId, items: fitting.filter((i) => i.refId === first.refId) };
+}
+
+/**
+ * Declared substitution: a line that names an ingredient may take stock of the `to` of a substitute
+ * declared for it or for a group above it (nearest first, then by id). The first substitute with
+ * stock that fits wins; the ingredient in stock that would be used first is the substitute and all
+ * its items are returned. Empty when there are no declared substitutes or the line is a component.
+ */
+export function declaredItems(
+  ctx: Context,
+  want: Wanted,
+): { effect: Substitute; substitute: string; items: Item[] } | undefined {
+  if (ctx.substitutes.length === 0 || want.ref.kind !== 'ingredient') return undefined;
+  const declared = substitutesByParent(
+    want.ref.id,
+    (id) => ctx.tree.byId.get(id)?.parentId,
+    ctx.substitutes,
+  );
+  for (const effect of declared) {
+    const fitting = byUseBy(
+      ctx.items.filter(
+        (i) =>
+          i.ref.kind === 'ingredient' &&
+          stateFits(want, i) &&
+          (i.refId === effect.to || isA(ctx.tree, i.refId, effect.to)),
+      ),
+    );
+    const first = fitting[0];
+    if (first !== undefined) {
+      return {
+        effect,
+        substitute: first.refId,
+        items: fitting.filter((i) => i.refId === first.refId),
+      };
+    }
+  }
+  return undefined;
 }

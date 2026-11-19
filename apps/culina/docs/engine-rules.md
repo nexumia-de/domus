@@ -740,6 +740,19 @@ amount.
   is too little is `short` (test `makeable.test.ts` and vector
   `substitution-short-keeps-amount`). The effect on the result (taste,
   texture) is not computed.
+- **Declared substitution** (`input.substitutes`, default none): a line that
+  names an ingredient may take stock of the `to` of a shipped
+  [substitute effect](#substitute-effects) declared for it or for a group
+  above it. It is consulted last, only where the line's own tier, a component
+  made from its lines and the sibling rule all found nothing. The first
+  substitute with stock that fits wins (the ingredient itself before its
+  group, then by id); the report's `substitution` names `asked`, `substitute`
+  and `itemId` as for a sibling, plus `effect` (the substitute's id, for the
+  text of what changes) and, where the source gives one, `factor`. With a
+  `factor` the line needs `factor` times its amount in the same unit, and the
+  report's `need` is that amount of the substitute (a short substitute is
+  `short` against it); without one the amount is unchanged. Vectors
+  `declared-substitute-*`.
 - **State.** When line and item both have a state they must be equal; an
   item without a state fits; a raw item never stands for a component (a
   prepared thing).
@@ -838,6 +851,39 @@ run by `test/makeable-vectors.test.ts`; `test/makeable.test.ts` holds the
 properties (a substitute never changes an amount, the stock order does not
 matter).
 
+## The shipped classics in the finder
+
+`classicsMakeable(input)` (`src/classics/makeable.ts`) judges the shipped
+classics on the stock with **the same finder**, not a second logic. For each
+classic it calls `deriveClassic` (portions default 2, `lang` default `en`),
+writes the dish out as slots (every classic component is expanded into its
+own lines, so the finder names the ingredient that lacks, not the component;
+a line takes the role of the slot that names its component; the line's state
+is not asked) and hands the dish to `makeable`. The input is `makeable`'s
+(`ingredients`, `stock`, `today`, `facts`, `options`) with `classics`,
+optional `portions` and `lang`; the app passes the notebook's tree completed
+by the catalogue. The result is `{ ok: true, candidates }` or
+`{ ok: false, error }` with the `makeable` or `deriveClassic` code and the
+`classic` id. A candidate is the finder's dish candidate with `kind: 'classic'`,
+`country`, `course`, `vegetarian` and `notInCatalogue`; the order is the
+finder's (urgency, roles covered, name, id) across all classics, and
+`maxMissing` (default 0) and "at least one line that is there" decide what is
+listed, as for an own dish.
+
+- **A `wanted` line** (no catalogue ingredient yet) is left out of the lines:
+  it never counts as lacking, and its name in `lang` is in `notInCatalogue`,
+  once each, in file order.
+- **Water** (`isWater`: a `wanted` text whose English or German begins with
+  water, cold water, ice-cold water, "Wasser", "kaltes Wasser") is neither
+  asked for nor named: a kitchen has it.
+- A line without an amount is only asked for by presence; an amount in a unit
+  the stock cannot be converted to is `have-amount-unknown`, as for any dish.
+- A component that names itself is expanded once.
+
+Vectors: `packages/engine/vectors/classics-makeable/`, kind
+`classics_makeable` ([vector format](vectors.md#kind-of-the-classics-in-the-finder)),
+run by `test/classics-makeable-vectors.test.ts`.
+
 # Techniques, steps and classics
 
 Issue 87 (work package 2 of the [helper plan](helper-plan.md)). Code:
@@ -853,11 +899,12 @@ records. A validator returns `{ ok: true }` or
 `{ ok: false, error: { code: 'invalid', findings } }`, every finding a
 `code`, a `path` and where it helps a `value`.
 
-| Function                                  | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `validateTechnique`, `validateTechniques` | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `validateSteps`                           | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `validateClassic`                         | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (a settled line or slot may have no amount: its entry then records a choice) (`settled-without-entry`, `settled-target`, `persons-unsettled`, `persons-entry`) |
+| Function                                        | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validateTechnique`, `validateTechniques`       | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `validateHandlingRule`, `validateHandlingRules` | as `validateTechnique` for `text` and `why`, plus a known `technique` and `target` when the context gives them (`unknown-technique`, `unknown-ingredient`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `validateSteps`                                 | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `validateClassic`                               | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (a settled line or slot may have no amount: its entry then records a choice) (`settled-without-entry`, `settled-target`, `persons-unsettled`, `persons-entry`) |
 
 **Deriving a classic.** `deriveClassic(classic, { portions?, lang })`
 returns the dish and the components in the shapes the model has, so the app
@@ -888,6 +935,26 @@ technique again from any step that names it; a learned technique gives none.
 The steps are all components' steps in cooking order. An unknown technique id
 is `unknown-technique` with the step index.
 
+**Handling rules.** `handlingRules(ingredients, rules, tree, learned, options?)`
+gives the rules to show for the ingredient ids of a dish (all components
+together, in order). A rule matches an ingredient when its `target` is that
+ingredient or any group above it in the catalogue tree (`tree` is a list of
+`{ id, parentId? }`; the walk goes up through `parentId`). An ingredient that is
+not in the tree (the user's own) matches only a rule that names it. A rule whose
+`technique` is in `learned` is left out, as is, when `options.used` (the set of
+techniques the dish uses) is given, a rule whose technique is not in it: a rule
+about pasta water stays away from a dish without pasta. Each rule shows **once**,
+beside the first ingredient it matched; the result is ordered by ingredient
+(list order), then by rule list order: `{ ok: true, rules: [{ rule, ingredient }] }`.
+A loop in the tree is `{ ok: false, error: { code: 'cycle', id } }`.
+`validateHandlingRule(rule, context?)` and `validateHandlingRules(list,
+context?)` check the texts (`text-incomplete`), at least one source
+(`no-source`), sentences of at most 25 words (`sentence-too-long`), unique ids
+(`duplicate-id`) and, when `context` gives `techniqueIds` or `ingredientIds`, a
+known technique (`unknown-technique`) and a known target (`unknown-ingredient`).
+The rules are data files in `data/handling/`; the app gets them from
+`dist/classics.json` (`handling`), so the engine keeps no list of them.
+
 **Copying into the notebook.** `copyClassic(classic, { portions?, lang, date,
 newId, ingredientIds? })` returns the records the app writes: one component
 record per component and the dish, each version 1 of a new family (`family` is
@@ -911,8 +978,37 @@ typecheck (`techniques.generated.ts`, not committed), so adding a technique is
 adding one file and touches no shared file. The classics are indexed the same
 way in the app (`packages/app/make-classics.mjs`).
 
-Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`
+Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`, `vectors/handling/`
 ([vector format](vectors.md#kinds-of-techniques-classics-and-skills-issue-87)).
+
+# Substitute effects
+
+Work package 10 of the [helper plan](helper-plan.md) (issue 93). Code:
+`src/substitutes/` (`types.ts`, `validate.ts`, `lookup.ts`, `shipped.ts`). The
+format is in the [data model](data-model.md#substitute-effect); the guide for
+writers is [classic format](classic-format.md#a-substitute-file). Every
+function returns `{ ok: true, ... }` or `{ ok: false, error }` or a list and
+never throws; none reads a clock or a random number.
+
+- `validateSubstitute(substitute, { ingredientIds? })` and
+  `validateSubstitutes(list, { ingredientIds? })` return the findings of
+  [content](#techniques-steps-and-classics): `text-incomplete` (`changes` empty
+  in a language), `no-source`, `sentence-too-long` (more than 25 words),
+  `same-ingredient` (`from` equals `to`), `bad-range` (`factor` not a positive
+  number), `unknown-ingredient` (only with `ingredientIds`, the catalogue) and,
+  for a list, `duplicate-id`. The shape is checked by `substitute.schema.json`.
+- `substituteEffects(id, ingredients, list)` returns the substitutes that
+  replace an ingredient: those declared for it, then for its parent, and so on
+  up the tree (a group covers all below it), within a level by id.
+- `SUBSTITUTES` is every file of `data/substitutes/`, read through an index that
+  `scripts/make-substitutes.mjs` writes before tests and typecheck
+  (`substitutes.generated.ts`, not committed). `substituteById(id)` finds one.
+  The app ships them in `dist/classics.json` (key `substitutes`), not in `main.js`.
+- The finder uses them through `makeable`'s `substitutes` input
+  ([what the stock allows](#what-the-stock-allows)).
+
+Vectors: `vectors/substitutes/` and `vectors/makeable/declared-substitute-*`
+([vector format](vectors.md#kinds-of-substitute-effects-issue-93)).
 
 # Vectors
 

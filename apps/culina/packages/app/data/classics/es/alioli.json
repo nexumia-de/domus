@@ -55,9 +55,9 @@
         },
         {
           "key": "bread",
-          "wanted": {
-            "en": "White bread (crumb)",
-            "de": "Weißbrot (Krume)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
           },
           "note": {
             "en": "A crumb of bread the size of a walnut (\"del tamaño de una nuez\"), soaked. The size is a comparison, not a measure, so the line has no amount. Original: \"un migón de pan del tamaño de una nuez\".",

@@ -61,9 +61,9 @@
         },
         {
           "key": "wine",
-          "wanted": {
-            "en": "White wine",
-            "de": "Weißwein"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174837"
           },
           "note": {
             "en": "White wine and water, half and half. The source gives no volume.",
@@ -101,9 +101,9 @@
         },
         {
           "key": "lemon",
-          "wanted": {
-            "en": "Lemon juice",
-            "de": "Zitronensaft"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
           },
           "note": {
             "en": "A few drops. The source gives no amount.",

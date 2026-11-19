@@ -19,6 +19,13 @@
     "value": 4,
     "basis": "settled"
   },
+  "units": {
+    "pint": {
+      "kind": "volume",
+      "factor": 568.26125,
+      "read": "The source is the English edition printed in London (1907); its pint is taken as the imperial pint of units.json. A judgement."
+    }
+  },
   "components": [
     {
       "id": "gratin-dauphinois-potatoes",
@@ -53,9 +60,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -87,16 +94,17 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
-          "note": {
-            "en": "One and one-half pints of boiled milk. The units table has no pint, so the line has no amount.",
-            "de": "Eineinhalb Pint gekochte Milch. Die Einheitentabelle kennt kein Pint; die Zeile hat daher keine Menge."
+          "amount": {
+            "value": 1.5,
+            "unit": "pint",
+            "original": "one and one-half pints of boiled milk"
           }
         },
         {
           "key": "gruyere",
-          "wanted": {
-            "en": "Gruyère cheese",
-            "de": "Gruyère"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171242"
           },
           "amount": {
             "value": 4,
@@ -213,10 +221,10 @@
   ],
   "check": {
     "method": "second-edition",
-    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 2222: two lbs of potatoes, one beaten egg (first scan \"Qgg\"), one and one-half pints of milk, four oz. of Gruyère (first scan \"freshj\"), forty to forty-five minutes, moderate oven: all agree. No change. The pints have no size in the units table, so the milk has no amount."
+    "note": "Second check by a reader who did not transcribe it (group fr1). Compared with the 1909 printing of the same book (archive.org b21530142), No. 2222: two lbs of potatoes, one beaten egg (first scan \"Qgg\"), one and one-half pints of milk, four oz. of Gruyère (first scan \"freshj\"), forty to forty-five minutes, moderate oven: all agree. No change. Amounts in pints restored on 2026-11-19 after the imperial units were added, read again in the same text."
   },
   "note": {
-    "en": "The oven is given only as moderate; no temperature is stated. Milk is given in pints, which the units table does not hold, so that line has no amount.",
-    "de": "Der Ofen wird nur als mäßig heiß angegeben; eine Temperatur nennt die Quelle nicht. Die Milch steht in Pint, das die Einheitentabelle nicht kennt; diese Zeile hat daher keine Menge."
+    "en": "The oven is given only as moderate; no temperature is stated.",
+    "de": "Der Ofen wird nur als mäßig heiß angegeben; eine Temperatur nennt die Quelle nicht."
   }
 }

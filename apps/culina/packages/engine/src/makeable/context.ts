@@ -6,6 +6,7 @@ import { buildTree, dayNumber } from '../model';
 import { familyHeads } from '../versions/chain';
 import type { BaseIngredient, IngredientTreeOf } from '@nexumia-de/materia';
 import type { ComponentRef } from '../components/types';
+import type { Substitute } from '../substitutes/types';
 import type { MakeableComponent, MakeableError, MakeableInput, MakeableStockItem } from './types';
 
 type TreeIngredient = BaseIngredient & { roles?: readonly string[] };
@@ -22,6 +23,7 @@ export interface Context {
   tree: IngredientTreeOf<TreeIngredient>;
   facts: NonNullable<MakeableInput['facts']>;
   sibling: boolean;
+  substitutes: readonly Substitute[];
   items: readonly Item[];
   components: ReadonlyMap<string, MakeableComponent>;
   /** Today as a day number. */
@@ -72,6 +74,7 @@ export function buildContext(input: MakeableInput): Built {
     tree: tree.tree,
     facts: input.facts ?? {},
     sibling: input.options?.siblingSubstitution ?? true,
+    substitutes: input.substitutes ?? [],
     items,
     components: heads,
     today,

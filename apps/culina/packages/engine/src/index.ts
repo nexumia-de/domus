@@ -271,6 +271,17 @@ export type { NotesResult, TechniqueNote } from './techniques/notes';
 export { MAX_SENTENCE_WORDS, validateTechnique, validateTechniques } from './techniques/validate';
 export type { Technique, TechniqueLevel, TechniqueSource } from './techniques/types';
 
+export { validateHandlingRule, validateHandlingRules } from './handling/validate';
+export type { HandlingContext } from './handling/validate';
+export { handlingRules } from './handling/rules';
+export type { HandlingOptions, HandlingResult, ShownRule, TreeNode } from './handling/rules';
+export type { HandlingLevel, HandlingRule, HandlingSource } from './handling/types';
+export { SUBSTITUTES, substituteById } from './substitutes/shipped';
+export { substituteEffects } from './substitutes/lookup';
+export { validateSubstitute, validateSubstitutes } from './substitutes/validate';
+export type { SubstituteChecks } from './substitutes/validate';
+export type { Substitute, SubstituteLevel, SubstituteSource } from './substitutes/types';
+
 export { learnedTechniques, skillId, skillRecord } from './skills/skill';
 export type { SkillRecord } from './skills/skill';
 
@@ -292,6 +303,13 @@ export { copyClassic } from './classics/copy';
 export type { CopiedComponent, CopiedDish, CopyOptions, CopyResult, Origin } from './classics/copy';
 export { resolveSourceUnit } from './classics/units';
 export type { UnitSize } from './classics/units';
+export { classicsMakeable, isWater } from './classics/makeable';
+export type {
+  ClassicCandidate,
+  ClassicsMakeableError,
+  ClassicsMakeableInput,
+  ClassicsMakeableResult,
+} from './classics/makeable';
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
 export type {

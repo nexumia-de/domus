@@ -4,6 +4,7 @@ import type { Amount, IngredientFacts } from '../amounts/types';
 import type { ComponentRef, FoodState } from '../components/types';
 import type { RatioTemplate, TemplateError } from '../ratios/types';
 import type { PercentAmount } from '../scale/types';
+import type { Substitute } from '../substitutes/types';
 import type { Versioned } from '../versions/types';
 
 /** An ingredient of the tree; `roles` left out are inherited from the parent. */
@@ -73,6 +74,12 @@ export interface MakeableInput {
   dishes?: readonly MakeableDish[];
   templates?: readonly RatioTemplate[];
   stock: readonly MakeableStockItem[];
+  /**
+   * Declared substitutes (what replaces an ingredient and what changes). A line that names an
+   * ingredient may take stock of a substitute's `to` where nothing of its own and no sibling is
+   * there; the report names the substitute and its effect. Absent: none.
+   */
+  substitutes?: readonly Substitute[];
   /** Today, `YYYY-MM-DD`, from the host. */
   today: string;
   /** Density and unit weight per ingredient id, for converting between units. */
@@ -90,6 +97,10 @@ export interface MakeableSubstitution {
   substitute: string;
   /** The stock item. */
   itemId: string;
+  /** Set when a declared substitute stood in: its id, for the text of what changes. */
+  effect?: string;
+  /** With `effect`: its factor, if the source gives one; `need` of the line is then in the substitute's amount. */
+  factor?: number;
 }
 
 /** One line (or slot, or role of a template) against the stock. */

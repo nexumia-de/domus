@@ -1,0 +1,23 @@
+{
+  "id": "butter-warm-for-hollandaise",
+  "target": "fdc-group-butter",
+  "text": {
+    "en": "For a hollandaise kind of sauce, use the butter warm, not hot.",
+    "de": "Für eine Sauce nach Art der Hollandaise die Butter warm verwenden, nicht heiß."
+  },
+  "why": {
+    "en": "Hot butter cooks the egg yolks further.",
+    "de": "Heiße Butter gart das Eigelb weiter."
+  },
+  "technique": "warm-emulsion",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.8 Hollandaise Based Sauces, section Temperatures and Sanitation Concerns",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.08%3A_Hollandaise_Based_Sauces",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The clarified butter used to make the sauce should be warm but not so hot as to further cook the egg yolks."
+    }
+  ]
+}

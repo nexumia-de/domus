@@ -1,4 +1,4 @@
-import type { Food } from './derive.mjs';
+import type { Extra, Food } from './derive.mjs';
 import type { Names, Snapshot } from './wikidata.mjs';
 
 export interface SourcedNumber {
@@ -22,6 +22,10 @@ export type RefuseMap = Map<
   string,
   { description: string; refuse: number; refuseDescription: string }
 >;
+/** The named foods of extras.json by FDC id. */
+export const EXTRAS: Map<number, Extra>;
+/** Whether the food is a row of the catalogue: selected by the rule or named in extras.json. */
+export const isSelected: (food: Food) => boolean;
 /** The food rows (with yields when `refuse` is given), without parents. */
 export const buildRows: (
   foods: Food[],

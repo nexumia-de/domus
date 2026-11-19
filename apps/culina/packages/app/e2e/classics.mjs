@@ -83,6 +83,15 @@ const flow = async (browser, origin, width) => {
     await page.getByText(`Original name: ${PAN.originalName}`).isVisible(),
     `${label}: the original name`,
   );
+  // The source and the second check are closed behind a tap, below the method.
+  for (const name of ['Source', 'Second check']) {
+    const summary = page.locator('.foot-block summary', { hasText: new RegExp(`^${name}$`) });
+    check(
+      (await summary.locator('..').getAttribute('open')) === null,
+      `${label}: ${name} is behind a tap`,
+    );
+    await summary.click();
+  }
   const text = await page.locator('.classic-card').innerText();
   check(
     text.includes(PAN.source.author) &&

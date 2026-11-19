@@ -184,6 +184,9 @@ Three view links at the top (14 px, 44 px high, the current one with a
 4 px bar of `--accent` and bold text), two selects for the filters, an
 entry list in the `.rows` style: name, kind and status as text, then the
 reason and the notes in muted text. No alarm colour; `styles/cook.css`.
+Below the own list the classics have their own h2 and two more selects
+(Country, Meat and fish, 44 px, in the same grid as the filters); their
+entries use the same row as an own dish.
 Screenshots: `docs/screenshots/cook-*`.
 
 # Classics screens
@@ -196,7 +199,10 @@ source's wording, notes and "settled by us" in muted text below; no colour
 carries a meaning. Cooking shows one step in `--fs-lg`, a progress bar in
 `--accent`, and Back and Next as 56 px buttons in a 1:2 grid; the technique note is a box with
 `--accent-soft` and a `--border` outline, its "why" behind a 44 px summary. The
-settled list and the whole recipe are `<details>`. Tokens only, in
+dish screen runs name, portions, ingredients, "Cook step by step", method, and
+then Source, What we settled and Second check, each a closed `<details>`
+(`.foot-block`, 44 px summary) so that the ingredients are on the first screen
+at 360 x 720. The whole recipe is a `<details>` too. Tokens only, in
 `styles/classics.css`. Screenshots: `docs/screenshots/classics-*`.
 
 # Stock screens

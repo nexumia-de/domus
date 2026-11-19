@@ -1,8 +1,8 @@
 ---
 type: Specification
-title: Classic and technique file format
-description: The guide a transcriber follows to write one dish file and one technique file, field by field, with an invented example, the rules for amounts as the source gives them, source unit words, settled values and the second check, and the command that validates one file.
-tags: [classics, techniques, format, transcription, helper]
+title: Classic, technique and handling rule file format
+description: The guide a transcriber follows to write one dish file, one technique file and one handling rule file, field by field, with an invented example, the rules for amounts as the source gives them, source unit words, settled values and the second check, and the command that validates one file.
+tags: [classics, techniques, handling, format, transcription, helper]
 generated: { by: claude-code/2.1.326, at: 2026-11-19 }
 sources:
   - id: plan
@@ -25,10 +25,11 @@ checks is in [engine rules](engine-rules.md#techniques-steps-and-classics). This
 page is the guide for the one who writes a file. **The examples below are
 invented**: no real recipe and no real book. Do not copy them into a dish.
 
-| What      | Where                                            | File name   |
-| --------- | ------------------------------------------------ | ----------- |
-| Technique | `packages/engine/data/techniques/<id>.json`      | `<id>.json` |
-| Dish      | `packages/app/data/classics/<country>/<id>.json` | `<id>.json` |
+| What       | Where                                            | File name   |
+| ---------- | ------------------------------------------------ | ----------- |
+| Technique  | `packages/engine/data/techniques/<id>.json`      | `<id>.json` |
+| Substitute | `packages/engine/data/substitutes/<id>.json`     | `<id>.json` |
+| Dish       | `packages/app/data/classics/<country>/<id>.json` | `<id>.json` |
 
 The country folder is `de`, `it`, `fr` or `es`. An id is a lower-case slug
 (`pommes-puree`), unique among all dishes (or all techniques), equal to the file
@@ -92,6 +93,60 @@ These come from the [helper plan](helper-plan.md#rules-for-content).
 
 A note that says more than its source is cut back by the lead. The tests check
 the two languages, the sentence length and that the file name is the id.
+
+# A handling rule file
+
+One file per rule in `packages/engine/data/handling/<id>.json`: when an
+ingredient goes into a dish and how it is treated, with the reason
+([mentor](decisions/mentor.md), point 8). It hangs on an ingredient or a group
+of the catalogue and on one technique, so it shows on every dish that uses the
+ingredient and fades when the user marks the technique as learned.
+
+```json
+{
+  "id": "example-handling-rule",
+  "target": "fdc-group-butter",
+  "text": {
+    "en": "Example rule (fictional): say in one or two short sentences when the ingredient goes in and how it is treated.",
+    "de": "Beispielregel (erfunden): in ein bis zwei kurzen Sätzen sagen, wann die Zutat hineinkommt und wie sie behandelt wird."
+  },
+  "why": {
+    "en": "Example reason: say in one or two lines why.",
+    "de": "Beispielgrund: in ein bis zwei Zeilen sagen, warum."
+  },
+  "technique": "example-technique",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}
+```
+
+| Field       | What to write                                                                                                                                                                                                                             |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | The slug; the file name. Say what and which ingredient (`potatoes-cold-start`).                                                                                                                                                           |
+| `target`    | A catalogue ingredient id (`fdc-173468`) or a catalogue group id (`fdc-group-butter`): the rule then shows for everything under the group. Use the group when the source speaks of the kind, the single id when it speaks of one product. |
+| `text`      | `{ en, de }`: the rule in **one or two short sentences**: when it goes in, how it is treated. Own words, never the source's.                                                                                                              |
+| `why`       | `{ en, de }`: the reason, in one short sentence, from the same source.                                                                                                                                                                    |
+| `technique` | The id of one of the shipped techniques: the skill the rule belongs to. Choose the skill the cook practises while following the rule.                                                                                                     |
+| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tradition` when kitchens' sources state it.                                                                                           |
+| `sources`   | At least one, shaped as for a technique: `title`, `place`, `url`, `licence`, `sentence` (at most 25 words, verbatim).                                                                                                                     |
+
+The order of work: open a source, find the sentence, then write the rule from
+it. **No source, no rule**; the owner's own examples are examples of the kind,
+not data. Wording never judges (no wrong, error, mistake, bad, too much, too
+little, missing and their German counterparts); the wording test covers these
+texts. The tests check the schema, the two languages, the sentence length, the
+file name, a known technique and a target in the catalogue. Check one file with
+`npm run validate:content -- packages/engine/data/handling/<id>.json`. The
+build writes every rule into `dist/classics.json` (key `handling`), not into
+`main.js`.
 
 # A dish file
 
@@ -225,9 +280,19 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
 - `ref`: `{ "kind": "ingredient", "id": "<id of packages/app/data/ingredient-catalogue.json>" }`,
   or `{ "kind": "component", "id": "<a component of this file>" }`. Look the
   ingredient up in the catalogue; the validator refuses an id it does not have.
-- `wanted`: `{ en, de }`, **only while the catalogue lacks the ingredient**. A
-  later package replaces every `wanted` by a catalogue id until none is left; a
-  dish with one can be read but not yet copied into the notebook.
+- `wanted`: `{ en, de }`, **only while the catalogue lacks the ingredient**
+  (a food the USDA data does not have: meat, fish, bouquet garni, orange-flower
+  water, whole cloves ...). First look for the food in the catalogue by its
+  English and German names and in the group nodes of the tree; a food that
+  only the selection rule leaves out but the USDA data has is added through
+  [named foods](ingredient-catalogue.md#named-foods), not typed. A dish with a
+  `wanted` line can be read but not yet copied into the notebook. The finder
+  never counts such a line as lacking and names it apart; a line whose English
+  or German text is water ("Water", "Cold water", "Wasser") is not asked for at
+  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)). The
+  names that remain are an explicit, reviewed list in
+  `test/classics-wanted-list.test.ts`: a new unmatched line fails it until a
+  reviewer adds the name there.
 
 Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 **give one to every line that a step uses, or that is settled**), `role`,
@@ -313,7 +378,7 @@ The command first generates what it needs and git ignores (the compiled
 schemas, the technique and dish indexes), so it works in a fresh checkout
 after `npm ci`; nothing has to be built or tested before.
 
-For a technique: `npm run validate:content -- packages/engine/data/techniques/<id>.json`.
+For a technique or a handling rule: `npm run validate:content -- packages/engine/data/techniques/<id>.json` or `.../data/handling/<id>.json`.
 The command checks the schema, the file name and folder, then the engine's
 rules against the shipped techniques and the catalogue, and derives the dish
 for two portions; it prints what is wrong and exits with 1, or prints `ok`. It
@@ -330,3 +395,54 @@ two counts, as it should: its ingredient and its technique are not real.
   keep the range in their note.
 - All shipped dishes are bundled into the app's script; when there are many,
   they are loaded per country instead.
+
+# A substitute file
+
+A substitute says what replaces an ingredient and what changes. It is reference
+knowledge: the app always offers it and it does not fade when the user learns
+skills. **One direction per file**: `flour-to-cornstarch` and
+`cornstarch-to-flour` are two files, and the second is written only if the
+source says it. The shapes are in the [data model](data-model.md#substitute-effect);
+the engine rules are in [engine rules](engine-rules.md#substitute-effects). The
+example is invented.
+
+```json
+{
+  "id": "example-a-to-b",
+  "from": "example-ingredient-a",
+  "to": "example-ingredient-b",
+  "factor": 0.5,
+  "changes": {
+    "en": "Example effect (fictional): say in one or two short sentences what changes.",
+    "de": "Beispielwirkung (erfunden): in ein bis zwei kurzen Sätzen sagen, was sich ändert."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "An Example Textbook (fictional, not a real book)",
+      "place": "chapter 1, page 1",
+      "url": "https://example.org/example-textbook",
+      "licence": "CC0-1.0 (invented for this example)",
+      "sentence": "This sentence is invented for the example and rests on nothing."
+    }
+  ]
+}
+```
+
+| Field     | What to write                                                                                                                                                                                                   |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                      |
+| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                 |
+| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                       |
+| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out. |
+| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**     |
+| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tradition` where kitchens' sources state it. No source: the file is not written.                                              |
+| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                      |
+
+How to write one: open a source first, find the sentence that states the
+replacement and its effect (and the factor), and only then write `changes`. A
+note that says more than its source is cut back. Wording never judges: say what
+changes, not whether it is good (a test scans `changes` for the words of
+[behaviour](behaviour.md)). The tests check the two languages, the sentence
+length, that the file name is the id and that `from` and `to` are in the
+catalogue.

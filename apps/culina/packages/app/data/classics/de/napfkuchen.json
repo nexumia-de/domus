@@ -158,9 +158,9 @@
         },
         {
           "key": "roll",
-          "wanted": {
-            "en": "Grated bread roll",
-            "de": "Geriebenes Brötchen"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174928"
           },
           "note": {
             "en": "To sprinkle into the buttered pan; no quantity given.",

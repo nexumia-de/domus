@@ -1,7 +1,8 @@
 // One line against the stock, and a list of lines (a component, a dish, a made sub-component).
 // Order of tiers: the line's own items (exact, descendant, same component family), then for a
-// component a made sub-component, then for a leaf ingredient a sibling. MakeableSubstitution never
-// changes the needed amount and is consulted only where the own tier has nothing.
+// component a made sub-component, then for a leaf ingredient a sibling, then a declared substitute.
+// A sibling never changes the needed amount; a declared substitute does only by its own factor
+// (where the source gives one). Both are consulted only where the own tier has nothing.
 import { toGrams } from '../amounts/convert';
 import type { Amount } from '../amounts/types';
 import type { ComponentRef, FoodState } from '../components/types';
@@ -10,7 +11,7 @@ import { scaleByFactor } from '../scale/scale';
 import { compareStock } from './amount';
 import type { Compared } from './amount';
 import type { Context, Item } from './context';
-import { eligibleItems, siblingItems } from './eligible';
+import { declaredItems, eligibleItems, siblingItems } from './eligible';
 import type {
   MakeableLineReport,
   MakeableLineStatus,
@@ -155,6 +156,27 @@ export function evaluateLine(
     return stock(c, {
       status: c.status === 'have' ? 'have-by-substitution' : c.status,
       substitution,
+    });
+  }
+  const declared = declaredItems(ctx, want);
+  if (declared !== undefined) {
+    const { effect } = declared;
+    const need =
+      spec.amount !== undefined && effect.factor !== undefined
+        ? { value: spec.amount.value * effect.factor, unit: spec.amount.unit }
+        : spec.amount;
+    const c = resolveTier(ctx, declared.items, need, askedId);
+    const substitution = {
+      asked: askedId,
+      substitute: declared.substitute,
+      itemId: (c.used[0] as Item).id,
+      effect: effect.id,
+      ...(effect.factor !== undefined ? { factor: effect.factor } : {}),
+    };
+    return stock(c, {
+      status: c.status === 'have' ? 'have-by-substitution' : c.status,
+      substitution,
+      ...(need !== undefined ? { need } : {}),
     });
   }
   return { ...head, status: 'missing', items: [] };

@@ -1,0 +1,206 @@
+{
+  "id": "ranked-by-urgency",
+  "description": "Classics come in the finder's order: the one that uses the item with the earliest use-by first, the one without a date last",
+  "inputs": {
+    "kind": "classics_makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "ghee",
+        "parentId": "fat"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "nuts",
+        "roles": ["crunch"]
+      }
+    ],
+    "classics": [
+      {
+        "id": "aaa",
+        "name": {
+          "en": "Example aaa",
+          "de": "Beispiel aaa"
+        },
+        "originalName": "Example aaa",
+        "country": "de",
+        "vegetarian": true,
+        "course": "main",
+        "source": {
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        },
+        "persons": {
+          "value": 2,
+          "basis": "stated"
+        },
+        "settled": [],
+        "check": {
+          "method": "second-reader",
+          "note": "Invented for this vector."
+        },
+        "components": [
+          {
+            "id": "sauce",
+            "name": {
+              "en": "Example sauce",
+              "de": "Beispielsauce"
+            },
+            "role": "sauce",
+            "lines": [
+              {
+                "key": "one",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "butter"
+                },
+                "amount": {
+                  "value": 30,
+                  "unit": "g"
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          },
+          {
+            "role": "crunch",
+            "ref": {
+              "kind": "ingredient",
+              "id": "nuts"
+            },
+            "amount": {
+              "value": 20,
+              "unit": "g"
+            },
+            "optional": true
+          }
+        ]
+      },
+      {
+        "id": "bbb",
+        "name": {
+          "en": "Example bbb",
+          "de": "Beispiel bbb"
+        },
+        "originalName": "Example bbb",
+        "country": "de",
+        "vegetarian": true,
+        "course": "main",
+        "source": {
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        },
+        "persons": {
+          "value": 2,
+          "basis": "stated"
+        },
+        "settled": [],
+        "check": {
+          "method": "second-reader",
+          "note": "Invented for this vector."
+        },
+        "components": [
+          {
+            "id": "sauce",
+            "name": {
+              "en": "Example sauce",
+              "de": "Beispielsauce"
+            },
+            "role": "sauce",
+            "lines": [
+              {
+                "key": "one",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "flour"
+                },
+                "amount": {
+                  "value": 30,
+                  "unit": "g"
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          },
+          {
+            "role": "crunch",
+            "ref": {
+              "kind": "ingredient",
+              "id": "nuts"
+            },
+            "amount": {
+              "value": 20,
+              "unit": "g"
+            },
+            "optional": true
+          }
+        ]
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "butter"
+        }
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        },
+        "useBy": "2026-11-20"
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "bbb",
+        "urgency": {
+          "useBy": "2026-11-20",
+          "daysLeft": 2
+        }
+      },
+      {
+        "id": "aaa",
+        "urgency": null
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the rules are in docs/engine-rules.md#what-the-stock-allows."
+}

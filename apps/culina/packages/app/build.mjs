@@ -18,6 +18,7 @@ import { build } from 'esbuild';
 import { compileSchemas } from './compile-schemas.mjs';
 import { makeClassics, shippedContent } from './make-classics.mjs';
 import { makeTechniques } from '../engine/scripts/make-techniques.mjs';
+import { makeSubstitutes } from '../engine/scripts/make-substitutes.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const src = join(root, 'src');
@@ -33,6 +34,7 @@ const listFiles = (dir) =>
 compileSchemas();
 makeClassics();
 makeTechniques();
+makeSubstitutes();
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(join(dist, 'icons'), { recursive: true });
 
@@ -57,8 +59,8 @@ writeFileSync(
   join(dist, 'catalogue.json'),
   JSON.stringify(JSON.parse(readFileSync(join(root, 'data', 'ingredient-catalogue.json'), 'utf8'))),
 );
-// The shipped classics and technique notes, read from the data folders: its own file too, loaded
-// at start and precached; main.js carries neither.
+// The shipped classics, technique notes and handling rules, read from the data folders: its own file too, loaded
+// at start and precached; main.js carries none of them.
 writeFileSync(join(dist, 'classics.json'), JSON.stringify(shippedContent()));
 for (const name of ['icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']) {
   cpSync(join(src, 'assets', name), join(dist, 'icons', name));

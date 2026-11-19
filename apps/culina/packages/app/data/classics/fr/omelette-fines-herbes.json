@@ -61,9 +61,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           },
           "amount": {
             "value": 3,
@@ -73,9 +73,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount. The title says fine herbes, but the text names only parsley.",

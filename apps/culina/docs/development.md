@@ -176,6 +176,13 @@ the picker and the service worker precaches it; `main.js` does not carry
 it). Prettier ignores the generated
 file.
 
+Foods that a shipped dish needs and the selection rule leaves out are listed in
+`tools/catalogue/extras.json` ([named foods](ingredient-catalogue.md#named-foods));
+the same command rebuilds them. After adding one, refresh the German names
+(below) so that the snapshot keeps the NDB numbers of the new rows, run
+`npx prettier --write tools/catalogue/wikidata-de.json`, and rebuild the
+catalogue after that (the file's SHA-256 is in the catalogue's envelope).
+
 Hosts tested on 2026-11-18, both answered 200 through the proxy:
 
 ```

@@ -44,7 +44,8 @@
 }
 
 .cook-start-heading,
-.cook-nearest-heading {
+.cook-nearest-heading,
+.classic-nearest-heading {
   margin: var(--sp-3) 0 var(--sp-2);
   font-size: var(--fs-md);
 }
@@ -57,23 +58,27 @@
   justify-content: space-between;
 }
 
-.cook-head {
+.cook-head,
+.classic-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   column-gap: var(--sp-3);
 }
 
-.cook-entry .cook-link {
+.cook-entry .cook-link,
+.classic-entry .classic-found-link {
   gap: var(--sp-1);
 }
 
-.cook-note {
+.cook-note,
+.classic-note {
   display: block;
 }
 
 /* Offers and substitutes are plain text beside the facts; the status words carry the meaning. */
-.cook-status {
+.cook-status,
+.classic-status {
   font-weight: 600;
 }
 
@@ -113,4 +118,12 @@
 .slot-offer {
   display: block;
   color: var(--text-muted);
+}
+
+.cook-classics {
+  margin-top: var(--sp-4);
+}
+
+.cook-classics-heading {
+  margin: var(--sp-4) 0 var(--sp-2);
 }

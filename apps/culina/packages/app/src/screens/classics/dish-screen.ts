@@ -1,6 +1,6 @@
-// #/classic/<id>: one shipped classic. Name and original name, the source, the persons it states,
-// a portions stepper (the engine scales), the ingredient lines, what we settled, the second check,
-// "Cook step by step", and the whole recipe on this one screen.
+// #/classic/<id>: one shipped classic. In this order: name and original name, course and meat flag,
+// a portions stepper (the engine scales), the ingredient lines, "Cook step by step", the whole
+// method; then, each closed behind a tap, the source, what we settled and the second check.
 import { classicOf, techniques } from '../../classics/content';
 import { cookView } from '../../classics/cook-view';
 import { dishView, type DishView } from '../../classics/dish-view';
@@ -12,13 +12,13 @@ import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { stepper } from '../stepper';
-import { sourceBlock } from './source-block';
+import { checkDetails, sourceDetails } from './source-block';
 import { ingredientsBlock, methodBlock } from './recipe';
 
 const t = strings.classics;
 
 const settledBlock = (view: DishView): HTMLElement => {
-  const details = el('details', 'settled-block');
+  const details = el('details', 'settled-block foot-block');
   details.append(el('summary', undefined, t.settledSummary));
   if (view.settled.length === 0) details.append(el('p', 'muted', t.settledNone));
   else {
@@ -43,6 +43,9 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   const back = el('a', 'family-link', t.backToCountry(t.countries[classic.country]));
   back.href = hashFor('classics', classic.country);
   const results = el('div', 'classic-results');
+  const cook = el('a', 'btn primary cook-start', t.cookButton);
+  cook.href = hashFor('classic', classic.id, 'cook');
+  cook.addEventListener('click', () => setStep(classic.id, 0));
   const draw = (portions: number): void => {
     const nameOf = (ingredient: string): string => ingredientLabel(ingredient, lang);
     const shown = dishView(classic, portions, lang, nameOf);
@@ -54,8 +57,8 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
     const method = steps.ok ? methodBlock(steps.steps) : undefined;
     results.replaceChildren(
       ingredientsBlock(shown.view.components, shown.view.slots),
+      cook,
       ...(method === undefined ? [] : [method]),
-      settledBlock(shown.view),
     );
   };
   const first = dishView(classic, portionsOf(classic.id), lang, (x) => ingredientLabel(x, lang));
@@ -68,7 +71,6 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
         'muted',
         `${t.course[first.view.course]} · ${first.view.vegetarian ? t.withoutMeat : t.withMeat}`,
       ),
-      sourceBlock(first.view),
     );
     if (first.view.note !== undefined) card.append(el('p', undefined, first.view.note));
   }
@@ -83,10 +85,9 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
       draw(n);
     },
   );
-  const cook = el('a', 'btn primary cook-start', t.cookButton);
-  cook.href = hashFor('classic', classic.id, 'cook');
-  cook.addEventListener('click', () => setStep(classic.id, 0));
-  card.append(control.wrap, cook, results);
+  card.append(control.wrap, results);
+  if (first.ok)
+    card.append(sourceDetails(first.view), settledBlock(first.view), checkDetails(first.view));
   draw(portionsOf(classic.id));
   // The catalogue gives the ingredient names; draw again when it is there.
   void loadNames().then(() => draw(portionsOf(classic.id)));

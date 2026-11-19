@@ -33,9 +33,11 @@ export const validators: RecordValidators = {
 /** The export envelope schema, to check that the hand-written header rules agree with it. */
 export const envelopeValidator = compile('export');
 
-/** Shipped content and its example: the schemas of techniques, classics and skill state. */
+/** Shipped content and its example: the schemas of techniques, substitutes, classics and skill state. */
 export const contentValidators = {
   technique: compile('technique'),
+  handling: compile('handling'),
+  substitute: compile('substitute'),
   classic: compile('classic'),
   skill: compile('skill'),
   component: compile('component'),

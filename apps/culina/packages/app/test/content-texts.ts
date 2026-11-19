@@ -1,4 +1,4 @@
-// Collects the bilingual texts of shipped content (techniques, classics) from their JSON files,
+// Collects the bilingual texts of shipped content (techniques, substitutes, classics) from their JSON files,
 // for tests that scan every text. A text is any object with a string `en` and a string `de`.
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -29,11 +29,15 @@ export function jsonFiles(dir: string): string[] {
 
 /** The folders of shipped content. */
 export const TECHNIQUE_DIR = engine('data/techniques');
+export const HANDLING_DIR = engine('data/handling');
+export const SUBSTITUTE_DIR = engine('data/substitutes');
 export const CLASSIC_DIR = app('data/classics');
 /** The fictional examples: always present, so the scan is never empty. */
 export const EXAMPLE_FILES = [
   engine('schemas/examples/technique.valid.json'),
+  engine('schemas/examples/substitute.valid.json'),
   engine('schemas/examples/classic.valid.json'),
+  engine('schemas/examples/handling.valid.json'),
 ];
 
 function walk(value: unknown, where: string, out: ContentText[]): void {
@@ -55,6 +59,11 @@ export function textsOf(files: readonly string[]): ContentText[] {
   return out;
 }
 
-/** The texts of every shipped technique and classic. */
+/** The texts of every shipped technique, handling rule, substitute and classic. */
 export const shippedTexts = (): ContentText[] =>
-  textsOf([...jsonFiles(TECHNIQUE_DIR), ...jsonFiles(CLASSIC_DIR)]);
+  textsOf([
+    ...jsonFiles(TECHNIQUE_DIR),
+    ...jsonFiles(HANDLING_DIR),
+    ...jsonFiles(SUBSTITUTE_DIR),
+    ...jsonFiles(CLASSIC_DIR),
+  ]);

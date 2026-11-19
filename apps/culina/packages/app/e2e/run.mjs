@@ -2,6 +2,7 @@
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 import { catalogue } from './catalogue.mjs';
 import { classics } from './classics.mjs';
+import { classicsFinder } from './classics-finder.mjs';
 import { components } from './components.mjs';
 import { cook } from './cook.mjs';
 import { editor } from './editor.mjs';
@@ -38,6 +39,7 @@ try {
   await stock(browser, server);
   await cook(browser, server);
   await classics(browser, server);
+  await classicsFinder(browser, server);
   await importCatalogue(browser, server);
 } catch (error) {
   check(false, `e2e aborted: ${error.message}`);

@@ -1,0 +1,125 @@
+{
+  "id": "declared-substitute-sibling-first",
+  "description": "The sibling rule is consulted first: a sibling in stock is used and no effect is named",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "starch"
+      },
+      {
+        "id": "cornstarch",
+        "parentId": "starch"
+      },
+      {
+        "id": "potato-starch",
+        "parentId": "starch"
+      },
+      {
+        "id": "wheat-flour",
+        "parentId": "flour"
+      },
+      {
+        "id": "sauce-thickener"
+      }
+    ],
+    "components": [
+      {
+        "id": "sauce",
+        "name": "Sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            },
+            "amount": {
+              "value": 30,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "sauce",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "oil"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "cornstarch"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      }
+    ],
+    "substitutes": [
+      {
+        "id": "butter-to-cornstarch",
+        "from": "butter",
+        "to": "cornstarch",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "sauce",
+        "complete": true,
+        "lacking": 0,
+        "substitutions": [
+          {
+            "asked": "butter",
+            "substitute": "oil"
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved."
+}

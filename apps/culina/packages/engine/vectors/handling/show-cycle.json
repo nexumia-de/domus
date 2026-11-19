@@ -1,0 +1,49 @@
+{
+  "id": "show-cycle",
+  "description": "A loop in the tree is an error with the id where it was found",
+  "inputs": {
+    "kind": "handling_show",
+    "ingredients": ["a"],
+    "rules": [
+      {
+        "id": "r",
+        "target": "z",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "tree": [
+      {
+        "id": "a",
+        "parentId": "b"
+      },
+      {
+        "id": "b",
+        "parentId": "a"
+      }
+    ],
+    "learned": []
+  },
+  "error_code": "cycle",
+  "error_detail": {
+    "id": "a"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

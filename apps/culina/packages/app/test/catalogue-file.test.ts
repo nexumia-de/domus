@@ -4,7 +4,12 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
-import { buildRows, serialise, type CatalogueRow } from '../../../tools/catalogue/build.mjs';
+import {
+  buildRows,
+  EXTRAS,
+  serialise,
+  type CatalogueRow,
+} from '../../../tools/catalogue/build.mjs';
 import {
   deriveDensity,
   deriveUnitWeight,
@@ -43,13 +48,17 @@ describe('the shipped file', () => {
   test('is valid against the catalogue and ingredient schemas', () => {
     expect(validate(shipped), JSON.stringify(validate.errors?.slice(0, 3))).toBe(true);
   });
-  test('ids are unique, sorted, fdc-<FDC id>, and every row has a number the engine can use', () => {
+  test('ids are unique, sorted, fdc-<FDC id>, and every row has a number the engine can use (a named food may have none)', () => {
     const ids = shipped.ingredients.map((r) => r.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual([...ids].sort());
     for (const row of foodRows) {
       expect(row.id).toBe(`fdc-${row['x-fdc']?.id}`);
-      expect(row.densityGPerMl !== undefined || row.unitWeightG !== undefined, row.id).toBe(true);
+      const named = EXTRAS.has(row['x-fdc']?.id ?? 0);
+      expect(
+        named || row.densityGPerMl !== undefined || row.unitWeightG !== undefined,
+        row.id,
+      ).toBe(true);
     }
   });
   test('names are unique and every number names its FDC id, dataset release and portion', () => {

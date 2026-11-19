@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "fennel",
-          "wanted": {
-            "en": "Fennel",
-            "de": "Fenchel"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169385"
           },
           "note": {
             "en": "No weight or number given in the source.",

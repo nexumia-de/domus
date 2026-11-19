@@ -12,6 +12,7 @@ import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { storeText } from '../editor/store-text';
+import { classicsSection } from './classics-section';
 import { emptyState } from './empty';
 import { cookEntry } from './entry';
 import { filterControls } from './filters';
@@ -57,9 +58,21 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
 
   let filters: CookFilters = readCookFilters(browserStore());
   const results = el('div', 'cook-results');
-  const controls = filterControls(filters, (next) => {
+  const kept = (next: CookFilters): CookFilters => {
+    const { country, meatFree } = filters;
+    return {
+      ...next,
+      ...(country === undefined ? {} : { country }),
+      ...(meatFree === undefined ? {} : { meatFree }),
+    };
+  };
+  const classicsPart = classicsSection(filters, (next) => {
     filters = next;
     writeCookFilters(browserStore(), next);
+  });
+  const controls = filterControls(filters, (next) => {
+    filters = kept(next);
+    writeCookFilters(browserStore(), filters);
     draw();
   });
   const draw = (): void => {
@@ -71,6 +84,7 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
     }
     controls.setRoles(found.roles);
     results.replaceChildren(found.shown.length === 0 ? emptyState(found) : list(found));
+    if (ingredientId === undefined) classicsPart.draw(filters);
   };
   draw();
 
@@ -78,5 +92,6 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
     source.stock.filter((s) => s.ref.kind === 'ingredient').map((s) => s.ref.id),
   );
   section.append(controls.element, startSection(listIngredients(), ticked, false), results);
+  if (ingredientId === undefined) section.append(classicsPart.element);
   return section;
 };

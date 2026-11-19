@@ -3,6 +3,7 @@
 // Entries are ordinary ingredient records; a file or an entry that does not fit is left out.
 import type { IngredientRecord } from '../records';
 import { schemaIssues } from '../store/validate';
+import { withRoles } from './roles';
 
 const FORMAT = 'culina-ingredient-catalogue';
 
@@ -16,10 +17,11 @@ export const readCatalogue = (file: unknown): IngredientRecord[] | undefined => 
   if (typeof file !== 'object' || file === null) return undefined;
   const { format, formatVersion, ingredients } = file as Record<string, unknown>;
   if (format !== FORMAT || formatVersion !== 1 || !Array.isArray(ingredients)) return undefined;
-  return (ingredients as unknown[])
-    .filter((entry) => schemaIssues('ingredients', entry).length === 0)
-    .map((entry) => entry as IngredientRecord)
-    .sort(byName);
+  return withRoles(
+    (ingredients as unknown[])
+      .filter((entry) => schemaIssues('ingredients', entry).length === 0)
+      .map((entry) => entry as IngredientRecord),
+  ).sort(byName);
 };
 
 let loaded: Promise<IngredientRecord[] | undefined> | undefined;

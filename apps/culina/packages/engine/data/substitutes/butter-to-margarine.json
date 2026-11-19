@@ -1,0 +1,26 @@
+{
+  "id": "butter-to-margarine",
+  "from": "fdc-group-butter",
+  "to": "fdc-group-margarine",
+  "changes": {
+    "en": "About the same fat: 80 to 85 % against about 80 % in butter, with a similar rest. The book asks for great care when soft tub margarine takes the place of solid margarine.",
+    "de": "Etwa gleich viel Fett: 80 bis 85 % gegenüber etwa 80 % in Butter, der Rest ist ähnlich. Das Buch mahnt zu großer Sorgfalt, wenn weiche Streichmargarine feste Margarine ersetzt."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 3.3 Major Fats and Oils Used in Bakeries, section Margarine",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/03%3A_Fats_and_Oils/3.03%3A_Major_Fats_and_Oils_Used_in_Bakeries",
+      "licence": "CC BY 4.0",
+      "sentence": "Margarine has a fat content ranging from 80% to 85%, with the balance pretty much the same as butter."
+    },
+    {
+      "title": "Understanding Ingredients for the Canadian Baker (BC Cook Articulation Committee, BCcampus)",
+      "place": "chapter 3.3 Major Fats and Oils Used in Bakeries, section Margarine",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Understanding_Ingredients_for_the_Canadian_Baker/03%3A_Fats_and_Oils/3.03%3A_Major_Fats_and_Oils_Used_in_Bakeries",
+      "licence": "CC BY 4.0",
+      "sentence": "Great care must be taken when attempting to substitute spreadable margarine for solid margarine in recipes."
+    }
+  ]
+}

@@ -216,8 +216,10 @@ examples in `schemas/examples/`.
   parent ingredient ("butter") is satisfied by any descendant in stock; a
   line that names a leaf ingredient may, unless the rule is switched off,
   be satisfied by a sibling under the same parent, and the finder reports
-  that as a substitution naming the substitute. A substitute never changes
+  that as a substitution naming the substitute. A sibling never changes
   the amount of the line ([engine rules](engine-rules.md#what-the-stock-allows)).
+  What replaces an ingredient beyond its siblings, with what changes, is a
+  shipped [substitute effect](#substitute-effect).
   A line cannot name a class that is not a node of the tree; that would
   need a new field on lines and slots and is open.
 - **As purchased versus edible portion.** `yields` records, per state,
@@ -513,6 +515,24 @@ sauce, crunch, acid, garnish, starch). The seed list comes with the seed
 data; a role id nobody defined is reported as unknown by the engine, not
 refused by the schema. There is no role entity yet (open question 2).
 
+**The role table** (`packages/app/data/ingredient-roles.json`, read by
+`src/catalogue/roles.ts`) says which catalogue ingredients or groups fill a role
+of a ratio card (`flour`, `egg`, `fat`, `sugar`, `oil`, `acid`, `liquid`,
+`salt`) or of a dish (`crunch`, `garnish`). The ratio templates already carry
+what is needed on their side (each part has a `role`, and the finder matches an
+ingredient whose roles include it), and the finder's tree already lets a role
+on a group cover every food below it; what was missing is that the USDA data
+has no roles, so no catalogue ingredient could fill one. So no second table of
+slots was added: the table is only the ingredient side, 23 entries (a group or
+a food, its roles, and `basis`: every one is marked as a judgement, with the
+ratio card that uses the role). The app adds the roles when it reads the
+catalogue, so a copy in the notebook has them (an entry that already has roles
+keeps its own, and a copy made before has none). Water has no catalogue entry
+and no row; a stock item of water is marked always there. A test checks that
+every id is in the catalogue and every role is one a ratio card or a dish
+knows. The dish lines of the classics carry no role table of their own: a
+line's `role` is the slot's, as before.
+
 ## Technique
 
 A kitchen technique with the short note the helper shows beside a step.
@@ -533,6 +553,61 @@ Shipped read-only, one JSON file per technique in
 - **Sentence.** Every source carries the sentence the note rests on, at most
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).
+
+## Handling rule
+
+When an ingredient goes into a dish and how it is treated, with the reason
+([mentor](decisions/mentor.md), point 8). Shipped read-only, one JSON file per
+rule in `packages/engine/data/handling/<id>.json`, never stored. Schema:
+`handling.schema.json`; the guide for writing one is
+[classic format](classic-format.md#a-handling-rule-file).
+
+| Field       | Type            | Required | Meaning                                                                                  |
+| ----------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `id`        | id              | yes      | See [ids](#ids); equal to the file name                                                  |
+| `target`    | string          | yes      | A catalogue ingredient id, or a catalogue group id (applies to everything under it)      |
+| `text`      | text in 2 langs | yes      | The rule in one or two short sentences: when it goes in, how it is treated               |
+| `why`       | text in 2 langs | yes      | The reason                                                                               |
+| `technique` | id              | yes      | The skill the rule belongs to; the rule is not shown once that technique is learned      |
+| `level`     | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                                 |
+| `sources`   | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` (25 words) |
+
+- **Group targets.** A rule on a group shows for every ingredient below it in
+  the catalogue tree (`parentId`), so it shows on every shipped or own dish that
+  uses one. An ingredient the catalogue does not know matches only a rule that
+  names it.
+- **No state.** What a user has learned is the [skill state](#skill-state); a
+  rule has none of its own.
+
+## Substitute effect
+
+What replaces an ingredient and what changes: reference knowledge, always
+offered and never faded by the skills the user has learned
+([decision](decisions/mentor.md)). Shipped read-only, one JSON file per
+substitute in `packages/engine/data/substitutes/<id>.json`, never stored.
+Schema: `substitute.schema.json`; the guide for writing one is
+[classic format](classic-format.md#a-substitute-file). The finder extends its
+sibling rule with them ([engine rules](engine-rules.md#substitute-effects)).
+
+| Field     | Type            | Required | Meaning                                                                                |
+| --------- | --------------- | -------- | -------------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                                |
+| `from`    | string          | yes      | The catalogue ingredient or group id that is replaced; a group covers all below it     |
+| `to`      | string          | yes      | The catalogue ingredient or group id that replaces it; a group covers all below it     |
+| `factor`  | number          | no       | Amount of `to` per amount of `from`, in the same unit; only where the source gives one |
+| `changes` | text in 2 langs | yes      | What changes (taste, texture, amount, handling) in one or two short sentences          |
+| `level`   | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                               |
+| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence`          |
+
+- **One direction per file.** A replacement that the source states both ways
+  is two files (`flour-to-cornstarch`, `cornstarch-to-flour`); a reverse is
+  written only from what the source says, with a `factor` only if it names one.
+- **No factor, no scaling.** Without `factor` the amount of the line stays as
+  it is and `changes` says what the source says about amounts.
+- **Sentence.** As for a technique: at most 25 words per source, checked by the
+  engine; a level `studied` only where a study measured it.
+- **Catalogue ids.** `from` and `to` are ids of the catalogue; the app's tests
+  check that every shipped one is in it.
 
 ## Classic
 
@@ -967,7 +1042,7 @@ with `get`, `put`, `remove` and `list`.
 # Schemas and tests
 
 - `common`, `ingredient`, `template`, `component`, `dish`, `stock`,
-  `affinity`, `tasting`, `export`, `catalogue`, `technique`, `classic`, `skill` in `packages/engine/schemas/`, JSON Schema draft
+  `affinity`, `tasting`, `export`, `catalogue`, `technique`, `substitute`, `classic`, `skill` in `packages/engine/schemas/`, JSON Schema draft
   2020-12[^jsonschema]. Each has an absolute `$id`
   (`https://nexumia-de.github.io/culina/schemas/<name>.schema.json`; an
   identifier, not necessarily a place to download), shared types live in

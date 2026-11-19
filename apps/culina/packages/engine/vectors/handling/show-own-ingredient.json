@@ -1,0 +1,85 @@
+{
+  "id": "show-own-ingredient",
+  "description": "An ingredient that is not in the tree matches only a rule that names it",
+  "inputs": {
+    "kind": "handling_show",
+    "ingredients": ["u-1234"],
+    "rules": [
+      {
+        "id": "r-fat",
+        "target": "fat",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      },
+      {
+        "id": "r-own",
+        "target": "u-1234",
+        "text": {
+          "en": "Put it in early.",
+          "de": "Früh zugeben."
+        },
+        "why": {
+          "en": "The flavour needs time.",
+          "de": "Der Geschmack braucht Zeit."
+        },
+        "technique": "melting",
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "tree": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "butter-salted",
+        "parentId": "butter"
+      },
+      {
+        "id": "oil",
+        "parentId": "fat"
+      },
+      {
+        "id": "salt"
+      }
+    ],
+    "learned": []
+  },
+  "expected": {
+    "rules": [
+      {
+        "rule": "r-own",
+        "ingredient": "u-1234"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

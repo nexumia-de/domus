@@ -29,9 +29,9 @@
       "lines": [
         {
           "key": "beans",
-          "wanted": {
-            "en": "Green beans",
-            "de": "Grüne Bohnen"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169961"
           },
           "amount": {
             "value": 500,
@@ -151,9 +151,9 @@
         },
         {
           "key": "parsley",
-          "wanted": {
-            "en": "Parsley",
-            "de": "Petersilie"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
           },
           "note": {
             "en": "Original: 1 demi-cuillerée à bouche de persil haché. The book sizes a spoon for flour only, so the line has no amount.",
@@ -162,9 +162,9 @@
         },
         {
           "key": "lemon",
-          "wanted": {
-            "en": "Lemon juice",
-            "de": "Zitronensaft"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
           },
           "note": {
             "en": "Original: 1 cuillerée à café de jus de citron. The book gives no size for a coffee spoon, so no amount.",

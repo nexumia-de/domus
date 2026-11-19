@@ -19,6 +19,13 @@
     "value": 4,
     "basis": "settled"
   },
+  "units": {
+    "pint": {
+      "kind": "volume",
+      "factor": 568.26125,
+      "read": "The source is the English edition printed in London (1907); its pint is taken as the imperial pint of units.json. A judgement."
+    }
+  },
   "components": [
     {
       "id": "souffle-parmesan-base",
@@ -46,9 +53,10 @@
             "kind": "ingredient",
             "id": "fdc-group-milk"
           },
-          "note": {
-            "en": "Two and one-half pints of milk. The units table has no pint, so the line has no amount.",
-            "de": "Zweieinhalb Pint Milch. Die Einheitentabelle kennt kein Pint; die Zeile hat daher keine Menge."
+          "amount": {
+            "value": 2.5,
+            "unit": "pint",
+            "original": "two and one-half pints of milk"
           }
         },
         {
@@ -60,9 +68,9 @@
         },
         {
           "key": "pepper",
-          "wanted": {
-            "en": "Pepper",
-            "de": "Pfeffer"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
           }
         },
         {
@@ -219,10 +227,10 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "Weak: no second scan or edition of Escoffier was named, so this is a second reading of the same English text (escoffier.txt lines 39550-39576). Agreed: 1 lb flour, 1 lb Parmesan, 3 oz butter, ten yolks, ten whites, 20 to 25 minutes. Unchanged: the milk (pints) stays without amount; the book names no oven temperature."
+    "note": "Weak: no second scan or edition of Escoffier was named, so this is a second reading of the same English text (escoffier.txt lines 39550-39576). Agreed: 1 lb flour, 1 lb Parmesan, 3 oz butter, ten yolks, ten whites, 20 to 25 minutes. Unchanged: the book names no oven temperature. Amounts in pints restored on 2026-11-19 after the imperial units were added, read again in the same text."
   },
   "note": {
-    "en": "Quantities as the book gives them (one lb. of flour, one lb. of Parmesan). No oven temperature is stated, and the size of the silver timbale is not given. Milk is given in pints, so that line has no amount.",
-    "de": "Mengen für ein Restaurant, wie das Buch sie angibt (ein Pfund Mehl, ein Pfund Parmesan). Eine Ofentemperatur nennt die Quelle nicht; die Größe der Silbertimbale nennt das Buch ebenfalls nicht. Die Milch steht in Pint; diese Zeile hat daher keine Menge."
+    "en": "Quantities as the book gives them (one lb. of flour, one lb. of Parmesan). No oven temperature is stated, and the size of the silver timbale is not given.",
+    "de": "Mengen für ein Restaurant, wie das Buch sie angibt (ein Pfund Mehl, ein Pfund Parmesan). Eine Ofentemperatur nennt die Quelle nicht; die Größe der Silbertimbale nennt das Buch ebenfalls nicht."
   }
 }

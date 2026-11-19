@@ -1,9 +1,10 @@
 // The one adapter from the notebook to the engine's finder: the ingredient tree, every version of
 // the components and dishes, the seed ratio templates, the stock as stored, the facts for
-// conversion and today. No arithmetic and no rule here: every number and status on the screens
+// conversion, the shipped substitutes and today. No arithmetic and no rule here: every number and status on the screens
 // comes from the engine's result.
 import { SEED_TEMPLATES } from '@culina/engine';
 import type { MakeableInput, MakeableOptions } from '@culina/engine';
+import { substitutes } from '../classics/content';
 import { factsOf } from '../notebook/build';
 import type { ComponentRecord, DishRecord, IngredientRecord, StockRecord } from '../records';
 
@@ -27,6 +28,7 @@ export const cookInput = (
   options?: MakeableOptions,
 ): MakeableInput => {
   const known = new Set(source.ingredients.map((i) => i.id));
+  const declared = substitutes();
   return {
     ingredients: source.ingredients.map((i) => ({
       id: i.id,
@@ -39,6 +41,7 @@ export const cookInput = (
     stock: source.stock,
     today,
     facts: factsOf(source.ingredients),
+    ...(declared.length === 0 ? {} : { substitutes: declared }),
     ...(options === undefined ? {} : { options }),
   };
 };

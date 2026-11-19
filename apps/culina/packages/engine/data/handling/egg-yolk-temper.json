@@ -1,0 +1,30 @@
+{
+  "id": "egg-yolk-temper",
+  "target": "fdc-group-egg-yolk",
+  "text": {
+    "en": "Before yolks meet a hot liquid, warm them by stirring in a little of it, slowly and without pause.",
+    "de": "Bevor Eigelb auf eine heiße Flüssigkeit trifft, es erwärmen, indem man etwas davon langsam und ohne Pause einrührt."
+  },
+  "why": {
+    "en": "Above 85 °C the yolks curdle.",
+    "de": "Über 85 °C gerinnt das Eigelb flockig."
+  },
+  "technique": "thicken-with-egg",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Temper the egg yolk and cream mixture by slowly adding a small amount of the hot liquid while stirring continuously."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Temperatures over 185°F (85°C) will cause the yolks to curdle."
+    }
+  ]
+}
