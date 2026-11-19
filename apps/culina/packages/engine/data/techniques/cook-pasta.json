@@ -5,12 +5,12 @@
     "de": "Nudeln kochen"
   },
   "watch": {
-    "en": "Use plenty of water at a rapid boil and add all the pasta at once.",
-    "de": "Reichlich sprudelnd kochendes Wasser nehmen und alle Nudeln auf einmal hineingeben."
+    "en": "Bring the water to a rapid boil and add all the pasta at once.",
+    "de": "Das Wasser sprudelnd aufkochen und alle Nudeln auf einmal hineingeben."
   },
   "why": {
-    "en": "Pasta takes up salt while it cooks; salt added afterwards does not season it in the same way.",
-    "de": "Nudeln nehmen das Salz beim Kochen auf; nachträglich zugegebenes Salz würzt nicht auf dieselbe Weise."
+    "en": "Salt added after cooking does not season the pasta in the same way.",
+    "de": "Salz, das erst nach dem Kochen dazukommt, würzt die Nudeln nicht auf dieselbe Weise."
   },
   "level": "textbook",
   "sources": [
