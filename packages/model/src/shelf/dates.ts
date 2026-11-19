@@ -52,6 +52,19 @@ export function dayNumber(text: string): number | undefined {
 const two = (n: number): string => String(n).padStart(2, '0');
 
 /**
+ * The calendar date of a day number, the inverse of `dayNumber`.
+ *
+ * @param n - Whole days since 1970-01-01 (negative: before).
+ * @returns The date as `YYYY-MM-DD`, or undefined for a non-integer or a date outside the years 0000 to 9999 (the form `dayNumber` reads).
+ */
+export function dateOfDay(n: number): string | undefined {
+  if (!Number.isInteger(n)) return undefined;
+  const { y, m, d } = toCivil(n);
+  if (y < 0 || y > 9999) return undefined;
+  return `${String(y).padStart(4, '0')}-${two(m)}-${two(d)}`;
+}
+
+/**
  * The date some days after another.
  *
  * @param text - A date as `YYYY-MM-DD`.

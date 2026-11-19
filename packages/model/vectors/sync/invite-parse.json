@@ -1,0 +1,689 @@
+{
+  "id": "invite-parse",
+  "kind": "invite-parse",
+  "description": "parseInvite (takes a parsed value, not text): a minimal invite; with name; with access; with both. Unknown fields are ignored, inside storage too (the result has only the known fields); access is kept when its keys and values are right. Errors: not-an-invite for non-objects and other formats; older-version for version 1 (a place invite, not read); newer-version for a version above 2 (checked first); invalid for any other version, a secret that is not 43 base64url characters, a name that is not text, a broken storage (type breaks its rule, empty or missing address, missing), and an access that is not an object of text values with keys of the stated form.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "minimal",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      }
+    },
+    {
+      "name": "with name",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home"
+        }
+      }
+    },
+    {
+      "name": "with access",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {
+            "token": "ghp_abc"
+          }
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {
+            "token": "ghp_abc"
+          }
+        }
+      }
+    },
+    {
+      "name": "with name and access",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home",
+          "access": {
+            "token": "t",
+            "userName": "u"
+          }
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home",
+          "access": {
+            "token": "t",
+            "userName": "u"
+          }
+        }
+      }
+    },
+    {
+      "name": "empty access is kept",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {}
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {}
+        }
+      }
+    },
+    {
+      "name": "secret with every kind of character",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "abcdefghijklmnopqrstuvwxyz0123456789_-ABCDE",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "abcdefghijklmnopqrstuvwxyz0123456789_-ABCDE",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      }
+    },
+    {
+      "name": "unknown fields ignored, also inside storage",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/",
+            "region": "x"
+          },
+          "extra": 1
+        }
+      },
+      "expected": {
+        "ok": true,
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      }
+    },
+    {
+      "name": "a string",
+      "input": {
+        "value": "invite"
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-invite"
+      }
+    },
+    {
+      "name": "an array",
+      "input": {
+        "value": []
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-invite"
+      }
+    },
+    {
+      "name": "null",
+      "input": {
+        "value": null
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-invite"
+      }
+    },
+    {
+      "name": "another format",
+      "input": {
+        "value": {
+          "format": "materia-place",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-invite"
+      }
+    },
+    {
+      "name": "version 1",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 1,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "older-version"
+      }
+    },
+    {
+      "name": "version 3",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 3,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "newer version wins over other problems",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 7
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "version 0",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 0,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "version as text",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": "2",
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no version",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "secret too short",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "secret too long",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "secret with padding",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "secret with a plus",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no secret",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "name not text",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": 5
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no storage",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage not an object",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": "webdav"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage type with a capital",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "WebDAV",
+            "address": "x"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage type starting with a digit",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "1x",
+            "address": "x"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage type empty",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "",
+            "address": "x"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage address empty",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": ""
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "storage address missing",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "access not an object",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": "token"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "access an array",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": ["t"]
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "access key with a capital first letter",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {
+            "Token": "t"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "access key with a hyphen",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {
+            "api-key": "t"
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "access value not text",
+      "input": {
+        "value": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "access": {
+            "token": 5
+          }
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    }
+  ]
+}

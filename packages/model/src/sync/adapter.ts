@@ -23,4 +23,10 @@ export interface StorageAdapter {
   read(path: string): Promise<ReadResult>;
   /** `ifMatch`: an etag the file must still have; `null`: the file must not exist; omitted: unconditional. */
   write(path: string, body: string, ifMatch?: string | null): Promise<WriteResult>;
+  /**
+   * A storage that can tell when a file changed calls `changed` (it may call
+   * it more often than needed, never less). The returned function stops it.
+   * A storage without this method is polled (docs/sync.md#storage-adapter).
+   */
+  watch?(path: string, changed: () => void): () => void;
 }

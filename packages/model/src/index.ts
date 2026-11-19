@@ -45,8 +45,24 @@ export {
 } from './shelf/index';
 
 export {
+  buildCollection,
   buildDocument,
   buildEnvelope,
+  buildInvite,
+  buildSealed,
+  COLLECTION_FORMAT,
+  COLLECTION_VERSION,
+  INVITE_FORMAT,
+  INVITE_VERSION,
+  latestStamp,
+  nextStamp,
+  parseCollection,
+  parseInvite,
+  parseSealed,
+  planCollectionSync,
+  pruneTombstones,
+  SEALED_VERSION,
+  sealedAad,
   combinePlaces,
   DOCUMENT_FORMAT,
   DOCUMENT_VERSION,
@@ -94,7 +110,12 @@ export type * from './shelf/dates';
 export type * from './shelf/expiry';
 export type * from './shelf/limiting';
 export type * from './sync/adapter';
+export type * from './sync/collection';
+export type * from './sync/collection-plan';
 export type * from './sync/document';
+export type * from './sync/invite';
+export type * from './sync/prune';
+export type * from './sync/sealed';
 export type * from './sync/envelope';
 export type * from './sync/places';
 export type * from './sync/plan';

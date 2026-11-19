@@ -18,7 +18,18 @@
         "plan",
         "unit-parse",
         "unit-build",
-        "unit-plan"
+        "unit-plan",
+        "stamp",
+        "latest-stamp",
+        "prune",
+        "collection-parse",
+        "collection-build",
+        "collection-plan",
+        "sealed-parse",
+        "sealed-build",
+        "sealed-aad",
+        "invite-parse",
+        "invite-build"
       ]
     },
     "description": {

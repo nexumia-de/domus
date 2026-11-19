@@ -4,7 +4,15 @@
 
 import { compareText } from './canonical';
 import { instantMs } from './instant';
-import { isObj, movedText, objects, parseMoved, recordsByKey, text } from './frame';
+import {
+  COLLECTION_NAME,
+  isObj,
+  movedText,
+  objects,
+  parseMoved,
+  recordsByKey,
+  text,
+} from './frame';
 import type { SyncRecord } from './records';
 
 /** The format name of a unit document. */
@@ -16,7 +24,6 @@ export const UNIT_VERSION = 1;
 export type UnitKind = 'place' | 'library' | 'profile';
 
 const KINDS: readonly string[] = ['place', 'library', 'profile'];
-const COLLECTION_NAME = /^[a-z][a-z0-9-]*$/;
 
 /** Who and what a unit is; the name merges like a record. */
 export interface UnitInfo {

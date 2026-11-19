@@ -1,0 +1,83 @@
+{
+  "id": "invite-build",
+  "kind": "invite-build",
+  "description": "buildInvite: the object with a fixed key order (format, version, secret, name, storage, access), the keys of access sorted, absent optional fields left out; shown as its JSON text so the order is checked. Each result parses back to the same invite.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "minimal",
+      "input": {
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          }
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-invite\",\"version\":2,\"secret\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"storage\":{\"type\":\"webdav\",\"address\":\"https://dav.example.org/domus/\"}}"
+      }
+    },
+    {
+      "name": "key order does not depend on the input",
+      "input": {
+        "invite": {
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home",
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "version": 2,
+          "format": "materia-invite"
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-invite\",\"version\":2,\"secret\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"name\":\"Home\",\"storage\":{\"type\":\"webdav\",\"address\":\"https://dav.example.org/domus/\"}}"
+      }
+    },
+    {
+      "name": "with access, keys sorted",
+      "input": {
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home",
+          "access": {
+            "token": "b",
+            "apiHost": "a"
+          }
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-invite\",\"version\":2,\"secret\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"name\":\"Home\",\"storage\":{\"type\":\"webdav\",\"address\":\"https://dav.example.org/domus/\"},\"access\":{\"apiHost\":\"a\",\"token\":\"b\"}}"
+      }
+    },
+    {
+      "name": "without access",
+      "input": {
+        "invite": {
+          "format": "materia-invite",
+          "version": 2,
+          "secret": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "storage": {
+            "type": "webdav",
+            "address": "https://dav.example.org/domus/"
+          },
+          "name": "Home"
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-invite\",\"version\":2,\"secret\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"name\":\"Home\",\"storage\":{\"type\":\"webdav\",\"address\":\"https://dav.example.org/domus/\"}}"
+      }
+    }
+  ]
+}

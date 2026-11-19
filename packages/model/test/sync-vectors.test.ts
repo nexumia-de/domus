@@ -6,23 +6,38 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import {
   buildDocument,
+  buildCollection,
   buildEnvelope,
+  buildInvite,
+  buildSealed,
   buildUnit,
   combinePlaces,
   envelopeAad,
   instantMs,
+  latestStamp,
   mergePlace,
   mergeRecords,
+  nextStamp,
+  parseCollection,
   parseDocument,
   parseEnvelope,
+  parseInvite,
+  parseSealed,
   parseUnit,
+  planCollectionSync,
   planSync,
   planUnitSync,
+  pruneTombstones,
+  sealedAad,
+  type CollectionDocument,
   type Envelope,
+  type Invite,
+  type LocalCollectionState,
   type LocalPlaceState,
   type LocalUnitState,
   type Place,
   type PlaceDocument,
+  type Sealed,
   type SyncRecord,
   type UnitDocument,
 } from '../src/index';
@@ -42,6 +57,16 @@ type Input = {
   ticked: never;
   document: never;
   envelope: never;
+  now: never;
+  latest: never;
+  records: never;
+  horizonDays: never;
+  options: never;
+  collection: never;
+  space: never;
+  invite: never;
+  sealed: never;
+  value: never;
   text?: string;
   json?: unknown;
 };
@@ -70,6 +95,17 @@ describe('sync vectors', () => {
         'unit-parse',
         'unit-build',
         'unit-plan',
+        'stamp',
+        'latest-stamp',
+        'prune',
+        'collection-parse',
+        'collection-build',
+        'collection-plan',
+        'sealed-parse',
+        'sealed-build',
+        'sealed-aad',
+        'invite-parse',
+        'invite-build',
       ]),
     );
   });
@@ -87,6 +123,49 @@ describe('sync vectors', () => {
           test(c.name, () => expect(planSync(i.local, i.remote)).toEqual(c.expected));
         } else if (v.kind === 'unit-plan') {
           test(c.name, () => expect(planUnitSync(i.local, i.remote)).toEqual(c.expected));
+        } else if (v.kind === 'stamp') {
+          test(c.name, () =>
+            expect({ stamp: nextStamp(i.now, i.latest) ?? null }).toEqual(c.expected),
+          );
+        } else if (v.kind === 'latest-stamp') {
+          test(c.name, () => expect({ stamp: latestStamp(i.records) ?? null }).toEqual(c.expected));
+        } else if (v.kind === 'prune') {
+          test(c.name, () =>
+            expect(pruneTombstones(i.records, i.now, i.horizonDays)).toEqual(c.expected),
+          );
+        } else if (v.kind === 'collection-parse') {
+          test(c.name, () => expect(parseCollection(text(i))).toEqual(c.expected));
+        } else if (v.kind === 'collection-build') {
+          test(c.name, () => {
+            const out = buildCollection(i.collection as CollectionDocument);
+            expect({ text: out }).toEqual(c.expected);
+            const back = parseCollection(out);
+            expect(back.ok && buildCollection(back.collection)).toBe(out);
+          });
+        } else if (v.kind === 'collection-plan') {
+          test(c.name, () =>
+            expect(planCollectionSync(i.local, i.remote, i.options)).toEqual(c.expected),
+          );
+        } else if (v.kind === 'sealed-parse') {
+          test(c.name, () => expect(parseSealed(text(i))).toEqual(c.expected));
+        } else if (v.kind === 'sealed-build') {
+          test(c.name, () => {
+            const out = buildSealed(i.sealed as Sealed);
+            expect({ text: out }).toEqual(c.expected);
+            expect(parseSealed(out)).toEqual({ ok: true, sealed: JSON.parse(out) });
+          });
+        } else if (v.kind === 'sealed-aad') {
+          test(c.name, () =>
+            expect({ aad: sealedAad(i.space, i.collection) ?? null }).toEqual(c.expected),
+          );
+        } else if (v.kind === 'invite-parse') {
+          test(c.name, () => expect(parseInvite(i.value)).toEqual(c.expected));
+        } else if (v.kind === 'invite-build') {
+          test(c.name, () => {
+            const out = buildInvite(i.invite as Invite);
+            expect({ text: JSON.stringify(out) }).toEqual(c.expected);
+            expect(parseInvite(out)).toEqual({ ok: true, invite: out });
+          });
         } else if (v.kind === 'unit-parse') {
           test(c.name, () => expect(parseUnit(text(i))).toEqual(c.expected));
         } else if (v.kind === 'unit-build') {
@@ -273,6 +352,56 @@ describe('unit plan properties', () => {
       expect(swapped.local.collections, `generated ${n}: symmetry`).toEqual(
         first.local.collections,
       );
+    }
+  });
+});
+
+describe('collection plan properties', () => {
+  const now = '2026-11-19T10:02:00.000Z';
+  const pick = seeded(31337);
+  const synced = [undefined, '2026-11-17T00:00:00.000Z', TIMES[0] as string, TIMES[3] as string];
+  const cuts = [undefined, '2026-11-18T09:00:00.000Z', '2026-11-18T10:00:30.000Z'];
+  test('after both sides apply a plan, a second cycle has nothing to do', () => {
+    for (let n = 0; n < 400; n++) {
+      const syncedAt = synced[pick(synced.length)];
+      const local: LocalCollectionState = {
+        space: 's',
+        collection: 'stock',
+        records: generate(pick),
+        ...(syncedAt === undefined ? {} : { syncedAt }),
+      };
+      const prunedBefore = cuts[pick(cuts.length)];
+      const remote: CollectionDocument = {
+        format: 'materia-collection',
+        version: 1,
+        space: 's',
+        collection: 'stock',
+        records: generate(pick),
+        ...(prunedBefore === undefined ? {} : { prunedBefore }),
+      };
+      const options = { now, horizonDays: 1 };
+      const first = planCollectionSync(local, remote, options);
+      if ('error' in first) throw new Error('same collection expected');
+      const second = planCollectionSync(first.local, first.write ?? remote, options);
+      if ('error' in second) throw new Error('same collection expected');
+      expect(second.write, `generated ${n}`).toBeUndefined();
+      expect(second.localChanged, `generated ${n}`).toBe(false);
+      expect(second.expired, `generated ${n}`).toEqual([]);
+      expect(second.pruned, `generated ${n}`).toEqual([]);
+    }
+  });
+});
+
+describe('stamp properties', () => {
+  test('the stamp is later than the newest seen and readable again', () => {
+    const pick = seeded(5);
+    for (let n = 0; n < 300; n++) {
+      const now = TIMES[pick(TIMES.length)] as string;
+      const latest = TIMES[pick(TIMES.length)] as string;
+      const stamp = nextStamp(now, latest) as string;
+      expect(instantMs(stamp), `generated ${n}`).toBeGreaterThan(instantMs(latest) as number);
+      expect(instantMs(stamp), `generated ${n}`).toBeGreaterThanOrEqual(instantMs(now) as number);
+      expect(stamp).toMatch(/\.\d{3}Z$/);
     }
   });
 });

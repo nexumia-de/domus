@@ -1,0 +1,43 @@
+{
+  "id": "sealed-build",
+  "kind": "sealed-build",
+  "description": "buildSealed: fixed key order format, version, cipher (name, nonce), data; unknown members of the input are not written. Each text parses back to the same file.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "complete",
+      "input": {
+        "sealed": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-sync\",\"version\":2,\"cipher\":{\"name\":\"AES-GCM\",\"nonce\":\"bm9uY2Vub25jZTEy\"},\"data\":\"Y2lwaGVydGV4dA==\"}"
+      }
+    },
+    {
+      "name": "order does not depend on the input",
+      "input": {
+        "sealed": {
+          "data": "Y2lwaGVydGV4dA==",
+          "cipher": {
+            "nonce": "bm9uY2Vub25jZTEy",
+            "name": "AES-GCM"
+          },
+          "version": 2,
+          "format": "materia-sync",
+          "extra": 1
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-sync\",\"version\":2,\"cipher\":{\"name\":\"AES-GCM\",\"nonce\":\"bm9uY2Vub25jZTEy\"},\"data\":\"Y2lwaGVydGV4dA==\"}"
+      }
+    }
+  ]
+}

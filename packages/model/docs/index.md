@@ -18,7 +18,7 @@ Shared knowledge of all nexumia-de repositories is in phosh-toolkit's
 - [Modules](modules.md) - What the package holds, its public entry, what a domain passes in, and what stays in the apps.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use; none at run time.
 
-- [Sync](sync.md) - The pure parts of stock sync: record merge rules, places, the place document, the encrypted envelope, the storage adapter port, the plan of one cycle, and its limits.
+- [Sync](sync.md) - The pure parts of stock sync: record merge rules, places, the place document, the encrypted envelope, the storage adapter port, the plan of one cycle, and for spaces the never-backwards stamp, pruning, the collection document and its plan, the sealed file and the invite, with its limits.
 
 # Development
 
