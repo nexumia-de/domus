@@ -113,13 +113,14 @@ each text node.
 System font stack `system-ui, -apple-system, 'Segoe UI', Roboto,
 'Helvetica Neue', Arial, sans-serif`; no web font, nothing loaded.
 
-| Token     | Size             | Use                                 |
-| --------- | ---------------- | ----------------------------------- |
-| `--fs-xs` | 0.75rem (12 px)  | Navigation labels on the phone      |
-| `--fs-sm` | 0.875rem (14 px) | Secondary text                      |
-| `--fs-md` | 1rem (16 px)     | Body, side navigation, app name     |
-| `--fs-lg` | 1.25rem (20 px)  | Screen headings                     |
-| `--fs-xl` | 1.5rem (24 px)   | Reserved for a large empty headline |
+| Token      | Size               | Use                                   |
+| ---------- | ------------------ | ------------------------------------- |
+| `--fs-xxs` | 0.675rem (10.8 px) | German navigation labels on the phone |
+| `--fs-xs`  | 0.75rem (12 px)    | Navigation labels on the phone        |
+| `--fs-sm`  | 0.875rem (14 px)   | Secondary text                        |
+| `--fs-md`  | 1rem (16 px)       | Body, side navigation, app name       |
+| `--fs-lg`  | 1.25rem (20 px)    | Screen headings                       |
+| `--fs-xl`  | 1.5rem (24 px)     | Reserved for a large empty headline   |
 
 Sizes are in `rem`, so the system's text size setting scales them.
 Weights: 400 body, 600 labels and summaries, 700 headings and the current
@@ -247,8 +248,40 @@ Chromium and committed.
 
 Short texts for an experienced cook: no tutorials, no exclamation marks,
 at most 120 characters. Guidance, where there is any, sits in a
-collapsible `<details>`. All visible texts are in `src/strings.ts`.
-**Test:** `test/strings.test.ts`.
+collapsible `<details>`. All visible texts are in `src/strings-*.ts` (English, canonical) and
+`src/de/` (German), chosen by `src/strings.ts` ([behaviour](behaviour.md#language)).
+**Test:** `test/strings.test.ts`, `test/strings-de.test.ts`.
+
+## German
+
+Plain, friendly kitchen German, "du" where a sentence needs an address (the German content texts
+are impersonal and use no "Sie"); labels are nouns or infinitives. Short labels that fit 360 px;
+never judging: no falsch, Fehler, fehlt, zu viel, zu wenig, schlecht, ungültig; say what is needed
+or what happens instead. The terms, for Cook's Notebook and the sister apps (Mixtura, emptio), so
+the same word means the same thing in each:
+
+| English       | German               |
+| ------------- | -------------------- |
+| ingredient    | Zutat                |
+| component     | Komponente           |
+| dish          | Gericht              |
+| step, method  | Schritt, Zubereitung |
+| portions      | Portionen            |
+| stock         | Vorrat               |
+| notebook      | Notizbuch            |
+| technique     | Technik              |
+| source        | Quelle               |
+| ratio         | Verhältnis           |
+| role slot     | Rolle                |
+| tick (stock)  | anhaken              |
+| settings      | Einstellungen        |
+| Follow device | Wie das Gerät        |
+| Follow system | Wie das System       |
+| Undo          | Rückgängig           |
+
+The mechanism is meant to be repeated in the sister apps: one English object per area, one German
+object typed `typeof` the English one, a selector that picks a set at start and reloads on a change
+of the one setting, a test for equal keys and arguments.
 
 # Screenshots
 

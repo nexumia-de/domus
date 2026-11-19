@@ -12,7 +12,9 @@ import {
   listIngredients,
   notebook,
 } from '../../notebook';
+import { appLang } from '../../shared/locale';
 import { formatMass, formatNumber } from '../../shared/mass';
+import { displayName } from '../../shared/names';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { bareSelect, button, mark, textField } from './form-bits';
@@ -40,7 +42,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
     if (kind === 'ingredient') {
       return listIngredients().map((i) => ({
         ref: { kind: 'ingredient' as const, id: i.id },
-        name: i.name,
+        name: displayName(i, appLang),
         ...(i.roles === undefined ? {} : { meta: i.roles.map(roleLabel).join(', ') }),
       }));
     }

@@ -1,6 +1,7 @@
 // "Make a recipe from this ratio": the ratio card hands the calculator's amounts to the new
 // component editor. In memory only; the editor keeps what it takes as its draft at once.
 import { displayStep, roundMass } from '@culina/engine';
+import { appLang, withDecimalMark } from '../shared/locale';
 import type { ComponentForm } from './component-form';
 import { newComponentForm } from './component-form';
 
@@ -28,7 +29,7 @@ export const takePrefill = (): Prefill | undefined => {
 /** Grams as the calculator displays them: the engine's display step. */
 const shown = (g: number): string => {
   const rounded = roundMass(g, displayStep(g));
-  return String(rounded.ok ? rounded.g : g);
+  return withDecimalMark(String(rounded.ok ? rounded.g : g), appLang);
 };
 
 /** A new component form with one line per role; the ingredient of each is still to be picked. */

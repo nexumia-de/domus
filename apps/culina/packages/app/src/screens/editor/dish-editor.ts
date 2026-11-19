@@ -24,6 +24,8 @@ import {
   today,
 } from '../../notebook';
 import { hashFor } from '../../router';
+import { appLang } from '../../shared/locale';
+import { displayName } from '../../shared/names';
 import { parseEntry } from '../../shared/parse';
 import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
@@ -126,7 +128,7 @@ const build = (
     })),
     ...listIngredients().map((i) => ({
       ref: { kind: 'ingredient' as const, id: i.id },
-      name: i.name,
+      name: displayName(i, appLang),
     })),
   ];
 

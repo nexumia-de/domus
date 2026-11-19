@@ -120,4 +120,4 @@ export const cookStrings = {
   problem:
     'The finder could not read the notebook as it is: an ingredient has a parent that is not there or makes a loop.',
   storeProblem: 'The notebook could not be opened, so nothing can be found.',
-} as const;
+};

@@ -39,4 +39,4 @@ export const nutritionStrings = {
   rounding: 'Rounded in the steps of 21 CFR 101.9(c), the US rule for nutrition labels.',
   source: 'Nutrients per 100 g: USDA FoodData Central, SR Legacy (public domain).',
   notALabel: 'Not a food label: anyone who sells food needs the label rules.',
-} as const;
+};

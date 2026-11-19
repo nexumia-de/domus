@@ -4,6 +4,7 @@
 import type { ClassicCandidate, Lang } from '@culina/engine';
 import { hashFor } from '../router';
 import type { IngredientRecord } from '../records';
+import { displayName } from '../shared/names';
 import { cookRow } from './rows';
 import type { CookRow } from './rows';
 import type { Lookup } from './lookup';
@@ -15,9 +16,6 @@ export interface ClassicRow extends CookRow {
   notInCatalogue: string[];
 }
 
-const nameIn = (record: IngredientRecord, lang: Lang): string =>
-  lang === 'de' ? (record.names?.['de']?.name ?? record.name) : record.name;
-
 /** Names in the content language: the ingredient's name, the id when it is not known. */
 export const classicLookup = (
   ingredients: ReadonlyMap<string, IngredientRecord>,
@@ -28,7 +26,7 @@ export const classicLookup = (
     ref.kind === 'ingredient'
       ? (() => {
           const record = ingredients.get(ref.id);
-          return record === undefined ? ref.id : nameIn(record, lang);
+          return record === undefined ? ref.id : displayName(record, lang);
         })()
       : base.name(ref),
   itemRef: base.itemRef,

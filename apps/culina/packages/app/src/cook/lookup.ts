@@ -1,6 +1,8 @@
 // Names for the finder's screens: ingredients, the head of a component's family, stock items.
 import { familyHeads } from '@culina/engine';
 import type { ComponentRef } from '@culina/engine';
+import { appLang } from '../shared/locale';
+import { displayName } from '../shared/names';
 import type { CookSource } from './input';
 
 export interface Lookup {
@@ -11,7 +13,7 @@ export interface Lookup {
 }
 
 export const lookupOf = (source: CookSource): Lookup => {
-  const ingredients = new Map(source.ingredients.map((i) => [i.id, i.name]));
+  const ingredients = new Map(source.ingredients.map((i) => [i.id, displayName(i, appLang)]));
   const byId = new Map(source.components.map((c) => [c.id, c]));
   const heads = new Map(familyHeads(source.components).map((h) => [h.version.family, h]));
   const items = new Map(source.stock.map((s) => [s.id, s.ref]));

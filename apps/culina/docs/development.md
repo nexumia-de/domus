@@ -73,7 +73,7 @@ TypeScript, installed for that build only).
   `manifest.webmanifest`, `catalogue.json`, `classics.json` (the dishes and technique notes read from the data folders by `make-classics.mjs`; fetched at start, precached, not in `main.js`), `icons/`, `sw.js`), `src/main.ts` (start),
   `src/router.ts` (hash router), `src/prefs.ts` (theme in `localStorage`),
   `src/theme-init.ts`, `src/sw-register.ts`, `src/sw.ts`, `src/strings.ts`
-  (all visible texts), `src/engine-info.ts` (the app's one use of the
+  (picks the language set; the English texts are `src/strings-*.ts`, the German ones `src/de/`), `src/engine-info.ts` (the app's one use of the
   engine), `src/shell/` (landmarks, navigation, toast), `src/screens/` (screens and their
   parts), `src/shared/` (number entry, mass display, search), `src/notebook/` (the in-memory notebook over the store: reads, writes, drafts, example data), `src/editor/` (form state of the editors, without DOM), `src/ratios/`,
   `src/components/` and `src/dishes/` (view logic without DOM), `src/demo/`
@@ -136,7 +136,7 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
 `e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
-and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px; see [behaviour](behaviour.md#classics)).
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px) and `e2e/german.mjs` (the app in German at 360 x 720, chosen through the setting and through the browser locale `de`; see [behaviour](behaviour.md#classics)).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.

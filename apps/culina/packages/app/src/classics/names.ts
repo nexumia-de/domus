@@ -3,6 +3,7 @@
 import type { Lang } from '@culina/engine';
 import { loadCatalogue } from '../catalogue/load';
 import { getIngredient } from '../notebook';
+import { displayName } from '../shared/names';
 import type { IngredientRecord } from '../records';
 
 let catalogue: ReadonlyMap<string, IngredientRecord> = new Map();
@@ -16,11 +17,8 @@ export const loadNames = async (): Promise<ReadonlyMap<string, IngredientRecord>
 
 export const catalogueEntries = (): ReadonlyMap<string, IngredientRecord> => catalogue;
 
-const nameIn = (record: IngredientRecord, lang: Lang): string =>
-  lang === 'de' ? (record.names?.['de']?.name ?? record.name) : record.name;
-
 /** The name of a catalogue ingredient id in a language. */
 export const ingredientLabel = (id: string, lang: Lang): string => {
   const record = getIngredient(id) ?? catalogue.get(id);
-  return record === undefined ? id : nameIn(record, lang);
+  return record === undefined ? id : displayName(record, lang);
 };

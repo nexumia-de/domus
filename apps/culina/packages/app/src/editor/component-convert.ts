@@ -1,6 +1,7 @@
 // Switching the entry between weight and percent, and choosing the reference ingredient. The
 // arithmetic is the engine's (`convertComponentLines`); this file maps the form to the engine and back.
 import { convertComponentLines, type ComponentLine, type FactsByIngredient } from '@culina/engine';
+import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
 import { engineLine, type ComponentForm, type LineForm } from './component-form';
 
@@ -13,7 +14,7 @@ const apply = (form: ComponentForm, lines: readonly ComponentLine[]): LineForm[]
   form.lines.map((line, index) => {
     const amount = lines[index]?.amount;
     if (amount === undefined || parseEntry(line.amount).kind !== 'ok') return line;
-    return { ...line, amount: String(amount.value), unit: amount.unit };
+    return { ...line, amount: withDecimalMark(String(amount.value), appLang), unit: amount.unit };
   });
 
 const convert = (

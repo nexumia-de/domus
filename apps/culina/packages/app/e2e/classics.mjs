@@ -453,9 +453,10 @@ const flow = async (browser, origin, width) => {
     `${label}: Teach again brings the rule back`,
   );
 
-  // Content language.
+  // The one language setting: a change reloads the app, so its own texts follow it too.
   await openWith(page, origin, 'settings');
-  await page.getByLabel('Deutsch').check();
+  await page.getByLabel('Deutsch').click();
+  await page.waitForFunction(() => document.documentElement.lang === 'de');
   check(
     (await page.evaluate(() => localStorage.getItem('culina.lang'))) === 'de',
     `${label}: the content language is kept`,
@@ -467,8 +468,8 @@ const flow = async (browser, origin, width) => {
     `${label}: dish texts follow the content language`,
   );
   check(
-    (await page.locator('.recipe-block').first().innerText()).includes('Example'),
-    `${label}: the app's own texts stay English`,
+    (await page.getByRole('heading', { name: 'Zutaten' }).count()) >= 1,
+    `${label}: the app's own texts follow the same setting`,
   );
   await openWith(page, origin, `classic/${PAN.id}/cook`);
   check(
@@ -476,7 +477,8 @@ const flow = async (browser, origin, width) => {
     `${label}: the handling rule follows the content language`,
   );
   await openWith(page, origin, 'settings');
-  await page.getByLabel('Follow device').check();
+  await page.getByLabel('Wie das Gerät').click();
+  await page.waitForFunction(() => document.documentElement.lang === 'en');
   await openWith(page, origin, `classics/it`);
   check(
     (await page.locator('.classic-link').innerText()).includes(SECOND.name.en),

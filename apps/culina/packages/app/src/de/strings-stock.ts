@@ -1,0 +1,73 @@
+// German texts of the stock screens; the keys and signatures of ../strings-stock.ts. Wording never
+// judges: a date that has passed is information.
+import type { stockStrings } from '../strings-stock';
+
+export const stockStringsDe: typeof stockStrings = {
+  title: 'Vorrat',
+  empty: 'Noch nichts angehakt. Hake an, was in der Küche da ist.',
+  guidanceSummary: 'Was hier hineingehört',
+  guidance:
+    'Anhaken genügt. Menge, Zustand und Daten sind freiwillig und lassen sich später bei jedem Eintrag ergänzen.',
+  listLabel: 'Vorrat',
+  add: 'Vorrat anhaken',
+  addTitle: 'Vorrat anhaken',
+  back: 'Zurück zum Vorrat',
+  searchLabel: 'Im Notizbuch suchen und anhaken',
+  searchHint:
+    'Hake so viele an, wie du magst. Ein Haken wird sofort gespeichert; nochmal antippen nimmt ihn weg.',
+  yourHeading: 'Dein Notizbuch',
+  yourNone: 'Nichts in deinem Notizbuch hat diesen Namen.',
+  yourEmpty:
+    'Dein Notizbuch hat noch keine Zutaten oder Komponenten. Der Katalog unten hat einige.',
+  component: 'Komponente',
+  tickLabel: (name: string): string => `${name} ist da`,
+  alwaysOn: 'Immer da',
+  alwaysLabel: (name: string): string => `Immer da: ${name}`,
+  alwaysHint: 'Immer da zählt als vorhanden, bis du den Haken entfernst.',
+  ticked: (name: string): string => `${name} ist im Vorrat.`,
+  unticked: (name: string): string => `${name} ist nicht mehr im Vorrat.`,
+  removed: (name: string): string => `${name} aus dem Vorrat entfernt.`,
+  usedUp: (name: string): string => `${name} ist aufgebraucht.`,
+  restored: (name: string): string => `${name} ist wieder im Vorrat.`,
+  undo: 'Rückgängig',
+  remove: 'Entfernen',
+  removeLabel: (name: string): string => `${name} aus dem Vorrat entfernen`,
+  gone: 'Etwas, das nicht mehr in deinem Notizbuch steht',
+  // Rows
+  always: 'immer da',
+  state: { raw: 'roh', cooked: 'gegart', prepared: 'zubereitet' },
+  daysLeft: (days: number): string => (days === 1 ? 'noch 1 Tag' : `noch ${days} Tage`),
+  useByToday: 'heute verbrauchen',
+  pastUseBy: 'Datum überschritten',
+  // The item screen
+  editTitle: (name: string): string => `${name} im Vorrat`,
+  detailHint: 'Alles hier ist freiwillig. Lass ein Feld leer, wenn du dazu nichts sagen willst.',
+  amountLabel: 'Menge',
+  unitLabel: 'Einheit',
+  stateLabel: 'Zustand',
+  stateNone: 'Nicht angegeben',
+  preparedLabel: 'Zubereitet am',
+  preparedToday: 'Heute',
+  useByLabel: 'Verbrauchen bis',
+  useByClear: 'Leeren',
+  suggestHeading: 'Aus der erfassten Haltbarkeit',
+  suggest: (useBy: string, storage: string, days: number): string =>
+    `Verbrauchen bis ${useBy} (${storage}, ${days} Tage)`,
+  suggestNote: 'Nur bei Zutaten mit einer Haltbarkeit samt Quelle.',
+  storage: { pantry: 'Vorratsschrank', fridge: 'Kühlschrank', freezer: 'Gefrierfach' },
+  derived: (useBy: string): string => `Verbrauchen bis ${useBy}, nach der erfassten Haltbarkeit.`,
+  noteLabel: 'Notiz',
+  save: 'Speichern',
+  saved: 'Gespeichert.',
+  cancel: 'Abbrechen',
+  amountNotNumber: 'Gib eine Menge über 0 ein oder lass das Feld leer.',
+  useHeading: 'Etwas verbrauchen',
+  useLabel: 'Verbrauchte Menge',
+  useButton: 'Abziehen',
+  useHint: (amount: string): string => `${amount} im Vorrat.`,
+  useNotNumber: 'Gib die verbrauchte Menge über 0 ein.',
+  useCannot:
+    'Diese Einheit lässt sich ohne Dichte oder Stückgewicht nicht mit der im Vorrat vergleichen.',
+  left: (amount: string): string => `${amount} übrig.`,
+  notFound: 'Dieser Eintrag ist nicht mehr im Vorrat.',
+};
