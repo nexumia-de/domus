@@ -121,8 +121,8 @@
         },
         {
           "text": {
-            "en": "Heat the oil and fry the flour in it lightly. Stir it into the pot.",
-            "de": "Das Öl erhitzen und das Mehl darin leicht anrösten. In den Topf einrühren."
+            "en": "Heat the oil, sauté the flour in it and stir it into the pot.",
+            "de": "Das Öl erhitzen, das Mehl darin anschwitzen und in den Topf einrühren."
           },
           "technique": "saute",
           "uses": ["oil", "flour"]
@@ -157,7 +157,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the plain text of the book (lines 31538-31556 of muro.txt) by the transcriber of this file; a second reader compares it with the printed page 701."
+    "note": "Second reading of the same scan (same OCR; weak). Compared the recipe (muro.txt 31544-31551, p. 701): chickpeas cooked in seasoned water, a handful of spinach, one spoonful of flour browned in the oil, a yolk dissolved in water at serving. Changed: the flour is sautéed, not 'lightly'. The book gives no amount for chickpeas, spinach, oil or flour. Nothing unreadable."
   },
   "note": {
     "en": "A dish for the days of abstinence, as the source states. The chickpeas are cooked as a separate step; the source gives no recipe for them and no quantity.",

@@ -153,7 +153,7 @@
         {
           "text": {
             "en": "At serving, stir the thickened egg mixture into the soup.",
-            "de": "Beim Servieren die angedickte Eimischung in die Suppe rühren."
+            "de": "Beim Servieren die angedickte Eiermischung in die Suppe rühren."
           },
           "uses": ["egg-yolk"]
         }
@@ -179,7 +179,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the plain text of the book (lines 6192-6236 of muro.txt) by the transcriber of this file; the page is bracketed because the running head is garbled, and a second reader compares it with the printed page."
+    "note": "Second reading of the same scan (same OCR; weak). Compared the delicate form (muro.txt 6192-6236; p. 117 by sequence, the running head reads '1 27'): all amounts, steps and their order agreed. Changed: German spelling 'Eiermischung' only. The book gives no amount for the bread."
   },
   "note": {
     "en": "This is the delicate form the author gives after the plain one (the plain form pours milk over the bread with a pinch of salt and sugar). Only the delicate form is transcribed. The bread amount is not given.",

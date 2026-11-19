@@ -156,8 +156,8 @@
       "steps": [
         {
           "text": {
-            "en": "Put the peas, the onions, the lettuce hearts, the parsley bouquet, the butter, the salt and the pepper in a pot. Cook over low heat, stirring often with a wooden spoon so that the peas do not stick.",
-            "de": "Die Erbsen, die Zwiebeln, die Salatherzen, den Petersilienstrauß, die Butter, Salz und Pfeffer in einen Topf geben. Bei schwacher Hitze garen und oft mit einem Holzlöffel rühren, damit die Erbsen nicht ansetzen."
+            "en": "Put the peas, the onions, the lettuce hearts, the parsley bouquet, the butter, the salt and the pepper in a pot. Cook over low heat, stirring often with a wooden spatula so that the peas do not stick.",
+            "de": "Die Erbsen, die Zwiebeln, die Salatherzen, den Petersilienstrauß, die Butter, Salz und Pfeffer in einen Topf geben. Bei schwacher Hitze garen und oft mit einem Holzspatel rühren, damit die Erbsen nicht ansetzen."
           },
           "uses": ["peas", "onion", "lettuce", "parsley", "butter", "salt", "pepper"]
         },
@@ -171,11 +171,14 @@
         {
           "text": {
             "en": "Add the butter kneaded with the flour, and stir hard for two minutes.",
-            "de": "Die mit dem Mehl verkneteten Butter dazugeben und zwei Minuten kräftig rühren."
+            "de": "Die mit dem Mehl verknetete Butter dazugeben und zwei Minuten kräftig rühren."
           },
           "technique": "thicken-with-starch",
           "uses": ["butter-flour", "flour"],
-          "time": { "value": 2, "unit": "min" }
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
         },
         {
           "text": {
@@ -186,10 +189,9 @@
         },
         {
           "text": {
-            "en": "Just before serving, dissolve the egg yolks in the water and stir them in.",
-            "de": "Kurz vor dem Servieren die Eigelb im Wasser auflösen und unterrühren."
+            "en": "At serving, dissolve the two egg yolks in the water and add them.",
+            "de": "Beim Servieren die zwei Eigelb im Wasser auflösen und dazugeben."
           },
-          "technique": "thicken-with-egg",
           "uses": ["egg-yolk", "water"]
         }
       ]
@@ -214,7 +216,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the plain text of the book (lines 33176-33216 of muro.txt) by the transcriber of this file; the page is bracketed because the running head is garbled, and a second reader compares it with the printed page."
+    "note": "Second reading of the same scan (the only Muro edition on archive.org; djvu text and HTML page with the same OCR; weak). Compared every line of the recipe (muro.txt 33176-33216): amounts, units and times agreed. Changed: wooden spatula (espátula de boj), not spoon; the yolks are added at serving, without a thickening technique the book does not name. Nothing unreadable."
   },
   "note": {
     "en": "A replacement: the first choice of the selection (Zucchini in pisto) gives no amounts in the book, so it is not transcribed. The source gives the butter and flour as a sauce poured over the peas.",

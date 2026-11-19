@@ -93,15 +93,15 @@
       "steps": [
         {
           "text": {
-            "en": "Peel the potatoes and cut them into small cubes or thin slices. Sprinkle them with salt and let the excess water drain off.",
+            "en": "Peel the potatoes and cut them into small cubes or thin round slices. Sprinkle them with salt and let the excess water drain off.",
             "de": "Die Kartoffeln schälen und in kleine Würfel oder dünne Scheiben schneiden. Mit Salz bestreuen und das überschüssige Wasser abtropfen lassen."
           },
           "uses": ["potato", "salt"]
         },
         {
           "text": {
-            "en": "Heat the oil in a large frying pan.",
-            "de": "Das Öl in einer großen Pfanne erhitzen."
+            "en": "Heat the oil in a large frying pan to around 350 °F (177 °C).",
+            "de": "Das Öl in einer großen Pfanne auf etwa 350 °F (177 °C) erhitzen."
           },
           "uses": ["oil-frying"],
           "temperature": {
@@ -137,8 +137,8 @@
         },
         {
           "text": {
-            "en": "Heat 1 tablespoon of the oil in a smaller frying pan until it is smoking hot. Pour in the potato and egg mixture and shake the pan so it does not stick. A smaller pan makes a thicker omelette.",
-            "de": "Einen Esslöffel des Öls in einer kleineren Pfanne sehr heiß werden lassen. Die Kartoffel-Ei-Masse hineingeben und die Pfanne schütteln, damit nichts ansetzt. Eine kleinere Pfanne ergibt ein dickeres Omelett."
+            "en": "Heat 1 tablespoon of the oil in a frying pan until it is smoking hot. Pour in the potato and egg mixture and shake the pan so it does not stick or burn. Use a smaller frying pan for a thicker omelette.",
+            "de": "Einen Esslöffel des Öls in einer Pfanne sehr heiß werden lassen. Die Kartoffel-Ei-Masse hineingeben und die Pfanne schütteln, damit nichts ansetzt oder anbrennt. Für ein dickeres Omelett eine kleinere Pfanne nehmen."
           },
           "technique": "pan-fry",
           "uses": ["oil-omelette", "egg", "potato"]
@@ -177,7 +177,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the fetched page text (ingredients and method sections, revision 4517810). A second reader has to compare the amounts and the steps with the page."
+    "note": "Second reading of the same page (revision oldid 4517810, fetched again 2026-11-19; the same text, weak). Amounts agreed: 3 lb (1200 g) potatoes, 4 eggs, 2 cups oil, 1 tablespoon oil, 350 °F (177 °C), 10 minutes soaking. Changed in wording: 'thin round slices', 'around 350 °F', a frying pan with a smaller pan as the option, 'or burn'."
   },
   "note": {
     "en": "A wiki page in English, with the page's own measures (pounds, cups, tablespoon, degrees Fahrenheit). No servings are stated; the frying oil is the page's amount.",

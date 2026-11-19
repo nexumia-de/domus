@@ -23,7 +23,7 @@
     "cuartillo": {
       "kind": "volume",
       "factor": 500,
-      "read": "Muro p. 356, lines 16332–16340, on kitchen vessels: 'se suple con vasos de á cuartillo, ó de medio cuartillo, que miden medio litro y un cuarto de litro cabales, cada uno, respectivamente'. The book states that a cuartillo vessel measures half a litre (taken as the size of the unit; a judgement)."
+      "read": "Muro p. 356, lines 16336–16339, on kitchen vessels: 'se suple con vasos de á cuartillo, ó de medio cuartillo, que miden medio litro y un cuarto de litro cabales, cada uno, respectivamente'. The book states that a cuartillo vessel measures half a litre (taken as the size of the unit; a judgement)."
     }
   },
   "components": [
@@ -52,14 +52,9 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "amount": {
-            "value": 1,
-            "unit": "cuartillo",
-            "original": "un cuartillo de agua salada"
-          },
           "note": {
-            "en": "Salted water for cooking the potato paste, one cuartillo for each two libras of potatoes. The OCR garbles the word before 'cuartillo' (raw characters in the evidence file); read as 'un'.",
-            "de": "Gesalzenes Wasser zum Garen der Kartoffelmasse, ein Cuartillo je zwei Libras Kartoffeln. Die OCR verwirrt das Wort vor 'cuartillo' (Rohzeichen in der Belegdatei); gelesen als 'un'."
+            "en": "Salted water for cooking the potato paste. Source wording: \"[unreadable] cuartillo de agua salada para cada dos libras de patatas\". The word before 'cuartillo' is not legible in the scan, so the line has no amount.",
+            "de": "Gesalzenes Wasser zum Garen der Kartoffelmasse. Quellenwortlaut: \"[unleserlich] cuartillo de agua salada para cada dos libras de patatas\". Das Wort vor 'cuartillo' ist im Scan nicht lesbar, daher ohne Menge."
           }
         },
         {
@@ -74,7 +69,7 @@
             "original": "hasta medio cuartillo de leche de vacas"
           },
           "note": {
-            "en": "Cow's milk, cooked beforehand, added up to half a cuartillo.",
+            "en": "Cow's milk, boiled beforehand, added up to half a cuartillo.",
             "de": "Kuhmilch, vorher gekocht, bis zu einem halben Cuartillo zugegeben."
           }
         },
@@ -135,8 +130,8 @@
       "steps": [
         {
           "text": {
-            "en": "Steam the floury potatoes until they are cooked. Cut large ones into pieces the size of walnuts first.",
-            "de": "Die mehligkochenden Kartoffeln dämpfen, bis sie gar sind. Große vorher in walnussgroße Stücke schneiden."
+            "en": "Steam the floury potatoes. If they are large, cut them into pieces the size of walnuts.",
+            "de": "Die mehligkochenden Kartoffeln dämpfen. Sind sie groß, in walnussgroße Stücke schneiden."
           },
           "technique": "steam",
           "uses": ["potato"]
@@ -150,15 +145,15 @@
         },
         {
           "text": {
-            "en": "Heat the milk beforehand.",
-            "de": "Die Milch vorher erhitzen."
+            "en": "Boil the milk beforehand.",
+            "de": "Die Milch vorher aufkochen."
           },
           "uses": ["milk"]
         },
         {
           "text": {
-            "en": "Bring the salted water to a boil in a pot over high heat.",
-            "de": "Das gesalzene Wasser in einem Topf bei starker Hitze zum Kochen bringen."
+            "en": "Put the pot with the salted water on high heat.",
+            "de": "Den Topf mit dem gesalzenen Wasser auf starke Hitze stellen."
           },
           "uses": ["water", "salt"]
         },
@@ -177,8 +172,8 @@
         },
         {
           "text": {
-            "en": "Take the pot off the strong heat and move it to the side of the stove. Let the purée simmer gently for a quarter of an hour, stirring so that it does not stick.",
-            "de": "Den Topf von der starken Hitze nehmen und an den Rand des Herdes stellen. Das Püree eine Viertelstunde sanft köcheln lassen und dabei rühren, damit nichts ansetzt."
+            "en": "Take the pot off the strong heat and move it to the side of the stove. Let the purée simmer gently for a quarter of an hour, taking care that it does not stick.",
+            "de": "Den Topf von der starken Hitze nehmen und an den Rand des Herdes stellen. Das Püree eine Viertelstunde sanft köcheln lassen und darauf achten, dass nichts ansetzt."
           },
           "technique": "simmer",
           "uses": ["potato"],
@@ -224,7 +219,7 @@
   ],
   "check": {
     "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the old print (OCR of Muro, lines 30656–30712); the garbled word before 'cuartillo' in the water line and the 'dos onzas ó 60 gramo*' figure need a second reader on the scan."
+    "note": "Second reading of the same scan (same OCR; weak). Compared the recipe (muro.txt 30656-30712, pp. 681-682). Changed: the water has no amount (the word before 'cuartillo' is not legible in the scan, the OCR is the same); steamed, then cut; milk boiled beforehand; water on high heat with no boiling stated. Kept: 60 g butter (the asterisk in 'gramo*' garbles the last letter; the figure agrees with two onzas and the onza of 30 g at muro.txt line 4040); half a cuartillo of milk."
   },
   "note": {
     "en": "Replaces Ángel Muro's 'Patatas á lo pobre' (no amounts in the source; see the transcription evidence file). Mashed potatoes from the same chapter, with the book's own quantities. The book does not size the libra, so the potato weight has no amount.",
