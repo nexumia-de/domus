@@ -64,6 +64,17 @@ for southern and Austrian dishes (unnumbered). Mary Hahn (died 1929):
 no full text found. A 1963 "Davidis" on archive.org is not public
 domain.
 
+**Since 2026-11-19 the dishes follow the English edition**: Henriette
+Davidis, A Practical Book of the Art of Cooking as Performed in Germany
+("German national cookery for American kitchens"), Milwaukee: C. N.
+Caspar, 1904, at
+`https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt`.
+It is printed in roman type and its fractions survive the machine
+reading; the fraktur scans of the German editions lose them. The German
+American edition above is the second check. Page images do not open:
+`archive.org/download/` redirects to a host the proxy refuses and
+`iiif.archive.org` is refused.
+
 | Dish                       | Place in Davidis 1897          | Status  |
 | -------------------------- | ------------------------------ | ------- |
 | Kartoffelsuppe             | Suppen 40                      | read    |
