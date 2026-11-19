@@ -1,0 +1,265 @@
+{
+  "id": "napfkuchen",
+  "name": {
+    "en": "Yeast ring cake",
+    "de": "Napfkuchen"
+  },
+  "originalName": "Sweet Cake (\"Rodon Kuchen\"), No. 90; index: Napfkuchen (\"Rodon-Kuchen\")",
+  "country": "de",
+  "vegetarian": true,
+  "course": "baking",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division S (Pastry, Cakes, Etc.), No. 90; the rising as given under No. 1 (General Directions)",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 8,
+    "basis": "settled"
+  },
+  "units": {
+    "pound": {
+      "kind": "mass",
+      "factor": 453.59237,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"; preface: the German metrical measures \"have been changed to conform to those in vogue\" in the United States); taken as the US customary (avoirdupois) pound of units.json (453.59237 g). A judgement."
+    },
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    },
+    "teaspoonful": {
+      "kind": "volume",
+      "factor": 4.92892159375,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary teaspoon of units.json, one third of a tablespoon (4.92892159375 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "napfkuchen-dough",
+      "name": {
+        "en": "Yeast ring cake dough",
+        "de": "Napfkuchenteig"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "pound",
+            "original": "1 pound of sifted flour"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "pound",
+            "original": "% pound of freshened butter"
+          },
+          "note": {
+            "en": "The fraction is damaged in the machine-read text (\"%\"); read as one half. PENDING second check.",
+            "de": "Der Bruch ist im maschinell gelesenen Text verstümmelt (\"%\"); als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+          }
+        },
+        {
+          "key": "almonds",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170568"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "pound",
+            "original": "% pound of coarsely pounded almonds"
+          },
+          "note": {
+            "en": "Coarsely pounded. The fraction is read as one half, see the butter. PENDING second check.",
+            "de": "Grob gestoßen. Der Bruch ist wie bei der Butter als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "pound",
+            "original": "% pound of sugar"
+          },
+          "note": {
+            "en": "The fraction is read as one half, see the butter. PENDING second check.",
+            "de": "Der Bruch ist wie bei der Butter als ein halbes Pfund gelesen. Zweite Prüfung ausstehend."
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 9,
+            "unit": "count",
+            "original": "9 fresh eggs"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 cupful of fresh warm milk"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167749"
+          },
+          "note": {
+            "en": "Grated peel of a lemon.",
+            "de": "Geriebene Schale einer Zitrone."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "teaspoonful",
+            "original": "% teaspoonful of salt"
+          },
+          "note": {
+            "en": "The fraction is read as one half. PENDING second check.",
+            "de": "Der Bruch ist als ein halber Teelöffel gelesen. Zweite Prüfung ausstehend."
+          }
+        },
+        {
+          "key": "yeast",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-175043"
+          },
+          "note": {
+            "en": "The source gives no quantity; it is dissolved in the milk with a little sugar.",
+            "de": "Die Quelle nennt keine Menge; die Hefe wird in der Milch mit etwas Zucker gelöst."
+          }
+        },
+        {
+          "key": "roll",
+          "wanted": {
+            "en": "Grated bread roll",
+            "de": "Geriebenes Brötchen"
+          },
+          "note": {
+            "en": "To sprinkle into the buttered pan; no quantity given.",
+            "de": "Zum Ausstreuen der gefetteten Form; keine Menge angegeben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stir the butter to a cream.",
+            "de": "Die Butter schaumig rühren."
+          },
+          "technique": "cream-butter",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Add the eggs little by little, stirring constantly.",
+            "de": "Die Eier nach und nach unter ständigem Rühren zugeben."
+          },
+          "uses": ["eggs"]
+        },
+        {
+          "text": {
+            "en": "Stir in the almonds, the milk, the lemon peel, the salt, the sugar and the dissolved yeast.",
+            "de": "Mandeln, Milch, Zitronenschale, Salz, Zucker und die gelöste Hefe einrühren."
+          },
+          "uses": ["almonds", "milk", "lemon", "salt", "sugar", "yeast"]
+        },
+        {
+          "text": {
+            "en": "Stir in the flour a spoonful at a time.",
+            "de": "Das Mehl esslöffelweise einrühren."
+          },
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Butter a pan and sprinkle it with the grated roll.",
+            "de": "Eine Form buttern und mit dem geriebenen Brötchen ausstreuen."
+          },
+          "uses": ["roll"]
+        },
+        {
+          "text": {
+            "en": "Put the dough into the pan, cover it and let it rise in a warm place without a draught.",
+            "de": "Den Teig in die Form geben, zudecken und an einem warmen, zugfreien Ort gehen lassen."
+          },
+          "technique": "proof-yeast",
+          "time": {
+            "value": 1.5,
+            "to": 2,
+            "unit": "h"
+          }
+        },
+        {
+          "text": {
+            "en": "Bake the cake.",
+            "de": "Den Kuchen backen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "napfkuchen-dough"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "8",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for 1 pound of flour and 9 eggs, one cake.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed from the English edition only: No. 90 at lines 26160-26171 of the plain text; the index entry \"Napfkuchen (Rodon-Kuchen)\" at line 33173; the rising as given under No. 1 in the General Directions at lines 24714-24731. The machine-read fractions (\"%\") are read as one half and must be checked against the page."
+  },
+  "note": {
+    "en": "The English edition's Sweet Cake, which its index names as the Napfkuchen. The text says to bake it in a buttered pan, not a mould. The source's remark that baking powder can replace the yeast is not transcribed. The German version with 15 eggs and citron is not in the English text and is not used.",
+    "de": "Der Süße Kuchen der englischen Ausgabe, den deren Register als Napfkuchen führt. Der Text sagt, in einer gefetteten Form zu backen, nicht in einer Napfform. Der Hinweis, Backpulver statt Hefe zu nehmen, ist nicht übertragen. Die deutsche Fassung mit 15 Eiern und Zitronat steht nicht im englischen Text und wird nicht verwendet."
+  }
+}

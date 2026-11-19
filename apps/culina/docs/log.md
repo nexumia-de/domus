@@ -57,3 +57,7 @@
 ## 2026-11-16
 
 - **Creation**: repository bootstrapped from the tooling analysis: [existing tools and data](existing-tools.md), [how chefs work](chef-practice.md), the decisions on the [name](decisions/app-name.md) and on [building after Mixtura](decisions/after-mixtura.md), the [roadmap](roadmap.md) and the hosts in [development](development.md).
+
+## 2026-11-19
+
+- **Transcription**: four German classics written from the English edition of Davidis (1904), which the German scan's index maps to the same dishes: [milchsuppe](../packages/app/data/classics/de/milchsuppe.json), [kartoffelkloesse](../packages/app/data/classics/de/kartoffelkloesse.json), [rote-gruetze](../packages/app/data/classics/de/rote-gruetze.json), [napfkuchen](../packages/app/data/classics/de/napfkuchen.json). All four are PENDING a second check; the fractions damaged in the machine-read text are recorded in the evidence file.
