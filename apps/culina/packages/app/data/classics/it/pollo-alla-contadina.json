@@ -1,0 +1,264 @@
+{
+  "id": "pollo-alla-contadina",
+  "name": {
+    "en": "Country-style chicken",
+    "de": "Huhn nach Bauernart"
+  },
+  "originalName": "Pollo alla contadina",
+  "country": "it",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "N. 166",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "pollo-alla-contadina-chicken",
+      "name": {
+        "en": "Country-style chicken",
+        "de": "Huhn nach Bauernart"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chicken",
+          "wanted": {
+            "en": "Young chicken (pollastro)",
+            "de": "Junges Huhn (Pollastro)"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "Un pollastro"
+          },
+          "note": {
+            "en": "The weight is not given in the source.",
+            "de": "Das Gewicht steht nicht in der Quelle."
+          }
+        },
+        {
+          "key": "rosemary",
+          "wanted": {
+            "en": "Fresh rosemary",
+            "de": "Frischer Rosmarin"
+          },
+          "note": {
+            "en": "'A few sprigs' (ciocchette); no amount.",
+            "de": "'Einige Zweige'; keine Menge."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "uno spicchio d'aglio"
+          },
+          "note": {
+            "en": "One clove, cut into four or five pieces.",
+            "de": "Eine Zehe, in vier oder fünf Stücke geschnitten."
+          }
+        },
+        {
+          "key": "lard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171401"
+          },
+          "note": {
+            "en": "The source says 'tutino di lardone'; the amount is not legible in the scan, so no amount is written.",
+            "de": "Die Quelle sagt 'tutino di lardone'; die Menge ist im Scan nicht lesbar, daher steht keine Menge da."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Black pepper",
+            "de": "Schwarzer Pfeffer"
+          }
+        },
+        {
+          "key": "tomato",
+          "wanted": {
+            "en": "Ripe tomato",
+            "de": "Reife Tomate"
+          },
+          "note": {
+            "en": "In pieces, seeds removed; no amount given.",
+            "de": "In Stücken, ohne Kerne; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "The source says broth or water, with no amount. Water is written, our choice; the validator takes settled entries only for amounts.",
+            "de": "Die Quelle sagt Brühe oder Wasser, ohne Menge. Geschrieben ist Wasser, unsere Wahl; der Validator nimmt Festlegungen nur für Mengen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stud the chicken with the rosemary sprigs and the garlic pieces.",
+            "de": "Das Huhn mit den Rosmarinzweigen und den Knoblauchstücken spicken."
+          },
+          "uses": ["chicken", "rosemary", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Put the chicken on the heat in the lard.",
+            "de": "Das Huhn in das Schweinefett auf den Herd legen."
+          },
+          "uses": ["chicken", "lard"]
+        },
+        {
+          "text": {
+            "en": "Season it with salt and pepper, outside and inside.",
+            "de": "Außen und innen mit Salz und Pfeffer würzen."
+          },
+          "uses": ["chicken", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Brown it on all sides.",
+            "de": "Von allen Seiten anbraten."
+          },
+          "technique": "sear",
+          "uses": ["chicken", "lard"]
+        },
+        {
+          "text": {
+            "en": "Add the tomato in pieces.",
+            "de": "Die Tomate in Stücken dazugeben."
+          },
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "When the tomato has broken down, moisten the chicken with water.",
+            "de": "Wenn die Tomate zerfallen ist, das Huhn mit Wasser angießen."
+          },
+          "uses": ["water"]
+        }
+      ]
+    },
+    {
+      "id": "pollo-alla-contadina-potatoes",
+      "name": {
+        "en": "Fried potatoes",
+        "de": "Gebratene Kartoffeln"
+      },
+      "role": "garnish",
+      "lines": [
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "'Some' raw potatoes; no amount given.",
+            "de": "'Einige' rohe Kartoffeln; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "note": {
+            "en": "The source offers oil, lard or butter; oil is written, our choice of the first of the three named.",
+            "de": "Die Quelle nennt Öl, Schweinefett oder Butter; geschrieben ist Öl, unsere Wahl unter den dreien."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the raw potatoes into wedges.",
+            "de": "Die rohen Kartoffeln in Spalten schneiden."
+          },
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Fry the wedges in oil in a separate pan.",
+            "de": "Die Spalten in einer separaten Pfanne in Öl anbraten."
+          },
+          "technique": "pan-fry",
+          "uses": ["potato", "oil"]
+        },
+        {
+          "text": {
+            "en": "Let the potatoes take flavour in the chicken's juices.",
+            "de": "Die Kartoffeln im Saft des Huhns Geschmack annehmen lassen."
+          },
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Serve the potatoes as a side dish with the chicken.",
+            "de": "Die Kartoffeln als Beilage zum Huhn servieren."
+          },
+          "uses": ["potato"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "pollo-alla-contadina-chicken"
+      }
+    },
+    {
+      "role": "garnish",
+      "ref": {
+        "kind": "component",
+        "id": "pollo-alla-contadina-potatoes"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons and no weight of the bird; one young chicken with potatoes is taken as four servings.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 12426-12481). The garbled OCR at lines 12430-12431 (the fat before the lard) and 12452 (broth or water) is not fully legible. Not yet read by a second person."
+  },
+  "note": {
+    "en": "Artusi's recipe 166. The weight of the bird and the amount of lard are not legible in the scan; no cooking time is given. The source says that butter may replace the lard for a more delicate taste; the sentence is damaged in the scan, so the lard is written.",
+    "de": "Artusis Rezept Nr. 166. Das Gewicht des Huhns und die Menge des Schweinefetts sind im Scan nicht lesbar; eine Garzeit fehlt. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; der Satz ist im Scan beschädigt, daher ist das Schweinefett geschrieben."
+  }
+}

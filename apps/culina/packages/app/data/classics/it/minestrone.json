@@ -1,0 +1,363 @@
+{
+  "id": "minestrone",
+  "name": {
+    "en": "Minestrone",
+    "de": "Minestrone (Gemüsesuppe)"
+  },
+  "originalName": "Minestrone",
+  "country": "it",
+  "vegetarian": false,
+  "course": "soup",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "N. 33",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "minestrone-soup",
+      "name": {
+        "en": "Minestrone",
+        "de": "Minestrone"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "boiled-meat",
+          "wanted": {
+            "en": "Boiled meat (lesso)",
+            "de": "Gekochtes Fleisch (Lesso)"
+          },
+          "note": {
+            "en": "'The usual boiled meat'. The source gives neither kind nor weight.",
+            "de": "'Das übliche Lesso'. Die Quelle nennt weder Sorte noch Gewicht."
+          }
+        },
+        {
+          "key": "broth",
+          "wanted": {
+            "en": "Meat broth",
+            "de": "Fleischbrühe"
+          },
+          "note": {
+            "en": "The beans and the soup are cooked in broth; no amount is given.",
+            "de": "Bohnen und Suppe werden in Brühe gegart; keine Menge angegeben."
+          }
+        },
+        {
+          "key": "beans",
+          "wanted": {
+            "en": "Shelled fresh beans",
+            "de": "Frische Bohnen (ausgelöst)"
+          },
+          "note": {
+            "en": "'A handful' of shelled fresh beans; the source gives no weight and no size of the handful.",
+            "de": "'Eine Handvoll' ausgelöste frische Bohnen; die Quelle gibt weder Gewicht noch die Größe der Handvoll an."
+          }
+        },
+        {
+          "key": "savoy",
+          "wanted": {
+            "en": "Savoy cabbage",
+            "de": "Wirsingkohl"
+          },
+          "note": {
+            "en": "Cut into thin strips; no amount.",
+            "de": "In dünne Streifen geschnitten; keine Menge."
+          }
+        },
+        {
+          "key": "spinach",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168462"
+          }
+        },
+        {
+          "key": "chard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169991"
+          },
+          "note": {
+            "en": "'A little' chard; no amount.",
+            "de": "'Wenig' Mangold; keine Menge."
+          }
+        },
+        {
+          "key": "ham",
+          "wanted": {
+            "en": "Fatty ham (prosciutto grasso)",
+            "de": "Fetter Schinken (Prosciutto grasso)"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "grammi 40 di prosciutto grasso"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "uno spicchio d'aglio"
+          }
+        },
+        {
+          "key": "parsley",
+          "wanted": {
+            "en": "Parsley",
+            "de": "Petersilie"
+          },
+          "note": {
+            "en": "'A pinch'; the source gives no weight for it.",
+            "de": "'Ein Pizzico'; die Quelle gibt dafür kein Gewicht an."
+          }
+        },
+        {
+          "key": "celery",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169988"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          }
+        },
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "una patata"
+          }
+        },
+        {
+          "key": "zucchini",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169291"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count",
+            "original": "uno zucchino"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "note": {
+            "en": "'Very little' onion; no amount.",
+            "de": "'Ganz wenig' Zwiebel; keine Menge."
+          }
+        },
+        {
+          "key": "tomato",
+          "wanted": {
+            "en": "Tomato sauce or paste",
+            "de": "Tomatensauce oder Tomatenmark"
+          },
+          "note": {
+            "en": "'A little'; the source gives no amount.",
+            "de": "'Ein wenig'; die Quelle gibt keine Menge an."
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "Black pepper",
+            "de": "Schwarzer Pfeffer"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-rice-white"
+          },
+          "note": {
+            "en": "'Enough' rice to make the soup nearly dry; no amount.",
+            "de": "'Reichlich' Reis, bis die Suppe fast trocken ist; keine Menge."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "'A good pinch'; no amount.",
+            "de": "'Ein guter Pizzico'; keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Make the usual boiled meat.",
+            "de": "Das übliche Lesso kochen."
+          },
+          "technique": "boil",
+          "uses": ["boiled-meat", "broth"]
+        },
+        {
+          "text": {
+            "en": "Cook the beans separately in the broth.",
+            "de": "Die Bohnen getrennt in der Brühe garen."
+          },
+          "technique": "simmer",
+          "uses": ["beans", "broth"]
+        },
+        {
+          "text": {
+            "en": "If the beans are dried, half-cook them in water first.",
+            "de": "Sind die Bohnen getrocknet, vorher in Wasser halb garen."
+          }
+        },
+        {
+          "text": {
+            "en": "Cut the savoy cabbage, the spinach and a little chard into thin strips.",
+            "de": "Wirsing, Spinat und etwas Mangold in dünne Streifen schneiden."
+          },
+          "uses": ["savoy", "spinach", "chard"]
+        },
+        {
+          "text": {
+            "en": "Soak the greens in cold water.",
+            "de": "Das Grüne in kaltem Wasser einweichen."
+          },
+          "uses": ["savoy", "spinach", "chard"]
+        },
+        {
+          "text": {
+            "en": "Put the greens in a dry pot on the heat until their water comes out, then drain them well, pressing them with a ladle.",
+            "de": "Das Grüne in einem trockenen Topf auf den Herd stellen, bis das Wasser austritt; dann gut abgießen und mit der Kelle ausdrücken."
+          },
+          "uses": ["savoy", "spinach", "chard"]
+        },
+        {
+          "text": {
+            "en": "Chop the fatty ham, the garlic and the parsley together.",
+            "de": "Den fetten Schinken, den Knoblauch und die Petersilie zusammen fein hacken."
+          },
+          "uses": ["ham", "garlic", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Sweat the chopped mix in a pan.",
+            "de": "Die gehackte Mischung in einer Pfanne anschwitzen."
+          },
+          "technique": "sweat",
+          "uses": ["ham", "garlic", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Cut the celery, the carrot, the potato, the zucchini and the onion into thin short strips.",
+            "de": "Sellerie, Karotte, Kartoffel, Zucchini und Zwiebel in dünne kurze Streifen schneiden."
+          },
+          "uses": ["celery", "carrot", "potato", "zucchini", "onion"]
+        },
+        {
+          "text": {
+            "en": "Add them to the pot with the chopped mix.",
+            "de": "Sie zusammen mit der gehackten Mischung in den Topf geben."
+          },
+          "uses": ["celery", "carrot", "potato", "zucchini", "onion", "ham", "garlic", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Add the beans.",
+            "de": "Die Bohnen dazugeben."
+          },
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Add a little tomato sauce or paste.",
+            "de": "Etwas Tomatensauce oder Tomatenmark dazugeben."
+          },
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "Season with pepper and salt.",
+            "de": "Mit Pfeffer und Salz würzen."
+          },
+          "uses": ["pepper", "salt"]
+        },
+        {
+          "text": {
+            "en": "Cook everything in the broth.",
+            "de": "Alles in der Brühe garen."
+          },
+          "technique": "simmer",
+          "uses": ["broth"]
+        },
+        {
+          "text": {
+            "en": "Add the rice, enough to make the soup nearly dry.",
+            "de": "Den Reis dazugeben, so viel, dass die Suppe fast trocken wird."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice"]
+        },
+        {
+          "text": {
+            "en": "Just before taking it off the heat, add a good pinch of parmesan.",
+            "de": "Kurz bevor es vom Herd kommt, einen guten Pizzico Parmesan dazugeben."
+          },
+          "uses": ["parmesan"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "minestrone-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check: transcribed by the agent from the machine-read 1891 text (lines 4831-4898). The number 'quattro o cinque' in line 4881 is read from the same text. Not yet read by a second person."
+  },
+  "note": {
+    "en": "Artusi's recipe 33, the minestrone of his own taste. The source says it is for four or five persons; four is written. The source gives no amount for the boiled meat, the broth, the beans, the greens, most vegetables, the rice or the cheese. The cooking time is not stated. Artusi also says the soup is heavy for weak stomachs; that remark is not part of the method.",
+    "de": "Artusis Rezept Nr. 33, der Minestrone nach seinem eigenen Geschmack. Die Quelle nennt vier oder fünf Personen; geschrieben sind vier. Die Quelle gibt keine Menge für das gekochte Fleisch, die Brühe, die Bohnen, das Grüne, die meisten Gemüse, den Reis oder den Käse an. Die Garzeit fehlt."
+  }
+}
