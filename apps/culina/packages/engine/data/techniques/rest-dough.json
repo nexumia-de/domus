@@ -1,0 +1,32 @@
+{
+  "id": "rest-dough",
+  "name": {
+    "en": "Resting dough",
+    "de": "Teig ruhen lassen"
+  },
+  "watch": {
+    "en": "Let the dough rest once it has been cut or shaped.",
+    "de": "Den Teig nach dem Schneiden oder Formen ruhen lassen."
+  },
+  "why": {
+    "en": "Resting lets the gluten strands relax and helps keep the dough from shrinking.",
+    "de": "Beim Ruhen entspannen sich die Kleberstränge, und der Teig zieht sich weniger zusammen."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.5 Pastry Doughs",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.05%3A_Pastry_Doughs",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "rest the dough once it has been cut to allow the gluten strands to relax and help prevent the dough from shrinking."
+    },
+    {
+      "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
+      "place": "chapter 1.4 Yeast Doughs",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.04%3A_Yeast_Doughs",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "This allows the gluten strands to relax and get ready for the final stages of the process."
+    }
+  ]
+}
