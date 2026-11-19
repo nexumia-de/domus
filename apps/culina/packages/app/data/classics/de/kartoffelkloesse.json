@@ -126,8 +126,8 @@
         },
         {
           "text": {
-            "en": "Fold in the beaten egg whites.",
-            "de": "Den geschlagenen Schnee unterheben."
+            "en": "Stir in the beaten egg whites.",
+            "de": "Den steifen Eierschaum unterrühren."
           },
           "uses": ["eggs"]
         },
@@ -141,12 +141,8 @@
         },
         {
           "text": {
-            "en": "Cook the dumplings in boiling salted water for half an hour.",
-            "de": "Die Klöße eine halbe Stunde in kochendem Salzwasser garen."
-          },
-          "time": {
-            "value": 30,
-            "unit": "min"
+            "en": "Cook the dumplings in boiling salted water. The source gives a fraction of an hour that is not legible in the scans.",
+            "de": "Die Klöße in kochendem Salzwasser garen. Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
           }
         },
         {
@@ -183,8 +179,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check. Transcribed from the English edition only: No. 26 at lines 22262-22271 of the plain text, the division heading at line 21987. A second reader compares every amount and step."
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 29, Feine Kartoffelklöße) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 6 eggs, whites beaten, 4 spoonfuls of flour, 1 cup of melted butter or fat, nutmeg, salt, potatoes boiled the day before, shaped with a spoon, browned butter. Changed: cooking time removed (English garbled, German readings differ); 'fold in' is now 'stir in', as the source says stir all together. Not legible: the cooking time."
   },
   "note": {
     "en": "Serve with currant juice instead of browned butter if liked; the source gives it as an alternative and it is not transcribed. The source sizes the potatoes and the flour only in soupplates and basting spoons, which are not given in units: they are written without amount. The book's version No. 20, with butter, egg yolks and bread, is not used.",

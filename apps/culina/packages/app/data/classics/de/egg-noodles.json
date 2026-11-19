@@ -17,7 +17,7 @@
   },
   "persons": {
     "value": 8,
-    "basis": "stated"
+    "basis": "settled"
   },
   "units": {
     "tablespoonful": {
@@ -196,10 +196,17 @@
       }
     }
   ],
-  "settled": [],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "8",
+      "reason": "Our choice: the source gives 8 to 10 persons; the lower number is entered.",
+      "target": "persons"
+    }
+  ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed from the English edition by one agent; a second reader has to compare the amounts (the time is read from a machine-read \"%\" as one half) and the steps."
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 27, Gute Nudeln) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 4 eggs, 4 tablespoonfuls of milk, 8 to 10 persons, method, boiling salted water, browned butter. Time: English %, davidis.txt garbled, second scan 1.2 (one half): half an hour kept, confirmed by the second scan only. Changed: persons settled to 8 (the source gives 8 to 10). Not legible: none."
   },
   "note": {
     "en": "The plain noodles only. The source names roast veal or dried prunes as companions and gives serving variants with crisp noodles or crumbs, which are not transcribed. The source gives 8 to 10 persons; 8 is entered.",

@@ -20,11 +20,6 @@
     "basis": "stated"
   },
   "units": {
-    "pint": {
-      "kind": "volume",
-      "factor": 473.176473,
-      "read": "The American edition: its preface says the German weights and measures \"have been changed to conform to those in vogue and best understood in this country\"; taken as the US customary pint of units.json (2 cups = 473.176473 ml). A judgement."
-    },
     "ounce": {
       "kind": "mass",
       "factor": 28.349523125,
@@ -68,14 +63,9 @@
             "kind": "ingredient",
             "id": "fdc-171256"
           },
-          "amount": {
-            "value": 1,
-            "unit": "pint",
-            "original": "1 pint of cream"
-          },
           "note": {
-            "en": "The amount says cream; the method names sour cream, which is used here.",
-            "de": "Die Menge nennt Sahne; die Zubereitung nennt saure Sahne, die hier verwendet wird."
+            "en": "Sour cream, used for the sauce. The English gives 1 pint of cream; the German edition reads 3 Dt. in both scans. The amount is not confirmed, so none is given.",
+            "de": "Saure Sahne für die Sauce. Die englische Ausgabe nennt 1 Pint Sahne; die deutsche Ausgabe liest in beiden Scans 3 Dt. Die Menge ist nicht bestätigt und steht deshalb nicht da."
           }
         },
         {
@@ -113,8 +103,8 @@
         },
         {
           "text": {
-            "en": "Butter a dish and put the potato slices into it in layers.",
-            "de": "Eine Auflaufform buttern und die Kartoffelscheiben lagenweise hineinlegen."
+            "en": "Put the potato slices in layers into a buttered pan.",
+            "de": "Die Kartoffelscheiben in Schichten in eine butterbestrichene Form legen."
           },
           "uses": ["butter", "potatoes"]
         },
@@ -134,14 +124,10 @@
         },
         {
           "text": {
-            "en": "Bake in the oven for about half an hour.",
-            "de": "Etwa eine halbe Stunde im Ofen backen."
+            "en": "Bake in the oven. The source gives the time as a fraction of an hour that is not legible in the scans.",
+            "de": "Im Ofen backen. Die Quelle nennt die Zeit als Bruchteil einer Stunde; der Bruch ist in den Scans nicht lesbar."
           },
-          "technique": "bake",
-          "time": {
-            "value": 0.5,
-            "unit": "h"
-          }
+          "technique": "bake"
         },
         {
           "text": {
@@ -163,8 +149,8 @@
   ],
   "settled": [],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed from the English edition by one agent; a second reader has to compare the amounts (the pint is read from a machine-read \"Eint\") and the oven time (\"lake\" in the text is read as bake)."
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German American edition, No. 18) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 4 persons, 4 eggs, layers, sour cream, eggs and Parmesan, about 3 ounces of cheese (the second scan; davidis.txt reads 8), serve with ham and beefsteak. Changed: cream amount removed (English 1 pint; both German scans 3 Dt.); pint unit removed; baking time removed (English %, German Ya and Us: no clear fraction). Not legible: the baking time."
   },
   "note": {
     "en": "The source names ham and beefsteak as companions; the recipe itself does not use them. The source names Parmesan cheese and no meat, fish or stock.",

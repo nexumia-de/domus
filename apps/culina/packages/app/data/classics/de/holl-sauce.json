@@ -20,11 +20,6 @@
     "basis": "settled"
   },
   "units": {
-    "pound": {
-      "kind": "mass",
-      "factor": 453.59237,
-      "read": "The American edition: its preface says the German weights and measures \"have been changed to conform to those in vogue and best understood in this country\" (title page: \"Weights and Measures in American equivalents\"); taken as the avoirdupois pound of units.json (453.59237 g). A judgement."
-    },
     "teaspoonful": {
       "kind": "volume",
       "factor": 4.92892159375,
@@ -99,14 +94,9 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "pound",
-            "original": "% pound of butter"
-          },
           "note": {
-            "en": "The machine-read text prints the fraction as a percent sign. Read as one half, as the book writes one half with the same sign elsewhere (\"% hour\").",
-            "de": "Der maschinell gelesene Text druckt den Bruch als Prozentzeichen. Als Hälfte gelesen, wie das Buch dasselbe Zeichen an anderen Stellen für die Hälfte setzt (\"% hour\")."
+            "en": "The English prints the fraction as a percent sign (%); the German edition reads 4 Pfd. (davidis.txt) and 8 Pfd. (second scan). The amount is not confirmed, so none is given.",
+            "de": "Die englische Ausgabe druckt den Bruch als Prozentzeichen (%); die deutsche Ausgabe liest 4 Pfd. (davidis.txt) und 8 Pfd. (zweiter Scan). Die Menge ist nicht bestätigt und steht deshalb nicht da."
           }
         },
         {
@@ -179,8 +169,8 @@
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: transcribed from the English edition by one agent; a second reader has to compare the amounts (the fraction of the butter in particular) and the steps."
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 23, Holländische Sauce mit Wein) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 3 yolks, 1 teaspoonful of flour, half water and half white wine, mace, stir to the boil, off the heat, a few drops of lemon juice, artichokes, mushrooms, fish, tongue. Changed: butter amount removed (English %; German 4 Pfd. and 8 Pfd.: not clear); pound unit removed. Not legible: the butter amount."
   },
   "note": {
     "en": "The source suggests serving with artichokes, mushrooms, fish or tongue; the recipe itself does not say more than the sauce. The wine and water have no volume in the source.",

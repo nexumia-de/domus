@@ -20,20 +20,10 @@
     "basis": "settled"
   },
   "units": {
-    "pound": {
-      "kind": "mass",
-      "factor": 453.59237,
-      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary pound of units.json (453.59237 g). A judgement."
-    },
     "ounce": {
       "kind": "mass",
       "factor": 28.349523125,
       "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary (avoirdupois) ounce of units.json (28.349523125 g). A judgement."
-    },
-    "tablespoonful": {
-      "kind": "volume",
-      "factor": 14.78676478125,
-      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
     },
     "cupful": {
       "kind": "volume",
@@ -56,14 +46,9 @@
             "en": "Beef, from the joint",
             "de": "Rindfleisch aus dem Stück"
           },
-          "amount": {
-            "value": 1.5,
-            "unit": "pound",
-            "original": "1½ pounds of beef from the joint"
-          },
           "note": {
-            "en": "The second form of No. 33, for when veal and pork are not to be had. The first form uses equal parts of beef, veal and medium fat pork and gives no total weight.",
-            "de": "Die zweite Form der Nr. 33, für den Fall, dass kein Kalb- und Schweinefleisch zu bekommen ist. Die erste Form nimmt gleiche Teile Rind, Kalb und Schwein und nennt kein Gesamtgewicht."
+            "en": "The second form of No. 33, for when veal and pork are not to be had. The first form uses equal parts of beef, veal and medium fat pork and gives no total weight. The English gives 1½ pounds only as a garbled fraction (iy2); the German scans read 13 Pf. Not confirmed, so no amount is given.",
+            "de": "Die zweite Form der Nr. 33, wenn Kalb- und Schweinefleisch nicht zu haben sind. Die erste Form nimmt gleiche Teile Rind, Kalb und mittelfetten Schweinespeck und nennt kein Gesamtgewicht. Die englische Ausgabe nennt 1½ Pfund nur als verstümmelten Bruch (iy2); die deutschen Scans lesen 13 Pf. Nicht bestätigt, deshalb ohne Menge."
           }
         },
         {
@@ -72,14 +57,9 @@
             "en": "Kidney suet",
             "de": "Nierenfett"
           },
-          "amount": {
-            "value": 0.5,
-            "unit": "pound",
-            "original": "½ pound of kidney suet or fresh pork fat"
-          },
           "note": {
-            "en": "Kidney suet or fresh pork fat; the source allows either.",
-            "de": "Nierenfett oder frisches Schweinefett; die Quelle lässt beides zu."
+            "en": "Kidney suet or fresh pork fat; the source allows either. The English gives a fraction of a pound (garbled as %); the German edition reads 3 Pfd. (davidis.txt) and 4 Pfd. (second scan). Not confirmed, so no amount is given.",
+            "de": "Nierenfett oder frisches Schweinefett; die Quelle lässt beides zu. Die englische Ausgabe nennt einen Bruch eines Pfundes (verstümmelt als %); die deutsche Ausgabe liest 3 Pfd. (davidis.txt) und 4 Pfd. (zweiter Scan). Nicht bestätigt, deshalb ohne Menge."
           }
         },
         {
@@ -142,15 +122,9 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "amount": {
-            "value": 3,
-            "unit": "tablespoonful",
-            "original": "3 tablespoonfuls of butter to each 1½ pounds of chopped meat"
-          },
-          "settled": true,
           "note": {
-            "en": "The ratio is given for the first form, per 1½ pounds of chopped meat; the second form names only hot butter. Applied here to the 1½ pounds of beef.",
-            "de": "Das Verhältnis steht bei der ersten Form, je 1½ Pfund gehacktes Fleisch; die zweite Form nennt nur heiße Butter. Hier auf die 1½ Pfund Rindfleisch angewendet."
+            "en": "The second form names no amount of butter; the butter ratio belongs to the first form (English: 3 tablespoonfuls; German: 4). Not used here.",
+            "de": "Die zweite Form nennt keine Buttermenge; das Butterverhältnis gehört zur ersten Form (englisch: 3 Esslöffel; deutsch: 4). Hier nicht übernommen."
           }
         },
         {
@@ -207,20 +181,18 @@
         },
         {
           "text": {
-            "en": "If the oven is not hot enough, first fry the loaf on the stove for half an hour with the pan covered. Do not turn it.",
-            "de": "Ist der Ofen nicht heiß genug, den Laib zuerst eine halbe Stunde auf dem Herd zugedeckt braten. Nicht wenden."
+            "en": "If the oven is not hot enough, first fry the loaf on the stove with the pan covered; the time is not legible in the scans. Do not turn it.",
+            "de": "Ist der Ofen nicht heiß genug, den Braten zuerst auf dem Herd mit zugedecktem Topf braten; die Zeit ist in den Scans nicht lesbar. Nicht wenden."
           },
           "technique": "pan-fry",
-          "time": { "value": 30, "unit": "min" },
           "uses": ["butter"]
         },
         {
           "text": {
-            "en": "Bake in the oven until light brown, basting often.",
-            "de": "Im Ofen hellbraun backen und oft mit dem Fett übergießen."
+            "en": "Bake in the oven until light brown, basting often. The source gives up to 1 hour.",
+            "de": "Im Ofen gelb braten, oft begießen. Die Quelle nennt bis zu 1 Stunde."
           },
           "technique": "bake",
-          "time": { "value": 0.5, "to": 1, "unit": "h" },
           "uses": ["butter"]
         },
         {
@@ -255,17 +227,11 @@
       "value": "4",
       "reason": "Our judgement: the source names no number of persons; the variant with 1½ pounds of beef and 4 eggs is taken for 4 persons.",
       "target": "persons"
-    },
-    {
-      "what": "Amount of butter",
-      "value": "3 tablespoonfuls",
-      "reason": "Our judgement: the source gives 3 tablespoonfuls of butter for each 1½ pounds of chopped meat in its first form; the second form, used here, names no amount.",
-      "target": "frikandelle-loaf/butter"
     }
   ],
   "check": {
-    "method": "second-reader",
-    "note": "PENDING second check: a second agent who did not transcribe this file compares every amount and step with the English text, lines 11675-11697 of /home/user/sources/davidis-en.txt, and checks the fractions (1½, ½, 1 hour); the readings of iy2, % and 1% are the uncertain ones."
+    "method": "second-edition",
+    "note": "Second edition: davidis.txt (German, No. 40, first form) and a second scan of the same printing (henriettedavidis01davi.html). Agreed: 4 eggs, 2 ounces of crumbs (German 23, read as 2), 1 cup of water, salt, nutmeg, shaping, hot butter, basting, cream, juniper. Changed: beef and suet amounts removed (fractions not clear; German readings differ); butter amount and settled entry removed (second form gives none); bake time cut to up to 1 hour; stove time removed. Not legible: beef, suet, times."
   },
   "note": {
     "en": "The second form of No. 33 (Fried Meat Loaf made from fresh Meat, No. 1) only; the book's Heat Loaf No. 2 is a different recipe and is not used. The German edition's Nr. 40 is the same loaf; the English edition numbers the beef recipes differently.",
