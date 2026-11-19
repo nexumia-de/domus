@@ -1,0 +1,226 @@
+{
+  "id": "creme-caramel",
+  "name": {
+    "en": "Crème caramel",
+    "de": "Karamellcreme"
+  },
+  "originalName": "Pots de crème au caramel",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "dessert",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Pots de crème au caramel\", pp. 295-296; gouffe.txt lines 15792-15806; method from \"Pots de crème au café\", lines 15756-15791",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "caramel",
+      "name": {
+        "en": "Caramel",
+        "de": "Karamell"
+      },
+      "lines": [
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g",
+            "original": "10 grammes de sucre en poudre"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Original: la contenance d'un petit pot (the content of one small pot). The book gives no size for the small pot, so no amount.",
+            "de": "Original: la contenance d'un petit pot (der Inhalt eines kleinen Topfes). Das Buch gibt die Größe des kleinen Topfes nicht an, daher keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Melt the sugar in a small pan, stirring well with a spoon, until it is a dark mahogany colour.",
+            "de": "Den Zucker in einem kleinen Topf unter kräftigem Rühren mit einem Löffel schmelzen, bis er dunkel mahagonifarben ist."
+          },
+          "technique": "caramelise-sugar",
+          "uses": ["sugar"]
+        },
+        {
+          "text": {
+            "en": "Add the water to the caramel.",
+            "de": "Das Wasser zum Karamell geben."
+          },
+          "uses": ["water"]
+        }
+      ]
+    },
+    {
+      "id": "creme-caramel-custard",
+      "name": {
+        "en": "Custard",
+        "de": "Eiercreme"
+      },
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "note": {
+            "en": "Original: une quantité de lait égale à la contenance de 3 des petits pots (as much milk as 3 small pots hold). The book gives no size for the small pot, so no amount.",
+            "de": "Original: une quantité de lait égale à la contenance de 3 des petits pots (so viel Milch, wie 3 kleine Töpfe fassen). Das Buch gibt die Größe des kleinen Topfes nicht an, daher keine Menge."
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "count",
+            "original": "5 jaunes d'œufs"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de sucre en poudre"
+          }
+        },
+        {
+          "key": "caramel",
+          "ref": {
+            "kind": "component",
+            "id": "caramel"
+          },
+          "note": {
+            "en": "Original: un pot de caramel (one small pot of caramel). The caramel takes the place of the coffee of the book's coffee custard.",
+            "de": "Original: un pot de caramel (ein kleiner Topf Karamell). Das Karamell tritt an die Stelle des Kaffees der Kaffeecreme im Buch."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the milk in a saucepan.",
+            "de": "Die Milch in einem Topf aufkochen."
+          },
+          "technique": "boil",
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "Put the egg yolks and the sugar into a bowl and add the caramel.",
+            "de": "Die Eigelbe und den Zucker in eine Schüssel geben und das Karamell zufügen."
+          },
+          "uses": ["yolk", "sugar", "caramel"]
+        },
+        {
+          "text": {
+            "en": "Pour in the milk and beat well to mix.",
+            "de": "Die Milch zugießen und gut verrühren."
+          },
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "Strain the mixture through a fine sieve.",
+            "de": "Die Masse durch ein feines Sieb passieren."
+          },
+          "uses": ["yolk", "sugar", "caramel", "milk"]
+        },
+        {
+          "text": {
+            "en": "Fill the small pots, removing any foam from the surface.",
+            "de": "Die kleinen Töpfchen füllen und den Schaum von der Oberfläche abnehmen."
+          }
+        },
+        {
+          "text": {
+            "en": "Bring water to the boil in a pan that holds all the pots.",
+            "de": "Wasser in einem Topf, der alle Töpfchen fasst, zum Kochen bringen."
+          },
+          "technique": "boil"
+        },
+        {
+          "text": {
+            "en": "Put the pots into the pan; the water must come no higher than half their height.",
+            "de": "Die Töpfchen in den Topf stellen; das Wasser darf nicht höher als bis zur halben Höhe der Töpfchen reichen."
+          }
+        },
+        {
+          "text": {
+            "en": "Put a metal lid on the pan, with heat on top of the lid as well.",
+            "de": "Einen Metalldeckel auf den Topf legen, und auch auf den Deckel Hitze geben."
+          }
+        },
+        {
+          "text": {
+            "en": "Keep the heat low so that the water only simmers; it must not boil. Cook for 15 minutes and check that the custard is set.",
+            "de": "Die Hitze niedrig halten, sodass das Wasser nur leicht simmert; es darf nicht kochen. 15 Minuten garen und prüfen, ob die Creme gestockt ist."
+          },
+          "technique": "water-bath",
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the pots cool in the water, then dry them and serve.",
+            "de": "Die Töpfchen im Wasser abkühlen lassen, dann abtrocknen und servieren."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "creme-caramel-custard"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "6",
+      "reason": "Our judgement: the source makes 6 custard pots; one pot is taken as one portion. Not a count of persons stated by the source.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed from gouffe.txt lines 15792-15806 and 15756-15791 (1877 print, machine-read); the numbers are listed in the evidence file for the second reader."
+  },
+  "note": {
+    "en": "The custard follows the book's coffee custard with the caramel in place of the coffee. The book says the milk and the caramel water are measured by the small pot, whose size the book does not give.",
+    "de": "Die Creme folgt der Kaffeecreme des Buches, mit Karamell statt Kaffee. Das Buch misst Milch und Karamellwasser nach dem kleinen Topf, dessen Größe es nicht angibt."
+  }
+}

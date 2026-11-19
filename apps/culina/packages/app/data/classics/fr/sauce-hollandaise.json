@@ -1,0 +1,252 @@
+{
+  "id": "sauce-hollandaise",
+  "name": {
+    "en": "Hollandaise sauce",
+    "de": "Sauce Hollandaise"
+  },
+  "originalName": "Sauce hollandaise",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Sauce hollandaise\" (Sauces de ménage), pp. 92-93; gouffe.txt lines 4912-4970",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "cuillerée à bouche": {
+      "kind": "mass",
+      "factor": 30,
+      "read": "Gouffé's own statement: \"30 grammes de farine (une cuillerée à bouche ordinaire)\" (gouffe.txt line 3085). The book gives this spoon for flour only; it is taken for all uses here. A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "sauce-hollandaise-emulsion",
+      "name": {
+        "en": "Hollandaise sauce",
+        "de": "Sauce Hollandaise"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "cuillerée à bouche",
+            "original": "2 cuillerées à bouche de vinaigre"
+          },
+          "note": {
+            "en": "Reduced until one coffee spoon (cuillerée à café) is left; that coffee spoon is the result of the reduction, not an amount.",
+            "de": "Eingekocht, bis ein Kaffeelöffel (cuillerée à café) übrig ist; dieser Kaffeelöffel ist das Ergebnis des Einkochens, keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g",
+            "original": "5 grammes de sel"
+          }
+        },
+        {
+          "key": "pepper",
+          "wanted": {
+            "en": "White pepper",
+            "de": "Weißer Pfeffer"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "g",
+            "original": "3 grammes de poivre blanc"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "cuillerée à bouche",
+            "original": "2 cuillerées à bouche d'eau froide"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "2 jaunes d'œufs"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 120,
+            "unit": "g",
+            "original": "120 grammes de beurre"
+          },
+          "note": {
+            "en": "Added in portions of 20 g, each one only when the last has melted.",
+            "de": "In Portionen zu 20 g zugegeben, jede erst, wenn die vorige geschmolzen ist."
+          }
+        },
+        {
+          "key": "water-finish",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cuillerée à bouche",
+            "original": "une cuillerée à bouche d'eau froide"
+          },
+          "note": {
+            "en": "Added after the third part of the butter, so that the sauce does not turn.",
+            "de": "Nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt."
+          }
+        },
+        {
+          "key": "water-thin",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Original: une cuillerée d'eau (one spoon of water, no size given). Added when all the butter is in. A third spoon of cold water is added only if the sauce is still thick.",
+            "de": "Original: une cuillerée d'eau (ein Löffel Wasser, ohne Größenangabe). Zugegeben, wenn alle Butter drin ist. Ein dritter Löffel kaltes Wasser nur, wenn die Sauce noch zu dick ist."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Reduce the vinegar with the salt and the pepper in a small saucepan until about one coffee spoon of liquid is left.",
+            "de": "Den Essig mit Salz und Pfeffer in einem kleinen Topf einkochen, bis etwa ein Kaffeelöffel Flüssigkeit übrig ist."
+          },
+          "technique": "reduce",
+          "uses": ["vinegar", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat and add the cold water and the egg yolks, removing the germs and leaving no white.",
+            "de": "Den Topf vom Herd nehmen und das kalte Wasser und die Eigelbe zugeben; die Keime entfernen und kein Eiweiß lassen."
+          },
+          "uses": ["water", "yolk"]
+        },
+        {
+          "text": {
+            "en": "Put the pan back on a low heat and stir with a wooden spoon.",
+            "de": "Den Topf wieder auf kleine Hitze stellen und mit einem Holzlöffel rühren."
+          },
+          "uses": ["yolk"]
+        },
+        {
+          "text": {
+            "en": "As soon as the yolks begin to set, take the pan off the heat, add 20 g of butter and stir until it has melted.",
+            "de": "Sobald die Eigelbe zu stocken beginnen, den Topf vom Herd nehmen, 20 g Butter zugeben und rühren, bis sie geschmolzen ist."
+          },
+          "technique": "warm-emulsion",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Put the pan back on the heat for one minute, then take it off again.",
+            "de": "Den Topf eine Minute zurück auf die Hitze stellen, dann wieder vom Herd nehmen."
+          }
+        },
+        {
+          "text": {
+            "en": "Add 20 g of butter and stir until it has melted.",
+            "de": "20 g Butter zugeben und rühren, bis sie geschmolzen ist."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Repeat the heating and the adding of 20 g of butter until all 120 g are used.",
+            "de": "Das Erwärmen und Zugeben von je 20 g Butter wiederholen, bis alle 120 g verbraucht sind."
+          },
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "After the third part of the butter has been mixed in, add a spoon of cold water so that the sauce does not turn.",
+            "de": "Nachdem der dritte Teil der Butter eingerührt ist, einen Löffel kaltes Wasser zugeben, damit die Sauce nicht gerinnt."
+          },
+          "uses": ["water-finish"]
+        },
+        {
+          "text": {
+            "en": "When all the butter is in, add one more spoon of water so that the sauce is not too firm.",
+            "de": "Wenn alle Butter drin ist, einen weiteren Löffel Wasser zugeben, damit die Sauce nicht zu fest wird."
+          },
+          "uses": ["water-thin"]
+        },
+        {
+          "text": {
+            "en": "If the sauce still coats the back of the spoon more than 3 mm thick, add a third spoon of cold water.",
+            "de": "Wenn die Sauce den Löffelrücken noch mehr als 3 mm dick überzieht, einen dritten Löffel kaltes Wasser zugeben."
+          },
+          "uses": ["water-thin"]
+        },
+        {
+          "text": {
+            "en": "Taste the sauce and season it to the taste of the people eating it.",
+            "de": "Die Sauce probieren und nach dem Geschmack der Esser würzen."
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "sauce-hollandaise-emulsion"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source gives no number of persons; 120 g of butter is taken as a sauce for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "second-reader",
+    "note": "PENDING second check. Transcribed from gouffe.txt lines 4912-4970 (1877 print, machine-read); the numbers are listed in the evidence file for the second reader."
+  },
+  "note": {
+    "en": "Made with egg yolk and butter only. The book advises against adding flour or starch to a hollandaise, since the yolk and the butter alone are its base (gouffe.txt lines 4961-4968).",
+    "de": "Nur mit Eigelb und Butter. Das Buch rät davon ab, Mehl oder Stärke zur Hollandaise zu geben, da allein Eigelb und Butter ihre Grundlage sind (gouffe.txt Zeilen 4961-4968)."
+  }
+}
