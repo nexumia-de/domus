@@ -1,0 +1,22 @@
+{
+  "kind": "home-order",
+  "title": "Open entries by priority, then category, then name; bought ones last",
+  "input": {
+    "categoryOrder": ["produce", "bakery", "dairy", "household", "other"],
+    "entries": [
+      { "id": "e1", "name": "Milk", "categoryId": "dairy", "priority": "soon" },
+      { "id": "e2", "name": "Toilet paper", "categoryId": "household", "priority": "now" },
+      { "id": "e3", "name": "Apples", "categoryId": "produce", "priority": "soon" },
+      { "id": "e4", "name": "Bread", "categoryId": "bakery", "priority": "now" },
+      { "id": "e5", "name": "Vanilla pods", "categoryId": "other", "priority": "sometime" },
+      {
+        "id": "e6",
+        "name": "Butter",
+        "categoryId": "dairy",
+        "priority": "now",
+        "bought": { "at": "2026-11-18T10:00:00Z" }
+      }
+    ]
+  },
+  "expected": { "order": ["e4", "e2", "e3", "e1", "e5", "e6"] }
+}

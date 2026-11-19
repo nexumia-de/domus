@@ -1,0 +1,46 @@
+{
+  "kind": "add-entry",
+  "title": "Adding what is already open keeps one entry with the more pressing priority, both amounts and both origins",
+  "input": {
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Cream",
+        "ingredientId": "fdc-170859",
+        "categoryId": "dairy",
+        "priority": "sometime",
+        "amount": "1 cup",
+        "addedAt": "2026-11-17T18:00:00Z",
+        "origins": [{ "kind": "typed" }]
+      }
+    ],
+    "add": {
+      "id": "e2",
+      "name": "Cream, heavy",
+      "ingredientId": "fdc-170859",
+      "categoryId": "dairy",
+      "priority": "now",
+      "amount": "200 ml",
+      "addedAt": "2026-11-18T09:00:00Z",
+      "origins": [{ "kind": "recipe", "app": "culina", "title": "Mushroom sauce" }]
+    }
+  },
+  "expected": {
+    "joinedWith": "e1",
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Cream",
+        "ingredientId": "fdc-170859",
+        "categoryId": "dairy",
+        "priority": "now",
+        "amount": "1 cup + 200 ml",
+        "addedAt": "2026-11-17T18:00:00Z",
+        "origins": [
+          { "kind": "typed" },
+          { "kind": "recipe", "app": "culina", "title": "Mushroom sauce" }
+        ]
+      }
+    ]
+  }
+}

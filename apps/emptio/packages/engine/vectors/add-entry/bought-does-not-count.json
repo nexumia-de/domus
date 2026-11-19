@@ -1,0 +1,47 @@
+{
+  "kind": "add-entry",
+  "title": "A bought entry is not joined: adding the same free name again makes a new entry",
+  "input": {
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Batteries",
+        "categoryId": "household",
+        "priority": "soon",
+        "addedAt": "2026-11-10T08:00:00Z",
+        "origins": [{ "kind": "typed" }],
+        "bought": { "at": "2026-11-12T17:30:00Z" }
+      }
+    ],
+    "add": {
+      "id": "e2",
+      "name": "batteries",
+      "categoryId": "household",
+      "priority": "soon",
+      "addedAt": "2026-11-18T09:00:00Z",
+      "origins": [{ "kind": "typed" }]
+    }
+  },
+  "expected": {
+    "joinedWith": null,
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Batteries",
+        "categoryId": "household",
+        "priority": "soon",
+        "addedAt": "2026-11-10T08:00:00Z",
+        "origins": [{ "kind": "typed" }],
+        "bought": { "at": "2026-11-12T17:30:00Z" }
+      },
+      {
+        "id": "e2",
+        "name": "batteries",
+        "categoryId": "household",
+        "priority": "soon",
+        "addedAt": "2026-11-18T09:00:00Z",
+        "origins": [{ "kind": "typed" }]
+      }
+    ]
+  }
+}
