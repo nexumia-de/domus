@@ -1,0 +1,25 @@
+{
+  "id": "boil",
+  "name": {
+    "en": "Boiling",
+    "de": "Kochen in sprudelndem Wasser"
+  },
+  "watch": {
+    "en": "Boil green vegetables quickly in plenty of water.",
+    "de": "Grünes Gemüse zügig in reichlich Wasser kochen."
+  },
+  "why": {
+    "en": "This keeps their colour and flavour.",
+    "de": "So behalten sie Farbe und Geschmack."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 3.10 Vegetable Nutrition, Storage and Preparation, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Green vegetables should be boiled quickly in a large amount of water in order to retain their color and flavor."
+    }
+  ]
+}

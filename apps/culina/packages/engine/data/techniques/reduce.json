@@ -1,0 +1,32 @@
+{
+  "id": "reduce",
+  "name": {
+    "en": "Reducing",
+    "de": "Einkochen"
+  },
+  "watch": {
+    "en": "Let it cook down until it reaches the thickness you want.",
+    "de": "Einkochen lassen, bis es die gewünschte Dichte hat."
+  },
+  "why": {
+    "en": "As steam escapes, what remains concentrates: the sauce thickens and the flavour gets stronger.",
+    "de": "Wenn Dampf entweicht, wird der Rest konzentrierter: Die Sauce dickt ein und der Geschmack wird kräftiger."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Reduction",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier:_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Sauces are often finished by allowing them to reduce until the desired consistency is reached."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.3 Sauces and Thickening Agents, section Reduction",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier:_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "As steam escapes, the remaining ingredients concentrate, thickening the sauce and strengthening the flavors."
+    }
+  ]
+}

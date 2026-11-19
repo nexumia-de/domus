@@ -1,0 +1,32 @@
+{
+  "id": "skim",
+  "name": {
+    "en": "Skimming",
+    "de": "Abschäumen"
+  },
+  "watch": {
+    "en": "Skim off the fat and impurities that rise to the surface.",
+    "de": "Fett und Trübstoffe abschöpfen, die an die Oberfläche steigen."
+  },
+  "why": {
+    "en": "Left in, they may make the liquid cloudy.",
+    "de": "Bleiben sie darin, kann die Flüssigkeit trüb werden."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.1 Light Stocks, section Skim the Stock Frequently",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier:_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.01%3A_Light_Stocks",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "A stock should be skimmed often to remove the fat and impurities that rise to the surface during cooking."
+    },
+    {
+      "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
+      "place": "chapter 1.1 Light Stocks, section Skim the Stock Frequently",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier:_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.01%3A_Light_Stocks",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "If they are not removed, they may make the stock cloudy."
+    }
+  ]
+}

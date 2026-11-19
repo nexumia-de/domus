@@ -1,0 +1,32 @@
+{
+  "id": "cook-pasta",
+  "name": {
+    "en": "Cooking pasta",
+    "de": "Nudeln kochen"
+  },
+  "watch": {
+    "en": "Use plenty of water at a rapid boil and add all the pasta at once.",
+    "de": "Reichlich sprudelnd kochendes Wasser nehmen und alle Nudeln auf einmal hineingeben."
+  },
+  "why": {
+    "en": "Pasta takes up salt while it cooks; salt added afterwards does not season it in the same way.",
+    "de": "Nudeln nehmen das Salz beim Kochen auf; nachträglich zugegebenes Salz würzt nicht auf dieselbe Weise."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "The water should be brought to a rapid boil, then all the pasta should be added at once."
+    },
+    {
+      "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
+      "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
+      "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
+      "licence": "CC BY-NC-SA 4.0",
+      "sentence": "Adding salt to the pasta after it is cooked will not provide the same seasoning effect."
+    }
+  ]
+}
