@@ -37,6 +37,7 @@ export const stringsDe: Strings = {
     apps: [
       { href: 'mixtura/', name: 'Drink Builder', what: 'Eine Werkbank für Mixgetränke' },
       { href: 'culina/', name: 'Cook’s Notebook', what: 'Ein Helfer in der Küche' },
+      { href: 'emptio/', name: 'Einkaufsliste', what: 'Die Einkaufsliste des Haushalts' },
     ],
     syncTitle: 'Abgleich',
     syncIntro:

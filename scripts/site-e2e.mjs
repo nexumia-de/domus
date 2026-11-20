@@ -171,9 +171,11 @@ try {
   const databases = await any.evaluate(async () =>
     (await indexedDB.databases()).map((db) => db.name),
   );
-  const wanted = [...apps.map((app) => app.db), rootApp.db];
+  // An app without `db` keeps everything in the shared database of the root app.
+  const withDb = [...apps, rootApp].filter((app) => app.db !== undefined);
+  const wanted = withDb.map((app) => app.db);
   check(new Set(wanted).size === wanted.length, `database names differ (${wanted.join(', ')})`);
-  for (const app of [...apps, rootApp]) {
+  for (const app of withDb) {
     check(databases.includes(app.db), `${app.name}: its database exists (${databases.join(', ')})`);
   }
 

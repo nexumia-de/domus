@@ -14,12 +14,15 @@ there.
 | `packages/host`  | hospes, the host code two apps need: sync cipher, WebDAV adapter                   |
 | `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks                              |
 | `apps/culina`    | Culina (Cook's Notebook), a helper in the kitchen                                  |
-| `apps/emptio`    | Emptio (Shopping List), the household's shopping list                              |
+| `apps/emptio`    | Emptio (Shopping List), the household's shopping list, with a native Linux app     |
 | `apps/domus`     | Household (`@domus/app`): the app at the root of the address, where sync is set up |
 | `scripts`        | checks and the site build that span the parts                                      |
 
 These are web apps (PWA) and libraries, not GTK apps; the GTK rules do
-not apply.
+not apply. The exception is an app's native Linux package
+(`apps/<app>/packages/linux`,
+[decision](docs/decisions/native-linux-gjs.md)), which has its own
+`AGENTS.md` with the GTK rules.
 
 ## Rules
 

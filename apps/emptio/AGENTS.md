@@ -5,8 +5,10 @@ follow the store one is in, shared in the household, and tied to what
 Culina and Mixtura know about stock. Visible name: **Shopping List**.
 Knowledge of this repository: [docs/index.md](docs/index.md).
 
-Emptio is a web app (PWA) that is also installed on Android and Linux,
-not a GTK app; the GTK rules do not apply. Its sister apps are
+Emptio is a web app (PWA) that is also installed on Android and Linux;
+the GTK rules do not apply to it. Its native Linux app
+(`packages/linux`, [docs](docs/native-linux.md)) is a GTK app and has
+its own [rules](packages/linux/AGENTS.md). Its sister apps are
 [Culina](../culina) (cooking) and
 [Mixtura](../mixtura) (drinks); the umbrella
 of all of them is Domus, this repository, whose
@@ -42,5 +44,6 @@ without asking.
 ## Before committing
 
 1. From the root, `npm run check:emptio` passes (format, lint,
-   typecheck, tests).
+   typecheck, tests); after a change to a screen also
+   `npm run e2e -w @emptio/app`.
 2. `docs/` updated in the same commit.

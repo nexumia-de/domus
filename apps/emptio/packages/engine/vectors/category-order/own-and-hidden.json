@@ -1,0 +1,16 @@
+{
+  "kind": "category-order",
+  "title": "Hidden starting categories leave the order, own ones stand before other by name, other cannot be hidden, and a renamed starting category keeps its place",
+  "input": {
+    "starting": ["produce", "bakery", "dairy", "other"],
+    "changes": [
+      { "id": "bakery", "hidden": true },
+      { "id": "c-2", "name": "Werkstatt" },
+      { "id": "c-1", "name": "Garten" },
+      { "id": "c-3", "name": "Zoo", "hidden": true },
+      { "id": "dairy", "name": "Milch und Käse" },
+      { "id": "other", "hidden": true }
+    ]
+  },
+  "expected": { "order": ["produce", "dairy", "c-1", "c-2", "other"] }
+}

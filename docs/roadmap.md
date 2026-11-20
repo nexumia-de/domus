@@ -101,8 +101,19 @@ checks green. The apps' own goals are in their roadmaps
    real GitHub**; the Docker WebDAV server, the CORS fronts and the
    integration test left with Mixtura's sync code and come back with
    goal 10.
-7. **Emptio on spaces.** Its goals 1 and 2 (the list, shared) on the
-   shared packages, with the short polling.
+7. **Emptio on spaces.** Done on 2026-11-20
+   ([behaviour](../apps/emptio/docs/behaviour.md)). The shopping list is
+   built: entries with priority and category, suggestions from earlier
+   entries, ticking, clearing with Undo, categories, English and German,
+   installable and offline under `/emptio/`. The list is the collections
+   `list` and `list-categories` of a space; a shared one is read again
+   every 15 seconds. What two apps need moved to the host package with
+   it: the loops of an app (`createCollectionSync`, from Mixtura), the
+   choice of the shown space, a service worker, and the browser harness
+   with the fake of GitHub's API (from the Household app).
+   **Not done**: adding from a food catalogue (there is no shared
+   catalogue yet), export and import, **nothing was run against the real
+   GitHub**.
 8. **Culina on spaces.** Stock shared with Mixtura's: the same
    collection `stock`, where Culina may add its optional fields (amount,
    state); how the two ingredient catalogues meet is decided here. Its
@@ -117,8 +128,18 @@ checks green. The apps' own goals are in their roadmaps
     nginx and Caddy fronts and the setup guide are in the history of
     `apps/mixtura`), then S3.
 
+11. **Native Linux apps.** Decided on 2026-11-20
+    ([decision](decisions/native-linux-gjs.md)): libadwaita screens in
+    GJS for Phosh that reuse the engines and the sync code. **Emptio is
+    built** ([native Linux app](../apps/emptio/docs/native-linux.md)):
+    the list, an entry, categories, preferences, joining a space by
+    invitation link, a Flatpak manifest and CI jobs. **Not done**: no
+    Flatpak was built and nothing ran on a phone; Mixtura and Culina
+    follow, each in a session of its own; the platform pieces move to a
+    shared package with the second app.
+
 Not planned: Dropbox, Google Drive and OneDrive. They need an app
 registration with each provider that the owner does not want to hold;
 the storage port leaves room for someone else to add them.
 
-Goals 6 to 8 can change places; 9 and 10 can start once goal 3 is done.
+Goals 6 to 8 can change places; 9 to 11 can start once goal 3 is done.

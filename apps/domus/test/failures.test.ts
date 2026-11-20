@@ -107,6 +107,7 @@ test('German texts are not left in English', () => {
       '.home.apps.0.name',
       '.home.apps.1.href',
       '.home.apps.1.name',
+      '.home.apps.2.href',
       '.create.type.github.title',
       '.create.type.webdav.title',
       '.create.finish.nameLine',

@@ -1,0 +1,23 @@
+{
+  "name": "@emptio/linux",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Emptio's native Linux app (GTK4, libadwaita, GJS): Shopping List for Phosh and the desktop",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@emptio/app": "0.0.0",
+    "@emptio/engine": "0.0.0",
+    "@nexumia-de/hospes": "0.1.0",
+    "@nexumia-de/materia": "0.3.0",
+    "@noble/ciphers": "2.4.0",
+    "@noble/hashes": "2.4.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "smoke": "node scripts/smoke.mjs",
+    "interact": "node scripts/interact.mjs"
+  }
+}

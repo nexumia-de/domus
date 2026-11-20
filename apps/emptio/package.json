@@ -9,11 +9,13 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "test": "npm test -w @emptio/engine && npm test -w @emptio/app",
-    "typecheck": "npm run typecheck -w @emptio/engine && npm run typecheck -w @emptio/app",
+    "test": "npm test -w @emptio/engine && npm test -w @emptio/app && npm test -w @emptio/linux",
+    "typecheck": "npm run typecheck -w @emptio/engine && npm run typecheck -w @emptio/app && npm run typecheck -w @emptio/linux",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm test"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "build": "npm run build -w @emptio/app",
+    "e2e": "npm run e2e -w @emptio/app"
   }
 }

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      The page loads only its own files. It connects to itself, to GitHub's API and, for a
+      WebDAV storage, to a server of the household's own choosing, whose address nobody can
+      list here (as in the Household app); plain http is not allowed. Without a space that
+      has a storage the app sends no request to another host.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.github.com https:; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f9f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121512" media="(prefers-color-scheme: dark)" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      name="description"
+      content="The household's shopping list with priorities. Works offline; the list stays on your device unless the household sets up a shared space."
+    />
+    <title>Shopping List</title>
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <script src="theme-init.js"></script>
+    <link rel="stylesheet" href="app.css" />
+    <script type="module" src="main.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>Shopping List needs JavaScript.</noscript>
+  </body>
+</html>

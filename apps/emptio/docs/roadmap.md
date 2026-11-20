@@ -21,13 +21,21 @@ are sub-issues of it; there are no milestones
 0. **Foundations.** Repository set up like Culina (rules for agents,
    licence, check, CI); the data model and the
    engine rules as documents with their first vectors.
-1. **The list.** Entries with priority and category, adding by search
-   from the catalogue and by free name, ticking, the home order; the
-   local store; installable and offline; deployed. Usable by one person
-   on one device.
-2. **Shared.** The list as Emptio's file in the household's place, encrypted, over
-   storage the user configured. From here it can replace KitchenOwl in
-   the household, which is why it comes before stores.
+1. **The list.** Built on 2026-11-20 ([behaviour](behaviour.md)):
+   entries with priority and category, adding by free name with
+   suggestions from earlier entries, ticking, the home order; kept in
+   the database the apps share; installable and offline; in the site
+   build under `/emptio/`. Adding from the catalogue waits for the
+   shared catalogue.
+2. **Shared.** Built on 2026-11-20: the list is two collections of a
+   space, sealed, over storage the household configured in the
+   Household app, read again every 15 seconds. Not run against a real
+   storage yet. From here it can replace KitchenOwl in the household,
+   which is why it comes before stores.
+
+   Beside the goals: a **native Linux app** in GJS since 2026-11-20
+   ([native Linux app](native-linux.md)).
+
 3. **Stores.** Stores with the default route of their chain (Rewe,
    Aldi, Rossmann, a general one), "I am at", hiding what a store does
    not carry, "not here", moving categories, the route proposal from
@@ -43,8 +51,7 @@ are sub-issues of it; there are no milestones
 
 # Depends on others
 
-- Goal 2 needs the sync parts that exist in Mixtura today
-  as the shared package hospes
-  ([shared host code](architecture.md#shared-host-code)).
+- Goal 2 uses the shared package hospes for everything about sync
+  ([behaviour](behaviour.md#sync)).
 - Goal 4 needs Culina's stock and finder (its goal 4) and a common
   ingredient catalogue.

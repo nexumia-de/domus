@@ -1,0 +1,9 @@
+{
+  "kind": "category-order",
+  "title": "Without changes the order is the starting order, and other is last even when the starting list names it earlier or not at all",
+  "input": {
+    "starting": ["other", "produce", "dairy"],
+    "changes": []
+  },
+  "expected": { "order": ["produce", "dairy", "other"] }
+}

@@ -18,7 +18,12 @@ sources:
 
 # How Emptio is built
 
-A plan, not yet a specification: nothing here is built. Why the app
+A plan of 2026-11-18. Since 2026-11-20 goals 1 and 2 are built, and
+where they differ from this plan the [behaviour](behaviour.md) and the
+[data model](data-model.md) say what holds: places are spaces, the list
+is two collections of a space and not a file of its own, storage and
+invites are the Household app's, and the app is served from
+`domus.nexumia.de/emptio/`. Why the app
 exists is in [existing tools](existing-tools.md); the route through a
 store is in [store layouts](store-layouts.md); the order of work is in
 the [roadmap](roadmap.md).

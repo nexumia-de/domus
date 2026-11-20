@@ -26,13 +26,14 @@ Examples may name foods and shops; rules may not.
 | `home-order`         | 1    | `entries` (id and entry), `categoryOrder`       | `order`: the entry ids                   |
 | `new-entry-category` | 4    | `name`, optional `catalogue`, `earlier` entries | `categoryId`                             |
 | `add-entry`          | 5    | `entries`, `add` (id and entry)                 | `entries` after adding, and `joinedWith` |
+| `category-order`     |      | `starting` ids, `changes` (id, name, hidden)    | `order`: the category ids                |
+| `suggest`            |      | `query`, `earlier` entries, optional `limit`    | `suggestions`                            |
 
 Entries in vectors carry only the fields the rule reads; an entry is
 written as `{ "id": "...", ...fields of the [data model](data-model.md#entry) }`.
 
-Until the functions exist (issue 12), `test/vectors.test.ts` checks
-only that every file has a known kind, a title, an input and an
-expected value. With issue 12 each kind gets a test that runs the
-function on `input` and compares with `expected`.
+`test/vectors.test.ts` runs the function of each kind on `input` and
+compares with `expected`, and checks that no function changes its
+input.
 
-The vectors today: two per kind, six files.
+The vectors today: two per kind, ten files.
