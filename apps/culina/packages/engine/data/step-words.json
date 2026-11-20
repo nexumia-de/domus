@@ -1,0 +1,290 @@
+{
+  "techniques": {
+    "bake": {
+      "en": ["bake", "baking", "baked"],
+      "de": ["backen", "gebacken", "bäckt"]
+    },
+    "batter": {
+      "en": ["batter"],
+      "de": ["backteig", "ausbackteig", "bierteig"]
+    },
+    "blanch": {
+      "en": ["blanch"],
+      "de": ["blanchier"]
+    },
+    "boil": {
+      "en": ["boil"],
+      "de": ["kochen", "aufkochen", "gekocht", "sieden"]
+    },
+    "braise": {
+      "en": ["braise", "braising", "stew"],
+      "de": ["schmor", "geschmort"]
+    },
+    "brine": {
+      "en": ["brine"],
+      "de": ["salzlake", "in lake"]
+    },
+    "caramelise-sugar": {
+      "en": ["carameli"],
+      "de": ["karamellisier", "karamelisier"]
+    },
+    "cold-emulsion": {
+      "en": ["mayonnaise", "emulsif"],
+      "de": ["mayonnaise", "emulgier"]
+    },
+    "cook-pasta": {
+      "en": ["cook the pasta", "cook pasta", "boil the pasta"],
+      "de": ["nudeln kochen", "pasta kochen", "nudeln garen", "teigwaren kochen"]
+    },
+    "cook-rice": {
+      "en": ["cook the rice", "cook rice"],
+      "de": ["reis kochen", "reis garen", "reis quellen"]
+    },
+    "cream-butter": {
+      "en": ["cream the butter", "cream butter"],
+      "de": ["butter schaumig", "schaumig rühr", "schaumig schlag"]
+    },
+    "deep-fry": {
+      "en": ["deep fry", "deep fried", "deep frying"],
+      "de": ["frittier", "schwimmend ausback", "ausbacken"]
+    },
+    "deglaze": {
+      "en": ["deglaz"],
+      "de": ["ablösch", "abgelöscht"]
+    },
+    "fold-in": {
+      "en": ["fold in", "fold"],
+      "de": ["unterheb", "untergehoben", "unterzieh"]
+    },
+    "fresh-pasta": {
+      "en": ["fresh pasta"],
+      "de": ["frische nudeln", "frische pasta"]
+    },
+    "gratinate": {
+      "en": ["gratin", "broil"],
+      "de": ["gratinier", "überback"]
+    },
+    "knead": {
+      "en": ["knead"],
+      "de": ["knet", "geknetet"]
+    },
+    "knife-cuts": {
+      "en": ["cut", "chop", "dice", "slice", "mince"],
+      "de": ["schneid", "geschnitten", "hack", "würfel", "in scheiben"]
+    },
+    "marinate": {
+      "en": ["marinat"],
+      "de": ["marinier", "beizen", "gebeizt"]
+    },
+    "pan-fry": {
+      "en": ["pan fry", "fry", "fried"],
+      "de": ["braten", "gebraten", "ausbraten"]
+    },
+    "poach": {
+      "en": ["poach"],
+      "de": ["pochier", "gar ziehen"]
+    },
+    "proof-yeast": {
+      "en": ["proof", "prove", "let rise", "rise"],
+      "de": ["gehen lassen", "aufgehen", "gare"]
+    },
+    "reduce": {
+      "en": ["reduce", "cook down", "boil down"],
+      "de": ["reduzier", "einkoch", "eingekocht", "einreduzier"]
+    },
+    "rest-dough": {
+      "en": ["rest the dough", "let the dough rest"],
+      "de": ["teig ruhen", "teig rasten"]
+    },
+    "rest-meat": {
+      "en": ["rest the meat", "let the meat rest", "let it rest"],
+      "de": ["fleisch ruhen", "ruhen lassen"]
+    },
+    "risotto": {
+      "en": ["risotto"],
+      "de": ["risotto"]
+    },
+    "roll-dough": {
+      "en": ["roll out", "roll the dough"],
+      "de": ["ausroll", "ausgerollt", "auswell"]
+    },
+    "roux": {
+      "en": ["roux"],
+      "de": ["mehlschwitze", "einbrenne", "mehl anschwitz"]
+    },
+    "saute": {
+      "en": ["saut"],
+      "de": ["sautier", "schwenk"]
+    },
+    "sear": {
+      "en": ["sear", "brown"],
+      "de": ["scharf anbrat", "anbrat", "angebraten", "bräun"]
+    },
+    "shape-dumplings": {
+      "en": ["shape dumplings", "form dumplings", "shape the dumplings"],
+      "de": ["klöße formen", "knödel formen", "nocken formen"]
+    },
+    "simmer": {
+      "en": ["simmer"],
+      "de": ["köchel", "simmern", "leise kochen"]
+    },
+    "skim": {
+      "en": ["skim"],
+      "de": ["abschäum", "abgeschäumt", "abschöpf", "entfett"]
+    },
+    "steam": {
+      "en": ["steam"],
+      "de": ["dämpf", "gedämpft"]
+    },
+    "stock-cold-start": {
+      "en": ["start in cold water", "into cold water"],
+      "de": ["kalt ansetz", "kalt aufsetz", "in kaltem wasser ansetz"]
+    },
+    "sweat": {
+      "en": ["sweat"],
+      "de": ["anschwitz", "angeschwitzt", "andünst", "dünst", "glasig"]
+    },
+    "thicken-with-egg": {
+      "en": ["thicken with egg", "liaison", "bind with the yolk"],
+      "de": ["legier", "mit eigelb binden", "mit ei binden"]
+    },
+    "thicken-with-starch": {
+      "en": ["thicken", "slurry"],
+      "de": ["mit stärke binden", "abbind", "binden", "andick"]
+    },
+    "warm-emulsion": {
+      "en": ["hollandaise", "whisk in the butter"],
+      "de": ["hollandaise", "butter unterschlag", "butter einschlag"]
+    },
+    "water-bath": {
+      "en": ["water bath", "bain marie"],
+      "de": ["wasserbad"]
+    },
+    "whip-egg-whites": {
+      "en": ["whip the egg whites", "beat the egg whites", "whisk the whites", "stiff peaks"],
+      "de": ["eischnee", "eiweiß schlag", "eiweiß steif", "eiweiß zu schnee"]
+    }
+  },
+  "actions": {
+    "set-aside": {
+      "en": ["set aside", "put aside"],
+      "de": ["beiseite stell", "beiseitestell", "zur seite stell"]
+    },
+    "add": {
+      "en": ["add"],
+      "de": ["dazugeb", "zugeb", "hinzugeb", "hinzufüg", "beigeb"]
+    },
+    "mix": {
+      "en": ["mix", "combine"],
+      "de": ["misch", "vermeng", "vermisch"]
+    },
+    "stir": {
+      "en": ["stir"],
+      "de": ["rühr", "umrühr", "verrühr", "einrühr"]
+    },
+    "whisk": {
+      "en": ["whisk"],
+      "de": ["verquirl", "quirl"]
+    },
+    "season": {
+      "en": ["season"],
+      "de": ["würz", "gewürzt", "salzen", "pfeffern"]
+    },
+    "taste": {
+      "en": ["taste"],
+      "de": ["abschmeck"]
+    },
+    "wash": {
+      "en": ["wash", "rinse"],
+      "de": ["wasch", "gewaschen", "abspül", "abbraus"]
+    },
+    "peel": {
+      "en": ["peel"],
+      "de": ["schäl", "geschält", "pell"]
+    },
+    "grate": {
+      "en": ["grate"],
+      "de": ["reib", "gerieben", "raspel"]
+    },
+    "mash": {
+      "en": ["mash"],
+      "de": ["zerdrück", "zerstampf", "stampf"]
+    },
+    "puree": {
+      "en": ["puree", "purée", "blend"],
+      "de": ["pürier", "fein mix"]
+    },
+    "soak": {
+      "en": ["soak"],
+      "de": ["einweich", "eingeweicht"]
+    },
+    "drain": {
+      "en": ["drain"],
+      "de": ["abgieß", "abgegossen", "abtropf", "abschütt"]
+    },
+    "strain": {
+      "en": ["strain", "sieve"],
+      "de": ["passier", "durch ein sieb", "abseih", "durchseih"]
+    },
+    "dry": {
+      "en": ["pat dry", "dry"],
+      "de": ["trockn", "abtrockn", "trockentupf", "trocken tupf"]
+    },
+    "heat": {
+      "en": ["heat", "warm"],
+      "de": ["erhitz", "erwärm"]
+    },
+    "melt": {
+      "en": ["melt"],
+      "de": ["schmelz", "zerlass", "geschmolzen"]
+    },
+    "toast": {
+      "en": ["toast"],
+      "de": ["röst", "geröstet", "anröst"]
+    },
+    "roast": {
+      "en": ["roast"],
+      "de": ["im ofen braten", "im ofen garen", "im backofen braten"]
+    },
+    "grill": {
+      "en": ["grill"],
+      "de": ["grill"]
+    },
+    "cool": {
+      "en": ["let cool", "cool"],
+      "de": ["abkühl", "auskühl", "erkalt"]
+    },
+    "chill": {
+      "en": ["chill", "refrigerate"],
+      "de": ["kalt stell", "kaltstell", "kühl stell", "in den kühlschrank"]
+    },
+    "cover": {
+      "en": ["cover"],
+      "de": ["zudeck", "abdeck"]
+    },
+    "fill": {
+      "en": ["fill", "pour"],
+      "de": ["füll", "einfüll", "gieß", "eingieß", "angieß"]
+    },
+    "spread": {
+      "en": ["spread"],
+      "de": ["verstreich", "bestreich", "verteil"]
+    },
+    "shape": {
+      "en": ["shape", "form"],
+      "de": ["formen", "geformt"]
+    },
+    "garnish": {
+      "en": ["garnish"],
+      "de": ["garnier"]
+    },
+    "serve": {
+      "en": ["serve"],
+      "de": ["anricht", "servier"]
+    },
+    "preheat": {
+      "en": ["preheat"],
+      "de": ["vorheiz", "vorgeheizt"]
+    }
+  }
+}
