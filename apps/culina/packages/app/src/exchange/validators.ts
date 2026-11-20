@@ -7,7 +7,6 @@ export const recordValidators: RecordValidators = {
   templates: compiled.templates,
   components: compiled.components,
   dishes: compiled.dishes,
-  stock: compiled.stock,
   affinities: compiled.affinities,
   tastings: compiled.tastings,
 };

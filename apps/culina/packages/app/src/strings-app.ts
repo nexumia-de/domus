@@ -509,12 +509,13 @@ export const appStrings = {
     summaryHeading: 'What the file holds',
     exportedOn: (date: string): string => `Exported on ${date}`,
     nothingInFile: 'The file holds no records.',
+    stockLeftOut: (n: number): string =>
+      `The file is from an older version and holds ${n} stock ${n === 1 ? 'item' : 'items'}. They are left out: stock belongs to a space now, shared with the other apps, and is not imported from a file.`,
     kinds: {
       ingredients: 'ingredients',
       templates: 'templates',
       components: 'component versions',
       dishes: 'dish versions',
-      stock: 'stock items',
       affinities: 'pairings',
       tastings: 'tasting notes',
     },

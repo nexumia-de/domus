@@ -13,7 +13,8 @@ Every rule is a pure function of `packages/engine`, reached through
 ([vector format](vectors.md)). Time and ids come in as input. The
 entities are in the [data model](data-model.md).
 
-Rules 1, 4 and 5 are built in Goal 1 and have vectors today; 2 and 3
+Rules 1, 4 and 5, the order of the categories and what the add field
+offers are built and have vectors; 2 and 3
 are stated exactly and built in Goal 3; 6 to 8 are outlines that are
 completed when their goal starts.
 
@@ -25,10 +26,15 @@ with combining marks removed, `ß` as `ss`, lower case, spaces at the
 ends removed and runs of spaces as one. Keys are compared by code
 units. No locale of the device is used.
 
+# The order of the categories
+
+The starting order without the categories the household hid, then the
+household's own by the sort key of their name and then by id, then
+`other`, which is always there and always last (`categoryOrder`).
+
 # 1. Order at home
 
-Input: entries and the order of the categories (the starting order,
-own categories after it by the sort key of their name).
+Input: entries and the order of the categories.
 
 1. Open entries come first, sorted by: priority (`now`, `soon`,
    `sometime`); position of the category (a category that is not in the
@@ -78,6 +84,15 @@ The open entry is kept with:
 - the notes by the same rule as the amounts;
 - the origins of both, each kind and title once, the old ones first;
 - its own id, name, category, `addedAt` and `notAt`.
+
+# What the add field offers
+
+Input: the typed text and the household's entries, open and bought
+(`suggest`). Each thing once ([twice the same](#5-twice-the-same)), with
+the name and category of its latest entry; it counts as open when one
+of its entries is. Names whose sort key starts with the key of the text
+come first, then names with a word that starts with it, then names that
+contain it; inside each group by sort key. An empty text gives nothing.
 
 # 6. Route proposal
 

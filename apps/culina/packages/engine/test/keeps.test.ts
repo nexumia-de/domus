@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { shelfLifeApplies, stockExpiry, useBySuggestions } from '../src/index';
 import type { KeepEntry, ShelfLifeEntry } from '../src/index';
-import { validators } from './validators';
+import { stockValidator, validators } from './validators';
 
 const example = <T>(name: string): T =>
   JSON.parse(
@@ -146,7 +146,7 @@ describe('the schemas', () => {
   });
   test('a stock item may say where it lies', () => {
     const item = example<Record<string, unknown>>('stock.valid');
-    expect(validators.stock({ ...item, storage: 'freezer' })).toBe(true);
-    expect(validators.stock({ ...item, storage: 'cellar' })).toBe(false);
+    expect(stockValidator({ ...item, storage: 'freezer' })).toBe(true);
+    expect(stockValidator({ ...item, storage: 'cellar' })).toBe(false);
   });
 });

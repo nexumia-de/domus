@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Shopping List</title>
+  <rect width="512" height="512" rx="112" fill="#1f6b4a"/>
+  <rect x="136" y="104" width="240" height="304" rx="24" fill="#f7f9f6"/>
+  <path d="M180 190l18 18 34-36M180 262l18 18 34-36" fill="none" stroke="#1f6b4a" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M260 196h76M260 268h76M188 340h148" fill="none" stroke="#1f6b4a" stroke-width="16" stroke-linecap="round"/>
+</svg>

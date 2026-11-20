@@ -72,22 +72,13 @@ export const OWN = {
       version: { family: DISH, date: '2026-11-10' },
     },
   ],
-  stock: [{ id: uid(30), ref: { kind: 'ingredient', id: FLOUR }, amount: g(1000), state: 'raw' }],
   tastings: [
     { id: NOTE1, ref: { kind: 'component', id: V2 }, date: '2026-11-06', text: 'Thick enough' },
     { id: NOTE2, ref: { kind: 'component', id: V3 }, date: '2026-11-10', text: 'Glossy' },
   ],
 };
 
-export const KINDS = [
-  'ingredients',
-  'templates',
-  'components',
-  'dishes',
-  'stock',
-  'affinities',
-  'tastings',
-];
+export const KINDS = ['ingredients', 'templates', 'components', 'dishes', 'affinities', 'tastings'];
 
 export const listStore = (page, kind) =>
   page.evaluate(async (k) => {

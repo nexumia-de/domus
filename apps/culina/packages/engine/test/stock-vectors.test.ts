@@ -41,13 +41,11 @@ describe('stock vectors', () => {
   });
 
   test('every item of a vector is valid against the stock schema', async () => {
-    const { validators } = await import('./validators');
+    const { stockValidator } = await import('./validators');
     for (const v of vectors) {
       const item = v.inputs.item as StockItem | undefined;
       if (item === undefined) continue;
-      expect(validators.stock(item), `${v.id}: ${JSON.stringify(validators.stock.errors)}`).toBe(
-        true,
-      );
+      expect(stockValidator(item), `${v.id}: ${JSON.stringify(stockValidator.errors)}`).toBe(true);
     }
   });
 });

@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-20
+
+- **Creation**: the native Linux app `packages/linux` (GTK 4, libadwaita, GJS; app id `de.nexumia.Emptio`), by the owner's [decision](../../../docs/decisions/native-linux-gjs.md): the same list, actions, texts and sync as the web app through `@emptio/app/core`, a Web Crypto subset on `@noble/ciphers` and `@noble/hashes`, `fetch` on libsoup, the host package's file store, joining a space by invitation link, desktop file, metainfo, icons, a Flatpak manifest and the CI jobs `emptio-linux-check` and `emptio-flatpak`. No Flatpak was built and no phone was used. [Native Linux app](native-linux.md), [dependencies](dependencies.md).
+- **Creation**: goals 1 and 2 ([roadmap](roadmap.md), goal 7 of the [repository](../../../docs/roadmap.md)). Engine: the sort key, rules 1, 4 and 5, the order of the categories and the suggestions, with ten vectors that now run. App: the list, the entry screen, categories, settings, English and German, a manifest and a service worker, in the site build under `/emptio/`. The list is the collections `list` and `list-categories` of a space in the shared database; one loop of the host package per shared space reads it again every 15 seconds. Browser checks `e2e/` (183 checks) found three defects that were fixed in the app: the tick box took taps on 22 px only (`components.css`, the box is now drawn at 44 px), a hidden legend made the page 15 px too wide (`.chips legend`), and the link to the Household app was 20 px high. [Behaviour](behaviour.md), [list orderings](list-orderings.md), [data model](data-model.md).
+
 ## 2026-11-19
 
 - **Update**: Emptio moved with its history into the repository domus ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.

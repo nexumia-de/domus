@@ -27,21 +27,38 @@ npm ci
 | `npm run typecheck`    | `tsc --noEmit` in both packages                                     |
 | `npm test`             | vitest in both packages                                             |
 
-There is no build yet; it comes with the app shell (issue 13).
+From the repository root the same check is `npm run check:emptio`. More
+commands, each with `-w` and the package:
+
+| Command                             | What it does                                                                                                                                     |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run build -w @emptio/app`      | The web app into `packages/app/dist` (esbuild; a service worker with the file list)                                                              |
+| `npm run e2e -w @emptio/app`        | The browser checks against a fake of GitHub's API ([behaviour](behaviour.md#what-is-checked)); Chromium from `PLAYWRIGHT_CHROMIUM_PATH` when set |
+| `npm run icons -w @emptio/app`      | Draws the PNG icons from the SVGs; run only when an SVG changes                                                                                  |
+| `npm run build -w @emptio/linux`    | The native app as one module for GJS ([native Linux app](native-linux.md))                                                                       |
+| `npm run smoke -w @emptio/linux`    | The native platform pieces in real GJS                                                                                                           |
+| `npm run interact -w @emptio/linux` | The native screens driven through Broadway                                                                                                       |
 
 ## Layout
 
 - `packages/engine` (`@emptio/engine`): the pure engine. `src/index.ts`
   is its only public entry; the package exports the TypeScript file
-  directly, so there is no build step. One job per file: so far
-  `src/priority.ts`. `data/categories.json` holds the starting
+  directly. One job per file: `priority.ts`, `sort-key.ts`,
+  `home-order.ts`, `category.ts`, `add-entry.ts`, `suggest.ts`,
+  `starting-categories.ts`. `data/categories.json` holds the starting
   categories ([categories](categories.md)); `vectors/` holds the worked
   examples ([vector format](vectors.md)).
-- `packages/app` (`@emptio/app`): the web app. So far only the visible
-  name and a test that the engine is reached through its entry.
-- materia is not a dependency yet. It is added, pinned to an exact tag,
-  with the first code that uses it (the sync record of the local store,
-  issue 14).
+- `packages/app` (`@emptio/app`): the web app. `src/list/` is the list
+  without a screen (the records, the actions, the categories, the status
+  words), `src/app.ts` the running app (state, the shown space, the
+  host package's loops), `src/screens/` the four screens on a small DOM
+  helper, `src/core.ts` what a second shell imports
+  (`@emptio/app/core`). `e2e/` holds the browser checks.
+- `packages/linux` (`@emptio/linux`): the native app; `src/platform/`
+  what GJS lacks, `src/ui/` the pages, `data/` the desktop file,
+  metainfo, icons and licence texts.
+- The shared packages come from this repository: hospes for everything
+  about spaces and sync, materia through it.
 
 ## The purity rule
 

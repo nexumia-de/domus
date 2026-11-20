@@ -53,6 +53,7 @@ export const stringsEn = {
     apps: [
       { href: 'mixtura/', name: 'Drink Builder', what: 'A workbench for mixed drinks' },
       { href: 'culina/', name: 'Cook’s Notebook', what: 'A helper in the kitchen' },
+      { href: 'emptio/', name: 'Shopping List', what: 'The household’s shopping list' },
     ],
     syncTitle: 'Sync',
     syncIntro:

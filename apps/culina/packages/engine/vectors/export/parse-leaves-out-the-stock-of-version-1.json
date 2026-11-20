@@ -1,0 +1,70 @@
+{
+  "id": "parse-leaves-out-the-stock-of-version-1",
+  "description": "A version 1 file with four stock items and one ingredient reads: the ingredient is kept, the stock is left out and counted, and the file is at version 2 after the migration",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 1,
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour"
+        }
+      ],
+      "stock": [
+        {
+          "id": "s1",
+          "ref": {
+            "kind": "ingredient",
+            "id": "carrot"
+          }
+        },
+        {
+          "id": "s2",
+          "ref": {
+            "kind": "ingredient",
+            "id": "olive-oil"
+          },
+          "always": true
+        },
+        {
+          "id": "s3",
+          "ref": {
+            "kind": "component",
+            "id": "broth"
+          },
+          "x-emptio": {
+            "boughtOn": "2026-11-10"
+          }
+        },
+        {
+          "id": "s4",
+          "ref": {
+            "kind": "component",
+            "id": "broth"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "state": "prepared",
+          "always": false,
+          "preparedOn": "2026-11-16",
+          "useBy": "2026-11-20",
+          "note": "second shelf"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "counts": {
+      "ingredients": 1
+    },
+    "formatVersion": 2,
+    "stockLeftOut": 4
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (export version 2 has no stock; docs/decisions/stock-in-spaces.md), no kitchen figure is involved."
+}

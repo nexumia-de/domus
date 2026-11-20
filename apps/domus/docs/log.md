@@ -2,6 +2,7 @@
 
 ## 2026-11-20
 
+- **Emptio on the home page**: the list of apps has a third card, Shopping List (`emptio/`). The browser harness and the fake of GitHub's API moved to the host package (`@nexumia-de/hospes/testing/*`), because Emptio's browser checks use them too; `e2e/run.mjs` and `scenario.mjs` import them from there.
 - **A space on this device only** (roadmap goal 6, [roadmap](../../../docs/roadmap.md)): the app handles the space an app makes before sync is set up (storage type `device` of `@nexumia-de/hospes`). Home and the space's page say "On this device only" in place of a storage and a sync state; no cycle, invite or access change for it; rename is local; removing it says that its data is deleted for good. New route `#/spaces/<id>/connect`, **Connect a storage**: the storage and access steps of Create a space, now shared code (`screens/storage-steps.ts`, `screens/wizard.ts`), then `connectStorage` in `logic/actions.ts` (check, store, name into `space`, one cycle); a failing cycle puts the space back on this device only with its data. `storageWords` takes the texts. Tests: flows for connect (success, refused storage, failing cycle, a file already there) and rename without a cycle; the browser checks seed such a space with the host package's code, connect it to the fake GitHub and join it from a second device. [Screens](screens.md#a-space-on-this-device-only).
 
 ## 2026-11-19

@@ -8,8 +8,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { build } from 'esbuild';
 import { buildApp } from '../build.mjs';
-import { startFakeGithub } from './fake-github.mjs';
-import { check, failureCount, launch, serveDir } from './harness.mjs';
+import { startFakeGithub } from '@nexumia-de/hospes/testing/fake-github';
+import { check, failureCount, launch, serveDir } from '@nexumia-de/hospes/testing/browser';
 import { deviceOnly, makeShots, narrow, scenario } from './scenario.mjs';
 
 const work = mkdtempSync(join(tmpdir(), 'domus-e2e-'));

@@ -5,9 +5,9 @@
     "kind": "export_parse",
     "file": {
       "format": "culina-export",
-      "formatVersion": 1,
+      "formatVersion": 2,
       "x-note": "ok",
-      "stock": []
+      "tastings": []
     }
   },
   "expected": {

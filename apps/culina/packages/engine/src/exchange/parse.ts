@@ -12,8 +12,25 @@ import {
   type RecordValidators,
 } from './types';
 
-/** The migrations from older export versions; none yet, the format has never changed. */
-export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [];
+/** The version from which a file holds no stock (docs/exchange.md#versions). */
+const WITHOUT_STOCK = 2;
+
+/**
+ * The migrations from older export versions. 1 -> 2 leaves `stock` out: stock is the shared
+ * collection of a space since version 2, and a replace import must not delete what another app
+ * or person put there.
+ */
+export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [
+  {
+    from: 1,
+    to: 2,
+    migrate: (file) => {
+      const out = { ...file };
+      delete out.stock;
+      return out;
+    },
+  },
+];
 
 export interface ParseOptions {
   /** Test hook: the newest version this reader knows (default `EXPORT_VERSION`). */
@@ -83,6 +100,15 @@ export function parseExport(
   if (!isObject(parsed)) return fail({ code: 'not-an-export' });
   const version = versionOf(parsed, current);
   if (typeof version !== 'number') return version;
+  // Counted before the chain runs, so the host can say that the file's stock was left out.
+  const stock = parsed.stock;
+  const stockLeftOut =
+    options.migrations === undefined &&
+    version < WITHOUT_STOCK &&
+    current >= WITHOUT_STOCK &&
+    Array.isArray(stock)
+      ? stock.length
+      : 0;
   const done = migrated(parsed, version, current, options.migrations ?? EXPORT_MIGRATIONS);
   if ('error' in done) return done;
   const { file } = done;
@@ -127,6 +153,7 @@ export function parseExport(
       ...(typeof seedVersion === 'string' ? { seedVersion } : {}),
       ...(typeof exportedAt === 'string' ? { exportedAt } : {}),
       records,
+      ...(stockLeftOut > 0 ? { stockLeftOut } : {}),
     },
   };
 }

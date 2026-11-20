@@ -1,7 +1,7 @@
 // The Stock screen: what is there, the nearest use-by first, then by name. Rows show only the
 // detail that was entered; remaining days are plain words, never colour. Remove acts at once
 // with the toast and Undo.
-import { listStock, removeStockItem, restoreStock, storeProblem, today } from '../../notebook';
+import { listStock, removeStockItem, restoreStock, stockUnavailable, today } from '../../notebook';
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
@@ -10,6 +10,7 @@ import { strings } from '../../strings';
 import { cookTabs } from '../cook/tabs';
 import { storeText } from '../editor/store-text';
 import { stockLookup } from './lookup';
+import { stockSpaceSection } from './stock-space';
 
 const t = strings.stock;
 
@@ -55,9 +56,9 @@ const row = (r: StockRow): HTMLElement => {
 export const stockScreen = (): HTMLElement => {
   const section = el('section', 'screen stock-screen');
   section.append(el('h1', undefined, t.title), cookTabs('stock'));
-  const problem = storeProblem();
-  if (problem !== undefined) {
-    section.append(el('p', 'note-quiet', storeText(problem)));
+  // Stock lives in the database all apps share, not in the notebook's own store.
+  if (stockUnavailable()) {
+    section.append(el('p', 'note-quiet', t.unavailable));
   } else {
     const add = el('a', 'btn primary new-link', t.add);
     add.href = hashFor('stock', undefined, 'add');
@@ -71,6 +72,8 @@ export const stockScreen = (): HTMLElement => {
     list.append(...rows.map(row));
     section.append(list);
   }
+  const space = stockSpaceSection();
+  if (space !== undefined) section.append(space);
   const guidance = el('details', 'guidance');
   guidance.append(el('summary', undefined, t.guidanceSummary), el('p', undefined, t.guidance));
   section.append(guidance);

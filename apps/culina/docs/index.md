@@ -40,6 +40,8 @@ links. Change history is in [log.md](log.md).
 
 - [Design](design.md) - Light and dark with a user override, the Beet accent, colour, type and spacing tokens with computed contrast ratios, the ratio, component, dish and editor screens, icon rules, the 720 px breakpoint and screenshots.
 
+- [Stock orderings](stock-orderings.md) - What the stock does when things happen in an unlucky order (a change during a cycle, a stale screen, the move of old items interrupted, two tabs, two devices), with the test that pins each ordering or "not pinned".
+
 - [Export, import, matching and Cooklang](exchange.md) - The engine's pure rules of the export file, merging by id with conflicts, remapping ingredient ids, matching names to ingredients, and the Cooklang reader and writer written from the specification, with what is supported and what is lost; vectors in `packages/engine/vectors/`.
 
 # Decisions
@@ -51,7 +53,8 @@ links. Change history is in [log.md](log.md).
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
 - [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship by country as full recipes with their techniques, first Germany, Italy, France and Spain.
 - [Hosting](decisions/hosting.md) - Decided: the app is a static folder any host or own server can serve; Cloudflare is the first host and only an adapter in this repository, no shared deploy code.
-- [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock.
+- [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock; for stock replaced by stock in spaces.
+- [Stock in spaces](decisions/stock-in-spaces.md) - Decided 2026-11-20: stock is the shared collection `stock` of a space, the same collection as Mixtura's with Culina's optional fields; the record, batches, unticking, the space used, sync, the one move of old items, the export without stock, how the catalogues will meet, what is lost.
 
 # Development
 

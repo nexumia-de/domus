@@ -1,0 +1,35 @@
+{
+  "kind": "suggest",
+  "title": "A thing bought several times is offered once, with the spelling and category of its latest entry; it counts as open when one of its entries is",
+  "input": {
+    "query": "but",
+    "earlier": [
+      {
+        "id": "e1",
+        "name": "butter",
+        "categoryId": "other",
+        "addedAt": "2026-10-01T08:00:00Z",
+        "bought": { "at": "2026-10-02T17:00:00Z" }
+      },
+      {
+        "id": "e2",
+        "name": "Butter",
+        "categoryId": "dairy",
+        "addedAt": "2026-11-01T08:00:00Z",
+        "bought": { "at": "2026-11-02T17:00:00Z" }
+      },
+      {
+        "id": "e3",
+        "name": "Buttermilk",
+        "categoryId": "dairy",
+        "addedAt": "2026-11-03T08:00:00Z"
+      }
+    ]
+  },
+  "expected": {
+    "suggestions": [
+      { "name": "Butter", "categoryId": "dairy", "open": false },
+      { "name": "Buttermilk", "categoryId": "dairy", "open": true }
+    ]
+  }
+}

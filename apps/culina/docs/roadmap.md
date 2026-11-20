@@ -40,6 +40,11 @@ in [how chefs work](chef-practice.md) and
    catalogue by role.
 6. **Sync.** The same mechanism as Mixtura in three units (place,
    library, profile), encrypted, over storage the user configured
-   ([decision](decisions/sync.md)).
+   ([decision](decisions/sync.md)). Partly done on 2026-11-20: **stock**
+   is the shared collection `stock` of a space, synced by the host
+   package with the household's other apps
+   ([decision](decisions/stock-in-spaces.md)); places are spaces now.
+   Not done: the library (components, dishes, own ingredients, tasting
+   notes) and the profile.
 7. **Later.** Curated affinities with sources, cost, prep lists,
    allergens.

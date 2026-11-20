@@ -100,10 +100,11 @@ export interface DishRecord {
 }
 
 /**
- * A stock record. Fields of other apps (`x-...`) are carried along: an edit changes a copy of the
- * stored record and never rebuilds it from the typed fields.
+ * A stock item as Culina shows it. It is not stored as such: the shared collection `stock` of a
+ * space holds one record per thing, and src/shared-stock/value.ts is the one boundary between the
+ * two. The id is the record's key, `key~n` for the n-th further batch.
  */
-export type StockRecord = StockItem & { [extra: `x-${string}`]: unknown };
+export type StockRecord = StockItem;
 
 export type { FoodState, IngredientFacts };
 

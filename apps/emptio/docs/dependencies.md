@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Dependencies
-description: Every dependency of Emptio with exact version, licence and use; none at run time yet.
+description: Every dependency of Emptio with exact version, licence and use; at run time two MIT crypto libraries in the native app only.
 tags: [dependencies, licences]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 ---
@@ -12,12 +12,20 @@ Versions are pinned exactly in `package.json` and equal Culina's, so
 the repositories stay aligned; the lockfile pins the rest. Licences read
 from each package's `package.json` in `node_modules`. Emptio itself is
 AGPL-3.0-or-later ([LICENSE](../LICENSE)); all dependencies are
-development only and MIT or Apache-2.0, compatible with it.
+MIT or Apache-2.0, compatible with it.
 
 ## Runtime
 
-None. materia follows with the first code that uses it
-([development](development.md#layout)).
+| Package          | Version | Licence | Use                                                                                               |
+| ---------------- | ------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `@noble/ciphers` | 2.4.0   | MIT     | AES-256-GCM for the native app, where GJS has no Web Crypto ([native Linux app](native-linux.md)) |
+| `@noble/hashes`  | 2.4.0   | MIT     | HKDF-SHA-256 for the same                                                                         |
+
+Both are bundled into the native app only; their licence texts are in
+`packages/linux/data/licenses/` and are installed by the Flatpak
+manifest. The web app has no runtime dependency outside this repository
+(hospes and materia). The native app runs on GJS, GTK 4, libadwaita and
+libsoup 3 of the GNOME runtime (LGPL), which it uses and does not ship.
 
 ## Development only
 

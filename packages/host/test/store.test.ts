@@ -1,7 +1,8 @@
-// One suite, run against both Store implementations.
+// One suite, run against every Store implementation.
 import { IDBFactory } from 'fake-indexeddb';
 import { describe, expect, test } from 'vitest';
 import { StoreBlocked, StoreOpenError, createIdbStore } from '../src/idb-store';
+import { StoreFileError, createFileStore, createMemoryFiles } from '../src/file-store';
 import { createMemoryStore } from '../src/memory-store';
 import type { Store, StoredSpace } from '../src/store';
 
@@ -20,6 +21,7 @@ const rec = (key: string, value: unknown, at = '2026-11-19T10:00:00.000Z') => ({
 describe.each<[string, () => Store]>([
   ['memory', createMemoryStore],
   ['indexeddb', () => createIdbStore({ factory: new IDBFactory() })],
+  ['files', () => createFileStore(createMemoryFiles())],
 ])('Store: %s', (_name, make) => {
   test('spaces: put, get, list, replace, remove', async () => {
     const s = make();
@@ -163,5 +165,58 @@ describe('IndexedDB store', () => {
       },
     } as unknown as IDBFactory;
     await expect(createIdbStore({ factory }).listSpaces()).rejects.toBeInstanceOf(StoreBlocked);
+  });
+});
+
+describe('file store', () => {
+  test('one file for the spaces and one per collection, named so that nothing leaves the folder', async () => {
+    const files = createMemoryFiles();
+    const s = createFileStore(files);
+    await s.putSpace(sp('abc'));
+    await s.writeCollection('abc', 'list', { records: [rec('k', 1)] });
+    await s.writeCollection('abc', '../../etc/x.y', { records: [] });
+    expect([...files.all.keys()].sort()).toEqual([
+      'abc.%2E%2E%2F%2E%2E%2Fetc%2Fx%2Ey.json',
+      'abc.list.json',
+      'spaces.json',
+    ]);
+  });
+
+  test('two stores on the same files share the data (a restart of the app)', async () => {
+    const files = createMemoryFiles();
+    const first = createFileStore(files);
+    await first.putSpace(sp('a', { name: 'Home' }));
+    await first.writeCollection('a', 'list', { records: [rec('k', 1)], syncedAt: 't', etag: 'e' });
+    const second = createFileStore(files);
+    expect((await second.getSpace('a'))?.name).toBe('Home');
+    expect(await second.readCollection('a', 'list')).toEqual({
+      records: [rec('k', 1)],
+      syncedAt: 't',
+      etag: 'e',
+    });
+  });
+
+  test('removing a space leaves the files of a space whose id starts the same', async () => {
+    const files = createMemoryFiles();
+    const s = createFileStore(files);
+    await s.putSpace(sp('a'));
+    await s.putSpace(sp('ab'));
+    await s.writeCollection('a', 'list', { records: [rec('k', 1)] });
+    await s.writeCollection('ab', 'list', { records: [rec('k', 2)] });
+    await s.removeSpace('a');
+    expect([...files.all.keys()].sort()).toEqual(['ab.list.json', 'spaces.json']);
+  });
+
+  test('a file that cannot be read is an error and is never written over', async () => {
+    const files = createMemoryFiles();
+    const s = createFileStore(files);
+    files.write('spaces.json', '{ half a fi');
+    files.write('a.list.json', '"not a state"');
+    await expect(s.listSpaces()).rejects.toBeInstanceOf(StoreFileError);
+    await expect(s.putSpace(sp('a'))).rejects.toBeInstanceOf(StoreFileError);
+    await expect(s.readCollection('a', 'list')).rejects.toBeInstanceOf(StoreFileError);
+    await expect(s.changeRecords('a', 'list', (c) => c)).rejects.toBeInstanceOf(StoreFileError);
+    expect(files.all.get('spaces.json')).toBe('{ half a fi');
+    expect(files.all.get('a.list.json')).toBe('"not a state"');
   });
 });

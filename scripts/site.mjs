@@ -8,6 +8,8 @@ export const apps = [
     db: 'mixtura',
   },
   { name: 'culina', dist: 'apps/culina/packages/app/dist', cachePrefix: 'culina-', db: 'culina' },
+  // Emptio keeps the list in the database the apps share and has none of its own.
+  { name: 'emptio', dist: 'apps/emptio/packages/app/dist', cachePrefix: 'emptio-' },
 ];
 
 /**

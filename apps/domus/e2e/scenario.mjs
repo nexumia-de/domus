@@ -5,8 +5,16 @@
 // the space an app made before sync was set up, and its way to a storage.
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { MAIN, MULTI, NOREPOS, PUBLIC, READONLY, TOKENS, WRONG } from './fake-github.mjs';
-import { audit, check, everything, newDevice } from './harness.mjs';
+import {
+  MAIN,
+  MULTI,
+  NOREPOS,
+  PUBLIC,
+  READONLY,
+  TOKENS,
+  WRONG,
+} from '@nexumia-de/hospes/testing/fake-github';
+import { audit, check, everything, newDevice } from '@nexumia-de/hospes/testing/browser';
 
 const DAV = 'https://dav.example';
 
@@ -116,7 +124,7 @@ export async function scenario(browser, run) {
     'the page language follows the browser',
   );
   const links = await a.$$eval('.apps a', (list) => list.map((x) => x.getAttribute('href')));
-  ok(links.join() === 'mixtura/,culina/', `home: lists both apps (${links.join()})`);
+  ok(links.join() === 'mixtura/,culina/,emptio/', `home: lists the apps (${links.join()})`);
   ok((await mainText(a)).includes(t.home.empty), 'home: the empty state says what a space is');
   ok(
     (await a.locator('[data-testid=create-space]').count()) === 1,

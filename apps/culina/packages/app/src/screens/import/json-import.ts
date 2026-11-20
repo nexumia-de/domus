@@ -46,6 +46,10 @@ export async function renderJsonImport(
   if (content.exportedAt !== undefined) {
     sections.append(el('p', 'muted', text.exportedOn(content.exportedAt.slice(0, 10))));
   }
+  // An older file's stock is not imported: stock is the shared collection of a space now.
+  if (content.stockLeftOut !== undefined) {
+    sections.append(el('p', 'note stock-left-out', text.stockLeftOut(content.stockLeftOut)));
+  }
   if (total(file) === 0) {
     sections.append(el('p', 'note', text.nothingInFile));
     return;

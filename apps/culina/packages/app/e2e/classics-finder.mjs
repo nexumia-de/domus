@@ -8,6 +8,7 @@ import { overflow, smallTargets } from './measure.mjs';
 import { content, PAN, SECOND } from './classics-fixture.mjs';
 import { TODAY } from './cook-fixture.mjs';
 import { engine } from './notebook-fixture.mjs';
+import { addStock } from './stock-helpers.mjs';
 
 const QUERY = `?no-sw&e2e-store&e2e-content&e2e-now=${TODAY}T08:00:00Z`;
 const BUTTER = 'fdc-173410';
@@ -23,29 +24,26 @@ const open = async (page, origin, hash) => {
   await page.goto(`${origin}/${QUERY}#/${hash}`);
   await page.getByRole('heading', { level: 1 }).first().waitFor();
 };
-const stockOf = (ids) => ids.map((id) => ({ id: `s-${id}`, ref: { kind: 'ingredient', id } }));
+const stockOf = (ids) => ids.map((id) => ({ id, ref: { kind: 'ingredient', id } }));
 const store = async (page, ids) => {
   const failed = await page.evaluate(
-    async ({ ingredients, stock }) => {
+    async (ingredients) => {
       const opened = await globalThis.__culinaStore;
       const out = [];
-      for (const [kind, list] of [
-        ['ingredients', ingredients],
-        ['stock', stock],
-      ]) {
-        for (const record of list) {
-          const done = await opened.store.put(kind, record);
-          if (!done.ok) out.push(`${kind} ${record.id}`);
-        }
+      for (const record of ingredients) {
+        const done = await opened.store.put('ingredients', record);
+        if (!done.ok) out.push(`ingredients ${record.id}`);
       }
       return out;
     },
-    {
-      ingredients: ids.map((id) => ({ id, name: NAMES[id] })),
-      stock: stockOf(ids),
-    },
+    ids.map((id) => ({ id, name: NAMES[id] })),
   );
   if (failed.length > 0) throw new Error(`fixture not stored: ${failed.join('; ')}`);
+  // Stock is the shared collection of a space: one tick per ingredient.
+  await addStock(
+    page,
+    ids.map((id) => ({ ref: { kind: 'ingredient', id } })),
+  );
 };
 /** The engine's classics for a stock and how much may lack, as the screen is specified. */
 const expected = (ids, maxMissing) => {

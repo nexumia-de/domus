@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Shopping List
+Name[de]=Einkaufsliste
+Comment=The household's shopping list
+Comment[de]=Die Einkaufsliste des Haushalts
+Exec=de.nexumia.Emptio
+Icon=de.nexumia.Emptio
+Terminal=false
+Categories=GTK;Utility;
+Keywords=shopping;groceries;list;household;einkaufen;einkaufsliste;
+Keywords[de]=Einkaufen;Einkaufsliste;Haushalt;Lebensmittel;
+StartupNotify=true
+X-Purism-FormFactor=Workstation;Mobile;

@@ -14,7 +14,7 @@ const swapId = (id: unknown, map: ReadonlyMap<string, string>): unknown =>
 
 /**
  * A copy of `records` in which every reference to an ingredient id in `map` (line and slot
- * refs, stock refs, `parentId`, both ends of an affinity) names the mapped id, and the mapped
+ * refs, `parentId`, both ends of an affinity) names the mapped id, and the mapped
  * ingredients themselves are left out: the notebook's own record stands for them.
  */
 export function remapIngredients(
@@ -31,7 +31,6 @@ export function remapIngredients(
   for (const r of copy.dishes) {
     r.slots = (r.slots as { ref: unknown }[]).map((s) => ({ ...s, ref: swapRef(s.ref, map) }));
   }
-  for (const r of copy.stock) r.ref = swapRef(r.ref, map);
   for (const r of copy.affinities) {
     r.a = swapId(r.a, map);
     r.b = swapId(r.b, map);

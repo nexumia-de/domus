@@ -101,12 +101,35 @@ checks green. The apps' own goals are in their roadmaps
    real GitHub**; the Docker WebDAV server, the CORS fronts and the
    integration test left with Mixtura's sync code and come back with
    goal 10.
-7. **Emptio on spaces.** Its goals 1 and 2 (the list, shared) on the
-   shared packages, with the short polling.
-8. **Culina on spaces.** Stock shared with Mixtura's: the same
-   collection `stock`, where Culina may add its optional fields (amount,
-   state); how the two ingredient catalogues meet is decided here. Its
-   sync goal.
+7. **Emptio on spaces.** Done on 2026-11-20
+   ([behaviour](../apps/emptio/docs/behaviour.md)). The shopping list is
+   built: entries with priority and category, suggestions from earlier
+   entries, ticking, clearing with Undo, categories, English and German,
+   installable and offline under `/emptio/`. The list is the collections
+   `list` and `list-categories` of a space; a shared one is read again
+   every 15 seconds. What two apps need moved to the host package with
+   it: the loops of an app (`createCollectionSync`, from Mixtura), the
+   choice of the shown space, a service worker, and the browser harness
+   with the fake of GitHub's API (from the Household app).
+   **Not done**: adding from a food catalogue (there is no shared
+   catalogue yet), export and import, **nothing was run against the real
+   GitHub**.
+8. **Culina on spaces.** Stock done on 2026-11-20
+   ([decision](../apps/culina/docs/decisions/stock-in-spaces.md)).
+   Culina's stock is the collection `stock` of a space, the same one
+   Mixtura writes: the key is the ingredient id or a component's family
+   id, the value `{ present, … }` with the shared names `openedOn`,
+   `bestBefore` and `note` and Culina's own `amount`, `state`, `always`,
+   `storage` and `batches`; fields of other apps are kept. Items from
+   before are moved into the space once. One loop of the host package
+   per shared space; Culina's export no longer holds stock (format
+   version 2). **How the catalogues meet** (the agent's choice, open to
+   the owner): the ids of the two apps do not overlap, each app shows
+   the records whose key it knows, and a table of equal things will live
+   with the shared catalogue package (cibus), which is not built.
+   **Not done**: Culina's libraries and profile (recipes, settings) are
+   not synced; nothing was run against a real storage; a shared space
+   was never seen in Culina in a browser.
 9. **Sync server.** `server/`: the contract, the Worker and the
    container from one code base, the setup link, push; its adapter;
    tests that run the same suite against both. For households that
@@ -117,8 +140,19 @@ checks green. The apps' own goals are in their roadmaps
     nginx and Caddy fronts and the setup guide are in the history of
     `apps/mixtura`), then S3.
 
+11. **Native Linux apps.** Decided on 2026-11-20
+    ([decision](decisions/native-linux-gjs.md)): libadwaita screens in
+    GJS for Phosh that reuse the engines and the sync code. **Emptio is
+    built** ([native Linux app](../apps/emptio/docs/native-linux.md)):
+    the list, an entry, categories, preferences, joining a space by
+    invitation link, a Flatpak manifest and CI jobs. **Not done**: the
+    Flatpak bundles CI builds were never installed and nothing ran on a
+    phone; Mixtura and Culina
+    follow, each in a session of its own; the platform pieces move to a
+    shared package with the second app.
+
 Not planned: Dropbox, Google Drive and OneDrive. They need an app
 registration with each provider that the owner does not want to hold;
 the storage port leaves room for someone else to add them.
 
-Goals 6 to 8 can change places; 9 and 10 can start once goal 3 is done.
+Goals 6 to 8 can change places; 9 to 11 can start once goal 3 is done.

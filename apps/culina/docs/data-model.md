@@ -101,19 +101,19 @@ code and **copies nothing**: the schemas here are written for Culina's
 model. Where the shared code exists, the "general" columns below are
 replaced by a reference to it.
 
-| Entity                  | General model (Mixtura inventory module)                  | Kitchen-specific here                                                                     |
-| ----------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Amounts and units       | `amounts/`: number plus unit, conversion, scaling         | Kitchen unit set; mass is canonical; density and unit weight per ingredient               |
-| Ingredient              | `ingredients/` tree, inheritance, shelf life              | Yield per state (as purchased to edible), season, allergens, density, unit weight         |
-| Ratio template          | `templates/` roles, slots, matching, variants             | Parts by mass with an anchor role, ranges from sourced rows, derivatives as changes       |
-| Component               | `ingredients/prepared.ts`: nesting, cycles, yield         | Yield by weight, percentage lines, baker's percentage base, method steps                  |
-| Dish                    | `templates/slots.ts`: roles filled by things              | Dish roles (main, sauce, crunch, acid, garnish, starch) and portions                      |
-| Version                 | `specs/`: versions, family, diff                          | Diff fields are lines, yield and method                                                   |
-| Tasting note            | none                                                      | A note with a date on one version of a component or dish                                  |
-| Stock item              | `stock/` and `shelf/`: what is held, dates, fresh or past | Amount and state on stock, date prepared, use by                                          |
-| Affinity                | `affinity.schema.json` exists in Mixtura                  | Context is cuisine, season, technique; later (issue 27 and the pairing work), no code yet |
-| Export file             | `exchange/`: envelope, version check, migrations          | Culina's entity kinds                                                                     |
-| Nutrition, salt figures | none (balance is drink-only)                              | Kitchen rules, derived; see [nutrition](nutrition-evaluation.md)                          |
+| Entity                  | General model (Mixtura inventory module)                  | Kitchen-specific here                                                                      |
+| ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Amounts and units       | `amounts/`: number plus unit, conversion, scaling         | Kitchen unit set; mass is canonical; density and unit weight per ingredient                |
+| Ingredient              | `ingredients/` tree, inheritance, shelf life              | Yield per state (as purchased to edible), season, allergens, density, unit weight          |
+| Ratio template          | `templates/` roles, slots, matching, variants             | Parts by mass with an anchor role, ranges from sourced rows, derivatives as changes        |
+| Component               | `ingredients/prepared.ts`: nesting, cycles, yield         | Yield by weight, percentage lines, baker's percentage base, method steps                   |
+| Dish                    | `templates/slots.ts`: roles filled by things              | Dish roles (main, sauce, crunch, acid, garnish, starch) and portions                       |
+| Version                 | `specs/`: versions, family, diff                          | Diff fields are lines, yield and method                                                    |
+| Tasting note            | none                                                      | A note with a date on one version of a component or dish                                   |
+| Stock item              | `stock/` and `shelf/`: what is held, dates, fresh or past | Amount and state on stock, date prepared, use by; the shared collection `stock` of a space |
+| Affinity                | `affinity.schema.json` exists in Mixtura                  | Context is cuisine, season, technique; later (issue 27 and the pairing work), no code yet  |
+| Export file             | `exchange/`: envelope, version check, migrations          | Culina's entity kinds                                                                      |
+| Nutrition, salt figures | none (balance is drink-only)                              | Kitchen rules, derived; see [nutrition](nutrition-evaluation.md)                           |
 
 The shared model's seams matter for the shapes: roles are **data** (an id,
 not a closed union), the measure of a template is a parameter (here
@@ -493,11 +493,18 @@ same time never lose one.
 
 ## Stock item
 
-What the user has. Schema: `stock.schema.json`. An item can be nothing
-but "this ingredient (or prepared component) is there": only `id` and
-`ref` are required, and ticking in the app writes exactly that. The
-kitchen's detail stays in the model as optional fields and can be added
-to any item at any time. Items are stored; days left are derived.
+What the user has. Stock is not Culina's own data: it is the collection
+`stock` of a **space** in the database `domus` that all apps on the
+address share, the same collection as Mixtura's, synced with the space
+([stock in spaces](decisions/stock-in-spaces.md),
+[spaces on the host](../../../packages/host/docs/spaces.md)). Culina's own
+database keeps no stock; a device without a space gets one on this device
+only. Schema of the item as Culina shows it: `stock.schema.json`. An item
+can be nothing but "this ingredient (or prepared component) is there":
+ticking writes exactly that. The kitchen's detail stays optional and can
+be added to any item at any time. Days left are derived.
+
+**The item in memory** (what the screens and the engine read):
 
 | Field        | Type    | Required | Meaning                                                                      |
 | ------------ | ------- | -------- | ---------------------------------------------------------------------------- |
@@ -511,30 +518,58 @@ to any item at any time. Items are stored; days left are derived.
 | `storage`    | string  | no       | Where it lies: `pantry`, `fridge` or `freezer`                               |
 | `note`       | string  | no       | Free text                                                                    |
 
-Stored as, for presence only and with every detail:
+`id` is not stored: it is the record's key for the first item and
+`key~n` for the n-th further batch.
+
+**The record in the collection** (one per thing; translated in one file,
+`packages/app/src/shared-stock/value.ts`):
+
+- **Key**: the ingredient's id, or for a component the id of its family
+  (the first version), whichever version was ticked. Culina shows a
+  record whose key is an ingredient of the notebook, else a component
+  family of the notebook; any other record is left untouched.
+- **Value**: `present` (boolean, required; `false` means not there), then
+  the first item's fields under the shared names where the meaning is the
+  same: `openedOn` for `preparedOn`, `bestBefore` for `useBy`, `note`; and
+  Culina's own optional fields under their names: `amount`, `state`,
+  `always`, `storage`. Further items of the same thing (batches kept
+  apart) are objects with the same fields in `batches`. A value without a
+  boolean `present` is not shown and left untouched; a field that does
+  not fit is not shown and stays stored.
+- **Fields of other apps** (Mixtura's `moreBatches`, any other) are kept:
+  every write is worked out inside one atomic change from the value as
+  stored then, replacing only `present`, `amount`, `state`, `always`,
+  `storage`, `openedOn`, `bestBefore`, `note` and `batches`.
+- **Unticking** writes `present: false` without Culina's fields; the
+  record stays, so a merge can tell "out" from "never entered".
+
+Stored as, for presence only and with two batches:
 
 ```json
-{ "id": "u-5c1d…", "ref": { "kind": "ingredient", "id": "carrot" } }
+{ "key": "carrot", "updatedAt": "2026-11-18T08:00:00.000Z", "value": { "present": true } }
 ```
 
 ```json
 {
-  "id": "u-9a4e…",
-  "ref": { "kind": "component", "id": "u-77b2…" },
-  "amount": { "value": 400, "unit": "g" },
-  "state": "prepared",
-  "always": false,
-  "preparedOn": "2026-11-16",
-  "useBy": "2026-11-20",
-  "note": "second shelf"
+  "key": "u-77b2…",
+  "updatedAt": "2026-11-18T08:00:00.000Z",
+  "value": {
+    "present": true,
+    "amount": { "value": 400, "unit": "g" },
+    "state": "prepared",
+    "openedOn": "2026-11-16",
+    "bestBefore": "2026-11-20",
+    "note": "second shelf",
+    "batches": [{ "state": "prepared", "openedOn": "2026-11-18", "storage": "freezer" }]
+  }
 }
 ```
 
-Shared with other apps: rows are materia's sync record (`{ key,
-updatedAt, value }` or `{ key, updatedAt, deleted }`), so stock can sync
-later and another app can add items. Fields starting with `x-` written
-by another app are kept: Culina changes a copy of the stored record and
-never rebuilds it from the fields it knows.
+Items from before 2026-11-20 (Culina's own kind `stock`, `{ id, ref, ... }`)
+are moved into the used space once at the first start after the update
+and then cleared from Culina's database
+([decision](decisions/stock-in-spaces.md#the-one-move-of-old-items),
+[orderings](stock-orderings.md)).
 
 Days left, "use soon" and "past", the limiting shelf life of a dish and
 "what can I make, ranked by what must go first" are derived. If `useBy`
@@ -874,32 +909,31 @@ One JSON file with everything the user entered, validated by
 | Field           | Type     | Required | Meaning                    |
 | --------------- | -------- | -------- | -------------------------- |
 | `format`        | constant | yes      | `culina-export`            |
-| `formatVersion` | integer  | yes      | `1`                        |
+| `formatVersion` | integer  | yes      | `2`                        |
 | `seedVersion`   | string   | no       | Seed data the ids refer to |
 | `exportedAt`    | instant  | no       | Supplied by the host       |
 | `ingredients`   | array    | no       | Ingredient records         |
 | `templates`     | array    | no       | Template records           |
 | `components`    | array    | no       | Component records          |
 | `dishes`        | array    | no       | Dish records               |
-| `stock`         | array    | no       | Stock item records         |
 | `affinities`    | array    | no       | Affinity records           |
 | `tastings`      | array    | no       | Tasting note records       |
 
 ```json
 {
   "format": "culina-export",
-  "formatVersion": 1,
+  "formatVersion": 2,
   "seedVersion": "0",
   "exportedAt": "2026-11-17T12:00:00Z",
   "components": [],
-  "stock": []
+  "tastings": []
 }
 ```
 
 - `format` is the constant `culina-export`; `formatVersion` is an
   integer (the same name Mixtura uses; the issue called it
   `schemaVersion`). `seedVersion` names the seed data that ids refer to.
-- Arrays `ingredients`, `templates`, `components`, `dishes`, `stock`,
+- Arrays `ingredients`, `templates`, `components`, `dishes`,
   `affinities`, `tastings` are optional; the export holds user entities, seed entities
   stay in the seed.
 - **Forward compatibility.** A reader checks `format` and
@@ -915,6 +949,13 @@ One JSON file with everything the user entered, validated by
   into `tastings` (issue 50) changes the format, and `formatVersion`
   stays 1 on purpose: nothing is released, so no export file of the old
   shape exists outside development and no migration is written.
+- **Version 2 (2026-11-20): no stock.** Stock is the shared collection
+  `stock` of a space, not Culina's data
+  ([stock in spaces](decisions/stock-in-spaces.md)): a replace import
+  would otherwise delete what another app or person put into the space.
+  A version 1 file is still read; the migration 1 to 2 leaves its `stock`
+  out, `parseExport` counts what it left out (`stockLeftOut`), and the
+  import preview says so.
 - Identity: importing never overwrites a seed entity, and a user id that
   exists is merged or replaced by the user's choice. Built in issue 18 in
   the engine (`buildExport`, `parseExport`, `planMerge`; [exchange](exchange.md)),
@@ -1013,7 +1054,12 @@ in [Stored versus derived](#stored-versus-derived) is computed.
 **Database.** One IndexedDB database `culina`. One object store per entity
 kind, named like the collections of the [export file](#export-file):
 `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
-`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. Two more: `meta` (`key` to `value`; today
+`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. The
+object store `stock` holds nothing since 2026-11-20: stock is the shared
+collection of a space in the database `domus`, and `stock` only held the
+items of the version before until their one move
+([stock item](#stock-item)); nothing writes it, and `clearKind('stock')`
+empties it after the move. Two more: `meta` (`key` to `value`; today
 only `schemaVersion`, an integer that starts at 1) and `backup` (empty
 except during a migration). No device id yet; sync adds it to `meta`
 without a migration.

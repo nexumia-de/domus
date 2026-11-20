@@ -1,0 +1,96 @@
+/*
+ * Design tokens: the only file with colours, sizes and radii; every other stylesheet uses
+ * var(--...). The light set is on :root, the dark set twice: for the system preference
+ * (unless the person chose Light) and for the explicit Dark choice. The two dark blocks
+ * must stay identical.
+ */
+:root {
+  color-scheme: light dark;
+
+  --bg: #f7f9f6;
+  --surface: #ffffff;
+  --surface-2: #eaefe9;
+  --text: #171c18;
+  --text-muted: #4f5a52;
+  --border: #76827a;
+  --divider: #dbe2dc;
+  --accent: #1f6b4a;
+  --on-accent: #ffffff;
+  --accent-soft: #dfeee6;
+  --danger: #a5282c;
+  --now: #a5282c;
+  --now-soft: #f9e1e1;
+  --sometime: #4f5a52;
+  --error-bg: #f9e1e1;
+  --error-text: #7a1a1d;
+  --focus: #171c18;
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  --target: 44px;
+  --content-w: 36rem;
+  --focus-width: 3px;
+  --focus-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #121512;
+    --surface: #1b201c;
+    --surface-2: #262c27;
+    --text: #eef2ee;
+    --text-muted: #adb8b0;
+    --border: #818d85;
+    --divider: #323a34;
+    --accent: #86d1ab;
+    --on-accent: #0b2a1c;
+    --accent-soft: #1b3327;
+    --danger: #f08f92;
+    --now: #f08f92;
+    --now-soft: #3b1c1d;
+    --sometime: #adb8b0;
+    --error-bg: #3b1c1d;
+    --error-text: #f5b9bb;
+    --focus: #eef2ee;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #121512;
+  --surface: #1b201c;
+  --surface-2: #262c27;
+  --text: #eef2ee;
+  --text-muted: #adb8b0;
+  --border: #818d85;
+  --divider: #323a34;
+  --accent: #86d1ab;
+  --on-accent: #0b2a1c;
+  --accent-soft: #1b3327;
+  --danger: #f08f92;
+  --now: #f08f92;
+  --now-soft: #3b1c1d;
+  --sometime: #adb8b0;
+  --error-bg: #3b1c1d;
+  --error-text: #f5b9bb;
+  --focus: #eef2ee;
+}

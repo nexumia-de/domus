@@ -142,9 +142,10 @@ describe('invalid cases named by the issue', () => {
     expect(fails('tasting', (d: Doc) => (d.text = ''))).toBe(true);
     expect(fails('tasting', (d: Doc) => (d['x-mood'] = 'happy'))).toBe(false);
   });
-  test('export: only formatVersion 1 is read, entities are checked inside', () => {
-    expect(fails('export', (d: Doc) => (d.formatVersion = 2))).toBe(true);
-    expect(fails('export', (d: Doc) => (d.stock[0].state = 'frozen'))).toBe(true);
+  test('export: only formatVersion 2 is read, entities are checked inside, stock is no part', () => {
+    expect(fails('export', (d: Doc) => (d.formatVersion = 1))).toBe(true);
+    expect(fails('export', (d: Doc) => (d.stock = []))).toBe(true);
+    expect(fails('export', (d: Doc) => (d.ingredients[0].name = ''))).toBe(true);
     expect(fails('export', (d: Doc) => (d.tastings[0].ref.kind = 'stock'))).toBe(true);
   });
   test('ingredient names: language tag keys, a name and a source each, no unknown field', () => {

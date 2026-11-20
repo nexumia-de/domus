@@ -2,6 +2,7 @@
 // batch into stock, made today; choosing where it lies derives its use-by date from the component.
 import { check, watch } from './harness.mjs';
 import { addNewIngredient, formReady, layout, listStore, open } from './editor-helpers.mjs';
+import { stockItems } from './stock-helpers.mjs';
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const NAME = 'Prep sauce';
@@ -102,15 +103,15 @@ const intoStock = async (page, componentId) => {
   await page.locator('.stock-rows').waitFor();
   const names = await page.locator('.stock-rows .stock-link .entry-name').allTextContents();
   check(same(names, [NAME]), `${label}: the batch is in the stock list (${names.join(', ')})`);
-  const [item] = await listStore(page, 'stock');
+  const [item] = await stockItems(page);
   check(
     same(
       { ...item, id: undefined },
       {
         ref: { kind: 'component', id: componentId },
         state: 'prepared',
-        storage: 'freezer',
         preparedOn: today,
+        storage: 'freezer',
       },
     ),
     `${label}: stored with its place and date, and no use-by date written (${JSON.stringify(item)})`,

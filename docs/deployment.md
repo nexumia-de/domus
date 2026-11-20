@@ -37,11 +37,10 @@ looked at it in a browser yet.
 | `/`         | `apps/domus/dist` (Household, an app) |
 | `/mixtura/` | `apps/mixtura/packages/app/dist`      |
 | `/culina/`  | `apps/culina/packages/app/dist`       |
+| `/emptio/`  | `apps/emptio/packages/app/dist`       |
 
-The list is `scripts/site.mjs`. Emptio is added there when it has a
-build. Both apps already used relative addresses for every file, their
-manifest (`id`, `scope`, `start_url` are `./`) and their service worker,
-so each is a PWA of its own in its folder and installs alone.
+The list is `scripts/site.mjs`. Emptio is in it since 2026-11-20; it has
+no database of its own (the list is in the shared `domus`).
 
 **The root page is the Household app** (`apps/domus`, built by
 `npm run build -w @domus/app` like the others): the list of the apps and the
@@ -82,7 +81,8 @@ serves `./dist` the way Cloudflare does:
   its own on activation, which was right on its own address and would
   have removed Culina's offline copy here; it now deletes only caches
   named `mixtura-…`;
-- the database names differ (`mixtura`, `culina`);
+- the database names differ (`mixtura`, `culina`; Emptio has none of its
+  own);
 - every app loads offline;
 - no console error and no request to another host;
 - the root app loads, lists both apps, has no manifest and registers no

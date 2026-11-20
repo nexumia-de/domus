@@ -72,4 +72,29 @@ export const stockStringsDe: typeof stockStrings = {
     'Diese Einheit lässt sich ohne Dichte oder Stückgewicht nicht mit der im Vorrat vergleichen.',
   left: (amount: string): string => `${amount} übrig.`,
   notFound: 'Dieser Eintrag ist nicht mehr im Vorrat.',
+  space: { home: 'Zuhause', unnamed: 'Space ohne Namen' },
+  spaceLabel: 'Vorrat von',
+  spaceHint:
+    'Jeder Space hat seinen eigenen Vorrat, geteilt mit den anderen Apps des Haushalts. Die App Haushalt richtet Spaces ein.',
+  household: 'Spaces in der App Haushalt',
+  unavailable:
+    'Der Vorrat lässt sich nicht öffnen: Dieser Browser gibt der Seite keinen gemeinsamen Speicher (ein privates Fenster?).',
+  status: {
+    deviceOnly: 'Nur auf diesem Gerät.',
+    never: 'Noch nicht abgeglichen.',
+    syncing: 'Wird abgeglichen …',
+    inStep: 'Abgeglichen mit dem Haushalt.',
+    notInStep: (why: string): string => `Nicht abgeglichen: ${why}. Siehe App Haushalt.`,
+    reasons: {
+      access: 'der Speicher hat den Zugriff abgelehnt',
+      notFound: 'der Speicher wurde nicht gefunden',
+      unreachable: 'der Speicher war nicht erreichbar',
+      wait: 'der Speicher bittet zu warten',
+      conflict: 'ein anderes Gerät hat gerade geschrieben',
+      storage: 'diese Version kennt den Speicher nicht',
+      otherSpace: 'die Datei im Speicher gehört zu einem anderen Space',
+      newer: 'die Datei im Speicher braucht eine neuere Version der App',
+      unreadable: 'die Datei im Speicher ließ sich nicht lesen',
+    },
+  },
 };

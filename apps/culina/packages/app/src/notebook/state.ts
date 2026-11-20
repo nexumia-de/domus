@@ -2,22 +2,20 @@
 // opened and read once at startup (start.ts); writes go through the store first and only then
 // change the cache (actions.ts). Without a store the cache is the empty, read-only notebook.
 import type { SkillRecord } from '@culina/engine';
+import type { StockSpace } from '../shared-stock/space';
 import type { ErrorCode, Store } from '../store';
-import type {
-  ComponentRecord,
-  DishRecord,
-  IngredientRecord,
-  StockRecord,
-  TastingRecord,
-} from '../records';
+import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
 
 export interface NotebookState {
   ingredients: IngredientRecord[];
   components: ComponentRecord[];
   dishes: DishRecord[];
   tastings: TastingRecord[];
-  /** What is there, in the order the store lists it; the screens sort. */
-  stock: StockRecord[];
+  /**
+   * What is there: the collection `stock` of the used space, in the database all apps share
+   * (src/shared-stock). Undefined before the start and in tests that do not need it.
+   */
+  stockSpace: StockSpace | undefined;
   /** Which techniques the user marked as learned: one record per technique. */
   skills: SkillRecord[];
   /** Undefined when the store could not be opened. */
@@ -33,7 +31,7 @@ export const state: NotebookState = {
   components: [],
   dishes: [],
   tastings: [],
-  stock: [],
+  stockSpace: undefined,
   skills: [],
   store: undefined,
   problem: undefined,
@@ -69,7 +67,8 @@ export const reset = (): void => {
   state.components = [];
   state.dishes = [];
   state.tastings = [];
-  state.stock = [];
+  state.stockSpace?.stop();
+  state.stockSpace = undefined;
   state.skills = [];
   state.store = undefined;
   state.problem = undefined;

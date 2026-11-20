@@ -22,6 +22,11 @@ export interface Store extends ReadStore {
   put(kind: Kind, record: unknown): Promise<Result<{ row: Row }>>;
   /** Writes a tombstone; the row is never deleted. */
   remove(kind: Kind, id: string): Promise<Result<{ row: Row }>>;
+  /**
+   * Deletes every row of a kind, tombstones included. Only for `stock`, once its items moved into
+   * the shared collection of a space (src/shared-stock/legacy.ts).
+   */
+  clearKind(kind: 'stock'): Promise<Result>;
   readonly schemaVersion: number;
   /** Unfinished forms: their own object store, not validated, not exported or synced. */
   readonly drafts: Drafts;
@@ -111,6 +116,18 @@ export const readWriteStore = (
       }));
       storeLog('put', { kind, count: 1, ids: [toId(id)] });
       return row ? { ok: true, row } : fail({ code: 'unavailable' });
+    } catch (error) {
+      return failed(error);
+    }
+  },
+  async clearKind(kind) {
+    try {
+      await run(db, [kind], 'readwrite', (tx) => {
+        tx.objectStore(kind).clear();
+        return () => undefined;
+      });
+      storeLog('clear', { kind });
+      return { ok: true };
     } catch (error) {
       return failed(error);
     }

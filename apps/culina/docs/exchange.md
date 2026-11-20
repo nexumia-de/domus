@@ -43,8 +43,8 @@ How the app uses them: [behaviour](behaviour.md#export-and-import).
   number from 1 (`bad-version`); a higher version than the reader knows
   (`newer-version`, with `found` and `supported`, before anything else of the
   file is looked at); older versions migrated step by step through
-  `EXPORT_MIGRATIONS` (`bad-migration` when a step is missing or throws; the
-  list is empty because the format has never changed); a top-level field that
+  `EXPORT_MIGRATIONS` (`bad-migration` when a step is missing or throws; see
+  [versions](#versions)); a top-level field that
   is not a header field, a kind or `x-` (`unknown-field`); a collection that is
   no list (`not-a-list`); a record that breaks its schema (`invalid-record`
   with kind, position and schema paths, never the text); two records of one
@@ -52,6 +52,20 @@ How the app uses them: [behaviour](behaviour.md#export-and-import).
   and not kept; record-level `x-` fields are part of the record and are kept.
 - The hand-written header rules agree with `export.schema.json`: a test
   validates every built envelope against it.
+
+### Versions
+
+| Version | Since      | What changed                                                                                                                                                                     |
+| ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | issue 18   | The first file                                                                                                                                                                   |
+| 2       | 2026-11-20 | No `stock`: it is the shared collection of a space ([stock in spaces](decisions/stock-in-spaces.md)). The migration 1 to 2 leaves it out; `stockLeftOut` counts what it left out |
+
+A file of version 1 is read through the chain. `parseExport` counts the
+items of its `stock` before the chain runs and returns the number as
+`stockLeftOut` (absent when none, and absent when a test passes its own
+chain); the import preview says that they are left out. A version 2 file
+that holds `stock` is refused (`unknown-field`). Vectors:
+`parse-leaves-out-the-stock-of-version-1`, `parse-refuses-stock-in-version-2`.
 
 ## Merging
 
@@ -74,7 +88,7 @@ user removed earlier is a tombstone in the store, not a live record, so the
 file's record is added and revives it.
 
 `remapIngredients(records, map)` points every reference to an ingredient id in
-`map` (line refs, slot refs, stock refs, `parentId`, both ends of an
+`map` (line refs, slot refs, `parentId`, both ends of an
 affinity) at the mapped id and drops the mapped ingredients from the set.
 Component refs are never changed.
 

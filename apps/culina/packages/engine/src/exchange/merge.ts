@@ -48,7 +48,6 @@ const empty = (): FullRecordSets => ({
   templates: [],
   components: [],
   dishes: [],
-  stock: [],
   affinities: [],
   tastings: [],
 });
