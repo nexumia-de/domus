@@ -2,7 +2,8 @@
 // step as the shipped dishes are: one step on the screen with what it uses, time and temperature,
 // the note of its skill while the skill is not learned, the handling rules of its ingredients,
 // large Back and Next, and the screen kept awake. A dish runs through its components in the order
-// of its slots and then through its assembly; a component that is ready in stock is one step.
+// of its slots and then through its assembly; a component that is ready in stock is one step. A
+// filling swapped on the dish screen (`src/dishes/session.ts`) is the one that is cooked.
 import { handlingRulesList, techniques } from '../classics/content';
 import type { StepView } from '../classics/cook-view';
 import { handlingNotes, type HandlingNote } from '../classics/handling-view';
@@ -11,6 +12,8 @@ import { loadNames } from '../classics/names';
 import { setStep, stepOf } from '../classics/session';
 import { catalogueTree } from '../classics/tree';
 import { dishCookView, ownCookView } from '../components/steps-view';
+import { withSwaps } from '../dishes/alternatives';
+import { swapsOf } from '../dishes/session';
 import { getComponent, getDish, learnedSkills, notebook, setLearned, stockOf } from '../notebook';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
@@ -182,11 +185,20 @@ export const cookDishScreen = (id: string | undefined): HTMLElement => {
     backLabel: own.backToDish,
     noSteps: own.noSteps,
     done: own.cookDone,
+    // What was swapped on the dish screen is cooked: the stored dish with those fillings.
     steps: (learned) =>
-      dishCookView(notebook(), dish, dish.portions ?? 1, currentLang(), techniques(), learned, {
-        // A made batch in stock: the component is ready, its steps are left out.
-        ready: (componentId) => stockOf({ kind: 'component', id: componentId }).length > 0,
-        fromStock: own.fromStock,
-      }),
+      dishCookView(
+        notebook(),
+        withSwaps(notebook(), dish, swapsOf(dish.id)).dish,
+        dish.portions ?? 1,
+        currentLang(),
+        techniques(),
+        learned,
+        {
+          // A made batch in stock: the component is ready, its steps are left out.
+          ready: (componentId) => stockOf({ kind: 'component', id: componentId }).length > 0,
+          fromStock: own.fromStock,
+        },
+      ),
   });
 };

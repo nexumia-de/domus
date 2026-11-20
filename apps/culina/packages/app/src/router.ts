@@ -1,6 +1,7 @@
 /**
  * Hash router: the start screen #/start, the classics #/classics/<country> and #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
- * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, and the
+ * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, the random pick
+ * #/dishes/random, and the
  * history screens #/components/<id>/history, #/dishes/<id>/history, the import screen
  * #/settings/import, the stock screens #/stock, #/stock/add and #/stock/<id>/edit, and the
  * finder #/cook, #/cook/use-up and #/cook/<ingredientId>/with. The back stack is the browser
@@ -71,13 +72,14 @@ const WITH_PARAM: readonly Route[] = [
 ];
 
 /** The editors: a new record, or the record in `param` edited; `with`: the finder from one ingredient. */
-export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with' | 'cook';
+export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with' | 'cook' | 'random';
 const WITH_ACTION: readonly Route[] = ['components', 'dishes'];
 
 export const hashFor = (route: Route, param?: string, action?: Action): string => {
   if (action === 'new') return `#/${route}/new`;
   if (action === 'import') return `#/${route}/import`;
   if (action === 'add') return `#/${route}/add`;
+  if (action === 'random') return `#/${route}/random`;
   if (!param) return `#/${route}`;
   const base = `#/${route}/${encodeURIComponent(param)}`;
   return action === 'edit' || action === 'history' || action === 'with' || action === 'cook'
@@ -119,6 +121,10 @@ export const actionFromHash = (hash: string): Action | undefined => {
   if (!WITH_ACTION.includes(routeFromHash(hash))) return undefined;
   const [, second, third] = segments(hash);
   if (second === 'new' && third === undefined) return 'new';
+  // #/dishes/random: a dish put together by chance. Like `new`, the word is not an id.
+  if (second === 'random' && third === undefined && routeFromHash(hash) === 'dishes') {
+    return 'random';
+  }
   // #/components/<id>/cook and #/dishes/<id>/cook: an own component or dish step by step.
   if (second && third === 'cook') return 'cook';
   return second && (third === 'edit' || third === 'history') ? third : undefined;
@@ -128,7 +134,8 @@ export const actionFromHash = (hash: string): Action | undefined => {
 export const paramFromHash = (hash: string): string | undefined => {
   if (!WITH_PARAM.includes(routeFromHash(hash))) return undefined;
   const raw = segments(hash)[1];
-  if (!raw || actionFromHash(hash) === 'new' || actionFromHash(hash) === 'add') return undefined;
+  const action = actionFromHash(hash);
+  if (!raw || action === 'new' || action === 'add' || action === 'random') return undefined;
   try {
     return decodeURIComponent(raw);
   } catch {

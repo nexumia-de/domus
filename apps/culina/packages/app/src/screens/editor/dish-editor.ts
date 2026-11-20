@@ -11,6 +11,7 @@ import {
   type DishProblem,
   type SlotForm,
 } from '../../editor/dish-form';
+import { dishFormFromPick, takeDishPrefill } from '../../editor/prefill';
 import { AMOUNT_UNITS, MASS_ONLY, ROLE_IDS, type AmountUnit } from '../../editor/units';
 import {
   draftKey,
@@ -89,12 +90,17 @@ export const dishEditor = (id?: string): HTMLElement => {
   const start = (): void =>
     void (async () => {
       const draft = await loadDraft(key);
-      const form = isForm(draft)
-        ? draft
-        : stored
-          ? dishFormFromRecord(stored)
-          : newDishForm(newId());
-      build(screen, form, key, isForm(draft), () => {
+      // A random pick waiting for a new dish comes first and is kept as the draft at once.
+      const prefill = id === undefined ? takeDishPrefill() : undefined;
+      const form =
+        prefill !== undefined
+          ? dishFormFromPick(prefill, newId())
+          : isForm(draft)
+            ? draft
+            : stored
+              ? dishFormFromRecord(stored)
+              : newDishForm(newId());
+      build(screen, form, key, prefill !== undefined || isForm(draft), () => {
         screen.replaceChildren(back, heading());
         start();
       });
@@ -113,6 +119,9 @@ const build = (
   const session = draftSession(key, () => form);
   if (dirty) session.change();
   let open: number | undefined;
+  // Slots added here whose role nobody chose yet: such a slot takes the role of the component
+  // that is picked for it, so that the dish offers that component's alternatives.
+  const roleOpen = new WeakSet<SlotForm>();
   let focusAfter: string[] | undefined;
   let rowProblems: ReadonlyMap<number, readonly RowProblem[]> = new Map();
   const changed = (): void => session.change();
@@ -184,6 +193,7 @@ const build = (
     );
     role.addEventListener('change', () => {
       slot.role = role.value;
+      roleOpen.delete(slot);
       changed();
     });
     const pick = el('button', 'btn pick-btn');
@@ -272,6 +282,11 @@ const build = (
           catalogue: true,
           onPick(ref) {
             slot.ref = ref;
+            const usual =
+              ref.kind === 'component'
+                ? listComponents().find((c) => c.version.family === ref.id)?.role
+                : undefined;
+            if (usual !== undefined && usual !== '' && roleOpen.has(slot)) slot.role = usual;
             rowProblems = new Map(
               [...rowProblems].map(([i, ps]) => [
                 i,
@@ -315,7 +330,9 @@ const build = (
 
   const addSlot = button(t.addSlot, 'quiet', () => {
     const next = openRoles(form.slots.map((s) => s.role))[0] ?? 'main';
-    form.slots.push({ role: next, amount: '', unit: 'g' });
+    const added: SlotForm = { role: next, amount: '', unit: 'g' };
+    roleOpen.add(added);
+    form.slots.push(added);
     open = form.slots.length - 1;
     changed();
     draw();

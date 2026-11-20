@@ -106,6 +106,69 @@
   text-decoration: none;
 }
 
+/* Swapping the filling of a slot: the button under the filling, the row of alternatives, and the
+   notice that nothing is stored. Quiet: no alarm colour. */
+.slot-swap {
+  margin-top: var(--sp-1);
+}
+
+.slot-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.slot-choices-label {
+  flex-basis: 100%;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.slot-choice {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.swap-notice {
+  margin-top: var(--sp-3);
+}
+
+.swap-notice .note-quiet {
+  margin: 0 0 var(--sp-2);
+}
+
+/* The random pick: one row per role, the component and "Roll again" beside it. */
+.pick-stock {
+  margin: 0 0 var(--sp-3);
+}
+
+.pick-rows {
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+  list-style: none;
+}
+
+.pick-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding-block: var(--sp-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.pick-text {
+  flex: 1 1 10rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pick-text .note-quiet {
+  display: block;
+}
+
 /* An open slot is an invitation: a dashed outline, the quiet text colour, no alarm. */
 .slot-open td {
   padding-block: var(--sp-3);
