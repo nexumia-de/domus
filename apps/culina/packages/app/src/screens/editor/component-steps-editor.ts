@@ -1,4 +1,4 @@
-// The steps of a component in the editor, as a kit: per step what is done (a skill that is taught,
+// The steps of a component, and the assembly steps of a dish, in the editor, as a kit: per step what is done (a skill that is taught,
 // or a simple action), the lines that go in (ticked), time, temperature and one line of note. A
 // step copied from a shipped dish keeps its text, shown above the fields. Nothing here stores: the
 // form is changed and `changed` is called.
@@ -6,13 +6,7 @@ import { pickText } from '@culina/engine';
 import { techniques } from '../../classics/content';
 import { currentLang } from '../../classics/lang';
 import { wordOptions } from '../../components/steps-view';
-import {
-  freshLineKey,
-  newStepForm,
-  type ComponentForm,
-  type LineForm,
-  type StepForm,
-} from '../../editor/component-form';
+import { freshLineKey, newStepForm, type StepForm } from '../../editor/component-form';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { nextId } from '../fields';
@@ -33,17 +27,41 @@ export interface StepsEditor {
   showProblems(problems: ReadonlyMap<number, readonly string[]>): void;
 }
 
+/** What has steps: a component form or a dish form. */
+export interface StepsOwner {
+  steps?: StepForm[];
+}
+
+/** What a step may use: a line of a component or a slot of a dish. It is named by its key. */
+export interface Usable {
+  key?: string;
+}
+
+export interface StepsOptions {
+  /** The prefix of a new key: `l` for a line, `s` for a slot. */
+  prefix?: string;
+  /** The legend of the list to tick and what it says while empty. */
+  usesLegend?: string;
+  usesEmpty?: string;
+  /** The line above the cards. */
+  help?: string;
+}
+
 /**
- * The steps section of the component editor.
+ * The steps section of the component editor, and the assembly section of the dish editor.
  *
- * @param form - The form; its `steps` and the keys of its lines are changed in place.
+ * @param owner - The form; its `steps` are changed in place.
+ * @param usable - The lines or slots a step may use, read anew each time; a key is given in place.
  * @param changed - Called after every change, to keep the draft.
- * @param lineLabel - The name of a line, or `undefined` while its ingredient is not picked.
+ * @param label - The name of a line or slot, or `undefined` while nothing is picked for it.
+ * @param options - The wording for a dish; the component's by default.
  */
-export const stepsEditor = (
-  form: ComponentForm,
+export const stepsEditor = <U extends Usable>(
+  owner: StepsOwner,
+  usable: () => U[],
   changed: () => void,
-  lineLabel: (line: LineForm) => string | undefined,
+  label: (item: U) => string | undefined,
+  options: StepsOptions = {},
 ): StepsEditor => {
   const element = el('div', 'steps-editor');
   const list = el('div', 'step-cards');
@@ -53,36 +71,37 @@ export const stepsEditor = (
   let signature = '';
 
   const steps = (): StepForm[] => {
-    form.steps ??= [];
-    return form.steps;
+    owner.steps ??= [];
+    return owner.steps;
   };
-  const labels = (): (string | undefined)[] => form.lines.map(lineLabel);
+  const labels = (): (string | undefined)[] => usable().map(label);
   const sign = (): string => JSON.stringify(labels());
 
   const fillUses = (step: StepForm, node: HTMLElement): void => {
     const named = labels();
-    const boxes = form.lines.flatMap((line, index) => {
+    const items = usable();
+    const boxes = items.flatMap((line, index) => {
       const name = named[index];
       if (name === undefined) return [];
-      const label = el('label', 'choice');
+      const choice = el('label', 'choice');
       const input = el('input');
       input.type = 'checkbox';
       input.checked = line.key !== undefined && step.uses.includes(line.key);
       input.addEventListener('change', () => {
         // A line gets its key when a step first uses it.
-        line.key ??= freshLineKey(form.lines);
+        line.key ??= freshLineKey(items, options.prefix ?? 'l');
         const key = line.key;
         step.uses = input.checked
           ? [...step.uses.filter((k) => k !== key), key]
           : step.uses.filter((k) => k !== key);
         changed();
       });
-      label.append(input, el('span', undefined, name));
-      return [label];
+      choice.append(input, el('span', undefined, name));
+      return [choice];
     });
     node.replaceChildren(
-      el('legend', undefined, t.stepUses),
-      ...(boxes.length === 0 ? [el('p', 'hint', t.stepNoLines)] : boxes),
+      el('legend', undefined, options.usesLegend ?? t.stepUses),
+      ...(boxes.length === 0 ? [el('p', 'hint', options.usesEmpty ?? t.stepNoLines)] : boxes),
     );
   };
 
@@ -110,9 +129,9 @@ export const stepsEditor = (
       changed();
     });
     const wrap = el('div', 'field-wrap');
-    const label = el('label', 'field-label', t.wordLabel);
-    label.htmlFor = control.id;
-    wrap.append(label, control);
+    const caption = el('label', 'field-label', t.wordLabel);
+    caption.htmlFor = control.id;
+    wrap.append(caption, control);
     return wrap;
   };
 
@@ -254,7 +273,7 @@ export const stepsEditor = (
       list.querySelector<HTMLElement>('.step-card:last-child select')?.focus();
     }),
   );
-  element.append(el('p', 'muted', t.stepsHelp), list, add);
+  element.append(el('p', 'muted', options.help ?? t.stepsHelp), list, add);
   draw();
 
   return {

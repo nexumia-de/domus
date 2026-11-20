@@ -8,6 +8,7 @@ import type {
   IngredientFacts,
   IngredientYield,
   NutrientsPer100g,
+  Step,
 } from '@culina/engine';
 import type { NamesByLanguage } from './shared/names';
 
@@ -62,6 +63,8 @@ export interface ComponentRecord extends Component {
 }
 
 export interface SlotRecord {
+  /** Names the slot so an assembly step can use it; unique in the dish. */
+  key?: string;
   role: string;
   ref: { kind: 'ingredient' | 'component'; id: string };
   amount?: {
@@ -90,6 +93,8 @@ export interface DishRecord {
   name: string;
   portions?: number;
   slots: SlotRecord[];
+  /** The assembly: what is done with the fillings; a step uses slots by their key. */
+  steps?: Step[];
   version: VersionInfo;
   note?: string;
 }

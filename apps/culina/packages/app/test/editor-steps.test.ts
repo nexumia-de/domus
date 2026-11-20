@@ -147,11 +147,7 @@ test('the end of a range stays until the value is typed anew', () => {
 
 test('a line gets a key no other line has', () => {
   expect(freshLineKey([])).toBe('l1');
-  expect(
-    freshLineKey([
-      { amount: '', unit: 'g', key: 'l1' },
-      { amount: '', unit: 'g', key: 'fat' },
-      { amount: '', unit: 'g' },
-    ]),
-  ).toBe('l2');
+  expect(freshLineKey([{ key: 'l1' }, { key: 'fat' }, {}])).toBe('l2');
+  // The slots of a dish count on their own: s1, s2, ...
+  expect(freshLineKey([{ key: 's1' }, {}], 's')).toBe('s2');
 });

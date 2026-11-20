@@ -119,8 +119,8 @@ export const actionFromHash = (hash: string): Action | undefined => {
   if (!WITH_ACTION.includes(routeFromHash(hash))) return undefined;
   const [, second, third] = segments(hash);
   if (second === 'new' && third === undefined) return 'new';
-  // #/components/<id>/cook: an own component step by step.
-  if (second && third === 'cook' && routeFromHash(hash) === 'components') return 'cook';
+  // #/components/<id>/cook and #/dishes/<id>/cook: an own component or dish step by step.
+  if (second && third === 'cook') return 'cook';
   return second && (third === 'edit' || third === 'history') ? third : undefined;
 };
 

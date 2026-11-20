@@ -3,6 +3,13 @@ import type { ComponentRef } from '@culina/engine';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
 import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
+import {
+  isBlankStep,
+  stepFormOf,
+  stepProblemsOf,
+  stepRecordOf,
+  type StepForm,
+} from './component-form';
 import type { VersionNote } from './version-save';
 import type { AmountUnit } from './units';
 
@@ -14,6 +21,8 @@ export interface SlotForm {
   amount: string;
   unit: AmountUnit;
   optional?: boolean;
+  /** Names the slot for the assembly steps; kept from the record, given when a step first uses it. */
+  key?: string;
 }
 
 export interface DishForm {
@@ -23,6 +32,8 @@ export interface DishForm {
   portions: string;
   note: string;
   slots: SlotForm[];
+  /** The assembly steps; a draft written before they existed has none. */
+  steps?: StepForm[];
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
@@ -33,7 +44,9 @@ export type DishProblem =
   | { code: 'no-slots' }
   | { code: 'filling'; index: number }
   | { code: 'amount'; index: number }
-  | { code: 'portions' };
+  | { code: 'portions' }
+  | { code: 'step'; index: number }
+  | { code: 'step-number'; index: number };
 
 export const newDishForm = (id: string): DishForm => ({
   id,
@@ -42,6 +55,7 @@ export const newDishForm = (id: string): DishForm => ({
   portions: '2',
   note: '',
   slots: [],
+  steps: [],
 });
 
 export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
@@ -56,7 +70,9 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
     amount: s.amount === undefined ? '' : withDecimalMark(String(s.amount.value), appLang),
     unit: (s.amount?.unit ?? 'g') as AmountUnit,
     ...(s.optional === true ? { optional: true } : {}),
+    ...(s.key === undefined ? {} : { key: s.key }),
   })),
+  steps: (dish.steps ?? []).map(stepFormOf),
   version: dish.version,
 });
 
@@ -76,6 +92,7 @@ export const dishProblems = (form: DishForm): DishProblem[] => {
     if (slot.ref === undefined) out.push({ code: 'filling', index });
     if (parseEntry(slot.amount).kind === 'invalid') out.push({ code: 'amount', index });
   });
+  out.push(...stepProblemsOf(form.steps));
   return out;
 };
 
@@ -91,8 +108,13 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
       ref: slot.ref as ComponentRef,
       ...(entry.kind === 'ok' ? { amount: { value: entry.value, unit: slot.unit } } : {}),
       ...(slot.optional === true ? { optional: true } : {}),
+      ...(slot.key === undefined ? {} : { key: slot.key }),
     };
   });
+  const keys = new Set(slots.flatMap((slot) => (slot.key === undefined ? [] : [slot.key])));
+  const steps = (form.steps ?? [])
+    .filter((step) => !isBlankStep(step))
+    .map((step) => stepRecordOf(step, keys));
   const portions = wholePortions(form.portions);
   const note = form.note.trim();
   return {
@@ -102,6 +124,7 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
       name: form.name.trim(),
       ...(portions === undefined ? {} : { portions }),
       slots,
+      ...(steps.length === 0 ? {} : { steps }),
       version: form.version ?? { family: form.id, date: today },
       ...(note === '' ? {} : { note }),
     },

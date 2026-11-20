@@ -6,6 +6,9 @@ import { lookupOf } from '../cook/lookup';
 import { offersFor } from '../cook/offers';
 import { dishRaw } from '../dishes/raw';
 import { openRows, slotRows } from '../dishes/slots';
+import { techniques } from '../classics/content';
+import { currentLang } from '../classics/lang';
+import { dishStepLines } from '../components/steps-view';
 import { hashFor } from '../router';
 import type { DishRecord, Notebook } from '../records';
 import { formatNumber } from '../shared/mass';
@@ -54,5 +57,26 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   );
   draw(initial);
   card.append(control.wrap, results);
+  // The assembly, and the way to cook the whole dish: its components first, then these steps.
+  const assembly = dishStepLines(nb, dish, currentLang(), techniques());
+  const cookable =
+    assembly.length > 0 ||
+    dish.slots.some(
+      (slot) =>
+        slot.ref.kind === 'component' &&
+        (nb.components.find((c) => c.id === slot.ref.id)?.steps ?? []).length > 0,
+    );
+  if (cookable) {
+    const section = el('section', 'steps-section');
+    if (assembly.length > 0) {
+      const list = el('ol', 'recipe-steps');
+      for (const line of assembly) list.append(el('li', undefined, line));
+      section.append(el('h2', undefined, strings.dishes.assemblyHeading), list);
+    }
+    const cook = el('a', 'btn primary', strings.dishes.cookSteps);
+    cook.href = hashFor('dishes', dish.id, 'cook');
+    section.append(cook);
+    card.append(section);
+  }
   return card;
 };

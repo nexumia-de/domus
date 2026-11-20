@@ -124,7 +124,8 @@ export const newComponentForm = (id: string): ComponentForm => ({
 
 const text = (n: number): string => withDecimalMark(String(n), appLang);
 
-const stepForm = (step: Step): StepForm => ({
+/** A stored step as the editor holds it. */
+export const stepFormOf = (step: Step): StepForm => ({
   word:
     step.technique !== undefined
       ? `t:${step.technique}`
@@ -151,12 +152,33 @@ export const isBlankStep = (step: StepForm): boolean =>
   step.time.trim() === '' &&
   step.temperature.trim() === '';
 
-/** A key no line of the form has yet: `l1`, `l2`, ... */
-export const freshLineKey = (lines: readonly LineForm[]): string => {
+/** A key none of the lines (or slots) has yet: `l1`, `l2`, ... with the prefix given. */
+export const freshLineKey = (lines: readonly { key?: string }[], prefix = 'l'): string => {
   const taken = new Set(lines.map((l) => l.key));
   let n = 1;
-  while (taken.has(`l${n}`)) n += 1;
-  return `l${n}`;
+  while (taken.has(`${prefix}${n}`)) n += 1;
+  return `${prefix}${n}`;
+};
+
+/** What the steps of a form still need, each with the index of its step. */
+export const stepProblemsOf = (
+  steps: readonly StepForm[] = [],
+): ({ code: 'step'; index: number } | { code: 'step-number'; index: number })[] => {
+  const out: ({ code: 'step'; index: number } | { code: 'step-number'; index: number })[] = [];
+  steps.forEach((step, index) => {
+    if (isBlankStep(step)) return;
+    // A step says what is done: a word, a note or the text it was copied with.
+    if (step.word === '' && step.note.trim() === '' && step.text === undefined) {
+      out.push({ code: 'step', index });
+    }
+    if (
+      parseEntry(step.time).kind === 'invalid' ||
+      parseEntry(step.temperature).kind === 'invalid'
+    ) {
+      out.push({ code: 'step-number', index });
+    }
+  });
+  return out;
 };
 
 export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
@@ -180,7 +202,7 @@ export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
   yieldUnit: record.yield?.amount.unit ?? 'g',
   ...(record.yield === undefined ? {} : { yieldSource: record.yield.source }),
   method: (record.method ?? []).join('\n'),
-  steps: (record.steps ?? []).map(stepForm),
+  steps: (record.steps ?? []).map(stepFormOf),
   keeps: (record.keeps ?? []).map((k) => ({
     storage: k.storage,
     days: String(k.days),
@@ -210,19 +232,7 @@ export const problemsOf = (form: ComponentForm): Problem[] => {
     if (parseEntry(line.amount).kind === 'invalid') out.push({ code: 'amount', index });
   });
   if (parseEntry(form.yieldAmount).kind === 'invalid') out.push({ code: 'yield' });
-  (form.steps ?? []).forEach((step, index) => {
-    if (isBlankStep(step)) return;
-    // A step says what is done: a word, a note or the text it was copied with.
-    if (step.word === '' && step.note.trim() === '' && step.text === undefined) {
-      out.push({ code: 'step', index });
-    }
-    if (
-      parseEntry(step.time).kind === 'invalid' ||
-      parseEntry(step.temperature).kind === 'invalid'
-    ) {
-      out.push({ code: 'step-number', index });
-    }
-  });
+  out.push(...stepProblemsOf(form.steps));
   const places = new Set<string>();
   (form.keeps ?? []).forEach((keep, index) => {
     // Whole days, and each storage place once.
@@ -233,8 +243,8 @@ export const problemsOf = (form: ComponentForm): Problem[] => {
   return out;
 };
 
-/** The step as it is stored; `keys` are the keys of the lines that exist. */
-const stepRecord = (step: StepForm, keys: ReadonlySet<string>): Step => {
+/** The step as it is stored; `keys` are the keys of the lines (or slots) that exist. */
+export const stepRecordOf = (step: StepForm, keys: ReadonlySet<string>): Step => {
   const uses = step.uses.filter((key) => keys.has(key));
   const time = parseEntry(step.time);
   const temperature = parseEntry(step.temperature);
@@ -289,7 +299,7 @@ export const formToRecord = (form: ComponentForm, today: string): RecordResult =
   const keys = new Set(lines.flatMap((l) => (l.key === undefined ? [] : [l.key])));
   const kitSteps = (form.steps ?? [])
     .filter((step) => !isBlankStep(step))
-    .map((step) => stepRecord(step, keys));
+    .map((step) => stepRecordOf(step, keys));
   const yielded = parseEntry(form.yieldAmount);
   const steps = form.method
     .split('\n')

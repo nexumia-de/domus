@@ -1,7 +1,8 @@
-// #/components/<id>/cook: an own component cooked step by step, as the shipped dishes are: one step
-// on the screen with the lines it uses, time and temperature, the note of its skill while the skill
-// is not learned, the handling rules of its ingredients, large Back and Next, and the screen kept
-// awake.
+// #/components/<id>/cook and #/dishes/<id>/cook: an own component, or a whole dish, cooked step by
+// step as the shipped dishes are: one step on the screen with what it uses, time and temperature,
+// the note of its skill while the skill is not learned, the handling rules of its ingredients,
+// large Back and Next, and the screen kept awake. A dish runs through its components in the order
+// of its slots and then through its assembly; a component that is ready in stock is one step.
 import { handlingRulesList, techniques } from '../classics/content';
 import type { StepView } from '../classics/cook-view';
 import { handlingNotes, type HandlingNote } from '../classics/handling-view';
@@ -9,8 +10,8 @@ import { currentLang } from '../classics/lang';
 import { loadNames } from '../classics/names';
 import { setStep, stepOf } from '../classics/session';
 import { catalogueTree } from '../classics/tree';
-import { ownCookView } from '../components/steps-view';
-import { getComponent, learnedSkills, notebook, setLearned } from '../notebook';
+import { dishCookView, ownCookView } from '../components/steps-view';
+import { getComponent, getDish, learnedSkills, notebook, setLearned, stockOf } from '../notebook';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
 import { keepAwake } from '../shell/wake-lock';
@@ -21,23 +22,32 @@ import { techniqueNote } from './classics/technique-note';
 import { storeText } from './editor/store-text';
 
 const t = strings.classics;
-const own = strings.components;
 
-export const cookComponentScreen = (id: string | undefined): HTMLElement => {
-  const component = id === undefined ? undefined : getComponent(id);
+/** What the screen cooks: a name, where Back leads, and the steps for what is learned so far. */
+interface Cookable {
+  id: string;
+  name: string;
+  backHash: string;
+  backLabel: string;
+  noSteps: string;
+  done: string;
+  steps: (learned: ReadonlySet<string>) => StepView[];
+}
+
+const unknown = (backHash: string, backLabel: string, title: string, text: string): HTMLElement => {
   const section = el('section', 'screen cook-steps');
-  const back = el('a', 'family-link', component === undefined ? own.back : own.backToComponent);
-  back.href = component === undefined ? hashFor('components') : hashFor('components', component.id);
-  if (component === undefined) {
-    section.append(
-      back,
-      el('h1', undefined, strings.screens.components.title),
-      el('p', 'note-quiet', own.unknown),
-    );
-    return section;
-  }
+  const back = el('a', 'family-link', backLabel);
+  back.href = backHash;
+  section.append(back, el('h1', undefined, title), el('p', 'note-quiet', text));
+  return section;
+};
+
+const cookScreen = (cooked: Cookable): HTMLElement => {
+  const section = el('section', 'screen cook-steps');
+  const back = el('a', 'family-link', cooked.backLabel);
+  back.href = cooked.backHash;
   const lang = currentLang();
-  section.append(back, el('h1', undefined, component.name));
+  section.append(back, el('h1', undefined, cooked.name));
 
   const progress = el('progress', 'cook-progress');
   progress.setAttribute('aria-hidden', 'true');
@@ -54,7 +64,7 @@ export const cookComponentScreen = (id: string | undefined): HTMLElement => {
   section.append(progress, body, buttons, whole);
 
   const go = (step: number, total: number): void => {
-    setStep(component.id, Math.max(0, Math.min(total, step)));
+    setStep(cooked.id, Math.max(0, Math.min(total, step)));
     draw(true);
   };
 
@@ -62,10 +72,10 @@ export const cookComponentScreen = (id: string | undefined): HTMLElement => {
   let rules = new Map<number, HandlingNote[]>();
   const draw = (moveFocus: boolean): void => {
     const learned = learnedSkills();
-    const steps = ownCookView(notebook(), component, lang, techniques(), learned);
+    const steps = cooked.steps(learned);
     rules = handlingNotes(steps, handlingRulesList(), catalogueTree(), learned);
     const total = steps.length;
-    const at = Math.min(stepOf(component.id), total);
+    const at = Math.min(stepOf(cooked.id), total);
     progress.max = Math.max(total, 1);
     progress.value = at;
     const method = methodBlock(steps);
@@ -82,10 +92,10 @@ export const cookComponentScreen = (id: string | undefined): HTMLElement => {
     const announced = message !== undefined;
     message = undefined;
     if (at >= total) {
-      const done = el('a', 'btn primary', own.backToComponent);
-      done.href = hashFor('components', component.id);
+      const done = el('a', 'btn primary', cooked.backLabel);
+      done.href = cooked.backHash;
       body.replaceChildren(
-        el('h2', 'cook-step-heading', total === 0 ? own.noSteps : own.cookDone),
+        el('h2', 'cook-step-heading', total === 0 ? cooked.noSteps : cooked.done),
         status,
         done,
       );
@@ -111,6 +121,8 @@ export const cookComponentScreen = (id: string | undefined): HTMLElement => {
 
   const stepBody = (step: StepView): HTMLElement => {
     const box = el('div', 'cook-step');
+    // A dish names the part a step belongs to; a component is its own only part.
+    if (step.component !== cooked.name) box.append(el('p', 'muted', t.stepFrom(step.component)));
     if (step.text !== '') box.append(el('p', 'cook-step-text', step.text));
     if (step.lines.length > 0) {
       box.append(el('h3', undefined, t.usesHeading), lineList(step.lines, t.usesHeading));
@@ -138,4 +150,43 @@ export const cookComponentScreen = (id: string | undefined): HTMLElement => {
   // The catalogue gives the tree for the handling rules; draw again when it is there.
   void loadNames().then(() => draw(false));
   return section;
+};
+
+export const cookComponentScreen = (id: string | undefined): HTMLElement => {
+  const component = id === undefined ? undefined : getComponent(id);
+  const own = strings.components;
+  if (component === undefined) {
+    return unknown(hashFor('components'), own.back, strings.screens.components.title, own.unknown);
+  }
+  return cookScreen({
+    id: component.id,
+    name: component.name,
+    backHash: hashFor('components', component.id),
+    backLabel: own.backToComponent,
+    noSteps: own.noSteps,
+    done: own.cookDone,
+    steps: (learned) => ownCookView(notebook(), component, currentLang(), techniques(), learned),
+  });
+};
+
+export const cookDishScreen = (id: string | undefined): HTMLElement => {
+  const dish = id === undefined ? undefined : getDish(id);
+  const own = strings.dishes;
+  if (dish === undefined) {
+    return unknown(hashFor('dishes'), own.back, strings.screens.dishes.title, own.unknown);
+  }
+  return cookScreen({
+    id: dish.id,
+    name: dish.name,
+    backHash: hashFor('dishes', dish.id),
+    backLabel: own.backToDish,
+    noSteps: own.noSteps,
+    done: own.cookDone,
+    steps: (learned) =>
+      dishCookView(notebook(), dish, dish.portions ?? 1, currentLang(), techniques(), learned, {
+        // A made batch in stock: the component is ready, its steps are left out.
+        ready: (componentId) => stockOf({ kind: 'component', id: componentId }).length > 0,
+        fromStock: own.fromStock,
+      }),
+  });
 };
