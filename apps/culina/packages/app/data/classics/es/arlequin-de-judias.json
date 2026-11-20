@@ -171,6 +171,7 @@
             "en": "After the cooking time, take the beans out and drain them.",
             "de": "Nach der Garzeit die Bohnen herausnehmen und abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["beans"]
         },
         {
@@ -178,6 +179,7 @@
             "en": "Keep the beans hot. Put them in a warm vegetable dish with the butter, the fine herbs, salt, pepper, a pinch of clove and the grated nutmeg.",
             "de": "Die Bohnen warm halten. In einer warmen Gemüseschüssel mit der Butter, den feinen Kräutern, Salz, Pfeffer, einer Prise Gewürznelke und der geriebenen Muskatnuss anrichten."
           },
+          "action": "season",
           "uses": ["beans", "butter", "herbs", "salt", "pepper", "clove", "nutmeg"]
         },
         {
@@ -185,6 +187,7 @@
             "en": "Cover the dish with a lid and shake it in the air so that the beans mix well with the melting butter.",
             "de": "Die Schüssel mit einem Deckel abdecken und schwenken, damit sich die Bohnen gut mit der schmelzenden Butter vermischen."
           },
+          "action": "mix",
           "uses": ["beans", "butter"]
         },
         {
@@ -192,6 +195,7 @@
             "en": "At serving, squeeze the juice of half a lemon over the beans. Use plenty of chopped parsley.",
             "de": "Beim Anrichten den Saft einer halben Zitrone über die Bohnen träufeln. Reichlich gehackte Petersilie verwenden."
           },
+          "action": "season",
           "uses": ["beans", "lemon", "parsley"]
         }
       ]

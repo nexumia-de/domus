@@ -98,6 +98,7 @@
             "en": "Spread the flour on the table and make a well in the middle.",
             "de": "Das Mehl auf dem Tisch verteilen und in der Mitte eine Mulde formen."
           },
+          "action": "prepare",
           "uses": ["flour"]
         },
         {
@@ -105,6 +106,7 @@
             "en": "Put the butter in small pieces into the well, with the salt.",
             "de": "Die Butter in kleinen Stücken mit dem Salz in die Mulde geben."
           },
+          "action": "add",
           "uses": ["butter", "salt"]
         },
         {
@@ -112,6 +114,7 @@
             "en": "Add enough water to make a very thick dough, mixing it in small portions.",
             "de": "So viel Wasser zugeben, dass ein sehr fester Teig entsteht, und in kleinen Portionen einarbeiten."
           },
+          "action": "mix",
           "uses": ["water", "flour"]
         },
         {
@@ -239,6 +242,7 @@
             "en": "Stir the flour into the whole egg in a pan until smooth.",
             "de": "Das Mehl in einem Topf mit dem ganzen Ei glatt verrühren."
           },
+          "action": "stir",
           "uses": ["flour", "egg"]
         },
         {
@@ -246,19 +250,22 @@
             "en": "Add the six yolks, the sugar, the orange-flower water, the lemon peel and the milk.",
             "de": "Die sechs Eigelb, den Zucker, das Orangenblütenwasser, die Zitronenschale und die Milch zugeben."
           },
+          "action": "add",
           "uses": ["yolk", "sugar", "orange-water", "lemon", "milk"]
         },
         {
           "text": {
             "en": "Line the inside of a plain mould, not high, with a good layer of the pastry.",
             "de": "Eine glatte, nicht hohe Form innen mit einer guten Schicht des Teigs auslegen."
-          }
+          },
+          "action": "prepare"
         },
         {
           "text": {
             "en": "Pour the custard into the lined mould.",
             "de": "Die Creme in die ausgelegte Form füllen."
           },
+          "action": "fill",
           "uses": ["flour", "egg", "yolk", "sugar", "orange-water", "lemon", "milk"]
         },
         {
@@ -273,6 +280,7 @@
             "en": "When it is cold, take it out of the mould and sprinkle it with sugar.",
             "de": "Wenn es kalt ist, aus der Form lösen und mit Zucker bestreuen."
           },
+          "action": "turn-out",
           "uses": ["sugar"]
         }
       ]

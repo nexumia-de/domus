@@ -375,17 +375,51 @@ is reported.
 ```json
 {
   "text": { "en": "...", "de": "..." },
-  "technique": "folding",
+  "technique": "fold-in",
   "uses": ["fat"],
   "time": { "value": 5, "unit": "min" },
   "temperature": { "value": 180, "unit": "C" }
 }
 ```
 
-`technique` names a technique file that exists; `sourceNote` (optional,
+**Every step names what is done** (since 2026-11-20), by exactly one of two
+words:
+
+- `technique`: a technique file that exists. **A technique is a promise to
+  teach:** its note is shown beside the first step of the dish that names it,
+  so a step gets a technique only when that note fits what the cook does in
+  this step. "Brown the flour in the fat" is a roux; "Bring to the boil" inside
+  a skimming step is skimming; cutting a chicken into joints is not knife cuts
+  (the note is about pieces of one size).
+- `action`: a plain action of `packages/engine/data/actions.json` (42: add,
+  stir, season, pour, sprinkle, strain, take off the heat, serve ...). It names
+  the step and teaches nothing. **When in doubt, the plain action**, or the
+  nearest one: "prepare" for what has no word of its own (tie the meat, break
+  the bones, separate the eggs, line a mould).
+
+How to choose when a step does several things: the technique, if one fits;
+otherwise the action that handles the lines the step names ("take the pot off
+the heat and stir in the butter" is stir); otherwise the first. Salt, pepper
+and spices alone are "season", other things "add". Into a mould, a dish or a
+tureen is "fill"; over something or into the pan is "pour". A step that does
+nothing (a sign that the dish is done) has no word and stands, with the
+reason, in the list of `packages/app/test/classics-steps.test.ts`; that test
+holds every other step to one word. A plain action that is missing is proposed
+to the owner, not invented in a dish file: the validator refuses an unknown
+one (`unknown-action`). No technique is added without a sourced note.
+
+`npm run propose:steps -- <part of the path>` prints, for each step, what the
+word lists would propose from the English and the German sentence
+([engine rules](engine-rules.md#proposing-a-step-from-a-sentence)), beside
+what the file says. It is a word match and often not what the step means;
+the transcriber decides by reading.
+
+`sourceNote` (optional,
 `{ en, de }`) a remark about the source for this step, shown only in Source;
 `uses` the `key`s of the lines
-the step uses; `time` (`s`, `min`, `h`) and `temperature` (`C`, `F`) **as the
+the step names (a step that names no ingredient of its component has no
+`uses`; "the dough", "the sauce" and water that is no line are no
+ingredient); `time` (`s`, `min`, `h`) and `temperature` (`C`, `F`) **as the
 source gives them**, one number or a range with `to`. A word ("moderate oven")
 or another scale goes into the text.
 

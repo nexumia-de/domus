@@ -137,6 +137,7 @@
             "en": "Beat the eggs, the starch, the milk with a little water, the mace and the salt thoroughly.",
             "de": "Eier, Stärke, Milch mit etwas Wasser, Muskatblüte und Salz gründlich schlagen."
           },
+          "action": "whisk",
           "uses": ["egg", "starch", "milk", "water", "mace", "salt"]
         },
         {
@@ -144,6 +145,7 @@
             "en": "Melt the butter in the pan over low heat.",
             "de": "Die Butter bei schwacher Hitze in der Pfanne schmelzen."
           },
+          "action": "melt",
           "uses": ["butter"]
         },
         {
@@ -151,6 +153,7 @@
             "en": "Pour in the batter and spread it with a spoon.",
             "de": "Den Teig in die Pfanne gießen und mit dem Löffel verteilen."
           },
+          "action": "pour",
           "uses": ["egg", "starch", "milk", "water", "mace", "salt"]
         },
         {
@@ -166,13 +169,15 @@
             "en": "Sprinkle sugar and cinnamon over it.",
             "de": "Zucker und Zimt darüberstreuen."
           },
+          "action": "sprinkle",
           "uses": ["sugar", "cinnamon"]
         },
         {
           "text": {
             "en": "Put it on a plate and fold it.",
             "de": "Auf einen Teller legen und zusammenschlagen."
-          }
+          },
+          "action": "serve"
         }
       ]
     }

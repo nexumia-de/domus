@@ -129,6 +129,7 @@
             "en": "Wipe the rice clean in a cloth; do not wash it.",
             "de": "Den Reis mit einem Tuch sauber reiben; nicht waschen."
           },
+          "action": "prepare",
           "uses": ["rice"]
         },
         {
@@ -168,6 +169,7 @@
             "en": "Add the salt.",
             "de": "Das Salz zugeben."
           },
+          "action": "season",
           "uses": ["salt"]
         },
         {
@@ -175,6 +177,7 @@
             "en": "Crush the saffron finely and dissolve it in a drop of warm water before adding it to the rice.",
             "de": "Den Safran fein zerreiben und in einem Tropfen warmen Wassers auflösen, bevor er in den Reis kommt."
           },
+          "action": "crush",
           "uses": ["saffron", "water", "rice"]
         },
         {
@@ -190,6 +193,7 @@
             "en": "Before taking it off the heat, stir in the grated parmesan and serve with more parmesan.",
             "de": "Vor dem Herd den geriebenen Parmesan unterrühren und mit mehr Parmesan servieren."
           },
+          "action": "stir",
           "uses": ["parmesan"]
         }
       ]

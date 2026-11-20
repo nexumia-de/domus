@@ -94,6 +94,7 @@
             "en": "Cut the fennel into wedges.",
             "de": "Den Fenchel in Spalten schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["fennel"]
         },
         {
@@ -101,6 +102,7 @@
             "en": "Remove the hard outer leaves.",
             "de": "Die harten äußeren Blätter entfernen."
           },
+          "action": "trim",
           "uses": ["fennel"]
         },
         {
@@ -116,6 +118,7 @@
             "en": "Dry the wedges.",
             "de": "Die Spalten trocknen."
           },
+          "action": "dry",
           "uses": ["fennel"]
         },
         {
@@ -123,6 +126,7 @@
             "en": "Dust the wedges with flour.",
             "de": "Die Spalten mit Mehl bestäuben."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -232,25 +236,29 @@
             "en": "Mix the flour with the egg yolk and the other ingredients, adding the water little by little, to a batter that is not too runny.",
             "de": "Das Mehl mit dem Eigelb und den übrigen Zutaten mischen und das Wasser nach und nach zugeben, bis ein nicht zu dünner Teig entsteht."
           },
+          "action": "mix",
           "uses": ["flour", "egg", "oil", "brandy", "salt", "water"]
         },
         {
           "text": {
             "en": "Work it well with a ladle.",
             "de": "Mit der Kelle gut durcharbeiten."
-          }
+          },
+          "action": "stir"
         },
         {
           "text": {
             "en": "Let it rest for several hours.",
             "de": "Mehrere Stunden ruhen lassen."
-          }
+          },
+          "action": "stand"
         },
         {
           "text": {
             "en": "Just before using it, add the beaten egg white.",
             "de": "Kurz vor dem Gebrauch das geschlagene Eiweiß zugeben."
           },
+          "action": "add",
           "uses": ["egg"]
         }
       ]

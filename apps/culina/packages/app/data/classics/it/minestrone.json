@@ -283,13 +283,16 @@
           "text": {
             "en": "If the beans are dried, half-cook them in water first.",
             "de": "Sind die Bohnen getrocknet, vorher in Wasser halb garen."
-          }
+          },
+          "action": "cook",
+          "uses": ["beans"]
         },
         {
           "text": {
             "en": "Cut the savoy cabbage, the spinach and a little chard into thin strips.",
             "de": "Wirsing, Spinat und etwas Mangold in dünne Streifen schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -297,6 +300,7 @@
             "en": "Soak the greens in cold water.",
             "de": "Das Grüne in kaltem Wasser einweichen."
           },
+          "action": "soak",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -304,6 +308,7 @@
             "en": "Put the greens in a dry pot on the heat until their water comes out, then drain them well, pressing them with a ladle.",
             "de": "Das Grüne in einem trockenen Topf auf den Herd stellen, bis das Wasser austritt; dann gut abgießen und mit der Kelle ausdrücken."
           },
+          "action": "drain",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -311,6 +316,7 @@
             "en": "Chop the fatty ham, the garlic and the parsley together.",
             "de": "Den fetten Schinken, den Knoblauch und die Petersilie zusammen fein hacken."
           },
+          "technique": "knife-cuts",
           "uses": ["ham", "garlic", "parsley"]
         },
         {
@@ -326,6 +332,7 @@
             "en": "Cut the celery, the carrot, the potato, the zucchini and the onion into thin short strips.",
             "de": "Sellerie, Karotte, Kartoffel, Zucchini und Zwiebel in dünne kurze Streifen schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["celery", "carrot", "potato", "zucchini", "onion"]
         },
         {
@@ -333,6 +340,7 @@
             "en": "Add them to the pot with the chopped mix.",
             "de": "Sie zusammen mit der gehackten Mischung in den Topf geben."
           },
+          "action": "add",
           "uses": ["celery", "carrot", "potato", "zucchini", "onion", "ham", "garlic", "parsley"]
         },
         {
@@ -340,6 +348,7 @@
             "en": "Add the beans.",
             "de": "Die Bohnen dazugeben."
           },
+          "action": "add",
           "uses": ["beans"]
         },
         {
@@ -347,6 +356,7 @@
             "en": "Add a little tomato sauce or paste.",
             "de": "Etwas Tomatensauce oder Tomatenmark dazugeben."
           },
+          "action": "add",
           "uses": ["tomato"]
         },
         {
@@ -354,6 +364,7 @@
             "en": "Season with pepper and salt.",
             "de": "Mit Pfeffer und Salz würzen."
           },
+          "action": "season",
           "uses": ["pepper", "salt"]
         },
         {
@@ -377,6 +388,7 @@
             "en": "Just before taking it off the heat, add a good pinch of parmesan.",
             "de": "Kurz bevor es vom Herd kommt, einen guten Pizzico Parmesan dazugeben."
           },
+          "action": "add",
           "uses": ["parmesan"]
         }
       ]

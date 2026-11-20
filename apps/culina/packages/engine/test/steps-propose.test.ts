@@ -146,10 +146,48 @@ describe('time and temperature', () => {
   });
 });
 
+describe('sentences of the shipped dishes that the lists got wrong before 2026-11-20', () => {
+  test('"garen" is cooking, not the proof of a dough', () => {
+    expect(word('Bei schwacher Hitze garen, bis die Oberseite trocken ist.')).toBe('action:cook');
+    expect(word('Den Teig zugedeckt gehen lassen')).toBe('technique:proof-yeast');
+  });
+  test('"the heat" as a noun is not heating; taking the pan off it has its own word', () => {
+    expect(word('Take the pan off the heat.')).toBe('action:remove-from-heat');
+    expect(word('Die Pfanne vom Feuer nehmen.')).toBe('action:remove-from-heat');
+    expect(word('Remove from the heat and add the butter')).toBe('action:remove-from-heat');
+    expect(word('Melt the butter in the pan over low heat.')).toBe('action:melt');
+    expect(word('Heat the oil in a large frying pan.')).toBe('action:heat');
+  });
+  test('the German "Form" (a mould) is not shaping', () => {
+    expect(word('Jede Lage mit der Sauce bedecken und so die Form füllen.')).toBe('action:fill');
+    expect(word('Die Masse zu einem Laib formen')).toBe('action:shape');
+  });
+  test('"binden" alone is tying as well as thickening, so it proposes nothing', () => {
+    expect(word('Das Fleisch mit Küchengarn binden')).toBeUndefined();
+    expect(word('Die Sauce binden')).toBe('technique:thicken-with-starch');
+  });
+  test('beating, pouring and sprinkling have a word', () => {
+    expect(word('Beat the eggs, the starch and the milk thoroughly.')).toBe('action:whisk');
+    expect(word('Beat the egg whites to a froth.')).toBe('technique:whip-egg-whites');
+    expect(word('Pour the sauce over the pieces.')).toBe('action:pour');
+    expect(word('Den Teig in die Pfanne gießen')).toBe('action:pour');
+    expect(word('Sprinkle sugar and cinnamon over it.')).toBe('action:sprinkle');
+    expect(word('Zucker und Zimt darüberstreuen.')).toBe('action:sprinkle');
+    expect(word('Pass the mixture through a sieve.')).toBe('action:strain');
+  });
+  test('"cook" is proposed only as a verb with its object or manner', () => {
+    expect(word('Cook the soup for half an hour.')).toBe('action:cook');
+    expect(word('After the cooking time, take the beans out and drain them.')).toBe('action:drain');
+    expect(word('Cook the pasta in salted water.')).toBe('technique:cook-pasta');
+  });
+});
+
 describe('a known limit', () => {
   test('the list knows words, not grammar: a noun that is also a verb is taken for the verb', () => {
-    // "the heat" is a noun here; the cook wanted "add". The user corrects it.
-    expect(word('Remove from the heat and add the butter')).toBe('action:heat');
+    // "the lemon peel" is a noun here; the cook wanted "add". The user corrects it.
+    expect(word('Put the milk, the sugar and the lemon peel into a pot.')).toBe('action:peel');
+    // A participle counts as the verb: the potatoes are already boiled, the step cuts them.
+    expect(word('Die gekochten Kartoffeln in Scheiben schneiden.')).toBe('technique:boil');
     // A separated German verb ("brate ... an") is not found.
     expect(word('Brate das Fleisch an')).toBeUndefined();
   });

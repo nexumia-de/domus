@@ -259,6 +259,7 @@
             "en": "Freshen the meat first.",
             "de": "Das Fleisch zuerst auffrischen."
           },
+          "action": "prepare",
           "uses": ["beef"]
         },
         {
@@ -274,6 +275,7 @@
             "en": "Keep the meat uncovered in a cool place for 3 to 4 days in summer, or 8 to 10 days in winter.",
             "de": "Das Fleisch unbedeckt an einem kühlen Ort lagern: 3 bis 4 Tage im Sommer, 8 bis 10 Tage im Winter."
           },
+          "action": "stand",
           "uses": ["beef"]
         },
         {
@@ -281,6 +283,7 @@
             "en": "Turn the meat often, but not with the hands.",
             "de": "Das Fleisch oft wenden, aber nicht mit den Händen."
           },
+          "action": "turn",
           "uses": ["beef"]
         },
         {
@@ -288,6 +291,7 @@
             "en": "Cut the pork fat into strips as long as a finger and roll them in salt, pepper and ground cloves.",
             "de": "Den Speck in fingerlange Streifen schneiden und in Salz, Pfeffer und gemahlenen Nelken wälzen."
           },
+          "technique": "knife-cuts",
           "uses": ["fat-pork", "salt", "pepper", "clove"]
         },
         {
@@ -295,6 +299,7 @@
             "en": "Prick the meat all over with a sharp knife and push the strips into it.",
             "de": "Das Fleisch mit einem scharfen Messer überall einstechen und die Streifen hineinstecken."
           },
+          "action": "prepare",
           "uses": ["beef", "fat-pork"]
         },
         {
@@ -302,6 +307,7 @@
             "en": "Sprinkle a little more salt over the meat; salting heavily makes it tough.",
             "de": "Noch etwas Salz über das Fleisch streuen; viel Salz macht es zäh."
           },
+          "action": "season",
           "uses": ["salt", "beef"]
         },
         {
@@ -317,6 +323,7 @@
             "en": "Brown the heaping tablespoonful of flour in the fat.",
             "de": "Den gehäuften Esslöffel Mehl im Fett bräunen."
           },
+          "technique": "roux",
           "uses": ["flour", "fat"]
         },
         {
@@ -324,6 +331,7 @@
             "en": "Pour in enough boiling water to cover the meat and cover the pot at once.",
             "de": "So viel kochendes Wasser zugießen, dass das Fleisch bedeckt ist, und den Topf sofort zudecken."
           },
+          "action": "pour",
           "uses": ["water", "beef"]
         },
         {
@@ -331,6 +339,7 @@
             "en": "After a few minutes add the carrots, the onions, the rye bread crust and, if needed, some of the spiced vinegar.",
             "de": "Nach wenigen Minuten Möhren, Zwiebeln, die Roggenbrotkruste und bei Bedarf etwas von dem gewürzten Essig zugeben."
           },
+          "action": "add",
           "uses": ["carrot", "onion", "rye", "vinegar"]
         },
         {
@@ -351,6 +360,7 @@
             "en": "In the last half hour of cooking, add the sweet cream.",
             "de": "In der letzten halben Stunde des Garens den süßen Rahm zugeben."
           },
+          "action": "add",
           "time": {
             "value": 30,
             "unit": "min"
@@ -362,6 +372,7 @@
             "en": "Put the meat on a warm dish in the oven while you prepare the gravy.",
             "de": "Das Fleisch auf eine warme Platte legen und im Ofen warmhalten, während die Soße zubereitet wird."
           },
+          "action": "set-aside",
           "uses": ["beef"]
         },
         {
@@ -369,6 +380,7 @@
             "en": "If the gravy is too thick, thin it with water. If it is not thick enough, stir in a little flour.",
             "de": "Ist die Soße zu dick, mit Wasser verdünnen. Ist sie nicht dick genug, etwas Mehl einrühren."
           },
+          "action": "stir",
           "uses": ["water", "flour"]
         },
         {
@@ -376,6 +388,7 @@
             "en": "If the gravy is too sour and brown enough, add a cupful of milk, pass it through a sieve and boil it quickly.",
             "de": "Ist die Soße zu sauer und braun genug, eine Tasse Milch zugeben, durch ein Sieb streichen und schnell aufkochen."
           },
+          "action": "strain",
           "uses": ["milk"]
         },
         {
@@ -383,6 +396,7 @@
             "en": "Pour part of the gravy over the meat and serve the rest in a gravy boat.",
             "de": "Einen Teil der Soße über das Fleisch gießen und den Rest in einer Soßenschüssel reichen."
           },
+          "action": "serve",
           "uses": ["beef"]
         }
       ]

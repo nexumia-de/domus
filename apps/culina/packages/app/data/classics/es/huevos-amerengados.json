@@ -166,6 +166,7 @@
             "en": "Lift the balls out as they set and drain them on a sieve.",
             "de": "Die Kugeln herausnehmen, sobald sie fest sind, und auf einem Sieb abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["egg"]
         },
         {
@@ -181,6 +182,7 @@
             "en": "Arrange the balls in a pyramid on a dish and pour the cream over them.",
             "de": "Die Kugeln pyramidenförmig auf eine Platte legen und die Sahne darübergießen."
           },
+          "action": "serve",
           "uses": ["egg", "cream"]
         }
       ]

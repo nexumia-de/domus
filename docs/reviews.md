@@ -21,6 +21,54 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-20: the steps of Culina's shipped dishes on the kit
+
+Every step of the 48 shipped dishes names what is done, by a technique
+or a plain action ([classic format](../apps/culina/docs/classic-format.md)).
+
+| Part                                                                                                                      | Done by                | Checked by                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A word for 324 steps (24 techniques, 300 plain actions), `uses` for 5 steps, 12 new plain actions                         | agent, general purpose | lead: a script compared every dish file with the one before and found no change but `action`, `technique` and `uses`, and no existing technique changed; lead read 81 of the 324 words against their step (below) |
+| The word lists (`step-words.json`), the tool `propose-steps.mjs`, `validateClassic` refusing an unknown action, the tests | agent, general purpose | lead ran `npm run check:culina` and the browser checks on the agent's commits brought onto the current main; lead did not read the tool or the changed word lists line by line                                    |
+| The brief, bringing the commits over (one overlap in the log), this entry                                                 | lead                   | nobody                                                                                                                                                                                                            |
+
+**What the lead read.** All 24 techniques the agent gave to steps,
+each against the note it shows: they fit; two sit loosely (chopping
+meat, and ham with garlic and parsley, under "cut the pieces to one
+size"). All 17 steps given the catch-all "Prepare", and every seventh of
+the other plain actions (40 steps): none was out of place. The other 243
+words were not read by a second reader.
+
+**Found by the checks**
+
+- The agent's own trial: the word list proposed the word the agent chose
+  for about half the sentences (244 of 445 after its changes). It
+  changed seven entries of the list and pinned them with tests.
+- The agent found that `tools/content/validate-file.mjs` did not
+  generate the substitutes index, so it could not bundle the engine in a
+  fresh checkout, and fixed it. No test pins that.
+- One browser check that the change does not touch failed once on the
+  lead's machine and passed on the next run: `e2e/catalogue.mjs`, "the
+  grams shown are the engine's from the catalogue rows", where the line
+  of three eggs showed no amount. Four builds and browser runs were going
+  at the same time. The lead suspected that an amount typed while a
+  catalogue entry is still being taken into the notebook is dropped,
+  tried exactly that with the store slowed down, and the amount stayed.
+  **The cause is not found.** The check does not wait for the picker to
+  close at that line, which is the next thing to look at if it returns.
+
+**Counts.** Culina's engine 1093 tests, its app 485, on main with the
+agent's commits. Steps: 447, with a technique 145 (before 121), with a
+plain action 300 (before 0), with `uses` 359 (before 354), without a
+word 2, both named in the test with the reason.
+
+**Not verified.** That each word fits its step, beyond the 81 read. The
+German sentences, which the agent read only where the English left a
+doubt. Four existing techniques the agent found to fit loosely and left
+(`bake` on a meat loaf, `fresh-pasta` on cutting and rolling, `boil` on
+a three-hour boil, `saute` on flour): they are for the owner. No browser
+check looks at a shipped dish with its new words.
+
 ## 2026-11-20: Culina's notes read against three books
 
 The record of the research is

@@ -208,5 +208,89 @@
       "en": "Preheat the oven",
       "de": "Ofen vorheizen"
     }
+  },
+  {
+    "id": "cook",
+    "name": {
+      "en": "Cook",
+      "de": "Garen"
+    }
+  },
+  {
+    "id": "pour",
+    "name": {
+      "en": "Pour",
+      "de": "Gießen"
+    }
+  },
+  {
+    "id": "sprinkle",
+    "name": {
+      "en": "Sprinkle",
+      "de": "Bestreuen"
+    }
+  },
+  {
+    "id": "crush",
+    "name": {
+      "en": "Crush",
+      "de": "Zerstoßen"
+    }
+  },
+  {
+    "id": "grease",
+    "name": {
+      "en": "Grease",
+      "de": "Einfetten"
+    }
+  },
+  {
+    "id": "trim",
+    "name": {
+      "en": "Trim",
+      "de": "Putzen"
+    }
+  },
+  {
+    "id": "prepare",
+    "name": {
+      "en": "Prepare",
+      "de": "Vorbereiten"
+    }
+  },
+  {
+    "id": "turn",
+    "name": {
+      "en": "Turn",
+      "de": "Wenden"
+    }
+  },
+  {
+    "id": "take-out",
+    "name": {
+      "en": "Take out",
+      "de": "Herausnehmen"
+    }
+  },
+  {
+    "id": "turn-out",
+    "name": {
+      "en": "Turn out",
+      "de": "Stürzen"
+    }
+  },
+  {
+    "id": "remove-from-heat",
+    "name": {
+      "en": "Take off the heat",
+      "de": "Vom Herd nehmen"
+    }
+  },
+  {
+    "id": "stand",
+    "name": {
+      "en": "Let stand",
+      "de": "Stehen lassen"
+    }
   }
 ]

@@ -192,6 +192,7 @@
             "en": "Take the bones out of the meat, tie the meat with string, and break the bones.",
             "de": "Die Knochen aus dem Fleisch lösen, das Fleisch mit Küchengarn binden und die Knochen zerbrechen."
           },
+          "action": "prepare",
           "uses": ["beef", "bone"]
         },
         {
@@ -207,6 +208,7 @@
             "en": "Set the pot on the fire and add the salt.",
             "de": "Den Topf aufs Feuer stellen und das Salz zugeben."
           },
+          "action": "season",
           "uses": ["salt"]
         },
         {
@@ -229,6 +231,7 @@
             "en": "Wipe the rim of the pot, add the vegetables, and let it boil again.",
             "de": "Den Topfrand abwischen, das Gemüse zugeben und wieder aufkochen lassen."
           },
+          "action": "add",
           "uses": ["carrot", "onion", "leek", "celery", "clove", "turnip"]
         },
         {
@@ -247,13 +250,15 @@
             "en": "Take the meat out and put it on a dish. Taste the broth to see that it is well seasoned for the soup; add more salt only in the tureen. The broth should always be a little low in salt, as it is salted again when reheated.",
             "de": "Das Fleisch herausnehmen und auf eine Platte legen. Die Brühe probieren, sie soll für die Suppe gut gesalzen sein; mehr Salz nur in der Suppenschüssel zugeben. Die Brühe soll immer etwas salzarm sein, da sie beim Wiedererwärmen nachgesalzen wird."
           },
+          "action": "take-out",
           "uses": ["beef"]
         },
         {
           "text": {
             "en": "Skim the fat off the hot broth with the ladle, taking as little broth as possible.",
             "de": "Das Fett mit der Kelle von der heißen Brühe abnehmen und dabei möglichst wenig Brühe mitnehmen."
-          }
+          },
+          "technique": "skim"
         }
       ]
     }

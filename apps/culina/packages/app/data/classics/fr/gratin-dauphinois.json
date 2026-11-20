@@ -161,6 +161,7 @@
             "en": "Slice the potatoes finely.",
             "de": "Die Kartoffeln fein schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["potato"]
         },
         {
@@ -168,32 +169,37 @@
             "en": "Put them in a bowl and add the salt, the pepper, the nutmeg, the beaten egg, the boiled milk and the cheese.",
             "de": "In eine Schüssel geben und Salz, Pfeffer, Muskat, das verquirlte Ei, die gekochte Milch und den Käse dazugeben."
           },
+          "action": "add",
           "uses": ["potato", "salt", "pepper", "nutmeg", "egg", "milk", "gruyere"]
         },
         {
           "text": {
             "en": "Mix everything thoroughly.",
             "de": "Alles gründlich vermischen."
-          }
+          },
+          "action": "mix"
         },
         {
           "text": {
             "en": "Rub the earthenware dishes with garlic and butter them well.",
             "de": "Die Auflaufformen aus Steingut mit Knoblauch einreiben und gut ausbuttern."
           },
+          "action": "grease",
           "uses": ["garlic", "butter"]
         },
         {
           "text": {
             "en": "Pour the mixture into the dishes.",
             "de": "Die Masse in die Formen füllen."
-          }
+          },
+          "action": "fill"
         },
         {
           "text": {
             "en": "Sprinkle generously with the cheese.",
             "de": "Reichlich mit Käse bestreuen."
           },
+          "action": "sprinkle",
           "uses": ["gruyere"]
         },
         {
@@ -201,6 +207,7 @@
             "en": "Add a few pieces of butter on top.",
             "de": "Einige Butterstücke obenauf verteilen."
           },
+          "action": "add",
           "uses": ["butter"]
         },
         {

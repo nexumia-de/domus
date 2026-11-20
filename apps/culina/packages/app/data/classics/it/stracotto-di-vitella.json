@@ -189,6 +189,7 @@
             "en": "Cut the onion, the carrot and the celery roughly.",
             "de": "Zwiebel, Karotte und Sellerie grob schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["onion", "carrot", "celery"]
         },
         {
@@ -196,6 +197,7 @@
             "en": "Cut the carnesecca into small dice.",
             "de": "Die Carnesecca in kleine Würfel schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["carnesecca"]
         },
         {
@@ -203,6 +205,7 @@
             "en": "Put everything on the heat together.",
             "de": "Alles zusammen auf den Herd stellen."
           },
+          "action": "heat",
           "uses": ["veal", "carnesecca", "butter", "onion", "carrot", "celery"]
         },
         {
@@ -210,6 +213,7 @@
             "en": "Season with salt and pepper.",
             "de": "Mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["salt", "pepper"]
         },
         {
@@ -225,6 +229,7 @@
             "en": "Dust the meat with a pinch of flour.",
             "de": "Das Fleisch mit einem Pizzico Mehl bestäuben."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -232,6 +237,7 @@
             "en": "Stir so that the flour does not burn.",
             "de": "Umrühren, damit das Mehl nicht anbrennt."
           },
+          "action": "stir",
           "uses": ["flour"]
         },
         {
@@ -239,6 +245,7 @@
             "en": "Pour tomato sauce or paste over the meat.",
             "de": "Tomatensauce oder Tomatenmark über das Fleisch gießen."
           },
+          "action": "pour",
           "uses": ["tomato"]
         },
         {
@@ -253,7 +260,8 @@
           "text": {
             "en": "Pass the sauce through a sieve.",
             "de": "Die Sauce durch ein Sieb streichen."
-          }
+          },
+          "action": "strain"
         }
       ]
     },
@@ -327,6 +335,7 @@
             "en": "Drain them well and keep them for a moment in the sauce near the heat.",
             "de": "Gut abgießen und kurz in der Sauce bei Hitze warm halten."
           },
+          "action": "drain",
           "uses": ["pasta"]
         },
         {
@@ -334,6 +343,7 @@
             "en": "Dress them with butter and a little parmesan; more parmesan can be added at the table.",
             "de": "Mit Butter und etwas Parmesan anmachen; bei Tisch kann mehr Parmesan dazugegeben werden."
           },
+          "action": "serve",
           "uses": ["butter-dressing", "parmesan-dressing"]
         }
       ]

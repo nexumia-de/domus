@@ -109,6 +109,7 @@
             "en": "Add salt, the onion and the carrot.",
             "de": "Salz, die Zwiebel und die Karotte zugeben."
           },
+          "action": "add",
           "uses": ["salt", "onion", "carrot"]
         },
         {
@@ -116,6 +117,7 @@
             "en": "Take out the carrot and press the rest through a fine cloth sieve.",
             "de": "Die Karotte herausnehmen und den Rest durch ein feines Tuchsieb streichen."
           },
+          "action": "strain",
           "uses": ["carrot"]
         },
         {
@@ -123,19 +125,22 @@
             "en": "Put the purée in a pan with the sugar and moisten it with the cooking water of the peas.",
             "de": "Das Püree mit dem Zucker in einen Topf geben und mit dem Kochwasser der Erbsen angießen."
           },
+          "action": "add",
           "uses": ["sugar", "liquid"]
         },
         {
           "text": {
             "en": "Stir over the heat so that the purée does not stick.",
             "de": "Auf dem Herd rühren, damit das Püree nicht ansetzt."
-          }
+          },
+          "action": "stir"
         },
         {
           "text": {
             "en": "At the first boil, move the pan to the side of the stove.",
             "de": "Beim ersten Aufkochen den Topf an den Rand des Herdes stellen."
-          }
+          },
+          "action": "remove-from-heat"
         }
       ]
     },
@@ -235,6 +240,7 @@
             "en": "Drain the rice and put it in the tureen with the purée.",
             "de": "Den Reis abgießen und mit dem Püree in die Suppenschüssel geben."
           },
+          "action": "drain",
           "uses": ["rice", "puree"]
         },
         {
@@ -242,13 +248,15 @@
             "en": "Add the butter and stir well until it has melted.",
             "de": "Die Butter zugeben und gut unterrühren, bis sie geschmolzen ist."
           },
+          "action": "add",
           "uses": ["butter"]
         },
         {
           "text": {
             "en": "Serve.",
             "de": "Servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     }
