@@ -31,17 +31,10 @@ const scenes = [
   ['templates', '#/templates'],
   ['template', '#/templates/daiquiri'],
   ['stock', '#/stock'],
-  ['stock-places', '#/stock?sheet=places'],
+  ['stock-spaces', '#/stock?sheet=spaces'],
   ['buy-next', '#/stock/buy-next'],
   ['settings', '#/settings'],
   ['data', '#/settings/data'],
-  ['sync', '#/settings/sync'],
-  ['sync-storage', '#/settings/sync?sheet=storage'],
-  ['sync-join', '#/settings/sync?sheet=join'],
-  ['sync-bind', '#/settings/sync', (page) => syncSheet(page, 'bind')],
-  ['sync-share', '#/settings/sync', (page) => syncSheet(page, 'share')],
-  ['sync-move', '#/settings/sync', (page) => syncSheet(page, 'move')],
-  ['sync-passphrase', '#/settings/sync', (page) => syncSheet(page, 'passphrase')],
   ['spec-share', '#/drinks', specShare],
   ['share-preview', '#/drinks', sharePreview],
   ['about', '#/about'],
@@ -74,46 +67,10 @@ async function ingredientForm(page) {
   await page.locator('#f-name').blur();
 }
 
-// The sheets of the Sync page and the share screens need data (a storage, a
-// bound place, an own drink). Every step looks at the page and makes only what
-// is missing, because one browser context serves all scenes of a pass. No step
-// navigates the document (the zoom pass injects a style rule first): clicks and
-// the address hash only.
-const SYNC_KEYS = {
-  bind: 'place-bind',
-  share: 'place-share',
-  move: 'place-move',
-  passphrase: 'place-passphrase',
-};
-
-async function ensureStorage(page) {
-  if ((await page.locator('[data-focus^="storage-remove:"]').count()) > 0) return;
-  await page.locator('[data-focus="storage-add"]').click();
-  await page.locator('#storage-label').fill('Test storage');
-  await page.locator('#storage-address').fill('http://127.0.0.1:9/dav');
-  await page.locator('[data-focus="storage-save"]').click();
-  await page.locator('[data-sheet="storage"]').waitFor({ state: 'detached' });
-  await page.locator('[data-focus^="storage-remove:"]').first().waitFor();
-}
-
-async function syncSheet(page, sheet) {
-  await ensureStorage(page);
-  const bindButton = page.locator('[data-focus^="place-bind:"]');
-  if (sheet !== 'bind' && (await bindButton.count()) > 0) {
-    await bindButton.first().click();
-    await page.locator('[data-sheet="bind"]').waitFor();
-    await page.locator('[data-focus="bind-start"]').click();
-    await page.locator('[data-sheet="bind"]').waitFor({ state: 'detached' });
-  }
-  const wanted = page.locator(`[data-focus^="${SYNC_KEYS[sheet]}:"]`).first();
-  await wanted.waitFor();
-  await wanted.click();
-  await page.locator(`[data-sheet="${sheet}"]`).waitFor();
-  // The invite link is made by an async compression: wait for it and its QR code.
-  if (sheet === 'share') await page.locator('[data-testid="invite-qr"] svg[role="img"]').waitFor();
-  await quiet(page);
-}
-
+// The share screens need data (an own drink). Every step looks at the page and
+// makes only what is missing, because one browser context serves all scenes of
+// a pass. No step navigates the document (the zoom pass injects a style rule
+// first): clicks and the address hash only.
 const DRINK = 'Accessible Test Drink';
 
 async function ensureDrink(page) {

@@ -185,6 +185,23 @@ test('a space that got a storage, or left the device, is picked up by the next r
   sync.stop();
 });
 
+test('a shared database that cannot be opened is no error: nothing runs', async () => {
+  const broken = {
+    ...sharedStore(),
+    listSpaces: () => Promise.reject(new Error('The local database could not be opened')),
+  };
+  const sync = createStockSync({
+    shared: broken,
+    adapter: () => fakeStorage().adapter,
+    now,
+    onChange: () => undefined,
+    ...noTimers,
+  });
+  await expect(sync.refresh()).resolves.toBeUndefined();
+  expect(sync.status('any')).toBeUndefined();
+  sync.stop();
+});
+
 test('the status in words', () => {
   const at = '2026-11-20T09:00:00.000Z';
   const later = '2026-11-20T09:05:10.000Z';

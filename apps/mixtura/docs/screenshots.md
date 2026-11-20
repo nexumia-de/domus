@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Screenshots
-description: Overview of the app screens at 360x720 and 1200x800 in light and dark, how they are generated, which files are obsolete since Mixtura's own sync was removed on 2026-11-20 (the Sync page and the Places sheet), and the separate mock-up screenshots from the design phase.
+description: Overview of the app screens at 360x720 and 1200x800 in light and dark, how they are generated, which pictures may be out of date since Mixtura's own sync was removed on 2026-11-20, and the separate mock-up screenshots from the design phase.
 tags: [screenshots, ui, testing]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -97,7 +97,7 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 
 ## Stock and Buy Next
 
-The four `app-stock-places-*` rows are **obsolete**: they show the line and the sheet as they were before 2026-11-20, with the word "Places" and with Add, Rename and Remove. The sheet is now "Spaces" and only chooses ([spaces](screens-stock-settings.md#spaces)). No new picture was taken.
+The four `app-stock-spaces-*` rows show the line and the Spaces sheet as they are since 2026-11-20 ([spaces](screens-stock-settings.md#spaces)), taken by `e2e/spaces.mjs --docs` with a second space seeded.
 
 | Screen                    | 360x720                                                                                                                                                                        | 1200x800                                                                                                                                                                          |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -106,28 +106,21 @@ The four `app-stock-places-*` rows are **obsolete**: they show the line and the 
 | `app-stock-in-stock`      | <a href="screenshots/app-stock-in-stock-360x720.png"><img src="screenshots/app-stock-in-stock-360x720.png" alt="app-stock-in-stock at 360x720" width="180"></a>                | <a href="screenshots/app-stock-in-stock-1200x800.png"><img src="screenshots/app-stock-in-stock-1200x800.png" alt="app-stock-in-stock at 1200x800" width="400"></a>                |
 | `app-stock-create`        | <a href="screenshots/app-stock-create-360x720.png"><img src="screenshots/app-stock-create-360x720.png" alt="app-stock-create at 360x720" width="180"></a>                      | <a href="screenshots/app-stock-create-1200x800.png"><img src="screenshots/app-stock-create-1200x800.png" alt="app-stock-create at 1200x800" width="400"></a>                      |
 | `app-stock-batches`       | <a href="screenshots/app-stock-batches-360x720.png"><img src="screenshots/app-stock-batches-360x720.png" alt="app-stock-batches at 360x720" width="180"></a>                   | <a href="screenshots/app-stock-batches-1200x800.png"><img src="screenshots/app-stock-batches-1200x800.png" alt="app-stock-batches at 1200x800" width="400"></a>                   |
-| `app-stock-places-line`   | <a href="screenshots/app-stock-places-line-360x720.png"><img src="screenshots/app-stock-places-line-360x720.png" alt="app-stock-places-line at 360x720" width="180"></a>       | <a href="screenshots/app-stock-places-line-1200x800.png"><img src="screenshots/app-stock-places-line-1200x800.png" alt="app-stock-places-line at 1200x800" width="400"></a>       |
-| `app-stock-places-sheet`  | <a href="screenshots/app-stock-places-sheet-360x720.png"><img src="screenshots/app-stock-places-sheet-360x720.png" alt="app-stock-places-sheet at 360x720" width="180"></a>    | <a href="screenshots/app-stock-places-sheet-1200x800.png"><img src="screenshots/app-stock-places-sheet-1200x800.png" alt="app-stock-places-sheet at 1200x800" width="400"></a>    |
-| `app-stock-places-rows`   | <a href="screenshots/app-stock-places-rows-360x720.png"><img src="screenshots/app-stock-places-rows-360x720.png" alt="app-stock-places-rows at 360x720" width="180"></a>       | <a href="screenshots/app-stock-places-rows-1200x800.png"><img src="screenshots/app-stock-places-rows-1200x800.png" alt="app-stock-places-rows at 1200x800" width="400"></a>       |
-| `app-stock-places-detail` | <a href="screenshots/app-stock-places-detail-360x720.png"><img src="screenshots/app-stock-places-detail-360x720.png" alt="app-stock-places-detail at 360x720" width="180"></a> | <a href="screenshots/app-stock-places-detail-1200x800.png"><img src="screenshots/app-stock-places-detail-1200x800.png" alt="app-stock-places-detail at 1200x800" width="400"></a> |
+| `app-stock-spaces-line`   | <a href="screenshots/app-stock-spaces-line-360x720.png"><img src="screenshots/app-stock-spaces-line-360x720.png" alt="app-stock-spaces-line at 360x720" width="180"></a>       | <a href="screenshots/app-stock-spaces-line-1200x800.png"><img src="screenshots/app-stock-spaces-line-1200x800.png" alt="app-stock-spaces-line at 1200x800" width="400"></a>       |
+| `app-stock-spaces-sheet`  | <a href="screenshots/app-stock-spaces-sheet-360x720.png"><img src="screenshots/app-stock-spaces-sheet-360x720.png" alt="app-stock-spaces-sheet at 360x720" width="180"></a>    | <a href="screenshots/app-stock-spaces-sheet-1200x800.png"><img src="screenshots/app-stock-spaces-sheet-1200x800.png" alt="app-stock-spaces-sheet at 1200x800" width="400"></a>    |
+| `app-stock-spaces-rows`   | <a href="screenshots/app-stock-spaces-rows-360x720.png"><img src="screenshots/app-stock-spaces-rows-360x720.png" alt="app-stock-spaces-rows at 360x720" width="180"></a>       | <a href="screenshots/app-stock-spaces-rows-1200x800.png"><img src="screenshots/app-stock-spaces-rows-1200x800.png" alt="app-stock-spaces-rows at 1200x800" width="400"></a>       |
+| `app-stock-spaces-detail` | <a href="screenshots/app-stock-spaces-detail-360x720.png"><img src="screenshots/app-stock-spaces-detail-360x720.png" alt="app-stock-spaces-detail at 360x720" width="180"></a> | <a href="screenshots/app-stock-spaces-detail-1200x800.png"><img src="screenshots/app-stock-spaces-detail-1200x800.png" alt="app-stock-spaces-detail at 1200x800" width="400"></a> |
 | `app-stock-near-date`     | <a href="screenshots/app-stock-near-date-360x720.png"><img src="screenshots/app-stock-near-date-360x720.png" alt="app-stock-near-date at 360x720" width="180"></a>             | <a href="screenshots/app-stock-near-date-1200x800.png"><img src="screenshots/app-stock-near-date-1200x800.png" alt="app-stock-near-date at 1200x800" width="400"></a>             |
 | `app-stock-empty`         | <a href="screenshots/app-stock-empty-360x720.png"><img src="screenshots/app-stock-empty-360x720.png" alt="app-stock-empty at 360x720" width="180"></a>                         | <a href="screenshots/app-stock-empty-1200x800.png"><img src="screenshots/app-stock-empty-1200x800.png" alt="app-stock-empty at 1200x800" width="400"></a>                         |
 | `app-buy-next`            | <a href="screenshots/app-buy-next-360x720.png"><img src="screenshots/app-buy-next-360x720.png" alt="app-buy-next at 360x720" width="180"></a>                                  | <a href="screenshots/app-buy-next-1200x800.png"><img src="screenshots/app-buy-next-1200x800.png" alt="app-buy-next at 1200x800" width="400"></a>                                  |
 | `app-buy-next-open`       | <a href="screenshots/app-buy-next-open-360x720.png"><img src="screenshots/app-buy-next-open-360x720.png" alt="app-buy-next-open at 360x720" width="180"></a>                   | <a href="screenshots/app-buy-next-open-1200x800.png"><img src="screenshots/app-buy-next-open-1200x800.png" alt="app-buy-next-open at 1200x800" width="400"></a>                   |
 
-## Sync (obsolete)
+## Sync (removed)
 
 Mixtura's Sync page and its sheets were removed on 2026-11-20
 ([stock in spaces](decisions/stock-in-spaces.md)); sync is set up in the
-Household app. The script that took the pictures (`e2e/sync.mjs`) is gone
-too. These files in `docs/screenshots/` show screens that no longer exist
-and can be deleted; they are not shown here any more:
-
-- `app-sync-page-360x720.png`, `app-sync-page-1200x800.png`
-- `app-sync-storage-360x720.png`, `app-sync-storage-1200x800.png`
-- `app-sync-bind-360x720.png`, `app-sync-bind-1200x800.png`
-- `app-sync-share-360x720.png`, `app-sync-share-1200x800.png`
-- `app-sync-join-360x720.png`, `app-sync-join-1200x800.png`
+Household app. The script that took the pictures (`e2e/sync.mjs`) and the
+pictures themselves (`app-sync-*`) are gone too.
 
 Pictures of Settings taken before that day (`shell-settings-dark-*`,
 `dark-settings-*`, `app-alcohol-settings-*`, `settings-data-row-*`) may

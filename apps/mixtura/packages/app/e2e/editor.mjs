@@ -60,7 +60,7 @@ const dump = () =>
         request.onerror = () => rej(request.error);
         request.onsuccess = () => {
           const db = request.result;
-          const names = ['specs', 'ingredients', 'drafts', 'stock', 'templates', 'affinities'];
+          const names = ['specs', 'ingredients', 'drafts', 'templates', 'affinities'];
           const tx = db.transaction(names);
           const out = {};
           let left = names.length;

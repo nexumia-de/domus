@@ -24,8 +24,6 @@ const screens = [
   ['stock', '#/stock'],
   ['buy-next-empty', '#/stock/buy-next'],
   ['settings', '#/settings'],
-  ['sync', '#/settings/sync'],
-  ['sync-storage', '#/settings/sync?sheet=storage'],
 ];
 
 const site = await serve();

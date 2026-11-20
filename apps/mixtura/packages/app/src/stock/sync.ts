@@ -44,7 +44,10 @@ export interface StockSyncOptions {
 }
 
 export interface StockSync {
-  /** Reads the spaces of the device and starts a loop for every shared one; safe to call again. */
+  /**
+   * Reads the spaces of the device and starts a loop for every shared one; safe to call again.
+   * Never rejects: a database that cannot be read leaves things as they are.
+   */
   refresh(): Promise<void>;
   /** The user changed stock of this space: a cycle follows after a short pause. */
   changed(spaceId: string): void;
@@ -116,7 +119,14 @@ export function createStockSync(options: StockSyncOptions): StockSync {
   return {
     async refresh() {
       if (stopped) return;
-      const spaces = await shared.listSpaces();
+      let spaces: StoredSpace[];
+      try {
+        spaces = await shared.listSpaces();
+      } catch {
+        // The shared database cannot be opened (no IndexedDB, a private window): nothing to
+        // sync, and the app says so itself with its read-only banner.
+        return;
+      }
       if (stopped) return;
       const here = new Set(spaces.map((s) => s.id));
       for (const [id, entry] of running) {
@@ -130,7 +140,10 @@ export function createStockSync(options: StockSyncOptions): StockSync {
         if (old?.signature === signature) continue;
         old?.loop?.stop();
         const entry: Running = { signature, busy: false, deviceOnly: isDeviceOnly(space) };
-        const { syncedAt } = await shared.readCollection(space.id, STOCK_COLLECTION);
+        const syncedAt = await shared
+          .readCollection(space.id, STOCK_COLLECTION)
+          .then((state) => state.syncedAt)
+          .catch(() => undefined);
         if (syncedAt !== undefined) entry.syncedAt = syncedAt;
         running.set(space.id, entry);
         if (!entry.deviceOnly) start(space, entry);
