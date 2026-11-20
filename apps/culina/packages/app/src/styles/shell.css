@@ -38,7 +38,7 @@
   top: 0;
   z-index: 1;
   min-height: var(--header-h);
-  padding: 0 var(--sp-2) 0 var(--sp-4);
+  padding: env(safe-area-inset-top) var(--sp-2) 0 var(--sp-4);
   background: var(--surface);
   border-bottom: 1px solid var(--divider);
 }
@@ -86,6 +86,9 @@
   /* Above the content, which comes later in the page and has transformed parts (the chevron of a
      "What belongs here" summary) that would be painted over the bar. */
   z-index: 1;
+  /* Chrome on Android draws the page under the system's navigation bar (edge to edge); the bar
+     keeps clear of it. The measured `--nav-real-h` follows. */
+  padding-bottom: env(safe-area-inset-bottom);
   background: var(--surface);
   border-top: 1px solid var(--border);
 }
