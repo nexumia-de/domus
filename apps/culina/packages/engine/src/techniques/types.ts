@@ -20,13 +20,20 @@ export const TECHNIQUE_LEVELS = [
 ] as const;
 export type TechniqueLevel = (typeof TECHNIQUE_LEVELS)[number];
 
-/** What a statement rests on: the work, the place in it, the URL and the sentence read. */
+/**
+ * What a statement rests on: the work, the place in it, where it is found and the sentence read.
+ * A page on the web has a `url`; a printed book has the `isbn` of the edition read and no link.
+ */
 export interface TechniqueSource {
   title: string;
   place: string;
-  url: string;
-  /** SPDX identifier of the work's licence, for example `CC-BY-NC-SA-4.0`. */
+  url?: string;
+  /** ISBN-13 of the edition read, digits only. */
+  isbn?: string;
+  /** SPDX identifier of the work's licence, for example `CC-BY-NC-SA-4.0`; a book cited by isbn has none. */
   licence?: string;
+  /** How this source knows it, when that differs from the level of the note. */
+  level?: TechniqueLevel;
   /** The sentence the note rests on, at most 25 words, for the reviewer. */
   sentence: string;
 }

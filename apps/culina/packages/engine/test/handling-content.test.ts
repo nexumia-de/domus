@@ -47,11 +47,15 @@ describe('shipped handling rules', () => {
   test('no id twice', () => {
     expect(validateHandlingRules(rules, context)).toEqual({ ok: true });
   });
-  test('every source is read on a page: an https URL, a licence and a sentence', () => {
+  test('every source is read: a page with an https URL and a licence, or a book with its ISBN', () => {
     for (const rule of rules) {
       for (const source of rule.sources) {
-        expect(source.url, rule.id).toMatch(/^https:\/\//);
-        expect(source.licence, rule.id).toBeTruthy();
+        if (source.url === undefined) {
+          expect(source.isbn, rule.id).toMatch(/^97[89][0-9]{10}$/);
+        } else {
+          expect(source.url, rule.id).toMatch(/^https:\/\//);
+          expect(source.licence, rule.id).toBeTruthy();
+        }
       }
     }
   });

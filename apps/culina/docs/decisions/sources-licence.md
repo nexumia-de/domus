@@ -43,4 +43,5 @@ By kind: technique notes 96 entries (88 NC-SA, 3 BY, 5 BY-NC), handling rules 31
 ## Not decided here
 
 - This record is **not legal advice**. If the project ever becomes commercial, the licences are read again by someone who can judge them.
+- **Books (since 2026-11-20).** A source that is a printed book is entered with the `isbn` of the edition read and without `url` and `licence`; the test counts these entries apart (`BOOK_ENTRIES` in `test/source-licences.test.ts`, 0 today) and they are not part of the table above. A citation of a fact from a book is not a reuse of the book, so a commercial variant would keep them; that, too, is a judgement and not legal advice.
 - Where the two new evidence levels (`tested`, `authority`) bring sources that are copyrighted books or official pages, their licence is entered the same way when the note is written; for a book without an open licence there is none to enter, and the note rests on a quoted sentence only ([source books](../source-books.md)).

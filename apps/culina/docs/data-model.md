@@ -552,15 +552,24 @@ Shipped read-only, one JSON file per technique in
 `technique.schema.json`; the guide for writing one is
 [classic format](classic-format.md#a-technique-file).
 
-| Field     | Type            | Required | Meaning                                                                                   |
-| --------- | --------------- | -------- | ----------------------------------------------------------------------------------------- |
-| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                                   |
-| `name`    | text in 2 langs | yes      | Visible name                                                                              |
-| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                             |
-| `why`     | text in 2 langs | yes      | Why it matters                                                                            |
-| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known           |
-| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, `licence` (an SPDX identifier), and the `sentence` |
+| Field     | Type            | Required | Meaning                                                                             |
+| --------- | --------------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                             |
+| `name`    | text in 2 langs | yes      | Visible name                                                                        |
+| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                       |
+| `why`     | text in 2 langs | yes      | Why it matters                                                                      |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known     |
+| `sources` | array of object | yes      | At least one: `title`, `place`, a `url` or an `isbn`, `licence`, and the `sentence` |
 
+- **Page or book.** A source read on the web has a `url` and a `licence`
+  (an SPDX identifier). A printed book has the `isbn` of the edition read
+  (13 digits, no hyphens) instead: the app shows it as text without a link,
+  and it has no `licence`, because the book is cited as fact and nothing of
+  it is reused. The schema refuses a source with neither. Since 2026-11-20.
+- **Level of a source.** A source may carry its own `level` when it knows
+  the statement in another way than the note says, for example a kitchen
+  test (`tested`) cited beside a textbook; the app then labels that source
+  with its own level. Since 2026-11-20.
 - **Sentence.** Every source carries the sentence the note rests on, at most
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).

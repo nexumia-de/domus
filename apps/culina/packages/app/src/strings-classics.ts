@@ -111,6 +111,7 @@ export const classicsStrings = {
   noteSources: 'Sources',
   noteSource: (level: string, title: string, place: string): string =>
     `${level} · ${title}, ${place}`,
+  noteSourceBook: (line: string, isbn: string): string => `${line} (ISBN ${isbn})`,
   iKnowThis: 'I know this',
   learnedDone: (name: string): string =>
     `Marked as learned: ${name}. Its note is not shown again. Settings can bring it back.`,

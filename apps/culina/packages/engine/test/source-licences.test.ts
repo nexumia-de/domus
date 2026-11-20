@@ -7,7 +7,8 @@ import { describe, expect, test } from 'vitest';
 import { contentValidators as schema } from './validators';
 
 interface Source {
-  url: string;
+  url?: string;
+  isbn?: string;
   licence?: string;
 }
 interface Item {
@@ -25,10 +26,16 @@ const read = (kind: string): { file: string; item: Item }[] => {
     }));
 };
 const all = KINDS.flatMap(read);
-const sources = all.flatMap(({ file, item }) => item.sources.map((source) => ({ file, source })));
+const every = all.flatMap(({ file, item }) => item.sources.map((source) => ({ file, source })));
+/** A printed book, cited by the ISBN of the edition read: it has no licence, nothing of it is reused. */
+const books = every.filter(({ source }) => source.url === undefined);
+/** A page on the web: it has a licence. */
+const sources = every.filter(({ source }) => source.url !== undefined);
 
 /** The SPDX identifiers in use. A new one is added here and to the decision record. */
 const KNOWN = ['CC-BY-4.0', 'CC-BY-NC-4.0', 'CC-BY-NC-SA-4.0'];
+/** The number of source entries that are books (docs/decisions/sources-licence.md). */
+const BOOK_ENTRIES = 0;
 const isNonCommercial = (id: string): boolean => /(^|-)NC(-|$)/.test(id);
 
 const counted = (): Map<string, number> => {
@@ -54,7 +61,14 @@ const documented = (): Map<string, number> => {
 };
 
 describe('source licences', () => {
-  test('every source of every shipped note has a licence, as an SPDX identifier', () => {
+  test('a book is cited by its ISBN, without a url and without a licence', () => {
+    for (const { file, source } of books) {
+      expect(source.isbn, file).toMatch(/^97[89][0-9]{10}$/);
+      expect(source.licence, file).toBeUndefined();
+    }
+    expect(books.length).toBe(BOOK_ENTRIES);
+  });
+  test('every source with a url has a licence, as an SPDX identifier', () => {
     const without = sources.filter(({ source }) => source.licence === undefined).map((s) => s.file);
     expect(without).toEqual([]);
     for (const { file, source } of sources) {

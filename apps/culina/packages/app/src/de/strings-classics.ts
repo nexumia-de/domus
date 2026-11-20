@@ -111,6 +111,7 @@ export const classicsStringsDe: typeof classicsStrings = {
   noteSources: 'Quellen',
   noteSource: (level: string, title: string, place: string): string =>
     `${level} · ${title}, ${place}`,
+  noteSourceBook: (line: string, isbn: string): string => `${line} (ISBN ${isbn})`,
   iKnowThis: 'Das kenne ich',
   learnedDone: (name: string): string =>
     `Als gelernt markiert: ${name}. Der Hinweis erscheint nicht mehr. In den Einstellungen kommt er zurück.`,
