@@ -376,7 +376,11 @@ await page.waitForFunction(() =>
 expect(pushed > 0, 'Undo opens the dropped swap again');
 
 // ---- Nothing stored ----
-expect((await stored()) === before, 'IndexedDB and local storage are untouched by swaps');
+const after = await stored();
+expect(
+  after === before,
+  `IndexedDB and local storage are untouched by swaps${after === before ? '' : `: before ${before}, after ${after}`}`,
+);
 
 // ---- An amount only: same template, same ranges, ticks for the saved values ----
 await open('#/drinks/daiquiri?swap=2::25ml');
