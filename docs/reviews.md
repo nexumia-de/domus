@@ -55,6 +55,12 @@ given smaller ones, as the owner asked.
   storage in the same process; the script was fixed, not the app.
 - The Household app's test of untranslated German texts listed the home
   page's links; the third app's link was added to its list.
+- CI's `mixtura-e2e-slow` failed on the first push in `e2e/swap.mjs`: the
+  check's snapshot was taken before the first start had finished its
+  writes. The fault was in the check (its wait did not wait) and is fixed
+  there; it also failed on main in 1 of 3 runs. The lead had run only
+  three of Mixtura's browser checks before pushing, which is why CI found
+  it first.
 - Culina's agent found no defect in existing code and rewrote
   `test/stock-notebook.test.ts`, whose subject (stock rows in Culina's
   own database and in the export) no longer exists.

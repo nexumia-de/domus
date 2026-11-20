@@ -106,20 +106,24 @@ await open('#/drinks/daiquiri');
 // The stock panel then reads the stock: the app makes its space in the shared
 // database and writes the device setting `spaces` behind it, the last write of
 // a first start. Wait for that one too, or it lands between the two snapshots.
-await page.waitForFunction(async () => {
-  if (!(await indexedDB.databases()).some((d) => d.name === 'mixtura')) return false;
-  return new Promise((done) => {
-    const open = indexedDB.open('mixtura');
-    open.onerror = () => done(false);
-    open.onsuccess = () => {
-      const get = open.result.transaction('settings').objectStore('settings').get('spaces');
-      get.onsuccess = () => {
-        open.result.close();
-        done(get.result !== undefined);
-      };
-    };
-  });
-});
+// The wait reads the stores from here, with the snapshot itself: an async predicate in the
+// page did not hold the check back (the snapshot was taken with no setting and no shared
+// database, and both arrived during the swaps).
+const firstStartDone = async () => {
+  const deadline = Date.now() + 20000;
+  let last = '';
+  for (;;) {
+    const now = await stored();
+    const { stores } = JSON.parse(now);
+    const written = stores['mixtura/settings'] > 0 && stores['domus/spaces'] > 0;
+    // Twice the same: nothing of the first start is still on its way.
+    if (written && now === last) return;
+    if (Date.now() > deadline) throw new Error(`The first start did not finish: ${now}`);
+    last = now;
+    await page.waitForTimeout(200);
+  }
+};
+await firstStartDone();
 const before = await stored();
 const savedAbv = await abv();
 expect(
