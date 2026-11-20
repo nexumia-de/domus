@@ -43,6 +43,9 @@
 
   --target: 44px;
   --content-w: 36rem;
+  --header-h: 52px;
+  --nav-h: 56px;
+  --rail-w: 13rem;
   --focus-width: 3px;
   --focus-offset: 2px;
 }

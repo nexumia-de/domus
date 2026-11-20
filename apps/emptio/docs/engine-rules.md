@@ -66,7 +66,23 @@ with a category), and the household's earlier entries.
    and the same sort key, the category of the latest such entry (by
    `addedAt`). The household's choice wins over the catalogue.
 2. Otherwise the category the catalogue gives the ingredient.
-3. Otherwise `other`.
+3. Otherwise the category of the usual item the name means
+   (`usualCategory`, the list is in
+   [categories](categories.md#usual-items)). Names are compared by
+   their sort key, word by word:
+   1. the longest run of the name's words that is an item ("Bio-Milch
+      3,5 %" is milk), the last such run on a tie;
+   2. otherwise, from the last word to the first, the item a word is a
+      plural of ("Tomaten", "eggs": the item followed by `e`, `n`, `s`,
+      `en`, `es`, `er` or `nen`), or the longest item the word ends
+      with, the head of a German compound ("Vollmilch" is milk,
+      "Wildschwein" is Schwein and not Wein). Only items of one word
+      and four letters or more are looked for inside a word.
+4. Otherwise `other`.
+
+Step 3 is a guess from a short list and is wrong for some names (a
+compound whose head is another department). The household corrects it
+on the entry, and step 1 keeps that choice from then on.
 
 # 5. Twice the same
 

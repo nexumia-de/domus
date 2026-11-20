@@ -28,7 +28,7 @@ async function fresh() {
 }
 
 describe('adding', () => {
-  test('a new entry is typed, soon, and other, with its name tidied', async () => {
+  test('a new entry is typed, soon, and in the category of the usual item it names, with its name tidied', async () => {
     const { d, space, entries } = await fresh();
     expect(await addToList(d, space, { name: '  Oat   milk ' })).toEqual({
       id: 'e1',
@@ -38,7 +38,7 @@ describe('adding', () => {
       {
         id: 'e1',
         name: 'Oat milk',
-        categoryId: 'other',
+        categoryId: 'dairy',
         priority: 'soon',
         addedAt: expect.stringMatching(/^2026-11-20T09:00:00\.\d{3}Z$/) as string,
         origins: [{ kind: 'typed' }],

@@ -1,42 +1,9 @@
-.app-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-2);
-  max-width: var(--content-w);
-  margin: 0 auto;
-  padding: var(--sp-2) var(--sp-4);
-}
-
-.app-title {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target);
-  color: var(--text);
-  font-size: var(--fs-lg);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.app-nav {
-  display: flex;
-  gap: var(--sp-3);
-}
-
-.app-nav a,
 .back,
 .choice-link,
 .plain-link {
   display: inline-flex;
   align-items: center;
   min-height: var(--target);
-}
-
-.app-main {
-  max-width: var(--content-w);
-  margin: 0 auto;
-  padding: 0 var(--sp-4) calc(var(--sp-6) * 3);
 }
 
 /* Fields and buttons */
@@ -129,10 +96,6 @@ button.danger {
   max-width: 100%;
 }
 
-.add-form {
-  margin-bottom: var(--sp-4);
-}
-
 .add-row {
   display: flex;
   gap: var(--sp-2);
@@ -147,7 +110,12 @@ button.danger {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
-  margin-top: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.add-more .chips {
+  flex: none;
+  max-width: 100%;
 }
 
 .add-more .field {
@@ -155,14 +123,19 @@ button.danger {
   min-width: 10rem;
 }
 
+/* One row that scrolls sideways, so that the dock keeps its height whatever is offered. */
 .suggestions {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--sp-2);
+  overflow-x: auto;
+}
+
+.suggestion {
+  flex: none;
 }
 
 .suggestions:not(:empty) {
-  margin-top: var(--sp-2);
+  margin-bottom: var(--sp-2);
 }
 
 .suggestion {
@@ -185,12 +158,20 @@ button.danger {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
+  position: relative;
   min-height: var(--target);
-  padding: 0 var(--sp-3);
+  padding: 0 var(--sp-4);
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
   cursor: pointer;
+}
+
+/* The chip is the control: its ground, border and weight say which one is chosen. */
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .chip:has(input:checked) {
@@ -332,37 +313,6 @@ button.danger {
 .empty {
   padding: var(--sp-5) 0;
   text-align: center;
-}
-
-/* What was said last: above the bottom edge, never over the add field. */
-
-.live {
-  position: fixed;
-  right: var(--sp-3);
-  bottom: var(--sp-3);
-  left: var(--sp-3);
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  max-width: var(--content-w);
-  margin: 0 auto;
-  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-4);
-  border-radius: var(--radius);
-  background: var(--text);
-  color: var(--bg);
-}
-
-.live:empty {
-  display: none;
-}
-
-.live button {
-  flex: none;
-  border-color: var(--bg);
-  background: transparent;
-  color: var(--bg);
 }
 
 /* Categories and settings */

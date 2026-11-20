@@ -14,7 +14,6 @@ import {
   type LangChoice,
   type Theme,
 } from '../prefs';
-import { hashFor } from '../router';
 import type { Ctx, Screen } from './context';
 
 export function settingsScreen(ctx: Ctx): Screen {
@@ -98,7 +97,6 @@ export function settingsScreen(ctx: Ctx): Screen {
   const node = h(
     'div',
     { class: 'screen screen-settings' },
-    h('a', { class: 'back', href: hashFor.list }, `‹ ${t.nav.back}`),
     h('h1', {}, t.settings.title),
     h('h2', {}, t.settings.spaces),
     h('p', { class: 'muted' }, t.settings.spacesIntro),

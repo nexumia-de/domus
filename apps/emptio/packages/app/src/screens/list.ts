@@ -1,4 +1,4 @@
-// The list at home: the add field, open entries by priority and category,
+// The list at home: the add field (docked at the bottom), open entries by priority and category,
 // bought ones below (docs/behaviour.md#the-list).
 import {
   DEFAULT_PRIORITY,
@@ -58,28 +58,31 @@ export function listScreen(ctx: Ctx): Screen {
       label: h('label', { class: `chip chip-${step}` }, input, t.priority[step]),
     };
   });
+  // Priority and amount belong to what is being typed; they show once there is a name.
+  const more = h(
+    'div',
+    { class: 'add-more', hidden: true },
+    h(
+      'fieldset',
+      { class: 'chips' },
+      h('legend', { class: 'visually-hidden' }, t.priorityLabel),
+      ...radios.map((radio) => radio.label),
+    ),
+    h('label', { class: 'visually-hidden', for: amount.id }, t.list.amountLabel),
+    amount,
+  );
+  // The form is docked at the bottom, so what it offers opens upwards, above the field.
   const form = h(
     'form',
     { class: 'add-form', novalidate: true },
+    suggestions,
+    more,
     h('label', { class: 'visually-hidden', for: name.id }, t.list.addLabel),
     h(
       'div',
       { class: 'add-row' },
       name,
       h('button', { type: 'submit', class: 'primary' }, t.list.add),
-    ),
-    suggestions,
-    h(
-      'div',
-      { class: 'add-more' },
-      h(
-        'fieldset',
-        { class: 'chips' },
-        h('legend', { class: 'visually-hidden' }, t.priorityLabel),
-        ...radios.map((radio) => radio.label),
-      ),
-      h('label', { class: 'visually-hidden', for: amount.id }, t.list.amountLabel),
-      amount,
     ),
   );
 
@@ -104,6 +107,7 @@ export function listScreen(ctx: Ctx): Screen {
   });
 
   function drawSuggestions(): void {
+    more.hidden = name.value.trim() === '';
     const hits = suggest(name.value, app.state().entries, 6);
     suggestions.replaceChildren(
       ...(hits.length === 0
@@ -294,9 +298,8 @@ export function listScreen(ctx: Ctx): Screen {
     { class: 'screen screen-list' },
     h('h1', { class: 'visually-hidden' }, t.appName),
     spaceLine,
-    form,
     body,
   );
   draw();
-  return { node, update: draw };
+  return { node, dock: form, update: draw };
 }

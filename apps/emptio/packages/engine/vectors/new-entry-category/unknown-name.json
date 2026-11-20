@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "A name that is no usual item and that the household never had is other; a short item is not looked for inside a word",
+  "input": { "name": "Geburtstagskarte für Renate", "earlier": [] },
+  "expected": { "categoryId": "other" }
+}

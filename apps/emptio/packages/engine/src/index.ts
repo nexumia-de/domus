@@ -14,3 +14,4 @@ export { suggest } from './suggest';
 export type { SuggestEntry, Suggestion } from './suggest';
 export { STARTING_CATEGORIES, STARTING_CATEGORIES_SOURCE } from './starting-categories';
 export type { StartingCategory } from './starting-categories';
+export { USUAL_ITEMS, USUAL_ITEMS_SOURCE, usualCategory } from './usual-items';

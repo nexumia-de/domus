@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "Words around a usual item do not count, and a plural is the item",
+  "input": { "name": "Bio-Tomaten, lose", "earlier": [] },
+  "expected": { "categoryId": "produce" }
+}

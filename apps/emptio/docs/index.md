@@ -24,7 +24,7 @@ links. Change history is in [log.md](log.md).
 
 # Reference
 
-- [Starting categories and household goods](categories.md) - The 19 categories in English and German, the mapping from USDA food groups, usual household goods, taxonomies not used.
+- [Starting categories and usual items](categories.md) - The 19 categories in English and German, the mapping from USDA food groups, usual household goods, taxonomies not used.
 - [List orderings](list-orderings.md) - Unlucky orders of events around the list with the test that pins each, and the ones no test pins.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use; none at run time yet.
 

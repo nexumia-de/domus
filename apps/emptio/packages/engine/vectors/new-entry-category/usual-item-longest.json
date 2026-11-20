@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "The longest item a word ends with wins: Wildschwein is Schwein, not Wein",
+  "input": { "name": "Wildschwein", "earlier": [] },
+  "expected": { "categoryId": "meat" }
+}
