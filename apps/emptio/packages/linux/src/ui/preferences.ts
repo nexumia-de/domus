@@ -45,11 +45,9 @@ export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
   const state = app.state();
   let first: unknown = null;
   for (const space of state.spaces) {
-    const line = new Adw.ActionRow({
-      title: space.name,
-      subtitle: statusText(t.status, app.status(space.id), ui.now(), true),
-      use_markup: false,
-    });
+    const line = new Adw.ActionRow({ use_markup: false });
+    line.set_title(space.name);
+    line.set_subtitle(statusText(t.status, app.status(space.id), ui.now(), true));
     const choose = new Gtk.CheckButton({
       active: space.id === state.space?.id,
       valign: Gtk.Align.CENTER,

@@ -61,7 +61,7 @@ export function entryPage(ui: Ui, id: string): Page {
     label: t.entry.remove,
     halign: Gtk.Align.CENTER,
     margin_top: 24,
-    css_classes: ['destructive-action', 'pill'],
+    css_classes: ['destructive-action', 'pill', 'emptio-target'],
   });
   remove.connect('clicked', () => {
     void app
@@ -97,7 +97,7 @@ export function entryPage(ui: Ui, id: string): Page {
   const save = new Gtk.Button({
     label: t.entry.save,
     hexpand: true,
-    css_classes: ['suggested-action'],
+    css_classes: ['suggested-action', 'emptio-target'],
   });
   save.connect('clicked', () => {
     const text: string = name.get_text();

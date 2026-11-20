@@ -52,16 +52,18 @@ export function listPage(ui: Ui, menu: any): Page {
     hexpand: true,
     placeholder_text: t.list.addPlaceholder,
     input_hints: Gtk.InputHints.WORD_COMPLETION,
+    css_classes: ['emptio-target'],
   });
   name.update_property([Gtk.AccessibleProperty.LABEL], [t.list.addLabel]);
   const pressing = Gtk.DropDown.new_from_strings(PRIORITIES.map((step) => t.priority[step]));
   pressing.set_selected(PRIORITIES.indexOf(DEFAULT_PRIORITY));
+  pressing.add_css_class('emptio-target');
   pressing.set_tooltip_text(t.priorityLabel);
   pressing.update_property([Gtk.AccessibleProperty.LABEL], [t.priorityLabel]);
   const add = new Gtk.Button({
     icon_name: 'list-add-symbolic',
     tooltip_text: t.list.add,
-    css_classes: ['suggested-action'],
+    css_classes: ['suggested-action', 'emptio-target'],
   });
   add.update_property([Gtk.AccessibleProperty.LABEL], [t.list.add]);
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
@@ -95,16 +97,14 @@ export function listPage(ui: Ui, menu: any): Page {
     const detail = [entry.amount, entry.bought === undefined ? category : undefined, entry.note]
       .filter((part) => part !== undefined && part !== '')
       .join(' · ');
-    const line = new Adw.ActionRow({
-      title: entry.name,
-      subtitle: detail,
-      use_markup: false,
-      activatable: true,
-    });
+    // Markup is switched off before the texts are set: a name may hold "&" or "<".
+    const line = new Adw.ActionRow({ use_markup: false, activatable: true });
+    line.set_title(entry.name);
+    line.set_subtitle(detail);
     const tick = new Gtk.CheckButton({
       active: entry.bought !== undefined,
       valign: Gtk.Align.CENTER,
-      css_classes: ['selection-mode'],
+      css_classes: ['selection-mode', 'emptio-target'],
     });
     tick.update_property([Gtk.AccessibleProperty.LABEL], [t.list.tick(entry.name)]);
     tick.connect('toggled', () => {
@@ -205,7 +205,7 @@ export function listPage(ui: Ui, menu: any): Page {
       const button = new Gtk.Button({
         label: t.list.clearBought,
         valign: Gtk.Align.CENTER,
-        css_classes: ['flat'],
+        css_classes: ['flat', 'emptio-target'],
       });
       button.connect('clicked', clear);
       group.set_header_suffix(button);

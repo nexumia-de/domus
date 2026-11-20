@@ -1,6 +1,7 @@
 // The native app: GTK 4 and libadwaita on GJS, the same list, actions, texts
 // and sync as the web app (docs/native-linux.md).
 import Adw from 'gi://Adw?version=1';
+import Gdk from 'gi://Gdk?version=4.0';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
@@ -68,9 +69,20 @@ const application = new Adw.Application({
   flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
 });
 
+// The app's whole stylesheet: controls a finger taps are at least 44 px (the toolkit's
+// rule); libadwaita draws buttons and fields lower than that.
+const STYLE = '.emptio-target { min-height: 44px; min-width: 44px; }';
+
 application.connect('activate', () => {
   const open = application.get_active_window();
   if (open) return open.present();
+  const css = new Gtk.CssProvider();
+  css.load_from_string(STYLE);
+  Gtk.StyleContext.add_provider_for_display(
+    Gdk.Display.get_default(),
+    css,
+    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+  );
 
   const prefs = filePrefs();
   applyStyle(themeOf(prefs.get(KEYS.theme)));

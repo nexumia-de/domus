@@ -75,7 +75,7 @@ export function categoriesPage(ui: Ui): Page {
         icon_name: 'user-trash-symbolic',
         valign: Gtk.Align.CENTER,
         tooltip_text: t.categories.remove,
-        css_classes: ['flat'],
+        css_classes: ['flat', 'emptio-target'],
       });
       remove.update_property(
         [Gtk.AccessibleProperty.LABEL],
