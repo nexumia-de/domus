@@ -199,6 +199,7 @@
             "en": "Pour in the filtered water: 3 litres for the small pot.",
             "de": "Das gefilterte Wasser eingießen: 3 Liter für den kleinen Topf."
           },
+          "technique": "stock-cold-start",
           "uses": ["water"]
         },
         {

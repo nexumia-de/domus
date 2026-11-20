@@ -35,7 +35,7 @@ const sources = every.filter(({ source }) => source.url !== undefined);
 /** The SPDX identifiers in use. A new one is added here and to the decision record. */
 const KNOWN = ['CC-BY-4.0', 'CC-BY-NC-4.0', 'CC-BY-NC-SA-4.0'];
 /** The number of source entries that are books (docs/decisions/sources-licence.md). */
-const BOOK_ENTRIES = 0;
+const BOOK_ENTRIES = 157;
 const isNonCommercial = (id: string): boolean => /(^|-)NC(-|$)/.test(id);
 
 const counted = (): Map<string, number> => {

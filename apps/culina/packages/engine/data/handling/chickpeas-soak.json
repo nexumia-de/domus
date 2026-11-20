@@ -2,12 +2,12 @@
   "id": "chickpeas-soak",
   "target": "fdc-173756",
   "text": {
-    "en": "Soak dried chickpeas before cooking them.",
-    "de": "Getrocknete Kichererbsen vor dem Kochen einweichen."
+    "en": "Soak dried chickpeas before cooking them, in salted water (10 to 20 g of salt per litre).",
+    "de": "Getrocknete Kichererbsen vor dem Kochen einweichen, in gesalzenem Wasser (10 bis 20 g Salz je Liter)."
   },
   "why": {
-    "en": "The tough seed coat makes legumes slow to cook; soaking speeds it up.",
-    "de": "Die harte Samenschale macht Hülsenfrüchte langsam gar; Einweichen beschleunigt das."
+    "en": "The tough seed coat makes legumes slow to cook; soaking speeds it up. Salt in the soaking water makes the skins more elastic, so they burst less, and does not keep the peas from softening.",
+    "de": "Die harte Samenschale macht Hülsenfrüchte langsam gar; Einweichen beschleunigt das. Salz im Einweichwasser macht die Schalen elastischer, sodass sie weniger platzen, und hindert die Erbsen nicht am Weichwerden."
   },
   "technique": "simmer",
   "level": "textbook",
@@ -25,6 +25,37 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Food_Preparation_Lab_Manual_(Beirman_and_Gilbert)/05%3A_Cereals_vs._Legumes/5.01%3A_Cereal_and_Legume_Introduction",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Two ways to speed the cooking of legumes are soaking and pressure cooking."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Seeds, Reducing Cooking Times by Presoaking, p. 488",
+      "isbn": "9780340831496",
+      "sentence": "This reduces cooking time by 25% or more, and for a very basic reason: heat penetrates a dry seed faster than water does."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Seeds, Salt and Baking Soda Speed Cooking, p. 489",
+      "isbn": "9780340831496",
+      "sentence": "Plain salt at a concentration around 1% (10 g/l, or 2 teaspoons/qt) speeds cooking greatly"
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 2 SOUPS, STEWS, and the Science of Stock, section The Beans",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "Salting beans can help tenderize their skins, preventing blowouts."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Getrocknete Hülsenfrüchte, p. 316",
+      "isbn": "9783805708388",
+      "sentence": "Das Einweichen gelingt am besten in einer 2%igen Kochsalzlösung für ca. 1 Tag."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Linsen - Verkürzen der Kochzeit, p. 318",
+      "isbn": "9783805708388",
+      "sentence": "Das Einweichen von Hülsenfrüchten in Salzwasser schwächt das Pektin der Schale."
     }
   ]
 }

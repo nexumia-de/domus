@@ -1,0 +1,22 @@
+{
+  "id": "cream-in-acid-sauce",
+  "target": "fdc-group-cream",
+  "text": {
+    "en": "In a sauce with wine or vinegar, cook only heavy cream or crème fraîche; stir milk, light cream or sour cream in at the end, off the boil.",
+    "de": "In einer Sauce mit Wein oder Essig nur Schlagsahne oder Crème fraîche mitkochen; Milch, leichte Sahne oder saure Sahne erst am Ende einrühren und nicht mehr kochen."
+  },
+  "why": {
+    "en": "Heat and acid together curdle the milk protein; heavy cream and crème fraîche hold so little of it that it does not show.",
+    "de": "Hitze und Säure zusammen lassen das Milcheiweiß gerinnen; Schlagsahne und Crème fraîche enthalten so wenig davon, dass es nicht auffällt."
+  },
+  "technique": "braise",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Milk and Cream Emulsions, p. 630",
+      "isbn": "9780340831496",
+      "sentence": "The exceptions are heavy cream and créme fraiche, which contain so little casein that its curdling simply isn’t noticeable (p. 29)."
+    }
+  ]
+}

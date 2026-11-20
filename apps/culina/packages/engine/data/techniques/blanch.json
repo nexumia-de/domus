@@ -5,12 +5,12 @@
     "de": "Blanchieren"
   },
   "watch": {
-    "en": "Cook only a few seconds in a large amount of boiling water.",
-    "de": "Nur wenige Sekunden in reichlich kochendem Wasser garen."
+    "en": "Cook only a few seconds in a large amount of boiling water, then cool at once and do not leave the food lying in the cold water.",
+    "de": "Nur wenige Sekunden in reichlich kochendem Wasser garen, dann sofort abkühlen und nicht im kalten Wasser liegen lassen."
   },
   "why": {
-    "en": "It softens firm foods, sets colours and loosens skins for peeling.",
-    "de": "Es macht festes Gargut weicher, fixiert Farben und löst Häute zum Schälen."
+    "en": "It softens firm foods, sets colours and loosens skins for peeling. The sudden heat stops the enzymes that dull the colour; left in the water, the food leaches.",
+    "de": "Es macht festes Gargut weicher, fixiert Farben und löst Häute zum Schälen. Die plötzliche Hitze stoppt die Enzyme, die die Farbe trüben; im Wasser liegend laugt das Gargut aus."
   },
   "level": "textbook",
   "sources": [
@@ -27,6 +27,31 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/03%3A_Vegetables/3.10%3A_Vegetable_Nutrition_Storage_and_Preparation",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "blanching is used to remove strong or bitter flavors, soften firm foods, set colors or loosen skins for peeling."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Sonderfall Blanchieren, p. 267",
+      "isbn": "9783805708388",
+      "sentence": "Blanchieren heißt Erhitzen für wenige Sekunden in kochender Flüssigkeit und danach sofortiges Abkühlen (z. B. Eiswasser)."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Sonderfall Blanchieren, p. 267",
+      "isbn": "9783805708388",
+      "sentence": "Die Hitze beim Blanchieren bringt die Arbeit dieser Enzyme schlagartig durch die hohe Temperatur zum Erliegen."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Gemüse braten (margin note), p. 295",
+      "isbn": "9783805708388",
+      "sentence": "Wird in Eiswasser abgeschreckt, darf das Gemüse keinesfalls darin gelagert werden, da es auslaugen würde."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 4 BLANCHING, SEARING, BRAISING, GLAZING, ROASTING, and the Science of Vegetables, section Volume and pH",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "With large pots of boiling water that never drop below 190°F, the chlorophyllase is rapidly destroyed"
     }
   ]
 }

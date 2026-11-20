@@ -5,12 +5,12 @@
     "de": "Wasserbad"
   },
   "watch": {
-    "en": "Set the custard in a water bath.",
-    "de": "Die Creme im Wasserbad garen."
+    "en": "Set the custard in a water bath, leave the bath uncovered, and take the custard out while the middle still wobbles a little.",
+    "de": "Die Creme im Wasserbad garen, das Bad offen lassen und die Creme herausnehmen, solange die Mitte noch leicht wackelt."
   },
   "why": {
-    "en": "The edges then cook at the same pace as the middle, which gives a smooth finish.",
-    "de": "So garen die Ränder im gleichen Tempo wie die Mitte, und die Creme wird glatt."
+    "en": "The edges then cook at the same pace as the middle, which gives a smooth finish. An open bath stays below the boil, and the heat left in the custard finishes the middle.",
+    "de": "So garen die Ränder im gleichen Tempo wie die Mitte, und die Creme wird glatt. Ein offenes Bad bleibt unter dem Siedepunkt, und die Restwärme der Creme gart die Mitte fertig."
   },
   "level": "textbook",
   "sources": [
@@ -27,6 +27,24 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.06%3A_Custards",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Even cooking is need to produce a smooth finish once cooked."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, Custard Theory and Practice - Cooking, p. 95",
+      "isbn": "9780340831496",
+      "sentence": "It’s a mistake to cover the whole water bath, since this forces the water to the boil"
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, Custard Theory and Practice - Cooking, p. 95",
+      "isbn": "9780340831496",
+      "sentence": "Unless the custard needs to be firm enough to unmold, it’s best taken from the oven while the center is still slightly underdone and jiggly."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Garziehen/Pochieren, p. 268",
+      "isbn": "9783805708388",
+      "sentence": "Eierstich wird indirekt pochiert, damit sich keine Bläschen darin bilden, was beim Kochen der Fall wäre."
     }
   ]
 }

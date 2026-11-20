@@ -1,0 +1,28 @@
+{
+  "id": "rice-wash-for-loose-grains",
+  "target": "fdc-group-rice",
+  "text": {
+    "en": "For loose grains, wash long-grain rice two or three times before cooking; for a creamy dish leave the starch on.",
+    "de": "Für lockere Körner Langkornreis vor dem Kochen zwei- bis dreimal waschen; für ein cremiges Gericht die Stärke am Korn lassen."
+  },
+  "why": {
+    "en": "Washing takes off the starch on the surface of the grains, which would make them stick.",
+    "de": "Waschen entfernt die Stärke an der Oberfläche der Körner, die sie sonst kleben ließe."
+  },
+  "technique": "cook-rice",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Seeds, Cooking with Rice - Rinsing and Soaking, p. 474",
+      "isbn": "9780340831496",
+      "sentence": "An initial rinsing of the dry rice removes surface starch and thus a source of added stickiness."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 3 Reis, Reis (Sorten), p. 343",
+      "isbn": "9783805708388",
+      "sentence": "Locker bleiben die Reiskörner nach dem Kochen, wenn sie vorher 2- bis 3-mal gewaschen werden."
+    }
+  ]
+}

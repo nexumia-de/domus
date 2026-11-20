@@ -6,8 +6,8 @@
     "de": "Mehl für eine Mehlschwitze in Fett garen: für eine helle wenige Minuten, für eine dunklere länger."
   },
   "why": {
-    "en": "The cooking takes the raw flour taste out and gives colour and aroma.",
-    "de": "Das Garen nimmt den rohen Mehlgeschmack und gibt Farbe und Aroma."
+    "en": "The cooking takes the raw flour taste out and gives colour and aroma; the sauce then simmers long enough for the starch to swell fully, at least 20 minutes by the trade's rule.",
+    "de": "Das Garen nimmt den rohen Mehlgeschmack und gibt Farbe und Aroma; danach köchelt die Sauce so lange, bis die Stärke ganz gequollen ist, nach der Regel der Küche mindestens 20 Minuten."
   },
   "technique": "roux",
   "level": "textbook",
@@ -25,6 +25,18 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Brown roux requires a much longer cooking time to develop its characteristic color and aroma."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Roux - Improvements in Flavor, Color, and Dispersability, p. 617",
+      "isbn": "9780340831496",
+      "sentence": "it cooks out the raw cereal flavor and develops a rounded, toasty flavor that becomes more pronounced and intense as the color darkens."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Saucen - 1 Bindemöglichkeiten von Saucen, Mehlschwitze - Roux, Herstellung und Verwendung, p. 633",
+      "isbn": "9783805708388",
+      "sentence": "Eine generelle Kochzeit der Flüssigkeit mit Roux beträgt mindestens 20 Minuten."
     }
   ]
 }

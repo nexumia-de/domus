@@ -1,0 +1,30 @@
+{
+  "id": "stock-cold-start",
+  "name": {
+    "en": "Starting a stock cold",
+    "de": "Brühe kalt ansetzen"
+  },
+  "watch": {
+    "en": "Put bones and meat for a stock into cold water and bring it up slowly, uncovered.",
+    "de": "Knochen und Fleisch für eine Brühe in kaltes Wasser geben und langsam, ohne Deckel, erhitzen."
+  },
+  "why": {
+    "en": "In water that heats slowly the proteins leave the meat and clump into large pieces that can be skimmed, and the flavour goes over into the liquid; a hot start gives fine particles that cloud the stock.",
+    "de": "In langsam heiß werdendem Wasser treten die Eiweiße aus und ballen sich zu großen Stücken, die sich abschöpfen lassen, und der Geschmack geht in die Flüssigkeit über; ein heißer Ansatz gibt feine Teilchen, die die Brühe trüben."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, The Importance of a Cold Start and Uncovered, Slow Heating, p. 599",
+      "isbn": "9780340831496",
+      "sentence": "The cold start and slow heating allow the soluble proteins to escape the solids and coagulate slowly"
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Brühen, Helle Brühen - Grundprinzip, p. 592",
+      "isbn": "9783805708388",
+      "sentence": "Knochen und Parüren laugen besser aus."
+    }
+  ]
+}

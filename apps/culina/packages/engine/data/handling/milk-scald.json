@@ -6,8 +6,8 @@
     "de": "Milch bis knapp unter den Siedepunkt erhitzen (abbrühen) und nicht voll aufkochen."
   },
   "why": {
-    "en": "Boiling can make milk curdle.",
-    "de": "Beim Kochen kann Milch gerinnen."
+    "en": "Just below the boil is hot enough. Fresh milk does not curdle from boiling alone; it curdles when it is old or meets acid.",
+    "de": "Knapp unter dem Siedepunkt ist heiß genug. Frische Milch gerinnt nicht allein durch Kochen; sie gerinnt, wenn sie alt ist oder auf Säure trifft."
   },
   "technique": "simmer",
   "level": "textbook",
@@ -18,6 +18,18 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.05%3A_Bechamel_Based_Sauces",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "to heat a liquid, usually milk, to just below boiling point. Boiling can cause the milk to curdle, which is not particularly appetizing."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Milk and Dairy Products, Milk Proteins (paragraph before 'The Caseins'), p. 19",
+      "isbn": "9780340831496",
+      "sentence": "Fresh milk and cream can be boiled down to a fraction of their volume without curdling."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, Always Add Hot Ingredients to Cold, p. 94",
+      "isbn": "9780340831496",
+      "sentence": "A custard mixed cold has just as even a texture and sets almost as quickly as a pre-scalded one."
     }
   ]
 }

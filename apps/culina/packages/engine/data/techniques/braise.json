@@ -5,12 +5,12 @@
     "de": "Schmoren"
   },
   "watch": {
-    "en": "Cover the pot and cook at a very low simmer, with the liquid reaching one third to one half of the food.",
-    "de": "Den Topf zudecken und bei ganz schwacher Hitze köcheln lassen; die Flüssigkeit reicht bis zu einem Drittel bis zur Hälfte des Garguts."
+    "en": "Cover the pot and keep the liquid well below the boil, at about 80 °C; in the oven leave the lid slightly open. The liquid reaches one third to one half of the food.",
+    "de": "Den Topf zudecken und die Flüssigkeit deutlich unter dem Siedepunkt halten, bei etwa 80 °C; im Ofen den Deckel einen Spalt offen lassen. Die Flüssigkeit reicht bis zu einem Drittel bis zur Hälfte des Garguts."
   },
   "why": {
-    "en": "Heat, time and moisture break down the tough connective tissue of the meat until a fork cuts it.",
-    "de": "Hitze, Zeit und Feuchtigkeit bauen das zähe Bindegewebe des Fleisches ab, bis es sich mit der Gabel schneiden lässt."
+    "en": "Heat, time and moisture turn the tough connective tissue into gelatine from about 70 to 80 °C, until a fork cuts the meat; hotter than that, the fibres lose more juice.",
+    "de": "Hitze, Zeit und Feuchtigkeit verwandeln das zähe Bindegewebe ab etwa 70 bis 80 °C in Gelatine, bis sich das Fleisch mit der Gabel schneiden lässt; heißer verlieren die Fasern mehr Saft."
   },
   "level": "textbook",
   "sources": [
@@ -34,6 +34,31 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/02%3A_Recipe_conversions_and_Braising/2.02%3A_The_Cooking_Techniques_-_Braising",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Braising relies on heat, time, and moisture to break down the tough connective tissue (collagen) that binds together the muscle fibers"
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Hot Water: Braising, Stewing, Poaching, Simmering, p. 162",
+      "isbn": "9780340831496",
+      "sentence": "the key variable is temperature, which should be kept well below the boil, around 180°F/80°C, so that the outer portions don’t overcook badly."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Tough and Large Cuts: Slower Means Moister, p. 163",
+      "isbn": "9780340831496",
+      "sentence": "So it’s a challenge to make tough meats succulent."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 2 SOUPS, STEWS, and the Science of Stock, section Boiling Water Under Cover",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "In my simple test, putting the lid on increased the temperature in the pot by almost 25 degrees!"
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zerlegen, Auslösen und Zubereiten - 2 Fleisch verarbeiten, Bindegewebs-Eiweiß beim Schmoren, p. 906",
+      "isbn": "9783805708388",
+      "sentence": "Bei 80°C ist das Kollagen vollständig gelockert und das Fleisch wird mürbe."
     }
   ]
 }

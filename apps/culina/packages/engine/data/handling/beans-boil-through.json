@@ -1,0 +1,22 @@
+{
+  "id": "beans-boil-through",
+  "target": "fdc-group-beans",
+  "text": {
+    "en": "Never eat beans raw; boil them through.",
+    "de": "Bohnen nie roh essen; immer durchkochen."
+  },
+  "why": {
+    "en": "Raw beans contain the toxin phasin, which boiling breaks down within a few minutes.",
+    "de": "Rohe Bohnen enthalten den Giftstoff Phasin, den das Kochen in wenigen Minuten abbaut."
+  },
+  "technique": "boil",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Bohnen (margin note), p. 316",
+      "isbn": "9783805708388",
+      "sentence": "Dieses wird beim Kochen bereits nach wenigen Minuten abgebaut."
+    }
+  ]
+}

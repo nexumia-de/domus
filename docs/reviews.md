@@ -21,6 +21,54 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-20: Culina's notes read against three books
+
+The record of the research is
+[four books read against the notes](../apps/culina/docs/book-findings.md).
+
+| Part                                                                                              | Done by                | Checked by                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| McGee read against the 64 notes: 105 findings                                                     | agent, general purpose | the lead's script found all 105 quoted sentences under the page named; the lead did not open the passages                                              |
+| The Food Lab read against the 64 notes: 78 findings                                               | agent, general purpose | the script found all 78 sentences under the section named; the lead did not open the passages                                                          |
+| Der junge Koch read against the 64 notes: 130 findings                                            | agent, general purpose | the script found 129 sentences and refused one, which was dropped; the lead did not open the passages                                                  |
+| Texture Over Taste sampled                                                                        | lead                   | nobody                                                                                                                                                 |
+| The brief, the script, the decision per note, the texts of 24 changed and 14 new notes, the tests | lead                   | `npm run check`; no second agent read the texts of the notes or the German                                                                             |
+| A source may be a book and may carry its own level (schemas, type, note card)                     | lead                   | `test/content.test.ts`, `test/source-licences.test.ts`; one browser check on the shipped pot-au-feu (`e2e/classics.mjs`, "a note that rests on books") |
+
+**Found by the checks and fixed**
+
+- One quoted sentence of Der junge Koch did not stand under the page
+  its finding named (the lead's script; the agent's own check had
+  passed it). The finding was dropped and nothing rests on it.
+- Two new texts said "too much" and "zu viel", which the wording rule
+  of the app refuses in a note (`packages/app/test/strings.test.ts`,
+  "no text of a technique, a handling rule or a classic judges a
+  dish"). The texts were reworded; the rule was not touched.
+- A new handling rule rests on a kitchen test alone and has the level
+  `tested`, which `test/evidence-levels.test.ts` refused, because it
+  held every shipped note to `textbook`. The test now names that one
+  note with its level, fails when another note leaves `textbook`
+  unnamed, and holds a `tested` note to a source that says so.
+- Four page numbers in the hand-written tables of the research document
+  differed from the findings; the lead compared the tables with the
+  data and corrected them.
+
+**Counts.** Culina's engine 1048 tests, its app 449, before and after
+the notes changed (1045 and 449 before the work began; three tests are
+new). Culina's browser checks passed once to the end, with the pre-installed Chromium
+(`PLAYWRIGHT_CHROMIUM_PATH`); eight of them are new. 312 of 313 quoted sentences found by the script. 157 book entries
+in 59 of the 64 earlier notes and in the 14 new ones.
+
+**Not verified.** No printed book was seen: the pages are the scan
+pages minus an offset checked on four pages per book. The books were
+searched and read around the hits, not read through. The script proves
+that a sentence stands where the finding says, not that the statement
+of the note follows from it; nobody read a finding against its book a
+second time. The agents' own counts of what they did not find were not
+checked. The German texts were read by no native speaker. The text
+copies came from a shadow library and a lending scan; whether the owner
+holds the books was not established.
+
 ## 2026-11-20: Mixtura on spaces (roadmap goal 6, pull request 6)
 
 | Part                                                                                                                                                                          | Done by                                  | Checked by                                                                                                                               |

@@ -562,8 +562,46 @@ const empty = async (browser, origin) => {
   await context.close();
 };
 
+// A source that is a printed book: the shipped pot-au-feu, whose step 4 names "Starting a stock
+// cold", a note that rests on two books. A book is text with its ISBN, not a link.
+const bookSource = async (browser, origin) => {
+  const label = 'a note that rests on books';
+  const { context, page, problems } = await fresh(browser, origin, 360);
+  await page.goto(`${origin}/?no-sw#/classic/pot-au-feu`);
+  await heading(page, 'Pot-au-feu (small pot)').waitFor();
+  await page.getByRole('link', { name: 'Cook step by step' }).click();
+  await step(page, 1, 20).waitFor();
+  for (let n = 2; n <= 4; n += 1) {
+    await page.getByRole('button', { name: 'Next' }).click();
+    await step(page, n, 20).waitFor();
+  }
+  check(
+    await page.getByRole('heading', { name: 'Technique: Starting a stock cold' }).isVisible(),
+    `${label}: the step where the water goes in shows the note`,
+  );
+  await page.locator('.technique-more summary').click();
+  const items = await page.locator('.technique-sources li').allInnerTexts();
+  check(
+    items.length === 2 && items.every((t) => t.startsWith('Textbook · ')),
+    `${label}: two sources, each with its level (${items.length})`,
+  );
+  check(
+    items.some((t) => t.includes('McGee') && t.endsWith('(ISBN 9780340831496)')) &&
+      items.some((t) => t.includes('Der junge Koch') && t.endsWith('(ISBN 9783805708388)')),
+    `${label}: each book is named with the ISBN of the edition read`,
+  );
+  check(
+    (await page.locator('.technique-sources a').count()) === 0,
+    `${label}: a book is text, not a link`,
+  );
+  await layout(page, label);
+  check(problems.length === 0, `${label}: no console or request problem ${problems.join('; ')}`);
+  await context.close();
+};
+
 export const classics = async (browser, server) => {
   await flow(browser, server.origin, 360);
   await flow(browser, server.origin, 1000);
   await empty(browser, server.origin);
+  await bookSource(browser, server.origin);
 };
