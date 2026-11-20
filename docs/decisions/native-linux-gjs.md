@@ -75,5 +75,6 @@ ways were put to the owner with what each costs:
 
 ## Not verified
 
-No Flatpak was built, nothing ran on a phone, and the start time and
+CI built the Flatpak bundles for x86_64 and aarch64, but nobody
+installed one; nothing ran on a phone, and the start time and
 memory in the table above were never measured.

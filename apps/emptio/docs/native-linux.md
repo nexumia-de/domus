@@ -95,8 +95,10 @@ not have.
 
 # What is not checked
 
-- **No Flatpak was built or installed**; the manifest, the runtime
-  version and the CI job are written from the toolkit's documents.
+- **The Flatpak was built by CI only** (`emptio-flatpak`, x86_64 and
+  aarch64, first on 2026-11-20 in pull request 12); nobody installed or
+  started a bundle, so the launcher and the sandbox's permissions are
+  untried.
 - **No phone**: Broadway is not Phosh. Swipe back, the on-screen
   keyboard, touch and the real compositor were not tried.
 - The `gi://` calls have no types (`platform/gi.d.ts`); the smoke run,

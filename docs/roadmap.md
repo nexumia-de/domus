@@ -145,8 +145,9 @@ checks green. The apps' own goals are in their roadmaps
     GJS for Phosh that reuse the engines and the sync code. **Emptio is
     built** ([native Linux app](../apps/emptio/docs/native-linux.md)):
     the list, an entry, categories, preferences, joining a space by
-    invitation link, a Flatpak manifest and CI jobs. **Not done**: no
-    Flatpak was built and nothing ran on a phone; Mixtura and Culina
+    invitation link, a Flatpak manifest and CI jobs. **Not done**: the
+    Flatpak bundles CI builds were never installed and nothing ran on a
+    phone; Mixtura and Culina
     follow, each in a session of its own; the platform pieces move to a
     shared package with the second app.
 

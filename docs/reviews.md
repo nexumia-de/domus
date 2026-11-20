@@ -74,8 +74,9 @@ site "e2e passed", Mixtura's `spaces`, `stock` and `two-tabs` at
 **What nobody verified.**
 
 - The real GitHub or a WebDAV server, in any app.
-- A Flatpak build, an install, a phone: the native app ran on a headless
-  display only.
+- An install of the Flatpak bundles (CI built them for x86_64 and
+  aarch64 on the first run; nobody started one) and a phone: the native
+  app ran on a headless display only.
 - Culina with a shared space in a browser (its checks use a space on
   this device only); two tabs at Culina's first start after the update,
   where the move of old items could run twice at once.
