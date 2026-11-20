@@ -58,6 +58,7 @@ export {
   type StoredStorage,
 } from './store';
 export { createMemoryStore } from './memory-store';
+export { StoreFileError, createFileStore, createMemoryFiles, type Files } from './file-store';
 export { DEVICE_ONLY, deviceOnlyStorage, ensureSpace, isDeviceOnly } from './device';
 export {
   DB_NAME,
@@ -86,3 +87,10 @@ export {
   type SyncLoop,
   type SyncLoopOptions,
 } from './watch';
+export {
+  createCollectionSync,
+  type CollectionSync,
+  type CollectionSyncOptions,
+  type SyncStatus,
+} from './collection-sync';
+export { pickSpace, viewOf, type SpaceView } from './space-choice';

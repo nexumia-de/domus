@@ -1,6 +1,7 @@
-// Shared by the browser checks: a static server for the built app, Chromium, a "device" (a browser
-// context with storage of its own: a second one is a second device), the watchers that collect
-// problems, and the audits every screen goes through.
+// Shared by the browser checks of the apps (`@nexumia-de/hospes/testing/browser`): a static
+// server for a built app, Chromium, a "device" (a browser context with storage of its own: a
+// second one is a second device), the watchers that collect problems, and the audits every
+// screen goes through. Not part of an app's bundle.
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize } from 'node:path';
@@ -12,6 +13,9 @@ export const serveDir = async (dir) => {
     '.js': 'text/javascript; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
     '.svg': 'image/svg+xml',
+    '.png': 'image/png',
+    '.json': 'application/json',
+    '.webmanifest': 'application/manifest+json',
   };
   const server = createServer((request, response) => {
     const path = normalize(decodeURIComponent(new URL(request.url, 'http://x').pathname));

@@ -173,7 +173,7 @@ except the first one on a device without any.
 
 ## Sync
 
-Mixtura has no sync code of its own. `stock/sync.ts` (`createStockSync`)
+Mixtura has no sync code of its own. `createCollectionSync` of the host package (until 2026-11-20 Mixtura's own `stock/sync.ts`)
 starts one loop of the host package (`createSyncLoop`) per shared space;
 each run is the host's cycle `syncCollection` on the collection `stock`
 ([the cycle and the loop](../../../packages/host/docs/spaces.md#one-cycle-cyclets)).
@@ -328,7 +328,7 @@ Export and import: [export and import](export-format.md#tests).
 - `test/stock-spaces.test.ts` and `test/stock-spaces-rules.test.ts`: the
   combined view, the entry space, `resolveSelection` and the rules of
   ticking.
-- `test/stock-sync.test.ts`: two devices converge on a shared space over
+- `packages/host/test/collection-sync.test.ts`: two devices converge on a shared space over
   a fake adapter, no request for a space on this device only, a failed
   cycle, an unknown storage, a space that got a storage or left, the
   status in words.

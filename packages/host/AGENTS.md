@@ -30,7 +30,9 @@ package is [materia](../model), the pure model.
 - **Requests only to storage the user configured.** The package never
   chooses an address; the caller gives it. No telemetry, no logging.
 - **TypeScript source is the entry.** `src/index.ts` is exported as it
-  is; there is no build step. The apps bundle it.
+  is; there is no build step. The apps bundle it. Two more entries:
+  `./service-worker` for an app's worker, and `./testing/*` for the
+  apps' browser checks (never bundled into an app).
 - **Every rule has a test** in `test/`; fixed vectors pin what is
   derived from a space's secret.
 - **Code moves here when a second app needs it, never in advance**, and

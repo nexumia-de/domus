@@ -115,8 +115,18 @@ one transaction. A database that cannot be opened rejects with
 `StoreOpenError` (the next call tries again), one blocked by another tab
 with `StoreBlocked`; there is no fallback to memory. When another tab
 asks for a newer version the store closes its connection and reopens on
-the next call. `close()` closes it. One test suite runs against both
-implementations.
+the next call. `close()` closes it.
+
+`createFileStore(files)` (`file-store.ts`) is the same port on plain
+files, for a host without IndexedDB (a native app): `spaces.json` and
+one file `<space id>.<collection>.json` per collection, each written
+whole. `files` is a small synchronous port (`read`, `write`, `remove`,
+`list`) the caller fills; `write` must replace a file atomically. Names
+are encoded, so nothing leaves the folder. A file that cannot be read
+rejects with `StoreFileError` and is never written over. One process
+owns the folder. `createMemoryFiles()` is for tests.
+
+One test suite runs against all three implementations.
 
 ## A space on this device only
 
@@ -215,6 +225,40 @@ has no screen and no framework in it.
   `start`, `poke` and `syncNow` still run.
 - `stop()` cancels timers and the watch; a run in flight finishes and
   nothing follows.
+
+## The loops of an app (`collection-sync.ts`)
+
+`createCollectionSync({ store, collections, adapter, now, onChange, intervalMs?, isVisible?, isOnline? })`
+is what an app starts once. It reads the spaces of the device and keeps
+one loop per shared space; a run of the loop is one cycle for each of
+the app's `collections` (Mixtura and Culina `stock`, Emptio `list` and
+`list-categories`), each in its own file. It came from Mixtura on
+2026-11-20, when Emptio needed the same.
+
+- `refresh()` reads the spaces again and makes the loops match: a space
+  that got a storage gets a loop, one that left loses it, a changed
+  storage or access makes a new one. One look at a time; never rejects.
+- `changed(spaceId)` after a change by the user (a cycle in 2 s),
+  `syncNow()` when the page comes to the front or the connection is
+  back, `stop()` at the end.
+- `status(spaceId)`: `device-only`, `never`, `syncing`, `in-step` (with
+  the time) or `failed` (with the failure; `storage` when this build
+  does not know the storage type).
+- `onChange('records')` when a cycle changed local records or the set of
+  spaces changed: the screens read again. `onChange('status')` otherwise.
+- A collection whose cycle fails does not hold back the others; the run
+  fails with the first failure and the records a good cycle changed are
+  still told.
+- `intervalMs` is the app's choice inside the decided 15 to 30 seconds
+  (default 20 s; Emptio 15 s).
+
+## Which space an app shows (`space-choice.ts`)
+
+For an app that shows one space at a time. `viewOf(space, unnamed)`
+gives `{ id, name, deviceOnly }`. `pickSpace(spaces, choice, counts)`:
+the chosen space while it exists; otherwise the first shared space,
+unless only a space on this device holds the app's records; otherwise
+the first. Mixtura counts several spaces at once and has its own rules.
 
 ## Limits
 

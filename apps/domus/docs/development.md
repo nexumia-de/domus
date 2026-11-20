@@ -26,7 +26,7 @@ generated: { by: claude-code, at: 2026-11-19 }
 | `src/strings.ts`, `src/strings-de.ts` | every visible text, English and German                                                                                                                                                                          |
 | `src/styles/`                         | `tokens.css` (the only colours and sizes), `base.css`, `components.css`                                                                                                                                         |
 | `test/`                               | vitest: flows with the memory store and a fake storage, wording, invite, router, build                                                                                                                          |
-| `e2e/`                                | Playwright: `run.mjs`, `scenario.mjs`, `fake-github.mjs`, `harness.mjs`, `seed-entry.mjs`                                                                                                                       |
+| `e2e/`                                | Playwright: `run.mjs`, `scenario.mjs`, `seed-entry.mjs`                                                                                                                                                         |
 
 ## Commands
 
@@ -88,7 +88,7 @@ root page also gets `frame-ancestors 'none'` and the other baseline headers from
 
 `npm run e2e -w @domus/app`, with `PLAYWRIGHT_CHROMIUM_PATH` for a Chromium you
 already have (never `playwright install` where the network is limited). It starts
-`e2e/fake-github.mjs` on a free port, builds the app against it into a temporary
+the fake of GitHub's API (`@nexumia-de/hospes/testing/fake-github`, shared with Emptio since 2026-11-20) on a free port, builds the app against it into a temporary
 folder, serves it, and runs `scenario.mjs` four times: 360 x 720 and 1200 x 800,
 English and German (the browser's locale decides the language). Each run:
 

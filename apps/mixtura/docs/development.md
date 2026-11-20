@@ -49,19 +49,19 @@ npm ci
 The shell (#17) is plain TypeScript building DOM; no framework. Source in
 `packages/app/src/`:
 
-| File or folder                              | Job                                                                                                                                                                                                                                |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                                                                                                                                                   |
-| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)                                                                                                                                             |
-| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                                                                                                                                                          |
-| `destinations.ts`                           | The four destinations with labels and icons                                                                                                                                                                                        |
-| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                                                                                                                                                  |
-| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                                                                                                                                                         |
-| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                                                                                                                                                    |
-| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))                                                                                                                                    |
-| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                                                                                                                                               |
-| `stock/`, `household.ts`, `env.ts`          | Stock of the spaces in memory, the sync loop per shared space (`stock/sync.ts`; the cycle, cipher and adapters are in `packages/host`), the link to the Household app, the compiled-in GitHub API address ([store](store.md#sync)) |
-| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                                                                                                                                               |
+| File or folder                              | Job                                                                                                                                                                                                                                                 |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                                                                                                                                                                    |
+| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)                                                                                                                                                              |
+| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                                                                                                                                                                           |
+| `destinations.ts`                           | The four destinations with labels and icons                                                                                                                                                                                                         |
+| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                                                                                                                                                                   |
+| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                                                                                                                                                                          |
+| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                                                                                                                                                                     |
+| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))                                                                                                                                                     |
+| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                                                                                                                                                                |
+| `stock/`, `household.ts`, `env.ts`          | Stock of the spaces in memory, the sync loop per shared space (`createCollectionSync` of `packages/host`, where the cycle, cipher and adapters are too), the link to the Household app, the compiled-in GitHub API address ([store](store.md#sync)) |
+| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                                                                                                                                                                |
 
 **Adding a screen (#18 to #20).** Make `screens/<name>/index.ts` that
 exports `screens: Screen[]` (`match(route)` and `view(context)` returning
@@ -157,7 +157,7 @@ against a WebDAV server any more: `mixtura-webdav`, the Docker servers of
 `tools/webdav-server` and the fronts of `tools/webdav-front` were removed
 on 2026-11-20 with Mixtura's own sync
 ([stock in spaces](decisions/stock-in-spaces.md#what-is-lost)). Sync is
-tested with a fake adapter only (`test/stock-sync.test.ts` and the tests
+tested with a fake adapter only (`packages/host/test/collection-sync.test.ts` and the tests
 of the host package).
 
 Actions are

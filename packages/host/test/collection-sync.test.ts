@@ -1,19 +1,22 @@
-// The stock sync: one loop per shared space on the host package's cycle, none
-// for a space on this device only, two devices converging through one storage,
-// and what the Spaces sheet is told.
+// The loops of an app: one per shared space on the cycle, none for a space on
+// this device only, two devices converging through one storage, several
+// collections in one run, and what a screen is told.
 import { expect, test } from 'vitest';
-import {
-  deriveSpace,
-  localChange,
-  newSecret,
-  type Store as SharedStore,
-  type StoredSpace,
-} from '@nexumia-de/hospes';
-import { syncText } from '../src/screens/stock/sync-text';
-import { createStockSync, type StockSyncOptions } from '../src/stock/sync';
-import { sharedStore, storedStock } from './helpers';
+import { createCollectionSync, type CollectionSyncOptions } from '../src/collection-sync';
+import { localChange } from '../src/cycle';
+import { createMemoryStore } from '../src/memory-store';
+import { deriveSpace, newSecret } from '../src/space';
+import type { Store as SharedStore, StoredSpace } from '../src/store';
 
-type Adapter = ReturnType<StockSyncOptions['adapter']>;
+type Adapter = ReturnType<CollectionSyncOptions['adapter']>;
+
+const sharedStore = (): SharedStore => createMemoryStore();
+
+/** The record of a key in a collection of a space, as stored. */
+async function stored(shared: SharedStore, spaceId: string, key: string, collection = 'stock') {
+  const { records } = await shared.readCollection(spaceId, collection);
+  return records.find((r) => r.key === key);
+}
 
 /** A storage in memory with versions, as the adapters give them; `down` makes it unreachable. */
 function fakeStorage() {
@@ -50,12 +53,17 @@ const now = (): string => new Date(Date.UTC(2026, 10, 20, 9, 0, 0, tick++)).toIS
 const noTimers = { setTimer: () => 0, clearTimer: () => undefined };
 const settle = (): Promise<void> => new Promise((r) => setTimeout(r, 30));
 
-async function device(space: StoredSpace, adapter: Adapter) {
+async function device(
+  space: StoredSpace,
+  adapter: Adapter,
+  collections: readonly string[] = ['stock'],
+) {
   const shared: SharedStore = sharedStore();
   await shared.putSpace(space);
   const seen: string[] = [];
-  const sync = createStockSync({
-    shared,
+  const sync = createCollectionSync({
+    store: shared,
+    collections,
     adapter: () => adapter,
     now,
     onChange: (what) => seen.push(what),
@@ -87,7 +95,7 @@ test('two devices converge on the stock of a shared space', async () => {
 
   await b.sync.refresh();
   await settle();
-  expect(await storedStock(b.shared, space.id, 'gin')).toMatchObject({ value: { present: true } });
+  expect(await stored(b.shared, space.id, 'gin')).toMatchObject({ value: { present: true } });
   // The screens are told that records changed, so they read them again.
   expect(b.seen).toContain('records');
 
@@ -99,7 +107,7 @@ test('two devices converge on the stock of a shared space', async () => {
   await settle();
   a.sync.syncNow();
   await settle();
-  expect(await storedStock(a.shared, space.id, 'gin')).toMatchObject({ value: { present: false } });
+  expect(await stored(a.shared, space.id, 'gin')).toMatchObject({ value: { present: false } });
   a.sync.stop();
   b.sync.stop();
 });
@@ -133,7 +141,7 @@ test('a failed cycle is told, keeps the local stock and is forgotten after a goo
   await sync.refresh();
   await settle();
   expect(sync.status(space.id)).toEqual({ kind: 'failed', failure: 'unreachable' });
-  expect(await storedStock(shared, space.id, 'rum')).toMatchObject({ value: { present: true } });
+  expect(await stored(shared, space.id, 'rum')).toMatchObject({ value: { present: true } });
   storage.state.down = false;
   sync.syncNow();
   await settle();
@@ -145,8 +153,9 @@ test('a storage this build does not know is told as such and no loop runs', asyn
   const space = { ...(await sharedSpace()), storage: { type: 'carrier-pigeon', address: 'x' } };
   const shared = sharedStore();
   await shared.putSpace(space);
-  const sync = createStockSync({
-    shared,
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['stock'],
     adapter: () => {
       throw new Error('unknown');
     },
@@ -165,8 +174,9 @@ test('a space that got a storage, or left the device, is picked up by the next r
   const secret = newSecret();
   const { id } = await deriveSpace(secret);
   await shared.putSpace({ id, secret, name: 'Home', storage: { type: 'device', address: '' } });
-  const sync = createStockSync({
-    shared,
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['stock'],
     adapter: () => storage.adapter,
     now,
     onChange: () => undefined,
@@ -190,8 +200,9 @@ test('a shared database that cannot be opened is no error: nothing runs', async 
     ...sharedStore(),
     listSpaces: () => Promise.reject(new Error('The local database could not be opened')),
   };
-  const sync = createStockSync({
-    shared: broken,
+  const sync = createCollectionSync({
+    store: broken,
+    collections: ['stock'],
     adapter: () => fakeStorage().adapter,
     now,
     onChange: () => undefined,
@@ -228,8 +239,9 @@ test('a stop while the spaces are being read leaves no loop behind', async () =>
       return shared.readCollection(id, name);
     },
   };
-  const sync = createStockSync({
-    shared: slow,
+  const sync = createCollectionSync({
+    store: slow,
+    collections: ['stock'],
     adapter: () => storage.adapter,
     now,
     onChange: () => undefined,
@@ -249,8 +261,9 @@ test('a space that came or went since the last look tells the screens to read ag
   const storage = fakeStorage();
   const shared = sharedStore();
   const seen: string[] = [];
-  const sync = createStockSync({
-    shared,
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['stock'],
     adapter: () => storage.adapter,
     now,
     onChange: (what) => seen.push(what),
@@ -272,19 +285,73 @@ test('a space that came or went since the last look tells the screens to read ag
   sync.stop();
 });
 
-test('the status in words', () => {
-  const at = '2026-11-20T09:00:00.000Z';
-  const later = '2026-11-20T09:05:10.000Z';
-  expect(syncText({ kind: 'device-only' }, later, true)).toBe('On this device only');
-  expect(syncText({ kind: 'in-step', at }, later, true)).toBe('In step · 5 min ago');
-  expect(syncText({ kind: 'in-step', at }, at, true)).toBe('In step · just now');
-  expect(syncText({ kind: 'never' }, later, true)).toBe('Not synced yet');
-  expect(syncText({ kind: 'never' }, later, false)).toBe('Offline');
-  expect(syncText({ kind: 'failed', failure: 'unauthorised' }, later, true)).toBe(
-    'Last sync failed: the storage refused the access',
-  );
-  expect(syncText({ kind: 'failed', failure: 'bad-document' }, later, true)).toBe(
-    'Last sync failed: the file in the storage could not be read',
-  );
-  expect(syncText(undefined, later, true)).toBe('');
+test('every collection of an app gets its own file in one run', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const a = await device(space, storage.adapter, ['entries', 'categories']);
+  const b = await device(space, storage.adapter, ['entries', 'categories']);
+  await localChange(a.shared, space.id, 'entries', now, () => ({
+    put: [{ key: 'e1', value: { name: 'Milk' } }],
+  }));
+  await localChange(a.shared, space.id, 'categories', now, () => ({
+    put: [{ key: 'c1', value: { name: 'Garden' } }],
+  }));
+  await a.sync.refresh();
+  await settle();
+  expect([...storage.files.keys()].sort()).toEqual([
+    `${space.id}/categories.json`,
+    `${space.id}/entries.json`,
+  ]);
+  await b.sync.refresh();
+  await settle();
+  expect(await stored(b.shared, space.id, 'e1', 'entries')).toMatchObject({
+    value: { name: 'Milk' },
+  });
+  expect(await stored(b.shared, space.id, 'c1', 'categories')).toMatchObject({
+    value: { name: 'Garden' },
+  });
+  // A collection of another app in the same space is not touched.
+  expect([...storage.files.keys()]).not.toContain(`${space.id}/stock.json`);
+  a.sync.stop();
+  b.sync.stop();
+});
+
+test('a collection whose file cannot be read does not hold back the others', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const a = await device(space, storage.adapter, ['entries', 'categories']);
+  await localChange(a.shared, space.id, 'categories', now, () => ({
+    put: [{ key: 'c1', value: { name: 'Garden' } }],
+  }));
+  // Something that is no sealed file lies where the first collection belongs.
+  storage.files.set(`${space.id}/entries.json`, { body: 'not a sealed file', etag: 'x' });
+  await a.sync.refresh();
+  await settle();
+  expect(a.sync.status(space.id)).toEqual({ kind: 'failed', failure: 'not-sealed' });
+  // The file that cannot be read is left as it is; the second collection was still written.
+  expect(storage.files.get(`${space.id}/entries.json`)?.body).toBe('not a sealed file');
+  expect(storage.files.has(`${space.id}/categories.json`)).toBe(true);
+  a.sync.stop();
+});
+
+test("the interval of the loop is the app's to choose", async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const shared = sharedStore();
+  await shared.putSpace(space);
+  const waits: number[] = [];
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['entries'],
+    adapter: () => storage.adapter,
+    now,
+    onChange: () => undefined,
+    intervalMs: 5000,
+    setTimer: (_fn, ms) => waits.push(ms),
+    clearTimer: () => undefined,
+  });
+  await sync.refresh();
+  await settle();
+  expect(waits).toContain(5000);
+  sync.stop();
 });

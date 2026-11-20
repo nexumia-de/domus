@@ -1,5 +1,5 @@
 // A small fake of the GitHub REST endpoints the adapter and the setup screen use, for the browser
-// checks. It answers CORS like api.github.com does (any origin, the headers the adapter sends,
+// checks of the apps (`@nexumia-de/hospes/testing/fake-github`). It answers CORS like api.github.com does (any origin, the headers the adapter sends,
 // ETag exposed) and keeps every request in `log`, so a check can see where a token went.
 //
 //   GET  /user/repos                      the repositories the token reaches

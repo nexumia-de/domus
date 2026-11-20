@@ -7,9 +7,15 @@
 import { type AppState } from './app-state';
 import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
-import { adapterFor, createIdbStore, type Store as SharedStore } from '@nexumia-de/hospes';
+import {
+  adapterFor,
+  createCollectionSync,
+  createIdbStore,
+  type CollectionSync,
+  type Store as SharedStore,
+} from '@nexumia-de/hospes';
+import { STOCK_COLLECTION } from './stock/source';
 import { invalidateStock } from './stock/state';
-import { createStockSync, type StockSync } from './stock/sync';
 import { GITHUB_API } from './env';
 import { type Store } from './state';
 import { strings } from './strings';
@@ -38,8 +44,8 @@ export interface AppData {
    * Stock is the collection `stock` of a space (docs/store.md#stock-in-a-space).
    */
   shared: SharedStore;
-  /** Keeps the stock of every shared space in step with its storage (stock/sync.ts). */
-  sync: StockSync;
+  /** Keeps the stock of every shared space in step with its storage (the host package's loops). */
+  sync: CollectionSync;
 }
 
 export interface Connection {
@@ -173,8 +179,9 @@ export function connect(app: Store<AppState>): Connection {
   });
 
   const shared = createIdbStore();
-  const sync = createStockSync({
-    shared,
+  const sync = createCollectionSync({
+    store: shared,
+    collections: [STOCK_COLLECTION],
     adapter: (storage) => adapterFor(storage, { apiBase: GITHUB_API }),
     now: nowInstant,
     // Records another device changed are read again; a status change only redraws.

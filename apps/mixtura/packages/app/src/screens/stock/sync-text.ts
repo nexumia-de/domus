@@ -1,6 +1,6 @@
-// The sync status of a space's stock in words (stock/sync.ts), for the Spaces sheet.
+// The sync status of a space's stock in words, for the Spaces sheet.
 
-import { type SyncStatus } from '../../stock/sync';
+import { type SyncStatus } from '@nexumia-de/hospes';
 import { strings } from '../../strings';
 
 const t = strings.spaces.status;

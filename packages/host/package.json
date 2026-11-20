@@ -6,7 +6,10 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./service-worker": "./src/service-worker.ts",
+    "./testing/browser": "./testing/browser.mjs",
+    "./testing/fake-github": "./testing/fake-github.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -1,26 +1,17 @@
-// Keeps the stock of every shared space in step with its storage. All of the
-// work is the host package's: one sync loop per space runs cycles on the
-// collection `stock` (docs/store.md#sync). Mixtura adds nothing of its own: no
-// storage, no secret and no invite are handled here; they are set up in the
-// Household app. A space that is on this device only causes no request.
+// Keeps collections of every shared space in step with its storage: one sync
+// loop per space runs cycles on the collections an app names (Mixtura and
+// Culina `stock`, Emptio its list). An app adds nothing of its own: no storage,
+// no secret and no invite are handled here; they are set up in the Household
+// app. A space that is on this device only causes no request. See
+// docs/spaces.md#the-loops-of-an-app.
+import type { StorageAdapter } from '@nexumia-de/materia';
+import { syncCollection, type CycleResult } from './cycle';
+import { isDeviceOnly } from './device';
+import { deriveSpace } from './space';
+import type { Store, StoredSpace, StoredStorage } from './store';
+import { createSyncLoop, type SyncLoop } from './watch';
 
-import {
-  createSyncLoop,
-  deriveSpace,
-  isDeviceOnly,
-  syncCollection,
-  type adapterFor,
-  type CycleResult,
-  type Store as SharedStore,
-  type StoredSpace,
-  type StoredStorage,
-  type SyncLoop,
-} from '@nexumia-de/hospes';
-import { STOCK_COLLECTION } from './source';
-
-type StorageAdapter = ReturnType<typeof adapterFor>;
-
-/** What is known of the sync of one space's stock, for the Spaces sheet. */
+/** What is known of the sync of one space's collections, for a screen. */
 export type SyncStatus =
   | { kind: 'device-only' }
   | { kind: 'never' }
@@ -29,8 +20,10 @@ export type SyncStatus =
   /** The last cycle failed; `at` is the last good one, if any. */
   | { kind: 'failed'; failure: string; at?: string };
 
-export interface StockSyncOptions {
-  shared: SharedStore;
+export interface CollectionSyncOptions {
+  store: Store;
+  /** The collections this app keeps in step, each in its own file; at least one. */
+  collections: readonly string[];
   /** May throw for a storage it cannot use; the space then shows the failure `storage`. */
   adapter: (storage: StoredStorage) => StorageAdapter;
   now: () => string;
@@ -38,18 +31,20 @@ export interface StockSyncOptions {
   onChange: (what: 'records' | 'status') => void;
   isVisible?: () => boolean;
   isOnline?: () => boolean;
+  /** Interval between cycles while the page is in front; the loop's default (20 s) when absent. */
+  intervalMs?: number;
   /** For tests: the loop's timers. */
   setTimer?: (fn: () => void, ms: number) => unknown;
   clearTimer?: (handle: unknown) => void;
 }
 
-export interface StockSync {
+export interface CollectionSync {
   /**
    * Reads the spaces of the device and starts a loop for every shared one; safe to call again.
    * Never rejects: a database that cannot be read leaves things as they are.
    */
   refresh(): Promise<void>;
-  /** The user changed stock of this space: a cycle follows after a short pause. */
+  /** The user changed a collection of this space: a cycle follows after a short pause. */
   changed(spaceId: string): void;
   /** A cycle now for every shared space (the page came to the front, the connection is back). */
   syncNow(): void;
@@ -69,8 +64,8 @@ interface Running {
 
 const signatureOf = (space: StoredSpace): string => JSON.stringify([space.secret, space.storage]);
 
-export function createStockSync(options: StockSyncOptions): StockSync {
-  const { shared, now, onChange } = options;
+export function createCollectionSync(options: CollectionSyncOptions): CollectionSync {
+  const { store, collections, now, onChange } = options;
   const running = new Map<string, Running>();
   let stopped = false;
   let looking: Promise<void> | undefined;
@@ -90,34 +85,78 @@ export function createStockSync(options: StockSyncOptions): StockSync {
     const run = async (): Promise<CycleResult> => {
       entry.busy = true;
       onChange('status');
-      let result: CycleResult;
-      try {
-        result = await syncCollection({
-          space: await derived,
-          collection: STOCK_COLLECTION,
-          adapter,
-          store: shared,
-          now,
-        });
-      } catch {
-        result = { ok: false, failure: 'server', detail: 'unexpected' };
+      // Every collection gets its cycle, also after one failed: a file that cannot be read
+      // does not hold back the others. The run fails with the first failure.
+      let result: CycleResult = {
+        ok: true,
+        changed: false,
+        wrote: false,
+        expired: [],
+        pruned: [],
+        rejected: [],
+        pending: false,
+      };
+      let failed: CycleResult | undefined;
+      for (const collection of collections) {
+        let one: CycleResult;
+        try {
+          one = await syncCollection({
+            space: await derived,
+            collection,
+            adapter,
+            store,
+            now,
+          });
+        } catch {
+          one = { ok: false, failure: 'server', detail: 'unexpected' };
+        }
+        if (!one.ok) failed ??= one;
+        else if (result.ok) {
+          result = {
+            ok: true,
+            changed: result.changed || one.changed,
+            wrote: result.wrote || one.wrote,
+            expired: [...result.expired, ...one.expired],
+            pruned: [...result.pruned, ...one.pruned],
+            rejected: [...result.rejected, ...one.rejected],
+            pending: result.pending || one.pending,
+          };
+        }
       }
+      const changed = result.ok && result.changed;
+      if (failed) result = failed;
       entry.busy = false;
       if (result.ok) {
         delete entry.failure;
         entry.syncedAt = now();
       } else entry.failure = result.failure;
-      onChange(result.ok && result.changed ? 'records' : 'status');
+      // Records a good cycle changed are told even when another collection failed.
+      onChange(changed ? 'records' : 'status');
       return result;
     };
     entry.loop = createSyncLoop({
       run,
       ...(options.isVisible ? { isVisible: options.isVisible } : {}),
       ...(options.isOnline ? { isOnline: options.isOnline } : {}),
+      ...(options.intervalMs === undefined ? {} : { intervalMs: options.intervalMs }),
       ...(options.setTimer ? { setTimer: options.setTimer } : {}),
       ...(options.clearTimer ? { clearTimer: options.clearTimer } : {}),
     });
     entry.loop.start();
+  }
+
+  /** The oldest `syncedAt` of the collections; undefined while one was never in step. */
+  async function lastSynced(spaceId: string): Promise<string | undefined> {
+    let oldest: string | undefined;
+    for (const collection of collections) {
+      const at = await store
+        .readCollection(spaceId, collection)
+        .then((state) => state.syncedAt)
+        .catch(() => undefined);
+      if (at === undefined) return undefined;
+      if (oldest === undefined || at < oldest) oldest = at;
+    }
+    return oldest;
   }
 
   /** Reads the spaces once and makes the loops match them. Never rejects. */
@@ -125,10 +164,10 @@ export function createStockSync(options: StockSyncOptions): StockSync {
     if (stopped) return;
     let spaces: StoredSpace[];
     try {
-      spaces = await shared.listSpaces();
+      spaces = await store.listSpaces();
     } catch {
       // The shared database cannot be opened (no IndexedDB, a private window): nothing to
-      // sync, and the app says so itself with its read-only banner.
+      // sync, and the app says so itself.
       return;
     }
     if (stopped) return;
@@ -151,10 +190,7 @@ export function createStockSync(options: StockSyncOptions): StockSync {
       const signature = signatureOf(space);
       const old = running.get(space.id);
       if (old?.signature === signature) continue;
-      const syncedAt = await shared
-        .readCollection(space.id, STOCK_COLLECTION)
-        .then((state) => state.syncedAt)
-        .catch(() => undefined);
+      const syncedAt = await lastSynced(space.id);
       // Stopped while the collection was read: start nothing more.
       if (stopped) return;
       old?.loop?.stop();
@@ -168,7 +204,7 @@ export function createStockSync(options: StockSyncOptions): StockSync {
 
   return {
     refresh() {
-      // One look at a time: the stock read and the page coming to the front both ask at the
+      // One look at a time: the app's first read and the page coming to the front both ask at the
       // start, and two looks side by side would each start a loop for the same space. A request
       // during a look runs one more after it.
       if (looking) {
