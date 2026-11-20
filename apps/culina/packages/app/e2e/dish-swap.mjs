@@ -6,6 +6,7 @@
 // rely on what holds for every number (the pure pick is in test/dish-swap-pick.test.ts).
 import { check, watch } from './harness.mjs';
 import { addNewIngredient, formReady, layout, listStore, open } from './editor-helpers.mjs';
+import { wrappedTexts } from './measure.mjs';
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const card = (page, n) => page.locator('.step-card').nth(n - 1);
@@ -87,6 +88,13 @@ const swap = async (page) => {
     `${label}: Swap lists the other components of the role (${offered.join(', ')})`,
   );
   await layout(page, `${label} (alternatives open)`);
+  {
+    const wrapped = await wrappedTexts(page, '.slots-table td.num');
+    check(
+      wrapped.length === 0,
+      `${label} (alternatives open): every amount of a slot stays on one line ${wrapped.join(' | ')}`,
+    );
+  }
   await page.getByRole('button', { name: 'Swap rice', exact: true }).click();
   check(
     same(await fillings(page), ['Swap patties', 'Swap rice']) &&
@@ -127,6 +135,13 @@ const swap = async (page) => {
     `${label}: nothing is stored by the swap`,
   );
   await layout(page, `${label} (swapped)`);
+  {
+    const wrapped = await wrappedTexts(page, '.slots-table td.num');
+    check(
+      wrapped.length === 0,
+      `${label} (swapped): every amount of a slot stays on one line ${wrapped.join(' | ')}`,
+    );
+  }
 
   // The cook screen cooks what was swapped; the rice is in stock, so it is one step.
   await page.getByRole('link', { name: 'Cook step by step' }).click();

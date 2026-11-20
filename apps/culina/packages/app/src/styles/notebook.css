@@ -57,6 +57,13 @@
   hyphens: manual;
 }
 
+/* A heading may wrap between its words; an amount stays whole, number and unit together. */
+.lines-table td.num,
+.slots-table td.num,
+.raw-table td.num {
+  white-space: nowrap;
+}
+
 .lines-table th.pct {
   width: 4.5rem;
 }
@@ -108,7 +115,11 @@
 
 /* Swapping the filling of a slot: the button under the filling, the row of alternatives, and the
    notice that nothing is stored. Quiet: no alarm colour. */
-.slot-swap {
+/* On a line of its own under the filling: beside the name it widened the first column until the
+   amounts beside it broke between number and unit. */
+.slot-filling .slot-swap {
+  display: flex;
+  width: fit-content;
   margin-top: var(--sp-1);
 }
 
