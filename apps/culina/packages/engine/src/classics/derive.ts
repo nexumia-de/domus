@@ -3,7 +3,7 @@
 // shapes the model already has. The app does no arithmetic.
 import type { Amount, UnitId } from '../amounts/types';
 import type { ComponentRef, FoodState } from '../components/types';
-import type { Step } from '../steps/types';
+import type { TextStep } from '../steps/types';
 import { pickText } from '../text/i18n';
 import type { Lang } from '../text/i18n';
 import type { AmountWord, Classic, ClassicLine, ClassicSlot, SourceAmount } from './types';
@@ -42,7 +42,7 @@ export interface DerivedComponent {
   name: string;
   role?: string;
   lines: DerivedLine[];
-  steps: Step[];
+  steps: TextStep[];
 }
 
 export interface DerivedSlot {

@@ -1,7 +1,7 @@
 // A classic: a shipped dish of one named source, one file per dish. Never stored. Its amounts are
 // as the source gives them, in the source's own unit words; the engine derives grams and portions.
 import type { ComponentRef, FoodState } from '../components/types';
-import type { Step } from '../steps/types';
+import type { TextStep } from '../steps/types';
 import type { I18nText } from '../text/i18n';
 
 export type Country = 'de' | 'it' | 'fr' | 'es';
@@ -60,7 +60,7 @@ export interface ClassicComponent {
   name: I18nText;
   role?: string;
   lines: readonly ClassicLine[];
-  steps?: readonly Step[];
+  steps?: readonly TextStep[];
 }
 
 /** Something we settled where the source is vague; `target` is `persons` or `<component id>/<line key>` (`slots/<key>` for a slot). */

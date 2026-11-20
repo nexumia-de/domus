@@ -262,8 +262,11 @@ export type { I18nText, Lang } from './text/i18n';
 export { contentResult } from './content/types';
 export type { ContentFinding, ContentFindingCode, ContentResult } from './content/types';
 export { validateSteps } from './steps/validate';
-export type { StepsOwner } from './steps/validate';
-export type { Step, StepTemperature, StepTime } from './steps/types';
+export type { StepOptions, StepsOwner } from './steps/validate';
+export { stepWord } from './steps/types';
+export type { Step, StepTemperature, StepTime, StepWord, TextStep } from './steps/types';
+export { ACTIONS, actionById } from './actions/shipped';
+export type { Action } from './actions/types';
 
 export { TECHNIQUES, techniqueById } from './techniques/shipped';
 export { techniqueNotes } from './techniques/notes';

@@ -1,0 +1,212 @@
+[
+  {
+    "id": "set-aside",
+    "name": {
+      "en": "Set aside",
+      "de": "Beiseitestellen"
+    }
+  },
+  {
+    "id": "add",
+    "name": {
+      "en": "Add",
+      "de": "Dazugeben"
+    }
+  },
+  {
+    "id": "mix",
+    "name": {
+      "en": "Mix",
+      "de": "Mischen"
+    }
+  },
+  {
+    "id": "stir",
+    "name": {
+      "en": "Stir",
+      "de": "Rühren"
+    }
+  },
+  {
+    "id": "whisk",
+    "name": {
+      "en": "Whisk",
+      "de": "Verquirlen"
+    }
+  },
+  {
+    "id": "season",
+    "name": {
+      "en": "Season",
+      "de": "Würzen"
+    }
+  },
+  {
+    "id": "taste",
+    "name": {
+      "en": "Taste and adjust",
+      "de": "Abschmecken"
+    }
+  },
+  {
+    "id": "wash",
+    "name": {
+      "en": "Wash",
+      "de": "Waschen"
+    }
+  },
+  {
+    "id": "peel",
+    "name": {
+      "en": "Peel",
+      "de": "Schälen"
+    }
+  },
+  {
+    "id": "grate",
+    "name": {
+      "en": "Grate",
+      "de": "Reiben"
+    }
+  },
+  {
+    "id": "mash",
+    "name": {
+      "en": "Mash",
+      "de": "Zerdrücken"
+    }
+  },
+  {
+    "id": "puree",
+    "name": {
+      "en": "Purée",
+      "de": "Pürieren"
+    }
+  },
+  {
+    "id": "soak",
+    "name": {
+      "en": "Soak",
+      "de": "Einweichen"
+    }
+  },
+  {
+    "id": "drain",
+    "name": {
+      "en": "Drain",
+      "de": "Abgießen"
+    }
+  },
+  {
+    "id": "strain",
+    "name": {
+      "en": "Strain",
+      "de": "Passieren"
+    }
+  },
+  {
+    "id": "dry",
+    "name": {
+      "en": "Dry",
+      "de": "Trocknen"
+    }
+  },
+  {
+    "id": "heat",
+    "name": {
+      "en": "Heat",
+      "de": "Erhitzen"
+    }
+  },
+  {
+    "id": "melt",
+    "name": {
+      "en": "Melt",
+      "de": "Schmelzen"
+    }
+  },
+  {
+    "id": "toast",
+    "name": {
+      "en": "Toast",
+      "de": "Rösten"
+    }
+  },
+  {
+    "id": "roast",
+    "name": {
+      "en": "Roast in the oven",
+      "de": "Im Ofen braten"
+    }
+  },
+  {
+    "id": "grill",
+    "name": {
+      "en": "Grill",
+      "de": "Grillen"
+    }
+  },
+  {
+    "id": "cool",
+    "name": {
+      "en": "Let cool",
+      "de": "Abkühlen lassen"
+    }
+  },
+  {
+    "id": "chill",
+    "name": {
+      "en": "Chill",
+      "de": "Kalt stellen"
+    }
+  },
+  {
+    "id": "cover",
+    "name": {
+      "en": "Cover",
+      "de": "Zudecken"
+    }
+  },
+  {
+    "id": "fill",
+    "name": {
+      "en": "Fill",
+      "de": "Füllen"
+    }
+  },
+  {
+    "id": "spread",
+    "name": {
+      "en": "Spread",
+      "de": "Verstreichen"
+    }
+  },
+  {
+    "id": "shape",
+    "name": {
+      "en": "Shape",
+      "de": "Formen"
+    }
+  },
+  {
+    "id": "garnish",
+    "name": {
+      "en": "Garnish",
+      "de": "Garnieren"
+    }
+  },
+  {
+    "id": "serve",
+    "name": {
+      "en": "Serve",
+      "de": "Anrichten"
+    }
+  },
+  {
+    "id": "preheat",
+    "name": {
+      "en": "Preheat the oven",
+      "de": "Ofen vorheizen"
+    }
+  }
+]

@@ -91,7 +91,7 @@ export function validateClassic(classic: Classic, context: ClassicContext): Cont
         out.push(found('amount-word', `components[${i}].lines[${j}].amountWord`));
       }
     });
-    out.push(...stepFindings(`components[${i}]`, c, techniqueIds));
+    out.push(...stepFindings(`components[${i}]`, c, techniqueIds, { textRequired: true }));
   });
   classic.slots.forEach((slot, i) => item(`slots[${i}]`, slot));
 

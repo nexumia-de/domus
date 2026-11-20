@@ -156,6 +156,22 @@ view logic without DOM in `src/components/` (`lines.ts`, `figures.ts`,
 `bakersPercent`, `componentYield`, `expandComponent`, `portionsFromYield`,
 `toPurchased`); the app rounds once for display (`src/shared/mass.ts`).
 
+**Steps and cooking (since 2026-11-20).** A component with `steps` shows
+them under **Steps**, one line per step: the word, the lines it uses, time,
+temperature, the note ("Searing: Beef · 10 min · until brown"); a copied
+step shows its text. Below stands **Cook step by step**, which opens
+`#/components/<id>/cook` (`src/screens/component-cook.ts`): the screen of
+the shipped dishes with the component's own steps, one step at a time with
+the lines it uses and their amounts, time and temperature, the note of a
+skill at its first step until the skill is marked as learned, and the
+handling rules of the ingredients in the step
+(`ownCookView` in `src/components/steps-view.ts`; the notes are placed by
+the same `techniqueNotes` and `handlingNotes` as for a shipped dish). A
+handling rule shows only for an ingredient that is in the catalogue or
+under one of its groups: an ingredient the user made up has no rule. A
+dish is not cooked this way yet, only a component. **Test:**
+`test/steps-view.test.ts`, `test/router.test.ts`, `e2e/steps-kit.mjs`.
+
 **Data and the example-data rule.** Records come from the notebook in memory
 (`src/notebook/`: `listComponents`, `getComponent`, `listDishes`, `getDish`,
 `ingredientName`, `factsByIngredient`), filled from the local store at
@@ -293,6 +309,35 @@ sub-component takes a mass), the yield as weighed (left empty until then;
 the source is `user`), and method and notes (one per line, stored as
 `method`). A line without an amount is kept ("to taste" in the component view). The state and
 note of an existing line are kept as they are.
+
+- **Steps of a component (the kit, since 2026-11-20).** Between the lines
+  and the yield stands **Steps**: one card per step, added with "Add a
+  step". A card has **What is done** (one select with two groups: the
+  skills, which are the techniques and show their note when cooking, and
+  the simple actions, which only name the step), **What goes in** (the
+  lines of the component as checkboxes; a line gets its `key` when a
+  step first ticks it, `l1`, `l2`, ...), time and temperature with their
+  unit, and one line of note. Buttons move a step up or down and remove
+  it; after a move the focus is on the step that moved. No text is
+  typed for a step: it is shown from its word and its lines, in the
+  language of the content. A step copied from a shipped dish keeps its
+  text, shown above the fields and not edited. A card nothing was
+  entered in is left out on Save. Save refuses two things, each said at
+  its card: lines or a time without a word and without a note, and a
+  time or temperature that is not a number above 0. The lists of lines
+  in the cards follow the lines above (a new line appears, a removed one
+  goes, and with it its use in the steps); they are redrawn only when
+  the names of the lines changed, so typing elsewhere does not move the
+  focus. Code: `StepForm` in `src/editor/component-form.ts`,
+  `src/screens/editor/component-steps-editor.ts`, the words and the
+  line of a step in `src/components/steps-view.ts`. **Fixed with it:**
+  the editor read and wrote neither `steps` nor the `key` of a line, so
+  a copied dish lost its steps the first time it was saved from the
+  editor. **Test:** `test/editor-steps.test.ts` ("editing a copied dish
+  keeps its steps and the keys of its lines" fails on the form of
+  commit `e6f1d45` and its control passes there),
+  `test/steps-view.test.ts`, `e2e/steps-kit.mjs`. Not proved: the kit
+  was looked at in Chromium at 360 px in English only.
 
 - **Weight or percent.** The two radio buttons switch at any time. In
   percent entry the lines that are not the reference are percent of the

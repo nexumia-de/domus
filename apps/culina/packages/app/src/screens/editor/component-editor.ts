@@ -8,6 +8,7 @@ import {
   newComponentForm,
   problemsOf,
   type ComponentForm,
+  type LineForm,
   type Problem,
 } from '../../editor/component-form';
 import { inCycle } from '../../editor/cycle';
@@ -33,6 +34,7 @@ import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { strings } from '../../strings';
 import { linesEditor } from './component-lines-editor';
+import { stepsEditor } from './component-steps-editor';
 import { removeWithUndo } from './delete';
 import { draftSession } from './draft-session';
 import { editorActions } from './editor-actions';
@@ -68,6 +70,10 @@ const needsText = (p: Problem): string => {
       return t.needs.yield;
     case 'cycle':
       return t.needs.cycle;
+    case 'step':
+      return t.needs.step(p.index + 1);
+    case 'step-number':
+      return t.needs.stepNumber(p.index + 1);
   }
 };
 
@@ -175,18 +181,20 @@ const build = (
   };
   const switchTo = (to: 'weight' | 'percent'): void => apply(switchEntry(form, to, facts()));
 
+  /** The name of a line whose ingredient or component is picked. */
+  const pickedName = (line: LineForm): string | undefined => {
+    if (line.ref === undefined) return undefined;
+    const nb = notebook();
+    return line.ref.kind === 'ingredient'
+      ? nb.ingredientName(line.ref.id)
+      : (nb.components.find((c) => c.id === line.ref?.id)?.name ?? line.ref.id);
+  };
+
   const fillReference = (): void => {
     reference.replaceChildren(new Option(t.referenceChoose, ''));
-    const nb = notebook();
     form.lines.forEach((line, index) => {
       const label =
-        line.ref === undefined
-          ? line.role === undefined
-            ? undefined
-            : roleLabel(line.role)
-          : line.ref.kind === 'ingredient'
-            ? nb.ingredientName(line.ref.id)
-            : (nb.components.find((c) => c.id === line.ref?.id)?.name ?? line.ref.id);
+        pickedName(line) ?? (line.role === undefined ? undefined : roleLabel(line.role));
       if (label !== undefined) reference.append(new Option(label, String(index)));
     });
     const at = referenceIndex(form);
@@ -234,6 +242,8 @@ const build = (
   const yieldRow = el('div', 'line-amount');
   yieldRow.append(yieldAmount.wrap, yieldUnit);
 
+  const steps = stepsEditor(form, changed, pickedName);
+
   const notes = areaField(t.notesLabel, form.method);
   notes.control.addEventListener('input', () => {
     form.method = notes.control.value;
@@ -254,6 +264,7 @@ const build = (
       problemsOf(form).some((p) => p.code === 'yield'),
     );
     lines.figures();
+    steps.syncLines();
     info?.update();
   };
 
@@ -273,9 +284,12 @@ const build = (
     linesError.clear();
     yieldError.clear();
     const rows = new Map<number, RowProblem[]>();
+    const stepProblems = new Map<number, string[]>();
     const lineProblems: string[] = [];
     for (const p of problems) {
-      if (p.code === 'name') nameError.show(needsText(p));
+      if (p.code === 'step' || p.code === 'step-number') {
+        stepProblems.set(p.index, [...(stepProblems.get(p.index) ?? []), needsText(p)]);
+      } else if (p.code === 'name') nameError.show(needsText(p));
       else if (p.code === 'yield') yieldError.show(needsText(p));
       else if (p.code === 'ingredient' || p.code === 'amount') {
         const at = rows.get(p.index) ?? [];
@@ -285,6 +299,7 @@ const build = (
     }
     if (lineProblems.length > 0) linesError.show(lineProblems.join(' '));
     lines.showProblems(rows);
+    steps.showProblems(stepProblems);
     status.textContent = t.needs.summary;
     focusFirstError(screen);
   };
@@ -348,6 +363,8 @@ const build = (
     lines.element,
     addRow,
     linesError.node,
+    el('h2', undefined, t.stepsHeading),
+    steps.element,
     el('h2', undefined, t.yieldHeading),
     yieldRow,
     yieldError.node,

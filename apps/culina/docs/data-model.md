@@ -312,7 +312,7 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `lines`       | array of object | yes      | `ref` (ingredient or component), optional `amount`, `role`, `state`, `note` |
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
-| `steps`       | array of object | no       | Steps with bilingual text, technique and lines used; see [Steps](#steps)    |
+| `steps`       | array of object | no       | Steps by technique or plain action, lines used, note; see [Steps](#steps)   |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
 
 - **Lines.** A line may carry a `key`, a short slug that is unique in the component, so that a step can name it (see [Steps](#steps)). An amount is mass, volume or count, or `percent` of the
@@ -349,11 +349,29 @@ nesting. Schema: `component.schema.json`. One stored record is one
 
 `steps` is the method for the helper: an ordered array, and `method`
 (plain text) stays valid beside it for the user's own recipes. A step is
-`{ text, technique?, uses?, time?, temperature? }`:
+`{ text?, technique?, action?, uses?, time?, temperature?, note? }`. It
+says what is done in at least one of four ways, and the schema refuses a
+step that has none of them:
 
-- `text` is [a text in both languages](#text-in-two-languages).
+- `text` is [a text in both languages](#text-in-two-languages). A shipped
+  dish always has it (its schema requires it, and so does the engine,
+  `text-incomplete`), and a copy of a shipped dish keeps it. A step the
+  user builds has none.
 - `technique` is the id of a [technique](#technique), which the helper
   explains once ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- `action` is the id of a **plain action** (since 2026-11-20): a word for
+  a step that teaches nothing, such as set aside, drain or serve. The 30
+  plain actions are shipped in `data/actions.json` with a name in both
+  languages (`ACTIONS`, `actionById`). **Why two lists:** a technique
+  needs what to watch, why, and a source; a plain action has none of
+  them, and it does not show among the skills that can be marked as
+  learned. A plain action becomes a technique when a source says
+  something about it: the id moves from one list to the other, and a
+  test keeps the two lists free of a shared id. A step names a technique
+  or an action, not both (`technique-and-action`); `stepWord` gives the
+  one it has.
+- `note` is the user's own remark in one language, plain text: what the
+  structure cannot say ("until golden", "half of the butter").
 - `uses` lists the `key`s of the lines the step uses. **Why keys, not line
   numbers:** the plan says "the lines the step uses", and an index shifts
   as soon as a line is added or moved in the editor, so a step would point
@@ -735,8 +753,10 @@ the store kind `skills`. Schema: `skill.schema.json`.
 Shipped helper content is written in English (canonical) and German as
 `{ "en": "...", "de": "..." }` (`i18nText` in `common.schema.json`). Both are
 required and not empty; the engine also refuses a text of white space only.
-A user's own recipe keeps plain strings; only steps are in two languages
-because a derived or copied classic keeps its steps as they are.
+A user's own recipe keeps plain strings; only the `text` of a step is in
+two languages, because a derived or copied classic keeps its steps as
+they are. A step the user builds has no text: it is shown from the name
+of its technique or action, which the app has in both languages.
 
 # Stored versus derived
 

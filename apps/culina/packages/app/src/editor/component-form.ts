@@ -1,6 +1,6 @@
 // The component editor's form state (plain JSON, so it is also the draft) and its two
 // translations: from a stored record to the form, and from the form to a record.
-import type { ComponentLine, ComponentRef, FoodState } from '@culina/engine';
+import type { ComponentLine, ComponentRef, FoodState, I18nText, Step } from '@culina/engine';
 import type { ComponentRecord, VersionInfo } from '../records';
 import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
@@ -16,7 +16,39 @@ export interface LineForm {
   role?: string;
   state?: FoodState;
   note?: string;
+  /** Names the line for the steps; kept from the record, given when a step first uses the line. */
+  key?: string;
 }
+
+/** One step as the editor holds it: a word, the lines it uses, time, temperature and a note. */
+export interface StepForm {
+  /** What is done: empty for none, `t:<id>` for a technique, `a:<id>` for a plain action. */
+  word: string;
+  /** Keys of the lines the step uses. */
+  uses: string[];
+  /** As typed; empty for none. */
+  time: string;
+  timeUnit: 's' | 'min' | 'h';
+  temperature: string;
+  temperatureUnit: 'C' | 'F';
+  /** The user's own remark, one line. */
+  note: string;
+  /** The text of a copied dish in both languages: shown, kept, not edited. */
+  text?: I18nText;
+  /** The end of a range a copy came with; dropped when the value is typed anew. */
+  timeTo?: number;
+  temperatureTo?: number;
+}
+
+export const newStepForm = (): StepForm => ({
+  word: '',
+  uses: [],
+  time: '',
+  timeUnit: 'min',
+  temperature: '',
+  temperatureUnit: 'C',
+  note: '',
+});
 
 export interface ComponentForm {
   id: string;
@@ -37,6 +69,8 @@ export interface ComponentForm {
   yieldSource?: string;
   /** One step or note per line. */
   method: string;
+  /** The steps of the kit; a draft written before they existed has none. */
+  steps?: StepForm[];
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
@@ -48,7 +82,9 @@ export type Problem =
   | { code: 'ingredient'; index: number }
   | { code: 'amount'; index: number }
   | { code: 'yield' }
-  | { code: 'cycle' };
+  | { code: 'cycle' }
+  | { code: 'step'; index: number }
+  | { code: 'step-number'; index: number };
 
 export const newComponentForm = (id: string): ComponentForm => ({
   id,
@@ -60,9 +96,45 @@ export const newComponentForm = (id: string): ComponentForm => ({
   yieldAmount: '',
   yieldUnit: 'g',
   method: '',
+  steps: [],
 });
 
 const text = (n: number): string => withDecimalMark(String(n), appLang);
+
+const stepForm = (step: Step): StepForm => ({
+  word:
+    step.technique !== undefined
+      ? `t:${step.technique}`
+      : step.action !== undefined
+        ? `a:${step.action}`
+        : '',
+  uses: [...(step.uses ?? [])],
+  time: step.time === undefined ? '' : text(step.time.value),
+  timeUnit: step.time?.unit ?? 'min',
+  temperature: step.temperature === undefined ? '' : text(step.temperature.value),
+  temperatureUnit: step.temperature?.unit ?? 'C',
+  note: step.note ?? '',
+  ...(step.text === undefined ? {} : { text: step.text }),
+  ...(step.time?.to === undefined ? {} : { timeTo: step.time.to }),
+  ...(step.temperature?.to === undefined ? {} : { temperatureTo: step.temperature.to }),
+});
+
+/** True for a step nothing was entered in: Save leaves it out. */
+export const isBlankStep = (step: StepForm): boolean =>
+  step.word === '' &&
+  step.note.trim() === '' &&
+  step.text === undefined &&
+  step.uses.length === 0 &&
+  step.time.trim() === '' &&
+  step.temperature.trim() === '';
+
+/** A key no line of the form has yet: `l1`, `l2`, ... */
+export const freshLineKey = (lines: readonly LineForm[]): string => {
+  const taken = new Set(lines.map((l) => l.key));
+  let n = 1;
+  while (taken.has(`l${n}`)) n += 1;
+  return `l${n}`;
+};
 
 export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
   id: record.id,
@@ -79,11 +151,13 @@ export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
     ...(line.role === undefined ? {} : { role: line.role }),
     ...(line.state === undefined ? {} : { state: line.state }),
     ...(line.note === undefined ? {} : { note: line.note }),
+    ...(line.key === undefined ? {} : { key: line.key }),
   })),
   yieldAmount: record.yield === undefined ? '' : text(record.yield.amount.value),
   yieldUnit: record.yield?.amount.unit ?? 'g',
   ...(record.yield === undefined ? {} : { yieldSource: record.yield.source }),
   method: (record.method ?? []).join('\n'),
+  steps: (record.steps ?? []).map(stepForm),
   version: record.version,
 });
 
@@ -107,7 +181,55 @@ export const problemsOf = (form: ComponentForm): Problem[] => {
     if (parseEntry(line.amount).kind === 'invalid') out.push({ code: 'amount', index });
   });
   if (parseEntry(form.yieldAmount).kind === 'invalid') out.push({ code: 'yield' });
+  (form.steps ?? []).forEach((step, index) => {
+    if (isBlankStep(step)) return;
+    // A step says what is done: a word, a note or the text it was copied with.
+    if (step.word === '' && step.note.trim() === '' && step.text === undefined) {
+      out.push({ code: 'step', index });
+    }
+    if (
+      parseEntry(step.time).kind === 'invalid' ||
+      parseEntry(step.temperature).kind === 'invalid'
+    ) {
+      out.push({ code: 'step-number', index });
+    }
+  });
   return out;
+};
+
+/** The step as it is stored; `keys` are the keys of the lines that exist. */
+const stepRecord = (step: StepForm, keys: ReadonlySet<string>): Step => {
+  const uses = step.uses.filter((key) => keys.has(key));
+  const time = parseEntry(step.time);
+  const temperature = parseEntry(step.temperature);
+  const note = step.note.trim();
+  return {
+    ...(step.text === undefined ? {} : { text: step.text }),
+    ...(step.word.startsWith('t:') ? { technique: step.word.slice(2) } : {}),
+    ...(step.word.startsWith('a:') ? { action: step.word.slice(2) } : {}),
+    ...(uses.length === 0 ? {} : { uses }),
+    ...(time.kind === 'ok'
+      ? {
+          time: {
+            value: time.value,
+            ...(step.timeTo !== undefined && step.timeTo > time.value ? { to: step.timeTo } : {}),
+            unit: step.timeUnit,
+          },
+        }
+      : {}),
+    ...(temperature.kind === 'ok'
+      ? {
+          temperature: {
+            value: temperature.value,
+            ...(step.temperatureTo !== undefined && step.temperatureTo > temperature.value
+              ? { to: step.temperatureTo }
+              : {}),
+            unit: step.temperatureUnit,
+          },
+        }
+      : {}),
+    ...(note === '' ? {} : { note }),
+  };
 };
 
 export type RecordResult =
@@ -125,8 +247,13 @@ export const formToRecord = (form: ComponentForm, today: string): RecordResult =
       ...(line.role === undefined ? {} : { role: line.role }),
       ...(line.state === undefined ? {} : { state: line.state }),
       ...(line.note === undefined || line.note === '' ? {} : { note: line.note }),
+      ...(line.key === undefined ? {} : { key: line.key }),
     };
   });
+  const keys = new Set(lines.flatMap((l) => (l.key === undefined ? [] : [l.key])));
+  const kitSteps = (form.steps ?? [])
+    .filter((step) => !isBlankStep(step))
+    .map((step) => stepRecord(step, keys));
   const yielded = parseEntry(form.yieldAmount);
   const steps = form.method
     .split('\n')
@@ -151,6 +278,7 @@ export const formToRecord = (form: ComponentForm, today: string): RecordResult =
           }
         : {}),
       ...(steps.length === 0 ? {} : { method: steps }),
+      ...(kitSteps.length === 0 ? {} : { steps: kitSteps }),
       version: form.version ?? { family: form.id, date: today },
     } as ComponentRecord,
   };

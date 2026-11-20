@@ -1,6 +1,9 @@
 // The detail of one component: lines, yield, scaling, portions and the raw list.
 import { yieldView } from '../components/figures';
 import { lineRows } from '../components/lines';
+import { stepLines } from '../components/steps-view';
+import { techniques } from '../classics/content';
+import { currentLang } from '../classics/lang';
 import { roleLabel } from '../components/names';
 import { hashFor } from '../router';
 import type { ComponentRecord, Notebook } from '../records';
@@ -34,6 +37,16 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
     yieldSection(figures),
     ...scaleSections(nb, component, recordedG),
   );
+  const steps = stepLines(nb, component, currentLang(), techniques());
+  if (steps.length > 0) {
+    const section = el('section', 'steps-section');
+    const list = el('ol', 'recipe-steps');
+    for (const line of steps) list.append(el('li', undefined, line));
+    const cook = el('a', 'btn primary', strings.components.cookSteps);
+    cook.href = hashFor('components', component.id, 'cook');
+    section.append(el('h2', undefined, strings.components.stepsHeading), list, cook);
+    card.append(section);
+  }
   if (component.method !== undefined) {
     const notes = el('section', 'notes-section');
     notes.append(el('h2', undefined, strings.components.notesHeading));
