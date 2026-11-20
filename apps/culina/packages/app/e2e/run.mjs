@@ -14,6 +14,7 @@ import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
 import { importCatalogue } from './import-catalogue.mjs';
 import { install } from './install.mjs';
+import { mealPrep } from './meal-prep.mjs';
 import { navigation } from './navigation.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
@@ -36,6 +37,7 @@ try {
   await editor(browser, server);
   await editorMore(browser, server);
   await stepsKit(browser, server);
+  await mealPrep(browser, server);
   await catalogue(browser, server);
   await install(browser, server);
   await store(browser, server);

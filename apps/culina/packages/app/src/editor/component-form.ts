@@ -1,6 +1,13 @@
 // The component editor's form state (plain JSON, so it is also the draft) and its two
 // translations: from a stored record to the form, and from the form to a record.
-import type { ComponentLine, ComponentRef, FoodState, I18nText, Step } from '@culina/engine';
+import type {
+  ComponentLine,
+  ComponentRef,
+  FoodState,
+  I18nText,
+  KeepEntry,
+  Step,
+} from '@culina/engine';
 import type { ComponentRecord, VersionInfo } from '../records';
 import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
@@ -40,6 +47,18 @@ export interface StepForm {
   temperatureTo?: number;
 }
 
+/** How long the made component keeps in one place, as the editor holds it. */
+export interface KeepForm {
+  storage: KeepEntry['storage'];
+  /** As typed: whole days. */
+  days: string;
+  note: string;
+  /** Kept from the record; `user` once the days are typed anew. */
+  source: string;
+}
+
+const WHOLE = /^\d+$/;
+
 export const newStepForm = (): StepForm => ({
   word: '',
   uses: [],
@@ -71,6 +90,8 @@ export interface ComponentForm {
   method: string;
   /** The steps of the kit; a draft written before they existed has none. */
   steps?: StepForm[];
+  /** How long it keeps once made, per storage place. */
+  keeps?: KeepForm[];
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
@@ -84,7 +105,8 @@ export type Problem =
   | { code: 'yield' }
   | { code: 'cycle' }
   | { code: 'step'; index: number }
-  | { code: 'step-number'; index: number };
+  | { code: 'step-number'; index: number }
+  | { code: 'keep'; index: number };
 
 export const newComponentForm = (id: string): ComponentForm => ({
   id,
@@ -97,6 +119,7 @@ export const newComponentForm = (id: string): ComponentForm => ({
   yieldUnit: 'g',
   method: '',
   steps: [],
+  keeps: [],
 });
 
 const text = (n: number): string => withDecimalMark(String(n), appLang);
@@ -158,6 +181,12 @@ export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
   ...(record.yield === undefined ? {} : { yieldSource: record.yield.source }),
   method: (record.method ?? []).join('\n'),
   steps: (record.steps ?? []).map(stepForm),
+  keeps: (record.keeps ?? []).map((k) => ({
+    storage: k.storage,
+    days: String(k.days),
+    note: k.note ?? '',
+    source: k.source,
+  })),
   version: record.version,
 });
 
@@ -193,6 +222,13 @@ export const problemsOf = (form: ComponentForm): Problem[] => {
     ) {
       out.push({ code: 'step-number', index });
     }
+  });
+  const places = new Set<string>();
+  (form.keeps ?? []).forEach((keep, index) => {
+    // Whole days, and each storage place once.
+    if (!WHOLE.test(keep.days.trim()) || places.has(keep.storage))
+      out.push({ code: 'keep', index });
+    places.add(keep.storage);
   });
   return out;
 };
@@ -279,6 +315,19 @@ export const formToRecord = (form: ComponentForm, today: string): RecordResult =
         : {}),
       ...(steps.length === 0 ? {} : { method: steps }),
       ...(kitSteps.length === 0 ? {} : { steps: kitSteps }),
+      ...((form.keeps ?? []).length === 0
+        ? {}
+        : {
+            keeps: (form.keeps ?? []).map((keep): KeepEntry => {
+              const note = keep.note.trim();
+              return {
+                storage: keep.storage,
+                days: Number(keep.days.trim()),
+                source: keep.source,
+                ...(note === '' ? {} : { note }),
+              };
+            }),
+          }),
       version: form.version ?? { family: form.id, date: today },
     } as ComponentRecord,
   };

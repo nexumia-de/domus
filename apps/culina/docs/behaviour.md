@@ -156,6 +156,27 @@ view logic without DOM in `src/components/` (`lines.ts`, `figures.ts`,
 `bakersPercent`, `componentYield`, `expandComponent`, `portionsFromYield`,
 `toPurchased`); the app rounds once for display (`src/shared/mass.ts`).
 
+**Keeps and the stock (meal prep, since 2026-11-20).** The editor has a
+section **Keeps** after the yield: one row per storage place (fridge,
+freezer, pantry; "Add a storage place" offers the first one not used yet)
+with the days and a line on how it is kept. The figures are the user's own
+and are stored with the source `user`; the app proposes none, because a
+shelf life is a food-safety figure. Save refuses days that are no whole
+number and a place given twice, at the row. The component shows the
+entries ("Fridge: 3 days · airtight") and, on its current version, the
+button **Made it: put it in stock**: it stores a new stock item for the
+component, prepared today, and opens it. The stock item has a new field
+**Where it lies**. Without it the dates of every place the component keeps
+in are offered; with it only that place counts, and the use-by date is
+derived from the day of preparation and the component's days
+(`shelfLifeOf` in `src/screens/stock/lookup.ts`, the engine's
+`stockExpiry` and `useBySuggestions`). The date is shown and counted in
+the stock list, and never written into the item. Each "Made it" is a batch
+of its own, so two batches keep their own dates. **Test:**
+`test/meal-prep.test.ts`, `e2e/meal-prep.mjs`; in the engine
+`test/keeps.test.ts`. Not proved: looked at in Chromium at 360 px in
+English only; the test store is the in-memory one.
+
 **Steps and cooking (since 2026-11-20).** A component with `steps` shows
 them under **Steps**, one line per step: the word, the lines it uses, time,
 temperature, the note ("Searing: Beef · 10 min · until brown"); a copied

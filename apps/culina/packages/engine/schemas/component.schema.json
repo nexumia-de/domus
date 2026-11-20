@@ -6,9 +6,13 @@
   "type": "object",
   "required": ["id", "name", "lines", "version"],
   "additionalProperties": false,
-  "patternProperties": { "^x-": true },
+  "patternProperties": {
+    "^x-": true
+  },
   "properties": {
-    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
     "name": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/name"
     },
@@ -62,6 +66,30 @@
         },
         "source": {
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+        }
+      }
+    },
+    "keeps": {
+      "description": "How long the made component keeps, per storage place, and how. Every entry has a source; the user's own entry is the word user. A storage place stands once.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["storage", "days", "source"],
+        "additionalProperties": false,
+        "properties": {
+          "storage": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/storage"
+          },
+          "days": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/source"
+          },
+          "note": {
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+          }
         }
       }
     },

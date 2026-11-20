@@ -104,12 +104,14 @@ export type {
   UnmeasuredLine,
   YieldFigures,
   YieldResult,
+  KeepEntry,
 } from './components/types';
 
 export { toEdible, toPurchased, yieldFor } from './yields/edible';
 export type { EdibleResult, IngredientYield, YieldError, YieldLookup } from './yields/edible';
 
 export { stockExpiry } from './stock/expiry';
+export { shelfLifeApplies } from './stock/types';
 export { useBySuggestions } from './stock/suggest';
 export { useAmount } from './stock/use';
 export type { UseResult } from './stock/use';

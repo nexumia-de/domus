@@ -117,6 +117,10 @@ export const appStringsDe: typeof appStrings = {
     backToComponent: 'Zurück zur Komponente',
     noSteps: 'Diese Komponente hat noch keine Schritte.',
     cookDone: 'Das war der letzte Schritt.',
+    keepsHeading: 'Haltbarkeit',
+    keepsLine: (place: string, days: number): string =>
+      `${place}: ${days} ${days === 1 ? 'Tag' : 'Tage'}`,
+    madeIt: 'Fertig: in den Vorrat legen',
     colAmount: 'Menge',
     colPercent: (base: string): string => `% von ${base}`,
     buyAbout: (g: string): string => `etwa ${g} einkaufen`,
@@ -341,6 +345,14 @@ export const appStringsDe: typeof appStrings = {
     stepUp: (n: number): string => `Schritt ${n} nach oben`,
     stepDown: (n: number): string => `Schritt ${n} nach unten`,
     stepRemove: (n: number): string => `Schritt ${n} entfernen`,
+    keepsHeading: 'Haltbarkeit',
+    keepsHelp: 'Wie lange es fertig hält, und wie. Das sind deine eigenen Angaben.',
+    addKeep: 'Lagerort hinzufügen',
+    keepLegend: (n: number): string => `Lagerort ${n}`,
+    keepPlace: 'Lagerort',
+    keepDays: 'Tage',
+    keepNote: 'Wie (optional)',
+    keepRemove: (n: number): string => `Lagerort ${n} entfernen`,
     portionsLabel: 'Portionen',
     noteLabel: 'Notiz',
     slotsHeading: 'Rollen',
@@ -411,6 +423,8 @@ export const appStringsDe: typeof appStrings = {
         `Schritt ${n}: Wähle, was getan wird, oder schreibe eine Notiz, um zu speichern.`,
       stepNumber: (n: number): string =>
         `Schritt ${n}: Zeit und Temperatur müssen Zahlen über 0 sein, oder leer.`,
+      keep: (n: number): string =>
+        `Lagerort ${n}: Gib ganze Tage an und jeden Lagerort nur einmal, um zu speichern.`,
     },
   },
   // Versions, history, tasting notes and variations.

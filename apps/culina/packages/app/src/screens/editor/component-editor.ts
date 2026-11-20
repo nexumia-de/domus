@@ -34,6 +34,7 @@ import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { strings } from '../../strings';
 import { linesEditor } from './component-lines-editor';
+import { keepsEditor } from './component-keeps-editor';
 import { stepsEditor } from './component-steps-editor';
 import { removeWithUndo } from './delete';
 import { draftSession } from './draft-session';
@@ -74,6 +75,8 @@ const needsText = (p: Problem): string => {
       return t.needs.step(p.index + 1);
     case 'step-number':
       return t.needs.stepNumber(p.index + 1);
+    case 'keep':
+      return t.needs.keep(p.index + 1);
   }
 };
 
@@ -243,6 +246,7 @@ const build = (
   yieldRow.append(yieldAmount.wrap, yieldUnit);
 
   const steps = stepsEditor(form, changed, pickedName);
+  const keeps = keepsEditor(form, changed);
 
   const notes = areaField(t.notesLabel, form.method);
   notes.control.addEventListener('input', () => {
@@ -285,9 +289,11 @@ const build = (
     yieldError.clear();
     const rows = new Map<number, RowProblem[]>();
     const stepProblems = new Map<number, string[]>();
+    const keepProblems = new Set<number>();
     const lineProblems: string[] = [];
     for (const p of problems) {
-      if (p.code === 'step' || p.code === 'step-number') {
+      if (p.code === 'keep') keepProblems.add(p.index);
+      else if (p.code === 'step' || p.code === 'step-number') {
         stepProblems.set(p.index, [...(stepProblems.get(p.index) ?? []), needsText(p)]);
       } else if (p.code === 'name') nameError.show(needsText(p));
       else if (p.code === 'yield') yieldError.show(needsText(p));
@@ -300,6 +306,7 @@ const build = (
     if (lineProblems.length > 0) linesError.show(lineProblems.join(' '));
     lines.showProblems(rows);
     steps.showProblems(stepProblems);
+    keeps.showProblems(keepProblems);
     status.textContent = t.needs.summary;
     focusFirstError(screen);
   };
@@ -369,6 +376,8 @@ const build = (
     yieldRow,
     yieldError.node,
     el('p', 'muted', t.yieldHelp),
+    el('h2', undefined, t.keepsHeading),
+    keeps.element,
     notes.wrap,
   );
   if (info) screen.append(info.element);

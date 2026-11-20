@@ -25,12 +25,26 @@ export interface ComponentLine {
   key?: string;
 }
 
+/**
+ * How long a made component keeps in one place, and how: "in portions, airtight". Every entry has
+ * a source; the user's own entry is `user`.
+ */
+export interface KeepEntry {
+  storage: 'pantry' | 'fridge' | 'freezer';
+  days: number;
+  source: string;
+  /** How it is kept, in the user's words. */
+  note?: string;
+}
+
 /** A component: lines, the weighed output and the role whose mass is 100 percent. */
 export interface Component {
   id: string;
   /** Role whose summed mass (lines not in percent) is 100 percent for percent lines. */
   percentBase?: string;
   lines: readonly ComponentLine[];
+  /** How long it keeps once made, per storage place; absent when nothing is recorded. */
+  keeps?: readonly KeepEntry[];
   /** Steps with bilingual text; the stored `method` text stays valid beside them. */
   steps?: readonly Step[];
   /** The output weight as weighed; absent when unknown. There is no default. */

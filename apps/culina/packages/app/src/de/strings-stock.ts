@@ -45,6 +45,8 @@ export const stockStringsDe: typeof stockStrings = {
   amountLabel: 'Menge',
   unitLabel: 'Einheit',
   stateLabel: 'Zustand',
+  storageLabel: 'Wo es liegt',
+  storageNone: 'Nicht angegeben',
   stateNone: 'Nicht angegeben',
   preparedLabel: 'Zubereitet am',
   preparedToday: 'Heute',
