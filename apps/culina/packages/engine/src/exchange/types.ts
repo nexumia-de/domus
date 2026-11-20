@@ -1,13 +1,16 @@
 // Types of the export file: the kinds of records, the validators the host passes in, and the
 // errors of reading a file. Every fallible function returns a result union and never throws.
 
-/** The seven kinds of user records, named like the collections of the export file. */
+/**
+ * The six kinds of user records, named like the collections of the export file. Stock is not
+ * among them since version 2: it is the shared collection `stock` of a space, not Culina's data
+ * (docs/decisions/stock-in-spaces.md).
+ */
 export const EXPORT_KINDS = [
   'ingredients',
   'templates',
   'components',
   'dishes',
-  'stock',
   'affinities',
   'tastings',
 ] as const;
@@ -81,6 +84,8 @@ export interface ExportContent {
   seedVersion?: string;
   exportedAt?: string;
   records: FullRecordSets;
+  /** How many stock items a file of version 1 held; they are left out. Absent when none. */
+  stockLeftOut?: number;
 }
 
 export type ParseResult = { ok: true; content: ExportContent } | ExportFail;

@@ -120,7 +120,6 @@ const roundTrip = async (context, page, origin) => {
           ingredients: 'ingredients',
           components: 'component versions',
           dishes: 'dish versions',
-          stock: 'stock items',
           tastings: 'tasting notes',
         }[kind]
       }`,
@@ -330,12 +329,29 @@ const refusals = async (page, origin) => {
     'a file from a newer version',
     file(
       'x.json',
-      JSON.stringify({ format: 'culina-export', formatVersion: 2, components: [{ any: 'shape' }] }),
+      JSON.stringify({ format: 'culina-export', formatVersion: 3, components: [{ any: 'shape' }] }),
     ),
-    /newer version of the app \(format 2; this app reads up to 1\)/,
+    /newer version of the app \(format 3; this app reads up to 2\)/,
     before,
   );
   await layout(page, `${label} (refused file)`);
+
+  // A file of version 1 with stock is read; its stock is left out, and the preview says so.
+  const old = {
+    format: 'culina-export',
+    formatVersion: 1,
+    ingredients: [{ id: uid(81), name: 'Old flour' }],
+    stock: [{ id: uid(82), ref: { kind: 'ingredient', id: uid(81) } }],
+  };
+  await chooseFile(page, origin, file('old.json', JSON.stringify(old)));
+  await page.locator('.stock-left-out').waitFor();
+  const note = await page.locator('.stock-left-out').innerText();
+  const summary = await page.locator('.summary-list li').allTextContents();
+  check(
+    note.includes('holds 1 stock item. They are left out') && same(summary, ['1 ingredients']),
+    `${label}: an older file's stock is left out and the preview says so (${note} | ${summary})`,
+  );
+  check(same(await listAll(page), before), `${label}: reading the older file changed nothing`);
 };
 
 const reminder = async (browser, server) => {

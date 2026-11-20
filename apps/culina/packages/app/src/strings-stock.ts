@@ -68,4 +68,30 @@ export const stockStrings = {
   left: (amount: string): string => `${amount} left.`,
   // Quick entry beside the list
   notFound: 'That item is no longer in stock.',
+  // The space the stock belongs to, and how it is kept in step (docs/decisions/stock-in-spaces.md)
+  space: { home: 'Home', unnamed: 'Unnamed space' },
+  spaceLabel: 'Stock of',
+  spaceHint:
+    'Each space has its own stock, shared with the household’s other apps. Spaces are set up in the Household app.',
+  household: 'Spaces in the Household app',
+  unavailable:
+    'The stock cannot be opened: this browser gives no shared storage to the page (a private window?).',
+  status: {
+    deviceOnly: 'Kept on this device only.',
+    never: 'Not synced yet.',
+    syncing: 'Syncing …',
+    inStep: 'In step with the household.',
+    notInStep: (why: string): string => `Not in step: ${why}. See the Household app.`,
+    reasons: {
+      access: 'the storage refused the access',
+      notFound: 'the storage was not found',
+      unreachable: 'the storage could not be reached',
+      wait: 'the storage asks to wait',
+      conflict: 'another device was writing',
+      storage: 'this version does not know the storage',
+      otherSpace: 'the file in the storage belongs to another space',
+      newer: 'the file in the storage needs a newer version of the app',
+      unreadable: 'the file in the storage could not be read',
+    },
+  },
 };

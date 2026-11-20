@@ -11,15 +11,16 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 Versions are pinned exactly in `package.json` and equal Mixtura's, so
 both repositories stay aligned; the lockfile pins the rest. Licences read
 from each package's `package.json` in `node_modules`. Culina itself is
-AGPL-3.0-or-later ([LICENSE](../LICENSE)). The only runtime dependency
-is materia, the owner's own shared code under the same licence; all
+AGPL-3.0-or-later ([LICENSE](../LICENSE)). The runtime dependencies
+are materia and hospes, the owner's own shared code under the same licence; all
 others are development only and MIT or Apache-2.0, compatible with it.
 
 ## Runtime
 
-| Package               | Version | Licence           | Use                                                                                                                                                                                                                                                   |
-| --------------------- | ------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@nexumia-de/materia` | 0.2.0   | AGPL-3.0-or-later | The general model shared with Mixtura (ingredient tree, templates, specs, stock, shelf life, sync formats); a git dependency of `@culina/engine` at tag `v0.2.0` (commit `588d744`); no dependency of its own ([decision](decisions/shared-model.md)) |
+| Package               | Version | Licence           | Use                                                                                                                                                                                                                                                                           |
+| --------------------- | ------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@nexumia-de/materia` | 0.2.0   | AGPL-3.0-or-later | The general model shared with Mixtura (ingredient tree, templates, specs, stock, shelf life, sync formats); a git dependency of `@culina/engine` at tag `v0.2.0` (commit `588d744`); no dependency of its own ([decision](decisions/shared-model.md))                         |
+| `@nexumia-de/hospes`  | 0.1.0   | AGPL-3.0-or-later | The host code of the repository (`packages/host`, a workspace package, linked by `npm install`): spaces, the shared database `domus`, the sync cycle and loop and the storage adapters, used for stock ([decision](decisions/stock-in-spaces.md)); it depends on materia only |
 
 Licence read from `LICENSE` and `package.json` in
 `node_modules/@nexumia-de/materia`. Its tag is raised by hand (the owner

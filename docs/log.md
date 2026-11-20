@@ -2,6 +2,8 @@
 
 ## 2026-11-20
 
+- **Update**: goal 8, Culina's stock on spaces: the collection `stock` of a space, shared with Mixtura; old items are moved once; the export no longer holds stock. How the two catalogues meet is written down as a proposal (a table with the shared catalogue package, not built). [Roadmap](roadmap.md), [decision](../apps/culina/docs/decisions/stock-in-spaces.md). The work of this day by several agents is in the [review record](reviews.md).
+
 - **Decision**: by the owner: native Linux apps for Phosh as libadwaita screens in GJS, Emptio first, inside this repository ([decision](decisions/native-linux-gjs.md), [roadmap](roadmap.md) goal 11). Emptio's is built (`apps/emptio/packages/linux`); CI has `emptio-linux-check` and `emptio-flatpak`. No Flatpak was built and no phone was used.
 - **Update**: goal 7, Emptio on spaces. The shopping list exists as an app under `/emptio/` (`scripts/site.mjs`, the Household home page lists it, `site-e2e.mjs` takes an app without a database of its own); CI has `emptio-e2e`, a change to the host package or the model now also runs Culina's and Emptio's checks, the deploy waits for `emptio-check` and asks the address for `/emptio/`. The host package took over what two apps need: the loops of an app (from Mixtura), the choice of the shown space, a store on files, a service worker, and the browser harness with the fake of GitHub's API (from the Household app). [Roadmap](roadmap.md), [behaviour](../apps/emptio/docs/behaviour.md).
 

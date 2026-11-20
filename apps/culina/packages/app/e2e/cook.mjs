@@ -120,7 +120,7 @@ const ordering = async (browser, origin) => {
       !(await li('cook-soup-plate').innerText()).includes('You could add a garnish'),
     `${label}: an open role of a dish is offered only where the stock has something for it`,
   );
-  const salt = ranked(1).candidates.filter((c) => c.usedItems.includes('cook-s-salt'));
+  const salt = ranked(1).candidates.filter((c) => c.usedItems.includes('cook-salt'));
   check(salt.length === 0, `${label}: an always-there item is never named as what is used`);
   const wording = (await page.locator('main').innerText()).match(FORBIDDEN);
   check(wording === null, `${label}: the wording never judges ${wording ?? ''}`);
@@ -306,7 +306,7 @@ const useUp = async (browser, origin) => {
   await page.locator('.use-up-item').first().getByRole('link').first().click();
   await page.getByRole('heading', { level: 1, name: 'Leek in stock' }).waitFor();
   check(
-    page.url().endsWith('#/stock/cook-s-leek/edit') &&
+    page.url().endsWith('#/stock/cook-leek/edit') &&
       (await page.locator('nav [aria-current="page"]').innerText()).trim() === 'Cook',
     `${label}: an item opens in the stock screen, still under Cook`,
   );
@@ -341,7 +341,7 @@ const empties = async (browser, origin) => {
   await context.close();
 
   // Something ticked, nothing of one's own written yet.
-  const little = data.stock.filter((s) => ['cook-s-salt', 'cook-s-onion'].includes(s.id));
+  const little = data.stock.filter((s) => ['cook-salt', 'cook-onion'].includes(s.id));
   ({ context, page } = await fresh(browser, origin, 360, {
     stock: little,
     components: [],

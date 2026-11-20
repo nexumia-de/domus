@@ -43,6 +43,11 @@ await build({
   ...common,
   format: 'esm',
   entryPoints: { main: join(src, 'main.ts'), app: join(src, 'styles/index.css') },
+  // CULINA_GITHUB_API is for the browser checks only: a test build that talks to a fake of
+  // GitHub's API. Every other build has https://api.github.com compiled in (src/env.ts).
+  ...(process.env.CULINA_GITHUB_API
+    ? { define: { __GITHUB_API__: JSON.stringify(process.env.CULINA_GITHUB_API) } }
+    : {}),
 });
 // Classic script: it runs before the stylesheet to set the theme without a flash.
 await build({

@@ -114,10 +114,22 @@ checks green. The apps' own goals are in their roadmaps
    **Not done**: adding from a food catalogue (there is no shared
    catalogue yet), export and import, **nothing was run against the real
    GitHub**.
-8. **Culina on spaces.** Stock shared with Mixtura's: the same
-   collection `stock`, where Culina may add its optional fields (amount,
-   state); how the two ingredient catalogues meet is decided here. Its
-   sync goal.
+8. **Culina on spaces.** Stock done on 2026-11-20
+   ([decision](../apps/culina/docs/decisions/stock-in-spaces.md)).
+   Culina's stock is the collection `stock` of a space, the same one
+   Mixtura writes: the key is the ingredient id or a component's family
+   id, the value `{ present, … }` with the shared names `openedOn`,
+   `bestBefore` and `note` and Culina's own `amount`, `state`, `always`,
+   `storage` and `batches`; fields of other apps are kept. Items from
+   before are moved into the space once. One loop of the host package
+   per shared space; Culina's export no longer holds stock (format
+   version 2). **How the catalogues meet** (the agent's choice, open to
+   the owner): the ids of the two apps do not overlap, each app shows
+   the records whose key it knows, and a table of equal things will live
+   with the shared catalogue package (cibus), which is not built.
+   **Not done**: Culina's libraries and profile (recipes, settings) are
+   not synced; nothing was run against a real storage; a shared space
+   was never seen in Culina in a browser.
 9. **Sync server.** `server/`: the contract, the Worker and the
    container from one code base, the setup link, push; its adapter;
    tests that run the same suite against both. For households that

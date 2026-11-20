@@ -528,12 +528,13 @@ export const appStringsDe: typeof appStrings = {
     summaryHeading: 'Was die Datei enthält',
     exportedOn: (date: string): string => `Exportiert am ${date}`,
     nothingInFile: 'Die Datei enthält keine Einträge.',
+    stockLeftOut: (n: number): string =>
+      `Die Datei stammt aus einer älteren Version und enthält ${n} ${n === 1 ? 'Vorratseintrag' : 'Vorratseinträge'}. Sie werden ausgelassen: Der Vorrat gehört jetzt zu einem Space, geteilt mit den anderen Apps, und wird nicht aus einer Datei übernommen.`,
     kinds: {
       ingredients: 'Zutaten',
       templates: 'Verhältnisse',
       components: 'Komponentenversionen',
       dishes: 'Gerichteversionen',
-      stock: 'Vorratseinträge',
       affinities: 'Kombinationen',
       tastings: 'Verkostungsnotizen',
     },

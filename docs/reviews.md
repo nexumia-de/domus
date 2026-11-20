@@ -21,6 +21,66 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-20: Emptio on spaces, its native app, Culina's stock on spaces
+
+Roadmap goals 7, 8 and the first part of 11
+([roadmap](roadmap.md)). The lead used a larger model; the agents were
+given smaller ones, as the owner asked.
+
+| Part                                                                                                                                  | Done by              | Checked by                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Host package (loops of an app, space choice, file store, service worker, moved test helpers), Emptio's engine, web app and unit tests | lead                 | Emptio's browser checks (agent 1) and the checks below; nobody read the code a second time                                                                                                                                  |
+| Emptio's browser checks (`apps/emptio/packages/app/e2e/`, 183 checks)                                                                 | agent 1, small model | lead ran them after fixing what they found; lead did not read the scenarios line by line                                                                                                                                    |
+| Native Emptio: platform pieces, pages, joining, smoke check                                                                           | lead                 | the smoke check in real GJS, screenshots at 360 × 720 read by the lead, the interaction check (agent 3)                                                                                                                     |
+| Native packaging: desktop file, metainfo, icons, Flatpak manifest, CI jobs                                                            | agent 2, small model | `desktop-file-validate` and `appstreamcli validate` run by the agent; the lead read its report and did **not** read the manifest or the CI jobs line by line; no Flatpak was built                                          |
+| Native interaction check (`scripts/interact*.mjs`, 17 checks)                                                                         | agent 3, small model | lead ran it, moved its click positions after a layout change, and looked at one of its screenshots                                                                                                                          |
+| Culina's stock on spaces (`apps/culina`, design by the lead)                                                                          | agent 4, mid model   | lead read `shared-stock/value.ts`, `edits.ts` and `legacy.ts` in full, ran `npm run check` and Culina's browser checks; lead did not read `space.ts`, the screens, the engine's export change or the adapted browser checks |
+| The documents of the root, the host package, Emptio; this entry                                                                       | lead                 | nobody                                                                                                                                                                                                                      |
+
+**What the checks found, and where it was fixed.**
+
+- Emptio's browser checks: the tick box took taps on 22 px only (a
+  scaled check box), the page was 15 px too wide at 360 px (a hidden
+  legend with a width), the link to the Household app was 20 px high.
+  Fixed in `components.css` and `settings.ts`; the checks were not
+  changed and pass.
+- The agent fixed three faults of its own checks (a race with the first
+  empty write, Playwright's `check()` on a list that redraws, a heading
+  uppercased by CSS) and says so.
+- The native interaction check: a GTK markup warning for a name with an
+  ampersand, and controls of 26 to 42 px. Fixed in the pages; the
+  check's coordinates then had to move with the layout. Its reading of
+  the add button's height is taken at a stale position.
+- The lead's own smoke script blocked Node while GJS waited for the fake
+  storage in the same process; the script was fixed, not the app.
+- The Household app's test of untranslated German texts listed the home
+  page's links; the third app's link was added to its list.
+- Culina's agent found no defect in existing code and rewrote
+  `test/stock-notebook.test.ts`, whose subject (stock rows in Culina's
+  own database and in the export) no longer exists.
+
+**Counts** after the change, all passing: model 638, host 221, Mixtura
+1677 and 490, Culina 1094 and 506, Emptio 26, 36 and 9, Household 72;
+browser checks: Emptio 183, Culina's run "e2e passed", Household and the
+site "e2e passed", Mixtura's `spaces`, `stock` and `two-tabs` at
+360 × 720 (the rest of Mixtura's browser checks were not run).
+
+**What nobody verified.**
+
+- The real GitHub or a WebDAV server, in any app.
+- A Flatpak build, an install, a phone: the native app ran on a headless
+  display only.
+- Culina with a shared space in a browser (its checks use a space on
+  this device only); two tabs at Culina's first start after the update,
+  where the move of old items could run twice at once.
+- The choices Culina's agent made beyond the brief (the ids of batches
+  that shift when an earlier batch is removed, an untick that also
+  clears `openedOn`, `bestBefore` and `note`, which Mixtura keeps). They
+  are in its [decision record](../apps/culina/docs/decisions/stock-in-spaces.md)
+  for the owner.
+- That the Flatpak job's pinned `actions/download-artifact` commit is
+  the release its comment names.
+
 ## 2026-11-20: the steps of Culina's shipped dishes on the kit
 
 Every step of the 48 shipped dishes names what is done, by a technique

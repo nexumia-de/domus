@@ -123,3 +123,25 @@ export const writeCookFilters = (store: KeyValueStore | null, filters: CookFilte
     return false;
   }
 };
+
+/** Which space's stock this device shows (docs/decisions/stock-in-spaces.md); a space id. */
+export const SPACE_KEY = 'culina.space';
+
+export const readSpaceChoice = (store: KeyValueStore | null): string | null => {
+  try {
+    return store?.getItem(SPACE_KEY) ?? null;
+  } catch {
+    return null;
+  }
+};
+
+/** False when the choice could not be kept (no storage, quota, private mode). */
+export const writeSpaceChoice = (store: KeyValueStore | null, id: string): boolean => {
+  try {
+    if (!store) return false;
+    store.setItem(SPACE_KEY, id);
+    return true;
+  } catch {
+    return false;
+  }
+};

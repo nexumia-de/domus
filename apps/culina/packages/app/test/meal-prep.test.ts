@@ -10,7 +10,7 @@ import {
   type ComponentForm,
   type KeepForm,
 } from '../src/editor/component-form';
-import { saveRecord, saveStockItem, startNotebook } from '../src/notebook';
+import { addStockItem, saveRecord, startNotebook } from '../src/notebook';
 import type { ComponentRecord, StockRecord } from '../src/records';
 import { shelfLifeOf, stockLookup } from '../src/screens/stock/lookup';
 import { applyForm, formOf } from '../src/stock/form';
@@ -109,7 +109,9 @@ test('a made component in stock gets its use-by date from where it lies', async 
     state: 'prepared',
     preparedOn: '2026-11-20',
   };
-  expect((await saveStockItem(made)).ok).toBe(true);
+  expect((await addStockItem(made.ref, { state: 'prepared', preparedOn: '2026-11-20' })).ok).toBe(
+    true,
+  );
   // Without a place two shelf lives apply, so no date is derived.
   const open = must(stockRows([made], '2026-11-22', stockLookup)[0]);
   expect([open.daysLeft, open.remaining]).toEqual([undefined, undefined]);

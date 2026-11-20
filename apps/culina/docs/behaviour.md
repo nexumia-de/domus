@@ -602,15 +602,18 @@ What is there, with as little upkeep as possible
 [engine rules](engine-rules.md#stock)). Not an entry of its own: the stock
 screens are the view "What is there" of [Cook](#cook), and the navigation
 entry Cook stays marked on them. Start and Cook both offer it, so it is two taps from every screen. The list's heading is "What is there".
-Texts: `src/strings-stock.ts`.
+Texts: `src/strings-stock.ts`. Since 2026-11-20 the stock is the collection
+`stock` of a space, shared with the other apps of the household
+([decision](decisions/stock-in-spaces.md)).
 
 - **Tick what is there** (`#/stock/add`). A list to tick from: the
   notebook's ingredients and components by name, then the catalogue by
   search (the picker's catalogue section; choosing copies the entry and
   its parents into the notebook and ticks it, with a toast and Undo).
   Many ticks in a row without leaving the screen; each is saved at once and
-  stores nothing but `id` and `ref`. Ticking again unticks, with the toast
-  and Undo. "Always there" is a button on a ticked row (a check mark and a
+  stores nothing but `present: true` under the key of the thing. Ticking
+  again unticks (`present: false`, the record stays), with the toast and
+  Undo. "Always there" is a button on a ticked row (a check mark and a
   bar as well as colour); that item counts as present until unticked.
   Nothing is offered by default: no staples list is shipped; "Always there"
   can be set on any item. A tick is a box with a check mark, not only a
@@ -625,6 +628,15 @@ Texts: `src/strings-stock.ts`.
   none, unless the ingredient's recorded shelf life gives exactly one date
   for the item's state and date prepared. Remove acts at once with the toast
   and Undo.
+- **The space** (on the list). "Stock of Home" names the space whose stock
+  is shown; with more than one space on the device a choice ("Stock of")
+  that the device remembers (`culina.space`). Below it the sync status in
+  a few words (on this device only, not synced yet, syncing, in step with
+  the household, not in step and why), updated in place, and a link to the
+  space in the Household app, where spaces are made, shared and given a
+  storage. When the shared database cannot be opened (a private window)
+  the list says so and offers no ticking. **Test:** `e2e/stock.mjs`
+  (device only), `test/stock-notebook.test.ts` (which space is used).
 - **Detail of one item** (`#/stock/<id>/edit`). Amount and unit, state,
   date prepared (a native date field with a "Today" button from the
   injected clock), use by (with "Clear"), always there, note: all optional,
@@ -632,9 +644,10 @@ Texts: `src/strings-stock.ts`.
   life with a source, the dates it allows are offered as buttons; nothing
   is applied unless chosen. "Use some" subtracts an amount (any unit that
   converts, else a quiet sentence) from the amount in stock at once; using
-  all of it removes the item with the toast and Undo. Saving changes a copy
-  of the stored record, so fields of another app (`x-...`) stay. Nothing is
-  focused on open.
+  all of it removes the item with the toast and Undo. Saving is worked out
+  from the record as stored at that moment, so fields of another app
+  (Mixtura's `moreBatches`, `x-...`) and batches added elsewhere stay.
+  Nothing is focused on open.
 - **Prepared components** are stock items with `ref.kind` `component`.
   Only an entered use by counts for them (components have no shelf life).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at

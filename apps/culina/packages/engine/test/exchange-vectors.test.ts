@@ -86,9 +86,14 @@ function parse(vector: Vector): void {
   const result = parseExport(text, validators, options);
   if (vector.error_code !== undefined) return expectError(result, vector);
   if (!result.ok) throw new Error(`${vector.id}: ${result.error.code}`);
-  const e = vector.expected as { counts: Record<string, number>; formatVersion?: number };
+  const e = vector.expected as {
+    counts: Record<string, number>;
+    formatVersion?: number;
+    stockLeftOut?: number;
+  };
   expect(counts(result.content.records)).toEqual(e.counts);
   if (e.formatVersion !== undefined) expect(result.content.formatVersion).toBe(e.formatVersion);
+  expect(result.content.stockLeftOut).toBe(e.stockLeftOut);
 }
 
 function match(vector: Vector): void {
@@ -159,7 +164,6 @@ function remap(vector: Vector): void {
     ),
     lineRefs: refs(out.components, 'lines'),
     slotRefs: refs(out.dishes, 'slots'),
-    stockRefs: out.stock.map((s) => [(s.ref as Ref).kind, (s.ref as Ref).id]),
     affinities: out.affinities.map((a) => [a.a, a.b]),
   };
   expect(got).toEqual(vector.expected);

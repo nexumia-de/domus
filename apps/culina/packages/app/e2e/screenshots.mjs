@@ -89,10 +89,9 @@ const stockItems = [
   { id: 'u-s6', ref: { kind: 'ingredient', id: 'flour' } },
 ];
 const stocked = async (page) => {
-  await page.evaluate(async (items) => {
-    const opened = await globalThis.__culinaStore;
-    for (const item of items) await opened.store.put('stock', item);
-  }, stockItems);
+  // Stock is the shared collection of a space: written through the stock test hook.
+  // An `id` is not written: the hook keeps only the item's detail.
+  await page.evaluate((items) => globalThis.__culinaStock.add(items), stockItems);
   await page.reload();
   await page.getByRole('heading', { level: 1 }).waitFor();
 };

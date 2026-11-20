@@ -91,7 +91,9 @@ export const bulkStore = (db: IDBDatabase, now: () => string): Bulk => ({
   },
 
   async replaceAll(records) {
-    const kinds = KINDS.filter((kind): kind is ExportedKind => kind !== 'skills');
+    const kinds = KINDS.filter(
+      (kind): kind is ExportedKind => kind !== 'skills' && kind !== 'stock',
+    );
     const entries = kinds.flatMap((kind) => records[kind].map((record) => ({ kind, record })));
     const problem = firstProblem(entries);
     if (problem) return problem;

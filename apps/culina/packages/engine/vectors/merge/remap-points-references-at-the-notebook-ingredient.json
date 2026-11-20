@@ -1,6 +1,6 @@
 {
   "id": "remap-points-references-at-the-notebook-ingredient",
-  "description": "The file's onion is the notebook's onion: lines, slots, stock, parent links and affinities follow, and the file's own onion record is dropped",
+  "description": "The file's onion is the notebook's onion: lines, slots, parent links and affinities follow, and the file's own onion record is dropped",
   "inputs": {
     "kind": "remap_ingredients",
     "records": {
@@ -62,20 +62,6 @@
           }
         }
       ],
-      "stock": [
-        {
-          "id": "u-00000000-0000-4000-8000-00000000001e",
-          "ref": {
-            "kind": "ingredient",
-            "id": "f-onion"
-          },
-          "amount": {
-            "value": 2,
-            "unit": "count"
-          },
-          "state": "raw"
-        }
-      ],
       "affinities": [
         {
           "id": "u-00000000-0000-4000-8000-000000000032",
@@ -100,7 +86,6 @@
       ["component", "f-onion"]
     ],
     "slotRefs": [["ingredient", "u-onion"]],
-    "stockRefs": [["ingredient", "u-onion"]],
     "affinities": [["u-onion", "f-red"]]
   },
   "tolerance": 0,

@@ -9,7 +9,7 @@ import { hashFor } from '../router';
 import type { ComponentRecord, Notebook } from '../records';
 import { el } from '../shell/el';
 import { strings } from '../strings';
-import { headOfFamily, newId, saveStockItem, today } from '../notebook';
+import { addStockItem, headOfFamily, today } from '../notebook';
 import { showToast } from '../shell/toast';
 import { storeText } from './editor/store-text';
 import { cooklangAction } from './cooklang-action';
@@ -71,15 +71,12 @@ export const componentDetail = (nb: Notebook, component: ComponentRecord): HTMLE
       const made = el('button', 'btn quiet made-it', strings.components.madeIt);
       made.type = 'button';
       made.addEventListener('click', () => {
-        const id = newId();
-        void saveStockItem({
-          id,
-          ref: { kind: 'component', id: component.id },
-          state: 'prepared',
-          preparedOn: today(),
-        }).then((done) => {
+        void addStockItem(
+          { kind: 'component', id: component.id },
+          { state: 'prepared', preparedOn: today() },
+        ).then((done) => {
           if (!done.ok) return showToast(storeText(done.error.code));
-          window.location.hash = hashFor('stock', id, 'edit');
+          window.location.hash = hashFor('stock', done.id, 'edit');
         });
       });
       section.append(made);
