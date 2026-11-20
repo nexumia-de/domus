@@ -1,6 +1,8 @@
 import { expect, test } from 'vitest';
+import { ensureSpace, isDeviceOnly, localChange } from '@nexumia-de/hospes';
 import {
   changeAccess,
+  connectStorage,
   createSpace,
   joinSpace,
   nameInCollection,
@@ -8,7 +10,7 @@ import {
   syncSpace,
 } from '../src/logic/actions';
 import { inviteLink, inviteOf, needsAccess, parseInviteText } from '../src/logic/invite';
-import { createDevice, createRemote } from './helpers';
+import { createDevice, createRemote, type Device } from './helpers';
 
 const github = { type: 'github', address: 'me/household', access: { token: 'github_pat_SECRET' } };
 
@@ -248,4 +250,154 @@ test('webdav: the probe is the test, and a storage that answers 401 is unauthori
     ok: false,
     failure: 'unauthorised',
   });
+});
+
+// ---- A space on this device only (made by an app before sync was set up) --------------------
+
+/** A device with the space an app made, and something an app keeps in it. */
+async function deviceOnly(remote = createRemote()) {
+  const a = createDevice(remote);
+  const [space] = await ensureSpace(a.store, 'Home');
+  if (!space) throw new Error('no space');
+  await localChange(a.store, space.id, 'stock', a.deps.now, () => ({
+    put: [{ key: 'gin', value: { amount: 700 } }],
+  }));
+  return { remote, a, space, id: space.id };
+}
+const stockOf = async (a: Device, id: string) =>
+  (await a.store.readCollection(id, 'stock')).records.map((r) => r.key);
+
+test('device only: rename is kept and written to the collection, without a cycle', async () => {
+  const { remote, a, id } = await deviceOnly();
+  expect(await renameSpace(id, ' Flat ', a.deps)).toEqual({ saved: true });
+  expect((await a.store.getSpace(id))?.name).toBe('Flat');
+  expect(await nameInCollection(a.store, id)).toBe('Flat');
+  expect((await a.store.readCollection(id, 'space')).syncedAt).toBeUndefined();
+  expect(remote.reads).toBe(0);
+  expect(remote.writes).toBe(0);
+});
+
+test('device only: a cycle that is asked for all the same fails in words and sends nothing', async () => {
+  const { remote, a, space } = await deviceOnly();
+  expect(await syncSpace(space, a.deps)).toEqual({ ok: false, failure: 'bad-storage' });
+  expect(await changeAccess(space.id, { token: 't' }, a.deps)).toEqual({
+    ok: false,
+    failure: 'bad-storage',
+  });
+  expect(isDeviceOnly((await a.store.getSpace(space.id)) ?? space)).toBe(true);
+  expect(remote.reads + remote.writes).toBe(0);
+});
+
+test('connect: the space keeps id and secret, gets the storage, its name is written and a cycle ran', async () => {
+  const { remote, a, space, id } = await deviceOnly();
+  expect(await nameInCollection(a.store, id)).toBeUndefined();
+  const result = await connectStorage(id, github, a.deps);
+  expect(result).toEqual({ ok: true, outcome: { ok: true, name: 'Home', wrote: true } });
+  const now = await a.store.getSpace(id);
+  expect(now).toEqual({ ...space, storage: github });
+  expect(await nameInCollection(a.store, id)).toBe('Home');
+  expect((await a.store.readCollection(id, 'space')).syncedAt).toBeDefined();
+  expect(a.github.tested).toEqual([{ repository: 'me/household', token: 'github_pat_SECRET' }]);
+  // Only the `space` collection is sent here; the apps send theirs when they are opened.
+  expect([...remote.files.keys()]).toEqual([`${id}/space.json`]);
+  expect(await stockOf(a, id)).toEqual(['gin']);
+
+  // A second device joins with the invite and reads the name.
+  if (!now) throw new Error('gone');
+  const invite = inviteOf(now, true);
+  const b = createDevice(remote, Date.UTC(2026, 10, 19, 13));
+  expect(await joinSpace(invite, invite.access, b.deps)).toEqual({
+    ok: true,
+    id,
+    name: 'Home',
+    found: true,
+  });
+});
+
+test('connect: a name given while on this device only is the one that is sent', async () => {
+  const { remote, a, id } = await deviceOnly();
+  await renameSpace(id, 'Flat', a.deps);
+  const result = await connectStorage(id, github, a.deps);
+  expect(result.ok && result.outcome.ok && result.outcome.name).toBe('Flat');
+  const b = createDevice(remote);
+  const space = await a.store.getSpace(id);
+  if (!space) throw new Error('gone');
+  const invite = inviteOf(space, true);
+  expect(await joinSpace(invite, invite.access, b.deps)).toMatchObject({ ok: true, name: 'Flat' });
+});
+
+test('connect: a storage that is refused stores nothing and runs no cycle', async () => {
+  const { remote, a, space, id } = await deviceOnly();
+  a.github.test = { state: 'unauthorised' };
+  expect(await connectStorage(id, github, a.deps)).toEqual({ ok: false, failure: 'unauthorised' });
+  a.github.test = { state: 'reachable', private: true, canWrite: false, empty: false };
+  expect(await connectStorage(id, github, a.deps)).toEqual({ ok: false, readonly: true });
+  expect(await a.store.getSpace(id)).toEqual(space);
+  expect(remote.reads + remote.writes).toBe(0);
+});
+
+test('connect: a failing cycle puts the space back on this device only, with its data, and says why', async () => {
+  const { remote, a, space, id } = await deviceOnly();
+  remote.failRead = { failure: 'server', detail: 'HTTP 502' };
+  expect(await connectStorage(id, github, a.deps)).toEqual({
+    ok: false,
+    failure: 'server',
+    detail: 'HTTP 502',
+  });
+  // Back to what it was: same id, secret and name, no storage and no token left behind.
+  expect(await a.store.getSpace(id)).toEqual(space);
+  expect(JSON.stringify(await a.store.listSpaces())).not.toContain('SECRET');
+  expect(await stockOf(a, id)).toEqual(['gin']);
+  expect(await nameInCollection(a.store, id)).toBe('Home');
+  expect(remote.writes).toBe(0);
+  // Rename still works without a cycle, and the next try succeeds.
+  expect(await renameSpace(id, 'Flat', a.deps)).toEqual({ saved: true });
+  remote.failRead = undefined;
+  expect((await connectStorage(id, github, a.deps)).ok).toBe(true);
+  expect((await a.store.getSpace(id))?.storage).toEqual(github);
+  expect(await stockOf(a, id)).toEqual(['gin']);
+});
+
+test('connect: a storage the host cannot use is bad-storage and the space stays as it was', async () => {
+  const { a, space, id } = await deviceOnly();
+  const dav = { type: 'webdav', address: 'https://dav.example/x' };
+  a.deps.adapter = () => {
+    throw new RangeError('bad address');
+  };
+  expect(await connectStorage(id, dav, a.deps)).toEqual({ ok: false, failure: 'bad-storage' });
+  expect(await connectStorage(id, space.storage, a.deps)).toEqual({
+    ok: false,
+    failure: 'bad-storage',
+  });
+  expect(await a.store.getSpace(id)).toEqual(space);
+});
+
+test('connect: a space that has a storage, or is not here, is not touched', async () => {
+  const { a, space, id } = await created();
+  const other = { type: 'github', address: 'me/other', access: { token: 'x' } };
+  expect(await connectStorage(id, other, a.deps)).toEqual({ ok: false, failure: 'unexpected' });
+  expect(await a.store.getSpace(id)).toEqual(space);
+  expect(await connectStorage('ab'.repeat(16), other, a.deps)).toEqual({
+    ok: false,
+    failure: 'unexpected',
+  });
+});
+
+test('connect: a storage that already holds the file of this space is merged by the cycle', async () => {
+  // Cannot happen with a fresh secret; here the same secret is on two devices, one of which
+  // wrote to the storage first.
+  const { remote, a, space, id } = await created('Family');
+  const b = createDevice(remote, Date.UTC(2026, 10, 19, 14));
+  await b.store.putSpace({
+    id,
+    secret: space.secret,
+    name: 'Home',
+    storage: { type: 'device', address: '' },
+  });
+  const result = await connectStorage(id, github, b.deps);
+  // B wrote its name later than A wrote the file's: the later one wins on both devices.
+  expect(result).toEqual({ ok: true, outcome: { ok: true, name: 'Home', wrote: true } });
+  expect((await b.store.getSpace(id))?.storage).toEqual(github);
+  const synced = await syncSpace(space, a.deps);
+  expect(synced.ok && synced.name).toBe('Home');
 });

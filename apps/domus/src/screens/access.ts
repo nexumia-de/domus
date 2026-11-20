@@ -1,3 +1,4 @@
+import { isDeviceOnly } from '@nexumia-de/hospes';
 import { h } from '../dom';
 import { changeAccess } from '../logic/actions';
 import { storageWords } from '../logic/storage';
@@ -22,6 +23,11 @@ export function accessScreen(ctx: Ctx, id: string): HTMLElement {
         h('p', {}, t.space.notFound),
         buttonRow(linkButton(t.space.home, hashFor.home, { primary: true })),
       );
+      return;
+    }
+    if (isDeviceOnly(space)) {
+      // Nothing to change without a storage: the space's page offers to connect one.
+      ctx.go(hashFor.space(id), true);
       return;
     }
     const type = space.storage.type;
@@ -70,7 +76,7 @@ export function accessScreen(ctx: Ctx, id: string): HTMLElement {
     });
     body.append(
       h('p', { class: 'lead' }, type === 'github' ? t.access.githubIntro : t.access.webdavIntro),
-      h('p', { 'data-testid': 'storage-words' }, storageWords(space.storage)),
+      h('p', { 'data-testid': 'storage-words' }, storageWords(t, space.storage)),
       element,
     );
   })();

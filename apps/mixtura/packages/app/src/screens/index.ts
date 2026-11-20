@@ -10,7 +10,6 @@ import { screens as settings } from './settings';
 import { screens as share } from './share';
 import { screens as spec } from './spec';
 import { screens as stock } from './stock';
-import { screens as sync } from './sync';
 import { screens as templates } from './templates';
 import { screens as versions } from './versions';
 
@@ -22,7 +21,6 @@ export const screens: readonly Screen[] = [
   ...family,
   ...templates,
   ...stock,
-  ...sync,
   ...settings,
   ...share,
 ];

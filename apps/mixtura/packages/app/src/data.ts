@@ -7,9 +7,10 @@
 import { type AppState } from './app-state';
 import { createExchangeActions, saveAsFile, type ExchangeActions } from './exchange-actions';
 import { LEGACY_KEY, savePrefs } from './prefs';
-import type { Cipher } from '@mixtura/engine';
-import { createCipher } from '@nexumia-de/hospes';
-import { createScheduler, type Scheduler } from './sync/scheduler';
+import { adapterFor, createIdbStore, type Store as SharedStore } from '@nexumia-de/hospes';
+import { invalidateStock } from './stock/state';
+import { createStockSync, type StockSync } from './stock/sync';
+import { GITHUB_API } from './env';
 import { type Store } from './state';
 import { strings } from './strings';
 import { nowInstant } from './today';
@@ -32,10 +33,13 @@ export interface AppData {
   local(): LocalStore | null;
   /** Export, import, undo and the backup reminder (Settings, Data). */
   exchange: ExchangeActions;
-  /** When sync runs, and the one way to run it (docs/sync-cycle.md#triggers). */
-  sync: Scheduler;
-  /** The one cipher of the app, so keys derived for a place's file stay cached. */
-  cipher: Cipher;
+  /**
+   * The database the apps on the address share (host package): the spaces and their collections.
+   * Stock is the collection `stock` of a space (docs/store.md#stock-in-a-space).
+   */
+  shared: SharedStore;
+  /** Keeps the stock of every shared space in step with its storage (stock/sync.ts). */
+  sync: StockSync;
 }
 
 export interface Connection {
@@ -123,7 +127,6 @@ export function connect(app: Store<AppState>): Connection {
           });
         },
         legacyPrefs: readLegacyPrefs,
-        placeName: strings.places.home,
         onPersist: (persistence) => patch({ persistence }),
         onBackup: (backup) => {
           patch({ backup });
@@ -169,18 +172,21 @@ export function connect(app: Store<AppState>): Connection {
     download: saveAsFile,
   });
 
-  const cipher = createCipher();
-  const sync = createScheduler({
-    local: () => local,
-    app,
+  const shared = createIdbStore();
+  const sync = createStockSync({
+    shared,
+    adapter: (storage) => adapterFor(storage, { apiBase: GITHUB_API }),
     now: nowInstant,
-    online: () => globalThis.navigator?.onLine !== false,
-    cipher,
+    // Records another device changed are read again; a status change only redraws.
+    onChange: (what) =>
+      what === 'records' ? invalidateStock(app) : app.set({ stockRev: app.get().stockRev + 1 }),
+    isVisible: () => globalThis.document?.visibilityState !== 'hidden',
+    isOnline: () => globalThis.navigator?.onLine !== false,
   });
 
   const ready = open();
   return {
-    data: { catalog: () => catalog, local: () => local, exchange, sync, cipher },
+    data: { catalog: () => catalog, local: () => local, exchange, shared, sync },
     retry: () => void open(),
     ready,
   };

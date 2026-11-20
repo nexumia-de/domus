@@ -8,38 +8,21 @@ import { createPersistence, type Persistence, type PersistState } from './persis
 import {
   affinitiesRepo,
   ingredientsRepo,
-  placesRepo,
   specsRepo,
-  stockRepo,
   templatesRepo,
   type SpecsRepo,
 } from './repo-entities';
-import { bindingsRepo, storagesRepo, type StoragesRepo } from './repo-sync';
 import { draftsRepo, type DraftsRepo } from './repo-drafts';
 import { withReferenceChecks } from './references';
 import { keyValueRepo, settingsRepo, type SettingsRepo } from './repo-settings';
 import type { Repo } from './repo';
-import { transactPlace, type PlaceContents, type PlaceWrite } from './sync-apply';
-import { resolveSelection, type PlaceSelection } from './places';
-import type {
-  Affinity,
-  Backup,
-  Binding,
-  BindingKey,
-  Ingredient,
-  Place,
-  StockKey,
-  StockRecord,
-  Template,
-} from './types';
+import type { Affinity, Backup, Ingredient, Template } from './types';
 
 export * from './backup';
 export * from './catalog';
 export * from './errors';
 export * from './exchange';
 export * from './ids';
-export { DEFAULT_PLACE_NAME, resolveSelection, type PlaceSelection } from './places';
-export type { PlaceContents, PlaceWrite } from './sync-apply';
 export type { Persistence, PersistState } from './persist';
 export type { Repo } from './repo';
 export * from './seed';
@@ -52,16 +35,7 @@ export interface LocalStore {
   templates: Repo<Template>;
   specs: SpecsRepo;
   affinities: Repo<Affinity>;
-  places: Repo<Place>;
-  stock: Repo<StockRecord, StockKey>;
   settings: SettingsRepo;
-  /** The places that exist, the ones that count and the entry place, read now. */
-  placeSelection(): Promise<PlaceSelection>;
-  /** Reads one place and writes `work`'s answer in one transaction (the sync cycle's result). */
-  transactPlace(placeId: string, work: (current: PlaceContents) => PlaceWrite): Promise<void>;
-  /** Device-local sync configuration: never exported, never in a sync file (docs/sync-backends.md#stores). */
-  storages: StoragesRepo;
-  bindings: Repo<Binding, BindingKey>;
   /** Unsaved editor state; not entities, not exported. */
   drafts: DraftsRepo;
   persistence: Persistence;
@@ -92,7 +66,6 @@ export async function openLocalStore(options: StoreOptions = {}): Promise<LocalS
     void persistence.requestOnce().then((state) => options.onPersist?.(state));
   };
   const context = { db, afterWrite };
-  const places = placesRepo(context);
   const settings = settingsRepo(db);
   const affinities = affinitiesRepo(context);
   const guarded = withReferenceChecks({
@@ -105,14 +78,7 @@ export async function openLocalStore(options: StoreOptions = {}): Promise<LocalS
     templates: templatesRepo(context),
     specs: guarded.specs,
     affinities,
-    places,
-    stock: stockRepo(context),
     settings,
-    placeSelection: async () =>
-      resolveSelection(await places.list(), (await settings.load()).places),
-    transactPlace: (placeId, work) => transactPlace(db, placeId, work),
-    storages: storagesRepo(context),
-    bindings: bindingsRepo(context),
     drafts: draftsRepo(db),
     persistence,
     backup,

@@ -39,17 +39,19 @@ test('the export has the format version, the host instant and only user data', (
     'exportedAt',
     'formatVersion',
     'ingredients',
-    'places',
     'seedVersion',
     'specs',
-    'stock',
     'templates',
   ]);
   expect(buildExport(user, { exportedAt: AT }).seedVersion).toBeUndefined();
 });
 
 test('the export is stable: the same data gives the same text in any order', () => {
-  const shuffled = { ...user, specs: [...user.specs].reverse(), stock: [...user.stock].reverse() };
+  const shuffled = {
+    ...user,
+    specs: [...user.specs].reverse(),
+    ingredients: [...user.ingredients].reverse(),
+  };
   expect(text(buildExport(shuffled, { exportedAt: AT }))).toBe(
     text(buildExport(user, { exportedAt: AT })),
   );
@@ -77,9 +79,9 @@ test('refusals are named', () => {
   expect(kind(parse({ ...good(), formatVersion: 'one' }))).toBe('invalid');
   expect(kind(parse({ ...good(), formatVersion: 0 }))).toBe('invalid');
   expect(kind(parse({ ...good(), specs: 'none' }))).toBe('invalid');
-  const withoutStock: Partial<ExportFile> = good();
-  delete withoutStock.stock;
-  expect(kind(parse(withoutStock))).toBe('invalid');
+  const withoutSpecs: Partial<ExportFile> = good();
+  delete withoutSpecs.specs;
+  expect(kind(parse(withoutSpecs))).toBe('invalid');
   expect(kind(parse({ ...good(), extra: 1 }))).toBe('invalid');
 });
 
@@ -109,7 +111,7 @@ test('keys that could reach the prototype are refused anywhere in the file', () 
   expect(({} as Record<string, unknown>)['polluted']).toBeUndefined();
 });
 
-test('ids must follow the user-id rule, except the key of a stock record', () => {
+test('ids must follow the user-id rule', () => {
   const bad = good();
   bad.ingredients[0] = { ...bad.ingredients[0]!, id: 'lemon-juice' };
   const r = parse(bad);
@@ -117,9 +119,6 @@ test('ids must follow the user-id rule, except the key of a stock record', () =>
   if (!r.ok && r.failure.kind === 'invalid') {
     expect(r.failure.problems.join('\n')).toMatch(/not a user id|pattern/);
   }
-  const seedStock = good();
-  expect(seedStock.stock.some((s) => !s.ingredientId.startsWith('u-'))).toBe(true);
-  expect(parse(seedStock).ok).toBe(true);
 });
 
 test('repeated ids and repeated version slots are refused', () => {
@@ -128,7 +127,7 @@ test('repeated ids and repeated version slots are refused', () => {
   const r = parse(dup);
   expect(r.ok === false && r.failure.kind).toBe('invalid');
   const same = good();
-  same.stock.push({ ...same.stock[0]! });
+  same.ingredients.push({ ...same.ingredients[0]! });
   expect(parse(same).ok).toBe(false);
 });
 
@@ -150,51 +149,15 @@ test('merge never replaces with an older spec and never takes over a version slo
   expect(planImport(current, older, 'merge').skipped.specs).toBe(1);
 });
 
-type Live = Extract<ExportFile['stock'][number], { present: boolean }>;
-const withBatches = (file: ExportFile): Live =>
-  file.stock.find((x): x is Live => !x.deleted && !!x.moreBatches) as Live;
-
-test('a stock record may carry more batches, a repeated or false date is refused', () => {
-  const kept = structuredClone(good());
-  expect(kept.formatVersion).toBe(FORMAT_VERSION);
-  expect(withBatches(kept).moreBatches?.length).toBeGreaterThan(0);
-  expect(parse(kept).ok).toBe(true);
-  const twice = structuredClone(good());
-  withBatches(twice).moreBatches = ['2026-10-20', '2026-10-20'];
-  expect(parse(twice).ok).toBe(false);
-  const bad = structuredClone(good());
-  withBatches(bad).moreBatches = ['20 October'];
-  expect(parse(bad).ok).toBe(false);
-});
-
-test('a tombstone has no other fields and a live record needs present', () => {
-  const tomb = structuredClone(good());
-  const t = tomb.stock.find((x) => x.deleted);
-  expect(t).toBeDefined();
-  expect(parse(tomb).ok).toBe(true);
-  tomb.stock[tomb.stock.indexOf(t!)] = { ...t!, present: true } as never;
-  expect(parse(tomb).ok).toBe(false);
-  const live = structuredClone(good());
-  const l = live.stock.find((x) => !x.deleted)!;
-  Reflect.deleteProperty(l, 'present');
-  expect(parse(live).ok).toBe(false);
-});
-
 const legacy = readJson(`${schemasDir}examples/legacy/export-v1-full.json`);
-const OLD_PLACE = { id: 'u-7c0d1e2f-3a4b-4c5d-8e6f-0a1b2c3d4e5f', name: 'Home', updatedAt: AT };
 
-test('a version 1 file is read with the given place and refused without one', () => {
-  const r = parseExportFile(text(legacy), 500, schemaProblems, {
-    migrationInput: { placeForOldStock: OLD_PLACE },
-  });
+test('an older file is read without its stock and places', () => {
+  const r = parseExportFile(text(legacy), 500, schemaProblems);
   expect(r.ok && r.migratedFrom).toBe(1);
   if (r.ok) {
-    expect(r.file.formatVersion).toBe(2);
-    expect(r.file.places).toEqual([OLD_PLACE]);
-    expect(r.file.stock).toHaveLength(2);
-    expect(r.file.stock.every((s) => s.placeId === OLD_PLACE.id)).toBe(true);
-    expect(withBatches(r.file).moreBatches).toEqual(['2026-10-20']);
+    expect(r.file.formatVersion).toBe(FORMAT_VERSION);
+    expect('stock' in r.file).toBe(false);
+    expect('places' in r.file).toBe(false);
+    expect(r.file.specs.length).toBeGreaterThan(0);
   }
-  const none = parseExportFile(text(legacy), 500, schemaProblems);
-  expect(none).toEqual({ ok: false, failure: { kind: 'needs-place' } });
 });

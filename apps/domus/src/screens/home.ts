@@ -1,3 +1,4 @@
+import { isDeviceOnly } from '@nexumia-de/hospes';
 import { h } from '../dom';
 import { problemOf } from '../logic/failures';
 import { fragmentOf, parseInviteText } from '../logic/invite';
@@ -95,8 +96,15 @@ export function homeScreen(ctx: Ctx): HTMLElement {
               'a',
               { href: hashFor.space(space.id), class: 'space-card', 'data-testid': 'space-card' },
               h('span', { class: 'name' }, space.name ?? t.join.unnamed),
-              h('span', { class: 'what' }, storageWords(space.storage)),
-              statusView(t, space.storage.type, states[index]?.syncedAt, space.id, now),
+              h(
+                'span',
+                { class: 'what', 'data-testid': 'card-storage' },
+                storageWords(t, space.storage),
+              ),
+              // A space on this device only has no cycle, so no state and no failure.
+              isDeviceOnly(space)
+                ? null
+                : statusView(t, space.storage.type, states[index]?.syncedAt, space.id, now),
             ),
           ),
         );

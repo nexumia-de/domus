@@ -1,19 +1,19 @@
 ---
 type: Specification
 title: Sync
-description: The pure parts of sync - the record merge and its rules, places and the combined view, the plain place document, the general unit document (place, library, profile), the encrypted envelope, the storage adapter port and the plans of one sync cycle, and for spaces the never-backwards stamp, the pruning of removal markers, the collection document, its plan, the sealed file (version 2) and the invite, with the stated limits.
+description: The pure parts of sync - the record merge and its rules, the storage adapter port, and for spaces the never-backwards stamp, the pruning of removal markers, the collection document, the plan of one cycle, the sealed file (version 2) and the invite, with the stated limits; the earlier model of places, units and the passphrase envelope was removed on 2026-11-20.
 tags: [sync, merge, format, api]
 generated: { by: claude-code/2.1.327, at: 2026-11-19 }
 ---
 
 # Sync
 
-The general part of "stock sync" for the apps: a user keeps records per
-_place_ (for example the stock of a flat); each place can be synced as
-one file in storage the user chose; the app encrypts the file. This
-package holds only the pure parts: no cryptography, no base64 coding, no
-requests, no clock. Code is in `src/sync/`, vectors in `vectors/sync/`
-(run by `test/sync-vectors.test.ts`).
+The general part of sync for the apps: people share a _space_; each
+collection of a space (for example the stock) is one file in storage the
+space's people chose, merged per record; the host package encrypts the
+file. This package holds only the pure parts: no cryptography, no base64
+coding, no requests, no clock. Code is in `src/sync/`, vectors in
+`vectors/sync/` (run by `test/sync-vectors.test.ts`).
 
 ## Record merge
 
@@ -43,96 +43,6 @@ The result lists `records` (sorted by plain string order of the key),
 be written) and `rejected` (`local:<key>` or `remote:<key>`; the index
 when there is no usable key). Tombstones are never removed by the merge.
 
-## Places
-
-`mergePlace(local, remote)`: the newest name wins, ties as above (the
-greater name). The id stays the local one. A place with an unreadable
-time loses against any readable one.
-
-`combinePlaces(byPlace, ticked)` is the derived view over ticked places.
-`byPlace` is a plain object from place id to that place's records (not a
-`Map`, so vectors stay JSON). For every key some ticked place holds a
-live record of, one entry with the holders in the order of `ticked`;
-tombstones, invalid records, unticked and unknown places do not count; a
-repeated id counts once; entries sorted by key. Nothing is stored.
-
-## The document
-
-What gets encrypted, as compact JSON (`buildDocument`, `parseDocument`):
-
-| Field      | Meaning                                                              |
-| ---------- | -------------------------------------------------------------------- |
-| `format`   | `materia-place`                                                      |
-| `version`  | `1`                                                                  |
-| `place`    | `{ id, name, updatedAt }`, id and name text, `updatedAt` a timestamp |
-| `records`  | `SyncRecord[]`, written sorted by key                                |
-| `entities` | `SyncRecord[]` the records refer to, merged like records             |
-| `moved`    | optional `{ at, note? }`: the place moved, members are to join again |
-
-`parseDocument` errors: `not-json`; `not-a-document` (not an object or
-another `format`); `newer-version` (a `version` number above 1, checked
-before the rest, so the app can tell the user to update); `invalid` (any
-other frame problem: version not 1, broken place, `records` or
-`entities` not an array of objects, broken `moved`). Unknown top-level
-fields are ignored. Single bad records are not an error here; the merge
-rejects them. `buildDocument` writes a fixed key order (record: `key`,
-`updatedAt`, `deleted`, `value`), sorts records and entities by key and
-sorts the keys inside values, so equal content gives equal text.
-
-## Unit documents
-
-Since 0.3.0 one document serves three kinds of synced unit
-(`parseUnit`, `buildUnit`, `src/sync/unit.ts`): a `place` (stock), a
-`library` (one person's or a group's collections of specs, templates,
-ingredients, affinities) and a `profile` (one person's devices:
-preferences and a key ring). All are shared and merged the same way.
-
-| Field         | Meaning                                                                          |
-| ------------- | -------------------------------------------------------------------------------- |
-| `format`      | `materia-unit` (`UNIT_FORMAT`)                                                   |
-| `version`     | `1` (`UNIT_VERSION`)                                                             |
-| `kind`        | `place`, `library` or `profile`                                                  |
-| `unit`        | `{ id, name, updatedAt }`, merged like a place                                   |
-| `collections` | object from collection name to `SyncRecord[]`; names match `/^[a-z][a-z0-9-]*$/` |
-| `moved`       | optional `{ at, note? }`, as for places                                          |
-
-`materia-place` stays as it is for places written by 0.2.0
-(`parseDocument`, `buildDocument`, `planSync` are unchanged); new code
-may use `materia-unit` with kind `place`, where the records of a place
-are a collection of the app's choosing.
-
-`parseUnit` errors: `not-json`; `not-a-unit` (not an object or another
-`format`); `newer-version` (a `version` number above 1, checked first);
-`unknown-kind` (a `kind` string other than the three; a missing or
-non-string kind is `invalid`); `invalid` (any other frame problem,
-including a bad collection name, a collection that is not an array of
-objects or a broken `moved`). Unknown top-level fields are ignored.
-Unknown collections are kept, so an older app carries a collection a
-newer app added through a merge and writes it back. `buildUnit` fixes
-the key order, sorts collection names and records by key and sorts the
-keys inside values.
-
-## The envelope
-
-The file as stored (`buildEnvelope`, `parseEnvelope`):
-
-| Field                  | Meaning                                            |
-| ---------------------- | -------------------------------------------------- |
-| `format`, `version`    | `materia-sync`, `1`                                |
-| `kdf.name`, `kdf.hash` | non-empty names of the key derivation and its hash |
-| `kdf.iterations`       | positive integer                                   |
-| `kdf.salt`             | base64, `/^[A-Za-z0-9+/]+={0,2}$/`                 |
-| `cipher.name`          | non-empty                                          |
-| `cipher.nonce`         | base64                                             |
-| `data`                 | ciphertext, base64                                 |
-
-Errors: `not-json`, `not-an-envelope`, `newer-version`, `invalid`, with
-the same meaning as for the document. `envelopeAad` gives
-`materia-sync/1`, the additional data the cipher binds to the
-ciphertext. The `Cipher` port (`seal`, `open`) is a type the app fills;
-`open` throws when the passphrase is wrong or the data changed, and what
-is thrown is the app's choice.
-
 ## Storage adapter
 
 Types only (`src/sync/adapter.ts`). `read(path)` gives
@@ -149,41 +59,6 @@ changed calls `changed` (more often than needed is fine, less often is
 not) and returns a function that stops it. A storage without `watch` is
 polled by the app.
 
-## The plan
-
-`planSync(local, remote)` is the pure step of one cycle. `local` is
-`{ place, records, entities }`; `remote` is the parsed document or
-`undefined` when there is no file yet. Records, entities and the place
-are merged. The result:
-
-- `local`, `localChanged`: what the app stores. `localChanged` is true
-  when anything differs from the input, including dropped records.
-- `write`: the document to write, or absent when the remote already
-  equals the merge. Without a remote file it is always set.
-- `moved`: set when the remote says the place moved; the merged local
-  state is still returned (nothing local is lost) and nothing is
-  written.
-- `rejected`: as for the merge; entity entries start with `entity:`.
-
-A remote document of another place id gives `{ error: 'other-place' }`.
-After a successful write and storing `local`, a second cycle finds
-nothing to do (a property test).
-
-## The unit plan
-
-`planUnitSync(local, remote)` is `planSync` over
-`{ kind, unit, collections }`. `unit` merges as `mergePlace` does; every
-collection present on either side merges with `mergeRecords`; a
-collection on one side only is kept, stored locally when only the remote
-has it and written when only the local side has it (an empty one too).
-The result has `local`, `localChanged`, `write?`, `moved?` and
-`rejected`, whose entries start with the collection name
-(`specs:local:abc`, `specs:remote:2`). Errors: `{ error: 'other-unit' }`
-when the ids differ, `{ error: 'other-kind' }` when the kinds differ. A
-remote marked moved gives the merged state and `moved`, no write. After
-a write and storing `local`, a second cycle finds nothing to do (a
-property test).
-
 ## Spaces
 
 A space is a group of people and their things; it has one random secret,
@@ -192,9 +67,7 @@ and each collection of the space is one encrypted file
 ([decision](../../../docs/decisions/one-origin-spaces-storages.md)). The
 merge stays per record, newest wins. Deriving keys and ids from the
 secret and sealing are not part of this package (the host package does
-them); here are the pure rules and the formats. Place and unit documents,
-`planSync`, `planUnitSync` and the version 1 envelope remain, unchanged,
-for the apps that still use them.
+them); here are the pure rules and the formats.
 
 ### A stamp that never goes backwards
 
@@ -241,11 +114,11 @@ One file of a space, the thing that gets encrypted, as compact JSON
 | `format`       | `materia-collection` (`COLLECTION_FORMAT`)                            |
 | `version`      | `1` (`COLLECTION_VERSION`)                                            |
 | `space`        | the space id, non-empty text                                          |
-| `collection`   | the collection name, `/^[a-z][a-z0-9-]*$/` (as for unit collections)  |
+| `collection`   | the collection name, `/^[a-z][a-z0-9-]*$/`                            |
 | `records`      | `SyncRecord[]`, written sorted by key                                 |
 | `prunedBefore` | optional timestamp: removal markers older than this were dropped here |
 
-`parseCollection` errors, exactly as for `parseUnit`: `not-json`;
+`parseCollection` errors: `not-json`;
 `not-a-collection` (not an object or another `format`); `newer-version`
 (a `version` number above 1, checked first); `invalid` (any other frame
 problem: version not 1, empty or non-string `space`, a bad collection
@@ -300,17 +173,18 @@ the same `now` finds nothing to do (a property test).
 Spaces derive the key from a random secret outside this package, so the
 file needs no salt or iteration count:
 
-| Field               | Meaning                          |
-| ------------------- | -------------------------------- |
-| `format`, `version` | `materia-sync`, `2`              |
-| `cipher.name`       | non-empty                        |
-| `cipher.nonce`      | base64, the pattern of version 1 |
-| `data`              | ciphertext, base64               |
+| Field               | Meaning                               |
+| ------------------- | ------------------------------------- |
+| `format`, `version` | `materia-sync` (`SEALED_FORMAT`), `2` |
+| `cipher.name`       | non-empty                             |
+| `cipher.nonce`      | base64, `/^[A-Za-z0-9+/]+={0,2}$/`    |
+| `data`              | ciphertext, base64                    |
 
-Errors of `parseSealed`: `not-json`, `not-an-envelope`, `newer-version`
-(above 2), `invalid` (which includes version 1: a caller that wants to
-read version 1 uses `parseEnvelope`, which is unchanged). Unknown fields
-are dropped. `sealedAad(space, collection)` gives
+Errors of `parseSealed`: `not-json`; `not-an-envelope` (not an object or
+another `format`); `newer-version` (a `version` number above 2, checked
+before the rest, so the app can tell the user to update); `invalid` (any
+other frame problem, which includes version 1, the removed passphrase
+envelope). Unknown fields are dropped. `sealedAad(space, collection)` gives
 `materia-sync/2/<space>/<collection>`, the additional data the cipher
 binds to the ciphertext, so one file cannot be put in place of another;
 it is undefined when the space is empty or the collection name breaks
@@ -349,11 +223,27 @@ of `access` sorted, and without absent optional fields.
   made after seeing a record is newer than it. What remains: a clock far
   ahead still wins every conflict until the others have seen its
   records, and then their changes are stamped after them.
-- Tombstones of place and unit documents are kept forever, so such a
-  document only grows. For collections of a space `pruneTombstones`
-  drops them after the horizon. What remains: a device that was away
+- `pruneTombstones` drops removal markers after the horizon, so a
+  collection does not grow forever. What remains: a device that was away
   longer than the horizon and edited a record before leaving, but never
   synced that edit, keeps the record and brings it back (a record
   removed meanwhile by someone else returns with it). `expired` drops by
   the rule above and is not recoverable from the remote: the file no
   longer has the record.
+
+## The earlier model
+
+Removed on 2026-11-20. Before spaces, a user kept records per _place_,
+synced as one file encrypted with a key derived from a passphrase:
+places and the combined view (`mergePlace`, `combinePlaces`), the place
+document (`materia-place`: `parseDocument`, `buildDocument`,
+`planSync`), the unit document for a place, library or profile
+(`materia-unit`: `parseUnit`, `buildUnit`, `planUnitSync`) and the
+version 1 envelope (`parseEnvelope`, `buildEnvelope`, `envelopeAad`, the
+`Cipher` port). Only Mixtura's first sync used them; when Mixtura moved
+to spaces
+([decision](../../../docs/decisions/one-origin-spaces-storages.md)) no
+app was left that did, so they were removed with their vectors. A file
+of that model is not read any more: `parseSealed` answers `invalid` for
+a version 1 envelope, and `parseInvite` answers `older-version` for a
+version 1 invite.

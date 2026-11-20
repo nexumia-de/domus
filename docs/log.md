@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-20
+
+- **Update**: goal 6, Mixtura on spaces. Stock is the collection `stock` of a space in the shared database; Mixtura's own sync (places, storages, passphrases, invites, the Sync page) is removed and its names are the shared ones. The host package has a space on this device only (`device.ts`: `ensureSpace`, `isDeviceOnly`), which the Household app lists and can connect to a storage (`#/spaces/<id>/connect`). The earlier sync model (place document, envelope, units, passphrase cipher) left `packages/model` and `packages/host`. CI lost `mixtura-webdav`; `scripts/site-e2e.mjs` checks that a space Mixtura made shows in the Household app. Nothing was run against a real storage. [Roadmap](roadmap.md), [decision](../apps/mixtura/docs/decisions/stock-in-spaces.md).
+
 ## 2026-11-19
 
 - **Creation**: goal 5, the Household app (`apps/domus`, `@domus/app`) replaces the static root page: spaces, GitHub and WebDAV storages, invite with QR code, join, change access, every failure in words, English and German. The site's root now comes from its build (`scripts/site.mjs`, `build-site.mjs`: every root file gets the baseline headers and `no-cache`), `scripts/site-e2e.mjs` also checks that the root app loads, lists both apps, has no manifest and no service worker; root `check` includes `check:domus`; CI has `domus-check`, `domus-e2e` and a path filter for it (a change to the host package or the model runs it, a change to it runs `site-check`). `adapterFor` in the host package takes an optional `apiBase`. Not installable; nothing run against the real GitHub. [Roadmap](roadmap.md), [screens](../apps/domus/docs/screens.md).

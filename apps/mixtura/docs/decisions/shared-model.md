@@ -71,7 +71,9 @@ What is said below about tags and pins describes the time before.
    general parts of sync (places, the record merge with its vectors,
    the sync file format, the adapter interface) are written in materia
    from the start ([stock sync](stock-sync.md)); nothing drink-specific
-   goes there.
+   goes there. (Since 2026-11-20 Mixtura has no sync code of its own and
+   no places: the cycle is the host package's and stock is a collection
+   of a space, [stock in spaces](stock-in-spaces.md).)
 4. **The first version of materia carries no unit system** (decided by
    the agent on 2026-11-18, as step 6 of the
    [extraction order](../shared-model.md#extraction-order) asked to

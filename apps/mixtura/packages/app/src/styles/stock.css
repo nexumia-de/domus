@@ -250,9 +250,9 @@
   overscroll-behavior: contain;
 }
 
-/* ---- Places (#131): the line above the summary and the Places sheet ---- */
+/* ---- Spaces: the line above the summary and the Spaces sheet ---- */
 
-.places-line {
+.spaces-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -262,18 +262,18 @@
   font-size: var(--fs-sm);
 }
 
-.places-names {
+.spaces-names {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.place-list {
+.space-list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.place-row {
+.space-row {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
@@ -281,22 +281,17 @@
   border-bottom: 1px solid var(--divider);
 }
 
-.place-main {
+.space-main {
   display: flex;
   align-items: center;
   gap: var(--sp-2);
 }
 
-.place-main .place-name-input {
-  flex: 1;
-  min-width: 0;
-}
-
-.place-count {
+.space-count {
   min-height: var(--target);
 }
 
-.place-actions {
+.space-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-1);
@@ -319,7 +314,7 @@
   background: radial-gradient(circle, var(--accent) 0 40%, var(--surface) 45%);
 }
 
-.place-block {
+.space-block {
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
@@ -327,11 +322,11 @@
   border-top: 1px solid var(--divider);
 }
 
-.place-block h3 {
+.space-block h3 {
   margin: 0;
 }
 
-.stock-places-line {
+.stock-spaces-line {
   display: block;
   width: 100%;
   min-height: var(--target);
@@ -349,10 +344,14 @@
   overflow-wrap: anywhere;
 }
 
-/* Long labels wrap inside the Places sheet at large text sizes (200 %, 360 px). */
-.place-actions .btn {
+/* Long labels wrap inside the Spaces sheet at large text sizes (200 %, 360 px). */
+.space-actions .btn {
   min-width: 0;
   max-width: 100%;
   white-space: normal;
   text-align: start;
+}
+
+.space-sync {
+  padding-left: var(--sp-1);
 }

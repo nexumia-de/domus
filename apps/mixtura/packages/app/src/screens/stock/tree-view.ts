@@ -14,8 +14,8 @@ export interface TreeActions {
   toggle(node: StockNode): void;
   expand(node: StockNode): void;
   batches(node: StockNode): void;
-  /** Opens the sheet with one block per counting place. */
-  places(node: StockNode): void;
+  /** Opens the sheet with one block per counting space. */
+  spaces(node: StockNode): void;
   writable: boolean;
 }
 
@@ -71,19 +71,19 @@ function batchButton(node: StockNode, actions: TreeActions): HTMLElement {
   );
 }
 
-function placesButton(node: StockNode, depth: number, actions: TreeActions): HTMLElement {
+function spacesButton(node: StockNode, depth: number, actions: TreeActions): HTMLElement {
   return h(
     'button',
     {
-      class: 'stock-places-line',
+      class: 'stock-spaces-line',
       type: 'button',
       style: `padding-left: calc(var(--sp-2) + ${depth * 20}px + 44px)`,
-      'data-places': '',
-      'data-focus': `places:${node.id}`,
-      'aria-label': strings.places.forAria(node.name),
-      onclick: () => actions.places(node),
+      'data-spaces': '',
+      'data-focus': `spaces:${node.id}`,
+      'aria-label': strings.spaces.forAria(node.name),
+      onclick: () => actions.spaces(node),
     },
-    node.places.join(' · '),
+    node.spaces.join(' · '),
   );
 }
 
@@ -159,7 +159,7 @@ function rowOf(row: Row, actions: TreeActions): HTMLElement {
       node.prepared && node.children.length === 0 ? batchButton(node, actions) : null,
       row.expanded === null ? null : expander(node, open, actions),
     ),
-    node.places.length > 0 ? placesButton(node, depth, actions) : null,
+    node.spaces.length > 0 ? spacesButton(node, depth, actions) : null,
   );
 }
 

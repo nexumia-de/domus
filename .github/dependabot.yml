@@ -29,13 +29,3 @@ updates:
     schedule:
       interval: weekly
     versioning-strategy: increase
-  # The WebDAV server image of the sync tests and the user setup.
-  - package-ecosystem: docker-compose
-    directory: /apps/mixtura/tools/webdav-server
-    schedule:
-      interval: weekly
-  # The reverse-proxy images that add CORS in front of a WebDAV server.
-  - package-ecosystem: docker-compose
-    directory: /apps/mixtura/tools/webdav-front
-    schedule:
-      interval: weekly

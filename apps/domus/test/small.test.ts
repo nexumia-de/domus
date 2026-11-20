@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import type { FindRepositoriesResult } from '@nexumia-de/hospes';
+import { deviceOnlyStorage, type FindRepositoriesResult } from '@nexumia-de/hospes';
 import { chooseRepository, verdictOf } from '../src/logic/github-setup';
 import { cleanName } from '../src/logic/names';
 import { ago, clearFailure, lastFailure, noteFailure, spaceState } from '../src/logic/status';
@@ -17,6 +17,7 @@ import {
 } from '../src/prefs';
 import { hashFor, parseHash } from '../src/router';
 import { stringsEn } from '../src/strings';
+import { stringsDe } from '../src/strings-de';
 
 const ID = 'ab'.repeat(16);
 
@@ -29,6 +30,7 @@ describe('router', () => {
     expect(parseHash(hashFor.space(ID))).toEqual({ name: 'space', id: ID });
     expect(parseHash(hashFor.invite(ID))).toEqual({ name: 'invite', id: ID });
     expect(parseHash(hashFor.access(ID))).toEqual({ name: 'access', id: ID });
+    expect(parseHash(hashFor.connect(ID))).toEqual({ name: 'connect', id: ID });
     expect(parseHash('#/spaces/not-an-id')).toEqual({ name: 'home' });
     expect(parseHash(`#/spaces/${ID}/other`)).toEqual({ name: 'home' });
   });
@@ -90,17 +92,21 @@ describe('github steps', () => {
 
 describe('storage in words', () => {
   test('GitHub and WebDAV, never a user name, password or token', () => {
-    expect(storageWords({ type: 'github', address: 'me/household' })).toBe('GitHub: me/household');
-    expect(storageWords({ type: 'webdav', address: 'https://dav.example/remote.php/x/' })).toBe(
-      'WebDAV: dav.example/remote.php/x',
+    expect(storageWords(stringsEn, { type: 'github', address: 'me/household' })).toBe(
+      'GitHub: me/household',
     );
-    expect(storageWords({ type: 'webdav', address: 'https://dav.example/' })).toBe(
+    expect(
+      storageWords(stringsEn, { type: 'webdav', address: 'https://dav.example/remote.php/x/' }),
+    ).toBe('WebDAV: dav.example/remote.php/x');
+    expect(storageWords(stringsEn, { type: 'webdav', address: 'https://dav.example/' })).toBe(
       'WebDAV: dav.example',
     );
-    expect(storageWords({ type: 'webdav', address: 'https://u:p@dav.example/x' })).not.toContain(
-      'u:p',
-    );
-    expect(storageWords({ type: 'other', address: 'x' })).toBe('other');
+    expect(
+      storageWords(stringsEn, { type: 'webdav', address: 'https://u:p@dav.example/x' }),
+    ).not.toContain('u:p');
+    expect(storageWords(stringsEn, { type: 'other', address: 'x' })).toBe('other');
+    expect(storageWords(stringsEn, deviceOnlyStorage())).toBe('On this device only');
+    expect(storageWords(stringsDe, deviceOnlyStorage())).toBe('Nur auf diesem Gerät');
   });
   test('addresses', () => {
     expect(validAddress('github', 'me/household')).toBe(true);

@@ -2,7 +2,7 @@
   "name": "@nexumia-de/hospes",
   "version": "0.1.0",
   "private": true,
-  "description": "The host code the apps share: the sync cipher on Web Crypto and the WebDAV storage adapter on fetch",
+  "description": "The host code the apps share: sync on spaces (the secret, the sealed file on Web Crypto, local data in IndexedDB, the sync cycle) and the WebDAV and GitHub storage adapters on fetch",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {

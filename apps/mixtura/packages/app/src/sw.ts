@@ -74,8 +74,8 @@ const plain = (response: Response) =>
 
 worker.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  // The user's sync storage is another origin: its answers are never the app's files and the
-  // browser must handle the request itself (docs/sync-backends.md#service-worker).
+  // The storage of a space is another origin: its answers are never the app's files and the
+  // browser must handle the request itself (docs/development.md).
   if (new URL(event.request.url).origin !== worker.location.origin) return;
   event.respondWith(
     caches.open(APP_CACHE).then(async (cache) => {

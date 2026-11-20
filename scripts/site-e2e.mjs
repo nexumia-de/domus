@@ -1,6 +1,7 @@
 // `npm run e2e:site`: serves ./dist on localhost and checks in Chromium that
 // the apps stay apart under one address: each has its own service worker
-// scope, cache, database and manifest, and none removes what another keeps.
+// scope, cache, database and manifest, and none removes what another keeps;
+// and that they meet in the one database they share, the spaces.
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 /* global caches, document, indexedDB, navigator -- in functions the page runs */
 import { createReadStream, existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -208,6 +209,32 @@ try {
     );
   }
   await second.close();
+
+  // The apps share the database of spaces: stock marked in Mixtura on a device that never set
+  // up sync is in a space on this device only, and the Household app shows that space.
+  const bar = await context.newPage();
+  await bar.goto(`${origin}/mixtura/#/stock`);
+  await bar.waitForFunction(
+    () => document.querySelector('[data-spaces-line]')?.textContent === 'Home',
+  );
+  check(true, 'mixtura: the stock is kept in a space called Home');
+  await bar.locator('[data-focus="spaces"]').click();
+  const link = bar.locator('[data-focus="spaces-household"]');
+  await link.waitFor();
+  check(
+    (await link.evaluate((a) => a.href)) === `${origin}/`,
+    'mixtura: the Spaces sheet links to the Household app at the root',
+  );
+  const status = await bar.locator('[data-space-sync]').innerText();
+  check(status === 'On this device only', `mixtura: the space is on this device only (${status})`);
+  const household = await context.newPage();
+  await household.goto(`${origin}/`);
+  await household.waitForSelector('[data-testid="space-card"]');
+  const card = await household.locator('[data-testid="space-card"]').innerText();
+  check(
+    /Home/.test(card) && /On this device only|Nur auf diesem Gerät/.test(card),
+    `household: lists the space Mixtura made (${card.replace(/\s+/g, ' ')})`,
+  );
 
   check(problems.length === 0, `no console errors, no foreign requests ${problems.join('; ')}`);
 } finally {

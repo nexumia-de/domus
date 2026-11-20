@@ -79,16 +79,43 @@ checks green. The apps' own goals are in their roadmaps
    use is the owner's) and WebDAV only against a fake; **no collection of the
    apps is synced** (only `space` with the space's name), no sync loop runs
    and the code was not scanned with a camera.
-6. **Mixtura on spaces.** Stock as a shared collection; the earlier
-   sync code and screens removed.
+6. **Mixtura on spaces.** Done on 2026-11-20
+   ([decision](../apps/mixtura/docs/decisions/stock-in-spaces.md)).
+   Stock is the collection `stock` of a space: the key is the
+   ingredient id, the value says whether it is at hand, with optional
+   dates and a note, and keeps fields of other apps. Mixtura reads and
+   writes it in the shared database and runs one loop of the host
+   package per shared space; its own places, storages, passphrases,
+   invites, sync code and Sync page are removed, and "place" is "space"
+   everywhere. A device without a space gets **a space on this device
+   only** (`packages/host`, storage type `device`), so stock has a home
+   before sync is set up; the Household app shows it and can **connect a
+   storage** to it, which keeps its id, secret and data. The earlier sync
+   model left the shared packages too: the place document, the envelope,
+   units and the passphrase cipher. Mixtura's export file no longer
+   holds stock (format version 3).
+   **Not done**: the user's own ingredients and drinks are not synced, so
+   a mark for an own ingredient shows only where that ingredient exists;
+   a backup of a space (Household's export) is not built, so the stock of
+   a space on this device only has none; **nothing was run against the
+   real GitHub**; the Docker WebDAV server, the CORS fronts and the
+   integration test left with Mixtura's sync code and come back with
+   goal 10.
 7. **Emptio on spaces.** Its goals 1 and 2 (the list, shared) on the
    shared packages, with the short polling.
-8. **Culina on spaces.** Stock shared with Mixtura's; its sync goal.
+8. **Culina on spaces.** Stock shared with Mixtura's: the same
+   collection `stock`, where Culina may add its optional fields (amount,
+   state); how the two ingredient catalogues meet is decided here. Its
+   sync goal.
 9. **Sync server.** `server/`: the contract, the Worker and the
    container from one code base, the setup link, push; its adapter;
    tests that run the same suite against both. For households that
    want push or no GitHub account.
-10. **Further storages.** WebDAV moved to the new port, then S3.
+10. **Further storages.** WebDAV against a real server again (the
+    adapter is on the new port and offered by the Household app, but
+    since goal 6 tested against a fake only; the Docker server, the
+    nginx and Caddy fronts and the setup guide are in the history of
+    `apps/mixtura`), then S3.
 
 Not planned: Dropbox, Google Drive and OneDrive. They need an app
 registration with each provider that the owner does not want to hold;

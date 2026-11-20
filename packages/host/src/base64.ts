@@ -1,5 +1,5 @@
-// Bytes to base64 and back for the sync envelope, without `Buffer`
-// (browser code). Standard alphabet with padding, as the envelope stores it.
+// Bytes to base64 and back for the sealed file, without `Buffer`
+// (browser code). Standard alphabet with padding, as the sealed file stores it.
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 /** Encodes bytes as padded standard base64. */

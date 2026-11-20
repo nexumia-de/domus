@@ -28,10 +28,13 @@ await build({
   ...common,
   entryPoints: ['src/main.ts'],
   outfile: join(out, 'main.js'),
-  define: { APP_VERSION: JSON.stringify(version) },
-  // The MIT licence of the bundled QR encoder asks for its notice in every copy (docs/dependencies.md).
-  banner: {
-    js: '/* Includes QR Code Generator for JavaScript, Copyright (c) 2009 Kazuhiko Arase, released under the MIT license */',
+  // MIXTURA_GITHUB_API is for the browser checks only: a test build that talks to a fake of
+  // GitHub's API. Every other build has https://api.github.com compiled in (src/env.ts).
+  define: {
+    APP_VERSION: JSON.stringify(version),
+    ...(process.env.MIXTURA_GITHUB_API
+      ? { __GITHUB_API__: JSON.stringify(process.env.MIXTURA_GITHUB_API) }
+      : {}),
   },
 });
 
@@ -61,7 +64,6 @@ const styles = [
   'editor',
   'versions',
   'spec-extras',
-  'sync',
   'app',
 ];
 const css = styles

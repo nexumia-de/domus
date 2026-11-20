@@ -1,6 +1,6 @@
 /**
  * Hash router: #/ (home), #/spaces/new, #/spaces/<id>, #/spaces/<id>/invite,
- * #/spaces/<id>/access and #/join/<data> (the fragment an invite link carries; #/join alone
+ * #/spaces/<id>/access, #/spaces/<id>/connect and #/join/<data> (the fragment an invite link carries; #/join alone
  * is the same screen without data). The back stack is the browser history.
  */
 export type Route =
@@ -9,6 +9,7 @@ export type Route =
   | { name: 'space'; id: string }
   | { name: 'invite'; id: string }
   | { name: 'access'; id: string }
+  | { name: 'connect'; id: string }
   /** `fragment` is the whole hash, for the invite parser; empty when there is no data. */
   | { name: 'join'; fragment: string };
 
@@ -26,6 +27,7 @@ export function parseHash(hash: string): Route {
     if (third === undefined && parts.length === 2) return { name: 'space', id: second };
     if (third === 'invite' && parts.length === 3) return { name: 'invite', id: second };
     if (third === 'access' && parts.length === 3) return { name: 'access', id: second };
+    if (third === 'connect' && parts.length === 3) return { name: 'connect', id: second };
   }
   return { name: 'home' };
 }
@@ -36,4 +38,5 @@ export const hashFor = {
   space: (id: string): string => `#/spaces/${id}`,
   invite: (id: string): string => `#/spaces/${id}/invite`,
   access: (id: string): string => `#/spaces/${id}/access`,
+  connect: (id: string): string => `#/spaces/${id}/connect`,
 };

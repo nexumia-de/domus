@@ -211,7 +211,7 @@ export const screens: Screen[] = [
       const lineUnit = sheetLine === null ? 'ml' : (drink.spec.lines[sheetLine]?.unit ?? 'ml');
       const stockNow = stockState(context);
       const records = stockNow.kind === 'ready' ? stockNow.records : null;
-      // Marks and batches are written to the entry place, so they start from its own record.
+      // Marks and batches are written to the entry space, so they start from its own record.
       const own = stockNow.kind === 'ready' ? stockNow.entryRecords : new Map();
       const stockActions: StockPanelActions = {
         ...(stockNow.kind === 'ready' &&

@@ -4,9 +4,14 @@
 //
 // The one collection this app keeps is `space`, with the record `name`: the space's name. It
 // makes a space real (a file in the storage, read back by the next device) and is the end-to-end
-// test of a connection. The apps will add their own collections later.
+// test of a connection. The apps add their own collections and sync them themselves.
+//
+// A space on this device only (`isDeviceOnly`, made by an app before sync was set up) has no
+// storage: no cycle is run for it, here or anywhere, until `connectStorage` gave it one.
 import {
   deriveSpace,
+  deviceOnlyStorage,
+  isDeviceOnly,
   localChange,
   newSecret,
   syncCollection,
@@ -84,6 +89,7 @@ export async function checkStorage(
   deps: Deps,
 ): Promise<{ ok: true; public: boolean } | ({ ok: false; readonly?: true } & Partial<Problem>)> {
   try {
+    if (isDeviceOnly({ storage })) return { ok: false, failure: 'bad-storage' };
     if (storage.type === 'github') {
       const verdict = verdictOf(
         await deps.testGithub(storage.address, storage.access?.token ?? ''),
@@ -192,6 +198,8 @@ export async function joinSpace(
 /**
  * A new name for a space: kept here at once, written with the next cycle (run now). The
  * rename is never lost to a failed cycle; the outcome says whether it reached the storage.
+ * A space on this device only has no cycle and so no outcome; its name waits in the collection
+ * for the day a storage is connected.
  */
 export async function renameSpace(
   id: string,
@@ -205,6 +213,7 @@ export async function renameSpace(
     put: [{ key: NAME_KEY, value: name }],
   }));
   await deps.store.putSpace({ ...space, name });
+  if (isDeviceOnly(space)) return { saved: true };
   return { saved: true, outcome: await syncSpace({ ...space, name }, deps) };
 }
 
@@ -224,4 +233,50 @@ export async function changeAccess(
   if (!check.ok) return check;
   await deps.store.putSpace(next);
   return { ok: true, outcome: await syncSpace(next, deps) };
+}
+
+export type ConnectResult =
+  { ok: true; outcome: Outcome } | ({ ok: false; readonly?: true } & Partial<Problem>);
+
+/**
+ * A storage for a space that was on this device only: looked at first, then the space is stored
+ * with it, the `space` collection is made to hold the name, and one cycle runs on it. The id and
+ * the secret stay; what the apps keep in the space is sent by the apps when they are opened.
+ * When the cycle fails the space goes back to this device only: nothing of it is removed, and
+ * the person can fix the cause and try again. A space that already has a storage is not touched.
+ */
+export async function connectStorage(
+  id: string,
+  storage: StoredStorage,
+  deps: Deps,
+): Promise<ConnectResult> {
+  let connected = false;
+  const backToDevice = async (): Promise<void> => {
+    const current = await deps.store.getSpace(id);
+    if (current) await deps.store.putSpace({ ...current, storage: deviceOnlyStorage() });
+  };
+  try {
+    const space = await deps.store.getSpace(id);
+    if (!space || !isDeviceOnly(space)) return { ok: false, failure: 'unexpected' };
+    const check = await checkStorage(storage, deps);
+    if (!check.ok) return check;
+    const next: StoredSpace = { ...space, storage };
+    await deps.store.putSpace(next);
+    connected = true;
+    const name = cleanName(space.name ?? '');
+    if (name !== undefined && (await nameInCollection(deps.store, id)) === undefined) {
+      await localChange(deps.store, id, COLLECTION, deps.now, () => ({
+        put: [{ key: NAME_KEY, value: name }],
+      }));
+    }
+    const outcome = await syncSpace(next, deps);
+    if (!outcome.ok) {
+      await backToDevice();
+      return outcome;
+    }
+    return { ok: true, outcome };
+  } catch (error) {
+    if (connected) await backToDevice().catch(() => undefined);
+    return fail(problemOf(error));
+  }
 }

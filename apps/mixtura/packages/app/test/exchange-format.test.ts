@@ -21,42 +21,15 @@ const legacy = readFileSync(
   'utf8',
 );
 
-test('a version 1 file is read into the given place and imports with its batches', async () => {
+test('a version 1 file is read and imported without its stock', async () => {
   const store = await openFresh();
-  const selection = await store.placeSelection();
-  const place = selection.places.find((p) => p.id === selection.entry);
-  const parsed = parseExportFile(legacy, 500, { migrationInput: { placeForOldStock: place } });
+  const parsed = parseExportFile(legacy, 500);
   expect(parsed.ok && parsed.migratedFrom).toBe(1);
   if (!parsed.ok) return;
   expect(parsed.file.formatVersion).toBe(FORMAT_VERSION);
-  await store.exchange.importData(parsed.file, 'replace');
-  const stock = await store.stock.list();
-  expect(stock).toHaveLength(2);
-  expect(stock.every((r) => r.placeId === selection.entry)).toBe(true);
-  expect(stock).toContainEqual(expect.objectContaining({ moreBatches: ['2026-10-20'] }));
-});
-
-test('a version 1 file without a place to put its stock in is refused', () => {
-  expect(parseExportFile(legacy, 500)).toEqual({ ok: false, failure: { kind: 'needs-place' } });
-});
-
-test('a stock record with batches is stored, exported and refused when a date repeats', async () => {
-  const store = await openFresh();
-  const { entry } = await store.placeSelection();
-  const record = {
-    placeId: entry,
-    ingredientId: 'lime-juice',
-    updatedAt: AT,
-    present: true,
-    openedOn: '2026-11-10',
-    moreBatches: ['2026-11-01'],
-  };
-  await store.stock.put(record);
-  const file = await store.exchange.exportData({ exportedAt: AT });
-  expect(file.stock).toContainEqual(record);
-  await expect(
-    store.stock.put({ ...record, moreBatches: ['2026-11-01', '2026-11-01'] }),
-  ).rejects.toMatchObject({ kind: 'invalid' });
+  expect('stock' in parsed.file).toBe(false);
+  const plan = await store.exchange.importData(parsed.file, 'replace');
+  expect(plan.added.specs).toBeGreaterThan(0);
 });
 
 test('a file that breaks the schema is refused with the schema problems', () => {

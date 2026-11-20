@@ -18,6 +18,11 @@ sources:
 
 # Stock sync over storage the user configured
 
+> **Replaced on 2026-11-20** by [stock in spaces](stock-in-spaces.md): places are spaces, set up in
+> the Household app, and stock is a collection of a space. The code this document describes was
+> removed. It stays as the record of what was decided on 2026-11-18 and why; the measurements it
+> cites (the WebDAV spike) still hold.
+
 **Status: decided by the owner on 2026-11-18**, in the task, a change
 of plan and the answers to the spike the same day. Points the agent chose are
 marked "agent". What kind of storage is supported is in

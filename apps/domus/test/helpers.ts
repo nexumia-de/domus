@@ -1,6 +1,8 @@
 // A fake storage shared by several simulated devices, and the dependencies of one device.
 import {
+  UnknownStorage,
   createMemoryStore,
+  isDeviceOnly,
   type FindRepositoriesResult,
   type GithubConnectionResult,
   type Store,
@@ -14,6 +16,7 @@ export interface Remote {
   failRead: { failure: 'unauthorised' | 'server' | 'blocked'; detail?: string } | undefined;
   adapter: StorageAdapter;
   writes: number;
+  reads: number;
 }
 
 export function createRemote(): Remote {
@@ -22,8 +25,10 @@ export function createRemote(): Remote {
     files: new Map(),
     failRead: undefined,
     writes: 0,
+    reads: 0,
     adapter: {
       read(path): Promise<ReadResult> {
+        remote.reads += 1;
         if (remote.failRead) return Promise.resolve({ ok: false, ...remote.failRead });
         const file = remote.files.get(path);
         return Promise.resolve(
@@ -80,7 +85,11 @@ export function createDevice(remote: Remote, startAt = Date.UTC(2026, 10, 19, 12
         at += 1000;
         return new Date(at).toISOString();
       },
-      adapter: () => remote.adapter,
+      // As the host's `adapterFor`: a space on this device only has no adapter.
+      adapter: (storage) => {
+        if (isDeviceOnly({ storage })) throw new UnknownStorage(storage.type);
+        return remote.adapter;
+      },
       findRepositories: () => Promise.resolve(github.find),
       testGithub: (repository, token) => {
         github.tested.push({ repository, token });

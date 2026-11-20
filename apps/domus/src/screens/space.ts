@@ -1,3 +1,4 @@
+import { isDeviceOnly } from '@nexumia-de/hospes';
 import { h } from '../dom';
 import { COLLECTION, renameSpace, syncSpace } from '../logic/actions';
 import { cleanName } from '../logic/names';
@@ -31,6 +32,8 @@ export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
       return;
     }
     const type = space.storage.type;
+    // On this device only: no cycle, no invite, no access; a storage can be connected.
+    const local = isDeviceOnly(space);
     heading.textContent = space.name ?? t.join.unnamed;
     document.title = `${heading.textContent} - ${t.appName}`;
 
@@ -95,12 +98,12 @@ export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
       }
       nameError.textContent = '';
       void busy([renameButton, sync], async () => {
-        statusBox.replaceChildren(h('p', { class: 'status-line' }, t.space.syncing));
+        if (!local) statusBox.replaceChildren(h('p', { class: 'status-line' }, t.space.syncing));
         const result = await renameSpace(id, name.input.value, ctx.deps);
         if (result.outcome) report(result.outcome);
         messages.replaceChildren(notice('ok', t.space.nameSaved));
         await refreshTitle();
-        await drawStatus();
+        if (!local) await drawStatus();
       });
     });
 
@@ -120,7 +123,7 @@ export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
     );
     confirmBox.append(
       h('h2', { tabindex: '-1' }, t.space.removeTitle),
-      h('p', {}, t.space.removeText),
+      h('p', {}, local ? t.space.removeDeviceOnlyText : t.space.removeText),
       buttonRow(
         button(
           t.common.cancel,
@@ -145,30 +148,37 @@ export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
       ),
     );
 
-    body.append(
-      messages,
-      h(
-        'section',
-        { class: 'card' },
-        h('h2', {}, t.space.storageTitle),
-        h('p', { 'data-testid': 'storage-words' }, storageWords(space.storage)),
-        h('h2', {}, t.space.lastTitle),
-        statusBox,
-        buttonRow(sync),
-      ),
-      renameForm,
-      buttonRow(
-        linkButton(t.space.invite, hashFor.invite(id), { testid: 'invite' }),
-        linkButton(t.space.changeAccess, hashFor.access(id), {
-          quiet: true,
-          testid: 'change-access',
-        }),
-      ),
-      h('hr'),
-      buttonRow(remove),
-      confirmBox,
+    const storageCard = h(
+      'section',
+      { class: 'card' },
+      h('h2', {}, t.space.storageTitle),
+      h('p', { 'data-testid': 'storage-words' }, storageWords(t, space.storage)),
     );
-    await drawStatus();
+    if (local) {
+      storageCard.append(
+        h('p', { 'data-testid': 'device-only' }, t.space.deviceOnlyText),
+        buttonRow(
+          linkButton(t.space.connect, hashFor.connect(id), {
+            primary: true,
+            testid: 'connect-storage',
+          }),
+        ),
+      );
+    } else storageCard.append(h('h2', {}, t.space.lastTitle), statusBox, buttonRow(sync));
+    body.append(messages, storageCard, renameForm);
+    if (!local) {
+      body.append(
+        buttonRow(
+          linkButton(t.space.invite, hashFor.invite(id), { testid: 'invite' }),
+          linkButton(t.space.changeAccess, hashFor.access(id), {
+            quiet: true,
+            testid: 'change-access',
+          }),
+        ),
+      );
+    }
+    body.append(h('hr'), buttonRow(remove), confirmBox);
+    if (!local) await drawStatus();
   })();
   return page;
 }

@@ -1,7 +1,7 @@
 ---
 type: Guide
 title: Development
-description: Setup, commands, layout and the engine's purity rule for Mixtura, the CI job name, and the network hosts the research needed.
+description: Setup, commands, layout, the app shell and the engine's purity rule for Mixtura, the end-to-end scripts, the CI jobs, the Content-Security-Policy and why it allows `https:` for the storage of a space, and the network hosts the research needed.
 tags: [development, tooling, ci, network]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 ---
@@ -49,19 +49,19 @@ npm ci
 The shell (#17) is plain TypeScript building DOM; no framework. Source in
 `packages/app/src/`:
 
-| File or folder                              | Job                                                                                                                                            |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                                                               |
-| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)                                                         |
-| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                                                                      |
-| `destinations.ts`                           | The four destinations with labels and icons                                                                                                    |
-| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                                                              |
-| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                                                                     |
-| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                                                                |
-| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))                                                |
-| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                                                           |
-| `sync/`                                     | Sync cycle, bindings, invites and the passphrase; the cipher and the WebDAV adapter are in `packages/host` ([sync backends](sync-backends.md)) |
-| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                                                           |
+| File or folder                              | Job                                                                                                                                                                                                                                |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main.ts`                                   | Starts the app: preferences, store, navigation, service worker, redraw on change                                                                                                                                                   |
+| `state.ts`, `app-state.ts`                  | Generic store with subscribe; the app's one state object (route, theme, units, update)                                                                                                                                             |
+| `router.ts`, `navigation.ts`                | Pure hash parsing; history glue (one entry per in-app link, Back, Escape)                                                                                                                                                          |
+| `destinations.ts`                           | The four destinations with labels and icons                                                                                                                                                                                        |
+| `screen.ts`, `screens/`                     | The screen contract and one folder per destination; `screens/index.ts` lists them                                                                                                                                                  |
+| `shell/`                                    | Navigation bar and rail, panes, update banner, not-found page, `render.ts`                                                                                                                                                         |
+| `dom.ts`, `strings.ts`, `prefs.ts`          | DOM helpers (text nodes only), fixed texts, first-paint copy of theme and units                                                                                                                                                    |
+| `store/`, `data.ts`, `seed/`                | Local IndexedDB store, its connection to the state, the read-only seed file ([store](store.md))                                                                                                                                    |
+| `sw.ts`, `sw-register.ts`                   | Service worker (answers the app's own origin only); registration and the update flow                                                                                                                                               |
+| `stock/`, `household.ts`, `env.ts`          | Stock of the spaces in memory, the sync loop per shared space (`stock/sync.ts`; the cycle, cipher and adapters are in `packages/host`), the link to the Household app, the compiled-in GitHub API address ([store](store.md#sync)) |
+| `styles/`, `icons/`, `manifest.webmanifest` | The one stylesheet (tokens from the design), icons, web app manifest                                                                                                                                                               |
 
 **Adding a screen (#18 to #20).** Make `screens/<name>/index.ts` that
 exports `screens: Screen[]` (`match(route)` and `view(context)` returning
@@ -107,18 +107,18 @@ built app from a local static server in a fresh Chromium profile at both
 sizes and checks the four destinations, back navigation, touch targets, no
 horizontal overflow, the theme, a reload and a deep link with the network
 off, no request outside the origin, and the update flow with a second
-"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/list-keys.mjs` covers the sort menu, the arrow keys, the shortcuts and the filters sheet's focus ([as built](screens-browse.md#as-built-75)); `e2e/alcohol.mjs` covers the alcohol filters and their presets ([screens](screens-browse.md#as-built-37-alcohol-filters)); `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)); `e2e/editor.mjs` covers the spec editor ([as built](screens-specs.md#as-built-25)); `e2e/versions.mjs` covers versions, notes, status, riffs, the family and their export and import ([as built](screens-specs.md#as-built-26)); `e2e/shelf-variants.mjs` covers batch dates (host clock set with Playwright's fixed time) and variant riffs ([as built](non-alcoholic.md#as-built-37)); `e2e/substitutes.mjs` covers substitutes, the in-stock mark and the storage text ([as built](screens-specs.md#as-built-89)); `e2e/places.mjs` covers the places line and sheet, row place names, the entry place, rename, remove and Undo ([places](screens-stock-settings.md#places-131)); `e2e/spec-stock.mjs` covers the stock panel on the spec screen ([as built](screens-browse.md#as-built-82-stock-panel-on-the-spec-screen)); `e2e/webdav.mjs` runs the WebDAV adapter in the page against the Docker server and is skipped without `MIXTURA_WEBDAV_URL` ([sync backends](sync-backends.md#the-test-server)); `e2e/sync.mjs` is stock sync between two people in two browser contexts and two Docker servers, all through the Sync screens, and is skipped without `MIXTURA_WEBDAV_URL` and `MIXTURA_WEBDAV_URL_2` ([screens: sync](screens-sync.md#end-to-end-test)); `e2e/save-interrupt.mjs` cuts a save off at four points and checks that the edit survives ([as built](screens-specs.md#as-built-25)); `--throttle=N` (CPU slowed N times) and `--slow-frames=MS` (animation frames delayed) on `editor.mjs` and `exchange.mjs` show the races a fast machine hides. `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
+"build". `e2e/browse.mjs` covers the browse screens ([screens](screens-browse.md#as-built-18-19)) and prints the list numbers below; `e2e/list-keys.mjs` covers the sort menu, the arrow keys, the shortcuts and the filters sheet's focus ([as built](screens-browse.md#as-built-75)); `e2e/alcohol.mjs` covers the alcohol filters and their presets ([screens](screens-browse.md#as-built-37-alcohol-filters)); `e2e/store.mjs` covers the local store in the same way ([store](store.md#tests)); `e2e/exchange.mjs` covers export, import, Undo and the reminder ([export format](export-format.md#tests)); `e2e/editor.mjs` covers the spec editor ([as built](screens-specs.md#as-built-25)); `e2e/versions.mjs` covers versions, notes, status, riffs, the family and their export and import ([as built](screens-specs.md#as-built-26)); `e2e/shelf-variants.mjs` covers batch dates (host clock set with Playwright's fixed time) and variant riffs ([as built](non-alcoholic.md#as-built-37)); `e2e/substitutes.mjs` covers substitutes, the in-stock mark and the storage text ([as built](screens-specs.md#as-built-89)); `e2e/spaces.mjs` covers the spaces line and sheet on Stock ([spaces](screens-stock-settings.md#spaces)); `e2e/spec-stock.mjs` covers the stock panel on the spec screen ([as built](screens-browse.md#as-built-82-stock-panel-on-the-spec-screen)); `e2e/save-interrupt.mjs` cuts a save off at four points and checks that the edit survives ([as built](screens-specs.md#as-built-25)); `--throttle=N` (CPU slowed N times) and `--slow-frames=MS` (animation frames delayed) on `editor.mjs` and `exchange.mjs` show the races a fast machine hides. `node e2e/walk.mjs 360 720 --docs` also writes the screenshots in
 `docs/screenshots/` at scale 2. Playwright (pinned, see
 [dependencies](dependencies.md)) uses its own browser; where that is not
 installed and another Chromium build is, set `MIXTURA_CHROMIUM` to its
 binary (the cloud image has headless shell build 1243:
 `/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell`).
-`e2e/a11y.mjs` is the [accessibility pass](accessibility.md); `e2e/breakpoint.mjs` walks dark mode at 839 and 840 px; `e2e/dark.mjs` takes the dark screenshots ([overview](screenshots.md)). CI runs it as the job `e2e` after `npx playwright install --with-deps chromium`.
+`e2e/a11y.mjs` is the [accessibility pass](accessibility.md); `e2e/breakpoint.mjs` walks dark mode at 839 and 840 px; `e2e/dark.mjs` takes the dark screenshots ([overview](screenshots.md)). CI runs it as the job `mixtura-e2e` after `npx playwright install --with-deps chromium`.
 
 **Slow-device pass.** Every script takes `--throttle=N` and
 `--slow-frames=MS`; `npm run e2e:slow -w @mixtura/app` runs all of them at
 both sizes with `--throttle=4 --slow-frames=100` (about 5 minutes; CI job
-`e2e-slow`). It found no race when it was added (2026-11-17). Timing
+`mixtura-e2e-slow`). It found no race when it was added (2026-11-17). Timing
 budgets (the swap redraw under 50 ms) are only printed in that run, because
 `--slow-frames` delays the frame they wait for. A failure there is a race
 to fix at its cause with a wait for a specific condition: no retry, sleep or
@@ -147,10 +147,20 @@ so the rule cannot be removed silently
 
 ## CI
 
-`.github/workflows/ci.yml` runs `npm ci` and `npm run check` on pull
-requests and pushes to `main`. The job is named `check`; this is the
-required status check name for the branch-protection ruleset. A second
-job `e2e` runs the browser scripts (including the accessibility pass); a third, `e2e-slow`, the slow-device pass below; a fourth, `webdav` (#133), starts both Docker servers of `tools/webdav-server` (`--profile second`) and runs `test/sync-webdav-integration.test.ts`, `e2e/webdav.mjs` and `e2e/sync.mjs` (360 x 720 and 1200 x 800) against them, then starts the nginx and Caddy fronts of `tools/webdav-front` (#141) and runs the integration test against each ([sync backends](sync-backends.md#the-test-server), [setup guide](sync-setup.md)). None of the three is required yet; if `webdav` should be, the owner adds the name to the ruleset (`.github/rulesets/main.json`) and re-imports it. Actions are
+The workflow is the one of the repository, `.github/workflows/ci.yml` at
+the root ([development of the repository](../../../docs/development.md)).
+Mixtura has three jobs in it, run when Mixtura, the host package or the
+model changed: `mixtura-check` runs `npm ci` and `npm run check:mixtura`;
+`mixtura-e2e` runs the browser scripts (including the accessibility
+pass); `mixtura-e2e-slow` the slow-device pass above. There is no job
+against a WebDAV server any more: `mixtura-webdav`, the Docker servers of
+`tools/webdav-server` and the fronts of `tools/webdav-front` were removed
+on 2026-11-20 with Mixtura's own sync
+([stock in spaces](decisions/stock-in-spaces.md#what-is-lost)). Sync is
+tested with a fake adapter only (`test/stock-sync.test.ts` and the tests
+of the host package).
+
+Actions are
 pinned to a commit SHA, Dependabot updates npm and GitHub Actions weekly.
 
 The app uses only relative URLs, so the same build
@@ -196,12 +206,12 @@ the sub-path. `index.html` has a `description` meta tag.
 default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'
 ```
 
-No `unsafe-inline`, no `unsafe-eval`, and no host except in `connect-src`, which since #133 also allows any `https:` address and plain `http:` on `localhost` and `127.0.0.1`: the storage a user configured for stock sync has an address the policy cannot know ([decision](decisions/stock-sync.md#bring-your-own-backend), [sync backends](sync-backends.md#policy)). What each part is
+No `unsafe-inline`, no `unsafe-eval`, and no host except in `connect-src`, which also allows any `https:` address and plain `http:` on `localhost` and `127.0.0.1`. The reason is the storage of a space: the stock of a shared space is synced from this page to `https://api.github.com` (a GitHub storage; the address is compiled in, `src/env.ts`) or to a WebDAV address the household entered in the Household app, which the policy cannot know ([store](store.md#sync), [stock in spaces](decisions/stock-in-spaces.md)). The two local addresses date from the WebDAV test server of #133, which is removed; they still let a WebDAV storage on the same machine and a test build with `MIXTURA_GITHUB_API` work. The policy was not narrowed when Mixtura's own sync was removed. The service worker answers only requests of the app's own origin, so a request to a storage never comes from its cache. What each part is
 for: `script-src 'self'` covers `main.js`, `theme-init.js` and the ranking
 worker's script (`worker-src 'self'`); `style-src 'self'` is why the page
 has no inline style: `dom.ts` applies a `style` prop through the style
 object (CSSOM, not governed by the policy) instead of a style attribute;
-`connect-src 'self'` is the seed file, the rest the user's sync storage; `manifest-src 'self'`; `img-src
+`connect-src 'self'` is the seed file, the rest the storage of a space; `manifest-src 'self'`; `img-src
 'self'` (icons; no `data:` is used); `form-action 'none'`. The export
 download is a `blob:` link and needs no entry. A meta policy cannot carry
 `frame-ancestors`, `sandbox` or a report endpoint. On Cloudflare the same

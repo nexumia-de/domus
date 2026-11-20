@@ -15,20 +15,24 @@ rules do not apply. Its sister app for cooking is
 ## Architecture rules
 
 - **Own local data, offline first.** No server of ours, no account, no
-  telemetry. The only requests to another host go to storage the user
-  configured for stock sync, which is off by default; a place without a
-  binding sends none, and local data works offline as before
-  ([decision](docs/decisions/stock-sync.md)).
-- **Shared code lives in materia.** The general model and the general
-  parts of sync are in [materia](../../packages/model), used from this
+  telemetry. The only requests to another host go to the storage of a
+  space the household set up in the Household app; a space that is on
+  this device only sends none, and local data works offline as before
+  ([decision](docs/decisions/stock-in-spaces.md)).
+- **Shared code lives in materia.** The general model and the pure
+  rules of sync are in [materia](../../packages/model), used from this
   repository; nothing drink-specific goes there, and a bug in it is
   fixed there ([decision](docs/decisions/shared-model.md),
   [one repository](../../docs/decisions/one-repository.md)).
-- **Shared host code lives in hospes.** The sync cipher and the WebDAV
-  adapter are in [packages/host](../../packages/host)
-  (`@nexumia-de/hospes`), used from this repository; the app imports
-  them from the package, nothing of Mixtura's store, state or screens
-  goes there, and a bug in them is fixed there.
+- **Sync is the host package's.** Spaces, their storages, the cycle and
+  the loop are in [packages/host](../../packages/host)
+  (`@nexumia-de/hospes`). Mixtura has no sync code, storage, secret or
+  invite of its own: it reads and writes the collection `stock` of a
+  space and starts the host's loop for it. Spaces are made, shared and
+  removed in the Household app.
+- **Stock is taps, not bookkeeping.** At hand or not; no amounts, no
+  booking, nothing the app asks for. The collection is shared with the
+  other apps: keep the fields you do not know.
 - **Derive, don't store.** What can be made, balance numbers, cost and
   "what unlocks the most" are computed from specs, ingredients and stock
   every time; only what the user entered is stored.

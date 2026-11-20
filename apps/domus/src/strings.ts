@@ -67,6 +67,9 @@ export const stringsEn = {
     joinHint: 'Paste the link that someone sent you, or its end starting with #/join/.',
     joinButton: 'Continue',
   },
+  storage: {
+    deviceOnly: 'On this device only',
+  },
   status: {
     never: 'Never synced',
     inStep: (ago: string) => `In step · ${ago}`,
@@ -174,12 +177,34 @@ export const stringsEn = {
     removeText:
       'The space, its secret and the storage access are deleted from this device only. The files in the storage stay, and other devices are not affected. If this is the only device that knows the secret, nobody can open the files again.',
     removeConfirm: 'Remove',
+    removeDeviceOnlyText:
+      'This space is on this device only, and no copy exists anywhere else. The space, its secret and everything the apps keep in it, for example the stock, are deleted for good and cannot be brought back.',
+    deviceOnlyText:
+      'This space and what the apps keep in it, for example the stock, are on this device only. Nothing is sent anywhere.',
+    connect: 'Connect a storage',
+    connected: (storage: string) =>
+      `The space is now kept in step through ${storage}. Open the apps once so they send what they keep.`,
     removed: 'The space was removed from this device.',
     created: 'The space is created. Its first file was written to the storage and read back.',
     joined: (name: string) => `You joined “${name}”.`,
     joinedEmpty:
       'The storage holds no data for this space yet; the device that made the invite may not have synced yet. Sync now looks again.',
     accessSaved: 'The access is saved.',
+  },
+  connect: {
+    title: 'Connect a storage',
+    intro: (name: string) =>
+      `“${name}” is on this device only. With a storage it is kept in step on your devices and can be shared; the space, its secret and its data stay as they are.`,
+    heading: 'Connect the storage',
+    explain:
+      'This writes the space’s first file to the storage and reads it back. What the apps keep in the space follows when you open them.',
+    spaceLine: 'Space',
+    storageLine: 'Storage',
+    button: 'Connect storage',
+    connecting: 'Connecting the storage and writing the first file…',
+    failedTitle: 'The storage was not connected',
+    failedHint:
+      'The space stays on this device only and nothing of it was removed. Fix the cause and try again.',
   },
   access: {
     title: 'Change storage access',

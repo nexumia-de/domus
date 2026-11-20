@@ -2,11 +2,9 @@
 import { expect, test } from 'vitest';
 import { openDatabase } from '../src/store/db';
 import { migrations, rowsInPlace, type Migration } from '../src/store/migrations';
-import { DEFAULT_PLACE_NAME } from '../src/store/places';
-import { strings } from '../src/strings';
 import { SCHEMA_VERSION } from '../src/store/schema';
-import { isUserId, openLocalStore, StoreError } from '../src/store';
-import { freshFactory, openFresh, user } from './helpers';
+import { openLocalStore, StoreError } from '../src/store';
+import { freshFactory, user } from './helpers';
 
 const v1 = migrations.filter((m) => m.version === 1);
 
@@ -27,7 +25,7 @@ const oldRows = [
 ];
 const AT = '2026-11-18T08:00:00Z';
 const PLACE_ID = 'u-00000000-0000-4000-8000-000000000001';
-const options = { clock: () => AT, newId: () => PLACE_ID, placeName: 'Home' };
+const options = { clock: () => AT, newId: () => PLACE_ID };
 
 /** Opens a database as release 3 did: migrations 1 to 3, and puts the rows into its stock store. */
 async function openV3(factory: IDBFactory, rows: readonly object[] = oldRows): Promise<void> {
@@ -44,7 +42,21 @@ async function openV3(factory: IDBFactory, rows: readonly object[] = oldRows): P
   old.close();
 }
 
-test('opening a version 1 database upgrades it to the current one without losing data', async () => {
+/** Opens the database as release 5 did (stock per place, the sync stores), from whatever is there. */
+const openV5 = (factory: IDBFactory) =>
+  openDatabase({
+    factory,
+    version: 5,
+    migrations: migrations.filter((m) => m.version <= 5),
+    ...options,
+  });
+const getAll = <T>(db: IDBDatabase, store: string): Promise<T[]> =>
+  new Promise((resolve) => {
+    const req = db.transaction(store).objectStore(store).getAll();
+    req.onsuccess = () => resolve(req.result as T[]);
+  });
+
+test("opening a version 1 database upgrades it to the current one without losing the user's own data", async () => {
   const factory = freshFactory();
   const old = await openOld(factory);
   expect(old.version).toBe(1);
@@ -58,7 +70,6 @@ test('opening a version 1 database upgrades it to the current one without losing
   const store = await openLocalStore({ factory, storage: undefined, ...options });
   expect(await store.specs.get(user.specs[1]!.id)).toEqual(user.specs[1]);
   expect(await store.ingredients.list()).toEqual([user.ingredients[0]]);
-  expect(await store.stock.list()).toEqual([{ ...oldRows[0], placeId: PLACE_ID, updatedAt: AT }]);
   // No old preferences: nothing is invented, defaults apply.
   expect((await store.settings.load()).theme).toBe('system');
   store.close();
@@ -67,73 +78,14 @@ test('opening a version 1 database upgrades it to the current one without losing
 test('migration 4: every stock row of a version 3 database lands in the default place', async () => {
   const factory = freshFactory();
   await openV3(factory);
-  const store = await openLocalStore({ factory, storage: undefined, ...options });
-  expect(await store.places.list()).toEqual([{ id: PLACE_ID, name: 'Home', updatedAt: AT }]);
-  const stock = await store.stock.list();
+  const db = await openV5(factory);
+  expect(await getAll(db, 'places')).toEqual([{ id: PLACE_ID, name: 'Home', updatedAt: AT }]);
+  const stock = await getAll<object>(db, 'stock');
   expect(stock).toHaveLength(oldRows.length);
   // Every field of every row survives (the batches included), plus the place and the instant.
-  for (const row of oldRows) {
+  for (const row of oldRows)
     expect(stock).toContainEqual({ ...row, placeId: PLACE_ID, updatedAt: AT });
-    expect(await store.stock.get([PLACE_ID, row.ingredientId])).toEqual({
-      ...row,
-      placeId: PLACE_ID,
-      updatedAt: AT,
-    });
-  }
-  expect(await store.stock.listBy('placeId', PLACE_ID)).toHaveLength(oldRows.length);
-  expect((await store.settings.load()).places).toEqual({ ticked: [PLACE_ID], entry: PLACE_ID });
-  expect(await store.placeSelection()).toMatchObject({ ticked: [PLACE_ID], entry: PLACE_ID });
-  store.close();
-});
-
-test('migration 4: an empty version 3 database gets the default place and no stock', async () => {
-  const factory = freshFactory();
-  await openV3(factory, []);
-  const store = await openLocalStore({ factory, storage: undefined, ...options });
-  expect(await store.places.list()).toEqual([{ id: PLACE_ID, name: 'Home', updatedAt: AT }]);
-  expect(await store.stock.list()).toEqual([]);
-  expect((await store.settings.load()).places).toEqual({ ticked: [PLACE_ID], entry: PLACE_ID });
-  store.close();
-});
-
-test('migration 4: other data and the settings of a version 3 database stay', async () => {
-  const factory = freshFactory();
-  await openV3(factory);
-  const db = await openDatabase({
-    factory,
-    version: 3,
-    migrations: migrations.filter((m) => m.version <= 3),
-  });
-  const tx = db.transaction(['settings', 'specs', 'drafts'], 'readwrite');
-  tx.objectStore('settings').put({ key: 'theme', value: 'dark' });
-  tx.objectStore('specs').put(user.specs[1]);
-  tx.objectStore('drafts').put({ key: 'draft/x', value: { a: 1 } });
-  await new Promise((done) => (tx.oncomplete = done));
   db.close();
-  const store = await openLocalStore({ factory, storage: undefined, ...options });
-  expect((await store.settings.load()).theme).toBe('dark');
-  expect(await store.specs.list()).toEqual([user.specs[1]]);
-  expect(await store.drafts.get('draft/x')).toBeDefined();
-  store.close();
-});
-
-test('migration 4 runs once: the stock written after it is not moved again', async () => {
-  const factory = freshFactory();
-  await openV3(factory);
-  const first = await openLocalStore({ factory, storage: undefined, ...options });
-  await first.stock.put({ placeId: PLACE_ID, ingredientId: 'rum', updatedAt: AT, present: true });
-  first.close();
-  let ids = 0;
-  const second = await openLocalStore({
-    factory,
-    storage: undefined,
-    ...options,
-    newId: () => `u-00000000-0000-4000-8000-${String(++ids).padStart(12, '0')}`,
-  });
-  expect(ids).toBe(0);
-  expect(await second.stock.list()).toHaveLength(oldRows.length + 1);
-  expect(await second.places.list()).toHaveLength(1);
-  second.close();
 });
 
 test('migration 4 that fails leaves the version 3 database and its stock as they were', async () => {
@@ -153,11 +105,7 @@ test('migration 4 that fails leaves the version 3 database and its stock as they
     version: 3,
     migrations: migrations.filter((m) => m.version <= 3),
   });
-  const rows = await new Promise<object[]>((resolve) => {
-    const req = db.transaction('stock').objectStore('stock').getAll();
-    req.onsuccess = () => resolve(req.result as object[]);
-  });
-  expect(rows).toHaveLength(oldRows.length);
+  expect(await getAll(db, 'stock')).toHaveLength(oldRows.length);
   expect([...db.objectStoreNames]).not.toContain('places');
   db.close();
 });
@@ -168,19 +116,42 @@ test('rowsInPlace stamps rows and cannot be fooled by a row that carries a place
   ]);
 });
 
-test('a fresh install has the default place, named like the fixed string, ticked and entry', async () => {
-  const store = await openFresh();
-  const places = await store.places.list();
-  expect(places).toHaveLength(1);
-  expect(places[0]!.name).toBe(strings.places.home);
-  expect(places[0]!.name).toBe(DEFAULT_PLACE_NAME);
-  expect(isUserId(places[0]!.id)).toBe(true);
-  expect(await store.placeSelection()).toEqual({
-    places,
-    ticked: [places[0]!.id],
-    entry: places[0]!.id,
-  });
+const GONE = ['places', 'stock', 'storages', 'bindings'];
+
+test('migration 6: places, stock, storages and bindings leave the database; the rest stays', async () => {
+  const factory = freshFactory();
+  await openV3(factory);
+  const old = await openV5(factory);
+  for (const name of GONE) expect([...old.objectStoreNames]).toContain(name);
+  const tx = old.transaction(['settings', 'specs', 'drafts', 'storages'], 'readwrite');
+  tx.objectStore('settings').put({ key: 'theme', value: 'dark' });
+  tx.objectStore('specs').put(user.specs[1]);
+  tx.objectStore('drafts').put({ key: 'draft/x', value: { a: 1 } });
+  tx.objectStore('storages').put({ id: 's1', label: 'x', type: 'webdav', baseUrl: 'https://x' });
+  await new Promise((done) => (tx.oncomplete = done));
+  old.close();
+
+  const store = await openLocalStore({ factory, storage: undefined, ...options });
+  expect((await store.settings.load()).theme).toBe('dark');
+  expect(await store.specs.list()).toEqual([user.specs[1]]);
+  expect(await store.drafts.get('draft/x')).toBeDefined();
+  // The choice of spaces starts empty; it is made from the spaces of the device (stock/spaces-rules.ts).
+  expect((await store.settings.load()).spaces).toEqual({ ticked: [], entry: '', known: [] });
   store.close();
+  const db = await openDatabase({ factory });
+  expect(db.version).toBe(SCHEMA_VERSION);
+  for (const name of GONE) expect([...db.objectStoreNames]).not.toContain(name);
+  expect(await getAll(db, 'settings')).not.toContainEqual(
+    expect.objectContaining({ key: 'places' }),
+  );
+  db.close();
+});
+
+test('a fresh install runs the whole chain and ends without the stores for stock and sync', async () => {
+  const db = await openDatabase({ factory: freshFactory() });
+  for (const name of GONE) expect([...db.objectStoreNames]).not.toContain(name);
+  expect(await getAll(db, 'settings')).toEqual([]);
+  db.close();
 });
 
 test('migration 2 moves the interim preferences into settings, once', async () => {

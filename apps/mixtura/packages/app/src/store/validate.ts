@@ -4,14 +4,14 @@
 
 import { validators, type Validator } from './schema-validators.generated.mjs';
 import { StoreError } from './errors';
-import type { DeviceKind, EntityKind } from './types';
+import type { EntityKind } from './types';
 
-function validator(kind: EntityKind | DeviceKind | 'export'): Validator | undefined {
+function validator(kind: EntityKind | 'stock' | 'export'): Validator | undefined {
   return validators[kind];
 }
 
 /** Throws a StoreError of kind `invalid` that lists every problem. */
-export function validateEntity(kind: EntityKind | DeviceKind, value: unknown): void {
+export function validateEntity(kind: EntityKind, value: unknown): void {
   const check = validator(kind);
   if (!check) throw new StoreError('failed', `No schema for ${kind}`);
   if (check(value)) return;
@@ -19,6 +19,11 @@ export function validateEntity(kind: EntityKind | DeviceKind, value: unknown): v
     (e) => `${e.instancePath || '(record)'} ${e.message ?? 'is invalid'}`,
   );
   throw new StoreError('invalid', `The ${kind} does not match its schema`, details);
+}
+
+/** Whether a value is a stock value of the shared collection (docs/data-model.md#stock). */
+export function isStockValue(value: unknown): boolean {
+  return validator('stock')?.(value) === true;
 }
 
 /** Problems of a whole export file against the current schema, one line each, at most `limit`. */

@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Screenshots
-description: Overview of the current app screens at 360x720 and 1200x800 in light and dark, how they are generated, and the separate mock-up screenshots from the design phase.
+description: Overview of the app screens at 360x720 and 1200x800 in light and dark, how they are generated, which files are obsolete since Mixtura's own sync was removed on 2026-11-20 (the Sync page and the Places sheet), and the separate mock-up screenshots from the design phase.
 tags: [screenshots, ui, testing]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -25,15 +25,12 @@ Build first (`npm run build`), then in `packages/app`, with
 ([development](development.md)):
 
 ```sh
-for s in walk exchange browse list-keys stock places swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
+for s in walk exchange browse list-keys stock spaces swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
 ```
 
-The Sync screens come from `e2e/sync.mjs`, which needs both Docker servers
-([sync backends](sync-backends.md#the-test-server)):
-
-```sh
-for size in "360 720" "1200 800"; do node e2e/sync.mjs $size --docs; done
-```
+`e2e/spaces.mjs` writes `app-stock-spaces-*`. Those files were not made
+yet when this page was last changed (2026-11-20); the pictures of the
+earlier Places sheet are still listed below and are marked.
 
 A script writes only the files it names, so a file that no script
 writes is stale: add its screen to a script or delete it, and keep this
@@ -100,6 +97,8 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 
 ## Stock and Buy Next
 
+The four `app-stock-places-*` rows are **obsolete**: they show the line and the sheet as they were before 2026-11-20, with the word "Places" and with Add, Rename and Remove. The sheet is now "Spaces" and only chooses ([spaces](screens-stock-settings.md#spaces)). No new picture was taken.
+
 | Screen                    | 360x720                                                                                                                                                                        | 1200x800                                                                                                                                                                          |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `app-stock`               | <a href="screenshots/app-stock-360x720.png"><img src="screenshots/app-stock-360x720.png" alt="app-stock at 360x720" width="180"></a>                                           | <a href="screenshots/app-stock-1200x800.png"><img src="screenshots/app-stock-1200x800.png" alt="app-stock at 1200x800" width="400"></a>                                           |
@@ -116,17 +115,25 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 | `app-buy-next`            | <a href="screenshots/app-buy-next-360x720.png"><img src="screenshots/app-buy-next-360x720.png" alt="app-buy-next at 360x720" width="180"></a>                                  | <a href="screenshots/app-buy-next-1200x800.png"><img src="screenshots/app-buy-next-1200x800.png" alt="app-buy-next at 1200x800" width="400"></a>                                  |
 | `app-buy-next-open`       | <a href="screenshots/app-buy-next-open-360x720.png"><img src="screenshots/app-buy-next-open-360x720.png" alt="app-buy-next-open at 360x720" width="180"></a>                   | <a href="screenshots/app-buy-next-open-1200x800.png"><img src="screenshots/app-buy-next-open-1200x800.png" alt="app-buy-next-open at 1200x800" width="400"></a>                   |
 
-## Sync
+## Sync (obsolete)
 
-From `e2e/sync.mjs --docs` (needs the two Docker servers, [screens: sync](screens-sync.md#end-to-end-test)); test data only, the passphrase shown is generated for the run. Light theme.
+Mixtura's Sync page and its sheets were removed on 2026-11-20
+([stock in spaces](decisions/stock-in-spaces.md)); sync is set up in the
+Household app. The script that took the pictures (`e2e/sync.mjs`) is gone
+too. These files in `docs/screenshots/` show screens that no longer exist
+and can be deleted; they are not shown here any more:
 
-| Screen             | 360x720                                                                                                                                                                                 | 1200x800                                                                                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `app-sync-page`    | <a href="screenshots/app-sync-page-360x720.png"><img src="screenshots/app-sync-page-360x720.png" alt="Sync page: storages, places and their state lines at 360x720" width="180"></a>    | <a href="screenshots/app-sync-page-1200x800.png"><img src="screenshots/app-sync-page-1200x800.png" alt="Sync page: storages, places and their state lines at 1200x800" width="400"></a>    |
-| `app-sync-storage` | <a href="screenshots/app-sync-storage-360x720.png"><img src="screenshots/app-sync-storage-360x720.png" alt="Add Storage with the result of Test Connection at 360x720" width="180"></a> | <a href="screenshots/app-sync-storage-1200x800.png"><img src="screenshots/app-sync-storage-1200x800.png" alt="Add Storage with the result of Test Connection at 1200x800" width="400"></a> |
-| `app-sync-bind`    | <a href="screenshots/app-sync-bind-360x720.png"><img src="screenshots/app-sync-bind-360x720.png" alt="Sync This Place with the generated passphrase at 360x720" width="180"></a>        | <a href="screenshots/app-sync-bind-1200x800.png"><img src="screenshots/app-sync-bind-1200x800.png" alt="Sync This Place with the generated passphrase at 1200x800" width="400"></a>        |
-| `app-sync-share`   | <a href="screenshots/app-sync-share-360x720.png"><img src="screenshots/app-sync-share-360x720.png" alt="Share: invite link, QR code and the four values at 360x720" width="180"></a>    | <a href="screenshots/app-sync-share-1200x800.png"><img src="screenshots/app-sync-share-1200x800.png" alt="Share: invite link, QR code and the four values at 1200x800" width="400"></a>    |
-| `app-sync-join`    | <a href="screenshots/app-sync-join-360x720.png"><img src="screenshots/app-sync-join-360x720.png" alt="Join a Place at 360x720" width="180"></a>                                         | <a href="screenshots/app-sync-join-1200x800.png"><img src="screenshots/app-sync-join-1200x800.png" alt="Join a Place at 1200x800" width="400"></a>                                         |
+- `app-sync-page-360x720.png`, `app-sync-page-1200x800.png`
+- `app-sync-storage-360x720.png`, `app-sync-storage-1200x800.png`
+- `app-sync-bind-360x720.png`, `app-sync-bind-1200x800.png`
+- `app-sync-share-360x720.png`, `app-sync-share-1200x800.png`
+- `app-sync-join-360x720.png`, `app-sync-join-1200x800.png`
+
+Pictures of Settings taken before that day (`shell-settings-dark-*`,
+`dark-settings-*`, `app-alcohol-settings-*`, `settings-data-row-*`) may
+still show the row "Sync" where the row "Household" is now, and the
+`data-*` pictures may count stock entries; they were not looked at one by
+one and not regenerated.
 
 ## Spec editor
 

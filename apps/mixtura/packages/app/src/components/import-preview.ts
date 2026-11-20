@@ -26,8 +26,6 @@ function failureText(failure: ParseFailure): { title: string; text: string } {
   switch (failure.kind) {
     case 'not-mixtura':
       return e.notMixtura;
-    case 'needs-place':
-      return e.needsPlace;
     case 'newer':
       return { title: e.newer.title, text: e.newer.text(failure.found, failure.supported) };
     case 'unreadable':
@@ -129,8 +127,6 @@ export function importPanel(
     ingredients: file.ingredients.length,
     templates: file.templates.length,
     specs: file.specs.length,
-    places: file.places.length,
-    stock: file.stock.length,
     affinities: file.affinities.length,
   };
   return h(

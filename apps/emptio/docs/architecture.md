@@ -12,8 +12,8 @@ sources:
     title: Culina, decision "Sync in three units, after stock" (a place is the same place in Mixtura and Culina)
     url: ../../culina/docs/decisions/sync.md
   - id: mixtura-backends
-    title: Mixtura, docs/sync-backends.md (WebDAV adapter, CORS, user setup with Docker)
-    url: ../../mixtura/docs/sync-backends.md
+    title: "Host package: the WebDAV adapter (Mixtura's own sync, where it came from, was removed on 2026-11-20)"
+    url: ../../../packages/host/docs/webdav.md
 ---
 
 # How Emptio is built
