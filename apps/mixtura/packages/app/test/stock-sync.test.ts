@@ -202,6 +202,76 @@ test('a shared database that cannot be opened is no error: nothing runs', async 
   sync.stop();
 });
 
+test('two refreshes at once start one loop for a space', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const { sync } = await device(space, storage.adapter);
+  // At the start the stock read and the page coming to the front both ask.
+  await Promise.all([sync.refresh(), sync.refresh()]);
+  await settle();
+  expect(storage.state.reads).toBe(1);
+  sync.stop();
+  sync.syncNow();
+  await settle();
+  expect(storage.state.reads).toBe(1);
+});
+
+test('a stop while the spaces are being read leaves no loop behind', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const shared = sharedStore();
+  await shared.putSpace(space);
+  const slow = {
+    ...shared,
+    readCollection: async (id: string, name: string) => {
+      await settle();
+      return shared.readCollection(id, name);
+    },
+  };
+  const sync = createStockSync({
+    shared: slow,
+    adapter: () => storage.adapter,
+    now,
+    onChange: () => undefined,
+    ...noTimers,
+  });
+  const reading = sync.refresh();
+  // The spaces are listed; the stop comes while the first collection is read.
+  await new Promise((r) => setTimeout(r, 5));
+  sync.stop();
+  await reading;
+  await settle();
+  expect(storage.state.reads).toBe(0);
+  expect(sync.status(space.id)).toBeUndefined();
+});
+
+test('a space that came or went since the last look tells the screens to read again', async () => {
+  const storage = fakeStorage();
+  const shared = sharedStore();
+  const seen: string[] = [];
+  const sync = createStockSync({
+    shared,
+    adapter: () => storage.adapter,
+    now,
+    onChange: (what) => seen.push(what),
+    ...noTimers,
+  });
+  await shared.putSpace({ id: 'a', secret: 'x', storage: { type: 'device', address: '' } });
+  await sync.refresh();
+  // The first look is the screens' own read: nothing to read again.
+  expect(seen).not.toContain('records');
+  await sync.refresh();
+  expect(seen).not.toContain('records');
+  // Joined in the Household app in another tab.
+  await shared.putSpace({ id: 'b', secret: 'y', storage: { type: 'device', address: '' } });
+  await sync.refresh();
+  expect(seen.filter((w) => w === 'records')).toHaveLength(1);
+  await shared.removeSpace('a');
+  await sync.refresh();
+  expect(seen.filter((w) => w === 'records')).toHaveLength(2);
+  sync.stop();
+});
+
 test('the status in words', () => {
   const at = '2026-11-20T09:00:00.000Z';
   const later = '2026-11-20T09:05:10.000Z';

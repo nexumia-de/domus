@@ -73,6 +73,10 @@ export function createStockSync(options: StockSyncOptions): StockSync {
   const { shared, now, onChange } = options;
   const running = new Map<string, Running>();
   let stopped = false;
+  let looking: Promise<void> | undefined;
+  let again = false;
+  /** The ids of the spaces at the last look, to notice one that came or went. */
+  let known: string | undefined;
 
   function start(space: StoredSpace, entry: Running): void {
     let adapter: StorageAdapter;
@@ -116,39 +120,70 @@ export function createStockSync(options: StockSyncOptions): StockSync {
     entry.loop.start();
   }
 
+  /** Reads the spaces once and makes the loops match them. Never rejects. */
+  async function look(): Promise<void> {
+    if (stopped) return;
+    let spaces: StoredSpace[];
+    try {
+      spaces = await shared.listSpaces();
+    } catch {
+      // The shared database cannot be opened (no IndexedDB, a private window): nothing to
+      // sync, and the app says so itself with its read-only banner.
+      return;
+    }
+    if (stopped) return;
+    const ids = spaces
+      .map((s) => s.id)
+      .sort()
+      .join(' ');
+    // A space joined, made or removed elsewhere (the Household app in another tab): the
+    // screens hold the spaces of their last read and must read again. Not on the first look,
+    // which follows the screens' own read.
+    const moved = known !== undefined && known !== ids;
+    known = ids;
+    const here = new Set(spaces.map((s) => s.id));
+    for (const [id, entry] of running) {
+      if (here.has(id)) continue;
+      entry.loop?.stop();
+      running.delete(id);
+    }
+    for (const space of spaces) {
+      const signature = signatureOf(space);
+      const old = running.get(space.id);
+      if (old?.signature === signature) continue;
+      const syncedAt = await shared
+        .readCollection(space.id, STOCK_COLLECTION)
+        .then((state) => state.syncedAt)
+        .catch(() => undefined);
+      // Stopped while the collection was read: start nothing more.
+      if (stopped) return;
+      old?.loop?.stop();
+      const entry: Running = { signature, busy: false, deviceOnly: isDeviceOnly(space) };
+      if (syncedAt !== undefined) entry.syncedAt = syncedAt;
+      running.set(space.id, entry);
+      if (!entry.deviceOnly) start(space, entry);
+    }
+    onChange(moved ? 'records' : 'status');
+  }
+
   return {
-    async refresh() {
-      if (stopped) return;
-      let spaces: StoredSpace[];
-      try {
-        spaces = await shared.listSpaces();
-      } catch {
-        // The shared database cannot be opened (no IndexedDB, a private window): nothing to
-        // sync, and the app says so itself with its read-only banner.
-        return;
+    refresh() {
+      // One look at a time: the stock read and the page coming to the front both ask at the
+      // start, and two looks side by side would each start a loop for the same space. A request
+      // during a look runs one more after it.
+      if (looking) {
+        again = true;
+        return looking;
       }
-      if (stopped) return;
-      const here = new Set(spaces.map((s) => s.id));
-      for (const [id, entry] of running) {
-        if (here.has(id)) continue;
-        entry.loop?.stop();
-        running.delete(id);
-      }
-      for (const space of spaces) {
-        const signature = signatureOf(space);
-        const old = running.get(space.id);
-        if (old?.signature === signature) continue;
-        old?.loop?.stop();
-        const entry: Running = { signature, busy: false, deviceOnly: isDeviceOnly(space) };
-        const syncedAt = await shared
-          .readCollection(space.id, STOCK_COLLECTION)
-          .then((state) => state.syncedAt)
-          .catch(() => undefined);
-        if (syncedAt !== undefined) entry.syncedAt = syncedAt;
-        running.set(space.id, entry);
-        if (!entry.deviceOnly) start(space, entry);
-      }
-      onChange('status');
+      looking = (async () => {
+        do {
+          again = false;
+          await look();
+        } while (again && !stopped);
+      })().finally(() => {
+        looking = undefined;
+      });
+      return looking;
     },
     changed: (spaceId) => running.get(spaceId)?.loop?.poke(),
     syncNow() {

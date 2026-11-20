@@ -48,6 +48,30 @@ export function valueOf(row: Stock): Record<string, unknown> {
   return value;
 }
 
+/** The fields of a stock value this app reads and writes; every other field is another app's. */
+const OWN_FIELDS = new Set(['present', 'openedOn', 'moreBatches', 'bestBefore', 'note']);
+
+/**
+ * The value to store for a mark: what this app knows comes from the mark, every other field
+ * from the record as it is stored now. The screens hold the record of their last read, and a
+ * field another app wrote since then must not be overwritten with the older copy.
+ */
+function withForeignFields(
+  value: Record<string, unknown>,
+  stored: readonly SyncRecord[],
+  key: string,
+): Record<string, unknown> {
+  const current = stored.find((r) => r.key === key && r.deleted !== true)?.value;
+  const out: Record<string, unknown> = {};
+  for (const [field, v] of Object.entries(value)) if (OWN_FIELDS.has(field)) out[field] = v;
+  if (current !== null && typeof current === 'object') {
+    for (const [field, v] of Object.entries(current)) if (!OWN_FIELDS.has(field)) out[field] = v;
+  } else {
+    for (const [field, v] of Object.entries(value)) if (!OWN_FIELDS.has(field)) out[field] = v;
+  }
+  return out;
+}
+
 export interface StockData {
   spaces: Space[];
   rows: StockRecord[];
@@ -85,9 +109,11 @@ export async function writeStock(
     bySpace.set(record.spaceId, [...(bySpace.get(record.spaceId) ?? []), record]);
   }
   for (const [spaceId, list] of bySpace) {
-    await localChange(shared, spaceId, STOCK_COLLECTION, now, () => ({
+    await localChange(shared, spaceId, STOCK_COLLECTION, now, (stored) => ({
       put: list.flatMap((r) =>
-        'deleted' in r ? [] : [{ key: r.ingredientId, value: valueOf(r) }],
+        'deleted' in r
+          ? []
+          : [{ key: r.ingredientId, value: withForeignFields(valueOf(r), stored, r.ingredientId) }],
       ),
       remove: list.flatMap((r) => ('deleted' in r ? [r.ingredientId] : [])),
     }));

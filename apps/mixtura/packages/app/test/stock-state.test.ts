@@ -2,7 +2,13 @@ import { expect, test } from 'vitest';
 import { initialState } from '../src/app-state';
 import { COMMON_STOCK } from '../src/screens/stock/common';
 import { createStore } from '../src/state';
-import { changeStock, stockState, stockWrites, withPresent } from '../src/stock/state';
+import {
+  changeStock,
+  invalidateStock,
+  stockState,
+  stockWrites,
+  withPresent,
+} from '../src/stock/state';
 import { type LocalStore, type StockFields } from '../src/store';
 import type { Store as SharedStore } from '@nexumia-de/hospes';
 import { seedModel } from './browse-fixture';
@@ -133,6 +139,50 @@ test('a mark is stamped after everything in the collection, even with a clock th
   await stockWrites();
   const stamp = (await storedStock(shared, entry, 'gin'))?.updatedAt ?? '';
   expect(stamp > '2027-01-01T00:00:00.000Z').toBe(true);
+});
+
+test('a mark keeps a field another app wrote after the stock was read', async () => {
+  const shared = sharedStore();
+  const first = await context(await openFresh(), shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [{ key: 'rum', value: { present: true, note: 'back bar' } }]);
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  // Another app adds its field and changes the note; this app has the older record in memory.
+  await shared.changeRecords(entry, 'stock', (current) => ({
+    ...current,
+    records: current.records.map((r) => ({
+      ...r,
+      value: { present: true, note: 'cellar', 'x-culina-amount': { value: 2 } },
+    })),
+  }));
+  changeStock(ctx, [{ id: 'rum', next: withPresent(recordsOf(ctx), 'rum', false) }]);
+  await stockWrites();
+  // What this app knows is what it showed; what it does not know stays as stored.
+  expect((await storedStock(shared, entry, 'rum'))?.value).toEqual({
+    present: false,
+    note: 'back bar',
+    'x-culina-amount': { value: 2 },
+  });
+});
+
+test('a read asked for while a mark is being written shows the mark', async () => {
+  const memory = sharedStore();
+  // A database that takes its time to write, as a phone's does.
+  const shared = {
+    ...memory,
+    changeRecords: async (...args: Parameters<typeof memory.changeRecords>) => {
+      await new Promise((r) => setTimeout(r, 15));
+      return memory.changeRecords(...args);
+    },
+  };
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  changeStock(ctx, [{ id: 'gin', next: withPresent(recordsOf(ctx), 'gin', true) }]);
+  // Records arrived by sync before the write of the mark reached the database.
+  invalidateStock(ctx.store);
+  stockState(ctx);
+  await stockWrites();
+  await new Promise((r) => setTimeout(r, 40));
+  expect(recordsOf(ctx).get('gin')).toMatchObject({ present: true });
 });
 
 test('stock is not part of the export: it belongs to the space', async () => {

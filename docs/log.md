@@ -2,6 +2,7 @@
 
 ## 2026-11-20
 
+- **Creation**: rules for fixes and for work by several agents in [AGENTS.md](../AGENTS.md) (a fix names the commit its test fails on and the controls; a document per class of defect; the review record), the [review record](reviews.md) with its first entry, and the first ordering table, [sync orderings](../packages/host/docs/sync-orderings.md). Taken from a study of another agent-built project.
 - **Update**: goal 6, Mixtura on spaces. Stock is the collection `stock` of a space in the shared database; Mixtura's own sync (places, storages, passphrases, invites, the Sync page) is removed and its names are the shared ones. The host package has a space on this device only (`device.ts`: `ensureSpace`, `isDeviceOnly`), which the Household app lists and can connect to a storage (`#/spaces/<id>/connect`). The earlier sync model (place document, envelope, units, passphrase cipher) left `packages/model` and `packages/host`. CI lost `mixtura-webdav`; `scripts/site-e2e.mjs` checks that a space Mixtura made shows in the Household app. Nothing was run against a real storage. [Roadmap](roadmap.md), [decision](../apps/mixtura/docs/decisions/stock-in-spaces.md).
 
 ## 2026-11-19

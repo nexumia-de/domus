@@ -20,6 +20,7 @@ its own bundle. Change history is in [log.md](log.md).
 # Reference
 
 - [Deployment](deployment.md) - The one address domus.nexumia.de: layout of the site, headers per folder, the browser check that the apps stay apart, the deploy job, the owner's steps.
+- [Reviews](reviews.md) - The record of changes several agents made together: who did which part, who checked what, what the checks found, the counts, what nobody verified; first entry goal 6.
 - [Development](development.md) - The layout, the one workspace, the checks from the root, how the histories were imported, what still points at the old repositories.
 
 # Parts

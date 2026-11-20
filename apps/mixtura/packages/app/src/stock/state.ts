@@ -135,26 +135,30 @@ export function stockState({ state, store, data }: StockContext): StockState {
   };
   cache = entry;
   const names = { home: strings.spaces.home, unnamed: strings.spaces.unnamed };
-  Promise.all([loadStock(data.shared, names), local.settings.load()]).then(
-    ([{ spaces, rows }, settings]) => {
-      for (const record of rows) {
-        const space = entry.bySpace.get(record.spaceId) ?? new Map<string, StockRecord>();
-        space.set(record.ingredientId, record);
-        entry.bySpace.set(record.spaceId, space);
-      }
-      const hasStock = (id: string): boolean =>
-        [...(entry.bySpace.get(id)?.values() ?? [])].some((r) => !('deleted' in r));
-      const resolved = resolveSelection(spaces, settings.spaces, hasStock);
-      entry.selection = resolved.selection;
-      // A space that is new on this device, or gone: keep what was decided about it.
-      if (!sameSetting(resolved.setting, settings.spaces)) {
-        void local.settings.set('spaces', resolved.setting).catch(() => undefined);
-      }
-      finish(entry);
-      void data.sync.refresh();
-    },
-    () => finish(entry),
-  );
+  // After the writes that are under way: a read that overtook a mark would show the stock
+  // without it, and nothing would read again.
+  queue
+    .then(() => Promise.all([loadStock(data.shared, names), local.settings.load()]))
+    .then(
+      ([{ spaces, rows }, settings]) => {
+        for (const record of rows) {
+          const space = entry.bySpace.get(record.spaceId) ?? new Map<string, StockRecord>();
+          space.set(record.ingredientId, record);
+          entry.bySpace.set(record.spaceId, space);
+        }
+        const hasStock = (id: string): boolean =>
+          [...(entry.bySpace.get(id)?.values() ?? [])].some((r) => !('deleted' in r));
+        const resolved = resolveSelection(spaces, settings.spaces, hasStock);
+        entry.selection = resolved.selection;
+        // A space that is new on this device, or gone: keep what was decided about it.
+        if (!sameSetting(resolved.setting, settings.spaces)) {
+          void local.settings.set('spaces', resolved.setting).catch(() => undefined);
+        }
+        finish(entry);
+        void data.sync.refresh();
+      },
+      () => finish(entry),
+    );
   function finish(target: Cache): void {
     target.state = derive(target);
     if (cache === target) bump(store);
