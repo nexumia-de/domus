@@ -2,6 +2,7 @@
 // with materia's shelf helpers. A date is derived from the ingredient's recorded shelf life
 // only when exactly one value applies; nothing is ever written back.
 import { daysBetween, expiry } from '../model';
+import { shelfLifeApplies } from './types';
 import type { ShelfLifeEntry, StockExpiryResult, StockItem } from './types';
 
 interface Options {
@@ -22,7 +23,7 @@ const soon = (options: Options): { soonDays?: number } =>
  * @returns With an entered `useBy`: status, days left (0 on the day, negative after) and basis `entered`. Without one, if `preparedOn` and `state` are set and the shelf life has exactly one value for that state: the date from it, basis `shelf-life`. Otherwise status `none`. A date that is not a real date is `invalid-date`.
  */
 export function stockExpiry(
-  item: Pick<StockItem, 'useBy' | 'preparedOn' | 'state'>,
+  item: Pick<StockItem, 'useBy' | 'preparedOn' | 'state' | 'storage'>,
   today: string,
   shelfLife: readonly ShelfLifeEntry[] = [],
   options: Options = {},
@@ -38,12 +39,11 @@ export function stockExpiry(
     const e = expiry({ madeOn: item.useBy, today, shelfLifeDays: 0, ...soon(options) });
     return withBasis(e, 'entered');
   }
-  if (item.preparedOn === undefined || item.state === undefined)
-    return { ok: true, status: 'none' };
+  if (item.preparedOn === undefined) return { ok: true, status: 'none' };
   if (daysBetween(item.preparedOn, item.preparedOn) === undefined) {
     return { ok: false, error: { code: 'invalid-date', field: 'preparedOn' } };
   }
-  const days = new Set(shelfLife.filter((s) => s.state === item.state).map((s) => s.days));
+  const days = new Set(shelfLife.filter((s) => shelfLifeApplies(s, item)).map((s) => s.days));
   const [only] = days;
   if (days.size !== 1 || only === undefined) return { ok: true, status: 'none' };
   const e = expiry({ madeOn: item.preparedOn, today, shelfLifeDays: only, ...soon(options) });

@@ -40,6 +40,8 @@ export const stockStrings = {
   amountLabel: 'Amount',
   unitLabel: 'Unit',
   stateLabel: 'State',
+  storageLabel: 'Where it lies',
+  storageNone: 'Not stated',
   stateNone: 'Not stated',
   preparedLabel: 'Date prepared',
   preparedToday: 'Today',

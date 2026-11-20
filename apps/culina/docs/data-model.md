@@ -312,9 +312,19 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `lines`       | array of object | yes      | `ref` (ingredient or component), optional `amount`, `role`, `state`, `note` |
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
+| `keeps`       | array of object | no       | How long the made component keeps, per storage place; see below             |
 | `steps`       | array of object | no       | Steps by technique or plain action, lines used, note; see [Steps](#steps)   |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
 
+- **Keeps (since 2026-11-20, for meal prep).** `keeps` says how long the
+  made component keeps and how: one entry per storage place, each
+  `{ storage, days, source, note? }` with `storage` `pantry`, `fridge` or
+  `freezer`, `days` a whole number, and `note` the user's words for how
+  ("in portions, airtight"). Every entry has a `source`; the user's own
+  entry is `user`. **A shelf life is a food-safety figure:** a shipped
+  component gets one only from an authority that was read, and none is
+  shipped today. The stock rules read these entries as a shelf life
+  without a state ([stock item](#stock-item)).
 - **Lines.** A line may carry a `key`, a short slug that is unique in the component, so that a step can name it (see [Steps](#steps)). An amount is mass, volume or count, or `percent` of the
   `percentBase` mass. A line without an amount ("salt to taste") is kept
   and reported as unmeasured by anything derived.
@@ -482,6 +492,7 @@ to any item at any time. Items are stored; days left are derived.
 | `always`     | boolean | no       | The user marks it as always there; it counts as present until it is unticked |
 | `preparedOn` | date    | no       | When it was cooked or made                                                   |
 | `useBy`      | date    | no       | The date the user entered                                                    |
+| `storage`    | string  | no       | Where it lies: `pantry`, `fridge` or `freezer`                               |
 | `note`       | string  | no       | Free text                                                                    |
 
 Stored as, for presence only and with every detail:
@@ -511,13 +522,17 @@ never rebuilds it from the fields it knows.
 
 Days left, "use soon" and "past", the limiting shelf life of a dish and
 "what can I make, ranked by what must go first" are derived. If `useBy`
-is absent, the engine may derive a date from `preparedOn` plus the shelf
-life of the ingredient for that state, only when the ingredient records
-exactly one value for the state; it never writes it back and invents no
-shelf life. With several storage places (pantry, fridge, freezer) the
-screen offers the dates as suggestions and the user chooses. Components
-have no shelf life of their own yet, so for them only an entered `useBy`
-counts.
+is absent, the engine may derive a date from `preparedOn` plus a recorded
+shelf life, only when exactly one value applies; it never writes it back
+and invents no shelf life. A recorded shelf life applies when its state
+is the item's and its place is the item's (`shelfLifeApplies`): an
+ingredient records it per state and place, a component per place only
+([`keeps`](#component)), so a component's entry applies in any state.
+`storage` on the item says where it lies (since 2026-11-20): with it,
+only the shelf life of that place counts, which is what makes a date
+derivable for a component that keeps 3 days in the fridge and 90 in the
+freezer. Without it, and with several places, the screen offers the
+dates as suggestions and the user chooses.
 
 ## Affinity
 

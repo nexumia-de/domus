@@ -109,6 +109,10 @@ export const appStrings = {
     backToComponent: 'Back to the component',
     noSteps: 'This component has no steps yet.',
     cookDone: 'That was the last step.',
+    keepsHeading: 'Keeps',
+    keepsLine: (place: string, days: number): string =>
+      `${place}: ${days} ${days === 1 ? 'day' : 'days'}`,
+    madeIt: 'Made it: put it in stock',
     colAmount: 'Amount',
     colPercent: (base: string): string => `% of ${base}`,
     buyAbout: (g: string): string => `buy about ${g}`,
@@ -328,6 +332,14 @@ export const appStrings = {
     stepUp: (n: number): string => `Move step ${n} up`,
     stepDown: (n: number): string => `Move step ${n} down`,
     stepRemove: (n: number): string => `Remove step ${n}`,
+    keepsHeading: 'Keeps',
+    keepsHelp: 'How long it keeps once made, and how. These are your own figures.',
+    addKeep: 'Add a storage place',
+    keepLegend: (n: number): string => `Storage ${n}`,
+    keepPlace: 'Storage place',
+    keepDays: 'Days',
+    keepNote: 'How (optional)',
+    keepRemove: (n: number): string => `Remove storage ${n}`,
     portionsLabel: 'Portions',
     noteLabel: 'Note',
     slotsHeading: 'Role slots',
@@ -393,6 +405,8 @@ export const appStrings = {
       step: (n: number): string => `Step ${n}: choose what is done, or write a note, to save it.`,
       stepNumber: (n: number): string =>
         `Step ${n}: time and temperature must be numbers above 0, or empty.`,
+      keep: (n: number): string =>
+        `Storage ${n}: give whole days, and each storage place once, to save it.`,
     },
   },
   // Versions, history, tasting notes and variations.

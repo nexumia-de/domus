@@ -412,3 +412,17 @@
     content: none;
   }
 }
+
+/* How long a component keeps: the rows of the editor, and the list on the component. */
+.keep-rows {
+  margin: 0 0 var(--sp-3);
+}
+
+.keeps-list {
+  margin: 0 0 var(--sp-3);
+  padding-inline-start: var(--sp-5, 1.25rem);
+}
+
+.keeps-section .btn {
+  margin-top: var(--sp-2);
+}
