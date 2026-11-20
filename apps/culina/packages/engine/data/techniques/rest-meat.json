@@ -1,0 +1,43 @@
+{
+  "id": "rest-meat",
+  "name": {
+    "en": "Resting meat",
+    "de": "Fleisch ruhen lassen"
+  },
+  "watch": {
+    "en": "Let meat rest before cutting it: about 10 minutes for a thick steak, half an hour for a large roast. Take it off the heat a little early, it goes on cooking.",
+    "de": "Fleisch vor dem Anschneiden ruhen lassen: etwa 10 Minuten bei einem dicken Steak, eine halbe Stunde bei einem großen Braten. Etwas früher von der Hitze nehmen, es gart nach."
+  },
+  "why": {
+    "en": "As the meat cools a little it holds its juice better, so less runs out when it is cut; in one kitchen test a steak cut at once lost about 9 % of its weight as juice, a rested one about 2 %.",
+    "de": "Leicht abgekühlt hält das Fleisch seinen Saft besser, sodass beim Schneiden weniger ausläuft; in einem Küchenversuch verlor ein sofort angeschnittenes Steak etwa 9 % seines Gewichts als Saft, ein geruhtes etwa 2 %."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, After the Cooking: Resting, Carving, and Serving, p. 165",
+      "isbn": "9780340831496",
+      "sentence": "Cooling therefore makes the meat easier to carve and reduces the amount of fluid lost during carving."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Heat and Meat Texture (paragraph before 'Knowing When to Stop Cooking'), p. 153",
+      "isbn": "9780340831496",
+      "sentence": "and can range from a negligible few degrees in a thin cut to 20°F/10°C in a large roast."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 3 STEAKS, CHOPS, CHICKEN, FISH, and the Science of Fast-Cooking Foods, section THE IMPORTANCE OF RESTING MEAT",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "Cut it open immediately, and you lose an additional 9 percent."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Gerichte aus Fleisch herstellen - 3 Schlachtfleisch für einfache Speisen, Rindfleisch - Rinderrücken-Steaks, p. 679",
+      "isbn": "9783805708388",
+      "sentence": "Wichtig ist für das Fleisch eine Ruhephase vor dem Anschneiden/Servieren (mind. 10 Min.) - Nachgaren beachten !"
+    }
+  ]
+}

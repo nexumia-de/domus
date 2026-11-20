@@ -20,6 +20,8 @@ These are the owner's decisions after reading the research below. They are the o
 - **Food-safety figures are cited from the authority of the user's language**, not from one source for everyone: the BfR for German, the USDA FSIS or the UK Food Standards Agency for English. The numbers differ between authorities (finding 3 below), so the note says whose figure it is. The data holds no such figure today.
 - **The licence of the sources** is [decided apart](decisions/sources-licence.md): non-commercial use is fine for this hobby project.
 
+**What happened since (2026-11-20, written by the agent, not a decision of the owner).** The owner handed over text copies of McGee, _Der junge Koch_, _The Food Lab_ and _Texture Over Taste_ and asked for the app to be improved from them. Agents read them, and 157 source entries now name the first three ([four books read against the notes](book-findings.md)). That departs from the second point above in its wording: no person looked the passages up, each sentence was checked by a script against the text. The owner is asked there how the rule should read.
+
 ## How to read this file
 
 - **Verification marks.** `V-cat` = title, author, year, publisher or ISBN seen in a library or bookseller catalogue record returned by the Google Books catalogue feed or a web search on 2026-11-19. It is a catalogue record, not a publisher page, so "edition number", "in print" and "price" are usually **not verified**. `V-page` = seen on the publisher's or an official page. `NV` = not verified. Nothing was guessed; where a fact is missing it says `NV`.

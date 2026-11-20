@@ -5,12 +5,12 @@
     "de": "Kochen in sprudelndem Wasser"
   },
   "watch": {
-    "en": "Boil green vegetables and pasta quickly in plenty of water; simmer starchy roots such as potatoes slowly.",
-    "de": "Grünes Gemüse und Nudeln zügig in reichlich Wasser kochen; stärkereiche Wurzeln wie Kartoffeln langsam simmern lassen."
+    "en": "Boil green vegetables and pasta quickly in plenty of water, and stir pasta during the first minutes; simmer starchy roots such as potatoes slowly.",
+    "de": "Grünes Gemüse und Nudeln zügig in reichlich Wasser kochen und Nudeln in den ersten Minuten umrühren; stärkereiche Wurzeln wie Kartoffeln langsam simmern lassen."
   },
   "why": {
-    "en": "Plenty of water keeps released starch from making pasta sticky and keeps the colour and flavour of greens; a slow simmer lets the heat reach the middle and cook evenly.",
-    "de": "Reichlich Wasser verhindert, dass frei werdende Stärke die Nudeln klebrig macht, und erhält Farbe und Geschmack von Grünem; sanftes Köcheln lässt die Hitze bis in die Mitte dringen und gleichmäßig garen."
+    "en": "Pasta sticks in the first minutes, while the starch on its surface swells; stirring then keeps it apart. Plenty of water dilutes the starch and keeps the colour and flavour of greens; a slow simmer lets the heat reach the middle and cook evenly.",
+    "de": "Nudeln kleben in den ersten Minuten, solange die Stärke an ihrer Oberfläche quillt; Umrühren hält sie dann getrennt. Reichlich Wasser verdünnt die Stärke und erhält Farbe und Geschmack von Grünem; sanftes Köcheln lässt die Hitze bis in die Mitte dringen und gleichmäßig garen."
   },
   "level": "textbook",
   "sources": [
@@ -41,6 +41,25 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "otherwise, the starch released by the dough will make the pasta gummy and sticky."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Cereal Doughs and Batters, Cooking Pasta and Noodles - Cooking Water, p. 576",
+      "isbn": "9780340831496",
+      "sentence": "and to separate the noodles from each other so that they cook evenly and without sticking."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Cereal Doughs and Batters, Cooking Pasta and Noodles - Stickiness, p. 576",
+      "isbn": "9780340831496",
+      "sentence": "Sticking can be minimized by constantly stirring the noodles for the first few minutes of cooking"
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 7 TOMATO SAUCE, MACARONI, and the Science of Pasta, section The BEST Way",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "After that, whether the pasta is swimming in a hot tub of water or just barely covered, absolutely no sticking occurs."
     }
   ]
 }

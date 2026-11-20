@@ -199,6 +199,7 @@
             "en": "Put the bones in the pot first, the meat on top, and pour in the water, which should be very clear or filtered.",
             "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf, dann das Wasser eingießen; es soll sehr klar oder gefiltert sein."
           },
+          "technique": "stock-cold-start",
           "uses": ["beef", "bone", "water"]
         },
         {

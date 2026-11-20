@@ -10,6 +10,14 @@ export interface StepsOwner {
   steps?: readonly Step[];
 }
 
+/** What `stepFindings` checks beyond the techniques. */
+export interface StepOptions {
+  /** The ids of the known plain actions; left out, an action is not checked. */
+  actionIds?: ReadonlySet<string>;
+  /** True for a shipped dish: every step has its text in both languages. */
+  textRequired?: boolean;
+}
+
 /**
  * Findings of one component's lines and steps; `base` is the path prefix
  * (for example `components[0]`). Used by `validateSteps` and `validateClassic`.
@@ -18,6 +26,7 @@ export function stepFindings(
   base: string,
   owner: StepsOwner,
   techniqueIds: ReadonlySet<string>,
+  options: StepOptions = {},
 ): ContentFinding[] {
   const out: ContentFinding[] = [];
   const keys = new Set<string>();
@@ -28,7 +37,25 @@ export function stepFindings(
   });
   (owner.steps ?? []).forEach((step, i) => {
     const at = `${base}.steps[${i}]`;
-    if (!isI18nText(step.text)) out.push(found('text-incomplete', `${at}.text`));
+    if (step.text === undefined ? options.textRequired === true : !isI18nText(step.text)) {
+      out.push(found('text-incomplete', `${at}.text`));
+    }
+    const said =
+      step.text !== undefined ||
+      step.technique !== undefined ||
+      step.action !== undefined ||
+      (step.note !== undefined && step.note.trim() !== '');
+    if (!said) out.push(found('step-empty', at));
+    if (step.technique !== undefined && step.action !== undefined) {
+      out.push(found('technique-and-action', at, step.action));
+    }
+    if (
+      step.action !== undefined &&
+      options.actionIds !== undefined &&
+      !options.actionIds.has(step.action)
+    ) {
+      out.push(found('unknown-action', `${at}.action`, step.action));
+    }
     if (step.sourceNote !== undefined && !isI18nText(step.sourceNote)) {
       out.push(found('text-incomplete', `${at}.sourceNote`));
     }
@@ -49,17 +76,20 @@ export function stepFindings(
 }
 
 /**
- * Checks the steps of one component: texts complete in both languages, every
- * `technique` exists, every line named in `uses` exists (by `key`), line keys
- * are unique, a range ends above its start.
+ * Checks the steps of one component: a text, where there is one, complete in both
+ * languages; every step says something (text, technique, action or note) and names a
+ * technique or an action, not both; every `technique` and `action` exists, every line
+ * named in `uses` exists (by `key`), line keys are unique, a range ends above its start.
  *
  * @param component - A component with `lines` and `steps`.
  * @param techniqueIds - The ids of the known techniques.
+ * @param options - The known plain actions, and whether every step needs its text.
  * @returns `{ ok: true }` or `{ ok: false, error: { code: 'invalid', findings } }`.
  */
 export function validateSteps(
   component: StepsOwner,
   techniqueIds: ReadonlySet<string>,
+  options: StepOptions = {},
 ): ContentResult {
-  return contentResult(stepFindings('component', component, techniqueIds));
+  return contentResult(stepFindings('component', component, techniqueIds, options));
 }

@@ -5,12 +5,12 @@
     "de": "Mehlschwitze"
   },
   "watch": {
-    "en": "Cook the flour in the fat over medium heat, stirring often, until it reaches the colour you want.",
-    "de": "Das Mehl im Fett bei mittlerer Hitze unter häufigem Rühren garen, bis es die gewünschte Farbe hat."
+    "en": "Cook the flour in the fat over medium heat, stirring often, until it reaches the colour you want; then add the liquid gradually while whisking.",
+    "de": "Das Mehl im Fett bei mittlerer Hitze unter häufigem Rühren garen, bis es die gewünschte Farbe hat; dann die Flüssigkeit nach und nach unter Rühren zugeben."
   },
   "why": {
-    "en": "Cooking the flour in fat softens its flavour and keeps lumps out; a roux that has burnt no longer thickens.",
-    "de": "Das Mehl im Fett zu garen mildert den Mehlgeschmack und hält Klümpchen fern; eine verbrannte Mehlschwitze bindet nicht mehr."
+    "en": "Cooking the flour in fat softens its flavour and keeps lumps out. The darker the roux, the less it thickens.",
+    "de": "Das Mehl im Fett zu garen mildert den Mehlgeschmack und hält Klümpchen fern. Je dunkler die Mehlschwitze, desto weniger bindet sie."
   },
   "level": "textbook",
   "sources": [
@@ -34,6 +34,31 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Burnt roux will not thicken a liquid; it will simply acid dark specks and an undesirable flavor."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Roux - Improvements in Flavor, Color, and Dispersability, p. 617",
+      "isbn": "9780340831496",
+      "sentence": "It takes more of a dark brown roux than a light one to thicken a given amount of liquid."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Saucen - 1 Bindemöglichkeiten von Saucen, Mehlschwitze - Roux, p. 632",
+      "isbn": "9783805708388",
+      "sentence": "Durch starke Bräunung des Mehls werden die Stärkekörner geschädigt."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Saucen - 1 Bindemöglichkeiten von Saucen, Mehlschwitze - Roux, Herstellung und Verwendung, p. 633",
+      "isbn": "9783805708388",
+      "sentence": "Heiße Roux ist unter Rühren langsam kalt aufzugießen."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 7 TOMATO SAUCE, MACARONI, and the Science of Pasta, section Adding Liquid to a Roux",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "the sauce for which the milk was added rapidly will be much thinner, with a grainy, broken appearance."
     }
   ]
 }

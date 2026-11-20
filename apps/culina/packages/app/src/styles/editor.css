@@ -305,3 +305,110 @@
     width: 24rem;
   }
 }
+
+/* The steps of a component: one card per step, what is done, what goes in, time, temperature, note. */
+.step-cards {
+  margin: 0 0 var(--sp-3);
+}
+
+.step-card {
+  min-width: 0;
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-2) var(--sp-3) var(--sp-3);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.step-card > legend {
+  padding: 0 var(--sp-2);
+  font-weight: 600;
+}
+
+.step-card .field-wrap,
+.step-card .line-amount {
+  margin: 0 0 var(--sp-3);
+}
+
+.step-card .line-amount .field-wrap {
+  margin: 0;
+}
+
+/* The unit stands beside the field, not beside its label. */
+.step-card .line-amount {
+  align-items: flex-end;
+}
+
+.step-card .step-uses {
+  min-width: 0;
+  margin: 0 0 var(--sp-3);
+  background: transparent;
+}
+
+.step-source-text {
+  margin: 0 0 var(--sp-3);
+  overflow-wrap: anywhere;
+}
+
+.step-tools {
+  margin: 0;
+}
+
+.steps-section .btn {
+  margin-top: var(--sp-2);
+}
+
+/* A checkbox whose own area is a full target; the box drawn in it has the size of the radios. */
+.step-uses .choice input {
+  display: grid;
+  place-items: center;
+  width: var(--target);
+  height: var(--target);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.step-uses .choice input::before,
+.step-uses .choice input::after {
+  grid-area: 1 / 1;
+  content: '';
+}
+
+.step-uses .choice input::before {
+  box-sizing: border-box;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.step-uses .choice input:checked::before {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.step-uses .choice input:checked::after {
+  width: 0.4rem;
+  height: 0.8rem;
+  border: solid var(--on-accent);
+  border-width: 0 3px 3px 0;
+  transform: translateY(-0.1rem) rotate(45deg);
+}
+
+.step-uses .choice {
+  gap: var(--sp-1);
+}
+
+@media (forced-colors: active) {
+  .step-uses .choice input {
+    appearance: auto;
+  }
+
+  .step-uses .choice input::before,
+  .step-uses .choice input::after {
+    content: none;
+  }
+}

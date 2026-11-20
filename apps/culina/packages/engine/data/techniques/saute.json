@@ -5,12 +5,12 @@
     "de": "Sautieren"
   },
   "watch": {
-    "en": "Have everything cut and ready before you start: the cooking goes fast.",
-    "de": "Alles vor dem Start geschnitten und bereitstellen: das Garen geht schnell."
+    "en": "Have everything cut and ready before you start: the cooking goes fast. Put only a little into the pan at a time.",
+    "de": "Alles vor dem Start geschnitten und bereitstellen: das Garen geht schnell. Immer nur wenig auf einmal in die Pfanne geben."
   },
   "why": {
-    "en": "Sautéing cooks in a little fat in a shallow pan over high heat, and small or thin pieces cook quickly.",
-    "de": "Beim Sautieren gart man in wenig Fett in einer flachen Pfanne bei hoher Hitze, und kleine oder dünne Stücke garen schnell."
+    "en": "Sautéing cooks in a little fat in a shallow pan over high heat, and small or thin pieces cook quickly. A crowded pan cools, the juices collect and the food stews instead of browning.",
+    "de": "Beim Sautieren gart man in wenig Fett in einer flachen Pfanne bei hoher Hitze, und kleine oder dünne Stücke garen schnell. Eine überfüllte Pfanne kühlt ab, der Saft sammelt sich und das Gargut kocht, statt zu bräunen."
   },
   "level": "textbook",
   "sources": [
@@ -34,6 +34,24 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/01%3A_Professionalism_and_Saute/1.05%3A_The_Cooking_Techniques_-_Saute",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Ingredients for sautéing are usually cut into pieces or thinly sliced to facilitate fast cooking."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Hot Metal: Frying, or Sautéing, p. 159",
+      "isbn": "9780340831496",
+      "sentence": "the meat stews in its own juices until they boil off, and its surface doesn’t brown well."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Braten - Sautieren, p. 278",
+      "isbn": "9783805708388",
+      "sentence": "Durch das Schwenken wird eine gleichmäßige Wärmeverteilung erreicht, sodass alle Teile den gleichen Bräunungsgrad und dieselbe Garstufe erreichen."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Gemüse zerkleinern, p. 292",
+      "isbn": "9783805708388",
+      "sentence": "Damit das Braten nicht in Kochen übergeht, immer nur wenig Gemüse in die Pfanne geben."
     }
   ]
 }

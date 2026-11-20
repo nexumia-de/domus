@@ -18,6 +18,7 @@ import { navigation } from './navigation.mjs';
 import { ratios } from './ratios.mjs';
 import { serve } from './serve.mjs';
 import { smoke } from './smoke.mjs';
+import { stepsKit } from './steps-kit.mjs';
 import { stock } from './stock.mjs';
 import { store } from './store.mjs';
 import { versions } from './versions.mjs';
@@ -34,6 +35,7 @@ try {
   await hostRedirect(browser, redirectServer);
   await editor(browser, server);
   await editorMore(browser, server);
+  await stepsKit(browser, server);
   await catalogue(browser, server);
   await install(browser, server);
   await store(browser, server);

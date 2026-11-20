@@ -312,7 +312,7 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `lines`       | array of object | yes      | `ref` (ingredient or component), optional `amount`, `role`, `state`, `note` |
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
-| `steps`       | array of object | no       | Steps with bilingual text, technique and lines used; see [Steps](#steps)    |
+| `steps`       | array of object | no       | Steps by technique or plain action, lines used, note; see [Steps](#steps)   |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
 
 - **Lines.** A line may carry a `key`, a short slug that is unique in the component, so that a step can name it (see [Steps](#steps)). An amount is mass, volume or count, or `percent` of the
@@ -349,11 +349,29 @@ nesting. Schema: `component.schema.json`. One stored record is one
 
 `steps` is the method for the helper: an ordered array, and `method`
 (plain text) stays valid beside it for the user's own recipes. A step is
-`{ text, technique?, uses?, time?, temperature? }`:
+`{ text?, technique?, action?, uses?, time?, temperature?, note? }`. It
+says what is done in at least one of four ways, and the schema refuses a
+step that has none of them:
 
-- `text` is [a text in both languages](#text-in-two-languages).
+- `text` is [a text in both languages](#text-in-two-languages). A shipped
+  dish always has it (its schema requires it, and so does the engine,
+  `text-incomplete`), and a copy of a shipped dish keeps it. A step the
+  user builds has none.
 - `technique` is the id of a [technique](#technique), which the helper
   explains once ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- `action` is the id of a **plain action** (since 2026-11-20): a word for
+  a step that teaches nothing, such as set aside, drain or serve. The 30
+  plain actions are shipped in `data/actions.json` with a name in both
+  languages (`ACTIONS`, `actionById`). **Why two lists:** a technique
+  needs what to watch, why, and a source; a plain action has none of
+  them, and it does not show among the skills that can be marked as
+  learned. A plain action becomes a technique when a source says
+  something about it: the id moves from one list to the other, and a
+  test keeps the two lists free of a shared id. A step names a technique
+  or an action, not both (`technique-and-action`); `stepWord` gives the
+  one it has.
+- `note` is the user's own remark in one language, plain text: what the
+  structure cannot say ("until golden", "half of the butter").
 - `uses` lists the `key`s of the lines the step uses. **Why keys, not line
   numbers:** the plan says "the lines the step uses", and an index shifts
   as soon as a line is added or moved in the editor, so a step would point
@@ -552,15 +570,24 @@ Shipped read-only, one JSON file per technique in
 `technique.schema.json`; the guide for writing one is
 [classic format](classic-format.md#a-technique-file).
 
-| Field     | Type            | Required | Meaning                                                                                   |
-| --------- | --------------- | -------- | ----------------------------------------------------------------------------------------- |
-| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                                   |
-| `name`    | text in 2 langs | yes      | Visible name                                                                              |
-| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                             |
-| `why`     | text in 2 langs | yes      | Why it matters                                                                            |
-| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known           |
-| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, `licence` (an SPDX identifier), and the `sentence` |
+| Field     | Type            | Required | Meaning                                                                             |
+| --------- | --------------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                             |
+| `name`    | text in 2 langs | yes      | Visible name                                                                        |
+| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                       |
+| `why`     | text in 2 langs | yes      | Why it matters                                                                      |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known     |
+| `sources` | array of object | yes      | At least one: `title`, `place`, a `url` or an `isbn`, `licence`, and the `sentence` |
 
+- **Page or book.** A source read on the web has a `url` and a `licence`
+  (an SPDX identifier). A printed book has the `isbn` of the edition read
+  (13 digits, no hyphens) instead: the app shows it as text without a link,
+  and it has no `licence`, because the book is cited as fact and nothing of
+  it is reused. The schema refuses a source with neither. Since 2026-11-20.
+- **Level of a source.** A source may carry its own `level` when it knows
+  the statement in another way than the note says, for example a kitchen
+  test (`tested`) cited beside a textbook; the app then labels that source
+  with its own level. Since 2026-11-20.
 - **Sentence.** Every source carries the sentence the note rests on, at most
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).
@@ -726,8 +753,10 @@ the store kind `skills`. Schema: `skill.schema.json`.
 Shipped helper content is written in English (canonical) and German as
 `{ "en": "...", "de": "..." }` (`i18nText` in `common.schema.json`). Both are
 required and not empty; the engine also refuses a text of white space only.
-A user's own recipe keeps plain strings; only steps are in two languages
-because a derived or copied classic keeps its steps as they are.
+A user's own recipe keeps plain strings; only the `text` of a step is in
+two languages, because a derived or copied classic keeps its steps as
+they are. A step the user builds has no text: it is shown from the name
+of its technique or action, which the app has in both languages.
 
 # Stored versus derived
 

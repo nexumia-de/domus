@@ -1,0 +1,29 @@
+{
+  "id": "pasta-sauce-at-once",
+  "target": "fdc-group-pasta",
+  "text": {
+    "en": "Toss drained pasta with its sauce, oil or butter at once, and keep a little of the cooking water for the sauce.",
+    "de": "Abgegossene Nudeln sofort mit Sauce, Öl oder Butter schwenken und etwas Kochwasser für die Sauce aufheben."
+  },
+  "why": {
+    "en": "Drained pasta sticks together within minutes. The starchy cooking water helps the sauce bind and cling; in a kitchen test pasta cooked in less, starchier water gave a sauce that clung better.",
+    "de": "Abgegossene Nudeln kleben nach wenigen Minuten zusammen. Das stärkehaltige Kochwasser hilft der Sauce zu binden und zu haften; in einem Küchenversuch gab in weniger, stärkereicherem Wasser gekochte Pasta eine Sauce, die besser haftete."
+  },
+  "technique": "cook-pasta",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 4 Teigwaren - Nudeln und Strudel, 4.9 Nudeln kochen - Verkleben der Nudeln verhindern, p. 367",
+      "isbn": "9783805708388",
+      "sentence": "Ein Abspülen oder Abschrecken ist nicht nötig."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 7 TOMATO SAUCE, MACARONI, and the Science of Pasta, section The BEST Way",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "the pasta cooked in less water resulted in a much better sauce consistency, and the sauce actually clung to the pasta better as well."
+    }
+  ]
+}

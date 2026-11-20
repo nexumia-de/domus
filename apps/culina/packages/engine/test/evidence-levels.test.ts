@@ -17,6 +17,19 @@ const shipped = (kind: string): { id: string; level: string }[] =>
   readdirSync(dir(kind))
     .filter((f) => f.endsWith('.json'))
     .map((f) => JSON.parse(readFileSync(dir(kind) + f, 'utf8')) as { id: string; level: string });
+const shippedWithSources = (
+  kind: string,
+): { id: string; level: string; sources: { level?: string }[] }[] =>
+  readdirSync(dir(kind))
+    .filter((f) => f.endsWith('.json'))
+    .map(
+      (f) =>
+        JSON.parse(readFileSync(dir(kind) + f, 'utf8')) as {
+          id: string;
+          level: string;
+          sources: { level?: string }[];
+        },
+    );
 const readSchema = (name: string): { properties: { level: { enum: string[] } } } =>
   JSON.parse(
     readFileSync(fileURLToPath(new URL(`../schemas/${name}.schema.json`, import.meta.url)), 'utf8'),
@@ -90,11 +103,30 @@ describe('the shipped notes', () => {
       }
     }
   });
-  test('none was re-labelled: they are textbook notes', () => {
-    // A level above `textbook` needs a source of that kind that someone read; the two new levels
-    // are for later notes (docs/decisions/sources-licence.md, docs/source-books.md).
+  test('none was re-labelled: they are textbook notes, but for the ones named here', () => {
+    // A level other than `textbook` needs a source of that kind that was read. The notes of
+    // 2026-11-19 all stay `textbook`; a later note that rests on a kitchen test alone is named here
+    // with its level (docs/book-findings.md).
+    const other: Record<string, string> = { 'handling/mushrooms-wash': 'tested' };
+    const seen: string[] = [];
     for (const kind of ['techniques', 'handling', 'substitutes']) {
-      for (const item of shipped(kind)) expect(item.level, `${kind}/${item.id}`).toBe('textbook');
+      for (const item of shipped(kind)) {
+        const key = `${kind}/${item.id}`;
+        expect(item.level, key).toBe(other[key] ?? 'textbook');
+        if (other[key] !== undefined) seen.push(key);
+      }
+    }
+    expect(seen.sort()).toEqual(Object.keys(other).sort());
+  });
+  test('a note at the level `tested` rests on a source that says so', () => {
+    for (const kind of ['techniques', 'handling', 'substitutes']) {
+      for (const item of shippedWithSources(kind)) {
+        if (item.level !== 'tested') continue;
+        expect(
+          item.sources.some((s) => s.level === 'tested'),
+          `${kind}/${item.id}`,
+        ).toBe(true);
+      }
     }
   });
 });

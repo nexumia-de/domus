@@ -5,12 +5,12 @@
     "de": "Scharf anbraten"
   },
   "watch": {
-    "en": "Brown the surface of the food first.",
-    "de": "Zuerst die Oberfläche des Garguts bräunen."
+    "en": "Brown the surface in a hot pan, with the food dry.",
+    "de": "Die Oberfläche in der heißen Pfanne bräunen; das Gargut soll trocken sein."
   },
   "why": {
-    "en": "Browning the surface adds flavour, and searing first gives a dark crust and a caramelised taste.",
-    "de": "Das Bräunen der Oberfläche bringt Geschmack, und zuerst scharf anzubraten gibt eine dunkle Kruste und einen karamellisierten Geschmack."
+    "en": "Browning gives the crust its flavour. It does not seal the juices in: meat seared first loses about as much juice as meat browned at the end.",
+    "de": "Das Bräunen gibt der Kruste ihren Geschmack. Es versiegelt den Saft nicht: Zuerst angebratenes Fleisch verliert etwa so viel Saft wie erst am Ende gebräuntes."
   },
   "level": "textbook",
   "sources": [
@@ -27,6 +27,37 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.03%3A_The_Cooking_Techniques_-_Roasting",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Searing and then turning down to low is also beneficial when a dark crust and caramelized flavor is desired for the finished product."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, The Searing Question (box), p. 161",
+      "isbn": "9780340831496",
+      "sentence": "But searing does flavor the meat surface with products of the browning reactions (p. 777), and flavor gets our juices flowing."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, The Searing Question (box), p. 161",
+      "isbn": "9780340831496",
+      "sentence": "moisture loss is proportional to meat temperature, so the high heat of searing actually dries out the meat surface more than moderate heat does."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 3 STEAKS, CHOPS, CHICKEN, FISH, and the Science of Fast-Cooking Foods, section Q: What exactly is searing, and does it really “seal in juices”?",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "the theory is false, and it’s exceedingly simple to test."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Braten - Veränderungen der Inhaltsstoffe beim Garen, p. 278",
+      "isbn": "9783805708388",
+      "sentence": "Ein Steak wird dabei aber nicht wie oft behauptet rundherum „versiegelt\"!"
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Gerichte aus Fleisch herstellen - 3 Schlachtfleisch für einfache Speisen, Rindfleisch - Rinderrücken-Steaks, p. 679",
+      "isbn": "9783805708388",
+      "sentence": "Dies geschieht ab einer Temperatur von 150 °C auf der Oberfläche des Fleisches."
     }
   ]
 }

@@ -126,6 +126,29 @@ describe('what the schemas refuse', () => {
     );
     expect(fails('technique', 'technique.valid', (d) => delete d.sources[0].licence)).toBe(false);
   });
+  test('a source is a page with a url or a book with the ISBN of the edition read', () => {
+    const book = (d: Doc) => {
+      delete d.sources[0].url;
+      delete d.sources[0].licence;
+      d.sources[0].isbn = '9780000000002';
+    };
+    expect(fails('technique', 'technique.valid', book)).toBe(false);
+    expect(fails('technique', 'technique.valid', (d) => delete d.sources[0].url)).toBe(true);
+    expect(
+      fails('technique', 'technique.valid', (d) => {
+        book(d);
+        d.sources[0].isbn = '978-0-00-000000-2';
+      }),
+    ).toBe(true);
+  });
+  test('a source may say how it knows it, with a level from the list', () => {
+    expect(fails('technique', 'technique.valid', (d) => (d.sources[0].level = 'tested'))).toBe(
+      false,
+    );
+    expect(fails('technique', 'technique.valid', (d) => (d.sources[0].level = 'folklore'))).toBe(
+      true,
+    );
+  });
   test('a line names a catalogue ingredient or a wanted name, not both and not neither', () => {
     const line = (d: Doc) => d.components[0].lines[1];
     expect(fails('classic', classic, (d) => (line(d).wanted = { en: 'x', de: 'y' }))).toBe(true);

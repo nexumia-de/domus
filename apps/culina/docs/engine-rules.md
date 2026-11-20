@@ -989,6 +989,43 @@ way in the app (`packages/app/make-classics.mjs`).
 Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`, `vectors/handling/`
 ([vector format](vectors.md#kinds-of-techniques-classics-and-skills-issue-87)).
 
+## Proposing a step from a sentence
+
+`proposeStep(text, lines)` (`src/steps/propose.ts`, since 2026-11-20) reads one
+sentence of a recipe, in English or German, and proposes the parts of a
+[step](data-model.md#steps). It is for an importer: the recipe arrives as free
+text and is stored as steps of the kit, and the user confirms each proposal.
+There is no language model and no scoring; each rule fits in a sentence.
+
+- **What is done.** `data/step-words.json` lists words for every technique and
+  every plain action, in both languages (written by the project, a matching
+  aid, not teaching). A pattern matches where its words stand next to each
+  other in the sentence, each beginning a word of it: `anbrat` matches
+  "anbraten", and `braten` does not match "anbraten". The technique or action
+  whose pattern stands **first** in the sentence is proposed; at the same
+  place the pattern of more words wins ("scharf anbraten" over "anbraten",
+  "Mehl anschwitzen" as a roux over "anschwitzen"), then the longer one, then
+  the technique.
+- **What goes in.** A line is used when every word of one of its names stands
+  in the sentence, alone or with a plural or case ending (`s`, `es`, `n`, `e`,
+  `en`, `er`, `ern`, and `y` to `ies`). A name counts up to its first comma, so
+  the catalogue's "Potatoes, white, flesh and skin" is found as "potatoes".
+  A name is a whole word: "eine" is no egg, "Buttermilch" no butter.
+- **Time.** The first number or range ("30 bis 40", "2-3", "10 to 15") before
+  a unit of time (s, min, h and their words).
+- **Temperature.** A number or range before `°C`, `°F` or "degrees
+  Celsius/Fahrenheit"; "Grad" alone is Celsius. A bare degree sign or
+  "degrees" names no scale and gives no temperature.
+
+Where no rule applies nothing is proposed, and the importer keeps the sentence
+as the note of the step. **Limits, pinned by a test:** the list knows words,
+not grammar. A noun that is also a verb is taken for the verb ("remove from
+the heat and add the butter" proposes Heat), and a separated German verb
+("brate das Fleisch an") is not found. **Test:** `test/steps-propose.test.ts`;
+one test holds the word lists to the techniques and the plain actions, so a
+new technique without words fails. Not proved: the lists were tried on the
+sentences of the tests only, not yet on the 447 steps of the shipped dishes.
+
 # Substitute effects
 
 Work package 10 of the [helper plan](helper-plan.md) (issue 93). Code:

@@ -115,6 +115,10 @@ test('editor routes: new, and edit of an id; they round-trip and carry no id for
   expect(actionFromHash('#/components/u-1')).toBeUndefined();
   expect(actionFromHash('#/ratios/new')).toBeUndefined();
   expect(actionFromHash('#/components/u-1/other')).toBeUndefined();
+  // An own component is cooked step by step; a dish is not, yet.
+  expect(actionFromHash('#/components/u-1/cook')).toBe('cook');
+  expect(actionFromHash('#/dishes/u-1/cook')).toBeUndefined();
+  expect(hashFor('components', 'u-1', 'cook')).toBe('#/components/u-1/cook');
   expect(hashFor('components', undefined, 'new')).toBe('#/components/new');
   expect(hashFor('dishes', 'u-1', 'edit')).toBe('#/dishes/u-1/edit');
   for (const hash of ['#/components/new', '#/dishes/u-1/edit']) {

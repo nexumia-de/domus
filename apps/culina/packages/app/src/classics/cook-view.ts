@@ -2,7 +2,7 @@
 // amounts (from the engine), its time and temperature as the source gives them, and the technique
 // note the engine says to show. Pure: no DOM.
 import { deriveClassic, pickText, techniqueNotes } from '@culina/engine';
-import type { Classic, Lang, Step, Technique } from '@culina/engine';
+import type { Classic, Lang, Technique, TextStep } from '@culina/engine';
 import { temperatureText, timeText } from './amounts';
 import { dishView } from './dish-view';
 import type { LineView, NameOf } from './dish-view';
@@ -46,7 +46,7 @@ export function cookView(
   if (!derived.ok) return { ok: false, code: derived.error.code };
   const shown = dishView(classic, portions, lang, nameOf);
   if (!shown.ok) return shown;
-  const flat: { step: Step; component: number }[] = derived.components.flatMap((c, component) =>
+  const flat: { step: TextStep; component: number }[] = derived.components.flatMap((c, component) =>
     c.steps.map((step) => ({ step, component })),
   );
   const notes = techniqueNotes(

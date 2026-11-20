@@ -1,0 +1,28 @@
+{
+  "id": "butter-late-in-hot-pan",
+  "target": "fdc-group-butter",
+  "text": {
+    "en": "For hot searing, start in oil or clarified butter and add whole butter only at the end, for the taste.",
+    "de": "Zum scharfen Anbraten mit Öl oder Butterschmalz beginnen und Butter erst am Ende für den Geschmack zugeben."
+  },
+  "why": {
+    "en": "The milk solids in butter brown and then burn at about 120 °C; oil added to butter does not change that, clarifying does.",
+    "de": "Die Milchbestandteile der Butter bräunen und verbrennen bei etwa 120 °C; Öl zur Butter ändert daran nichts, Klären schon."
+  },
+  "technique": "sear",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Milk and Dairy Products, Frying with Butter, p. 37",
+      "isbn": "9780340831496",
+      "sentence": "Adding oil to butter does not improve its heat tolerance."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Braten, p. 278",
+      "isbn": "9783805708388",
+      "sentence": "Als Bratfett eignen sich am besten hitzebeständige, wasserfreie Fette wie Öl oder Butterschmalz."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "deglaze",
+  "name": {
+    "en": "Deglazing",
+    "de": "Ablöschen"
+  },
+  "watch": {
+    "en": "Pour liquid into the hot pan and dissolve the browned layer on its bottom.",
+    "de": "Flüssigkeit in die heiße Pfanne gießen und den gebräunten Satz am Boden lösen."
+  },
+  "why": {
+    "en": "The browned juices on the pan bottom carry the roast flavour; dissolved in the liquid they become the base of the sauce.",
+    "de": "Der gebräunte Bratensatz am Pfannenboden trägt den Röstgeschmack; in der Flüssigkeit gelöst wird er zur Grundlage der Sauce."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Concentrating Stock and Flavor to Finish a Dish (box), p. 600",
+      "isbn": "9780340831496",
+      "sentence": "The high pan temperature helps break down the gelatin molecules into shorter lengths"
+    }
+  ]
+}

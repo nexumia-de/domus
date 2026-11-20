@@ -1,0 +1,22 @@
+{
+  "id": "egg-white-salt-elsewhere",
+  "target": "fdc-group-egg-white",
+  "text": {
+    "en": "Put the salt into the other part of the dish, not into the egg whites to be whipped.",
+    "de": "Das Salz in den anderen Teil des Gerichts geben, nicht in das Eiweiß, das geschlagen wird."
+  },
+  "why": {
+    "en": "Salt makes the whites take longer to whip and the foam less stable.",
+    "de": "Salz verlängert das Aufschlagen und macht den Schaum weniger stabil."
+  },
+  "technique": "whip-egg-whites",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, The Effects of Other Ingredients - Salt, p. 104",
+      "isbn": "9780340831496",
+      "sentence": "Salt increases the whipping time and decreases the foam’s stability."
+    }
+  ]
+}

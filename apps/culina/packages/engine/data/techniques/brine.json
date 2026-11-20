@@ -1,0 +1,37 @@
+{
+  "id": "brine",
+  "name": {
+    "en": "Brining",
+    "de": "In Salzlake einlegen"
+  },
+  "watch": {
+    "en": "Leave poultry or pork in a brine of 3 to 6 % salt for some hours, then dry the surface well.",
+    "de": "Geflügel oder Schweinefleisch einige Stunden in eine Lake mit 3 bis 6 % Salz legen, danach die Oberfläche gut trocknen."
+  },
+  "why": {
+    "en": "Salt loosens the muscle fibres so that they hold more water, and the meat loses less in cooking; in one kitchen test brined chicken breasts lost about 10 % of their weight, plain ones about 17 %. Meat and juices turn saltier.",
+    "de": "Salz lockert die Muskelfasern, sodass sie mehr Wasser halten und das Fleisch beim Garen weniger verliert; in einem Küchenversuch verloren in Lake eingelegte Hähnchenbrüste etwa 10 % ihres Gewichts, unbehandelte etwa 17 %. Fleisch und Saft werden salziger."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Brining, p. 156",
+      "isbn": "9780340831496",
+      "sentence": "The meat’s weight increases by 10% or more."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 3 STEAKS, CHOPS, CHICKEN, FISH, and the Science of Fast-Cooking Foods, section Why Brine?",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "while a plain chicken breast lost about 17 percent of its moisture during cooking, a brined breast lost only 10 percent."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zerlegen, Auslösen und Zubereiten - 2 Fleisch verarbeiten, Mineralstoffe beim Grillen - Salzen von Fleisch, p. 914",
+      "isbn": "9783805708388",
+      "sentence": "Die Ziehzeit hängt ab von der Fleischgröße und beträgt wenige Stunden bis einen halben Tag."
+    }
+  ]
+}

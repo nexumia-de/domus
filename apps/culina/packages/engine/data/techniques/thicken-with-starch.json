@@ -5,12 +5,12 @@
     "de": "Binden mit Stärke"
   },
   "watch": {
-    "en": "Stir the starch smooth in a little cool liquid, add it to the hot liquid and heat almost to the boil, stirring.",
-    "de": "Die Stärke in etwas kalter Flüssigkeit glatt rühren, zur heißen Flüssigkeit geben und unter Rühren fast zum Kochen bringen."
+    "en": "Stir the starch smooth in a little cool liquid, add it to the hot liquid and heat almost to the boil, stirring. Keep it a little thinner than you want it: it thickens as it cools.",
+    "de": "Die Stärke in etwas kalter Flüssigkeit glatt rühren, zur heißen Flüssigkeit geben und unter Rühren fast zum Kochen bringen. Etwas dünner halten als gewünscht: Beim Abkühlen dickt es nach."
   },
   "why": {
-    "en": "The cool liquid keeps the starch grains apart so they do not lump; starch thickens once it is heated almost to boiling.",
-    "de": "Die kalte Flüssigkeit hält die Stärkekörner auseinander, damit sie nicht klumpen; Stärke bindet, sobald sie fast zum Kochen erhitzt ist."
+    "en": "The cool liquid keeps the starch grains apart so they do not lump; starch thickens once it is heated almost to boiling. Long boiling, hard stirring and acid thin it again.",
+    "de": "Die kalte Flüssigkeit hält die Stärkekörner auseinander, damit sie nicht klumpen; Stärke bindet, sobald sie fast zum Kochen erhitzt ist. Langes Kochen, kräftiges Rühren und Säure machen es wieder dünner."
   },
   "level": "textbook",
   "sources": [
@@ -41,6 +41,30 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
       "licence": "CC-BY-NC-SA-4.0",
       "sentence": "it must be stirred continuously during incorporation."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Thinning: The Granules Break, p. 612",
+      "isbn": "9780340831496",
+      "sentence": "All of these have the same effect: they shatter the swollen and fragile granules into very small fragments."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, The Influence of Other Ingredients on Starch Sauces - Flavorings: Salt, Sugar, Acid, p. 616",
+      "isbn": "9780340831496",
+      "sentence": "Gentle and brief cooking will minimize acid breakdown."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Judge Sauce Consistency at Serving Temperatures, p. 614",
+      "isbn": "9780340831496",
+      "sentence": "So sauces should be thinner at the stove than they’re meant to be at the table."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Saucen - 1 Bindemöglichkeiten von Saucen, Weitere Bindemittel in der Verwendung, p. 634",
+      "isbn": "9783805708388",
+      "sentence": "Säure in Flüssigkeiten zerstört zum Teil die Bindekraft, eine Nachbindung ist ggf. erforderlich."
     }
   ]
 }

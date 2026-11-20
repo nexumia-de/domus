@@ -5,12 +5,12 @@
     "de": "Marinieren"
   },
   "watch": {
-    "en": "Let the food rest in the acidic marinade; the acid works on the protein.",
-    "de": "Das Gargut in der sauren Marinade ruhen lassen; die Säure wirkt auf das Eiweiß."
+    "en": "Let the food rest in the acidic marinade, but not too long: the acid works on the protein at the surface.",
+    "de": "Das Gargut in der sauren Marinade ruhen lassen, aber nicht zu lange: Die Säure wirkt auf das Eiweiß an der Oberfläche."
   },
   "why": {
-    "en": "A marinade helps slowly cooked beef keep flavour and tenderness, and its acid changes the protein, a kind of cooking without heat.",
-    "de": "Eine Marinade hilft langsam gegartem Rindfleisch zu Geschmack und Zartheit, und ihre Säure verändert das Eiweiß, eine Art Garen ohne Hitze."
+    "en": "A marinade helps slowly cooked beef keep flavour and tenderness, and its acid changes the protein, a kind of cooking without heat. It gets in only a little way, and meat left too long in acid turns firm and dry at the surface.",
+    "de": "Eine Marinade hilft langsam gegartem Rindfleisch zu Geschmack und Zartheit, und ihre Säure verändert das Eiweiß, eine Art Garen ohne Hitze. Sie dringt nur wenig ein, und zu lange in Säure wird das Fleisch an der Oberfläche fest und trocken."
   },
   "level": "textbook",
   "sources": [
@@ -34,6 +34,30 @@
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Meat_Cutting_and_Processing_for_Food_Service_(BC_Campus)/01%3A_Meat_Science_and_Nutrition/1.02%3A_Composition_of_Meat",
       "licence": "CC-BY-4.0",
       "sentence": "Using marinades or moist heat methods like steaming or stewing will help ensure flavor & tenderness."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Marinades, p. 155",
+      "isbn": "9780340831496",
+      "sentence": "But marinades penetrate slowly, and can give the meat surface an overly sour flavor while they do so."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Flavorings from Plants, Marinades and Rubs, p. 399",
+      "isbn": "9780340831496",
+      "sentence": "Because flavors are mainly fat-soluble molecules, and meat is 75% water, flavor molecules can’t move very far inside."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zerlegen, Auslösen und Zubereiten - 2 Fleisch verarbeiten, Marinaden, p. 909",
+      "isbn": "9783805708388",
+      "sentence": "Legt man Fleisch zu lange in säurehaltige Marinaden ein, kann die Oberfläche unangenehm gummiartig und das Fleisch trocken werden"
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zerlegen, Auslösen und Zubereiten - 2 Fleisch verarbeiten, Fett beim Grillen, p. 913",
+      "isbn": "9783805708388",
+      "sentence": "Allerdings können fettlösliche Stoffe von außen nur wenige Millimeter tief ins das Fleisch eindringen (siehe auch Seite 924)."
     }
   ]
 }

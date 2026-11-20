@@ -36,7 +36,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["title", "place", "url", "sentence"],
+        "required": ["title", "place", "sentence"],
         "additionalProperties": false,
         "properties": {
           "title": {
@@ -54,18 +54,35 @@
             "pattern": "^https?://\\S+$",
             "maxLength": 500
           },
+          "isbn": {
+            "description": "The ISBN-13 of the edition read, digits only: a printed book has no page to link to. A source has a url or an isbn.",
+            "type": "string",
+            "pattern": "^97[89][0-9]{10}$"
+          },
           "licence": {
-            "description": "The licence of the work, as an SPDX identifier (CC-BY-NC-SA-4.0). Every shipped source has one; a build that leaves out what is non-commercial reads it.",
+            "description": "The licence of the work, as an SPDX identifier (CC-BY-NC-SA-4.0). Every shipped source with a url has one; a build that leaves out what is non-commercial reads it. A book cited by isbn has none: it is cited as fact, nothing of it is reused.",
             "type": "string",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$",
             "maxLength": 100
+          },
+          "level": {
+            "description": "How this source knows it, when that differs from the level of the note: a kitchen test cited beside a textbook.",
+            "enum": ["studied", "textbook", "tested", "authority", "tradition"]
           },
           "sentence": {
             "type": "string",
             "minLength": 1,
             "maxLength": 400
           }
-        }
+        },
+        "anyOf": [
+          {
+            "required": ["url"]
+          },
+          {
+            "required": ["isbn"]
+          }
+        ]
       }
     }
   }

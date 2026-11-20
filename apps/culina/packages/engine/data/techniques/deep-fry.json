@@ -1,0 +1,30 @@
+{
+  "id": "deep-fry",
+  "name": {
+    "en": "Deep-frying",
+    "de": "Frittieren"
+  },
+  "watch": {
+    "en": "Fry in small batches and keep the fat at or below 175 °C.",
+    "de": "In kleinen Portionen frittieren und das Fett bei höchstens 175 °C halten."
+  },
+  "why": {
+    "en": "A large batch cools the fat; below about 140 °C the food does not brown enough. Above 175 °C acrylamide can form.",
+    "de": "Eine große Portion kühlt das Fett ab; unter etwa 140 °C bräunt das Gargut nicht genug. Über 175 °C kann sich Acrylamid bilden."
+  },
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Frittieren, p. 276",
+      "isbn": "9783805708388",
+      "sentence": "Frittierfett sollte nicht über 175°C erhitzt werden, weil sich sonst aus Eiweiß und Stärke das krebserregende Acrylamid (siehe auch Grillen Seite 273) bilden kann."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Frittieren, p. 276",
+      "isbn": "9783805708388",
+      "sentence": "Bei einer Fetttemperatur von unter 140°C findet ansonsten keine ausreichende Bräunung statt."
+    }
+  ]
+}
