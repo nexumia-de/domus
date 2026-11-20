@@ -245,7 +245,7 @@ const build = (
   const yieldRow = el('div', 'line-amount');
   yieldRow.append(yieldAmount.wrap, yieldUnit);
 
-  const steps = stepsEditor(form, changed, pickedName);
+  const steps = stepsEditor(form, () => form.lines, changed, pickedName);
   const keeps = keepsEditor(form, changed);
 
   const notes = areaField(t.notesLabel, form.method);

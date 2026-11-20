@@ -6,13 +6,20 @@
   "type": "object",
   "required": ["id", "name", "slots", "version"],
   "additionalProperties": false,
-  "patternProperties": { "^x-": true },
+  "patternProperties": {
+    "^x-": true
+  },
   "properties": {
-    "id": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id" },
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+    },
     "name": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/name"
     },
-    "portions": { "type": "integer", "minimum": 1 },
+    "portions": {
+      "type": "integer",
+      "minimum": 1
+    },
     "slots": {
       "type": "array",
       "minItems": 1,
@@ -21,6 +28,10 @@
         "required": ["role", "ref"],
         "additionalProperties": false,
         "properties": {
+          "key": {
+            "description": "Names the slot inside its dish so an assembly step can point at it; unique in the dish.",
+            "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
+          },
           "role": {
             "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/roleId"
           },
@@ -30,13 +41,24 @@
           "amount": {
             "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/amount"
           },
-          "optional": { "type": "boolean" }
+          "optional": {
+            "type": "boolean"
+          }
         }
+      }
+    },
+    "steps": {
+      "description": "The assembly: what is done with the fillings once they are made. A step uses slots by their key, as a step of a component uses lines.",
+      "type": "array",
+      "items": {
+        "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
       }
     },
     "version": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/version"
     },
-    "note": { "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text" }
+    "note": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+    }
   }
 }

@@ -398,18 +398,29 @@ step that has none of them:
 Role slots filled by components or ingredients. Schema: `dish.schema.json`.
 One stored record is one [version](#version).
 
-| Field      | Type            | Required | Meaning                                                                |
-| ---------- | --------------- | -------- | ---------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                        |
-| `name`     | string          | yes      | Visible name                                                           |
-| `portions` | integer         | no       | Number of portions the dish makes                                      |
-| `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional` |
-| `version`  | object          | yes      | See [Version](#version)                                                |
-| `note`     | string          | no       | Free text                                                              |
+| Field      | Type            | Required | Meaning                                                                       |
+| ---------- | --------------- | -------- | ----------------------------------------------------------------------------- |
+| `id`       | id              | yes      | See [ids](#ids)                                                               |
+| `name`     | string          | yes      | Visible name                                                                  |
+| `portions` | integer         | no       | Number of portions the dish makes                                             |
+| `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional`, `key` |
+| `steps`    | array of object | no       | The assembly: what is done with the fillings; see below                       |
+| `version`  | object          | yes      | See [Version](#version)                                                       |
+| `note`     | string          | no       | Free text                                                                     |
 
 Weight per portion, the roles covered ("no crunch") and what is missing
 from stock are derived. A slot's amount is mass, volume or count, not
 percent.
+
+**Assembly (since 2026-11-20).** `steps` are [steps](#steps) of the same
+shape as a component's, for what is done once the fillings are made
+("stretch the dough, top it, bake"). Where a component's step uses lines,
+an assembly step uses **slots**, by the slot's `key`: a short slug that is
+unique in the dish, given when a step first uses the slot (`s1`, `s2`,
+...). A dish whose fillings only lie side by side on the plate needs no
+assembly, or one step. Cooking a dish runs through its components in the
+order of its slots and then through these steps
+([behaviour](behaviour.md#dishes)).
 
 ## Version
 

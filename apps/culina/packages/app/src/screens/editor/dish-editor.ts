@@ -1,6 +1,7 @@
 // The dish editor: name, portions, role slots with a filling (component or ingredient) and an
 // amount per portion. Same draft and save rules as the component editor.
 import { roleLabel } from '../../components/names';
+import { stepsEditor } from './component-steps-editor';
 import { openRoles } from '../../dishes/roles';
 import {
   dishFormFromRecord,
@@ -66,6 +67,10 @@ const needsText = (p: DishProblem): string => {
       return t.needs.slotAmount(p.index + 1);
     case 'portions':
       return t.needs.portions;
+    case 'step':
+      return t.needs.step(p.index + 1);
+    case 'step-number':
+      return t.needs.stepNumber(p.index + 1);
   }
 };
 
@@ -148,15 +153,24 @@ const build = (
     })),
   ];
 
+  /** The name of what fills a slot; `undefined` while nothing is chosen. */
+  const fillingOf = (slot: SlotForm): string | undefined => {
+    if (slot.ref === undefined) return undefined;
+    const nb = notebook();
+    return slot.ref.kind === 'ingredient'
+      ? nb.ingredientName(slot.ref.id)
+      : (nb.components.find((c) => c.id === slot.ref?.id)?.name ?? slot.ref.id);
+  };
+  const assembly = stepsEditor(form, () => form.slots, changed, fillingOf, {
+    prefix: 's',
+    usesLegend: t.assemblyUses,
+    usesEmpty: t.assemblyNoSlots,
+    help: t.assemblyHelp,
+  });
+
   const row = (slot: SlotForm, index: number): HTMLElement => {
     const li = el('li', 'line-edit slot-edit');
-    const nb = notebook();
-    const filling =
-      slot.ref === undefined
-        ? undefined
-        : slot.ref.kind === 'ingredient'
-          ? nb.ingredientName(slot.ref.id)
-          : (nb.components.find((c) => c.id === slot.ref?.id)?.name ?? slot.ref.id);
+    const filling = fillingOf(slot);
     const label = t.lineName(index + 1, filling ?? '');
     const role = bareSelect(
       `${t.slotRole}, ${label}`,
@@ -294,6 +308,8 @@ const build = (
       }
     }
     focusAfter = undefined;
+    // The assembly steps list the fillings: keep them in step with the slots.
+    assembly.syncLines();
   };
   draw();
 
@@ -313,8 +329,11 @@ const build = (
     portionsError.clear();
     slotsError.clear();
     const rows = new Map<number, RowProblem[]>();
+    const stepProblems = new Map<number, string[]>();
     for (const p of problems) {
-      if (p.code === 'name') nameError.show(needsText(p));
+      if (p.code === 'step' || p.code === 'step-number') {
+        stepProblems.set(p.index, [...(stepProblems.get(p.index) ?? []), needsText(p)]);
+      } else if (p.code === 'name') nameError.show(needsText(p));
       else if (p.code === 'portions') portionsError.show(needsText(p));
       else if (p.code === 'no-slots') slotsError.show(needsText(p));
       else {
@@ -325,6 +344,7 @@ const build = (
     }
     rowProblems = rows;
     draw();
+    assembly.showProblems(stepProblems);
     status.textContent = t.needs.summary;
     focusFirstError(screen);
   };
@@ -372,6 +392,8 @@ const build = (
     list,
     addSlot,
     slotsError.node,
+    el('h2', undefined, t.assemblyHeading),
+    assembly.element,
     versionFields(form, changed),
     editorActions({
       isNew: form.isNew,

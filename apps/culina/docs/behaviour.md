@@ -190,7 +190,7 @@ handling rules of the ingredients in the step
 the same `techniqueNotes` and `handlingNotes` as for a shipped dish). A
 handling rule shows only for an ingredient that is in the catalogue or
 under one of its groups: an ingredient the user made up has no rule. A
-dish is not cooked this way yet, only a component. **Test:**
+whole dish is cooked the same way ([dishes](#dishes)). **Test:**
 `test/steps-view.test.ts`, `test/router.test.ts`, `e2e/steps-kit.mjs`.
 
 **Data and the example-data rule.** Records come from the notebook in memory
@@ -256,6 +256,38 @@ the dough's percentages).
 
 `src/screens/dishes.ts`, `dish-detail.ts`, `dish-slots.ts`, `stepper.ts`;
 view logic in `src/dishes/` (`slots.ts`, `raw.ts`, `roles.ts`).
+
+**Assembly and cooking a dish (since 2026-11-20).** The dish editor has a
+section **Assembly** after the slots: the steps of the
+[kit](#editor), with one difference, a step ticks **fillings** (the slots
+of the dish, each named by what fills it) where a component's step ticks
+lines. A slot gets its `key` when a step first ticks it (`s1`, `s2`, ...).
+The dish shows the assembly, one line per step ("Serve: Patties, Mash"),
+and **Cook step by step**, which opens `#/dishes/<id>/cook`: the screen of
+a component ([components](#components)) for the whole dish
+(`dishCookView` in `src/components/steps-view.ts`,
+`src/screens/component-cook.ts`).
+
+- **Order.** The components in the order of the slots, each with its own
+  steps, then the assembly. A step says which part it belongs to
+  ("From: Patties"). A component that fills two slots is made once. A
+  slot filled by an ingredient has no steps.
+- **Amounts.** A component's lines show what the dish needs: the grams
+  its slots ask for, times the portions, over one run of the component
+  (its recorded yield, else the sum of its lines). A slot without an
+  amount leaves the component as it is written. The portions are the
+  ones stored with the dish; the stepper on the dish does not reach the
+  cook screen yet.
+- **Ready in stock.** A component with a stock item is not cooked again:
+  its steps are replaced by one step, "From stock: Mash", and its skill
+  is not taught there. This looks only at whether an item is there, not
+  at its amount or its date, and nothing is taken out of stock.
+- **Notes.** The note of a skill shows at its first step in the whole
+  dish, and the handling rules of the ingredients as for a component.
+
+**Test:** `test/dish-cook.test.ts`, `test/router.test.ts`,
+`e2e/dish-cook.mjs`. Not proved: looked at in Chromium at 360 px in English
+only; the unit tests build the notebook in memory.
 
 **Role slots.** Slots appear in stored order: the role label (main element,
 sauce, crunch, acid, garnish, starch), the filling (a component is a link,
