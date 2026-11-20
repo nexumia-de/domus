@@ -120,6 +120,7 @@
             "en": "Pound the salt, the sweet pepper and the two tomatoes thoroughly in a mortar.",
             "de": "Salz, die Paprikaschote und die zwei Tomaten im Mörser gründlich zerstoßen."
           },
+          "action": "crush",
           "uses": ["pepper", "tomato", "salt"]
         },
         {
@@ -127,6 +128,7 @@
             "en": "Add the bread crumb that has soaked in water, and pound everything together.",
             "de": "Die in Wasser eingeweichte Brotkrume dazugeben und alles zusammen zerstoßen."
           },
+          "action": "crush",
           "uses": ["bread"]
         },
         {
@@ -146,6 +148,7 @@
             "en": "Add the vinegar and the water to taste.",
             "de": "Essig und Wasser nach Geschmack dazugeben."
           },
+          "action": "add",
           "uses": ["vinegar", "water"]
         },
         {
@@ -153,6 +156,7 @@
             "en": "Pass it through a sieve. Put small pieces of bread into the thick liquid.",
             "de": "Durch ein Sieb streichen. In die dicke Flüssigkeit kleine Brotstücke geben."
           },
+          "action": "strain",
           "uses": ["bread"]
         }
       ]

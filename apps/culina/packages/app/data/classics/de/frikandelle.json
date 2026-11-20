@@ -168,6 +168,7 @@
             "en": "Chop the beef and the suet very fine together.",
             "de": "Das Rindfleisch und das Fett zusammen sehr fein hacken."
           },
+          "technique": "knife-cuts",
           "uses": ["beef", "suet"]
         },
         {
@@ -175,6 +176,7 @@
             "en": "Mix in the eggs, salt, nutmeg, the crumbs and the cold water.",
             "de": "Eier, Salz, Muskat, die Brösel und das kalte Wasser gut untermischen."
           },
+          "action": "mix",
           "uses": ["egg", "salt", "nutmeg", "crumbs", "water"]
         },
         {
@@ -182,6 +184,7 @@
             "en": "Shape the mixture by hand into a smooth round or oblong loaf, dredge it with crumbs and crease the top with a knife.",
             "de": "Die Masse mit den Händen zu einem glatten runden oder länglichen Laib formen, mit Bröseln bestreuen und die Oberfläche mit dem Messer einritzen."
           },
+          "action": "shape",
           "uses": ["crumbs"]
         },
         {
@@ -189,6 +192,7 @@
             "en": "Have hot butter ready and put the loaf into it.",
             "de": "Heiße Butter bereitstellen und den Laib hineinlegen."
           },
+          "action": "heat",
           "uses": ["butter"]
         },
         {
@@ -216,6 +220,7 @@
             "en": "While it bakes, pour a few spoonfuls of thick cream over the loaf from time to time, when possible.",
             "de": "Während des Backens von Zeit zu Zeit einige Löffel dicke Sahne über den Laib gießen, wenn möglich."
           },
+          "action": "pour",
           "uses": ["cream"]
         },
         {
@@ -223,6 +228,7 @@
             "en": "Before serving, sprinkle the crushed juniper berries over the meat.",
             "de": "Vor dem Servieren die zerriebenen Wacholderbeeren über das Fleisch streuen."
           },
+          "action": "sprinkle",
           "uses": ["juniper"]
         }
       ]

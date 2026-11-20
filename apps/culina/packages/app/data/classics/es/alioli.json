@@ -105,6 +105,7 @@
             "en": "Pound the garlic in a mortar.",
             "de": "Den Knoblauch im Mörser zerstoßen."
           },
+          "action": "crush",
           "uses": ["garlic"]
         },
         {
@@ -112,6 +113,7 @@
             "en": "Add the yolk and the bread soaked in water. Keep pounding and mixing.",
             "de": "Das Eigelb und das in Wasser eingeweichte Brot zugeben. Weiter zerstoßen und vermischen."
           },
+          "action": "add",
           "uses": ["yolk", "bread", "water"]
         },
         {
@@ -127,6 +129,7 @@
             "en": "If the sauce is thick, thin it with water.",
             "de": "Ist die Sauce dick, mit Wasser verdünnen."
           },
+          "action": "add",
           "uses": ["water"]
         }
       ]

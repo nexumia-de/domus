@@ -126,6 +126,7 @@
             "en": "Take the milk off the heat and let it cool.",
             "de": "Die Milch vom Herd nehmen und abkühlen lassen."
           },
+          "action": "cool",
           "uses": ["milk"]
         },
         {
@@ -133,6 +134,7 @@
             "en": "Melt the 80 g of sugar in a pan on its own.",
             "de": "Die 80 g Zucker in einer Pfanne für sich schmelzen."
           },
+          "action": "melt",
           "uses": ["sugar-caramel"]
         },
         {
@@ -140,6 +142,7 @@
             "en": "Pour some of the melted sugar into a plain mould, so that it covers the bottom as a thin film.",
             "de": "Etwas vom geschmolzenen Zucker in eine schlichte Form gießen, sodass der Boden dünn bedeckt ist."
           },
+          "action": "pour",
           "uses": ["sugar-caramel"]
         },
         {
@@ -155,19 +158,22 @@
             "en": "Stop it with a ladle of water: you will hear it hiss and clump. Keep stirring over the heat until it is a thick, dark liquid.",
             "de": "Mit einer Kelle Wasser stoppen: man hört es zischen und sich zusammenballen. Auf der Hitze weiter rühren, bis eine dicke, dunkle Flüssigkeit entsteht."
           },
+          "action": "stir",
           "uses": ["water", "sugar-caramel"]
         },
         {
           "text": {
             "en": "Set the dark syrup aside.",
             "de": "Den dunklen Sirup beiseitestellen."
-          }
+          },
+          "action": "set-aside"
         },
         {
           "text": {
             "en": "Beat the eggs in a pan.",
             "de": "Die Eier in einem Topf verquirlen."
           },
+          "action": "whisk",
           "uses": ["yolk", "white"]
         },
         {
@@ -175,25 +181,29 @@
             "en": "Mix the milk, the eggs and the dark syrup.",
             "de": "Milch, Eier und den dunklen Sirup vermischen."
           },
+          "action": "mix",
           "uses": ["milk", "yolk", "white", "sugar-caramel"]
         },
         {
           "text": {
             "en": "Taste it for sweetness.",
             "de": "Die Süße abschmecken."
-          }
+          },
+          "action": "taste"
         },
         {
           "text": {
             "en": "Pass it through a tin sieve that is not very fine.",
             "de": "Durch ein nicht zu feines Sieb aus Blech passieren."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
             "en": "Pour it into the prepared mould.",
             "de": "In die vorbereitete Form gießen."
-          }
+          },
+          "action": "fill"
         },
         {
           "text": {
@@ -206,7 +216,8 @@
           "text": {
             "en": "When the top begins to colour, put a sheet greased with butter under the lid.",
             "de": "Sobald die Oberseite Farbe annimmt, ein mit Butter gefettetes Blatt unter den Deckel legen."
-          }
+          },
+          "action": "cover"
         },
         {
           "text": {
@@ -218,25 +229,29 @@
           "text": {
             "en": "Let it cool well.",
             "de": "Gut abkühlen lassen."
-          }
+          },
+          "action": "cool"
         },
         {
           "text": {
             "en": "Loosen the edge all round with a thin knife.",
             "de": "Den Rand ringsum mit einem dünnen Messer lösen."
-          }
+          },
+          "action": "turn-out"
         },
         {
           "text": {
             "en": "In summer, before turning it out, you may chill it with ice.",
             "de": "Im Sommer kann man es vor dem Stürzen mit Eis kühlen."
-          }
+          },
+          "action": "chill"
         },
         {
           "text": {
             "en": "Turn it out onto a dish, with or without a cloth.",
             "de": "Auf eine Platte stürzen, mit oder ohne Tuch."
-          }
+          },
+          "action": "turn-out"
         }
       ]
     }

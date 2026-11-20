@@ -106,6 +106,7 @@
             "en": "Squeeze the spinach well dry.",
             "de": "Den Spinat gut ausdrücken."
           },
+          "action": "dry",
           "uses": ["spinach"]
         },
         {
@@ -137,6 +138,7 @@
             "en": "Dust the sheet lightly with flour when it starts to stick.",
             "de": "Die Platte leicht mit Mehl bestäuben, wenn sie zu kleben beginnt."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -144,6 +146,7 @@
             "en": "Wrap the sheet in a cloth and let it dry.",
             "de": "Die Platte in ein Tuch einschlagen und trocknen lassen."
           },
+          "action": "dry",
           "uses": ["flour"]
         },
         {
@@ -151,6 +154,7 @@
             "en": "Cut the sheet into strips a little wider than broth noodles.",
             "de": "Die Platte in Streifen schneiden, etwas breiter als Suppennudeln."
           },
+          "technique": "knife-cuts",
           "uses": ["flour"]
         },
         {
@@ -166,6 +170,7 @@
             "en": "As soon as the water boils, lift the pasta out and drain it.",
             "de": "Sobald das Wasser kocht, die Nudeln herausnehmen und abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["water"]
         },
         {
@@ -173,6 +178,7 @@
             "en": "Dress the pasta with the cheese and the butter.",
             "de": "Die Nudeln mit Käse und Butter anrichten."
           },
+          "action": "serve",
           "uses": ["cheese", "butter"]
         }
       ]

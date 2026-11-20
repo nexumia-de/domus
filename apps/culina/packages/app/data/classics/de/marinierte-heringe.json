@@ -202,6 +202,7 @@
             "en": "Clean the herring and take out the milt without opening the body.",
             "de": "Die Heringe reinigen und die Milch herausnehmen, ohne den Körper zu öffnen."
           },
+          "action": "trim",
           "uses": ["herring", "milt"]
         },
         {
@@ -209,6 +210,7 @@
             "en": "Wash them carefully and lay them in water for two days to freshen them.",
             "de": "Die Heringe sorgfältig waschen und zwei Tage in Wasser legen, damit sie frisch werden."
           },
+          "action": "soak",
           "uses": ["herring", "water"]
         },
         {
@@ -216,6 +218,7 @@
             "en": "Pound the nutmeg, the mustard seed, the shallots and the peppercorns very fine.",
             "de": "Muskatnuss, Senfkörner, Schalotten und Pfefferkörner sehr fein stoßen."
           },
+          "action": "crush",
           "uses": ["nutmeg", "mustard", "shallot", "peppercorn"]
         },
         {
@@ -223,6 +226,7 @@
             "en": "Put part of this mixture into each herring.",
             "de": "In jeden Hering einen Teil dieser Mischung geben."
           },
+          "action": "fill",
           "uses": ["herring", "nutmeg", "mustard", "shallot", "peppercorn"]
         },
         {
@@ -230,6 +234,7 @@
             "en": "Lay the herring in a jar in layers with the small onions, the peppergrass, the tarragon, the thyme and the bay leaves.",
             "de": "Die Heringe lagenweise in ein Glas legen, dazwischen kleine Zwiebeln, Kresse, Estragon, Thymian und Lorbeerblätter geben."
           },
+          "action": "fill",
           "uses": ["herring", "onion", "peppergrass", "tarragon", "thyme", "bay"]
         },
         {

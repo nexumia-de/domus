@@ -152,6 +152,7 @@
             "en": "Season the chopped mixture with a little oil, salt and pepper.",
             "de": "Die gehackte Mischung mit etwas Öl, Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["oil", "salt", "pepper"]
         },
         {
@@ -159,6 +160,7 @@
             "en": "Break up the tomatoes and put everything on the heat together.",
             "de": "Die Tomaten zerteilen und alles zusammen auf den Herd stellen."
           },
+          "action": "heat",
           "uses": [
             "tomato",
             "onion",
@@ -184,6 +186,7 @@
             "en": "Pass the sauce through a sieve.",
             "de": "Die Sauce durch ein Sieb streichen."
           },
+          "action": "strain",
           "uses": ["tomato"]
         }
       ]

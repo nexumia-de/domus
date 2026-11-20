@@ -119,6 +119,7 @@
             "en": "The day before, boil the potatoes in their skins and grate them.",
             "de": "Am Vortag die Kartoffeln in der Schale kochen und reiben."
           },
+          "technique": "boil",
           "uses": ["potatoes"]
         },
         {
@@ -134,6 +135,7 @@
             "en": "Stir the potatoes with the flour, the nutmeg, the salt, the melted butter and the eggs until well mixed.",
             "de": "Die Kartoffeln mit Mehl, Muskatnuss, Salz, der zerlassenen Butter und den Eiern gut verrühren."
           },
+          "action": "stir",
           "uses": ["potatoes", "flour", "nutmeg", "salt", "fat", "eggs"]
         },
         {
@@ -141,6 +143,7 @@
             "en": "Stir in the beaten egg whites.",
             "de": "Den steifen Eierschaum unterrühren."
           },
+          "action": "stir",
           "uses": ["eggs"]
         },
         {
@@ -156,6 +159,7 @@
             "en": "Cook the dumplings in boiling salted water.",
             "de": "Die Klöße in kochendem Salzwasser garen."
           },
+          "action": "cook",
           "sourceNote": {
             "en": "The source gives a fraction of an hour that is not legible in the scans.",
             "de": "Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
@@ -166,6 +170,7 @@
             "en": "Serve with browned butter.",
             "de": "Mit gebräunter Butter servieren."
           },
+          "action": "serve",
           "uses": ["fat"]
         }
       ]

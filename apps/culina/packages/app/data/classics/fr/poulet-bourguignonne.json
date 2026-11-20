@@ -114,6 +114,7 @@
             "en": "Cut the earthy part off the stalks with a knife.",
             "de": "Den erdigen Teil der Stiele mit dem Messer abschneiden."
           },
+          "action": "trim",
           "uses": ["mushroom"]
         },
         {
@@ -121,6 +122,7 @@
             "en": "Rinse the mushrooms quickly in fresh water, then dry them at once on a cloth. Mushrooms that stay long in water lose taste and colour.",
             "de": "Die Champignons kurz in frischem Wasser waschen und sofort auf einem Tuch trocknen. Pilze, die lange im Wasser liegen, verlieren Geschmack und Farbe."
           },
+          "action": "wash",
           "uses": ["mushroom"]
         },
         {
@@ -128,6 +130,7 @@
             "en": "Put the lemon juice, the same amount of water and the salt into a pan of two litres.",
             "de": "Zitronensaft, dieselbe Menge Wasser und das Salz in einen Topf mit zwei Litern Inhalt geben."
           },
+          "action": "add",
           "uses": ["lemon-juice", "water", "salt"]
         },
         {
@@ -143,6 +146,7 @@
             "en": "Toss the mushrooms in the pan so that they take up the lemon and the salt.",
             "de": "Die Pilze im Topf schwenken, damit sie Zitrone und Salz aufnehmen."
           },
+          "action": "mix",
           "uses": ["mushroom", "lemon-juice", "salt"]
         },
         {
@@ -150,6 +154,7 @@
             "en": "Set the pan on high heat and add the butter.",
             "de": "Den Topf auf starke Hitze stellen und die Butter zugeben."
           },
+          "action": "heat",
           "uses": ["butter"]
         },
         {
@@ -169,6 +174,7 @@
             "en": "Put the mushrooms into a bowl and cover them with a round of paper.",
             "de": "Die Pilze in eine Schüssel geben und mit einem runden Papier abdecken."
           },
+          "action": "cover",
           "uses": ["mushroom"]
         }
       ]
@@ -324,6 +330,7 @@
             "en": "Bleed the chicken into a bowl. Stir the blood for two minutes with a wooden spoon so that it does not clot.",
             "de": "Das Huhn ausbluten lassen. Das Blut zwei Minuten mit einem Holzlöffel rühren, damit es nicht gerinnt."
           },
+          "action": "prepare",
           "uses": ["chicken", "blood"]
         },
         {
@@ -331,6 +338,7 @@
             "en": "Pluck the chicken, remove the pin feathers, draw it and singe it.",
             "de": "Das Huhn rupfen, die Kiele entfernen, ausnehmen und absengen."
           },
+          "action": "prepare",
           "uses": ["chicken"]
         },
         {
@@ -338,6 +346,7 @@
             "en": "Cut the chicken into pieces, as the book's fricassée does; the book illustrates the cut in two figures.",
             "de": "Das Huhn wie bei der Fricassée des Buches in Stücke schneiden; das Buch zeigt den Schnitt in zwei Abbildungen."
           },
+          "action": "prepare",
           "uses": ["chicken"]
         },
         {
@@ -345,6 +354,7 @@
             "en": "Put the butter into the sauté pan and melt it.",
             "de": "Die Butter in die Sauteuse geben und schmelzen."
           },
+          "action": "melt",
           "uses": ["butter"]
         },
         {
@@ -352,6 +362,7 @@
             "en": "Place the chicken pieces in the melted butter, not on top of each other.",
             "de": "Die Hühnerteile in die geschmolzene Butter legen, ohne dass sie übereinanderliegen."
           },
+          "action": "add",
           "uses": ["chicken"]
         },
         {
@@ -359,6 +370,7 @@
             "en": "Season with the salt and the pepper.",
             "de": "Mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["salt", "pepper"]
         },
         {
@@ -374,6 +386,7 @@
             "en": "Sprinkle the flour over the pieces.",
             "de": "Das Mehl über die Stücke streuen."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -381,6 +394,7 @@
             "en": "Stir for 3 minutes.",
             "de": "3 Minuten rühren."
           },
+          "action": "stir",
           "time": {
             "value": 3,
             "unit": "min"
@@ -392,6 +406,7 @@
             "en": "Add the stock, the red wine and the bouquet garni.",
             "de": "Brühe, Rotwein und das Bouquet garni zugeben."
           },
+          "action": "add",
           "uses": ["stock", "wine", "bouquet"]
         },
         {
@@ -399,6 +414,7 @@
             "en": "Add the small onions, blanched and fried in a pan.",
             "de": "Die kleinen Zwiebeln zugeben, blanchiert und in der Pfanne angebraten."
           },
+          "action": "add",
           "uses": ["onion"]
         },
         {
@@ -406,6 +422,7 @@
             "en": "Add the juice of the turned mushrooms.",
             "de": "Den Saft der gedrehten Champignons zugeben."
           },
+          "action": "add",
           "uses": ["mushrooms"]
         },
         {
@@ -423,13 +440,15 @@
           "text": {
             "en": "Check the cooking and the seasoning.",
             "de": "Garzeit und Würze prüfen."
-          }
+          },
+          "action": "taste"
         },
         {
           "text": {
             "en": "Add the turned mushrooms to the sauce.",
             "de": "Die gedrehten Champignons in die Sauce geben."
           },
+          "action": "add",
           "uses": ["mushrooms"]
         },
         {
@@ -437,6 +456,7 @@
             "en": "Mix the blood with a little of the sauce. Stir it into the pan until the first boil.",
             "de": "Das Blut mit etwas Sauce mischen. In den Topf rühren, bis es einmal aufkocht."
           },
+          "action": "stir",
           "uses": ["blood"]
         },
         {
@@ -444,6 +464,7 @@
             "en": "Arrange the pieces on the dish: the two back pieces in the middle, the two legs on them, the two neck pieces on the legs, the two wing tips on the necks. Lean the two wings and the two thighs against this tall square, and put the two breast pieces on top.",
             "de": "Die Stücke auf der Platte anordnen: die zwei Rückenstücke in die Mitte, darauf die zwei Beine, auf den Beinen die zwei Halsstücke, auf den Hälsen die zwei Flügelspitzen. Die zwei Flügel und die zwei Schenkel an dieses hohe Viereck lehnen; oben darauf die zwei Brustteile legen."
           },
+          "action": "serve",
           "uses": ["chicken"]
         },
         {
@@ -451,6 +472,7 @@
             "en": "Pour the sauce over the pieces and set the mushrooms in the four corners.",
             "de": "Die Sauce über die Stücke gießen und die Champignons in die vier Ecken setzen."
           },
+          "action": "pour",
           "uses": ["mushrooms"]
         }
       ]

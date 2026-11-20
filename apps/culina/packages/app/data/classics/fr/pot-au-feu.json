@@ -178,6 +178,7 @@
             "en": "Bone the piece of beef and tie it so the meat holds together.",
             "de": "Das Rindfleisch auslösen und binden, damit das Fleisch zusammenhält."
           },
+          "action": "prepare",
           "uses": ["beef", "bones"]
         },
         {
@@ -185,6 +186,7 @@
             "en": "Break the bones with a cleaver.",
             "de": "Die Knochen mit dem Beil zerschlagen."
           },
+          "action": "prepare",
           "uses": ["bones"]
         },
         {
@@ -192,6 +194,7 @@
             "en": "Put the bones into the pot first, the meat on top.",
             "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf."
           },
+          "action": "add",
           "uses": ["bones", "beef"]
         },
         {
@@ -206,13 +209,15 @@
           "text": {
             "en": "Put the pot on the heat.",
             "de": "Den Topf auf die Hitze stellen."
-          }
+          },
+          "action": "heat"
         },
         {
           "text": {
             "en": "Add the salt: 30 g for the small pot.",
             "de": "Das Salz zugeben: 30 g für den kleinen Topf."
           },
+          "action": "season",
           "uses": ["salt"]
         },
         {
@@ -226,7 +231,8 @@
           "text": {
             "en": "As soon as the scum rises, add 1.5 decilitres of cold water.",
             "de": "Sobald der Schaum aufsteigt, 1,5 Deziliter kaltes Wasser zugeben."
-          }
+          },
+          "action": "add"
         },
         {
           "text": {
@@ -239,7 +245,8 @@
           "text": {
             "en": "Bring to the boil again and skim again; three times in all.",
             "de": "Wieder aufkochen lassen und abschöpfen; insgesamt dreimal."
-          }
+          },
+          "technique": "skim"
         },
         {
           "text": {
@@ -252,6 +259,7 @@
             "en": "Stick the clove into one onion.",
             "de": "Die Nelke in eine Zwiebel stecken."
           },
+          "action": "prepare",
           "uses": ["clove", "onion"]
         },
         {
@@ -259,19 +267,22 @@
             "en": "Add the vegetables. This stops the boil for a moment.",
             "de": "Das Gemüse zugeben. Dadurch hört das Kochen kurz auf."
           },
+          "action": "add",
           "uses": ["onion", "carrot", "leek", "celery", "turnip", "parsnip"]
         },
         {
           "text": {
             "en": "Let it boil again, then set the pot on the corner of the stove, so that only a third of its base is over the fire hole.",
             "de": "Wieder aufkochen lassen, dann den Topf so auf die Ecke des Herdes stellen, dass nur ein Drittel des Bodens über dem Feuerloch steht."
-          }
+          },
+          "action": "heat"
         },
         {
           "text": {
             "en": "Cover the rest of the fire with ash.",
             "de": "Den übrigen Teil des Feuers mit Asche abdecken."
-          }
+          },
+          "action": "cover"
         },
         {
           "text": {
@@ -288,13 +299,17 @@
           "text": {
             "en": "When the broth is done, take the meat out and put it on a dish.",
             "de": "Wenn die Brühe fertig ist, das Fleisch herausnehmen und auf eine Platte legen."
-          }
+          },
+          "action": "take-out",
+          "uses": ["beef"]
         },
         {
           "text": {
             "en": "Take the vegetables out as soon as they are cooked and put them on the plate.",
             "de": "Das Gemüse herausnehmen, sobald es gar ist, und auf den Teller legen."
-          }
+          },
+          "action": "take-out",
+          "uses": ["onion", "carrot", "leek", "celery", "turnip", "parsnip"]
         },
         {
           "text": {
@@ -307,7 +322,8 @@
           "text": {
             "en": "Taste the broth and check the salt.",
             "de": "Die Brühe probieren und das Salz prüfen."
-          }
+          },
+          "action": "taste"
         }
       ]
     }

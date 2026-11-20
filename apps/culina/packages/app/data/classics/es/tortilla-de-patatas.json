@@ -100,6 +100,7 @@
             "en": "Peel the potatoes and cut them into small cubes or thin round slices. Sprinkle them with salt and let the excess water drain off.",
             "de": "Die Kartoffeln schälen und in kleine Würfel oder dünne Scheiben schneiden. Mit Salz bestreuen und das überschüssige Wasser abtropfen lassen."
           },
+          "technique": "knife-cuts",
           "uses": ["potato", "salt"]
         },
         {
@@ -107,6 +108,7 @@
             "en": "Heat the oil in a large frying pan to around 350 °F (177 °C).",
             "de": "Das Öl in einer großen Pfanne auf etwa 350 °F (177 °C) erhitzen."
           },
+          "action": "heat",
           "uses": ["oil-frying"],
           "temperature": {
             "value": 350,
@@ -126,6 +128,7 @@
             "en": "Take the potatoes out of the oil and let them drain.",
             "de": "Die Kartoffeln aus dem Öl nehmen und abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["potato"]
         },
         {
@@ -133,6 +136,7 @@
             "en": "Beat the eggs, add salt to taste and mix them with the potatoes. Let the mixture soak for 10 minutes.",
             "de": "Die Eier verquirlen, mit Salz nach Geschmack würzen und mit den Kartoffeln mischen. Die Masse 10 Minuten ziehen lassen."
           },
+          "action": "whisk",
           "uses": ["egg", "salt", "potato"],
           "time": {
             "value": 10,
@@ -151,13 +155,15 @@
           "text": {
             "en": "After a few minutes, turn the omelette with a lid or a large plate and cook it until it is golden on the other side.",
             "de": "Nach einigen Minuten das Omelett mit einem Deckel oder einem großen Teller wenden und auf der anderen Seite goldgelb garen."
-          }
+          },
+          "action": "turn"
         },
         {
           "text": {
             "en": "Serve it hot or cold, with a salad.",
             "de": "Heiß oder kalt servieren, mit einem Salat."
-          }
+          },
+          "action": "serve"
         }
       ]
     }

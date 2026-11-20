@@ -125,6 +125,7 @@
             "en": "Cut the spinach roughly. Cook it apart, or together with the chickpeas.",
             "de": "Den Spinat grob schneiden. Getrennt oder zusammen mit den Kichererbsen garen."
           },
+          "action": "cook",
           "uses": ["spinach"]
         },
         {

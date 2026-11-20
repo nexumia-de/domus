@@ -114,6 +114,7 @@
             "en": "Put the milk, the cornstarch, the egg yolks, the sugar and the lemon peel into a pot.",
             "de": "Milch, Stärke, Eigelb, Zucker und Zitronenschale in einen Topf geben."
           },
+          "action": "add",
           "uses": ["milk", "starch", "yolk", "sugar", "lemon"]
         },
         {
@@ -128,7 +129,8 @@
           "text": {
             "en": "Pour the soup into the tureen.",
             "de": "Die Suppe in die Suppenschüssel gießen."
-          }
+          },
+          "action": "fill"
         }
       ]
     },
@@ -187,13 +189,15 @@
             "en": "Shape the froth into little balls, lay them on the soup and sprinkle them with sugar.",
             "de": "Den Schnee zu kleinen Klößchen formen, auf die Suppe legen und mit Zucker bestreuen."
           },
+          "action": "shape",
           "uses": ["whites", "froth-sugar"]
         },
         {
           "text": {
             "en": "Cover the tureen; the balls are done in a few minutes.",
             "de": "Die Suppenschüssel zudecken; die Klößchen sind in wenigen Minuten gar."
-          }
+          },
+          "action": "cover"
         }
       ]
     }

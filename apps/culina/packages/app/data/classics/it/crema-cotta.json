@@ -86,6 +86,7 @@
             "en": "Beat the egg yolks with the sugar.",
             "de": "Die Eigelb mit dem Zucker verrühren."
           },
+          "action": "whisk",
           "uses": ["yolk", "sugar"]
         },
         {
@@ -93,6 +94,7 @@
             "en": "Pour in the milk little by little.",
             "de": "Die Milch nach und nach zugießen."
           },
+          "action": "pour",
           "uses": ["milk"]
         },
         {
@@ -100,13 +102,15 @@
             "en": "To speed up the cooking you may use a strong heat, but as soon as it starts to steam, lower the heat.",
             "de": "Zum Beschleunigen darf die Hitze stark sein; sobald es dampft, die Hitze senken."
           },
+          "action": "heat",
           "uses": ["milk"]
         },
         {
           "text": {
             "en": "If it curdles, pass the cream through a sieve.",
             "de": "Gerinnt sie, die Creme durch ein Sieb passieren."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
@@ -121,6 +125,7 @@
             "en": "Add the vanilla shortly before taking it off the heat.",
             "de": "Die Vanille kurz vor dem Vom-Herd-Nehmen zugeben."
           },
+          "action": "add",
           "uses": ["vanilla"]
         }
       ]

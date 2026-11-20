@@ -126,6 +126,7 @@
             "en": "Put the bread, cut into thin slices, into the tureen.",
             "de": "Das Brot in dünnen Scheiben in die Suppenschüssel legen."
           },
+          "action": "add",
           "uses": ["bread"]
         },
         {
@@ -141,6 +142,7 @@
             "en": "Take a third of the cooked milk in another pot, off the heat, and dissolve the six egg yolks in it.",
             "de": "Ein Drittel der gekochten Milch in einem anderen Topf abseits der Hitze mit den sechs Eigelb verrühren."
           },
+          "action": "mix",
           "uses": ["milk", "egg-yolk"]
         },
         {
@@ -156,6 +158,7 @@
             "en": "Pour the rest of the milk over the bread in the tureen.",
             "de": "Den Rest der Milch über das Brot in der Suppenschüssel gießen."
           },
+          "action": "pour",
           "uses": ["milk", "bread"]
         },
         {
@@ -163,6 +166,7 @@
             "en": "At serving, stir the thickened egg mixture into the soup.",
             "de": "Beim Servieren die angedickte Eiermischung in die Suppe rühren."
           },
+          "action": "stir",
           "uses": ["egg-yolk"]
         }
       ]

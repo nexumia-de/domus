@@ -65,6 +65,7 @@
             "en": "Add the water to the caramel.",
             "de": "Das Wasser zum Karamell geben."
           },
+          "action": "add",
           "uses": ["water"]
         }
       ]
@@ -137,6 +138,7 @@
             "en": "Put the egg yolks and the sugar into a bowl and add the caramel.",
             "de": "Die Eigelbe und den Zucker in eine Schüssel geben und das Karamell zufügen."
           },
+          "action": "add",
           "uses": ["yolk", "sugar", "caramel"]
         },
         {
@@ -144,6 +146,7 @@
             "en": "Pour in the milk and beat well to mix.",
             "de": "Die Milch zugießen und gut verrühren."
           },
+          "action": "whisk",
           "uses": ["milk"]
         },
         {
@@ -151,13 +154,15 @@
             "en": "Strain the mixture through a fine sieve.",
             "de": "Die Masse durch ein feines Sieb passieren."
           },
+          "action": "strain",
           "uses": ["yolk", "sugar", "caramel", "milk"]
         },
         {
           "text": {
             "en": "Fill the small pots, removing any foam from the surface.",
             "de": "Die kleinen Töpfchen füllen und den Schaum von der Oberfläche abnehmen."
-          }
+          },
+          "action": "fill"
         },
         {
           "text": {
@@ -170,13 +175,15 @@
           "text": {
             "en": "Put the pots into the pan; the water must come no higher than half their height.",
             "de": "Die Töpfchen in den Topf stellen; das Wasser darf nicht höher als bis zur halben Höhe der Töpfchen reichen."
-          }
+          },
+          "technique": "water-bath"
         },
         {
           "text": {
             "en": "Put a metal lid on the pan, with heat on top of the lid as well.",
             "de": "Einen Metalldeckel auf den Topf legen, und auch auf den Deckel Hitze geben."
-          }
+          },
+          "action": "cover"
         },
         {
           "text": {
@@ -193,7 +200,8 @@
           "text": {
             "en": "Let the pots cool in the water, then dry them and serve.",
             "de": "Die Töpfchen im Wasser abkühlen lassen, dann abtrocknen und servieren."
-          }
+          },
+          "action": "cool"
         }
       ]
     }

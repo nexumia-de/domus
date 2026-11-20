@@ -98,6 +98,7 @@
             "en": "Take out the cores and the pips with an apple corer.",
             "de": "Kerngehäuse und Kerne mit dem Apfelausstecher entfernen."
           },
+          "action": "trim",
           "uses": ["apple"]
         },
         {
@@ -105,6 +106,7 @@
             "en": "Peel the apples, but keep them whole.",
             "de": "Die Äpfel schälen, aber ganz lassen."
           },
+          "action": "peel",
           "uses": ["apple"]
         },
         {
@@ -112,6 +114,7 @@
             "en": "Butter a round tinned iron dish with a layer of butter about 3 millimetres thick.",
             "de": "Eine runde Form aus verzinntem Eisen mit einer etwa 3 Millimeter dicken Butterschicht einfetten."
           },
+          "action": "grease",
           "uses": ["butter"]
         },
         {
@@ -119,6 +122,7 @@
             "en": "Sprinkle the cinnamon over the apples and fill the hole of each apple with crushed sugar.",
             "de": "Den Zimt über die Äpfel streuen und das Loch jedes Apfels mit gestoßenem Zucker füllen."
           },
+          "action": "fill",
           "uses": ["cinnamon", "sugar", "apple"]
         },
         {
@@ -126,6 +130,7 @@
             "en": "Melt 40 g of butter and pour it over the apples.",
             "de": "40 g Butter schmelzen und über die Äpfel gießen."
           },
+          "action": "pour",
           "uses": ["butter"]
         },
         {
@@ -140,6 +145,8 @@
             "en": "After 20 minutes, check that the apples are cooked, then serve.",
             "de": "Nach 20 Minuten prüfen, ob die Äpfel gar sind, dann servieren."
           },
+          "action": "serve",
+          "uses": ["apple"],
           "time": {
             "value": 20,
             "unit": "min"

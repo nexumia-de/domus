@@ -74,6 +74,7 @@
             "en": "Top and tail the beans, removing about half a centimetre at each end, and wash them.",
             "de": "Die Bohnen an beiden Enden etwa einen halben Zentimeter abschneiden und waschen."
           },
+          "action": "trim",
           "uses": ["beans"]
         },
         {
@@ -89,6 +90,7 @@
             "en": "Add the salt and put the beans into the boiling water, uncovered.",
             "de": "Das Salz zugeben und die Bohnen unbedeckt ins kochende Wasser geben."
           },
+          "action": "add",
           "uses": ["salt", "beans"]
         },
         {
@@ -96,6 +98,7 @@
             "en": "Cook until the beans are done: press one between the fingers, it should bend without crushing.",
             "de": "Garen, bis die Bohnen gar sind: eine zwischen den Fingern drücken, sie soll sich biegen lassen, ohne zu zerdrücken."
           },
+          "action": "cook",
           "uses": ["beans"]
         },
         {
@@ -103,6 +106,7 @@
             "en": "Drain the beans.",
             "de": "Die Bohnen abgießen."
           },
+          "action": "drain",
           "uses": ["beans"]
         }
       ]
@@ -178,6 +182,7 @@
             "en": "Put the butter into the sauté pan and melt it.",
             "de": "Die Butter in die Sautierpfanne geben und schmelzen."
           },
+          "action": "melt",
           "uses": ["butter"]
         },
         {
@@ -197,13 +202,15 @@
             "en": "Add the salt, the parsley and the lemon juice.",
             "de": "Salz, Petersilie und Zitronensaft zugeben."
           },
+          "action": "season",
           "uses": ["salt", "parsley", "lemon"]
         },
         {
           "text": {
             "en": "Mix everything well and serve.",
             "de": "Alles gut vermischen und servieren."
-          }
+          },
+          "action": "mix"
         }
       ]
     }

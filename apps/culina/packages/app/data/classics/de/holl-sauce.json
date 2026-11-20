@@ -129,6 +129,7 @@
             "en": "Mix the yolks and the flour smooth with the wine and the water.",
             "de": "Eigelb und Mehl mit Wein und Wasser glatt rühren."
           },
+          "action": "mix",
           "uses": ["yolk", "flour", "wine", "water"]
         },
         {
@@ -143,7 +144,8 @@
           "text": {
             "en": "Take the pan off the heat.",
             "de": "Die Pfanne vom Feuer nehmen."
-          }
+          },
+          "action": "remove-from-heat"
         },
         {
           "text": {
@@ -158,6 +160,7 @@
             "en": "Add a few drops of lemon juice.",
             "de": "Einige Tropfen Zitronensaft zugeben."
           },
+          "action": "add",
           "uses": ["lemon"]
         }
       ]

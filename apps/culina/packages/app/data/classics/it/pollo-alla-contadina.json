@@ -133,6 +133,7 @@
             "en": "Stud the chicken with the rosemary sprigs and the garlic pieces.",
             "de": "Das Huhn mit den Rosmarinzweigen und den Knoblauchstücken spicken."
           },
+          "action": "prepare",
           "uses": ["chicken", "rosemary", "garlic"]
         },
         {
@@ -140,6 +141,7 @@
             "en": "Put the chicken on the heat in the lard.",
             "de": "Das Huhn in das Schweinefett auf den Herd legen."
           },
+          "action": "heat",
           "uses": ["chicken", "lard"]
         },
         {
@@ -147,6 +149,7 @@
             "en": "Season it with salt and pepper, outside and inside.",
             "de": "Außen und innen mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["chicken", "salt", "pepper"]
         },
         {
@@ -162,6 +165,7 @@
             "en": "Add the tomato in pieces.",
             "de": "Die Tomate in Stücken dazugeben."
           },
+          "action": "add",
           "uses": ["tomato"]
         },
         {
@@ -169,6 +173,7 @@
             "en": "When the tomato has broken down, moisten the chicken with water.",
             "de": "Wenn die Tomate zerfallen ist, das Huhn mit Wasser angießen."
           },
+          "action": "add",
           "uses": ["water"]
         }
       ]
@@ -214,6 +219,7 @@
             "en": "Cut the raw potatoes into wedges.",
             "de": "Die rohen Kartoffeln in Spalten schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["potato"]
         },
         {
@@ -229,6 +235,7 @@
             "en": "Let the potatoes take flavour in the chicken's juices.",
             "de": "Die Kartoffeln im Saft des Huhns Geschmack annehmen lassen."
           },
+          "action": "stand",
           "uses": ["potato"]
         },
         {
@@ -236,6 +243,7 @@
             "en": "Serve the potatoes as a side dish with the chicken.",
             "de": "Die Kartoffeln als Beilage zum Huhn servieren."
           },
+          "action": "serve",
           "uses": ["potato"]
         }
       ]

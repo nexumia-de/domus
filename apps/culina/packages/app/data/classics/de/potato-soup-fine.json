@@ -173,6 +173,7 @@
             "en": "Cook the soup vegetables in the boiling water for 15 minutes.",
             "de": "Das Suppengemüse 15 Minuten im kochenden Wasser garen."
           },
+          "action": "cook",
           "time": {
             "value": 15,
             "unit": "min"
@@ -184,6 +185,7 @@
             "en": "Add the fried potatoes, without the butter, and the salt.",
             "de": "Die gebratenen Kartoffeln ohne die Butter und das Salz zugeben."
           },
+          "action": "add",
           "uses": ["potatoes", "salt"]
         },
         {
@@ -191,6 +193,7 @@
             "en": "Cook the soup for half an hour.",
             "de": "Die Suppe eine halbe Stunde kochen."
           },
+          "action": "cook",
           "time": {
             "value": 0.5,
             "unit": "h"
@@ -200,7 +203,8 @@
           "text": {
             "en": "Pass the soup through a sieve.",
             "de": "Die Suppe durch ein Sieb streichen."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
@@ -215,6 +219,7 @@
             "en": "Add the browned flour to the soup.",
             "de": "Das gebräunte Mehl in die Suppe geben."
           },
+          "action": "add",
           "uses": ["flour"]
         },
         {
@@ -222,13 +227,15 @@
             "en": "Stir in the beef extract and the claret and let the soup come to a boil.",
             "de": "Fleischextrakt und Rotwein einrühren und die Suppe einmal aufkochen lassen."
           },
+          "action": "stir",
           "uses": ["beef", "claret"]
         },
         {
           "text": {
             "en": "Serve with toasted bits of bread.",
             "de": "Mit gerösteten Brotwürfeln servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     }

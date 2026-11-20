@@ -86,7 +86,7 @@
     },
     "proof-yeast": {
       "en": ["proof", "prove", "let rise", "rise"],
-      "de": ["gehen lassen", "aufgehen", "gare"]
+      "de": ["gehen lassen", "aufgehen", "stückgare", "teiggare"]
     },
     "reduce": {
       "en": ["reduce", "cook down", "boil down"],
@@ -150,7 +150,7 @@
     },
     "thicken-with-starch": {
       "en": ["thicken", "slurry"],
-      "de": ["mit stärke binden", "abbind", "binden", "andick"]
+      "de": ["mit stärke binden", "mit mehl binden", "sauce binden", "abbind", "andick"]
     },
     "warm-emulsion": {
       "en": ["hollandaise", "whisk in the butter"],
@@ -183,8 +183,8 @@
       "de": ["rühr", "umrühr", "verrühr", "einrühr"]
     },
     "whisk": {
-      "en": ["whisk"],
-      "de": ["verquirl", "quirl"]
+      "en": ["whisk", "beat"],
+      "de": ["verquirl", "quirl", "schlagen", "aufschlag", "verschlag"]
     },
     "season": {
       "en": ["season"],
@@ -223,7 +223,7 @@
       "de": ["abgieß", "abgegossen", "abtropf", "abschütt"]
     },
     "strain": {
-      "en": ["strain", "sieve"],
+      "en": ["strain", "sieve", "pass"],
       "de": ["passier", "durch ein sieb", "abseih", "durchseih"]
     },
     "dry": {
@@ -231,7 +231,17 @@
       "de": ["trockn", "abtrockn", "trockentupf", "trocken tupf"]
     },
     "heat": {
-      "en": ["heat", "warm"],
+      "en": [
+        "heat the",
+        "heat it",
+        "heat a",
+        "heat up",
+        "heat plenty",
+        "heat gently",
+        "reheat",
+        "warm the",
+        "warm up"
+      ],
       "de": ["erhitz", "erwärm"]
     },
     "melt": {
@@ -263,15 +273,15 @@
       "de": ["zudeck", "abdeck"]
     },
     "fill": {
-      "en": ["fill", "pour"],
-      "de": ["füll", "einfüll", "gieß", "eingieß", "angieß"]
+      "en": ["fill"],
+      "de": ["füll", "einfüll"]
     },
     "spread": {
       "en": ["spread"],
       "de": ["verstreich", "bestreich", "verteil"]
     },
     "shape": {
-      "en": ["shape", "form"],
+      "en": ["shape", "form into", "form the", "form a"],
       "de": ["formen", "geformt"]
     },
     "garnish": {
@@ -279,12 +289,70 @@
       "de": ["garnier"]
     },
     "serve": {
-      "en": ["serve"],
+      "en": ["serve", "dress"],
       "de": ["anricht", "servier"]
     },
     "preheat": {
       "en": ["preheat"],
       "de": ["vorheiz", "vorgeheizt"]
+    },
+    "cook": {
+      "en": [
+        "cook the",
+        "cook it",
+        "cook them",
+        "cook until",
+        "cook over",
+        "cook in",
+        "cook for",
+        "cook everything",
+        "cook slowly"
+      ],
+      "de": ["garen", "gar kochen", "weich kochen"]
+    },
+    "pour": {
+      "en": ["pour"],
+      "de": ["gieß", "eingieß", "angieß", "übergieß", "begieß", "aufgieß"]
+    },
+    "sprinkle": {
+      "en": ["sprinkle", "dust", "dredge"],
+      "de": ["bestreu", "streu", "darüberstreu", "bestäub"]
+    },
+    "crush": {
+      "en": ["crush", "pound"],
+      "de": ["zerstoß", "stoßen", "mörser"]
+    },
+    "grease": {
+      "en": ["grease"],
+      "de": ["einfett", "ausfett", "ausbutter", "butter ausstreich"]
+    },
+    "trim": {
+      "en": ["trim", "clean the", "top and tail"],
+      "de": ["putz", "geputzt", "säuber", "reinig"]
+    },
+    "prepare": {
+      "en": ["prepare"],
+      "de": ["vorbereit", "bereitstell"]
+    },
+    "turn": {
+      "en": ["turn"],
+      "de": ["wend", "umdreh"]
+    },
+    "take-out": {
+      "en": ["take out", "lift out"],
+      "de": ["herausnehm", "herausheb", "herausfisch"]
+    },
+    "turn-out": {
+      "en": ["turn out", "unmould", "unmold"],
+      "de": ["stürz", "gestürzt"]
+    },
+    "remove-from-heat": {
+      "en": ["off the heat", "from the heat"],
+      "de": ["vom herd", "vom feuer", "von der hitze", "von der flamme"]
+    },
+    "stand": {
+      "en": ["let stand", "leave to stand", "let it stand"],
+      "de": ["stehen lassen", "ziehen lassen", "durchziehen"]
     }
   }
 }

@@ -121,6 +121,7 @@
             "en": "Remove the leaves and the green ribs. Cut a deep cross into the stalk.",
             "de": "Blätter und grüne Rippen entfernen. Den Strunk tief kreuzweise einschneiden."
           },
+          "action": "trim",
           "uses": ["cauliflower"]
         },
         {
@@ -136,6 +137,7 @@
             "en": "Cut it into small pieces.",
             "de": "In kleine Stücke schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["cauliflower"]
         },
         {
@@ -143,6 +145,7 @@
             "en": "Season it with butter, salt and pepper.",
             "de": "Mit Butter, Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["butter", "salt", "pepper"]
         },
         {
@@ -150,6 +153,7 @@
             "en": "Put it in a dish that withstands heat and sprinkle with the parmesan.",
             "de": "In eine feuerfeste Platte geben und mit dem Parmesan bestreuen."
           },
+          "action": "sprinkle",
           "uses": ["parmesan"]
         },
         {
@@ -157,6 +161,7 @@
             "en": "Cover it all with the béchamel.",
             "de": "Alles mit der Béchamelsauce bedecken."
           },
+          "action": "pour",
           "uses": ["bechamel"]
         },
         {
@@ -170,7 +175,8 @@
           "text": {
             "en": "Serve it hot.",
             "de": "Heiß servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     },
@@ -239,6 +245,7 @@
             "en": "Add the milk little by little, stirring all the time, until it is a thick, milky cream.",
             "de": "Die Milch nach und nach unter ständigem Rühren zugeben, bis eine dicke, milchfarbene Creme entsteht."
           },
+          "action": "add",
           "uses": ["milk"]
         },
         {
@@ -246,6 +253,7 @@
             "en": "If it is stiff, add milk. If it is runny, return it to the heat with a little butter kneaded with flour.",
             "de": "Ist sie fest, Milch zugeben. Ist sie dünnflüssig, mit etwas mit Mehl verkneteter Butter erneut auf den Herd stellen."
           },
+          "action": "add",
           "uses": ["milk", "butter", "flour"]
         }
       ]

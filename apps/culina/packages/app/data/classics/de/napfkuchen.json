@@ -198,6 +198,7 @@
             "en": "Add the eggs little by little, stirring constantly.",
             "de": "Die Eier nach und nach unter ständigem Rühren zugeben."
           },
+          "action": "add",
           "uses": ["eggs"]
         },
         {
@@ -205,6 +206,7 @@
             "en": "Stir in the almonds, the milk, the lemon peel, the salt, the sugar and the dissolved yeast.",
             "de": "Mandeln, Milch, Zitronenschale, Salz, Zucker und die gelöste Hefe einrühren."
           },
+          "action": "stir",
           "uses": ["almonds", "milk", "lemon", "salt", "sugar", "yeast"]
         },
         {
@@ -212,6 +214,7 @@
             "en": "Stir in the flour a spoonful at a time.",
             "de": "Das Mehl esslöffelweise einrühren."
           },
+          "action": "stir",
           "uses": ["flour"]
         },
         {
@@ -219,6 +222,7 @@
             "en": "Butter a pan and sprinkle it with the grated roll.",
             "de": "Eine Form buttern und mit dem geriebenen Brötchen ausstreuen."
           },
+          "action": "grease",
           "uses": ["roll"]
         },
         {
@@ -237,7 +241,8 @@
           "text": {
             "en": "Bake the cake.",
             "de": "Den Kuchen backen."
-          }
+          },
+          "technique": "bake"
         }
       ]
     }

@@ -171,6 +171,7 @@
             "en": "Beat the eggs and the sugar thoroughly with a ladle in a bowl.",
             "de": "Eier und Zucker in einer Schüssel gründlich mit einer Kelle schlagen."
           },
+          "action": "whisk",
           "uses": ["egg", "yolk", "sugar"]
         },
         {
@@ -178,6 +179,7 @@
             "en": "Add the flour little by little, working it in.",
             "de": "Das Mehl nach und nach einarbeiten."
           },
+          "action": "add",
           "uses": ["flour"]
         },
         {
@@ -193,6 +195,7 @@
             "en": "Add the melted butter last.",
             "de": "Zuletzt die flüssige Butter dazugeben."
           },
+          "action": "add",
           "uses": ["butter"]
         },
         {
@@ -200,6 +203,7 @@
             "en": "Butter a copper tin, dust it with flour or breadcrumbs, and pour the mixture in.",
             "de": "Eine Kupferform buttern, mit Mehl oder Semmelbröseln ausstreuen und die Masse hineingeben."
           },
+          "action": "grease",
           "uses": ["butter", "flour", "crumbs"]
         },
         {
@@ -215,6 +219,7 @@
             "en": "Split the almonds lengthwise, then cut each half across into four or five pieces.",
             "de": "Die Mandeln der Länge nach spalten und jede Hälfte quer in vier oder fünf Stücke schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["almond"]
         },
         {
@@ -222,6 +227,7 @@
             "en": "Cut the pine nuts in half across.",
             "de": "Die Pinienkerne quer halbieren."
           },
+          "technique": "knife-cuts",
           "uses": ["pine-nut"]
         },
         {
@@ -229,13 +235,15 @@
             "en": "Sprinkle the almonds and the pine nuts over the top.",
             "de": "Mandeln und Pinienkerne oben darüberstreuen."
           },
+          "action": "sprinkle",
           "uses": ["almond", "pine-nut"]
         },
         {
           "text": {
             "en": "Spread the mixture so the cake is no thicker than a finger and a half, at most two fingers.",
             "de": "Die Masse so verteilen, dass der Kuchen höchstens eineinhalb, notfalls zwei Finger dick wird."
-          }
+          },
+          "action": "spread"
         },
         {
           "text": {
@@ -249,6 +257,7 @@
             "en": "Dust it with icing sugar and serve it cool.",
             "de": "Mit Puderzucker bestäuben und kühl servieren."
           },
+          "action": "sprinkle",
           "uses": ["icing-sugar"]
         }
       ]

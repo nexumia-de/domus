@@ -111,6 +111,7 @@
             "en": "Cut the boiled potatoes into slices.",
             "de": "Die gekochten Kartoffeln in Scheiben schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["potatoes"]
         },
         {
@@ -118,6 +119,7 @@
             "en": "Put the potato slices in layers into a buttered pan.",
             "de": "Die Kartoffelscheiben in Schichten in eine butterbestrichene Form legen."
           },
+          "action": "fill",
           "uses": ["butter", "potatoes"]
         },
         {
@@ -125,6 +127,7 @@
             "en": "Mix the sour cream, the eggs and the Parmesan cheese into a sauce.",
             "de": "Saure Sahne, Eier und Parmesan zu einer Sauce verrühren."
           },
+          "action": "mix",
           "uses": ["cream", "egg", "cheese"]
         },
         {
@@ -132,6 +135,7 @@
             "en": "Cover each layer with the sauce and fill the dish in this way.",
             "de": "Jede Lage mit der Sauce bedecken und so die Form füllen."
           },
+          "action": "fill",
           "uses": ["cream", "egg", "cheese"]
         },
         {
@@ -149,7 +153,8 @@
           "text": {
             "en": "Serve as a side dish.",
             "de": "Als Beilage servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     }
