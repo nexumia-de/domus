@@ -10,6 +10,7 @@ import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { seedStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -66,35 +67,8 @@ const dump = () =>
         };
       }),
   );
-const setStock = (ids) =>
-  page.evaluate(
-    (list) =>
-      new Promise((res) => {
-        const r = indexedDB.open('mixtura');
-        r.onsuccess = () => {
-          // Stock is kept per place (docs/store.md): the rows go into the default place.
-          const tx = r.result.transaction(['stock', 'places'], 'readwrite');
-          const s = tx.objectStore('stock');
-          s.clear();
-          const places = tx.objectStore('places').getAll();
-          places.onsuccess = () => {
-            for (const id of list) {
-              s.put({
-                placeId: places.result[0].id,
-                ingredientId: id,
-                updatedAt: '2026-11-18T10:00:00.000Z',
-                present: true,
-              });
-            }
-          };
-          tx.oncomplete = () => {
-            r.result.close();
-            res();
-          };
-        };
-      }),
-    ids,
-  );
+// Stock is kept per space: the rows go into the space the app made.
+const setStock = (ids) => seedStock(page, ids, { replace: true });
 const cards = () => page.locator('[data-line-card]');
 const addLine = async (search, amount) => {
   await page.getByRole('button', { name: 'Add Ingredient' }).click();

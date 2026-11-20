@@ -21,6 +21,7 @@ const routes = [
   '#/templates',
   '#/templates/daiquiri',
   '#/stock',
+  '#/stock?sheet=spaces',
   '#/stock/buy-next',
   '#/settings',
   '#/settings/data',
@@ -68,7 +69,7 @@ expect(
   (await page.request.get(`${site.url}sw.js`)).headers()['cache-control'] === 'no-cache',
   'sw.js is served with no-cache',
 );
-// Hosts are allowed in `connect-src` only: the user's sync storage (docs/sync-backends.md#policy).
+// Hosts are allowed in `connect-src` only: the user's sync storage (docs/development.md).
 expect(
   /(?:^|; )connect-src 'self' https: http:\/\/localhost:\* http:\/\/127\.0\.0\.1:\*(?:;|$)/.test(
     policy,

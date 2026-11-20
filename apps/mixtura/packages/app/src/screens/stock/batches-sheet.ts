@@ -1,4 +1,4 @@
-// The batches of one prepared ingredient, or with several places counting the places of any ingredient, as a sheet over Stock (#101, #131): every
+// The batches of one prepared ingredient, or with several spaces counting the spaces of any ingredient, as a sheet over Stock (#101, #131): every
 // batch at hand with its date and where it stands, Used up for one, and a date
 // to add another. The user's own shelf life decides the states; the app
 // proposes none. Every change acts at once with Undo. Address:
@@ -9,7 +9,7 @@ import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
 import { type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
-import { placeBlocks } from '../../stock/places-view';
+import { spaceBlocks } from '../../stock/spaces-view';
 import { type StockState } from '../../stock/state';
 import { today } from '../../today';
 import type { BrowseModel } from '../browse/model';
@@ -19,13 +19,13 @@ import { batchBlock, resetBlocks } from './batches-block';
 import { closeSheet, sheetIs, stockAddress, openSheet } from './sheet-address';
 
 let lastId = '';
-let openedFrom: 'batches' | 'places' = 'batches';
+let openedFrom: 'batches' | 'spaces' = 'batches';
 let wasOpen = false;
 
 export function openBatches(
   context: ScreenContext,
   id: string,
-  from: 'batches' | 'places' = 'batches',
+  from: 'batches' | 'spaces' = 'batches',
 ): void {
   openedFrom = from;
   resetBlocks();
@@ -64,14 +64,14 @@ export function batchesSheet(
   const id = context.route.query.get('ing') ?? '';
   const item = model.tree.byId.get(id);
   if (!sheetIs(context, 'batches') || !item) return null;
-  const { writable, selection, byPlace } = state;
-  const blocks = placeBlocks(byPlace, selection.ticked, selection.places, id);
-  // Any ingredient has this sheet when several places count (the way to change another place's
-  // record); only a prepared one has it with a single place.
+  const { writable, selection, bySpace } = state;
+  const blocks = spaceBlocks(bySpace, selection.ticked, selection.spaces, id);
+  // Any ingredient has this sheet when several spaces count (the way to change another space's
+  // record); only a prepared one has it with a single space.
   const prepared = item.prepared !== undefined;
   if (!prepared && blocks.length < 2) return null;
   lastId = id;
-  const title = blocks.length > 1 ? strings.places.sheetTitle(item.name) : t.title(item.name);
+  const title = blocks.length > 1 ? strings.spaces.sheetTitle(item.name) : t.title(item.name);
   const shared = {
     context,
     model,

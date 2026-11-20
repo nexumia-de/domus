@@ -1,15 +1,16 @@
 // `npm run e2e -w @domus/app`: builds the app against a fake GitHub on localhost (a test build:
 // the API address is compiled in, see build.mjs), serves it, and runs the browser checks at
-// 360 x 720 and 1200 x 800 in English and German. Chromium: PLAYWRIGHT_CHROMIUM_PATH when set.
+// 360 x 720 and 1200 x 800 in English and German. A second bundle (seed-entry.mjs) is run in the
+// page to make the space an app keeps on this device only. Chromium: PLAYWRIGHT_CHROMIUM_PATH when set.
 // E2E_SHOTS=<folder>: also takes a screenshot of every screen in the German run at 360 x 720.
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { build } from 'esbuild';
 import { buildApp } from '../build.mjs';
 import { startFakeGithub } from './fake-github.mjs';
 import { check, failureCount, launch, serveDir } from './harness.mjs';
-import { makeShots, narrow, scenario } from './scenario.mjs';
+import { deviceOnly, makeShots, narrow, scenario } from './scenario.mjs';
 
 const work = mkdtempSync(join(tmpdir(), 'domus-e2e-'));
 await build({
@@ -21,6 +22,17 @@ await build({
   logLevel: 'warning',
 });
 const texts = await import(join(work, 'texts.mjs'));
+// What an app does before sync is set up, as a script the checks run in the page (`__seed`).
+await build({
+  entryPoints: [join(import.meta.dirname, 'seed-entry.mjs')],
+  bundle: true,
+  format: 'iife',
+  globalName: '__seed',
+  platform: 'browser',
+  outfile: join(work, 'seed.js'),
+  logLevel: 'warning',
+});
+const seed = readFileSync(join(work, 'seed.js'), 'utf8');
 
 const fake = await startFakeGithub();
 const dist = await buildApp({ outdir: join(work, 'dist'), githubApi: fake.origin });
@@ -40,8 +52,9 @@ try {
       process.env.E2E_SHOTS && run.width === 360 && run.lang === 'de'
         ? makeShots(process.env.E2E_SHOTS)
         : undefined;
-    const context = { ...run, texts, server, fake, label, shots, problems };
+    const context = { ...run, texts, seed, server, fake, label, shots, problems };
     await scenario(browser, context);
+    await deviceOnly(browser, context);
     await narrow(browser, context);
     check(
       problems.length === 0,

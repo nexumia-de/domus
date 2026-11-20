@@ -10,7 +10,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 # Plan
 
-- [Roadmap](roadmap.md) - The goals for the whole repository in order: one address, host package, spaces, GitHub storage, Domus screens (first version built), the apps on spaces, sync server, further storages; what each needs from the owner.
+- [Roadmap](roadmap.md) - The goals for the whole repository in order: one address, host package, spaces, GitHub storage, Domus screens (first version built), the apps on spaces (Mixtura done), sync server, further storages; what each needs from the owner.
 
 # Decisions
 
@@ -20,6 +20,7 @@ its own bundle. Change history is in [log.md](log.md).
 # Reference
 
 - [Deployment](deployment.md) - The one address domus.nexumia.de: layout of the site, headers per folder, the browser check that the apps stay apart, the deploy job, the owner's steps.
+- [Reviews](reviews.md) - The record of changes several agents made together: who did which part, who checked what, what the checks found, the counts, what nobody verified; first entry goal 6.
 - [Development](development.md) - The layout, the one workspace, the checks from the root, how the histories were imported, what still points at the old repositories.
 
 # Parts

@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Export and import
-description: The export file of the app, how it is read (limits, validation, version rules), the two import modes with their merge rules, the import backup and Undo, the change counter and the backup reminder, and how it is tested.
+description: The export file of the app (format version 3, four kinds of user records, no stock), how it is read (limits, validation, version rules, older files read without their stock), the two import modes with their merge rules, the import backup and Undo, the share file and link, the change counter and the backup reminder, and how it is tested.
 tags: [export, import, backup, format-version, store]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -24,6 +24,14 @@ The format itself is in the
 [data model](data-model.md#export-file); the screen's behaviour in
 [screens](screens-stock-settings.md#export-and-import); texts in
 [UI strings](ui-strings.md).
+
+The current format is **version 3** (`FORMAT_VERSION`), since 2026-11-20.
+It holds the four kinds of records that are Mixtura's own: ingredients,
+templates, specs and affinities. Stock is not in the file: it belongs to
+a space and is kept with the space
+([stock in spaces](decisions/stock-in-spaces.md#export)). A backup of a
+space is the Household app's export, which is not built yet; until then
+the stock of a space on this device only has no backup.
 
 ## Where the rules live
 
@@ -52,8 +60,8 @@ re-exports the engine names, so the screens' imports did not change.
 Editor drafts (store `drafts`) are not part of the file: they are unsaved work, not data.
 
 One JSON file: `app`, `formatVersion`, `exportedAt`, `seedVersion` (the
-built-in data the references were made against) and the five lists of
-user data. Settings, the persistence answer and seed data are not in it.
+built-in data the references were made against) and the four lists of
+user data (`ingredients`, `templates`, `specs`, `affinities`). Settings, the persistence answer and seed data are not in it.
 Records are sorted by id, so the same data gives the same text.
 
 `exportedAt` and the seed version are passed in by the host
@@ -77,19 +85,17 @@ input and is checked completely before anything is written:
    refuses the file (no prototype pollution).
 3. `app` is `mixtura` ("not a Mixtura export" otherwise).
 4. `formatVersion` is a whole number from 1. Above the app's version:
-   refused with both numbers ("It is format 3; this app reads up to 2.").
+   refused with both numbers ("It is format 4; this app reads up to 3.").
    Below: migrated by the pure functions of the engine's `exchange/migrate.ts`
    ([migration rule](data-model.md#export-file),
-   [version 2](#version-2-stock-per-place)); the app passes what a step
-   needs besides the file (`migrationInput`).
+   [older versions](#older-versions-stock-left-out)). A migration needs
+   nothing but the file.
 5. The current JSON Schema `export.schema.json` with all entity schemas
    (`additionalProperties: false`), at most 20 problems reported.
 6. Ids: ingredients, templates, affinities, specs and `lineageId` must be
-   user ids (`u-<uuid>`), and so are place ids and the `placeId` of stock;
-   the `ingredientId` of a stock record may be a seed id. Repeated ids,
-   repeated stock keys (place and ingredient together) and repeated
-   (`lineageId`, `version`) slots are refused, and so is a stock record
-   whose `placeId` names no place of the file.
+   user ids (`u-<uuid>`). Repeated ids and repeated (`lineageId`,
+   `version`) slots are refused, and so are riffs that are their own
+   ancestors.
 
 Any problem refuses the whole file and nothing changes; there is no
 partial import. A valid file shows a summary and, for both modes, what
@@ -98,48 +104,53 @@ replace, removed.
 
 ### Modes
 
-| Mode               | Same id                                                                                                               | Not in the file                     |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| Merge              | The existing record stays; a spec, place or stock record with a newer `updatedAt` in the file replaces its older one. | Stays.                              |
-| Replace Everything | The file's record is written; an identical record is left alone (skipped).                                            | Deleted (the six user stores only). |
+| Mode               | Same id                                                                                        | Not in the file                      |
+| ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------ |
+| Merge              | The existing record stays; a spec with a newer `updatedAt` in the file replaces its older one. | Stays.                               |
+| Replace Everything | The file's record is written; an identical record is left alone (skipped).                     | Deleted (the four user stores only). |
 
 A merge never drops a spec version: a file record that would take the
 (`lineageId`, `version`) slot of a different existing record is skipped.
 Records without `updatedAt` (ingredients, templates, affinities) are never
 replaced by a merge. Settings are never touched by an import.
 
-Keys: `id` for every kind except stock, which has the pair `placeId` and
-`ingredientId`: the same ingredient in two places is two records. In a
-merge a record whose key is new is added; for an existing key the one with
-the newer `updatedAt` wins, an equal or older one is skipped. A tombstone is
-a stock record like any other, so a newer removal wins over an older live
-record and a newer live record brings a removed one back; the same rule
-applies to places (a newer name wins).
+The key of every kind is `id`. In a merge a record whose id is new is
+added; for an existing spec the one with the newer `updatedAt` wins, an
+equal or older one is skipped.
 
-### Version 2: stock per place
+**Stock is not touched.** Neither mode reads or writes the stock of a
+space, and Undo does not either. Replace Everything therefore leaves the
+stock as it is; it cannot delete what another app or person put into the
+space. A stock mark can then name an ingredient of the user's own that
+the replace removed; such a mark is kept and not shown.
 
-Format version 2 ([#131](https://github.com/nexumia-de/mixtura/issues/131))
-adds `places` to the file (written before `stock`), gives every stock
-record `placeId` and `updatedAt`, and allows tombstones
-(`deleted: true`, no other field; [stock](data-model.md#stock)). The
-migration from version 1 (`formatMigrations[0]`) puts all stock of the
-old file into one place and sets `places` to that place alone. The engine
-has no ids or clock, so the place comes from the caller:
-`parseExportFile(text, bytes, check, { migrationInput: { placeForOldStock } })`,
-where the app passes its entry place (`exchange-actions.ts`). Migrated stock
-records get `updatedAt` equal to the file's `exportedAt`, or the place's
-`updatedAt` if the file has none. A version 1 file parsed without
-`placeForOldStock` is refused with the failure `needs-place`; nothing is
-guessed. Merging a migrated file into the app that supplied the place
-adds the stock to that place, and a migrated record is skipped when the
-app has the same record with a newer or equal `updatedAt`.
+### Older versions: stock left out
+
+| Step   | What it does                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| 1 to 2 | Hands the file on unchanged. Version 2 had made stock per place; that is of no use to version 3. |
+| 2 to 3 | Removes `places` and `stock` from the file. Nothing else changes.                                |
+
+A file of version 1 or 2 is therefore read as before, without its stock:
+its ingredients, templates, specs and pairings are imported, its stock
+records and places are dropped before the schema check and are not
+validated. The result of the parse names the version the file was migrated
+from (`migratedFrom`), and the import preview says under the summary: "The
+file was made by an older version (format {n}) and is converted. Stock in
+it is not imported: stock is kept with the space now."
+
+History: version 2 ([#131](https://github.com/nexumia-de/mixtura/issues/131))
+had `places` and gave every stock record `placeId` and `updatedAt`, with
+removal markers; its migration from version 1 needed a place from the
+caller (`migrationInput`, failure `needs-place`). All of that left the
+code on 2026-11-20.
 
 ### One transaction, import backup, Undo
 
 `applyInTransaction` reads the data, computes the plan from it and writes
 the result plus the import backup (`meta` key `importBackup`: the data as it
-was and the time) in one IndexedDB transaction over the six stores and
-`meta`. A failure (full device, a record the store refuses) aborts it all:
+was and the time) in one IndexedDB transaction over the four stores and
+`meta`. The backup holds no stock. A failure (full device, a record the store refuses) aborts it all:
 data and backup stay as they were. The toast "Imported {counts}" offers
 Undo for 8 seconds; Undo replaces the data with the backup in one transaction
 and removes it. Because the backup is in the store, it can also be used
@@ -150,7 +161,7 @@ import overwrites it.
 ## Share file
 
 Issue [#142](https://github.com/nexumia-de/mixtura/issues/142). One drink of the
-user's own travels as a small export file of format version 2, built by the
+user's own travels as a small export file of the current format version, built by the
 engine's `buildShareFile(snapshot, specId, exportedAt)`
 (`exchange/share.ts`). It holds:
 
@@ -163,7 +174,8 @@ engine's `buildShareFile(snapshot, specId, exportedAt)`
   with everything that spec needs, recursively. Every walk stops at a record
   it already took, so loops end.
 
-No stock, places or pairings (the lists are empty), no `seedVersion`.
+No pairings (the list is empty), no `seedVersion`; the format holds no
+stock.
 "Own" is the id test `isUserId` (`u-` and a UUID); seed records have slug ids
 and the receiver has them already, so a riff of a built-in drink carries only
 the riff. An id that is no user spec gives
@@ -188,15 +200,12 @@ version; another one is refused with its own message.
   again; a bare `#/share` with nothing to show goes to the normal start. The
   text goes through the same `parseExportFile` and `planImport` in merge
   mode as a file, and the same preview component; Add Drink applies it with
-  the same transaction, import backup and Undo. After reading, places, stock
-  and pairings are dropped, so a link cannot create or change a place.
+  the same transaction, import backup and Undo. After reading, pairings
+  are dropped; the format holds no stock, so a link cannot change the
+  stock of a space.
 - **Refusals**, one state each: damaged or cut off, newer link or file
   version, too large, not a Mixtura drink (including a file without a
   drink), no storage in this browser.
-- **Invite link.** The invite to join a place is a sibling,
-  `#/join/<payload>`, coded the same way (`1.` and base64url of deflate-raw
-  JSON) but with its own text and handling; it is not an export file. See
-  [screens: sync](screens-sync.md#invite-link).
 - **Permissions.** The Content-Security-Policy and Permissions-Policy are
   unchanged: streams need no entry, and `clipboard-write` is not in the
   denied list of `headers.mjs`, so the default (the page itself) applies.
@@ -232,22 +241,32 @@ rather than only in memory.
 - Engine `test/exchange.test.ts` (with Ajv): file shape, stability, file
   name, refusals (damaged, other app, newer, invalid, too large, forbidden
   keys, id rule, duplicates), migration mechanism, the version 1 file
-  (`schemas/examples/legacy/`) read with and without a place, tombstones.
+  (`schemas/examples/legacy/export-v1-full.json`) read without its stock
+  and places.
 - Engine `test/exchange-vectors.test.ts` over `vectors/exchange/` (schema
   check stubbed): every merge and replace case of the plan and every
-  refusal that does not depend on the schema, among them the version 1
-  migration, tombstones, stock and place merge by `updatedAt` (newer, older,
-  equal), the same ingredient in two places and an unknown place.
+  refusal that does not depend on the schema. Parse vectors: a minimal
+  file of version 3 (`parse-v3-minimal-ok`, `parse-minimal-ok`), files of
+  version 1 and 2 with their stock left out (`parse-v1-stock-left-out`,
+  `parse-v2-stock-left-out`), a newer format, another app, not JSON, an
+  array, too large by bytes and by text, the three forbidden keys, a
+  version that is no number or zero, a seed id, a repeated id, a repeated
+  version slot, a riff loop, a schema problem passed on. Plan vectors:
+  nine merge cases (adds and skips, identical, all versions kept, newer
+  and older spec, newer by milliseconds, no timestamp, the same slot
+  twice, a taken version slot) and three replace cases (empty file, key
+  order, removes and skips identical).
 - `test/exchange-format.test.ts` (app): the wrapper uses the real schema
-  check; reminder rule.
+  check; a version 1 file is read and imported without its stock; reminder
+  rule. `test/stock-state.test.ts`: stock is not part of the export.
 - `test/exchange-store.test.ts`: round trip into a fresh database, merge and
   replace rules, version-slot rule, Undo, a failing import changing
   nothing, change counter.
 - Share: engine `test/exchange-share.test.ts` (vectors, and every share file
   of the example data passes the real schema and the parser); app
   `test/share-link.test.ts` (round trip, unicode, limit, each refusal, the
-  decompression cap) and `test/share-open.test.ts` (preview, no places or
-  stock, same link twice, error states, sending); `e2e/share.mjs` at 360 x
+  decompression cap) and `test/share-open.test.ts` (preview, pairings
+  dropped, same link twice, error states, sending); `e2e/share.mjs` at 360 x
   720 and 1200 x 800.
 - `e2e/exchange.mjs` at 360 x 720 and 1200 x 800: export, wipe (fresh
   context), import, compare, Undo, five kinds of broken file, reminder, no

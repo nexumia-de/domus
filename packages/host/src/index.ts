@@ -1,7 +1,5 @@
 // The public entry of @nexumia-de/hospes: what the apps may import.
 export { base64ToBytes, bytesToBase64 } from './base64';
-export { DEFAULT_ITERATIONS, createCipher, type CipherOptions } from './cipher';
-export { UnsupportedEnvelope, WrongPassphrase } from './errors';
 export { createWebdavAdapter, type WebdavOptions } from './webdav';
 export {
   PROBE_PATH,
@@ -60,6 +58,7 @@ export {
   type StoredStorage,
 } from './store';
 export { createMemoryStore } from './memory-store';
+export { DEVICE_ONLY, deviceOnlyStorage, ensureSpace, isDeviceOnly } from './device';
 export {
   DB_NAME,
   DB_VERSION,

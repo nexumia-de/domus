@@ -1,8 +1,8 @@
 ---
 type: Specification
 title: Screens
-description: The routes and screens of the Household app with the intent of their texts - Home, Create a space (four steps, the three GitHub steps, WebDAV), a space, Invite with a QR code, Join, Change access - the sentence for every failure, what was decided where the brief was open, and what is not done or not verified.
-tags: [screens, spaces, sync, invite, github, webdav, qr, i18n]
+description: The routes and screens of the Household app with the intent of their texts - Home, Create a space (four steps, the three GitHub steps, WebDAV), a space, Invite with a QR code, a space on this device only and Connect a storage, Join, Change access - the sentence for every failure, what was decided where the brief was open, and what is not done or not verified.
+tags: [screens, spaces, sync, invite, github, webdav, device-only, qr, i18n]
 generated: { by: claude-code, at: 2026-11-19 }
 sources:
   - id: decision
@@ -32,14 +32,15 @@ in German; app names stay as they are.
 
 ## Routes
 
-| Hash                   | Screen                                                                                                   |
-| ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| `#/`                   | Home                                                                                                     |
-| `#/spaces/new`         | Create a space                                                                                           |
-| `#/spaces/<id>`        | A space (the id is the 32 hex characters derived from the secret)                                        |
-| `#/spaces/<id>/invite` | Invite                                                                                                   |
-| `#/spaces/<id>/access` | Change the storage access (not in the brief, see [decisions](#decisions))                                |
-| `#/join/<data>`        | Join; `<data>` is the fragment an invite link carries; `#/join` alone says "Paste the invite link first" |
+| Hash                    | Screen                                                                                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| `#/`                    | Home                                                                                                     |
+| `#/spaces/new`          | Create a space                                                                                           |
+| `#/spaces/<id>`         | A space (the id is the 32 hex characters derived from the secret)                                        |
+| `#/spaces/<id>/invite`  | Invite                                                                                                   |
+| `#/spaces/<id>/connect` | Connect a storage, for a space on this device only                                                       |
+| `#/spaces/<id>/access`  | Change the storage access (not in the brief, see [decisions](#decisions))                                |
+| `#/join/<data>`         | Join; `<data>` is the fragment an invite link carries; `#/join` alone says "Paste the invite link first" |
 
 An unknown hash is Home. The back stack is the browser history; Create has its
 own Back button for each step.
@@ -57,6 +58,11 @@ or token), and the state of its last cycle:
 | never   | Never synced                                           | no `syncedAt` stored for the collection `space`                                 |
 | in step | In step · 5 min ago (German: Abgeglichen · vor 5 Min.) | `syncedAt` of the collection, the time of the last successful cycle             |
 | failed  | Last sync failed, and the failure in words below       | the last failure this page saw, when newer than `syncedAt`; kept in memory only |
+
+A space **on this device only** (made by an app before sync was set up, see
+[below](#a-space-on-this-device-only)) shows its name and **On this device
+only** (German: _Nur auf diesem Gerät_) in place of the storage words and the
+state: it has no cycle, so no state and no failure.
 
 Without a space the empty state says in two sentences what a space is (a group
 of people and what they share; every device that knows the secret keeps the same
@@ -127,6 +133,63 @@ from this device only, the files in the storage stay, other devices are not
 affected, and if this is the only device that knows the secret nobody can open
 the files again. After a cycle the stored name follows the collection, so the
 name another device wrote becomes the heading.
+
+## A space on this device only
+
+An app that keeps a shared collection (first: Mixtura's stock) makes a space
+when the device has none, so it has somewhere to put it before the household
+set up sync ([spaces](../../../packages/host/docs/spaces.md)): a space with a
+secret and an id like any other, but with the storage type `device`, for which
+there is no adapter. This app never makes one; it shows it and gives it a
+storage.
+
+Its page has the name as the heading and a card that says **On this device
+only** and one sentence: "This space and what the apps keep in it, for example
+the stock, are on this device only. Nothing is sent anywhere.", with the primary
+button **Connect a storage** (German: _Speicher verbinden_). There is no Sync
+now, no state of a last cycle, no Invite someone and no Change storage access.
+**Rename** stores the name and writes it to the collection `space` with
+`localChange`, without a cycle; it is sent when a storage is connected.
+**Remove from this device** stays, and its confirmation says what is true here:
+the space is on this device only and no copy exists anywhere else; the space,
+its secret and everything the apps keep in it are deleted for good and cannot be
+brought back.
+
+`#/spaces/<id>/invite` and `#/spaces/<id>/access` of such a space lead to its
+page (the address bar entry is replaced): there is nothing to invite to and no
+access to change. No function of `src/logic/actions.ts` runs a cycle for it;
+one that is asked for all the same answers `bad-storage` and sends nothing.
+
+## Connect a storage
+
+`#/spaces/<id>/connect`, **Step n of 3**: the storage and the access steps of
+[Create a space](#create-a-space) (steps 2 and 3 there: the choice of GitHub or
+WebDAV, GitHub's three guided steps with the pick, the public warning and the
+read-only block, WebDAV with its test), from the same code
+(`src/screens/storage-steps.ts`, `src/screens/wizard.ts`). No name is asked
+for; a line above the steps says which space this is and that the space, its
+secret and its data stay as they are. Back on the first step leaves for the
+space's page.
+
+3. **Connect.** A summary (space, storage), then **Connect storage**
+   (`connectStorage`): the storage is looked at once more (`checkStorage`), the
+   space is stored with the new storage, the collection `space` is made to hold
+   the name if it does not yet, and one cycle runs on `space`. The id and the
+   secret never change. On success the space's page opens with "The space is
+   now kept in step through GitHub: owner/name. Open the apps once so they send
+   what they keep.": the apps sync their own collections themselves when they
+   are opened; this app sends only `space`. On failure **the space goes back to
+   this device only** (the storage and its access are taken off again, nothing
+   of the space or of what the apps keep in it is removed), the failure is told
+   in words under "The storage was not connected", followed by "The space stays
+   on this device only and nothing of it was removed. Fix the cause and try
+   again.", and Connect can be pressed again.
+
+If the storage already holds a `space.json` of the same space id (not possible
+with a fresh secret; possible when the same secret is on two devices), the
+cycle merges it as any cycle does: the later name wins on both sides.
+
+The route of a space that already has a storage leads to the space's page.
 
 ## Invite
 
@@ -209,12 +272,13 @@ and ends in what can be done:
 
 ## What is stored, and where
 
-| What                                                                          | Where                                                  | Why                                                                                                                              |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| spaces (id, secret, name, storage with its access) and the collection `space` | IndexedDB `domus` (the host package's shared database) | the secret and the access must be there to sync; stored in clear, as [spaces](../../../packages/host/docs/spaces.md#limits) says |
-| language and theme                                                            | `localStorage` keys `domus.lang`, `domus.theme`        | the only things kept there; a unit test checks that no other file touches storage                                                |
-| the last failure of a space                                                   | memory                                                 | a statement about now                                                                                                            |
-| the token while it is typed and until the space is stored                     | an input, then a variable                              | never in an address, `localStorage`, a log or the page text                                                                      |
+| What                                                                                                    | Where                                                  | Why                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| spaces (id, secret, name, storage with its access) and the collection `space`                           | IndexedDB `domus` (the host package's shared database) | the secret and the access must be there to sync; stored in clear, as [spaces](../../../packages/host/docs/spaces.md#limits) says |
+| language and theme                                                                                      | `localStorage` keys `domus.lang`, `domus.theme`        | the only things kept there; a unit test checks that no other file touches storage                                                |
+| a space on this device only: the same, with the storage `{ type: 'device', address: '' }` and no access | IndexedDB `domus`                                      | made by an app; what the apps keep in it is in the same database and nowhere else                                                |
+| the last failure of a space                                                                             | memory                                                 | a statement about now                                                                                                            |
+| the token while it is typed and until the space is stored                                               | an input, then a variable                              | never in an address, `localStorage`, a log or the page text                                                                      |
 
 ## Decisions
 
@@ -230,6 +294,16 @@ Where the brief was open, wrong or silent:
   the host package. Not done here, because Mixtura is not part of this change.
 - **A failed create or join removes the space again**, so no half-made space
   with a secret nobody has is left on the device.
+- **A failed connect does the opposite**: the space was there before and holds
+  what the apps keep, so it is never removed; it goes back to this device only,
+  and the access that did not work is not kept.
+- **Connect refuses a space that already has a storage** (`unexpected`; the
+  screen leads to the space's page before that). Moving a space to another
+  storage is not built.
+- **The state of a failed connect is not kept as a "last failure"**: a space on
+  this device only shows no failure; the sentence is on the Connect screen.
+- **`storageWords` takes the texts**, because "On this device only" is a
+  sentence of the language; `GitHub:` and `WebDAV:` stay as they are.
 - **A rename is kept when its cycle fails** (the name is local first); the state
   says so.
 - **Change access** (`#/spaces/<id>/access`) was added: without it an expired
@@ -263,7 +337,12 @@ Where the brief was open, wrong or silent:
 - **Export and import** are not built.
 - **No camera**: the code is shown and scanned by the other person's camera
   app; scanning a drawn code was not tested with a phone.
-- Only the `space` collection is synced; the apps' collections come with the
-  apps' goals. No sync loop runs (a cycle runs on create, join, rename and Sync
+- Only the `space` collection is synced here; the apps sync their own
+  collections. After Connect a storage, what an app keeps in the space reaches
+  the storage only when that app is opened; this app does not look whether it
+  did.
+- A space on this device only is made by an app, in the browser checks by the
+  host package's own code run in the page (`e2e/seed-entry.mjs`), not by
+  Mixtura itself. No sync loop runs (a cycle runs on create, join, rename and Sync
   now), no polling.
 - The household's own sync server and S3 are not offered.

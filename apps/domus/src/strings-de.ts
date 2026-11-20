@@ -51,6 +51,9 @@ export const stringsDe: Strings = {
     joinHint: 'Füge den Link ein, den dir jemand geschickt hat, oder sein Ende ab #/join/.',
     joinButton: 'Weiter',
   },
+  storage: {
+    deviceOnly: 'Nur auf diesem Gerät',
+  },
   status: {
     never: 'Noch nie abgeglichen',
     inStep: (ago) => `Abgeglichen · ${ago}`,
@@ -158,6 +161,13 @@ export const stringsDe: Strings = {
     removeText:
       'Der Raum, sein Geheimnis und der Zugang zum Speicher werden nur auf diesem Gerät gelöscht. Die Dateien im Speicher bleiben, und andere Geräte sind nicht betroffen. Ist dies das einzige Gerät, das das Geheimnis kennt, kann niemand die Dateien mehr öffnen.',
     removeConfirm: 'Entfernen',
+    removeDeviceOnlyText:
+      'Dieser Raum liegt nur auf diesem Gerät, und es gibt nirgendwo eine Kopie. Der Raum, sein Geheimnis und alles, was die Apps darin ablegen, zum Beispiel der Vorrat, werden endgültig gelöscht und lassen sich nicht zurückholen.',
+    deviceOnlyText:
+      'Dieser Raum und was die Apps darin ablegen, zum Beispiel der Vorrat, liegen nur auf diesem Gerät. Nichts wird irgendwohin gesendet.',
+    connect: 'Speicher verbinden',
+    connected: (storage) =>
+      `Der Raum wird jetzt über ${storage} abgeglichen. Öffne die Apps einmal, damit sie senden, was sie ablegen.`,
     removed: 'Der Raum wurde von diesem Gerät entfernt.',
     created:
       'Der Raum ist angelegt. Seine erste Datei wurde in den Speicher geschrieben und wieder gelesen.',
@@ -165,6 +175,21 @@ export const stringsDe: Strings = {
     joinedEmpty:
       'Im Speicher liegen für diesen Raum noch keine Daten; vielleicht hat das Gerät, das eingeladen hat, noch nicht abgeglichen. „Jetzt abgleichen“ schaut später noch einmal nach.',
     accessSaved: 'Der Zugang ist gespeichert.',
+  },
+  connect: {
+    title: 'Speicher verbinden',
+    intro: (name) =>
+      `„${name}“ liegt nur auf diesem Gerät. Mit einem Speicher wird der Raum auf deinen Geräten abgeglichen und lässt sich teilen; der Raum, sein Geheimnis und seine Daten bleiben, wie sie sind.`,
+    heading: 'Den Speicher verbinden',
+    explain:
+      'Das schreibt die erste Datei des Raums in den Speicher und liest sie wieder. Was die Apps im Raum ablegen, folgt, wenn du sie öffnest.',
+    spaceLine: 'Raum',
+    storageLine: 'Speicher',
+    button: 'Speicher verbinden',
+    connecting: 'Verbindet den Speicher und schreibt die erste Datei …',
+    failedTitle: 'Der Speicher wurde nicht verbunden',
+    failedHint:
+      'Der Raum bleibt nur auf diesem Gerät, und nichts davon wurde entfernt. Behebe die Ursache und versuche es noch einmal.',
   },
   access: {
     title: 'Zugang zum Speicher ändern',

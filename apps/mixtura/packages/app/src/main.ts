@@ -2,9 +2,8 @@ import { initialState } from './app-state';
 import { connect } from './data';
 import { watchKeyboardInset } from './keyboard-inset';
 import { startNavigation } from './navigation';
-import { watchSyncTriggers } from './sync/browser-triggers';
+import { watchSyncTriggers } from './stock/sync-triggers';
 import { watchShareLinks } from './share/watch';
-import { watchInviteLinks } from './screens/sync/invite-watch';
 import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
 import { loadShortcuts } from './shortcuts-pref';
@@ -44,10 +43,9 @@ if (root) {
   shell.applyUpdate = registerServiceWorker(store);
   startNavigation(store);
   watchShareLinks({ app: store, local: connection.data.local }, store, connection.ready);
-  watchInviteLinks(store);
   watchKeyboardInset();
-  watchSyncTriggers(connection.data.sync, store);
-  void connection.ready.then(() => connection.data.sync.start());
+  watchSyncTriggers(connection.data.sync);
+  void connection.ready.then(() => connection.data.sync.refresh());
   draw();
 
   document.addEventListener('keydown', (event) => {

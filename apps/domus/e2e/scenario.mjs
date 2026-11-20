@@ -1,7 +1,8 @@
 // The checks of one run: one viewport, one language. Device A creates a space on GitHub, invites;
 // device B (a second browser context: separate storage) joins with and without the access, renames;
 // A syncs; the failures of the storage are made on purpose and read in words; WebDAV is the same
-// again against a fake that the page reaches through the browser's own routing.
+// again against a fake that the page reaches through the browser's own routing. `deviceOnly` is
+// the space an app made before sync was set up, and its way to a storage.
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { MAIN, MULTI, NOREPOS, PUBLIC, READONLY, TOKENS, WRONG } from './fake-github.mjs';
@@ -609,6 +610,220 @@ export async function scenario(browser, run) {
   );
   await A.context.close();
   await B.context.close();
+}
+
+/**
+ * A space on this device only (made the way an app makes it, see seed-entry.mjs): Home and its
+ * page say so and send nothing, a storage is connected (a failing cycle first, which leaves the
+ * space as it was), and a second device joins and reads the name.
+ */
+export async function deviceOnly(browser, run) {
+  const { server, fake, t, texts, seed, locale, width, height, label, shots, problems } = run;
+  const origin = server.origin;
+  const ok = (value, what) => check(value, `${label}: device only: ${what}`);
+  const make = () =>
+    newDevice(browser, { origin, allowed: [origin, fake.origin], locale, problems, width, height });
+  const looked = async (page, name) => {
+    const found = await audit(page);
+    ok(found.overflow <= 0, `${name}: no horizontal scroll (${found.overflow})`);
+    ok(
+      found.small.length === 0,
+      `${name}: every tap target is at least 44 px (${found.small.join('; ')})`,
+    );
+    if (shots) await page.screenshot({ path: join(shots, `device-${name}.png`), fullPage: true });
+  };
+  const mainText = (page) => page.locator('main').innerText();
+  const waitTitle = (page, text) =>
+    page.waitForFunction((x) => document.querySelector('h1')?.textContent === x, text);
+  const inPage = (page, call) => page.evaluate(`${seed}; ${call}`);
+  const atSpace = (page, id) => page.waitForFunction((x) => location.hash === `#/spaces/${x}`, id);
+  fake.files.clear();
+  fake.log.length = 0;
+
+  const D = await make();
+  const d = D.page;
+  await d.goto(`${origin}/`);
+  await d.waitForSelector('[data-testid=empty]');
+  const id = await inPage(d, '__seed.deviceOnlySpace("Pantry")');
+  await d.reload();
+  await d.waitForSelector('[data-testid=space-card]');
+  const card = d.locator('[data-testid=space-card]');
+  ok(
+    (await card.locator('.name').innerText()) === 'Pantry' &&
+      (await card.locator('[data-testid=card-storage]').innerText()) === t.storage.deviceOnly,
+    `home: the card says "${t.storage.deviceOnly}" in place of a storage`,
+  );
+  ok(
+    (await card.locator('[data-testid=status]').count()) === 0,
+    'home: no sync state and no failure',
+  );
+  await looked(d, 'home');
+
+  await card.click();
+  await waitTitle(d, 'Pantry');
+  ok(
+    (await d.locator('[data-testid=storage-words]').innerText()) === t.storage.deviceOnly &&
+      (await d.locator('[data-testid=device-only]').innerText()) === t.space.deviceOnlyText,
+    'space: says the space and what the apps keep in it are on this device only',
+  );
+  ok(
+    (await d.locator('[data-testid=sync-now]').count()) === 0 &&
+      (await d.locator('[data-testid=invite]').count()) === 0 &&
+      (await d.locator('[data-testid=change-access]').count()) === 0 &&
+      (await d.locator('[data-testid=status]').count()) === 0,
+    'space: no "Sync now", no invite, no storage access, no sync state',
+  );
+  ok(
+    (await d.locator('[data-testid=connect-storage]').innerText()) === t.space.connect,
+    `space: offers "${t.space.connect}"`,
+  );
+  await looked(d, 'space');
+
+  await d.fill('[data-testid=rename-input]', 'Pantry 2');
+  await d.click('[data-testid=rename]');
+  await waitTitle(d, 'Pantry 2');
+  await d.getByText(t.space.nameSaved, { exact: true }).waitFor();
+  ok(
+    (await d.locator('[data-testid=status]').count()) === 0 &&
+      (await inPage(d, `__seed.look("${id}")`)).name === 'Pantry 2',
+    'space: rename is saved on the device, without a cycle',
+  );
+
+  await d.click('[data-testid=remove]');
+  ok(
+    (await d.locator('[data-testid=confirm-remove]').innerText()).includes(
+      t.space.removeDeviceOnlyText,
+    ),
+    'remove: says the data is deleted for good because no copy exists',
+  );
+  await looked(d, 'remove-confirm');
+  await d.click('[data-testid=remove-cancel]');
+
+  for (const route of ['invite', 'access']) {
+    await d.goto(`${origin}/#/spaces/${id}/${route}`);
+    await atSpace(d, id);
+    await d.waitForSelector('[data-testid=connect-storage]');
+    ok(true, `${route}: the route of a space without a storage leads to the space's page`);
+  }
+  ok(fake.log.length === 0, `nothing was sent anywhere so far (${fake.log.length} requests)`);
+
+  // ---- Connect a storage --------------------------------------------------------------------
+  await d.setViewportSize({ width: 320, height: 640 });
+  await looked(d, 'space-at-320');
+  await d.click('[data-testid=connect-storage]');
+  await d.waitForSelector('[data-testid=type-github]');
+  ok(
+    (await d.locator('h1').innerText()) === t.connect.title &&
+      (await d.locator('[data-testid=step-of]').innerText()) === t.create.stepOf(1, 3) &&
+      (await d.locator('[data-testid=connect-intro]').innerText()) === t.connect.intro('Pantry 2'),
+    'connect: three steps, starting with the storage; no name is asked for',
+  );
+  await looked(d, 'connect-1-storage-at-320');
+  await d.setViewportSize({ width, height });
+  await d.click('[data-testid=type-github]');
+  ok(
+    (await d.locator('ol.steps li').count()) === 4 &&
+      (await d.locator('[data-testid=step-of]').innerText()) === t.create.stepOf(2, 3),
+    "connect: GitHub's guided steps are those of Create a space",
+  );
+  await d.fill('[data-testid=token-input]', WRONG);
+  await d.click('[data-testid=next]');
+  await d
+    .locator('[data-testid=github-message]')
+    .getByText(texts.failureText(t, { failure: 'unauthorised' }, 'github'), { exact: true })
+    .waitFor();
+  ok(true, 'connect: a wrong token gives the "unauthorised" sentence');
+  await d.fill('[data-testid=token-input]', MAIN);
+  await d.click('[data-testid=next]');
+  await d.waitForSelector('[data-testid=connect]');
+  ok(
+    (await d.locator('[data-testid=summary-name]').innerText()) === 'Pantry 2' &&
+      (await d.locator('[data-testid=summary-storage]').innerText()) === 'GitHub: me/household',
+    'connect: the summary names the space and the storage',
+  );
+  await looked(d, 'connect-3-finish');
+
+  // The cycle fails: the space is as it was.
+  await D.context.route(`${fake.origin}/repos/*/*/contents/**`, (route) => route.abort());
+  await d.click('[data-testid=connect]');
+  await d
+    .locator('[data-testid=finish-message]')
+    .getByText(t.connect.failedTitle, { exact: true })
+    .waitFor();
+  const failedText = await d.locator('[data-testid=finish-message]').innerText();
+  ok(
+    failedText.includes(texts.failureText(t, { failure: 'blocked' }, 'github')) &&
+      failedText.includes(t.connect.failedHint),
+    'connect: a failing cycle is told in words, with what happens to the space',
+  );
+  await looked(d, 'connect-3-failed');
+  const after = await inPage(d, `__seed.look("${id}")`);
+  ok(
+    after.storage?.type === 'device' &&
+      after.storage.access === undefined &&
+      after.stock.join() === 'gin',
+    'connect: after the failure the space is on this device only again, without the token, with its data',
+  );
+  await D.context.unroute(`${fake.origin}/repos/*/*/contents/**`);
+
+  await d.click('[data-testid=connect]');
+  await atSpace(d, id);
+  await waitTitle(d, 'Pantry 2');
+  ok(
+    (await d.locator('[data-testid=space-messages]').innerText()) ===
+      t.space.connected('GitHub: me/household'),
+    'connect: the space page says it is kept in step now and to open the apps once',
+  );
+  ok(
+    (await d.locator('[data-testid=storage-words]').innerText()) === 'GitHub: me/household' &&
+      (await d.locator('[data-testid=status]').getAttribute('data-state')) === 'in-step' &&
+      (await d.locator('[data-testid=sync-now]').count()) === 1 &&
+      (await d.locator('[data-testid=connect-storage]').count()) === 0,
+    'connect: the space is an ordinary one now: storage, state, "Sync now"',
+  );
+  ok(
+    fake.files.has(`me/household:${id}/space.json`),
+    'connect: the same id is used for the file in the repository',
+  );
+  ok(
+    (await inPage(d, `__seed.look("${id}")`)).stock.join() === 'gin',
+    'connect: what the app kept in the space is still there',
+  );
+  const dump = await everything(d);
+  ok(
+    !dump.includes(MAIN),
+    'connect: the token is not in the address, storage, page text or fields',
+  );
+  await looked(d, 'space-connected');
+  await d.goto(`${origin}/#/spaces/${id}/connect`);
+  await atSpace(d, id);
+  await d.waitForSelector('[data-testid=sync-now]');
+  ok(true, "connect: the route of a space that has a storage leads to the space's page");
+
+  // ---- A second device joins and reads the name ----------------------------------------------
+  await d.click('[data-testid=invite]');
+  await d.check('[data-testid=include-access]');
+  const link = await d.locator('[data-testid=invite-link]').inputValue();
+  const E = await make();
+  const e = E.page;
+  await e.goto(link);
+  await e.click('[data-testid=join]');
+  await atSpace(e, id);
+  await waitTitle(e, 'Pantry 2');
+  ok(
+    (await mainText(e)).includes(t.space.joined('Pantry 2')),
+    'a second device joins the connected space and reads the name given on this device only',
+  );
+  await e.fill('[data-testid=rename-input]', 'Larder');
+  await e.click('[data-testid=rename]');
+  await e.waitForSelector('[data-testid=status][data-state=in-step]');
+  await d.goto(`${origin}/#/spaces/${id}`);
+  await waitTitle(d, 'Pantry 2');
+  await d.click('[data-testid=sync-now]');
+  await waitTitle(d, 'Larder');
+  ok(true, 'sync: the first device reads the name the second gave');
+  await D.context.close();
+  await E.context.close();
 }
 
 /** A 320 px walk over the screens that have a form, for overflow and tap targets. */

@@ -1,5 +1,5 @@
 // Opening a share link: the preview state, the one error state per failure,
-// and that a link never touches places, stock or pairings.
+// and that a link never touches spaces, stock or pairings.
 import { expect, test } from 'vitest';
 import { initialState } from '../src/app-state';
 import { createExchangeActions } from '../src/exchange-actions';
@@ -27,22 +27,19 @@ async function setup(store: LocalStore | null) {
 
 const link = (file: unknown): Promise<string> => encodePayload(JSON.stringify(file));
 
-/** The example data with a stock record, places and a pairing: a hand-made link may carry them. */
+/** The example data with a pairing: a hand-made link may carry one. */
 const everything = (): ExportFile => buildExport(user, { exportedAt: AT });
 
-test('a link with places, stock and pairings adds the drink only', async () => {
+test('a link with pairings adds the drink only', async () => {
   const store = await openFresh();
-  const placesBefore = await store.places.list();
   const { app, exchange, host } = await setup(store);
   await openShare(host, await link(everything()));
   const flow = app.get().importFlow;
   if (flow.kind !== 'preview') throw new Error(`expected a preview, got ${flow.kind}`);
   expect(flow.share).toBeDefined();
-  expect([flow.file.places, flow.file.stock, flow.file.affinities]).toEqual([[], [], []]);
+  expect(flow.file.affinities).toEqual([]);
   expect(flow.file.specs.length).toBeGreaterThan(0);
   expect(await exchange.apply('merge')).toBe(true);
-  expect(await store.places.list()).toEqual(placesBefore);
-  expect(await store.stock.list()).toEqual([]);
   expect(await store.affinities.list()).toEqual([]);
   expect((await store.specs.list()).length).toBe(user.specs.length);
   // Undo takes it back, like a file import.

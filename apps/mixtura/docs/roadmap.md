@@ -41,18 +41,19 @@ The reasons are in [how bartenders work](bartender-practice.md) and
    an exact tag.
    _Done when_: the engine's public API and every test are unchanged,
    and no general module exists in both repositories.
-8. **Stock sync.** Stock per place; each place can be synced to a
-   WebDAV folder the user chose, encrypted with a passphrase per place;
-   several storages at once; a second person joins by invite link or QR
-   code. Drinks live in libraries that sync and can be shared the same
-   way, and a profile carries a person's preferences and their places
-   and libraries to their other devices
-   ([decision](decisions/stock-sync.md)).
-   _Done when_: two browser profiles with two storages each share one
-   place, change stock on both sides while offline and converge without
-   losing a change; a second place on the other storage stays
-   independent; a local-only place sends no request; two devices of one
-   person hold the same specs after both edited offline. Mixtura and Culina
-   then become public.
+8. **Stock sync.** Done in two steps, the second replacing the first.
+   On 2026-11-18 stock per place synced to a WebDAV folder with a
+   passphrase per place ([decision](decisions/stock-sync.md)). On
+   2026-11-20, with goal 6 of the [repository](../../../docs/roadmap.md),
+   that code was removed: stock is the collection `stock` of a space,
+   kept in the database the apps share and synced by the host package;
+   spaces, storages and invites are set up in the Household app
+   ([decision](decisions/stock-in-spaces.md)). Not run against a real
+   storage yet; the first real use is the owner's.
+   _Open_: the user's own ingredients and drinks as collections of a
+   space, so a second device or person sees them too (the earlier
+   "library"), and preferences across a person's own devices (the
+   earlier "profile"). Until then a stock mark for an own ingredient
+   shows only on devices that have that ingredient.
 9. **Later.** Cost per drink, menus, curated affinities with sources,
    further storage adapters.

@@ -1,6 +1,8 @@
 // A storage in words, and what is checked about its address before anything is stored.
-import type { StoredStorage } from '@nexumia-de/hospes';
+import { DEVICE_ONLY, type StoredStorage } from '@nexumia-de/hospes';
+import type { Strings } from '../strings';
 
+/** The storages a space can be connected to; a space on this device only has none of them. */
 export type StorageKind = 'github' | 'webdav';
 export const isKind = (type: string): type is StorageKind => type === 'github' || type === 'webdav';
 
@@ -29,8 +31,12 @@ export function validAddress(type: string, address: string): boolean {
   return false;
 }
 
-/** "GitHub: owner/name", "WebDAV: host/path"; never a user name, password or token. */
-export function storageWords(storage: { type: string; address: string }): string {
+/**
+ * "GitHub: owner/name", "WebDAV: host/path", "On this device only" for a space without a
+ * storage; never a user name, password or token.
+ */
+export function storageWords(t: Strings, storage: { type: string; address: string }): string {
+  if (storage.type === DEVICE_ONLY) return t.storage.deviceOnly;
   if (storage.type === 'github') return `GitHub: ${storage.address}`;
   if (storage.type === 'webdav') {
     const url = parseWebdavAddress(storage.address);

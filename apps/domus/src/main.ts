@@ -3,6 +3,7 @@ import { h } from './dom';
 import { currentLang, stringsFor } from './lang';
 import { parseHash, type Route } from './router';
 import { accessScreen } from './screens/access';
+import { connectScreen } from './screens/connect';
 import type { Ctx } from './screens/context';
 import { createScreen } from './screens/create';
 import { displayFooter } from './screens/display';
@@ -58,6 +59,8 @@ if (root) {
         return inviteScreen(ctx, route.id);
       case 'access':
         return accessScreen(ctx, route.id);
+      case 'connect':
+        return connectScreen(ctx, route.id);
       case 'join':
         return joinScreen(ctx, route.fragment);
     }

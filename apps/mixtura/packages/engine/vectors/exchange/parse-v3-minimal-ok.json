@@ -1,0 +1,28 @@
+{
+  "id": "parse-v3-minimal-ok",
+  "kind": "parse",
+  "title": "A file of the current version is accepted without a migration",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 3,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "affinities": []
+  },
+  "bytes": 100,
+  "expected": {
+    "ok": true,
+    "migratedFrom": null,
+    "keys": [
+      "affinities",
+      "app",
+      "exportedAt",
+      "formatVersion",
+      "ingredients",
+      "specs",
+      "templates"
+    ]
+  }
+}

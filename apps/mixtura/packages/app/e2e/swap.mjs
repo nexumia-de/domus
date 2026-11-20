@@ -103,9 +103,23 @@ const settle = () => page.waitForTimeout(150);
 await open('#/drinks/daiquiri');
 // The spec screen draws from the seed before the store has opened; on a slow
 // machine the database does not exist yet, so wait for it before the snapshot.
-await page.waitForFunction(async () =>
-  (await indexedDB.databases()).some((d) => d.name === 'mixtura'),
-);
+// The stock panel then reads the stock: the app makes its space in the shared
+// database and writes the device setting `spaces` behind it, the last write of
+// a first start. Wait for that one too, or it lands between the two snapshots.
+await page.waitForFunction(async () => {
+  if (!(await indexedDB.databases()).some((d) => d.name === 'mixtura')) return false;
+  return new Promise((done) => {
+    const open = indexedDB.open('mixtura');
+    open.onerror = () => done(false);
+    open.onsuccess = () => {
+      const get = open.result.transaction('settings').objectStore('settings').get('spaces');
+      get.onsuccess = () => {
+        open.result.close();
+        done(get.result !== undefined);
+      };
+    };
+  });
+});
 const before = await stored();
 const savedAbv = await abv();
 expect(
@@ -362,7 +376,11 @@ await page.waitForFunction(() =>
 expect(pushed > 0, 'Undo opens the dropped swap again');
 
 // ---- Nothing stored ----
-expect((await stored()) === before, 'IndexedDB and local storage are untouched by swaps');
+const after = await stored();
+expect(
+  after === before,
+  `IndexedDB and local storage are untouched by swaps${after === before ? '' : `: before ${before}, after ${after}`}`,
+);
 
 // ---- An amount only: same template, same ranges, ticks for the saved values ----
 await open('#/drinks/daiquiri?swap=2::25ml');

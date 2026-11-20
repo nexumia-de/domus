@@ -12,8 +12,6 @@ import standaloneCode from 'ajv/dist/standalone/index.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const schemaDir = join(here, '..', 'engine', 'schemas');
-// Device-local records (storages, bindings): compiled like the others, but kept out of the export schema.
-const deviceDir = join(schemaDir, 'device');
 const target = join(here, 'src', 'store', 'schema-validators.generated.mjs');
 
 const list = (dir) =>
@@ -21,7 +19,7 @@ const list = (dir) =>
     .filter((name) => name.endsWith('.schema.json'))
     .sort()
     .map((name) => join(dir, name));
-const paths = [...list(schemaDir), ...list(deviceDir)];
+const paths = list(schemaDir);
 const files = paths.map((path) => basename(path));
 const schemas = paths.map((path) => JSON.parse(readFileSync(path, 'utf8')));
 

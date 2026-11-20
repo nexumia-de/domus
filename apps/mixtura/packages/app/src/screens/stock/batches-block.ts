@@ -1,13 +1,13 @@
-// One place's part of the batches sheet (#101, #131): its batches with Used
-// up, a date to add another, and with several places counting its own state
+// One space's part of the batches sheet (#101, #131): its batches with Used
+// up, a date to add another, and with several spaces counting its own state
 // (in stock, out, not tracked) with a toggle. Every change acts at once with
-// Undo and goes to this block's place.
+// Undo and goes to this block's space.
 
 import * as glyph from '../../components/glyphs';
 import { h } from '../../dom';
 import { type ScreenContext } from '../../screen';
 import { addBatch, batchDates, batchesOf, removeBatch } from '../../stock/batches';
-import { type PlaceBlock } from '../../stock/places-view';
+import { type SpaceBlock } from '../../stock/spaces-view';
 import { changeStock, withPresent } from '../../stock/state';
 import { strings } from '../../strings';
 import { showToast } from '../../toast';
@@ -32,7 +32,7 @@ export interface BlockContext {
   name: string;
   day: string;
   writable: boolean;
-  /** More than one place counts: the block says whose it is and has its own toggle. */
+  /** More than one space counts: the block says whose it is and has its own toggle. */
   multi: boolean;
   /** A prepared ingredient has batches; another ingredient only its state and what is recorded. */
   prepared: boolean;
@@ -41,32 +41,32 @@ export interface BlockContext {
 const redraw = (context: ScreenContext): void =>
   context.store.set({ stockRev: context.store.get().stockRev + 1 });
 
-const stateWord = (state: PlaceBlock['state']): string =>
+const stateWord = (state: SpaceBlock['state']): string =>
   state === 'in'
     ? strings.stock.inStock
     : state === 'out'
       ? strings.stock.out
       : strings.stock.notTracked;
 
-export function batchBlock(c: BlockContext, block: PlaceBlock): HTMLElement {
+export function batchBlock(c: BlockContext, block: SpaceBlock): HTMLElement {
   const { context, model, id, name, day, writable, multi, prepared } = c;
-  const { placeId, record } = block;
-  const at = multi ? `-${placeId}` : '';
-  const problem = problems.get(placeId) ?? null;
+  const { spaceId, record } = block;
+  const at = multi ? `-${spaceId}` : '';
+  const problem = problems.get(spaceId) ?? null;
   const base = record ?? { ingredientId: id, present: false };
   const batches = batchesOf(model.tree, model.preparedSpecs, id, record, day);
 
   const apply = (next: ReturnType<typeof addBatch>, text: string): void => {
-    const undo = changeStock(context, [{ id, placeId, next }]);
-    problems.delete(placeId);
+    const undo = changeStock(context, [{ id, spaceId, next }]);
+    problems.delete(spaceId);
     if (undo.length > 0) showToast(context.store, text, () => changeStock(context, undo));
   };
   const add = (date: string): void => {
-    if (date === '') problems.set(placeId, t.dateMissing);
-    else if (date > day) problems.set(placeId, t.dateFuture);
-    else if (batchDates(record).includes(date)) problems.set(placeId, t.already(date));
+    if (date === '') problems.set(spaceId, t.dateMissing);
+    else if (date > day) problems.set(spaceId, t.dateFuture);
+    else if (batchDates(record).includes(date)) problems.set(spaceId, t.already(date));
     else {
-      drafts.delete(placeId);
+      drafts.delete(spaceId);
       return apply(addBatch(base, date), t.added(name, date));
     }
     redraw(context);
@@ -78,12 +78,12 @@ export function batchBlock(c: BlockContext, block: PlaceBlock): HTMLElement {
     id: `batch-date${at}`,
     name: 'made-on',
     max: day,
-    value: drafts.get(placeId) ?? '',
+    value: drafts.get(spaceId) ?? '',
     disabled: !writable,
     'data-focus': `batch-date${at}`,
     ...(problem && { 'aria-invalid': 'true', 'aria-describedby': `batch-problem${at}` }),
     oninput: (event) => {
-      drafts.set(placeId, (event.target as HTMLInputElement).value);
+      drafts.set(spaceId, (event.target as HTMLInputElement).value);
     },
   });
   const list =
@@ -130,12 +130,12 @@ export function batchBlock(c: BlockContext, block: PlaceBlock): HTMLElement {
         {
           type: 'button',
           role: 'checkbox',
-          class: 'stock-toggle place-state',
+          class: 'stock-toggle space-state',
           'aria-checked': present ? 'true' : 'false',
-          'aria-label': strings.places.stateIn(block.name),
+          'aria-label': strings.spaces.stateIn(block.name),
           'aria-disabled': writable ? undefined : 'true',
-          'data-place-state': placeId,
-          'data-focus': `place-state${at}`,
+          'data-space-state': spaceId,
+          'data-focus': `space-state${at}`,
           onclick: () => {
             if (!writable) return;
             const text = present ? strings.stock.markedOut(name) : strings.stock.marked(name);
@@ -152,12 +152,12 @@ export function batchBlock(c: BlockContext, block: PlaceBlock): HTMLElement {
     : null;
 
   const recorded = [
-    record?.openedOn && strings.places.opened(record.openedOn),
-    record?.bestBefore && strings.places.bestBefore(record.bestBefore),
+    record?.openedOn && strings.spaces.opened(record.openedOn),
+    record?.bestBefore && strings.spaces.bestBefore(record.bestBefore),
   ].filter((text): text is string => typeof text === 'string' && text !== '');
   return h(
     'div',
-    { class: multi ? 'place-block' : 'sheet-group', 'data-place-block': placeId },
+    { class: multi ? 'space-block' : 'sheet-group', 'data-space-block': spaceId },
     multi && h('h3', {}, block.name),
     toggle,
     !prepared && recorded.length > 0 && h('p', { class: 'note' }, recorded.join(' · ')),

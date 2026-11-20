@@ -11,12 +11,6 @@ sources:
   - id: spike
     title: 'Mixtura: spike, WebDAV from the browser'
     url: ../../../apps/mixtura/docs/webdav-spike.md
-  - id: setup
-    title: 'Mixtura: set up storage for sync (user guide)'
-    url: ../../../apps/mixtura/docs/sync-setup.md
-  - id: backends
-    title: 'Mixtura: sync backends (the test server, the stores, the policy)'
-    url: ../../../apps/mixtura/docs/sync-backends.md
   - id: materia
     title: 'materia, sync: the StorageAdapter interface'
     url: ../../model/docs/sync.md
@@ -27,9 +21,12 @@ sources:
 Code: `src/webdav.ts`, `src/webdav-url.ts`, `src/webdav-connection.ts`; tests
 `test/webdav.test.ts` and `test/webdav-url.test.ts`. The adapter was built for
 Mixtura ([decision](../../../apps/mixtura/docs/decisions/stock-sync.md#bring-your-own-backend))
-and moved here unchanged; the test server, the device-local stores, the
-Content-Security-Policy and the service worker rule stay with Mixtura
-([sync backends](../../../apps/mixtura/docs/sync-backends.md)).
+and moved here unchanged. Mixtura's own sync, its Docker test server, the
+CORS fronts and the setup guide were removed on 2026-11-20
+([stock in spaces](../../../apps/mixtura/docs/decisions/stock-in-spaces.md));
+they are in the history of `apps/mixtura` and come back with goal 10 of the
+[roadmap](../../../docs/roadmap.md). Since then the adapter is tested against a
+fake `fetch` only.
 
 ## What a backend must do
 
@@ -54,7 +51,7 @@ server serves it from a browser page when it:
    `401`, `404`, `409` and `412` answers, or the page cannot read them.
 
 An unmodified Nextcloud fails point 5 ([spike](../../../apps/mixtura/docs/webdav-spike.md#result)). The
-server of [the test server](../../../apps/mixtura/docs/sync-backends.md#the-test-server) meets all five.
+Docker server that was in `apps/mixtura/tools/webdav-server` until 2026-11-20 met all five.
 
 ## The adapter
 
@@ -89,7 +86,7 @@ Any other exception from `fetch` is not caught.
 `src/webdav-connection.ts`, `testConnection(adapter, probe?)`, reads the probe
 path `.mixtura-probe` (it need not exist) and reports `reachable`,
 `unauthorised`, `blocked`, `unreachable` or `server` with the detail of the
-failure. Mixtura uses it for "Test Connection" of its settings screen ([screens: sync](../../../apps/mixtura/docs/screens-sync.md)). The probe name is still Mixtura's (`.mixtura-probe`); it moved unchanged.
+failure. The Household app uses it for "Test connection" when a space is created or connected ([screens](../../../apps/domus/docs/screens.md)). The probe name is still Mixtura's (`.mixtura-probe`); it moved unchanged.
 
 ### Limits
 
@@ -109,8 +106,8 @@ failure. Mixtura uses it for "Test Connection" of its settings screen ([screens:
   the ETag the caller passed was weak and the answer is `412` it waits 1,100 ms
   and repeats that one write once before it reports `conflict`. The wait is an
   injected function (`delay`), so unit tests do not wait; a strong ETag that
-  meets `412` is a conflict at once. `test/sync-webdav-integration.test.ts` of Mixtura
-  writes right after a read of a fresh file against the real server. Nextcloud
+  meets `412` is a conflict at once. Mixtura's integration test, removed
+  with its sync on 2026-11-20, wrote right after a read of a fresh file against the real server. Nextcloud
   has the opposite weakness, an unchanged ETag within one second
   ([spike](../../../apps/mixtura/docs/webdav-spike.md#nextcloud-keeps-the-etag-on-writes-within-one-second));
   the merge is safe without the condition

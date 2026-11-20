@@ -1,13 +1,15 @@
 # hospes
 
-The host code the household apps share: the sync cipher on Web Crypto
-(PBKDF2 into AES-256-GCM) and the WebDAV storage adapter on `fetch`.
+The host code the household apps share: sync on spaces (the secret and
+what is derived from it, the sealed file with AES-256-GCM on Web Crypto,
+local data in IndexedDB, the sync cycle and its loop) and the WebDAV and
+GitHub storage adapters on `fetch`.
 TypeScript source, no build step, no dependency but
 [materia](../model). Not published; the apps use it from this
 repository.
 
 ```ts
-import { createCipher, createWebdavAdapter, testConnection } from '@nexumia-de/hospes';
+import { adapterFor, createIdbStore, ensureSpace, syncCollection } from '@nexumia-de/hospes';
 ```
 
 What is in it: [docs/index.md](docs/index.md). Rules for agents:

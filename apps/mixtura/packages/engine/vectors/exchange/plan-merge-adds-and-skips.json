@@ -21,27 +21,17 @@
         "id": "u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
         "name": "x"
       }
-    ],
-    "stock": [
-      {
-        "placeId": "p1",
-        "ingredientId": "lemon",
-        "updatedAt": "2026-01-01T00:00:00Z",
-        "present": true
-      }
     ]
   },
   "expected": {
     "added": {
-      "ingredients": 1,
-      "stock": 1
+      "ingredients": 1
     },
     "skipped": {
       "ingredients": 1
     },
     "writes": {
-      "ingredients": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"],
-      "stock": ["p1/lemon"]
+      "ingredients": ["u-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"]
     }
   }
 }

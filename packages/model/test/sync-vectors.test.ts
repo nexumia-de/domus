@@ -1,45 +1,28 @@
-// Runs vectors/sync (merge, places, combined view, document, envelope, plan)
+// Runs vectors/sync (merge, stamps, pruning, collection, sealed file, invite)
 // and checks the two properties of the merge, symmetry and idempotence, over
 // the vectors and over generated cases from a seeded generator.
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import {
-  buildDocument,
   buildCollection,
-  buildEnvelope,
   buildInvite,
   buildSealed,
-  buildUnit,
-  combinePlaces,
-  envelopeAad,
   instantMs,
   latestStamp,
-  mergePlace,
   mergeRecords,
   nextStamp,
   parseCollection,
-  parseDocument,
-  parseEnvelope,
   parseInvite,
   parseSealed,
-  parseUnit,
   planCollectionSync,
-  planSync,
-  planUnitSync,
   pruneTombstones,
   sealedAad,
   type CollectionDocument,
-  type Envelope,
   type Invite,
   type LocalCollectionState,
-  type LocalPlaceState,
-  type LocalUnitState,
-  type Place,
-  type PlaceDocument,
   type Sealed,
   type SyncRecord,
-  type UnitDocument,
 } from '../src/index';
 import { validate } from './helpers/json-schema';
 
@@ -53,10 +36,6 @@ const vectors = readdirSync(dir)
 type Input = {
   local: never;
   remote: never;
-  byPlace: never;
-  ticked: never;
-  document: never;
-  envelope: never;
   now: never;
   latest: never;
   records: never;
@@ -87,14 +66,6 @@ describe('sync vectors', () => {
     expect(new Set(vectors.map((x) => x.v.kind))).toEqual(
       new Set([
         'merge',
-        'place',
-        'combine',
-        'document',
-        'envelope',
-        'plan',
-        'unit-parse',
-        'unit-build',
-        'unit-plan',
         'stamp',
         'latest-stamp',
         'prune',
@@ -115,14 +86,6 @@ describe('sync vectors', () => {
         const i = c.input;
         if (v.kind === 'merge') {
           test(c.name, () => expect(mergeRecords(i.local, i.remote)).toEqual(c.expected));
-        } else if (v.kind === 'place') {
-          test(c.name, () => expect(mergePlace(i.local, i.remote)).toEqual(c.expected));
-        } else if (v.kind === 'combine') {
-          test(c.name, () => expect(combinePlaces(i.byPlace, i.ticked)).toEqual(c.expected));
-        } else if (v.kind === 'plan') {
-          test(c.name, () => expect(planSync(i.local, i.remote)).toEqual(c.expected));
-        } else if (v.kind === 'unit-plan') {
-          test(c.name, () => expect(planUnitSync(i.local, i.remote)).toEqual(c.expected));
         } else if (v.kind === 'stamp') {
           test(c.name, () =>
             expect({ stamp: nextStamp(i.now, i.latest) ?? null }).toEqual(c.expected),
@@ -166,31 +129,7 @@ describe('sync vectors', () => {
             expect({ text: JSON.stringify(out) }).toEqual(c.expected);
             expect(parseInvite(out)).toEqual({ ok: true, invite: out });
           });
-        } else if (v.kind === 'unit-parse') {
-          test(c.name, () => expect(parseUnit(text(i))).toEqual(c.expected));
-        } else if (v.kind === 'unit-build') {
-          test(c.name, () => {
-            const out = buildUnit((i as unknown as { unit: UnitDocument }).unit);
-            expect({ text: out }).toEqual(c.expected);
-            const back = parseUnit(out);
-            expect(back.ok && buildUnit(back.unit)).toBe(out);
-          });
-        } else if (v.kind === 'document') {
-          if (file === 'document-build.json') {
-            test(c.name, () => {
-              const out = buildDocument(i.document);
-              expect({ text: out }).toEqual(c.expected);
-              const back = parseDocument(out);
-              expect(back.ok && buildDocument(back.document)).toBe(out);
-            });
-          } else test(c.name, () => expect(parseDocument(text(i))).toEqual(c.expected));
-        } else if (file === 'envelope-build.json') {
-          test(c.name, () => {
-            const out = buildEnvelope(i.envelope);
-            expect({ text: out, aad: envelopeAad(i.envelope) }).toEqual(c.expected);
-            expect(parseEnvelope(out)).toEqual({ ok: true, envelope: JSON.parse(out) });
-          });
-        } else test(c.name, () => expect(parseEnvelope(text(i))).toEqual(c.expected));
+        } else throw new Error(`no runner for kind ${String(v.kind)}`);
       }
     });
   }
@@ -267,91 +206,6 @@ describe('merge properties', () => {
       const left = mergeRecords(mergeRecords(x, y).records, z).records;
       const right = mergeRecords(x, mergeRecords(y, z).records).records;
       expect(left, `generated ${n}`).toEqual(right);
-    }
-  });
-});
-
-describe('plan properties', () => {
-  const place: Place = { id: 'p', name: 'Flat', updatedAt: TIMES[0] as string };
-  test('after both sides apply a plan, a second cycle has nothing to do', () => {
-    const pick = seeded(99);
-    for (let n = 0; n < 200; n++) {
-      const local: LocalPlaceState<unknown, unknown> = {
-        place,
-        records: generate(pick),
-        entities: generate(pick),
-      };
-      const remote: PlaceDocument = {
-        format: 'materia-place',
-        version: 1,
-        place,
-        records: generate(pick),
-        entities: generate(pick),
-      };
-      const first = planSync(local, remote);
-      if ('error' in first) throw new Error('same place expected');
-      const remoteAfter = first.write ?? remote;
-      const second = planSync(first.local, remoteAfter);
-      if ('error' in second) throw new Error('same place expected');
-      expect(second.write, `generated ${n}`).toBeUndefined();
-      expect(second.localChanged, `generated ${n}`).toBe(false);
-    }
-  });
-});
-
-describe('envelope type', () => {
-  test('the envelope of a vector is accepted as the type', () => {
-    const e = parseEnvelope(
-      JSON.stringify({
-        format: 'materia-sync',
-        version: 1,
-        kdf: { name: 'k', hash: 'h', iterations: 1, salt: 'AA==' },
-        cipher: { name: 'c', nonce: 'AA==' },
-        data: 'AA==',
-      }),
-    );
-    const envelope: Envelope | undefined = e.ok ? e.envelope : undefined;
-    expect(envelope?.version).toBe(1);
-  });
-});
-
-describe('unit plan properties', () => {
-  const unit = { id: 'u', name: 'Mine', updatedAt: TIMES[0] as string };
-  const names = ['specs', 'templates', 'future-things'];
-  const collections = (pick: (n: number) => number) => {
-    const out: Record<string, Rec[]> = {};
-    for (const name of names) if (pick(3) > 0) out[name] = generate(pick);
-    return out;
-  };
-  test('after both sides apply a plan, a second cycle has nothing to do', () => {
-    const pick = seeded(4242);
-    for (let n = 0; n < 200; n++) {
-      const local: LocalUnitState = {
-        kind: 'library',
-        unit,
-        collections: collections(pick),
-      };
-      const remote: UnitDocument = {
-        format: 'materia-unit',
-        version: 1,
-        kind: 'library',
-        unit,
-        collections: collections(pick),
-      };
-      const first = planUnitSync(local, remote);
-      if ('error' in first) throw new Error('same unit expected');
-      const second = planUnitSync(first.local, first.write ?? remote);
-      if ('error' in second) throw new Error('same unit expected');
-      expect(second.write, `generated ${n}`).toBeUndefined();
-      expect(second.localChanged, `generated ${n}`).toBe(false);
-      const swapped = planUnitSync(
-        { kind: 'library', unit, collections: remote.collections },
-        { ...remote, collections: local.collections },
-      );
-      if ('error' in swapped) throw new Error('same unit expected');
-      expect(swapped.local.collections, `generated ${n}: symmetry`).toEqual(
-        first.local.collections,
-      );
     }
   });
 });

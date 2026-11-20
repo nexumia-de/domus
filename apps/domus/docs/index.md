@@ -11,7 +11,7 @@ Change history is in [log.md](log.md).
 
 # Specifications
 
-- [Screens](screens.md) - Every route and screen with the intent of its texts: Home, Create a space in four steps with the three GitHub steps and WebDAV, a space, Invite with its QR code, Join, Change access; every failure in words; what was built beyond the brief, and what is not done or not verified.
+- [Screens](screens.md) - Every route and screen with the intent of its texts: Home, Create a space in four steps with the three GitHub steps and WebDAV, a space, a space on this device only and Connect a storage, Invite with its QR code, Join, Change access; every failure in words; what was built beyond the brief, and what is not done or not verified.
 
 # Reference
 

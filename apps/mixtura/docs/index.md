@@ -28,8 +28,6 @@ links. Change history is in [log.md](log.md).
 - [What the stock allows](makeable.md) - Which specs the stock makes makeable (exact, hierarchy, prepared, substitutes, optional lines), missing one, and the unlock ranking with its tie-breaks, performance numbers and vectors.
 - [Units](units.md) - Every unit with exact value or convention, behaviour in balance, parsing grammar, display and rounding (pour precision for ml); table also in `packages/engine/data/units.json`.
 - [Templates](templates.md) - The six root templates as data, matching a spec to a template by roles and ratios with distance and a tie rule, the range check (within, below, above, unknown) and the evidence of every number (all assumptions).
-- [Sync file encryption](sync-encryption.md) - The passphrase of a place: what the storage sees, where it is kept, the generated passphrase and its entropy, a lost passphrase. The cipher itself is in the [host package](../../../packages/host/docs/cipher.md).
-- [Sync cycle of a place](sync-cycle.md) - One attempt step by step against an adapter and a cipher, the checking read after a write, the outcomes and failure reasons, applying the result in one transaction, binding fields, moving a place, what is and is not guaranteed, the known limit for custom ingredients.
 - [Engine](engine.md) - The one public entry point of the engine package: purity, every exported function with signature and units, general model apart from drink-specific rules, vector folders, how to add a rule, executed examples, the build and its size.
 - [Engine amounts module](engine-amounts.md) - Parse, convert, scale and format amounts: files, error codes, options and the vector files.
 - [Shared model inventory](shared-model.md) - General and drink-specific engine modules from the code, the coupling points with file paths, what Culina needs differently, and the extraction order that keeps the public engine API.
@@ -45,28 +43,26 @@ links. Change history is in [log.md](log.md).
 - [PWA with own local data](decisions/pwa-own-data.md) - One web build installed on Android and Linux; data stays on the device, seeded from open data, no server.
 - [Six roots with optional slots](decisions/six-roots-optional-slots.md) - Accepted 2026-11-18: the six roots of Cocktail Codex stay, what the book files as variation becomes optional slots with bands chosen here, no seventh root; the Sidecar takes the book's ratio; supersedes the Collins root proposal (#114).
 - [Where the shared model lives](decisions/shared-model.md) - Accepted 2026-11-18: the repository nexumia-de/materia with an npm package consumed by git tag and built by `prepare`; no unit system in its first version; phosh-toolkit, monorepo, GitHub Packages, npmjs and submodules weighed.
-- [Stock sync](decisions/stock-sync.md) - Stock per place, synced to WebDAV storage the user configured, encrypted per place in the browser, joined by invite link or QR code; general parts in materia; what the rule "no server" means now; the order of work.
+- [Stock sync](decisions/stock-sync.md) - Replaced on 2026-11-20 by "Stock in spaces" for everything about places, storages, passphrases, invites and the sync file; kept as history: stock per place, synced to WebDAV storage the user configured, encrypted per place in the browser, joined by invite link or QR code.
+- [Stock in spaces](decisions/stock-in-spaces.md) - Decided 2026-11-20: stock is the collection `stock` of a space in the database all apps share, synced by the host package; Mixtura has no places, storages, passphrases, invites or sync screens of its own; a device without sync keeps its stock in a space on this device only; the export file holds no stock; what is lost and what is not verified.
 
 # Reference
 
-- [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure and the JSON export format; the JSON Schemas are in `packages/engine/schemas/`.
+- [Data model](data-model.md) - Entities, fields, required and stored-versus-derived, ids, inheritance, units of measure, stock as the value of a record in a space's collection, and the JSON export format (version 3, without stock); the JSON Schemas are in `packages/engine/schemas/`.
 - [Seed data](seed-data.md) - Bar Assistant's dataset: format, counts, licence, field mapping, gaps, problems, attribution; the converter, its rules and deviations, results, file layout, regenerating, thresholds, the 20 checked classics and Mixtura's own additions.
 
-- [Spike: WebDAV from the browser](webdav-spike.md) - A browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second; the app's CSP blocks other hosts; options for the owner.
-- [Export and import](export-format.md) - The export file, how files are checked and migrated, merge and replace rules, import backup and Undo, change counter and the backup reminder.
-- [Sync backends](sync-backends.md) - The device-local storages and bindings, the Content-Security-Policy and the service worker rule, the Docker test server and the user setup.
-- [Set up storage for sync](sync-setup.md) - The user guide: what a storage needs, the Docker server, nginx, Caddy or Apache in front of an existing WebDAV server, Nextcloud and its limits, what was tested, and one row per Sync problem text.
-- [Local store](store.md) - IndexedDB stores and indexes, schema versions and migrations, seed data beside user data with one catalog view, the persistence request and failure states.
+- [Spike: WebDAV from the browser](webdav-spike.md) - Measured on 2026-11-18, before Mixtura's own sync was removed: a browser page cannot reach an unmodified Nextcloud over WebDAV (CORS preflight gets 401); with eight lines of web server configuration read and conditional write work; Nextcloud keeps the ETag on writes within one second. The adapter now lives in the host package; the test server and fronts are gone.
+- [Export and import](export-format.md) - The export file (format version 3: ingredients, templates, specs, pairings; no stock), how files are checked and migrated (older files are read without their stock), merge and replace rules, import backup and Undo, the share file and link, change counter and the backup reminder.
+- [Local store](store.md) - IndexedDB stores and indexes (schema version 6), schema versions and migrations, stock as a collection of a space in the shared database of the host package, the sync loop per shared space, seed data beside user data with one catalog view, the persistence request and failure states.
 
 # Behaviour and design
 
 - [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.
 - [Screens: browse and read](screens-browse.md) - Templates, drinks list, filters, spec with balance panel, swap mode; the sections "As built" say what #18, #19, #20 and the alcohol filters of #37 do with the real seed data.
 - [Screens: own specs](screens-specs.md) - Spec editor, ingredient picker, prepared ingredients, save with note, versions and diff, riffs and family; "As built" sections say what #25, #26 and #27 do.
-- [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, settings, export and import, About; the section "As built" says what #30 and #33 do.
-- [Screens: sync](screens-sync.md) - The Sync page under Settings: storages with Test Connection, places with their state line, Sync This Place, Share, Join, Move, Stop Syncing, the five triggers of a sync cycle, what is stored and derived, the end-to-end test, what was not verified.
+- [Screens: stock and settings](screens-stock-settings.md) - Stock, Buy Next, the Spaces sheet (which spaces count, where new entries go, the sync status of each, the link to the Household app), settings with the Household row, export and import, About; the sections "As built" say what #30, #33 and #101 do.
 - [Design](design.md) - Layout rules, colour tokens with computed contrast and the proposed accent, type scale, how balance is drawn, copy rules, open questions and the review checklist.
-- [UI strings](ui-strings.md) - Every fixed text of the app, including empty, error and offline states.
+- [UI strings](ui-strings.md) - Every fixed text of the app, including empty, error and offline states and the sync status words of a space.
 
 # Development
 

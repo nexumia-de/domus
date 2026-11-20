@@ -1,7 +1,7 @@
 {
   "id": "sealed-parse",
   "kind": "sealed-parse",
-  "description": "parseSealed (version 2, no key derivation fields): a complete file is accepted and unknown fields (also a kdf) are dropped. Errors: not-json; not-an-envelope for non-objects and other formats; newer-version for a version number above 2 (before the rest); invalid for version 1 (a caller that wants it uses parseEnvelope), version 0, a missing or empty cipher name, nonce or data that is not base64 (empty, outside the alphabet, more than two = at the end).",
+  "description": "parseSealed (version 2, no key derivation fields): a complete file is accepted and unknown fields (also a kdf) are dropped. Errors: not-json; not-an-envelope for non-objects and other formats; newer-version for a version number above 2 (before the rest); invalid for version 1 (the passphrase envelope, removed), version 0, a missing or empty cipher name, nonce or data that is not base64 (empty, outside the alphabet, more than two = at the end).",
   "source": "docs/sync.md",
   "cases": [
     {

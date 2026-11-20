@@ -55,7 +55,6 @@ const entities: [string, string][] = [
   ['Ingredient', 'ingredient'],
   ['Template', 'template'],
   ['Spec', 'spec'],
-  ['Place', 'place'],
   ['Stock', 'stock'],
   ['Affinity', 'affinity'],
   ['Export file', 'export'],
@@ -102,9 +101,12 @@ test('the schemas are all covered', () => {
   expect(Object.keys(schemas).filter((n) => !covered.has(n))).toEqual([]);
 });
 
+// The stock value is shared with other apps, whose fields are kept.
+const OPEN = new Set(['common', 'stock']);
+
 test('every schema is draft 2020-12 with additionalProperties false on entities', () => {
   for (const [name, s] of Object.entries(schemas as Record<string, Schema>)) {
     expect(s.$schema, name).toBe('https://json-schema.org/draft/2020-12/schema');
-    if (name !== 'common') expect(s.additionalProperties, name).toBe(false);
+    if (!OPEN.has(name)) expect(s.additionalProperties, name).toBe(false);
   }
 });

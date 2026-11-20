@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { openDatabase } from '../src/store/db';
 import { SCHEMA_VERSION, stores } from '../src/store/schema';
 import { createCatalog, newUserId, overlay, StoreError, toStoreError } from '../src/store';
-import { freshFactory, openFresh, seed, user, userStock } from './helpers';
+import { freshFactory, openFresh, seed, user } from './helpers';
 
 const [syrup, gin] = [user.ingredients[1]!, user.ingredients[0]!];
 const [syrupSpec, sour] = [user.specs[0]!, user.specs[1]!];
@@ -42,12 +42,6 @@ test('create, read, update and delete for every entity', async () => {
       (v: object) => ({ ...v, notes: 'n' }),
       user.affinities[0]!.id,
     ],
-    [
-      store.stock,
-      userStock[1]!,
-      (v: object) => ({ ...v, present: true }),
-      [userStock[1]!.placeId, userStock[1]!.ingredientId],
-    ],
   ] as const;
   for (const [repo, value, change, rawKey] of cases) {
     const key = rawKey as IDBValidKey;
@@ -65,53 +59,6 @@ test('create, read, update and delete for every entity', async () => {
     await r.delete(key);
     expect(await r.list()).toEqual([]);
   }
-  store.close();
-});
-
-test('places: the default place is there, and a place is stored, renamed and removed', async () => {
-  const store = await openFresh();
-  const [home] = await store.places.list();
-  expect(home).toMatchObject({ name: 'Home' });
-  const cabin = user.places[1]!;
-  await store.places.put(cabin);
-  expect(await store.places.get(cabin.id)).toEqual(cabin);
-  await store.places.put({ ...cabin, name: 'Boat' });
-  expect((await store.places.list()).map((p) => p.name).sort()).toEqual(['Boat', 'Home']);
-  await expect(store.places.put({ ...cabin, id: 'cabin' })).rejects.toMatchObject({
-    kind: 'invalid',
-  });
-  await expect(store.places.put({ ...cabin, name: '' })).rejects.toMatchObject({ kind: 'invalid' });
-  await store.places.delete(cabin.id);
-  expect(await store.places.list()).toEqual([home]);
-  store.close();
-});
-
-test('stock is kept per place: the same ingredient in two places, listed by place', async () => {
-  const store = await openFresh();
-  const [a, b] = [user.places[0]!.id, user.places[1]!.id];
-  const record = (placeId: string, present: boolean) => ({
-    placeId,
-    ingredientId: 'gin',
-    updatedAt: '2026-11-18T09:00:00Z',
-    present,
-  });
-  await store.stock.put(record(a, true));
-  await store.stock.put(record(b, false));
-  expect(await store.stock.list()).toHaveLength(2);
-  expect(await store.stock.listBy('placeId', b)).toEqual([record(b, false)]);
-  expect(await store.stock.get([a, 'gin'])).toEqual(record(a, true));
-  // A tombstone has no other field than the key and the instant.
-  const tomb = {
-    placeId: a,
-    ingredientId: 'gin',
-    updatedAt: '2026-11-18T10:00:00Z',
-    deleted: true as const,
-  };
-  await store.stock.put(tomb);
-  expect(await store.stock.get([a, 'gin'])).toEqual(tomb);
-  await expect(store.stock.put({ ...tomb, present: true } as never)).rejects.toMatchObject({
-    kind: 'invalid',
-  });
   store.close();
 });
 
@@ -135,13 +82,10 @@ test('an invalid record is refused with a typed error and nothing is written', a
   expect(error).toMatchObject({ kind: 'invalid' });
   expect((error as StoreError).details.length).toBeGreaterThan(1);
   expect(await store.ingredients.list()).toEqual([]);
-  await expect(
-    store.stock.put({ ingredientId: 'x', present: 'yes' } as never),
-  ).rejects.toMatchObject({ kind: 'invalid' });
   store.close();
 });
 
-test('user entities need a user id; stock may use a seed id', async () => {
+test('user entities need a user id', async () => {
   const store = await openFresh();
   await expect(store.ingredients.put({ ...gin, id: 'lemon-juice' })).rejects.toMatchObject({
     kind: 'invalid',
@@ -149,21 +93,6 @@ test('user entities need a user id; stock may use a seed id', async () => {
   await expect(store.specs.put({ ...sour, lineageId: 'daiquiri' })).rejects.toMatchObject({
     kind: 'invalid',
   });
-  const { entry } = await store.placeSelection();
-  await store.stock.put({
-    placeId: entry,
-    ingredientId: 'lime-juice',
-    updatedAt: '2026-11-18T08:00:00Z',
-    present: true,
-  });
-  await expect(
-    store.stock.put({
-      placeId: 'home',
-      ingredientId: 'lime-juice',
-      updatedAt: '2026-11-18T08:00:00Z',
-      present: true,
-    }),
-  ).rejects.toMatchObject({ kind: 'invalid' });
   store.close();
 });
 
@@ -178,7 +107,6 @@ test('seed entities are never present in the user stores', async () => {
   // Reading and overlaying wrote nothing: only the one user ingredient is stored.
   expect((await store.ingredients.list()).map((i) => i.id)).toEqual([gin.id]);
   expect(await store.specs.list()).toEqual([]);
-  expect(await store.stock.list()).toEqual([]);
   store.close();
 });
 
@@ -204,7 +132,6 @@ test('without a store the catalog is the seed alone', async () => {
 
 test('settings default, save and load', async () => {
   const store = await openFresh();
-  const { entry } = await store.placeSelection();
   expect(await store.settings.load()).toEqual({
     theme: 'system',
     units: 'metric',
@@ -214,7 +141,7 @@ test('settings default, save and load', async () => {
     buyNextDrafts: 'yes',
     buyNextRetired: 'no',
     backup: { changesSinceExport: 0 },
-    places: { ticked: [entry], entry },
+    spaces: { ticked: [], entry: '', known: [] },
   });
   await store.settings.set('theme', 'dark');
   await store.settings.set('alcoholLow', 'up-to-15');
@@ -235,7 +162,7 @@ test('settings default, save and load', async () => {
     buyNextDrafts: 'yes',
     buyNextRetired: 'yes',
     backup: { changesSinceExport: 3, lastExportAt: '2026-11-17T09:30:00Z' },
-    places: { ticked: [entry], entry },
+    spaces: { ticked: [], entry: '', known: [] },
   });
   store.close();
 });

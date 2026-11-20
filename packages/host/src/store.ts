@@ -11,8 +11,8 @@ export interface StoredStorage {
 }
 
 /**
- * A space on this device. The secret is kept in clear, as the earlier
- * passphrase was: the device's storage is the trust boundary.
+ * A space on this device. The secret is kept in clear: the device's
+ * storage is the trust boundary.
  */
 export interface StoredSpace {
   /** The space id derived from the secret. */

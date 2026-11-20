@@ -30,41 +30,17 @@ export interface Affinity {
   [field: string]: unknown;
 }
 
-/** A place where ingredients are kept; stock is kept per place (docs/data-model.md#place). */
-export interface Place {
+/**
+ * A space as the stock screens need it: the host's space without its secret
+ * and storage access (docs/data-model.md#stock).
+ */
+export interface Space {
+  /** The space id derived from its secret (32 hex characters). */
   id: string;
   name: string;
-  updatedAt: string;
+  /** True when the space has no storage: it is on this device only and never synced. */
+  deviceOnly: boolean;
 }
-
-/** A storage the user configured on this device for sync. Device-local, never exported. */
-export interface Storage {
-  id: string;
-  label: string;
-  type: 'webdav';
-  baseUrl: string;
-  username?: string;
-  password?: string;
-}
-
-/** The synced units; only places for now. */
-export type UnitKind = 'place';
-
-/** Where one synced unit of this device is stored. Device-local, never exported. */
-export interface Binding {
-  unitKind: UnitKind;
-  unitId: string;
-  storageId: string;
-  folder: string;
-  passphrase: string;
-  /** The etag of the file as last read or written. */
-  etag?: string;
-  lastSyncAt?: string;
-  lastError?: string;
-}
-
-/** The key of a binding in its store. */
-export type BindingKey = [unitKind: UnitKind, unitId: string];
 
 /** What the screens read and edit of a stock record: the ingredient and what is known of it. */
 export interface StockFields {
@@ -76,15 +52,15 @@ export interface StockFields {
   note?: string;
 }
 
-/** A live stock record of one place; keyed by `placeId` and `ingredientId`. */
+/** A live stock record of one space: the collection's record with its space and key (stock/source.ts). */
 export interface Stock extends StockFields {
-  placeId: string;
+  spaceId: string;
   updatedAt: string;
 }
 
 /** A removed stock record, kept so a merge can tell removed from never entered. */
 export interface StockTombstone {
-  placeId: string;
+  spaceId: string;
   ingredientId: string;
   updatedAt: string;
   deleted: true;
@@ -92,15 +68,14 @@ export interface StockTombstone {
 
 export type StockRecord = Stock | StockTombstone;
 
-/** The key of a stock record in its store: place, then ingredient. */
-export type StockKey = [placeId: string, ingredientId: string];
-
-/** Which places count (device setting, never exported). */
-export interface PlaceSettings {
-  /** The places that count for derived views, in order. */
+/** Which spaces count for stock (device setting, never exported). */
+export interface SpaceSettings {
+  /** The spaces that count for derived views, in order. */
   ticked: string[];
-  /** The place new stock entries go to. */
+  /** The space new stock entries go to. */
   entry: string;
+  /** The spaces this device has seen; one that is not in the list is new and counts at once. */
+  known: string[];
 }
 
 export type Theme = 'system' | 'light' | 'dark';
@@ -133,9 +108,7 @@ export interface Settings {
   buyNextDrafts: YesNo;
   buyNextRetired: YesNo;
   backup: Backup;
-  places: PlaceSettings;
+  spaces: SpaceSettings;
 }
 
-export type EntityKind = 'ingredient' | 'template' | 'spec' | 'place' | 'stock' | 'affinity';
-/** Device-local records: validated like entities, but not entities (never exported, no backup count). */
-export type DeviceKind = 'storage' | 'binding';
+export type EntityKind = 'ingredient' | 'template' | 'spec' | 'affinity';

@@ -1,136 +1,216 @@
 import { expect, test } from 'vitest';
 import { initialState } from '../src/app-state';
-import { type AppData } from '../src/data';
 import { COMMON_STOCK } from '../src/screens/stock/common';
 import { createStore } from '../src/state';
-import { changeStock, stockState, stockWrites, withPresent } from '../src/stock/state';
+import {
+  changeStock,
+  invalidateStock,
+  stockState,
+  stockWrites,
+  withPresent,
+} from '../src/stock/state';
 import { type LocalStore, type StockFields } from '../src/store';
+import type { Store as SharedStore } from '@nexumia-de/hospes';
 import { seedModel } from './browse-fixture';
-import { openFresh } from './helpers';
+import { openFresh, seedStock, sharedStore, stockData, storedStock } from './helpers';
 
-function recordsOf(ctx: Parameters<typeof stockState>[0]): ReadonlyMap<string, StockFields> {
+function ready(ctx: Parameters<typeof stockState>[0]) {
   const s = stockState(ctx);
   if (s.kind !== 'ready') throw new Error('stock not loaded');
-  return s.records;
+  return s;
 }
+const recordsOf = (ctx: Parameters<typeof stockState>[0]): ReadonlyMap<string, StockFields> =>
+  ready(ctx).records;
 
-async function context(local: LocalStore) {
+async function context(local: LocalStore, shared: SharedStore) {
   const store = createStore({
     ...initialState('#/stock', { theme: 'system', units: 'metric' }),
     seed: { kind: 'ready' as const },
     storage: { kind: 'ready' as const },
   });
-  const data = { local: () => local } as unknown as AppData;
   const ctx = {
     get state() {
       return store.get();
     },
     store,
-    data,
+    data: stockData(local, shared),
   };
   stockState(ctx); // starts the read
   await new Promise((r) => setTimeout(r, 20));
   return ctx;
 }
 
-const AT = '2026-11-18T09:00:00Z';
-/** The stored record of an ingredient in the entry place, as the repository holds it. */
-const stored = async (local: LocalStore, id: string) =>
-  local.stock.get([(await local.placeSelection()).entry, id]);
+const AT = '2026-11-18T09:00:00.000Z';
 
-test('a change shows at once, is stored behind it, and Undo restores the old record', async () => {
-  const local = await openFresh();
-  const ctx = { ...(await context(local)), now: () => AT };
-  const state = () => ({ records: recordsOf(ctx) });
-  const entry = (await local.placeSelection()).entry;
+test('a device without a space gets one on this device only, named Home, and it takes the stock', async () => {
+  const shared = sharedStore();
+  const ctx = await context(await openFresh(), shared);
+  const { selection, writable } = ready(ctx);
+  expect(writable).toBe(true);
+  expect(selection.spaces).toMatchObject([{ name: 'Home', deviceOnly: true }]);
+  expect(selection.entry).toBe(selection.spaces[0]?.id);
+  expect((await shared.listSpaces())[0]?.storage).toEqual({ type: 'device', address: '' });
+});
+
+test('a change shows at once, is stored in the space behind it, and Undo leaves a removal marker', async () => {
+  const shared = sharedStore();
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  const entry = ready(ctx).selection.entry;
   const before = ctx.store.get().stockRev;
-  const undo = changeStock(ctx, [{ id: 'gin', next: withPresent(state().records, 'gin', true) }]);
-  expect(state().records.get('gin')).toMatchObject({ present: true });
+  const undo = changeStock(ctx, [{ id: 'gin', next: withPresent(recordsOf(ctx), 'gin', true) }]);
+  expect(recordsOf(ctx).get('gin')).toMatchObject({ present: true });
   expect(ctx.store.get().stockRev).toBeGreaterThan(before);
   await stockWrites();
-  expect(await stored(local, 'gin')).toEqual({
-    placeId: entry,
-    ingredientId: 'gin',
+  // The collection keeps the ingredient as the key and only what is known of it as the value.
+  expect(await storedStock(shared, entry, 'gin')).toEqual({
+    key: 'gin',
     updatedAt: AT,
-    present: true,
+    value: { present: true },
   });
   changeStock(ctx, undo);
   await stockWrites();
-  // A removal is kept as a tombstone, so a merge can tell it from "never entered".
-  expect(await stored(local, 'gin')).toEqual({
-    placeId: entry,
-    ingredientId: 'gin',
-    updatedAt: AT,
-    deleted: true,
-  });
-  expect(state().records.has('gin')).toBe(false);
+  // A removal is kept as a marker, so a merge can tell it from "never entered".
+  expect(await storedStock(shared, entry, 'gin')).toMatchObject({ key: 'gin', deleted: true });
+  expect(recordsOf(ctx).has('gin')).toBe(false);
 });
 
-test('toggling off writes present false and keeps the other fields of the record', async () => {
+test('toggling off writes present false and keeps the other fields, also those of another app', async () => {
+  const shared = sharedStore();
   const local = await openFresh();
-  const entry = (await local.placeSelection()).entry;
-  await local.stock.put({
-    placeId: entry,
-    ingredientId: 'rum',
-    updatedAt: '2026-11-01T00:00:00Z',
-    present: true,
-    note: 'back bar',
-  });
-  const ctx = { ...(await context(local)), now: () => AT };
-  const records = recordsOf(ctx);
-  changeStock(ctx, [{ id: 'rum', next: withPresent(records, 'rum', false) }]);
+  const first = await context(local, shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [
+    { key: 'rum', value: { present: true, note: 'back bar', 'x-culina-amount': { value: 1 } } },
+  ]);
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  changeStock(ctx, [{ id: 'rum', next: withPresent(recordsOf(ctx), 'rum', false) }]);
   await stockWrites();
-  expect(await stored(local, 'rum')).toEqual({
-    placeId: entry,
-    ingredientId: 'rum',
+  expect(await storedStock(shared, entry, 'rum')).toEqual({
+    key: 'rum',
     updatedAt: AT,
-    present: false,
-    note: 'back bar',
+    value: { present: false, note: 'back bar', 'x-culina-amount': { value: 1 } },
   });
 });
 
-test('Undo of a removal brings the record back, newer than the tombstone', async () => {
-  const local = await openFresh();
-  const entry = (await local.placeSelection()).entry;
-  await local.stock.put({
-    placeId: entry,
-    ingredientId: 'rum',
-    updatedAt: '2026-11-01T00:00:00Z',
-    present: true,
-    openedOn: '2026-10-01',
-  });
-  let clock = '2026-11-18T09:00:00Z';
-  const ctx = { ...(await context(local)), now: () => clock };
+test('a record that is no stock value is not shown and stays in the collection', async () => {
+  const shared = sharedStore();
+  const first = await context(await openFresh(), shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [
+    { key: 'gin', value: { present: 'yes' } },
+    { key: 'rum', value: { present: true, bestBefore: 'soon' } },
+    { key: 'lime-juice', value: { present: true } },
+  ]);
+  const ctx = await context(await openFresh(), shared);
+  expect([...recordsOf(ctx).keys()]).toEqual(['lime-juice']);
+  expect(await storedStock(shared, entry, 'gin')).toMatchObject({ value: { present: 'yes' } });
+});
+
+test('Undo of a removal brings the record back, newer than the marker', async () => {
+  const shared = sharedStore();
+  const first = await context(await openFresh(), shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [
+    { key: 'rum', value: { present: true, openedOn: '2026-10-01' } },
+  ]);
+  let clock = AT;
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => clock };
   const undo = changeStock(ctx, [{ id: 'rum', next: null }]);
   expect(recordsOf(ctx).has('rum')).toBe(false);
-  clock = '2026-11-18T09:00:05Z';
+  clock = '2026-11-18T09:00:05.000Z';
   changeStock(ctx, undo);
   await stockWrites();
   expect(recordsOf(ctx).get('rum')).toMatchObject({ present: true, openedOn: '2026-10-01' });
-  expect(await stored(local, 'rum')).toMatchObject({
-    updatedAt: '2026-11-18T09:00:05Z',
-    present: true,
-    openedOn: '2026-10-01',
+  const back = await storedStock(shared, entry, 'rum');
+  expect(back?.value).toEqual({ present: true, openedOn: '2026-10-01' });
+  // Both writes ran after the clock moved; the record follows the marker by the collection's stamp.
+  expect((back?.updatedAt ?? '') >= '2026-11-18T09:00:05.000Z').toBe(true);
+});
+
+test('a mark is stamped after everything in the collection, even with a clock that is behind', async () => {
+  const shared = sharedStore();
+  const first = await context(await openFresh(), shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [
+    { key: 'rum', updatedAt: '2027-01-01T00:00:00.000Z', value: { present: true } },
+  ]);
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  changeStock(ctx, [{ id: 'gin', next: withPresent(recordsOf(ctx), 'gin', true) }]);
+  await stockWrites();
+  const stamp = (await storedStock(shared, entry, 'gin'))?.updatedAt ?? '';
+  expect(stamp > '2027-01-01T00:00:00.000Z').toBe(true);
+});
+
+test('a mark keeps a field another app wrote after the stock was read', async () => {
+  const shared = sharedStore();
+  const first = await context(await openFresh(), shared);
+  const entry = ready(first).selection.entry;
+  await seedStock(shared, entry, [{ key: 'rum', value: { present: true, note: 'back bar' } }]);
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  // Another app adds its field and changes the note; this app has the older record in memory.
+  await shared.changeRecords(entry, 'stock', (current) => ({
+    ...current,
+    records: current.records.map((r) => ({
+      ...r,
+      value: { present: true, note: 'cellar', 'x-culina-amount': { value: 2 } },
+    })),
+  }));
+  changeStock(ctx, [{ id: 'rum', next: withPresent(recordsOf(ctx), 'rum', false) }]);
+  await stockWrites();
+  // What this app knows is what it showed; what it does not know stays as stored.
+  expect((await storedStock(shared, entry, 'rum'))?.value).toEqual({
+    present: false,
+    note: 'back bar',
+    'x-culina-amount': { value: 2 },
   });
 });
 
-test('marked stock is part of the export and survives an import', async () => {
+test('a read asked for while a mark is being written shows the mark', async () => {
+  const memory = sharedStore();
+  // A database that takes its time to write, as a phone's does.
+  const shared = {
+    ...memory,
+    changeRecords: async (...args: Parameters<typeof memory.changeRecords>) => {
+      await new Promise((r) => setTimeout(r, 15));
+      return memory.changeRecords(...args);
+    },
+  };
+  const ctx = { ...(await context(await openFresh(), shared)), now: () => AT };
+  changeStock(ctx, [{ id: 'gin', next: withPresent(recordsOf(ctx), 'gin', true) }]);
+  // Records arrived by sync before the write of the mark reached the database.
+  invalidateStock(ctx.store);
+  stockState(ctx);
+  await stockWrites();
+  await new Promise((r) => setTimeout(r, 40));
+  expect(recordsOf(ctx).get('gin')).toMatchObject({ present: true });
+});
+
+test('stock is not part of the export: it belongs to the space', async () => {
+  const shared = sharedStore();
   const local = await openFresh();
-  const ctx = await context(local);
-  const records = recordsOf(ctx);
-  changeStock(ctx, [
-    { id: 'gin', next: withPresent(records, 'gin', true) },
-    { id: 'lime-juice', next: withPresent(records, 'lime-juice', true) },
-  ]);
+  const ctx = await context(local, shared);
+  changeStock(ctx, [{ id: 'gin', next: withPresent(recordsOf(ctx), 'gin', true) }]);
   await stockWrites();
   const file = await local.exchange.exportData({ exportedAt: '2026-11-17T09:00:00Z' });
-  expect(file.stock.map((s) => s.ingredientId)).toEqual(['gin', 'lime-juice']);
-  const other = await openFresh();
-  await other.exchange.importData(file, 'replace');
-  expect((await other.stock.list()).map((s) => s.ingredientId).sort()).toEqual([
-    'gin',
-    'lime-juice',
-  ]);
+  expect('stock' in file).toBe(false);
+  // A replace import leaves the stock of the space alone.
+  await local.exchange.importData(file, 'replace');
+  expect(await storedStock(shared, ready(ctx).selection.entry, 'gin')).toMatchObject({
+    value: { present: true },
+  });
+});
+
+test('without a usable local store the stock is empty and cannot be changed', () => {
+  const store = createStore({
+    ...initialState('#/stock', { theme: 'system', units: 'metric' }),
+    seed: { kind: 'ready' as const },
+    storage: { kind: 'error' as const, error: 'unavailable' as const, reason: 'x' },
+  });
+  const ctx = { state: store.get(), store, data: stockData(null, sharedStore()) };
+  expect(ready(ctx)).toMatchObject({ writable: false });
+  expect(changeStock(ctx, [{ id: 'gin', next: { ingredientId: 'gin', present: true } }])).toEqual(
+    [],
+  );
 });
 
 test('the most used ingredients named for the empty screen exist in the seed', () => {

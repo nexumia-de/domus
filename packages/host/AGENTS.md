@@ -1,7 +1,8 @@
 # hospes
 
-The host code that the household apps share: the sync cipher on Web
-Crypto and the WebDAV storage adapter on `fetch`. One npm package,
+The host code that the household apps share: spaces with their sync
+cycle and local database, and the storage adapters (GitHub, WebDAV) on
+`fetch`. One npm package,
 `@nexumia-de/hospes`, used from this repository
 ([decision](../../docs/decisions/one-origin-spaces-storages.md)); the
 rules of the [root](../../AGENTS.md) apply too. Knowledge of this part:
@@ -25,14 +26,13 @@ package is [materia](../model), the pure model.
   package; an app keeps what only it knows in a database of its own. A
   change to its layout needs a new database version and a line in the log.
 - **No runtime dependency** except
-  [materia](../model), for the types and helpers of the envelope and the
-  storage port. Development tools come from the root.
+  [materia](../model), for the pure rules of sync and the storage port. Development tools come from the root.
 - **Requests only to storage the user configured.** The package never
   chooses an address; the caller gives it. No telemetry, no logging.
 - **TypeScript source is the entry.** `src/index.ts` is exported as it
   is; there is no build step. The apps bundle it.
-- **Every rule has a test** in `test/`; a fixed vector pins the envelope
-  format.
+- **Every rule has a test** in `test/`; fixed vectors pin what is
+  derived from a space's secret.
 - **Code moves here when a second app needs it, never in advance**, and
   it moves with its users changed in the same commit.
 - **The public entry is a contract.** A removed or changed export is

@@ -64,7 +64,7 @@ export function joinScreen(ctx: Ctx, fragment: string): HTMLElement {
       h('dt', {}, t.join.spaceLine),
       h('dd', { 'data-testid': 'join-name' }, invite.name ?? t.join.unnamed),
       h('dt', {}, t.join.storageLine),
-      h('dd', { 'data-testid': 'join-storage' }, storageWords(invite.storage)),
+      h('dd', { 'data-testid': 'join-storage' }, storageWords(t, invite.storage)),
     );
     element.append(summary);
     if (form) {

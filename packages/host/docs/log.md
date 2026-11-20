@@ -1,5 +1,11 @@
 # Log
 
+## 2026-11-20
+
+- **Sync orderings** (documentation only): [sync-orderings](sync-orderings.md), a table per class of unlucky order with its intended behaviour and the test that pins it; unpinned and unhandled orderings are listed as such. No code changed.
+- **A space on this device only**: `device.ts` with `DEVICE_ONLY`, `deviceOnlyStorage`, `isDeviceOnly` and `ensureSpace`: a space with a secret and an id but the storage type `device`, where an app keeps a shared collection (Mixtura's `stock`) before sync is set up; connecting a storage later keeps id, secret and data. New exports only. Tested in `test/device.test.ts`. See [spaces](spaces.md#a-space-on-this-device-only).
+- **Passphrase cipher removed** ([roadmap](../../../docs/roadmap.md) goal 6): with Mixtura on spaces no app used the version 1 envelope any more, and materia removed it the same day. Removed from the public entry: `createCipher`, `DEFAULT_ITERATIONS`, `CipherOptions` (`cipher.ts`) and `WrongPassphrase`, `UnsupportedEnvelope` (`errors.ts`); gone with them `test/cipher.test.ts`, `test/fixtures/envelope.json` and `docs/cipher.md`. A file sealed with a passphrase is not read any more (`openCollection` answers `not-sealed`). `base64.ts` stays: the sealed file and Mixtura's share link use it.
+
 ## 2026-11-19
 
 - **`adapterFor` takes `apiBase`** in its deps, for a `github` storage (default `https://api.github.com`): the Household app (`apps/domus`) compiles its API address in and passes it, so the browser checks can use a fake API without any run-time switch. Never read from a stored space or an invite. Tested in `test/storage.test.ts`; documented in [GitHub adapter](github.md#the-registry-storagets).

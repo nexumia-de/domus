@@ -1,10 +1,5 @@
 // The sealed file of a space: round trip and every way it fails to open.
-import {
-  buildEnvelope,
-  buildSealed,
-  parseSealed,
-  type CollectionDocument,
-} from '@nexumia-de/materia';
+import { buildSealed, parseSealed, type CollectionDocument } from '@nexumia-de/materia';
 import { expect, test } from 'vitest';
 import { base64ToBytes, bytesToBase64 } from '../src/base64';
 import { openCollection, sealCollection } from '../src/seal';
@@ -95,7 +90,7 @@ test('frame problems are not-sealed with the parse error as detail', async () =>
 });
 
 test('a version 1 envelope is not-sealed', async () => {
-  const v1 = buildEnvelope({
+  const v1 = JSON.stringify({
     format: 'materia-sync',
     version: 1,
     kdf: { name: 'PBKDF2', hash: 'SHA-256', iterations: 600000, salt: 'AAAAAAAAAAAAAAAAAAAAAA==' },

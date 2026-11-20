@@ -13,20 +13,20 @@ generated: { by: claude-code, at: 2026-11-19 }
 `apps/domus` is one workspace, `@domus/app`; its tooling files (`tsconfig.json`,
 `eslint.config.js`) are its own, Prettier is the root's.
 
-| Path                                  | What                                                                                                                                                                                         |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build.mjs`                           | esbuild into `dist/`: `index.html`, `app.css`, `main.js`, `theme-init.js`, `icon.svg`; `buildApp()`                                                                                          |
-| `src/main.ts`                         | starts the app: language, shell, hash router                                                                                                                                                 |
-| `src/router.ts`                       | the hash routes                                                                                                                                                                              |
-| `src/env.ts`                          | the GitHub API address, a constant of the build                                                                                                                                              |
-| `src/deps.ts`                         | the real effects: the IndexedDB store, the clock, the adapters                                                                                                                               |
-| `src/logic/`                          | what decides, without a DOM: `actions.ts` (create, join, rename, change access, the cycle), `invite.ts`, `github-setup.ts`, `status.ts`, `failures.ts`, `words.ts`, `storage.ts`, `names.ts` |
-| `src/screens/`                        | one file per screen and the small parts they share                                                                                                                                           |
-| `src/qr.ts`                           | the invite's QR code as an inline svg                                                                                                                                                        |
-| `src/strings.ts`, `src/strings-de.ts` | every visible text, English and German                                                                                                                                                       |
-| `src/styles/`                         | `tokens.css` (the only colours and sizes), `base.css`, `components.css`                                                                                                                      |
-| `test/`                               | vitest: flows with the memory store and a fake storage, wording, invite, router, build                                                                                                       |
-| `e2e/`                                | Playwright: `run.mjs`, `scenario.mjs`, `fake-github.mjs`, `harness.mjs`                                                                                                                      |
+| Path                                  | What                                                                                                                                                                                                            |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `build.mjs`                           | esbuild into `dist/`: `index.html`, `app.css`, `main.js`, `theme-init.js`, `icon.svg`; `buildApp()`                                                                                                             |
+| `src/main.ts`                         | starts the app: language, shell, hash router                                                                                                                                                                    |
+| `src/router.ts`                       | the hash routes                                                                                                                                                                                                 |
+| `src/env.ts`                          | the GitHub API address, a constant of the build                                                                                                                                                                 |
+| `src/deps.ts`                         | the real effects: the IndexedDB store, the clock, the adapters                                                                                                                                                  |
+| `src/logic/`                          | what decides, without a DOM: `actions.ts` (create, join, rename, change access, connect a storage, the cycle), `invite.ts`, `github-setup.ts`, `status.ts`, `failures.ts`, `words.ts`, `storage.ts`, `names.ts` |
+| `src/screens/`                        | one file per screen and the parts they share (`storage-steps.ts` and `wizard.ts` for Create and Connect)                                                                                                        |
+| `src/qr.ts`                           | the invite's QR code as an inline svg                                                                                                                                                                           |
+| `src/strings.ts`, `src/strings-de.ts` | every visible text, English and German                                                                                                                                                                          |
+| `src/styles/`                         | `tokens.css` (the only colours and sizes), `base.css`, `components.css`                                                                                                                                         |
+| `test/`                               | vitest: flows with the memory store and a fake storage, wording, invite, router, build                                                                                                                          |
+| `e2e/`                                | Playwright: `run.mjs`, `scenario.mjs`, `fake-github.mjs`, `harness.mjs`, `seed-entry.mjs`                                                                                                                       |
 
 ## Commands
 
@@ -70,7 +70,12 @@ root page also gets `frame-ancestors 'none'` and the other baseline headers from
   the host cannot use), join with and without the access, join twice, a wrong
   token, a read-only token, a public repository, a cycle that fails, a storage
   with no data yet, a secret that is none, rename in both directions between two
-  simulated devices, a rename kept when the cycle fails, change access, WebDAV.
+  simulated devices, a rename kept when the cycle fails, change access, WebDAV;
+  a space on this device only (made with the host's `ensureSpace`, with a record
+  in `stock`): rename without a cycle, connect a storage (the id and secret
+  kept, the name written, a second device joins), a refused storage, a failing
+  cycle that puts the space back with its data, a file of the same space
+  already in the storage.
 - `invite.test.ts`: the token is in the link only when asked for; every way a
   pasted link can be wrong has its error.
 - `failures.test.ts`: every failure has a sentence in both languages; the two
@@ -98,6 +103,14 @@ English and German (the browser's locale decides the language). Each run:
   rate limit, a 401, a 404 and a dropped connection, each told in words; the same
   again with WebDAV (a fake server inside the browser's routing at
   `https://dav.example`);
+- `deviceOnly` in `scenario.mjs`: a space on this device only, made in the page
+  by `e2e/seed-entry.mjs` (the host package's `ensureSpace` and a record in
+  `stock`, bundled by `run.mjs` and run with `page.evaluate`, because this app
+  never makes such a space): Home and the space's page, rename, the remove
+  text, the invite and access routes, nothing sent; Connect a storage at 320 px
+  and the run's width, a cycle made to fail (the space is as it was, without
+  the token, with its record), then the connection, and a second device that
+  joins and renames;
 - on every screen: no horizontal scroll, every tap target at least 44 px;
 - at 320 x 640 a walk over the forms;
 - over the whole run: no console error and no security-policy violation, no

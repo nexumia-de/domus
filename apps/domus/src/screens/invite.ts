@@ -1,3 +1,4 @@
+import { isDeviceOnly } from '@nexumia-de/hospes';
 import { h } from '../dom';
 import { inviteLink } from '../logic/invite';
 import { hashFor } from '../router';
@@ -19,6 +20,11 @@ export function inviteScreen(ctx: Ctx, id: string): HTMLElement {
         h('p', {}, t.space.notFound),
         buttonRow(linkButton(t.space.home, hashFor.home, { primary: true })),
       );
+      return;
+    }
+    if (isDeviceOnly(space)) {
+      // Nothing to invite to without a storage: the space's page offers to connect one.
+      ctx.go(hashFor.space(id), true);
       return;
     }
     const type = space.storage.type;

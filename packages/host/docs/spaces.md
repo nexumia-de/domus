@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Spaces on the host
-description: The host side of sync on spaces - the secret and the HKDF derivation of id, content key and access token, the sealed file, the invite link, the Store port and the shared IndexedDB database, one sync cycle step by step with its guarantees, the sync loop, and the limits.
+description: The host side of sync on spaces - the secret and the HKDF derivation of id, content key and access token, the sealed file, the invite link, the Store port and the shared IndexedDB database, a space on this device only, one sync cycle step by step with its guarantees, the sync loop, and the limits.
 tags: [spaces, sync, hkdf, aes-gcm, indexeddb, invite, cycle]
 generated: { by: claude-code, at: 2026-11-19 }
 sources:
@@ -23,8 +23,9 @@ cycle for one collection against any `StorageAdapter`, with local data in
 one IndexedDB database shared by all apps on the address. The pure rules
 (stamp, pruning, collection document, plan, sealed file, invite) are in
 [materia](../../model/docs/sync.md#spaces); this part does what touches
-the browser. There are no screens here, and no storage adapter beyond
-[WebDAV](webdav.md); GitHub and the sync server are later goals. Every
+the browser. There are no screens here; the storage adapters are
+[WebDAV](webdav.md) and [GitHub](github.md), and the sync server is a
+later goal. Every
 external effect is a function the caller can replace: the clock, the
 randomness, the timers.
 
@@ -117,6 +118,38 @@ asks for a newer version the store closes its connection and reopens on
 the next call. `close()` closes it. One test suite runs against both
 implementations.
 
+## A space on this device only
+
+`device.ts`. An app that keeps a shared collection needs a space to put
+it in before the household has set up sync. Such a space is like every
+other (a random secret, the id derived from it, a row in the `spaces`
+store), but its storage has the type `device` (`DEVICE_ONLY`) and an
+empty address: nothing is sent anywhere.
+
+- `deviceOnlyStorage()` gives that storage, `{ type: 'device', address: '' }`.
+- `isDeviceOnly(space)` tells whether a space has it. No cycle can run
+  for such a space and no invite can be made from it.
+- `ensureSpace(store, name, random?)` returns every space of the device
+  and never an empty list: when there is none it makes a device-only one
+  with that name (the app's word for "Home"), stores it and returns it.
+
+`ensureSpace` is single-flight per store: while one call runs, a second
+call on the same `Store` object gets the same promise, so two callers in
+one page do not both find "no space" and make two. The guard does not
+reach across tabs: two apps that start at the same moment in two tabs
+can each make one. The person then sees two spaces and can remove one.
+
+`adapterFor` does not know the type and throws `UnknownStorage` for it,
+so a caller checks `isDeviceOnly` first and neither builds an adapter nor
+starts `syncCollection` or a loop for such a space.
+
+Connecting a storage later (the Household app, `connectStorage` in
+`apps/domus`) replaces only the `storage` of the stored space: id and
+secret stay, and so do the rows of its collections; each app sends what
+it keeps in the space with its next cycle. An app keeps its shared collections in
+such a space from the first start, for example Mixtura its `stock`, so
+setting up sync moves no data.
+
 ## One cycle (`cycle.ts`)
 
 `syncCollection({ space, collection, adapter, store, now, horizonDays = 90, attempts = 3 })`:
@@ -185,8 +218,8 @@ has no screen and no framework in it.
 
 ## Limits
 
-- **The secret is stored in clear on the device** (the `spaces` store),
-  as the earlier passphrase was. Whoever can read the browser's data of
+- **The secret is stored in clear on the device** (the `spaces` store).
+  Whoever can read the browser's data of
   this address can read every space and its files.
 - **Whoever has an invite reads and writes everything** in the space,
   and the invite may carry the storage access (a token). Removing a

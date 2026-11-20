@@ -116,6 +116,27 @@ function createSyncStores({ db }: MigrationContext): void {
   bindings.createIndex('storageId', 'storageId');
 }
 
+/**
+ * Version 6: stock leaves this database. It is a collection of a space now, kept in the database
+ * the apps share (docs/store.md#stock-in-a-space), and sync is set up in the Household app, so
+ * the stores for places, stock, storages and bindings go. Nothing is carried over (owner's
+ * decision of 2026-11-19: no existing data matters). Queued behind migration 4's read, which
+ * makes two of the stores, by a read of its own.
+ */
+function dropStockAndSync({ db, tx }: MigrationContext): void {
+  const wait = tx.objectStore('settings').get('places');
+  wait.onsuccess = () => {
+    try {
+      for (const name of ['places', 'stock', 'storages', 'bindings']) {
+        if (db.objectStoreNames.contains(name)) db.deleteObjectStore(name);
+      }
+      tx.objectStore('settings').delete('places');
+    } catch {
+      tx.abort();
+    }
+  };
+}
+
 export const migrations: readonly Migration[] = [
   { version: 1, describe: 'Create the object stores', up: createStores },
   { version: 2, describe: 'Move the shell preferences into settings', up: importLegacyPrefs },
@@ -129,6 +150,11 @@ export const migrations: readonly Migration[] = [
     version: 5,
     describe: 'Add the device-local stores for storages and bindings',
     up: createSyncStores,
+  },
+  {
+    version: 6,
+    describe: 'Drop the stores for places, stock, storages and bindings',
+    up: dropStockAndSync,
   },
 ];
 

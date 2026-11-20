@@ -36,6 +36,33 @@ not apply.
 - **Own local data, offline first.** No server of ours, no account, no
   telemetry, in every app.
 
+## Fixes and reviews
+
+Taken from a study of another agent-built project on 2026-11-20
+([reviews](docs/reviews.md#where-these-rules-come-from)).
+
+- **A fix proves its test.** The commit message of a fix names the test
+  that pins it, the commit on which that test fails (run it there; do
+  not assume), and the neighbouring cases that passed before and after
+  (the controls). A test that passes without the fix proves nothing and
+  is said to be such or removed.
+- **One document per class of defect.** A defect about the order of
+  events (a change during a sync cycle, two tabs, a storage that fails
+  half way) gets a row in the ordering table of its part, with the
+  intended behaviour and the test that pins it; the first is
+  [sync orderings](packages/host/docs/sync-orderings.md). An ordering
+  that matters and has no test is listed there as not pinned.
+- **Say what a test does not prove** next to the claim: a fake storage,
+  an injected clock, no real device.
+- **Work done by several agents is recorded.** When a change was made
+  by more than one agent, [docs/reviews.md](docs/reviews.md) gets an
+  entry in the same pull request: who did which part, who checked what
+  (an agent does not count as the reviewer of its own part), what the
+  checks found, the test counts, and what nobody verified.
+- **What a check finds is fixed where it is wrong.** When a browser
+  check or a reviewer finds a defect in the app, the app is fixed, never
+  the check bent around it, and the entry names the finding.
+
 ## Before committing
 
 1. From the root: `npm run check:<part>` for every part you changed
