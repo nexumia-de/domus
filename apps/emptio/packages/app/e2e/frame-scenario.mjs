@@ -72,18 +72,31 @@ export async function toastStage(run, { page }) {
       return (await page.locator('.fr-toast').innerText()) === '';
     },
   );
-  await ok(run, 'toast: it goes by itself after about 3 s (no Undo used)', async () => {
+  await ok(run, 'toast: it goes by itself after 5 s, or 8 s with Undo (no Undo used)', async () => {
     await addFast(page, t, 'Tea gone');
     const start = Date.now();
     await page.waitForFunction(
       () => document.querySelector('.fr-toast')?.textContent === '',
       null,
       {
-        timeout: 8_000,
+        timeout: 12_000,
       },
     );
     const seconds = (Date.now() - start) / 1000;
-    return seconds >= 2 && seconds <= 6;
+    return seconds >= 4 && seconds <= 10;
+  });
+  await ok(run, 'toast: it stays while focus is on Undo, then goes', async () => {
+    await addFast(page, t, 'Tea hold');
+    await page.locator('.fr-toast button').focus();
+    await page.waitForTimeout(9_000);
+    const stayed = (await page.locator('.fr-toast').innerText()) !== '';
+    await page.locator('.fr-toast button').blur();
+    await page.waitForFunction(
+      () => document.querySelector('.fr-toast')?.textContent === '',
+      null,
+      { timeout: 12_000 },
+    );
+    return stayed;
   });
   // Put the list back as it was.
   for (const tea of await page.locator('.entry', { hasText: 'Tea' }).all()) {

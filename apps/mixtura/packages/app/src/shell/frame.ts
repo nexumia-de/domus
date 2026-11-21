@@ -18,10 +18,6 @@ import { type ScreenView } from '../screen';
 import { strings } from '../strings';
 import { nowInstant } from '../today';
 
-/** A plain toast stays this long, one with Undo longer (a hand needs time to reach it). */
-const PLAIN_MS = 5000;
-const UNDO_MS = 8000;
-
 let toaster: Toaster | undefined;
 
 /** Says something from any screen: a toast with an optional Undo (docs/behaviour.md, "Undo, not confirm"). */
@@ -48,7 +44,7 @@ export interface Frame {
 }
 
 export function createFrame(data: () => AppData): Frame {
-  toaster = createToaster({ plainMs: PLAIN_MS, actionMs: UNDO_MS });
+  toaster = createToaster();
   toaster.node.dataset['testid'] = 'toast';
   const header = createHeader();
   const sync = createSyncIndicator({

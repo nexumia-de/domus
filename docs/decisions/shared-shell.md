@@ -59,6 +59,34 @@ navigation, toasts and sync display. Three reasons:
    come from `@nexumia-de/gjs/texts`; the frame pieces of the three
    native apps move into `packages/gjs`.
 
+## Still app-own after the unification of 2026-11-21
+
+Toast timing (5 s, 8 s with Undo, held while hovered or focused) and the
+header title rule (four lines, then an ellipsis) are now the frame's and
+the same in every app; step 5 is done for the texts of Emptio's and
+Mixtura's native apps. What is left, as steps:
+
+6. **Mixtura's update banner** (`apps/mixtura/packages/app/src/shell/banner.ts`)
+   and its storage-failure banners (`store/errors.ts`, `app-state.ts`)
+   use Mixtura's own `.banner` markup; they go into the frame next to
+   the sync banner, and Emptio's service-worker update (`sw-register.ts`)
+   uses the same piece.
+7. **Navigation and settings** (step 4 above): Mixtura's `shell/nav.ts`,
+   `panes.ts` and settings screen, Emptio's `screens/settings.ts` and
+   `router.ts` are still per app.
+8. **Mixtura's modal sheets** (`shell/modal.ts`, `focus-trap.ts`) are
+   Mixtura's; a second app that needs a sheet moves them.
+9. **Emptio's web status words** (`strings.ts`, `status`) still copy the
+   host's `StatusWords` with other wording ("Synced …", "Sync failed.");
+   the web apps should share one set of words like the native apps do.
+10. **The frame of the native apps** (header, toasts, banners in
+    `packages/gjs`): the three native apps still build their own
+    `Adw.Toast` (the same copy in each `main.ts`: 4 s, 10 s with Undo,
+    which differs from the web frame's 5 s / 8 s) and banners; one helper
+    in `packages/gjs`, with the web timing, replaces the three copies.
+11. **Culina** is not covered here: its web app is step 3, done in
+    another session.
+
 ## Not decided
 
 - Whether a check can find copies (for example a list of shell module

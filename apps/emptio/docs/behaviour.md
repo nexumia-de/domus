@@ -42,7 +42,7 @@ the list, bottom = the input.**
   says "Sync failed." with Retry. Offline is not an error.
 - **Toast**: what was done last is a short message at the lower edge of
   the content, above the add field, in the theme's tokens (`--surface-2`,
-  `--text`, accent for Undo), gone after 3 s (4.5 s with Undo). Adding an
+  `--text`, accent for Undo), gone after 5 s (8 s with Undo, held while focus is on it). Adding an
   entry offers Undo (removes it); raising one that was there, clearing
   and removing offer Undo as before. A toast is a live region.
 - **Dock**: the add field is the only permanent element at the bottom.
@@ -195,7 +195,7 @@ has a storage no request leaves the address.
   add field stay, only the content scrolls). Also checked: the header
   per page with back arrow, the sync icon and its error banner with
   Retry (against the fake storage forced to fail), the toast in both
-  colour schemes, above the add field, with Undo and its 3 s, each
+  colour schemes, above the add field, with Undo and its timing, each
   filter and sort and their survival of a reload.
   Not proven: the real GitHub, a phone with its keyboard up, an
   installed app, two real devices, another browser than

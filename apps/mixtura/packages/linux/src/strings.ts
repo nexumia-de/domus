@@ -1,9 +1,11 @@
 // Every text of the native app, English and German. The drinks and the ingredients
 // are the built-in data's own names (English). The web app has English texts only, so
-// nothing here is shared with it; the status words have the host package's shape.
-import type { StatusWords } from '@nexumia-de/hospes';
+// nothing here is shared with it. The style, the spaces, joining, the sync status words and the
+// support link are shared with the other native apps (`@nexumia-de/gjs/texts`).
+import { sharedDe, sharedEn } from '@nexumia-de/gjs/texts';
 
 export const textsEn = {
+  ...sharedEn,
   appName: 'Drink Builder',
   menu: { preferences: 'Preferences', about: 'About Drink Builder' },
   drinks: {
@@ -65,63 +67,21 @@ export const textsEn = {
     undo: 'Undo',
   },
   preferences: {
-    appearance: 'Appearance',
-    style: 'Style',
-    styles: { system: 'Follow System', light: 'Light', dark: 'Dark' },
+    ...sharedEn.preferences,
     units: 'Units',
     unitSystems: { metric: 'Metric', us: 'US', imperial: 'Imperial' },
-    spaces: 'Spaces',
     spacesIntro:
       'A space is a household, or this device alone. Each space has its own bottles. A space is made and shared in the Household app in a browser; this app joins it by its invitation link.',
-    unnamedSpace: 'Unnamed space',
-    homeSpace: 'This device',
-  },
-  join: {
-    title: 'Join a Space',
-    description: 'The token is only needed when the invitation carries no access to the storage.',
-    link: 'Invitation link',
-    token: 'Access token (optional)',
-    joined: (name: string) => `Joined ${name}.`,
-    errors: {
-      empty: 'Paste an invitation link first.',
-      'not-an-invitation': 'This is not an invitation link.',
-      'needs-token': 'This invitation carries no access. Enter the token of the storage.',
-      'already-here': 'This space is already on this device.',
-    },
   },
   failure: {
+    ...sharedEn.failure,
     store: 'The data on this device could not be read.',
     seed: 'The built-in drink data is damaged.',
-    write: 'The change could not be saved.',
-    retry: 'Try Again',
   },
   about: {
     comments: 'Mix drinks from the bottles you have. Kept on this device.',
-    support: 'Support Development',
     data: 'Recipe data',
   },
-  status: {
-    deviceOnly: 'On this device only',
-    syncing: 'Syncing …',
-    never: 'Not synced yet',
-    offline: 'Offline',
-    inStep: (ago: string) => `In step · ${ago}`,
-    failed: (why: string) => `Last sync failed: ${why}`,
-    justNow: 'just now',
-    minutes: (n: number) => `${n} min ago`,
-    hours: (n: number) => `${n} h ago`,
-    failures: {
-      unauthorised: 'the storage refused the access',
-      'not-found': 'the storage was not found',
-      unreachable: 'the storage could not be reached',
-      blocked: 'the storage asks to wait',
-      conflict: 'another device was writing',
-      storage: 'this version does not know the storage',
-      'wrong-key': 'the file in the storage belongs to another space',
-      'newer-version': 'the file in the storage needs a newer version of the app',
-      other: 'the file in the storage could not be read',
-    },
-  } satisfies StatusWords,
 };
 
 export type Texts = typeof textsEn;
@@ -134,6 +94,7 @@ export function joinNames(names: readonly string[], max = 4): string {
 }
 
 export const textsDe: Texts = {
+  ...sharedDe,
   appName: 'Drink Builder',
   menu: { preferences: 'Einstellungen', about: 'Info zu Drink Builder' },
   drinks: {
@@ -196,61 +157,19 @@ export const textsDe: Texts = {
     undo: 'Rückgängig',
   },
   preferences: {
-    appearance: 'Darstellung',
-    style: 'Stil',
-    styles: { system: 'System folgen', light: 'Hell', dark: 'Dunkel' },
+    ...sharedDe.preferences,
     units: 'Einheiten',
     unitSystems: { metric: 'Metrisch', us: 'US', imperial: 'Imperial' },
-    spaces: 'Spaces',
     spacesIntro:
       'Ein Space ist ein Haushalt oder dieses Gerät allein. Jeder Space hat seine eigenen Flaschen. Ein Space wird in der App Haushalt im Browser angelegt und geteilt; diese App tritt ihm über seinen Einladungslink bei.',
-    unnamedSpace: 'Space ohne Namen',
-    homeSpace: 'Dieses Gerät',
-  },
-  join: {
-    title: 'Einem Space beitreten',
-    description: 'Das Token ist nur nötig, wenn die Einladung keinen Zugang zum Speicher enthält.',
-    link: 'Einladungslink',
-    token: 'Zugangstoken (freiwillig)',
-    joined: (name) => `${name} beigetreten.`,
-    errors: {
-      empty: 'Zuerst einen Einladungslink einfügen.',
-      'not-an-invitation': 'Das ist kein Einladungslink.',
-      'needs-token': 'Diese Einladung enthält keinen Zugang. Das Token des Speichers eingeben.',
-      'already-here': 'Dieser Space ist schon auf diesem Gerät.',
-    },
   },
   failure: {
+    ...sharedDe.failure,
     store: 'Die Daten auf diesem Gerät konnten nicht gelesen werden.',
     seed: 'Die eingebauten Drinkdaten sind beschädigt.',
-    write: 'Die Änderung konnte nicht gespeichert werden.',
-    retry: 'Erneut versuchen',
   },
   about: {
     comments: 'Drinks aus den Flaschen mixen, die du hast. Auf diesem Gerät gespeichert.',
-    support: 'Entwicklung unterstützen',
     data: 'Rezeptdaten',
-  },
-  status: {
-    deviceOnly: 'Nur auf diesem Gerät',
-    syncing: 'Wird abgeglichen …',
-    never: 'Noch nicht abgeglichen',
-    offline: 'Offline',
-    inStep: (ago) => `Auf dem Stand · ${ago}`,
-    failed: (why) => `Letzter Abgleich fehlgeschlagen: ${why}`,
-    justNow: 'gerade eben',
-    minutes: (n) => `vor ${n} Min.`,
-    hours: (n) => `vor ${n} Std.`,
-    failures: {
-      unauthorised: 'der Speicher hat den Zugang abgelehnt',
-      'not-found': 'der Speicher wurde nicht gefunden',
-      unreachable: 'der Speicher war nicht erreichbar',
-      blocked: 'der Speicher bittet zu warten',
-      conflict: 'ein anderes Gerät hat gerade geschrieben',
-      storage: 'diese Version kennt den Speicher nicht',
-      'wrong-key': 'die Datei im Speicher gehört zu einem anderen Space',
-      'newer-version': 'die Datei im Speicher braucht eine neuere Version der App',
-      other: 'die Datei im Speicher konnte nicht gelesen werden',
-    },
   },
 };

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (shared texts)
+
+- **Update**: the native app's strings spread `sharedEn` / `sharedDe` from `@nexumia-de/gjs/texts` (style, spaces, join, failure words, sync status, support); the copies are gone, the wording is identical. `about.support` became `support`. Checked: typecheck, 13 tests, smoke and Broadway interaction check in real GJS.
+
 ## 2026-11-21
 
 - **Fix: a mark lost after mark, Undo, mark and a reload** (CI `mixtura-e2e` failed twice at `spec-stock.mjs` line 106): stock writes waited for the write before them, so a reload right after the second mark could come before its write was asked of the store. Writes now start at once, in call order (`enqueueWrite`, `writeStock`); the test is in [sync orderings](../../../packages/host/docs/sync-orderings.md#mixturas-stock-on-top).

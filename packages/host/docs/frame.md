@@ -28,8 +28,17 @@ pieces that were the same in every app.
   error). `worstStatus(statuses)` picks the one status to show when an app
   counts several spaces (Mixtura's stock): failed, syncing, never, in
   step, device only.
+- The title wraps to at most four lines and then ends in an ellipsis
+  (`-webkit-line-clamp: 4`), in every app: a long title stays whole at
+  the large text sizes (WCAG 1.4.4, 1.4.10) without a tall header (two and three lines cut "Daiquiri: versions" at 320 px and 200 % text, where the title column is 148 px wide and needs four, found by Mixtura's `e2e/reflow.mjs`). Mixtura's own
+  override (unlimited wrapping) is gone.
 - `createToaster()`: one toast at a time, in the colours of the theme,
-  gone after 3 s (4.5 s when it has an action), with an optional Undo.
+  gone after 5 s (8 s when it has an action), with an optional Undo.
+  The same in every app. It stays while focus is in it and the time
+  starts again afterwards (WCAG 2.2.1: a keyboard user on Undo is not
+  cut off; 8 s is the time for a hand to reach Undo, where Emptio's
+  former 3 s / 4.5 s were too short on a phone). A resting pointer does
+  not hold it: a toast under it would cover the button below for good.
   Timers are options.
 - Icons are own line drawings (`FRAME_ICONS`, `drawIcon`).
 
