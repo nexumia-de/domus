@@ -315,3 +315,105 @@ recommendation above: figures are derived, never stored, never a verdict.
   `food.ec.europa.eu`, `ec.europa.eu`, `assets.publishing.service.gov.uk`,
   `www.fao.org`, `www.dge.de`, `www.nutrition.org.uk`, `www.health.gov`;
   `eur-lex.europa.eu` answered 202 with an empty body.
+
+# Figures only where they mean something (2026-11-21)
+
+A tester used the built app in German with the shipped content and found the
+herb omelette at "5 kcal / 20 kJ" per portion, fat 0 g, though a portion holds
+three eggs and 45 g of butter; under it "2 of 5 ingredients are counted. Not
+counted: egg (weight unknown), ... butter (no nutrition data)". Artusi's crema
+showed "0 of 4" with "sugar (no nutrition data), milk (weight unknown)", the
+Eierkuchen "milk (weight unknown)". A figure of 5 kcal for an omelette misleads;
+no figure is better than that one.
+
+## Why each line was not counted
+
+Reproduced on the merged branch with the shipped catalogue (the view as the
+screen gets it, every dish for its own number of persons):
+
+| Dish (persons)                | Line                  | Record the line points at                      | What is absent, and why                                                                                                                   |
+| ----------------------------- | --------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Omelette aux fines herbes (2) | 6 œufs (count)        | `fdc-group-egg-whole`, a parent of 3 rows      | `unitWeightG`: only the fresh egg has a piece (44 g); the two dried egg powders have none, and the parent rule wants every row to have it |
+|                               | 90 g beurre           | `fdc-group-butter`, 5 rows                     | `x-nutrition`: the rows run from 499 to 731 kcal per 100 g (light, whipped, salted, unsalted), so they do not agree within 1.05           |
+|                               | persil, no amount     | `fdc-170416`                                   | the amount: Gouffé gives a spoon whose size he states for flour only                                                                      |
+|                               | 5 g salt, 3 g pepper  | `fdc-173468`, `fdc-170931`                     | nothing: counted, 1.5 g pepper x 251 kcal per 100 g = 3.8 kcal a portion, shown as 5 kcal                                                 |
+| Crema (Artusi, 6)             | 8 yolks (count)       | `fdc-group-egg-yolk`, 2 rows                   | `unitWeightG`: fresh yolk 17 g, dried yolk none                                                                                           |
+|                               | 200 g zucchero        | `fdc-group-sugars`, 3 rows                     | `x-nutrition`: granulated 387, powdered 389, maple 354 kcal; largest / smallest 1.099, above 1.05                                         |
+|                               | 1 l latte             | `fdc-group-milk`, 33 rows                      | `densityGPerMl`: the rows include dried milk (0.29 to 0.54 g/ml) and fluid milk (1.03 to 1.07)                                            |
+|                               | vanilla, no amount    | `fdc-173471`                                   | the amount                                                                                                                                |
+| Eierkuchen (4)                | 1 large cupful milk   | `fdc-group-milk`                               | `densityGPerMl`, as above                                                                                                                 |
+|                               | 8 eggs (count)        | `fdc-group-egg-whole`                          | `unitWeightG`, as above                                                                                                                   |
+|                               | butter, sugar, spices | groups and spice rows, no amount in the source | the amount                                                                                                                                |
+
+The view then showed figures whenever two lines and a quarter of all were
+counted (`MIN_COUNTED`, `MIN_SHARE`, a judgement in the app). Lines are not what
+matters: salt and pepper are two lines. `MIN_MEASURED_FIGURES` in the engine
+(0.8 of the lines with a mass) belongs to the characters, counts lines as well,
+and was never applied to the nutrition.
+
+## The rules now
+
+1. **A group line is counted with the group's usual member.** Where a parent's
+   rows disagree, `tools/catalogue/usual.json` names the row a recipe that
+   names no kind means (a fresh egg, butter without salt, whole milk,
+   granulated sugar, white all-purpose flour; 20 parents, each with its
+   reason), the generator writes it as `x-group.usual` with the range of energy
+   over the rows, and the engine takes the member's density, piece weight and
+   figures for a line naming that parent, and for nothing else
+   ([catalogue](ingredient-catalogue.md#usual-member),
+   [engine rules](engine-rules.md#nutrition)). This is a judgement of the
+   project, stated as one on every parent and on the screen ("Where the recipe
+   names no kind, the usual one is counted: Egg, whole as Egg, whole, fresh").
+   No range is shown: the range over "Egg, whole" runs to egg powder, which no
+   omelette is made of.
+2. **Figures are shown only when nothing that can carry energy is left out.**
+   A line left out keeps every figure back unless it is optional, a seasoning
+   (USDA's category "Spices and Herbs"), water (USDA: 0 kcal, FDC 173647) or an
+   ingredient of at most 50 kcal per 100 g (judgement). The screen then shows no
+   energy at all, names the lines that keep it back and shows the coverage.
+   A line without an amount counts like any other: butter "for the pan" and
+   sugar "to sprinkle" add energy whatever the source left unsaid.
+
+## Before and after on the 48 shipped dishes
+
+Before: 15 dishes showed figures, among them the omelette (5 kcal), the sauce
+hollandaise (0 kcal: only its salt and white pepper counted, not the yolks and
+butter), the poulet bourguignonne (100 kcal, without the chicken), the rote
+Grütze (140 kcal, without the berries). After: **9 dishes show figures**, all
+with every line that carries energy counted: tortilla de patatas (1280 kcal a
+portion), haricots verts au beurre (130), mayonnaise (2380: a quart of oil
+for the 4 persons the dish data settles on), œufs à la neige (580), omelette aux
+fines herbes (520), sauce hollandaise (240), soufflé au parmesan (1440), crema
+(310) and latte brûlé (180). The other 39 show what is counted and what keeps
+the figures back. What keeps them back most often: a group or food without an
+amount in the source (butter in 12 dishes, flour, sugar, potatoes, oil, parmesan),
+a line not in the catalogue (beef bones, chocolate, fresh berries, orange-flower
+water, fine herbs, kidney suet), and a piece whose weight USDA does not give
+(the chicken of the poulet and the pollo, the herring). Each dish is pinned in
+`packages/app/test/nutrition-shipped.test.ts`.
+
+**Checked by hand from the USDA figures.** Omelette, a portion: 3 x 44 g egg
+(FDC 171287: 143 kcal, 599 kJ, 12.6 g protein, 9.51 g fat, 0.72 g
+carbohydrate, 142 mg sodium per 100 g), 45 g butter without salt (FDC 173430:
+717 kcal, 3000 kJ, 0.85, 81.1, 0.06, 11 mg), 2.5 g salt (FDC 173468: 38,800 mg
+sodium), 1.5 g black pepper (FDC 170931: 251 kcal, 1050 kJ, 10.4, 3.26, 64,
+20 mg). Energy 188.76 + 322.65 + 3.77 = 515.2 kcal, shown 520; 2156 kJ, shown
+2160; fat 49.1 g, shown 49; protein 17.2 g, shown 17; salt (1162.7 mg sodium x
+2.5) 2.91 g. The screen shows the same. Crema, a portion of 6: 22.7 g yolk (FDC
+172184, 322 kcal) 73.0 + 33.3 g sugar (FDC 169655, 387 kcal) 129.0 + 171.8 g
+milk (1 l x 1.031 g/ml / 6; FDC 172217, 61 kcal) 104.8 = 306.8 kcal, shown 310.
+
+## What the figures still are not
+
+- **Raw figures for a cooked dish.** Every amount is counted as the raw food the
+  source names; no yield, no loss of water or fat, no retention factor (none
+  could be read, see above).
+- **No fat taken up or left behind.** The butter of the omelette is counted
+  whole, though some stays in the pan; the oil of a fried dish is counted only
+  when the source gives it an amount, and then whole.
+- **The sources' vague amounts.** A "large cupful", "a piece of lemon peel",
+  "for 4 persons" settled by the project: the figure is as exact as these.
+  USDA's "medium" egg is 44 g without shell; a European size M egg is heavier.
+- **The usual member is a judgement**, not the cook's product; salted butter
+  would raise the salt of the omelette by about 0.7 g a portion (632 mg more sodium per 100 g, FDC 173410 against 173430).
+- **Not a nutrition declaration** under Regulation (EU) No 1169/2011, as above.

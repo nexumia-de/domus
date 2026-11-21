@@ -1,0 +1,102 @@
+{
+  "id": "figures-group-usual",
+  "description": "The figures of a line by record. A group without own figures takes those of its usual member (egg). A group with an own density keeps it and takes only what it lacks from the usual member (butter). A sibling of the usual member does not get the usual member's piece weight, only the parent's own density (dried egg). A food row with its own figures keeps them (fresh egg). A usual member that is not below the group is not used (fat). A parent's own value comes before the usual member's (flour type 1 inherits the density of flour)",
+  "inputs": {
+    "kind": "nutrition_figures",
+    "records": {
+      "inv-group-egg": { "usualId": "inv-egg-fresh", "densityGPerMl": 1.03 },
+      "inv-egg-fresh": {
+        "parentId": "inv-group-egg",
+        "unitWeightG": 50,
+        "nutrition": { "kcal": 143, "kJ": 599, "proteinG": 12.6, "fatG": 9.5, "carbohydrateG": 0.7 }
+      },
+      "inv-egg-dried": {
+        "parentId": "inv-group-egg",
+        "nutrition": { "kcal": 592, "kJ": 2480, "proteinG": 48, "fatG": 43.9, "carbohydrateG": 1.1 }
+      },
+      "inv-group-butter": { "usualId": "inv-butter-unsalted", "densityGPerMl": 0.95 },
+      "inv-butter-unsalted": {
+        "parentId": "inv-group-butter",
+        "densityGPerMl": 0.959,
+        "nutrition": {
+          "kcal": 717,
+          "kJ": 3000,
+          "proteinG": 0.85,
+          "fatG": 81.1,
+          "carbohydrateG": 0.06,
+          "sodiumMg": 11
+        }
+      },
+      "inv-group-fat": { "usualId": "inv-butter-unsalted" },
+      "inv-group-flour": { "densityGPerMl": 0.53 },
+      "inv-group-flour-white": { "parentId": "inv-group-flour", "usualId": "inv-flour-type-1" },
+      "inv-flour-type-1": {
+        "parentId": "inv-group-flour-white",
+        "densityGPerMl": 0.6,
+        "nutrition": { "kcal": 364, "kJ": 1520, "proteinG": 10.3, "fatG": 1, "carbohydrateG": 76.3 }
+      }
+    },
+    "ids": [
+      "inv-group-egg",
+      "inv-egg-fresh",
+      "inv-egg-dried",
+      "inv-group-butter",
+      "inv-group-fat",
+      "inv-group-flour-white"
+    ]
+  },
+  "expected": {
+    "inv-group-egg": {
+      "facts": { "densityGPerMl": 1.03, "unitWeightG": 50 },
+      "nutrition": { "kcal": 143, "kJ": 599, "proteinG": 12.6, "fatG": 9.5, "carbohydrateG": 0.7 },
+      "from": {
+        "densityGPerMl": { "id": "inv-group-egg", "by": "own" },
+        "unitWeightG": { "id": "inv-egg-fresh", "by": "usual" },
+        "nutrition": { "id": "inv-egg-fresh", "by": "usual" }
+      }
+    },
+    "inv-egg-fresh": {
+      "facts": { "densityGPerMl": 1.03, "unitWeightG": 50 },
+      "nutrition": { "kcal": 143, "kJ": 599, "proteinG": 12.6, "fatG": 9.5, "carbohydrateG": 0.7 },
+      "from": {
+        "densityGPerMl": { "id": "inv-group-egg", "by": "parent" },
+        "unitWeightG": { "id": "inv-egg-fresh", "by": "own" },
+        "nutrition": { "id": "inv-egg-fresh", "by": "own" }
+      }
+    },
+    "inv-egg-dried": {
+      "facts": { "densityGPerMl": 1.03 },
+      "nutrition": { "kcal": 592, "kJ": 2480, "proteinG": 48, "fatG": 43.9, "carbohydrateG": 1.1 },
+      "from": {
+        "densityGPerMl": { "id": "inv-group-egg", "by": "parent" },
+        "nutrition": { "id": "inv-egg-dried", "by": "own" }
+      }
+    },
+    "inv-group-butter": {
+      "facts": { "densityGPerMl": 0.95 },
+      "nutrition": {
+        "kcal": 717,
+        "kJ": 3000,
+        "proteinG": 0.85,
+        "fatG": 81.1,
+        "carbohydrateG": 0.06,
+        "sodiumMg": 11
+      },
+      "from": {
+        "densityGPerMl": { "id": "inv-group-butter", "by": "own" },
+        "nutrition": { "id": "inv-butter-unsalted", "by": "usual" }
+      }
+    },
+    "inv-group-fat": { "facts": {}, "from": {} },
+    "inv-group-flour-white": {
+      "facts": { "densityGPerMl": 0.53 },
+      "nutrition": { "kcal": 364, "kJ": 1520, "proteinG": 10.3, "fatG": 1, "carbohydrateG": 76.3 },
+      "from": {
+        "densityGPerMl": { "id": "inv-group-flour", "by": "parent" },
+        "nutrition": { "id": "inv-flour-type-1", "by": "usual" }
+      }
+    }
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector: the records and figures are made up and describe no real food; expected values follow the rule in docs/engine-rules.md (Nutrition, The figures of a line), worked out by hand."
+}

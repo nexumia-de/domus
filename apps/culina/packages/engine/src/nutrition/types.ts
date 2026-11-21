@@ -77,6 +77,15 @@ export interface NutritionError {
   ingredient?: string;
 }
 
+/**
+ * Whether the figures mean anything. `nothing-counted`: no line was counted. `left-out-matters`:
+ * a line that has an amount, is not optional and is not a seasoning was left out (listed in
+ * `lines`); a sum without it would read as the dish's and be far from it.
+ */
+export type NutritionShown =
+  | { figures: true }
+  | { figures: false; why: 'nothing-counted' | 'left-out-matters'; lines: NotCountedLine[] };
+
 /** Result of `dishNutrition`. */
 export type NutritionResult =
   | {
@@ -89,6 +98,8 @@ export type NutritionResult =
       coverage: NutritionCoverage;
       /** Nutrients left out of `perPortion` because a counted line lacks them. */
       notReported: ('fibreG' | 'saltG')[];
+      /** Whether the figures may be shown at all; the coverage is shown either way. */
+      shown: NutritionShown;
     }
   | { ok: false; error: NutritionError };
 

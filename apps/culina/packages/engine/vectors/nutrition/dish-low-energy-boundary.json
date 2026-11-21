@@ -1,0 +1,78 @@
+{
+  "id": "dish-low-energy-boundary",
+  "description": "The boundary of LOW_ENERGY_KCAL_PER_100G: 100 g flour counted; a stalk of an ingredient of exactly 50 kcal per 100 g with no unit weight is left out and does not keep the figures from being shown; an ingredient of 51 kcal per 100 g without amount is left out and does. Sums 300 kcal, 1250 kJ, 10 g protein, 1 g fat, 60 g carbohydrate, 3 g fibre, 2 mg sodium = 0.005 g salt; one portion",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-boundary",
+        "name": "Example boundary",
+        "portions": 1,
+        "slots": [
+          {
+            "role": "base",
+            "ref": { "kind": "ingredient", "id": "inv-flour" },
+            "amount": { "value": 100, "unit": "g" }
+          },
+          {
+            "role": "aromatic",
+            "ref": { "kind": "ingredient", "id": "inv-stalk" },
+            "amount": { "value": 1, "unit": "count" }
+          },
+          { "role": "garnish", "ref": { "kind": "ingredient", "id": "inv-root" } }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-stalk": { "kcal": 50, "kJ": 209, "proteinG": 1, "fatG": 0, "carbohydrateG": 10 },
+      "inv-root": { "kcal": 51, "kJ": 213, "proteinG": 1, "fatG": 0, "carbohydrateG": 11 }
+    }
+  },
+  "expected": {
+    "portions": 1,
+    "perPortion": {
+      "kcal": 300,
+      "kJ": 1250,
+      "proteinG": 10,
+      "fatG": 1,
+      "carbohydrateG": 60,
+      "fibreG": 3,
+      "saltG": 0.005
+    },
+    "countedGPerPortion": 100,
+    "coverage": {
+      "counted": 1,
+      "total": 3,
+      "notCounted": [
+        {
+          "index": 1,
+          "ref": { "kind": "ingredient", "id": "inv-stalk" },
+          "reason": "cannot-convert",
+          "missing": ["unitWeightG"]
+        },
+        { "index": 2, "ref": { "kind": "ingredient", "id": "inv-root" }, "reason": "no-amount" }
+      ]
+    },
+    "notReported": [],
+    "shown": {
+      "figures": false,
+      "why": "left-out-matters",
+      "lines": [
+        { "index": 2, "ref": { "kind": "ingredient", "id": "inv-root" }, "reason": "no-amount" }
+      ]
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."
+}

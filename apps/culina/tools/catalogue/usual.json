@@ -1,0 +1,105 @@
+{
+  "note": "The usual member of a parent whose rows do not agree (docs/ingredient-catalogue.md#usual-member). A dish line that names the parent (\"egg\", \"butter\", \"milk\": the source names no kind) is counted with the figures of this member where the parent has none of its own. Every choice is a judgement of the project, made on 2026-11-21 and stated in `why`; no number is written here: the generator reads the member's numbers from the dataset. Only parents that a shipped dish line points at with an amount are listed.",
+  "groups": [
+    {
+      "group": "fdc-group-egg-whole",
+      "usual": 171287,
+      "why": "a recipe's egg is a fresh hen's egg in its shell; the other rows are dried egg powders"
+    },
+    {
+      "group": "fdc-group-egg-yolk",
+      "usual": 172184,
+      "why": "the yolk of a fresh egg; the other row is dried yolk"
+    },
+    {
+      "group": "fdc-group-egg-white",
+      "usual": 172183,
+      "why": "the white of a fresh egg; the other rows are dried whites"
+    },
+    {
+      "group": "fdc-group-butter",
+      "usual": 173430,
+      "why": "butter without salt: the sources season with salt on its own line; the rows differ in sodium, whipped and light butter are other products"
+    },
+    {
+      "group": "fdc-group-milk",
+      "usual": 172217,
+      "why": "whole cow's milk, without added vitamins: the plain milk of the sources; the other rows are skimmed, dried, evaporated, flavoured or of other animals"
+    },
+    {
+      "group": "fdc-group-sugars",
+      "usual": 169655,
+      "why": "white granulated sugar; powdered and maple sugar are named as such where a source wants them"
+    },
+    {
+      "group": "fdc-group-cream",
+      "usual": 170858,
+      "why": "light whipping cream (about 31 % fat), the row nearest to the cream a European source means; sour cream and half and half are other products"
+    },
+    {
+      "group": "fdc-group-cream-fluid",
+      "usual": 170858,
+      "why": "as for Cream: light whipping cream, about 31 % fat"
+    },
+    {
+      "group": "fdc-group-cheese-parmesan",
+      "usual": 173431,
+      "why": "ordinary grated parmesan; the other row is a low-sodium product"
+    },
+    {
+      "group": "fdc-group-wheat-flour",
+      "usual": 169761,
+      "why": "white all-purpose flour without enrichment: the plain flour of the sources; whole-grain, bread and tortilla-mix flour are other products"
+    },
+    {
+      "group": "fdc-group-wheat-flour-white",
+      "usual": 169761,
+      "why": "as for Wheat flour: white all-purpose flour without enrichment"
+    },
+    {
+      "group": "fdc-group-oil",
+      "usual": 171413,
+      "why": "olive oil, the oil of the Spanish, French and Italian sources; almost every oil row has the same energy and fat"
+    },
+    {
+      "group": "fdc-group-vinegar",
+      "usual": 172240,
+      "why": "red wine vinegar, the vinegar of European cookery; distilled and cider vinegar differ little, balsamic is named as such"
+    },
+    {
+      "group": "fdc-group-apples",
+      "usual": 171688,
+      "why": "the dataset's own row for apples with skin that names no variety"
+    },
+    {
+      "group": "fdc-group-lettuce",
+      "usual": 169247,
+      "why": "cos or romaine, the head lettuce of the shipped Spanish dish; the leaf lettuces are close in figures but lighter per head"
+    },
+    {
+      "group": "fdc-group-mushrooms",
+      "usual": 169251,
+      "why": "white button mushroom, the cultivated mushroom; chanterelle, morel and enoki are named as such"
+    },
+    {
+      "group": "fdc-group-peppers-sweet",
+      "usual": 170427,
+      "why": "green sweet pepper, the pepper of the shipped gazpacho; red differs mainly in sugar"
+    },
+    {
+      "group": "fdc-group-peas",
+      "usual": 170419,
+      "why": "fresh green peas; split dried peas and sprouted peas are other products"
+    },
+    {
+      "group": "fdc-group-rice",
+      "usual": 168879,
+      "why": "white medium-grain rice, the rice the catalogue already gives the risotto; brown rice is named as such"
+    },
+    {
+      "group": "fdc-group-rice-white",
+      "usual": 168879,
+      "why": "as for Rice: white medium-grain rice"
+    }
+  ]
+}

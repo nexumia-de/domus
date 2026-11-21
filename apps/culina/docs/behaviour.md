@@ -310,10 +310,16 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
   the way down (`dishRaw`, the engine's expansion) with the same
   `dishNutrition`, rounding, coverage and words as a shipped dish. An
   optional slot is not counted, as on a shipped dish. A line without an
-  amount, and a slot that cannot be added up (a component without an
-  output weight, an unknown component), is listed as not counted with
-  "no amount". So a dish of components that are not weighed shows "too
-  few ingredients". Cooked or prepared ingredients are counted with the
+  amount is listed as not counted with "no amount"; a slot that cannot be
+  added up (a component without an output weight, an unknown component, an
+  amount without a known weight) with "weight not known" (since
+  2026-11-21: `unweighed`). Both keep the figures back under the same rule
+  as a shipped dish; an own line without amount reaches the view by its
+  name only, so it is never taken for a seasoning (not proved otherwise:
+  `UnmeasuredRow` carries no ingredient id). A slot of a group (milk, egg)
+  is counted with the group's usual member where its grams are known; the
+  notebook's own conversion of a cup of a group to grams is not changed
+  here. Cooked or prepared ingredients are counted with the
   figures of the raw food, as the catalogue gives only those.
 
 What each screen had that the other lacked, before (2026-11-21):
@@ -1175,17 +1181,34 @@ view logic is in `src/classics/` (no DOM), the screens in
   not counted ("Not counted: name (no amount)."), the share of the weight the
   figures rest on where it can be stated, that amounts are raw and as the recipe
   gives them, and the rounding rule. An ingredient is found in the notebook
-  first, then in the catalogue; a variety without its own density or unit
-  weight takes its parent's. **With too few ingredients counted** (none, one,
-  or fewer than a quarter of them; a judgement, `MIN_COUNTED` and `MIN_SHARE`
-  in `nutrition-view.ts`) there are no figures, only one short line
-  ("Nutrition cannot be worked out: too few ingredients have an amount and
-  nutrient data."), and everything else is behind the second tap. **It never judges**: no
+  first, then in the catalogue; its density, unit weight and figures come from
+  the engine's `lineFigures` (its own, else a parent's, else, for a group
+  whose rows do not agree, its **usual member**; [engine
+  rules](engine-rules.md#nutrition)). A line counted with a usual member is
+  named under the figures ("Where the recipe names no kind, the usual one is
+  counted: Egg, whole as Egg, whole, fresh."), and one line says what the
+  figures are not ("Raw figures for a cooked dish: no frying fat taken up, no
+  losses; old sources give rough amounts."). **When the figures would
+  mislead** (the engine's `shown`, since 2026-11-21): nothing is counted, or an
+  ingredient is left out that is no seasoning (USDA's "Spices and Herbs"), not
+  water and has more than 50 kcal per 100 g or no known figures. Then there are
+  no figures and no energy at all, only one line that names what keeps them
+  back ("No figures are shown: Butter, Sugars cannot be counted, and a total
+  without them would mislead.", or "Nutrition cannot be worked out: ..." when
+  nothing is counted), the coverage, and everything else behind the second
+  tap. Before, figures were shown from two counted ingredients and a quarter of
+  all (`MIN_COUNTED`, `MIN_SHARE`, removed), which let the herb omelette show 5
+  kcal from its salt and pepper. On the 48 shipped dishes 9 show figures
+  ([evaluation](nutrition-evaluation.md#figures-only-where-they-mean-something-2026-11-21)). **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be
   read, [evaluation](nutrition-evaluation.md#what-was-built)); the wording test
   scans `strings-nutrition.ts` and a test lists the words it must not contain.
-  **Tests:** `test/nutrition-view.test.ts`, `e2e/classics-nutrition.mjs`.
+  **Tests:** `test/nutrition-view.test.ts`, `test/nutrition-shipped.test.ts`
+  (all 48 shipped dishes: figures shown or not, energy, coverage; the omelette
+  and Artusi's crema worked out by hand from the USDA figures),
+  `e2e/classics-nutrition.mjs` (also a variant whose butter names the group
+  and one whose oil is not in the catalogue, at 360 and 1000 px).
 - **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish; the
   one cook screen of every origin since 2026-11-21). One
   step: "Step 3 of 8" as a heading, the component it belongs to (left out

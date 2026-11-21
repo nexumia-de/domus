@@ -1,11 +1,13 @@
 // What the nutrition section of a classic shows for some portions: the rounded figures per portion,
 // what they rest on and what was left out. The engine derives, converts, sums and rounds
-// (`deriveClassic`, `dishNutrition`, `roundNutrition`); this only picks the words. Pure: no DOM.
+// (`deriveClassic`, `lineFigures`, `dishNutrition`, `roundNutrition`) and says whether the figures
+// mean anything; this only picks the words. Pure: no DOM.
 // Never a verdict: no judgement, no colour, no comparison with a daily value.
-import { deriveClassic, dishNutrition, roundNutrition } from '@culina/engine';
+import { deriveClassic, dishNutrition, lineFigures, roundNutrition } from '@culina/engine';
 import type {
   Classic,
   FactsByIngredient,
+  FigureRecord,
   IngredientFacts,
   Lang,
   NotCountedLine,
@@ -32,8 +34,15 @@ export interface NutritionView {
   portions: number;
   /** Nothing could be counted: no rows. */
   none: boolean;
-  /** Too few ingredients are counted for figures worth showing (judgement: none, one, or under a quarter of them): no rows. */
+  /**
+   * The figures would mislead, so none are shown (the engine's `shown`): nothing is counted, or an
+   * ingredient with an amount that is no seasoning is left out. No rows; `why` says which.
+   */
   tooFew: boolean;
+  /** Why no figures are shown; absent when they are. */
+  why?: string;
+  /** "Counted as the usual kind ...": lines that name a group, counted with its usual member. */
+  asUsual?: string;
   rows: NutritionRow[];
   /** Fibre and salt notes for a figure that is not shown. */
   notShown: string[];
@@ -48,22 +57,31 @@ export type NutritionViewResult = { ok: true; view: NutritionView } | { ok: fals
 
 const MAX_DEPTH = 12;
 
-/** Figures are shown from two counted ingredients and a quarter of all (a judgement, not a source). */
-const MIN_COUNTED = 2;
-const MIN_SHARE = 0.25;
+/** USDA's food category for seasonings: a line of it left out does not hide the figures. */
+export const SEASONING_CATEGORY = 'Spices and Herbs';
 
-/** Density and unit weight of an ingredient; a variety without its own takes its parent's. */
-const factsOf = (id: string, lookup: Lookup): IngredientFacts => {
-  const facts: { densityGPerMl?: number; unitWeightG?: number } = {};
+/** The record as the engine's figure rule reads it; the usual member is `x-group.usual.id`. */
+const figureRecord = (record: IngredientRecord): FigureRecord => {
+  const usual = (record['x-group'] as { usual?: { id?: unknown } } | undefined)?.usual?.id;
+  const nutrition = record['x-nutrition']?.per100g;
+  return {
+    ...(record.parentId === undefined ? {} : { parentId: record.parentId }),
+    ...(record.densityGPerMl === undefined ? {} : { densityGPerMl: record.densityGPerMl.value }),
+    ...(record.unitWeightG === undefined ? {} : { unitWeightG: record.unitWeightG.value }),
+    ...(nutrition === undefined ? {} : { nutrition }),
+    ...(typeof usual === 'string' ? { usualId: usual } : {}),
+  };
+};
+
+/** USDA's category of the record or of the nearest record above it that has one. */
+const categoryOf = (id: string, lookup: Lookup): string | undefined => {
   let at = lookup(id);
   for (let depth = 0; at !== undefined && depth < MAX_DEPTH; depth++) {
-    if (facts.densityGPerMl === undefined && at.densityGPerMl !== undefined)
-      facts.densityGPerMl = at.densityGPerMl.value;
-    if (facts.unitWeightG === undefined && at.unitWeightG !== undefined)
-      facts.unitWeightG = at.unitWeightG.value;
+    const category = at['x-fdc']?.category ?? at['x-group']?.category;
+    if (category !== undefined) return category;
     at = at.parentId === undefined ? undefined : lookup(at.parentId);
   }
-  return facts;
+  return undefined;
 };
 
 const number = (n: number): string => formatNumber(n, 3);
@@ -96,36 +114,61 @@ type Derived = Parameters<typeof dishNutrition>[0];
 function viewOf(
   derived: Derived,
   nameFor: (line: NotCountedLine) => string,
+  nameOfId: (id: string) => string,
   lookup: Lookup,
 ): NutritionViewResult {
   const ids = new Set<string>();
   for (const line of [...derived.dish.slots, ...derived.components.flatMap((c) => c.lines)]) {
     if (line.ref?.kind === 'ingredient') ids.add(line.ref.id);
   }
+  const find = (id: string): FigureRecord | undefined => {
+    const record = lookup(id);
+    return record === undefined ? undefined : figureRecord(record);
+  };
   const facts: Record<string, IngredientFacts> = {};
   const nutrition: Record<string, NutritionById[string]> = {};
+  const seasonings: string[] = [];
+  const usualOf = new Map<string, string>();
   for (const id of ids) {
-    facts[id] = factsOf(id, lookup);
-    const found = lookup(id)?.['x-nutrition'];
-    if (found !== undefined) nutrition[id] = found.per100g;
+    const figures = lineFigures(id, find);
+    facts[id] = figures.facts;
+    if (figures.nutrition !== undefined) nutrition[id] = figures.nutrition;
+    const usual = Object.values(figures.from).find((o) => o.by === 'usual');
+    if (usual !== undefined) usualOf.set(id, usual.id);
+    if (categoryOf(id, lookup) === SEASONING_CATEGORY) seasonings.push(id);
   }
-  const result = dishNutrition(derived, { facts: facts as FactsByIngredient, nutrition });
+  const result = dishNutrition(derived, {
+    facts: facts as FactsByIngredient,
+    nutrition,
+    seasonings,
+  });
   if (!result.ok) return { ok: false, code: result.error.code };
-  const { coverage } = result;
+  const { coverage, shown } = result;
   const left = coverage.notCounted.map((line) =>
     t.notCountedItem(nameFor(line), t.reasons[line.reason]),
   );
   const rounded = roundNutrition(result.perPortion);
   if (!rounded.ok) return { ok: false, code: rounded.error.code };
   const none = coverage.counted === 0;
-  const tooFew =
-    none || coverage.counted < MIN_COUNTED || coverage.counted < coverage.total * MIN_SHARE;
+  const tooFew = !shown.figures;
+  const why = shown.figures
+    ? undefined
+    : shown.why === 'nothing-counted'
+      ? t.tooFew
+      : t.notShownLeftOut([...new Set(shown.lines.map(nameFor))].join(', '));
+  // A line that names a group and was counted with the group's usual member says so.
+  const leftIds = new Set(coverage.notCounted.flatMap((l) => (l.ref ? [l.ref.id] : [])));
+  const usual = [...usualOf]
+    .filter(([id]) => !leftIds.has(id))
+    .map(([id, member]) => t.usualItem(nameOfId(id), nameOfId(member)));
   return {
     ok: true,
     view: {
       portions: result.portions,
       none,
       tooFew,
+      ...(why === undefined ? {} : { why }),
+      ...(usual.length === 0 ? {} : { asUsual: t.asUsual(usual.join(', ')) }),
       rows: tooFew ? [] : rowsOf(rounded.rounded),
       notShown: tooFew
         ? []
@@ -171,6 +214,7 @@ export function nutritionView(
         ? (componentName.get(line.ref.id) ?? line.ref.id)
         : nameOf(line.ref.id);
     },
+    nameOf,
     lookup,
   );
 }
@@ -179,8 +223,13 @@ export function nutritionView(
 export interface OwnNutritionInput {
   /** The raw ingredients of the slots that are not optional, in grams for every portion. */
   raw: readonly { ingredientId: string; name: string; g: number }[];
-  /** Lines without an amount, and slots that could not be added up: not counted. */
+  /** Lines without an amount: not counted, and they do not hide the figures. */
   unmeasured: readonly string[];
+  /**
+   * Slots with an amount that could not be added up (no weight known): not counted, and they hide
+   * the figures, as a shipped line whose weight is unknown does.
+   */
+  unweighed?: readonly string[];
   /** Optional slots with their total grams where known: not counted, as on a shipped dish. */
   optional: readonly { name: string; g?: number }[];
 }
@@ -192,12 +241,14 @@ export interface OwnNutritionInput {
  * @param input - The raw ingredients, what has no amount and the optional slots.
  * @param portions - Portions the raw amounts are for, above zero.
  * @param lookup - Finds an ingredient record by id (notebook first, then the catalogue).
+ * @param nameOf - The name of an ingredient in the user's language, for the usual member of a group.
  * @returns The view, or the engine's error code.
  */
 export function ownNutritionView(
   input: OwnNutritionInput,
   portions: number,
   lookup: Lookup,
+  nameOf?: NameOf,
 ): NutritionViewResult {
   const names = new Map<string, string>();
   const slots: Derived['dish']['slots'] = [];
@@ -215,6 +266,16 @@ export function ownNutritionView(
     names.set(id, name);
     slots.push({ role: 'part', ref: { kind: 'ingredient', id } });
   });
+  // An amount the engine cannot weigh: one piece of an ingredient that no record has.
+  (input.unweighed ?? []).forEach((name, i) => {
+    const id = `#unweighed-${i}`;
+    names.set(id, name);
+    slots.push({
+      role: 'part',
+      ref: { kind: 'ingredient', id },
+      amount: { value: 1, unit: 'count' },
+    });
+  });
   input.optional.forEach((slot, i) => {
     const id = `#optional-${i}`;
     names.set(id, slot.name);
@@ -228,6 +289,7 @@ export function ownNutritionView(
   return viewOf(
     { dish: { id: 'own', name: '', portions, slots }, components: [] },
     (line) => (line.ref === undefined ? '' : (names.get(line.ref.id) ?? line.ref.id)),
+    (id) => names.get(id) ?? nameOf?.(id) ?? lookup(id)?.name ?? id,
     lookup,
   );
 }
