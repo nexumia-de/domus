@@ -1,0 +1,67 @@
+# Flatpak manifest of the native Cook's Notebook app. The JavaScript bundle is
+# built by npm before flatpak-builder runs (Flatpak builds are offline):
+#   npm ci && npm run build -w @culina/linux
+# from the repository root writes dist/de.nexumia.Culina.js next to this file.
+# Needs no permission beyond the display and the network: the data lives in
+# the app's own XDG data directory, and the storage the household configured
+# (GitHub API or a WebDAV server) is reached over HTTPS.
+id: de.nexumia.Culina
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: de.nexumia.Culina
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+modules:
+  - name: culina
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 de.nexumia.Culina.js -t ${FLATPAK_DEST}/share/${FLATPAK_ID}
+      - install -Dm755 de.nexumia.Culina.in ${FLATPAK_DEST}/bin/${FLATPAK_ID}
+      - install -Dm644 ${FLATPAK_ID}.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 ${FLATPAK_ID}.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - install -Dm644 ${FLATPAK_ID}.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      - install -Dm644 ${FLATPAK_ID}-symbolic.svg -t ${FLATPAK_DEST}/share/icons/hicolor/symbolic/apps
+      # AGPL-3.0 for the app; MIT for the two bundled @noble libraries and for
+      # the two helpers of Ajv's generated validators (the ingredient catalogue
+      # passes through them); the notice of the built-in data (catalogue,
+      # classics and notes: USDA and Wikidata CC0, the named sources).
+      - install -Dm644 LICENSE -t ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/culina
+      - install -Dm644 noble-ciphers-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-ciphers/LICENSE
+      - install -Dm644 noble-hashes-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-hashes/LICENSE
+      - install -Dm644 ajv-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/ajv/LICENSE
+      - install -Dm644 fast-deep-equal-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/fast-deep-equal/LICENSE
+      - install -Dm644 culina-data-NOTICE.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/culina-data/NOTICE
+    sources:
+      # The pre-built bundle (CI downloads it into dist/ first).
+      - type: file
+        path: dist/de.nexumia.Culina.js
+      - type: file
+        path: data/de.nexumia.Culina.in
+      - type: file
+        path: data/de.nexumia.Culina.desktop
+      - type: file
+        path: data/de.nexumia.Culina.metainfo.xml
+      # The web app's icon, as it is.
+      - type: file
+        path: ../app/src/assets/icon.svg
+        dest-filename: de.nexumia.Culina.svg
+      - type: file
+        path: data/de.nexumia.Culina-symbolic.svg
+      - type: file
+        path: ../../../../LICENSE
+      # The libraries' licences are kept once, with the shared package.
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-ciphers-MIT.txt
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-hashes-MIT.txt
+      - type: file
+        path: ../../../../packages/gjs/licenses/ajv-MIT.txt
+      - type: file
+        path: ../../../../packages/gjs/licenses/fast-deep-equal-MIT.txt
+      - type: file
+        path: data/licenses/culina-data-NOTICE.txt

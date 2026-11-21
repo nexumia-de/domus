@@ -9,7 +9,9 @@ tasting notes. Visible name:
 of this repository: [docs/index.md](docs/index.md).
 
 Culina is a web app (PWA) that is also installed on Android and Linux,
-not a GTK app; the GTK rules do not apply. Its sister app for drinks,
+not a GTK app; the GTK rules do not apply. The exception is its native
+Linux app (`packages/linux`, [docs](docs/native-linux.md)), a GTK app with
+its own `AGENTS.md`. Its sister app for drinks,
 [Mixtura](../mixtura), is built first
 ([decision](docs/decisions/after-mixtura.md)). The rules of the
 [root](../../AGENTS.md) apply too.

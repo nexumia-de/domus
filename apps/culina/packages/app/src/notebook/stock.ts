@@ -15,7 +15,8 @@ import {
   type StockUndo,
   type SyncRecord,
 } from '../shared-stock/edits';
-import { itemsOf, type Detail } from '../shared-stock/value';
+import { itemsFromRecords } from '../shared-stock/items';
+import type { Detail } from '../shared-stock/value';
 import { fail, type Result } from '../store/types';
 import type { StockRecord } from '../records';
 import { appLang } from '../shared/locale';
@@ -42,11 +43,7 @@ export const resolveStockKey = (key: string): ComponentRef | undefined => {
 };
 
 const itemsOfRecords = (records: readonly SyncRecord[]): StockRecord[] =>
-  records.flatMap((record) => {
-    if (record.deleted === true) return [];
-    const ref = resolveStockKey(record.key);
-    return ref === undefined ? [] : itemsOf(record.key, ref, record.value);
-  });
+  itemsFromRecords(records, resolveStockKey);
 
 /** How many records Culina shows (live, present, known); what the choice of space weighs. */
 export const shownCount = (records: readonly SyncRecord[]): number =>

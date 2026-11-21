@@ -26,6 +26,19 @@ Licence read from `LICENSE` and `package.json` in
 `node_modules/@nexumia-de/materia`. Its tag is raised by hand (the owner
 sets tags in materia); Dependabot does not follow git tags of this form.
 
+## Native Linux app
+
+`packages/linux` (`@culina/linux`) adds no dependency of its own. Its
+bundle contains what the web app uses (the engine, materia, hospes, Ajv's
+two helpers) and what the other native apps bundle:
+`@noble/ciphers` and `@noble/hashes` 2.4.0 (MIT, through
+`@nexumia-de/gjs`, [dependencies](../../../packages/gjs/docs/dependencies.md)).
+It runs on GJS, GTK 4, libadwaita and libsoup 3 of the GNOME runtime
+(LGPL), which it uses and does not ship. The data compiled into the bundle
+is the one listed under Data below; its notice is installed as
+`/app/share/licenses/de.nexumia.Culina/culina-data/NOTICE`
+([native app](native-linux.md#packaging)).
+
 ## Development only
 
 | Package             | Version | Licence    | Use                                                                                                     |
