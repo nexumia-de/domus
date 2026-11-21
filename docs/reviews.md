@@ -143,6 +143,51 @@ site "e2e passed", Mixtura's `spaces`, `stock` and `two-tabs` at
 - That the Flatpak job's pinned `actions/download-artifact` commit is
   the release its comment names.
 
+## 2026-11-20: swapping a filling and the random pick in Culina
+
+A slot of a dish can be swapped for another component of its role, and
+a dish can be put together at random, one component per role
+([behaviour](../apps/culina/docs/behaviour.md#dishes)).
+
+| Part                                                                                                                                                    | Done by                | Checked by                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Candidates by role, the swap, the pick (pure, random numbers passed in), the session of swaps, the two screens, texts, 14 unit tests, 45 browser checks | agent, general purpose | lead read `alternatives.ts`, `pick.ts`, `session.ts` and the change to the dish editor; ran `npm run check:culina` and the browser checks on the commit brought onto main; looked at both screens at 360 px (below) |
+| The dish editor: a slot added there takes the usual role of the component picked for it                                                                 | agent, general purpose | lead read the change and checked that the picker hands out the id the lookup uses; no unit test, the browser check asserts the roles                                                                                |
+| The layout fix and the measurement below, this entry                                                                                                    | lead                   | the browser check, run without the fix (fails) and with it (passes); no second reader                                                                                                                               |
+
+**Found by the checks and fixed in the app**
+
+- By the agent's browser check: the dish editor gave a slot added with
+  "Add a slot" the first open role whatever was picked for it, so a mash
+  picked second was stored as a sauce and had no alternatives. Fixed in
+  `dish-editor.ts`.
+- By the lead looking at the screen: at 360 px the Swap button stood
+  beside the name of the filling, not under it, and widened the first
+  column until the amounts beside it broke between number and unit
+  ("300" above "g"). No check of the agent saw it: `brokenWords` only
+  sees a word that is split. Fixed in `notebook.css` (the button on a
+  line of its own; an amount in a table cell does not wrap), and a new
+  measurement `wrappedTexts` in `e2e/measure.mjs` is used by
+  `e2e/dish-swap.mjs` ("every amount of a slot stays on one line").
+  Run without the fix it fails with "300 g | 400 g" at both places it
+  is used; with the fix it passes. In the run without the fix a third
+  check failed too ("back on the dish the swap is still there") and
+  passed with it; why the layout decides that one was not looked into.
+- Two things the lead suspected in the agent's code and checked in the
+  code, both fine: the candidates take the first record of a component
+  family they meet (the notebook answers every version id with the
+  current version), and the editor looks the role up by the family id
+  (the picker hands out that id).
+
+**Counts.** Culina's engine 1093 tests, its app 499. Browser checks
+1587, ended with "e2e passed"; 45 are the agent's, 2 the lead's.
+
+**Not verified.** That picks are even over many rolls: the checks assert
+only what holds for any random number. The German texts in a browser,
+desktop width, a real phone, a screen reader on the row of
+alternatives. The agent's unit tests use a notebook built in memory and
+a stock given as a list of ids.
+
 ## 2026-11-20: the steps of Culina's shipped dishes on the kit
 
 Every step of the 48 shipped dishes names what is done, by a technique

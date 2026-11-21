@@ -45,3 +45,21 @@ export const smallTargets = (page) =>
       .filter(({ r }) => r.width < 44 || r.height < 44)
       .map(({ n, r }) => `${n.tagName}.${n.className} ${r.width}x${r.height}`),
   );
+
+/**
+ * The texts of the elements whose text runs over more than one line: an amount such as "300 g"
+ * that breaks between number and unit. `brokenWords` does not see this, since no word is split.
+ */
+export const wrappedTexts = (page, selector) =>
+  page.evaluate((sel) => {
+    const out = [];
+    for (const node of document.querySelectorAll(sel)) {
+      const text = node.textContent.trim();
+      if (text === '') continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const lines = new Set([...range.getClientRects()].map((r) => Math.round(r.top)));
+      if (lines.size > 1) out.push(text);
+    }
+    return out;
+  }, selector);

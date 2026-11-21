@@ -1,5 +1,7 @@
 // The Dishes screen: the list, and the detail of one dish beside it or as its own screen.
 import { getDish, listDishes, notebook } from '../notebook';
+import { hashFor } from '../router';
+import { el } from '../shell/el';
 import { strings } from '../strings';
 import { notebookExtras } from './notebook-extras';
 import { dishDetail } from './dish-detail';
@@ -8,6 +10,15 @@ import { notebookScreen } from './notebook-screen';
 
 /** The search text survives navigation between the list and the details. */
 const state: ListState = { query: '' };
+
+/** The list's actions: a new dish, and a dish put together by chance (not while the store is closed). */
+const extras = (): ReturnType<typeof notebookExtras> => {
+  const base = notebookExtras('dishes');
+  if (base.actions.length === 0) return base;
+  const random = el('a', 'btn quiet random-link', strings.dishes.pickLink);
+  random.href = hashFor('dishes', undefined, 'random');
+  return { ...base, actions: [...base.actions, random] };
+};
 
 export const dishesScreen = (param?: string): HTMLElement =>
   notebookScreen(
@@ -34,7 +45,7 @@ export const dishesScreen = (param?: string): HTMLElement =>
       },
       unknown: strings.dishes.unknown,
       chooseOne: strings.dishes.chooseOne,
-      extras: notebookExtras('dishes'),
+      extras: extras(),
     },
     param,
   );

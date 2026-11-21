@@ -9,6 +9,7 @@ import { cookComponentScreen, cookDishScreen } from './component-cook';
 import { componentsScreen } from './components';
 import { cookScreen } from './cook/cook-screen';
 import { useUpScreen } from './cook/use-up';
+import { randomDishScreen } from './dish-random';
 import { dishesScreen } from './dishes';
 import { componentEditor } from './editor/component-editor';
 import { dishEditor } from './editor/dish-editor';
@@ -39,6 +40,7 @@ export const renderScreen = (route: Route, param?: string, action?: Action): HTM
   if (action === 'cook' && route === 'classic') return cookClassicScreen(param);
   if (action === 'cook' && route === 'components') return cookComponentScreen(param);
   if (action === 'cook' && route === 'dishes') return cookDishScreen(param);
+  if (action === 'random' && route === 'dishes') return randomDishScreen();
   if (action === 'import' && route === 'settings') return importScreen();
   if (route === 'cook' && action === 'with') return cookScreen(param);
   if (route === 'stock' && action === 'add') return stockAddScreen();

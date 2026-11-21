@@ -29,7 +29,7 @@ Mixtura[^mixtura].
 | -------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Start    | `#/start`                                                                                                                    | What do you want to cook: the classics by country and the way into every tool ([below](#classics)); the start screen                                                                                            | `src/screens/classics/`                              |
 | Ratios   | `#/ratios`, `#/ratios/<id>`                                                                                                  | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                           | `src/screens/ratios.ts`                              |
-| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`                                                             | Two parts, Components and Dishes: the lists and the screens of one entry ([components](#components), [dishes](#dishes))                                                                                         | `src/screens/components.ts`, `src/screens/dishes.ts` |
+| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`, `#/dishes/random`                                          | Two parts, Components and Dishes: the lists and the screens of one entry ([components](#components), [dishes](#dishes))                                                                                         | `src/screens/components.ts`, `src/screens/dishes.ts` |
 | Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics by country with their dishes and cooking step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`         |
 | Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                                                                | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                         | `src/screens/stock/`                                 |
 | Settings | `#/settings` (the gear in the header)                                                                                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                             | `src/screens/settings.ts`                            |
@@ -288,6 +288,71 @@ a component ([components](#components)) for the whole dish
 **Test:** `test/dish-cook.test.ts`, `test/router.test.ts`,
 `e2e/dish-cook.mjs`. Not proved: looked at in Chromium at 360 px in English
 only; the unit tests build the notebook in memory.
+
+**Alternatives and the random pick (since 2026-11-20).** A dish is put
+together from components, and a component names the role it usually fills
+(`role`). Both features read that and store no list of their own
+(`src/dishes/alternatives.ts`, `pick.ts`, `session.ts`).
+
+- **Alternatives of a slot.** The components of the notebook, in their
+  current version, whose `role` is the role of the slot, other than the
+  one that fills it. The role is the slot's, not the filling's. A slot
+  filled by an ingredient has none, and a component without a role is
+  nobody's alternative.
+- **Swap.** On the current version of a dish a slot with alternatives has
+  **Swap** under its filling; it opens a row with one button per
+  alternative. Choosing one changes the filling for now: the slot keeps
+  its role, its amount per portion and its key, so the totals, the list of
+  what goes in, the assembly lines and the cook screen follow. The slot
+  says "swapped for now", and under the table stands "Swapped for now.
+  Nothing is stored." with two buttons. **Back to the stored fillings**
+  drops every swap of the dish. **Keep as my version** stores the dish as
+  shown as the next version of its family, by the rule of the editor's
+  Save (`asNextVersion`), with the change named ("Rice in place of Mash"),
+  and opens that version. An older version of a dish has no Swap.
+- **How the swap reaches the cook screen.** The swaps are kept in memory
+  per dish version and slot (`src/dishes/session.ts`, as
+  `src/classics/session.ts` keeps the step). The dish screen writes them;
+  `#/dishes/<id>/cook` reads them and cooks the stored dish with those
+  fillings (`withSwaps`). They last until the page is loaded again, until
+  they are dropped or kept; the address does not carry them, so a link to
+  the cook screen opened elsewhere cooks the stored dish. A swap sets the
+  step of the cook screen back to the first.
+- **Random pick**, `#/dishes/random`, reached by "Put a dish together at
+  random" beside "Add a dish" (`src/screens/dish-random.ts`). The cook
+  ticks the roles wanted (main element, sauce and starch are ticked at
+  first), may tick "Only what is ready in stock", and presses **Roll**:
+  one component per ticked role, by chance, each candidate of a role with
+  the same share. A component counts as in stock when a stock item of it
+  exists, whatever its amount or date, as on the cook screen. A role with
+  more than one candidate has **Roll again**, which gives another
+  component of that role and leaves the other roles. A role without a
+  candidate says so in the quiet text colour ("No component of yours has
+  this role yet.", "Nothing with this role is in stock."). The screen says
+  in one line what the pick does not know: "The pick is random within each
+  role. It does not know what goes together." **Make it a dish** opens the
+  dish editor with one slot per picked component (role and filling; name
+  and amounts are still to be given), the way a ratio hands its amounts to
+  the component editor (`src/editor/prefill.ts`); nothing is stored until
+  the dish is saved there. The ticks and the last pick are kept in memory
+  while the app is open.
+- **The pick is a pure function.** `roll` and `rollRole` take the roles,
+  the candidates, the stock question and the random numbers as arguments;
+  the screen passes `Math.random`. The engine stays without randomness.
+- **In the dish editor**, a slot added with "Add a slot" takes the usual
+  role of the component picked for it, as long as nobody chose the slot's
+  role by hand; before, it kept the first open role, so a mash picked into
+  a new slot stood there as a sauce and had the sauces as alternatives.
+
+**Test:** `test/dish-swap-pick.test.ts` (candidates, alternatives, the
+swapped dish as shown and as cooked, the session, the next version, the
+pick with fixed numbers, only from stock, an empty role, rolling again,
+the prefill), `test/router.test.ts`, `e2e/dish-swap.mjs`. Not proved: the
+unit tests build the notebook in memory, give the stock as a list of ids
+and never call `Math.random`; the browser check runs in Chromium at
+360 px in English only, and there the pick is by chance, so it checks
+only what holds for every number. No test shows that the shares are equal
+over many rolls with `Math.random`, and no real phone was used.
 
 **Role slots.** Slots appear in stored order: the role label (main element,
 sauce, crunch, acid, garnish, starch), the filling (a component is a link,
