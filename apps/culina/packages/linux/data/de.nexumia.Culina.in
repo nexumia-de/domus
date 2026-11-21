@@ -1,0 +1,2 @@
+#!/bin/sh
+exec gjs -m /app/share/de.nexumia.Culina/de.nexumia.Culina.js "$@"
