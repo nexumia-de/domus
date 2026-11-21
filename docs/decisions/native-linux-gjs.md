@@ -84,7 +84,8 @@ ways were put to the owner with what each costs:
   runs and requires REUSE files.
 - **Every native app is published in the shared Flatpak repository**
   (owner, 2026-11-21). Each releases on its own with a tag
-  `<app>-v<version>` (Emptio: `emptio-v0.1.0`); phosh-apps lists it as
+  `<app>-v<version>` (Emptio: `emptio-v0.1.0`), made by the release
+  workflow when its release pull request is merged; phosh-apps lists it as
   `suitably/domus <app>-v*` and publishes the newest release of each
   ([Emptio's releases](../../apps/emptio/docs/native-linux.md#releases),
   [Mixtura's](../../apps/mixtura/docs/native-linux.md#releases)). CI has

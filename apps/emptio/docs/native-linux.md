@@ -99,19 +99,20 @@ The version lives only in the metainfo's newest stable `<release>`;
 `build.mjs` reads it for the About dialog. Later releases are prepared by
 the toolkit's `release.py` from `changelog.d/` (`release.toml`); the
 first, 0.1.0, was written by hand because `release.py` needs an existing
-release. A pushed tag `emptio-v<version>` runs CI on that commit, and the
+Releases are automatic ([release workflow](../../../.github/workflows/release.yml),
+the toolkit's reusable `release.yml` with `tag-prefix` from `release.toml`):
+a pull request that changes the native package adds a fragment in
+`changelog.d/` (or gets the label `no-changelog`); on Mondays, or by hand
+(Actions, Release, app emptio), the fragments become a pull request
+"Release emptio-v<version>"; merging it tags `emptio-v<version>`, which
+runs CI on that commit. The
 job `emptio-release` checks the tag against the metainfo and attaches
 both bundles to the GitHub Release of the tag. phosh-apps publishes the
 newest such release to the shared Flatpak repository
 (`flatpak.nexumia.de`, `apps.txt` line `suitably/domus emptio-v*`), where
-the phone installs and updates it. To release, from the repository root:
-
-```sh
-python3 ../phosh-toolkit/scripts/release.py --root apps/emptio/packages/linux prepare
-```
-
-then merge, and push the tag `emptio-v<version>` on the merged commit.
-There is no nightly app (`de.nexumia.Emptio.Devel`) yet: it needs a
+the phone installs and updates it. The tag needs the secret
+`RELEASE_TOKEN` (Contents and Pull requests read/write on this
+repository); without it a tag can still be pushed by hand. There is no nightly app (`de.nexumia.Emptio.Devel`) yet: it needs a
 second app id for the bundle, the desktop file, the metainfo and the
 icons.
 
