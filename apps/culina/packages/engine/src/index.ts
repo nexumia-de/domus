@@ -191,7 +191,7 @@ export type { Choice, Conflict, MergePlan } from './exchange/merge';
 export { remapIngredients } from './exchange/remap';
 export { matchIngredients, nameWords, normaliseName } from './exchange/match';
 export type { Candidate, NameMatch } from './exchange/match';
-export { EXPORT_KINDS } from './exchange/types';
+export { EXPORT_KINDS, KIND_SINCE } from './exchange/types';
 export type {
   ExportContent,
   ExportEnvelope,

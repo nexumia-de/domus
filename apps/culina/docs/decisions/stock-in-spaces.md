@@ -149,7 +149,9 @@ places for one kitchen's stock would drift apart.
   [exchange](../exchange.md#the-export-file)). Stock is not Culina's
   data: a replace import would delete what another app or person put
   into the space. A version 1 file is still read; its stock is left out
-  and the import preview says how many items.
+  and the import preview says how many items. Since 2026-11-21 (format 3, with the skill state) Settings says under "Your data" that the stock
+  is not in the file, and "Erase everything on this device" leaves it; what a stock backup would
+  take is written down in [exchange](../exchange.md#versions).
 
 ### How the two catalogues meet
 

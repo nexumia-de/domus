@@ -302,7 +302,12 @@ export const appStringsDe: typeof appStrings = {
     examplesAdded: 'Beispieleinträge wurden deinem Notizbuch hinzugefügt.',
     dataHeading: 'Deine Daten',
     dataHint:
-      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast. Nichts wird irgendwohin gesendet.',
+      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast, und deine als gelernt markierten Fertigkeiten.',
+    notInFileStock: (space: string | undefined): string =>
+      space === undefined
+        ? 'Nicht in der Datei: der Vorrat, gehalten in einem Space mit den anderen Apps des Haushalts.'
+        : `Nicht in der Datei: der Vorrat von „${space}“, gehalten mit den anderen Apps des Haushalts.`,
+    notInFileOther: 'Auch nicht: nicht gespeicherte Entwürfe und die Einstellungen dieses Geräts.',
     exportButton: 'Alles exportieren',
     exportNothing: 'Es gibt noch nichts zu exportieren.',
     exportedNote: 'Die Datei wurde zum Speichern an deinen Browser übergeben.',
@@ -314,6 +319,24 @@ export const appStringsDe: typeof appStrings = {
     reminderDays: (days: number): string => `Nach ${days} Tagen mit Änderungen`,
     reminderNotSaved:
       'Die Auswahl ließ sich auf diesem Gerät nicht speichern. Sie gilt, bis die App geschlossen wird.',
+    eraseButton: 'Alles auf diesem Gerät löschen',
+    eraseHint:
+      'Entfernt dein Notizbuch, die markierten Fertigkeiten, Entwürfe und die Einstellungen dieser App von diesem Gerät.',
+    eraseUndo:
+      'Das lässt sich nicht rückgängig machen: Exportiere zuerst, um eine Kopie zu behalten.',
+    eraseAsk: (what: string): string => `Von diesem Gerät löschen: ${what}?`,
+    eraseDrafts: (n: number): string =>
+      n === 1 ? '1 nicht gespeicherter Entwurf' : `${n} nicht gespeicherte Entwürfe`,
+    erasePrefs: 'die Einstellungen dieser App (Darstellung, Sprache, Filter, Erinnerung)',
+    eraseNothing: 'Von dieser App ist auf diesem Gerät nichts zu löschen.',
+    eraseStockStays: (space: string): string =>
+      `Der Vorrat von „${space}“ bleibt: Er wird mit den anderen Apps des Haushalts geteilt.`,
+    eraseStockWhere:
+      'Um ihn von diesem Gerät zu entfernen, entferne den Space in der App Haushalt.',
+    eraseHousehold: 'Den Space in der App Haushalt öffnen',
+    eraseExportFirst: 'Zuerst exportieren',
+    eraseConfirm: 'Alles löschen',
+    eraseCancel: 'Abbrechen',
   },
   // The reminder banner: quiet, never a dialog.
   backup: {
@@ -588,7 +611,10 @@ export const appStringsDe: typeof appStrings = {
       dishes: 'Gerichteversionen',
       affinities: 'Kombinationen',
       tastings: 'Verkostungsnotizen',
+      skills: 'Lernmarkierungen',
     },
+    skillsNotInFile:
+      'Die Datei ist älter und enthält keine Lernmarkierungen; die hier als gelernt markierten Fertigkeiten bleiben.',
     modeLegend: 'Wie übernehmen',
     modeMerge: 'Mit dem Vorhandenen zusammenführen',
     modeMergeHint:

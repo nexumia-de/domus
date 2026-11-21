@@ -59,6 +59,7 @@ How the app uses them: [behaviour](behaviour.md#export-and-import).
 | ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1       | issue 18   | The first file                                                                                                                                                                   |
 | 2       | 2026-11-20 | No `stock`: it is the shared collection of a space ([stock in spaces](decisions/stock-in-spaces.md)). The migration 1 to 2 leaves it out; `stockLeftOut` counts what it left out |
+| 3       | 2026-11-21 | `skills`: the [skill state](data-model.md#skill-state) (techniques marked as learned, marks taken back). The migration 2 to 3 changes nothing                                    |
 
 A file of version 1 is read through the chain. `parseExport` counts the
 items of its `stock` before the chain runs and returns the number as
@@ -66,6 +67,46 @@ items of its `stock` before the chain runs and returns the number as
 chain); the import preview says that they are left out. A version 2 file
 that holds `stock` is refused (`unknown-field`). Vectors:
 `parse-leaves-out-the-stock-of-version-1`, `parse-refuses-stock-in-version-2`.
+
+Version 3 adds the collection `skills` (2026-11-21, after a tester exported,
+deleted the browser's data, imported and found the technique he had marked as
+learned taught again). A kind belongs to the file from the version in
+`KIND_SINCE` on: a version 2 file that holds `skills` is refused
+(`unknown-field`), because the format decided that within one version the
+fields are closed. `parseExport` returns the version the file was written in
+as `fileVersion`, so the host knows that an older file could not hold the skill
+state (the import says so, and "replace everything" leaves it as it is). An app
+that reads up to version 2 refuses a version 3 file as `newer-version` with
+"update the app", before it looks at the skills: that is the rule older apps
+already follow (the vector `parse-refuses-newer-version` of version 2 was
+exactly a version 3 file). Skill records are not immutable: a mark that
+differs from the notebook's is a conflict the user decides, never "newer
+wins". Vectors: `parse-reads-version-2-without-skills`,
+`parse-reads-skills-of-version-3`, `parse-refuses-skills-in-version-2`,
+`parse-an-older-reader-refuses-version-3` (the old reader simulated with the
+`current: 2` test hook), and `round-trip-everything` with two skill records.
+
+**What the file does not hold, and why.** The stock of a space (the shared
+collection of the household's apps; a replace import would delete what
+another app or person put there, and its ids, its space, its removal markers
+and the newest-wins merge of the other apps' writes have no place in a merge by
+id that asks the user: see below); drafts (unfinished forms); and this
+device's preferences (theme, language, filters, the reminder, the choice of
+space). Settings says so under "Your data".
+
+**What a stock backup would take** (not built): the export is per space, so a
+file names the space id and its name; the records are the space's sync records
+with their stamps and removal markers, not Culina's view of them (records of
+Mixtura and keys Culina does not show included, or another app's data is lost
+on restore); an import never replaces: it merges by the host's
+newest-stamp rule through `localChange`, so another device's later mark wins
+and a restore cannot resurrect what the household removed since; importing into
+another space or onto a device that has not joined the space needs a decision
+(a new device-only space, or refuse); and each of these orderings (a restore
+during a cycle, a restore of an older file over newer marks, two tabs) gets a
+row in [sync orderings](../../../packages/host/docs/sync-orderings.md) with
+its test. The decision record says the Household app exports a space; that is
+where it belongs, since it holds the spaces of every app.
 
 ## Merging
 

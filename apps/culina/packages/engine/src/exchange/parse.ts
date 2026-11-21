@@ -4,6 +4,7 @@
 import { EXPORT_FORMAT, EXPORT_VERSION } from './build';
 import {
   EXPORT_KINDS,
+  KIND_SINCE,
   type ExportError,
   type ExportKind,
   type ExportMigration,
@@ -30,6 +31,8 @@ export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [
       return out;
     },
   },
+  // 2 -> 3 adds the collection `skills`; a file of version 2 has none, so nothing changes.
+  { from: 2, to: 3, migrate: (file) => file },
 ];
 
 export interface ParseOptions {
@@ -113,9 +116,11 @@ export function parseExport(
   if ('error' in done) return done;
   const { file } = done;
 
+  // A kind the file's own version did not have is a field it cannot hold (skills in version 2).
+  const heldBy = (field: string): boolean =>
+    EXPORT_KINDS.some((k) => k === field && (KIND_SINCE[k] ?? 1) <= version);
   for (const field of Object.keys(file)) {
-    const known =
-      HEADER_FIELDS.has(field) || field.startsWith('x-') || EXPORT_KINDS.some((k) => k === field);
+    const known = HEADER_FIELDS.has(field) || field.startsWith('x-') || heldBy(field);
     if (!known) return fail({ code: 'unknown-field', field });
   }
   const { seedVersion, exportedAt } = file;
@@ -150,6 +155,7 @@ export function parseExport(
     ok: true,
     content: {
       formatVersion: current,
+      fileVersion: version,
       ...(typeof seedVersion === 'string' ? { seedVersion } : {}),
       ...(typeof exportedAt === 'string' ? { exportedAt } : {}),
       records,

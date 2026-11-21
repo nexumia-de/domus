@@ -1,11 +1,19 @@
 // The summary of a file's content: counts per kind, and a readable label for a record.
-import { EXPORT_KINDS } from '@culina/engine';
+import { EXPORT_KINDS, pickText } from '@culina/engine';
+import { techniques } from '../../classics/content';
+import { currentLang } from '../../classics/lang';
 import type { ExportKind, ExportRecord, FullRecordSets } from '@culina/engine';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 export const recordLabel = (kind: ExportKind, record: ExportRecord): string => {
   if (kind === 'tastings') return `${String(record.date)} ${String(record.text).slice(0, 40)}`;
+  if (kind === 'skills') {
+    const technique = techniques().find((t) => t.id === record.technique);
+    return technique === undefined
+      ? String(record.technique)
+      : pickText(technique.name, currentLang());
+  }
   const name = record.name;
   return typeof name === 'string' && name !== '' ? name : record.id;
 };
@@ -19,8 +27,11 @@ export const summaryList = (records: FullRecordSets): HTMLElement => {
   return list;
 };
 
-export const total = (records: FullRecordSets): number =>
-  EXPORT_KINDS.reduce((n, kind) => n + records[kind].length, 0);
+/** The number of records, of every kind or of the kinds given. */
+export const total = (
+  records: FullRecordSets,
+  kinds: readonly ExportKind[] = EXPORT_KINDS,
+): number => kinds.reduce((n, kind) => n + records[kind].length, 0);
 
 /** The stored lists as a full set (every kind present). */
 export const fullSets = (

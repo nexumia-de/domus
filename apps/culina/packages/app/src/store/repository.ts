@@ -2,7 +2,7 @@
 import { nextUpdatedAt } from './clock';
 import { bulkStore, type Bulk } from './bulk';
 import { draftStore, type Drafts } from './drafts';
-import { failed, readKind, run } from './idb';
+import { ALL_STORES, failed, readKind, run } from './idb';
 import { storeLog, toId } from './log';
 import { schemaIssues } from './validate';
 import { fail, type Kind, type Result, type Row, type StoredRecord } from './types';
@@ -27,6 +27,13 @@ export interface Store extends ReadStore {
    * the shared collection of a space (src/shared-stock/legacy.ts).
    */
   clearKind(kind: 'stock'): Promise<Result>;
+  /**
+   * "Erase everything on this device": deletes every row of every kind, tombstones included, every
+   * draft and the migration backup, in one transaction; `meta` (the schema version) stays, so the
+   * database is as a first start leaves it. No tombstone is written: nothing of the notebook is
+   * synced (docs/behaviour.md, Erase everything on this device).
+   */
+  eraseAll(): Promise<Result>;
   readonly schemaVersion: number;
   /** Unfinished forms: their own object store, not validated, not exported or synced. */
   readonly drafts: Drafts;
@@ -127,6 +134,19 @@ export const readWriteStore = (
         return () => undefined;
       });
       storeLog('clear', { kind });
+      return { ok: true };
+    } catch (error) {
+      return failed(error);
+    }
+  },
+  async eraseAll() {
+    const names = ALL_STORES.filter((name) => name !== 'meta');
+    try {
+      await run(db, names, 'readwrite', (tx) => {
+        for (const name of names) tx.objectStore(name).clear();
+        return () => undefined;
+      });
+      storeLog('erase', { count: names.length });
       return { ok: true };
     } catch (error) {
       return failed(error);
