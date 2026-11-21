@@ -8,7 +8,8 @@ import { CLASSICS } from '../src/classics/index';
 import { belowOf, classesOf, conversionOf } from '../src/characters/classes';
 import { factsOfClassic } from '../src/characters/classic';
 import { factsOfDish } from '../src/characters/dish';
-import { CHARACTER_TABLE } from '../src/characters/table';
+import { CHARACTER_TABLE, MEAT_AND_FISH } from '../src/characters/table';
+import { entryOfDish } from '../src/browse/entry';
 import { characterChips, characterIds } from '../src/characters/view';
 import type { ComponentRecord, DishRecord, IngredientRecord, Notebook } from '../src/records';
 
@@ -282,5 +283,118 @@ describe('chips', () => {
       label: 'Tomatig',
     });
     expect(characterChips(['tomatoey'], 'en')[0]?.basis).toContain('Judgement');
+  });
+});
+
+describe('tomato products', () => {
+  test('canned tomato sauce or paste counts as tomato: gnocchi with tomato sauce, stracotto', () => {
+    expect(of('gnocchi-di-patate')).toContain('tomatoey');
+    expect(of('stracotto-di-vitella')).toContain('tomatoey');
+    // Control: no tomato, no tomatoey.
+    expect(of('risotto-alla-milanese')).not.toContain('tomatoey');
+  });
+});
+
+// Without meat and fish on a dish of the notebook (review of 2026-11-21): when in doubt the
+// answer is "not known", which the filter leaves out, never "meat-free".
+describe('without meat and fish, a dish of the notebook', () => {
+  const TOMATO_ = 'fdc-170457';
+  const BEEF = 'fdc-174036';
+  const g = (value: number) => ({ value, unit: 'g' as const });
+  const ing = (id: string, grams?: number) => ({
+    role: 'main',
+    ref: { kind: 'ingredient' as const, id },
+    ...(grams === undefined ? {} : { amount: g(grams) }),
+  });
+  const compSlot = (id: string, grams?: number) => ({
+    role: 'main',
+    ref: { kind: 'component' as const, id },
+    ...(grams === undefined ? {} : { amount: g(grams) }),
+  });
+  const component = (
+    id: string,
+    lines: ComponentRecord['lines'],
+    yieldG?: number,
+  ): ComponentRecord => ({
+    id,
+    name: id,
+    lines,
+    version,
+    ...(yieldG === undefined ? {} : { yield: { amount: g(yieldG), source: 'user' } }),
+  });
+  const book = (components: ComponentRecord[]): Notebook => ({
+    components,
+    facts: {},
+    ingredientName: (id) => id,
+    ingredientYields: () => undefined,
+  });
+  const entry = (components: ComponentRecord[], slots: DishRecord['slots']) =>
+    entryOfDish(book(components), { id: 'd', name: 'D', slots, version }, lookup, below);
+  const ragu = component('ragu', [ing(BEEF, 300)], 300);
+  const pastaRagu = component('pasta-ragu', [ing(PASTA, 400), compSlot('ragu')], 700);
+
+  test('lard (filed under Fats and Oils) is not meat-free', () => {
+    expect(entry([], [ing(TOMATO_, 200), ing('fdc-171401', 20)]).meatFree).toBe(false);
+  });
+
+  test('chicken fat, fish oil, bacon grease: not meat-free; a line of "fat" is the animal-fat group', () => {
+    for (const id of ['fdc-173564', 'fdc-173577', 'fdc-172345', 'fdc-group-fat']) {
+      expect(entry([], [ing(TOMATO_, 200), ing(id, 20)]).meatFree, id).toBe(false);
+    }
+  });
+
+  test('a group of which some food is animal fat (shortening) is not known either way', () => {
+    expect(
+      entry([], [ing(TOMATO_, 200), ing('fdc-group-shortening-household', 20)]).meatFree,
+    ).toBeUndefined();
+  });
+
+  test('beef in a component nested without amount, the slot with an amount: with meat', () => {
+    const e = entry([ragu, pastaRagu], [compSlot('pasta-ragu', 350)]);
+    expect(e.characters).toContain('with-meat');
+    expect(e.meatFree).toBe(false);
+  });
+
+  test('control: the same slot without an amount was with meat before and after', () => {
+    expect(entry([ragu, pastaRagu], [compSlot('pasta-ragu')]).meatFree).toBe(false);
+  });
+
+  test('a slot whose component is gone, or empty, makes the answer not known', () => {
+    expect(entry([], [ing(TOMATO_, 200), compSlot('gone', 100)]).meatFree).toBeUndefined();
+    expect(
+      entry([component('empty', [])], [ing(TOMATO_, 200), compSlot('empty')]).meatFree,
+    ).toBeUndefined();
+  });
+
+  test('butter and peas (groups without a category of their own) are known by their foods', () => {
+    expect(entry([], [ing('fdc-group-peas', 200), ing('fdc-group-butter', 20)]).meatFree).toBe(
+      true,
+    );
+  });
+
+  test('controls: tomato and olive oil are meat-free; a dish without slots is not known', () => {
+    expect(entry([], [ing(TOMATO_, 200), ing('fdc-171413', 20)]).meatFree).toBe(true);
+    expect(entry([], []).meatFree).toBeUndefined();
+  });
+
+  test('the list covers every catalogue food of an animal body outside meat and fish', () => {
+    // Read on 2026-11-21: what USDA files outside its meat, poultry and fish categories. A new
+    // entry matching this must be covered by the list (or be added to the plant-based exceptions).
+    const animalName =
+      /\b(lard|tallow|suet|bacon|grease|gelatin|broth|bouillon|anchov|fish|meat extract)\b|^fat, (beef|chicken|turkey|goose|duck|pork|mutton)/i;
+    const plant = new Set(['fdc-170169', 'fdc-170577']); // coconut meat
+    const covered = (id: string) =>
+      classesOf(id, lookup, below).some((c) => MEAT_AND_FISH.classes.includes(c));
+    const missed = file.ingredients
+      .filter((r) => animalName.test(r.name) && !plant.has(r.id) && !covered(r.id))
+      .map((r) => `${r.id} ${r.name}`);
+    expect(missed).toEqual([]);
+  });
+
+  test('the list holds every class of the rules "with meat" and "with fish"', () => {
+    const classes = CHARACTER_TABLE.filter((r) => ['with-meat', 'with-fish'].includes(r.id))
+      .flatMap((r) => r.when)
+      .flatMap((c) => c.ingredients ?? []);
+    expect(classes.filter((c) => !MEAT_AND_FISH.classes.includes(c))).toEqual([]);
   });
 });

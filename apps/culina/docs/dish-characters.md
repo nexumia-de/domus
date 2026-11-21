@@ -196,24 +196,25 @@ The egg groups (`fdc-group-egg-whole`, `-yolk`, `-white`) state no unit
 weight, so "6 eggs" did not convert and eggy, which needs a share, was said
 of no dish; the omelette was only "fried".
 
-| Change                                                                       | General statement                                                                                         | Dishes it changed                                                                                                  | Pins (and controls)                                                                              |
-| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| Mass of a group line ([engine rules](engine-rules.md#characters))            | a group without its own figure takes the one every food below it agrees on; foods that disagree give none | egg lines now weigh 44, 17 or 33 g a piece; eggy now on 8 dishes                                                   | omelette, soufflé, crema cotta, crème caramel, oeufs à la neige (torta, gratin, Frikandelle not) |
-| Fried: batter counts                                                         | a batter is a coat for frying (the technique's source is the chapter on frying)                           | + fritto di finocchi                                                                                               | fritto di finocchi                                                                               |
-| Fried: never a soup or a sauce (`unless` by course)                          | frying in a soup is a first step before the liquid, not what the dish is                                  | − potato soup                                                                                                      | potato soup (tortilla, Eierkuchen stay fried)                                                    |
-| Creamy: milk bound by roux, egg or starch, unless the dish bakes             | the oven sets it (soufflé, cake); browning a gratin is not baking                                         | − Parmesan soufflé                                                                                                 | soufflé (cauliflower with béchamel stays, Napfkuchen not)                                        |
-| Creamy: a cold emulsion of oil bound by egg yolk                             | the yolk is what makes it thick                                                                           | + mayonnaise, alioli                                                                                               | mayonnaise, alioli (gazpacho not: no yolk)                                                       |
-| Creamy: potatoes or rice cooked (baked, boiled, simmered) with milk or cream | their starch binds the milk                                                                               | + gratin dauphinois, baked potatoes with cheese                                                                    | both                                                                                             |
-| Cheesy: cheese in a baked or gratinated dish counts without amounts          | cheese baked into or onto a dish is what one tastes; grated over soup it is not                           | + baked potatoes with cheese, gratin dauphinois, cauliflower with béchamel (soufflé by its share, now known: 0.30) | the first two and soufflé (minestrone, risotto not)                                              |
-| Garlicky: garlic in a dish where no step uses heat counts without amounts    | raw garlic is far stronger than cooked                                                                    | + alioli                                                                                                           | alioli (tomato sauce with one clove not)                                                         |
-| Sweet: sugar, honey or syrup in a dish of the course dessert or baking       | a dessert or a cake with sugar is sweet                                                                   | + 10 desserts and cakes                                                                                            | crème caramel, apples in butter, Napfkuchen (pea soup with 5 g sugar not)                        |
-| Rich: a warm emulsion, or a cold emulsion of oil bound by egg yolk           | an emulsion of fat is mostly fat by what it is                                                            | + both hollandaises, mayonnaise, alioli                                                                            | mayonnaise, hollandaise (gazpacho not)                                                           |
+| Change                                                                       | General statement                                                                                                                                         | Dishes it changed                                                                                                  | Pins (and controls)                                                                              |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Mass of a group line ([engine rules](engine-rules.md#characters))            | a group without its own figure takes the one every food below it agrees on; foods that disagree give none                                                 | egg lines now weigh 44, 17 or 33 g a piece; eggy now on 8 dishes                                                   | omelette, soufflé, crema cotta, crème caramel, oeufs à la neige (torta, gratin, Frikandelle not) |
+| Fried: batter counts                                                         | a batter is a coat for frying (the technique's source is the chapter on frying)                                                                           | + fritto di finocchi                                                                                               | fritto di finocchi                                                                               |
+| Fried: never a soup or a sauce (`unless` by course)                          | frying in a soup is a first step before the liquid, not what the dish is                                                                                  | − potato soup                                                                                                      | potato soup (tortilla, Eierkuchen stay fried)                                                    |
+| Creamy: milk bound by roux, egg or starch, unless the dish bakes             | the oven sets it (soufflé, cake); browning a gratin is not baking                                                                                         | − Parmesan soufflé                                                                                                 | soufflé (cauliflower with béchamel stays, Napfkuchen not)                                        |
+| Creamy: a cold emulsion of oil bound by egg yolk                             | the yolk is what makes it thick                                                                                                                           | + mayonnaise, alioli                                                                                               | mayonnaise, alioli (gazpacho not: no yolk)                                                       |
+| Creamy: potatoes or rice cooked (baked, boiled, simmered) with milk or cream | their starch binds the milk                                                                                                                               | + gratin dauphinois, baked potatoes with cheese                                                                    | both                                                                                             |
+| Cheesy: cheese in a baked or gratinated dish counts without amounts          | cheese baked into or onto a dish is what one tastes; grated over soup it is not                                                                           | + baked potatoes with cheese, gratin dauphinois, cauliflower with béchamel (soufflé by its share, now known: 0.30) | the first two and soufflé (minestrone, risotto not)                                              |
+| Garlicky: garlic in a dish where no step uses heat counts without amounts    | raw garlic is far stronger than cooked                                                                                                                    | + alioli                                                                                                           | alioli (tomato sauce with one clove not)                                                         |
+| Sweet: sugar, honey or syrup in a dish of the course dessert or baking       | a dessert or a cake with sugar is sweet                                                                                                                   | + 10 desserts and cakes                                                                                            | crème caramel, apples in butter, Napfkuchen (pea soup with 5 g sugar not)                        |
+| Rich: a warm emulsion, or a cold emulsion of oil bound by egg yolk           | an emulsion of fat is mostly fat by what it is                                                                                                            | + both hollandaises, mayonnaise, alioli                                                                            | mayonnaise, hollandaise (gazpacho not)                                                           |
+| Tomatoey: canned tomato sauce and paste count as tomato                      | the catalogue now has them (`fdc-group-tomato-products-canned`) and the three Italian dishes link them; paste is concentrated, so its share counts it low | + gnocchi, minestrone, stracotto                                                                                   | gnocchi, stracotto (risotto not)                                                                 |
 
 Counts per character over the 48 dishes:
 
 | Character     | Before | After | Dishes after                                                                                                                                                                                                                                             |
 | ------------- | -----: | ----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| tomatoey      |      3 |     3 | gazpacho, pollo alla contadina, salsa di pomodoro                                                                                                                                                                                                        |
+| tomatoey      |      3 |     6 | gazpacho, gnocchi, minestrone, pollo alla contadina, salsa di pomodoro, stracotto                                                                                                                                                                        |
 | cheesy        |      0 |     4 | baked potatoes with cheese, gratin dauphinois, Parmesan soufflé, cauliflower with béchamel                                                                                                                                                               |
 | eggy          |      0 |     8 | huevos amerengados, crème caramel, oeufs à la neige, omelette, sauce hollandaise, Parmesan soufflé, crema cotta, latte brulé                                                                                                                             |
 | mushroomy     |      1 |     1 | poulet bourguignonne                                                                                                                                                                                                                                     |
@@ -234,7 +235,7 @@ Counts per character over the 48 dishes:
 
 Dishes with no character after: egg noodles, Kartoffelklöße, potato soup,
 arlequín de judías, guisantes, potaje, haricots verts au beurre, potage aux
-pois, gnocchi, minestrone, tagliatelle verdi (11; before: 13).
+pois, tagliatelle verdi (9; before: 13).
 
 **Left as they are, and why.** Each is a judgement of this reading:
 
@@ -249,9 +250,11 @@ pois, gnocchi, minestrone, tagliatelle verdi (11; before: 13).
   because its milk has no amount in the source; the answer is right, the
   number is not the dish's. Sauce hollandaise is eggy at 0.21: an egg-yolk
   sauce, accepted.
-- **Misses the data cannot reach.** Minestrone, stracotto and gnocchi are not
-  tomatoey and minestrone is not "with meat": their tomato sauce, boiled
-  meat, ham and broth are `wanted` lines without a catalogue entry. Milchsuppe
+- **Misses the data cannot reach.** Minestrone is not "with meat": its
+  boiled meat, ham and broth are `wanted` lines without a catalogue entry.
+  (Its tomato sauce now links the canned tomato products, so it is tomatoey
+  by presence: the amount is not given, a doubt for a soup where tomato is
+  one of many.) Milchsuppe
   and sopa de leche are sweet milk soups, but a soup is not a dessert and
   their sugar share is not judged (too few lines measured); a sweet soup rule
   would also catch the pea soup's 5 g.
@@ -271,6 +274,29 @@ pois, gnocchi, minestrone, tagliatelle verdi (11; before: 13).
   (sweet by course, fried not in a soup) do not hold for it; its shares are
   far better founded (amounts by weight). `factsOfDish` reads a course as
   soon as the record has one.
+
+**Without meat and fish on a dish of the notebook** (from a review the
+same day). It was derived from the characters "with meat" and "with fish"
+and said "meat-free" whenever every line had some food category, without
+asking which: a dish of tomato and lard was meat-free, because USDA files
+lard, tallow, bacon grease, poultry fats and the fish oils under Fats and
+Oils. It is now its own judgement (`src/characters/meat-free.ts`), apart
+from the characters (lard does not make a sauce "with meat"), with its own
+list `meatAndFish` in the table: the six meat, poultry and fish categories
+and the animal foods outside them, found by reading every catalogue entry on
+2026-11-21 (fat group, lard, bacon grease, fish oils, two shortenings with
+lard or tallow; no gelatine, broth, extract, anchovy or fish sauce exists).
+A test scans the catalogue by name so a new animal food outside the list
+fails. When in doubt it says "not known", which the filter leaves out: a
+line naming a group with an animal food below it ("shortening"), an
+ingredient nobody knows, a slot whose component is gone or empty. Two
+defects of the facts were fixed with it: a component nested without amount
+in a component whose slot has an amount lost all its ingredients (a pasta
+with a beef ragù was meat-free and had no character), and a gone or empty
+component counted as nothing. A group without a category of its own
+(butter, peas, beans) is now known by its foods, so a dish with butter is
+no longer left out for that. What it cannot know is in
+[behaviour](behaviour.md#one-filter-over-every-dish).
 
 Not verified: any dish of a user, the German names in a browser, whether
 the owner agrees with each judgement above. The egg weights are the

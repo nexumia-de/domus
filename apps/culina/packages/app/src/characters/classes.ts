@@ -9,34 +9,93 @@ export type Lookup = (id: string) => IngredientRecord | undefined;
 /** The tag of a USDA food category among the classes of a line. */
 export const categoryClass = (category: string): string => `category:${category}`;
 
-/** The ingredient's id, its ancestors' ids and the categories found on the way; a loop ends the walk. */
-export const classesOf = (id: string, lookup: Lookup): string[] => {
+/** The foods directly below an ingredient group in the catalogue. */
+export type Below = (id: string) => readonly IngredientRecord[];
+
+const categoryOf = (record: IngredientRecord | undefined): string | undefined =>
+  record?.['x-fdc']?.category ?? record?.['x-group']?.category;
+
+/** Every value stated below an ingredient, the nearest on each branch; a loop ends the walk. */
+const valuesBelow = <T>(
+  id: string,
+  below: Below,
+  valueOf: (r: IngredientRecord) => T | undefined,
+  seen: Set<string> = new Set(),
+): T[] => {
+  if (seen.has(id)) return [];
+  seen.add(id);
+  return below(id).flatMap((child) => {
+    const own = valueOf(child);
+    return own === undefined ? valuesBelow(child.id, below, valueOf, seen) : [own];
+  });
+};
+
+/** The one value every food below an ingredient that states one agrees on; else `undefined`. */
+const agreedBelow = <T>(
+  id: string,
+  below: Below,
+  valueOf: (r: IngredientRecord) => T | undefined,
+): T | undefined => {
+  const values = new Set(valuesBelow(id, below, valueOf));
+  return values.size === 1 ? [...values][0] : undefined;
+};
+
+/**
+ * The ingredient's id, its ancestors' ids and the categories found on the way; a loop ends the
+ * walk. Where no category is found and `below` is given, the category every food below the
+ * ingredient agrees on (the butter and pea groups of the catalogue state none of their own).
+ */
+export const classesOf = (id: string, lookup: Lookup, below?: Below): string[] => {
   const out: string[] = [];
   let current: string | undefined = id;
   while (current !== undefined && !out.includes(current)) {
     out.push(current);
     const record = lookup(current);
-    const category = record?.['x-fdc']?.category ?? record?.['x-group']?.category;
+    const category = categoryOf(record);
     if (category !== undefined && !out.includes(categoryClass(category))) {
       out.push(categoryClass(category));
     }
     current = record?.parentId;
   }
+  if (below !== undefined && !out.some((c) => c.startsWith('category:'))) {
+    const agreed = agreedBelow(id, below, categoryOf);
+    if (agreed !== undefined) out.push(categoryClass(agreed));
+  }
   return out;
 };
 
 /** The line of one ingredient; `g` is absent when its mass is not known. */
-export const lineOf = (id: string, g: number | undefined, lookup: Lookup): CharacterLine => {
+export const lineOf = (
+  id: string,
+  g: number | undefined,
+  lookup: Lookup,
+  below?: Below,
+): CharacterLine => {
   const per100g = lookup(id)?.['x-nutrition']?.per100g;
   return {
-    classes: classesOf(id, lookup),
+    classes: classesOf(id, lookup, below),
     ...(g === undefined ? {} : { g }),
     ...(per100g === undefined ? {} : { fatPer100g: per100g.fatG, kcalPer100g: per100g.kcal }),
   };
 };
 
-/** The foods directly below an ingredient group in the catalogue. */
-export type Below = (id: string) => readonly IngredientRecord[];
+/** Some food at or below the ingredient has one of the classes (by its own classes and above). */
+export const anyBelowIs = (
+  id: string,
+  classes: readonly string[],
+  lookup: Lookup,
+  below: Below,
+): boolean => {
+  const seen = new Set<string>();
+  const visit = (at: string): boolean => {
+    if (seen.has(at)) return false;
+    seen.add(at);
+    return below(at).some(
+      (child) => classesOf(child.id, lookup).some((c) => classes.includes(c)) || visit(child.id),
+    );
+  };
+  return visit(id);
+};
 
 /** The children index of some catalogue entries, as a `Below`. */
 export const belowOf = (entries: Iterable<IngredientRecord>): Below => {
@@ -51,16 +110,6 @@ export const belowOf = (entries: Iterable<IngredientRecord>): Below => {
 };
 
 type ConversionKey = 'densityGPerMl' | 'unitWeightG';
-
-/** Every value of a figure stated below an ingredient, the nearest on each branch; a loop ends the walk. */
-const statedBelow = (id: string, key: ConversionKey, below: Below, seen: Set<string>): number[] => {
-  if (seen.has(id)) return [];
-  seen.add(id);
-  return below(id).flatMap((child) => {
-    const own = child[key]?.value;
-    return own === undefined ? statedBelow(child.id, key, below, seen) : [own];
-  });
-};
 
 /** The figure of the ingredient itself or of the nearest ingredient above it that states one. */
 const statedAbove = (id: string, key: ConversionKey, lookup: Lookup): number | undefined => {
@@ -88,11 +137,7 @@ export const conversionOf = (
 ): { densityGPerMl?: number; unitWeightG?: number } => {
   const out: { densityGPerMl?: number; unitWeightG?: number } = {};
   for (const key of ['densityGPerMl', 'unitWeightG'] as const) {
-    let value = statedAbove(id, key, lookup);
-    if (value === undefined) {
-      const values = new Set(statedBelow(id, key, below, new Set()));
-      if (values.size === 1) value = [...values][0];
-    }
+    const value = statedAbove(id, key, lookup) ?? agreedBelow(id, below, (r) => r[key]?.value);
     if (value !== undefined) out[key] = value;
   }
   return out;

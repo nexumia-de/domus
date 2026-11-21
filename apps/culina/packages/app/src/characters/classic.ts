@@ -31,7 +31,7 @@ export const factsOfClassic = (
     const id = line.ref.id;
     const grams =
       line.amount === undefined ? undefined : toGrams(line.amount, conversionOf(id, lookup, below));
-    lines.push(lineOf(id, grams?.ok === true ? grams.g : undefined, lookup));
+    lines.push(lineOf(id, grams?.ok === true ? grams.g : undefined, lookup, below));
   }
   const steps = (classic.components ?? []).flatMap((c) => c.steps ?? []);
   return {

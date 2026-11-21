@@ -877,9 +877,23 @@ own; the origin is only a choice of the filter.
   characters, whether it is without meat and fish, and whether every line
   has an amount. For a shipped dish "without meat and fish" is the value
   set by hand in its file; for a dish of the notebook it is derived from
-  the characters and only said when the catalogue places every ingredient
-  in a food category, so a dish with an ingredient the user made up is
-  not offered as meat-free.
+  its ingredient lines (`src/characters/meat-free.ts`, the list
+  `meatAndFish` in `data/dish-characters.json`, since 2026-11-21): not
+  meat-free when a line is meat, poultry or fish by its USDA category, or
+  one of the animal foods USDA files under Fats and Oils (lard, tallow,
+  bacon grease, chicken, turkey and goose fat, the fish oils, shortenings
+  made with lard or tallow; a line of plain "fat" is the animal-fat group);
+  meat-free only when every line is known, and otherwise not known, which
+  the filter leaves out. Not known: an ingredient the user made up, a line
+  naming a group with an animal food below it ("shortening"), a slot whose
+  component is gone or empty. A component nested in another counts with
+  all its ingredients, with or without amounts. A group without a category
+  of its own (butter, peas, beans) is known by its foods. **What it cannot
+  know:** an ingredient the catalogue files as a plant or dairy food that
+  holds meat or fish in fact (the catalogue has no stock, gelatine,
+  anchovy or fish sauce today; a user's own "stock" is made up and so not
+  known), and anything outside the lines (a dish cooked in a meat broth
+  that is not a line).
 - **One filter.** `src/browse/filter.ts`: origin, character, course,
   cuisine, "Without meat and fish", "Only with every amount given"; each
   choice only drops entries. It is kept in `localStorage`

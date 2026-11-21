@@ -2,10 +2,12 @@
 // classic. The lists, the finder and the random pick filter these entries by the same rules
 // (./filter.ts). Pure: no DOM; the notebook, the classics and the ingredient lookup come in.
 import { COUNTRY_CODES, COURSE_IDS, deriveClassic, pickText } from '@culina/engine';
-import type { CharacterFacts, Classic, Course, Lang } from '@culina/engine';
-import type { Lookup } from '../characters/classes';
+import type { Classic, Course, Lang } from '@culina/engine';
+import { catalogueBelow } from '../characters/below';
+import type { Below, Lookup } from '../characters/classes';
 import { factsOfClassic } from '../characters/classic';
 import { factsOfDish } from '../characters/dish';
+import { meatFreeOf } from '../characters/meat-free';
 import { characterIds } from '../characters/view';
 import type { DishRecord, Notebook } from '../records';
 
@@ -27,8 +29,9 @@ export interface DishEntry {
   cuisine?: string;
   /**
    * True: without meat and fish. For a shipped dish this is set by hand in its file; for a dish
-   * of the notebook it is derived, and only said when the catalogue places every ingredient line in a
-   * food category. Undefined: not known, and the filter does not keep it.
+   * of the notebook it is derived (`meatFreeOf`): false for a line of meat, fish or another food of
+   * an animal's body; true only when every line is known. Undefined: not known, and the filter
+   * does not keep it.
    */
   meatFree?: boolean;
   /** The ids of its characters, in the order of the table. */
@@ -39,26 +42,21 @@ export interface DishEntry {
 
 export const entryKey = (origin: Origin, id: string): string => `${origin}:${id}`;
 
-/** A line is known when the catalogue places its ingredient in a food category. */
-const isCategory = (c: string): boolean => c.startsWith('category:');
-
-const MEAT_OR_FISH: readonly string[] = ['with-meat', 'with-fish'];
-
-const derivedMeatFree = (
-  facts: CharacterFacts,
-  characters: readonly string[],
-): boolean | undefined => {
-  if (characters.some((c) => MEAT_OR_FISH.includes(c))) return false;
-  if (facts.lines.length === 0 || facts.lines.some((l) => !l.classes.some(isCategory)))
-    return undefined;
-  return true;
-};
-
-/** The entry of a dish of the notebook. */
-export const entryOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): DishEntry => {
-  const facts = factsOfDish(nb, dish, lookup);
+/**
+ * The entry of a dish of the notebook. Without meat and fish is derived (`meatFreeOf`): said only
+ * when every line is known, and never of a line of an animal's body.
+ *
+ * @param below - The foods below a catalogue group; by default those of the loaded catalogue.
+ */
+export const entryOfDish = (
+  nb: Notebook,
+  dish: DishRecord,
+  lookup: Lookup,
+  below: Below = catalogueBelow,
+): DishEntry => {
+  const facts = factsOfDish(nb, dish, lookup, below);
   const characters = characterIds(facts);
-  const meatFree = derivedMeatFree(facts, characters);
+  const meatFree = meatFreeOf(facts, lookup, below);
   return {
     key: entryKey('own', dish.id),
     origin: 'own',
