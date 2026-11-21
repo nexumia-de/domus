@@ -63,7 +63,7 @@ application.connect('activate', () => {
     now,
     newId: () => `e-${crypto.randomUUID()}`,
     prefs,
-    names: { home: t.space.home, unnamed: t.space.unnamed },
+    names: { home: n.preferences.homeSpace, unnamed: n.preferences.unnamedSpace },
     adapter: (storage) => adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline }),
     isOnline,
   });
@@ -82,6 +82,7 @@ application.connect('activate', () => {
   const ui: Ui = {
     app,
     t,
+    n,
     lang,
     prefs,
     now,
@@ -116,7 +117,7 @@ application.connect('activate', () => {
     application.add_action(made);
   };
   action('categories', () => push(categoriesPage(ui)));
-  action('preferences', () => showPreferences(ui, n, store));
+  action('preferences', () => showPreferences(ui, store));
   action('about', () => {
     const about = new Adw.AboutDialog({
       application_name: t.appName,

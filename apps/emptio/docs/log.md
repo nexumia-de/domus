@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (shared texts)
+
+- **Update**: the native app takes the style, spaces, join, sync status and support texts from `@nexumia-de/gjs/texts` and keeps only menu, spaces intro and About comment. Visible changes: sync status words are the shared ones ("In step · …" instead of the web's "Synced …"), and the own-device space is called "This device" instead of "Home", as in the other native apps. Checked: typecheck, 2 tests, smoke and Broadway interaction check in real GJS.
+
 ## 2026-11-21 (frame)
 
 - **Update**: the web app looks like a phone app. Header = place and actions: the title of the page, a back arrow on subpages, Settings and Categories as header icons, no bottom navigation, no repeated headings in the body. The sync status is a small icon in the header (accessible name, tooltip, details by tap) and only an error shows a slim banner with Retry; the status words read "Synced 2 min ago". After adding, a short toast in theme colours with Undo replaces the white bar, and the add field is the only permanent thing at the bottom. New: filter by urgency (Now and Soon by default, Sometime counted and one tap away) and four sorts, kept per device ([behaviour](behaviour.md#filter-and-sort)). Header, sync icon, banner and toast are the host package's shared [frame](../../../packages/host/docs/frame.md). Browser checks adapted to the frame and extended (264 checks); `test/view.test.ts` and `test/small.test.ts` pin the arrangement and the words.

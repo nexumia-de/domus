@@ -144,7 +144,7 @@ export function listPage(ui: Ui, menu: any): Page {
     title.set_subtitle(
       space === undefined
         ? ''
-        : [space.name, statusText(t.status, app.status(space.id), ui.now(), true)]
+        : [space.name, statusText(ui.n.status, app.status(space.id), ui.now(), true)]
             .filter((part) => part !== '')
             .join(' · '),
     );

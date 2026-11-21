@@ -1,3 +1,4 @@
+import type { NativeStrings } from '../strings';
 import type { App, Lang, Prefs, Strings } from '@emptio/app/core';
 
 /** What every page gets. `Gtk` and `Adw` objects are untyped here (packages/gjs/src/gi.d.ts). */
@@ -5,6 +6,8 @@ import type { App, Lang, Prefs, Strings } from '@emptio/app/core';
 export interface Ui {
   app: App;
   t: Strings;
+  /** The native app's own texts and the ones shared with the other native apps. */
+  n: NativeStrings;
   lang: Lang;
   prefs: Prefs;
   now: () => string;

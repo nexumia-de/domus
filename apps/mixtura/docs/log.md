@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (shared texts)
+
+- **Update**: the native app's strings spread `sharedEn` / `sharedDe` from `@nexumia-de/gjs/texts` (style, spaces, join, failure words, sync status, support); the copies are gone, the wording is identical. `about.support` became `support`. Checked: typecheck, 13 tests, smoke and Broadway interaction check in real GJS.
+
 ## 2026-11-21
 
 - **Mixtura's web app on the shared frame** (step 2 of the [shared shell](../../../docs/decisions/shared-shell.md)): one header across the window (page title as the page's only `h1`, back on pushed screens, Share, New Drink, sync icon, Settings) from `@nexumia-de/hospes/frame`; panes are content only. Settings left the bottom bar for the header and is a pushed page. Toasts are the frame's `createToaster` (`say()` in `shell/frame.ts`); removed: `toast.ts`, `toasts.ts`, `shell/toast.ts`, the `.toast` CSS, `toast` in the state, `screens/stock/sync-text.ts` (the shared `statusText` with Mixtura's words). The sync icon shows the worst status of the ticked spaces (`worstStatus`, new in the frame); Retry runs `syncNow`. The update and storage banners stay Mixtura's own (not sync). Browser checks adapted to the new structure (header `h1`, three bar entries, `.fr-toast`) with new checks for the header per page, the sync icon and banner, and the toast with Undo. Toasts last 5 s (8 s with Undo) here, longer than Emptio's. Chromium only; no phone.

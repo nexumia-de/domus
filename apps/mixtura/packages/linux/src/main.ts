@@ -146,7 +146,7 @@ application.connect('activate', () => {
       website: 'https://github.com/suitably/domus',
       issue_url: 'https://github.com/suitably/domus/issues',
     });
-    about.add_link(t.about.support, 'https://liberapay.com/suitably');
+    about.add_link(t.support, 'https://liberapay.com/suitably');
     // The recipes and ingredients are Bar Assistant's public data (MIT): its notice is shown.
     if (model.attribution) {
       about.add_legal_section(t.about.data, null, Gtk.License.CUSTOM, model.attribution.notice);

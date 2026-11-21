@@ -5,18 +5,17 @@ import Gtk from 'gi://Gtk?version=4.0';
 import type { Store } from '@nexumia-de/hospes';
 import { KEYS, THEMES, statusText, themeOf } from '@emptio/app/core';
 import { applyStyle, joinByLink } from '@nexumia-de/gjs';
-import type { NativeStrings } from '../strings';
 import type { Ui } from './context';
 
-export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
-  const { app, t, prefs } = ui;
+export function showPreferences(ui: Ui, store: Store): void {
+  const { app, t, n, prefs } = ui;
   const dialog = new Adw.PreferencesDialog({ title: n.menu.preferences });
   const page = new Adw.PreferencesPage();
 
-  const look = new Adw.PreferencesGroup({ title: n.appearance });
+  const look = new Adw.PreferencesGroup({ title: n.preferences.appearance });
   const style = new Adw.ComboRow({
-    title: n.theme,
-    model: Gtk.StringList.new(THEMES.map((theme) => t.settings.themes[theme])),
+    title: n.preferences.style,
+    model: Gtk.StringList.new(THEMES.map((theme) => n.preferences.styles[theme])),
     selected: THEMES.indexOf(themeOf(prefs.get(KEYS.theme))),
   });
   style.connect('notify::selected', () => {
@@ -28,7 +27,7 @@ export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
   page.add(look);
 
   const spaces = new Adw.PreferencesGroup({
-    title: n.spaces,
+    title: n.preferences.spaces,
     description: n.spacesIntro,
   });
   const state = app.state();
@@ -36,7 +35,7 @@ export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
   for (const space of state.spaces) {
     const line = new Adw.ActionRow({ use_markup: false });
     line.set_title(space.name);
-    line.set_subtitle(statusText(t.status, app.status(space.id), ui.now(), true));
+    line.set_subtitle(statusText(n.status, app.status(space.id), ui.now(), true));
     const choose = new Gtk.CheckButton({
       active: space.id === state.space?.id,
       valign: Gtk.Align.CENTER,
@@ -59,12 +58,12 @@ export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
     void joinByLink(store, link.get_text(), token.get_text()).then(
       (done) => {
         if (!done.ok) return dialog.add_toast(new Adw.Toast({ title: n.join.errors[done.error] }));
-        ui.toast(n.join.joined(done.name ?? t.space.unnamed));
+        ui.toast(n.join.joined(done.name ?? n.preferences.unnamedSpace));
         dialog.close();
         // The joined space is shown, and its loop starts with the next look.
         void app.choose(done.id).then(() => app.wake());
       },
-      () => dialog.add_toast(new Adw.Toast({ title: t.failure.write })),
+      () => dialog.add_toast(new Adw.Toast({ title: n.failure.write })),
     );
   });
   join.add(link);

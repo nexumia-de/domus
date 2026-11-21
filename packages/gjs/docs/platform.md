@@ -53,9 +53,9 @@ data of the checks and for tests; it is a separate entry
 - **`texts.ts`** (entry `@nexumia-de/gjs/texts`, pure): the texts the
   native apps have in common in English and German: the style choice, the
   spaces' headings, joining by link and its errors, the sync status words,
-  the retry and support words. Culina's native app uses it; Emptio's and
-  Mixtura's own strings still hold copies of the same texts (an open point
-  in [Culina's native app](../../../apps/culina/docs/native-linux.md)).
+  the retry and support words. All three native apps use it (Emptio and
+  Mixtura since step 5 of the [shared shell](../../../docs/decisions/shared-shell.md));
+  an app spreads `sharedEn` / `sharedDe` and adds only its own texts.
 - **`style.ts`**: `applyStyle('system' | 'light' | 'dark')` for
   libadwaita's colour scheme, and `addStyle(css)` for the app's one
   stylesheet (its accent colour and the 44 px controls).
