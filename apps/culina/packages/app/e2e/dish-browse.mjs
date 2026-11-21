@@ -72,8 +72,13 @@ export const dishBrowse = async (browser, server) => {
   // Each choice narrows.
   await choose(page, 'From', { label: 'My dishes' });
   check(same(await names(page), OWN), `${label}: My dishes (${await names(page)})`);
-  const ownMeta = await page.locator('.dish-row-own .entry-meta').count();
-  check(ownMeta === 0, `${label}: with one origin chosen, no row repeats it`);
+  // An own dish may state a course (the example dishes do), so the meta line can be there; it
+  // must not say the origin again.
+  const ownMeta = await page.locator('.dish-row-own .entry-meta').allInnerTexts();
+  check(
+    ownMeta.every((m) => !m.includes('My dish')),
+    `${label}: with one origin chosen, no row repeats it (${ownMeta.join(' | ')})`,
+  );
   await choose(page, 'From', { label: 'All dishes' });
   await choose(page, 'Cuisine', { label: 'Italy' });
   check(same(await names(page), [SECOND.name.en]), `${label}: Italy (${await names(page)})`);
@@ -99,7 +104,9 @@ export const dishBrowse = async (browser, server) => {
     same(await names(page), [PAN.name.en]),
     `${label}: shipped and main (${await names(page)})`,
   );
+  // The example dishes state a main course and no cuisine, so a cuisine leaves none of them.
   await choose(page, 'From', { label: 'My dishes' });
+  await choose(page, 'Cuisine', { label: 'Italy' });
   check(
     (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.',
     `${label}: nothing found says so`,

@@ -92,6 +92,13 @@ describe('entries', () => {
     });
   });
 
+  test('a shipped dish is complete when every ingredient line has an amount; a slot filled by a component asks none', () => {
+    const complete = CLASSICS.filter((c) => entryOfClassic(c, lookup, 'en').complete).map(
+      (c) => c.id,
+    );
+    expect(complete.sort()).toEqual(['cocido-ordinario', 'pot-au-feu', 'rote-gruetze']);
+  });
+
   test('all entries: the notebook first, then every classic', () => {
     const all = allEntries(notebook, [tomatoDish], CLASSICS, lookup, 'de');
     expect(all).toHaveLength(1 + CLASSICS.length);
