@@ -217,3 +217,66 @@ test('the most used ingredients named for the empty screen exist in the seed', (
   const model = seedModel();
   for (const id of COMMON_STOCK) expect(model.tree.byId.has(id), id).toBe(true);
 });
+
+/**
+ * A store whose writes take their time to finish, like IndexedDB on a slow disk. A write is durable
+ * from the moment its transaction is created: a page that unloads then cannot take it back, but a
+ * write that has not been started yet is lost. `release()` lets the held writes finish.
+ */
+function slowCommit(inner: SharedStore) {
+  let gate: Promise<void> = Promise.resolve();
+  let open = (): void => undefined;
+  let started = 0;
+  const store: SharedStore = {
+    ...inner,
+    changeRecords: (space, name, fn) => {
+      started += 1;
+      const done = inner.changeRecords(space, name, fn);
+      return gate.then(() => done);
+    },
+  };
+  return {
+    store,
+    hold() {
+      gate = new Promise<void>((resolve) => (open = resolve));
+    },
+    release: () => open(),
+    started: () => started,
+  };
+}
+
+test('a mark, its Undo and a new mark are all in the store at once, so a reload right after keeps the mark', async () => {
+  const slow = slowCommit(sharedStore());
+  const ctx = { ...(await context(await openFresh(), slow.store)), now: () => AT };
+  const entry = ready(ctx).selection.entry;
+  const mark = () =>
+    changeStock(ctx, [{ id: 'gin', next: withPresent(ready(ctx).entryRecords, 'gin', true) }]);
+  const undo = mark();
+  await stockWrites();
+  slow.hold();
+  changeStock(ctx, undo);
+  mark();
+  // The page reloads here: what the store has been asked to do is what survives.
+  expect(slow.started()).toBe(3);
+  expect(await storedStock(slow.store, entry, 'gin')).toMatchObject({
+    key: 'gin',
+    value: { present: true },
+  });
+  slow.release();
+  await stockWrites();
+  expect(await storedStock(slow.store, entry, 'gin')).toMatchObject({ value: { present: true } });
+});
+
+test('control: a mark and its Undo, still held, end as a removal in the order they were made', async () => {
+  const slow = slowCommit(sharedStore());
+  const ctx = { ...(await context(await openFresh(), slow.store)), now: () => AT };
+  const entry = ready(ctx).selection.entry;
+  slow.hold();
+  const undo = changeStock(ctx, [
+    { id: 'gin', next: withPresent(ready(ctx).entryRecords, 'gin', true) },
+  ]);
+  changeStock(ctx, undo);
+  slow.release();
+  await stockWrites();
+  expect(await storedStock(slow.store, entry, 'gin')).toMatchObject({ key: 'gin', deleted: true });
+});
