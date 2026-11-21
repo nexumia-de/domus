@@ -2,21 +2,25 @@
 // screen show it: the search, the shared filter controls (dish-filter.ts), a count line and one row
 // per dish. The filter is the one stored choice (browse/filter.ts), so both screens show the same;
 // the search text lives as long as the page. The order and the meta are in browse/list-view.ts.
-import { allEntries, type DishEntry } from '../browse/entry';
+import { dishEntries } from '../browse/entries';
+import type { DishEntry } from '../browse/entry';
 import { EMPTY_FILTER, offeredBy, readDishFilter, writeDishFilter } from '../browse/filter';
 import type { DishFilter } from '../browse/filter';
 import { dishListView, type ListRow } from '../browse/list-view';
-import { characterLookup } from '../characters/lookup';
 import { CHARACTER_TABLE } from '../characters/table';
-import { classics } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { COUNTRIES } from '../classics/list-view';
 import { loadNames } from '../classics/names';
-import { listDishes, notebook } from '../notebook';
 import { browserStore } from '../prefs';
 import { el } from '../shell/el';
 import { strings } from '../strings';
-import { COURSE_ORDER, courseLabel, cuisineLabel, dishFilterControls } from './dish-filter';
+import {
+  COURSE_ORDER,
+  courseLabel,
+  cuisineLabel,
+  dishFilterControls,
+  replaceFilterControls,
+} from './dish-filter';
 import { nextId } from './fields';
 
 /** The choice when the browser cannot keep it (private mode, no storage): kept for this page only. */
@@ -33,9 +37,8 @@ export const keepDishFilter = (filter: DishFilter): void => {
 /** The search text, shared by the Dishes list and Start, until the page is closed. */
 const search = { query: '' };
 
-/** Every dish as an entry, in the content language. */
-export const everyEntry = (): DishEntry[] =>
-  allEntries(notebook(), listDishes(), classics(), characterLookup, currentLang());
+/** Every dish as an entry, in the content language (cached: browse/entries.ts). */
+export const everyEntry = (): readonly DishEntry[] => dishEntries();
 
 const ORDER = {
   characters: CHARACTER_TABLE.map((c) => c.id),
@@ -127,21 +130,8 @@ export const dishList = (options: DishListOptions): HTMLElement => {
   };
 
   // The controls are drawn anew on every change; the control that had focus keeps it.
-  const drawControls = (filter: DishFilter): void => {
-    const active = document.activeElement;
-    const focusClass =
-      active instanceof HTMLElement && controls.contains(active)
-        ? [
-            ...(active instanceof HTMLSelectElement ? active : (active.parentElement ?? active))
-              .classList,
-          ].find((c) => c.startsWith('dish-filter-'))
-        : undefined;
-    controls.replaceChildren(dishFilterControls(filter, offeredBy(entries, ORDER), change));
-    if (focusClass !== undefined) {
-      const again = controls.querySelector<HTMLElement>(`.${focusClass}`);
-      (again instanceof HTMLLabelElement ? again.querySelector('input') : again)?.focus();
-    }
-  };
+  const drawControls = (filter: DishFilter): void =>
+    replaceFilterControls(controls, dishFilterControls(filter, offeredBy(entries, ORDER), change));
 
   function change(next: DishFilter): void {
     keepDishFilter(next);

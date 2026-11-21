@@ -166,3 +166,26 @@ export const dishFilterControls = (
 
 /** The order in which courses are offered; kept in browse/filter.ts, where the native app reaches it too. */
 export { COURSE_ORDER } from '../browse/filter';
+
+/** The class `dish-filter-…` of the control in `slot` that has focus; undefined when none has. */
+const focusedControl = (slot: HTMLElement): string | undefined => {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement) || !slot.contains(active)) return undefined;
+  const owner = active instanceof HTMLSelectElement ? active : active.closest('.choice');
+  return owner === null
+    ? undefined
+    : [...owner.classList].find((c) => c.startsWith('dish-filter-'));
+};
+
+/**
+ * Puts freshly drawn filter controls into `slot`. The controls are drawn anew on every change, so
+ * the control that had focus (a select, or a tick by its box) gets it back. The list and the
+ * finder both use this.
+ */
+export const replaceFilterControls = (slot: HTMLElement, controls: HTMLElement): void => {
+  const keep = focusedControl(slot);
+  slot.replaceChildren(controls);
+  if (keep === undefined) return;
+  const again = slot.querySelector(`.${keep}`);
+  (again instanceof HTMLSelectElement ? again : again?.querySelector('input'))?.focus();
+};

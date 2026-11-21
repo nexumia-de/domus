@@ -999,16 +999,17 @@ Texts: `src/strings-stock.ts`. Since 2026-11-20 the stock is the collection
 "I stand in the kitchen and do not know what to cook"
 ([decision](decisions/recipe-book.md), issue 22; rules:
 [engine rules](engine-rules.md#what-the-stock-allows)). The navigation
-entry "Cook" (German "Kochen", the second of four) leads to `#/cook`. At the top of
-each of its screens are two parts, a row of two equal links ("With what I
-have", "Classics"; German "Mit meinem Vorrat", "Klassiker"): the second is the
-[classics by country](#classics) (`#/classics`, the country lists, the dish
-and cooking step by step, which the navigation marks as Cook too). Under the
-first part three views, switched by links below it (a group with
+entry "Cook" (German "Kochen", the second of four) leads to `#/cook`. Cook is
+"what the stock allows" and has no parts at the top (the former second part,
+"Classics", is gone: every dish, own or shipped, is in the one list of the
+Notebook). At the top of each of its screens are three views (a group with
 `aria-current`, a bar and bold text for the current one, not a second
 navigation landmark): **What can I cook** (`#/cook`), **Use up first**
 (`#/cook/use-up`) and **What is there** (`#/stock`, the stock list with its
-"Tick what is there" action). Texts:
+"Tick what is there" action). Every address of Cook marks Cook in the
+navigation: `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/stock`,
+`#/stock/add`, `#/stock/<id>/edit`. An entry of a dish opens the dish
+screen, which belongs to the Notebook (own or shipped). Texts:
 `src/strings-cook.ts`. **Test:** `e2e/cook.mjs`, `test/cook-finder.test.ts`,
 `test/router-cook.test.ts`.
 
@@ -1043,7 +1044,8 @@ navigation landmark): **What can I cook** (`#/cook`), **Use up first**
   urgency item and days, or "nothing it uses has a use-by date", then the
   roles covered, or "no roles recorded"); "Lacks: Thyme, Cream (100 g there,
   200 g needed)" for both origins; the substitutes, "with Salted butter in
-  place of Unsalted butter"; items that are there with no known amount,
+  place of Unsalted butter" (a sibling, or a shipped substitute effect, for
+  own and shipped dishes alike); items that are there with no known amount,
   "Cream is there; how much is not known."; for an own dish the open roles
   the stock can fill, "You could add a crunch: Walnut", only where the stock
   has an ingredient or component with that role (the same offer is shown on
@@ -1309,10 +1311,12 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
 - **Four destinations** (the usual guidance for a bottom bar is three to
   five): **Start**, **Cook** (German Kochen), **Notebook** (Notizbuch) and
   **Ratios** (Verhältnisse), in that order. A route belongs to one of them
-  (`navEntryFor` in `src/router.ts`): Cook holds the finder, the stock and the
-  shipped dishes with their cooking mode; the Notebook holds Components and Dishes,
-  two parts shown as a row of two equal links at the top of their lists
-  (`src/screens/section-tabs.ts`). The old routes (`#/components`, `#/dishes`,
+  (`navEntryFor` in `src/router.ts`): Cook holds the finder and the stock
+  (`#/cook…`, `#/stock…`), with its three views at the top and no parts; the
+  Notebook holds Components and Dishes, two parts shown as a row of two equal
+  links at the top of their lists (`src/screens/section-tabs.ts`), and every
+  dish screen with its cooking mode, own (`#/dishes/<id>`) or shipped
+  (`#/classic/<id>`, `#/classic/<id>/cook`). The old routes (`#/components`, `#/dishes`,
   `#/classics`, `#/cook`, `#/stock`, `#/settings`) work as before, links,
   bookmarks and tests included, and the navigation marks the destination
   they belong to; `#/classics` and `#/classics/<country>` open the one list
@@ -1324,8 +1328,8 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   It is there on every screen of a phone. From 720 px it is not in the header:
   Settings is the last entry of the side rail.
 - **Every former destination is at most two taps from Start**: Ratios, Cook
-  and Settings one, Components one, Dishes, the shipped dishes (Cook, then
-  "Classics"), Use up first and the stock two (Start also has an entry for each tool); the stock is two taps
+  and Settings one, Components one, Dishes (where the filter chooses the
+  shipped ones), Use up first and the stock two (Start also has an entry for each tool); the stock is two taps
   from every screen (Cook, then "What is there"). **Test:** `e2e/navigation.mjs`.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
   and label; from 720 px a side navigation with the same four destinations and

@@ -19,10 +19,6 @@ export const cookStrings = {
   /** The navigation entry; also the name of the group of three views. */
   title: 'Cook',
   viewsLabel: 'Views of Cook',
-  /** The two parts of the Cook destination: cooking from the stock, and the classic dishes. */
-  sectionsLabel: 'Parts of Cook',
-  sectionStock: 'With what I have',
-  sectionClassics: 'Classics',
   tabCook: 'What can I cook',
   tabUseUp: 'Use up first',
   tabStock: 'What is there',

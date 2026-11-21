@@ -1,7 +1,6 @@
 // The parts of a destination, as a row of equal links at the top of its screens: the two parts of
-// Cook (with what I have, classics) and of the Notebook (components, dishes). One group, not a
-// landmark: the page keeps its one navigation. The current part is marked with aria-current, bold
-// text and a bar, not by colour alone.
+// the Notebook (components, dishes). One group, not a landmark: the page keeps its one navigation.
+// The current part is marked with aria-current, bold text and a bar, not by colour alone.
 import { el } from '../shell/el';
 
 export interface SectionTab {

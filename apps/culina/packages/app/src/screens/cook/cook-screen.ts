@@ -8,7 +8,8 @@ import type { DishFilter } from '../../browse/filter';
 import { CHARACTER_TABLE } from '../../characters/table';
 import { loadNames } from '../../classics/names';
 import { carryOldCookChoices } from '../../cook/carry';
-import { dishEntries, shippedNow } from '../../cook/entries';
+import { dishEntries, dishEntriesByKey } from '../../browse/entries';
+import { shippedNow } from '../../cook/entries';
 import { find } from '../../cook/finder';
 import type { Found } from '../../cook/finder';
 import { isDish, originOf, partsInView } from '../../cook/one-list';
@@ -20,7 +21,7 @@ import type { CookFilters } from '../../prefs';
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
-import { COURSE_ORDER, dishFilterControls } from '../dish-filter';
+import { COURSE_ORDER, dishFilterControls, replaceFilterControls } from '../dish-filter';
 import { storeText } from '../editor/store-text';
 import { emptyState, noNotebook, nothingTicked } from './empty';
 import { cookEntry, rowOf } from './entry';
@@ -72,19 +73,6 @@ export const resultsOf = (found: Ok, filter: DishFilter): HTMLElement[] => {
   return out;
 };
 
-/** The control of the dish filter that had focus, so that it keeps it when they are redrawn. */
-const focusedControl = (slot: HTMLElement): string | undefined => {
-  const active = document.activeElement;
-  if (!(active instanceof HTMLElement) || !slot.contains(active)) return undefined;
-  const owner = active instanceof HTMLSelectElement ? active : active.closest('.choice');
-  return owner?.className.split(' ').at(-1);
-};
-
-const refocus = (slot: HTMLElement, name: string): void => {
-  const target = slot.querySelector(`.${name}`);
-  (target instanceof HTMLSelectElement ? target : target?.querySelector('input'))?.focus();
-};
-
 /** @param ingredientId - Set on #/cook/<id>/with: only own records that use that ingredient. */
 export const cookScreen = (ingredientId?: string): HTMLElement => {
   const section = el('section', 'screen cook-screen');
@@ -130,9 +118,9 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
     draw();
   });
   const drawFilter = (): void => {
-    const keep = focusedControl(filterSlot);
-    const entries = [...dishEntries().values()].filter((e) => !usesView || e.origin === 'own');
-    filterSlot.replaceChildren(
+    const entries = dishEntries().filter((e) => !usesView || e.origin === 'own');
+    replaceFilterControls(
+      filterSlot,
       dishFilterControls(
         narrowing(),
         offeredBy(entries, FILTER_ORDER),
@@ -148,13 +136,12 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
         { noOrigin: usesView },
       ),
     );
-    if (keep !== undefined) refocus(filterSlot, keep);
   };
   const draw = (): void => {
     if (ingredientId !== undefined && chosen === undefined) return results.replaceChildren();
     const found = find(source, today, filters, {
       filter: narrowing(),
-      entries: dishEntries(),
+      entries: dishEntriesByKey(),
       ...(ingredientId === undefined ? {} : { ingredientId }),
       shipped: shippedNow(),
     });

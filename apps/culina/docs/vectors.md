@@ -120,7 +120,7 @@ result as for the finder, `urgency: null` asserts none.
 Errors: `error_code` is a `makeable` code or a `deriveClassic` one, and
 `error_detail.classic` names the classic. Covered: complete with water and a
 `wanted` line apart, one line lacking, beyond the threshold (not listed),
-German names with a sibling substitute, the ranking by urgency, a classic that
+German names with a sibling substitute, a declared substitute effect (and the same classic without it), the ranking by urgency, a classic that
 does not derive.
 
 ## Kinds of components, yield and portions (issue 10)

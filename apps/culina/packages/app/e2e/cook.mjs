@@ -63,6 +63,12 @@ const ordering = async (browser, origin) => {
     (await text(page, '.cook-asof'))[0] === 'As of 18 Nov 2026',
     `${label}: the date used for the ranking is shown`,
   );
+  check(
+    (await page.locator('.section-tabs').count()) === 0 &&
+      (await page.locator('.cook-tab').allTextContents()).join('|') ===
+        'What can I cook|Use up first|What is there',
+    `${label}: Cook has no parts at the top, only its three views`,
+  );
   const shown = await onScreen(page);
   check(
     engineRank.candidates.length >= 5 &&
