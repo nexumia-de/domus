@@ -737,7 +737,13 @@ never stored ([analysis](dish-characters.md),
   is like that." The choice lives as long as the search text.
 - **The catalogue.** Groups and food categories above an ingredient come
   with the catalogue, which loads after the first draw; the dish is drawn
-  again when it is there.
+  again when it is there. So do the egg weights of a shipped dish (a group
+  takes the weight its foods agree on), so eggy shows once it is loaded.
+- **Which dishes have which character** changed on 2026-11-21 after a
+  reading of every shipped dish: eggy, cheesy, sweet, rich and garlicky now
+  show on shipped dishes, a soup is never fried, a baked soufflé is not
+  creamy; the table of changes, the counts and what was left as it is are in
+  [dish characters](dish-characters.md#every-shipped-dish-read-as-a-cook-would-2026-11-21).
 - **Not built.** The filter in Cook and in the random pick, the user's own
   correction of a character, cuisine and course on the user's dishes.
 

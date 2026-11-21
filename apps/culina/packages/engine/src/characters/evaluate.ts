@@ -100,6 +100,12 @@ const holds = (
       else reason = { clause: index, by: 'share', share };
     }
   }
+  if (clause.alsoIngredients !== undefined) {
+    for (const classes of clause.alsoIngredients) {
+      if (!facts.lines.some((l) => isOf(l, classes))) return undefined;
+    }
+    reason ??= { clause: index, by: 'presence' };
+  }
   if (clause.techniques !== undefined) {
     if (!clause.techniques.some((t) => facts.techniques.includes(t))) return undefined;
     reason ??= { clause: index, by: 'technique' };
@@ -108,6 +114,10 @@ const holds = (
     if (!facts.stepsKnown) return undefined;
     if (clause.withoutTechniques.some((t) => facts.techniques.includes(t))) return undefined;
     reason ??= { clause: index, by: 'technique' };
+  }
+  if (clause.courses !== undefined) {
+    if (facts.course === undefined || !clause.courses.includes(facts.course)) return undefined;
+    reason ??= { clause: index, by: 'course' };
   }
   for (const [bound, key] of [
     [clause.fat, 'fatPer100g'],

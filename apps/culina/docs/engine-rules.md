@@ -1140,7 +1140,9 @@ arguments; the table with its catalogue ids is the app's
 `classes` (the ingredient's id, its ancestors, `category:<USDA food
 category>`), `g` when the mass is known and fat and energy per 100 g when
 the catalogue has them. `techniques`: the technique ids of the steps.
-`stepsKnown`: whether a step names what is done.
+`stepsKnown`: whether a step names what is done. `course`: the course the
+dish states (since 2026-11-21; a shipped dish always states one, a dish of
+the notebook none yet).
 
 **A rule** has `when` (any clause gives the character) and `unless` (any
 clause takes it away). Every condition of a clause must hold:
@@ -1149,9 +1151,16 @@ clause takes it away). Every condition of a clause must hold:
 | ------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `ingredients`       | a line has one of the classes (presence)                                                                       |
 | `minShare`          | with `ingredients`: their share of the measured mass reaches it; share unknown: holds unless `presence: false` |
+| `alsoIngredients`   | each of its lists has a line of one of its classes as well (presence, no share)                                |
 | `techniques`        | a step names one of them                                                                                       |
 | `withoutTechniques` | no step names one of them, and `stepsKnown`                                                                    |
+| `courses`           | the dish states one of them; a dish without a course never matches                                             |
 | `fat`, `kcal`       | the figure per 100 g of the measured mass is within `min` and `max`                                            |
+
+`alsoIngredients` and `courses` were added on 2026-11-21 for rules that need
+two ingredients together (egg yolk with oil in a cold emulsion; potatoes or
+rice with milk) and the course (a dessert with sugar is sweet; a soup is
+never fried), see [dish characters](dish-characters.md#every-shipped-dish-read-as-a-cook-would-2026-11-21).
 
 **Coverage.** A share is judged when at least half of the lines have a mass
 (`MIN_MEASURED`) and every line of the classes asked has one; otherwise it
@@ -1160,7 +1169,16 @@ a mass (`MIN_MEASURED_FIGURES`) and every measured line has the figure: a
 figure of the whole dish is wrong as soon as a main ingredient is left out.
 The result carries `coverage` (lines, measured, covered) and for each
 character the clause that held and by what (`share` with its value,
-`presence`, `technique`, `figures`).
+`presence`, `technique`, `course`, `figures`).
+
+**Mass of a shipped line** (the app's `conversionOf`, not the engine): the
+ingredient's own density and unit weight; else those of the nearest
+ingredient above it (as the nutrition view converts); else, for a group, the
+one value every food below it that states one agrees on. The egg groups
+state no weight; the one egg below each that does gives 44 g (whole), 17 g
+(yolk), 33 g (white), USDA portions. Foods that disagree (apples, milks)
+give none, and the line stays without mass. The nutrition view does not use
+the last step, so it still lists egg lines as not counted.
 
 **Not proven.** No vectors: `test/characters.test.ts` holds hand-computed
 cases. The thresholds are in the table, not here, and come from no source.

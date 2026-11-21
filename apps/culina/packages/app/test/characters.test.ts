@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { CLASSICS } from '../src/classics/index';
-import { classesOf } from '../src/characters/classes';
+import { belowOf, classesOf, conversionOf } from '../src/characters/classes';
 import { factsOfClassic } from '../src/characters/classic';
 import { factsOfDish } from '../src/characters/dish';
 import { CHARACTER_TABLE } from '../src/characters/table';
@@ -20,6 +20,8 @@ const file = JSON.parse(
 ) as { ingredients: IngredientRecord[] };
 const byId = new Map(file.ingredients.map((r) => [r.id, r]));
 const lookup = (id: string): IngredientRecord | undefined => byId.get(id);
+// The app builds this from the loaded catalogue; here from the shipped file.
+const below = belowOf(file.ingredients);
 
 const TOMATO = 'fdc-170457';
 const CREAM = 'fdc-170859';
@@ -29,7 +31,7 @@ const version = { family: 'f', date: '2026-11-21' };
 const of = (id: string): string[] => {
   const classic = CLASSICS.find((c) => c.id === id);
   if (classic === undefined) throw new Error(id);
-  return characterIds(factsOfClassic(classic, lookup));
+  return characterIds(factsOfClassic(classic, lookup, below));
 };
 
 describe('the table', () => {
@@ -109,8 +111,107 @@ describe('shipped dishes', () => {
 
   test('every shipped dish is judged', () => {
     for (const classic of CLASSICS) {
-      expect(factsOfClassic(classic, lookup), classic.id).toBeDefined();
+      expect(factsOfClassic(classic, lookup, below), classic.id).toBeDefined();
     }
+  });
+});
+
+describe('conversion for the share', () => {
+  test('a group without a weight of its own takes the one its foods agree on', () => {
+    // One egg below each group states a USDA portion: 44 g whole, 17 g yolk, 33 g white.
+    expect(conversionOf('fdc-group-egg-whole', lookup, below).unitWeightG).toBe(44);
+    expect(conversionOf('fdc-group-egg-yolk', lookup, below).unitWeightG).toBe(17);
+    expect(conversionOf('fdc-group-egg-white', lookup, below).unitWeightG).toBe(33);
+  });
+
+  test('foods that disagree give none: apples weigh 161 to 212 g, milks differ in density', () => {
+    expect(conversionOf('fdc-group-apples', lookup, below).unitWeightG).toBeUndefined();
+    expect(conversionOf('fdc-group-milk', lookup, below).densityGPerMl).toBeUndefined();
+  });
+
+  test('an ingredient’s own figure comes first', () => {
+    expect(conversionOf('fdc-170028', lookup, below)).toEqual({ unitWeightG: 213 });
+  });
+});
+
+// The rules of 2026-11-21, after reading every shipped dish as a cook would
+// (docs/dish-characters.md). Each pin names the dish and why.
+describe('shipped dishes, the rules of 2026-11-21', () => {
+  test('eggy: omelette, soufflé and the custards, now that eggs counted in pieces have a mass', () => {
+    // Before, no egg line had a mass, so eggy was said of no shipped dish.
+    expect(of('omelette-fines-herbes')).toContain('eggy');
+    expect(of('souffle-parmesan')).toContain('eggy');
+    expect(of('crema-cotta')).toContain('eggy');
+    expect(of('creme-caramel')).toContain('eggy');
+    expect(of('oeufs-a-la-neige')).toContain('eggy');
+  });
+
+  test('eggy is not said where egg binds: a cake, a gratin, a purée, a meat loaf', () => {
+    expect(of('torta-mantovana')).not.toContain('eggy');
+    expect(of('gratin-dauphinois')).not.toContain('eggy');
+    expect(of('frikandelle')).not.toContain('eggy');
+    // Not covered (milk and potatoes have no mass), so not judged at all.
+    expect(of('pure-de-patatas')).not.toContain('eggy');
+  });
+
+  test('not proven eggy: by the amounts of its source the tortilla is a potato dish', () => {
+    // 4 eggs (176 g) to 3 lb of potatoes and 2 cups of frying oil: egg is 9 percent of the mass.
+    // A judgement left as the rule gives it; the doc names it as a disputed miss.
+    expect(of('tortilla-de-patatas')).not.toContain('eggy');
+  });
+
+  test('fried: a soup whose potatoes are fried first is not fried', () => {
+    expect(of('potato-soup-fine')).not.toContain('fried');
+    // Controls: dishes that are fried stay so.
+    expect(of('tortilla-de-patatas')).toContain('fried');
+    expect(of('eierkuchen')).toContain('fried');
+  });
+
+  test('fried: fennel in batter is fried, as a batter is a coat for frying', () => {
+    expect(of('fritto-di-finocchi')).toEqual(expect.arrayContaining(['fried', 'crisp']));
+  });
+
+  test('creamy: a baked soufflé is set, not creamy; béchamel under a gratin crust stays creamy', () => {
+    expect(of('souffle-parmesan')).not.toContain('creamy');
+    expect(of('cavolfiore-balsamella')).toContain('creamy');
+    expect(of('napfkuchen')).not.toContain('creamy');
+  });
+
+  test('creamy: mayonnaise and alioli (oil bound by egg yolk), not gazpacho (no yolk)', () => {
+    expect(of('mayonnaise')).toContain('creamy');
+    expect(of('alioli')).toContain('creamy');
+    expect(of('gazpacho-andaluz')).not.toContain('creamy');
+  });
+
+  test('creamy: potatoes baked in milk (gratin dauphinois)', () => {
+    expect(of('gratin-dauphinois')).toContain('creamy');
+    expect(of('baked-potatoes-cheese')).toContain('creamy');
+  });
+
+  test('cheesy: cheese baked into or onto a dish; not grated over a soup or a risotto', () => {
+    expect(of('baked-potatoes-cheese')).toContain('cheesy');
+    expect(of('gratin-dauphinois')).toContain('cheesy');
+    expect(of('souffle-parmesan')).toContain('cheesy');
+    expect(of('minestrone')).not.toContain('cheesy');
+    expect(of('risotto-alla-milanese')).not.toContain('cheesy');
+  });
+
+  test('garlicky: raw garlic in alioli; one clove in a cooked tomato sauce is not', () => {
+    expect(of('alioli')).toContain('garlicky');
+    expect(of('salsa-di-pomodoro')).not.toContain('garlicky');
+  });
+
+  test('sweet: desserts and cakes with sugar; not a soup with 5 g of sugar', () => {
+    expect(of('creme-caramel')).toContain('sweet');
+    expect(of('pommes-au-beurre')).toContain('sweet');
+    expect(of('napfkuchen')).toContain('sweet');
+    expect(of('potage-pois-verts-maigre')).not.toContain('sweet');
+  });
+
+  test('rich: emulsions of fat (mayonnaise, hollandaise); not gazpacho', () => {
+    expect(of('mayonnaise')).toContain('rich');
+    expect(of('sauce-hollandaise')).toContain('rich');
+    expect(of('gazpacho-andaluz')).not.toContain('rich');
   });
 });
 

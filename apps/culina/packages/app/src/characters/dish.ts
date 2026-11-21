@@ -68,11 +68,14 @@ export const factsOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): Cha
         : [],
     ),
   ];
+  // The dish record has no course of its own yet; once it has one, the rules read it.
+  const course = 'course' in dish && typeof dish.course === 'string' ? dish.course : undefined;
   return {
     lines: dish.slots.flatMap((slot) => slotLines(nb, slot, lookup)),
     techniques: [
       ...new Set(steps.flatMap((s) => (s.technique === undefined ? [] : [s.technique]))),
     ],
     stepsKnown: steps.some((s) => s.technique !== undefined || s.action !== undefined),
+    ...(course === undefined ? {} : { course }),
   };
 };

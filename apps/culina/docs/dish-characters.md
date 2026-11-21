@@ -180,6 +180,105 @@ lists, the start screen, Cook and the random pick. The base is built; the
 screens are being built on 2026-11-21. What the question "what do I feel
 like" needs beyond it is in the [plan](feel-like-plan.md).
 
+## Every shipped dish read as a cook would (2026-11-21)
+
+Since the characters filter every dish ("what do I feel like"), a wrong
+character shows a dish where it does not belong and an absent one hides it.
+All 48 shipped dishes were run through the table (a throwaway vitest script,
+not kept) and every row read against the dish: each claim plainly not true,
+each plain miss. The rules were changed in general terms, never for one
+dish; each change is pinned by named dishes in `test/characters.test.ts`
+("shipped dishes, the rules of 2026-11-21") and the new conditions by
+hand-computed cases in the engine's `test/characters.test.ts`.
+
+What the reading found first: no egg line of any shipped dish had a mass.
+The egg groups (`fdc-group-egg-whole`, `-yolk`, `-white`) state no unit
+weight, so "6 eggs" did not convert and eggy, which needs a share, was said
+of no dish; the omelette was only "fried".
+
+| Change                                                                       | General statement                                                                                         | Dishes it changed                                                                                                  | Pins (and controls)                                                                              |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Mass of a group line ([engine rules](engine-rules.md#characters))            | a group without its own figure takes the one every food below it agrees on; foods that disagree give none | egg lines now weigh 44, 17 or 33 g a piece; eggy now on 8 dishes                                                   | omelette, soufflé, crema cotta, crème caramel, oeufs à la neige (torta, gratin, Frikandelle not) |
+| Fried: batter counts                                                         | a batter is a coat for frying (the technique's source is the chapter on frying)                           | + fritto di finocchi                                                                                               | fritto di finocchi                                                                               |
+| Fried: never a soup or a sauce (`unless` by course)                          | frying in a soup is a first step before the liquid, not what the dish is                                  | − potato soup                                                                                                      | potato soup (tortilla, Eierkuchen stay fried)                                                    |
+| Creamy: milk bound by roux, egg or starch, unless the dish bakes             | the oven sets it (soufflé, cake); browning a gratin is not baking                                         | − Parmesan soufflé                                                                                                 | soufflé (cauliflower with béchamel stays, Napfkuchen not)                                        |
+| Creamy: a cold emulsion of oil bound by egg yolk                             | the yolk is what makes it thick                                                                           | + mayonnaise, alioli                                                                                               | mayonnaise, alioli (gazpacho not: no yolk)                                                       |
+| Creamy: potatoes or rice cooked (baked, boiled, simmered) with milk or cream | their starch binds the milk                                                                               | + gratin dauphinois, baked potatoes with cheese                                                                    | both                                                                                             |
+| Cheesy: cheese in a baked or gratinated dish counts without amounts          | cheese baked into or onto a dish is what one tastes; grated over soup it is not                           | + baked potatoes with cheese, gratin dauphinois, cauliflower with béchamel (soufflé by its share, now known: 0.30) | the first two and soufflé (minestrone, risotto not)                                              |
+| Garlicky: garlic in a dish where no step uses heat counts without amounts    | raw garlic is far stronger than cooked                                                                    | + alioli                                                                                                           | alioli (tomato sauce with one clove not)                                                         |
+| Sweet: sugar, honey or syrup in a dish of the course dessert or baking       | a dessert or a cake with sugar is sweet                                                                   | + 10 desserts and cakes                                                                                            | crème caramel, apples in butter, Napfkuchen (pea soup with 5 g sugar not)                        |
+| Rich: a warm emulsion, or a cold emulsion of oil bound by egg yolk           | an emulsion of fat is mostly fat by what it is                                                            | + both hollandaises, mayonnaise, alioli                                                                            | mayonnaise, hollandaise (gazpacho not)                                                           |
+
+Counts per character over the 48 dishes:
+
+| Character     | Before | After | Dishes after                                                                                                                                                                                                                                             |
+| ------------- | -----: | ----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| tomatoey      |      3 |     3 | gazpacho, pollo alla contadina, salsa di pomodoro                                                                                                                                                                                                        |
+| cheesy        |      0 |     4 | baked potatoes with cheese, gratin dauphinois, Parmesan soufflé, cauliflower with béchamel                                                                                                                                                               |
+| eggy          |      0 |     8 | huevos amerengados, crème caramel, oeufs à la neige, omelette, sauce hollandaise, Parmesan soufflé, crema cotta, latte brulé                                                                                                                             |
+| mushroomy     |      1 |     1 | poulet bourguignonne                                                                                                                                                                                                                                     |
+| garlicky      |      0 |     1 | alioli                                                                                                                                                                                                                                                   |
+| lemony        |      0 |     0 |                                                                                                                                                                                                                                                          |
+| spicy         |      0 |     0 |                                                                                                                                                                                                                                                          |
+| sweet         |      1 |    11 | Napfkuchen, rote Grütze, crema de chocolate, flan, huevos amerengados, crème caramel, oeufs à la neige, apples in butter, crema cotta, latte brulé, torta mantovana                                                                                      |
+| with meat     |      7 |     7 | Frikandelle, Sauerbraten, cocido, pot-au-feu, poulet bourguignonne, pollo alla contadina, stracotto                                                                                                                                                      |
+| with fish     |      1 |     1 | marinated herring                                                                                                                                                                                                                                        |
+| fried         |      6 |     6 | Eierkuchen, Frikandelle, tortilla, omelette, fritto di finocchi, pollo alla contadina                                                                                                                                                                    |
+| from the oven |      9 |     9 | baked potatoes with cheese, Frikandelle, Napfkuchen, flan, gratin dauphinois, apples in butter, Parmesan soufflé, cauliflower with béchamel, torta mantovana                                                                                             |
+| braised       |      2 |     2 | Sauerbraten, stracotto                                                                                                                                                                                                                                   |
+| uncooked      |      4 |     4 | marinated herring, alioli, gazpacho, mayonnaise                                                                                                                                                                                                          |
+| creamy        |     12 |    15 | baked potatoes with cheese, Holländische Sauce, Milchsuppe, Sauerbraten, alioli, huevos amerengados, puré de patatas, sopa de leche, gratin dauphinois, mayonnaise, oeufs à la neige, sauce hollandaise, cauliflower with béchamel, crema cotta, risotto |
+| crisp         |      2 |     2 | cauliflower with béchamel, fritto di finocchi                                                                                                                                                                                                            |
+| rich          |      0 |     4 | Holländische Sauce, alioli, mayonnaise, sauce hollandaise                                                                                                                                                                                                |
+| light         |      0 |     0 |                                                                                                                                                                                                                                                          |
+
+Dishes with no character after: egg noodles, Kartoffelklöße, potato soup,
+arlequín de judías, guisantes, potaje, haricots verts au beurre, potage aux
+pois, gnocchi, minestrone, tagliatelle verdi (11; before: 13).
+
+**Left as they are, and why.** Each is a judgement of this reading:
+
+- **Not eggy, though one might say so.** The tortilla: by its source's
+  amounts egg is 9 percent of the mass (4 eggs to 3 lb of potatoes and 2 cups
+  of frying oil), a potato dish bound by egg; the test pins this as the rule's
+  answer, the doubt is the owner's. Eierkuchen, crema de chocolate and the
+  German hollandaise: too few lines have a mass (the milk group states no
+  density, since its foods range from 0.29 to 1.07 g/ml), so nothing is said.
+  The flan: its pastry (1 l of flour) brings egg to 0.18 of the dish.
+- **Eggy by a share that rests on little.** Crème caramel comes to 0.68
+  because its milk has no amount in the source; the answer is right, the
+  number is not the dish's. Sauce hollandaise is eggy at 0.21: an egg-yolk
+  sauce, accepted.
+- **Misses the data cannot reach.** Minestrone, stracotto and gnocchi are not
+  tomatoey and minestrone is not "with meat": their tomato sauce, boiled
+  meat, ham and broth are `wanted` lines without a catalogue entry. Milchsuppe
+  and sopa de leche are sweet milk soups, but a soup is not a dessert and
+  their sugar share is not judged (too few lines measured); a sweet soup rule
+  would also catch the pea soup's 5 g.
+- **Disputed, not plainly false.** Sauerbraten is creamy by its gravy (cream
+  and milk bound by a roux): the rules cannot tell the sauce from the dish.
+  Set custards (crème caramel, latte brulé, crema de chocolate) are not
+  called creamy: smooth but set, a matter of taste. Poulet bourguignonne is
+  simmered in wine and not called braised. The omelette is "fried" (cooked in
+  butter in the pan). Cauliflower with béchamel is cheesy by its Parmesan
+  crust.
+- **Not judged at all.** Light and rich by figures: the groups carry no
+  USDA figures and few shipped dishes have four of five lines measured, so
+  no shipped dish reaches them; rich now comes from emulsions only. Lemony,
+  spicy and other taste effects: no dish is plainly lemony or hot, and the
+  data has no measure of acidity or heat, so nothing is guessed.
+- **A dish of the notebook** states no course yet, so the course clauses
+  (sweet by course, fried not in a soup) do not hold for it; its shares are
+  far better founded (amounts by weight). `factsOfDish` reads a course as
+  soon as the record has one.
+
+Not verified: any dish of a user, the German names in a browser, whether
+the owner agrees with each judgement above. The egg weights are the
+catalogue's USDA portions: a medium whole egg (44 g; a large one weighs
+about 50 g, which would raise the shares of whole eggs), a large yolk (17 g)
+and a large white (33 g). The cleaner place for them is the egg groups of
+the catalogue, which this change did not touch.
+
 [^classics]: `packages/app/data/classics/`, 12 dishes each for Germany, Italy, France and Spain.
 
 [^catalogue]: [Ingredient catalogue](ingredient-catalogue.md).

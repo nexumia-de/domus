@@ -21,6 +21,8 @@ export interface CharacterFacts {
   techniques: readonly string[];
   /** Whether the dish has steps that name what is done; without them no technique rule is judged. */
   stepsKnown: boolean;
+  /** The course the dish states (`main`, `soup`, `dessert`, ...); absent when it states none. */
+  course?: string;
 }
 
 /** A bound on a figure per 100 g of the counted mass. */
@@ -40,10 +42,14 @@ export interface CharacterClause {
   ingredients?: readonly string[];
   minShare?: number;
   presence?: boolean;
+  /** Each of these lists has a line of one of its classes as well (presence only, no share). */
+  alsoIngredients?: readonly (readonly string[])[];
   /** Any of these techniques is named by a step. */
   techniques?: readonly string[];
   /** None of these techniques is named by a step; holds only when the steps are known. */
   withoutTechniques?: readonly string[];
+  /** The dish states one of these courses; a dish without a course never matches. */
+  courses?: readonly string[];
   /** Fat in g per 100 g of the dish; judged only where `MIN_MEASURED_FIGURES` of the lines have a mass. */
   fat?: FigureBound;
   /** Energy in kcal per 100 g of the dish; judged under the same condition as `fat`. */
@@ -62,8 +68,11 @@ export interface CharacterRule {
 /** What made a character: the clause, and the share where one was read. */
 export interface CharacterReason {
   clause: number;
-  /** `share`: by mass; `presence`: an ingredient is there; `technique`; `figures`: fat or energy. */
-  by: 'share' | 'presence' | 'technique' | 'figures';
+  /**
+   * `share`: by mass; `presence`: an ingredient is there; `technique`; `course`: the course the
+   * dish states; `figures`: fat or energy.
+   */
+  by: 'share' | 'presence' | 'technique' | 'course' | 'figures';
   share?: number;
 }
 
