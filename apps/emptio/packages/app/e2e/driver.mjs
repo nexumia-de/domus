@@ -14,15 +14,13 @@ export async function ok(run, what, fn) {
 /** Opens the app and waits until the list has been read. */
 export async function openApp(page, origin, hash = '') {
   await page.goto(`${origin}/${hash}`);
-  await page.waitForFunction(() =>
-    document.querySelector('.space-line .space-name, .space-line select'),
-  );
+  await page.waitForFunction(() => document.querySelector('.add-form:not([hidden])'));
 }
 
-/** Waits until the live line says `text`. */
+/** Waits until the toast says `text`. */
 export const said = (page, text) =>
   page.waitForFunction(
-    (wanted) => document.querySelector('.live')?.textContent.includes(wanted),
+    (wanted) => document.querySelector('.fr-toast')?.textContent.includes(wanted),
     text,
   );
 
@@ -51,6 +49,13 @@ export async function add(page, t, name, { amount, priority, button = false } = 
   if (button) await form.getByRole('button', { name: t.list.add, exact: true }).click();
   else await field.press('Enter');
   await said(page, name.trim());
+}
+
+/** Shows every urgency on the list (the default hides Sometime). */
+export async function showAll(page) {
+  for (const chip of await page.locator('.filter-chip').all()) {
+    if ((await chip.getAttribute('aria-pressed')) === 'false') await chip.click();
+  }
 }
 
 /** Goes to a screen by the link of the header (or the back link). */

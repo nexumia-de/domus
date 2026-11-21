@@ -95,6 +95,7 @@ export const stringsDe: Strings = {
   space: { home: 'Zuhause', unnamed: 'Space ohne Namen' },
   status: {
     deviceOnly: 'Nur auf diesem Gerät',
+    failedShort: 'Abgleich fehlgeschlagen.',
     retry: 'Erneut versuchen',
     syncing: 'Wird abgeglichen …',
     never: 'Noch nicht abgeglichen',

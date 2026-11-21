@@ -38,10 +38,10 @@ async function device(run, secret) {
 }
 
 const inStep = (run, text) => text.startsWith(run.t.status.inStep('').split('·')[0].trim());
-const statusOf = (page) => page.locator('.space-status').first().innerText();
+const statusOf = (page) => page.locator('.fr-sync').getAttribute('aria-label');
 const waitInStep = (run, page) =>
   page.waitForFunction(
-    (prefix) => document.querySelector('.space-status')?.textContent.startsWith(prefix),
+    (prefix) => document.querySelector('.fr-sync')?.getAttribute('aria-label')?.startsWith(prefix),
     run.t.status.inStep('').split('·')[0].trim(),
     { timeout: 15_000 },
   );
@@ -130,6 +130,40 @@ export async function syncStage(run) {
     await waitInStep(run, a.page);
     return true;
   });
+
+  // An error: the header icon says so and a slim banner offers Retry; nothing else changes.
+  fake.fail.status = 500;
+  await add(a.page, t, 'Honey');
+  await ok(
+    run,
+    'sync error: the header icon turns to the error state and the banner offers Retry',
+    async () => {
+      await a.page.locator('.fr-banner:not([hidden])').waitFor({ timeout: 15_000 });
+      const retry = a.page
+        .locator('.fr-banner')
+        .getByRole('button', { name: t.status.retry, exact: true });
+      return (
+        (await a.page.locator('.fr-sync').getAttribute('data-sync')) === 'failed' &&
+        (await a.page.locator('.fr-banner').getAttribute('role')) === 'alert' &&
+        (await retry.boundingBox()).height >= 44 &&
+        (await a.page.locator('.fr-banner').boundingBox()).height < 70
+      );
+    },
+  );
+  fake.fail.status = undefined;
+  await a.page
+    .locator('.fr-banner')
+    .getByRole('button', { name: t.status.retry, exact: true })
+    .click();
+  await ok(
+    run,
+    'sync error: Retry brings the icon back to synced and the banner goes',
+    async () => {
+      await a.page.locator('.fr-banner').waitFor({ state: 'hidden', timeout: 15_000 });
+      await waitInStep(run, a.page);
+      return (await a.page.locator('.fr-sync').getAttribute('data-sync')) === 'synced';
+    },
+  );
 
   await ok(run, 'sync: the token went to the fake only, with every request to it', () => {
     const mine = fake.log.slice(logFrom).filter((r) => r.method !== 'OPTIONS');

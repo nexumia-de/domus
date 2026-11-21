@@ -89,6 +89,7 @@ export const stringsEn = {
   space: { home: 'Home', unnamed: 'Unnamed space' },
   status: {
     deviceOnly: 'On this device only',
+    failedShort: 'Sync failed.',
     retry: 'Retry',
     syncing: 'Syncing …',
     never: 'Not synced yet',

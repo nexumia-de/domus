@@ -11,6 +11,8 @@ export interface SyncIndicatorOptions {
   words: StatusWords;
   /** The current time, read when the details are asked for, so that "2 min ago" is right. */
   now: () => string;
+  /** The banner's one short line ("Sync failed"); the reason is in the details of the icon. */
+  bannerText: string;
   retryLabel: string;
   /** Shows the details ("Synced 2 min ago") as a toast. */
   say: (text: string) => void;
@@ -28,7 +30,7 @@ export interface SyncIndicator {
 export function createSyncIndicator(options: SyncIndicatorOptions): SyncIndicator {
   const { words } = options;
   const button = el('button', { class: 'fr-icon-btn fr-sync', type: 'button' });
-  const bannerText = el('span', { class: 'fr-banner-text' });
+  const bannerText = el('span', { class: 'fr-banner-text' }, options.bannerText);
   const retry = el('button', { class: 'fr-banner-action', type: 'button' }, options.retryLabel);
   retry.addEventListener('click', options.retry);
   const banner = el('div', { class: 'fr-banner', role: 'alert', hidden: true }, bannerText, retry);
@@ -62,7 +64,6 @@ export function createSyncIndicator(options: SyncIndicatorOptions): SyncIndicato
         button.replaceChildren(drawIcon(FRAME_ICONS[state]));
       }
       banner.hidden = state !== 'failed';
-      if (state === 'failed') bannerText.textContent = label;
     },
   };
 }

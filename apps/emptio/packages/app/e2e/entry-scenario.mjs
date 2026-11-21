@@ -1,6 +1,6 @@
 // Stage 2 of a run: the entry screen (edit, remove with Undo) and the categories screen (add,
 // rename, hide, remove), as one household would do them on the list stage's entries.
-import { goTo, ok, rowOf, rows, said } from './driver.mjs';
+import { goTo, ok, rowOf, rows, said, showAll } from './driver.mjs';
 
 const only = (list, name) => list.filter((r) => r.name === name);
 
@@ -11,6 +11,18 @@ export async function entryStage(run, { page }) {
   await page.waitForSelector('.entry');
   await rowOf(page, 'Milk').locator('.entry-text').click();
   await page.waitForSelector('.entry-form');
+  await ok(
+    run,
+    'entry screen: the header has the name and a back arrow, the body no heading',
+    async () => {
+      const back = page.locator('.fr-header').getByRole('link', { name: t.nav.back, exact: true });
+      return (
+        (await page.locator('h1').allInnerTexts()).join('|') === 'Milk' &&
+        (await back.getAttribute('href')) === '#/' &&
+        (await page.locator('main h1').count()) === 0
+      );
+    },
+  );
 
   const form = page.locator('.entry-form');
   // A label that wraps a select also contains its options, so the field is found by its caption.
@@ -33,6 +45,7 @@ export async function entryStage(run, { page }) {
   await label(t.entry.category).selectOption({ label: dairy });
   await form.getByRole('button', { name: t.entry.save, exact: true }).click();
   await page.waitForSelector('.screen-list');
+  await showAll(page);
   await ok(
     run,
     'entry screen: after Save the list shows the changes under the category heading',
@@ -64,7 +77,7 @@ export async function entryStage(run, { page }) {
     'entry screen: Remove leaves the list without the entry',
     async () => only(await rows(page), 'Whole milk').length === 0,
   );
-  await page.locator('.live').getByRole('button', { name: t.list.undo, exact: true }).click();
+  await page.locator('.fr-toast').getByRole('button', { name: t.list.undo, exact: true }).click();
   await ok(run, 'entry screen: Undo brings the entry back with its changes', async () => {
     await page.waitForFunction(() => document.querySelector('.entry-note'));
     return (

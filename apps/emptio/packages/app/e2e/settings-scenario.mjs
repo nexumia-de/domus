@@ -69,6 +69,25 @@ export async function settingsStage(run, { page }) {
     /^\.\.\/#\/spaces\/.+/.test(await page.locator('.choice-link').getAttribute('href')),
   );
 
+  await ok(
+    run,
+    'settings: the header says the page and has a back arrow; the body does not repeat it',
+    async () =>
+      (await page.locator('h1').allInnerTexts()).join('|') === t.settings.title &&
+      (await page
+        .locator('.fr-header')
+        .getByRole('link', { name: t.nav.back, exact: true })
+        .count()) === 1 &&
+      (await page.locator('main h1').count()) === 0,
+  );
+  await ok(run, 'settings: the back arrow leads to the list', async () => {
+    await page.locator('.fr-header').getByRole('link', { name: t.nav.back, exact: true }).click();
+    await page.waitForSelector('.screen-list');
+    await page.goto(`${server.origin}/#/settings`);
+    await page.waitForSelector('.choice');
+    return true;
+  });
+
   const root = page.locator('html');
   await page.locator('#theme').selectOption('dark');
   await ok(
@@ -108,7 +127,6 @@ export async function settingsStage(run, { page }) {
     `settings: switching the language reloads with the ${other.code} texts`,
     async () =>
       (await page.locator('h1').innerText()) === other.t.settings.title &&
-      (await page.locator('.app-title').innerText()) === other.t.appName &&
       (await page.locator('.choice-name').innerText()) === t.space.home,
   );
   await page.locator('#lang').selectOption('device');

@@ -69,6 +69,7 @@ if (root) {
   const sync = createSyncIndicator({
     words: t.status,
     now,
+    bannerText: t.status.failedShort,
     retryLabel: t.status.retry,
     say: (text) => ctx.say(text),
     retry: () => app.wake(),
@@ -109,7 +110,13 @@ if (root) {
   /** With more than one space the list says which one it shows, and switches. */
   function spaceSwitch(): HTMLElement | undefined {
     const { space, spaces } = app.state();
-    if (route.name !== 'list' || space === undefined || spaces.length < 2) return undefined;
+    if (route.name !== 'list' || space === undefined) return undefined;
+    // One space on this device alone needs no name; a shared one says whose list it is.
+    if (spaces.length < 2) {
+      return app.status(space.id)?.kind === 'device-only'
+        ? undefined
+        : h('span', { class: 'space-name' }, space.name);
+    }
     const select = h(
       'select',
       { class: 'space-select', 'aria-label': t.list.listOf },
