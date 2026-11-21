@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (frame)
+
+- **Update**: the web app looks like a phone app. Header = place and actions: the title of the page, a back arrow on subpages, Settings and Categories as header icons, no bottom navigation, no repeated headings in the body. The sync status is a small icon in the header (accessible name, tooltip, details by tap) and only an error shows a slim banner with Retry; the status words read "Synced 2 min ago". After adding, a short toast in theme colours with Undo replaces the white bar, and the add field is the only permanent thing at the bottom. New: filter by urgency (Now and Soon by default, Sometime counted and one tap away) and four sorts, kept per device ([behaviour](behaviour.md#filter-and-sort)). Header, sync icon, banner and toast are the host package's shared [frame](../../../packages/host/docs/frame.md). Browser checks adapted to the frame and extended (264 checks); `test/view.test.ts` and `test/small.test.ts` pin the arrangement and the words.
+
 ## 2026-11-21 (later)
 
 - **Update**: the platform pieces of the native app (Web Crypto subset, random bytes, `fetch` on libsoup, the file folder, `gi.d.ts`, joining by link, the preferences file, `applyStyle`) and the smoke and Broadway tooling moved to the shared package `packages/gjs`, because Mixtura's native app needs them too; the code is unchanged. Emptio imports `@nexumia-de/gjs`; its two tests of those pieces moved with them (it has two new ones of its own, for the texts), the licence texts of the two crypto libraries are installed from `packages/gjs/licenses/`, and the sync status words (`statusText`, `ago`) moved to the host package, which Emptio's `list/status.ts` re-exports. Emptio's tests, smoke check and 17 screen checks pass as before. Its CI jobs keep their names and now use composite actions shared with Mixtura's. [Native Linux app](native-linux.md).
