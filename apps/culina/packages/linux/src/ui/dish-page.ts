@@ -38,9 +38,11 @@ export function dishPage(ui: Ui, id: string): Page {
   const cook = barButton(t.dish.cook, true, () => ui.push(cookPage(ui, classic.id)));
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
   bar.append(cook);
-  view.add_bottom_bar(bar);
+  view.add_bottom_bar(new Adw.Clamp({ maximum_size: 600, child: bar }));
 
   const stepper = portionsRow();
+  const portionGroup = new Adw.PreferencesGroup();
+  portionGroup.add(stepper.row);
   let portions = portionsOf(classic.id);
   const stepsOf = (): StepView[] => {
     const steps = cookView(classic, portions, ui.lang, ui.nameOf, techniques(), new Set());
@@ -130,12 +132,12 @@ export function dishPage(ui: Ui, id: string): Page {
     const top = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 6 });
     top.append(text(shown.name, 'title-2'));
     top.append(text(s.classics.originalName(shown.originalName), 'dim-label'));
-    const portionGroup = new Adw.PreferencesGroup();
-    portionGroup.add(stepper.row);
     body.append(top);
     body.append(portionGroup);
 
     const ingredients = new Adw.PreferencesGroup({ title: t.dish.ingredients });
+    const lists = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 18 });
+    ingredients.add(lists);
     body.append(ingredients);
     const several = shown.components.length > 1;
     for (const component of shown.components) {
@@ -143,13 +145,13 @@ export function dishPage(ui: Ui, id: string): Page {
       const box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 6 });
       if (several) box.append(text(component.name, 'heading'));
       box.append(lineList(ui, component.lines));
-      ingredients.add(box);
+      lists.append(box);
     }
     if (shown.slots.length > 0) {
       const box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 6 });
       if (several) box.append(text(s.classics.dishHeading, 'heading'));
       box.append(lineList(ui, shown.slots));
-      ingredients.add(box);
+      lists.append(box);
     }
 
     const steps = stepsOf();

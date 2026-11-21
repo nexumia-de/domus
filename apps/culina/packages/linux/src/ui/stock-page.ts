@@ -25,7 +25,7 @@ export function stockPage(ui: Ui): Page {
   view.add_top_bar(head.header);
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
   bar.append(search);
-  view.add_bottom_bar(bar);
+  view.add_bottom_bar(new Adw.Clamp({ maximum_size: 600, child: bar }));
   const page = new Adw.NavigationPage({ title: t.stock.title, tag: 'stock', child: view });
 
   const entries = [...session.catalogue().values()];

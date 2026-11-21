@@ -127,7 +127,8 @@ application.connect('activate', () => {
     },
     keepAwake(reason) {
       const cookie = application.inhibit(window, Gtk.ApplicationInhibitFlags.IDLE, reason);
-      return () => application.uninhibit(cookie);
+      // A session without an inhibit service (Broadway) gives 0: there is nothing to undo.
+      return () => (cookie > 0 ? application.uninhibit(cookie) : undefined);
     },
     nameOf(id) {
       const entry = session.catalogue().get(id);

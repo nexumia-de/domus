@@ -43,7 +43,7 @@ export function cookPage(ui: Ui, id: string): Page {
   });
   bar.attach(back, 0, 0, 1, 1);
   bar.attach(next, 1, 0, 2, 1);
-  view.add_bottom_bar(bar);
+  view.add_bottom_bar(new Adw.Clamp({ maximum_size: 600, child: bar }));
   const page = new Adw.NavigationPage({ title: head.title.get_title(), tag: `cook-${id}`, child: view });
 
   if (classic === undefined) {

@@ -25,7 +25,7 @@ export function startPage(ui: Ui, menu: any): Page {
   view.add_top_bar(head.header);
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
   bar.append(barButton(t.start.cookable, true, () => ui.push(cookablePage(ui))));
-  view.add_bottom_bar(bar);
+  view.add_bottom_bar(new Adw.Clamp({ maximum_size: 600, child: bar }));
   const page = new Adw.NavigationPage({ title: t.appName, tag: 'start', child: view });
 
   let shown = '';
