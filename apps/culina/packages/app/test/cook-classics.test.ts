@@ -8,7 +8,8 @@ import { findClassics, withCatalogue } from '../src/cook/classic-finder';
 import { classicLookup, classicRow } from '../src/cook/classic-rows';
 import type { CookSource } from '../src/cook/input';
 import { lookupOf } from '../src/cook/lookup';
-import { parseClassicFinderFilters, parseCookFilters } from '../src/prefs';
+import { parseCookFilters } from '../src/prefs';
+import type { CookFilters } from '../src/prefs';
 import type { IngredientRecord } from '../src/records';
 import { loadContent, resetContent } from '../src/classics/content';
 import { EXAMPLE_CLASSICS, EXAMPLE_SUBSTITUTES, PAN_DISH, SECOND_DISH } from './classics-fixture';
@@ -34,7 +35,7 @@ const source = (...ids: string[]): CookSource => ({
 });
 const ask = (
   stock: CookSource,
-  filters = { lacking: 3 },
+  filters: CookFilters = { lacking: 3 },
   classics: readonly Classic[] = EXAMPLE_CLASSICS,
 ) => {
   const found = findClassics(classics, stock, catalogue, TODAY, filters, 'en');
@@ -85,19 +86,17 @@ test('an entry opens the dish view of the classic', () => {
   expect(row.key).toBe(`classic:${row.id}`);
 });
 
-test('the country and the meat filter only drop entries, in the engine order', () => {
+test('the role only drops entries, in the engine order; an old country or meat field is ignored', () => {
   const stock = source('fdc-173410', 'fdc-171413', 'fdc-173468');
   const all = ask(stock);
-  const de = ask(stock, { lacking: 3, country: 'de' } as never);
-  const free = ask(stock, { lacking: 3, meatFree: true } as never);
-  expect(all.shown.map((c) => c.id)).toEqual(expect.arrayContaining([PAN_DISH.id, SECOND_DISH.id]));
-  expect(de.shown.every((c) => c.country === 'de')).toBe(true);
-  expect(free.shown.every((c) => c.vegetarian)).toBe(true);
-  expect(de.shown.map((c) => c.id)).toEqual(
-    all.shown.filter((c) => c.country === 'de').map((c) => c.id),
+  const main = ask(stock, { lacking: 3, role: 'main' });
+  expect(main.shown.map((c) => c.id)).toEqual(
+    all.shown.filter((c) => c.roles.includes('main')).map((c) => c.id),
   );
-  expect(ask(stock, { lacking: 3, country: 'fr' } as never).shown).toEqual([]);
-  expect(de.matching).toBe(EXAMPLE_CLASSICS.filter((c) => c.country === 'de').length);
+  // What an older version stored beside the threshold is no filter any more.
+  expect(ask(stock, { lacking: 3, country: 'fr', meatFree: true } as never).shown).toEqual(
+    all.shown,
+  );
 });
 
 test('with nothing that matches, the nearest are named, fewest lacking first', () => {
@@ -108,13 +107,8 @@ test('with nothing that matches, the nearest are named, fewest lacking first', (
   expect(lacking).toEqual([...lacking].sort((a, b) => a - b));
 });
 
-test('the web finder no longer reads a country or meat choice; the Linux variant still does', () => {
-  const old = { lacking: 2, country: 'it', meatFree: true };
-  expect(parseCookFilters(old)).toEqual({ lacking: 2 });
-  expect(parseClassicFinderFilters(old)).toEqual({ lacking: 2, country: 'it', meatFree: true });
-  expect(parseClassicFinderFilters({ lacking: 2, country: 'xx', meatFree: 'yes' })).toEqual({
-    lacking: 2,
-  });
+test('the kept finder choices read role and threshold only', () => {
+  expect(parseCookFilters({ lacking: 2, country: 'it', meatFree: true })).toEqual({ lacking: 2 });
 });
 
 test('a shipped substitute effect applies to a shipped dish as to an own one', async () => {

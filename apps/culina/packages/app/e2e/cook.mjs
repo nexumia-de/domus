@@ -1,7 +1,7 @@
 // The finder in a browser, on the fixture notebook and stock with a fixed date: the own entries on
 // screen are the engine's ranking on the same data, dishes in the first group and components and
 // ratio cards in the second, every entry shows its reason, filters work and survive a reload, an
-// old country choice is carried into the dish filter, start from one ingredient (also by a German
+// old country or meat choice narrows nothing, start from one ingredient (also by a German
 // name), use up first, the empty states, 360 px without horizontal scroll, no console error or
 // foreign request, offline. The shipped dishes in the same list are checked with fictional content
 // in classics-finder.mjs; here only the own entries are compared.
@@ -472,7 +472,49 @@ const offline = async (browser, origin) => {
   return problems;
 };
 
-const carried = async (browser, origin) => {
+/**
+ * A dish filter chosen elsewhere: on "What uses <ingredient>" it does not narrow; on What can I
+ * cook, where it hides everything, the empty state names the choices and "Show all" empties it.
+ */
+const chosenElsewhere = async (browser, origin) => {
+  const { context, page, problems } = await fresh(browser, origin);
+  await page.evaluate(() =>
+    localStorage.setItem('culina.dishes', JSON.stringify({ course: 'main' })),
+  );
+  await reopen(page, origin, 'cook/cook-leek/with');
+  const uses = usesKeys('cook-leek', 1);
+  const expected = ranked(1).candidates.filter((c) => uses.has(`${c.kind}:${c.id}`));
+  check(
+    expected.length >= 4 &&
+      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(expected))) &&
+      (await page.locator('.dish-filter').count()) === 0 &&
+      (await page.locator('.cook-parts-hidden').count()) === 0,
+    `${label}: a course chosen elsewhere does not narrow "What uses Leek", and its controls are not there`,
+  );
+  await layout(page, `${label} (uses, with a dish filter kept)`);
+  await reopen(page, origin, 'cook');
+  await lackingSelect(page).selectOption('2');
+  await page.locator('.cook-show-all').waitFor();
+  const empty = (await page.locator('.cook-empty').innerText()).replace(/\s+/g, ' ');
+  check(
+    empty.includes('Nothing matches these choices.') && empty.includes('Chosen: Main'),
+    `${label}: the empty state says which dish filter choices hide everything (${empty})`,
+  );
+  await layout(page, `${label} (hidden by the dish filter)`);
+  await page.locator('.cook-show-all').click();
+  await page.locator('.cook-parts').waitFor();
+  check(
+    (await page.evaluate(() => localStorage.getItem('culina.dishes'))) === '{}' &&
+      (await lackingSelect(page).inputValue()) === '2' &&
+      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(ranked(2).candidates))),
+    `${label}: "Show all" empties the dish filter and keeps the finder's own choices`,
+  );
+  await context.close();
+  return problems;
+};
+
+/** An old entry with the classics' country and meat choice changes nothing and stops nothing. */
+const oldEntry = async (browser, origin) => {
   const { context, page, problems } = await fresh(browser, origin);
   await page.evaluate(() => {
     localStorage.setItem(
@@ -481,29 +523,29 @@ const carried = async (browser, origin) => {
     );
     localStorage.removeItem('culina.dishes');
   });
-  await reopen(page, origin, 'cook');
-  const kept = await page.evaluate(() => ({
-    cook: localStorage.getItem('culina.cook'),
-    dishes: JSON.parse(localStorage.getItem('culina.dishes') ?? '{}'),
-  }));
+  for (const hash of ['cook', 'cook/use-up', 'cook']) await reopen(page, origin, hash);
+  const kept = () =>
+    page.evaluate(() => ({
+      cook: localStorage.getItem('culina.cook'),
+      dishes: localStorage.getItem('culina.dishes'),
+    }));
+  const first = await kept();
   check(
-    kept.cook === JSON.stringify({ role: 'main', lacking: 2 }) &&
-      kept.dishes.cuisine === 'it' &&
-      kept.dishes.meatFree === true,
-    `${label}: an old country and meat choice are carried into the dish filter once (${kept.cook} ${JSON.stringify(kept.dishes)})`,
+    first.dishes === null &&
+      !(await page.locator('.dish-filter-meat-free input').isChecked()) &&
+      (await page.locator('.cook-parts').count()) === 1,
+    `${label}: an old country and meat choice do not narrow anything: culina.dishes untouched (${first.dishes})`,
   );
   check(
-    (await page.locator('.dish-filter-meat-free input').isChecked()) &&
-      (await lackingSelect(page).inputValue()) === '2' &&
+    (await lackingSelect(page).inputValue()) === '2' &&
       (await roleSelect(page).inputValue()) === 'main',
-    `${label}: the carried choices are shown on the filter`,
+    `${label}: the old entry's role and threshold are still read`,
   );
+  // The next time the finder's own choices are written, the old fields fall away.
+  await lackingSelect(page).selectOption('1');
   check(
-    (await page.locator('.cook-parts').count()) === 0 &&
-      (await page.locator('.cook-parts-hidden').count()) +
-        (await page.locator('.cook-empty').count()) >=
-        1,
-    `${label}: with a dish filter chosen, components and ratio cards are left out and it says so`,
+    (await kept()).cook === JSON.stringify({ role: 'main', lacking: 1 }),
+    `${label}: the old fields fall away when the entry is written (${(await kept()).cook})`,
   );
   await page.evaluate(() => localStorage.setItem('culina.cook', '{"lacking":'));
   await reopen(page, origin, 'cook');
@@ -525,7 +567,8 @@ export const cook = async (browser, server) => {
     ...(await clock(browser, origin)),
     ...(await desktop(browser, origin)),
     ...(await offline(browser, origin)),
-    ...(await carried(browser, origin)),
+    ...(await oldEntry(browser, origin)),
+    ...(await chosenElsewhere(browser, origin)),
   ];
   await empties(browser, origin);
   check(

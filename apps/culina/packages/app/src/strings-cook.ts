@@ -81,14 +81,7 @@ export const cookStrings = {
   offer: (invite: string, names: string): string => `You could add ${invite}: ${names}`,
   /** The entry's whole link, for a screen reader. */
   openLabel: (name: string): string => `Open ${name}`,
-  // The shipped classics. The country and meat texts and "Needs" are read by the native Linux app,
-  // which still filters the classics by itself; the web app uses the one dish filter.
-  countryLabel: 'Country',
-  countryAny: 'All countries',
-  meatLabel: 'Meat and fish',
-  meatAny: 'With or without',
-  meatFree: 'Without meat and fish',
-  classicsListLabel: 'What the stock allows for the classics',
+  // "Needs", read by the native Linux app for what a shipped dish lacks.
   needsHeading: 'Needs',
   /** The lines the catalogue has no ingredient for yet; they are not counted. */
   notInCatalogue: (names: string): string => `Not in the catalogue yet, so not counted: ${names}`,
@@ -103,7 +96,7 @@ export const cookStrings = {
   startFoundThrough: (name: string): string => `also called ${name}`,
   withHeading: (name: string): string => `What uses ${name}`,
   withNote:
-    'Only your own components and dishes that use it or something it can stand in for; the dish filter applies to the dishes.',
+    'Only your own components and dishes that use it or something it can stand in for, whatever is chosen on the dish filter.',
   withClear: 'Show everything',
   withUnknown: 'That ingredient is no longer in your notebook.',
   // Empty states
@@ -113,6 +106,8 @@ export const cookStrings = {
   addComponent: 'Add a component',
   importLink: 'Import a recipe',
   emptyNoMatch: 'Nothing matches these choices.',
+  /** The active choices of the dish filter, beside an empty list. */
+  filterChosen: (choices: string): string => `Chosen: ${choices}`,
   emptyNothingRelated: 'Nothing in your notebook uses what is ticked yet.',
   nearestHeading: 'The nearest ones',
   nearest: (name: string, lacks: string): string => `${name} lacks ${lacks}`,

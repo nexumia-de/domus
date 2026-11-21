@@ -59,6 +59,18 @@ const cookBar = async (page, label) => {
 };
 const step = (page, n, total) =>
   page.getByRole('heading', { level: 2, name: `Step ${n} of ${total}` });
+/**
+ * The cooking screen draws the handling notes and the "Instead" buttons of the step's lines once
+ * the catalogue has loaded (after the step heading): both need the catalogue's tree. Waits for the
+ * button on the butter line, so a count of handling notes is read after that draw, whether it
+ * should find one or none. (A name alone is no sign: once a dish is kept, the notebook has it.)
+ */
+const catalogueDrawn = (page) =>
+  page
+    .locator('.cook-step')
+    .getByRole('button', { name: /^(Instead|Statt)/ })
+    .first()
+    .waitFor();
 
 const flow = async (browser, origin, width) => {
   const label = `${width}px classics`;
@@ -247,6 +259,7 @@ const flow = async (browser, origin, width) => {
   await page.getByRole('link', { name: 'Cook step by step' }).click();
   await heading(page, PAN.name.en).waitFor();
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check((await page.locator('.cook-step-text').count()) === 1, `${label}: one step on the screen`);
   check(await page.getByText('Time: 5 min').isVisible(), `${label}: the time of the step`);
   check(
@@ -347,6 +360,7 @@ const flow = async (browser, origin, width) => {
   );
   await page.getByRole('button', { name: 'Back' }).click();
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(true, `${label}: Back returns to step 1`);
   await page.locator('.cook-whole summary').click();
   check(
@@ -415,6 +429,7 @@ const flow = async (browser, origin, width) => {
   // The next dish: the learned technique has no note; a wanted line explains why it cannot be kept.
   await openWith(page, origin, `classic/${SECOND.id}/cook`);
   await step(page, 1, 2).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.getByRole('heading', { name: NOTE }).count()) === 0,
     `${label}: the learned skill's note is not shown on the next dish`,
@@ -455,6 +470,7 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${SECOND.id}/cook`);
   await step(page, 1, 2).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.getByRole('heading', { name: NOTE }).count()) === 1,
     `${label}: the note shows again after Teach again`,
@@ -479,6 +495,7 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${PAN.id}/cook`);
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.locator('.handling-note').count()) === 0,
     `${label}: the rule is gone on another dish too`,
@@ -496,6 +513,7 @@ const flow = async (browser, origin, width) => {
   await page.getByText(`The note for ${TECHNIQUE.name.en} is shown again.`).waitFor();
   await openWith(page, origin, `classic/${PAN.id}/cook`);
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.locator('.handling-note').count()) === 1,
     `${label}: Teach again brings the rule back`,

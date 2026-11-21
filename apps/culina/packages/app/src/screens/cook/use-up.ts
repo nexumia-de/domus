@@ -5,7 +5,6 @@
 // from the engine's `useUpFirst`, the order of what uses an item from its one ranking.
 import { isEmptyFilter, readDishFilter } from '../../browse/filter';
 import { loadNames } from '../../classics/names';
-import { carryOldCookChoices } from '../../cook/carry';
 import { dishEntriesByKey } from '../../browse/entries';
 import { shippedNow } from '../../cook/entries';
 import { find } from '../../cook/finder';
@@ -32,7 +31,6 @@ export const useUpScreen = (): HTMLElement => {
   }
   const today = cookToday();
   const store = browserStore();
-  carryOldCookChoices(store);
   const filters = readCookFilters(store);
   const filter = readDishFilter(store);
   section.append(el('p', 'muted cook-asof', t.asOf(today)));

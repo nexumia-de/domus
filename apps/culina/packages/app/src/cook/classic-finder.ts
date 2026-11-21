@@ -3,11 +3,12 @@
 // dish). The ingredient tree is the notebook's, completed by the shipped catalogue, so that a line
 // naming a group ("Milk") is met by stock of a member that the notebook has not copied the group
 // of. No rule and no arithmetic here. The web app merges the result with its own dishes
-// (./one-list.ts); `findClassics` with its own country and meat filters serves the native Linux app.
+// (./one-list.ts); `findClassics`, with the nearest when nothing fits, serves the native Linux app,
+// which narrows by the dish filter itself.
 import { classicsMakeable } from '@culina/engine';
 import type { Classic, ClassicCandidate, Lang } from '@culina/engine';
 import type { IngredientRecord } from '../records';
-import type { ClassicFinderFilters } from '../prefs';
+import type { CookFilters } from '../prefs';
 import { cookInput } from './input';
 import type { CookSource } from './input';
 
@@ -24,8 +25,6 @@ export type FoundClassics =
       shown: ClassicCandidate[];
       /** When `shown` is empty: the nearest that pass the other filters, fewest lacking first. */
       nearest: ClassicCandidate[];
-      /** Classics that pass the country and meat filters, before the number that may lack. */
-      matching: number;
       /** Ingredient names for the rows: notebook first, then catalogue. */
       ingredients: ReadonlyMap<string, IngredientRecord>;
     };
@@ -80,17 +79,15 @@ export const classicsWithin = (
   };
 };
 
-const passes = (c: ClassicCandidate, filters: ClassicFinderFilters): boolean =>
-  (filters.country === undefined || c.country === filters.country) &&
-  (filters.meatFree !== true || c.vegetarian) &&
-  (filters.role === undefined || c.roles.includes(filters.role));
+const passes = (c: ClassicCandidate, filters: CookFilters): boolean =>
+  filters.role === undefined || c.roles.includes(filters.role);
 
 export const findClassics = (
   classics: readonly Classic[],
   source: CookSource,
   catalogue: ReadonlyMap<string, IngredientRecord>,
   today: string,
-  filters: ClassicFinderFilters,
+  filters: CookFilters,
   lang: Lang,
 ): FoundClassics => {
   const within = classicsWithin(classics, source, catalogue, today, filters.lacking, lang);
@@ -107,10 +104,5 @@ export const findClassics = (
         .slice(0, NEAREST);
     }
   }
-  const matching = classics.filter(
-    (c) =>
-      (filters.country === undefined || c.country === filters.country) &&
-      (filters.meatFree !== true || c.vegetarian),
-  ).length;
-  return { ok: true, shown, nearest, matching, ingredients: within.ingredients };
+  return { ok: true, shown, nearest, ingredients: within.ingredients };
 };
