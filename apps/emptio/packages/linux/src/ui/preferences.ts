@@ -8,7 +8,7 @@ import { applyStyle, joinByLink } from '@nexumia-de/gjs';
 import type { Ui } from './context';
 
 export function showPreferences(ui: Ui, store: Store): void {
-  const { app, t, n, prefs } = ui;
+  const { app, n, prefs } = ui;
   const dialog = new Adw.PreferencesDialog({ title: n.menu.preferences });
   const page = new Adw.PreferencesPage();
 
