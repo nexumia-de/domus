@@ -28,6 +28,7 @@ import { showToast } from '../shell/toast';
 import { strings } from '../strings';
 import { characterRow } from './character-chips';
 import { detailActions } from './detail-actions';
+import { courseLabel, cuisineLabel } from './dish-filter';
 import { slotsSection } from './dish-slots';
 import { storeText } from './editor/store-text';
 import { rawBlock } from './raw-table';
@@ -39,6 +40,12 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   const back = el('a', 'back-link', strings.dishes.back);
   back.href = hashFor('dishes');
   card.append(back, el('h1', undefined, dish.name));
+  // Course and cuisine where the cook stated them, in one quiet line.
+  const kind = [
+    ...(dish.course === undefined ? [] : [courseLabel(dish.course)]),
+    ...(dish.cuisine === undefined ? [] : [cuisineLabel(dish.cuisine)]),
+  ];
+  if (kind.length > 0) card.append(el('p', 'note-quiet dish-kind', kind.join(' · ')));
   if (dish.note !== undefined) card.append(el('p', 'muted', dish.note));
   card.append(versionLines('dishes', dish));
   const isHead = headOfFamily('dishes', dish.id)?.id === dish.id;

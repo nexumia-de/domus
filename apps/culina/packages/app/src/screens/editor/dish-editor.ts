@@ -1,6 +1,9 @@
-// The dish editor: name, portions, role slots with a filling (component or ingredient) and an
+// The dish editor: name, portions, course and cuisine, role slots with a filling (component or ingredient) and an
 // amount per portion. Same draft and save rules as the component editor.
+import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
 import { roleLabel } from '../../components/names';
+import { courseLabel, cuisineLabel } from '../dish-filter';
+import { selectField } from '../fields';
 import { stepsEditor } from './component-steps-editor';
 import { openRoles } from '../../dishes/roles';
 import {
@@ -138,6 +141,33 @@ const build = (
   portions.control.addEventListener('input', () => {
     form.portions = portions.control.value;
     portionsError.clear();
+    changed();
+  });
+  // Course and cuisine: optional, the same lists as a classic states; "not stated" comes first.
+  const course = selectField(
+    t.courseLabel,
+    [
+      { value: '', label: t.notStated },
+      ...COURSE_IDS.map((c) => ({ value: c, label: courseLabel(c) })),
+    ],
+    form.course ?? '',
+  );
+  course.control.classList.add('dish-course');
+  course.control.addEventListener('change', () => {
+    form.course = course.control.value;
+    changed();
+  });
+  const cuisine = selectField(
+    t.cuisineLabel,
+    [
+      { value: '', label: t.notStated },
+      ...COUNTRY_CODES.map((c) => ({ value: c, label: cuisineLabel(c) })),
+    ],
+    form.cuisine ?? '',
+  );
+  cuisine.control.classList.add('dish-cuisine');
+  cuisine.control.addEventListener('change', () => {
+    form.cuisine = cuisine.control.value;
     changed();
   });
   const note = areaField(t.noteLabel, form.note);
@@ -404,6 +434,8 @@ const build = (
     nameError.node,
     portions.wrap,
     portionsError.node,
+    course.wrap,
+    cuisine.wrap,
     note.wrap,
     el('h2', undefined, t.slotsHeading),
     list,

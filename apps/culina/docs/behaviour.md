@@ -548,11 +548,29 @@ note of an existing line are kept as they are.
   shown under the lines as information, in the neutral words of the ratio
   card, and never blocks saving. **Test:** `e2e/editor-more.mjs`.
 
-**Dish editor.** Name, portions (a whole number or empty), a note, and role
-slots: a role, a filling (a component or an ingredient, from the same
-picker) and an amount per portion. A stored slot always has a filling; a
-slot without one lives only in the draft. Open roles remain derived on the
-dish screen. **Test:** `test/notebook.test.ts`, `e2e/editor-more.mjs`.
+**Dish editor.** Name, portions (a whole number or empty), course and
+cuisine, a note, and role slots: a role, a filling (a component or an
+ingredient, from the same picker) and an amount per portion. A stored slot
+always has a filling; a slot without one lives only in the draft. Open
+roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
+`e2e/editor-more.mjs`.
+
+- **Course and cuisine (since 2026-11-21)** are two labelled selects of
+  44 px, "Course" and "Cuisine", each starting with "Not stated", which
+  stores no field. The courses are a classic's (starter to snack); the
+  cuisines are the four countries the app names (Germany, Italy, France,
+  Spain), [why only these](data-model.md#dish). They are fields of the
+  version like the name: a change is a new version, and the history says
+  "Course: empty → Main course". A copy of a classic keeps its course and
+  its country as the cuisine. The dish screen shows what is stated in one
+  quiet line under the name ("Main course · Italy"); nothing when neither
+  is. With them, the [one filter](#one-filter-over-every-dish) finds a dish
+  of the notebook by course and cuisine as it finds a classic. An older
+  draft without the fields saves without them. **Test:**
+  `test/dish-kind.test.ts` (form, schema, export and import, the copy, the
+  history), `test/browse.test.ts` (the entry and the filter),
+  `e2e/editor-more.mjs` (the selects at 360 px: 44 px, "Not stated"
+  first, saved, shown on the dish screen, read back by Edit).
 
 **What blocks saving.** Only what cannot be stored: no name, no line or
 slot, a line or slot without its ingredient or filling, an amount that is

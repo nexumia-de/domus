@@ -23,7 +23,7 @@ export interface DishEntry {
   href: string;
   /** Absent when the dish states none. */
   course?: Course;
-  /** The cuisine as a country code (`de`, `it`, `fr`, `es`, or what the user gave); absent when none is stated. */
+  /** The cuisine as a country code (`de`, `it`, `fr`, `es`: a classic's country or a dish's `cuisine`); absent when none is stated. */
   cuisine?: string;
   /**
    * True: without meat and fish. For a shipped dish this is set by hand in its file; for a dish
@@ -65,6 +65,8 @@ export const entryOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): Dis
     id: dish.id,
     name: dish.name,
     href: `#/dishes/${encodeURIComponent(dish.id)}`,
+    ...(dish.course === undefined ? {} : { course: dish.course }),
+    ...(dish.cuisine === undefined ? {} : { cuisine: dish.cuisine }),
     ...(meatFree === undefined ? {} : { meatFree }),
     characters,
     complete: dish.slots.length > 0 && dish.slots.every((s) => s.amount !== undefined),

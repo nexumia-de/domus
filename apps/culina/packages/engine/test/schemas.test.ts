@@ -2,6 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
+import { COUNTRY_CODES, COURSE_IDS } from '../src/index';
 
 const schemaDir = fileURLToPath(new URL('../schemas/', import.meta.url));
 const docPath = fileURLToPath(new URL('../../../docs/data-model.md', import.meta.url));
@@ -165,6 +166,21 @@ describe('invalid cases named by the issue', () => {
     expect(fails('catalogue', (d: Doc) => delete d.ingredients[0].densityGPerMl.source)).toBe(true);
     expect(fails('catalogue', (d: Doc) => (d.ingredients[0].id = 'Not A Slug'))).toBe(true);
     expect(fails('catalogue', (d: Doc) => (d.ingredients[0]['x-fdc'] = { id: 1 }))).toBe(false);
+  });
+  test('a dish states a course and a cuisine of the lists a classic uses, or none', () => {
+    expect(fails('dish', (d: Doc) => delete d.course)).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'it'))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.course = 'brunch'))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.course = ''))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'jp'))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'IT'))).toBe(true);
+  });
+  test('the course and country lists of the engine equal the schema', () => {
+    const common = read(`${schemaDir}common.schema.json`) as {
+      $defs: { course: { enum: string[] }; country: { enum: string[] } };
+    };
+    expect([...COURSE_IDS]).toEqual(common.$defs.course.enum);
+    expect([...COUNTRY_CODES]).toEqual(common.$defs.country.enum);
   });
 });
 

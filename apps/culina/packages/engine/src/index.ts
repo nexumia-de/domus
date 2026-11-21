@@ -320,6 +320,7 @@ export type {
 } from './classics/makeable';
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
+export { COUNTRY_CODES, COURSE_IDS } from './classics/types';
 export type {
   AmountWord,
   Classic,

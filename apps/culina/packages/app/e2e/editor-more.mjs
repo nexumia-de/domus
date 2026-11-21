@@ -68,6 +68,22 @@ const dish = async (page, origin) => {
   await layout(page, `${label} (empty)`);
   await page.getByLabel('Name', { exact: true }).fill('My plate');
   await page.getByLabel('Portions', { exact: true }).fill('3');
+  const course = page.getByLabel('Course', { exact: true });
+  const cuisine = page.getByLabel('Cuisine', { exact: true });
+  const kindBoxes = [await course.boundingBox(), await cuisine.boundingBox()];
+  const firstChoices = [
+    await course.locator('option').first().textContent(),
+    await cuisine.locator('option').first().textContent(),
+  ];
+  check(
+    kindBoxes.every((b) => b !== null && b.height >= 44 && b.x + b.width <= 360) &&
+      same(firstChoices, ['Not stated', 'Not stated']) &&
+      (await course.inputValue()) === '' &&
+      (await cuisine.inputValue()) === '',
+    `${label}: Course and Cuisine are selects of 44 px that start at "Not stated" (${JSON.stringify(kindBoxes)})`,
+  );
+  await course.selectOption({ label: 'Main course' });
+  await cuisine.selectOption({ label: 'Italy' });
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill('herb oil');
   await page.getByRole('button', { name: /Example: Herb oil/ }).click();
@@ -91,6 +107,15 @@ const dish = async (page, origin) => {
       stored.version.family === stored.id,
     `${label}: the dish stores its slots, the component with 15 g per portion`,
   );
+  check(
+    stored.course === 'main' && stored.cuisine === 'it',
+    `${label}: the dish stores course "main" and cuisine "it" (${stored.course}, ${stored.cuisine})`,
+  );
+  const kindLine = (await page.locator('.dish-kind').textContent())?.trim();
+  check(
+    kindLine === 'Main course · Italy',
+    `${label}: the dish screen shows course and cuisine in one quiet line (${kindLine})`,
+  );
   const rows = await page
     .locator('.slots-table tbody tr')
     .evaluateAll((trs) =>
@@ -106,6 +131,11 @@ const dish = async (page, origin) => {
   check(
     (await page.getByLabel('Name', { exact: true }).inputValue()) === 'My plate',
     `${label}: Edit opens the stored dish`,
+  );
+  check(
+    (await page.getByLabel('Course', { exact: true }).inputValue()) === 'main' &&
+      (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === 'it',
+    `${label}: Edit reads course and cuisine back into the selects`,
   );
   await page.getByRole('button', { name: 'Move down, Line 1, Example: Herb oil' }).click();
   check(

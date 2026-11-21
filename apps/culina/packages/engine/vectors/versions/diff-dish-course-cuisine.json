@@ -1,0 +1,69 @@
+{
+  "id": "diff-dish-course-cuisine",
+  "description": "A course is given where none was stated, and the cuisine is taken away: both are fields of the version, in the order portions, course, cuisine, note",
+  "inputs": {
+    "kind": "diff_dish",
+    "before": {
+      "id": "d1",
+      "name": "Example plate",
+      "cuisine": "it",
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "ingredient",
+            "id": "chicken"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "d1",
+        "date": "2026-11-01"
+      }
+    },
+    "after": {
+      "id": "d2",
+      "name": "Example plate",
+      "course": "main",
+      "slots": [
+        {
+          "role": "main",
+          "ref": {
+            "kind": "ingredient",
+            "id": "chicken"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          }
+        }
+      ],
+      "version": {
+        "family": "d1",
+        "date": "2026-11-08",
+        "parent": "d1"
+      }
+    }
+  },
+  "expected": {
+    "empty": false,
+    "changes": [
+      {
+        "type": "field",
+        "field": "course",
+        "after": "main"
+      },
+      {
+        "type": "field",
+        "field": "cuisine",
+        "before": "it"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of stored fields, no kitchen figure is involved."
+}
