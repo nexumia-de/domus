@@ -113,14 +113,13 @@ space; the web app can tick several).
 The version lives only in the metainfo's newest stable `<release>`;
 `build.mjs` reads it for the About dialog. The first, 0.1.0 (2026-11-21),
 was written by hand because the toolkit's `release.py` needs an existing
-release; later ones are prepared from `changelog.d/` (`release.toml`):
-
-```sh
-python3 ../phosh-toolkit/scripts/release.py --root apps/mixtura/packages/linux prepare
-```
-
-then merge, and push the tag `mixtura-v<version>` on the merged commit.
-CI runs on that commit, and the job `mixtura-release` checks the tag
+release. Releases are automatic ([release workflow](../../../.github/workflows/release.yml),
+the toolkit's reusable `release.yml` with `tag-prefix` from `release.toml`):
+a pull request that changes the native package adds a fragment in
+`changelog.d/` (or gets the label `no-changelog`); on Mondays, or by hand
+(Actions, Release, app mixtura), the fragments become a pull request
+"Release mixtura-v<version>"; merging it tags `mixtura-v<version>`, which
+runs CI on that commit. The job `mixtura-release` checks the tag
 against the metainfo and attaches both Flatpak bundles to the GitHub
 Release of the tag. phosh-apps publishes the newest such release to the
 shared Flatpak repository (`flatpak.nexumia.de`; the owner adds the line
