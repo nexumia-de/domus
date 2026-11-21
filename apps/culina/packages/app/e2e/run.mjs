@@ -6,6 +6,7 @@ import { classics } from './classics.mjs';
 import { classicsFinder } from './classics-finder.mjs';
 import { components } from './components.mjs';
 import { cook } from './cook.mjs';
+import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
 import { dishCharacters } from './dish-characters.mjs';
 import { dishSwap } from './dish-swap.mjs';
@@ -44,6 +45,7 @@ try {
   await dishCook(browser, server);
   await dishSwap(browser, server);
   await dishCharacters(browser, server);
+  await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);
   await store(browser, server);

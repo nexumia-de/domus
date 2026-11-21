@@ -1,4 +1,4 @@
-// The classics in a browser, on the fictional example dishes: start -> country -> dish -> step by
+// The classics in a browser, on the fictional example dishes: start -> the list (old country address) -> dish -> step by
 // step -> mark a skill as learned -> the note is gone on the next dish -> Settings "Teach again" ->
 // keep in the notebook. At 360 x 720 and at desktop size: no horizontal scroll, targets of at least
 // 44 x 44, no console error, nothing focused when a screen opens, focus moves on a step change.
@@ -17,7 +17,7 @@ import {
 import { nutritionSection } from './classics-nutrition.mjs';
 
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
-const START = 'What do you want to cook?';
+const START = 'What do you feel like?';
 
 const fresh = async (browser, origin, width) => {
   const context = await browser.newContext({
@@ -75,36 +75,35 @@ const flow = async (browser, origin, width) => {
       `${label}: the tool "${tool}" is still reachable from Start`,
     );
   }
-  const countries = await page.locator('.country-list li').allInnerTexts();
+  // Start lists the shipped dishes in the one list of every dish (e2e/dish-browse.mjs has the
+  // filter); the old country lists are that list with a filter.
+  const shown = await page.locator('.dish-row-shipped .entry-name').allInnerTexts();
   check(
-    JSON.stringify(countries.map((t) => t.trim())) ===
-      JSON.stringify(['Germany, 1 dish', 'Italy, 1 dish', 'France, 0 dishes', 'Spain, 0 dishes']),
-    `${label}: the four countries with their counts (${countries.join(' | ')})`,
+    JSON.stringify(shown) === JSON.stringify([PAN.name.en, SECOND.name.en]),
+    `${label}: Start lists the shipped dishes (${shown.join(' | ')})`,
   );
   await layout(page, `${label} start`);
 
-  // Country list, and an empty country.
-  await page.getByRole('link', { name: 'France, 0 dishes' }).click();
-  await heading(page, 'France').waitFor();
+  // The old address of an empty country: the list says nothing fits and offers Show all.
+  await openWith(page, origin, 'classics/fr');
+  await heading(page, 'Dishes').waitFor();
   check(
-    (await page.locator('.empty-country').count()) === 1,
-    `${label}: an empty country shows a quiet empty state`,
+    (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.' &&
+      (await page.getByLabel('Cuisine', { exact: true }).locator('option:checked').innerText()) ===
+        'France',
+    `${label}: an empty country shows a quiet empty state, the country named`,
   );
-  await page.goBack();
-  await page.getByRole('link', { name: 'Germany, 1 dish' }).click();
-  await heading(page, 'Germany').waitFor();
-  const row = (await page.locator('.classic-link').innerText()).replace(/\s+/g, ' ');
+  await openWith(page, origin, 'classics/de');
+  await heading(page, 'Dishes').waitFor();
+  const row = (await page.locator('.dish-row').innerText()).replace(/\s+/g, ' ');
   check(
-    row.includes(PAN.name.en) &&
-      row.includes('Main course') &&
-      row.includes('Without meat and fish'),
-    `${label}: the dish row has name, course and meat flag (${row})`,
+    row.includes(PAN.name.en) && row.includes('Main course') && row.includes('Germany'),
+    `${label}: the dish row has name, course and cuisine (${row})`,
   );
   await layout(page, `${label} country`);
-  await page.getByRole('link', { name: 'Italy' }).count();
 
   // Dish view.
-  await page.locator('.classic-link').click();
+  await page.locator('.dish-row').click();
   await heading(page, PAN.name.en).waitFor();
   check(
     await page.getByText(`Original name: ${PAN.originalName}`).isVisible(),
@@ -520,7 +519,7 @@ const flow = async (browser, origin, width) => {
   await page.waitForFunction(() => document.documentElement.lang === 'en');
   await openWith(page, origin, `classics/it`);
   check(
-    (await page.locator('.classic-link').innerText()).includes(SECOND.name.en),
+    (await page.locator('.dish-row').innerText()).includes(SECOND.name.en),
     `${label}: Follow device shows English here`,
   );
   await layout(page, `${label} dish (German list reset)`);
@@ -541,10 +540,9 @@ const empty = async (browser, origin) => {
   );
   await page.goto(`${origin}/?no-sw#/start`);
   await heading(page, START).waitFor();
-  await page.getByRole('link', { name: /^Germany/ }).click();
-  await heading(page, 'Germany').waitFor();
   check(
-    (await page.locator('.empty-country').count()) === 1,
+    (await page.locator('.dish-row').count()) === 0 &&
+      (await page.locator('.dish-rows .empty').count()) === 1,
     `${label}: the app works with zero dishes`,
   );
   await page.goto(`${origin}/?no-sw#/classic/nothing`);

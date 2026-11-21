@@ -74,6 +74,33 @@ test('an unknown hash is rewritten without a new history entry', () => {
   expect(host.location.hash).toBe('#/start');
 });
 
+test('a redirected address is replaced without a new history entry, on load and on navigation', () => {
+  const { host, fire } = fakeHost('#/classics/it');
+  const seen: string[] = [];
+  const asked: string[] = [];
+  startRouter(
+    host,
+    ({ route, param, initial }) => seen.push(`${route}:${param}:${initial}`),
+    (route, param) => {
+      if (route !== 'classics') return undefined;
+      asked.push(`${param}`);
+      return '#/dishes';
+    },
+  );
+  host.location.hash = '#/classics';
+  fire();
+  host.location.hash = '#/ratios';
+  fire();
+  expect(asked).toEqual(['it', 'undefined']);
+  expect(seen).toEqual([
+    'dishes:undefined:true',
+    'dishes:undefined:false',
+    'ratios:undefined:false',
+  ]);
+  expect(host.history.replaceState).toHaveBeenCalledTimes(2);
+  expect(host.location.hash).toBe('#/ratios');
+});
+
 test('a ratio card route carries the template id; other routes carry none', () => {
   expect(routeFromHash('#/ratios/pie-dough')).toBe('ratios');
   expect(paramFromHash('#/ratios/pie-dough')).toBe('pie-dough');
