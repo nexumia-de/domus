@@ -40,6 +40,7 @@ const pane = (options: PaneOptions): HTMLElement => {
   const ownEmpty = listDishes().length === 0 && (options.emptyActions ?? []).length > 0;
   section.append(
     dishList({
+      screen: 'dishes',
       listLabel: t.listLabel,
       empty: ownEmpty ? [] : [el('p', 'empty', t.emptyNotebook)],
       ...(options.current === undefined ? {} : { current: options.current }),

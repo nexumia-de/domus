@@ -5,7 +5,8 @@
 // (test/browse.test.ts).
 import { describe, expect, test } from 'vitest';
 import type { DishEntry } from '../src/browse/entry';
-import { bothOrigins, classicsFilter, dishListView } from '../src/browse/list-view';
+import { currentDishFilter, keepDishFilter } from '../src/browse/filter';
+import { activeChoices, bothOrigins, classicsFilter, dishListView } from '../src/browse/list-view';
 
 const entry = (
   over: Partial<DishEntry> & Pick<DishEntry, 'origin' | 'id' | 'name'>,
@@ -129,5 +130,46 @@ describe('the old addresses of the classics', () => {
     expect(classicsFilter(undefined)).toEqual({ origin: 'shipped' });
     expect(classicsFilter('it')).toEqual({ origin: 'shipped', cuisine: 'it' });
     expect(classicsFilter('xx')).toEqual({ origin: 'shipped' });
+  });
+});
+
+describe('the kept filter, for every screen', () => {
+  test('a store that throws (private mode) keeps the choice for the page; a working store takes over again', () => {
+    const throwing = {
+      getItem: (): string | null => {
+        throw new Error('blocked');
+      },
+      setItem: (): void => {
+        throw new Error('blocked');
+      },
+    };
+    expect(keepDishFilter({ cuisine: 'it' }, throwing)).toBe(false);
+    expect(currentDishFilter(throwing)).toEqual({ cuisine: 'it' });
+    expect(currentDishFilter(null)).toEqual({ cuisine: 'it' });
+    const kept = new Map<string, string>();
+    const working = {
+      getItem: (k: string) => kept.get(k) ?? null,
+      setItem: (k: string, v: string) => void kept.set(k, v),
+    };
+    expect(keepDishFilter({ course: 'soup' }, working)).toBe(true);
+    expect(currentDishFilter(working)).toEqual({ course: 'soup' });
+    expect(currentDishFilter(null)).toEqual({});
+  });
+});
+
+describe('the summary of the folded filter', () => {
+  test('names the choices in the order of the controls, and none for the empty filter', () => {
+    expect(activeChoices({})).toEqual([]);
+    expect(
+      activeChoices({
+        completeOnly: true,
+        cuisine: 'es',
+        meatFree: true,
+        course: 'main',
+        character: 'creamy',
+        origin: 'shipped',
+      }).map((c) => c.kind),
+    ).toEqual(['origin', 'character', 'course', 'cuisine', 'meatFree', 'completeOnly']);
+    expect(activeChoices({ course: 'main' })).toEqual([{ kind: 'course', value: 'main' }]);
   });
 });

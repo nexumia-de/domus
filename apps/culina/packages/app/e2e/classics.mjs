@@ -87,10 +87,14 @@ const flow = async (browser, origin, width) => {
   // The old address of an empty country: the list says nothing fits and offers Show all.
   await openWith(page, origin, 'classics/fr');
   await heading(page, 'Dishes').waitFor();
+  // Until the catalogue is read the list only says it is reading; then it says nothing fits.
+  await page.locator('.dish-rows .empty').waitFor();
   check(
     (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.' &&
-      (await page.getByLabel('Cuisine', { exact: true }).locator('option:checked').innerText()) ===
-        'France',
+      (await page
+        .getByLabel('Cuisine', { exact: true })
+        .locator('option:checked')
+        .textContent()) === 'France',
     `${label}: an empty country shows a quiet empty state, the country named`,
   );
   await openWith(page, origin, 'classics/de');
@@ -548,6 +552,8 @@ const empty = async (browser, origin) => {
   );
   await page.goto(`${origin}/?no-sw#/start`);
   await heading(page, START).waitFor();
+  // Until the catalogue is read the list only says it is reading.
+  await page.locator('.dish-rows .empty').waitFor();
   check(
     (await page.locator('.dish-row').count()) === 0 &&
       (await page.locator('.dish-rows .empty').count()) === 1,

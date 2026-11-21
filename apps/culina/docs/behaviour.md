@@ -897,9 +897,16 @@ own; the origin is only a choice of the filter.
 - **One filter.** `src/browse/filter.ts`: origin, character, course,
   cuisine, "Without meat and fish", "Only with every amount given"; each
   choice only drops entries. It is kept in `localStorage`
-  (`culina.dishes`), like the theme.
+  (`culina.dishes`), like the theme. Every screen reads and keeps it
+  through `currentDishFilter` and `keepDishFilter`; where the browser keeps
+  nothing (private mode), the choice holds for every screen until the page
+  is closed. **A link inside the app never changes the filter**; only an
+  old address from outside does (below).
 - **One set of controls.** `src/screens/dish-filter.ts`: selects of 44 px,
-  drawn only where there is something to offer, and two ticks. A stored
+  drawn only where there is something to offer, and two ticks. The origin
+  select offers "All dishes", "Mine" and "Shipped" (German "Alle
+  Gerichte", "Meine", "Mitgelieferte"), short enough that no option is cut
+  off in half a phone's width, in either language. A stored
   choice no dish has any more stays offered under its name, so that it can
   be seen and dropped. The control that had focus keeps it when the
   controls are drawn again after a change.
@@ -907,8 +914,12 @@ own; the origin is only a choice of the filter.
   `src/browse/list-view.ts`), the same on **Dishes** (`#/dishes`, under its
   title, the parts of the Notebook, "Add a dish" and "Put a dish together at
   random") and on **Start** (`#/start`, under the question "What do you feel
-  like?"). In this order: search by name, the filter (origin, character,
-  course, cuisine in two columns from 360 px; the two ticks), a count line
+  like?"). In this order: search by name, the filter folded behind one
+  line ("What you feel like" and the active choices, or "Everything"; a
+  `<details>`, so a button for assistive technology, opened with Enter or
+  Space, and it stays open or closed between the two screens until the
+  page is closed), and opened the selects (origin, character, course,
+  cuisine in two columns from 360 px) and the two ticks; a count line
   ("4 dishes"), the rows. Every dish whose entry passes the filter and the
   search, sorted by name in the content language, own and shipped mixed.
   A row is the name and a quiet line: course, cuisine, and the origin ("My
@@ -916,37 +927,55 @@ own; the origin is only a choice of the filter.
   one. A row of a shipped dish opens `#/classic/<id>`; a row of an own dish
   opens it as before, beside the list from 720 px with the row marked.
   Nothing found says "No dish fits these choices." and offers **Show all**,
-  which empties the filter and the search. The shipped dishes and the
-  catalogue load after the first draw (the catalogue gives the characters
-  of the ingredients it places); the list and the controls are drawn again
-  once they are there. The search text is shared by the two screens and
+  which empties the filter and the search and puts the focus on the search
+  field. The catalogue loads after the first draw (it gives the
+  characters of the ingredients it places and whether a dish is without
+  meat); the list and the controls are drawn again once it is there. Until
+  then the list does not say that nothing fits: it shows the rows that pass
+  already, or, with none, one quiet line "Reading the dishes …" and no
+  Show all. The search text is shared by the two screens and
   lives until the page is closed; the filter is the stored one, so a choice
   made on Start is the choice on Dishes and survives a reload. Where the
   browser cannot store it, it holds until the page is closed. A notebook
   without a dish of its own shows its "Add example data" under the list.
-- **Start at 360 x 720.** The question, the search, the filter and the
-  first rows are on the first screen; the ways into the tools (What can I
+- **The way back from a dish.** A dish, shipped or own, has one link back,
+  "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
+  Start or Dishes, it is the browser's back to that list, so the list is
+  as the user left it (also after the cook screen and back); opened any
+  other way (a bookmark, a link from elsewhere) it leads to `#/dishes`. It
+  never changes the filter. The own dish's link hides from 720 px, where
+  the list stands beside it.
+- **The first screen at 360 x 720.** On Start the question, the search,
+  the folded filter and the first rows; on Dishes the title, the parts,
+  the two actions, the search, the folded filter and the first rows; the ways into the tools (What can I
   cook, What is there, Components, Dishes, Ratios) follow the list.
 - **The old country lists.** `#/classics` and `#/classics/<country>` are no
   screens of their own any more: the router hands them to
   `classicsRedirect` (`src/screens/classics/classics-list.ts`), which stores
   the filter "Shipped dishes" (with the country as the cuisine; a country
   the app does not know gives none, and every other choice is dropped) and
-  replaces the address with `#/dishes` without a new history entry. So the
-  part "Classics" at the top of Cook, the link back from a shipped dish and
-  old bookmarks open the one list with that choice; the navigation then
-  marks the Notebook.
+  replaces the address with `#/dishes` without a new history entry. So old
+  bookmarks and links from outside open the one list with that choice; the
+  navigation then marks the Notebook. No link inside the app leads to these
+  addresses (the link back from a shipped dish led to `#/classics/<country>`
+  and so replaced the user's filter until 2026-11-21; Cook's part
+  "Classics" is being removed by its own change).
 
 **Test:** `test/browse.test.ts` (the shipped classics and catalogue, a
 notebook built in memory, a plain object as the store),
 `test/browse-list.test.ts` (order, each choice, combined choices, the line
-under a name, the filter of an old address; entries written by hand),
+under a name, the filter of an old address, the summary's choices, the kept
+filter with a store that throws; entries written by hand),
 `test/router.test.ts` (the redirect without a history entry),
 `e2e/dish-browse.mjs` (360 x 720, the two fictional shipped dishes and the
 example data: both origins in one list, each choice narrows, choices
 combine, Show all, the choice across a reload and between Start and Dishes,
-the first result on Start's first screen, a shipped row opens its dish,
-the old addresses, no horizontal scroll, 44 px targets). Not proved: the
+the first result on the first screen of Start and of Dishes, a shipped row
+opens its dish, the old addresses, the way back to Start with the filter
+untouched, no option of a select cut off in English and German, no "nothing
+fits" while the catalogue is held back, the focus after Show all, no
+horizontal scroll, 44 px targets). The private-mode fallback is proved only
+with a store that throws in the unit test, not in a private window. Not proved: the
 list with the real 48 shipped dishes in a browser beyond a look at a
 screenshot, desktop width beyond a look, German in a browser beyond
 `e2e/german.mjs` walking the screens, a screen reader on the count line.

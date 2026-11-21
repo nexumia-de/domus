@@ -1,8 +1,9 @@
 // The one filter over every dish (./entry.ts): what the user feels like. The lists, the finder
 // and the random pick share it, and it is kept in localStorage like the theme. Pure but for the
-// two functions that take a store.
+// functions that take a store. Every screen reads and keeps it through `currentDishFilter` and
+// `keepDishFilter`, so that a choice holds for the page even where the browser keeps nothing.
 import type { Course } from '@culina/engine';
-import type { KeyValueStore } from '../prefs';
+import { browserStore, type KeyValueStore } from '../prefs';
 import type { DishEntry, Origin } from './entry';
 
 export interface DishFilter {
@@ -143,4 +144,24 @@ export const writeDishFilter = (store: KeyValueStore | null, filter: DishFilter)
   } catch {
     return false;
   }
+};
+
+/** The choice the store could not keep (private mode, no storage): it holds until the page closes. */
+let unkept: DishFilter | undefined;
+
+/** The one filter as every screen reads it: the choice the store could not keep, else the stored one. */
+export const currentDishFilter = (store: KeyValueStore | null = browserStore()): DishFilter =>
+  unkept ?? readDishFilter(store);
+
+/**
+ * Keeps the filter for every screen: in the store, or, where the store keeps nothing, for this
+ * page. False when the store could not keep it.
+ */
+export const keepDishFilter = (
+  filter: DishFilter,
+  store: KeyValueStore | null = browserStore(),
+): boolean => {
+  const kept = writeDishFilter(store, filter);
+  unkept = kept ? undefined : filter;
+  return kept;
 };

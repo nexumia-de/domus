@@ -103,10 +103,10 @@ export const dishFilterControls = (
         'dish-filter-origin',
         t.originLabel,
         t.originAny,
-        offered.origins.map((o) => ({ value: o, label: t.origin[o] })),
+        offered.origins.map((o) => ({ value: o, label: t.originChoice[o] })),
         filter.origin,
         (v) => set('origin', v as Origin | undefined),
-        (v) => t.origin[v as Origin] ?? v,
+        (v) => t.originChoice[v as Origin] ?? v,
       ),
     );
   if (offered.characters.length > 0 || filter.character !== undefined)

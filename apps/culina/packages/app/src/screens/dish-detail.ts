@@ -40,6 +40,7 @@ import { nutritionDetails } from './classics/nutrition-block';
 import { ingredientsBlock, methodBlock } from './classics/recipe';
 import { sourceDetails } from './classics/source-block';
 import { insteadFor } from './classics/substitute-block';
+import { backToList } from './list-return';
 import { detailActions } from './detail-actions';
 import { courseLabel, cuisineLabel } from './dish-filter';
 import { slotsSection } from './dish-slots';
@@ -66,8 +67,8 @@ interface DishPage {
   /** The key of the dish in the session (portions and the cook screen's step). */
   id: string;
   card: HTMLElement;
-  /** Where Back leads; an own dish's Back hides from 720 px, where the list stands beside it. */
-  back: { href: string; label: string; className: string };
+  /** The way back to the list; an own dish's hides from 720 px, where the list stands beside it. */
+  back: HTMLElement;
   /** The name before the first view is there. */
   title: string;
   /** The portions before the cook chose any. */
@@ -85,8 +86,7 @@ interface DishPage {
 const dishPage = (page: DishPage): HTMLElement => {
   const { card } = page;
   const lang = currentLang();
-  const back = el('a', page.back.className, page.back.label);
-  back.href = page.back.href;
+  const { back } = page;
   const title = el('h1', undefined, page.title);
   const original = el('p', 'muted original-name');
   original.hidden = true;
@@ -188,11 +188,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   return dishPage({
     id: classic.id,
     card,
-    back: {
-      href: hashFor('classics', classic.country),
-      label: t.backToCountry(t.countries[classic.country]),
-      className: 'family-link',
-    },
+    back: backToList('family-link'),
     title: classic.id,
     startPortions: portionsOf(classic.id),
     shown: (portions) => shownOfClassic(classic, portions, context()),
@@ -264,7 +260,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   return dishPage({
     id: dish.id,
     card,
-    back: { href: hashFor('dishes'), label: strings.dishes.back, className: 'back-link' },
+    back: backToList('back-link'),
     title: dish.name,
     startPortions: dish.portions ?? 1,
     shown: (portions) => ({

@@ -45,7 +45,9 @@ export const dishCharacters = async (browser, server) => {
   await open(page, origin, 'dishes');
   // The list holds the shipped dishes too; their characters come from the catalogue, which loads
   // after the first draw. Only the dishes of the notebook are looked at here.
-  await page.getByLabel('From', { exact: true }).selectOption({ label: 'My dishes' });
+  // The filter is folded behind its summary line; open it.
+  await page.locator('.dish-filter-summary').click();
+  await page.getByLabel('From', { exact: true }).selectOption({ label: 'Mine' });
   const filter = page.getByLabel('What it is like');
   await page.waitForFunction(
     () => document.querySelectorAll('.dish-filter-character option').length > 3,

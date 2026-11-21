@@ -61,9 +61,29 @@ export const dishListView = (
 /**
  * The filter an old address of the classics stands for: `#/classics` is the shipped dishes,
  * `#/classics/<country>` those of one country. The other choices are dropped, so that the old link
- * shows every dish it showed before; a country the app does not know gives no cuisine.
+ * shows every dish it showed before; a country the app does not know gives no cuisine. Only an
+ * address from outside (a bookmark, an old link) comes here: no link inside the app leads to one,
+ * because a link inside the app never changes the user's filter.
  */
 export const classicsFilter = (country: string | undefined): DishFilter => ({
   origin: 'shipped',
   ...(isCountry(country) ? { cuisine: country } : {}),
 });
+
+/** One choice of the filter, as the folded filter's summary names it. */
+export type ActiveChoice =
+  | { kind: 'origin'; value: Origin }
+  | { kind: 'character' | 'course' | 'cuisine'; value: string }
+  | { kind: 'meatFree' | 'completeOnly' };
+
+/** The choices that narrow, in the order of the controls; none for the empty filter. */
+export const activeChoices = (filter: DishFilter): ActiveChoice[] => [
+  ...(filter.origin === undefined ? [] : [{ kind: 'origin' as const, value: filter.origin }]),
+  ...(filter.character === undefined
+    ? []
+    : [{ kind: 'character' as const, value: filter.character }]),
+  ...(filter.course === undefined ? [] : [{ kind: 'course' as const, value: filter.course }]),
+  ...(filter.cuisine === undefined ? [] : [{ kind: 'cuisine' as const, value: filter.cuisine }]),
+  ...(filter.meatFree === true ? [{ kind: 'meatFree' as const }] : []),
+  ...(filter.completeOnly === true ? [{ kind: 'completeOnly' as const }] : []),
+];

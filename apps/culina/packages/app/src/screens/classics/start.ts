@@ -22,6 +22,7 @@ export const startScreen = (): HTMLElement => {
   const dishes = el('section', 'start-block start-dishes');
   dishes.append(
     dishList({
+      screen: 'start',
       listLabel: strings.browse.startListLabel,
       empty: [el('p', 'empty', strings.empty.dishes)],
     }),
