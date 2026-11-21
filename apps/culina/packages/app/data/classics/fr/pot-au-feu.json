@@ -32,9 +32,9 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef (for pot-au-feu)",
-            "de": "Rindfleisch (für Pot-au-feu)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169491"
           },
           "amount": {
             "value": 750,
