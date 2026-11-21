@@ -137,14 +137,22 @@
         },
         {
           "key": "clove",
-          "wanted": {
-            "en": "Whole clove",
-            "de": "Gewürznelke"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171321"
           },
           "amount": {
             "value": 1,
             "unit": "count",
             "original": "1 clou de girofle"
+          },
+          "note": {
+            "en": "A whole clove.",
+            "de": "Eine ganze Nelke."
+          },
+          "sourceNote": {
+            "en": "The catalogue has only ground cloves.",
+            "de": "Der Katalog führt nur gemahlene Nelken."
           }
         },
         {
