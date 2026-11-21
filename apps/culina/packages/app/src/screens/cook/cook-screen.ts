@@ -3,7 +3,7 @@
 // top the one dish filter (shared with the Dishes list, `culina.dishes`) and the finder's own two
 // choices, role and how much may lack (`culina.cook`). A start from one ingredient at
 // #/cook/<id>/with. No arithmetic here: statuses and numbers are the engine's.
-import { offeredBy, readDishFilter, writeDishFilter } from '../../browse/filter';
+import { currentDishFilter, keepDishFilter, offeredBy } from '../../browse/filter';
 import type { DishFilter } from '../../browse/filter';
 import { CHARACTER_TABLE } from '../../characters/table';
 import { loadNames } from '../../classics/names';
@@ -105,14 +105,14 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
 
   const store = browserStore();
   let filters: CookFilters = readCookFilters(store);
-  let dishFilter: DishFilter = readDishFilter(store);
+  let dishFilter: DishFilter = currentDishFilter();
   // "What uses <ingredient>" answers that question alone: the dish filter chosen elsewhere does
   // not narrow it, and its controls are not shown there (the finder's own two choices are).
   const usesView = ingredientId !== undefined;
   const narrowing = (): DishFilter => (usesView ? {} : dishFilter);
   const setDishFilter = (next: DishFilter): void => {
     dishFilter = next;
-    writeDishFilter(store, dishFilter);
+    keepDishFilter(dishFilter);
     drawFilter();
     draw();
   };

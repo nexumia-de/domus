@@ -3,7 +3,7 @@
 // role, and the same dish filter (own and shipped dishes; components and ratio cards while no dish
 // filter is chosen). Tapping an item opens it in the stock screen. The order and the days come
 // from the engine's `useUpFirst`, the order of what uses an item from its one ranking.
-import { isEmptyFilter, readDishFilter } from '../../browse/filter';
+import { currentDishFilter, isEmptyFilter } from '../../browse/filter';
 import { loadNames } from '../../classics/names';
 import { dishEntriesByKey } from '../../browse/entries';
 import { shippedNow } from '../../cook/entries';
@@ -32,7 +32,7 @@ export const useUpScreen = (): HTMLElement => {
   const today = cookToday();
   const store = browserStore();
   const filters = readCookFilters(store);
-  const filter = readDishFilter(store);
+  const filter = currentDishFilter();
   section.append(el('p', 'muted cook-asof', t.asOf(today)));
   section.append(el('p', 'muted', `${t.useUpIntro} ${t.useUpThreshold(filters.lacking)}`));
   if (!isEmptyFilter(filter) || filters.role !== undefined)
