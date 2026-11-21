@@ -19,6 +19,11 @@ export interface StepView {
   technique?: Technique;
   /** True when the note of that technique shows at this step: first use, not yet learned. */
   note: boolean;
+  /**
+   * The step as one line of the method list, where it is not the text with time and temperature:
+   * an own step without a copied text names the lines it uses ("Searing: Beef · 10 min").
+   */
+  listed?: string;
 }
 
 export type CookViewResult = { ok: true; steps: StepView[] } | { ok: false; code: string };

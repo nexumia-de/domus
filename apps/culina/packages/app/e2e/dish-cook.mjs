@@ -70,7 +70,11 @@ const build = async (page, origin) => {
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'Kit plate' }).waitFor();
 
-  const assembly = await page.locator('.steps-section .recipe-steps li').allInnerTexts();
+  const assembly = await page
+    .locator('.dish-card .method-block .recipe-steps')
+    .last()
+    .locator('li')
+    .allInnerTexts();
   check(
     same(assembly, ['Serve: Kit patties, Kit mash']),
     `${label}: the dish shows its assembly (${assembly.join(' | ')})`,
@@ -132,12 +136,43 @@ const cook = async (page) => {
   check(true, `${label}: the end leads back to the dish`);
 };
 
+// The dish screen is the one of a shipped dish: the quiet line, the ingredient lines per component,
+// the nutrition behind a tap; and the portions chosen there are the ones cooked.
+const sameScreen = async (page) => {
+  const label = '360px dish screen of an own dish';
+  await page.getByRole('heading', { level: 1, name: 'Kit plate' }).waitFor();
+  check(
+    (await page.locator('.dish-quiet').innerText()).includes('In my notebook'),
+    `${label}: the quiet line names the origin (${await page.locator('.dish-quiet').innerText()})`,
+  );
+  const groups = await page.locator('.recipe-block').first().locator('h3').allInnerTexts();
+  check(
+    same(groups, ['Kit patties', 'Kit mash', 'For the dish']),
+    `${label}: the ingredient lines per component and for the dish (${groups.join(', ')})`,
+  );
+  check(
+    (await page.locator('.nutrition-block summary').first().innerText()) ===
+      'Nutrition per portion',
+    `${label}: nutrition per portion behind a tap`,
+  );
+  await page.getByRole('button', { name: 'More portions' }).click();
+  await layout(page, `${label} (3 portions)`);
+  await page.getByRole('link', { name: 'Cook step by step' }).click();
+  await page.getByRole('heading', { level: 2, name: 'Step 1 of 3' }).waitFor();
+  // 150 g per portion, now 3 portions: 450 g of a run of 500 g.
+  check(
+    same(await page.locator('.cook-step .recipe-amount').allInnerTexts(), ['450 g']),
+    `${label}: the portions chosen on the dish reach the cook screen`,
+  );
+};
+
 export const dishCook = async (browser, server) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
   const problems = watch(context, server.origin);
   const page = await context.newPage();
   await build(page, server.origin);
   await cook(page);
+  await sameScreen(page);
   check(
     problems.length === 0,
     `360px dish: no console errors or foreign requests ${problems.join('; ')}`,

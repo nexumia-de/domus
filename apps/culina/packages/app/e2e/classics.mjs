@@ -110,6 +110,14 @@ const flow = async (browser, origin, width) => {
     await page.getByText(`Original name: ${PAN.originalName}`).isVisible(),
     `${label}: the original name`,
   );
+  check(
+    (await page.locator('.dish-quiet').innerText()).includes('Shipped with the app') &&
+      (await page
+        .locator('.classic-copy')
+        .getByRole('button', { name: 'Keep in my notebook' })
+        .count()) === 1,
+    `${label}: the quiet line names the origin, and the dish can be kept from its screen`,
+  );
   // The source (with how it was checked and our remarks about it) is closed behind a tap, below the
   // method. What we settled and the second check have no disclosure of their own any more.
   const sourceSummary = page.locator('.foot-block summary', { hasText: /^Source$/ });
