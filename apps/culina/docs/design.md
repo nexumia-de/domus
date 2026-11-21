@@ -135,7 +135,7 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
   (every screen at 320, 360 and 1000 px).
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
-  header, one pane, **bottom navigation** (icon above label, sticky, 64 px
+  sticky header, one pane, **bottom navigation** (icon above label, sticky, 64 px
   high). **Four destinations**, the usual three to five for a bottom bar:
   Start, Cook, Notebook, Ratios (German Start, Kochen, Notizbuch,
   Verhältnisse), each as wide as its one-word label needs, the rest shared.

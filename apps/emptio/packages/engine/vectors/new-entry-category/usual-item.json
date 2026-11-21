@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "A free name the household never had takes the category of the usual item it names, in German or English, whatever its spelling",
+  "input": { "name": " milch ", "earlier": [] },
+  "expected": { "categoryId": "dairy" }
+}

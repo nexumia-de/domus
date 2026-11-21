@@ -1,0 +1,11 @@
+{
+  "kind": "new-entry-category",
+  "title": "The category the household last gave the name wins over the usual item's",
+  "input": {
+    "name": "Milch",
+    "earlier": [
+      { "id": "e1", "name": "milch", "categoryId": "drinks", "addedAt": "2026-11-01T08:00:00Z" }
+    ]
+  },
+  "expected": { "categoryId": "drinks" }
+}

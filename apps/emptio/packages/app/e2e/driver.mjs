@@ -43,10 +43,11 @@ export const rowOf = (page, name) =>
 /** Adds an entry on the list screen by Enter or by the button. */
 export async function add(page, t, name, { amount, priority, button = false } = {}) {
   const form = page.locator('.add-form');
-  if (priority) await form.locator(`.chip-${priority}`).click();
-  if (amount) await form.getByLabel(t.list.amountLabel, { exact: true }).fill(amount);
+  // Priority and amount show once there is a name.
   const field = form.getByLabel(t.list.addLabel, { exact: true });
   await field.fill(name);
+  if (priority) await form.locator(`.chip-${priority}`).click();
+  if (amount) await form.getByLabel(t.list.amountLabel, { exact: true }).fill(amount);
   if (button) await form.getByRole('button', { name: t.list.add, exact: true }).click();
   else await field.press('Enter');
   await said(page, name.trim());

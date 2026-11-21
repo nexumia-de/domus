@@ -3,7 +3,6 @@ import { OTHER_CATEGORY } from '@emptio/engine';
 import { button, h } from '../dom';
 import { addCategory, removeCategory, renameCategory, setCategoryHidden } from '../list/actions';
 import { categoriesOf, type Category } from '../list/categories';
-import { hashFor } from '../router';
 import type { Ctx, Screen } from './context';
 
 export function categoriesScreen(ctx: Ctx): Screen {
@@ -127,7 +126,6 @@ export function categoriesScreen(ctx: Ctx): Screen {
   const node = h(
     'div',
     { class: 'screen screen-categories' },
-    h('a', { class: 'back', href: hashFor.list }, `‹ ${t.nav.back}`),
     h('h1', {}, t.categories.title),
     h('p', { class: 'muted' }, t.categories.intro),
     list,

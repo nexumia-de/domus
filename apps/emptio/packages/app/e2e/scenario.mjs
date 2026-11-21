@@ -45,6 +45,33 @@ export async function listStage(run, { page }) {
     const list = await rows(page);
     return list.length === 2 && list.find((r) => r.name === 'Milk')?.amount === '2 l';
   });
+  await ok(run, 'adding: a usual thing stands under its category, not under Other', async () => {
+    const title = await rowOf(page, 'Milk').evaluate(
+      (row) => row.closest('.entries').previousElementSibling.textContent,
+    );
+    const lang = await page.evaluate(() => document.documentElement.lang);
+    return title === (lang === 'de' ? 'Milchprodukte & Eier' : 'Dairy & eggs');
+  });
+  // The frame: a window too low for the list still shows header and bottom edge; only the
+  // content scrolls. Chromium only; says nothing about a browser whose `dvh` is off.
+  const size = page.viewportSize();
+  await page.setViewportSize({ width: size.width, height: 320 });
+  await ok(
+    run,
+    'frame: in a low window the header and the bottom bar stay, the page does not scroll',
+    () =>
+      page.evaluate(() => {
+        const box = (selector) => document.querySelector(selector).getBoundingClientRect();
+        const main = document.querySelector('main');
+        return (
+          document.documentElement.scrollHeight === innerHeight &&
+          box('.app-header').top === 0 &&
+          Math.max(box('.app-nav').bottom, box('.app-dock').bottom) === innerHeight &&
+          main.scrollHeight > main.clientHeight
+        );
+      }),
+  );
+  await page.setViewportSize(size);
   await ok(run, 'adding: the Now section comes before Soon', async () => {
     const titles = await page.locator('.step-title').allInnerTexts();
     return titles.join('|') === `${t.priority.now}|${t.priority.soon}`;
@@ -52,7 +79,7 @@ export async function listStage(run, { page }) {
   await ok(run, 'adding: the fields are empty again and the add field has the focus', () =>
     page.evaluate(
       () =>
-        document.activeElement === document.querySelector('.add-form input[type=text]') &&
+        document.activeElement === document.querySelector('.add-row input') &&
         document.activeElement.value === '',
     ),
   );

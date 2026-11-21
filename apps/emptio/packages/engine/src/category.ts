@@ -2,6 +2,7 @@
 // and the order of the categories that rule 1 takes as input.
 import { compareText, sortKey } from './sort-key';
 import { OTHER_CATEGORY } from './types';
+import { usualCategory } from './usual-items';
 
 export interface EarlierEntry {
   id: string;
@@ -29,7 +30,7 @@ export function sameThing(
 
 /**
  * The category a new entry gets: the one the household last gave the same thing, otherwise
- * the catalogue's, otherwise `other`.
+ * the catalogue's, otherwise the one of the usual item the name means, otherwise `other`.
  */
 export function newEntryCategory(input: {
   name: string;
@@ -51,7 +52,9 @@ export function newEntryCategory(input: {
       latest = entry;
     }
   }
-  return latest?.categoryId ?? input.catalogue?.categoryId ?? OTHER_CATEGORY;
+  return (
+    latest?.categoryId ?? input.catalogue?.categoryId ?? usualCategory(input.name) ?? OTHER_CATEGORY
+  );
 }
 
 /** A category the household made or changed; a starting category has no name of its own. */

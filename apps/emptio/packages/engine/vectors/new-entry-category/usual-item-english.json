@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "An English name of several words is one usual item",
+  "input": { "name": "Toilet Paper", "earlier": [] },
+  "expected": { "categoryId": "household" }
+}

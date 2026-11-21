@@ -21,20 +21,39 @@ of the [repository](../../../docs/roadmap.md). The rules are in
 [data model](data-model.md). The web app is `packages/app`; the native
 Linux app shows the same list ([native Linux app](native-linux.md)).
 
+# The frame
+
+The app fills the window and is fixed to its edges
+(`styles/frame.css`): the header with the name on top, the content in
+between, and at the bottom the dock of the screen and the navigation
+(List, Categories, Settings; an entry counts as List). Only the content
+scrolls, so header and bottom bar are always there; the page itself
+never scrolls and no height in viewport units is used, which is not the
+visible height in every browser and installed app. From 720 px the
+navigation is a rail at the side. With little height and a name in the
+add field (a phone with its keyboard up) the navigation makes room for
+the list.
+
 # The list
 
-- **Add field** at the top: a name, Enter or the button adds it. Under
-  it how pressing (Now, Soon, Sometime; Soon unless chosen) and an
-  optional amount as free text. After adding, the field is empty again
-  and keeps the focus.
-- **Suggestions** appear while typing: the household's earlier entries
-  whose name matches ([rule](engine-rules.md#what-the-add-field-offers)),
-  at most six; one that is open says "on the list". A tap adds it.
+- **Add field** in the dock at the bottom, in reach of the thumb: a
+  name, Enter or the button adds it. Once there is a name, how pressing
+  (Now, Soon, Sometime; Soon unless chosen) and an optional amount as
+  free text show above it. After adding, the field is empty again and
+  keeps the focus.
+- **Suggestions** appear above the field while typing, in one row that
+  scrolls sideways: the household's earlier entries whose name matches
+  ([rule](engine-rules.md#what-the-add-field-offers)), at most six; one
+  that is open says "on the list". A tap adds it.
 - **Twice the same** ([rule 5](engine-rules.md#5-twice-the-same)): adding
   what is already open raises that entry and says so.
 - **Category** of a new entry: the one the household last gave the same
-  thing, otherwise Other ([rule 4](engine-rules.md#4-category-of-a-new-entry)).
-  There is no catalogue yet, so nothing else proposes one.
+  thing; otherwise the one of the usual item the name means ("Milch",
+  "Bio-Tomaten", "Vollkornbrot", "toilet paper"), from a
+  [list of the project](categories.md#usual-items); otherwise Other
+  ([rule 4](engine-rules.md#4-category-of-a-new-entry)). The guess can
+  be wrong; changing the category on the entry is remembered for the
+  next time.
 - **Open entries** by priority, under each priority by category, then by
   name ([rule 1](engine-rules.md#1-order-at-home)). A tick box of 44 px
   marks an entry as bought; the rest of the row opens it.
@@ -116,7 +135,7 @@ has a storage no request leaves the address.
 
 # What is checked
 
-- **Engine**: 10 vectors for rules 1, 4, 5, the order of categories and
+- **Engine**: 18 vectors for rules 1, 4, 5, the order of categories and
   the suggestions, run through the public entry
   (`packages/engine/test/vectors.test.ts`).
 - **App logic** (`packages/app/test/`): the actions, the first start, a
@@ -124,14 +143,17 @@ has a storage no request leaves the address.
   sharing a list through a storage in memory. These use the memory
   store, an injected clock that only moves forward and a fake storage:
   they prove the logic, not IndexedDB, a real storage or real clocks.
-- **Browser** (`npm run e2e -w @emptio/app`, 183 checks on 2026-11-20):
+- **Browser** (`npm run e2e -w @emptio/app`, 189 checks on 2026-11-20):
   every screen at 360 × 720 in English and German and at 1200 × 800,
   tap targets of 44 px, no horizontal overflow, Tab reaches every
   control, real IndexedDB across a reload, offline with the service
   worker, and two browser contexts sharing a space against a fake of
   GitHub's API (sealed files, a tick arriving without a reload within
   the polling time, the token going to that host only).
-  Not proven: the real GitHub, two real devices, another browser than
+  The frame is checked in a low Chromium window only (header and
+  bottom bar stay, only the content scrolls).
+  Not proven: the real GitHub, a phone with its keyboard up, an
+  installed app, two real devices, another browser than
   Chromium, contrast, a screen reader, real touch.
 
 # Not built
