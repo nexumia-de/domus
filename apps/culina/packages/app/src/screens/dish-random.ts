@@ -36,7 +36,7 @@ import {
   courseLabel,
   cuisineLabel,
   dishFilterControls,
-  replaceDishFilterControls,
+  replaceFilterControls,
 } from './dish-filter';
 import { currentDishFilter, everyEntry, keepDishFilter } from './dish-list';
 
@@ -139,7 +139,7 @@ export const randomDishScreen = (): HTMLElement => {
   // The one filter: its controls are replaced on every change.
   const filterBox = el('div', 'pick-filter');
   const drawFilter = (): void => {
-    replaceDishFilterControls(
+    replaceFilterControls(
       filterBox,
       dishFilterControls(
         filter,
