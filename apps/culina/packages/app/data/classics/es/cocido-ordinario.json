@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef for the pot (lean and fat)",
-            "de": "Rindfleisch für den Topf (mager und mit Fett)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169491"
           },
           "amount": {
             "value": 750,

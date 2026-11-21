@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "veal",
-          "wanted": {
-            "en": "Lean veal, with bone or trimmings",
-            "de": "Mageres Kalbfleisch, mit Knochen oder Abschnitten"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173817"
           },
           "amount": {
             "value": 500,
