@@ -93,6 +93,28 @@ reusable workflow is not used: it cannot take a file built before
 flatpak-builder runs, and it requires REUSE files this repository does
 not have.
 
+# Releases
+
+The version lives only in the metainfo's newest stable `<release>`;
+`build.mjs` reads it for the About dialog. Later releases are prepared by
+the toolkit's `release.py` from `changelog.d/` (`release.toml`); the
+first, 0.1.0, was written by hand because `release.py` needs an existing
+release. A pushed tag `emptio-v<version>` runs CI on that commit, and the
+job `emptio-release` checks the tag against the metainfo and attaches
+both bundles to the GitHub Release of the tag. phosh-apps publishes the
+newest such release to the shared Flatpak repository
+(`flatpak.nexumia.de`, `apps.txt` line `suitably/domus emptio-v*`), where
+the phone installs and updates it. To release, from the repository root:
+
+```sh
+python3 ../phosh-toolkit/scripts/release.py --root apps/emptio/packages/linux prepare
+```
+
+then merge, and push the tag `emptio-v<version>` on the merged commit.
+There is no nightly app (`de.nexumia.Emptio.Devel`) yet: it needs a
+second app id for the bundle, the desktop file, the metainfo and the
+icons.
+
 # What is not checked
 
 - **The Flatpak was built by CI only** (`emptio-flatpak`, x86_64 and
@@ -105,5 +127,6 @@ not have.
   the interaction check and the screenshots are what checks them.
 - The real GitHub and a WebDAV server; a second instance of the app on
   the same folder (the file store expects one process).
-- REUSE compliance and a changelog-driven release as the toolkit
-  describes them are not set up for this repository.
+- REUSE compliance is not set up for this repository.
+- `emptio-release` and its publishing have not run yet: the first tag
+  `emptio-v0.1.0` comes after this is merged.

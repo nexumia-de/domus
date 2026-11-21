@@ -147,7 +147,9 @@ checks green. The apps' own goals are in their roadmaps
     the list, an entry, categories, preferences, joining a space by
     invitation link, a Flatpak manifest and CI jobs. **Not done**: the
     Flatpak bundles CI builds were never installed and nothing ran on a
-    phone; Mixtura and Culina
+    phone. Every native app goes into the shared Flatpak repository
+    (owner, 2026-11-21); Emptio releases with a tag `emptio-v<version>`,
+    the first tag is not pushed yet. Mixtura and Culina
     follow, each in a session of its own; the platform pieces move to a
     shared package with the second app.
 
