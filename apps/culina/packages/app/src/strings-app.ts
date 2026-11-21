@@ -187,6 +187,20 @@ export const appStrings = {
     pickNoRoles: 'Tick at least one role.',
     pickNote: 'The pick is random within each role. It does not know what goes together.',
     pickMake: 'Make it a dish',
+    pickDishHeading: 'Surprise me with a dish',
+    pickDishNote: 'One dish by chance, yours or shipped, among those that fit your choice above.',
+    pickDishReady: 'Only what the stock allows now',
+    pickDishRoll: 'Surprise me',
+    pickDishResult: 'Your dish',
+    pickDishAgainLabel: 'Roll again: another dish',
+    pickDishAmong: (n: number): string =>
+      n === 1 ? 'The only dish that fits.' : `By chance among ${n} dishes.`,
+    pickDishNoneReady: 'The stock allows none of these dishes now.',
+    pickRolesHeading: 'Put one together from your components',
+    pickFitsNote: 'Rolled among the combinations that are like your choice above.',
+    pickNoFit: 'No combination of your components is like that.',
+    pickNoFitTried: (tries: number, total: number): string =>
+      `No combination of your components was like that in ${tries} tries by chance (of ${total}).`,
   },
   ratios: {
     searchLabel: 'Search by name',

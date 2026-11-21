@@ -3,7 +3,11 @@
 // shown and cooked with the other filling while nothing is stored, then kept as a new version.
 // The random pick rolls one component per role, rolls a role again, picks only from stock, and
 // hands the picks to the dish editor. The pick itself is by `Math.random` here: the checks only
-// rely on what holds for every number (the pure pick is in test/dish-swap-pick.test.ts).
+// rely on what holds for every number (the pure pick is in test/dish-swap-pick.test.ts and
+// test/dish-pick-filter.test.ts). Then "Surprise me with a dish" under the one stored filter, and
+// the roll per role with a character chosen: the components here are made of ingredients the user
+// typed, which have no character, so the browser sees only the honest "none" of that roll; the
+// narrowing itself is proved with catalogue ingredients in the unit test.
 import { check, watch } from './harness.mjs';
 import { addNewIngredient, formReady, layout, listStore, open } from './editor-helpers.mjs';
 import { wrappedTexts } from './measure.mjs';
@@ -330,6 +334,106 @@ const random = async (page, origin) => {
   );
 };
 
+const dishLink = (page) => page.locator('.pick-dish-link');
+
+const surprise = async (page, origin) => {
+  const label = '360px surprise me';
+  await open(page, origin, 'dishes/random');
+  check(
+    (await page.locator('.pick-filter .dish-filter').count()) === 1 &&
+      (await page.getByRole('heading', { level: 2, name: 'Surprise me with a dish' }).count()) ===
+        1 &&
+      (await dishLink(page).count()) === 0,
+    `${label}: the screen shows the shared filter and nothing rolled yet`,
+  );
+  await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
+  const first = await dishLink(page).getAttribute('href');
+  const among = await page.locator('.pick-dish-among').innerText();
+  const n = Number(/(\d+)/.exec(among)?.[1] ?? 0);
+  check(
+    /^#\/(dishes|classic)\//.test(first ?? '') && n > 2,
+    `${label}: one dish of all, own or shipped, links to its screen (${first}; ${among})`,
+  );
+  await layout(page, `${label} (rolled)`);
+  await page.getByRole('button', { name: 'Roll again: another dish' }).click();
+  const second = await dishLink(page).getAttribute('href');
+  check(
+    second !== first && /^#\/(dishes|classic)\//.test(second ?? ''),
+    `${label}: "Roll again" gives another dish (${first} then ${second})`,
+  );
+
+  await page.getByLabel('From', { exact: true }).selectOption('own');
+  await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
+  const own = await dishLink(page).getAttribute('href');
+  check(
+    own?.startsWith('#/dishes/') &&
+      (await page.locator('.pick-dish-among').innerText()) === 'By chance among 2 dishes.' &&
+      (await page.locator('.pick-dish-meta').innerText()).startsWith('My dishes'),
+    `${label}: "My dishes" rolls among the two dishes of the notebook (${own})`,
+  );
+  // The choice is the one stored filter: it is there after a reload, as for the list.
+  await open(page, origin, 'dishes/random');
+  check(
+    (await page.getByLabel('From', { exact: true }).inputValue()) === 'own' &&
+      (await page.evaluate(() => localStorage.getItem('culina.dishes'))) === '{"origin":"own"}',
+    `${label}: the choice is kept in the shared filter`,
+  );
+
+  await page.getByLabel('Cuisine', { exact: true }).selectOption('it');
+  await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
+  check(
+    (await dishLink(page).count()) === 0 &&
+      (await page.locator('.pick-dish-none').innerText()) === 'No dish fits these choices.',
+    `${label}: nothing fits: the quiet sentence`,
+  );
+  await layout(page, `${label} (nothing fits)`);
+  await page.getByRole('button', { name: 'Show all', exact: true }).click();
+  check(
+    (await page.getByLabel('From', { exact: true }).inputValue()) === '' &&
+      (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === '' &&
+      (await dishLink(page).count()) === 1,
+    `${label}: "Show all" drops the choices and rolls among every dish`,
+  );
+
+  // Only the rice is in stock: the stock allows no dish now.
+  await page.getByLabel('Only what the stock allows now').check();
+  await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
+  check(
+    (await dishLink(page).count()) === 0 &&
+      (await page.locator('.pick-dish-none').innerText()) ===
+        'The stock allows none of these dishes now.',
+    `${label}: "only what the stock allows" with nothing allowed says so`,
+  );
+  await page.getByLabel('Only what the stock allows now').uncheck();
+
+  // The roll per role with a character: the typed ingredients have none.
+  const fitsLine = 'Rolled among the combinations that are like your choice above.';
+  check(
+    !(await page.getByText(fitsLine).isVisible()),
+    `${label}: without a character the roll per role says nothing about fitting`,
+  );
+  await page.getByLabel('What it is like', { exact: true }).selectOption('tomatoey');
+  check(
+    await page.getByText(fitsLine).isVisible(),
+    `${label}: with a character the roll per role says it rolls among what fits`,
+  );
+  await page.getByRole('button', { name: 'Roll', exact: true }).click();
+  check(
+    (await page.locator('.pick-row').count()) === 0 &&
+      (await page.locator('.pick-no-fit').innerText()) ===
+        'No combination of your components is like that.',
+    `${label}: no combination with the character: the honest sentence, no pick`,
+  );
+  await layout(page, `${label} (no combination fits)`);
+  await page.getByLabel('What it is like', { exact: true }).selectOption('');
+  await page.getByRole('button', { name: 'Roll', exact: true }).click();
+  check(
+    (await page.locator('.pick-row').count()) > 0 &&
+      (await page.locator('.pick-no-fit').count()) === 0,
+    `${label}: control: without the character the same roll picks`,
+  );
+};
+
 export const dishSwap = async (browser, server) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
   const problems = watch(context, server.origin);
@@ -337,6 +441,7 @@ export const dishSwap = async (browser, server) => {
   await build(page, server.origin);
   await swap(page);
   await random(page, server.origin);
+  await surprise(page, server.origin);
   check(
     problems.length === 0,
     `360px swap and random pick: no console errors or foreign requests ${problems.join('; ')}`,

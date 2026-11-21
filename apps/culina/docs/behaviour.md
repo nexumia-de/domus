@@ -319,7 +319,28 @@ together from components, and a component names the role it usually fills
   the cook screen opened elsewhere cooks the stored dish. A swap sets the
   step of the cook screen back to the first.
 - **Random pick**, `#/dishes/random`, reached by "Put a dish together at
-  random" beside "Add a dish" (`src/screens/dish-random.ts`). The cook
+  random" beside "Add a dish" (`src/screens/dish-random.ts`): what do I
+  feel like? The screen shows the controls of the
+  [one filter over every dish](#one-filter-over-every-dish) at its top; a
+  choice made here is stored there (`culina.dishes`) and holds for the list
+  and the finder too. Under it, two rolls.
+- **Surprise me with a dish** (since 2026-11-21, `src/dishes/pick-dish.ts`).
+  **Surprise me** takes one whole dish by chance, each with the same share,
+  among the entries of both origins (`allEntries`) that pass the filter.
+  The tick "Only what the stock allows now" narrows it to the dishes whose
+  every required line the stock covers today, as the finder judges it: the
+  screen asks `find` (the notebook's dishes) and `findClassics` (the shipped
+  ones) with no line allowed to lack and keeps the complete ones
+  (`src/dishes/ready-now.ts`; the finder is called, not changed). The result
+  names the dish as a link to its own screen (own or shipped), its origin,
+  course and cuisine, and "By chance among n dishes."; with more than one
+  dish **Roll again** gives another, never the same. When nothing fits, the
+  quiet sentence of the list ("No dish fits these choices.", or "The stock
+  allows none of these dishes now." when only the tick empties it) and
+  **Show all**, which drops every choice of the filter and the tick and
+  rolls again. A dish rolled earlier that no longer fits a changed choice
+  is no longer shown.
+- **The roll per role** ("Put one together from your components"). The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
   one component per ticked role, by chance, each candidate of a role with
@@ -334,11 +355,37 @@ together from components, and a component names the role it usually fills
   dish editor with one slot per picked component (role and filling; name
   and amounts are still to be given), the way a ratio hands its amounts to
   the component editor (`src/editor/prefill.ts`); nothing is stored until
-  the dish is saved there. The ticks and the last pick are kept in memory
+  the dish is saved there. The ticks and the last picks are kept in memory
   while the app is open.
-- **The pick is a pure function.** `roll` and `rollRole` take the roles,
-  the candidates, the stock question and the random numbers as arguments;
-  the screen passes `Math.random`. The engine stays without randomness.
+- **The roll per role under the filter** (since 2026-11-21,
+  `src/dishes/pick-judge.ts`, `rollFitting` in `pick.ts`). A combination is
+  a dish that does not exist yet, so it is put together in memory (one slot
+  per picked component, no amounts) and judged as a dish of the notebook is
+  (`entryOfDish`): its characters, and "without meat and fish" derived the
+  same way, so a component with an ingredient the catalogue does not place
+  is never meat-free. Without amounts a character that needs a share is
+  judged on what is there, as for a dish of the notebook without amounts.
+  With a character or "Without meat and fish" chosen, the roll is among the
+  combinations that have it, and a quiet line says "Rolled among the
+  combinations that are like your choice above." The search is bounded:
+  up to 200 combinations (the product of the candidates of the ticked roles
+  that have any) every one is judged and one of those that fit is taken;
+  above, 60 combinations are drawn by chance and the first that fits is
+  taken. None found: "No combination of your components is like that."
+  when all were judged, and "No combination of your components was like
+  that in 60 tries by chance (of n)." when only tries were made, since then
+  one may exist. **Roll again** on a role stays among its candidates that
+  fit with the other picks, and is offered only where there is a second
+  that fits. Origin, course, cuisine and "Only with every amount given"
+  say nothing about a combination of components and do not apply to this
+  roll; the screen does not judge them for it. A change of the character or
+  "Without meat and fish" drops the picks, since they were judged by the
+  choice before.
+- **The pick is a pure function.** `roll`, `rollRole`, `rollFitting`,
+  `rollRoleFitting` and `surpriseDish` take the roles or entries, the
+  candidates, the stock question, the judge and the random numbers as
+  arguments; the screen passes `Math.random`. The engine stays without
+  randomness.
 - **In the dish editor**, a slot added with "Add a slot" takes the usual
   role of the component picked for it, as long as nobody chose the slot's
   role by hand; before, it kept the first open role, so a mash picked into
@@ -347,10 +394,19 @@ together from components, and a component names the role it usually fills
 **Test:** `test/dish-swap-pick.test.ts` (candidates, alternatives, the
 swapped dish as shown and as cooked, the session, the next version, the
 pick with fixed numbers, only from stock, an empty role, rolling again,
-the prefill), `test/router.test.ts`, `e2e/dish-swap.mjs`. Not proved: the
-unit tests build the notebook in memory, give the stock as a list of ids
-and never call `Math.random`; the browser check runs in Chromium at
-360 px in English only, and there the pick is by chance, so it checks
+the prefill), `test/dish-pick-filter.test.ts` (with fixed numbers: every
+dish of both origins reachable, the filter and the stock keys narrow the
+pool, rolling again never gives the same dish, none fits; the combinations
+judged with catalogue ingredients for "without meat and fish" and a
+character, each that fits reachable, rolling a role again within what fits,
+none found when all are judged, the bounded tries above 200 combinations),
+`test/router.test.ts`, `e2e/dish-swap.mjs`. Not proved: the unit tests build
+the notebook in memory, give the stock as a list of ids and never call
+`Math.random`; what the stock allows now is the finder's answer and is
+checked in the browser only for "none allowed"; the browser check runs in
+Chromium at 360 px in English only, its components are made of typed
+ingredients without a character, so there the roll per role under a
+character shows only "none found", and the pick is by chance, so it checks
 only what holds for every number. No test shows that the shares are equal
 over many rolls with `Math.random`, and no real phone was used.
 
