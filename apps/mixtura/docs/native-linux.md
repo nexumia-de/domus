@@ -136,9 +136,9 @@ app's `icon.svg`, installed under the app id by the manifest
 (`de.nexumia.Mixtura.yml`: GNOME runtime, network and display only, no
 file access). The licences are installed into
 `/app/share/licenses/de.nexumia.Mixtura/<module>/`: the app, the two
-crypto libraries (kept once in `packages/gjs/licenses/`), Ajv and
-fast-deep-equal (the validators the seed and the stock records pass
-through), and Bar Assistant's data. CI (`mixtura-linux-check`,
+crypto libraries, Ajv and fast-deep-equal (the validators the seed and
+the stock records pass through; all four kept once in
+`packages/gjs/licenses/`), and Bar Assistant's data. CI (`mixtura-linux-check`,
 `mixtura-flatpak` for x86_64 and aarch64, `mixtura-release`) uses the same
 composite actions as Emptio's jobs
 ([development](../../../docs/development.md)).

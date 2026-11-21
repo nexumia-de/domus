@@ -35,6 +35,19 @@ were given one part each and reported back.
 
 **What nobody verified.** A real phone, a screen reader, a real storage failing (the banner check uses a space whose cycle fails before any request), the 4x-throttled `e2e:slow` script.
 
+## 2026-11-21: Culina's native app
+
+| Part                                                                                                                                           | Done by          | Checked by                                                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/culina/packages/linux`, `@culina/app/core`, `shared-stock/items.ts`, `packages/gjs` (`language`, `texts`, licences moved), CI jobs, docs | agent, mid model | lead read the agent's report only and ran `npm run format:check` after merging `main`; lead did **not** read the code, the manifest or the CI jobs; CI on this pull request builds the Flatpak for the first time |
+| Culina job in the release workflow, this entry                                                                                                 | lead             | nobody                                                                                                                                                                                                            |
+
+**Test counts** (agent's run): Culina native 10, engine 1094, web app 506, gjs 11, Mixtura native 13, Emptio native 2; smoke in real GJS 13 checks per app; Culina's interaction check 20.
+
+**Choices to confirm by the owner.** The native ingredient list keeps names in one column (an empty amount cell), unlike the web app. Four classics carry "rights reserved, to be checked by the owner" and the technique notes cite CC BY-NC-SA textbooks; publishing a Flatpak is a distribution to look at before the tag `culina-v0.1.0`.
+
+**What nobody verified.** The Flatpak build before CI, an installed bundle, a phone, a real storage, the German texts by a native speaker, Mixtura's and Emptio's interaction checks after the licence move.
+
 ## 2026-11-21: Emptio and Mixtura into the shared Flatpak repository
 
 Roadmap goal 11 (Emptio's releases, pull request 14; Mixtura's native app,

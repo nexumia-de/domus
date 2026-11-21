@@ -12,7 +12,9 @@
     "./tooling/seed": "./tooling/seed.mjs",
     "./tooling/interact-lib": "./tooling/interact-lib.mjs",
     "./tooling/interact-pixels": "./tooling/interact-pixels.mjs",
-    "./node-files": "./src/node-files.ts"
+    "./node-files": "./src/node-files.ts",
+    "./language": "./src/language.ts",
+    "./texts": "./src/texts.ts"
   },
   "engines": {
     "node": ">=22.12.0"

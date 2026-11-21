@@ -20,7 +20,7 @@ sources:
 | `packages/host`  | `@nexumia-de/hospes`                                           | new                |
 | `packages/gjs`   | `@nexumia-de/gjs`; what the native Linux apps share            | new                |
 | `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app`, `@mixtura/linux` | nexumia-de/mixtura |
-| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`                      | nexumia-de/culina  |
+| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`, `@culina/linux`     | nexumia-de/culina  |
 | `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`, `@emptio/linux`     | nexumia-de/emptio  |
 | `apps/domus`     | `@domus/app`; Household, the app at the root of the address    | new                |
 | `scripts`        | none; checks and the site build that span the parts            | new                |

@@ -1,0 +1,29 @@
+Data built into Cook's Notebook (de.nexumia.Culina)
+
+The app itself is AGPL-3.0-or-later (see the licence file of the module "culina").
+The data below is compiled into the app; its sources and licences are named in
+Culina's docs (apps/culina/docs/dependencies.md, source-books.md,
+decisions/sources-licence.md in https://github.com/suitably/domus).
+
+Ingredient catalogue
+  USDA FoodData Central, SR Legacy (April 2018), https://fdc.nal.usda.gov/
+  Licence: CC0 1.0 Universal (public domain).
+  Refuse percentages: USDA SR28 archive, same licence.
+  German names: Wikidata (CC0 1.0 Universal) and the project's own translation
+  (AGPL-3.0-or-later).
+  Roles of ingredients: the project's own table (AGPL-3.0-or-later).
+
+Classic dishes
+  Each dish follows one named source (author, title, year, place); the amounts
+  are facts of that source, the method is written in the project's own words.
+  The source, its link and its licence where one is stated are shown on the
+  dish screen under "Source". The books are the editions named there:
+  Henriette Davidis (1904), Pellegrino Artusi (1891), Angel Muro (1894),
+  Jules Gouffe (1877), Auguste Escoffier (1907), and one Wikibooks page
+  (CC BY-SA 4.0, by the Wikibooks contributors).
+
+Technique, handling and substitute notes
+  Written in the project's own words from the textbooks and papers each note
+  names as its source; the app shows the sources behind the note. The textbooks
+  are open textbooks (mostly CC BY-NC-SA 4.0, some CC BY 4.0 or CC BY-NC 4.0).
+  No text of them is copied.

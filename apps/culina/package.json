@@ -9,8 +9,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "test": "npm test -w @culina/engine && npm test -w @culina/app",
-    "typecheck": "npm run typecheck -w @culina/engine && npm run typecheck -w @culina/app",
+    "test": "npm test -w @culina/engine && npm test -w @culina/app && npm test -w @culina/linux",
+    "typecheck": "npm run typecheck -w @culina/engine && npm run typecheck -w @culina/app && npm run typecheck -w @culina/linux",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
