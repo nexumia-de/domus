@@ -30,13 +30,16 @@
 
 .fr-title {
   margin: 0;
+  display: -webkit-box;
   overflow: hidden;
   color: var(--text);
   font-size: var(--fs-lg);
   font-weight: 700;
   line-height: 1.25;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
 }
 
 .fr-title:focus {

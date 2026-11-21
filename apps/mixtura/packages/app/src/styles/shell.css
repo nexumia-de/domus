@@ -146,14 +146,6 @@
 
 /* ---- Header (the shared frame, hospes frame.css) and bottom action bar ---- */
 
-/* Titles wrap, never cut off: text at 200 % (docs/design.md, Text size and reflow). */
-.fr-title {
-  overflow: visible;
-  overflow-wrap: anywhere;
-  text-overflow: clip;
-  white-space: normal;
-}
-
 .fr-subtitle .tag {
   margin: 0;
 }

@@ -238,8 +238,9 @@ and before every pull request that changes a screen. Every item is
 checked at 360 × 720 and at 1200 × 800, in light and in dark.
 
 - [ ] No horizontal scrolling at 360 px and at 320 px; no clipped or
-      overlapping text; titles, labels and names wrap, they are not
-      truncated with an ellipsis.
+      overlapping text; labels and names wrap, they are not truncated
+      with an ellipsis; the header title (the shared frame) wraps to four
+      lines and only then ends in an ellipsis.
 - [ ] Text scaling and reflow (WCAG 1.4.4, 1.4.10): with the root font size
       at 200 % the screen still reflows at 360 px and at 320 px without
       sideways scrolling; sizes around text are `rem` or `min-height`
