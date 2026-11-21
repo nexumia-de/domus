@@ -38,7 +38,8 @@ import {
   dishFilterControls,
   replaceFilterControls,
 } from './dish-filter';
-import { currentDishFilter, everyEntry, keepDishFilter } from './dish-list';
+import { currentDishFilter, keepDishFilter } from '../browse/filter';
+import { everyEntry } from './dish-list';
 
 const t = strings.dishes;
 const tb = strings.browse;

@@ -742,6 +742,14 @@ export const appStrings = {
     /** The start screen: every dish under the one filter, then the tools. */
     startTitle: 'What do you feel like?',
     startListLabel: 'Dishes that fit',
+    /** The origin as the select offers it, short enough for half a phone's width. */
+    originChoice: { own: 'Mine', shipped: 'Shipped' },
+    /** The folded filter's summary when nothing is chosen. */
+    anything: 'Everything',
+    /** While the shipped dishes and the catalogue are read, instead of "nothing fits". */
+    loading: 'Reading the dishes …',
+    /** The way back from a dish to the list it was opened from. */
+    backToList: 'Back to the list',
   },
   nutrition: nutritionStrings,
   // Texts for the store's error codes; the editing screens show them.

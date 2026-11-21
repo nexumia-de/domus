@@ -774,6 +774,14 @@ export const appStringsDe: typeof appStrings = {
     /** The start screen: every dish under the one filter, then the tools. */
     startTitle: 'Worauf hast du Lust?',
     startListLabel: 'Passende Gerichte',
+    /** The origin as the select offers it, short enough for half a phone's width. */
+    originChoice: { own: 'Meine', shipped: 'Mitgelieferte' },
+    /** The folded filter's summary when nothing is chosen. */
+    anything: 'Alles',
+    /** While the shipped dishes and the catalogue are read, instead of "nothing fits". */
+    loading: 'Die Gerichte werden gelesen …',
+    /** The way back from a dish to the list it was opened from. */
+    backToList: 'Zurück zur Liste',
   },
   nutrition: nutritionStringsDe,
   // Texts for the store's error codes; the editing screens show them.
