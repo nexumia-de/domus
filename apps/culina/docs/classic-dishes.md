@@ -244,6 +244,18 @@ without an amount, because its source gives none ("salt", "some
 butter") or a fraction could not be read. "Complete only" therefore
 keeps no shipped dish; that is a fact of the sources, not of the links.
 
+**Correction of the same day.** The sentence above and the column
+"Complete" below, and "0 of 48 dishes complete" in both totals, were true
+of the code then and gave the wrong reason. `entryOfClassic` asked an
+amount of the slot that names a component of the dish, and no shipped dish
+has one there: 0 of 48 followed from the code, whatever the sources say
+(found by two reviewers). The slot that names a component is no longer
+asked; **three dishes are complete**: rote Grütze, cocido ordinario and
+pot-au-feu (`test/browse.test.ts` names them). The catalogue also has no
+tarragon and no Romano: those are foods of the USDA data set that the
+catalogue does not carry
+([named foods](ingredient-catalogue.md#named-foods)).
+
 | Country | Dish                       | Amount  | Linked before | Linked after | Wanted | Water | Complete |
 | ------- | -------------------------- | ------- | ------------- | ------------ | ------ | ----- | -------- |
 | de      | baked-potatoes-cheese      | 2 / 6   | 5 / 5         | 5 / 5        | 0      | 0     | no       |

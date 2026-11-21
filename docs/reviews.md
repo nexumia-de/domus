@@ -21,6 +21,111 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-21: one list of dishes in Culina, and what a tester found
+
+The owner asked for the shipped classics and the notebook's dishes to
+become one list with one filter, and for as many agents in parallel as
+possible. The lead wrote the base (one entry, one filter, the controls)
+and committed it; fifteen agents built one part each in their own
+worktree, six reviewed or tested and built nothing; the lead merged and
+ran the checks after each merge. All agents were the high model; the
+lead changed model once during the work.
+
+| Part                                                                               | Done by                                                                                | Checked by                                                                                                                                                  |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The base: `src/browse/entry.ts`, `filter.ts`, `screens/dish-filter.ts`             | lead                                                                                   | reviewer 2 (wrote failing probes; found the meat-free holes and that "complete" kept no shipped dish)                                                       |
+| Course and cuisine on a dish of the notebook                                       | agent A                                                                                | reviewer 4 (used the built app, English and German, 360 and 1280 px; no finding)                                                                            |
+| The one list on Start and Dishes, the old country addresses                        | agent B                                                                                | reviewer 4 (five findings); B's fixes were checked by nobody but B and the lead's check runs                                                                |
+| "What can I cook" as one list under the filter                                     | agent C                                                                                | reviewer 5 (seven findings); C's fixes were checked by nobody but C and the lead's check runs                                                               |
+| The random pick under the filter                                                   | agent D                                                                                | reviewer 1 (four findings, the first reproduced in a unit test and in the browser); D's fixes were checked by nobody but D and the lead's check runs        |
+| One dish screen and one cook screen                                                | agent E                                                                                | reviewer 5 (ticked the blocks of both old screens off in the browser; found a check that races the catalogue load, no defect of the screens)                |
+| The native Linux app under the filter                                              | agent F, who could not run GTK                                                         | reviewer 2 installed gjs 1.80, GTK 4.14 and libadwaita 1.5 and ran smoke and the 21 Broadway checks: all passed, the estimated click coordinates were right |
+| The decision record, the roadmap, the plan                                         | agent G                                                                                | reviewer 3 (every claim against the code, every link)                                                                                                       |
+| The dish lines linked to the catalogue (one line)                                  | agent H                                                                                | reviewer 3 (recomputed the per-dish table: every cell matched; agreed on 31 of 32 lines left unlinked)                                                      |
+| The character rules; "without meat and fish"                                       | agent I                                                                                | nobody but I: the reviewer's seven probes pass now, and I ran them itself                                                                                   |
+| Three named foods in the catalogue, six lines linked                               | agent J                                                                                | nobody; J reports that the unchanged generator reproduced the shipped file byte for byte and that none of the 716 earlier rows changed                      |
+| The stock covers recipes: group, part and water rules, staples, the picker's order | agent K                                                                                | nobody                                                                                                                                                      |
+| The backup: format 3 with what was learned, what the file does not hold, erase     | agent L                                                                                | nobody                                                                                                                                                      |
+| Amounts as a cook writes them: a line in pieces, unit names, household measures    | agent M                                                                                | nobody                                                                                                                                                      |
+| The German of the interface and of 138 content texts                               | agent N, a language model                                                              | nobody; no native speaker read it                                                                                                                           |
+| Nutrition: the usual member of a group, when a figure is shown                     | agent O, who computed the omelette and the crema by hand from the USDA figures         | nobody                                                                                                                                                      |
+| A walk through the built app as a cook, German, 360 and 1280 px, real content      | the tester, at commit cc92c34, before the list, the finder and the screens were merged | this was a check                                                                                                                                            |
+| The merges, the conflicts, this entry                                              | lead                                                                                   | nobody                                                                                                                                                      |
+
+**What the checks found, and where it was fixed.**
+
+- _Reviewer 2, the base._ A dish of tomato and lard counted as without
+  meat (any food category counted as known); meat in a component nested
+  in a component disappeared when the slot had an amount; a slot whose
+  component was gone counted as nothing. Fixed in the app by agent I
+  (`src/characters/meat-free.ts`, `dish.ts`), each with a test that
+  fails on the commit before.
+- _Reviewers 2 and 3._ No shipped dish was "complete": the base asked an
+  amount of the slot that names a component. Fixed by the lead in
+  `entryOfClassic`; `test/browse.test.ts` names the three dishes that
+  are complete.
+- _Reviewer 1, the random pick._ "Roll again" on one role could put a
+  component into another role's row, and "Make it a dish" stored it
+  there (picks were kept by position); every filter change lost the
+  keyboard focus; picks went stale when the filter changed on another
+  screen. Fixed by agent D; three unit tests and four browser checks
+  fail on the code before.
+- _Reviewer 4, the list._ The link back from a shipped dish replaced the
+  user's filter and led to another screen; the origin select cut off its
+  chosen text at 360 px; "No dish fits" and "Show all" flashed while the
+  catalogue loaded; a choice did not reach the finder where storage
+  throws. Fixed by agent B; the filter folds behind a summary line.
+- _Reviewer 5, the finder._ The carry of an old country or meat choice
+  into the shared filter came back after the user cleared it when the
+  second write threw, and narrowed more than the old choice had: the
+  carry was removed. The empty state had no way out; "What uses" an
+  ingredient inherited a filter set elsewhere. Fixed by agent C.
+- _A check that was wrong, corrected in the check._ `e2e/classics.mjs`
+  counted a handling note before the catalogue had loaded (1 failure in
+  20 runs); it waits now. The app drew as before.
+- _A defect behind a check that looked flaky, fixed in the app._ "The
+  catalogue picker element was not stable": a pick that was saved late
+  closed a picker opened meanwhile. Fixed by agent C in the two editors,
+  with a check that fails on the old files.
+- _The tester._ Twelve everyday foods in stock found no dish (agent K);
+  the backup held neither the stock nor what was learned, and nothing
+  erased the data (agent L; the stock is still not in the file, and the
+  screen says so); one line in pieces blanked a component and showed ids
+  for names (agent M); an omelette of 5 kcal (agent O); English and
+  clumsy German (agent N).
+- _Found by the lead's check runs after merges._ Two checks of the list
+  assumed that an example dish states no course, which agent A's example
+  data now does: the checks were corrected to ask what they mean. The
+  German review named a cuisine "Deutsche Küche", which agent B's new
+  check found cut off in the select at 360 px: fixed in the app with a
+  short form for the select. One entry of the parts table cited a book
+  chapter that its author had quoted from memory: the citation was
+  removed and the entry says it is a judgement.
+- _Reviewer 3, the documents._ The dated notes in two decision records
+  stated as done what was being built; they are true since the merges.
+  One clove was linked to ground cloves and another left unlinked; agent
+  J linked it. `classic-dishes.md` gave the wrong reason for "0 of 48
+  complete" and named catalogue entries that do not exist: a dated
+  correction stands there. Still open: the README's "Not a recipe box",
+  which contradicts the recipe book decision and is the owner's wording.
+
+**Test counts** (lead's last run of `npm run check` after the last
+merge): Culina engine 1172, app 779, native 17; the other parts as
+listed in the output of that run. The whole of Culina's browser checks
+passed on the merged state after the last merge; agent C ran them three
+times in a row on its branch, each passing with 1712 checks.
+
+**What nobody verified.** The parts of agents I, J, K, L, M, N and O
+beyond their own tests and the lead's check runs; the fixes of B, C and
+D after their reviews. A real phone, a screen reader, a real private
+window. The German by a native speaker with kitchen training. The web
+app at desktop width beyond the 1000 px runs and two reviewers' walks.
+The Linux app on libadwaita 1.9, which the Flatpak targets, and by
+hand. The tester's walk was not repeated on the merged state, so that
+its findings are gone is shown by the tests of each fix, not by a
+second walk. No source of a dish was opened: the order of steps and
+the amounts are as they were.
+
 ## 2026-11-21: unification of toasts, header titles and native texts; Mixtura's stock write race
 
 | Part                                                                                                                                                                                                                         | Done by            | Checked by                                                                                                                                                                                |
