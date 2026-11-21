@@ -189,9 +189,9 @@
       "lines": [
         {
           "key": "chicken",
-          "wanted": {
-            "en": "Chicken",
-            "de": "Huhn"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171447"
           },
           "amount": {
             "value": 1,

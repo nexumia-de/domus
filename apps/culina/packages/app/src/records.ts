@@ -30,6 +30,10 @@ export interface IngredientRecord {
   unitWeightG?: { value: number; source: string };
   /** Nutrients per 100 g, read from the dataset the catalogue is generated from. */
   'x-nutrition'?: { per100g: NutrientsPer100g; source?: string };
+  /** The USDA row the entry is generated from; `category` is USDA's food category. */
+  'x-fdc'?: { category?: string };
+  /** A generated parent; `category` is given when every food below it has the same one. */
+  'x-group'?: { category?: string };
   note?: string;
 }
 

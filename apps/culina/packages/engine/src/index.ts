@@ -348,3 +348,16 @@ export type {
   PortionNutrients,
   RoundNutritionResult,
 } from './nutrition/types';
+
+export { MIN_MEASURED, MIN_MEASURED_FIGURES, dishCharacters, shareOf } from './characters/evaluate';
+export type {
+  CharacterClause,
+  CharacterCoverage,
+  CharacterFacts,
+  CharacterLine,
+  CharacterReason,
+  CharacterRule,
+  CharactersResult,
+  DishCharacter,
+  FigureBound,
+} from './characters/types';

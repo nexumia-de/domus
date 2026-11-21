@@ -145,6 +145,29 @@ ingredients, table)`, pure, on the walk `dishNutrition` already has,
 Order: pull request 11 first (the swap makes the base with many forms),
 then 3, 1, 2, 5, 4.
 
+## What was built
+
+On 2026-11-21, by the owner's word "build it so":
+
+- Step "order" first: the swap of a filling (pull request 11) is merged.
+- Step 3: 26 raw meats, poultry, fish and shellfish are named foods of the
+  [catalogue](ingredient-catalogue.md#named-foods); 8 lines of the classics
+  point at them. The counts above are those before this.
+- Steps 1 and 2: the engine function
+  ([engine rules](engine-rules.md#characters)) and a table of 18 characters
+  (`packages/app/data/dish-characters.json`): tomatoey, cheesy, eggy,
+  mushroomy, garlicky, lemony, spicy, sweet, with meat, with fish, fried,
+  from the oven, braised, uncooked, creamy, crisp, rich, light. Run over
+  the classics the first table called minestrone cheesy (cheese on top),
+  gazpacho creamy (an emulsion), sauerbraten fried (seared) and a boiled
+  dinner light (its meat had no amount); the rules were narrowed for each,
+  and a test pins them.
+- Step 5 in part: chips on a dish and on a classic, the filter of the
+  Dishes list ([behaviour](behaviour.md#characters)).
+
+Open, each an issue: the filter in Cook and in the random pick; the user's
+correction of a character; cuisine and course on the user's dishes.
+
 [^classics]: `packages/app/data/classics/`, 12 dishes each for Germany, Italy, France and Spain.
 
 [^catalogue]: [Ingredient catalogue](ingredient-catalogue.md).

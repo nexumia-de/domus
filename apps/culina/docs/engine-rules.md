@@ -1129,6 +1129,42 @@ random number. The data is the catalogue's `x-nutrition`
 
 Vectors: `vectors/nutrition/` ([vector format](vectors.md#kinds-of-nutrition-issue-94)).
 
+# Characters
+
+`dishCharacters(facts, rules)` (`src/characters/evaluate.ts`) says which
+characters a dish has. Pure: the facts of the dish and the rules come in as
+arguments; the table with its catalogue ids is the app's
+(`packages/app/data/dish-characters.json`), every row a judgement.
+
+**Facts.** `lines`: one per ingredient line, components written out, with
+`classes` (the ingredient's id, its ancestors, `category:<USDA food
+category>`), `g` when the mass is known and fat and energy per 100 g when
+the catalogue has them. `techniques`: the technique ids of the steps.
+`stepsKnown`: whether a step names what is done.
+
+**A rule** has `when` (any clause gives the character) and `unless` (any
+clause takes it away). Every condition of a clause must hold:
+
+| Condition           | Holds when                                                                                                     |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `ingredients`       | a line has one of the classes (presence)                                                                       |
+| `minShare`          | with `ingredients`: their share of the measured mass reaches it; share unknown: holds unless `presence: false` |
+| `techniques`        | a step names one of them                                                                                       |
+| `withoutTechniques` | no step names one of them, and `stepsKnown`                                                                    |
+| `fat`, `kcal`       | the figure per 100 g of the measured mass is within `min` and `max`                                            |
+
+**Coverage.** A share is judged when at least half of the lines have a mass
+(`MIN_MEASURED`) and every line of the classes asked has one; otherwise it
+is unknown. Fat and energy are judged when at least four of five lines have
+a mass (`MIN_MEASURED_FIGURES`) and every measured line has the figure: a
+figure of the whole dish is wrong as soon as a main ingredient is left out.
+The result carries `coverage` (lines, measured, covered) and for each
+character the clause that held and by what (`share` with its value,
+`presence`, `technique`, `figures`).
+
+**Not proven.** No vectors: `test/characters.test.ts` holds hand-computed
+cases. The thresholds are in the table, not here, and come from no source.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

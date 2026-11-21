@@ -47,9 +47,9 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef, from the round",
-            "de": "Rindfleisch aus der Keule"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168694"
           },
           "amount": {
             "value": 5,
@@ -111,9 +111,9 @@
         },
         {
           "key": "fat-pork",
-          "wanted": {
-            "en": "Fat pork",
-            "de": "Fettspeck"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167811"
           },
           "note": {
             "en": "For the lardoons, cut into finger-long strips.",

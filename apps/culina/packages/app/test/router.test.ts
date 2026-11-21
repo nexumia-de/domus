@@ -122,9 +122,17 @@ test('editor routes: new, and edit of an id; they round-trip and carry no id for
   expect(hashFor('dishes', 'u-1', 'cook')).toBe('#/dishes/u-1/cook');
   // A ratio has nothing to cook.
   expect(actionFromHash('#/ratios/bread/cook')).toBeUndefined();
+  // The random pick is a screen of the dishes; like `new`, the word is not an id.
+  expect(actionFromHash('#/dishes/random')).toBe('random');
+  expect(paramFromHash('#/dishes/random')).toBeUndefined();
+  expect(hashFor('dishes', undefined, 'random')).toBe('#/dishes/random');
+  // Components have no random pick: there the word is read as an id.
+  expect(actionFromHash('#/components/random')).toBeUndefined();
+  expect(paramFromHash('#/components/random')).toBe('random');
+  expect(actionFromHash('#/dishes/random/edit')).toBe('edit');
   expect(hashFor('components', undefined, 'new')).toBe('#/components/new');
   expect(hashFor('dishes', 'u-1', 'edit')).toBe('#/dishes/u-1/edit');
-  for (const hash of ['#/components/new', '#/dishes/u-1/edit']) {
+  for (const hash of ['#/components/new', '#/dishes/u-1/edit', '#/dishes/random']) {
     const { host } = fakeHost(hash);
     const seen: string[] = [];
     startRouter(host, ({ route, param, action }) => seen.push(`${route}:${param}:${action}`));

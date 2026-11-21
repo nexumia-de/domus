@@ -4,7 +4,13 @@ import { hashFor, type Route } from '../router';
 import { strings } from '../strings';
 import { el } from '../shell/el';
 import { sectionTabs } from './section-tabs';
-import { entryList, type Entry, type ListState, type ListText } from './entry-list';
+import {
+  entryList,
+  type Entry,
+  type ListFilter,
+  type ListState,
+  type ListText,
+} from './entry-list';
 
 export interface NotebookScreen {
   route: Route;
@@ -17,6 +23,8 @@ export interface NotebookScreen {
   chooseOne: string;
   /** The action to add an entry and the example-data action of an empty notebook. */
   extras: { actions: Node[]; emptyActions: Node[]; note?: string };
+  /** A filter over the entries' tags. */
+  filter?: ListFilter;
 }
 
 export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElement => {
@@ -39,6 +47,7 @@ export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElem
       actions: config.extras.actions,
       emptyActions: config.extras.emptyActions,
       ...(note === undefined ? {} : { note }),
+      ...(config.filter === undefined ? {} : { filter: config.filter }),
     });
     screen.append(list, el('p', 'pane-empty muted', config.chooseOne));
     return screen;
@@ -51,6 +60,7 @@ export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElem
       current: param,
       actions: config.extras.actions,
       emptyActions: config.extras.emptyActions,
+      ...(config.filter === undefined ? {} : { filter: config.filter }),
     }),
     detail,
   );

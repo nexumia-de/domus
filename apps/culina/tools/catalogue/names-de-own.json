@@ -10,6 +10,7 @@
   "uncertain": {
     "fdc-167782": "Fruit of Crateva religiosa; no common German word, descriptive name chosen",
     "fdc-167783": "unknown fruit; plain descriptive name",
+    "fdc-167875": "USDA \"unheated\" cured ham is a US wet-cured ham; not claimed to be raw ham (Rohschinken) or prosciutto",
     "fdc-168419": "Corchorus olitorius leaves; word chosen by the translator",
     "fdc-168446": "the old German word may mean starch (Kartoffelstärke); kept literal because USDA lists potato flour",
     "fdc-168578": "Hungarian wax pepper; no exact German word",
@@ -26,6 +27,7 @@
     "fdc-169335": "\"Cabbage, common (danish, domestic, pointed types)\"; descriptive",
     "fdc-169336": "see fdc-169335",
     "fdc-169401": "name kept from the Spanish",
+    "fdc-169491": "USDA chuck arm pot roast; the German cut name is approximate (Schulter, Bug)",
     "fdc-169715": "see fdc-168933",
     "fdc-169719": "US wheat class, name kept",
     "fdc-169720": "US wheat class, name kept",
@@ -35,10 +37,14 @@
     "fdc-170553": "Brosimum alicastrum seeds",
     "fdc-171033": "brand-named US product, descriptive",
     "fdc-172207": "see fdc-169079",
+    "fdc-172479": "USDA composite of retail cuts; descriptive name",
     "fdc-173412": "anhydrous butter oil; Butterschmalz is the cook's word, Butterreinfett the regulatory one",
     "fdc-173563": "tropical fat; descriptive",
     "fdc-173570": "tropical fat (Virola); descriptive",
     "fdc-173738": "\"french beans, mature\"; descriptive",
+    "fdc-173815": "USDA composite of retail cuts; descriptive name",
+    "fdc-173817": "USDA composite of retail cuts; descriptive name",
+    "fdc-174182": "USDA \"anchovy, european\" (Engraulis encrasicolus), the fresh fish; \"Anchovis\" as alias because cooks mean the salted fillet",
     "fdc-174259": "\"mungo beans\" is Vigna mungo (urd)",
     "fdc-175189": "cranberry (roman) beans are borlotti; mild doubt",
     "fdc-group-cabbage-common": "\"Cabbage, common\"; descriptive"
@@ -65,12 +71,18 @@
     },
     "fdc-167782": { "name": "Abiyuch (Crateva-Frucht)" },
     "fdc-167783": { "name": "Rowal (tropische Frucht)" },
+    "fdc-167811": { "name": "Schweinerückenspeck", "aliases": ["Fettspeck", "Rückenspeck"] },
+    "fdc-167818": { "name": "Schweinerücken, Fleisch mit Fett", "aliases": ["Schweinekarree"] },
+    "fdc-167843": { "name": "Schweineschulter, Fleisch mit Fett", "aliases": ["Schweinebug"] },
+    "fdc-167875": { "name": "Schinken, gepökelt, nicht erhitzt", "aliases": ["Schinken"] },
+    "fdc-167902": { "name": "Schweinehackfleisch", "aliases": ["Gehacktes vom Schwein"] },
     "fdc-168094": { "name": "Mayonnaise, kalorienreduziert, cholesterinfrei" },
     "fdc-168114": { "name": "Hüttenkäse, fettarm (1 % Fett), ohne Salzzusatz" },
     "fdc-168115": { "name": "Mayonnaise, natrium- und kalorienarm" },
     "fdc-168150": { "name": "Jambolan-Pflaume", "aliases": ["Java-Pflaume", "Jambul"] },
     "fdc-168195": { "name": "Clementine", "aliases": ["Clementinen"] },
     "fdc-168203": { "name": "Granny Smith", "aliases": ["Apfel Granny Smith"] },
+    "fdc-168277": { "name": "Speck, gepökelt, roh", "aliases": ["Bacon", "Frühstücksspeck"] },
     "fdc-168385": { "name": "Amaranthblätter", "aliases": ["Amaranth, Blätter"] },
     "fdc-168389": { "name": "Spargel" },
     "fdc-168391": {
@@ -110,6 +122,10 @@
     "fdc-168587": { "name": "Raukensamen, ganz, getrocknet" },
     "fdc-168588": { "name": "Mandelmus, ohne Salz", "aliases": ["Mandelbutter", "Mandelpaste"] },
     "fdc-168604": { "name": "Tahini, Sesamsorte nicht angegeben", "aliases": ["Sesampaste"] },
+    "fdc-168694": {
+      "name": "Rindfleisch, Keule, mit Fett",
+      "aliases": ["Rinderkeule", "Rindfleisch aus der Keule"]
+    },
     "fdc-168835": { "name": "Schokoladensirup, Fudge-Art", "aliases": ["Fudge-Sauce"] },
     "fdc-168836": { "name": "Maissirup, dunkel" },
     "fdc-168837": { "name": "Maissirup, hell" },
@@ -156,10 +172,7 @@
       "name": "Maisgrieß, weiß, selbsttreibend, gebeutelt, mit Weizenmehl, angereichert"
     },
     "fdc-168925": { "name": "Maisgrieß, weiß, selbsttreibend, entkeimt, angereichert" },
-    "fdc-168927": {
-      "name": "Nudeln, trocken",
-      "aliases": ["Pasta", "Teigwaren"]
-    },
+    "fdc-168927": { "name": "Nudeln, trocken", "aliases": ["Pasta", "Teigwaren"] },
     "fdc-168929": { "name": "Maisgrieß, entkeimt, gelb, nicht angereichert" },
     "fdc-168931": {
       "name": "Rundkornreis, weiß, nicht angereichert",
@@ -237,6 +250,10 @@
     "fdc-169407": { "name": "Wassermelonenkerne, getrocknet" },
     "fdc-169408": { "name": "Japanische Kastanien, getrocknet" },
     "fdc-169410": { "name": "Tahini, aus rohem Sesam, steingemahlen", "aliases": ["Sesampaste"] },
+    "fdc-169491": {
+      "name": "Rindfleisch, Schulter zum Schmoren, mit Fett",
+      "aliases": ["Rinderschulter", "Rinderbug", "Rindfleisch zum Schmoren"]
+    },
     "fdc-169577": { "name": "Pancake-Sirup, kalorienreduziert" },
     "fdc-169578": { "name": "Pancake-Sirup", "aliases": ["Pfannkuchensirup"] },
     "fdc-169593": { "name": "Kakaopulver, ungesüßt", "aliases": ["Kakao", "Backkakao"] },
@@ -455,6 +472,7 @@
     "fdc-171027": { "name": "Distelöl, ölsäurereich", "aliases": ["Safloröl, ölsäurereich"] },
     "fdc-171028": { "name": "Traubenkernöl" },
     "fdc-171033": { "name": "Pflanzenöl, Natreon-Raps, hochstabil, ölsäurereich (70 %)" },
+    "fdc-171081": { "name": "Pute, ganz, mit Haut", "aliases": ["Truthahn", "Puter"] },
     "fdc-171248": { "name": "Ricotta, aus teilentrahmter Milch" },
     "fdc-171256": { "name": "Saure Sahne, fettreduziert", "aliases": ["Sauerrahm", "Saurer Rahm"] },
     "fdc-171272": {
@@ -489,9 +507,16 @@
     "fdc-171426": { "name": "Sojalecithin", "aliases": ["Lecithin"] },
     "fdc-171429": { "name": "Sheaöl", "aliases": ["Karitéöl", "Sheabutter"] },
     "fdc-171442": { "name": "Leinöl, mit Leinsamenstücken" },
+    "fdc-171447": {
+      "name": "Hähnchen, mit Haut",
+      "aliases": ["Huhn", "Hühnchen", "Hähnchen, ganz"]
+    },
+    "fdc-171474": { "name": "Hähnchenbrust, mit Haut", "aliases": ["Hühnerbrust"] },
+    "fdc-171631": { "name": "Salsiccia, Schwein, mild", "aliases": ["Italienische Bratwurst"] },
     "fdc-171686": { "name": "Acerola", "aliases": ["Acerolakirsche", "Westindische Kirsche"] },
     "fdc-171711": { "name": "Heidelbeere", "aliases": ["Blaubeere", "Heidelbeeren", "Blaubeeren"] },
     "fdc-171727": { "name": "Holunderbeere", "aliases": ["Holunder", "Holunderbeeren"] },
+    "fdc-171955": { "name": "Kabeljau, Atlantik", "aliases": ["Dorsch"] },
     "fdc-172015": { "name": "Maisgrieß, entkeimt, weiß, nicht angereichert" },
     "fdc-172023": { "name": "Hirsemehl" },
     "fdc-172183": { "name": "Eiweiß, frisch", "aliases": ["Eiklar"] },
@@ -534,6 +559,7 @@
     },
     "fdc-172345": { "name": "Speckfett", "aliases": ["Bratfett vom Speck"] },
     "fdc-172370": { "name": "Pflanzenöl, Soja, raffiniert" },
+    "fdc-172385": { "name": "Hähnchen-Oberschenkel, mit Haut", "aliases": ["Hühnerschenkel"] },
     "fdc-172420": { "name": "Linsen" },
     "fdc-172423": { "name": "Lupinen, trocken" },
     "fdc-172425": { "name": "Mattenbohnen, trocken", "aliases": ["Mothbohnen"] },
@@ -543,6 +569,7 @@
     "fdc-172434": { "name": "Erdnüsse, Virginia" },
     "fdc-172436": { "name": "Straucherbsen, trocken", "aliases": ["Taubenerbsen, trocken"] },
     "fdc-172445": { "name": "Sojaschrot, entfettet" },
+    "fdc-172479": { "name": "Lammfleisch, gemischte Teilstücke, mit Fett", "aliases": ["Lamm"] },
     "fdc-172684": { "name": "Roggenbrot" },
     "fdc-172686": { "name": "Weizenbrot", "aliases": ["Weißbrot"] },
     "fdc-172803": { "name": "Backpulver, doppeltwirkend, mit Natriumaluminiumsulfat" },
@@ -584,6 +611,7 @@
       "name": "Butter, fettreduziert, Stangenform, mit Salz",
       "aliases": ["Leichte Butter, gesalzen"]
     },
+    "fdc-173686": { "name": "Lachs, Atlantik, wild", "aliases": ["Atlantischer Lachs"] },
     "fdc-173727": { "name": "Adzukibohnen", "aliases": ["Azukibohnen"] },
     "fdc-173734": { "name": "Schwarze Bohnen", "aliases": ["Black Beans"] },
     "fdc-173738": { "name": "Französische Bohnen, trocken" },
@@ -598,11 +626,20 @@
       "name": "Augenbohnen, trocken",
       "aliases": ["Schwarzaugenbohnen", "Kuhbohnen"]
     },
+    "fdc-173815": { "name": "Kalbfleisch, gemischte Teilstücke, mit Fett", "aliases": ["Kalb"] },
+    "fdc-173817": {
+      "name": "Kalbfleisch, gemischte Teilstücke, mager",
+      "aliases": ["Mageres Kalbfleisch"]
+    },
     "fdc-173963": { "name": "Schwarze Johannisbeere", "aliases": ["Cassis", "Ahlbeere"] },
     "fdc-173964": {
       "name": "Rote und weiße Johannisbeere",
       "aliases": ["Johannisbeere, rot", "Ribisel", "Träuble"]
     },
+    "fdc-174036": { "name": "Rinderhackfleisch, 20 % Fett", "aliases": ["Hackfleisch vom Rind"] },
+    "fdc-174182": { "name": "Sardelle, europäisch", "aliases": ["Anchovis"] },
+    "fdc-174210": { "name": "Garnelen, gemischte Arten", "aliases": ["Garnele", "Shrimps"] },
+    "fdc-174216": { "name": "Miesmuschel", "aliases": ["Miesmuscheln", "Blaue Muschel"] },
     "fdc-174252": { "name": "Limabohnen, groß, trocken" },
     "fdc-174255": { "name": "Limabohnen, klein (Baby), trocken" },
     "fdc-174256": { "name": "Mungbohnen, trocken", "aliases": ["Mungobohnen"] },
@@ -613,6 +650,7 @@
     "fdc-174281": { "name": "Spargelbohnen, trocken" },
     "fdc-174283": { "name": "Flügelbohnen, trocken" },
     "fdc-174284": { "name": "Rote Linsen", "aliases": ["Linsen, rot"] },
+    "fdc-174311": { "name": "Lammkeule, mit Fett", "aliases": ["Keule vom Lamm"] },
     "fdc-174683": { "name": "Weintrauben, europäische Sorten, rot oder grün" },
     "fdc-174837": { "name": "Weißwein", "aliases": ["Weißwein, Tafelwein"] },
     "fdc-174928": {
@@ -625,6 +663,8 @@
     },
     "fdc-175041": { "name": "Weinstein", "aliases": ["Cremor tartari", "Kaliumhydrogentartrat"] },
     "fdc-175043": { "name": "Trockenhefe", "aliases": ["Backhefe, trocken", "Trockenbackhefe"] },
+    "fdc-175116": { "name": "Hering, Atlantik", "aliases": ["Atlantischer Hering"] },
+    "fdc-175159": { "name": "Thunfisch, Gelbflossen", "aliases": ["Gelbflossenthunfisch"] },
     "fdc-175186": { "name": "Black-Turtle-Bohnen", "aliases": ["Schwarze Bohnen"] },
     "fdc-175189": { "name": "Cranberrybohnen", "aliases": ["Borlottibohnen", "Roman Beans"] },
     "fdc-175193": { "name": "Kidneybohnen, alle Sorten" },
@@ -636,6 +676,7 @@
     },
     "fdc-175208": { "name": "Augenbohnen, Catjang, trocken" },
     "fdc-175210": { "name": "Helmbohnen, trocken", "aliases": ["Hyazinthbohnen"] },
+    "fdc-175290": { "name": "Kalbshackfleisch", "aliases": ["Hackfleisch vom Kalb"] },
     "fdc-group-alcoholic-beverage-wine-table": {
       "name": "Wein",
       "aliases": ["Tischwein", "Tafelwein"]
@@ -644,6 +685,7 @@
     "fdc-group-barley": { "name": "Gerste" },
     "fdc-group-beans": { "name": "Bohnen" },
     "fdc-group-beans-kidney": { "name": "Kidneybohnen", "aliases": ["Rote Bohnen"] },
+    "fdc-group-beef": { "name": "Rindfleisch", "aliases": ["Rind"] },
     "fdc-group-bread": { "name": "Brot" },
     "fdc-group-broadbeans": {
       "name": "Dicke Bohnen",
@@ -660,6 +702,7 @@
       "aliases": ["Parmigiano", "Parmigiano Reggiano"]
     },
     "fdc-group-cheese-ricotta": { "name": "Ricotta" },
+    "fdc-group-chicken-broilers-or-fryers": { "name": "Hähnchen", "aliases": ["Huhn", "Hühnchen"] },
     "fdc-group-corn-flour": { "name": "Maismehl" },
     "fdc-group-corn-flour-masa": { "name": "Masa-Maismehl", "aliases": ["Masa Harina"] },
     "fdc-group-corn-flour-whole-grain": { "name": "Maismehl, Vollkorn" },
@@ -693,9 +736,11 @@
     "fdc-group-egg-whole": { "name": "Ei", "aliases": ["Vollei", "Eier", "Hühnerei, ganz"] },
     "fdc-group-egg-yolk": { "name": "Eigelb", "aliases": ["Eidotter", "Dotter"] },
     "fdc-group-fat": { "name": "Fett", "aliases": ["Tierfett", "Bratfett"] },
+    "fdc-group-fish": { "name": "Fisch" },
     "fdc-group-fish-oil": { "name": "Fischöle", "aliases": ["Tran"] },
     "fdc-group-grapes": { "name": "Weintrauben", "aliases": ["Trauben"] },
     "fdc-group-ice-cream": { "name": "Eiscreme", "aliases": ["Speiseeis", "Eis"] },
+    "fdc-group-lamb": { "name": "Lammfleisch", "aliases": ["Lamm"] },
     "fdc-group-leavening-agents": { "name": "Backtriebmittel", "aliases": ["Triebmittel"] },
     "fdc-group-leavening-agents-baking-powder": { "name": "Backpulver" },
     "fdc-group-leavening-agents-baking-powder-double-acting": {
@@ -749,6 +794,9 @@
       "name": "Paprikaschoten",
       "aliases": ["Paprika", "Gemüsepaprika"]
     },
+    "fdc-group-pork": { "name": "Schweinefleisch", "aliases": ["Schwein"] },
+    "fdc-group-pork-cured": { "name": "Schweinefleisch, gepökelt" },
+    "fdc-group-pork-fresh": { "name": "Schweinefleisch, frisch" },
     "fdc-group-rice": { "name": "Reis" },
     "fdc-group-rice-brown": { "name": "Reis, braun", "aliases": ["Naturreis", "Vollkornreis"] },
     "fdc-group-rice-flour": { "name": "Reismehl" },
@@ -773,6 +821,10 @@
     "fdc-group-syrups-corn": { "name": "Maissirup" },
     "fdc-group-syrups-table-blends": { "name": "Tafelsirup-Mischungen" },
     "fdc-group-tomatoes": { "name": "Tomaten", "aliases": ["Paradeiser"] },
+    "fdc-group-veal": { "name": "Kalbfleisch", "aliases": ["Kalb"] },
+    "fdc-group-veal-composite-of-trimmed-retail-cuts": {
+      "name": "Kalbfleisch, gemischte Teilstücke"
+    },
     "fdc-group-vinegar": { "name": "Essig", "aliases": ["Speiseessig"] },
     "fdc-group-wheat": { "name": "Weizen" },
     "fdc-group-wheat-flour": { "name": "Weizenmehl", "aliases": ["Mehl"] },
