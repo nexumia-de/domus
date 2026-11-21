@@ -12,6 +12,7 @@ links. Change history is in [log.md](log.md).
 
 - [Roadmap](roadmap.md) - Goals and their order; the helper (skills, checklist, known dishes) comes before sync.
 - [Helper build plan](helper-plan.md) - The owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
+- [What "what do I feel like" still needs](feel-like-plan.md) - After one dish list: course and cuisine coverage, the filter with the stock, something like this dish, time and effort, taste effects, seasonal produce, favourites and history, each with its data, cost and the rule it touches; the recommendation.
 - [Deployment](deployment.md) - Deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter, and how to serve the same folder elsewhere.
 
 # Research
@@ -53,6 +54,8 @@ links. Change history is in [log.md](log.md).
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
 - [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship by country as full recipes with their techniques, first Germany, Italy, France and Spain.
+- [Licence of the sources](decisions/sources-licence.md) - Decided 2026-11-19: non-commercial sources (CC BY-NC-SA 4.0, CC BY-NC 4.0) fit; every source of a shipped note carries its licence as an SPDX identifier.
+- [One dish list](decisions/one-dish-list.md) - Decided 2026-11-21: own and shipped dishes in one list with one entry, one filter and one dish and cook screen; the origin follows from where a dish lives and is not stored; shipped dishes stay read-only in their file; rejected: a stored flag in the user's store, two tabs with the same filters.
 - [Hosting](decisions/hosting.md) - Decided: the app is a static folder any host or own server can serve; Cloudflare is the first host and only an adapter in this repository, no shared deploy code.
 - [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock; for stock replaced by stock in spaces.
 - [Stock in spaces](decisions/stock-in-spaces.md) - Decided 2026-11-20: stock is the shared collection `stock` of a space, the same collection as Mixtura's with Culina's optional fields; the record, batches, unticking, the space used, sync, the one move of old items, the export without stock, how the catalogues will meet, what is lost.

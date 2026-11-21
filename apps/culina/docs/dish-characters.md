@@ -165,8 +165,15 @@ On 2026-11-21, by the owner's word "build it so":
 - Step 5 in part: chips on a dish and on a classic, the filter of the
   Dishes list ([behaviour](behaviour.md#characters)).
 
-Open, each an issue: the filter in Cook and in the random pick; the user's
-correction of a character; cuisine and course on the user's dishes.
+Open, each an issue: the user's correction of a character.
+
+Since 2026-11-21 the filter in Cook and in the random pick, and cuisine and
+course on the user's dishes, are part of the
+[one dish list](decisions/one-dish-list.md): one filter with the
+character among its choices, over own and shipped dishes, used by the
+lists, the start screen, Cook and the random pick. The base is built; the
+screens are being built on 2026-11-21. What the question "what do I feel
+like" needs beyond it is in the [plan](feel-like-plan.md).
 
 [^classics]: `packages/app/data/classics/`, 12 dishes each for Germany, Italy, France and Spain.
 
