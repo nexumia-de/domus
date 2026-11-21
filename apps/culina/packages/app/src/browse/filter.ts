@@ -1,6 +1,7 @@
 // The one filter over every dish (./entry.ts): what the user feels like. The lists, the finder
 // and the random pick share it, and it is kept in localStorage like the theme. Pure but for the
 // two functions that take a store.
+import type { Course } from '@culina/engine';
 import type { KeyValueStore } from '../prefs';
 import type { DishEntry, Origin } from './entry';
 
@@ -81,6 +82,19 @@ export const offeredBy = (
     order.cuisines,
   ),
 });
+
+/** The order in which courses are offered (the engine's `Course`). */
+export const COURSE_ORDER: readonly Course[] = [
+  'starter',
+  'soup',
+  'main',
+  'side',
+  'dessert',
+  'baking',
+  'sauce',
+  'breakfast',
+  'snack',
+];
 
 export const DISH_FILTER_KEY = 'culina.dishes';
 

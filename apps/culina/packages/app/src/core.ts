@@ -41,3 +41,16 @@ export { displayName, matchesAnyName } from './shared/names';
 export { strings, stringsDe, stringsEn } from './strings';
 export type { Strings } from './strings';
 export type { IngredientRecord, StockRecord } from './records';
+export { entryOfClassic } from './browse/entry';
+export type { DishEntry } from './browse/entry';
+export {
+  COURSE_ORDER,
+  DISH_FILTER_KEY,
+  isEmptyFilter,
+  matchesFilter,
+  offeredBy,
+  parseDishFilter,
+} from './browse/filter';
+export type { DishFilter, Offered } from './browse/filter';
+export { CHARACTER_TABLE } from './characters/table';
+export { characterLabel } from './characters/view';

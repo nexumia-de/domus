@@ -27,8 +27,11 @@ const check = (good, text, detail = '') => {
 // Coordinates at 360x720, from the screenshots.
 const BAR_BUTTON = [180, 681];
 const BACK_ARROW = [23, 22];
-const FIRST_COUNTRY = [180, 198];
-const FIRST_DISH = [180, 130];
+// The first dish of the start page, below the title and the closed filter row. ESTIMATED from
+// the layout when the country pages gave way to one list (2026-11-21, no gjs on that machine):
+// check it against 01-start.png on the next run and correct it.
+const FIRST_DISH = [180, 240];
+const FILTER_ROW = [180, 136];
 const PLUS = [312, 150];
 const COOK_BACK = [57, 675];
 const COOK_NEXT = [240, 675];
@@ -76,7 +79,7 @@ const defects = (s) =>
 async function main() {
   const gjsFile = await bundleApp();
 
-  // The classics by country, a dish, its portions, cooking step by step and the way back.
+  // The list of every dish, the filter row, a dish, its portions, cooking step by step and the way back.
   const flow = seed('flow');
   check(present(flow).length === 9, 'the recorded kitchen has 9 things at hand');
   {
@@ -86,9 +89,16 @@ async function main() {
       const start = shotName('01-start');
       await s.shot(start);
 
-      await s.click(...FIRST_COUNTRY);
-      const country = shotName('02-country');
-      check((await changedSince(s, start, '02-country')) > 0.1, 'a country opens its dishes');
+      await s.click(...FILTER_ROW);
+      check(
+        (await changedSince(s, start, '02-filter-open')) > 0.05,
+        'the filter row opens its choices',
+      );
+      await s.click(...FILTER_ROW);
+      check(
+        (await changedSince(s, start, '02-filter-closed')) < 0.002,
+        'and closes again to the list as it was',
+      );
       await s.click(...FIRST_DISH);
       const dish = shotName('03-dish');
       check((await changedSince(s, start, '03-dish')) > 0.1, 'a dish opens its page');
@@ -113,7 +123,7 @@ async function main() {
       await s.click(...BACK_ARROW);
       await s.click(...BACK_ARROW);
       check(
-        (await changedSince(s, country, '08-back-to-country')) < 0.002,
+        (await changedSince(s, start, '08-back-to-list')) < 0.002,
         'the back button returns to the list as it was',
       );
       check(defects(s).length === 0, 'no error in the app log', defects(s).join(' | '));
@@ -200,7 +210,6 @@ async function main() {
     try {
       await s.start();
       await s.shot(shotName('30-german'));
-      await s.click(...FIRST_COUNTRY);
       await s.click(...FIRST_DISH);
       await s.shot(shotName('31-german-dish'));
       s.activate('preferences');
@@ -223,8 +232,7 @@ async function main() {
     try {
       await s.start();
       await s.shot(shotName('40-wide-start'));
-      await s.click(500, 190);
-      await s.click(500, 130);
+      await s.click(500, 240);
       await s.shot(shotName('41-wide-dish'));
       say(
         'ok  ',
