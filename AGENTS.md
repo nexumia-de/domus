@@ -30,7 +30,10 @@ not apply. The exception is an app's native Linux package
 - **Parts stay apart.** An app imports nothing of another app, and a
   shared package imports nothing of an app; `npm run boundaries` checks
   it. What two apps need moves to a shared package, never in advance
-  and never as a copy.
+  and never as a copy. The app shell (header, navigation, settings,
+  sync display, toasts, banners) is shared
+  ([decision](docs/decisions/shared-shell.md)): an app builds none of
+  its own.
 - **A shared package is changed together with its users.** A change to
   `packages/model` that breaks an app is fixed in the app in the same
   commit; there are no version tags to wait for.

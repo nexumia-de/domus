@@ -1,8 +1,8 @@
 # Releases of the native app with the toolkit's release.py (docs/releases.md
 # in phosh-toolkit). The version lives only in the metainfo; build.mjs reads
-# it for the About dialog. To release, from the repository root:
-#   python3 ../phosh-toolkit/scripts/release.py --root apps/emptio/packages/linux prepare
-# merge, then push the tag emptio-v<version> on that commit.
+# it for the About dialog. Releases are automatic: .github/workflows/release.yml
+# turns the fragments into a pull request "Release emptio-v<version>"; merging it
+# tags emptio-v<version>.
 metainfo = "data/de.nexumia.Emptio.metainfo.xml"
 fragments = "changelog.d"
 tag-prefix = "emptio-v"

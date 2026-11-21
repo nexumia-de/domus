@@ -1,0 +1,66 @@
+# Releases of the native Linux apps, one app at a time, with the toolkit's
+# reusable release workflow (docs/releases.md in phosh-toolkit, "Several
+# apps in one repository"). Each app has its own release.toml with a
+# tag-prefix (emptio-v, mixtura-v):
+#
+# - pull_request: "Changelog" asks for a fragment in the app's changelog.d/
+#   when a pull request changes the app's native package (label
+#   no-changelog to skip).
+# - schedule (Mondays) or by hand: collects an app's fragments into a pull
+#   request "Release <app>-v<version>".
+# - push to main: merging that pull request tags <app>-v<version>; CI then
+#   builds the bundles and creates the GitHub Release (emptio-release,
+#   mixtura-release), and phosh-apps publishes it.
+#
+# RELEASE_TOKEN: a fine-grained token with Contents and Pull requests
+# read/write on this repository; pull requests and tags made with
+# GITHUB_TOKEN start no workflows.
+name: Release
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '41 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App to release
+        required: true
+        type: choice
+        options: [emptio, mixtura]
+      version:
+        description: Version to release (default from the fragments)
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  emptio:
+    if: github.event_name != 'workflow_dispatch' || inputs.app == 'emptio'
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: nexumia-de/phosh-toolkit/.github/workflows/release.yml@908ab9499274b6a0639df0693a0d6b8d4bdcfbee # v0.6.0
+    with:
+      version: ${{ inputs.version }}
+      release-config: apps/emptio/packages/linux/release.toml
+      toolkit-ref: v0.6.0
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+  mixtura:
+    if: github.event_name != 'workflow_dispatch' || inputs.app == 'mixtura'
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: nexumia-de/phosh-toolkit/.github/workflows/release.yml@908ab9499274b6a0639df0693a0d6b8d4bdcfbee # v0.6.0
+    with:
+      version: ${{ inputs.version }}
+      release-config: apps/mixtura/packages/linux/release.toml
+      toolkit-ref: v0.6.0
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
