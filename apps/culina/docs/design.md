@@ -152,9 +152,8 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
   entry at the bottom of the rail (the header and the rail stay in view; the gear is
   hidden there), content on the right at most `--content-w` wide. **Test:**
   `e2e/smoke.mjs` (bottom bar at 360 px, side column at 1000 px), `e2e/navigation.mjs`.
-- **Parts of a destination.** Cook has two parts (with what I have, classics)
-  and the Notebook two (components, dishes), a row of equal links at the top of
-  their screens (`.section-tabs`, bordered, 44 px high); the current one is
+- **Parts of a destination.** The Notebook has two parts (components,
+  dishes), a row of equal links at the top of its screens (`.section-tabs`, bordered, 44 px high); the current one is
   tinted, bold and has a bar, not colour alone, and the row is a group, not a
   second navigation landmark.
 - **Touch targets at least 44 x 44 px**: navigation links, summaries and
@@ -198,14 +197,12 @@ warning token, and none was added. Rules of use:
 # Cook screens
 
 `#/cook`, `#/cook/use-up`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook)).
-The two parts of Cook (with what I have, classics) as a bordered row of two
-equal links at the top, then three view links (14 px, 44 px high, the current one with a
-4 px bar of `--accent` and bold text), two selects for the filters, an
-entry list in the `.rows` style: name, kind and status as text, then the
-reason and the notes in muted text. No alarm colour; `styles/cook.css`.
-Below the own list the classics have their own h2 and two more selects
-(Country, Meat and fish, 44 px, in the same grid as the filters); their
-entries use the same row as an own dish.
+Three view links at the top (14 px, 44 px high, the current one with a 4 px
+bar of `--accent` and bold text; no row of parts above them), the one dish
+filter and the two selects of the finder (44 px, one grid), then two groups
+under an h2 each, "Dishes" (own and shipped) and "Components and ratios", in
+the `.rows` style: name, a quiet origin or kind word and status as text, then
+the reason and the notes in muted text. No alarm colour; `styles/cook.css`.
 Screenshots: `docs/screenshots/cook-*`.
 
 # Classics screens

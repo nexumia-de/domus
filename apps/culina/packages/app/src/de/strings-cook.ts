@@ -20,9 +20,6 @@ const MONTHS = [
 export const cookStringsDe: typeof cookStrings = {
   title: 'Kochen',
   viewsLabel: 'Ansichten von Kochen',
-  sectionsLabel: 'Teile von Kochen',
-  sectionStock: 'Mit meinem Vorrat',
-  sectionClassics: 'Klassiker',
   tabCook: 'Was kann ich kochen',
   tabUseUp: 'Zuerst verbrauchen',
   tabStock: 'Vorrat',

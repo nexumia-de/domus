@@ -870,9 +870,11 @@ writes the dish out as slots (every classic component is expanded into its
 own lines, so the finder names the ingredient that lacks, not the component;
 a line takes the role of the slot that names its component; the line's state
 is not asked) and hands the dish to `makeable`. The input is `makeable`'s
-(`ingredients`, `stock`, `today`, `facts`, `options`) with `classics`,
-optional `portions` and `lang`; the app passes the notebook's tree completed
-by the catalogue. The result is `{ ok: true, candidates }` or
+(`ingredients`, `stock`, `today`, `facts`, `substitutes`, `options`) with
+`classics`, optional `portions` and `lang`; the app passes the notebook's tree
+completed by the catalogue and the shipped substitute effects, as for an own
+dish, so a declared substitute stands in on a shipped dish's line by the same
+rule (vectors `declared-substitute`, `declared-substitute-absent`). The result is `{ ok: true, candidates }` or
 `{ ok: false, error }` with the `makeable` or `deriveClassic` code and the
 `classic` id. A candidate is the finder's dish candidate with `kind: 'classic'`,
 `country`, `course`, `vegetarian` and `notInCatalogue`; the order is the

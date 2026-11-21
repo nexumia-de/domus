@@ -1,31 +1,21 @@
-// The tabs at the top of Cook: two parts (with what I have, classics), and in the first the three views
-// what can I cook, use up first, what is there. The current one is marked with aria-current, a bold
-// label and a bar, not by colour alone.
+// The views at the top of Cook, which is "what the stock allows": what can I cook, use up first,
+// what is there. The current one is marked with aria-current, a bold label and a bar, not by
+// colour alone. A group, not a landmark: the page keeps its one navigation.
 import { hashFor, USE_UP } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
-import { sectionTabs } from '../section-tabs';
 
 const t = strings.cook;
 
-export type CookView = 'cook' | 'use-up' | 'stock' | 'classics';
+export type CookView = 'cook' | 'use-up' | 'stock';
 
-const VIEWS: readonly { view: Exclude<CookView, 'classics'>; hash: string; label: string }[] = [
+const VIEWS: readonly { view: CookView; hash: string; label: string }[] = [
   { view: 'cook', hash: hashFor('cook'), label: t.tabCook },
   { view: 'use-up', hash: hashFor('cook', USE_UP), label: t.tabUseUp },
   { view: 'stock', hash: hashFor('stock'), label: t.tabStock },
 ];
 
 export const cookTabs = (current: CookView): HTMLElement => {
-  const wrap = el('div', 'cook-nav');
-  wrap.append(
-    sectionTabs(t.sectionsLabel, [
-      { label: t.sectionStock, hash: hashFor('cook'), current: current !== 'classics' },
-      { label: t.sectionClassics, hash: hashFor('classics'), current: current === 'classics' },
-    ]),
-  );
-  if (current === 'classics') return wrap;
-  // A group, not a landmark: the page keeps its one navigation.
   const nav = el('div', 'cook-tabs');
   nav.setAttribute('role', 'group');
   nav.setAttribute('aria-label', t.viewsLabel);
@@ -39,6 +29,5 @@ export const cookTabs = (current: CookView): HTMLElement => {
     list.append(item);
   }
   nav.append(list);
-  wrap.append(nav);
-  return wrap;
+  return nav;
 };

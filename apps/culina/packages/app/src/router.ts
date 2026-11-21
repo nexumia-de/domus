@@ -24,8 +24,8 @@ export const DEFAULT_ROUTE: Route = 'start';
 
 /**
  * The four destinations of the navigation. Settings is not one of them: it is the gear in the header
- * (and the last entry of the side rail). The stock screens and the classics belong to Cook, the
- * components and dishes to the Notebook.
+ * (and the last entry of the side rail). The finder and the stock screens belong to Cook, the
+ * components and every dish (own or shipped, with its cooking mode) to the Notebook.
  */
 export const NAV_ENTRIES = ['start', 'cook', 'notebook', 'ratios'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
@@ -45,9 +45,10 @@ export const navEntryFor = (route: Route): NavEntry | undefined => {
       return 'start';
     case 'cook':
     case 'stock':
+      return 'cook';
+    // A shipped dish is a dish like an own one (one list, one dish screen): under the Notebook.
     case 'classics':
     case 'classic':
-      return 'cook';
     case 'components':
     case 'dishes':
       return 'notebook';

@@ -6,7 +6,8 @@
 import { isEmptyFilter, readDishFilter } from '../../browse/filter';
 import { loadNames } from '../../classics/names';
 import { carryOldCookChoices } from '../../cook/carry';
-import { dishEntries, shippedNow } from '../../cook/entries';
+import { dishEntriesByKey } from '../../browse/entries';
+import { shippedNow } from '../../cook/entries';
 import { find } from '../../cook/finder';
 import { daysText } from '../../cook/rows';
 import { cookToday, notebookSource } from '../../cook/source';
@@ -44,7 +45,7 @@ export const useUpScreen = (): HTMLElement => {
   const draw = (): void => {
     const found = find(notebookSource(), today, filters, {
       filter,
-      entries: dishEntries(),
+      entries: dishEntriesByKey(),
       shipped: shippedNow(),
     });
     if (!found.ok) return body.replaceChildren(el('p', 'note-quiet', t.problem));

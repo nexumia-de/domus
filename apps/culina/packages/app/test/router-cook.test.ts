@@ -37,11 +37,10 @@ test('the navigation has four destinations; every route is shown under one, Sett
     if (route === 'settings') expect(entry).toBeUndefined();
     else expect(NAV_ENTRIES).toContain(entry);
   }
-  // Cook holds the finder, the stock and the classics (with their cooking mode); the Notebook the
-  // components and the dishes.
-  for (const route of ['cook', 'stock', 'classics', 'classic'] as const)
-    expect(navEntryFor(route)).toBe('cook');
-  for (const route of ['components', 'dishes'] as const)
+  // Cook holds the finder and the stock; the Notebook the components and every dish, own or
+  // shipped (with its cooking mode), and the old address of the classics.
+  for (const route of ['cook', 'stock'] as const) expect(navEntryFor(route)).toBe('cook');
+  for (const route of ['components', 'dishes', 'classics', 'classic'] as const)
     expect(navEntryFor(route)).toBe('notebook');
   expect(navEntryFor('start')).toBe('start');
   expect(navEntryFor('ratios')).toBe('ratios');

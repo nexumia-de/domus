@@ -10,7 +10,8 @@ import type { CookSource } from '../src/cook/input';
 import { lookupOf } from '../src/cook/lookup';
 import { parseClassicFinderFilters, parseCookFilters } from '../src/prefs';
 import type { IngredientRecord } from '../src/records';
-import { EXAMPLE_CLASSICS, PAN_DISH, SECOND_DISH } from './classics-fixture';
+import { loadContent, resetContent } from '../src/classics/content';
+import { EXAMPLE_CLASSICS, EXAMPLE_SUBSTITUTES, PAN_DISH, SECOND_DISH } from './classics-fixture';
 import { must } from './must';
 
 const TODAY = '2026-11-18';
@@ -114,4 +115,45 @@ test('the web finder no longer reads a country or meat choice; the Linux variant
   expect(parseClassicFinderFilters({ lacking: 2, country: 'xx', meatFree: 'yes' })).toEqual({
     lacking: 2,
   });
+});
+
+test('a shipped substitute effect applies to a shipped dish as to an own one', async () => {
+  // The tree as the catalogue has it: oil and butter under their groups, for which the effects are declared.
+  const tree = new Map(
+    [
+      { id: 'fdc-group-oil', name: 'Oils' },
+      { id: 'fdc-group-butter', name: 'Butter' },
+      { id: 'fdc-171413', name: 'Oil, olive', parentId: 'fdc-group-oil' },
+      { id: 'fdc-173410', name: 'Butter, salted', parentId: 'fdc-group-butter' },
+      { id: 'fdc-173468', name: 'Salt, table' },
+    ].map((r) => [r.id, r as IngredientRecord]),
+  );
+  const stock = source('fdc-173410', 'fdc-173468');
+  const pan = () => {
+    const found = findClassics(EXAMPLE_CLASSICS, stock, tree, TODAY, { lacking: 3 }, 'en');
+    if (!found.ok) throw new Error('not ok');
+    return must(found.shown.find((c) => c.id === PAN_DISH.id));
+  };
+  const without = pan();
+  expect(without.substitutions).toEqual([]);
+  try {
+    await loadContent(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            format: 'culina-classics',
+            formatVersion: 1,
+            classics: EXAMPLE_CLASSICS,
+            techniques: [],
+            substitutes: EXAMPLE_SUBSTITUTES,
+          }),
+      }),
+    );
+    const withEffects = pan();
+    expect(withEffects.substitutions.map((s) => s.effect)).toEqual(['example-oil-to-butter']);
+    expect(withEffects.lacking).toBe(without.lacking - 1);
+  } finally {
+    resetContent();
+  }
 });
