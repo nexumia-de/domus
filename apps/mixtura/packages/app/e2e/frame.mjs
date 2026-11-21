@@ -5,7 +5,7 @@
 // Undo restoring what was done. Screenshots go to dist/walk/.
 //
 //   node e2e/frame.mjs [width height]
-/* global document, window -- in functions the page runs */
+/* global document, window, MutationObserver -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';

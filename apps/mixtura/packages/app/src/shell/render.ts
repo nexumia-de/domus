@@ -86,7 +86,9 @@ export function render(root: HTMLElement, shell: Shell): void {
   document.title = `${view.title} - Drink Builder`;
   restoreScroll(root, state.route, scroll, view.list !== undefined);
   if (toastFocused) {
-    shell.frame.toast.querySelector<HTMLElement>('.fr-toast-action')?.focus({ preventScroll: true });
+    shell.frame.toast
+      .querySelector<HTMLElement>('.fr-toast-action')
+      ?.focus({ preventScroll: true });
   }
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;
   again?.focus({ preventScroll: true });

@@ -44,7 +44,6 @@ export interface ExchangeHost {
   download(name: string, text: string): void;
 }
 
-
 export function formatCounts(counts: Counts): string {
   const parts = KINDS.filter((k) => counts[k] > 0).map((k) => {
     const [one, many] = strings.data.kinds[k];

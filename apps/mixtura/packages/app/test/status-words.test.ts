@@ -3,8 +3,9 @@ import { expect, test } from 'vitest';
 import { statusText } from '@nexumia-de/hospes';
 import { strings } from '../src/strings';
 
-const syncText = (...args: Parameters<typeof statusText> extends [unknown, ...infer R] ? R : never) =>
-  statusText(strings.spaces.status, ...args);
+const syncText = (
+  ...args: Parameters<typeof statusText> extends [unknown, ...infer R] ? R : never
+) => statusText(strings.spaces.status, ...args);
 
 test('the status in words', () => {
   const at = '2026-11-20T09:00:00.000Z';

@@ -93,9 +93,7 @@ export function swapActions(
     resetAll() {
       const before = swap;
       replace(store, addressOf(route, noSwap, null));
-      say(swapStrings.toastReset, () =>
-        replace(store, addressOf(route, before, null)),
-      );
+      say(swapStrings.toastReset, () => replace(store, addressOf(route, before, null)));
     },
     step(direction) {
       if (line === null) return;

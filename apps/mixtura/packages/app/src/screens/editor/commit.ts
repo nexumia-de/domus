@@ -102,7 +102,8 @@ export async function save(ctx: Ctx, confirmed = false): Promise<void> {
     await local.drafts.delete(draftKeyOf(session.key)).catch(() => undefined);
     dropSession(session);
     await refreshBrowse(store, data.catalog());
-    say(saved.outcome === 'version'
+    say(
+      saved.outcome === 'version'
         ? t.savedVersion(saved.name, saved.version)
         : saved.outcome === 'status'
           ? t.statusSaved(saved.name, t.statusValues[saved.status].toLowerCase())

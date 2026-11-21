@@ -223,13 +223,13 @@ goes when the evidence table says verified.
 
 For the owner; each has a proposal and nothing is decided silently.
 
-| #   | Question                 | Proposal                                                                                                                                                                                                         |
-| --- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | Accent colour            | Copper, `#9A4A12` / `#F0A468` (above).                                                                                                                                                                           |
+| #   | Question                 | Proposal                                                                                                                                                                                                                                            |
+| --- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | Accent colour            | Copper, `#9A4A12` / `#F0A468` (above).                                                                                                                                                                                                              |
 | Q2  | Navigation structure     | Bottom navigation with three destinations (Drinks, Templates, Stock; Settings moved to the header on 2026-11-21), rail from 840 px; see [navigation](behaviour.md#navigation). Alternative: drinks list only as the home and Templates as a filter. |
-| Q3  | Default unit system      | Metric, as the [decision](decisions/units-and-display.md) proposes; the Settings screen asks nothing at first start.                                                                                             |
-| Q4  | Where Buy Next lives     | As a second view of the Stock destination (Stock / Buy Next), not a fifth destination.                                                                                                                           |
-| Q5  | Hash URLs (`#/drinks/…`) | Yes: static hosting on GitHub Pages needs no server rewrite and the installed app works the same.                                                                                                                |
+| Q3  | Default unit system      | Metric, as the [decision](decisions/units-and-display.md) proposes; the Settings screen asks nothing at first start.                                                                                                                                |
+| Q4  | Where Buy Next lives     | As a second view of the Stock destination (Stock / Buy Next), not a fifth destination.                                                                                                                                                              |
+| Q5  | Hash URLs (`#/drinks/…`) | Yes: static hosting on GitHub Pages needs no server rewrite and the installed app works the same.                                                                                                                                                   |
 
 # Review checklist
 
