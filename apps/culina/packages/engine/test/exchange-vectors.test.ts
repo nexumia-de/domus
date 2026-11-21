@@ -90,10 +90,12 @@ function parse(vector: Vector): void {
     counts: Record<string, number>;
     formatVersion?: number;
     stockLeftOut?: number;
+    fileVersion?: number;
   };
   expect(counts(result.content.records)).toEqual(e.counts);
   if (e.formatVersion !== undefined) expect(result.content.formatVersion).toBe(e.formatVersion);
   expect(result.content.stockLeftOut).toBe(e.stockLeftOut);
+  if (e.fileVersion !== undefined) expect(result.content.fileVersion).toBe(e.fileVersion);
 }
 
 function match(vector: Vector): void {

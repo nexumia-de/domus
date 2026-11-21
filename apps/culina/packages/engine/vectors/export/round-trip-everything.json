@@ -189,17 +189,30 @@
           "date": "2026-11-10",
           "text": "Glossy"
         }
+      ],
+      "skills": [
+        {
+          "id": "skill-fold-in",
+          "technique": "fold-in",
+          "learned": false
+        },
+        {
+          "id": "skill-pan-fry",
+          "technique": "pan-fry",
+          "learned": true
+        }
       ]
     },
     "exportedAt": "2026-11-18T08:00:00Z"
   },
   "expected": {
-    "kinds": ["ingredients", "components", "dishes", "tastings"],
+    "kinds": ["ingredients", "components", "dishes", "tastings", "skills"],
     "counts": {
       "ingredients": 2,
       "components": 4,
       "dishes": 1,
-      "tastings": 2
+      "tastings": 2,
+      "skills": 2
     },
     "fileName": "cooks-notebook-2026-11-18.json"
   },

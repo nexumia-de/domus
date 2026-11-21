@@ -1,6 +1,6 @@
 {
   "id": "parse-leaves-out-the-stock-of-version-1",
-  "description": "A version 1 file with four stock items and one ingredient reads: the ingredient is kept, the stock is left out and counted, and the file is at version 2 after the migration",
+  "description": "A version 1 file with four stock items and one ingredient reads: the ingredient is kept, the stock is left out and counted, and the file is at version 3 after the migrations",
   "inputs": {
     "kind": "export_parse",
     "file": {
@@ -62,7 +62,7 @@
     "counts": {
       "ingredients": 1
     },
-    "formatVersion": 2,
+    "formatVersion": 3,
     "stockLeftOut": 4
   },
   "tolerance": 0,

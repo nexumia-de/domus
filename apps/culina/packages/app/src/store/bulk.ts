@@ -23,11 +23,12 @@ export interface Bulk {
   /** Validates every entry, then writes them all (newer `updatedAt` each) or none. */
   putMany(entries: readonly Entry[]): Promise<Result<{ count: number }>>;
   /**
-   * Makes the live records of every exported kind exactly `records`: those given are written, live
-   * records that are not given get a tombstone (so a later sync knows they were removed).
-   * Kinds that are not exported (skills) are left as they are. Validated first; one transaction.
+   * Makes the live records of every kind given in `records` exactly those records: they are
+   * written, live records that are not given get a tombstone (so a later sync knows they were
+   * removed). A kind that is not given (skills from a file older than format 3, and the old
+   * `stock`, which is never exported) is left as it is. Validated first; one transaction.
    */
-  replaceAll(records: Readonly<Record<ExportedKind, readonly unknown[]>>): Promise<Result>;
+  replaceAll(records: Readonly<Partial<Record<ExportedKind, readonly unknown[]>>>): Promise<Result>;
   /**
    * Undo of an import: each change puts `before` back (a newer `updatedAt`), or, when the
    * record did not exist before, tombstones it. One transaction; the notebook is as it was for
@@ -92,21 +93,23 @@ export const bulkStore = (db: IDBDatabase, now: () => string): Bulk => ({
 
   async replaceAll(records) {
     const kinds = KINDS.filter(
-      (kind): kind is ExportedKind => kind !== 'skills' && kind !== 'stock',
+      (kind): kind is ExportedKind =>
+        kind !== 'stock' && records[kind as ExportedKind] !== undefined,
     );
-    const entries = kinds.flatMap((kind) => records[kind].map((record) => ({ kind, record })));
+    const given = (kind: ExportedKind): readonly unknown[] => records[kind] ?? [];
+    const entries = kinds.flatMap((kind) => given(kind).map((record) => ({ kind, record })));
     const problem = firstProblem(entries);
     if (problem) return problem;
     try {
       await run(db, kinds, 'readwrite', (tx, abort) => {
         for (const kind of kinds) {
           const store = tx.objectStore(kind);
-          const given = new Map(records[kind].map((r) => [idOf(r) as string, r]));
+          const kept = new Map(given(kind).map((r) => [idOf(r) as string, r]));
           const all = store.getAll();
           all.onsuccess = () => {
             try {
               const stored = new Map((all.result as Row[]).map((row) => [row.key, row]));
-              for (const [id, record] of given) {
+              for (const [id, record] of kept) {
                 store.put({
                   key: id,
                   updatedAt: nextUpdatedAt(now, stored.get(id)?.updatedAt),
@@ -114,7 +117,7 @@ export const bulkStore = (db: IDBDatabase, now: () => string): Bulk => ({
                 });
               }
               for (const row of stored.values()) {
-                if (row.deleted || given.has(row.key)) continue;
+                if (row.deleted || kept.has(row.key)) continue;
                 store.put({
                   key: row.key,
                   updatedAt: nextUpdatedAt(now, row.updatedAt),

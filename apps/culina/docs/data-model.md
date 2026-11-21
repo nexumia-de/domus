@@ -827,10 +827,11 @@ the store kind `skills`. Schema: `skill.schema.json`.
   back writes `learned: false` and keeps the record.
 - Nothing else is stored; which notes show follows from it
   ([engine rules](engine-rules.md#techniques-steps-and-classics)).
-- **Not in the export file yet.** The export format is version 1 and a
-  reader refuses unknown collections; the store keeps `skills` apart from the
-  exported kinds (replace-all and the backup reminder ignore it). Whether the
-  export gets a `skills` collection is open.
+- **In the export file since format version 3** (2026-11-21,
+  [export file](#export-file)): merged by id like every kind (a mark that
+  differs is a conflict the user decides), replaced by "replace everything"
+  with a version 3 file, left as it is by an older file, and counted by the
+  backup reminder.
 
 ## Text in two languages
 
@@ -927,7 +928,7 @@ One JSON file with everything the user entered, validated by
 | Field           | Type     | Required | Meaning                    |
 | --------------- | -------- | -------- | -------------------------- |
 | `format`        | constant | yes      | `culina-export`            |
-| `formatVersion` | integer  | yes      | `2`                        |
+| `formatVersion` | integer  | yes      | `3`                        |
 | `seedVersion`   | string   | no       | Seed data the ids refer to |
 | `exportedAt`    | instant  | no       | Supplied by the host       |
 | `ingredients`   | array    | no       | Ingredient records         |
@@ -936,11 +937,12 @@ One JSON file with everything the user entered, validated by
 | `dishes`        | array    | no       | Dish records               |
 | `affinities`    | array    | no       | Affinity records           |
 | `tastings`      | array    | no       | Tasting note records       |
+| `skills`        | array    | no       | Skill state records        |
 
 ```json
 {
   "format": "culina-export",
-  "formatVersion": 2,
+  "formatVersion": 3,
   "seedVersion": "0",
   "exportedAt": "2026-11-17T12:00:00Z",
   "components": [],
@@ -952,7 +954,7 @@ One JSON file with everything the user entered, validated by
   integer (the same name Mixtura uses; the issue called it
   `schemaVersion`). `seedVersion` names the seed data that ids refer to.
 - Arrays `ingredients`, `templates`, `components`, `dishes`,
-  `affinities`, `tastings` are optional; the export holds user entities, seed entities
+  `affinities`, `tastings`, `skills` are optional; the export holds user entities, seed entities
   stay in the seed.
 - **Forward compatibility.** A reader checks `format` and
   `formatVersion` **first** and refuses a higher version with a message
@@ -974,6 +976,14 @@ One JSON file with everything the user entered, validated by
   A version 1 file is still read; the migration 1 to 2 leaves its `stock`
   out, `parseExport` counts what it left out (`stockLeftOut`), and the
   import preview says so.
+- **Version 3 (2026-11-21): with `skills`.** The [skill state](#skill-state)
+  (which techniques the user marked as learned, and marks taken back) is
+  the user's own and is now in the file. The migration 2 to 3 changes
+  nothing (a version 2 file has no skills); a version 2 file that holds
+  `skills` is refused (`unknown-field`), and an app that reads up to
+  version 2 refuses a version 3 file as newer (`newer-version`). The
+  reader returns the file's own version (`fileVersion`) so that "replace
+  everything" with an older file leaves the skill state as it is.
 - Identity: importing never overwrites a seed entity, and a user id that
   exists is merged or replaced by the user's choice. Built in issue 18 in
   the engine (`buildExport`, `parseExport`, `planMerge`; [exchange](exchange.md)),

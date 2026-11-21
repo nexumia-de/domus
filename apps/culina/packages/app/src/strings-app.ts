@@ -291,7 +291,13 @@ export const appStrings = {
     examplesHeading: 'Example data',
     examplesAdded: 'Example records were added to your notebook.',
     dataHeading: 'Your data',
-    dataHint: 'One file holds every record and version you entered. Nothing is sent anywhere.',
+    dataHint:
+      'One file holds every record and version you entered and the skills you marked as learned.',
+    notInFileStock: (space: string | undefined): string =>
+      space === undefined
+        ? "Not in the file: the stock, kept in a space with the household's other apps."
+        : `Not in the file: the stock of “${space}”, kept with the household's other apps.`,
+    notInFileOther: 'Nor are unsaved drafts and the settings of this device.',
     exportButton: 'Export everything',
     exportNothing: 'There is nothing to export yet.',
     exportedNote: 'The file was handed to your browser to save.',
@@ -303,6 +309,21 @@ export const appStrings = {
     reminderDays: (days: number): string => `After ${days} days with changes`,
     reminderNotSaved:
       'The choice could not be saved on this device. It applies until the app is closed.',
+    eraseButton: 'Erase everything on this device',
+    eraseHint:
+      "Removes your notebook, the skills you marked, drafts and this app's settings from this device.",
+    eraseUndo: 'It cannot be undone: export first to keep a copy.',
+    eraseAsk: (what: string): string => `Erase from this device: ${what}?`,
+    eraseDrafts: (n: number): string => `${n} unsaved ${n === 1 ? 'draft' : 'drafts'}`,
+    erasePrefs: "this app's settings (theme, language, filters, reminder)",
+    eraseNothing: 'There is nothing of this app on this device to erase.',
+    eraseStockStays: (space: string): string =>
+      `The stock of “${space}” stays: it is shared with the household's other apps.`,
+    eraseStockWhere: 'To remove it from this device, remove the space in the Household app.',
+    eraseHousehold: 'Open the space in the Household app',
+    eraseExportFirst: 'Export first',
+    eraseConfirm: 'Erase everything',
+    eraseCancel: 'Cancel',
   },
   // The reminder banner: quiet, never a dialog.
   backup: {
@@ -568,7 +589,10 @@ export const appStrings = {
       dishes: 'dish versions',
       affinities: 'pairings',
       tastings: 'tasting notes',
+      skills: 'skill marks',
     },
+    skillsNotInFile:
+      'The file is from an older version and holds no skill marks; the skills marked as learned here stay.',
     modeLegend: 'How to bring it in',
     modeMerge: 'Merge with what is here',
     modeMergeHint: 'Records that are not here are added; records that differ are listed for you.',

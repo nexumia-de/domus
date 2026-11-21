@@ -1440,18 +1440,77 @@ root, the bottom padding of the main area), so the toast never covers the last r
 
 Issue #18. Engine rules: [exchange](exchange.md). Code: `src/exchange/` (logic, no DOM),
 `src/screens/settings-data.ts`, `src/screens/import/`, `src/shell/backup-banner.ts`,
-`src/store/bulk.ts`. **Test:** `e2e/export-import.mjs`, `e2e/cooklang-flow.mjs`,
-`test/reminder.test.ts`, `test/cook-model.test.ts`, `test/store-bulk.test.ts`,
+`src/store/bulk.ts`. **Test:** `e2e/export-import.mjs`, `e2e/erase-device.mjs`, `e2e/cooklang-flow.mjs`,
+`test/backup-round-trip.test.ts`, `test/backup-erase.test.ts`, `test/reminder.test.ts`, `test/cook-model.test.ts`, `test/store-bulk.test.ts`,
 `test/router-import.test.ts`. Screenshots: `docs/screenshots/import-*`, `settings-*`,
 `backup-banner-360x720-light.png`.
 
 ## Settings, Your data
 
-Export everything, Import from a file (`#/settings/import`), the date of the last export, and the
-reminder period. **Export** hands the browser one file, `cooks-notebook-YYYY-MM-DD.json`
-(no name, no time of day), built by the engine from the store's live records: every version,
-tasting note and ingredient; not drafts, not tombstones. It makes no request. Nothing to export
-gives a quiet sentence.
+Export everything, Import from a file (`#/settings/import`), what the file does not hold, the date
+of the last export, the reminder period, and "Erase everything on this device". **Export** hands
+the browser one file, `cooks-notebook-YYYY-MM-DD.json` (no name, no time of day), format 3, built
+by the engine from the store's live records: every version, tasting note and ingredient, and the
+skill state (techniques marked as learned, and marks taken back); not drafts, not tombstones. It
+makes no request. Nothing to export gives a quiet sentence. Two quiet lines under the hint say what
+is not in the file: "Not in the file: the stock of “Home”, kept with the household's other apps."
+(the used space's name; without a space "kept in a space") and "Nor are unsaved drafts and the
+settings of this device." Why the stock is not in it: [exchange](exchange.md#versions).
+
+**What holds user data, and what the file does with it** (checked 2026-11-21):
+
+| Where                                                                                                                                                  | In the file         | Import                                                 | Erase on this device                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- | ------------------------------------------------------ | ------------------------------------------ |
+| IndexedDB `culina`: `ingredients`, `templates`, `components`, `dishes`, `affinities`, `tastings`                                                       | yes                 | merge or replace                                       | yes                                        |
+| IndexedDB `culina`: `skills`                                                                                                                           | yes, since format 3 | merge or replace; a format 1 or 2 file leaves it as is | yes                                        |
+| IndexedDB `culina`: `drafts`                                                                                                                           | no                  | no                                                     | yes                                        |
+| IndexedDB `culina`: `stock` (old items waiting for their move into a space), `backup` (migration data)                                                 | no                  | no                                                     | yes                                        |
+| IndexedDB `domus`: collection `stock` of each space, the spaces themselves (shared with Mixtura, Emptio and the Household app)                         | no                  | no (a format 1 file's stock is left out and counted)   | no: removed in the Household app           |
+| localStorage `culina.theme`, `culina.lang`, `culina.dishes`, `culina.cook`, `culina.space`, `culina.lastExport`, `culina.reminderDays`, `culina.debug` | no                  | no                                                     | yes (every key that starts with `culina.`) |
+
+**Test:** `test/backup-round-trip.test.ts` (export, a fresh database, "Merge now", every record
+and the skill state compared; replace with format 3 and format 2; a differing mark is a
+conflict), `e2e/export-import.mjs` (the same in a browser, the tester's steps, and a format 2
+file). Not proved: fake-indexeddb in the unit test; the browser check clears IndexedDB through the
+developer protocol on one device in Chromium.
+
+## Erase everything on this device
+
+A button under "Your data". It asks first with an inline row (never a dialog) that names what goes,
+with counts: "Erase from this device: 24 ingredients, 8 component versions, 5 dish versions, 3
+tasting notes, 1 skill marks, 2 unsaved drafts, this app's settings (theme, language, filters,
+reminder)?" (only what is there; nothing there gives one quiet sentence). When a space is used, two
+quiet lines say "The stock of “Home” stays: it is shared with the household's other apps." and
+"To remove it from this device, remove the space in the Household app.", with a link to the space
+there (`../#/spaces/<id>`). Then "Export first" (the export as above; the question stays open),
+"Erase everything" and "Cancel". There is no Undo, hence the export offered first.
+
+The erase empties every object store of Culina's database `culina` except `meta` in one
+transaction (every record and version, the skill state, drafts, old stock items, the migration
+backup; no tombstones: nothing of the notebook is synced today), removes every localStorage key
+that starts with `culina.`, and starts the app again at `#/start` (a reload), so the app is as on
+a first start: empty notebook, default theme and language, no filter, no export date.
+
+**The stock is left out on purpose.** It is the collection `stock` of a space in the database
+`domus` that Mixtura, Emptio and the Household app share on this origin. Removing Culina's view of
+it would remove Mixtura's on this device too; writing removal markers would remove it for the
+whole household at the next cycle; deleting rows without markers would bring them back from the
+storage at the next cycle, and the host's `removeSpace` is not safe while a loop runs
+([sync orderings](../../../packages/host/docs/sync-orderings.md), "A space is removed while its loop
+is still running": not handled). Removing a space from this device is the Household app's.
+
+Not handled: a second open tab of Culina keeps its notebook in memory until it is reloaded, and a
+save there writes that record again. When the notebook is synced one day (the library of the
+[sync decision](decisions/sync.md)), the erase must be decided again: rows deleted without
+markers would come back from the storage, which may be what "this device only" wants.
+
+**Code:** `src/exchange/erase.ts`, `Store.eraseAll` (`src/store/repository.ts`),
+`src/screens/settings-data.ts`. **Test:** `test/backup-erase.test.ts` (counts; every row of the
+own database, drafts and `culina.` keys gone, other apps' keys and the stock of the space and the
+space itself kept; the next start is empty), `e2e/erase-device.mjs` (run from
+`e2e/export-import.mjs`: question with counts, Export first, Cancel, erase, reload at `#/start`,
+default theme, stock untouched). Not proved: fake-indexeddb and a memory store for `domus` in the
+unit test; one tab; Chromium only; the German texts were not seen in a browser.
 
 ## Backup reminder
 
@@ -1459,7 +1518,8 @@ The date of the last export is kept in `localStorage` (`culina.lastExport`) with
 user chose (`culina.reminderDays`: Never, 7, 14, **30 (default)**, 90 days). A quiet line above the
 screen (never a dialog) shows only when the notebook has changes that no export holds (some
 row's `updatedAt`, tombstones included, is later than the last export) **and** the period has
-passed since the last export, or, with no export yet, since the oldest change. Text: "Your notebook
+passed since the last export, or, with no export yet, since the oldest change (the skill state
+counts since format 3). Text: "Your notebook
 has changes that are in no export yet." / "... The last export was N days ago." with "Export now"
 (links to Settings) and "Not now" (hides it until the app is reopened). Exporting hides it.
 **Test:** `test/reminder.test.ts`; `e2e/export-import.mjs` injects the clock with
@@ -1471,7 +1531,12 @@ has changes that are in no export yet." / "... The last export was N days ago." 
 as an export file. A file that cannot be used (not JSON, not an export, a record that does not fit
 its schema, a repeated id, a newer version) ends in one quiet sentence plus "Nothing was changed."
 and **never touches stored data** (the engine returns no records and nothing is written before
-the user confirms). Older versions would be migrated by the export migration chain (none yet).
+the user confirms). Older versions are migrated by the export migration chain
+([versions](exchange.md#versions)): a format 1 file's stock is left out and counted; a format 1 or 2
+file holds no skill state, and the summary says "The file is from an older version and holds no
+skill marks; the skills marked as learned here stay." ("replace everything" then leaves the skill
+state as it is). The summary counts skill records as "skill marks"; a skill conflict is labelled
+with the technique's name.
 
 **JSON files.** The summary lists counts per entity. Then:
 
@@ -1539,7 +1604,9 @@ as markup).
 # Local store
 
 The app keeps what the user enters in IndexedDB ([data model](data-model.md#storage-and-migrations));
-the editors write ([editor](#editor)). Settings shows one quiet line about it, read with
+the editors write ([editor](#editor)). Its own database is `culina`; the stock lives in the
+database `domus` that the household's apps share ([stock](#stock)). Which of them the export file
+holds and what "Erase everything on this device" removes: [Settings, Your data](#settings-your-data). Settings shows one quiet line about it, read with
 `navigator.storage.persisted()` (the request is made when the user first
 saves something):
 
