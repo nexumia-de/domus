@@ -100,13 +100,13 @@ space; the web app can tick several).
 
 # Build, run, checks
 
-| Command                              | What it does                                                                                                                                                                   |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run build -w @mixtura/linux`    | Builds the engine and the validators, then esbuild makes `dist/de.nexumia.Mixtura.js` (about 0.9 MB with the seed); `gi://` stays imported. The GitHub address is compiled in  |
-| `gjs -m dist/de.nexumia.Mixtura.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `MIXTURA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                         |
-| `npm test -w @mixtura/linux`         | The session on the real seed and the shared database in memory (13 tests, with the texts); part of `npm run check:mixtura`                                                     |
-| `npm run smoke -w @mixtura/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost |
-| `npm run interact -w @mixtura/linux` | Drives the app through GTK's Broadway backend with Playwright (18 checks and a wide screenshot) and checks the data files after each step; `SHOTS=<folder>` keeps a screenshot per step              |
+| Command                              | What it does                                                                                                                                                                            |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @mixtura/linux`    | Builds the engine and the validators, then esbuild makes `dist/de.nexumia.Mixtura.js` (about 0.9 MB with the seed); `gi://` stays imported. The GitHub address is compiled in           |
+| `gjs -m dist/de.nexumia.Mixtura.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `MIXTURA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                  |
+| `npm test -w @mixtura/linux`         | The session on the real seed and the shared database in memory (13 tests, with the texts); part of `npm run check:mixtura`                                                              |
+| `npm run smoke -w @mixtura/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost          |
+| `npm run interact -w @mixtura/linux` | Drives the app through GTK's Broadway backend with Playwright (18 checks and a wide screenshot) and checks the data files after each step; `SHOTS=<folder>` keeps a screenshot per step |
 
 # Releases
 

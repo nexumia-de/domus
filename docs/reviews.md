@@ -21,6 +21,34 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-21: Emptio and Mixtura into the shared Flatpak repository
+
+Roadmap goal 11 (Emptio's releases, pull request 14; Mixtura's native app,
+this pull request). The lead used a larger model, the agent a mid model.
+
+| Part                                                                                                                                         | Done by            | Checked by                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Emptio's release job, first release, `release.toml`; phosh-apps' per-app tags; the toolkit's `tag-prefix`                                    | lead               | CI of pull request 14 and the tag run of `emptio-v0.1.0` (release created with both bundles); nobody read the code a second time                                                                                                                      |
+| Shared package `packages/gjs`, Mixtura's native app, `@mixtura/app/core`, status words in the host package, composite CI actions, their docs | agent 1, mid model | lead read the agent's report, the Mixtura manifest and the composite release action in full, the job graph of `ci.yml`, and ran `npm run check`; lead did **not** read the pages, `session.ts`, the gjs package or the interaction check line by line |
+| This entry                                                                                                                                   | lead               | nobody                                                                                                                                                                                                                                                |
+
+**What the checks found, and where it was fixed.**
+
+- The lead's `npm run check` failed on the formatting of
+  `apps/mixtura/docs/native-linux.md`, which the agent reported as
+  passing; fixed with Prettier, the check then passes (all parts).
+- The agent's report says the commit message counts 3 new host tests;
+  there are 2 (host 223 tests).
+
+**Test counts** (lead's run): model 638, host 223, gjs 9, the other parts
+as on `main`; Mixtura native 13, Emptio native 2 (its other tests moved to
+gjs).
+
+**What nobody verified.** The Mixtura Flatpak build (CI on this pull
+request builds it), the composite actions before CI runs them, an
+installed bundle, a phone, sync against a real storage, libadwaita 1.9 of
+the GNOME 51 runtime, the German texts by a native speaker.
+
 ## 2026-11-20: Emptio on spaces, its native app, Culina's stock on spaces
 
 Roadmap goals 7, 8 and the first part of 11
