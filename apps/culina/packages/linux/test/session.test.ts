@@ -161,8 +161,9 @@ test('the choice of space and the filters are kept in the preferences', async ()
   const only = must(session.state().space).id;
   await session.choose(only);
   expect(kept.get(PREFS.space)).toBe(only);
-  session.setFilters({ lacking: 3, country: 'it', meatFree: true });
-  expect(session.filters()).toEqual({ lacking: 3, country: 'it', meatFree: true });
+  // An older country and meat choice in the same entry are not read back (no filter any more).
+  session.setFilters({ lacking: 3, country: 'it', meatFree: true } as never);
+  expect(session.filters()).toEqual({ lacking: 3 });
   session.setFilters({ lacking: 0 });
   expect(session.filters()).toEqual({ lacking: 0 });
   session.stop();
@@ -249,7 +250,7 @@ test('the same filter narrows what the stock allows, the nearest dishes too', as
   expect([...narrowed.shown, ...narrowed.nearest].every((row) => ofCuisine.has(row.id))).toBe(true);
   expect(narrowed.shown.some((row) => row.id === 'egg-noodles')).toBe(false);
   // An older kept country choice of the finder does not narrow: only how much may lack is used.
-  const old = session.cookable({ lacking: 3, country: elsewhere as 'de' });
+  const old = session.cookable({ lacking: 3, country: elsewhere } as never);
   expect(old.ok && old.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
   // A filter nothing passes gives an empty list, not a failure.
   const nothing = session.cookable({ lacking: 3 }, { cuisine: 'xx' });

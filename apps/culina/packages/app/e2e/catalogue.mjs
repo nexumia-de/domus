@@ -226,6 +226,67 @@ const unavailable = async (browser, origin) => {
   await context.close();
 };
 
+/**
+ * A catalogue pick is stored before it lands on the line. When the next line is added in that
+ * moment (both clicks in one task here, so it happens every time), the late pick fills its own
+ * line and leaves the new line's picker open.
+ */
+const latePick = async (browser, origin) => {
+  const label = '360px catalogue picker, a pick that lands late';
+  const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
+  const problems = watch(context, origin);
+  const page = await context.newPage();
+  await open(page, origin, 'components/new');
+  await formReady(page);
+  await addLine(page);
+  await searchBox(page).fill('garlic');
+  await entryButton(page, 'Garlic').waitFor();
+  await page.evaluate(() => {
+    const pick = [...document.querySelectorAll('.picker-catalogue .picker-choice')].find((b) =>
+      b.textContent.startsWith('Garlic'),
+    );
+    const add = [...document.querySelectorAll('button')].find(
+      (b) => b.textContent.trim() === 'Add an ingredient',
+    );
+    pick.click();
+    add.click();
+  });
+  await page.waitForFunction(() => document.querySelectorAll('.line-edit').length === 2);
+  await page.waitForTimeout(300);
+  const names = await page.locator('.line-edit .pick-name').allInnerTexts();
+  check(
+    (await page.locator('.picker').count()) === 1 &&
+      (await searchBox(page).isVisible()) &&
+      names[0]?.trim() === 'Garlic',
+    `${label}: the late pick fills its own line and the new line's picker stays open (${names.join(' | ')})`,
+  );
+  // The same on a dish: a late pick on the first slot leaves the second slot's picker open.
+  await open(page, origin, 'dishes/new');
+  await formReady(page);
+  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await searchBox(page).fill('egg, whole, fresh');
+  await entryButton(page, 'Egg, whole, fresh').first().waitFor();
+  await page.evaluate(() => {
+    const pick = [...document.querySelectorAll('.picker-catalogue .picker-choice')].find((b) =>
+      (b.getAttribute('aria-label') ?? b.textContent).startsWith('Egg, whole, fresh'),
+    );
+    const add = [...document.querySelectorAll('button')].find(
+      (b) => b.textContent.trim() === 'Add a slot',
+    );
+    pick.click();
+    add.click();
+  });
+  await page.waitForFunction(() => document.querySelectorAll('.slot-edit').length === 2);
+  await page.waitForTimeout(300);
+  const slots = await page.locator('.slot-edit .pick-name').allInnerTexts();
+  check(
+    (await page.locator('.picker').count()) === 1 && slots[0]?.trim() === 'Egg, whole, fresh',
+    `${label}: on a dish too, the late pick fills its slot and the new slot's picker stays open (${slots.join(' | ')})`,
+  );
+  check(problems.length === 0, `${label}: no console error ${problems.join('; ')}`);
+  await context.close();
+};
+
 export const catalogue = async (browser, server) => {
   const origin = server.origin;
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
@@ -238,6 +299,7 @@ export const catalogue = async (browser, server) => {
     `catalogue: no console errors, CSP violations or foreign requests${problems.length ? ' ' + problems.join('; ') : ''}`,
   );
   await context.close();
+  await latePick(browser, origin);
   await catalogueTree(browser, origin);
   await catalogueGerman(browser, origin);
   await offline(browser, origin);

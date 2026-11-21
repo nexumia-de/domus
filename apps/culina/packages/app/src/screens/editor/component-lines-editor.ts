@@ -205,8 +205,12 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
             ) {
               line.unit = 'g';
             }
-            open = undefined;
-            focusAfter = [`[data-pick="${index}"]`];
+            // A catalogue pick is stored first and lands later; by then another line may have
+            // its picker open, which this pick must not close.
+            if (open?.index === index) {
+              open = undefined;
+              focusAfter = [`[data-pick="${index}"]`];
+            }
             changed();
             draw();
           },

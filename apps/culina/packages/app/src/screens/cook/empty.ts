@@ -1,10 +1,13 @@
 // The empty states of the finder, each with the way forward: nothing ticked, nothing in the
 // notebook (said also beside a list of shipped dishes), or nothing that matches, in which case the
 // nearest candidates under the same choices are named with what they lack.
+import type { DishFilter } from '../../browse/filter';
+import { isEmptyFilter } from '../../browse/filter';
 import type { Found } from '../../cook/finder';
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import { chosenLabels } from '../dish-filter';
 import { rowOf } from './entry';
 
 const t = strings.cook;
@@ -56,8 +59,26 @@ const nearestList = (found: Ok): HTMLElement => {
   return list;
 };
 
-/** Nothing is shown: why, and the nearest under the same choices. */
-export const emptyState = (found: Ok, notebookEmpty: boolean): HTMLElement => {
+/**
+ * Where the dish filter narrows: which choices are active, and "Show all", which empties the dish
+ * filter (the finder's own two choices stay), so the way out is beside the empty list and not a
+ * screen above it.
+ */
+const wayOut = (filter: DishFilter, showAll: () => void): HTMLElement[] => {
+  if (isEmptyFilter(filter)) return [];
+  const all = el('button', 'btn quiet cook-show-all', strings.browse.reset);
+  all.type = 'button';
+  all.addEventListener('click', showAll);
+  return [el('p', 'muted cook-chosen', t.filterChosen(chosenLabels(filter).join(', '))), all];
+};
+
+/** Nothing is shown: why, the active dish filter with the way out, and the nearest. */
+export const emptyState = (
+  found: Ok,
+  notebookEmpty: boolean,
+  filter: DishFilter,
+  showAll: () => void,
+): HTMLElement => {
   const box = notebookEmpty ? noNotebook() : el('div', 'cook-empty');
   if (!notebookEmpty)
     box.append(
@@ -69,6 +90,7 @@ export const emptyState = (found: Ok, notebookEmpty: boolean): HTMLElement => {
           : `${t.emptyNoMatch} ${t.emptyNothingRelated}`,
       ),
     );
+  box.append(...wayOut(filter, showAll));
   if (found.nearest.length > 0)
     box.append(el('h2', 'cook-nearest-heading', t.nearestHeading), nearestList(found));
   return box;

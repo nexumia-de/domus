@@ -326,8 +326,12 @@ const build = (
             if (ref.kind === 'component' && !(MASS_ONLY as readonly string[]).includes(slot.unit)) {
               slot.unit = 'g';
             }
-            open = undefined;
-            focusAfter = [`[data-pick="${index}"]`];
+            // A catalogue pick is stored first and lands later; by then another slot may have
+            // its picker open, which this pick must not close.
+            if (open === index) {
+              open = undefined;
+              focusAfter = [`[data-pick="${index}"]`];
+            }
             changed();
             draw();
           },

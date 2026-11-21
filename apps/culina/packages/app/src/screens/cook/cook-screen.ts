@@ -7,7 +7,6 @@ import { offeredBy, readDishFilter, writeDishFilter } from '../../browse/filter'
 import type { DishFilter } from '../../browse/filter';
 import { CHARACTER_TABLE } from '../../characters/table';
 import { loadNames } from '../../classics/names';
-import { carryOldCookChoices } from '../../cook/carry';
 import { dishEntries, dishEntriesByKey } from '../../browse/entries';
 import { shippedNow } from '../../cook/entries';
 import { find } from '../../cook/finder';
@@ -16,7 +15,8 @@ import { isDish, originOf, partsInView } from '../../cook/one-list';
 import type { AnyCandidate } from '../../cook/one-list';
 import { cookToday, notebookSource } from '../../cook/source';
 import { listIngredients, storeProblem } from '../../notebook';
-import { browserStore, CLASSIC_COUNTRIES, readCookFilters, writeCookFilters } from '../../prefs';
+import { COUNTRIES } from '../../classics/list-view';
+import { browserStore, readCookFilters, writeCookFilters } from '../../prefs';
 import type { CookFilters } from '../../prefs';
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
@@ -37,7 +37,7 @@ type Ok = Extract<Found, { ok: true }>;
 export const FILTER_ORDER = {
   characters: CHARACTER_TABLE.map((e) => e.id),
   courses: COURSE_ORDER,
-  cuisines: CLASSIC_COUNTRIES,
+  cuisines: COUNTRIES,
 };
 
 const group = (
@@ -57,8 +57,11 @@ const group = (
   return section;
 };
 
-/** What the results area shows for a finding. */
-export const resultsOf = (found: Ok, filter: DishFilter): HTMLElement[] => {
+/**
+ * What the results area shows for a finding.
+ * @param showAll - Empties the dish filter; offered where it hides everything.
+ */
+export const resultsOf = (found: Ok, filter: DishFilter, showAll: () => void): HTMLElement[] => {
   if (!found.hasStock) return [nothingTicked()];
   const out: HTMLElement[] = [];
   if (found.dishes.length > 0)
@@ -68,7 +71,8 @@ export const resultsOf = (found: Ok, filter: DishFilter): HTMLElement[] => {
   if (!partsInView(filter) && found.within.some((c) => !isDish(c)))
     out.push(el('p', 'muted cook-parts-hidden', t.partsHidden));
   const notebookEmpty = !found.hasRecipes && found.within.length === 0;
-  if (found.dishes.length + found.parts.length === 0) out.push(emptyState(found, notebookEmpty));
+  if (found.dishes.length + found.parts.length === 0)
+    out.push(emptyState(found, notebookEmpty, filter, showAll));
   else if (notebookEmpty) out.push(noNotebook());
   return out;
 };
@@ -99,16 +103,17 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
   } else section.append(el('p', 'muted', t.intro));
 
   const store = browserStore();
-  carryOldCookChoices(store);
   let filters: CookFilters = readCookFilters(store);
   let dishFilter: DishFilter = readDishFilter(store);
-  // On the "uses" view only own records are listed, so the origin is not asked there.
+  // "What uses <ingredient>" answers that question alone: the dish filter chosen elsewhere does
+  // not narrow it, and its controls are not shown there (the finder's own two choices are).
   const usesView = ingredientId !== undefined;
-  const narrowing = (): DishFilter => {
-    if (!usesView || dishFilter.origin === undefined) return dishFilter;
-    return Object.fromEntries(
-      Object.entries(dishFilter).filter(([k]) => k !== 'origin'),
-    ) as DishFilter;
+  const narrowing = (): DishFilter => (usesView ? {} : dishFilter);
+  const setDishFilter = (next: DishFilter): void => {
+    dishFilter = next;
+    writeDishFilter(store, dishFilter);
+    drawFilter();
+    draw();
   };
   const results = el('div', 'cook-results');
   const filterSlot = el('div', 'cook-dish-filter');
@@ -117,27 +122,14 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
     writeCookFilters(store, next);
     draw();
   });
-  const drawFilter = (): void => {
-    const entries = dishEntries().filter((e) => !usesView || e.origin === 'own');
+  function drawFilter(): void {
+    if (usesView) return;
     replaceFilterControls(
       filterSlot,
-      dishFilterControls(
-        narrowing(),
-        offeredBy(entries, FILTER_ORDER),
-        (next) => {
-          dishFilter =
-            usesView && dishFilter.origin !== undefined
-              ? { ...next, origin: dishFilter.origin }
-              : next;
-          writeDishFilter(store, dishFilter);
-          drawFilter();
-          draw();
-        },
-        { noOrigin: usesView },
-      ),
+      dishFilterControls(dishFilter, offeredBy(dishEntries(), FILTER_ORDER), setDishFilter),
     );
-  };
-  const draw = (): void => {
+  }
+  function draw(): void {
     if (ingredientId !== undefined && chosen === undefined) return results.replaceChildren();
     const found = find(source, today, filters, {
       filter: narrowing(),
@@ -150,8 +142,8 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
       return;
     }
     controls.setRoles(found.roles);
-    results.replaceChildren(...resultsOf(found, narrowing()));
-  };
+    results.replaceChildren(...resultsOf(found, narrowing(), () => setDishFilter({})));
+  }
   drawFilter();
   draw();
   // The catalogue completes the tree for the shipped dishes and the characters of every dish;
@@ -167,7 +159,8 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
     source.stock.filter((s) => s.ref.kind === 'ingredient').map((s) => s.ref.id),
   );
   const choices = el('div', 'cook-choices');
-  choices.append(filterSlot, controls.element);
+  if (usesView) choices.append(controls.element);
+  else choices.append(filterSlot, controls.element);
   section.append(choices, startSection(listIngredients(), ticked, false), results);
   return section;
 };

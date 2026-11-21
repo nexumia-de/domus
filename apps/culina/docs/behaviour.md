@@ -1114,14 +1114,14 @@ screen, which belongs to the Notebook (own or shipped). Texts:
   3 (default 1); "Covers the role" keeps entries whose covered roles include
   the chosen one. Both apply to own and shipped entries alike.
 - **The old country and meat choices.** An older version kept "Country"
-  and "Meat and fish" for the classics in `culina.cook`. On the first open
-  of Cook they are carried into the dish filter once (the country as the
-  cuisine, the meat choice as "Without meat and fish"; a choice the dish
-  filter already has wins) and taken out of `culina.cook`; an unreadable
-  entry is the default, never an error (`src/cook/carry.ts`, test
-  `test/cook-carry.test.ts`, `e2e/cook.mjs`). The native Linux app still
-  keeps its own country and meat filter in its preferences file; that is
-  not this change.
+  and "Meat and fish" for the classics in `culina.cook`. They are ignored,
+  as the native Linux app ignores them: they are not carried into the dish
+  filter, because they only ever narrowed the classics section and carried
+  over they would hide own dishes on the Dishes list and in the random pick
+  too, behind the user's back. Role and threshold in the same entry are still
+  read; the two old fields fall away the next time the finder writes its
+  choices. An unreadable entry is the default, never an error. **Test:**
+  `test/cook-old-entry.test.ts`, `e2e/cook.mjs`.
 - **Start from one ingredient** (`#/cook/<ingredientId>/with`, heading
   "What uses Leek"): a section at the top lists the ticked ingredients and
   a search over the notebook's ingredients by every name (English and
@@ -1129,7 +1129,11 @@ screen, which belongs to the Notebook (own or shipped). Texts:
   only own components and dishes that use the ingredient or one it can
   stand in for (`usesIngredient`); "Show everything" leaves it. No shipped
   dish is listed here: the engine has no "uses" question for them yet. The
-  dish filter applies to the own dishes (its "From" is not offered here).
+  dish filter does not narrow this view and its controls are not shown here:
+  the user came from one ingredient and asked what uses it, so a course or a
+  character chosen on another screen must not hide the answer (the finder's
+  own "Show" and "Covers the role" still apply and are shown). **Test:**
+  `e2e/cook.mjs` (a course kept elsewhere, "What uses Leek" unchanged).
 - **Use up first.** The stock items that have a use-by date, nearest first
   (the engine's `useUpFirst`), each with days left in words and links to
   what uses it among the entries of What can I cook under the same choices:
@@ -1146,7 +1150,11 @@ screen, which belongs to the Notebook (own or shipped). Texts:
   nearest under the same choices, own or shipped, and what each lacks (both
   engines at a wide threshold, fewest lacking first, the one ranking within
   the same number); with nothing near at all, only "Nothing matches these
-  choices.".
+  choices.". Where the dish filter has a choice, the empty state also says
+  which ("Chosen: Main, Without meat and fish", as the controls name them)
+  and has "Show all", which empties the dish filter (the finder's own two
+  choices stay), so the way out is beside the empty list and not a screen
+  above it. **Test:** `e2e/cook.mjs`.
 - **Catalogue ingredients only.** The generated catalogue carries no roles;
   the [role table](data-model.md#roles) adds a few when the catalogue is
   read, so a ratio card is makeable from stock of catalogue foods. With no

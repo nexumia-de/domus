@@ -71,13 +71,7 @@ export const cookStringsDe: typeof cookStrings = {
   amountUnknown: (name: string): string => `${name} ist da; wie viel, ist nicht bekannt.`,
   offer: (invite: string, names: string): string => `Du könntest ${invite} ergänzen: ${names}`,
   openLabel: (name: string): string => `${name} öffnen`,
-  // The shipped classics (the native Linux app)
-  countryLabel: 'Land',
-  countryAny: 'Alle Länder',
-  meatLabel: 'Fleisch und Fisch',
-  meatAny: 'Mit oder ohne',
-  meatFree: 'Ohne Fleisch und Fisch',
-  classicsListLabel: 'Was der Vorrat für die Klassiker hergibt',
+  // "Needs" (the native Linux app)
   needsHeading: 'Braucht',
   notInCatalogue: (names: string): string =>
     `Noch nicht im Katalog, deshalb nicht gezählt: ${names}`,
@@ -93,7 +87,7 @@ export const cookStringsDe: typeof cookStrings = {
   startFoundThrough: (name: string): string => `auch ${name} genannt`,
   withHeading: (name: string): string => `Was ${name} verwendet`,
   withNote:
-    'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden; der Filter für Gerichte gilt für die Gerichte.',
+    'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden, unabhängig vom Filter für Gerichte.',
   withClear: 'Alles zeigen',
   withUnknown: 'Diese Zutat ist nicht mehr in deinem Notizbuch.',
   // Empty states
@@ -103,6 +97,7 @@ export const cookStringsDe: typeof cookStrings = {
   addComponent: 'Komponente anlegen',
   importLink: 'Rezept importieren',
   emptyNoMatch: 'Nichts passt zu dieser Auswahl.',
+  filterChosen: (choices: string): string => `Gewählt: ${choices}`,
   emptyNothingRelated: 'Nichts in deinem Notizbuch verwendet bisher, was angehakt ist.',
   nearestHeading: 'Die nächsten',
   nearest: (name: string, lacks: string): string => `${name} braucht noch ${lacks}`,
