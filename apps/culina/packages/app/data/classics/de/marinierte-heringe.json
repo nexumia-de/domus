@@ -72,18 +72,22 @@
         },
         {
           "key": "mustard",
-          "wanted": {
-            "en": "White mustard seed",
-            "de": "Weiße Senfkörner"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170929"
           },
           "amount": {
             "value": 1,
             "unit": "ounce",
             "original": "1 ounce of white mustard seeds"
           },
+          "note": {
+            "en": "White mustard seeds, whole.",
+            "de": "Weiße Senfkörner, ganz."
+          },
           "sourceNote": {
-            "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead.",
-            "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen."
+            "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead. The catalogue has only ground mustard seed, of no named kind.",
+            "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen. Der Katalog führt nur gemahlene Senfsaat ohne genannte Sorte."
           }
         },
         {

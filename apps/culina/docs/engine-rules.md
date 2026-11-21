@@ -799,10 +799,18 @@ it; a candidate with no dated item has no urgency and is the least urgent.
 
 **Ranking contract.** Candidates are ordered by urgency first (earliest
 use-by first, none last), then by the number of distinct roles covered
-(more first), then by name and id as plain string comparison; the order
-does not depend on the order of the input. Complete and partial candidates
-share the list (`complete`, `lacking` tell them apart); the reasons are the
-urgency's item and `roles`.
+(more first), then by name, id and kind as plain string comparison; the
+order does not depend on the order of the input. Complete and partial
+candidates share the list (`complete`, `lacking` tell them apart); the
+reasons are the urgency's item and `roles`. The contract is exported as
+`rankCandidates(list)`, generic over anything with `kind`, `id`, `name`,
+`roles` and an optional `urgency.daysLeft`: `makeable` and
+`classicsMakeable` both return their candidates in this order, and because
+it is a total order the union of their lists ranked again is the merge of
+both by the same rule (the app's one list of own and shipped dishes).
+Vectors `rank-merge-own-and-classic`, `rank-merge-ties` (kind
+`rank_candidates`, each also run on the reversed input); property in
+`test/makeable.test.ts`.
 
 **Use up first.** `useUpFirst` lists the stock items that have a use-by,
 earliest first, each with the candidates that use it (in ranking order);
@@ -868,7 +876,9 @@ by the catalogue. The result is `{ ok: true, candidates }` or
 `{ ok: false, error }` with the `makeable` or `deriveClassic` code and the
 `classic` id. A candidate is the finder's dish candidate with `kind: 'classic'`,
 `country`, `course`, `vegetarian` and `notInCatalogue`; the order is the
-finder's (urgency, roles covered, name, id) across all classics, and
+finder's (`rankCandidates`: urgency, roles covered, name, id, kind) across
+all classics, so a list of own candidates and classics ranked again with
+`rankCandidates` is ordered by one rule, and
 `maxMissing` (default 0) and "at least one line that is there" decide what is
 listed, as for an own dish.
 

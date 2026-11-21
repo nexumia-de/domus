@@ -1,26 +1,20 @@
-// "Nutrition per portion" on the dish screen, closed behind a tap like the source: the rounded
-// figures for the chosen portions and where the data comes from; with too few counted ingredients one
-// short line instead. What was left out and how it is rounded is behind a second tap. It never judges.
-import type { Classic } from '@culina/engine';
-import { nutritionView, type Lookup } from '../../classics/nutrition-view';
-import { currentLang } from '../../classics/lang';
-import { catalogueEntries, ingredientLabel } from '../../classics/names';
-import { getIngredient } from '../../notebook';
+// "Nutrition per portion" on the dish screen of either origin, closed behind a tap like the source:
+// the rounded figures for the chosen portions and where the data comes from; with too few counted
+// ingredients one short line instead. What was left out and how it is rounded is behind a second
+// tap. It never judges. The figures come from the dish's view model (src/dishes/shown.ts).
+import type { NutritionViewResult } from '../../classics/nutrition-view';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 const t = strings.nutrition;
 
-const lookup: Lookup = (id) => getIngredient(id) ?? catalogueEntries().get(id);
-
-/** The closed section and the function that draws it again for other portions. */
-export const nutritionDetails = (
-  classic: Classic,
-): { element: HTMLDetailsElement; draw: (portions: number) => void } => {
+/** The closed section and the function that draws it again for other figures. */
+export const nutritionDetails = (): {
+  element: HTMLDetailsElement;
+  draw: (shown: NutritionViewResult) => void;
+} => {
   const element = el('details', 'nutrition-block foot-block');
-  const draw = (portions: number): void => {
-    const lang = currentLang();
-    const shown = nutritionView(classic, portions, lang, (id) => ingredientLabel(id, lang), lookup);
+  const draw = (shown: NutritionViewResult): void => {
     const body: HTMLElement[] = [];
     if (shown.ok) {
       const { view } = shown;
@@ -49,6 +43,5 @@ export const nutritionDetails = (
     }
     element.replaceChildren(el('summary', undefined, t.heading), ...body);
   };
-  draw(1);
   return { element, draw };
 };

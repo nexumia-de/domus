@@ -75,9 +75,9 @@
         },
         {
           "key": "savoy",
-          "wanted": {
-            "en": "Savoy cabbage",
-            "de": "Wirsingkohl"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170388"
           },
           "note": {
             "en": "Cut into thin strips.",
@@ -204,13 +204,13 @@
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
           },
           "note": {
-            "en": "'A little'.",
-            "de": "'Ein wenig'."
+            "en": "Tomato sauce or paste, 'a little'.",
+            "de": "Tomatensauce oder Tomatenmark, 'ein wenig'."
           },
           "sourceNote": {
             "en": "The source gives no amount.",

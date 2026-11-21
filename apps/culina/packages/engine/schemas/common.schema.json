@@ -251,6 +251,24 @@
         }
       }
     },
+    "course": {
+      "description": "Where a dish sits in a meal: the courses a shipped classic states, one list for classics and the notebook's dishes.",
+      "enum": [
+        "starter",
+        "soup",
+        "main",
+        "side",
+        "dessert",
+        "baking",
+        "sauce",
+        "breakfast",
+        "snack"
+      ]
+    },
+    "country": {
+      "description": "A country code the app has a name for: the countries of the shipped classics, and the cuisine of a dish.",
+      "enum": ["de", "it", "fr", "es"]
+    },
     "ref": {
       "description": "Reference to an ingredient or to a component (a sub-recipe or a made item).",
       "type": "object",

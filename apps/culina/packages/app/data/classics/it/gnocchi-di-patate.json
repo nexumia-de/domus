@@ -90,9 +90,9 @@
         },
         {
           "key": "tomato-sauce",
-          "wanted": {
-            "en": "Tomato sauce",
-            "de": "Tomatensauce"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170054"
           },
           "note": {
             "en": "Optional, as you like.",

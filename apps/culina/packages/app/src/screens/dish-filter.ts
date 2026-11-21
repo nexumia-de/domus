@@ -29,13 +29,14 @@ const select = (
   choices: readonly Choice[],
   chosen: string | undefined,
   onChange: (value: string | undefined) => void,
+  labelOf: (value: string) => string = (value) => value,
 ): HTMLElement => {
   const control = el('select', `field ${className}`);
   control.id = nextId('dish-filter');
   // A stored choice the list no longer offers stays offered, so that it can be seen and dropped.
   const all =
     chosen !== undefined && !choices.some((c) => c.value === chosen)
-      ? [...choices, { value: chosen, label: chosen }]
+      ? [...choices, { value: chosen, label: labelOf(chosen) }]
       : choices;
   const first = el('option', undefined, any);
   first.value = '';
@@ -105,6 +106,7 @@ export const dishFilterControls = (
         offered.origins.map((o) => ({ value: o, label: t.origin[o] })),
         filter.origin,
         (v) => set('origin', v as Origin | undefined),
+        (v) => t.origin[v as Origin] ?? v,
       ),
     );
   if (offered.characters.length > 0 || filter.character !== undefined)
@@ -116,6 +118,7 @@ export const dishFilterControls = (
         offered.characters.map((c) => ({ value: c, label: characterLabel(c, currentLang()) })),
         filter.character,
         (v) => set('character', v),
+        (v) => characterLabel(v, currentLang()),
       ),
     );
   if (offered.courses.length > 0 || filter.course !== undefined)
@@ -127,6 +130,7 @@ export const dishFilterControls = (
         offered.courses.map((c) => ({ value: c, label: courseLabel(c) })),
         filter.course,
         (v) => set('course', v),
+        courseLabel,
       ),
     );
   if (offered.cuisines.length > 0 || filter.cuisine !== undefined)
@@ -138,6 +142,7 @@ export const dishFilterControls = (
         offered.cuisines.map((c) => ({ value: c, label: cuisineLabel(c) })),
         filter.cuisine,
         (v) => set('cuisine', v),
+        cuisineLabel,
       ),
     );
 

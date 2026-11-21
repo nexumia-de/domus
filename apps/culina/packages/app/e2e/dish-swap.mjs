@@ -119,9 +119,14 @@ const swap = async (page) => {
     `${label}: the list of what goes in follows the swap`,
   );
   check(
-    same(await page.locator('.steps-section .recipe-steps li').allInnerTexts(), [
-      'Serve: Swap patties, Swap rice',
-    ]),
+    same(
+      await page
+        .locator('.dish-card .method-block .recipe-steps')
+        .last()
+        .locator('li')
+        .allInnerTexts(),
+      ['Serve: Swap patties, Swap rice'],
+    ),
     `${label}: the assembly names the other filling`,
   );
   check(

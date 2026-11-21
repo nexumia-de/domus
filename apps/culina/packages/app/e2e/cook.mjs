@@ -1,7 +1,10 @@
-// The finder in a browser, on the fixture notebook and stock with a fixed date: the order on screen
-// equals the engine's ranking on the same data, every entry shows its reason, filters work and
-// survive a reload, start from one ingredient (also by a German name), use up first, the empty
-// states, 360 px without horizontal scroll, no console error or foreign request, offline.
+// The finder in a browser, on the fixture notebook and stock with a fixed date: the own entries on
+// screen are the engine's ranking on the same data, dishes in the first group and components and
+// ratio cards in the second, every entry shows its reason, filters work and survive a reload, an
+// old country choice is carried into the dish filter, start from one ingredient (also by a German
+// name), use up first, the empty states, 360 px without horizontal scroll, no console error or
+// foreign request, offline. The shipped dishes in the same list are checked with fictional content
+// in classics-finder.mjs; here only the own entries are compared.
 import { check, watch } from './harness.mjs';
 import { layout } from './editor-helpers.mjs';
 import { FORBIDDEN, overflow } from './measure.mjs';
@@ -28,8 +31,14 @@ const fresh = async (browser, origin, width = 360, only) => {
 const reopen = async (page, origin, hash, now) => {
   await open(page, origin, hash, now);
 };
+const OWN = '.cook-list > li[data-origin="own"]';
 const onScreen = (page) =>
-  page.locator('.cook-list > li').evaluateAll((items) => items.map((li) => li.dataset.key));
+  page.locator(OWN).evaluateAll((items) => items.map((li) => li.dataset.key));
+/** The engine's list as the screen groups it: dishes first, then components and ratio cards. */
+const grouped = (list) => [
+  ...list.filter((c) => c.kind === 'dish'),
+  ...list.filter((c) => c.kind !== 'dish'),
+];
 const text = (page, selector) => page.locator(selector).allInnerTexts();
 const noFieldFocused = (page) =>
   page.evaluate(
@@ -57,23 +66,30 @@ const ordering = async (browser, origin) => {
   const shown = await onScreen(page);
   check(
     engineRank.candidates.length >= 5 &&
-      JSON.stringify(shown) === JSON.stringify(keys(engineRank.candidates)),
+      JSON.stringify(shown) === JSON.stringify(keys(grouped(engineRank.candidates))),
     `${label}: the order on screen is the engine's (${shown.length} entries: ${shown.join(', ')})`,
   );
   check(
     new Set(engineRank.candidates.map((c) => c.kind)).size === 3,
     `${label}: components, a dish and a ratio template are all candidates`,
   );
-  const reasons = await text(page, '.cook-list .cook-reason');
+  const groups = await page.locator('.cook-group-heading').allInnerTexts();
+  check(
+    JSON.stringify(groups) === JSON.stringify(['Dishes', 'Components and ratios']) &&
+      (await page.locator('.cook-dishes li[data-kind="component"]').count()) === 0 &&
+      (await page.locator('.cook-parts li[data-kind="dish"]').count()) === 0,
+    `${label}: dishes in one group, components and ratio cards in a second (${groups.join(', ')})`,
+  );
+  const reasons = await text(page, `${OWN} .cook-reason`);
   check(
     reasons.length === shown.length && reasons.every((r) => r.trim().length > 0),
     `${label}: every entry shows why it is ranked there`,
   );
-  const statuses = await text(page, '.cook-list .cook-status');
+  const statuses = await text(page, `${OWN} .cook-status`);
   check(
     JSON.stringify(statuses) ===
       JSON.stringify(
-        engineRank.candidates.map((c) => (c.complete ? 'complete' : `lacks ${c.lacking}`)),
+        grouped(engineRank.candidates).map((c) => (c.complete ? 'complete' : `lacks ${c.lacking}`)),
       ),
     `${label}: "complete" or "lacks N" beside each entry, as the engine counts`,
   );
@@ -134,7 +150,7 @@ const ordering = async (browser, origin) => {
     `${label}: an entry opens its recipe`,
   );
   await page.goBack();
-  await page.locator('.cook-list').waitFor();
+  await page.locator('.cook-list').first().waitFor();
   const dishHref = await li('cook-soup-plate').getByRole('link').getAttribute('href');
   const roux = ranked(1).candidates.find((c) => c.kind === 'template');
   const templateHref = await page
@@ -159,8 +175,8 @@ const filters = async (browser, origin) => {
   await lackingSelect(page).selectOption({ label: 'Complete only' });
   const complete = ranked(0).candidates;
   check(
-    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(complete)) &&
-      (await text(page, '.cook-status')).every((s) => s === 'complete'),
+    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(complete))) &&
+      (await text(page, `${OWN} .cook-status`)).every((s) => s === 'complete'),
     `${label}: "complete only" is the engine's threshold 0, in the engine's order`,
   );
   const options = await roleSelect(page).locator('option').allInnerTexts();
@@ -173,7 +189,7 @@ const filters = async (browser, origin) => {
   check(
     main.length > 0 &&
       main.length < complete.length &&
-      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(main)),
+      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(main))),
     `${label}: a role keeps only what covers it, order unchanged (${main.length} of ${complete.length})`,
   );
   check(
@@ -181,18 +197,18 @@ const filters = async (browser, origin) => {
     `${label}: the choice is kept in the preferences`,
   );
   await page.reload();
-  await page.locator('.cook-list').waitFor();
+  await page.locator('.cook-list').first().waitFor();
   check(
     (await lackingSelect(page).inputValue()) === '0' &&
       (await roleSelect(page).inputValue()) === 'main' &&
-      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(main)),
+      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(main))),
     `${label}: the filters survive a reload`,
   );
   await layout(page, `${label} (filtered)`);
   await lackingSelect(page).selectOption({ label: 'Lacking at most 3' });
   const wide = ranked(3).candidates.filter((c) => c.roles.includes('main'));
   check(
-    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(wide)),
+    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(wide))),
     `${label}: "lacking at most 3" is the engine's threshold 3`,
   );
   await context.close();
@@ -219,7 +235,7 @@ const start = async (browser, origin) => {
   const expected = ranked(1).candidates.filter((c) => uses.has(`${c.kind}:${c.id}`));
   const shown = await onScreen(page);
   check(
-    expected.length >= 4 && JSON.stringify(shown) === JSON.stringify(keys(expected)),
+    expected.length >= 4 && JSON.stringify(shown) === JSON.stringify(keys(grouped(expected))),
     `${label}: only what uses the leeks or one that can stand in for them, in the engine's order (${shown.length})`,
   );
   check(
@@ -235,7 +251,7 @@ const start = async (browser, origin) => {
   await layout(page, `${label} (from one ingredient)`);
   // By search, through the German name and an alias.
   await page.getByRole('link', { name: 'Show everything' }).click();
-  await page.locator('.cook-list').waitFor();
+  await page.locator('.cook-list').first().waitFor();
   await page.locator('.cook-start summary').click();
   const search = page.getByLabel('Search your ingredients');
   await search.fill('zwiebel');
@@ -257,7 +273,8 @@ const start = async (browser, origin) => {
   await hit.first().click();
   await page.getByRole('heading', { level: 1, name: 'What uses Yoghurt' }).waitFor();
   check(
-    (await page.locator('.cook-list').count()) + (await page.locator('.cook-empty').count()) === 1,
+    (await page.locator('.cook-list').count()) > 0 !==
+      (await page.locator('.cook-empty').count()) > 0,
     `${label}: an ingredient nothing uses has an empty state, not a broken list`,
   );
   await context.close();
@@ -285,7 +302,7 @@ const useUp = async (browser, origin) => {
   );
   const first = engineUp[0];
   const firstLinks = await page
-    .locator(`.use-up-item[data-item-id="${first.itemId}"] .use-up-recipe`)
+    .locator(`.use-up-item[data-item-id="${first.itemId}"] li[data-origin="own"] .use-up-recipe`)
     .allInnerTexts();
   check(
     first.candidates.length >= 3 && firstLinks.length === first.candidates.length,
@@ -293,7 +310,7 @@ const useUp = async (browser, origin) => {
   );
   check(
     (await page.locator('.use-up-item').last().innerText()).includes(
-      'Nothing in your notebook uses it yet.',
+      'Nothing in the list uses it yet.',
     ),
     `${label}: an item nothing uses says so`,
   );
@@ -393,7 +410,7 @@ const clock = async (browser, origin) => {
   const engineRank = ranked(1, '2026-11-20');
   check(
     (await text(page, '.cook-asof'))[0] === 'As of 20 Nov 2026' &&
-      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(engineRank.candidates)),
+      JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(engineRank.candidates))),
     `${label}: the date comes from the injected clock; two days later the engine's order is shown`,
   );
   const soup = await page
@@ -417,7 +434,7 @@ const desktop = async (browser, origin) => {
   }
   await reopen(page, origin, 'cook');
   check(
-    (await page.locator('.cook-list > li').count()) === ranked(1).candidates.length,
+    (await page.locator(OWN).count()) === ranked(1).candidates.length,
     '1000px: the finder lists what the engine ranks',
   );
   await context.close();
@@ -434,9 +451,9 @@ const offline = async (browser, origin) => {
   await controlled(page);
   await context.setOffline(true);
   await page.reload();
-  await page.locator('.cook-list').waitFor();
+  await page.locator('.cook-list').first().waitFor();
   check(
-    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(ranked(1).candidates)),
+    JSON.stringify(await onScreen(page)) === JSON.stringify(keys(grouped(ranked(1).candidates))),
     `${label}: offline, the finder shows the same ranking`,
   );
   await page.goto(`${origin}/?e2e-now=${NOW}#/cook/use-up`);
@@ -444,6 +461,49 @@ const offline = async (browser, origin) => {
   check(
     (await page.locator('.use-up-item').count()) === 3,
     `${label}: offline, use up first works`,
+  );
+  await context.close();
+  return problems;
+};
+
+const carried = async (browser, origin) => {
+  const { context, page, problems } = await fresh(browser, origin);
+  await page.evaluate(() => {
+    localStorage.setItem(
+      'culina.cook',
+      JSON.stringify({ role: 'main', lacking: 2, country: 'it', meatFree: true }),
+    );
+    localStorage.removeItem('culina.dishes');
+  });
+  await reopen(page, origin, 'cook');
+  const kept = await page.evaluate(() => ({
+    cook: localStorage.getItem('culina.cook'),
+    dishes: JSON.parse(localStorage.getItem('culina.dishes') ?? '{}'),
+  }));
+  check(
+    kept.cook === JSON.stringify({ role: 'main', lacking: 2 }) &&
+      kept.dishes.cuisine === 'it' &&
+      kept.dishes.meatFree === true,
+    `${label}: an old country and meat choice are carried into the dish filter once (${kept.cook} ${JSON.stringify(kept.dishes)})`,
+  );
+  check(
+    (await page.locator('.dish-filter-meat-free input').isChecked()) &&
+      (await lackingSelect(page).inputValue()) === '2' &&
+      (await roleSelect(page).inputValue()) === 'main',
+    `${label}: the carried choices are shown on the filter`,
+  );
+  check(
+    (await page.locator('.cook-parts').count()) === 0 &&
+      (await page.locator('.cook-parts-hidden').count()) +
+        (await page.locator('.cook-empty').count()) >=
+        1,
+    `${label}: with a dish filter chosen, components and ratio cards are left out and it says so`,
+  );
+  await page.evaluate(() => localStorage.setItem('culina.cook', '{"lacking":'));
+  await reopen(page, origin, 'cook');
+  check(
+    (await lackingSelect(page).inputValue()) === '1',
+    `${label}: a broken old entry is the default, not a stumble`,
   );
   await context.close();
   return problems;
@@ -459,6 +519,7 @@ export const cook = async (browser, server) => {
     ...(await clock(browser, origin)),
     ...(await desktop(browser, origin)),
     ...(await offline(browser, origin)),
+    ...(await carried(browser, origin)),
   ];
   await empties(browser, origin);
   check(

@@ -10,6 +10,7 @@ export const DISHES: DishRecord[] = [
     id: 'example-flat-dough-with-sauce',
     name: 'Example: Flat dough with pan sauce',
     portions: 4,
+    course: 'main',
     slots: [
       {
         role: 'main',
@@ -27,6 +28,7 @@ export const DISHES: DishRecord[] = [
     id: 'example-vegetable-plate',
     name: 'Example: Vegetable plate with herb oil',
     portions: 2,
+    course: 'main',
     slots: [
       {
         role: 'main',

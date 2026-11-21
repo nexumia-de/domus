@@ -55,6 +55,29 @@ describe('entries', () => {
     expect(b.complete).toBe(false);
   });
 
+  test('a dish of the notebook carries the course and cuisine it states, and none it does not', () => {
+    const stated = entryOfDish(notebook, { ...tomatoDish, course: 'soup', cuisine: 'it' }, lookup);
+    expect(stated).toMatchObject({ course: 'soup', cuisine: 'it' });
+    const bare = entryOfDish(notebook, tomatoDish, lookup);
+    expect('course' in bare || 'cuisine' in bare).toBe(false);
+  });
+
+  test('the course and cuisine filter keep own and shipped dishes alike', () => {
+    const own = { ...tomatoDish, course: 'main' as const, cuisine: 'it' as const };
+    const all = allEntries(notebook, [own, unknownDish], CLASSICS, lookup, 'en');
+    const kept = all.filter((e) => matchesFilter(e, { course: 'main', cuisine: 'it' }));
+    expect(kept.some((e) => e.key === 'own:a')).toBe(true);
+    expect(kept.some((e) => e.key === 'own:b')).toBe(false);
+    expect(kept.every((e) => e.course === 'main' && e.cuisine === 'it')).toBe(true);
+    const offered = offeredBy(allEntries(notebook, [own], [], lookup, 'en'), {
+      characters: [],
+      courses: ['soup', 'main'],
+      cuisines: ['de', 'it'],
+    });
+    expect(offered.courses).toEqual(['main']);
+    expect(offered.cuisines).toEqual(['it']);
+  });
+
   test('a shipped classic carries its course, its country as the cuisine and its hand-set meat-free', () => {
     const classic = CLASSICS[0];
     if (classic === undefined) throw new Error('no classics');
@@ -67,6 +90,13 @@ describe('entries', () => {
       cuisine: classic.country,
       meatFree: classic.vegetarian,
     });
+  });
+
+  test('a shipped dish is complete when every ingredient line has an amount; a slot filled by a component asks none', () => {
+    const complete = CLASSICS.filter((c) => entryOfClassic(c, lookup, 'en').complete).map(
+      (c) => c.id,
+    );
+    expect(complete.sort()).toEqual(['cocido-ordinario', 'pot-au-feu', 'rote-gruetze']);
   });
 
   test('all entries: the notebook first, then every classic', () => {

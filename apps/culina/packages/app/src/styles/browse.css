@@ -1,0 +1,35 @@
+/* The one list of every dish (screens/dish-list.ts), on Dishes and on Start: the filter controls in
+   two columns from a phone's width on, the count line, the rows, "Show all". */
+.dish-list .dish-filter-selects {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin-top: 0;
+}
+
+.dish-list .dish-filter-ticks {
+  margin: 0 0 var(--sp-2);
+}
+
+.dish-count {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-sm);
+}
+
+.dish-row .entry-name {
+  overflow-wrap: anywhere;
+}
+
+.dish-show-all {
+  margin-top: var(--sp-2);
+}
+
+.dishes-pane .dish-list {
+  margin-top: var(--sp-3);
+}
+
+.dishes-own-empty {
+  margin-top: var(--sp-4);
+}
+
+.start-dishes {
+  margin-bottom: var(--sp-4);
+}

@@ -27,17 +27,12 @@ const ALLOWED: readonly (readonly [string, number])[] = [
   ['Meat broth', 1],
   ['Meat stock', 1],
   ['Orange-flower water', 2],
-  ['Savoy cabbage', 1],
   ['Shelled fresh beans', 1],
   ['Soup vegetables', 1],
   ['Tarragon', 1],
-  ['Tomato sauce', 1],
-  ['Tomato sauce or paste', 2],
   ['Water', 30],
   ['Water (the cooking water of the peas)', 1],
   ['Water, cold', 1],
-  ['White mustard seed', 1],
-  ['Whole clove', 1],
 ];
 
 describe('the wanted allow-list', () => {

@@ -31,7 +31,7 @@ export const cookStringsDe: typeof cookStrings = {
     return `Stand ${d}. ${MONTHS[(m ?? 1) - 1]} ${y}`;
   },
   intro:
-    'Sortiert danach, was zuerst verbraucht werden sollte, dann danach, wie viele Rollen es abdeckt.',
+    'Deine und mitgelieferte Gerichte in einer Liste: zuerst, was bald verbraucht werden sollte, dann nach abgedeckten Rollen.',
   // Filters
   filtersLabel: 'Filter',
   roleLabel: 'Deckt die Rolle ab',
@@ -45,6 +45,12 @@ export const cookStringsDe: typeof cookStrings = {
   },
   // Entries
   listLabel: 'Was der Vorrat hergibt',
+  dishesHeading: 'Gerichte',
+  partsHeading: 'Komponenten und Verhältnisse',
+  partsListLabel: 'Komponenten und Verhältnisse, die der Vorrat hergibt',
+  partsHidden:
+    'Komponenten und Verhältniskarten bleiben weg, solange ein Filter für Gerichte gewählt ist.',
+  originWord: { own: 'eigenes', shipped: 'mitgeliefert' },
   complete: 'vollständig',
   lacks: (n: number): string => `noch ${n} nötig`,
   kind: { component: 'Komponente', dish: 'Gericht', template: 'Verhältnis', classic: 'Klassiker' },
@@ -68,10 +74,7 @@ export const cookStringsDe: typeof cookStrings = {
   amountUnknown: (name: string): string => `${name} ist da; wie viel, ist nicht bekannt.`,
   offer: (invite: string, names: string): string => `Du könntest ${invite} ergänzen: ${names}`,
   openLabel: (name: string): string => `${name} öffnen`,
-  // The shipped classics, beside the notebook's own dishes
-  classicsHeading: 'Klassische Gerichte',
-  classicsIntro: 'Die mitgelieferten Klassiker, nach denselben Regeln mit dem Vorrat abgeglichen.',
-  classicsFiltersLabel: 'Filter für die Klassiker',
+  // The shipped classics (the native Linux app)
   countryLabel: 'Land',
   countryAny: 'Alle Länder',
   meatLabel: 'Fleisch und Fisch',
@@ -79,14 +82,8 @@ export const cookStringsDe: typeof cookStrings = {
   meatFree: 'Ohne Fleisch und Fisch',
   classicsListLabel: 'Was der Vorrat für die Klassiker hergibt',
   needsHeading: 'Braucht',
-  withoutMeatMark: 'ohne Fleisch und Fisch',
   notInCatalogue: (names: string): string =>
     `Noch nicht im Katalog, deshalb nicht gezählt: ${names}`,
-  classicsEmptyNothingTicked:
-    'Noch nichts angehakt, deshalb lässt sich kein Klassiker mit dem Vorrat abgleichen.',
-  classicsEmpty: 'Kein Klassiker passt zu dieser Auswahl.',
-  classicsNearestHeading: 'Die nächsten Klassiker',
-  classicsNearest: (name: string, needs: string): string => `${name} braucht ${needs}`,
   // Start from one ingredient
   startSummary: 'Von einer Zutat ausgehen',
   startHint:
@@ -98,7 +95,8 @@ export const cookStringsDe: typeof cookStrings = {
   startNoStock: 'Noch nichts angehakt, such also nach dem Namen.',
   startFoundThrough: (name: string): string => `auch ${name} genannt`,
   withHeading: (name: string): string => `Was ${name} verwendet`,
-  withNote: 'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden.',
+  withNote:
+    'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden; der Filter für Gerichte gilt für die Gerichte.',
   withClear: 'Alles zeigen',
   withUnknown: 'Diese Zutat ist nicht mehr in deinem Notizbuch.',
   // Empty states
@@ -120,7 +118,9 @@ export const cookStringsDe: typeof cookStrings = {
       : `Gezählt wird, was bis zu ${lacking} weitere Zutaten braucht.`,
   useUpNoDates:
     'Noch kein Eintrag hat ein Verbrauchsdatum. Das Datum lässt sich am Eintrag ergänzen.',
-  useUpNothing: 'Nichts in deinem Notizbuch verwendet es bisher.',
+  useUpNothing: 'Nichts in der Liste verwendet es bisher.',
+  useUpFiltered:
+    'Gezählt innerhalb des Filters für Gerichte, der bei „Was kann ich kochen“ gewählt ist.',
   useUpUsedBy: 'Verwendet von',
   useUpOpenItem: (name: string): string => `${name} im Vorrat`,
   problem:

@@ -408,6 +408,8 @@ One stored record is one [version](#version).
 | `id`       | id              | yes      | See [ids](#ids)                                                               |
 | `name`     | string          | yes      | Visible name                                                                  |
 | `portions` | integer         | no       | Number of portions the dish makes                                             |
+| `course`   | string          | no       | Where it sits in a meal: the course list of a [classic](#classic)             |
+| `cuisine`  | string          | no       | Whose kitchen it is: `de`, `it`, `fr` or `es`                                 |
 | `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional`, `key` |
 | `steps`    | array of object | no       | The assembly: what is done with the fillings; see below                       |
 | `version`  | object          | yes      | See [Version](#version)                                                       |
@@ -416,6 +418,22 @@ One stored record is one [version](#version).
 Weight per portion, the roles covered ("no crunch") and what is missing
 from stock are derived. A slot's amount is mass, volume or count, not
 percent.
+
+**Course and cuisine (since 2026-11-21).** The two things a shipped
+classic states, so that one filter works over every dish
+([behaviour](behaviour.md#one-filter-over-every-dish)). Both are
+optional and belong to the version like the other fields: a change is a
+new version, and the history names it. `course` is one of the classic's
+courses (`$defs/course` of `common.schema.json`, the engine's
+`COURSE_IDS`); `cuisine` is a country code of `$defs/country`, the same
+four a classic's `country` takes (`COUNTRY_CODES`). A copy of a classic
+keeps its course, and its country as the cuisine.
+**Why only the four codes:** they are the countries the app has a name
+for in both languages; a free code would show as a bare `jp` in the
+list and the filter. Allowing more later is additive (a wider enum,
+and names from the browser's `Intl.DisplayNames`); a narrower list
+later would not be. An export with another code is refused by the
+schema like any other value it does not know.
 
 **Assembly (since 2026-11-20).** `steps` are [steps](#steps) of the same
 shape as a component's, for what is done once the fillings are made

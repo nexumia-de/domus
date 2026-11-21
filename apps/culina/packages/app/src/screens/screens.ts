@@ -1,15 +1,14 @@
 import { USE_UP, type Action, type Route } from '../router';
 import { classicsScreen } from './classics/classics-list';
-import { cookClassicScreen } from './classics/cook-screen';
-import { classicScreen } from './classics/dish-screen';
 import { startScreen } from './classics/start';
 import { historyScreen } from './history';
 import { importScreen } from './import/import-screen';
-import { cookComponentScreen, cookDishScreen } from './component-cook';
+import { cookClassicScreen, cookComponentScreen, cookDishScreen } from './component-cook';
 import { componentsScreen } from './components';
 import { cookScreen } from './cook/cook-screen';
 import { useUpScreen } from './cook/use-up';
 import { randomDishScreen } from './dish-random';
+import { classicScreen } from './dish-detail';
 import { dishesScreen } from './dishes';
 import { componentEditor } from './editor/component-editor';
 import { dishEditor } from './editor/dish-editor';

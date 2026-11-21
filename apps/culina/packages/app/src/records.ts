@@ -2,6 +2,8 @@
 // Only the fields the screens use are typed; a record valid against its schema is accepted as is.
 import type {
   Component,
+  Country,
+  Course,
   FactsByIngredient,
   StockItem,
   FoodState,
@@ -96,6 +98,10 @@ export interface DishRecord {
   id: string;
   name: string;
   portions?: number;
+  /** Where the dish sits in a meal, where the cook states it. */
+  course?: Course;
+  /** The country whose kitchen it belongs to, where the cook states it. */
+  cuisine?: Country;
   slots: SlotRecord[];
   /** The assembly: what is done with the fillings; a step uses slots by their key. */
   steps?: Step[];

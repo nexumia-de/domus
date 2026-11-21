@@ -89,25 +89,15 @@ const rowsOf = (rounded: PortionNutrients): NutritionRow[] => [
     : [{ key: 'salt' as const, label: t.salt, value: t.gramsValue(number(rounded.saltG)) }]),
 ];
 
-/**
- * The nutrition section of a classic for some portions.
- *
- * @param classic - A shipped classic.
- * @param portions - Portions wanted, above zero.
- * @param lang - The content language.
- * @param nameOf - The name of a catalogue ingredient.
- * @param lookup - Finds an ingredient record by id (notebook first, then the catalogue).
- * @returns The view, or the engine's error code.
- */
-export function nutritionView(
-  classic: Classic,
-  portions: number,
-  lang: Lang,
-  nameOf: NameOf,
+/** The `dish` and `components` of a derived dish, as `dishNutrition` reads them. */
+type Derived = Parameters<typeof dishNutrition>[0];
+
+/** The words for the figures of a derived dish; `nameFor` names a line that was not counted. */
+function viewOf(
+  derived: Derived,
+  nameFor: (line: NotCountedLine) => string,
   lookup: Lookup,
 ): NutritionViewResult {
-  const derived = deriveClassic(classic, { portions, lang });
-  if (!derived.ok) return { ok: false, code: derived.error.code };
   const ids = new Set<string>();
   for (const line of [...derived.dish.slots, ...derived.components.flatMap((c) => c.lines)]) {
     if (line.ref?.kind === 'ingredient') ids.add(line.ref.id);
@@ -122,14 +112,6 @@ export function nutritionView(
   const result = dishNutrition(derived, { facts: facts as FactsByIngredient, nutrition });
   if (!result.ok) return { ok: false, code: result.error.code };
   const { coverage } = result;
-  const componentName = new Map(derived.components.map((c) => [c.id, c.name]));
-  const nameFor = (line: NotCountedLine): string => {
-    if (line.wanted !== undefined) return line.wanted;
-    if (line.ref === undefined) return '';
-    return line.ref.kind === 'component'
-      ? (componentName.get(line.ref.id) ?? line.ref.id)
-      : nameOf(line.ref.id);
-  };
   const left = coverage.notCounted.map((line) =>
     t.notCountedItem(nameFor(line), t.reasons[line.reason]),
   );
@@ -158,4 +140,94 @@ export function nutritionView(
         : { massShare: t.massShare(String(Math.floor(coverage.massShare * 100))) }),
     },
   };
+}
+
+/**
+ * The nutrition section of a classic for some portions.
+ *
+ * @param classic - A shipped classic.
+ * @param portions - Portions wanted, above zero.
+ * @param lang - The content language.
+ * @param nameOf - The name of a catalogue ingredient.
+ * @param lookup - Finds an ingredient record by id (notebook first, then the catalogue).
+ * @returns The view, or the engine's error code.
+ */
+export function nutritionView(
+  classic: Classic,
+  portions: number,
+  lang: Lang,
+  nameOf: NameOf,
+  lookup: Lookup,
+): NutritionViewResult {
+  const derived = deriveClassic(classic, { portions, lang });
+  if (!derived.ok) return { ok: false, code: derived.error.code };
+  const componentName = new Map(derived.components.map((c) => [c.id, c.name]));
+  return viewOf(
+    derived,
+    (line) => {
+      if (line.wanted !== undefined) return line.wanted;
+      if (line.ref === undefined) return '';
+      return line.ref.kind === 'component'
+        ? (componentName.get(line.ref.id) ?? line.ref.id)
+        : nameOf(line.ref.id);
+    },
+    lookup,
+  );
+}
+
+/** What an own dish adds up to for the nutrition: its raw ingredients for the portions. */
+export interface OwnNutritionInput {
+  /** The raw ingredients of the slots that are not optional, in grams for every portion. */
+  raw: readonly { ingredientId: string; name: string; g: number }[];
+  /** Lines without an amount, and slots that could not be added up: not counted. */
+  unmeasured: readonly string[];
+  /** Optional slots with their total grams where known: not counted, as on a shipped dish. */
+  optional: readonly { name: string; g?: number }[];
+}
+
+/**
+ * The nutrition section of an own dish for some portions. The raw ingredients come from the
+ * engine's expansion (`dishRaw`); here they become the lines `dishNutrition` counts.
+ *
+ * @param input - The raw ingredients, what has no amount and the optional slots.
+ * @param portions - Portions the raw amounts are for, above zero.
+ * @param lookup - Finds an ingredient record by id (notebook first, then the catalogue).
+ * @returns The view, or the engine's error code.
+ */
+export function ownNutritionView(
+  input: OwnNutritionInput,
+  portions: number,
+  lookup: Lookup,
+): NutritionViewResult {
+  const names = new Map<string, string>();
+  const slots: Derived['dish']['slots'] = [];
+  for (const row of input.raw) {
+    names.set(row.ingredientId, row.name);
+    slots.push({
+      role: 'part',
+      ref: { kind: 'ingredient', id: row.ingredientId },
+      amount: { value: row.g, unit: 'g' },
+    });
+  }
+  // Lines that have no ingredient to look up get an id of their own that no record has.
+  input.unmeasured.forEach((name, i) => {
+    const id = `#unmeasured-${i}`;
+    names.set(id, name);
+    slots.push({ role: 'part', ref: { kind: 'ingredient', id } });
+  });
+  input.optional.forEach((slot, i) => {
+    const id = `#optional-${i}`;
+    names.set(id, slot.name);
+    slots.push({
+      role: 'part',
+      ref: { kind: 'ingredient', id },
+      ...(slot.g === undefined ? {} : { amount: { value: slot.g, unit: 'g' as const } }),
+      optional: true,
+    });
+  });
+  return viewOf(
+    { dish: { id: 'own', name: '', portions, slots }, components: [] },
+    (line) => (line.ref === undefined ? '' : (names.get(line.ref.id) ?? line.ref.id)),
+    lookup,
+  );
 }

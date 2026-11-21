@@ -4,10 +4,25 @@ import type { ComponentRef, FoodState } from '../components/types';
 import type { TextStep } from '../steps/types';
 import type { I18nText } from '../text/i18n';
 
-export type Country = 'de' | 'it' | 'fr' | 'es';
+/** The countries the app has a name for: a classic's country and a dish's cuisine (`country` in common.schema.json). */
+export const COUNTRY_CODES = ['de', 'it', 'fr', 'es'] as const;
 
-export type Course =
-  'starter' | 'soup' | 'main' | 'side' | 'dessert' | 'baking' | 'sauce' | 'breakfast' | 'snack';
+export type Country = (typeof COUNTRY_CODES)[number];
+
+/** Where a dish sits in a meal, for a classic and a dish of the notebook alike (`course` in common.schema.json). */
+export const COURSE_IDS = [
+  'starter',
+  'soup',
+  'main',
+  'side',
+  'dessert',
+  'baking',
+  'sauce',
+  'breakfast',
+  'snack',
+] as const;
+
+export type Course = (typeof COURSE_IDS)[number];
 
 /** An amount as the source gives it: `value`, or a range from `value` to `max`; `unit` is an id of the unit table or a word of `units`. */
 export interface SourceAmount {

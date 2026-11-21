@@ -3,6 +3,7 @@ import { currentLang } from './classics/lang';
 import { startNotebook, stockOnline, subscribe, wakeStock } from './notebook';
 import { e2eNow } from './store/e2e-clock';
 import { startRouter } from './router';
+import { classicsRedirect } from './screens/classics/classics-list';
 import { mountShell } from './shell/shell';
 import { strings } from './strings';
 import { registerServiceWorker } from './sw-register';
@@ -26,8 +27,10 @@ if (root) {
       if (document.visibilityState === 'visible') wakeStock();
     });
     window.addEventListener('online', stockOnline);
-    startRouter(window, ({ route, param, action, initial }) =>
-      shell.show(route, param, !initial, action),
+    startRouter(
+      window,
+      ({ route, param, action, initial }) => shell.show(route, param, !initial, action),
+      classicsRedirect,
     );
   });
   registerServiceWorker();

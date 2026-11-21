@@ -25,18 +25,21 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen   | Route                                                                                                                        | Today                                                                                                                                                                                                           | Source                                               |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| Start    | `#/start`                                                                                                                    | What do you want to cook: the classics by country and the way into every tool ([below](#classics)); the start screen                                                                                            | `src/screens/classics/`                              |
-| Ratios   | `#/ratios`, `#/ratios/<id>`                                                                                                  | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                           | `src/screens/ratios.ts`                              |
-| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`, `#/dishes/random`                                          | Two parts, Components and Dishes: the lists and the screens of one entry ([components](#components), [dishes](#dishes))                                                                                         | `src/screens/components.ts`, `src/screens/dishes.ts` |
-| Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics by country with their dishes and cooking step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`         |
-| Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                                                                | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                         | `src/screens/stock/`                                 |
-| Settings | `#/settings` (the gear in the header)                                                                                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                             | `src/screens/settings.ts`                            |
+| Screen   | Route                                                                                  | Today                                                                                                                                                                                                                                                               | Source                                                      |
+| -------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Start    | `#/start`                                                                              | What do you feel like: the one filter and the list of every dish, the notebook's and the shipped ones, then the way into every tool ([below](#one-filter-over-every-dish)); the start screen                                                                        | `src/screens/classics/start.ts`, `src/screens/dish-list.ts` |
+| Ratios   | `#/ratios`, `#/ratios/<id>`                                                            | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                                                                               | `src/screens/ratios.ts`                                     |
+| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`, `#/dishes/random`    | Two parts, Components and Dishes: the lists and the screens of one entry; Dishes lists every dish, own and shipped ([components](#components), [dishes](#dishes), [the one list](#one-filter-over-every-dish))                                                      | `src/screens/components.ts`, `src/screens/dishes.ts`        |
+| Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics, whose link opens the one list with the shipped dishes chosen; a shipped dish and cooking it step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`                |
+| Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                          | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                                                                             | `src/screens/stock/`                                        |
+| Settings | `#/settings` (the gear in the header)                                                  | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                                                                                 | `src/screens/settings.ts`                                   |
 
 An unknown route (`#/nope`, empty) shows Start and rewrites the URL to
-`#/start` without a new history entry. **Test:** `test/router.test.ts`,
-`e2e/smoke.mjs`.
+`#/start` without a new history entry. The old addresses of the country
+lists, `#/classics` and `#/classics/<country>`, set the one filter to the
+shipped dishes (of that country) and are rewritten to `#/dishes`, also
+without a new history entry ([below](#one-filter-over-every-dish)).
+**Test:** `test/router.test.ts`, `e2e/smoke.mjs`, `e2e/dish-browse.mjs`.
 
 # Ratios
 
@@ -181,11 +184,13 @@ English only; the test store is the in-memory one.
 them under **Steps**, one line per step: the word, the lines it uses, time,
 temperature, the note ("Searing: Beef · 10 min · until brown"); a copied
 step shows its text. Below stands **Cook step by step**, which opens
-`#/components/<id>/cook` (`src/screens/component-cook.ts`): the screen of
-the shipped dishes with the component's own steps, one step at a time with
+`#/components/<id>/cook` (`src/screens/component-cook.ts`, since
+2026-11-21 the one cook screen of every origin, [dishes](#dishes)): the
+screen of the shipped dishes with the component's own steps, one step at a time with
 the lines it uses and their amounts, time and temperature, the note of a
 skill at its first step until the skill is marked as learned, and the
-handling rules of the ingredients in the step
+handling rules of the ingredients in the step, "Instead" on a line
+with substitutes, and the component's lines in "Whole recipe"
 (`ownCookView` in `src/components/steps-view.ts`; the notes are placed by
 the same `techniqueNotes` and `handlingNotes` as for a shipped dish). A
 handling rule shows only for an ingredient that is in the catalogue or
@@ -255,7 +260,94 @@ the dough's percentages).
 # Dishes
 
 `src/screens/dishes.ts`, `dish-detail.ts`, `dish-slots.ts`, `stepper.ts`;
-view logic in `src/dishes/` (`slots.ts`, `raw.ts`, `roles.ts`).
+view logic in `src/dishes/` (`shown.ts`, `slots.ts`, `raw.ts`, `roles.ts`).
+
+**One dish screen and one cook screen for both origins (since
+2026-11-21).** A dish looks and works the same whether it is in the
+notebook or shipped. One view model, `ShownDish` in `src/dishes/shown.ts`
+(pure, no DOM), is built from a shipped classic (`shownOfClassic`, through
+`deriveClassic`: `dishView`, `cookView`, `nutritionView`, `entryOfClassic`)
+and from a dish of the notebook (`shownOfDish`: `slotRows`, `dishParts`,
+`dishRaw`, `ownNutritionView`, `entryOfDish`). One screen module,
+`src/screens/dish-detail.ts`, draws it for `#/dishes/<id>` and
+`#/classic/<id>`; one cook screen module, `src/screens/component-cook.ts`,
+serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
+`#/classic/<id>/cook`. The addresses did not change.
+
+- **Top to bottom, for both:** Back; the name; the original name (only a
+  shipped dish has one); the **quiet line**: course, cuisine, "Without
+  meat and fish" or "With meat or fish", and the origin ("In my notebook",
+  "Shipped with the app"), each part only where it is known (an own
+  dish's course and cuisine are read where the record has them, its meat
+  flag is the derived one of the lists and is left out when not known);
+  the note of an own dish; what the dish can do (own: version, Edit and
+  the rest as before; shipped: **Keep in my notebook**, the same copy as at
+  the end of cooking, left out for a dish with an ingredient the catalogue
+  lacks); the character chips (without "with meat" and "with fish", which
+  the quiet line says); **Portions**; **Ingredients**, a heading per
+  component and "For the dish", each line with its amount for the
+  portions, its note, "optional", the settled mark of a shipped line and
+  "Instead" where there are substitutes; for an own dish the role slots
+  with Swap ([below](#dishes)); **Cook step by step**, where there are
+  steps; **Method**, every step grouped by the part it belongs to; for an
+  own dish "What goes in, all the way down"; then behind a tap **Nutrition
+  per portion** and, for a shipped dish, **Source**.
+- **Portions** are kept in memory per dish while the app is open
+  (`src/classics/session.ts`): a shipped dish starts at 2, an own dish at
+  its stored `portions` or 1. The cook screen cooks the portions chosen on
+  the dish screen, for both origins; before, an own dish was always
+  cooked for its stored portions.
+- **An own dish's ingredients.** A component that fills a slot is a group
+  with its lines at what the dish needs of it (the grams its slots ask for
+  over one run, as when cooking); a component ready in stock still lists
+  its lines. The "For the dish" lines are the slots with their totals.
+  The role slot table below says the same totals again, with the role,
+  the amount per portion and Swap.
+- **An own dish's method** lists every step the cook screen cooks, the
+  components' first, one line per step as on a component ("Pan-frying:
+  Beef · 8 min"); before, only the assembly was listed.
+- **Nutrition per portion of an own dish** counts its raw ingredients all
+  the way down (`dishRaw`, the engine's expansion) with the same
+  `dishNutrition`, rounding, coverage and words as a shipped dish. An
+  optional slot is not counted, as on a shipped dish. A line without an
+  amount, and a slot that cannot be added up (a component without an
+  output weight, an unknown component), is listed as not counted with
+  "no amount". So a dish of components that are not weighed shows "too
+  few ingredients". Cooked or prepared ingredients are counted with the
+  figures of the raw food, as the catalogue gives only those.
+
+What each screen had that the other lacked, before (2026-11-21):
+
+| On the screen of | Shipped had, own lacked                                                                                      | Own had, shipped lacked                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| the dish         | original name, quiet line, ingredient lines per component, "Instead", method, nutrition, source              | note, version and its actions, role slots with Swap and open roles, "all the way down" |
+| cooking          | ingredients in "Whole recipe", "Instead" on a step's lines, the portions of the dish screen, Keep at the end | "From stock" for a ready component, a back link at the end                             |
+
+Now given to the other origin, because the function was there: the quiet
+line, the ingredient lines per component, "Instead", the whole method,
+nutrition per portion and the dish screen's portions reaching the cook
+screen for an own dish (and "Instead" and the ingredients in "Whole
+recipe" for an own component); Keep in my notebook on a shipped dish's
+screen. **Not built:** Swap, role slots, open roles and "all the way
+down" for a shipped dish (a shipped slot's amount is in the source's
+units, the slot table is in grams, and shipped dishes are never written);
+a source block, settled marks and an original name for an own dish (no
+data); versions, history and tasting notes for a shipped dish (it is
+read-only; Keep makes it an own dish that has them); folding Swap into
+the ingredient lines so that the role slot table can go (the browser
+checks of the slot table would have to be rewritten).
+
+**Test:** `test/dish-shown.test.ts` (every shipped classic at 2 and 5
+portions against `dishView`, `cookView` and its list entry; a notebook in
+memory: the groups, the totals, the portions, the steps against
+`dishCookView`, the stock, the slot rows, the nutrition and what it leaves
+out, course and cuisine read defensively), `e2e/dish-cook.mjs` (the quiet
+line, the groups, the nutrition tap and 3 portions reaching the cook
+screen at 360 px), `e2e/classics.mjs` (the quiet line and Keep on a
+shipped dish). Not proved: the nutrition test uses the catalogue's own
+records as the notebook's ingredients and made-up output weights; the
+browser checks ran in Chromium at 360 and 1000 px in English only; no
+real phone.
 
 **Assembly and cooking a dish (since 2026-11-20).** The dish editor has a
 section **Assembly** after the slots: the steps of the
@@ -276,8 +368,8 @@ a component ([components](#components)) for the whole dish
   its slots ask for, times the portions, over one run of the component
   (its recorded yield, else the sum of its lines). A slot without an
   amount leaves the component as it is written. The portions are the
-  ones stored with the dish; the stepper on the dish does not reach the
-  cook screen yet.
+  ones chosen on the dish screen (before any choice, the ones stored
+  with the dish).
 - **Ready in stock.** A component with a stock item is not cooked again:
   its steps are replaced by one step, "From stock: Mash", and its skill
   is not taught there. This looks only at whether an item is there, not
@@ -424,7 +516,9 @@ the design at all. Starch is often there but is never invited. **Test:**
 `test/dishes-view.test.ts`, `e2e/components.mjs`.
 
 **Portion control.** A number field with minus and plus buttons of 44 px,
-starting at the dish's `portions` or 1 and not remembered between visits.
+starting at the dish's `portions` or 1 and kept in memory while the app
+is open (since 2026-11-21, so that the cook screen cooks them; a reload
+starts again).
 Typing `6` or `2,5` recalculates at once; the buttons step by whole portions
 and never go below 1; text that is not a number above 0 gets the hint "Enter
 a number above 0." and keeps the last results. The totals are per-portion
@@ -604,11 +698,29 @@ note of an existing line are kept as they are.
   shown under the lines as information, in the neutral words of the ratio
   card, and never blocks saving. **Test:** `e2e/editor-more.mjs`.
 
-**Dish editor.** Name, portions (a whole number or empty), a note, and role
-slots: a role, a filling (a component or an ingredient, from the same
-picker) and an amount per portion. A stored slot always has a filling; a
-slot without one lives only in the draft. Open roles remain derived on the
-dish screen. **Test:** `test/notebook.test.ts`, `e2e/editor-more.mjs`.
+**Dish editor.** Name, portions (a whole number or empty), course and
+cuisine, a note, and role slots: a role, a filling (a component or an
+ingredient, from the same picker) and an amount per portion. A stored slot
+always has a filling; a slot without one lives only in the draft. Open
+roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
+`e2e/editor-more.mjs`.
+
+- **Course and cuisine (since 2026-11-21)** are two labelled selects of
+  44 px, "Course" and "Cuisine", each starting with "Not stated", which
+  stores no field. The courses are a classic's (starter to snack); the
+  cuisines are the four countries the app names (Germany, Italy, France,
+  Spain), [why only these](data-model.md#dish). They are fields of the
+  version like the name: a change is a new version, and the history says
+  "Course: empty → Main course". A copy of a classic keeps its course and
+  its country as the cuisine. The dish screen shows what is stated in one
+  quiet line under the name ("Main course · Italy"); nothing when neither
+  is. With them, the [one filter](#one-filter-over-every-dish) finds a dish
+  of the notebook by course and cuisine as it finds a classic. An older
+  draft without the fields saves without them. **Test:**
+  `test/dish-kind.test.ts` (form, schema, export and import, the copy, the
+  history), `test/browse.test.ts` (the entry and the filter),
+  `e2e/editor-more.mjs` (the selects at 360 px: 44 px, "Not stated"
+  first, saved, shown on the dish screen, read back by Edit).
 
 **What blocks saving.** Only what cannot be stored: no name, no line or
 slot, a line or slot without its ingredient or filling, an amount that is
@@ -730,11 +842,11 @@ never stored ([analysis](dish-characters.md),
   chips are those of the dish **as shown**: a swapped filling changes them
   at once. A classic does not show "With meat" and "With fish": its line
   "Without meat and fish" is set by hand and stays the one statement.
-- **Filter of the Dishes list.** A select "What it is like" under the
-  search, 44 px, with "Anything" and the characters at least one dish has,
-  in the table's order; without any there is no select. A choice narrows
-  the list and works together with the search; nothing found says "No dish
-  is like that." The choice lives as long as the search text.
+- **Filter by character.** The select "What it is like" of the one filter
+  ([below](#one-filter-over-every-dish)), on Dishes and on Start: "Anything"
+  and the characters at least one dish has, own or shipped, in the table's
+  order. It replaced the single select of the Dishes list on 2026-11-21 and
+  is kept with the other choices, across a reload.
 - **The catalogue.** Groups and food categories above an ingredient come
   with the catalogue, which loads after the first draw; the dish is drawn
   again when it is there. So do the egg weights of a shipped dish (a group
@@ -744,20 +856,21 @@ never stored ([analysis](dish-characters.md),
   show on shipped dishes, a soup is never fried, a baked soufflé is not
   creamy; the table of changes, the counts and what was left as it is are in
   [dish characters](dish-characters.md#every-shipped-dish-read-as-a-cook-would-2026-11-21).
-- **Not built.** The filter in Cook and in the random pick, the user's own
-  correction of a character, cuisine and course on the user's dishes.
+- **Not built.** The user's own correction of a character, cuisine and
+  course on the user's dishes.
 
 **Test:** `test/characters.test.ts` (the table against the catalogue, the
 facts of a dish and of a classic, shipped dishes by name),
-`e2e/dish-characters.mjs` (chips, the filter, 360 px; the ingredients there
-are the user's own, so only a technique gives a character). Not verified:
+`e2e/dish-characters.mjs` (chips, the character choice over the user's
+dishes, 360 px; the ingredients there are the user's own, so only a
+technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
 # One filter over every dish
 
-Begun on 2026-11-21: the shipped classics and the dishes of the notebook
-become one list with one filter, instead of two parts of the app each with
-its own. The base is in place; the screens are moved onto it one by one.
+Since 2026-11-21 the shipped classics and the dishes of the notebook are
+one list with one filter, instead of two parts of the app each with its
+own; the origin is only a choice of the filter.
 
 - **One entry.** `src/browse/entry.ts` gives every dish the same entry,
   whatever its origin (`own` or `shipped`): name, link, course, cuisine,
@@ -772,11 +885,57 @@ its own. The base is in place; the screens are moved onto it one by one.
   choice only drops entries. It is kept in `localStorage`
   (`culina.dishes`), like the theme.
 - **One set of controls.** `src/screens/dish-filter.ts`: selects of 44 px,
-  drawn only where there is something to offer, and two ticks.
+  drawn only where there is something to offer, and two ticks. A stored
+  choice no dish has any more stays offered under its name, so that it can
+  be seen and dropped. The control that had focus keeps it when the
+  controls are drawn again after a change.
+- **One list** (`src/screens/dish-list.ts`, view logic in
+  `src/browse/list-view.ts`), the same on **Dishes** (`#/dishes`, under its
+  title, the parts of the Notebook, "Add a dish" and "Put a dish together at
+  random") and on **Start** (`#/start`, under the question "What do you feel
+  like?"). In this order: search by name, the filter (origin, character,
+  course, cuisine in two columns from 360 px; the two ticks), a count line
+  ("4 dishes"), the rows. Every dish whose entry passes the filter and the
+  search, sorted by name in the content language, own and shipped mixed.
+  A row is the name and a quiet line: course, cuisine, and the origin ("My
+  dish", "Shipped") while the list holds both and the filter does not fix
+  one. A row of a shipped dish opens `#/classic/<id>`; a row of an own dish
+  opens it as before, beside the list from 720 px with the row marked.
+  Nothing found says "No dish fits these choices." and offers **Show all**,
+  which empties the filter and the search. The shipped dishes and the
+  catalogue load after the first draw (the catalogue gives the characters
+  of the ingredients it places); the list and the controls are drawn again
+  once they are there. The search text is shared by the two screens and
+  lives until the page is closed; the filter is the stored one, so a choice
+  made on Start is the choice on Dishes and survives a reload. Where the
+  browser cannot store it, it holds until the page is closed. A notebook
+  without a dish of its own shows its "Add example data" under the list.
+- **Start at 360 x 720.** The question, the search, the filter and the
+  first rows are on the first screen; the ways into the tools (What can I
+  cook, What is there, Components, Dishes, Ratios) follow the list.
+- **The old country lists.** `#/classics` and `#/classics/<country>` are no
+  screens of their own any more: the router hands them to
+  `classicsRedirect` (`src/screens/classics/classics-list.ts`), which stores
+  the filter "Shipped dishes" (with the country as the cuisine; a country
+  the app does not know gives none, and every other choice is dropped) and
+  replaces the address with `#/dishes` without a new history entry. So the
+  part "Classics" at the top of Cook, the link back from a shipped dish and
+  old bookmarks open the one list with that choice; the navigation then
+  marks the Notebook.
 
 **Test:** `test/browse.test.ts` (the shipped classics and catalogue, a
-notebook built in memory, a plain object as the store). Not proved: the
-controls in a browser.
+notebook built in memory, a plain object as the store),
+`test/browse-list.test.ts` (order, each choice, combined choices, the line
+under a name, the filter of an old address; entries written by hand),
+`test/router.test.ts` (the redirect without a history entry),
+`e2e/dish-browse.mjs` (360 x 720, the two fictional shipped dishes and the
+example data: both origins in one list, each choice narrows, choices
+combine, Show all, the choice across a reload and between Start and Dishes,
+the first result on Start's first screen, a shipped row opens its dish,
+the old addresses, no horizontal scroll, 44 px targets). Not proved: the
+list with the real 48 shipped dishes in a browser beyond a look at a
+screenshot, desktop width beyond a look, German in a browser beyond
+`e2e/german.mjs` walking the screens, a screen reader on the count line.
 
 # Stock
 
@@ -866,67 +1025,95 @@ navigation landmark): **What can I cook** (`#/cook`), **Use up first**
   arithmetic in the app: every number and status comes from `makeable`.
   Today is the shell's injected clock (`?e2e-now=` in tests), read in
   `src/cook/source.ts` only, and shown on the screen as "As of 18 Nov 2026".
-- **What can I cook.** The engine's candidates (own components and dishes,
-  ratio templates where the engine returns them) in the engine's exact
-  order; the filters only drop entries. "Complete only" is not a rule:
-  each entry shows "complete" or "lacks N" as text. Each entry is one link
-  to its recipe (a dish, a component or a ratio card) and shows: the
-  reason line, "uses the Leek with 1 day left; covers aromatic, sauce"
-  (the engine's urgency item and days, or "nothing it uses has a use-by
-  date", then the roles covered, or "no roles recorded"); "Lacks: Thyme,
-  Cream (100 g there, 200 g needed)"; the substitutes, "with Salted butter
-  in place of Unsalted butter"; items that are there with no known amount,
-  "Cream is there; how much is not known."; and for a dish the open roles
-  the stock can fill, "You could add a crunch: Walnut", only where the
-  stock has an ingredient or component with that role. The same offer is
-  shown on the dish screen beside "Open: add a crunch". Wording is neutral:
-  "lacks", "could add", never an alarm word or colour.
-- **Filters**, kept in `localStorage` (`culina.cook`, like the theme; no
-  storage means the defaults): "Show" is the engine's threshold, complete
-  only or lacking at most 1, 2 or 3 (default 1); "Covers the role" keeps
-  entries whose covered roles include the chosen one. The same three choices
-  apply to the classics below; "Country" and "Meat and fish" are kept in the
-  same entry and belong to the classics only.
-- **Classic dishes**, a section below the own list ("Classic dishes",
-  `src/screens/cook/classics-section.ts`; not on the "uses an ingredient"
-  view). Each shipped classic is derived (`deriveClassic`, 2 portions) and
-  judged by the engine's finder on the stock (`classicsMakeable`,
-  [engine rules](engine-rules.md#the-shipped-classics-in-the-finder)); the
-  app only filters (country: Germany, Italy, France, Spain or all; "Without
-  meat and fish") and shows. The entry reads like an own dish (status,
-  reason, substitutes, unknown amounts) with the country and, where it
-  applies, "without meat and fish" in the kind line, and what is missing as
-  "Needs: Oil, Salt" (never "lacks"/"wrong"). Water is never asked for. A
-  line the catalogue has no ingredient for yet is not counted and is named
-  apart: "Not in the catalogue yet, so not counted: Bouquet garni". The
-  ingredient tree is the notebook's completed by the shipped catalogue (the
-  notebook wins on an id), loaded on the first draw and drawn again when it
-  is there; names are in the content language. Each entry is one link to
-  `#/classic/<id>`. With nothing that fits: "No classic fits these choices."
-  (or the quiet sentence for no stock) and the three nearest, "<name> needs
-  <list>". **Test:** `test/cook-classics.test.ts`, `e2e/classics-finder.mjs`.
+- **What can I cook: one list.** Own dishes and the shipped dishes are
+  one list, whatever their origin (owner's goal of 2026-11-21). The engine
+  judges both: own components, dishes and ratio templates with `makeable`,
+  each shipped dish derived (`deriveClassic`, 2 portions) with
+  `classicsMakeable` ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)).
+  **The order is a rule:** both finders rank by the same contract (urgency,
+  then roles covered, then name, id and kind as plain string comparison), a
+  total order, so the app merges them by ranking the union again with the
+  engine's `rankCandidates` ([ranking contract](engine-rules.md#what-the-stock-allows));
+  the filters only drop entries (`src/cook/one-list.ts`). **Two groups:**
+  "Dishes" (own and shipped) first, then "Components and ratios" (own
+  components and ratio cards, in the same ranking), because a component or a
+  ratio card is not a dish: it has no course, cuisine or character, so the
+  second group is shown only while the dish filter chooses nothing or only
+  "My dishes"; otherwise a quiet line says it is left out. Each entry is one
+  link (an own dish, a component, a ratio card, or `#/classic/<id>` for a
+  shipped dish) and shows: a quiet line with the origin word ("mine",
+  "shipped"; only where both origins are in the group) and the country of a
+  shipped dish, or the kind ("component", "ratio") in the second group;
+  "complete" or "lacks N" as text ("Complete only" is not a rule); the reason
+  line, "uses the Leek with 1 day left; covers aromatic, sauce" (the engine's
+  urgency item and days, or "nothing it uses has a use-by date", then the
+  roles covered, or "no roles recorded"); "Lacks: Thyme, Cream (100 g there,
+  200 g needed)" for both origins; the substitutes, "with Salted butter in
+  place of Unsalted butter"; items that are there with no known amount,
+  "Cream is there; how much is not known."; for an own dish the open roles
+  the stock can fill, "You could add a crunch: Walnut", only where the stock
+  has an ingredient or component with that role (the same offer is shown on
+  the dish screen beside "Open: add a crunch"); for a shipped dish a line the
+  catalogue has no ingredient for yet is not counted and is named apart,
+  "Not in the catalogue yet, so not counted: Bouquet garni". Water is never
+  asked for. For the shipped dishes the ingredient tree is the notebook's
+  completed by the shipped catalogue (the notebook wins on an id), loaded on
+  the first draw and drawn again when it is there; their names are in the
+  content language. Wording is neutral: "lacks", "could add", never an alarm
+  word or colour. **Test:** `test/cook-one-list.test.ts`,
+  `test/cook-finder.test.ts`, `e2e/cook.mjs`, `e2e/classics-finder.mjs`.
+- **The one filter on top**, the same as on the Dishes list
+  ([one filter over every dish](#one-filter-over-every-dish)): "From" (mine,
+  shipped), "What it is like" (character), course, cuisine, "Without meat and
+  fish", "Only with every amount given", read on the `DishEntry` of each
+  dish (`entryOfDish`, `entryOfClassic`) and kept under `culina.dishes`: a
+  choice made on the finder is the Dishes list's and the other way round. A
+  select offers only values some dish has. When the controls are drawn again
+  after a change, the control that had focus keeps it. Below it the finder's
+  own two choices, kept in `culina.cook` (no storage means the defaults):
+  "Show" is the engine's threshold, complete only or lacking at most 1, 2 or
+  3 (default 1); "Covers the role" keeps entries whose covered roles include
+  the chosen one. Both apply to own and shipped entries alike.
+- **The old country and meat choices.** An older version kept "Country"
+  and "Meat and fish" for the classics in `culina.cook`. On the first open
+  of Cook they are carried into the dish filter once (the country as the
+  cuisine, the meat choice as "Without meat and fish"; a choice the dish
+  filter already has wins) and taken out of `culina.cook`; an unreadable
+  entry is the default, never an error (`src/cook/carry.ts`, test
+  `test/cook-carry.test.ts`, `e2e/cook.mjs`). The native Linux app still
+  keeps its own country and meat filter in its preferences file; that is
+  not this change.
 - **Start from one ingredient** (`#/cook/<ingredientId>/with`, heading
   "What uses Leek"): a section at the top lists the ticked ingredients and
   a search over the notebook's ingredients by every name (English and
   German, through `shared/names.ts`). The list keeps the engine's order and
   only own components and dishes that use the ingredient or one it can
-  stand in for (`usesIngredient`); "Show everything" leaves it.
+  stand in for (`usesIngredient`); "Show everything" leaves it. No shipped
+  dish is listed here: the engine has no "uses" question for them yet. The
+  dish filter applies to the own dishes (its "From" is not offered here).
 - **Use up first.** The stock items that have a use-by date, nearest first
   (the engine's `useUpFirst`), each with days left in words and links to
-  the components and dishes that use it, counted within the same "lacking
-  at most" choice; an item nothing uses says so. Tapping the item opens it
+  what uses it among the entries of What can I cook under the same choices:
+  the same "lacking at most" and role, and the same dish filter, so own and
+  shipped dishes count, and components and ratio cards while no dish filter
+  is chosen (in the one ranking, by the engine's `usedItems`). A line says
+  when a filter applies; an item nothing in the list uses says so. Tapping the item opens it
   in the stock screen (`#/stock/<id>/edit`).
 - **Empty states**, each with the way forward: nothing ticked yet (link
-  "Tick what is there"); nothing in the notebook yet, when nothing is
-  found and there is no component or dish (links to add a component and to
-  import); nothing matches, with the three nearest candidates and what each
-  lacks (the engine at a wide threshold, fewest lacking first).
+  "Tick what is there"); nothing in the notebook yet, when the notebook has
+  no component or dish and the engine finds nothing of one's own (links to
+  add a component and to import; said below the list when shipped dishes
+  are listed, in place of it when none is); nothing matches, with the three
+  nearest under the same choices, own or shipped, and what each lacks (both
+  engines at a wide threshold, fewest lacking first, the one ranking within
+  the same number); with nothing near at all, only "Nothing matches these
+  choices.".
 - **Catalogue ingredients only.** The generated catalogue carries no roles;
   the [role table](data-model.md#roles) adds a few when the catalogue is
   read, so a ratio card is makeable from stock of catalogue foods. With no
-  recipe of one's own and no ratio card that fits there is nothing to rank
-  in the own list and the screen shows "Your notebook has no components or
-  dishes yet." with its links (the classics below are listed regardless).
+  recipe of one's own and no ratio card that fits the screen shows "Your
+  notebook has no components or dishes yet." with its links (shipped dishes
+  that fit are listed regardless).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
   least 44 px, nothing focused on open. **Offline:** the finder reads the
   local notebook. No "add to list": shopping lists are the planned sister
@@ -941,21 +1128,19 @@ view logic is in `src/classics/` (no DOM), the screens in
 `src/screens/classics/`. **Test:** `test/classics-view.test.ts`,
 `test/classics-notebook.test.ts`, `e2e/classics.mjs`.
 
-- **Start** (`#/start`, the screen the app opens on and the first navigation
-  entry, "Start"). The heading asks "What do you want to cook?". The first
-  choice is "Classics by country": Germany, Italy, France and Spain, each with
-  its number of dishes. Behind it, "Your tools" links to What can I cook, What
-  is there (the stock), Components, Dishes and Ratios, as before; nothing was
-  removed. The classics screens are shown under the Cook entry, in its
-  second part "Classics".
-- **List** (`#/classics/<country>`). Each dish with its name in the content
-  language, its course and "Without meat and fish" or "With meat or fish". A
-  country without a dish says so quietly ("No dishes from here yet"); the
-  app works with no dish at all. A dish id or a country that is not known gives
-  one quiet sentence.
-- **Dish** (`#/classic/<id>`). In this order, so that the ingredients are on
-  the first screen at 360 x 720: the name, the original name, course and meat
-  flag; a portions stepper, default 2; the ingredient lines per component and
+- **Start and the list.** The shipped dishes are listed with the
+  dishes of the notebook in the [one list](#one-filter-over-every-dish), on
+  Start and on Dishes; "Shipped dishes" and a cuisine are choices of its
+  filter. The country lists (`#/classics`, `#/classics/<country>`) became
+  that list with the filter set; their addresses keep working. A
+  collection without a dish leaves the list with the notebook's dishes, and
+  the app works with no dish at all. A dish id that is not known gives one
+  quiet sentence.
+- **Dish** (`#/classic/<id>`, drawn by the one dish screen of both
+  origins since 2026-11-21, [dishes](#dishes)). In this order, so that the
+  ingredients are on the first screen at 360 x 720: the name, the original
+  name, the quiet line (course, cuisine, meat flag, "Shipped with the
+  app"); Keep in my notebook; the characters; a portions stepper, default 2; the ingredient lines per component and
   for the dish; "Cook step by step"; the whole method; then, each closed behind
   a tap (`<details>`), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
@@ -1007,8 +1192,10 @@ view logic is in `src/classics/` (no DOM), the screens in
   read, [evaluation](nutrition-evaluation.md#what-was-built)); the wording test
   scans `strings-nutrition.ts` and a test lists the words it must not contain.
   **Tests:** `test/nutrition-view.test.ts`, `e2e/classics-nutrition.mjs`.
-- **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish). One
-  step: "Step 3 of 8" as a heading, the component it belongs to, the text,
+- **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish; the
+  one cook screen of every origin since 2026-11-21). One
+  step: "Step 3 of 8" as a heading, the component it belongs to (left out
+  where the part has the dish's own name), the text,
   the lines it uses with their amounts, time and temperature as the source
   gives them, a progress bar. "Back" and "Next" are 56 px high ("Finish" on the
   last step) and **stay on the screen**: they are a bar that sticks above the
@@ -1129,20 +1316,22 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   five): **Start**, **Cook** (German Kochen), **Notebook** (Notizbuch) and
   **Ratios** (Verhältnisse), in that order. A route belongs to one of them
   (`navEntryFor` in `src/router.ts`): Cook holds the finder, the stock and the
-  classics with their cooking mode; the Notebook holds Components and Dishes,
+  shipped dishes with their cooking mode; the Notebook holds Components and Dishes,
   two parts shown as a row of two equal links at the top of their lists
   (`src/screens/section-tabs.ts`). The old routes (`#/components`, `#/dishes`,
   `#/classics`, `#/cook`, `#/stock`, `#/settings`) work as before, links,
   bookmarks and tests included, and the navigation marks the destination
-  they belong to. The Notebook entry opens on Components.
+  they belong to; `#/classics` and `#/classics/<country>` open the one list
+  of dishes with the shipped ones chosen, so the Notebook is marked there.
+  The Notebook entry opens on Components.
 - **Settings is the gear** at the right end of the header, a 44 px target
   named for assistive technology ("Settings", "Einstellungen") and marked
   `aria-current` on the Settings screen; it is the first stop after the skip link.
   It is there on every screen of a phone. From 720 px it is not in the header:
   Settings is the last entry of the side rail.
 - **Every former destination is at most two taps from Start**: Ratios, Cook
-  and Settings one, Components one, Dishes, Classics, Use up first and the
-  stock two (Start also has an entry for each tool); the stock is two taps
+  and Settings one, Components one, Dishes, the shipped dishes (Cook, then
+  "Classics"), Use up first and the stock two (Start also has an entry for each tool); the stock is two taps
   from every screen (Cook, then "What is there"). **Test:** `e2e/navigation.mjs`.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
   and label; from 720 px a side navigation with the same four destinations and

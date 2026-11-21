@@ -1,7 +1,7 @@
 // One entry for every dish the app knows, whatever its origin: a dish of the notebook or a shipped
 // classic. The lists, the finder and the random pick filter these entries by the same rules
 // (./filter.ts). Pure: no DOM; the notebook, the classics and the ingredient lookup come in.
-import { deriveClassic, pickText } from '@culina/engine';
+import { COUNTRY_CODES, COURSE_IDS, deriveClassic, pickText } from '@culina/engine';
 import type { CharacterFacts, Classic, Course, Lang } from '@culina/engine';
 import type { Lookup } from '../characters/classes';
 import { factsOfClassic } from '../characters/classic';
@@ -23,7 +23,7 @@ export interface DishEntry {
   href: string;
   /** Absent when the dish states none. */
   course?: Course;
-  /** The cuisine as a country code (`de`, `it`, `fr`, `es`, or what the user gave); absent when none is stated. */
+  /** The cuisine as a country code (`de`, `it`, `fr`, `es`: a classic's country or a dish's `cuisine`); absent when none is stated. */
   cuisine?: string;
   /**
    * True: without meat and fish. For a shipped dish this is set by hand in its file; for a dish
@@ -33,7 +33,7 @@ export interface DishEntry {
   meatFree?: boolean;
   /** The ids of its characters, in the order of the table. */
   characters: readonly string[];
-  /** True when every ingredient line and slot has an amount. */
+  /** True when every line that names an ingredient has an amount; for a dish of the notebook, every slot. */
   complete: boolean;
 }
 
@@ -65,6 +65,9 @@ export const entryOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): Dis
     id: dish.id,
     name: dish.name,
     href: `#/dishes/${encodeURIComponent(dish.id)}`,
+    // Only a value of the lists: a record that carries something else states nothing.
+    ...(COURSE_IDS.some((c) => c === dish.course) ? { course: dish.course } : {}),
+    ...(COUNTRY_CODES.some((c) => c === dish.cuisine) ? { cuisine: dish.cuisine } : {}),
     ...(meatFree === undefined ? {} : { meatFree }),
     characters,
     complete: dish.slots.length > 0 && dish.slots.every((s) => s.amount !== undefined),
@@ -74,8 +77,12 @@ export const entryOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): Dis
 const classicComplete = (classic: Classic): boolean => {
   const derived = deriveClassic(classic, { lang: 'en' });
   if (!derived.ok) return false;
-  const lines = [...derived.components.flatMap((c) => c.lines), ...derived.dish.slots];
-  return lines.every((l) => l.amount !== undefined);
+  // A slot or line that names a component of the dish carries no amount of its own: the amounts
+  // are on the component's lines. Only what names an ingredient is asked.
+  const lines = [...derived.components.flatMap((c) => c.lines), ...derived.dish.slots].filter(
+    (l) => l.ref?.kind !== 'component',
+  );
+  return lines.length > 0 && lines.every((l) => l.amount !== undefined);
 };
 
 /** The entry of a shipped classic. */

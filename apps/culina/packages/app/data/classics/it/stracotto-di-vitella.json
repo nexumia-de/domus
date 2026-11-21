@@ -129,9 +129,13 @@
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
+          },
+          "note": {
+            "en": "Tomato sauce or paste.",
+            "de": "Tomatensauce oder Tomatenmark."
           },
           "sourceNote": {
             "en": "No amount given.",

@@ -25,20 +25,12 @@
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
     },
     "originalName": { "type": "string", "minLength": 1, "maxLength": 120 },
-    "country": { "enum": ["de", "it", "fr", "es"] },
+    "country": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/country"
+    },
     "vegetarian": { "type": "boolean" },
     "course": {
-      "enum": [
-        "starter",
-        "soup",
-        "main",
-        "side",
-        "dessert",
-        "baking",
-        "sauce",
-        "breakfast",
-        "snack"
-      ]
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/course"
     },
     "source": {
       "type": "object",

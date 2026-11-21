@@ -16,6 +16,8 @@ import type {
   MakeableResult,
 } from './types';
 
+export { rank as rankCandidates } from './rank';
+export type { RankedCandidate } from './rank';
 export { stockForRole } from './for-role';
 export { usesIngredient } from './uses';
 export type { UsesIngredientResult } from './uses';

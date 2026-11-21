@@ -1,5 +1,5 @@
 // The finder's adapter and filters against direct engine calls, on the fixture notebook.
-import { makeable, SEED_TEMPLATES, usesIngredient } from '@culina/engine';
+import { makeable, rankCandidates, SEED_TEMPLATES, usesIngredient } from '@culina/engine';
 import type { MakeableCandidate, MakeableInput } from '@culina/engine';
 import { expect, test } from 'vitest';
 import { find } from '../src/cook/finder';
@@ -32,6 +32,19 @@ const candidates = (maxMissing: number): MakeableCandidate[] => {
   return r.candidates;
 };
 
+/** Both groups of an own-only finding, ranked again as one: the engine's list, narrowed. */
+const shownOf = (found: Extract<ReturnType<typeof find>, { ok: true }>): MakeableCandidate[] =>
+  rankCandidates([...found.dishes, ...found.parts] as MakeableCandidate[]);
+
+test('without shipped dishes the groups split the engine list: dishes, then the rest', () => {
+  const found = find(source, TODAY, { lacking: 1 });
+  if (!found.ok) throw new Error('not ok');
+  const engine = candidates(1);
+  expect(found.dishes.map(keyOf)).toEqual(engine.filter((c) => c.kind === 'dish').map(keyOf));
+  expect(found.parts.map(keyOf)).toEqual(engine.filter((c) => c.kind !== 'dish').map(keyOf));
+  expect(found.classicsWithin).toEqual([]);
+});
+
 test('the adapter hands the engine what a direct call gets: the same result, every time', () => {
   for (const n of [0, 1, 3]) {
     expect(makeable(cookInput(source, TODAY, { maxMissing: n }))).toEqual(makeable(direct(n)));
@@ -58,35 +71,35 @@ test('the screen order is the engine ranking, filters only drop entries', () => 
   const engine = candidates(1);
   const found = find(source, TODAY, { lacking: 1 });
   if (!found.ok) throw new Error('not ok');
-  expect(found.shown.map(keyOf)).toEqual(engine.map(keyOf));
+  expect(shownOf(found).map(keyOf)).toEqual(engine.map(keyOf));
   const sauce = find(source, TODAY, { lacking: 1, role: 'sauce' });
   if (!sauce.ok) throw new Error('not ok');
-  expect(sauce.shown.map(keyOf)).toEqual(
+  expect(shownOf(sauce).map(keyOf)).toEqual(
     engine.filter((c) => c.roles.includes('sauce')).map(keyOf),
   );
-  expect(sauce.shown.length).toBeGreaterThan(0);
-  expect(sauce.shown.length).toBeLessThan(engine.length);
+  expect(shownOf(sauce).length).toBeGreaterThan(0);
+  expect(shownOf(sauce).length).toBeLessThan(engine.length);
 });
 
 test('complete only is the engine threshold 0', () => {
   const found = find(source, TODAY, { lacking: 0 });
   if (!found.ok) throw new Error('not ok');
-  expect(found.shown.map(keyOf)).toEqual(candidates(0).map(keyOf));
-  expect(found.shown.every((c) => c.complete)).toBe(true);
+  expect(shownOf(found).map(keyOf)).toEqual(candidates(0).map(keyOf));
+  expect(shownOf(found).every((c) => c.complete)).toBe(true);
 });
 
 test('start from one ingredient keeps the engine order of what uses it', () => {
-  const found = find(source, TODAY, { lacking: 3 }, 'cook-leek');
+  const found = find(source, TODAY, { lacking: 3 }, { ingredientId: 'cook-leek' });
   if (!found.ok) throw new Error('not ok');
   const uses = usesIngredient(direct(3), 'cook-leek');
   if (!uses.ok) throw new Error('not ok');
   const keys = new Set(uses.records.map(keyOf));
-  expect(found.shown.map(keyOf)).toEqual(
+  expect(shownOf(found).map(keyOf)).toEqual(
     candidates(3)
       .filter((c) => keys.has(keyOf(c)))
       .map(keyOf),
   );
-  const names = found.shown.map((c) => c.name);
+  const names = shownOf(found).map((c) => c.name);
   expect(names).toEqual(
     expect.arrayContaining(['Potato and leek soup', 'Buttered leeks', 'Onion tart', 'Soup plate']),
   );
@@ -100,7 +113,7 @@ test('when nothing matches the nearest are named, fewest lacking first', () => {
   };
   const found = find(little, TODAY, { lacking: 0 });
   if (!found.ok) throw new Error('not ok');
-  expect(found.shown).toEqual([]);
+  expect(shownOf(found)).toEqual([]);
   expect(found.narrowed).toBe(false);
   expect(found.nearest.map((c) => c.name)).toContain('Onion tart');
   const lacks = found.nearest.map((c) => c.lacking);
@@ -111,7 +124,7 @@ test('when nothing matches the nearest are named, fewest lacking first', () => {
 test('a role nothing covers leaves no nearest and says the choices are narrowed', () => {
   const found = find(source, TODAY, { lacking: 3, role: 'garnish' });
   if (!found.ok) throw new Error('not ok');
-  expect(found.shown).toEqual([]);
+  expect(shownOf(found)).toEqual([]);
   expect(found.nearest).toEqual([]);
   expect(found.narrowed).toBe(true);
 });
@@ -120,7 +133,7 @@ test('the reason line is built from the engine: urgency item, days left and the 
   const found = find(source, TODAY, { lacking: 1 });
   if (!found.ok) throw new Error('not ok');
   const row = (id: string) =>
-    cookRow(must(found.shown.find((c) => c.id === id)), found.look, found.offers);
+    cookRow(must(shownOf(found).find((c) => c.id === id)), found.look, found.offers);
   const soup = row('cook-potato-leek-soup');
   expect(soup.status).toBe('complete');
   expect(soup.reason).toBe('uses the Leek with 1 day left; covers aromatic, main element, sauce');
