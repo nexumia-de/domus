@@ -15,6 +15,7 @@ import {
   rollFitting,
   rollRoleFitting,
   type Fits,
+  type RolePick,
 } from '../src/dishes/pick';
 import { dishPool, surpriseDish } from '../src/dishes/pick-dish';
 import { combinationDish, combinationJudge } from '../src/dishes/pick-judge';
@@ -241,5 +242,62 @@ describe('the roll per role under the filter', () => {
       tries: TRIES,
     });
     expect(unlucky.taken()).toBe(TRIES * 3);
+  });
+});
+
+// From the review of 3b9d11e: the picks were handed out by position among the roles that had a
+// candidate under the options at the time, so a change of the stock option between Roll and
+// "Roll again" moved a component into another role's row.
+describe('every pick stays in its own role', () => {
+  const C = (id: string, role: string): Candidate => ({ id, name: id, role });
+  const SET = [
+    C('patty', 'main'),
+    C('onion', 'main'),
+    C('mash', 'starch'),
+    C('gravy', 'sauce'),
+    C('tomato', 'sauce'),
+  ];
+  const off = { onlyStock: false, inStock: () => false };
+  const noMash = { onlyStock: true, inStock: (id: string) => id !== 'mash' };
+  const anything: Fits = () => true;
+  const inOwnRole = (picks: readonly RolePick[]) =>
+    picks.every((p) => p.choice === undefined || p.choice.role === p.role);
+
+  test('the stock option turned on after the roll: rolling the main again moves nothing', () => {
+    const rolled = rollFitting(ROLES, SET, off, () => 0, anything);
+    if (!rolled.found) throw new Error('none found');
+    expect(named(rolled.picks)).toEqual(['patty', 'mash', 'gravy']);
+    const again = rollRoleFitting('main', rolled.picks, SET, noMash, () => 0, anything);
+    expect(inOwnRole(again)).toBe(true);
+    expect(named(again)).toEqual(['onion', 'mash', 'gravy']);
+  });
+
+  test("the stock option turned off after the roll: an empty role takes no other role's pick", () => {
+    const rolled = rollFitting(ROLES, SET, noMash, () => 0, anything);
+    if (!rolled.found) throw new Error('none found');
+    expect(named(rolled.picks)).toEqual(['patty', undefined, 'gravy']);
+    const again = rollRoleFitting('main', rolled.picks, SET, off, () => 0.99, anything);
+    expect(inOwnRole(again)).toBe(true);
+    expect(named(again)).toEqual(['onion', undefined, 'gravy']);
+  });
+
+  test('nothing in stock: rolling a role again keeps every pick', () => {
+    const rolled = rollFitting(ROLES, SET, off, () => 0, anything);
+    if (!rolled.found) throw new Error('none found');
+    const nothing = { onlyStock: true, inStock: () => false };
+    const again = rollRoleFitting('starch', rolled.picks, SET, nothing, () => 0.5, anything);
+    expect(named(again)).toEqual(['patty', 'mash', 'gravy']);
+  });
+
+  test('under a judge the draw is even over the combinations that fit, not over a role', () => {
+    // Main {A, B}, sauce {x, y}; A+x, A+y and B+x fit: A comes up in two of three.
+    const four = [C('A', 'main'), C('B', 'main'), C('x', 'sauce'), C('y', 'sauce')];
+    const notBy: Fits = (choices) =>
+      !(choices.some((c) => c.id === 'B') && choices.some((c) => c.id === 'y'));
+    const mains = [0.1, 0.5, 0.9].map((r) => {
+      const rolled = rollFitting(['main', 'sauce'], four, off, () => r, notBy);
+      return rolled.found ? rolled.picks[0]?.choice?.id : undefined;
+    });
+    expect(mains).toEqual(['A', 'A', 'B']);
   });
 });

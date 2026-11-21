@@ -164,5 +164,26 @@ export const dishFilterControls = (
   return group;
 };
 
+/**
+ * Puts new controls of the filter into `slot` in place of the old ones; the control that had focus
+ * there (a select, or the box of a tick) keeps it, found again by its `dish-filter-` class. Used by
+ * the random pick; the Dishes list and the finder each still have their own copy of this.
+ */
+export const replaceDishFilterControls = (slot: HTMLElement, controls: HTMLElement): void => {
+  const active = document.activeElement;
+  const owner =
+    active instanceof HTMLElement && slot.contains(active)
+      ? active instanceof HTMLSelectElement
+        ? active
+        : active.closest('.choice')
+      : null;
+  const name =
+    owner === null ? undefined : [...owner.classList].find((c) => c.startsWith('dish-filter-'));
+  slot.replaceChildren(controls);
+  if (name === undefined) return;
+  const target = slot.querySelector(`.${name}`);
+  (target instanceof HTMLSelectElement ? target : target?.querySelector('input'))?.focus();
+};
+
 /** The order in which courses are offered; kept in browse/filter.ts, where the native app reaches it too. */
 export { COURSE_ORDER } from '../browse/filter';

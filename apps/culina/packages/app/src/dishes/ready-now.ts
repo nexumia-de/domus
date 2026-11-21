@@ -1,13 +1,12 @@
-// Which dishes the stock allows now, for "Surprise me with a dish": asked of the finder as it is
-// (`find` for the notebook's dishes, `findClassics` for the shipped ones), with no line allowed
-// to lack. Nothing is judged here; this only turns the finder's answers into entry keys.
+// Which dishes the stock allows now, for "Surprise me with a dish": asked of the finder as it is,
+// with no line allowed to lack (`find` for the notebook's dishes, `classicsWithin` for the shipped
+// ones, which skips the finder's look for the nearest). Nothing is judged here; this only turns
+// the finder's answers into entry keys.
 import { entryKey } from '../browse/entry';
-import { findClassics } from '../cook/classic-finder';
+import { classicsWithin } from '../cook/classic-finder';
+import { shippedNow } from '../cook/entries';
 import { find } from '../cook/finder';
 import { cookToday, notebookSource } from '../cook/source';
-import { classics } from '../classics/content';
-import { currentLang } from '../classics/lang';
-import { catalogueEntries } from '../classics/names';
 
 /** The keys of the entries whose every required line the stock covers today. */
 export const readyNowKeys = (): Set<string> => {
@@ -18,15 +17,16 @@ export const readyNowKeys = (): Set<string> => {
   if (own.ok)
     for (const c of own.within)
       if (c.kind === 'dish' && c.complete) keys.add(entryKey('own', c.id));
-  const shipped = findClassics(
-    classics(),
+  const shipped = shippedNow();
+  const classics = classicsWithin(
+    shipped.classics,
     source,
-    catalogueEntries(),
+    shipped.catalogue,
     today,
-    { lacking: 0 },
-    currentLang(),
+    0,
+    shipped.lang,
   );
-  if (shipped.ok)
-    for (const c of shipped.shown) if (c.complete) keys.add(entryKey('shipped', c.id));
+  if (classics.ok)
+    for (const c of classics.candidates) if (c.complete) keys.add(entryKey('shipped', c.id));
   return keys;
 };
