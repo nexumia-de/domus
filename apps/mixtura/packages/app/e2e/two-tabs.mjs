@@ -24,7 +24,7 @@ expect((await first.getByText('Another window updated').count()) === 0, 'no bann
 
 const second = await context.newPage();
 await second.goto(`${site.url}#/about`);
-await second.locator('.pane h1:visible').last().waitFor();
+await second.locator('.fr-header h1').last().waitFor();
 const upgraded = await second.evaluate(
   () =>
     new Promise((resolve) => {
@@ -60,7 +60,7 @@ expect((await banner.getByRole('button', { name: 'Try Again' }).count()) === 0, 
 const navigated = first.waitForEvent('load');
 await reload.click();
 await navigated;
-await first.locator('.pane h1:visible').last().waitFor();
+await first.locator('.fr-header h1').last().waitFor();
 expect(true, 'Reload reloads the page');
 await browser.close();
 await site.close();

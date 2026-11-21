@@ -42,7 +42,7 @@ const open = async (address) => {
   // A fresh document: a hash change alone would be a navigation inside the app.
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const abv = () => page.locator('.balance .metric[aria-label="ABV"] .metric-value').innerText();
 const change = (key) => page.locator(`[data-change="${key}"]`).innerText();

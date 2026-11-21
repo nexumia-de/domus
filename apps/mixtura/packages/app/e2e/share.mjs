@@ -38,7 +38,7 @@ const newPage = async (permissions = []) => {
 const open = async (page, address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const dump = (page) =>
   page.evaluate(
@@ -256,17 +256,17 @@ await receiver.getByRole('link', { name: /^Family/ }).waitFor();
 await shot(receiver, 'added');
 // Undo is offered as for a file import.
 expect(
-  (await receiver.locator('.toast').innerText()).includes('Imported'),
+  (await receiver.locator('.fr-toast').innerText()).includes('Imported'),
   'the toast says what was added',
 );
 expect(
-  (await receiver.locator('.toast button', { hasText: 'Undo' }).count()) === 1,
+  (await receiver.locator('.fr-toast button', { hasText: 'Undo' }).count()) === 1,
   'the toast offers Undo',
 );
 
 // Reload: the normal start, nothing applied twice.
 await receiver.reload({ waitUntil: 'load' });
-await receiver.locator('.pane h1:visible').last().waitFor();
+await receiver.locator('.fr-header h1').last().waitFor();
 expect(
   (await receiver.evaluate(() => location.hash)).startsWith('#/drinks'),
   'a reload after reading shows the normal start',
@@ -286,7 +286,7 @@ expect(
   'Add Drink is off when nothing would change',
 );
 await receiver.getByRole('button', { name: 'Close' }).click();
-await receiver.locator('.pane h1:visible').last().waitFor();
+await receiver.locator('.fr-header h1').last().waitFor();
 const again = await dump(receiver);
 expect(again.specs.length === 2 && again.ingredients.length === 1, 'nothing is duplicated');
 

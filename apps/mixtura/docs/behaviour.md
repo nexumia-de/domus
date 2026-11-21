@@ -82,11 +82,22 @@ by the tests of the repository.
 
 **One structure** (owner question Q2 in [design](design.md#open-questions)):
 
-- **Four top-level destinations**, always in the same order: **Drinks**
+- **Three top-level destinations**, always in the same order: **Drinks**
   (the list of all specs, the home), **Templates**, **Stock** (with the
-  second view **Buy Next**), **Settings**. Below 840 px they are a
-  bottom navigation bar (56 px high, icon and label); from 840 px a rail
-  on the left.
+  second view **Buy Next**). Below 840 px they are a bottom navigation
+  bar (56 px high, icon and label); from 840 px a rail on the left
+  under the header.
+- **The header** is the shared frame (`@nexumia-de/hospes/frame`,
+  [frame](../../../packages/host/docs/frame.md), [decision](../../../docs/decisions/shared-shell.md)):
+  one bar across the window with the page title (the page's one `h1`),
+  a back arrow on a pushed screen, the page's own action (Share on a
+  drink of your own, New Drink on the lists), a small **sync icon** and
+  **Settings**. The sync icon shows the worst state of the spaces that
+  count on Stock; a tap says the details in a toast; a slim banner with
+  Retry appears only on a real error (offline is not one). The body
+  starts with content, never repeats the title. **Settings** is a
+  pushed page (Back returns to where it was opened; the bar is hidden
+  on a phone) and is not in the bar.
 - **Pushed screens** open on top of a destination: spec, swap mode,
   editor, versions, family, template detail, ingredient picker. A pushed
   screen replaces the bottom navigation with its own action bar
@@ -109,7 +120,7 @@ by the tests of the repository.
   back gesture leaves the app (nothing intercepts it). Swap mode and the
   editor intercept back only when they hold changes: back then keeps the
   draft (editor) or drops the swap (swap mode, it was never saved) and
-  shows an Undo toast; no confirm dialog.
+  shows a toast with Undo (the shared toast: 5 s, 8 s when it has Undo); no confirm dialog.
 - **Deep links.** Every screen has a URL; the app uses hash routes so
   static hosting needs no rewrite rules (Q5). The URL is the shareable
   address of the screen and restores it on open.

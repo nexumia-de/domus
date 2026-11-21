@@ -79,6 +79,8 @@ export function render(root: HTMLElement, shell: Shell): void {
     ),
   );
   root.replaceChildren(app);
+  // The header lives through redraws, so what a modal made inert last time is freed first.
+  for (const node of shell.frame.top) node.removeAttribute('inert');
   inertBehindModal(app);
   trapFocus(app);
   document.title = `${view.title} - Drink Builder`;

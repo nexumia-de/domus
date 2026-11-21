@@ -39,7 +39,7 @@ page.setDefaultTimeout(15000);
 const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${height}.png`) });
 const docShot = async (name) => {
   if (!docs) return;
-  await page.evaluate(() => document.querySelector('.toast')?.remove());
+  await page.evaluate(() => document.querySelector('.fr-toast')?.replaceChildren());
   await page.screenshot({ path: join(DOCS, `app-${name}-${width}x${height}.png`) });
 };
 const toast = () => page.getByTestId('toast');

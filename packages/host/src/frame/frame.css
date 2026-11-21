@@ -173,3 +173,10 @@
 .fr-toast-action {
   color: var(--accent);
 }
+
+/* `hidden` must win over the display of the rules above. */
+.fr-banner[hidden],
+.fr-icon-btn[hidden],
+.fr-subtitle[hidden] {
+  display: none;
+}

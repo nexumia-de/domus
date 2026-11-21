@@ -46,7 +46,7 @@ const shot = (name) =>
 const open = async (address, on = page) => {
   await on.goto('about:blank');
   await on.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await on.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await on.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const dump = () =>
   page.evaluate(
@@ -411,7 +411,7 @@ await shot('family-chain');
 await page.locator('[data-family="ancestor"]').first().locator('a').click();
 await page.locator('.spec').waitFor();
 expect(
-  (await page.locator('.pane h1:visible').last().innerText()).startsWith('Daiquiri'),
+  (await page.locator('.fr-header h1').last().innerText()).startsWith('Daiquiri'),
   'an entry opens that drink',
 );
 await open('#/drinks?q=nothing-like-this');

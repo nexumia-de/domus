@@ -183,18 +183,13 @@ export const seedStock = async (page, rows, { space, replace = false, make = fal
  * A further space on this device only, as the Household app would make one (the scripts of
  * Mixtura cannot open Household: only Mixtura's build is served). Resolves with its id.
  */
-export const addSpace = (page, name) =>
+export const addSpace = (page, name, storage = { type: 'device', address: '' }) =>
   inDb(
     page,
-    ({ spaces, done, hex }, spaceName) => {
-      const space = {
-        id: hex(16),
-        secret: hex(32),
-        name: spaceName,
-        storage: { type: 'device', address: '' },
-      };
+    ({ spaces, done, hex }, { spaceName, spaceStorage }) => {
+      const space = { id: hex(16), secret: hex(32), name: spaceName, storage: spaceStorage };
       spaces.put(space);
       done(space.id);
     },
-    name,
+    { spaceName: name, spaceStorage: storage },
   );

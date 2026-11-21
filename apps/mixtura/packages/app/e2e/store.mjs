@@ -32,7 +32,8 @@ const newPage = async (init) => {
   if (init) await page.addInitScript(init);
   return page;
 };
-const ready = (page) => page.locator('nav.nav').waitFor();
+// The page is drawn once the header has its title (the bar is hidden on a pushed phone screen).
+const ready = (page) => page.locator('.fr-header h1').waitFor();
 const theme = (page) => page.evaluate(() => document.documentElement.dataset.theme ?? null);
 const goSettings = async (page) => {
   await page.goto(`${site.url}#/settings`);
@@ -352,7 +353,7 @@ const spacesSetting = (page) =>
     'the banner names what still works',
   );
   await banner.getByRole('button', { name: 'Try Again' }).waitFor();
-  await page.getByRole('link', { name: 'Settings', exact: true }).click();
+  await page.locator('.fr-header').getByRole('link', { name: 'Settings', exact: true }).click();
   await page.getByRole('button', { name: 'Dark', exact: true }).click();
   expect((await theme(page)) === 'dark', 'settings still apply for the session');
   await page.screenshot({ path: join(OUT, `store-unavailable-${width}x${height}.png`) });

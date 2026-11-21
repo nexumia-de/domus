@@ -75,7 +75,7 @@ const DRINK = 'Accessible Test Drink';
 
 async function ensureDrink(page) {
   await page.evaluate(() => (location.hash = '#/drinks'));
-  await page.locator('.pane h1:visible').last().waitFor();
+  await page.locator('.fr-header h1').last().waitFor();
   await quiet(page);
   const row = page.locator('a.row', { hasText: DRINK }).first();
   if ((await row.count()) === 0) {
@@ -105,7 +105,7 @@ async function ensureDrink(page) {
 async function specShare(page) {
   await ensureDrink(page);
   // The toast of the save sits over the sheet's lower part until it times out.
-  await page.locator('[data-testid="toast"]').waitFor({ state: 'detached', timeout: 15000 });
+  await page.locator('[data-testid="toast"]').waitFor({ state: 'hidden', timeout: 15000 });
   await page.locator('[data-focus="share"]').click();
   await page.locator('[data-testid="share-link"]').waitFor();
   await quiet(page);
@@ -124,7 +124,7 @@ async function sharePreview(page) {
 const open = async (page, address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
   await quiet(page);
 };
 

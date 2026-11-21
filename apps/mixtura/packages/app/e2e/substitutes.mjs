@@ -41,7 +41,7 @@ const shot = (name) =>
 const open = async (address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const sheetClosed = () => page.waitForFunction(() => !location.hash.includes('sheet='));
 const dump = () =>
@@ -175,7 +175,7 @@ await picker.locator('[data-offer="bourbon-whiskey"]').click();
 await picker.waitFor({ state: 'detached' });
 expect((await page.locator('[data-substitute]').count()) === 1, 'no duplicate substitute');
 expect(
-  (await page.locator('.toast, [role="status"]').allInnerTexts()).join(' ').includes('already'),
+  (await page.locator('.fr-toast, [role="status"]').allInnerTexts()).join(' ').includes('already'),
   'it says so',
 );
 
