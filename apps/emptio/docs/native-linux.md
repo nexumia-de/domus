@@ -35,18 +35,15 @@ two devices of one space.
 # What GJS lacks
 
 GJS 1.80 has no `crypto`, `fetch`, `structuredClone` and no IndexedDB.
-`src/platform/` fills each:
-
-| Missing                    | Filled by                                                                                                                                                    |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Web Crypto                 | `subtle.ts`: the subset the host package calls (HKDF-SHA-256, AES-256-GCM) on `@noble/hashes` and `@noble/ciphers`[^noble]; anything else throws             |
-| Random bytes, `randomUUID` | `random.ts`: `/dev/urandom` through GIO                                                                                                                      |
-| `fetch`, `Response`        | `soup-fetch.ts`: libsoup 3, no cookies, no cache; no answer rejects with a `TypeError` as in a browser                                                       |
-| IndexedDB                  | The host package's file store on `gio-files.ts`: JSON files in `$XDG_DATA_HOME/emptio`, written atomically and readable by the user only (they hold secrets) |
-| `structuredClone`          | A JSON copy (what the stores copy is JSON)                                                                                                                   |
-
-The device's language is read from `GLib.get_language_names()`; style
-and the shown space are kept in `prefs.json` beside the data.
+The pieces that fill each (a Web Crypto subset on `@noble/hashes` and
+`@noble/ciphers`[^noble], random bytes, `fetch` on libsoup 3, the host
+package's file store on GIO, the preferences file, the style helpers and
+joining a space by link) were built here first and have been in the
+shared package `packages/gjs` (`@nexumia-de/gjs`) since 2026-11-21,
+when Mixtura's native app became the second that needs them
+([platform pieces](../../../packages/gjs/docs/platform.md)). Emptio
+imports them from there; the data lives in `$XDG_DATA_HOME/emptio`, and
+the device's language is read from `GLib.get_language_names()`.
 
 # Pages
 
@@ -65,7 +62,7 @@ is pushed, so swiping back works.
   category, a remove button for an own one, a row to add one.
 - **Preferences**: style (Follow System, Light, Dark), the spaces with
   their status and which one is shown, and **Join a Space** by an
-  invitation link (`src/join.ts`). The link is made in the Household app
+  invitation link (`joinByLink` of `@nexumia-de/gjs`). The link is made in the Household app
   in a browser; a token is asked for only when the invitation carries
   none. The space is stored and the first cycle says whether the storage
   works; the Household app's connection test before storing is not here.
@@ -79,16 +76,19 @@ bar, making or sharing a space, removing a space, the language choice
 
 | Command                             | What it does                                                                                                                                          |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @emptio/linux`    | esbuild makes one module, `dist/de.nexumia.Emptio.js`; `gi://` stays imported. The GitHub address is compiled in                                      |
+| `npm run build -w @emptio/linux`    | esbuild (the shared build of `packages/gjs`) makes one module, `dist/de.nexumia.Emptio.js`; `gi://` stays imported. The GitHub address is compiled in |
 | `gjs -m dist/de.nexumia.Emptio.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `EMPTIO_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`) |
-| `npm test -w @emptio/linux`         | The Web Crypto subset against Node's Web Crypto in both directions, the fixed vector of the host package, joining by link                             |
+| `npm test -w @emptio/linux`         | The native texts (German has what English has). The Web Crypto subset and joining by link are tested in `packages/gjs`                                |
 | `npm run smoke -w @emptio/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles against the fake GitHub on localhost  |
 | `npm run interact -w @emptio/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step                                               |
+
+The smoke check and the Broadway session are the shared ones
+(`packages/gjs/tooling`), given Emptio's collection `list` and app id.
 
 Packaging is in `data/` and `de.nexumia.Emptio.yml` (GNOME runtime,
 network and display only, no file access); CI builds the module, runs
 the smoke check and the validators (`emptio-linux-check`) and builds
-Flatpak bundles for x86_64 and aarch64 (`emptio-flatpak`). The toolkit's
+Flatpak bundles for x86_64 and aarch64 (`emptio-flatpak`), with the same composite actions as Mixtura's jobs. The toolkit's
 reusable workflow is not used: it cannot take a file built before
 flatpak-builder runs, and it requires REUSE files this repository does
 not have.
@@ -123,7 +123,7 @@ icons.
   untried.
 - **No phone**: Broadway is not Phosh. Swipe back, the on-screen
   keyboard, touch and the real compositor were not tried.
-- The `gi://` calls have no types (`platform/gi.d.ts`); the smoke run,
+- The `gi://` calls have no types (`packages/gjs/src/gi.d.ts`); the smoke run,
   the interaction check and the screenshots are what checks them.
 - The real GitHub and a WebDAV server; a second instance of the app on
   the same folder (the file store expects one process).

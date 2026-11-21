@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (later)
+
+- **Sync status in words**: `status-text.ts` with `statusText`, `ago` and `StatusWords`, moved from Emptio's `list/status.ts` when Mixtura's native app needed the same line; the words stay each app's (Emptio's `strings.status`, Mixtura's native texts). Emptio re-exports it. New exports only. `test/status-text.test.ts` pins the kinds, the age steps, the unknown failure and offline with words of its own.
+
 ## 2026-11-20
 
 - **The loops of an app** (roadmap goal 7): `collection-sync.ts` with `createCollectionSync`, `CollectionSync`, `CollectionSyncOptions` and `SyncStatus`, moved from Mixtura (`stock/sync.ts`, `createStockSync`) when Emptio needed the same, and widened: several collections per run, each failing alone, and `intervalMs`. Mixtura uses it with `['stock']`; its test moved to `test/collection-sync.test.ts` with three new cases. [Spaces](spaces.md#the-loops-of-an-app-collection-syncts).

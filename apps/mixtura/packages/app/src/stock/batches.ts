@@ -13,7 +13,7 @@ import {
   type PreparedSpec,
 } from '@mixtura/engine';
 import type { StockFields } from '../store';
-import type { StockRecords } from './state';
+import type { StockRecords } from './marks';
 
 export type BatchStatus = ExpiryStatus | 'invalid';
 

@@ -55,6 +55,10 @@ links. Change history is in [log.md](log.md).
 - [Export and import](export-format.md) - The export file (format version 3: ingredients, templates, specs, pairings; no stock), how files are checked and migrated (older files are read without their stock), merge and replace rules, import backup and Undo, the share file and link, change counter and the backup reminder.
 - [Local store](store.md) - IndexedDB stores and indexes (schema version 6), schema versions and migrations, stock as a collection of a space in the shared database of the host package, the sync loop per shared space, seed data beside user data with one catalog view, the persistence request and failure states.
 
+# Native app
+
+- [Native Linux app](native-linux.md) - Drink Builder as a GTK 4 and libadwaita app on GJS for Phosh and the desktop (`packages/linux`, app id `de.nexumia.Mixtura`): what it shares with the web app, its screens and what it leaves out, joining a space by invitation link, build, checks, release into the shared Flatpak repository, what nobody verified.
+
 # Behaviour and design
 
 - [Behaviour](behaviour.md) - Navigation, deep links, state across reloads, interaction rules, flows and the screen index with issue numbers and mock-ups.

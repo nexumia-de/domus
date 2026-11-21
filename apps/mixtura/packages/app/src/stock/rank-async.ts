@@ -9,7 +9,7 @@ import type { SpecStatus, StockMode, UnlockResult } from '@mixtura/engine';
 import type { BrowseModel } from '../screens/browse/model';
 import { indexOf, rankKey, rankStock } from './derived';
 import type { RankReply, RankRequest } from './rank-worker';
-import type { StockRecords } from './state';
+import type { StockRecords } from './marks';
 
 export interface Ranked {
   /** The ranking for these records, when it has arrived. */

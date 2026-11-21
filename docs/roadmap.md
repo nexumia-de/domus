@@ -145,13 +145,20 @@ checks green. The apps' own goals are in their roadmaps
     GJS for Phosh that reuse the engines and the sync code. **Emptio is
     built** ([native Linux app](../apps/emptio/docs/native-linux.md)):
     the list, an entry, categories, preferences, joining a space by
-    invitation link, a Flatpak manifest and CI jobs. **Not done**: the
-    Flatpak bundles CI builds were never installed and nothing ran on a
-    phone. Every native app goes into the shared Flatpak repository
-    (owner, 2026-11-21); Emptio releases with a tag `emptio-v<version>`,
-    the first tag is not pushed yet. Mixtura and Culina
-    follow, each in a session of its own; the platform pieces move to a
-    shared package with the second app.
+    invitation link, a Flatpak manifest and CI jobs. **Mixtura is built**
+    (2026-11-21, [native Linux app](../apps/mixtura/docs/native-linux.md)):
+    the drinks with search and a "can make" filter, a drink with its
+    ingredients and balance figures, the bottles as switches, preferences
+    with joining by link, English and German, a Flatpak manifest and the
+    jobs `mixtura-linux-check`, `mixtura-flatpak` and `mixtura-release`;
+    the platform pieces moved out of Emptio into the shared package
+    `packages/gjs` ([platform pieces](../packages/gjs/docs/platform.md)).
+    Every native app goes into the shared Flatpak repository (owner,
+    2026-11-21); each releases with a tag `<app>-v<version>`, and no tag is
+    pushed yet. **Not done**: Culina's native app (a session of its own);
+    the Flatpak bundles of Mixtura were never built and none of the
+    bundles was installed; nothing ran on a phone; the owner adds
+    `suitably/domus mixtura-v*` to phosh-apps' `apps.txt`.
 
 Not planned: Dropbox, Google Drive and OneDrive. They need an app
 registration with each provider that the owner does not want to hold;

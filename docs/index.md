@@ -15,7 +15,7 @@ its own bundle. Change history is in [log.md](log.md).
 # Decisions
 
 - [One repository](decisions/one-repository.md) - Why the apps and the shared model are in one repository, what replaces version tags, what keeps the parts apart, what was not decided.
-- [Native Linux apps in GJS](decisions/native-linux-gjs.md) - Native apps for Phosh as libadwaita screens in GJS that reuse the engines and sync, Emptio first, inside this repository; the alternatives, the agent's choices, what is open.
+- [Native Linux apps in GJS](decisions/native-linux-gjs.md) - Native apps for Phosh as libadwaita screens in GJS that reuse the engines and sync, Emptio and Mixtura built, Culina next, inside this repository, released into the shared Flatpak repository; the alternatives, the agent's choices, what is open.
 - [One address, spaces, storages](decisions/one-origin-spaces-storages.md) - All apps on domus.nexumia.de and separately installable; sync on spaces with one secret and one invite; GitHub first, then the household's sync server, WebDAV and S3; invites that may carry access; the agent's choices for each.
 
 # Reference
@@ -28,6 +28,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 - [materia](../packages/model/docs/index.md) - The general model.
 - [hospes](../packages/host/docs/index.md) - The host code the apps share: sync cipher, WebDAV adapter.
+- [gjs](../packages/gjs/docs/index.md) - What the native Linux apps share: the pieces GJS lacks, joining by link, the build and check tooling.
 - [Mixtura](../apps/mixtura/docs/index.md) - Drinks.
 - [Culina](../apps/culina/docs/index.md) - Cooking.
 - [Emptio](../apps/emptio/docs/index.md) - Shopping list.

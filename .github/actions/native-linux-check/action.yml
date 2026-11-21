@@ -1,0 +1,52 @@
+# The check of a native Linux app (GTK4, libadwaita, GJS) after checkout: the
+# bundle builds, starts in GJS (the smoke check) and the desktop file and the
+# metainfo validate. The bundle is uploaded for the Flatpak job, because
+# Flatpak builds are offline. Used by emptio-linux-check and mixtura-linux-check.
+name: Native app check
+description: Builds a native app's bundle, runs its smoke check and validates its desktop file and metainfo.
+inputs:
+  workspace:
+    description: npm workspace of the native package, e.g. "@emptio/linux".
+    required: true
+  directory:
+    description: Folder of the native package, e.g. apps/emptio/packages/linux.
+    required: true
+  app-id:
+    description: Application id, e.g. de.nexumia.Emptio.
+    required: true
+  artifact:
+    description: Name of the uploaded bundle artifact.
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+    - name: Install GJS, GTK, libadwaita and the metadata validators
+      shell: bash
+      run: |
+        sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120 update -q
+        sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120 install -y -q \
+          gjs gir1.2-gtk-4.0 gir1.2-adw-1 gir1.2-soup-3.0 desktop-file-utils appstream
+    - run: npm ci
+      shell: bash
+    - run: npm run build -w "${{ inputs.workspace }}"
+      shell: bash
+    - run: npm run smoke -w "${{ inputs.workspace }}"
+      shell: bash
+    - name: Validate the desktop file and the metainfo
+      shell: bash
+      run: |
+        desktop-file-validate "${{ inputs.directory }}"/data/*.desktop
+        appstreamcli validate --no-net "${{ inputs.directory }}"/data/*.metainfo.xml
+        # Phosh hides an app without the form factor; the validator does not catch it.
+        grep -Eiq '^X-Purism-FormFactor=.*mobile;' "${{ inputs.directory }}"/data/*.desktop
+    # The bundle of this commit, for the Flatpak job.
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: ${{ inputs.artifact }}
+        path: ${{ inputs.directory }}/dist/${{ inputs.app-id }}.js
+        retention-days: 3
+        if-no-files-found: error

@@ -1,4 +1,4 @@
-// Run inside GJS by scripts/smoke.mjs: the parts that only a real GJS can
+// Run inside GJS by tooling/smoke.mjs (one run for every native app): the parts that only a real GJS can
 // prove. Derives the fixed vector, keeps a list in files, and takes two
 // "devices" (two folders) through sync cycles against the fake GitHub that the
 // Node script started. Prints one line per check and exits 1 on a failure.
@@ -12,10 +12,10 @@ import {
   syncCollection,
   type Store,
 } from '@nexumia-de/hospes';
-import { gioFiles } from './platform/gio-files';
-import { randomBytes } from './platform/random';
-import { soupFetch } from './platform/soup-fetch';
-import { installWebPlatform } from './platform/subtle';
+import { gioFiles } from './gio-files';
+import { randomBytes } from './random';
+import { soupFetch } from './soup-fetch';
+import { installWebPlatform } from './subtle';
 
 installWebPlatform(randomBytes);
 
@@ -31,6 +31,7 @@ const check = (ok: boolean, what: string): void => {
 const api = GLib.getenv('SMOKE_GITHUB_API') as string;
 const token = GLib.getenv('SMOKE_TOKEN') as string;
 const work = GLib.getenv('SMOKE_DIR') as string;
+const collection = GLib.getenv('SMOKE_COLLECTION') as string;
 const SECRET = 'AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8';
 const now = (): string => new Date().toISOString();
 
@@ -51,7 +52,7 @@ async function main(): Promise<void> {
   const a = device('a');
   const b = device('b');
   for (const store of [a, b]) await store.putSpace({ id: space.id, secret: SECRET, storage });
-  const plain = soupFetch('emptio-smoke');
+  const plain = soupFetch('gjs-smoke');
   // A request that got no answer is said, so a failing run names its cause.
   const fetch = ((...args: Parameters<typeof plain>) =>
     plain(...args).catch((error: unknown) => {
@@ -61,25 +62,25 @@ async function main(): Promise<void> {
   const cycle = (store: Store) =>
     syncCollection({
       space,
-      collection: 'list',
+      collection,
       adapter: adapterFor(storage, { apiBase: api, fetch, online: () => true }),
       store,
       now,
     });
 
-  await localChange(a, space.id, 'list', now, () => ({
+  await localChange(a, space.id, collection, now, () => ({
     put: [{ key: 'e1', value: { name: 'Äpfel' } }],
   }));
   // A second store on the same folder is the app after a restart.
-  const again = await device('a').readCollection(space.id, 'list');
-  check(again.records.length === 1, 'the list survives in files');
+  const again = await device('a').readCollection(space.id, collection);
+  check(again.records.length === 1, 'the collection survives in files');
   const mode = GLib.file_test(`${work}/a/spaces.json`, GLib.FileTest.EXISTS);
   check(mode, 'the spaces file exists');
 
   const first = await cycle(a);
   check(first.ok && first.wrote, `device A writes the sealed file (${JSON.stringify(first)})`);
   const second = await cycle(b);
-  const got = (await b.readCollection(space.id, 'list')).records;
+  const got = (await b.readCollection(space.id, collection)).records;
   check(
     second.ok && got.length === 1 && (got[0]?.value as { name?: string })?.name === 'Äpfel',
     `device B reads it (${JSON.stringify(second)})`,
@@ -89,7 +90,7 @@ async function main(): Promise<void> {
 
   const wrong = await syncCollection({
     space,
-    collection: 'list',
+    collection,
     adapter: adapterFor(
       { ...storage, access: { token: 'github_pat_wrong' } },
       { apiBase: api, fetch, online: () => true },
@@ -103,7 +104,7 @@ async function main(): Promise<void> {
   );
   const nowhere = await syncCollection({
     space,
-    collection: 'list',
+    collection,
     adapter: adapterFor(storage, { apiBase: 'http://127.0.0.1:9', fetch, online: () => false }),
     store: a,
     now,

@@ -47,6 +47,6 @@ modules:
       - type: file
         path: ../../../../LICENSE
       - type: file
-        path: data/licenses/noble-ciphers-MIT.txt
+        path: ../../../../packages/gjs/licenses/noble-ciphers-MIT.txt
       - type: file
-        path: data/licenses/noble-hashes-MIT.txt
+        path: ../../../../packages/gjs/licenses/noble-hashes-MIT.txt

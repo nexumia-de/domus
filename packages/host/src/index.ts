@@ -94,3 +94,4 @@ export {
   type SyncStatus,
 } from './collection-sync';
 export { pickSpace, viewOf, type SpaceView } from './space-choice';
+export { ago, statusText, type StatusWords } from './status-text';

@@ -10,8 +10,14 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { bundleApp } from './interact-build.mjs';
-import { Session, sleep, stopAll } from './interact-lib.mjs';
-import { heightOf, isBlue, difference, isRed, pixelAt } from './interact-pixels.mjs';
+import { Session, sleep, stopAll } from '@nexumia-de/gjs/tooling/interact-lib';
+import {
+  heightOf,
+  isBlue,
+  difference,
+  isRed,
+  pixelAt,
+} from '@nexumia-de/gjs/tooling/interact-pixels';
 
 const shots = process.env.SHOTS;
 if (shots) mkdirSync(shots, { recursive: true });
@@ -61,7 +67,14 @@ const named = (dir, name) => {
 };
 const shotName = (name) => (shots ? join(shots, `${name}.png`) : undefined);
 const forAScreen = (width, height, dir, file) =>
-  new Session({ gjsFile: file, dataDir: dir, width, height });
+  new Session({
+    appId: 'de.nexumia.Emptio',
+    dataEnv: 'EMPTIO_DATA_DIR',
+    gjsFile: file,
+    dataDir: dir,
+    width,
+    height,
+  });
 
 async function onList(s, name) {
   const file = shotName(name);

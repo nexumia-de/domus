@@ -5,3 +5,4 @@
 # merge, then push the tag emptio-v<version> on that commit.
 metainfo = "data/de.nexumia.Emptio.metainfo.xml"
 fragments = "changelog.d"
+tag-prefix = "emptio-v"

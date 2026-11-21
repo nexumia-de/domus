@@ -14,12 +14,11 @@ too; the toolkit's GTK rules above apply to this package only.
   `@emptio/engine`, `@emptio/app/core` and the host package; nothing of
   them is written a second time here. A text only the native app needs
   is in `src/strings.ts`, English and German.
-- **What GJS lacks is in `src/platform/`**, each piece behind the
-  interface the shared code already takes (`crypto`, `fetch`, `Files`).
-  It moves to a shared package when a second native app needs it.
-- **No Web Crypto beyond the subset.** `subtle.ts` has what the host
-  package calls and throws for anything else; a new call there gets a
-  test against Node's Web Crypto.
+- **What GJS lacks is in `@nexumia-de/gjs`**
+  ([`packages/gjs`](../../../../packages/gjs)), shared with Mixtura's
+  native app: Web Crypto subset, `fetch` on libsoup, files, joining by
+  link, the build and the checks. Nothing of it is copied here; a bug in
+  it is fixed there and both native apps are checked.
 - **Recorded data for checks and screenshots** (`scripts/seed.mjs`,
   `EMPTIO_DATA_DIR`), never a person's.
 - Releases come from `changelog.d/` through the toolkit's `release.py`

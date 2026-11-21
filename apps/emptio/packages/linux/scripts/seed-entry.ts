@@ -1,26 +1,9 @@
 // Recorded data for checks and screenshots, written with the app's own code
 // into a folder the native app reads through EMPTIO_DATA_DIR. Never a
 // person's data.
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { createFileStore, ensureSpace, type Files } from '@nexumia-de/hospes';
+import { createFileStore, ensureSpace } from '@nexumia-de/hospes';
+import { nodeFiles } from '@nexumia-de/gjs/node-files';
 import { addCategory, addToList, setBought, type ListDeps } from '@emptio/app/core';
-
-function nodeFiles(folder: string): Files {
-  mkdirSync(folder, { recursive: true });
-  return {
-    read: (name) => {
-      try {
-        return readFileSync(join(folder, name), 'utf8');
-      } catch {
-        return null;
-      }
-    },
-    write: (name, text) => writeFileSync(join(folder, name), text),
-    remove: (name) => rmSync(join(folder, name), { force: true }),
-    list: () => readdirSync(folder),
-  };
-}
 
 /** A household's list on an ordinary day; German when `lang` is `de`. */
 export async function seed(folder: string, lang: 'en' | 'de'): Promise<void> {
