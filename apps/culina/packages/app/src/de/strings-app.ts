@@ -159,6 +159,8 @@ export const appStringsDe: typeof appStrings = {
     backToDish: 'Zurück zum Gericht',
     noSteps: 'Dieses Gericht hat noch keine Schritte.',
     cookDone: 'Das war der letzte Schritt.',
+    originOwn: 'In meinem Notizbuch',
+    originShipped: 'Mit der App geliefert',
     fromStock: (name: string): string => `Aus dem Vorrat: ${name}`,
     slotsHeading: 'Rollen',
     colFilling: 'Belegung',

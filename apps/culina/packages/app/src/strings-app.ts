@@ -151,6 +151,8 @@ export const appStrings = {
     backToDish: 'Back to the dish',
     noSteps: 'This dish has no steps yet.',
     cookDone: 'That was the last step.',
+    originOwn: 'In my notebook',
+    originShipped: 'Shipped with the app',
     fromStock: (name: string): string => `From stock: ${name}`,
     slotsHeading: 'Role slots',
     colFilling: 'Filling',

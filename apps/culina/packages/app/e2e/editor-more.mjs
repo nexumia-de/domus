@@ -111,9 +111,10 @@ const dish = async (page, origin) => {
     stored.course === 'main' && stored.cuisine === 'it',
     `${label}: the dish stores course "main" and cuisine "it" (${stored.course}, ${stored.cuisine})`,
   );
-  const kindLine = (await page.locator('.dish-kind').textContent())?.trim();
+  // The one quiet line of both origins: course, cuisine, the meat flag where it is known, the origin.
+  const kindLine = (await page.locator('.dish-quiet').textContent())?.trim();
   check(
-    kindLine === 'Main course · Italy',
+    kindLine?.startsWith('Main course · Italy') === true && kindLine.endsWith('In my notebook'),
     `${label}: the dish screen shows course and cuisine in one quiet line (${kindLine})`,
   );
   const rows = await page

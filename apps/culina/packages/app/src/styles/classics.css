@@ -23,7 +23,7 @@
   padding: var(--sp-3);
 }
 
-.classic-card .cook-start {
+.dish-card .cook-start {
   margin: var(--sp-3) 0;
   text-decoration: none;
 }

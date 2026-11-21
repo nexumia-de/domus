@@ -184,11 +184,13 @@ English only; the test store is the in-memory one.
 them under **Steps**, one line per step: the word, the lines it uses, time,
 temperature, the note ("Searing: Beef · 10 min · until brown"); a copied
 step shows its text. Below stands **Cook step by step**, which opens
-`#/components/<id>/cook` (`src/screens/component-cook.ts`): the screen of
-the shipped dishes with the component's own steps, one step at a time with
+`#/components/<id>/cook` (`src/screens/component-cook.ts`, since
+2026-11-21 the one cook screen of every origin, [dishes](#dishes)): the
+screen of the shipped dishes with the component's own steps, one step at a time with
 the lines it uses and their amounts, time and temperature, the note of a
 skill at its first step until the skill is marked as learned, and the
-handling rules of the ingredients in the step
+handling rules of the ingredients in the step, "Instead" on a line
+with substitutes, and the component's lines in "Whole recipe"
 (`ownCookView` in `src/components/steps-view.ts`; the notes are placed by
 the same `techniqueNotes` and `handlingNotes` as for a shipped dish). A
 handling rule shows only for an ingredient that is in the catalogue or
@@ -258,7 +260,94 @@ the dough's percentages).
 # Dishes
 
 `src/screens/dishes.ts`, `dish-detail.ts`, `dish-slots.ts`, `stepper.ts`;
-view logic in `src/dishes/` (`slots.ts`, `raw.ts`, `roles.ts`).
+view logic in `src/dishes/` (`shown.ts`, `slots.ts`, `raw.ts`, `roles.ts`).
+
+**One dish screen and one cook screen for both origins (since
+2026-11-21).** A dish looks and works the same whether it is in the
+notebook or shipped. One view model, `ShownDish` in `src/dishes/shown.ts`
+(pure, no DOM), is built from a shipped classic (`shownOfClassic`, through
+`deriveClassic`: `dishView`, `cookView`, `nutritionView`, `entryOfClassic`)
+and from a dish of the notebook (`shownOfDish`: `slotRows`, `dishParts`,
+`dishRaw`, `ownNutritionView`, `entryOfDish`). One screen module,
+`src/screens/dish-detail.ts`, draws it for `#/dishes/<id>` and
+`#/classic/<id>`; one cook screen module, `src/screens/component-cook.ts`,
+serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
+`#/classic/<id>/cook`. The addresses did not change.
+
+- **Top to bottom, for both:** Back; the name; the original name (only a
+  shipped dish has one); the **quiet line**: course, cuisine, "Without
+  meat and fish" or "With meat or fish", and the origin ("In my notebook",
+  "Shipped with the app"), each part only where it is known (an own
+  dish's course and cuisine are read where the record has them, its meat
+  flag is the derived one of the lists and is left out when not known);
+  the note of an own dish; what the dish can do (own: version, Edit and
+  the rest as before; shipped: **Keep in my notebook**, the same copy as at
+  the end of cooking, left out for a dish with an ingredient the catalogue
+  lacks); the character chips (without "with meat" and "with fish", which
+  the quiet line says); **Portions**; **Ingredients**, a heading per
+  component and "For the dish", each line with its amount for the
+  portions, its note, "optional", the settled mark of a shipped line and
+  "Instead" where there are substitutes; for an own dish the role slots
+  with Swap ([below](#dishes)); **Cook step by step**, where there are
+  steps; **Method**, every step grouped by the part it belongs to; for an
+  own dish "What goes in, all the way down"; then behind a tap **Nutrition
+  per portion** and, for a shipped dish, **Source**.
+- **Portions** are kept in memory per dish while the app is open
+  (`src/classics/session.ts`): a shipped dish starts at 2, an own dish at
+  its stored `portions` or 1. The cook screen cooks the portions chosen on
+  the dish screen, for both origins; before, an own dish was always
+  cooked for its stored portions.
+- **An own dish's ingredients.** A component that fills a slot is a group
+  with its lines at what the dish needs of it (the grams its slots ask for
+  over one run, as when cooking); a component ready in stock still lists
+  its lines. The "For the dish" lines are the slots with their totals.
+  The role slot table below says the same totals again, with the role,
+  the amount per portion and Swap.
+- **An own dish's method** lists every step the cook screen cooks, the
+  components' first, one line per step as on a component ("Pan-frying:
+  Beef · 8 min"); before, only the assembly was listed.
+- **Nutrition per portion of an own dish** counts its raw ingredients all
+  the way down (`dishRaw`, the engine's expansion) with the same
+  `dishNutrition`, rounding, coverage and words as a shipped dish. An
+  optional slot is not counted, as on a shipped dish. A line without an
+  amount, and a slot that cannot be added up (a component without an
+  output weight, an unknown component), is listed as not counted with
+  "no amount". So a dish of components that are not weighed shows "too
+  few ingredients". Cooked or prepared ingredients are counted with the
+  figures of the raw food, as the catalogue gives only those.
+
+What each screen had that the other lacked, before (2026-11-21):
+
+| On the screen of | Shipped had, own lacked                                                                                      | Own had, shipped lacked                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| the dish         | original name, quiet line, ingredient lines per component, "Instead", method, nutrition, source              | note, version and its actions, role slots with Swap and open roles, "all the way down" |
+| cooking          | ingredients in "Whole recipe", "Instead" on a step's lines, the portions of the dish screen, Keep at the end | "From stock" for a ready component, a back link at the end                             |
+
+Now given to the other origin, because the function was there: the quiet
+line, the ingredient lines per component, "Instead", the whole method,
+nutrition per portion and the dish screen's portions reaching the cook
+screen for an own dish (and "Instead" and the ingredients in "Whole
+recipe" for an own component); Keep in my notebook on a shipped dish's
+screen. **Not built:** Swap, role slots, open roles and "all the way
+down" for a shipped dish (a shipped slot's amount is in the source's
+units, the slot table is in grams, and shipped dishes are never written);
+a source block, settled marks and an original name for an own dish (no
+data); versions, history and tasting notes for a shipped dish (it is
+read-only; Keep makes it an own dish that has them); folding Swap into
+the ingredient lines so that the role slot table can go (the browser
+checks of the slot table would have to be rewritten).
+
+**Test:** `test/dish-shown.test.ts` (every shipped classic at 2 and 5
+portions against `dishView`, `cookView` and its list entry; a notebook in
+memory: the groups, the totals, the portions, the steps against
+`dishCookView`, the stock, the slot rows, the nutrition and what it leaves
+out, course and cuisine read defensively), `e2e/dish-cook.mjs` (the quiet
+line, the groups, the nutrition tap and 3 portions reaching the cook
+screen at 360 px), `e2e/classics.mjs` (the quiet line and Keep on a
+shipped dish). Not proved: the nutrition test uses the catalogue's own
+records as the notebook's ingredients and made-up output weights; the
+browser checks ran in Chromium at 360 and 1000 px in English only; no
+real phone.
 
 **Assembly and cooking a dish (since 2026-11-20).** The dish editor has a
 section **Assembly** after the slots: the steps of the
@@ -279,8 +368,8 @@ a component ([components](#components)) for the whole dish
   its slots ask for, times the portions, over one run of the component
   (its recorded yield, else the sum of its lines). A slot without an
   amount leaves the component as it is written. The portions are the
-  ones stored with the dish; the stepper on the dish does not reach the
-  cook screen yet.
+  ones chosen on the dish screen (before any choice, the ones stored
+  with the dish).
 - **Ready in stock.** A component with a stock item is not cooked again:
   its steps are replaced by one step, "From stock: Mash", and its skill
   is not taught there. This looks only at whether an item is there, not
@@ -427,7 +516,9 @@ the design at all. Starch is often there but is never invited. **Test:**
 `test/dishes-view.test.ts`, `e2e/components.mjs`.
 
 **Portion control.** A number field with minus and plus buttons of 44 px,
-starting at the dish's `portions` or 1 and not remembered between visits.
+starting at the dish's `portions` or 1 and kept in memory while the app
+is open (since 2026-11-21, so that the cook screen cooks them; a reload
+starts again).
 Typing `6` or `2,5` recalculates at once; the buttons step by whole portions
 and never go below 1; text that is not a number above 0 gets the hint "Enter
 a number above 0." and keeps the last results. The totals are per-portion
@@ -1039,9 +1130,11 @@ view logic is in `src/classics/` (no DOM), the screens in
   collection without a dish leaves the list with the notebook's dishes, and
   the app works with no dish at all. A dish id that is not known gives one
   quiet sentence.
-- **Dish** (`#/classic/<id>`). In this order, so that the ingredients are on
-  the first screen at 360 x 720: the name, the original name, course and meat
-  flag; a portions stepper, default 2; the ingredient lines per component and
+- **Dish** (`#/classic/<id>`, drawn by the one dish screen of both
+  origins since 2026-11-21, [dishes](#dishes)). In this order, so that the
+  ingredients are on the first screen at 360 x 720: the name, the original
+  name, the quiet line (course, cuisine, meat flag, "Shipped with the
+  app"); Keep in my notebook; the characters; a portions stepper, default 2; the ingredient lines per component and
   for the dish; "Cook step by step"; the whole method; then, each closed behind
   a tap (`<details>`), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
@@ -1093,8 +1186,10 @@ view logic is in `src/classics/` (no DOM), the screens in
   read, [evaluation](nutrition-evaluation.md#what-was-built)); the wording test
   scans `strings-nutrition.ts` and a test lists the words it must not contain.
   **Tests:** `test/nutrition-view.test.ts`, `e2e/classics-nutrition.mjs`.
-- **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish). One
-  step: "Step 3 of 8" as a heading, the component it belongs to, the text,
+- **Cooking** (`#/classic/<id>/cook`, portions as chosen on the dish; the
+  one cook screen of every origin since 2026-11-21). One
+  step: "Step 3 of 8" as a heading, the component it belongs to (left out
+  where the part has the dish's own name), the text,
   the lines it uses with their amounts, time and temperature as the source
   gives them, a progress bar. "Back" and "Next" are 56 px high ("Finish" on the
   last step) and **stay on the screen**: they are a bar that sticks above the

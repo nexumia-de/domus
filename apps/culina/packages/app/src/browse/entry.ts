@@ -1,7 +1,7 @@
 // One entry for every dish the app knows, whatever its origin: a dish of the notebook or a shipped
 // classic. The lists, the finder and the random pick filter these entries by the same rules
 // (./filter.ts). Pure: no DOM; the notebook, the classics and the ingredient lookup come in.
-import { deriveClassic, pickText } from '@culina/engine';
+import { COUNTRY_CODES, COURSE_IDS, deriveClassic, pickText } from '@culina/engine';
 import type { CharacterFacts, Classic, Course, Lang } from '@culina/engine';
 import type { Lookup } from '../characters/classes';
 import { factsOfClassic } from '../characters/classic';
@@ -65,8 +65,9 @@ export const entryOfDish = (nb: Notebook, dish: DishRecord, lookup: Lookup): Dis
     id: dish.id,
     name: dish.name,
     href: `#/dishes/${encodeURIComponent(dish.id)}`,
-    ...(dish.course === undefined ? {} : { course: dish.course }),
-    ...(dish.cuisine === undefined ? {} : { cuisine: dish.cuisine }),
+    // Only a value of the lists: a record that carries something else states nothing.
+    ...(COURSE_IDS.some((c) => c === dish.course) ? { course: dish.course } : {}),
+    ...(COUNTRY_CODES.some((c) => c === dish.cuisine) ? { cuisine: dish.cuisine } : {}),
     ...(meatFree === undefined ? {} : { meatFree }),
     characters,
     complete: dish.slots.length > 0 && dish.slots.every((s) => s.amount !== undefined),
