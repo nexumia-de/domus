@@ -1,0 +1,126 @@
+{
+  "id": "template-water-kitchen",
+  "description": "The template role water is the kitchen's: flour alone makes the bread card complete; water adds no role and does not list a card on its own",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-21",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "egg"
+      },
+      {
+        "id": "egg-whole",
+        "parentId": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "egg-whole-fresh",
+        "parentId": "egg-whole"
+      },
+      {
+        "id": "egg-yolk",
+        "parentId": "egg"
+      },
+      {
+        "id": "egg-yolk-dried",
+        "parentId": "egg-yolk"
+      },
+      {
+        "id": "egg-white",
+        "parentId": "egg"
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      }
+    ],
+    "components": [],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        }
+      }
+    ],
+    "templates": [
+      {
+        "id": "bread",
+        "name": "Bread",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 5
+          },
+          {
+            "role": "water",
+            "parts": 3
+          }
+        ],
+        "source": "user",
+        "anchor": "flour"
+      },
+      {
+        "id": "pasta",
+        "name": "Pasta",
+        "parts": [
+          {
+            "role": "flour",
+            "parts": 3
+          },
+          {
+            "role": "egg",
+            "parts": 2
+          }
+        ],
+        "source": "user",
+        "anchor": "flour"
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "kind": "template",
+        "id": "bread",
+        "complete": true,
+        "roles": ["flour"],
+        "lines": [
+          {
+            "role": "flour",
+            "status": "have",
+            "items": ["s1"]
+          },
+          {
+            "role": "water",
+            "status": "have",
+            "source": "kitchen",
+            "items": []
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree and of stored fields; ingredients, amounts and recipes are made up and no kitchen figure is involved."
+}

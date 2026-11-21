@@ -5,8 +5,9 @@ and templates, builds dishes from components, tells you what you can
 cook from what is there and what should be used up first, and keeps
 your versions with tasting notes.
 
-Status: research and plan only. Its sister app for drinks,
-[Mixtura](../mixtura), is built first and
+Status: in use, as a web app and a native Linux app; it ships 48 dishes
+to cook beside your own. Its sister app for drinks,
+[Mixtura](../mixtura), was built first and
 Culina follows on the same engine. The plan is in
 [docs/roadmap.md](docs/roadmap.md).
 

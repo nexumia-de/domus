@@ -11,6 +11,7 @@ import { cookTabs } from '../cook/tabs';
 import { storeText } from '../editor/store-text';
 import { stockLookup } from './lookup';
 import { stockSpaceSection } from './stock-space';
+import { staplesSection } from './staples';
 
 const t = strings.stock;
 
@@ -63,6 +64,10 @@ export const stockScreen = (): HTMLElement => {
     const add = el('a', 'btn primary new-link', t.add);
     add.href = hashFor('stock', undefined, 'add');
     section.append(add);
+  }
+  if (!stockUnavailable()) {
+    const staples = staplesSection();
+    if (staples !== undefined) section.append(staples);
   }
   const rows = stockRows(listStock(), today(), stockLookup);
   if (rows.length === 0) section.append(el('p', 'empty', t.empty));

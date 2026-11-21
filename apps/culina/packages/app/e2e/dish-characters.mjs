@@ -1,6 +1,6 @@
 // The characters of a dish in a browser, on two dishes built here (patties that are pan-fried
-// with a mash, and the mash alone): the chips on the dish, and the filter of the Dishes list, which
-// offers only the characters a dish has and narrows the list to them. The ingredients here are
+// with a mash, and the mash alone): the chips on the dish, and the character choice of the one
+// filter on the Dishes list, which offers only the characters a dish has and narrows the list. The ingredients here are
 // the user's own, without a place in the catalogue, so only a technique gives a character; the
 // rules by ingredient are checked without a browser (test/characters.test.ts).
 import { addSlot, component } from './dish-swap.mjs';
@@ -43,13 +43,23 @@ export const dishCharacters = async (browser, server) => {
   await layout(page, `${label}, dish`);
 
   await open(page, origin, 'dishes');
+  // The list holds the shipped dishes too; their characters come from the catalogue, which loads
+  // after the first draw. Only the dishes of the notebook are looked at here.
+  // The filter is folded behind its summary line; open it.
+  await page.locator('.dish-filter-summary').click();
+  await page.getByLabel('From', { exact: true }).selectOption({ label: 'Mine' });
   const filter = page.getByLabel('What it is like');
+  await page.waitForFunction(
+    () => document.querySelectorAll('.dish-filter-character option').length > 3,
+  );
   const options = await filter.locator('option').allInnerTexts();
   check(
-    same(options, ['Anything', 'Fried', 'Uncooked']),
+    options[0] === 'Anything' &&
+      options.indexOf('Fried') > 0 &&
+      options.indexOf('Uncooked') > options.indexOf('Fried'),
     `${label}: the filter offers the characters the dishes have, in the table's order (${options.join(', ')})`,
   );
-  const names = () => page.locator('.entry-list .entry-name').allInnerTexts();
+  const names = () => page.locator('.dish-rows .entry-name').allInnerTexts();
   await filter.selectOption({ label: 'Fried' });
   check(
     same(await names(), ['Patty plate']),
@@ -57,7 +67,7 @@ export const dishCharacters = async (browser, server) => {
   );
   await page.getByLabel('Search by name').fill('zzz');
   check(
-    (await page.locator('.entry-list .empty').innerText()) === 'No dish is like that.',
+    (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.',
     `${label}: nothing found under a character says so`,
   );
   await page.getByLabel('Search by name').fill('');
@@ -65,7 +75,7 @@ export const dishCharacters = async (browser, server) => {
   await filter.selectOption({ label: 'Anything' });
   check(
     same(await names(), ['Mash plate', 'Patty plate']),
-    `${label}: Anything shows every dish again (${(await names()).join(', ')})`,
+    `${label}: Anything shows every dish of mine again (${(await names()).join(', ')})`,
   );
   check(
     problems.length === 0,

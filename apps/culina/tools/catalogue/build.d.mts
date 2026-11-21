@@ -1,5 +1,6 @@
 import type { Extra, Food } from './derive.mjs';
 import type { Names, Snapshot } from './wikidata.mjs';
+import type { UsualTable } from './usual.mjs';
 
 export interface SourcedNumber {
   value: number;
@@ -18,7 +19,7 @@ export interface CatalogueRow {
   /** Present on food rows. */
   'x-fdc'?: { id: number; description: string; category?: string };
   /** Present on generated parents; `rows` is how many food rows are below. */
-  'x-group'?: { rows: number; category?: string };
+  'x-group'?: { rows: number; category?: string; usual?: { id: string; source: string } };
 }
 export type RefuseMap = Map<
   string,
@@ -26,6 +27,8 @@ export type RefuseMap = Map<
 >;
 /** The named foods of extras.json by FDC id. */
 export const EXTRAS: Map<number, Extra>;
+/** The usual members of usual.json. */
+export const USUAL: UsualTable;
 /** Whether the food is a row of the catalogue: selected by the rule or named in extras.json. */
 export const isSelected: (food: Food) => boolean;
 /** The food rows (with yields when `refuse` is given), without parents. */

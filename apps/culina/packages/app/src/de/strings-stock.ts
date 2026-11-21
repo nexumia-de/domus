@@ -14,7 +14,7 @@ export const stockStringsDe: typeof stockStrings = {
   back: 'Zurück zum Vorrat',
   searchLabel: 'Im Notizbuch suchen und anhaken',
   searchHint:
-    'Hake so viele an, wie du magst. Ein Haken wird sofort gespeichert; nochmal antippen nimmt ihn weg.',
+    'Hake so viele an, wie du magst. Ein Haken wird sofort gespeichert; noch einmal antippen entfernt ihn.',
   yourHeading: 'Dein Notizbuch',
   yourNone: 'Nichts in deinem Notizbuch hat diesen Namen.',
   yourEmpty:
@@ -29,6 +29,11 @@ export const stockStringsDe: typeof stockStrings = {
   removed: (name: string): string => `${name} aus dem Vorrat entfernt.`,
   usedUp: (name: string): string => `${name} ist aufgebraucht.`,
   restored: (name: string): string => `${name} ist wieder im Vorrat.`,
+  staplesHeading: 'Grundzutaten',
+  staplesHint: (names: string): string =>
+    `${names} zählen erst als da, wenn sie angehakt sind. Hake sie als immer da an, dann fragt die Suche nicht mehr nach ihnen.`,
+  staplesTick: 'Grundzutaten anhaken',
+  staplesTicked: (names: string): string => `${names}: immer da.`,
   undo: 'Rückgängig',
   remove: 'Entfernen',
   removeLabel: (name: string): string => `${name} aus dem Vorrat entfernen`,
@@ -72,11 +77,11 @@ export const stockStringsDe: typeof stockStrings = {
     'Diese Einheit lässt sich ohne Dichte oder Stückgewicht nicht mit der im Vorrat vergleichen.',
   left: (amount: string): string => `${amount} übrig.`,
   notFound: 'Dieser Eintrag ist nicht mehr im Vorrat.',
-  space: { home: 'Zuhause', unnamed: 'Space ohne Namen' },
+  space: { home: 'Zuhause', unnamed: 'Raum ohne Namen' },
   spaceLabel: 'Vorrat von',
   spaceHint:
-    'Jeder Space hat seinen eigenen Vorrat, geteilt mit den anderen Apps des Haushalts. Die App Haushalt richtet Spaces ein.',
-  household: 'Spaces in der App Haushalt',
+    'Jeder Raum hat seinen eigenen Vorrat, geteilt mit den anderen Apps des Haushalts. Die App Haushalt richtet Räume ein.',
+  household: 'Räume in der App Haushalt',
   unavailable:
     'Der Vorrat lässt sich nicht öffnen: Dieser Browser gibt der Seite keinen gemeinsamen Speicher (ein privates Fenster?).',
   status: {
@@ -92,7 +97,7 @@ export const stockStringsDe: typeof stockStrings = {
       wait: 'der Speicher bittet zu warten',
       conflict: 'ein anderes Gerät hat gerade geschrieben',
       storage: 'diese Version kennt den Speicher nicht',
-      otherSpace: 'die Datei im Speicher gehört zu einem anderen Space',
+      otherSpace: 'die Datei im Speicher gehört zu einem anderen Raum',
       newer: 'die Datei im Speicher braucht eine neuere Version der App',
       unreadable: 'die Datei im Speicher ließ sich nicht lesen',
     },

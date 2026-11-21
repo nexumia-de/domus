@@ -10,6 +10,10 @@ export interface CharacterEntry extends CharacterRule {
 
 export const CHARACTER_TABLE: readonly CharacterEntry[] = table.characters;
 
+/** The classes that make a dish not "without meat and fish" (`./meat-free.ts`), and why. */
+export const MEAT_AND_FISH: { readonly classes: readonly string[]; readonly basis: string } =
+  table.meatAndFish;
+
 const byId = new Map(CHARACTER_TABLE.map((e) => [e.id, e]));
 
 export const characterEntry = (id: string): CharacterEntry | undefined => byId.get(id);

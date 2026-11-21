@@ -1,0 +1,106 @@
+{
+  "id": "declared-substitute-absent",
+  "description": "The same classic without declared substitutes: cornstarch is not there and no sibling stands in (wheat flour is not a starch), so at threshold 0 the classic is not listed",
+  "inputs": {
+    "kind": "classics_makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "starch"
+      },
+      {
+        "id": "cornstarch",
+        "parentId": "starch"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "wheat-flour",
+        "parentId": "flour"
+      }
+    ],
+    "classics": [
+      {
+        "id": "thickened",
+        "name": {
+          "en": "Example thickened sauce",
+          "de": "Beispiel gebundene Sauce"
+        },
+        "originalName": "Example thickened sauce",
+        "country": "de",
+        "vegetarian": true,
+        "course": "main",
+        "source": {
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        },
+        "persons": {
+          "value": 2,
+          "basis": "stated"
+        },
+        "settled": [],
+        "check": {
+          "method": "second-reader",
+          "note": "Invented for this vector."
+        },
+        "components": [
+          {
+            "id": "sauce",
+            "name": {
+              "en": "Example sauce",
+              "de": "Beispielsauce"
+            },
+            "role": "sauce",
+            "lines": [
+              {
+                "key": "starch",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "cornstarch"
+                },
+                "amount": {
+                  "value": 40,
+                  "unit": "g"
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          }
+        ]
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "wheat-flour"
+        },
+        "amount": {
+          "value": 50,
+          "unit": "g"
+        }
+      }
+    ],
+    "options": {
+      "maxMissing": 0
+    }
+  },
+  "expected": {
+    "candidates": []
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the rule is in docs/engine-rules.md (declared substitution, the shipped classics in the finder)."
+}

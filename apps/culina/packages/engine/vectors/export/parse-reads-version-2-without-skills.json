@@ -1,0 +1,27 @@
+{
+  "id": "parse-reads-version-2-without-skills",
+  "description": "A version 2 file (no skills collection) reads through the migration 2 to 3; its records are kept and the file version is reported as 2",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 2,
+      "ingredients": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000001",
+          "name": "Flour"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "counts": {
+      "ingredients": 1
+    },
+    "formatVersion": 3,
+    "fileVersion": 2
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (export version 3 adds skills), no kitchen figure is involved."
+}

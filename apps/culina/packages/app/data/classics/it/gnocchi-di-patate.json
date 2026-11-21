@@ -90,13 +90,13 @@
         },
         {
           "key": "tomato-sauce",
-          "wanted": {
-            "en": "Tomato sauce",
-            "de": "Tomatensauce"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170054"
           },
           "note": {
             "en": "Optional, as you like.",
-            "de": "Optional, nach Belieben."
+            "de": "Nach Belieben."
           }
         }
       ],
@@ -203,6 +203,6 @@
   },
   "note": {
     "en": "The source also cooks the gnocchi in milk, without draining, for a more delicate dish; that variant is not transcribed. The printed heading reads 39 in the OCR; the number 59 is taken from the book's order and the selection.",
-    "de": "Die Quelle garte die Gnocchi auch in Milch, ohne sie abzugießen, für ein zarteres Gericht; diese Variante ist nicht übertragen. Die Überschrift ist in der OCR als 39 gelesen; die Nummer 59 folgt der Reihenfolge des Buches und der Auswahl."
+    "de": "Die Quelle gart die Gnocchi auch in Milch, ohne sie abzugießen, für ein zarteres Gericht; diese Variante ist nicht übertragen. Die Überschrift ist in der OCR als 39 gelesen; die Nummer 59 folgt der Reihenfolge des Buches und der Auswahl."
   }
 }

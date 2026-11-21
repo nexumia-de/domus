@@ -1,0 +1,89 @@
+/* The one list of every dish (screens/dish-list.ts), on Dishes and on Start: the filter controls in
+   two columns from a phone's width on, the count line, the rows, "Show all". */
+.dish-list .dish-filter-selects {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin-top: 0;
+}
+
+.dish-list .dish-filter-ticks {
+  margin: 0 0 var(--sp-2);
+}
+
+/* The folded filter: one line, a 44 px target, naming the active choices. */
+.dish-filter-fold {
+  margin: 0 0 var(--sp-2);
+}
+
+.dish-filter-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp-2);
+  min-height: var(--target);
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+  list-style: none;
+}
+
+.dish-filter-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The chevron that says the line opens: right when folded, down when open. */
+.dish-filter-summary::before {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-end: var(--sp-1);
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.dish-filter-fold[open] .dish-filter-summary::before {
+  transform: rotate(45deg);
+}
+
+.dish-filter-summary-name {
+  font-weight: 600;
+}
+
+.dish-filter-summary-choices {
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+}
+
+.dish-filter-fold[open] .dish-filter-summary {
+  margin-bottom: var(--sp-2);
+}
+
+.dish-count {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-sm);
+}
+
+.dish-row .entry-name {
+  overflow-wrap: anywhere;
+}
+
+.dish-show-all {
+  margin-top: var(--sp-2);
+}
+
+.dishes-pane .dish-list {
+  margin-top: var(--sp-3);
+}
+
+.dishes-own-empty {
+  margin-top: var(--sp-4);
+}
+
+.start-dishes {
+  margin-bottom: var(--sp-4);
+}

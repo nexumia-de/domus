@@ -100,7 +100,7 @@
           },
           "note": {
             "en": "A ladle of water (un ramaiuolino d'acqua) to stop the caramel.",
-            "de": "Eine Kelle Wasser (un ramaiuolino d'acqua), um den Karamell zu stoppen."
+            "de": "Eine Kelle Wasser (un ramaiuolino d'acqua), zum Ablöschen des Karamells."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -156,7 +156,7 @@
         {
           "text": {
             "en": "Stop it with a ladle of water: you will hear it hiss and clump. Keep stirring over the heat until it is a thick, dark liquid.",
-            "de": "Mit einer Kelle Wasser stoppen: man hört es zischen und sich zusammenballen. Auf der Hitze weiter rühren, bis eine dicke, dunkle Flüssigkeit entsteht."
+            "de": "Mit einer Kelle Wasser ablöschen: Es zischt, und der Zucker ballt sich zusammen. Auf der Hitze weiter rühren, bis eine dicke, dunkle Flüssigkeit entsteht."
           },
           "action": "stir",
           "uses": ["water", "sugar-caramel"]
@@ -242,7 +242,7 @@
         {
           "text": {
             "en": "In summer, before turning it out, you may chill it with ice.",
-            "de": "Im Sommer kann man es vor dem Stürzen mit Eis kühlen."
+            "de": "Im Sommer kann man den Pudding vor dem Stürzen mit Eis kühlen."
           },
           "action": "chill"
         },
@@ -272,6 +272,6 @@
   },
   "note": {
     "en": "The book's own dose is for ten persons. Both the 1891 first edition (No. 423) and the 1985 edition (No. 692) give the same amounts. The 'stecchino' test is written in the source as a skewer of 'granata'; read here as a thin skewer. The book prefers an oval mould with a rim about a finger wide, so that the water does not splash in while it boils. No oven temperature is given; the cooking is on the stove in a water bath.",
-    "de": "Das Buch gibt die Dosis für zehn Personen an. Die Erstausgabe von 1891 (Nr. 423) und die Ausgabe von 1985 (Nr. 692) nennen dieselben Mengen. Die Stäbchenprobe steht in der Quelle als Stäbchen aus 'granata'; hier als dünnes Stäbchen übersetzt. Das Buch bevorzugt eine ovale Form mit einem etwa fingerbreiten Rand, damit beim Kochen kein Wasser hineinspritzt. Keine Ofentemperatur angegeben; gegart wird auf dem Herd im Wasserbad."
+    "de": "Das Buch gibt die Mengen für zehn Personen an. Die Erstausgabe von 1891 (Nr. 423) und die Ausgabe von 1985 (Nr. 692) nennen dieselben Mengen. Die Stäbchenprobe steht in der Quelle als Stäbchen aus ‚granata‘; hier als dünnes Stäbchen übersetzt. Das Buch bevorzugt eine ovale Form mit einem etwa fingerbreiten Rand, damit beim Kochen kein Wasser hineinspritzt. Keine Ofentemperatur angegeben; gegart wird auf dem Herd im Wasserbad."
   }
 }

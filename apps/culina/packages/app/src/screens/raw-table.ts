@@ -16,6 +16,10 @@ export interface RawBlock {
   rows: readonly RawRow[];
   rawG: number;
   unmeasured: readonly UnmeasuredRow[];
+  /** Lines whose amount cannot be weighed; not in the rows. */
+  unconverted?: readonly UnmeasuredRow[];
+  /** Names of components taken as weighing what goes into them. */
+  unweighed?: readonly string[];
   skipped?: readonly { name: string; why: string }[];
 }
 
@@ -62,6 +66,17 @@ export const rawBlock = (block: RawBlock, what: string): HTMLElement => {
         block.unmeasured.map((u) => strings.notebook.withoutAmount(u.name, u.where)),
       ),
     );
+  }
+  if (block.unconverted !== undefined && block.unconverted.length > 0) {
+    wrap.append(
+      list(
+        strings.notebook.unconvertedHeading,
+        block.unconverted.map((u) => strings.notebook.withoutAmount(u.name, u.where)),
+      ),
+    );
+  }
+  for (const name of block.unweighed ?? []) {
+    wrap.append(el('p', 'note-quiet', strings.notebook.unweighed(name)));
   }
   if (block.skipped !== undefined && block.skipped.length > 0) {
     wrap.append(

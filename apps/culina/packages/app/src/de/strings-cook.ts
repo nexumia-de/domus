@@ -20,9 +20,6 @@ const MONTHS = [
 export const cookStringsDe: typeof cookStrings = {
   title: 'Kochen',
   viewsLabel: 'Ansichten von Kochen',
-  sectionsLabel: 'Teile von Kochen',
-  sectionStock: 'Mit meinem Vorrat',
-  sectionClassics: 'Klassiker',
   tabCook: 'Was kann ich kochen',
   tabUseUp: 'Zuerst verbrauchen',
   tabStock: 'Vorrat',
@@ -31,7 +28,7 @@ export const cookStringsDe: typeof cookStrings = {
     return `Stand ${d}. ${MONTHS[(m ?? 1) - 1]} ${y}`;
   },
   intro:
-    'Sortiert danach, was zuerst verbraucht werden sollte, dann danach, wie viele Rollen es abdeckt.',
+    'Deine und mitgelieferte Gerichte in einer Liste: zuerst, was bald verbraucht werden sollte, dann nach abgedeckten Rollen.',
   // Filters
   filtersLabel: 'Filter',
   roleLabel: 'Deckt die Rolle ab',
@@ -45,6 +42,12 @@ export const cookStringsDe: typeof cookStrings = {
   },
   // Entries
   listLabel: 'Was der Vorrat hergibt',
+  dishesHeading: 'Gerichte',
+  partsHeading: 'Komponenten und Verhältnisse',
+  partsListLabel: 'Komponenten und Verhältnisse, die der Vorrat hergibt',
+  partsHidden:
+    'Komponenten und Verhältniskarten bleiben weg, solange ein Filter für Gerichte gewählt ist.',
+  originWord: { own: 'eigenes', shipped: 'mitgeliefert' },
   complete: 'vollständig',
   lacks: (n: number): string => `noch ${n} nötig`,
   kind: { component: 'Komponente', dish: 'Gericht', template: 'Verhältnis', classic: 'Klassiker' },
@@ -57,36 +60,26 @@ export const cookStringsDe: typeof cookStrings = {
       : daysLeft === 0
         ? `nutzt ${item}, heute verbrauchen`
         : `nutzt ${item}, noch ${daysLeft === 1 ? '1 Tag' : `${daysLeft} Tage`}`,
-  reasonNoDate: 'nichts davon hat ein Verbrauchsdatum',
-  reasonRoles: (roles: string): string => `deckt ${roles} ab`,
+  reasonNoDate: 'ohne Verbrauchsdatum',
+  reasonRoles: (roles: string): string => `Rollen: ${roles}`,
   reasonNoRoles: 'keine Rollen erfasst',
+  // Ein Substantiv behält im Satz seinen großen Anfangsbuchstaben ("deckt Fett, Mehl ab").
+  roleInSentence: (label: string): string => `${label}`,
   lacksHeading: 'Noch nötig',
   lacksShort: (name: string, have: string, need: string): string =>
     `${name} (${have} da, ${need} nötig)`,
   lacksOtherState: (name: string): string => `${name} (da, in anderem Zustand)`,
   substitution: (substitute: string, asked: string): string => `mit ${substitute} statt ${asked}`,
+  throughGroup: (inStock: string, asked: string): string =>
+    `${inStock} im Vorrat zählt für ${asked}`,
+  throughPart: (whole: string, part: string): string => `${part} aus ${whole} im Vorrat`,
   amountUnknown: (name: string): string => `${name} ist da; wie viel, ist nicht bekannt.`,
   offer: (invite: string, names: string): string => `Du könntest ${invite} ergänzen: ${names}`,
   openLabel: (name: string): string => `${name} öffnen`,
-  // The shipped classics, beside the notebook's own dishes
-  classicsHeading: 'Klassische Gerichte',
-  classicsIntro: 'Die mitgelieferten Klassiker, nach denselben Regeln mit dem Vorrat abgeglichen.',
-  classicsFiltersLabel: 'Filter für die Klassiker',
-  countryLabel: 'Land',
-  countryAny: 'Alle Länder',
-  meatLabel: 'Fleisch und Fisch',
-  meatAny: 'Mit oder ohne',
-  meatFree: 'Ohne Fleisch und Fisch',
-  classicsListLabel: 'Was der Vorrat für die Klassiker hergibt',
+  // "Needs" (the native Linux app)
   needsHeading: 'Braucht',
-  withoutMeatMark: 'ohne Fleisch und Fisch',
   notInCatalogue: (names: string): string =>
     `Noch nicht im Katalog, deshalb nicht gezählt: ${names}`,
-  classicsEmptyNothingTicked:
-    'Noch nichts angehakt, deshalb lässt sich kein Klassiker mit dem Vorrat abgleichen.',
-  classicsEmpty: 'Kein Klassiker passt zu dieser Auswahl.',
-  classicsNearestHeading: 'Die nächsten Klassiker',
-  classicsNearest: (name: string, needs: string): string => `${name} braucht ${needs}`,
   // Start from one ingredient
   startSummary: 'Von einer Zutat ausgehen',
   startHint:
@@ -98,7 +91,8 @@ export const cookStringsDe: typeof cookStrings = {
   startNoStock: 'Noch nichts angehakt, such also nach dem Namen.',
   startFoundThrough: (name: string): string => `auch ${name} genannt`,
   withHeading: (name: string): string => `Was ${name} verwendet`,
-  withNote: 'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden.',
+  withNote:
+    'Nur eigene Komponenten und Gerichte, die sie oder einen Ersatz dafür verwenden, unabhängig vom Filter für Gerichte.',
   withClear: 'Alles zeigen',
   withUnknown: 'Diese Zutat ist nicht mehr in deinem Notizbuch.',
   // Empty states
@@ -108,6 +102,7 @@ export const cookStringsDe: typeof cookStrings = {
   addComponent: 'Komponente anlegen',
   importLink: 'Rezept importieren',
   emptyNoMatch: 'Nichts passt zu dieser Auswahl.',
+  filterChosen: (choices: string): string => `Gewählt: ${choices}`,
   emptyNothingRelated: 'Nichts in deinem Notizbuch verwendet bisher, was angehakt ist.',
   nearestHeading: 'Die nächsten',
   nearest: (name: string, lacks: string): string => `${name} braucht noch ${lacks}`,
@@ -120,7 +115,9 @@ export const cookStringsDe: typeof cookStrings = {
       : `Gezählt wird, was bis zu ${lacking} weitere Zutaten braucht.`,
   useUpNoDates:
     'Noch kein Eintrag hat ein Verbrauchsdatum. Das Datum lässt sich am Eintrag ergänzen.',
-  useUpNothing: 'Nichts in deinem Notizbuch verwendet es bisher.',
+  useUpNothing: 'Nichts in der Liste verwendet es bisher.',
+  useUpFiltered:
+    'Gezählt innerhalb des Filters für Gerichte, der bei „Was kann ich kochen“ gewählt ist.',
   useUpUsedBy: 'Verwendet von',
   useUpOpenItem: (name: string): string => `${name} im Vorrat`,
   problem:

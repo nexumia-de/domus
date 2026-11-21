@@ -18,6 +18,7 @@ import {
 } from '../notebook';
 import type { ComponentRecord, DishRecord, TastingRecord } from '../records';
 import { hashFor } from '../router';
+import { formatDate } from '../shared/locale';
 import { el } from '../shell/el';
 import { showToast } from '../shell/toast';
 import { strings } from '../strings';
@@ -123,7 +124,7 @@ export const historyScreen = (kind: Kind, id?: string): HTMLElement => {
         continue;
       }
       const item = el('div', 'tasting-note');
-      item.append(el('p', 'muted', note.date), el('p', undefined, note.text));
+      item.append(el('p', 'muted', formatDate(note.date)), el('p', undefined, note.text));
       item.append(
         button(t.editNote, 'quiet edit-note', () => {
           editing = { versionId: entry.record.id, note };
@@ -163,7 +164,7 @@ export const historyScreen = (kind: Kind, id?: string): HTMLElement => {
     const { record } = entry;
     const item = el('li', 'history-entry card');
     item.dataset.version = String(entry.number);
-    item.append(el('h2', undefined, t.versionLine(entry.number, record.version.date)));
+    item.append(el('h2', undefined, t.versionLine(entry.number, formatDate(record.version.date))));
     if (entry.isHead) item.append(el('span', 'tag', t.current));
     const written = [
       record.version.change === undefined ? undefined : t.change(record.version.change),

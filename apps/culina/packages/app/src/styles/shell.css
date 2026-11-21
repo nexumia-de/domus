@@ -79,6 +79,12 @@
   outline: none;
 }
 
+/* The screen heading, focused by script after a change of screen that a tap or a click led to
+   (shell.ts): a heading is not a control, so the ring stays for keyboard use only. */
+.app-main h1.focus-quiet:focus {
+  outline: none;
+}
+
 .app-nav {
   grid-area: nav;
   position: sticky;

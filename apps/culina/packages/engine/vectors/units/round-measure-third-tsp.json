@@ -1,0 +1,15 @@
+{
+  "id": "round-measure-third-tsp",
+  "description": "A third of a teaspoon shows as a quarter",
+  "inputs": {
+    "kind": "round_measure",
+    "ml": 1.642973864583,
+    "measure": "tsp"
+  },
+  "expected": {
+    "value": 0.25,
+    "exact": false
+  },
+  "tolerance": 1e-9,
+  "source": "1.643 / 4.929 = 0.333, rounds to 1 quarter. Display rule (assumption, unverified, no source): a household measure to the nearest quarter, at least a quarter; sizes from data/units.json."
+}

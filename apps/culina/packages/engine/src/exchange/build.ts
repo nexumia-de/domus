@@ -3,8 +3,11 @@ import { EXPORT_KINDS, type ExportEnvelope, type ExportRecord, type RecordSets }
 
 /** The version of the file this engine writes and the newest it reads. */
 export const EXPORT_FORMAT = 'culina-export';
-/** 1: the first file. 2: without `stock` (docs/exchange.md#versions). */
-export const EXPORT_VERSION = 2;
+/**
+ * 1: the first file. 2: without `stock`. 3: with `skills`, the techniques marked as learned
+ * (docs/exchange.md#versions).
+ */
+export const EXPORT_VERSION = 3;
 
 const byId = (a: ExportRecord, b: ExportRecord): number => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 

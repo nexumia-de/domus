@@ -61,7 +61,7 @@
           },
           "sourceNote": {
             "en": "The source says it may replace the Tuscan oil in whole or in part. No oil amount is given, so no oil line is written.",
-            "de": "Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen. Eine Ölmenge steht nicht da, daher ist keine Ölzeile geschrieben."
+            "de": "Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen. Eine Ölmenge nennt sie nicht, daher gibt es keine Zeile für Öl."
           }
         },
         {
@@ -120,7 +120,7 @@
           },
           "note": {
             "en": "'A pinch' of flour. It binds the sauce and must not burn.",
-            "de": "'Ein Pizzico' Mehl. Es bindet die Sauce und darf nicht anbrennen."
+            "de": "Eine Prise (un pizzico) Mehl. Es bindet die Sauce und darf nicht anbrennen."
           },
           "sourceNote": {
             "en": "The source gives no weight.",
@@ -129,9 +129,13 @@
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
+          },
+          "note": {
+            "en": "Tomato sauce or paste.",
+            "de": "Tomatensauce oder Tomatenmark."
           },
           "sourceNote": {
             "en": "No amount given.",
@@ -175,7 +179,7 @@
           },
           "note": {
             "en": "'Sparingly'. More can be added at the table.",
-            "de": "'Sparsam'. Bei Tisch kann mehr nachgegeben werden."
+            "de": "‚Sparsam‘. Bei Tisch kann mehr nachgegeben werden."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -227,7 +231,7 @@
         {
           "text": {
             "en": "Dust the meat with a pinch of flour.",
-            "de": "Das Fleisch mit einem Pizzico Mehl bestäuben."
+            "de": "Das Fleisch mit einer Prise Mehl bestäuben."
           },
           "action": "sprinkle",
           "uses": ["flour"]
@@ -313,7 +317,7 @@
           },
           "note": {
             "en": "'Sparingly'.",
-            "de": "'Sparsam'."
+            "de": "‚Sparsam‘."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -379,6 +383,6 @@
   },
   "note": {
     "en": "Artusi's recipe 161. The sauce is meant for pasta or for a risotto with sauce; the rice variant is not written here. Artusi says that dried mushrooms may be added for flavour; no amount is given, so they are not written. The cooking time is not stated. The pasta line is the source's own quantity for this sauce.",
-    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht geschrieben. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher sind sie nicht geschrieben. Eine Garzeit nennt die Quelle nicht."
+    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht übertragen. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher stehen sie nicht im Rezept. Eine Garzeit nennt die Quelle nicht."
   }
 }

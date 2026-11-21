@@ -5,7 +5,6 @@ import { DISH_ROLES, inviteText, openRoles } from '../src/dishes/roles';
 import { dishRaw } from '../src/dishes/raw';
 import { openRows, slotRows } from '../src/dishes/slots';
 import type { DishRecord } from '../src/records';
-import { strings } from '../src/strings';
 import { notebookOf, readComponentVector } from './component-vectors';
 import { must } from './must';
 
@@ -80,19 +79,20 @@ test('three levels down: the dish total follows the nested yield rule', () => {
   expect(celery?.g).toBeCloseTo(((baseFromStock + mainBase) / baseRun) * 100, 9);
 });
 
-test('a component without an output weight cannot be scaled; the rest still renders', () => {
+test('a component without an output weight is taken as weighing its input, and named', () => {
   const nb = notebook();
   const plate = dish('example-vegetable-plate');
   const rows = slotRows(nb, plate, 3);
   const raw = dishRaw(nb, rows);
-  expect(raw.skipped).toEqual([
-    { name: 'Example: Herb oil', why: strings.notebook.problem.noYield('Example: Herb oil') },
-  ]);
+  expect(raw.skipped).toEqual([]);
+  expect(raw.unweighed).toEqual(['Example: Herb oil']);
   // the slot itself still shows its amount per portion and total
   expect(rows.at(-1)?.perPortionG).toBe(10);
   expect(rows.at(-1)?.totalG).toBe(30);
   expect(raw.rows.find((r) => r.ingredientId === 'lemon-juice')?.g).toBeCloseTo(15, 9);
-  expect(raw.rows.some((r) => r.ingredientId === 'parsley')).toBe(false);
+  // 30 g of an oil whose run is 100 g oil + 20 g parsley (120 g in): a quarter of a run.
+  expect(raw.rows.find((r) => r.ingredientId === 'parsley')?.g).toBeCloseTo(5, 9);
+  expect(raw.unmeasured.map((u) => u.name)).toContain('Salt');
 });
 
 test('a slot with a unit that needs a density, a missing component or no amount never throws', () => {

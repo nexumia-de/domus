@@ -51,7 +51,11 @@ export const applyTheme = (root: AttributeTarget, theme: Theme): void => {
   else root.setAttribute('data-theme', theme);
 };
 
-/** The filters of the finder, kept in localStorage like the theme: the role and how much may lack. */
+/**
+ * The finder's own two choices, kept in localStorage like the theme: the role and how much may
+ * lack. What the user feels like (origin, character, course, cuisine, without meat and fish) is the
+ * one dish filter (`browse/filter.ts`, key `culina.dishes`), shared with the Dishes list.
+ */
 export const COOK_KEY = 'culina.cook';
 
 export const MAX_LACKING = 3;
@@ -61,40 +65,39 @@ export interface CookFilters {
   role?: string;
   /** Lines that may be lacking, 0 to `MAX_LACKING`. */
   lacking: number;
-  /** Classics of this country only; undefined: all four. */
-  country?: ClassicCountry;
-  /** True: only classics without meat and fish. */
-  meatFree?: true;
 }
 
-/** The countries of the shipped classics (the filter's choices). */
+/** The countries of the shipped dishes, in the order the filters offer them. */
 export const CLASSIC_COUNTRIES = ['de', 'it', 'fr', 'es'] as const;
-export type ClassicCountry = (typeof CLASSIC_COUNTRIES)[number];
 
 export const DEFAULT_COOK_FILTERS: CookFilters = { lacking: 1 };
 
-/** Anything unreadable is the default; a value out of range is the default for that field. */
-export const parseCookFilters = (value: unknown): CookFilters => {
+const rawOf = (value: unknown): Record<string, unknown> | undefined => {
   let raw: unknown = value;
   if (typeof value === 'string') {
     try {
       raw = JSON.parse(value);
     } catch {
-      return { ...DEFAULT_COOK_FILTERS };
+      return undefined;
     }
   }
-  if (typeof raw !== 'object' || raw === null) return { ...DEFAULT_COOK_FILTERS };
-  const { role, lacking, country, meatFree } = raw as {
-    role?: unknown;
-    lacking?: unknown;
-    country?: unknown;
-    meatFree?: unknown;
-  };
-  const chosen = CLASSIC_COUNTRIES.find((c) => c === country);
+  return typeof raw === 'object' && raw !== null && !Array.isArray(raw)
+    ? (raw as Record<string, unknown>)
+    : undefined;
+};
+
+/**
+ * Anything unreadable is the default; a value out of range is the default for that field. Any
+ * other field is not read: an older version kept a country and "without meat and fish" for the
+ * classics here, and they are ignored (never carried into the dish filter), so an old choice
+ * cannot narrow a list behind the user's back; they fall away the next time this entry is written.
+ */
+export const parseCookFilters = (value: unknown): CookFilters => {
+  const raw = rawOf(value);
+  if (raw === undefined) return { ...DEFAULT_COOK_FILTERS };
+  const { role, lacking } = raw;
   return {
     ...(typeof role === 'string' && role !== '' ? { role } : {}),
-    ...(chosen === undefined ? {} : { country: chosen }),
-    ...(meatFree === true ? { meatFree: true as const } : {}),
     lacking:
       typeof lacking === 'number' &&
       Number.isInteger(lacking) &&

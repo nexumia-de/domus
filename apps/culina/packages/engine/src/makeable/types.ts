@@ -62,10 +62,23 @@ export interface MakeableDish extends Versioned {
 export interface MakeableOptions {
   /** A line naming a leaf ingredient may take a sibling under the same parent. Default true. */
   siblingSubstitution?: boolean;
+  /**
+   * A stock item of a group (an ingredient with members below it) covers a line that names a
+   * member, reported in the line's `through`. Default true.
+   */
+  groupInStock?: boolean;
   /** Lines that may be missing or short and still list the candidate. Default 0. */
   maxMissing?: number;
   /** The roles a dish is asked to fill, for `openRoles`. Default `DEFAULT_DISH_ROLES`. */
   dishRoles?: readonly string[];
+}
+
+/** What a whole food is made of, by ingredient id: a whole egg has a yolk and a white. Data, never a name match. */
+export interface MakeablePart {
+  /** The whole (an ingredient id); a stock item of it or below it covers each part. */
+  whole: string;
+  /** Ingredient ids of the parts; a line naming one of them exactly is covered. */
+  parts: readonly string[];
 }
 
 export interface MakeableInput {
@@ -80,6 +93,12 @@ export interface MakeableInput {
    * there; the report names the substitute and its effect. Absent: none.
    */
   substitutes?: readonly Substitute[];
+  /**
+   * Parts of whole foods. A line that names a part, where nothing of its own is in stock, is
+   * covered by stock of the whole, with no amount (the whole's amount says nothing exact about
+   * the part's). Absent: none.
+   */
+  parts?: readonly MakeablePart[];
   /** Today, `YYYY-MM-DD`, from the host. */
   today: string;
   /** Density and unit weight per ingredient id, for converting between units. */
@@ -103,6 +122,21 @@ export interface MakeableSubstitution {
   factor?: number;
 }
 
+/**
+ * A line covered by stock that is not the line's own ingredient and is no substitute: a group in
+ * stock above the member the line names (`group`), or a whole in stock whose part the line names
+ * (`part`).
+ */
+export interface MakeableThrough {
+  rule: 'group' | 'part';
+  /** The ingredient the line names; for a template role: the member that carries the role. */
+  asked: string;
+  /** The ingredient of the stock item: the group or the whole. */
+  inStock: string;
+  /** The stock item. */
+  itemId: string;
+}
+
 /** One line (or slot, or role of a template) against the stock. */
 export interface MakeableLineReport {
   index: number;
@@ -111,11 +145,16 @@ export interface MakeableLineReport {
   role?: string;
   optional: boolean;
   status: MakeableLineStatus;
-  /** `stock`: a stock item; `made`: a sub-component made from its own lines. */
-  source?: 'stock' | 'made';
+  /**
+   * `stock`: a stock item; `made`: a sub-component made from its own lines; `kitchen`: water,
+   * which every kitchen has (no item, never lacking, no role, not counted as a line that is there).
+   */
+  source?: 'stock' | 'made' | 'kitchen';
   /** Stock items this line would use, earliest use-by first. */
   items: string[];
   substitution?: MakeableSubstitution;
+  /** Set when a group or a whole in stock covers the line. */
+  through?: MakeableThrough;
   /** Needed, in the line's unit; absent for a line without a usable amount. */
   need?: Amount;
   /** Known stock in the line's unit, for `short` and `have-amount-unknown`. */

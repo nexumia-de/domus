@@ -1,5 +1,6 @@
 /**
- * Hash router: the start screen #/start, the classics #/classics/<country> and #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
+ * Hash router: the start screen #/start, the old addresses #/classics[/<country>] (redirected to
+ * #/dishes by main.ts), the classic #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
  * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, the random pick
  * #/dishes/random, and the
  * history screens #/components/<id>/history, #/dishes/<id>/history, the import screen
@@ -23,8 +24,8 @@ export const DEFAULT_ROUTE: Route = 'start';
 
 /**
  * The four destinations of the navigation. Settings is not one of them: it is the gear in the header
- * (and the last entry of the side rail). The stock screens and the classics belong to Cook, the
- * components and dishes to the Notebook.
+ * (and the last entry of the side rail). The finder and the stock screens belong to Cook, the
+ * components and every dish (own or shipped, with its cooking mode) to the Notebook.
  */
 export const NAV_ENTRIES = ['start', 'cook', 'notebook', 'ratios'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
@@ -44,9 +45,10 @@ export const navEntryFor = (route: Route): NavEntry | undefined => {
       return 'start';
     case 'cook':
     case 'stock':
+      return 'cook';
+    // A shipped dish is a dish like an own one (one list, one dish screen): under the Notebook.
     case 'classics':
     case 'classic':
-      return 'cook';
     case 'components':
     case 'dishes':
       return 'notebook';
@@ -159,14 +161,29 @@ export interface Navigation {
   initial: boolean;
 }
 
-/** Calls `onRoute` now and on every hash change; rewrites an unknown hash to the real route. */
-export const startRouter = (host: RouterHost, onRoute: (navigation: Navigation) => void): void => {
+/**
+ * An old address that stands for another: it may do its own work (store a choice) and gives the
+ * hash to show instead, or undefined to keep the address.
+ */
+export type Redirect = (route: Route, param: string | undefined) => string | undefined;
+
+/**
+ * Calls `onRoute` now and on every hash change; rewrites an unknown hash to the real route, and an
+ * address `redirect` replaces to its new one, both without a new history entry.
+ */
+export const startRouter = (
+  host: RouterHost,
+  onRoute: (navigation: Navigation) => void,
+  redirect?: Redirect,
+): void => {
   const go = (initial: boolean): void => {
-    const route = routeFromHash(host.location.hash);
-    const param = paramFromHash(host.location.hash);
-    const action = actionFromHash(host.location.hash);
+    const asked = host.location.hash;
+    const hash = redirect?.(routeFromHash(asked), paramFromHash(asked)) ?? asked;
+    const route = routeFromHash(hash);
+    const param = paramFromHash(hash);
+    const action = actionFromHash(hash);
     const canonical = hashFor(route, param, action);
-    if (host.location.hash !== canonical) host.history.replaceState(null, '', canonical);
+    if (asked !== canonical) host.history.replaceState(null, '', canonical);
     onRoute({
       route,
       ...(param === undefined ? {} : { param }),

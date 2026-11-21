@@ -14,12 +14,11 @@ export const KINDS = [
 export type Kind = (typeof KINDS)[number];
 
 /**
- * The kinds that are in the export file and in a backup. `skills` (which techniques the user has
- * learned) is personal state of this device's notebook and is stored and synced but not exported yet
+ * The kinds that are in the export file and in a backup; `skills` since format version 3
  * (docs/data-model.md, Skill state). `stock` is only where items from before 2026-11-20 wait for
  * their move into the shared collection of a space (src/shared-stock/legacy.ts); nothing writes it.
  */
-export type ExportedKind = Exclude<Kind, 'skills' | 'stock'>;
+export type ExportedKind = Exclude<Kind, 'stock'>;
 
 export const isKind = (value: unknown): value is Kind => KINDS.some((kind) => kind === value);
 

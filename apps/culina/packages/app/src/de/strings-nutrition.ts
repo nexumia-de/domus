@@ -26,10 +26,19 @@ export const nutritionStringsDe: typeof nutritionStrings = {
   notCounted: (list: string): string => `Nicht gezählt: ${list}.`,
   massShare: (percent: string): string =>
     `Die gezählten Zutaten machen ${percent} % des Gewichts aus, soweit es bekannt ist.`,
-  tooFew: 'Nährwerte nicht berechenbar: zu wenige Zutaten mit Menge und Nährwertdaten.',
+  tooFew:
+    'Nährwerte lassen sich nicht berechnen: Nur wenige Zutaten haben Menge und Nährwertdaten.',
+  notShownLeftOut: (list: string): string =>
+    `Keine Werte: Nicht zählbar ist ${list}; eine Summe ohne das wäre irreführend.`,
+  asUsual: (list: string): string => `Wo das Rezept keine Sorte nennt, zählt die übliche: ${list}.`,
+  usualItem: (name: string, usual: string): string => `${name} als ${usual}`,
+  seasoningsNote:
+    'Nicht in den Werten: Gewürze, Wasser und Zutaten mit höchstens 50 kcal je 100 g; sie stehen unten.',
+  limits:
+    'Rohwerte für ein gegartes Gericht: ohne aufgenommenes Bratfett, ohne Verluste; alte Quellen nennen grobe Mengen.',
   moreSummary: 'Was nicht gezählt ist und wie gezählt wird',
   reasons: {
-    wanted: 'noch nicht im Katalog',
+    wanted: 'ohne Katalogeintrag',
     'no-amount': 'ohne Menge',
     'cannot-convert': 'Gewicht unbekannt',
     'no-nutrition': 'keine Nährwertdaten',
@@ -41,5 +50,5 @@ export const nutritionStringsDe: typeof nutritionStrings = {
   rounding: 'Gerundet nach 21 CFR 101.9(c), der US-Regel für Nährwertangaben.',
   source: 'Nährstoffe pro 100 g: USDA FoodData Central, SR Legacy (gemeinfrei).',
   notALabel:
-    'Keine Nährwertkennzeichnung: Wer Lebensmittel verkauft, braucht die Kennzeichnungsregeln.',
+    'Eine Hilfe für die eigene Küche, keine Nährwertkennzeichnung für den Verkauf von Lebensmitteln.',
 };

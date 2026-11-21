@@ -28,6 +28,7 @@ import {
 } from './form-bits';
 import { picker, type PickerItem } from './picker';
 import { parseEntry } from '../../shared/parse';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.editor;
 
@@ -126,7 +127,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
         ? el('span', 'unit-fixed', t.percentUnit)
         : bareSelect(
             `${t.unitLabel}, ${t.lineName(index + 1, name ?? '')}`,
-            unitsFor(line).map((u) => ({ value: u, label: u })),
+            unitOptions(unitsFor(line)),
             line.unit,
           );
     if (unit instanceof HTMLSelectElement) {
@@ -205,8 +206,12 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
             ) {
               line.unit = 'g';
             }
-            open = undefined;
-            focusAfter = [`[data-pick="${index}"]`];
+            // A catalogue pick is stored first and lands later; by then another line may have
+            // its picker open, which this pick must not close.
+            if (open?.index === index) {
+              open = undefined;
+              focusAfter = [`[data-pick="${index}"]`];
+            }
             changed();
             draw();
           },
@@ -239,6 +244,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
       ) {
         text = t.percentOf(formatNumber(figure.percent, 1), roleLabel(form.percentBase));
       }
+      if (figure?.lacks !== undefined) text = strings.notebook.lacks[figure.lacks];
       node.textContent = text;
     });
   };

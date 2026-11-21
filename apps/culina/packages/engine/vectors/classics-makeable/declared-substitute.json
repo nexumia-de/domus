@@ -1,0 +1,149 @@
+{
+  "id": "declared-substitute",
+  "description": "A shipped substitute effect declared for an ingredient applies to a classic as to an own dish: the line asks for cornstarch, only wheat flour is there, the line is had by substitution with the same amount and the effect named",
+  "inputs": {
+    "kind": "classics_makeable",
+    "today": "2026-11-18",
+    "ingredients": [
+      {
+        "id": "starch"
+      },
+      {
+        "id": "cornstarch",
+        "parentId": "starch"
+      },
+      {
+        "id": "flour"
+      },
+      {
+        "id": "wheat-flour",
+        "parentId": "flour"
+      }
+    ],
+    "classics": [
+      {
+        "id": "thickened",
+        "name": {
+          "en": "Example thickened sauce",
+          "de": "Beispiel gebundene Sauce"
+        },
+        "originalName": "Example thickened sauce",
+        "country": "de",
+        "vegetarian": true,
+        "course": "main",
+        "source": {
+          "author": "Example Author",
+          "title": "Example Cookbook (fictional)",
+          "year": 1900,
+          "place": "page 1",
+          "url": "https://example.org/book"
+        },
+        "persons": {
+          "value": 2,
+          "basis": "stated"
+        },
+        "settled": [],
+        "check": {
+          "method": "second-reader",
+          "note": "Invented for this vector."
+        },
+        "components": [
+          {
+            "id": "sauce",
+            "name": {
+              "en": "Example sauce",
+              "de": "Beispielsauce"
+            },
+            "role": "sauce",
+            "lines": [
+              {
+                "key": "starch",
+                "ref": {
+                  "kind": "ingredient",
+                  "id": "cornstarch"
+                },
+                "amount": {
+                  "value": 40,
+                  "unit": "g"
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "role": "main",
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            }
+          }
+        ]
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "wheat-flour"
+        },
+        "amount": {
+          "value": 50,
+          "unit": "g"
+        }
+      }
+    ],
+    "substitutes": [
+      {
+        "id": "cornstarch-to-flour",
+        "from": "cornstarch",
+        "to": "wheat-flour",
+        "changes": {
+          "en": "Invented effect for a test vector.",
+          "de": "Erfundene Wirkung für einen Testvektor."
+        },
+        "level": "textbook",
+        "sources": [
+          {
+            "title": "Example Textbook (fictional)",
+            "place": "chapter 1",
+            "url": "https://example.org/textbook",
+            "sentence": "Invented sentence for a test vector."
+          }
+        ]
+      }
+    ],
+    "options": {
+      "maxMissing": 0
+    }
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "thickened",
+        "kind": "classic",
+        "complete": true,
+        "lacking": 0,
+        "substitutions": [
+          {
+            "asked": "cornstarch",
+            "substitute": "wheat-flour",
+            "effect": "cornstarch-to-flour"
+          }
+        ],
+        "lines": [
+          {
+            "status": "have-by-substitution",
+            "need": {
+              "value": 40,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the rule is in docs/engine-rules.md (declared substitution, the shipped classics in the finder)."
+}

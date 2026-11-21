@@ -65,7 +65,7 @@
           },
           "sourceNote": {
             "en": "The source reads \"% pound of freshened butter\". The fraction is not legible in either text, so no amount is given.",
-            "de": "Die Quelle nennt \"% Pfund frisch gemachte Butter\". Der Bruch ist in beiden Texten nicht lesbar, daher keine Menge."
+            "de": "Die Quelle nennt „% Pfund frisch gemachte Butter“. Der Bruch ist in beiden Texten nicht lesbar, daher keine Menge."
           }
         },
         {
@@ -80,7 +80,7 @@
           },
           "sourceNote": {
             "en": "The source reads \"% pound\". The fraction is not legible in either text (the German edition's \"4 Pfd.\" is not one half), so no amount is given.",
-            "de": "Die Quelle nennt \"% Pfund\". Der Bruch ist in keinem der beiden Texte lesbar (die deutsche Ausgabe nennt \"4 Pfd.\"), daher keine Menge."
+            "de": "Die Quelle nennt „% Pfund“. Der Bruch ist in keinem der beiden Texte lesbar (die deutsche Ausgabe nennt „4 Pfd.“), daher keine Menge."
           }
         },
         {
@@ -91,7 +91,7 @@
           },
           "sourceNote": {
             "en": "The source reads \"% pound of sugar\"; the fraction is not legible in either text, so no amount is given.",
-            "de": "Die Quelle nennt \"% Pfund Zucker\"; der Bruch ist in keinem der beiden Texte lesbar, daher keine Menge."
+            "de": "Die Quelle nennt „% Pfund Zucker“; der Bruch ist in keinem der beiden Texte lesbar, daher keine Menge."
           }
         },
         {
@@ -123,7 +123,7 @@
           },
           "sourceNote": {
             "en": "The German edition's quantity is not clearly legible (\"d Dt.\"). The source's 1 cupful stands.",
-            "de": "Die Menge der deutschen Ausgabe ist nicht eindeutig lesbar (\"d Dt.\"). Es gilt die 1 Tasse der Quelle."
+            "de": "Die Menge der deutschen Ausgabe ist nicht eindeutig lesbar („d Dt.“). Es gilt die 1 Tasse der Quelle."
           }
         },
         {

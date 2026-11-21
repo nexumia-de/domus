@@ -1,0 +1,112 @@
+{
+  "id": "uses-ingredient-part",
+  "description": "A whole (fresh whole egg) is used by a line that names its declared part (yolk), and not by one naming a variant of the part",
+  "inputs": {
+    "kind": "uses_ingredient",
+    "ingredientId": "egg-whole-fresh",
+    "today": "2026-11-21",
+    "stock": [],
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "egg"
+      },
+      {
+        "id": "egg-whole",
+        "parentId": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "egg-whole-fresh",
+        "parentId": "egg-whole"
+      },
+      {
+        "id": "egg-yolk",
+        "parentId": "egg"
+      },
+      {
+        "id": "egg-yolk-dried",
+        "parentId": "egg-yolk"
+      },
+      {
+        "id": "egg-white",
+        "parentId": "egg"
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      }
+    ],
+    "components": [
+      {
+        "id": "mayo",
+        "name": "Mayo",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg-yolk"
+            }
+          }
+        ],
+        "version": {
+          "family": "mayo",
+          "date": "2026-11-01"
+        }
+      },
+      {
+        "id": "dried",
+        "name": "Dried",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg-yolk-dried"
+            }
+          }
+        ],
+        "version": {
+          "family": "dried",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "parts": [
+      {
+        "whole": "egg-whole",
+        "parts": ["egg-yolk", "egg-white"]
+      }
+    ],
+    "options": {
+      "siblingSubstitution": false
+    }
+  },
+  "expected": {
+    "records": [
+      {
+        "kind": "component",
+        "id": "mayo"
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree and of stored fields; ingredients, amounts and recipes are made up and no kitchen figure is involved."
+}

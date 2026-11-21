@@ -2,6 +2,23 @@
   "format": "culina-dish-characters",
   "formatVersion": 1,
   "note": "The characters of a dish that Culina derives from its ingredients, their amounts and the techniques of its steps (docs/dish-characters.md). A character is computed when a dish is shown and never stored. A class is a catalogue id (the ingredient or a group above it) or `category:` and a USDA food category. Any clause of `when` gives the character; every condition of a clause must hold. `minShare` is a share of the dish's mass; where it cannot be known, presence decides unless `presence` is false. Every row states in `basis` what it rests on: all thresholds are judgements of the project, none comes from a source.",
+  "meatAndFish": {
+    "basis": "Which ingredient lines make a dish of the notebook not \"without meat and fish\": the USDA food categories of meat, poultry and fish (as the rules \"with meat\" and \"with fish\"), and the foods of an animal's body that USDA files elsewhere, under Fats and Oils: the fat group (beef tallow, chicken, turkey and goose fat), lard, bacon grease, the fish oils, and the two shortenings made with lard or beef tallow. Found by reading every catalogue entry outside those categories on 2026-11-21; the catalogue has no gelatine, broth, meat extract, anchovy or fish sauce. A line naming a group of which any food below is one of these (\"shortening\") is not known either way. Eggs, milk, butter, cheese and honey are not meat or fish. A judgement of the project.",
+    "classes": [
+      "category:Beef Products",
+      "category:Pork Products",
+      "category:Poultry Products",
+      "category:Lamb, Veal, and Game Products",
+      "category:Sausages and Luncheon Meats",
+      "category:Finfish and Shellfish Products",
+      "fdc-group-fat",
+      "fdc-171401",
+      "fdc-172345",
+      "fdc-group-fish-oil",
+      "fdc-172327",
+      "fdc-173567"
+    ]
+  },
   "characters": [
     {
       "id": "tomatoey",
@@ -9,10 +26,10 @@
         "en": "Tomatoey",
         "de": "Tomatig"
       },
-      "basis": "Judgement of the project: tomato carries a dish from about a seventh of its mass; a spoonful in a braise does not. Where the amounts are not known, tomato being there counts.",
+      "basis": "Judgement of the project: tomato, fresh or canned (sauce, paste), carries a dish from about a seventh of its mass; a spoonful in a braise does not. Paste is concentrated, so its share counts it low. Where the amounts are not known, tomato being there counts: a source that names tomato sauce in a braise or on gnocchi means it to be tasted.",
       "when": [
         {
-          "ingredients": ["fdc-group-tomatoes"],
+          "ingredients": ["fdc-group-tomatoes", "fdc-group-tomato-products-canned"],
           "minShare": 0.15
         }
       ]
@@ -23,12 +40,16 @@
         "en": "Cheesy",
         "de": "Käsig"
       },
-      "basis": "Judgement of the project: cheese from 8 percent of the mass. Without amounts nothing is said: cheese grated over a soup does not make it cheesy.",
+      "basis": "Judgement of the project: cheese from 8 percent of the mass. Without amounts, cheese in a dish that is baked or gratinated counts, since baked into or onto a dish (a gratin, a soufflé) it is what one tastes; cheese grated over a soup or a risotto does not make it cheesy.",
       "when": [
         {
           "ingredients": ["fdc-group-cheese"],
           "minShare": 0.08,
           "presence": false
+        },
+        {
+          "ingredients": ["fdc-group-cheese"],
+          "techniques": ["bake", "gratinate"]
         }
       ]
     },
@@ -38,7 +59,7 @@
         "en": "Eggy",
         "de": "Mit viel Ei"
       },
-      "basis": "Judgement of the project: an egg dish is one where egg is a fifth of the mass or more (omelette, custard); an egg that binds a dough is not. Without amounts nothing is said.",
+      "basis": "Judgement of the project: an egg dish is one where egg is a fifth of the mass or more (omelette, custard, soufflé); an egg that binds a dough, a purée or a sauce is not. Eggs counted in pieces weigh what the catalogue gives (44 g a whole egg, 17 g a yolk, 33 g a white: the USDA portion of the one egg below each group that states one). Without amounts nothing is said, so a dish whose milk or other main lines have no mass is not judged.",
       "when": [
         {
           "ingredients": ["fdc-group-egg"],
@@ -67,12 +88,43 @@
         "en": "Garlicky",
         "de": "Knoblauchig"
       },
-      "basis": "Judgement of the project: garlic is in most savoury dishes; it marks a dish from 1.5 percent of the mass (about two cloves per portion of 400 g). Without amounts nothing is said.",
+      "basis": "Judgement of the project: garlic is in most savoury dishes; it marks a dish from 1.5 percent of the mass (about two cloves per portion of 400 g). Raw garlic is far stronger than cooked, so in a dish where no step uses heat (alioli) its presence counts. Otherwise, without amounts, nothing is said.",
       "when": [
         {
           "ingredients": ["fdc-169230", "fdc-171325"],
           "minShare": 0.015,
           "presence": false
+        },
+        {
+          "ingredients": ["fdc-169230", "fdc-171325"],
+          "withoutTechniques": [
+            "bake",
+            "blanch",
+            "boil",
+            "braise",
+            "caramelise-sugar",
+            "cook-pasta",
+            "cook-rice",
+            "deep-fry",
+            "deglaze",
+            "gratinate",
+            "pan-fry",
+            "poach",
+            "reduce",
+            "risotto",
+            "roux",
+            "saute",
+            "sear",
+            "simmer",
+            "skim",
+            "steam",
+            "stock-cold-start",
+            "sweat",
+            "thicken-with-egg",
+            "thicken-with-starch",
+            "warm-emulsion",
+            "water-bath"
+          ]
         }
       ]
     },
@@ -115,12 +167,16 @@
         "en": "Sweet",
         "de": "Süß"
       },
-      "basis": "Judgement of the project: sugar, honey or syrup from a tenth of the mass. Without amounts nothing is said: a pinch of sugar is in many savoury dishes.",
+      "basis": "Judgement of the project: sugar, honey or syrup from a tenth of the mass, or any of them in a dish that states its course as dessert or baking (a dessert or a cake with sugar is sweet). Otherwise, without amounts, nothing is said: a pinch of sugar is in many savoury dishes.",
       "when": [
         {
           "ingredients": ["fdc-group-sugars", "fdc-169640", "fdc-group-syrups", "fdc-168820"],
           "minShare": 0.1,
           "presence": false
+        },
+        {
+          "ingredients": ["fdc-group-sugars", "fdc-169640", "fdc-group-syrups", "fdc-168820"],
+          "courses": ["dessert", "baking"]
         }
       ]
     },
@@ -162,10 +218,15 @@
         "en": "Fried",
         "de": "Gebraten"
       },
-      "basis": "Judgement of the project: a step that pan-fries or deep-fries. Searing before a braise and sautéing vegetables are not counted.",
+      "basis": "Judgement of the project: a step that pan-fries, deep-fries or coats in batter (a batter is a coat for frying: the technique's source is the chapter on frying). Searing before a braise and sautéing vegetables are not counted, and a soup or a sauce is never called fried: frying there is a first step before the liquid (potato soup), not what the dish is.",
       "when": [
         {
-          "techniques": ["pan-fry", "deep-fry"]
+          "techniques": ["pan-fry", "deep-fry", "batter"]
+        }
+      ],
+      "unless": [
+        {
+          "courses": ["soup", "sauce"]
         }
       ]
     },
@@ -241,7 +302,7 @@
         "en": "Creamy",
         "de": "Cremig"
       },
-      "basis": "Judgement of the project: a sensation, not an ingredient: cream from a tenth of the mass, or milk or cream bound by a roux, by egg or by starch, or a warm emulsion, or a risotto, or a cold emulsion that is mostly oil (mayonnaise, not gazpacho). Milk and butter in a cake are not creamy, so dairy alone does not count.",
+      "basis": "Judgement of the project: a sensation, not an ingredient: cream from a tenth of the mass; or milk or cream bound by a roux, by egg or by starch, unless the dish then bakes (a soufflé or a cake is set, not creamy; browning a gratin is not baking); or potatoes or rice cooked in milk or cream, whose starch binds it (gratin dauphinois); or a warm emulsion, or a risotto; or a cold emulsion of oil bound by egg yolk (mayonnaise, alioli) or that is mostly oil, not gazpacho. Milk and butter in a cake are not creamy, so dairy alone does not count.",
       "when": [
         {
           "ingredients": ["fdc-group-cream"],
@@ -250,10 +311,21 @@
         },
         {
           "ingredients": ["fdc-group-milk", "fdc-group-cream"],
-          "techniques": ["roux", "thicken-with-egg", "thicken-with-starch"]
+          "techniques": ["roux", "thicken-with-egg", "thicken-with-starch"],
+          "withoutTechniques": ["bake"]
+        },
+        {
+          "ingredients": ["fdc-group-milk", "fdc-group-cream"],
+          "alsoIngredients": [["fdc-170028", "fdc-group-rice"]],
+          "techniques": ["bake", "boil", "simmer"]
         },
         {
           "techniques": ["warm-emulsion", "risotto"]
+        },
+        {
+          "ingredients": ["fdc-group-egg-yolk"],
+          "alsoIngredients": [["fdc-group-oil"]],
+          "techniques": ["cold-emulsion"]
         },
         {
           "ingredients": ["fdc-group-oil"],
@@ -282,12 +354,20 @@
         "en": "Rich",
         "de": "Gehaltvoll"
       },
-      "basis": "Judgement of the project: 15 g of fat or more per 100 g of the measured ingredients, from the catalogue's USDA figures. Said only where at least four of five lines have an amount; water that is not a line is not counted.",
+      "basis": "Judgement of the project: 15 g of fat or more per 100 g of the measured ingredients, from the catalogue's USDA figures, said only where at least four of five lines have an amount (water that is not a line is not counted); or an emulsion of fat, which is mostly fat by what it is: a warm emulsion (hollandaise) or a cold emulsion of oil bound by egg yolk (mayonnaise), not gazpacho.",
       "when": [
         {
           "fat": {
             "min": 15
           }
+        },
+        {
+          "techniques": ["warm-emulsion"]
+        },
+        {
+          "ingredients": ["fdc-group-egg-yolk"],
+          "alsoIngredients": [["fdc-group-oil"]],
+          "techniques": ["cold-emulsion"]
         }
       ]
     },

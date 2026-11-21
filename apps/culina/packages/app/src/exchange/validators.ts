@@ -9,4 +9,5 @@ export const recordValidators: RecordValidators = {
   dishes: compiled.dishes,
   affinities: compiled.affinities,
   tastings: compiled.tastings,
+  skills: compiled.skills,
 };

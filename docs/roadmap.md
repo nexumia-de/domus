@@ -154,7 +154,7 @@ checks green. The apps' own goals are in their roadmaps
     the platform pieces moved out of Emptio into the shared package
     `packages/gjs` ([platform pieces](../packages/gjs/docs/platform.md)).
     **Culina is built** (2026-11-21, [native Linux
-    app](../apps/culina/docs/native-linux.md)): the classics by country, a
+    app](../apps/culina/docs/native-linux.md)): the shipped dishes in one list, a
     dish with the amounts per portion, cooking step by step, what can I
     cook from the stock of the shown space and the switches of that stock,
     preferences with joining by link, English and German, a Flatpak

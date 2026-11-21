@@ -1,6 +1,6 @@
 {
   "format": "culina-export",
-  "formatVersion": 2,
+  "formatVersion": 3,
   "exportedAt": "2026-11-17T12:00:00Z",
   "seedVersion": "0",
   "ingredients": [
@@ -194,6 +194,13 @@
       },
       "date": "2026-11-18",
       "text": "Crumb open, crust good, needs a little more salt."
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-pan-fry",
+      "technique": "pan-fry",
+      "learned": true
     }
   ]
 }

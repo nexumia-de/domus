@@ -1,25 +1,41 @@
 // How the amounts the engine derived are written on screen. No arithmetic: the engine converted and
-// scaled; this only rounds once for display with the shared helpers and picks the words.
-import type { Amount, DerivedLine, DerivedRange, StepTemperature, StepTime } from '@culina/engine';
+// scaled and rounds for display (`roundMass`, `roundPieces`, `roundMeasure`); this picks the words.
+// The derived numbers stay as they are: sums and nutrition read them, not this text.
+import type {
+  Amount,
+  DerivedLine,
+  DerivedRange,
+  HouseholdMeasure,
+  StepTemperature,
+  StepTime,
+} from '@culina/engine';
 import { formatMass, formatNumber } from '../shared/mass';
+import { measureText, piecesText, unitName } from '../shared/units';
 import { strings } from '../strings';
 
 const t = strings.classics;
 
-/** One derived amount (grams, millilitres or pieces) as text. */
-export const amountText = (a: Amount): string => {
+/**
+ * One derived amount as text: grams; millilitres, or the spoon or cup the source wrote; pieces to
+ * a whole or a half, the exact count quietly beside where they differ.
+ */
+export const amountText = (a: Amount, measure?: HouseholdMeasure): string => {
   if (a.unit === 'g') return formatMass(a.value, 'g');
-  if (a.unit === 'ml') return `${formatNumber(a.value, a.value < 10 ? 1 : 0)} ml`;
-  return t.pieces(formatNumber(a.value, 1));
+  if (a.unit === 'ml') {
+    if (measure !== undefined) return measureText(a.value, measure);
+    return `${formatNumber(a.value, a.value < 10 ? 1 : 0)} ${unitName('ml')}`;
+  }
+  return piecesText(a.value);
 };
 
 /** The amount of a line: the source's range when it gave one, else the amount; none for no amount. */
 export const lineAmountText = (
-  line: Pick<DerivedLine, 'amount'>,
+  line: Pick<DerivedLine, 'amount' | 'measure'>,
   range: DerivedRange | undefined,
 ): string | undefined => {
-  if (range !== undefined) return t.amountRange(amountText(range.min), amountText(range.max));
-  return line.amount === undefined ? undefined : amountText(line.amount);
+  if (range !== undefined)
+    return t.amountRange(amountText(range.min, line.measure), amountText(range.max, line.measure));
+  return line.amount === undefined ? undefined : amountText(line.amount, line.measure);
 };
 
 const TIME = { s: t.seconds, min: t.minutes, h: t.hours } as const;

@@ -3,7 +3,17 @@
 export * from './model';
 
 export { convert, toGrams } from './amounts/convert';
-export { displayStep, roundMass } from './amounts/round';
+export {
+  displayStep,
+  householdMeasureOf,
+  HOUSEHOLD_MEASURES,
+  MEASURE_STEP,
+  PIECE_STEP,
+  roundMass,
+  roundMeasure,
+  roundPieces,
+} from './amounts/round';
+export type { HouseholdMeasure, ShownNumberResult } from './amounts/round';
 export { UNIT_IDS, isUnitId, unitFactor, unitKind } from './amounts/units';
 export type {
   Amount,
@@ -85,7 +95,8 @@ export { convertComponentLines } from './components/convert';
 export type { ConvertLinesResult, LineEntry } from './components/convert';
 export { componentLineGrams } from './components/lines';
 export { portionsFromYield, portionWeight } from './components/portions';
-export { componentYield } from './components/yield';
+export { componentYield, runGrams } from './components/yield';
+export type { RunGramsResult } from './components/yield';
 export type {
   Component,
   ComponentError,
@@ -101,6 +112,8 @@ export type {
   PortionsResult,
   PortionWeightResult,
   RawIngredient,
+  UnconvertedIndex,
+  UnconvertedLine,
   UnmeasuredLine,
   YieldFigures,
   YieldResult,
@@ -191,7 +204,7 @@ export type { Choice, Conflict, MergePlan } from './exchange/merge';
 export { remapIngredients } from './exchange/remap';
 export { matchIngredients, nameWords, normaliseName } from './exchange/match';
 export type { Candidate, NameMatch } from './exchange/match';
-export { EXPORT_KINDS } from './exchange/types';
+export { EXPORT_KINDS, KIND_SINCE } from './exchange/types';
 export type {
   ExportContent,
   ExportEnvelope,
@@ -232,8 +245,10 @@ export type {
 
 export {
   DEFAULT_DISH_ROLES,
+  KITCHEN_ROLE,
   makeable,
   openDishRoles,
+  rankCandidates,
   stockForRole,
   usesIngredient,
 } from './makeable';
@@ -252,8 +267,11 @@ export type {
   MakeableResult,
   MakeableStockItem,
   MakeableSubstitution,
+  MakeableThrough,
+  MakeablePart,
   MakeableUrgency,
   MakeableUseUp,
+  RankedCandidate,
   RoleStockItem,
   StockForRoleResult,
   UsesIngredientResult,
@@ -320,6 +338,7 @@ export type {
 } from './classics/makeable';
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
+export { COUNTRY_CODES, COURSE_IDS } from './classics/types';
 export type {
   AmountWord,
   Classic,
@@ -336,7 +355,10 @@ export type {
 export { SALT_PER_SODIUM, dishNutrition } from './nutrition/dish';
 export type { DishNutritionInput } from './nutrition/dish';
 export { ROUNDING_SOURCE, roundNutrition } from './nutrition/round';
+export { lineFigures } from './nutrition/figures';
+export type { FigureLookup, FigureOrigin, FigureRecord, LineFigures } from './nutrition/figures';
 export type {
+  NutritionShown,
   NotCountedLine,
   NotCountedReason,
   NutrientsPer100g,

@@ -12,6 +12,10 @@ export interface Lookup {
   itemRef(itemId: string): ComponentRef | undefined;
 }
 
+/** An ingredient's name in the app's language (the German name in German, where it has one). */
+export const ingredientName = (record: Parameters<typeof displayName>[0]): string =>
+  displayName(record, appLang);
+
 export const lookupOf = (source: CookSource): Lookup => {
   const ingredients = new Map(source.ingredients.map((i) => [i.id, displayName(i, appLang)]));
   const byId = new Map(source.components.map((c) => [c.id, c]));

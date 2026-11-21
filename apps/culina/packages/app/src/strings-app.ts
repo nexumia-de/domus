@@ -53,6 +53,8 @@ export const appStrings = {
     liquid: 'Liquid',
     yeast: 'Yeast',
     salt: 'Salt',
+    // A role of the example ingredients (onion, carrot, celery).
+    aromatic: 'Aromatic',
   },
   /** "Open: add ..." for a role the dish does not fill yet. */
   roleInvite: {
@@ -78,6 +80,15 @@ export const appStrings = {
     withoutAmountHeading: 'Without an amount',
     withoutAmount: (name: string, where: string): string => `${name} (in ${where})`,
     notAddedHeading: 'Not added up',
+    unconvertedHeading: 'Not weighed',
+    /** Beside a line whose unit needs a fact its ingredient lacks: it is left out of the sums. */
+    lacks: {
+      'needs-unit-weight': 'no piece weight recorded, not in the sums',
+      'needs-density': 'no density recorded, not in the sums',
+      'not-convertible': 'no density or piece weight recorded, not in the sums',
+    },
+    unweighed: (name: string): string =>
+      `The output of ${name} is not weighed: one run is taken as weighing what goes in.`,
     stateRaw: 'raw',
     stateCooked: 'cooked',
     statePrepared: 'prepared',
@@ -124,8 +135,9 @@ export const appStrings = {
     yieldLabel: 'Yield',
     outputSource: (source: string): string => `Output: ${source}`,
     outputUnknown: 'Output not weighed yet',
-    outputUnknownHelp: 'Scale it by a factor until it has an output weight.',
+    outputUnknownHelp: 'Until you weigh the finished output, it scales by a factor only.',
     inputPartial: 'The input counts only the lines that have an amount.',
+    inputUnweighed: 'The input counts only the lines whose amount can be weighed.',
     scaleHeading: 'Scale',
     outputWanted: 'Output wanted (g)',
     factorLabel: 'Factor (1 is the recipe as written)',
@@ -151,6 +163,8 @@ export const appStrings = {
     backToDish: 'Back to the dish',
     noSteps: 'This dish has no steps yet.',
     cookDone: 'That was the last step.',
+    originOwn: 'In my notebook',
+    originShipped: 'Shipped with the app',
     fromStock: (name: string): string => `From stock: ${name}`,
     slotsHeading: 'Role slots',
     colFilling: 'Filling',
@@ -187,6 +201,20 @@ export const appStrings = {
     pickNoRoles: 'Tick at least one role.',
     pickNote: 'The pick is random within each role. It does not know what goes together.',
     pickMake: 'Make it a dish',
+    pickDishHeading: 'Surprise me with a dish',
+    pickDishNote: 'One dish by chance, yours or shipped, among those that fit your choice above.',
+    pickDishReady: 'Only what the stock allows now',
+    pickDishRoll: 'Surprise me',
+    pickDishResult: 'Suggestion',
+    pickDishAgainLabel: 'Roll again: another dish',
+    pickDishAmong: (n: number): string =>
+      n === 1 ? 'The only dish that fits.' : `By chance among ${n} dishes.`,
+    pickDishNoneReady: 'The stock allows none of these dishes now.',
+    pickRolesHeading: 'Put one together from your components',
+    pickFitsNote: 'Rolled among the combinations that are like your choice above.',
+    pickNoFit: 'No combination of your components is like that.',
+    pickNoFitTried: (tries: number, total: number): string =>
+      `No combination of your components was like that in ${tries} tries by chance (of ${total}).`,
   },
   ratios: {
     searchLabel: 'Search by name',
@@ -275,7 +303,13 @@ export const appStrings = {
     examplesHeading: 'Example data',
     examplesAdded: 'Example records were added to your notebook.',
     dataHeading: 'Your data',
-    dataHint: 'One file holds every record and version you entered. Nothing is sent anywhere.',
+    dataHint:
+      'One file holds every record and version you entered and the skills you marked as learned.',
+    notInFileStock: (space: string | undefined): string =>
+      space === undefined
+        ? "Not in the file: the stock, kept in a space with the household's other apps."
+        : `Not in the file: the stock of “${space}”, kept with the household's other apps.`,
+    notInFileOther: 'Nor are unsaved drafts and the settings of this device.',
     exportButton: 'Export everything',
     exportNothing: 'There is nothing to export yet.',
     exportedNote: 'The file was handed to your browser to save.',
@@ -287,6 +321,21 @@ export const appStrings = {
     reminderDays: (days: number): string => `After ${days} days with changes`,
     reminderNotSaved:
       'The choice could not be saved on this device. It applies until the app is closed.',
+    eraseButton: 'Erase everything on this device',
+    eraseHint:
+      "Removes your notebook, the skills you marked, drafts and this app's settings from this device.",
+    eraseUndo: 'It cannot be undone: export first to keep a copy.',
+    eraseAsk: (what: string): string => `Erase from this device: ${what}?`,
+    eraseDrafts: (n: number): string => `${n} unsaved ${n === 1 ? 'draft' : 'drafts'}`,
+    erasePrefs: "this app's settings (theme, language, filters, reminder)",
+    eraseNothing: 'There is nothing of this app on this device to erase.',
+    eraseStockStays: (space: string): string =>
+      `The stock of “${space}” stays: it is shared with the household's other apps.`,
+    eraseStockWhere: 'To remove it from this device, remove the space in the Household app.',
+    eraseHousehold: 'Open the space in the Household app',
+    eraseExportFirst: 'Export first',
+    eraseConfirm: 'Erase everything',
+    eraseCancel: 'Cancel',
   },
   // The reminder banner: quiet, never a dialog.
   backup: {
@@ -376,6 +425,9 @@ export const appStrings = {
     keepNote: 'How (optional)',
     keepRemove: (n: number): string => `Remove storage ${n}`,
     portionsLabel: 'Portions',
+    courseLabel: 'Course',
+    cuisineLabel: 'Cuisine',
+    notStated: 'Not stated',
     noteLabel: 'Note',
     slotsHeading: 'Role slots',
     slotRole: 'Role',
@@ -487,6 +539,8 @@ export const appStrings = {
       yield: 'Yield',
       method: 'Method',
       portions: 'Portions',
+      course: 'Course',
+      cuisine: 'Cuisine',
       note: 'Note',
     },
     toTaste: 'to taste',
@@ -547,7 +601,10 @@ export const appStrings = {
       dishes: 'dish versions',
       affinities: 'pairings',
       tastings: 'tasting notes',
+      skills: 'skill marks',
     },
+    skillsNotInFile:
+      'The file is from an older version and holds no skill marks; the skills marked as learned here stay.',
     modeLegend: 'How to bring it in',
     modeMerge: 'Merge with what is here',
     modeMergeHint: 'Records that are not here are added; records that differ are listed for you.',
@@ -576,7 +633,7 @@ export const appStrings = {
     replaceConfirm: 'Yes, replace',
     replaceCancel: 'Cancel',
     merged: (added: number, taken: number): string =>
-      `Imported: ${added} added, ${taken} replaced by the file's.`,
+      `Imported: ${added} added, ${taken} replaced by the version in the file.`,
     replaced: (count: number): string =>
       `Imported: everything here is now the ${count} records of the file.`,
     undo: 'Undo',
@@ -661,6 +718,41 @@ export const appStrings = {
   stock: stockStrings,
   cook: cookStrings,
   classics: classicsStrings,
+  // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.
+  browse: {
+    filtersLabel: 'What you feel like',
+    originLabel: 'From',
+    originAny: 'All dishes',
+    origin: { own: 'My dishes', shipped: 'Shipped dishes' },
+    characterLabel: 'What it is like',
+    characterAny: 'Anything',
+    courseLabel: 'Course',
+    courseAny: 'Any course',
+    cuisineLabel: 'Cuisine',
+    cuisineAny: 'Any cuisine',
+    /** A cuisine by the adjective of its country, never the country's name. */
+    cuisines: { de: 'German', it: 'Italian', fr: 'French', es: 'Spanish' },
+    /** The same in the cuisine select, under the label that already says cuisine: short enough for 360 px. */
+    cuisineChoice: { de: 'German', it: 'Italian', fr: 'French', es: 'Spanish' },
+    meatFree: 'Without meat and fish',
+    completeOnly: 'Only with every amount given',
+    reset: 'Show all',
+    none: 'No dish fits these choices.',
+    count: (n: number): string => (n === 1 ? '1 dish' : `${n} dishes`),
+    /** Where a row's dish comes from, said when the list holds both. */
+    rowOrigin: { own: 'My dish', shipped: 'Shipped' },
+    /** The start screen: every dish under the one filter, then the tools. */
+    startTitle: 'What do you feel like?',
+    startListLabel: 'Dishes that fit',
+    /** The origin as the select offers it, short enough for half a phone's width. */
+    originChoice: { own: 'Mine', shipped: 'Shipped' },
+    /** The folded filter's summary when nothing is chosen. */
+    anything: 'Everything',
+    /** While the shipped dishes and the catalogue are read, instead of "nothing fits". */
+    loading: 'Reading the dishes …',
+    /** The way back from a dish to the list it was opened from. */
+    backToList: 'Back to the list',
+  },
   nutrition: nutritionStrings,
   // Texts for the store's error codes; the editing screens show them.
   store: {
@@ -672,4 +764,24 @@ export const appStrings = {
     invalidRecord: 'This entry has a value that is not allowed, so it was not saved.',
     notFound: 'That entry no longer exists.',
   },
+  /** The name of every unit where one is shown or chosen; percent is written as %. */
+  units: {
+    g: 'g',
+    kg: 'kg',
+    oz: 'oz',
+    lb: 'lb',
+    ml: 'ml',
+    l: 'l',
+    tsp: 'tsp',
+    tbsp: 'tbsp',
+    cup: 'cup',
+    'imp-floz': 'fl oz (UK)',
+    'imp-gill': 'gill (UK)',
+    'imp-pint': 'pint (UK)',
+    'imp-quart': 'quart (UK)',
+    count: 'pcs',
+    percent: '%',
+  },
+  /** An amount rounded for display with the exact figure quietly beside: "5½ (5.33)". */
+  exactBeside: (shown: string, exact: string): string => `${shown} (${exact})`,
 };

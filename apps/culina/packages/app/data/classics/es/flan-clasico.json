@@ -189,7 +189,7 @@
           },
           "sourceNote": {
             "en": "The source gives the figure as '20<>' in the scan text; the figure is not legible in the text, so no amount is written.",
-            "de": "Die Quelle nennt die Menge im Scan-Text als '20<>'; die Zahl ist im Text nicht lesbar, daher keine Menge."
+            "de": "Die Quelle nennt die Menge im Scan-Text als ‚20<>‘; die Zahl ist im Text nicht lesbar, daher keine Menge."
           }
         },
         {
@@ -278,7 +278,7 @@
         {
           "text": {
             "en": "When it is cold, take it out of the mould and sprinkle it with sugar.",
-            "de": "Wenn es kalt ist, aus der Form lösen und mit Zucker bestreuen."
+            "de": "Wenn der Flan kalt ist, aus der Form lösen und mit Zucker bestreuen."
           },
           "action": "turn-out",
           "uses": ["sugar"]
@@ -316,6 +316,6 @@
   },
   "note": {
     "en": "The pastry is the book's own recipe for the lining, 'masa doblada, ó en hojas, ó hojaldre' (p. 836), taken as the book gives it. The sugar figure is not legible in the text, so no amount is written.",
-    "de": "Der Teig ist das eigene Rezept des Buches für die Auskleidung, 'masa doblada, ó en hojas, ó hojaldre' (S. 836), so übernommen, wie das Buch es angibt. Die Zuckermenge ist im Text nicht lesbar, daher steht keine Menge dabei."
+    "de": "Der Teig ist das eigene Rezept des Buches für die Auskleidung, ‚masa doblada, ó en hojas, ó hojaldre‘ (S. 836), so übernommen, wie das Buch es angibt. Die Zuckermenge ist im Text nicht lesbar, daher steht keine Menge dabei."
   }
 }

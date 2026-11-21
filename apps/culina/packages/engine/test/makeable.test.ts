@@ -1,7 +1,7 @@
 // Properties of the finder that no single vector shows: a substitute never changes the amount a
-// line needs, and the result does not depend on the order of the stock.
+// line needs, the result does not depend on the order of the stock, and the ranking merges lists.
 import { expect, test } from 'vitest';
-import { makeable } from '../src/index';
+import { makeable, rankCandidates } from '../src/index';
 import type { MakeableInput, MakeableStockItem } from '../src/index';
 
 const base: MakeableInput = {
@@ -63,4 +63,21 @@ test('the order of the stock does not change the result', () => {
   const forward = makeable({ ...base, stock });
   const backward = makeable({ ...base, stock: [...stock].reverse() });
   expect(backward).toEqual(forward);
+});
+
+test('the finder returns its candidates in the order rankCandidates gives, so two lists merge', () => {
+  const stock = [
+    { ...item('a', 'ghee', 40), useBy: '2026-11-21' },
+    item('b', 'flour', 500),
+    item('c', 'oil', 40),
+  ];
+  const r = makeable({ ...base, stock });
+  if (!r.ok) throw new Error(r.error.code);
+  expect(rankCandidates(r.candidates)).toEqual(r.candidates);
+  expect(rankCandidates([...r.candidates].reverse())).toEqual(r.candidates);
+  // A merged list is ranked again by the same rule, whichever list comes first.
+  const other = [{ kind: 'classic', id: 'z', name: 'Z', roles: [], urgency: { daysLeft: 0 } }];
+  const merged = rankCandidates([...r.candidates, ...other]);
+  expect(rankCandidates([...other, ...r.candidates])).toEqual(merged);
+  expect(merged[0]?.id).toBe('z');
 });

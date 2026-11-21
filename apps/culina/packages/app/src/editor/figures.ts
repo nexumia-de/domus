@@ -1,5 +1,5 @@
 // What each line of the form comes to, live, from the engine: grams and percent of the base.
-import { lineRows } from '../components/lines';
+import { lineRows, type LackingFact } from '../components/lines';
 import type { Notebook } from '../records';
 import type { ComponentForm } from './component-form';
 import { engineLine } from './component-form';
@@ -7,6 +7,8 @@ import { engineLine } from './component-form';
 export interface LineFigure {
   g?: number;
   percent?: number;
+  /** The line's unit needs a fact its ingredient lacks: it is left out of the sums. */
+  lacks?: LackingFact;
 }
 
 /** One entry per form line; empty when the engine cannot add the lines up (no base yet, for example). */
@@ -24,6 +26,7 @@ export const lineFigures = (nb: Notebook, form: ComponentForm): LineFigure[] => 
     return {
       ...(row?.g === undefined ? {} : { g: row.g }),
       ...(row?.percent === undefined ? {} : { percent: row.percent }),
+      ...(row?.unconverted === undefined ? {} : { lacks: row.unconverted.lacks }),
     };
   });
 };

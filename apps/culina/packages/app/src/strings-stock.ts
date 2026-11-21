@@ -24,6 +24,11 @@ export const stockStrings = {
   removed: (name: string): string => `Removed ${name} from stock.`,
   usedUp: (name: string): string => `Used up ${name}.`,
   restored: (name: string): string => `${name} is back in stock.`,
+  staplesHeading: 'Staples',
+  staplesHint: (names: string): string =>
+    `${names} count as there only once ticked. Tick them as always there and the finder stops asking for them.`,
+  staplesTick: 'Tick the staples',
+  staplesTicked: (names: string): string => `${names}: always there.`,
   undo: 'Undo',
   remove: 'Remove',
   removeLabel: (name: string): string => `Remove ${name} from stock`,

@@ -12,6 +12,7 @@ links. Change history is in [log.md](log.md).
 
 - [Roadmap](roadmap.md) - Goals and their order; the helper (skills, checklist, known dishes) comes before sync.
 - [Helper build plan](helper-plan.md) - The owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
+- [What "what do I feel like" still needs](feel-like-plan.md) - After one dish list: course and cuisine coverage, the filter with the stock, something like this dish, time and effort, taste effects, seasonal produce, favourites and history, each with its data, cost and the rule it touches; the recommendation.
 - [Deployment](deployment.md) - Deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter, and how to serve the same folder elsewhere.
 
 # Research
@@ -24,6 +25,7 @@ links. Change history is in [log.md](log.md).
 - [Four books read against the notes](book-findings.md) - Research of 2026-11-20: McGee, Der junge Koch and The Food Lab read by three agents against the 64 notes, how the texts were handled, what the books confirm, refine and contradict, the 24 changed and 14 new notes, where the books disagree, what was not shipped and what nobody verified.
 - [Books as cited authorities](source-books.md) - Research of 2026-11-19 on books that can be cited for the skills (McGee, Der junge Koch, The Food Lab, Pauli, Hamelman and others) with evidence level, languages, editions, what was verified and what not, food-safety authorities and their differing numbers, and the owner's decisions of the same day: buying order, a citation needs a page looked up in the book, two new evidence levels, food-safety figures by the authority of the user's language.
 - [Dish characters computed from the recipe](dish-characters.md) - Analysis of 2026-11-21: whether tomatoey, creamy or fried can be computed from ingredients, amounts and techniques for a finder "what do I feel like"; measured on the 48 classics (presence works, share by mass rests on 44 percent of the lines, no meat or fish in the catalogue), three kinds of character and the recommendation, and what was built of it.
+- [The German of the app](german-review.md) - Review of 2026-11-21 after a tester read the app in German: every changed text (app strings, shipped dishes, technique notes, handling rules, substitutes) with old and new wording, the date form, cuisine adjectives and citation words, what is left to the owner (the visible name, everyday ingredient names), done by a language model and not yet by a native speaker with kitchen training.
 - [Ratios and salt percentages checked against sources](ratios.md) - Every ratio, baker's percentage and salt percentage with basis, status (confirmed, corrected, unverified) and source; NCHFP fermentation data.
 
 # Specifications
@@ -53,12 +55,14 @@ links. Change history is in [log.md](log.md).
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
 - [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship by country as full recipes with their techniques, first Germany, Italy, France and Spain.
+- [Licence of the sources](decisions/sources-licence.md) - Decided 2026-11-19: non-commercial sources (CC BY-NC-SA 4.0, CC BY-NC 4.0) fit; every source of a shipped note carries its licence as an SPDX identifier.
+- [One dish list](decisions/one-dish-list.md) - Decided 2026-11-21: own and shipped dishes in one list with one entry, one filter and one dish and cook screen; the origin follows from where a dish lives and is not stored; shipped dishes stay read-only in their file; rejected: a stored flag in the user's store, two tabs with the same filters.
 - [Hosting](decisions/hosting.md) - Decided: the app is a static folder any host or own server can serve; Cloudflare is the first host and only an adapter in this repository, no shared deploy code.
 - [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock; for stock replaced by stock in spaces.
 - [Stock in spaces](decisions/stock-in-spaces.md) - Decided 2026-11-20: stock is the shared collection `stock` of a space, the same collection as Mixtura's with Culina's optional fields; the record, batches, unticking, the space used, sync, the one move of old items, the export without stock, how the catalogues will meet, what is lost.
 
 # Development
 
-- [Native Linux app](native-linux.md) - Cook's Notebook as a GTK 4 and libadwaita app on GJS (`packages/linux`): the classics by country, a dish with amounts per portion, cooking step by step, what can I cook from the stock of the shown space and ticking that stock, joining a space by link; what it shares with the web app, what 0.1 leaves out, the alignment of the ingredient list, build, release, packaging and what nobody verified.
+- [Native Linux app](native-linux.md) - Cook's Notebook as a GTK 4 and libadwaita app on GJS (`packages/linux`): one list of the shipped dishes under the dish filter, a dish with amounts per portion, cooking step by step, what can I cook from the stock of the shown space and ticking that stock, joining a space by link; what it shares with the web app, what 0.1 leaves out, the alignment of the ingredient list, build, release, packaging and what nobody verified.
 - [Development](development.md) - Setup, commands, layout, the engine's purity rule, the app build, generated validators, tests and service worker, CI (jobs `check` and `e2e`) and the network hosts.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

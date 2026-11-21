@@ -1,0 +1,15 @@
+{
+  "id": "round-measure-half-cup-noise",
+  "description": "Half a cup derived to 10 significant digits is still exactly half a cup",
+  "inputs": {
+    "kind": "round_measure",
+    "ml": 118.2941183,
+    "measure": "cup"
+  },
+  "expected": {
+    "value": 0.5,
+    "exact": true
+  },
+  "tolerance": 1e-9,
+  "source": "118.2941183 ml is 236.5882365 / 2 cut to 10 significant digits, as deriveClassic writes it: 0.49999999987 cups, half a cup and exact for display (the relative difference is below 1e-8)."
+}

@@ -192,3 +192,45 @@ describe('the table', () => {
     expect(ids(facts([{ classes: ['milk'], g: 1 }]), [{ id: 'x', when: [{}] }])).toEqual([]);
   });
 });
+
+describe('more ingredients and the course', () => {
+  const MAYO: CharacterRule = {
+    id: 'creamy',
+    when: [{ ingredients: ['yolk'], alsoIngredients: [['oil']], techniques: ['cold-emulsion'] }],
+  };
+  const SWEET: CharacterRule = {
+    id: 'sweet',
+    when: [{ ingredients: ['sugar'], courses: ['dessert', 'baking'] }],
+  };
+
+  test('alsoIngredients: every list must have a line as well, by presence', () => {
+    const yolkAndOil = facts([{ classes: ['yolk'] }, { classes: ['oil'] }], ['cold-emulsion']);
+    expect(dishCharacters(yolkAndOil, [MAYO]).characters).toEqual([
+      { id: 'creamy', reason: { clause: 0, by: 'presence' } },
+    ]);
+    expect(ids(facts([{ classes: ['yolk'] }], ['cold-emulsion']), [MAYO])).toEqual([]);
+    expect(ids(facts([{ classes: ['oil'] }], ['cold-emulsion']), [MAYO])).toEqual([]);
+  });
+
+  test('courses: the course the dish states must be one of them; no course, no match', () => {
+    const sugar = [{ classes: ['sugar'] }];
+    expect(ids({ ...facts(sugar), course: 'dessert' }, [SWEET])).toEqual(['sweet']);
+    expect(ids({ ...facts(sugar), course: 'soup' }, [SWEET])).toEqual([]);
+    expect(ids(facts(sugar), [SWEET])).toEqual([]);
+  });
+
+  test('a clause of a course alone gives the reason course; in unless it takes the character away', () => {
+    const rule: CharacterRule = { id: 'x', when: [{ courses: ['soup'] }] };
+    expect(dishCharacters({ ...facts([]), course: 'soup' }, [rule]).characters).toEqual([
+      { id: 'x', reason: { clause: 0, by: 'course' } },
+    ]);
+    const fried: CharacterRule = {
+      id: 'fried',
+      when: [{ techniques: ['pan-fry'] }],
+      unless: [{ courses: ['soup', 'sauce'] }],
+    };
+    expect(ids({ ...facts([], ['pan-fry']), course: 'main' }, [fried])).toEqual(['fried']);
+    expect(ids({ ...facts([], ['pan-fry']), course: 'soup' }, [fried])).toEqual([]);
+    expect(ids(facts([], ['pan-fry']), [fried])).toEqual(['fried']);
+  });
+});

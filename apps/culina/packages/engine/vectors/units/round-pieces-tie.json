@@ -1,0 +1,14 @@
+{
+  "id": "round-pieces-tie",
+  "description": "2.25 pieces round away from zero to 2.5",
+  "inputs": {
+    "kind": "round_pieces",
+    "count": 2.25
+  },
+  "expected": {
+    "value": 2.5,
+    "exact": false
+  },
+  "tolerance": 1e-9,
+  "source": "2.25 / 0.5 = 4.5, a tie, away from zero: 5 halves. Display rule (assumption, unverified, no source): pieces to the nearest half, at least a half; the exact count is kept for sums."
+}

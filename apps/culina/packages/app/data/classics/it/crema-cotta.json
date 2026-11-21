@@ -84,7 +84,7 @@
         {
           "text": {
             "en": "Beat the egg yolks with the sugar.",
-            "de": "Die Eigelb mit dem Zucker verrühren."
+            "de": "Die Eigelbe mit dem Zucker verrühren."
           },
           "action": "whisk",
           "uses": ["yolk", "sugar"]
@@ -100,7 +100,7 @@
         {
           "text": {
             "en": "To speed up the cooking you may use a strong heat, but as soon as it starts to steam, lower the heat.",
-            "de": "Zum Beschleunigen darf die Hitze stark sein; sobald es dampft, die Hitze senken."
+            "de": "Anfangs darf die Hitze stark sein, damit es schneller geht; sobald die Creme dampft, die Hitze senken."
           },
           "action": "heat",
           "uses": ["milk"]
@@ -108,14 +108,14 @@
         {
           "text": {
             "en": "If it curdles, pass the cream through a sieve.",
-            "de": "Gerinnt sie, die Creme durch ein Sieb passieren."
+            "de": "Falls die Creme gerinnt, sie durch ein Sieb passieren."
           },
           "action": "strain"
         },
         {
           "text": {
             "en": "Cook it, stirring all the time in circles, until it sticks to the spoon.",
-            "de": "Unter ständigem Rühren im Kreis garen, bis sie am Löffel haften bleibt."
+            "de": "Unter ständigem Rühren im Kreis garen, bis die Creme am Löffel haften bleibt."
           },
           "technique": "thicken-with-egg",
           "uses": ["milk", "yolk", "sugar"]
@@ -123,7 +123,7 @@
         {
           "text": {
             "en": "Add the vanilla shortly before taking it off the heat.",
-            "de": "Die Vanille kurz vor dem Vom-Herd-Nehmen zugeben."
+            "de": "Die Vanille zugeben, kurz bevor der Topf vom Herd kommt."
           },
           "action": "add",
           "uses": ["vanilla"]

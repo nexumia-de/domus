@@ -45,14 +45,14 @@ export const classicsStringsDe: typeof classicsStrings = {
   unknownDish: 'Dieses Gericht steht nicht in der Liste.',
   originalName: (name: string): string => `Originalname: ${name}`,
   sourceHeading: 'Quelle',
+  // The year only once: some titles end with the imprint and its year already.
   sourceLine: (author: string, title: string, year: number): string =>
-    `${author}, ${title}, ${year}`,
+    `${title}`.includes(`${year}`) ? `${author}, ${title}` : `${author}, ${title}, ${year}`,
   sourcePlace: (place: string): string => `Fundstelle: ${place}`,
   sourceLink: 'Quelle öffnen',
   sourceLicence: (licence: string): string => `Lizenz: ${licence}`,
   personsStated: (n: number): string => `Die Quelle gibt ihre Mengen für ${n} Personen an.`,
-  personsSettled: (n: number): string =>
-    `Die Quelle nennt keine Zahl; wir haben ${n} Personen angesetzt.`,
+  personsSettled: (n: number): string => `Die Quelle nennt keine Zahl; angenommen: ${n} Personen.`,
   portionsLabel: 'Portionen',
   portionsFewer: 'Weniger Portionen',
   portionsMore: 'Mehr Portionen',
@@ -64,7 +64,6 @@ export const classicsStringsDe: typeof classicsStrings = {
   asNeeded: 'nach Bedarf',
   settledMark: 'von uns festgelegt',
   amountRange: (a: string, b: string): string => `${a} bis ${b}`,
-  pieces: (n: string): string => `${n} Stk.`,
   optional: 'optional',
   remarksHeading: 'Anmerkungen zur Quelle',
   remarkLine: (name: string, original?: string, remark?: string): string =>
@@ -116,9 +115,9 @@ export const classicsStringsDe: typeof classicsStrings = {
   learnedDone: (name: string): string =>
     `Als gelernt markiert: ${name}. Der Hinweis erscheint nicht mehr. In den Einstellungen kommt er zurück.`,
   // Handling note
-  handlingHeading: (name: string): string => `Umgang: ${name}`,
+  handlingHeading: (name: string): string => `Tipp zu ${name}`,
   // Substitutes
-  insteadButton: 'Stattdessen',
+  insteadButton: 'Ersatz',
   insteadLabel: (name: string): string => `Statt ${name}`,
   factorQuarter: 'Menge: etwa ein Viertel',
   factorThird: 'Menge: etwa ein Drittel',

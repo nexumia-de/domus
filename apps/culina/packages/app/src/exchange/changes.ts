@@ -6,8 +6,8 @@ export const changeSpan = async (store: ReadStore): Promise<ChangeSpan> => {
   let first: string | undefined;
   let last: string | undefined;
   for (const kind of KINDS) {
-    // Skills and the old stock are not in the export file: a change to them is no unexported change.
-    if (kind === 'skills' || kind === 'stock') continue;
+    // The old stock is not in the export file: a change to it is no unexported change.
+    if (kind === 'stock') continue;
     const listed = await store.listRows(kind);
     if (!listed.ok) continue;
     for (const row of listed.rows) {

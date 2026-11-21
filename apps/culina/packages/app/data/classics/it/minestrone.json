@@ -36,7 +36,7 @@
           },
           "note": {
             "en": "'The usual boiled meat'.",
-            "de": "'Das übliche Lesso'."
+            "de": "‚Das übliche Lesso‘."
           },
           "sourceNote": {
             "en": "The source gives neither kind nor weight.",
@@ -66,7 +66,7 @@
           },
           "note": {
             "en": "'A handful' of shelled fresh beans.",
-            "de": "'Eine Handvoll' ausgelöste frische Bohnen."
+            "de": "‚Eine Handvoll‘ ausgelöste frische Bohnen."
           },
           "sourceNote": {
             "en": "The source gives no weight and no size of the handful.",
@@ -75,9 +75,9 @@
         },
         {
           "key": "savoy",
-          "wanted": {
-            "en": "Savoy cabbage",
-            "de": "Wirsingkohl"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170388"
           },
           "note": {
             "en": "Cut into thin strips.",
@@ -103,7 +103,7 @@
           },
           "note": {
             "en": "'A little' chard.",
-            "de": "'Wenig' Mangold."
+            "de": "‚Wenig‘ Mangold."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -142,7 +142,7 @@
           },
           "note": {
             "en": "'A pinch'.",
-            "de": "'Ein Pizzico'."
+            "de": "Eine Prise (un pizzico)."
           },
           "sourceNote": {
             "en": "The source gives no weight for it.",
@@ -195,7 +195,7 @@
           },
           "note": {
             "en": "'Very little' onion.",
-            "de": "'Ganz wenig' Zwiebel."
+            "de": "‚Ganz wenig‘ Zwiebel."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -204,13 +204,13 @@
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
           },
           "note": {
-            "en": "'A little'.",
-            "de": "'Ein wenig'."
+            "en": "Tomato sauce or paste, 'a little'.",
+            "de": "Tomatensauce oder Tomatenmark, ‚ein wenig‘."
           },
           "sourceNote": {
             "en": "The source gives no amount.",
@@ -239,7 +239,7 @@
           },
           "note": {
             "en": "'Enough' rice to make the soup nearly dry.",
-            "de": "'Reichlich' Reis, bis die Suppe fast trocken ist."
+            "de": "‚Reichlich‘ Reis, bis die Suppe fast trocken ist."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -254,7 +254,7 @@
           },
           "note": {
             "en": "'A good pinch'.",
-            "de": "'Ein guter Pizzico'."
+            "de": "Eine gute Prise (un buon pizzico)."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -386,7 +386,7 @@
         {
           "text": {
             "en": "Just before taking it off the heat, add a good pinch of parmesan.",
-            "de": "Kurz bevor es vom Herd kommt, einen guten Pizzico Parmesan dazugeben."
+            "de": "Kurz bevor die Suppe vom Herd kommt, eine gute Prise Parmesan dazugeben."
           },
           "action": "add",
           "uses": ["parmesan"]

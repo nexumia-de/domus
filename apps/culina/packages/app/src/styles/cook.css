@@ -44,8 +44,7 @@
 }
 
 .cook-start-heading,
-.cook-nearest-heading,
-.classic-nearest-heading {
+.cook-nearest-heading {
   margin: var(--sp-3) 0 var(--sp-2);
   font-size: var(--fs-md);
 }
@@ -58,27 +57,23 @@
   justify-content: space-between;
 }
 
-.cook-head,
-.classic-head {
+.cook-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   column-gap: var(--sp-3);
 }
 
-.cook-entry .cook-link,
-.classic-entry .classic-found-link {
+.cook-entry .cook-link {
   gap: var(--sp-1);
 }
 
-.cook-note,
-.classic-note {
+.cook-note {
   display: block;
 }
 
 /* Offers and substitutes are plain text beside the facts; the status words carry the meaning. */
-.cook-status,
-.classic-status {
+.cook-status {
   font-weight: 600;
 }
 
@@ -120,10 +115,12 @@
   color: var(--text-muted);
 }
 
-.cook-classics {
-  margin-top: var(--sp-4);
+/* The two groups of the one list: dishes of both origins, then components and ratio cards. */
+.cook-group-heading {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: var(--fs-md);
 }
 
-.cook-classics-heading {
-  margin: var(--sp-4) 0 var(--sp-2);
+.cook-parts-hidden {
+  margin-top: var(--sp-3);
 }

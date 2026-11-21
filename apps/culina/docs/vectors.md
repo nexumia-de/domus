@@ -66,14 +66,17 @@ Field names are snake_case in the vectors and camelCase in the code; the
 runners map them. Error vectors carry `error_code` (and `error_line_id`
 where the error names a line) instead of `expected`.
 
-| `kind`         | Inputs                                                                                   | Expected                                                        |
-| -------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `convert`      | `amount` (`value`, `unit`), `to`, optional `facts` (`densityGPerMl`, `unitWeightG`)      | `value` in unit `to`                                            |
-| `round`        | `g`, optional `step_g` (absent: the default display step)                                | `g`                                                             |
-| `scale_factor` | `lines` (`id`, optional `amount`, `role`), `factor`, optional `salt_roles`               | `factor`, `values` (amount per line id), `unscaled`, `cautions` |
-| `scale_total`  | `lines`, `target_g`, optional `facts_by_id`, optional `salt_roles`                       | as `scale_factor`                                               |
-| `scale_line`   | `lines`, `line_id`, `have` (an amount), optional `facts_by_id`, optional `salt_roles`    | as `scale_factor`                                               |
-| `hydration`    | `lines` (`id`, `g`, `role`, optional `composition`, `component`), optional `water_roles` | `hydration_pct`, `flour_g`, `water_g`, `not_counted`            |
+| `kind`              | Inputs                                                                                   | Expected                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `convert`           | `amount` (`value`, `unit`), `to`, optional `facts` (`densityGPerMl`, `unitWeightG`)      | `value` in unit `to`                                            |
+| `round`             | `g`, optional `step_g` (absent: the default display step)                                | `g`                                                             |
+| `round_pieces`      | `count`                                                                                  | `value` (to a half, at least a half), `exact`                   |
+| `round_measure`     | `ml`, `measure` (`tsp`, `tbsp`, `cup`)                                                   | `value` (measures to a quarter, at least a quarter), `exact`    |
+| `household_measure` | `ml` (the size of one unit of a word)                                                    | `measure` (`tsp`, `tbsp`, `cup` or `null`)                      |
+| `scale_factor`      | `lines` (`id`, optional `amount`, `role`), `factor`, optional `salt_roles`               | `factor`, `values` (amount per line id), `unscaled`, `cautions` |
+| `scale_total`       | `lines`, `target_g`, optional `facts_by_id`, optional `salt_roles`                       | as `scale_factor`                                               |
+| `scale_line`        | `lines`, `line_id`, `have` (an amount), optional `facts_by_id`, optional `salt_roles`    | as `scale_factor`                                               |
+| `hydration`         | `lines` (`id`, `g`, `role`, optional `composition`, `component`), optional `water_roles` | `hydration_pct`, `flour_g`, `water_g`, `not_counted`            |
 
 `bakers_percent` and `scale_bakers` keep the fields above, with one
 mapping in the runner: `is_flour` true gives the role `flour`; in a
@@ -120,7 +123,7 @@ result as for the finder, `urgency: null` asserts none.
 Errors: `error_code` is a `makeable` code or a `deriveClassic` one, and
 `error_detail.classic` names the classic. Covered: complete with water and a
 `wanted` line apart, one line lacking, beyond the threshold (not listed),
-German names with a sibling substitute, the ranking by urgency, a classic that
+German names with a sibling substitute, a declared substitute effect (and the same classic without it), the ranking by urgency, a classic that
 does not derive.
 
 ## Kinds of components, yield and portions (issue 10)
@@ -133,13 +136,13 @@ top-level fields are snake_case. Yield figures in vectors are synthetic
 and say so in `source`. Error vectors carry `error_code` and
 `error_detail` (`componentId`, `index`, `path`, `cause`, `state`, `field`).
 
-| `kind`             | Inputs                                                                                                                   | Expected                                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| `expand_component` | `components`, `id`, optional `output_g`, optional `facts_by_ingredient`                                                  | `raw` (`ingredient_id`, optional `state`, `role`, `g`, in order), `raw_g`, `factor`, `unmeasured` (`path`, `index`, `ref_id`) |
-| `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` (indexes)                         |
-| `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                        |
-| `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                   |
-| `convert_lines`    | `component`, `to` (`weight` or `percent`), optional `facts_by_ingredient`                                                | `lines`: the new `amount` (`value`, `unit`) per line in order, absent for a line without amount; the grams are checked equal  |
+| `kind`             | Inputs                                                                                                                   | Expected                                                                                                                                                                                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `expand_component` | `components`, `id`, optional `output_g`, optional `facts_by_ingredient`, optional `without_yield` (`input`)              | `raw` (`ingredient_id`, optional `state`, `role`, `g`, in order), `raw_g`, `factor`, `unmeasured` (`path`, `index`, `ref_id`); optional `unconverted` (the same and `cause`, the conversion code) and `unweighed` (component ids), both empty when absent |
+| `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` and `unconverted` (indexes)                                                                                                                                   |
+| `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                                                                                                                                                    |
+| `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                                                                                                                                               |
+| `convert_lines`    | `component`, `to` (`weight` or `percent`), optional `facts_by_ingredient`                                                | `lines`: the new `amount` (`value`, `unit`) per line in order, absent for a line without amount; the grams are checked equal                                                                                                                              |
 
 ## Kind of cross-record validation (issue 36)
 
@@ -212,23 +215,27 @@ Run by `test/makeable-vectors.test.ts` from `packages/engine/vectors/makeable/`.
 `expected` is a subset of the result: objects by field, arrays by position
 and length; `urgency: null` asserts no urgency.
 
-| `kind`            | `inputs`                                                                                                                                                                                          | `expected`                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `substitutes` (declared substitute effects), `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst` |
-| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                                                                    | `items` (`itemId`, `ingredientId`, `useBy`)  |
-| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `options` (`siblingSubstitution`)                                                                | `records` (`kind`, `id`), exactly, in order  |
+| `kind`            | `inputs`                                                                                                                                                                                                                                      | `expected`                                                |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `substitutes` (declared substitute effects), `parts` (`whole`, `parts`), `options` (`siblingSubstitution`, `groupInStock`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst`              |
+| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                                                                                                                | `items` (`itemId`, `ingredientId`, `useBy`)               |
+| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `parts`, `options` (`siblingSubstitution`, `groupInStock`)                                                                                   | `records` (`kind`, `id`), exactly, in order               |
+| `rank_candidates` | `candidates` (`kind`, `id`, `name`, `roles`, optional `urgency.daysLeft`; own and classic kinds mixed)                                                                                                                                        | `order` (`kind:id`), exactly, also for the reversed input |
 
 Errors use `error_code` and `error_detail` as elsewhere (`invalid-tree`,
 `invalid-date`, `cycle`, `invalid-template`). Covered: exact match, a
-parent line taking a descendant, a generic item not satisfying a specific
-line, sibling substitution on, off, earliest use-by and for a class line, a
+parent line taking a descendant, a group in stock covering a member
+(`group-in-stock-*`: nearest group, short, own first, before a sibling, state)
+and, with `groupInStock` off, not (`group-in-stock-off`), a whole covering a
+part (`part-*`), the kitchen's water (`kitchen-water-*`, `template-water-*`),
+a group covering a template role (`template-group-covers-role`), sibling substitution on, off, earliest use-by and for a class line, a
 short substitute keeping the amount, state mismatch (cooked line and raw
 item, raw item and prepared component), a prepared component in stock,
 presence-only stock, short amounts, batches adding up, conversion by the
 engine, partial matches with the threshold, optional lines, a nested
 component from stock and made (scaled, short, unscaled), family heads and a
 stock item of another version, the ranking (urgency beats roles, roles break
-an urgency tie, name then id, no use-by last, a date in the past),
+an urgency tie, name then id, no use-by last, a date in the past; own candidates and classics ranked as one list, and the ties by name, id and kind),
 always-there items, empty stock, open roles, ratio templates (inherited
 roles, threshold, swapped class), use up first, what uses an ingredient (itself, a class above, a sibling, through a component, head versions only, a generic item not standing for a specific line) and the errors. Amounts,
 dates and ingredients are synthetic and say so in `source`.
@@ -264,10 +271,11 @@ food (the shipped numbers are read from USDA by the generator, never typed);
 expected values are computed by hand. `expected` is compared deeply with the
 vector's `tolerance`.
 
-| `kind`            | Inputs                                                                                                            | Expected                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `nutrition_dish`  | `derived` (`dish` with `portions` and `slots`, `components`, as `deriveClassic` gives them), `facts`, `nutrition` | `portions`, `perPortion`, `countedGPerPortion`, `coverage`, `notReported`; or `error_code` |
-| `nutrition_round` | `figures` (a `PortionNutrients`)                                                                                  | `rounded`; or `error_code` `invalid-value` with `error_detail.field`                       |
+| `kind`              | Inputs                                                                                                                                         | Expected                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `nutrition_dish`    | `derived` (`dish` with `portions` and `slots`, `components`, as `deriveClassic` gives them), `facts`, `nutrition`, optional `seasonings` (ids) | `portions`, `perPortion`, `countedGPerPortion`, `coverage`, `notReported`, `shown`; or `error_code` |
+| `nutrition_figures` | `records` (id to `FigureRecord`: `parentId`, `densityGPerMl`, `unitWeightG`, `nutrition`, `usualId`), `ids`                                    | per id the `lineFigures` result: `facts`, `nutrition`, `from`                                       |
+| `nutrition_round`   | `figures` (a `PortionNutrients`)                                                                                                               | `rounded`; or `error_code` `invalid-value` with `error_detail.field`                                |
 
 ## Kinds of substitute effects (issue 93)
 

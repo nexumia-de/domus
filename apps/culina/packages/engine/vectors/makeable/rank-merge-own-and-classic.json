@@ -1,0 +1,50 @@
+{
+  "id": "rank-merge-own-and-classic",
+  "description": "Own candidates and shipped classics in one list by the same contract: urgency first (a classic with 1 day left before an own dish with 3), then roles covered, then name; a candidate without urgency is last whatever its origin",
+  "inputs": {
+    "kind": "rank_candidates",
+    "candidates": [
+      {
+        "kind": "dish",
+        "id": "own-soup",
+        "name": "Leek soup",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 3 }
+      },
+      { "kind": "component", "id": "own-stock", "name": "Brown stock", "roles": [] },
+      { "kind": "classic", "id": "pot-au-feu", "name": "Pot-au-feu", "roles": ["main", "sauce"] },
+      {
+        "kind": "classic",
+        "id": "risotto",
+        "name": "Risotto",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 1 }
+      },
+      {
+        "kind": "dish",
+        "id": "own-salad",
+        "name": "Bean salad",
+        "roles": ["main", "acid", "crunch"]
+      },
+      {
+        "kind": "classic",
+        "id": "omelette",
+        "name": "Omelette",
+        "roles": ["main"],
+        "urgency": { "daysLeft": -1 }
+      }
+    ]
+  },
+  "expected": {
+    "order": [
+      "classic:omelette",
+      "classic:risotto",
+      "dish:own-soup",
+      "dish:own-salad",
+      "classic:pot-au-feu",
+      "component:own-stock"
+    ]
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the contract is in docs/engine-rules.md#what-the-stock-allows (ranking contract)."
+}

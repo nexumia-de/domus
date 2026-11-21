@@ -215,6 +215,8 @@
       "id": "u-00000000-0000-4000-8000-000000000002",
       "name": "Example dish",
       "portions": 2,
+      "course": "main",
+      "cuisine": "de",
       "slots": [
         {
           "role": "main",

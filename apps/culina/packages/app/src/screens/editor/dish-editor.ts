@@ -1,6 +1,9 @@
-// The dish editor: name, portions, role slots with a filling (component or ingredient) and an
+// The dish editor: name, portions, course and cuisine, role slots with a filling (component or ingredient) and an
 // amount per portion. Same draft and save rules as the component editor.
+import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
 import { roleLabel } from '../../components/names';
+import { courseLabel, cuisineLabel } from '../dish-filter';
+import { selectField } from '../fields';
 import { stepsEditor } from './component-steps-editor';
 import { openRoles } from '../../dishes/roles';
 import {
@@ -51,6 +54,7 @@ import { picker } from './picker';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
 import { asNextVersion, tastingText } from '../../editor/version-save';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.editor;
 const isForm = (value: unknown): value is DishForm =>
@@ -140,6 +144,33 @@ const build = (
     portionsError.clear();
     changed();
   });
+  // Course and cuisine: optional, the same lists as a classic states; "not stated" comes first.
+  const course = selectField(
+    t.courseLabel,
+    [
+      { value: '', label: t.notStated },
+      ...COURSE_IDS.map((c) => ({ value: c, label: courseLabel(c) })),
+    ],
+    form.course ?? '',
+  );
+  course.control.classList.add('dish-course');
+  course.control.addEventListener('change', () => {
+    form.course = course.control.value;
+    changed();
+  });
+  const cuisine = selectField(
+    t.cuisineLabel,
+    [
+      { value: '', label: t.notStated },
+      ...COUNTRY_CODES.map((c) => ({ value: c, label: cuisineLabel(c) })),
+    ],
+    form.cuisine ?? '',
+  );
+  cuisine.control.classList.add('dish-cuisine');
+  cuisine.control.addEventListener('change', () => {
+    form.cuisine = cuisine.control.value;
+    changed();
+  });
   const note = areaField(t.noteLabel, form.note);
   note.control.addEventListener('input', () => {
     form.note = note.control.value;
@@ -216,11 +247,7 @@ const build = (
     });
     mark(amount.control, parseEntry(slot.amount).kind === 'invalid');
     const units: readonly string[] = slot.ref?.kind === 'component' ? MASS_ONLY : AMOUNT_UNITS;
-    const unit = bareSelect(
-      `${t.unitLabel}, ${label}`,
-      units.map((u) => ({ value: u, label: u })),
-      slot.unit,
-    );
+    const unit = bareSelect(`${t.unitLabel}, ${label}`, unitOptions(units), slot.unit);
     unit.addEventListener('change', () => {
       slot.unit = unit.value as AmountUnit;
       changed();
@@ -296,8 +323,12 @@ const build = (
             if (ref.kind === 'component' && !(MASS_ONLY as readonly string[]).includes(slot.unit)) {
               slot.unit = 'g';
             }
-            open = undefined;
-            focusAfter = [`[data-pick="${index}"]`];
+            // A catalogue pick is stored first and lands later; by then another slot may have
+            // its picker open, which this pick must not close.
+            if (open === index) {
+              open = undefined;
+              focusAfter = [`[data-pick="${index}"]`];
+            }
             changed();
             draw();
           },
@@ -404,6 +435,8 @@ const build = (
     nameError.node,
     portions.wrap,
     portionsError.node,
+    course.wrap,
+    cuisine.wrap,
     note.wrap,
     el('h2', undefined, t.slotsHeading),
     list,

@@ -8,6 +8,7 @@ import {
   hydration,
   portionsFromYield,
   portionWeight,
+  runGrams,
   toEdible,
   toPurchased,
   yieldFor,
@@ -64,6 +65,39 @@ describe('componentLineGrams', () => {
     };
     expect(componentLineGrams(c)).toMatchObject({ ok: false, error: { code: 'no-percent-base' } });
   });
+  test('a line whose ingredient lacks a fact is listed and left out of the input', () => {
+    const c: Component = {
+      id: 'c',
+      lines: [ing('tomato', 400), ing('onion', 1, 'count'), ing('oil', 10, 'ml')],
+    };
+    const r = componentLineGrams(c, { oil: { densityGPerMl: 0.9 } });
+    expect(r).toMatchObject({
+      ok: true,
+      inputG: 409,
+      unmeasured: [],
+      unconverted: [{ index: 1, cause: { code: 'needs-unit-weight' } }],
+    });
+    expect(r.ok && r.lines.map((l) => l.index)).toEqual([0, 2]);
+  });
+  test('percent lines resting on a base line that lacks a fact are cannot-convert', () => {
+    const c: Component = {
+      id: 'c',
+      percentBase: 'flour',
+      lines: [
+        { ...ing('flour', 500, 'ml'), role: 'flour' },
+        { ...ing('water'), amount: { value: 70, unit: 'percent' } },
+      ],
+    };
+    expect(componentLineGrams(c)).toMatchObject({
+      ok: false,
+      error: { code: 'cannot-convert', index: 0, cause: { code: 'needs-density' } },
+    });
+    // Without percent lines the same base line is only listed.
+    expect(componentLineGrams({ ...c, lines: [c.lines[0] as ComponentLine] })).toMatchObject({
+      ok: true,
+      unconverted: [{ index: 0 }],
+    });
+  });
   test('invalid values are errors, not NaN', () => {
     expect(componentLineGrams({ id: 'c', lines: [ing('x', -1)] })).toMatchObject({
       error: { code: 'cannot-convert', cause: { code: 'invalid-value' } },
@@ -98,9 +132,46 @@ describe('expandComponent', () => {
     expect(r).toMatchObject({ ok: true, rawG: 75, raw: [{ ingredientId: 'x', g: 75 }] });
   });
   test('errors inside a nested component carry its id', () => {
-    const s: Component = { id: 's', lines: [ing('x', 100, 'ml')], yield: yieldOf(100) };
+    const s: Component = { id: 's', lines: [ing('x', -100)], yield: yieldOf(100) };
     const r = expandComponent([{ id: 't', lines: [sub('s', 10)] }, s], 't');
     expect(r).toMatchObject({ error: { code: 'cannot-convert', componentId: 's', index: 0 } });
+  });
+  test('a line that lacks a fact inside a nested component is listed with its path, the rest expands', () => {
+    const s: Component = {
+      id: 's',
+      lines: [ing('x', 100, 'ml'), ing('y', 100)],
+      yield: yieldOf(100),
+    };
+    const r = expandComponent([{ id: 't', lines: [sub('s', 10)] }, s], 't');
+    expect(r).toMatchObject({
+      ok: true,
+      rawG: 10,
+      raw: [{ ingredientId: 'y', g: 10 }],
+      unconverted: [{ path: ['t', 's'], index: 0, cause: { code: 'needs-density' } }],
+      unweighed: [],
+    });
+  });
+  test('without a yield a run is no-yield, or with withoutYield its input', () => {
+    const s: Component = { id: 's', lines: [ing('x', 300), ing('egg', 1, 'count')] };
+    const t: Component = { id: 't', lines: [sub('s', 100)] };
+    expect(expandComponent([t, s], 't')).toMatchObject({ error: { code: 'no-yield' } });
+    expect(expandComponent([t, s], 's', {}, { outputG: 150 })).toMatchObject({
+      error: { code: 'no-yield', componentId: 's' },
+    });
+    // The egg has no piece weight: the run weighs its converted input, 300 g.
+    expect(expandComponent([t, s], 't', {}, { withoutYield: 'input' })).toMatchObject({
+      ok: true,
+      raw: [{ ingredientId: 'x', g: 100 }],
+      unweighed: ['s'],
+    });
+    expect(expandComponent([t, s], 's', {}, { outputG: 150, withoutYield: 'input' })).toMatchObject(
+      { ok: true, factor: 0.5, raw: [{ ingredientId: 'x', g: 150 }], unweighed: ['s'] },
+    );
+    // A recorded yield is used as before and nothing is listed.
+    const weighed = { ...s, yield: yieldOf(200) };
+    expect(
+      expandComponent([t, weighed], 's', {}, { outputG: 100, withoutYield: 'input' }),
+    ).toMatchObject({ ok: true, factor: 0.5, unweighed: [] });
   });
   test('an expansion feeds hydration as the composition of a preferment', () => {
     const poolish: Component = {
@@ -132,12 +203,35 @@ describe('expandComponent', () => {
   });
 });
 
+describe('runGrams', () => {
+  test('the recorded yield, else only on request the input, else nothing', () => {
+    const c: Component = { id: 'c', lines: [ing('x', 10), ing('egg', 2, 'count')] };
+    expect(runGrams(c)).toEqual({ ok: true, weighed: false });
+    expect(runGrams(c, {}, 'input')).toEqual({ ok: true, g: 10, weighed: false });
+    expect(runGrams(c, { egg: { unitWeightG: 50 } }, 'input')).toEqual({
+      ok: true,
+      g: 110,
+      weighed: false,
+    });
+    expect(runGrams({ ...c, yield: yieldOf(90) }, {}, 'input')).toEqual({
+      ok: true,
+      g: 90,
+      weighed: true,
+    });
+    expect(runGrams({ id: 'e', lines: [ing('x')] }, {}, 'input')).toEqual({
+      ok: true,
+      weighed: false,
+    });
+  });
+});
+
 describe('componentYield', () => {
   test('without a yield it is unknown, with a yield of zero input an error', () => {
     expect(componentYield({ id: 'c', lines: [ing('x', 10)] })).toEqual({
       ok: true,
       inputG: 10,
       unmeasured: [],
+      unconverted: [],
       yield: { known: false },
     });
     expect(componentYield({ id: 'c', lines: [ing('x')] })).toMatchObject({

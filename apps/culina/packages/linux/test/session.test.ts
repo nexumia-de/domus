@@ -161,8 +161,9 @@ test('the choice of space and the filters are kept in the preferences', async ()
   const only = must(session.state().space).id;
   await session.choose(only);
   expect(kept.get(PREFS.space)).toBe(only);
-  session.setFilters({ lacking: 3, country: 'it', meatFree: true });
-  expect(session.filters()).toEqual({ lacking: 3, country: 'it', meatFree: true });
+  // An older country and meat choice in the same entry are not read back (no filter any more).
+  session.setFilters({ lacking: 3, country: 'it', meatFree: true } as never);
+  expect(session.filters()).toEqual({ lacking: 3 });
   session.setFilters({ lacking: 0 });
   expect(session.filters()).toEqual({ lacking: 0 });
   session.stop();
@@ -186,4 +187,73 @@ test('the dish view takes its amounts from the engine: more portions, bigger amo
   expect(portionsOf(noodles.id)).toBe(2);
   setPortions(noodles.id, 5);
   expect(portionsOf(noodles.id)).toBe(5);
+});
+
+test('every dish is an entry of the web app, and the one filter narrows the list', async () => {
+  const { session } = await make();
+  await session.load();
+  const all = session.entries();
+  expect(all).toHaveLength(classics().length);
+  expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
+  // What is offered comes from the dishes: the four countries in their order, courses, characters.
+  const offered = session.offered();
+  expect(offered.origins).toEqual(['shipped']);
+  expect(offered.cuisines).toEqual(['de', 'it', 'fr', 'es']);
+  expect(offered.courses.length).toBeGreaterThan(1);
+  expect(offered.characters.length).toBeGreaterThan(0);
+  // Each choice keeps only what passes it, and the choices combine.
+  const italian = session.dishes({ cuisine: 'it' });
+  expect(italian.length).toBeGreaterThan(0);
+  expect(italian.length).toBeLessThan(all.length);
+  expect(italian.every((entry) => entry.cuisine === 'it')).toBe(true);
+  const free = session.dishes({ cuisine: 'it', meatFree: true });
+  expect(free.every((entry) => entry.cuisine === 'it' && entry.meatFree === true)).toBe(true);
+  expect(free.length).toBeLessThan(italian.length);
+  const character = must(offered.characters[0]);
+  expect(session.dishes({ character }).every((e) => e.characters.includes(character))).toBe(true);
+  const course = must(offered.courses[0]);
+  expect(session.dishes({ course }).every((e) => e.course === course)).toBe(true);
+  expect(session.dishes({ completeOnly: true }).every((e) => e.complete)).toBe(true);
+  expect(session.dishes({})).toHaveLength(all.length);
+  session.stop();
+});
+
+test('the dish filter is kept under the web app key, and a change tells the pages', async () => {
+  const { session, kept } = await make();
+  let told = 0;
+  session.subscribe(() => told++);
+  expect(session.dishFilter()).toEqual({});
+  session.setDishFilter({ cuisine: 'fr', meatFree: true });
+  expect(PREFS.dishes).toBe('culina.dishes');
+  expect(kept.get('culina.dishes')).toBe('{"cuisine":"fr","meatFree":true}');
+  expect(session.dishFilter()).toEqual({ cuisine: 'fr', meatFree: true });
+  expect(told).toBe(1);
+  // What cannot be read is the empty filter.
+  kept.set(PREFS.dishes, 'not json');
+  expect(session.dishFilter()).toEqual({});
+  session.stop();
+});
+
+test('the same filter narrows what the stock allows, the nearest dishes too', async () => {
+  const { session } = await make();
+  await session.load();
+  for (const id of [EGG, MILK, FLOUR, SALT, BUTTER]) await session.tick(id);
+  const wide = session.cookable({ lacking: 3 });
+  expect(wide.ok && wide.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
+  const noodles = must(session.entries().find((e) => e.id === 'egg-noodles'));
+  const elsewhere = must(session.offered().cuisines.find((c) => c !== noodles.cuisine));
+  const narrowed = session.cookable({ lacking: 3 }, { cuisine: elsewhere });
+  expect(narrowed.ok).toBe(true);
+  if (!narrowed.ok) return;
+  const ofCuisine = new Set(session.dishes({ cuisine: elsewhere }).map((e) => e.id));
+  expect(narrowed.shown.length + narrowed.nearest.length).toBeGreaterThan(0);
+  expect([...narrowed.shown, ...narrowed.nearest].every((row) => ofCuisine.has(row.id))).toBe(true);
+  expect(narrowed.shown.some((row) => row.id === 'egg-noodles')).toBe(false);
+  // An older kept country choice of the finder does not narrow: only how much may lack is used.
+  const old = session.cookable({ lacking: 3, country: elsewhere } as never);
+  expect(old.ok && old.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
+  // A filter nothing passes gives an empty list, not a failure.
+  const nothing = session.cookable({ lacking: 3 }, { cuisine: 'xx' });
+  expect(nothing.ok && nothing.shown.length + nothing.nearest.length).toBe(0);
+  session.stop();
 });

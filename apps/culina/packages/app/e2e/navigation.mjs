@@ -1,8 +1,9 @@
 // The navigation: four destinations (Start, Cook, Notebook, Ratios) in the bottom bar, Settings as a
 // gear in the header, in English and German, at 320 and 360 px (and, with E2E_WIDE_FONT=1, in the
-// wide font the CI runner has). Each label is on one line and nothing is cut off. The Cook and
-// Notebook screens carry their parts at the top, and every former destination is reachable from
-// Start in at most two taps, the stock from anywhere in two.
+// wide font the CI runner has). Each label is on one line and nothing is cut off. The Notebook
+// carries its two parts at the top; Cook ("what the stock allows") has no parts, only its three
+// views. Every address of Cook marks Cook, every dish (own or shipped) marks the Notebook. Every
+// former destination is reachable from Start in at most two taps, the stock from anywhere in two.
 import { check, watch } from './harness.mjs';
 import { overflow } from './measure.mjs';
 
@@ -10,13 +11,11 @@ const LANGS = {
   en: {
     names: ['Start', 'Cook', 'Notebook', 'Ratios'],
     settings: 'Settings',
-    cookParts: ['With what I have', 'Classics'],
     views: ['What can I cook', 'Use up first', 'What is there'],
     notebookParts: ['Components', 'Dishes'],
     titles: {
-      start: 'What do you want to cook?',
+      start: 'What do you feel like?',
       cook: 'What can I cook',
-      classics: 'Classics by country',
       stock: 'What is there',
       useUp: 'Use up first',
       components: 'Components',
@@ -28,13 +27,11 @@ const LANGS = {
   de: {
     names: ['Start', 'Kochen', 'Notizbuch', 'Verhältnisse'],
     settings: 'Einstellungen',
-    cookParts: ['Mit meinem Vorrat', 'Klassiker'],
     views: ['Was kann ich kochen', 'Zuerst verbrauchen', 'Vorrat'],
     notebookParts: ['Komponenten', 'Gerichte'],
     titles: {
-      start: 'Was möchtest du kochen?',
+      start: 'Worauf hast du Lust?',
       cook: 'Was kann ich kochen',
-      classics: 'Klassiker nach Land',
       stock: 'Vorrat',
       useUp: 'Zuerst verbrauchen',
       components: 'Komponenten',
@@ -66,6 +63,11 @@ const go = async (page, origin, hash, title) => {
   await page.getByRole('heading', { level: 1, name: title, exact: true }).waitFor();
 };
 const hashOf = (page) => new URL(page.url()).hash;
+/** Opens an address whose heading is not fixed here and waits for its first heading. */
+const goAny = async (page, origin, hash) => {
+  await page.goto(`${origin}/?no-sw#/${hash}`);
+  await page.getByRole('heading', { level: 1 }).first().waitFor();
+};
 
 /** The bottom bar as laid out: names in order, one line each, inside the screen, 44 px targets. */
 const bar = async (browser, origin, lang, width) => {
@@ -130,7 +132,8 @@ const gear = async (browser, origin, lang, width) => {
   for (const [route, title] of [
     ['start', L.titles.start],
     ['cook', L.titles.cook],
-    ['classics', L.titles.classics],
+    // The old address of the classics lands on the one list of dishes.
+    ['classics', L.titles.dishes],
     ['stock', L.titles.stock],
     ['components', L.titles.components],
     ['dishes', L.titles.dishes],
@@ -172,7 +175,7 @@ const gear = async (browser, origin, lang, width) => {
   await context.close();
 };
 
-/** Parts at the top of Cook and the Notebook; the old routes keep working and mark their destination. */
+/** Parts at the top of the Notebook, the views of Cook; the old routes keep working and mark their destination. */
 const parts = async (browser, origin, lang, width) => {
   const L = LANGS[lang];
   const label = `${lang} ${width}px`;
@@ -183,17 +186,51 @@ const parts = async (browser, origin, lang, width) => {
       .evaluateAll((n) => n.map((x) => x.textContent));
   const tabs = () => page.locator('.section-tabs').first().getByRole('link').allTextContents();
   const marked = () => page.locator('.section-tabs [aria-current="page"]').allTextContents();
+  // Cook has no parts at the top: its three views, the current one marked.
+  const views = () => page.locator('.cook-tab').allTextContents();
+  const viewMarked = () => page.locator('.cook-tab[aria-current="page"]').allTextContents();
+  const COOK = [
+    ['cook', L.titles.cook, L.views[0]],
+    ['cook/use-up', L.titles.useUp, L.views[1]],
+    ['stock', L.titles.stock, L.views[2]],
+  ];
+  for (const [route, title, now] of COOK) {
+    await go(page, origin, route, title);
+    check(
+      (await current()).join() === L.names[1],
+      `${label} #/${route}: the bar marks ${L.names[1]} (${await current()})`,
+    );
+    check(
+      (await page.locator('.section-tabs').count()) === 0 &&
+        (await views()).join() === L.views.join() &&
+        (await viewMarked()).join() === now,
+      `${label} #/${route}: no parts at the top, the views ${L.views.join(' | ')} with ${now} marked (${await views()} / ${await viewMarked()})`,
+    );
+  }
+  // The other addresses of Cook mark Cook; a shipped dish and its cooking mode mark the Notebook,
+  // as an own dish does.
+  for (const [route, name] of [
+    ['cook/not-an-ingredient/with', L.names[1]],
+    ['stock/add', L.names[1]],
+    ['stock/not-an-item/edit', L.names[1]],
+    ['classic/sauerbraten', L.names[2]],
+    ['classic/sauerbraten/cook', L.names[2]],
+  ]) {
+    await goAny(page, origin, route);
+    check(
+      (await current()).join() === name,
+      `${label} #/${route}: the bar marks ${name} (${await current()})`,
+    );
+  }
   const CASES = [
-    ['cook', L.titles.cook, 'Cook', L.cookParts, L.cookParts[0]],
-    ['cook/use-up', L.titles.useUp, 'Cook', L.cookParts, L.cookParts[0]],
-    ['stock', L.titles.stock, 'Cook', L.cookParts, L.cookParts[0]],
-    ['classics', L.titles.classics, 'Cook', L.cookParts, L.cookParts[1]],
+    // The old address of the classics is the list of every dish, filtered to the shipped ones.
+    ['classics', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
     ['components', L.titles.components, 'Notebook', L.notebookParts, L.notebookParts[0]],
     ['dishes', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
   ];
-  for (const [route, title, entry, names, now] of CASES) {
+  for (const [route, title, , names, now] of CASES) {
     await go(page, origin, route, title);
-    const name = L.names[entry === 'Cook' ? 1 : 2];
+    const name = L.names[2];
     check(
       (await current()).join() === name,
       `${label} #/${route}: the bar marks ${name} (${await current()})`,
@@ -207,14 +244,6 @@ const parts = async (browser, origin, lang, width) => {
       .evaluateAll((n) => n.filter((x) => x.getBoundingClientRect().height < 44).length);
     check(small === 0, `${label} #/${route}: the tabs are at least 44 px high`);
   }
-  // Cook's three views are still there under its first part.
-  await go(page, origin, 'cook', L.titles.cook);
-  const views = await page.locator('.cook-tab').allTextContents();
-  check(
-    views.join() === L.views.join(),
-    `${label}: the views of Cook are ${L.views.join(' | ')} (${views})`,
-  );
-  // The country list and a dish keep Cook as their destination, cooking mode too.
   await context.close();
 };
 
@@ -233,7 +262,6 @@ const taps = async (browser, origin, lang) => {
     ['Components', '#/components', [() => nav(notebook)]],
     ['Dishes', '#/dishes', [() => nav(notebook), () => tab(L.notebookParts[1])]],
     ['Cook', '#/cook', [() => nav(cook)]],
-    ['Classics', '#/classics', [() => nav(cook), () => tab(L.cookParts[1])]],
     ['Use up first', '#/cook/use-up', [() => nav(cook), () => tab(L.views[1])]],
     ['Stock', '#/stock', [() => nav(cook), () => tab(L.views[2])]],
     ['Settings', '#/settings', [() => page.locator('header .settings-link')]],
@@ -255,7 +283,7 @@ const taps = async (browser, origin, lang) => {
     ['ratios', L.titles.ratios],
     ['dishes', L.titles.dishes],
     ['settings', L.titles.settings],
-    ['classics', L.titles.classics],
+    ['classics', L.titles.dishes],
   ]) {
     await go(page, origin, route, title);
     await nav(cook).click();
