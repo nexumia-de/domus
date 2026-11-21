@@ -1,7 +1,7 @@
 # The check of a native Linux app (GTK4, libadwaita, GJS) after checkout: the
 # bundle builds, starts in GJS (the smoke check) and the desktop file and the
 # metainfo validate. The bundle is uploaded for the Flatpak job, because
-# Flatpak builds are offline. Used by emptio-linux-check and mixtura-linux-check.
+# Flatpak builds are offline. Used by emptio-linux-check, mixtura-linux-check and culina-linux-check.
 name: Native app check
 description: Builds a native app's bundle, runs its smoke check and validates its desktop file and metainfo.
 inputs:

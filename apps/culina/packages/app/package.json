@@ -22,5 +22,10 @@
   },
   "devDependencies": {
     "fake-indexeddb": "6.2.8"
+  },
+  "exports": {
+    "./core": "./src/core.ts",
+    "./make-classics.mjs": "./make-classics.mjs",
+    "./catalogue.json": "./data/ingredient-catalogue.json"
   }
 }

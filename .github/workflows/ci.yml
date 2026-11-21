@@ -7,7 +7,7 @@
 # a model change runs them too; the host package uses the model and Mixtura
 # uses the host package, so a host change runs Mixtura and a model change runs
 # the host package. The shared package of the native Linux apps (packages/gjs)
-# uses the host package; a change to it runs Mixtura and Emptio (their native
+# uses the host package; a change to it runs Mixtura, Culina and Emptio (their native
 # packages), a change to the host package runs it. Emptio does not use the model yet. Domus (the Household
 # app at the root of the address) uses the model and the host package, so a
 # change to either runs it too, and a change to it runs the site check.
@@ -21,8 +21,8 @@ on:
   pull_request:
   push:
     branches: [main]
-    # A native app's release (emptio-release, mixtura-release below).
-    tags: ['emptio-v*', 'mixtura-v*']
+    # A native app's release (emptio-release, mixtura-release, culina-release below).
+    tags: ['emptio-v*', 'mixtura-v*', 'culina-v*']
 
 permissions:
   contents: read
@@ -68,7 +68,7 @@ jobs:
                 apps/culina/*) culina=true ;;
                 apps/emptio/*) emptio=true ;;
                 apps/domus/*) domus=true ;;
-                packages/gjs/*) gjs=true; mixtura=true; emptio=true ;;
+                packages/gjs/*) gjs=true; mixtura=true; culina=true; emptio=true ;;
                 packages/host/*) host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
                 packages/model/*) model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
                 LICENSE | *.md) ;;
@@ -412,6 +412,77 @@ jobs:
           title: Mixtura
           app-id: de.nexumia.Mixtura
           metainfo: apps/mixtura/packages/linux/data/de.nexumia.Mixtura.metainfo.xml
+          tag: ${{ github.ref_name }}
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          publish-token: ${{ secrets.PUBLISH_TOKEN }}
+
+  # The native Culina app (GTK4, libadwaita, GJS): the bundle builds, starts
+  # in GJS and its desktop file and metainfo validate. The bundle is handed to
+  # culina-flatpak, because Flatpak builds are offline. The steps are the
+  # composite action .github/actions/native-linux-check.
+  culina-linux-check:
+    name: culina-linux-check
+    needs: culina-check
+    if: needs.changes.outputs.culina == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/native-linux-check
+        with:
+          workspace: '@culina/linux'
+          directory: apps/culina/packages/linux
+          app-id: de.nexumia.Culina
+          artifact: culina-linux-bundle
+
+  # The Flatpak of the native app, x86_64 and aarch64 natively (the steps are the
+  # composite action .github/actions/native-flatpak). A tag culina-v<version> also
+  # releases it (culina-release).
+  culina-flatpak:
+    name: culina-flatpak (${{ matrix.arch }})
+    needs: culina-linux-check
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/native-flatpak
+        with:
+          app-id: de.nexumia.Culina
+          directory: apps/culina/packages/linux
+          arch: ${{ matrix.arch }}
+          bundle-artifact: culina-linux-bundle
+          licence-dirs: 'culina noble-ciphers noble-hashes ajv fast-deep-equal culina-data'
+
+  # A tag culina-v<version> releases the native app: the version must be the
+  # newest stable <release> in the metainfo (release.toml), and both bundles
+  # of the tagged commit go to the GitHub Release of the tag. phosh-apps
+  # publishes the newest such release (apps.txt: suitably/domus culina-v*).
+  culina-release:
+    name: culina-release
+    needs: culina-flatpak
+    if: startsWith(github.ref, 'refs/tags/culina-v')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/native-release
+        with:
+          app: culina
+          title: Culina
+          app-id: de.nexumia.Culina
+          metainfo: apps/culina/packages/linux/data/de.nexumia.Culina.metainfo.xml
           tag: ${{ github.ref_name }}
           token: ${{ github.token }}
           repository: ${{ github.repository }}

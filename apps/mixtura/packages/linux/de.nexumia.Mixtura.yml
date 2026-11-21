@@ -59,8 +59,8 @@ modules:
       - type: file
         path: ../../../../packages/gjs/licenses/noble-hashes-MIT.txt
       - type: file
-        path: data/licenses/ajv-MIT.txt
+        path: ../../../../packages/gjs/licenses/ajv-MIT.txt
       - type: file
-        path: data/licenses/fast-deep-equal-MIT.txt
+        path: ../../../../packages/gjs/licenses/fast-deep-equal-MIT.txt
       - type: file
         path: data/licenses/bar-assistant-MIT.txt

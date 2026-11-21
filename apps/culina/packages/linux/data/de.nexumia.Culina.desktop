@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Cook's Notebook
+Name[de]=Cook's Notebook
+Comment=Classic dishes, step by step, and what you can cook from what is there
+Comment[de]=Klassiker Schritt für Schritt und was du aus dem Vorhandenen kochen kannst
+Exec=de.nexumia.Culina
+Icon=de.nexumia.Culina
+Terminal=false
+Categories=GTK;Utility;
+Keywords=cooking;recipes;kitchen;food;classics;ingredients;
+Keywords[de]=Kochen;Rezepte;Küche;Essen;Klassiker;Zutaten;
+StartupNotify=true
+X-Purism-FormFactor=Workstation;Mobile;

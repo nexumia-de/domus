@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.nexumia.Culina</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>Cook's Notebook</name>
+  <summary>Classic dishes step by step, and what you can cook</summary>
+  <description>
+    <p>
+      Cook's Notebook is a helper in the kitchen. Pick a classic dish by
+      country, set the portions, and the app shows every amount for them and
+      leads you through the method one step at a time, with the time and
+      temperature the source gives and a short note on a technique where it
+      helps.
+    </p>
+    <p>
+      It also tells you what you can cook from what is at hand: it reads the
+      household's stock and lists the classics that stock allows, and the
+      ones that lack only an ingredient or two. Every classic names its
+      source. There is no language model: the notes are written from
+      textbooks and named sources.
+    </p>
+    <p>
+      It works offline. The classics are built in; the stock stays on your
+      device unless the household shares a space over storage it configured
+      itself, on GitHub or on a WebDAV server of its choice. There is no
+      server of ours, no account and no telemetry.
+    </p>
+  </description>
+  <developer id="de.nexumia">
+    <name>suitably</name>
+  </developer>
+  <url type="homepage">https://github.com/suitably/domus</url>
+  <url type="bugtracker">https://github.com/suitably/domus/issues</url>
+  <url type="donation">https://liberapay.com/suitably</url>
+  <launchable type="desktop-id">de.nexumia.Culina.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+  <recommends>
+    <display_length compare="ge">360</display_length>
+  </recommends>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <releases>
+    <release version="0.1.0" date="2026-11-21">
+      <description>
+        <p>Cook's Notebook is now also an app for Linux phones and desktops: browse the classics by country, set the portions, cook step by step and see what you can cook from your stock.</p>
+      </description>
+    </release>
+  </releases>
+</component>
