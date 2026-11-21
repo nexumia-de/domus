@@ -187,13 +187,15 @@ dataset's cut for a pot), the fat pork of the sauerbraten (backfat), the
 herring of the marinated herrings, the chicken of the poulet bourguignonne and
 the pollastro of the pollo alla contadina (chicken with skin, cut up), and the
 lean veal of the stracotto (lean only), eight lines in all. Lines that stay
-`wanted` for want of a food that is clearly the one named: "Beef, from the
-joint" (the frikandelle: a joint is no cut), beef bone and bones, beef
+`wanted` for want of a food that is clearly the one named: beef bone and bones, beef
 extract, kidney suet, herring milt, boiled meat (lesso), meat stock and broth,
 chicken blood, "Fatty ham (prosciutto grasso)" and carnesecca (the dataset has
 no dry-cured Italian pork; its cured ham is a US wet-cured ham, which is
 not claimed to be either). Judgement: "Beef for the pot" points at the chuck
-arm pot roast because the dataset names that cut for a pot roast.
+arm pot roast because the dataset names that cut for a pot roast. On
+2026-11-21 "Beef, from the joint" (the frikandelle) was linked to the
+beef group, a ninth line: a joint is no cut, and a source that names
+the animal and no cut points at its group, not at one cut.
 
 Judgements made when matching a line to a food: "Pepper" (no colour) is black
 pepper; "Peppergrass" is garden cress (the existing row); "Claret" and "Red

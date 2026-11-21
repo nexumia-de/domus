@@ -42,9 +42,13 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef, from the joint",
-            "de": "Rindfleisch aus dem Stück"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-beef"
+          },
+          "note": {
+            "en": "From the joint.",
+            "de": "Aus dem Stück."
           },
           "sourceNote": {
             "en": "The second form of No. 33, for when veal and pork are not to be had. The first form uses equal parts of beef, veal and medium fat pork and gives no total weight. The English gives 1½ pounds only as a garbled fraction (iy2); the German scans read 13 Pf. Not confirmed, so no amount is given.",

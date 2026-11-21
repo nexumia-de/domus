@@ -213,6 +213,95 @@ protected in Spain until 2030.
 | Buñuelos                      | p. 784             | heading |
 | Torrijas                      |                    | none    |
 
+# The 48 shipped dishes against the catalogue (2026-11-21)
+
+Measured on 2026-11-21, after the meat, poultry, fish and shellfish of
+the [catalogue](ingredient-catalogue.md#named-foods) came in and after
+linking the `wanted` lines for which the catalogue has a fitting entry.
+Counted by a throwaway test over the shipped files (not kept), which
+calls `entryOfClassic` of `packages/app/src/browse/entry.ts` for
+"complete" (every line of the derived dish and every slot has an
+amount) and the character rules for the characters.
+
+- **Amount**: lines of components and slots that carry an amount, of
+  all lines and slots.
+- **Linked before / after**: lines and slots that name a catalogue
+  ingredient (`ref`), of those that name an ingredient at all (a line or
+  slot that names a component of the dish is left out).
+- **Wanted**: lines still `wanted`, besides water; **water**: `wanted`
+  lines whose text is water, which the finder never asks for.
+
+Linking changed one line: the beef of the Frikandelle ("Beef, from the
+joint") now names the catalogue's beef group, as the source names no
+cut; its wording stays as the line's note. Every other `wanted` line
+names a food the catalogue lacks, or has only in another form (ground
+cloves and mustard seed, dried tarragon, Romano for cacio); see
+[named foods](ingredient-catalogue.md#named-foods). Amounts, units,
+methods and sources were not touched.
+
+**No shipped dish is complete**: each has at least one line or slot
+without an amount, because its source gives none ("salt", "some
+butter") or a fraction could not be read. "Complete only" therefore
+keeps no shipped dish; that is a fact of the sources, not of the links.
+
+| Country | Dish                       | Amount  | Linked before | Linked after | Wanted | Water | Complete |
+| ------- | -------------------------- | ------- | ------------- | ------------ | ------ | ----- | -------- |
+| de      | baked-potatoes-cheese      | 2 / 6   | 5 / 5         | 5 / 5        | 0      | 0     | no       |
+| de      | egg-noodles                | 2 / 7   | 5 / 6         | 5 / 6        | 0      | 1     | no       |
+| de      | eierkuchen                 | 3 / 10  | 8 / 9         | 8 / 9        | 0      | 1     | no       |
+| de      | frikandelle                | 3 / 11  | 6 / 10        | 7 / 10       | 2      | 1     | no       |
+| de      | holl-sauce                 | 2 / 8   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| de      | kartoffelkloesse           | 2 / 7   | 6 / 6         | 6 / 6        | 0      | 0     | no       |
+| de      | marinierte-heringe         | 5 / 14  | 9 / 13        | 9 / 13       | 3      | 1     | no       |
+| de      | milchsuppe                 | 4 / 9   | 7 / 7         | 7 / 7        | 0      | 0     | no       |
+| de      | napfkuchen                 | 4 / 11  | 10 / 10       | 10 / 10      | 0      | 0     | no       |
+| de      | potato-soup-fine           | 6 / 10  | 6 / 9         | 6 / 9        | 2      | 1     | no       |
+| de      | rote-gruetze               | 5 / 6   | 3 / 5         | 3 / 5        | 2      | 0     | no       |
+| de      | sauerbraten                | 6 / 18  | 15 / 17       | 15 / 17      | 1      | 1     | no       |
+| es      | alioli                     | 2 / 6   | 4 / 5         | 4 / 5        | 0      | 1     | no       |
+| es      | arlequin-de-judias         | 2 / 10  | 8 / 9         | 8 / 9        | 1      | 0     | no       |
+| es      | cocido-ordinario           | 11 / 12 | 8 / 11        | 8 / 11       | 1      | 2     | no       |
+| es      | crema-de-chocolate         | 4 / 6   | 4 / 5         | 4 / 5        | 1      | 0     | no       |
+| es      | flan-clasico               | 8 / 13  | 9 / 11        | 9 / 11       | 1      | 1     | no       |
+| es      | gazpacho-andaluz           | 2 / 8   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| es      | guisantes-al-natural       | 6 / 12  | 10 / 11       | 10 / 11      | 0      | 1     | no       |
+| es      | huevos-amerengados         | 6 / 9   | 7 / 8         | 7 / 8        | 1      | 0     | no       |
+| es      | potaje-espinacas-garbanzos | 1 / 8   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| es      | pure-de-patatas            | 3 / 9   | 7 / 8         | 7 / 8        | 0      | 1     | no       |
+| es      | sopa-de-leche              | 5 / 8   | 7 / 7         | 7 / 7        | 0      | 0     | no       |
+| es      | tortilla-de-patatas        | 4 / 6   | 5 / 5         | 5 / 5        | 0      | 0     | no       |
+| fr      | creme-caramel              | 3 / 7   | 4 / 5         | 4 / 5        | 0      | 1     | no       |
+| fr      | gratin-dauphinois          | 4 / 10  | 9 / 9         | 9 / 9        | 0      | 0     | no       |
+| fr      | haricots-verts-beurre      | 5 / 9   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| fr      | mayonnaise                 | 5 / 8   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| fr      | oeufs-a-la-neige           | 9 / 12  | 10 / 10       | 10 / 10      | 0      | 0     | no       |
+| fr      | omelette-fines-herbes      | 4 / 6   | 5 / 5         | 5 / 5        | 0      | 0     | no       |
+| fr      | pommes-au-beurre           | 3 / 5   | 4 / 4         | 4 / 4        | 0      | 0     | no       |
+| fr      | pot-au-feu                 | 11 / 12 | 8 / 11        | 8 / 11       | 2      | 1     | no       |
+| fr      | potage-pois-verts-maigre   | 6 / 12  | 8 / 10        | 8 / 10       | 0      | 2     | no       |
+| fr      | poulet-bourguignonne       | 10 / 17 | 11 / 15       | 11 / 15      | 3      | 1     | no       |
+| fr      | sauce-hollandaise          | 4 / 9   | 5 / 8         | 5 / 8        | 0      | 3     | no       |
+| fr      | souffle-parmesan           | 6 / 10  | 9 / 9         | 9 / 9        | 0      | 0     | no       |
+| it      | cavolfiore-balsamella      | 2 / 11  | 8 / 9         | 8 / 9        | 0      | 1     | no       |
+| it      | crema-cotta                | 3 / 5   | 4 / 4         | 4 / 4        | 0      | 0     | no       |
+| it      | fritto-di-finocchi         | 2 / 12  | 7 / 10        | 7 / 10       | 1      | 2     | no       |
+| it      | gnocchi-di-patate          | 2 / 8   | 4 / 7         | 4 / 7        | 2      | 1     | no       |
+| it      | latte-brule                | 5 / 7   | 5 / 6         | 5 / 6        | 0      | 1     | no       |
+| it      | minestrone                 | 4 / 20  | 13 / 19       | 13 / 19      | 6      | 0     | no       |
+| it      | pollo-alla-contadina       | 2 / 12  | 9 / 10        | 9 / 10       | 0      | 1     | no       |
+| it      | risotto-alla-milanese      | 3 / 8   | 6 / 7         | 6 / 7        | 0      | 1     | no       |
+| it      | salsa-di-pomodoro          | 4 / 10  | 9 / 9         | 9 / 9        | 0      | 0     | no       |
+| it      | stracotto-di-vitella       | 7 / 17  | 12 / 15       | 12 / 15      | 2      | 1     | no       |
+| it      | tagliatelle-verdi          | 1 / 7   | 4 / 6         | 4 / 6        | 1      | 1     | no       |
+| it      | torta-mantovana            | 6 / 11  | 10 / 10       | 10 / 10      | 0      | 0     | no       |
+
+Totals: 469 lines and slots, 209 with an amount; 410 name an
+ingredient, 343 of them linked before and 344 after; 66 lines stay
+`wanted` (34 water, 32 other); 0 of 48 dishes complete. One character
+changed: the Frikandelle is now "with meat". Not proved: the count is
+a throwaway test, not the finder's own walk; no source was opened
+again.
+
 # Hosts
 
 Reached: `archive.org` (`/stream/`, metadata, search),
