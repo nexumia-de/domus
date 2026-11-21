@@ -93,38 +93,48 @@ export type FittingRoll =
       tries: number;
     };
 
-/** Every combination of one item per list, the first list changing slowest. */
-const combinationsOf = (lists: readonly (readonly Candidate[])[]): Candidate[][] =>
-  lists.reduce<Candidate[][]>(
-    (combos, list) => combos.flatMap((combo) => list.map((c) => [...combo, c])),
-    [[]],
+/** A combination: the picked component of each role that has one, keyed by the role. */
+export type Chosen = ReadonlyMap<string, Candidate>;
+
+/** Every combination of one candidate per role, the first role changing slowest. */
+const combinationsOf = (
+  lists: readonly { role: string; list: readonly Candidate[] }[],
+): Map<string, Candidate>[] =>
+  lists.reduce<Map<string, Candidate>[]>(
+    (combos, { role, list }) =>
+      combos.flatMap((combo) => list.map((c) => new Map([...combo, [role, c]]))),
+    [new Map()],
   );
 
-/** The picks for a combination; `of` counts the candidates of a role that fit with the others. */
+/** The components of a combination other than the one of `role`. */
+const othersOf = (chosen: Chosen, role: string): Candidate[] =>
+  [...chosen].flatMap(([r, c]) => (r === role ? [] : [c]));
+
+/**
+ * The picks for a combination, each role reading its own choice by its name, never by position.
+ * `of` counts the candidates of a role (under the options now) that fit with the other choices.
+ */
 const picksOf = (
   roles: readonly string[],
-  lists: readonly (readonly Candidate[])[],
-  combo: readonly Candidate[],
+  options: PickOptions,
+  candidates: readonly Candidate[],
+  chosen: Chosen,
   fits: Fits,
-): RolePick[] => {
-  let next = 0;
-  return roles.map((role, i) => {
-    const list = lists[i] ?? [];
-    if (list.length === 0) return { role, of: 0 };
-    const at = next++;
-    const choice = combo[at];
-    const others = combo.filter((_, j) => j !== at);
-    const of = list.filter((c) => fits([...others, c])).length;
+): RolePick[] =>
+  roles.map((role) => {
+    const choice = chosen.get(role);
+    const others = othersOf(chosen, role);
+    const of = candidatesOf(role, candidates, options).filter((c) => fits([...others, c])).length;
     return { role, ...(choice === undefined ? {} : { choice }), of };
   });
-};
 
 /**
  * One pick per role among the combinations that fit. The roles with a candidate make the
  * combinations; a role without one stays empty, as in `roll`. With at most `JUDGE_ALL_UP_TO`
  * combinations every one is judged and one of those that fit is taken with one number; with more,
  * up to `TRIES` combinations are drawn (one number per role each) and the first that fits is taken,
- * so "none found" then says only that none of the tries fitted.
+ * so "none found" then says only that none of the tries fitted. The draw is even over the
+ * combinations that fit, not over the candidates of a role.
  */
 export const rollFitting = (
   roles: readonly string[],
@@ -133,30 +143,35 @@ export const rollFitting = (
   random: () => number,
   fits: Fits,
 ): FittingRoll => {
-  const lists = roles.map((role) => candidatesOf(role, candidates, options));
-  const filled = lists.filter((l) => l.length > 0);
+  const filled = roles
+    .map((role) => ({ role, list: candidatesOf(role, candidates, options) }))
+    .filter((r) => r.list.length > 0);
   if (filled.length === 0) return { found: true, picks: roles.map((role) => ({ role, of: 0 })) };
-  const combinations = filled.reduce((n, l) => n * l.length, 1);
-  let combo: Candidate[] | undefined;
+  const combinations = filled.reduce((n, r) => n * r.list.length, 1);
+  const judge = (chosen: Chosen): boolean => fits([...chosen.values()]);
+  let chosen: Chosen | undefined;
   if (combinations <= JUDGE_ALL_UP_TO) {
-    combo = pickOne(combinationsOf(filled).filter(fits), random());
-    if (combo === undefined) return { found: false, combinations, all: true, tries: combinations };
+    chosen = pickOne(combinationsOf(filled).filter(judge), random());
+    if (chosen === undefined) return { found: false, combinations, all: true, tries: combinations };
   } else {
-    for (let i = 0; i < TRIES && combo === undefined; i++) {
-      const drawn = filled.flatMap((l) => {
-        const c = pickFrom(l, random());
-        return c === undefined ? [] : [c];
-      });
-      if (fits(drawn)) combo = drawn;
+    for (let i = 0; i < TRIES && chosen === undefined; i++) {
+      const drawn = new Map<string, Candidate>();
+      for (const { role, list } of filled) {
+        const c = pickFrom(list, random());
+        if (c !== undefined) drawn.set(role, c);
+      }
+      if (judge(drawn)) chosen = drawn;
     }
-    if (combo === undefined) return { found: false, combinations, all: false, tries: TRIES };
+    if (chosen === undefined) return { found: false, combinations, all: false, tries: TRIES };
   }
-  return { found: true, picks: picksOf(roles, lists, combo, fits) };
+  return { found: true, picks: picksOf(roles, options, candidates, chosen, fits) };
 };
 
 /**
- * Rolls one role again among its candidates that fit with the other picks, other than the one it
- * has; the counts of every role are taken again, since they depend on the others.
+ * Rolls one role again among its candidates (under the options now) that fit with the other
+ * picks, other than the one it has. The other roles keep their choices, each read by its role;
+ * when the role has no candidate that fits, it keeps its own. The counts of every role are taken
+ * again, since they depend on the others.
  */
 export const rollRoleFitting = (
   role: string,
@@ -166,17 +181,19 @@ export const rollRoleFitting = (
   random: () => number,
   fits: Fits,
 ): RolePick[] => {
-  const roles = picks.map((p) => p.role);
-  const lists = roles.map((r) => candidatesOf(r, candidates, options));
-  const others = picks.flatMap((p) =>
-    p.role === role || p.choice === undefined ? [] : [p.choice],
+  const chosen = new Map(
+    picks.flatMap((p) => (p.choice === undefined ? [] : [[p.role, p.choice] as const])),
   );
-  const now = picks.find((p) => p.role === role)?.choice;
-  const list = (lists[roles.indexOf(role)] ?? []).filter((c) => fits([...others, c]));
+  const now = chosen.get(role);
+  const others = othersOf(chosen, role);
+  const list = candidatesOf(role, candidates, options).filter((c) => fits([...others, c]));
   const choice = list.length === 0 ? now : pickFrom(list, random(), now?.id);
-  const combo = picks.flatMap((p) => {
-    const c = p.role === role ? choice : p.choice;
-    return c === undefined ? [] : [c];
-  });
-  return picksOf(roles, lists, combo, fits);
+  if (choice !== undefined) chosen.set(role, choice);
+  return picksOf(
+    picks.map((p) => p.role),
+    options,
+    candidates,
+    chosen,
+    fits,
+  );
 };

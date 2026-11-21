@@ -437,6 +437,69 @@ const surprise = async (page, origin) => {
       (await page.locator('.pick-no-fit').count()) === 0,
     `${label}: control: without the character the same roll picks`,
   );
+
+  // The stock tick changes what a role may hold: the picks rolled under the other choice go.
+  await page.getByLabel('Only what is ready in stock').check();
+  check(
+    (await page.locator('.pick-row').count()) === 0,
+    `${label}: ticking "only what is ready in stock" drops the picks rolled without it`,
+  );
+  await page.getByLabel('Only what is ready in stock').uncheck();
+
+  // A change of the filter keeps the keyboard where it was (review of 3b9d11e).
+  const cuisine = page.getByLabel('Cuisine', { exact: true });
+  await cuisine.focus();
+  await page.keyboard.press('ArrowDown');
+  check(
+    (await cuisine.inputValue()) !== '' &&
+      (await page.evaluate(() =>
+        document.activeElement?.classList.contains('dish-filter-cuisine'),
+      )),
+    `${label}: after a change by keyboard the cuisine select still has the focus`,
+  );
+  const meatFree = page.getByLabel('Without meat and fish', { exact: true });
+  await meatFree.focus();
+  await page.keyboard.press('Space');
+  check(
+    (await meatFree.isChecked()) &&
+      (await page.evaluate(
+        () =>
+          document.activeElement
+            ?.closest('.choice')
+            ?.classList.contains('dish-filter-meat-free') === true,
+      )),
+    `${label}: after a tick by keyboard its box still has the focus`,
+  );
+  await meatFree.uncheck();
+  await cuisine.selectOption('');
+
+  // The list writes the same filter: what was found under another choice is dropped on return.
+  await page.getByLabel('What it is like', { exact: true }).selectOption('tomatoey');
+  await page.getByRole('button', { name: 'Roll', exact: true }).click();
+  await page.locator('.pick-no-fit').waitFor();
+  // In-app navigation, not a reload: the picks live in memory while the app is open.
+  const toList = async () => {
+    await page.getByRole('link', { name: 'All dishes' }).click();
+    await page.getByRole('link', { name: 'Put a dish together at random' }).waitFor();
+  };
+  const toPick = async () => {
+    await page.getByRole('link', { name: 'Put a dish together at random' }).click();
+    await page.getByRole('heading', { level: 1, name: 'Random pick' }).waitFor();
+  };
+  await toList();
+  await toPick();
+  check(
+    (await page.locator('.pick-no-fit').count()) === 1,
+    `${label}: control: back on the screen with the same filter, "none found" is still there`,
+  );
+  await toList();
+  await page.getByLabel('What it is like', { exact: true }).selectOption('');
+  await toPick();
+  check(
+    (await page.locator('.pick-no-fit').count()) === 0 &&
+      (await page.locator('.pick-row').count()) === 0,
+    `${label}: a character dropped on the list drops the "none found" judged under it`,
+  );
 };
 
 export const dishSwap = async (browser, server) => {

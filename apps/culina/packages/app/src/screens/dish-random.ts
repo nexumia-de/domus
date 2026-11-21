@@ -5,12 +5,10 @@
 // component per ticked role together; with a character or "without meat and fish" chosen, it rolls
 // among the combinations that have it. "Make it a dish" opens the dish editor with the picks as
 // slots; nothing is stored here.
-import { allEntries, type DishEntry } from '../browse/entry';
-import { offeredBy, readDishFilter, writeDishFilter, type DishFilter } from '../browse/filter';
+import type { DishEntry } from '../browse/entry';
+import { offeredBy, type DishFilter } from '../browse/filter';
 import { characterLookup } from '../characters/lookup';
 import { CHARACTER_TABLE } from '../characters/table';
-import { classics } from '../classics/content';
-import { currentLang } from '../classics/lang';
 import { loadNames } from '../classics/names';
 import { roleLabel } from '../components/names';
 import { roleCandidates } from '../dishes/alternatives';
@@ -28,12 +26,19 @@ import { combinationJudge, judgesCombination } from '../dishes/pick-judge';
 import { readyNowKeys } from '../dishes/ready-now';
 import { setDishPrefill } from '../editor/prefill';
 import { ROLE_IDS } from '../editor/units';
-import { listDishes, notebook, stockOf } from '../notebook';
-import { browserStore, CLASSIC_COUNTRIES } from '../prefs';
+import { notebook, stockOf } from '../notebook';
+import { CLASSIC_COUNTRIES } from '../prefs';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
 import { strings } from '../strings';
-import { COURSE_ORDER, courseLabel, cuisineLabel, dishFilterControls } from './dish-filter';
+import {
+  COURSE_ORDER,
+  courseLabel,
+  cuisineLabel,
+  dishFilterControls,
+  replaceDishFilterControls,
+} from './dish-filter';
+import { currentDishFilter, everyEntry, keepDishFilter } from './dish-list';
 
 const t = strings.dishes;
 const tb = strings.browse;
@@ -53,6 +58,10 @@ const state: {
   dish: string | undefined;
   /** True: the last "Surprise me" found no dish. */
   dishNone: boolean;
+  /** The judged part of the filter the picks or `noFit` were rolled under (`judgeKey`). */
+  judgedUnder: string | undefined;
+  /** The whole filter and the stock tick that the last "Surprise me" found no dish under. */
+  dishNoneUnder: string | undefined;
 } = {
   roles: new Set(DEFAULT_PICK_ROLES),
   onlyStock: false,
@@ -61,6 +70,31 @@ const state: {
   dishReady: false,
   dish: undefined,
   dishNone: false,
+  judgedUnder: undefined,
+  dishNoneUnder: undefined,
+};
+
+/** The part of the filter a combination is judged by: the character and "without meat and fish". */
+const judgeKey = (filter: DishFilter): string =>
+  JSON.stringify([filter.character ?? null, filter.meatFree === true]);
+
+/** The whole filter and the stock tick, as "Surprise me" saw them. */
+const dishKey = (filter: DishFilter): string =>
+  JSON.stringify([
+    filter.origin,
+    filter.character,
+    filter.course,
+    filter.cuisine,
+    filter.meatFree,
+    filter.completeOnly,
+    state.dishReady,
+  ]);
+
+/** Drops the picks of the roll per role and its "none found". */
+const dropPicks = (): void => {
+  state.picks = undefined;
+  state.noFit = undefined;
+  state.judgedUnder = undefined;
 };
 
 const inStock = (componentId: string): boolean =>
@@ -81,9 +115,6 @@ const tick = (
   return choice;
 };
 
-const entries = (): DishEntry[] =>
-  allEntries(notebook(), listDishes(), classics(), characterLookup, currentLang());
-
 const metaOf = (entry: DishEntry): string =>
   [
     tb.origin[entry.origin],
@@ -95,16 +126,21 @@ export const randomDishScreen = (): HTMLElement => {
   const screen = el('section', 'screen dish-random');
   const back = el('a', 'back-link', t.back);
   back.href = hashFor('dishes');
-  const store = browserStore();
-  let filter: DishFilter = readDishFilter(store);
+  let filter: DishFilter = currentDishFilter();
+  // The list and the finder write the same filter: what was judged or found under another choice
+  // no longer holds when the screen is opened again.
+  if (state.judgedUnder !== undefined && state.judgedUnder !== judgeKey(filter)) dropPicks();
+  if (state.dishNone && state.dishNoneUnder !== dishKey(filter)) state.dishNone = false;
+  // Every dish as an entry, once per visit (and again when the catalogue has loaded).
+  let all = everyEntry();
   const options = (): PickOptions => ({ onlyStock: state.onlyStock, inStock });
   const judge = () => combinationJudge(notebook(), characterLookup, filter);
 
   // The one filter: its controls are replaced on every change.
   const filterBox = el('div', 'pick-filter');
   const drawFilter = (): void => {
-    const all = entries();
-    filterBox.replaceChildren(
+    replaceDishFilterControls(
+      filterBox,
       dishFilterControls(
         filter,
         offeredBy(all, {
@@ -113,14 +149,10 @@ export const randomDishScreen = (): HTMLElement => {
           cuisines: CLASSIC_COUNTRIES,
         }),
         (next) => {
-          const judgedBefore = JSON.stringify([filter.character, filter.meatFree]);
           filter = next;
-          writeDishFilter(store, next);
+          keepDishFilter(next);
           // A combination judged by other choices is not kept: its counts belong to those.
-          if (JSON.stringify([next.character, next.meatFree]) !== judgedBefore) {
-            state.picks = undefined;
-            state.noFit = undefined;
-          }
+          if (state.judgedUnder !== undefined && state.judgedUnder !== judgeKey(next)) dropPicks();
           state.dishNone = false;
           drawFilter();
           drawDish();
@@ -133,11 +165,12 @@ export const randomDishScreen = (): HTMLElement => {
   // "Surprise me with a dish".
   const dishResult = el('div', 'pick-dish-result');
   const pool = (): DishEntry[] =>
-    dishPool(entries(), filter, state.dishReady ? readyNowKeys() : undefined);
+    dishPool(all, filter, state.dishReady ? readyNowKeys() : undefined);
   const rollDish = (not?: string): void => {
     const found = surpriseDish(pool(), Math.random(), not);
     state.dish = found?.key;
     state.dishNone = found === undefined;
+    state.dishNoneUnder = state.dishNone ? dishKey(filter) : undefined;
   };
   const drawDish = (): void => {
     if (state.dishNone) {
@@ -145,10 +178,9 @@ export const randomDishScreen = (): HTMLElement => {
       reset.type = 'button';
       reset.addEventListener('click', () => {
         filter = {};
-        writeDishFilter(store, filter);
+        keepDishFilter(filter);
         state.dishReady = false;
-        state.picks = undefined;
-        state.noFit = undefined;
+        if (state.judgedUnder !== undefined && state.judgedUnder !== judgeKey(filter)) dropPicks();
         rollDish();
         drawFilter();
         drawDishControls();
@@ -157,7 +189,7 @@ export const randomDishScreen = (): HTMLElement => {
         dishResult.querySelector<HTMLElement>('.pick-dish-link')?.focus();
       });
       const narrowedByStock =
-        state.dishReady && dishPool(entries(), filter).length > 0 ? t.pickDishNoneReady : tb.none;
+        state.dishReady && dishPool(all, filter).length > 0 ? t.pickDishNoneReady : tb.none;
       dishResult.replaceChildren(el('p', 'note-quiet pick-dish-none', narrowedByStock), reset);
       return;
     }
@@ -308,7 +340,12 @@ export const randomDishScreen = (): HTMLElement => {
   const stock = el('div', 'tick-choices pick-stock');
   stock.append(
     tick('', t.pickOnlyStock, state.onlyStock, (on) => {
+      // The picks were rolled under the other choice: they are dropped, not kept half valid.
       state.onlyStock = on;
+      if (state.picks !== undefined || state.noFit !== undefined) {
+        dropPicks();
+        drawRoles();
+      }
     }),
   );
   const rollButton = el('button', 'btn primary pick-roll', t.pickRoll);
@@ -323,6 +360,7 @@ export const randomDishScreen = (): HTMLElement => {
     const candidates = roleCandidates(notebook());
     const fits = judge();
     state.noFit = undefined;
+    state.judgedUnder = judgeKey(filter);
     if (fits === undefined) {
       state.picks = roll(wanted, candidates, options(), Math.random);
     } else {
@@ -348,6 +386,7 @@ export const randomDishScreen = (): HTMLElement => {
   // The catalogue completes the characters of the shipped dishes; draw again once it is there.
   void loadNames().then(() => {
     if (!screen.isConnected) return;
+    all = everyEntry();
     drawFilter();
     drawDish();
   });
