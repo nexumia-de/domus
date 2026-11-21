@@ -5,3 +5,4 @@
 # merge, then push the tag mixtura-v<version> on that commit.
 metainfo = "data/de.nexumia.Mixtura.metainfo.xml"
 fragments = "changelog.d"
+tag-prefix = "mixtura-v"
