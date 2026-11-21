@@ -1,7 +1,7 @@
 // The pure part of the shared frame: which icon the sync status gets. The DOM of the header,
 // the sync button and the toast is checked in the apps' browser checks (Chromium only).
 import { describe, expect, test } from 'vitest';
-import { syncDisplay } from '../src/frame/sync-display';
+import { syncDisplay, worstStatus } from '../src/frame/sync-display';
 
 describe('syncDisplay', () => {
   const at = '2026-11-20T09:00:00.000Z';
@@ -17,5 +17,21 @@ describe('syncDisplay', () => {
     expect(syncDisplay({ kind: 'failed', failure: 'unreachable' }, false)).toBe('offline');
     expect(syncDisplay({ kind: 'never' }, false)).toBe('offline');
     expect(syncDisplay({ kind: 'in-step', at }, false)).toBe('synced');
+  });
+});
+
+describe('worstStatus', () => {
+  const at = '2026-11-20T09:00:00.000Z';
+  test('the status that needs attention most wins', () => {
+    expect(worstStatus([])).toBeUndefined();
+    expect(worstStatus([undefined])).toBeUndefined();
+    expect(worstStatus([{ kind: 'device-only' }, { kind: 'in-step', at }])).toEqual({
+      kind: 'in-step',
+      at,
+    });
+    expect(worstStatus([{ kind: 'in-step', at }, { kind: 'never' }])).toEqual({ kind: 'never' });
+    expect(worstStatus([{ kind: 'never' }, { kind: 'syncing' }])).toEqual({ kind: 'syncing' });
+    const failed = { kind: 'failed', failure: 'other' } as const;
+    expect(worstStatus([{ kind: 'syncing' }, failed, { kind: 'in-step', at }])).toEqual(failed);
   });
 });

@@ -2,10 +2,10 @@
 // icon with its error banner, and the toast with Undo. CSS: `@nexumia-de/hospes/frame.css`,
 // built on the tokens of each app (docs/frame.md).
 export { createHeader, headerButton, headerLink } from './header';
-export type { FrameHeader, HeaderPage } from './header';
+export type { FrameHeader, HeaderAttrs, HeaderPage } from './header';
 export { createSyncIndicator } from './sync-indicator';
 export type { SyncIndicator, SyncIndicatorOptions } from './sync-indicator';
-export { syncDisplay } from './sync-display';
+export { syncDisplay, worstStatus } from './sync-display';
 export type { SyncDisplay } from './sync-display';
 export { createToaster } from './toaster';
 export type { Toaster, ToasterOptions, ToastAction } from './toaster';
