@@ -15,14 +15,19 @@ entries, accent and tokens; what is here is the logic and the CSS of the
 pieces that were the same in every app.
 
 - `createHeader()`: `show({ title, back?, subtitle?, actions })`. The one
-  `h1` of the page lives here; a subpage gets a back arrow on the left.
+  `h1` of the page lives here; a subpage gets a back arrow on the left
+  (`back` is a link, `{ href }`, or a button that runs the app's own
+  history, `{ run }`; both take `attrs`, for example a focus key).
   `headerLink` and `headerButton` make icon-only actions (44 px, tooltip
-  and accessible name).
+  and accessible name; an icon the app drew gets the frame's icon class;
+  an optional last argument adds attributes).
 - `createSyncIndicator({ words, now, bannerText, retryLabel, say, retry })`:
   a small icon button for the state of the shown space, whose tap says
   the details (`statusText`) through `say`, and a slim banner with Retry
   that is shown only on an error (`syncDisplay`: offline is not an
-  error).
+  error). `worstStatus(statuses)` picks the one status to show when an app
+  counts several spaces (Mixtura's stock): failed, syncing, never, in
+  step, device only.
 - `createToaster()`: one toast at a time, in the colours of the theme,
   gone after 3 s (4.5 s when it has an action), with an optional Undo.
   Timers are options.
@@ -34,12 +39,21 @@ pieces that were the same in every app.
 `--text`, `--text-muted`, `--accent`, `--accent-soft` (optional),
 `--border`, `--divider`, `--error-bg`, `--error-text`, `--target`,
 `--header-h`, `--radius`, `--radius-sm`, `--sp-1` to `--sp-4`, `--fs-xs`
-to `--fs-lg`; `--content-w` is optional. An app puts the toast in a
+to `--fs-lg`; `--content-w`, `--toast-bottom` (the toast's distance from the lower
+edge, for an app with a bottom bar) and `--toast-z` are optional. An app puts the toast in a
 positioned container at the lower edge of its content.
 
 ## Tested
 
-`test/frame.test.ts` pins `syncDisplay`. The DOM is checked in the apps'
+`test/frame.test.ts` pins `syncDisplay` and `worstStatus`. The DOM is checked in the apps'
 browser checks (Emptio's: header per page, sync icon, banner with Retry,
 toast in both colour schemes with Undo and its timing), in Chromium only.
 Not proven: a screen reader, real touch, another browser.
+
+## Used by
+
+Emptio (step 1) and Mixtura (step 2 of the
+[shared shell](../../../docs/decisions/shared-shell.md)). Mixtura redraws
+the whole page from its store, so it makes the frame once and puts the
+same nodes into every redraw (a toast keeps its timer); a modal sheet
+makes the header `inert` for the time it is open.
