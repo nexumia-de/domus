@@ -685,6 +685,24 @@ export const appStringsDe: typeof appStrings = {
   stock: stockStringsDe,
   cook: cookStringsDe,
   classics: classicsStringsDe,
+  // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.
+  browse: {
+    filtersLabel: 'Worauf du Lust hast',
+    originLabel: 'Von',
+    originAny: 'Meine und mitgelieferte',
+    origin: { own: 'Meine Gerichte', shipped: 'Mitgelieferte Gerichte' },
+    characterLabel: 'Wie es ist',
+    characterAny: 'Egal',
+    courseLabel: 'Gang',
+    courseAny: 'Jeder Gang',
+    cuisineLabel: 'Küche',
+    cuisineAny: 'Jede Küche',
+    meatFree: 'Ohne Fleisch und Fisch',
+    completeOnly: 'Nur mit allen Mengen',
+    reset: 'Alle zeigen',
+    none: 'Kein Gericht passt zu dieser Auswahl.',
+    count: (n: number): string => (n === 1 ? '1 Gericht' : `${n} Gerichte`),
+  },
   nutrition: nutritionStringsDe,
   // Texts for the store's error codes; the editing screens show them.
   store: {

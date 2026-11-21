@@ -691,6 +691,31 @@ facts of a dish and of a classic, shipped dishes by name),
 are the user's own, so only a technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
+# One filter over every dish
+
+Begun on 2026-11-21: the shipped classics and the dishes of the notebook
+become one list with one filter, instead of two parts of the app each with
+its own. The base is in place; the screens are moved onto it one by one.
+
+- **One entry.** `src/browse/entry.ts` gives every dish the same entry,
+  whatever its origin (`own` or `shipped`): name, link, course, cuisine,
+  characters, whether it is without meat and fish, and whether every line
+  has an amount. For a shipped dish "without meat and fish" is the value
+  set by hand in its file; for a dish of the notebook it is derived from
+  the characters and only said when the catalogue places every ingredient
+  in a food category, so a dish with an ingredient the user made up is
+  not offered as meat-free.
+- **One filter.** `src/browse/filter.ts`: origin, character, course,
+  cuisine, "Without meat and fish", "Only with every amount given"; each
+  choice only drops entries. It is kept in `localStorage`
+  (`culina.dishes`), like the theme.
+- **One set of controls.** `src/screens/dish-filter.ts`: selects of 44 px,
+  drawn only where there is something to offer, and two ticks.
+
+**Test:** `test/browse.test.ts` (the shipped classics and catalogue, a
+notebook built in memory, a plain object as the store). Not proved: the
+controls in a browser.
+
 # Stock
 
 What is there, with as little upkeep as possible

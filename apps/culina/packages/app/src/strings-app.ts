@@ -661,6 +661,24 @@ export const appStrings = {
   stock: stockStrings,
   cook: cookStrings,
   classics: classicsStrings,
+  // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.
+  browse: {
+    filtersLabel: 'What you feel like',
+    originLabel: 'From',
+    originAny: 'Mine and shipped',
+    origin: { own: 'My dishes', shipped: 'Shipped dishes' },
+    characterLabel: 'What it is like',
+    characterAny: 'Anything',
+    courseLabel: 'Course',
+    courseAny: 'Any course',
+    cuisineLabel: 'Cuisine',
+    cuisineAny: 'Any cuisine',
+    meatFree: 'Without meat and fish',
+    completeOnly: 'Only with every amount given',
+    reset: 'Show all',
+    none: 'No dish fits these choices.',
+    count: (n: number): string => (n === 1 ? '1 dish' : `${n} dishes`),
+  },
   nutrition: nutritionStrings,
   // Texts for the store's error codes; the editing screens show them.
   store: {
