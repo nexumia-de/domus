@@ -67,7 +67,14 @@ export function startPage(ui: Ui, menu: any): Page {
     if (signature === shown) return;
     shown = signature;
     clear(body);
-    body.append(new Gtk.Label({ label: s.classics.startTitle, xalign: 0, css_classes: ['title-2'], wrap: true }));
+    body.append(
+      new Gtk.Label({
+        label: s.classics.startTitle,
+        xalign: 0,
+        css_classes: ['title-2'],
+        wrap: true,
+      }),
+    );
     const group = new Adw.PreferencesGroup({
       title: s.classics.classicsHeading,
     });

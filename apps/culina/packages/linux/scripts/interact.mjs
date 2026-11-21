@@ -99,11 +99,17 @@ async function main() {
       );
       await s.click(...BAR_BUTTON);
       const step1 = shotName('05-step-1');
-      check((await changedSince(s, dish, '05-step-1')) > 0.1, 'Cook step by step opens the first step');
+      check(
+        (await changedSince(s, dish, '05-step-1')) > 0.1,
+        'Cook step by step opens the first step',
+      );
       await s.click(...COOK_NEXT);
       check((await changedSince(s, step1, '06-step-2')) > 0.01, 'Next shows the next step');
       await s.click(...COOK_BACK);
-      check((await changedSince(s, step1, '07-step-1-again')) < 0.02, 'Back shows the first step again (the buttons may differ in hover)');
+      check(
+        (await changedSince(s, step1, '07-step-1-again')) < 0.02,
+        'Back shows the first step again (the buttons may differ in hover)',
+      );
       await s.click(...BACK_ARROW);
       await s.click(...BACK_ARROW);
       check(
@@ -220,7 +226,10 @@ async function main() {
       await s.click(500, 190);
       await s.click(500, 130);
       await s.shot(shotName('41-wide-dish'));
-      say('ok  ', '1000x700: start and dish were drawn (look at 40 and 41; not judged by the script)');
+      say(
+        'ok  ',
+        '1000x700: start and dish were drawn (look at 40 and 41; not judged by the script)',
+      );
     } finally {
       await s.stop();
     }

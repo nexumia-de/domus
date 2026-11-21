@@ -1,7 +1,7 @@
 // A classic: the portions, the ingredients with the amounts for them (the engine's numbers), the
 // method, and the source. "Cook step by step" is in the bottom bar. Nutrition and the handling
 // and substitute notes of the web app are not here (docs/native-linux.md).
-import { pickText } from '@culina/engine';
+import { pickText, type Classic } from '@culina/engine';
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import {
@@ -35,6 +35,7 @@ export function dishPage(ui: Ui, id: string): Page {
     return { page, update: () => undefined };
   }
 
+  const dish: Classic = classic;
   const cook = barButton(t.dish.cook, true, () => ui.push(cookPage(ui, classic.id)));
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
   bar.append(cook);
@@ -77,7 +78,7 @@ export function dishPage(ui: Ui, id: string): Page {
 
   function change(next: number): void {
     portions = Math.max(1, Math.min(MAX_PORTIONS, next));
-    setPortions(classic!.id, portions);
+    setPortions(dish.id, portions);
     draw();
   }
 
@@ -117,7 +118,7 @@ export function dishPage(ui: Ui, id: string): Page {
 
   function draw(): void {
     clear(body);
-    const result = dishView(classic!, portions, ui.lang, ui.nameOf);
+    const result = dishView(dish, portions, ui.lang, ui.nameOf);
     if (!result.ok) {
       body.append(new Adw.StatusPage({ title: s.classics.portionsUnknown, vexpand: true }));
       return;
@@ -161,7 +162,12 @@ export function dishPage(ui: Ui, id: string): Page {
         const row = new Adw.ActionRow({ use_markup: false });
         row.set_title(step.text);
         row.add_prefix(
-          new Gtk.Label({ label: String(step.number), valign: Gtk.Align.START, css_classes: ['heading', 'dim-label'], margin_top: 12 }),
+          new Gtk.Label({
+            label: String(step.number),
+            valign: Gtk.Align.START,
+            css_classes: ['heading', 'dim-label'],
+            margin_top: 12,
+          }),
         );
         method.add(row);
       }

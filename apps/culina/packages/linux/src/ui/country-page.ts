@@ -5,7 +5,6 @@ import { classicRows, classics, type ClassicCountry } from '@culina/app/core';
 import { column, titled, type Page, type Ui } from './context';
 import { dishPage } from './dish-page';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export function countryPage(ui: Ui, country: ClassicCountry): Page {
   const { s } = ui;
   const name = s.classics.countries[country];

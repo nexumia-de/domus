@@ -3,7 +3,7 @@
 // large Back and Next buttons in the bottom bar. The screen stays on while the page is open.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import { pickText } from '@culina/engine';
+import { pickText, type Classic } from '@culina/engine';
 import {
   classics,
   cookView,
@@ -44,13 +44,18 @@ export function cookPage(ui: Ui, id: string): Page {
   bar.attach(back, 0, 0, 1, 1);
   bar.attach(next, 1, 0, 2, 1);
   view.add_bottom_bar(new Adw.Clamp({ maximum_size: 600, child: bar }));
-  const page = new Adw.NavigationPage({ title: head.title.get_title(), tag: `cook-${id}`, child: view });
+  const page = new Adw.NavigationPage({
+    title: head.title.get_title(),
+    tag: `cook-${id}`,
+    child: view,
+  });
 
   if (classic === undefined) {
     body.append(new Adw.StatusPage({ title: s.classics.unknownDish, vexpand: true }));
     bar.set_visible(false);
     return { page, update: () => undefined };
   }
+  const dish: Classic = classic;
   const steps: StepView[] = (() => {
     const made = cookView(classic, portions, ui.lang, ui.nameOf, techniques(), new Set());
     return made.ok ? made.steps : [];
@@ -77,7 +82,9 @@ export function cookPage(ui: Ui, id: string): Page {
   function technique(step: StepView): any {
     const tech = step.technique;
     if (tech === undefined) return null;
-    const group = new Adw.PreferencesGroup({ title: s.classics.noteHeading(pickText(tech.name, ui.lang)) });
+    const group = new Adw.PreferencesGroup({
+      title: s.classics.noteHeading(pickText(tech.name, ui.lang)),
+    });
     const watch = new Adw.ActionRow({ use_markup: false });
     watch.set_title(pickText(tech.watch, ui.lang));
     group.add(watch);
@@ -87,8 +94,14 @@ export function cookPage(ui: Ui, id: string): Page {
     more.add_row(why);
     for (const source of tech.sources) {
       const row = new Adw.ActionRow({ use_markup: false });
-      const line = s.classics.noteSource(s.classics.noteLevel[source.level ?? tech.level], source.title, source.place);
-      row.set_title(source.isbn === undefined ? line : s.classics.noteSourceBook(line, source.isbn));
+      const line = s.classics.noteSource(
+        s.classics.noteLevel[source.level ?? tech.level],
+        source.title,
+        source.place,
+      );
+      row.set_title(
+        source.isbn === undefined ? line : s.classics.noteSourceBook(line, source.isbn),
+      );
       more.add_row(row);
     }
     group.add(more);
@@ -97,7 +110,7 @@ export function cookPage(ui: Ui, id: string): Page {
 
   function draw(): void {
     clear(body);
-    const at = Math.min(stepOf(classic!.id), total);
+    const at = Math.min(stepOf(dish.id), total);
     progress.set_fraction(total === 0 ? 0 : at / total);
     back.set_sensitive(at > 0);
     next.set_visible(at < total);

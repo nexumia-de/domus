@@ -11,6 +11,12 @@ import { classics, dishView, portionsOf, setPortions, STOCK } from '@culina/app/
 import { shippedContent } from '@culina/app/make-classics.mjs';
 import { PREFS, createSession, type SessionOptions } from '../src/session';
 
+/** A value that the test knows is there. */
+const must = <T>(value: T | undefined): T => {
+  if (value === undefined) throw new Error('expected a value');
+  return value;
+};
+
 const content = shippedContent();
 const catalogue = JSON.parse(
   readFileSync(fileURLToPath(import.meta.resolve('@culina/app/catalogue.json')), 'utf8'),
@@ -80,9 +86,12 @@ test('ticking ingredients makes classics cookable, and the engine names what is 
   const { session } = await make();
   await session.load();
   for (const id of [EGG, MILK, FLOUR, SALT, BUTTER]) expect(await session.tick(id)).toBe(true);
-  expect(session.state().stock.map((item) => item.ref.id).sort()).toEqual(
-    [BUTTER, EGG, FLOUR, MILK, SALT].sort(),
-  );
+  expect(
+    session
+      .state()
+      .stock.map((item) => item.ref.id)
+      .sort(),
+  ).toEqual([BUTTER, EGG, FLOUR, MILK, SALT].sort());
   const found = session.cookable({ lacking: 2 });
   expect(found.ok).toBe(true);
   if (!found.ok) return;
@@ -103,7 +112,7 @@ test('a tick is a record of the collection stock as the web app writes it', asyn
   await session.load();
   await session.tick(EGG);
   const [space] = await ensureSpace(store, 'Home');
-  const records = (await store.readCollection(space!.id, STOCK)).records;
+  const records = (await store.readCollection(must(space).id, STOCK)).records;
   expect(records.find((r) => r.key === EGG)?.value).toEqual({ present: true });
   session.stop();
 });
@@ -113,26 +122,32 @@ test('an untick keeps other apps fields, Undo brings the tick back, and a thing 
   await session.load();
   const [space] = await ensureSpace(store, 'Home');
   const { localChange } = await import('@nexumia-de/hospes');
-  await localChange(store, space!.id, STOCK, () => '2026-11-21T08:00:00.000Z', () => ({
-    put: [
-      { key: MILK, value: { present: true, shelf: 'door' } },
-      { key: 'gin', value: { present: true } },
-    ],
-  }));
+  await localChange(
+    store,
+    must(space).id,
+    STOCK,
+    () => '2026-11-21T08:00:00.000Z',
+    () => ({
+      put: [
+        { key: MILK, value: { present: true, shelf: 'door' } },
+        { key: 'gin', value: { present: true } },
+      ],
+    }),
+  );
   await session.load();
   expect(session.state().stock.map((item) => item.ref.id)).toEqual([MILK]);
 
   const undo = await session.untick(MILK);
   expect(undo).toBeDefined();
-  let records = (await store.readCollection(space!.id, STOCK)).records;
+  let records = (await store.readCollection(must(space).id, STOCK)).records;
   expect(records.find((r) => r.key === MILK)?.value).toEqual({ present: false, shelf: 'door' });
   expect(records.find((r) => r.key === 'gin')?.value).toEqual({ present: true });
   expect(session.state().stock).toHaveLength(0);
   // Unticking what is not there does nothing.
   expect(await session.untick(MILK)).toBeUndefined();
 
-  expect(await session.restore(undo!)).toBe(true);
-  records = (await store.readCollection(space!.id, STOCK)).records;
+  expect(await session.restore(must(undo))).toBe(true);
+  records = (await store.readCollection(must(space).id, STOCK)).records;
   expect(records.find((r) => r.key === MILK)?.value).toEqual({ present: true, shelf: 'door' });
   expect(session.state().stock).toHaveLength(1);
   // A key outside the catalogue cannot be ticked.
@@ -143,7 +158,7 @@ test('an untick keeps other apps fields, Undo brings the tick back, and a thing 
 test('the choice of space and the filters are kept in the preferences', async () => {
   const { session, kept } = await make();
   await session.load();
-  const only = session.state().space!.id;
+  const only = must(session.state().space).id;
   await session.choose(only);
   expect(kept.get(PREFS.space)).toBe(only);
   session.setFilters({ lacking: 3, country: 'it', meatFree: true });
@@ -155,7 +170,7 @@ test('the choice of space and the filters are kept in the preferences', async ()
 
 test('the dish view takes its amounts from the engine: more portions, bigger amounts, German names', async () => {
   await make();
-  const noodles = classics().find((c) => c.id === 'egg-noodles')!;
+  const noodles = must(classics().find((c) => c.id === 'egg-noodles'));
   const name = (id: string): string => id;
   const two = dishView(noodles, 2, 'en', name);
   const four = dishView(noodles, 4, 'en', name);

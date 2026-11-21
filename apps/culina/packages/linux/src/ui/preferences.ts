@@ -44,9 +44,7 @@ export function showPreferences(ui: Ui, store: Store): void {
     const line = new Adw.ActionRow({ use_markup: false });
     line.set_title(space.name);
     line.set_subtitle(
-      space.id === state.space?.id
-        ? statusText(t.status, session.status(), ui.now(), true)
-        : '',
+      space.id === state.space?.id ? statusText(t.status, session.status(), ui.now(), true) : '',
     );
     const choose = new Gtk.CheckButton({
       active: space.id === state.space?.id,

@@ -147,7 +147,8 @@ export const textsDe: Texts = {
     content: 'Die eingebauten Gerichtedaten sind beschädigt.',
   },
   about: {
-    comments: 'Klassische Gerichte Schritt für Schritt, und was du kochen kannst. Auf diesem Gerät gespeichert.',
+    comments:
+      'Klassische Gerichte Schritt für Schritt, und was du kochen kannst. Auf diesem Gerät gespeichert.',
     data: 'Gerichte- und Zutatendaten',
     dataNotice:
       'Zutaten: USDA FoodData Central (SR Legacy), CC0 1.0 Universal; deutsche Namen aus Wikidata (CC0 1.0) und vom Projekt (AGPL-3.0-or-later).\n\nDie klassischen Gerichte folgen den Quellen, die sie nennen (Autor, Titel, Jahr, Link und Lizenz stehen bei jedem Gericht unter „Quelle“); die Zubereitung ist in eigenen Worten geschrieben.\n\nDie Technikhinweise sind in eigenen Worten nach den Lehrbüchern geschrieben, die sie nennen.',

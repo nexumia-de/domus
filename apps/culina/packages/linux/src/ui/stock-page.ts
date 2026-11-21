@@ -70,7 +70,9 @@ export function stockPage(ui: Ui): Page {
     shown = signature;
     clear(body);
     if (query === '') {
-      body.append(new Gtk.Label({ label: t.stock.hint, wrap: true, xalign: 0, css_classes: ['dim-label'] }));
+      body.append(
+        new Gtk.Label({ label: t.stock.hint, wrap: true, xalign: 0, css_classes: ['dim-label'] }),
+      );
       const group = new Adw.PreferencesGroup({ title: t.cookable.stock });
       const names = [...at].map((id) => ({ id, name: ui.nameOf(id) }));
       names.sort((a, b) => a.name.localeCompare(b.name));
@@ -89,7 +91,14 @@ export function stockPage(ui: Ui): Page {
     }
     body.append(group);
     if (found.length > LIMIT) {
-      body.append(new Gtk.Label({ label: t.stock.more(found.length - LIMIT), wrap: true, xalign: 0, css_classes: ['dim-label'] }));
+      body.append(
+        new Gtk.Label({
+          label: t.stock.more(found.length - LIMIT),
+          wrap: true,
+          xalign: 0,
+          css_classes: ['dim-label'],
+        }),
+      );
     }
   }
   search.connect('search-changed', update);

@@ -73,7 +73,7 @@ export function cookablePage(ui: Ui): Page {
       ...(found.lacks.length > 0 ? [`${s.cook.needsHeading}: ${found.lacks.join(', ')}`] : []),
       ...found.substitutions,
     ];
-    line.set_subtitle(needs ? parts.join('\n') : parts[0] ?? '');
+    line.set_subtitle(needs ? parts.join('\n') : (parts[0] ?? ''));
     line.add_suffix(new Gtk.Image({ icon_name: 'go-next-symbolic' }));
     line.connect('activated', () => ui.push(dishPage(ui, found.id)));
     return line;
@@ -91,7 +91,9 @@ export function cookablePage(ui: Ui): Page {
     shown = signature;
     clear(results);
     if (!found.ok) {
-      results.append(new Adw.StatusPage({ title: s.cook.problem, icon_name: 'dialog-error-symbolic' }));
+      results.append(
+        new Adw.StatusPage({ title: s.cook.problem, icon_name: 'dialog-error-symbolic' }),
+      );
       return;
     }
     if (found.shown.length > 0) {

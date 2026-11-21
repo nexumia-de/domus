@@ -71,7 +71,9 @@ export function barButton(label: string, suggested: boolean, run: () => void): a
   const button = new Gtk.Button({
     label,
     hexpand: true,
-    css_classes: suggested ? ['pill', 'suggested-action', 'culina-target'] : ['pill', 'culina-target'],
+    css_classes: suggested
+      ? ['pill', 'suggested-action', 'culina-target']
+      : ['pill', 'culina-target'],
   });
   button.connect('clicked', run);
   return button;
