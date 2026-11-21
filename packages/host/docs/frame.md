@@ -34,10 +34,12 @@ pieces that were the same in every app.
   override (unlimited wrapping) is gone.
 - `createToaster()`: one toast at a time, in the colours of the theme,
   gone after 5 s (8 s when it has an action), with an optional Undo.
-  The same in every app. It stays while a pointer is on it or focus is
-  in it and the time starts again afterwards (WCAG 2.2.1: a hand needs
-  time to reach Undo; Emptio's former 3 s / 4.5 s were too short on a
-  phone). Timers are options.
+  The same in every app. It stays while focus is in it and the time
+  starts again afterwards (WCAG 2.2.1: a keyboard user on Undo is not
+  cut off; 8 s is the time for a hand to reach Undo, where Emptio's
+  former 3 s / 4.5 s were too short on a phone). A resting pointer does
+  not hold it: a toast under it would cover the button below for good.
+  Timers are options.
 - Icons are own line drawings (`FRAME_ICONS`, `drawIcon`).
 
 ## Tokens

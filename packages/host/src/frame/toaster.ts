@@ -31,26 +31,22 @@ export function createToaster(options: ToasterOptions = {}): Toaster {
   const node = el('div', { class: 'fr-toast', role: 'status', 'aria-live': 'polite' });
   let timer: unknown;
   let ms = plainMs;
-  // WCAG 2.2.1: the toast stays while a pointer is on it or focus is in it, and the time starts
-  // again when both are gone (a hand needs time to reach Undo).
-  const arm = (): void => {
-    clearTimer(timer);
-    timer = setTimer(clear, ms);
-  };
-  const hold = (): void => clearTimer(timer);
-  node.addEventListener('pointerenter', hold);
-  node.addEventListener('focusin', hold);
-  node.addEventListener('pointerleave', () => {
-    if (!node.contains(document.activeElement) && node.firstChild) arm();
-  });
-  node.addEventListener('focusout', () => {
-    if (!node.matches(':hover') && node.firstChild) arm();
-  });
 
   const clear = (): void => {
     clearTimer(timer);
     node.replaceChildren();
   };
+  const arm = (): void => {
+    clearTimer(timer);
+    timer = setTimer(clear, ms);
+  };
+  // WCAG 2.2.1: the toast stays while focus is in it (a keyboard user is on Undo) and the time
+  // starts again when focus leaves. The pointer does not hold it: a toast that appears under a
+  // resting pointer would then cover the button below it for good (found by Mixtura's stock check).
+  node.addEventListener('focusin', () => clearTimer(timer));
+  node.addEventListener('focusout', () => {
+    if (node.firstChild) arm();
+  });
 
   return {
     node,

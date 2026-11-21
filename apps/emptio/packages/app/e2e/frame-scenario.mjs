@@ -73,7 +73,6 @@ export async function toastStage(run, { page }) {
     },
   );
   await ok(run, 'toast: it goes by itself after 5 s, or 8 s with Undo (no Undo used)', async () => {
-    await page.mouse.move(5, 5); // a pointer resting where the toast appears would hold it
     await addFast(page, t, 'Tea gone');
     const start = Date.now();
     await page.waitForFunction(
@@ -86,12 +85,12 @@ export async function toastStage(run, { page }) {
     const seconds = (Date.now() - start) / 1000;
     return seconds >= 4 && seconds <= 10;
   });
-  await ok(run, 'toast: it stays while the pointer is on it, then goes', async () => {
+  await ok(run, 'toast: it stays while focus is on Undo, then goes', async () => {
     await addFast(page, t, 'Tea hold');
-    await page.locator('.fr-toast').hover();
+    await page.locator('.fr-toast button').focus();
     await page.waitForTimeout(9_000);
     const stayed = (await page.locator('.fr-toast').innerText()) !== '';
-    await page.mouse.move(5, 5);
+    await page.locator('.fr-toast button').blur();
     await page.waitForFunction(
       () => document.querySelector('.fr-toast')?.textContent === '',
       null,
