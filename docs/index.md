@@ -16,6 +16,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 - [One repository](decisions/one-repository.md) - Why the apps and the shared model are in one repository, what replaces version tags, what keeps the parts apart, what was not decided.
 - [Native Linux apps in GJS](decisions/native-linux-gjs.md) - Native apps for Phosh as libadwaita screens in GJS that reuse the engines and sync, Emptio and Mixtura built, Culina next, inside this repository, released into the shared Flatpak repository; the alternatives, the agent's choices, what is open.
+- [One shared app shell](decisions/shared-shell.md) - Header, navigation, settings, sync display, toasts and banners live once in the host package (web) and in packages/gjs (native); why the apps had their own; the plan to move them over.
 - [One address, spaces, storages](decisions/one-origin-spaces-storages.md) - All apps on domus.nexumia.de and separately installable; sync on spaces with one secret and one invite; GitHub first, then the household's sync server, WebDAV and S3; invites that may carry access; the agent's choices for each.
 
 # Reference

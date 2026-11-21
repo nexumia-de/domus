@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (evening)
+
+- **Decision**: by the owner: one shared app shell ([decision](decisions/shared-shell.md)). Why every app had its own (separate repositories until 2026-11-19, the sharing rule applied to logic only, no check), what is shared from now on, the plan in five steps (Emptio done in pull request 19; Mixtura, Culina, shared navigation and settings, native apps). Open after this session: pull requests 18 (Culina native) and 19 (Emptio frame) wait for CI, which stopped running (Actions minutes of the private repository, presumably); the owner makes the repository public or raises the limit.
+
 ## 2026-11-21 (later)
 
 - **Open** (handoff, the lead session ended): Culina's native app is built by an agent on the branch `culina-native` (pushed regularly, `WIP:` commits unfinished); still to do: review it, add a `culina` job to `.github/workflows/release.yml`, a `docs/reviews.md` entry, a pull request. The owner: make `suitably/domus` public (phosh-apps cannot read a private repository's releases; every publish run fails until then), the secret `RELEASE_TOKEN`, the tag `mixtura-v0.1.0`, then the line `suitably/domus mixtura-v*` in phosh-apps' `apps.txt`. Proposal not written yet: a Culina finder "what do I feel like" (base, then characters such as tomatoey or creamy computed from the ingredients, not tagged by hand).
