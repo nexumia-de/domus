@@ -12,11 +12,11 @@
     "@nexumia-de/hospes": "0.1.0"
   },
   "scripts": {
-    "prebuild": "node ../app/compile-schemas.mjs",
+    "prebuild": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
     "build": "node build.mjs",
-    "pretest": "node ../app/compile-schemas.mjs",
+    "pretest": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
     "test": "vitest run",
-    "pretypecheck": "node ../app/compile-schemas.mjs",
+    "pretypecheck": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
     "typecheck": "tsc --noEmit -p .",
     "smoke": "node scripts/smoke.mjs",
     "interact": "node scripts/interact.mjs"

@@ -37,7 +37,7 @@ export type { ResolveKey } from './shared-stock/items';
 export { restoreEdit, tickEdit, untickEdit } from './shared-stock/edits';
 export type { Decision, StockUndo, SyncRecord } from './shared-stock/edits';
 export { STOCK } from './shared-stock/value';
-export { displayName } from './shared/names';
+export { displayName, matchesAnyName } from './shared/names';
 export { strings, stringsDe, stringsEn } from './strings';
 export type { Strings } from './strings';
 export type { IngredientRecord, StockRecord } from './records';
