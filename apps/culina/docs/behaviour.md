@@ -659,6 +659,38 @@ stored is ever written again ([data model](data-model.md#version)).
 Screenshots: [design](design.md#screenshots). Out of scope: merging
 branches, sharing versions between devices, comparing different recipes.
 
+# Characters
+
+What a dish is like (tomatoey, creamy, fried), derived when it is shown and
+never stored ([analysis](dish-characters.md),
+[engine rules](engine-rules.md#characters)). Code: `src/characters/`
+(`table.ts`, `classes.ts`, `dish.ts`, `classic.ts`, `view.ts`), the table
+`data/dish-characters.json`, `src/screens/character-chips.ts`.
+
+- **Chips on a dish.** A dish of the notebook and a shipped classic show
+  their characters as quiet chips under the name: text in a pill, no
+  control, the muted text colour; the chip's title says what its rule rests
+  on. A dish with no character shows no row. On a dish of the notebook the
+  chips are those of the dish **as shown**: a swapped filling changes them
+  at once. A classic does not show "With meat" and "With fish": its line
+  "Without meat and fish" is set by hand and stays the one statement.
+- **Filter of the Dishes list.** A select "What it is like" under the
+  search, 44 px, with "Anything" and the characters at least one dish has,
+  in the table's order; without any there is no select. A choice narrows
+  the list and works together with the search; nothing found says "No dish
+  is like that." The choice lives as long as the search text.
+- **The catalogue.** Groups and food categories above an ingredient come
+  with the catalogue, which loads after the first draw; the dish is drawn
+  again when it is there.
+- **Not built.** The filter in Cook and in the random pick, the user's own
+  correction of a character, cuisine and course on the user's dishes.
+
+**Test:** `test/characters.test.ts` (the table against the catalogue, the
+facts of a dish and of a classic, shipped dishes by name),
+`e2e/dish-characters.mjs` (chips, the filter, 360 px; the ingredients there
+are the user's own, so only a technique gives a character). Not verified:
+desktop width, the German texts in a browser, a screen reader on the chips.
+
 # Stock
 
 What is there, with as little upkeep as possible

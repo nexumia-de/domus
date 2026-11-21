@@ -21,6 +21,21 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-21: characters of a dish in Culina, and meat and fish in its catalogue
+
+| Part                                                                                                                | Done by            | Checked by                                                                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 26 named foods of meat, poultry, fish and shellfish, German names, 8 classic lines linked, `catalogue-meat.test.ts` | agent, mid model   | lead read the report and the diff's file list, put `names-de-own.json` back into its one-line form (the agent had reformatted every entry) and ran the checks; lead did not compare the FDC ids with the dataset or read the German names |
+| Engine `dishCharacters`, the character table, chips, the filter, their tests                                        | lead               | nobody but the lead's own tests                                                                                                                                                                                                           |
+| Finding the failing line in the CI log of pull request 24                                                           | agent, small model | lead confirmed the cause in the code (both screens have the same heading)                                                                                                                                                                 |
+| This entry                                                                                                          | lead               | nobody                                                                                                                                                                                                                                    |
+
+**What the checks found, and where it was fixed.** Running the first table over the 48 classics showed four wrong characters (minestrone cheesy, gazpacho creamy, sauerbraten fried, a boiled dinner light); the rules were narrowed and the engine got a stricter coverage for fat and energy. CI found the swap check "back on the dish the swap is still there" failing: a race in the check (it waited for a heading both screens have), fixed in the check; the app was right. The build test "main.js does not carry the catalogue" failed on the character table naming garlic's id; the test now looks for a row's text, the table stays.
+
+**Test counts** (lead's run of `npm run check:culina`): engine 1113, app 539, linux 10. Culina's browser checks end with "e2e passed".
+
+**What nobody verified.** The 26 FDC ids against the dataset by a second reader, the German names by a native speaker of the trade, the thresholds of the table against any source (there is none), desktop width, a real phone, a screen reader on the chips, a notebook of a real user.
+
 ## 2026-11-21: the shared frame, Emptio and Mixtura (pull requests 19 and this one)
 
 | Part                                                                                                      | Done by            | Checked by                                                                                                                                                                    |

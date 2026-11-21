@@ -2,8 +2,12 @@
 // ingredients of the whole dish for the chosen portions. On the current version a slot can be
 // swapped for another component of its role: that changes what is shown and cooked now
 // (`src/dishes/session.ts`), and only "Keep as my version" stores it, as a new version.
+import { factsOfDish } from '../characters/dish';
+import { characterLookup } from '../characters/lookup';
+import { characterChips, characterIds } from '../characters/view';
 import { techniques } from '../classics/content';
 import { currentLang } from '../classics/lang';
+import { loadNames } from '../classics/names';
 import { setStep } from '../classics/session';
 import { dishStepLines } from '../components/steps-view';
 import { cookInput } from '../cook/input';
@@ -22,6 +26,7 @@ import { formatNumber } from '../shared/mass';
 import { el } from '../shell/el';
 import { showToast } from '../shell/toast';
 import { strings } from '../strings';
+import { characterRow } from './character-chips';
 import { detailActions } from './detail-actions';
 import { slotsSection } from './dish-slots';
 import { storeText } from './editor/store-text';
@@ -156,7 +161,16 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
     message = undefined;
     slots.append(status);
     const steps = stepsSection(shown);
-    results.replaceChildren(slots, rawSection, ...(steps === undefined ? [] : [steps]));
+    // The characters of the dish as it is shown: a swapped filling changes them at once.
+    const characters = characterRow(
+      characterChips(characterIds(factsOfDish(nb, shown, characterLookup)), currentLang()),
+    );
+    results.replaceChildren(
+      ...(characters === undefined ? [] : [characters]),
+      slots,
+      rawSection,
+      ...(steps === undefined ? [] : [steps]),
+    );
   };
   const control = stepper(
     strings.dishes.portionsLabel,
@@ -169,6 +183,10 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
     },
   );
   draw();
+  // The groups and categories above an ingredient come with the catalogue: drawn again once it is there.
+  void loadNames().then(() => {
+    if (card.isConnected) draw();
+  });
   card.append(control.wrap, results);
   return card;
 };

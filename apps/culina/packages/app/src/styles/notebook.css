@@ -274,3 +274,21 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* The characters of a dish: quiet chips, not controls. */
+.character-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+  list-style: none;
+}
+
+.character-chip {
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}

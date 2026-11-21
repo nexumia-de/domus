@@ -50,282 +50,107 @@
     "fdc-group-cabbage-common": "\"Cabbage, common\"; descriptive"
   },
   "names": {
-    "fdc-167695": {
-      "name": "Mayonnaise, mit Tofu"
-    },
-    "fdc-167697": {
-      "name": "Buttermilch, fettreduziert (gesäuert)"
-    },
-    "fdc-167702": {
-      "name": "Leinöl, kaltgepresst",
-      "aliases": ["Leinsamenöl"]
-    },
+    "fdc-167695": { "name": "Mayonnaise, mit Tofu" },
+    "fdc-167697": { "name": "Buttermilch, fettreduziert (gesäuert)" },
+    "fdc-167702": { "name": "Leinöl, kaltgepresst", "aliases": ["Leinsamenöl"] },
     "fdc-167703": {
       "name": "Hüttenkäse, fettarm (1 % Fett), laktosereduziert",
       "aliases": ["Cottage Cheese"]
     },
-    "fdc-167705": {
-      "name": "Parmesan, natriumarm",
-      "aliases": ["Parmigiano"]
-    },
+    "fdc-167705": { "name": "Parmesan, natriumarm", "aliases": ["Parmigiano"] },
     "fdc-167716": {
       "name": "Hüttenkäse, fettarm (1 % Fett), mit Gemüse",
       "aliases": ["Cottage Cheese mit Gemüse"]
     },
-    "fdc-167749": {
-      "name": "Zitronenschale",
-      "aliases": ["Zitronenzeste", "Zitronenabrieb"]
-    },
-    "fdc-167750": {
-      "name": "Kaktusfeige",
-      "aliases": ["Feigenkaktus", "Opuntie"]
-    },
-    "fdc-167763": {
-      "name": "Tamarinde",
-      "aliases": ["Tamarinden"]
-    },
+    "fdc-167749": { "name": "Zitronenschale", "aliases": ["Zitronenzeste", "Zitronenabrieb"] },
+    "fdc-167750": { "name": "Kaktusfeige", "aliases": ["Feigenkaktus", "Opuntie"] },
+    "fdc-167763": { "name": "Tamarinde", "aliases": ["Tamarinden"] },
     "fdc-167776": {
       "name": "Birne, Williams Christ",
       "aliases": ["Williams-Birne", "Bartlett-Birne"]
     },
-    "fdc-167782": {
-      "name": "Abiyuch (Crateva-Frucht)"
-    },
-    "fdc-167783": {
-      "name": "Rowal (tropische Frucht)"
-    },
-    "fdc-167811": {
-      "name": "Schweinerückenspeck",
-      "aliases": ["Fettspeck", "Rückenspeck"]
-    },
-    "fdc-167818": {
-      "name": "Schweinerücken, Fleisch mit Fett",
-      "aliases": ["Schweinekarree"]
-    },
-    "fdc-167843": {
-      "name": "Schweineschulter, Fleisch mit Fett",
-      "aliases": ["Schweinebug"]
-    },
-    "fdc-167875": {
-      "name": "Schinken, gepökelt, nicht erhitzt",
-      "aliases": ["Schinken"]
-    },
-    "fdc-167902": {
-      "name": "Schweinehackfleisch",
-      "aliases": ["Gehacktes vom Schwein"]
-    },
-    "fdc-168094": {
-      "name": "Mayonnaise, kalorienreduziert, cholesterinfrei"
-    },
-    "fdc-168114": {
-      "name": "Hüttenkäse, fettarm (1 % Fett), ohne Salzzusatz"
-    },
-    "fdc-168115": {
-      "name": "Mayonnaise, natrium- und kalorienarm"
-    },
-    "fdc-168150": {
-      "name": "Jambolan-Pflaume",
-      "aliases": ["Java-Pflaume", "Jambul"]
-    },
-    "fdc-168195": {
-      "name": "Clementine",
-      "aliases": ["Clementinen"]
-    },
-    "fdc-168203": {
-      "name": "Granny Smith",
-      "aliases": ["Apfel Granny Smith"]
-    },
-    "fdc-168277": {
-      "name": "Speck, gepökelt, roh",
-      "aliases": ["Bacon", "Frühstücksspeck"]
-    },
-    "fdc-168385": {
-      "name": "Amaranthblätter",
-      "aliases": ["Amaranth, Blätter"]
-    },
-    "fdc-168389": {
-      "name": "Spargel"
-    },
+    "fdc-167782": { "name": "Abiyuch (Crateva-Frucht)" },
+    "fdc-167783": { "name": "Rowal (tropische Frucht)" },
+    "fdc-167811": { "name": "Schweinerückenspeck", "aliases": ["Fettspeck", "Rückenspeck"] },
+    "fdc-167818": { "name": "Schweinerücken, Fleisch mit Fett", "aliases": ["Schweinekarree"] },
+    "fdc-167843": { "name": "Schweineschulter, Fleisch mit Fett", "aliases": ["Schweinebug"] },
+    "fdc-167875": { "name": "Schinken, gepökelt, nicht erhitzt", "aliases": ["Schinken"] },
+    "fdc-167902": { "name": "Schweinehackfleisch", "aliases": ["Gehacktes vom Schwein"] },
+    "fdc-168094": { "name": "Mayonnaise, kalorienreduziert, cholesterinfrei" },
+    "fdc-168114": { "name": "Hüttenkäse, fettarm (1 % Fett), ohne Salzzusatz" },
+    "fdc-168115": { "name": "Mayonnaise, natrium- und kalorienarm" },
+    "fdc-168150": { "name": "Jambolan-Pflaume", "aliases": ["Java-Pflaume", "Jambul"] },
+    "fdc-168195": { "name": "Clementine", "aliases": ["Clementinen"] },
+    "fdc-168203": { "name": "Granny Smith", "aliases": ["Apfel Granny Smith"] },
+    "fdc-168277": { "name": "Speck, gepökelt, roh", "aliases": ["Bacon", "Frühstücksspeck"] },
+    "fdc-168385": { "name": "Amaranthblätter", "aliases": ["Amaranth, Blätter"] },
+    "fdc-168389": { "name": "Spargel" },
     "fdc-168391": {
       "name": "Bittergurke, Blattspitzen",
       "aliases": ["Bittermelone, Blattspitzen"]
     },
-    "fdc-168396": {
-      "name": "Limabohnen, frisch",
-      "aliases": ["Mondbohnen", "Butterbohnen"]
-    },
+    "fdc-168396": { "name": "Limabohnen, frisch", "aliases": ["Mondbohnen", "Butterbohnen"] },
     "fdc-168405": {
       "name": "Augenbohnen, junge Hülsen mit Samen",
       "aliases": ["Kuhbohnen", "Schwarzaugenbohnen"]
     },
-    "fdc-168407": {
-      "name": "Gartenkresse",
-      "aliases": ["Kresse"]
-    },
-    "fdc-168412": {
-      "name": "Endivie",
-      "aliases": ["Endiviensalat"]
-    },
-    "fdc-168419": {
-      "name": "Jutemalve, Blätter",
-      "aliases": ["Mulukhiyya", "Jute"]
-    },
-    "fdc-168421": {
-      "name": "Grünkohl",
-      "aliases": ["Braunkohl", "Krauskohl", "Winterkohl"]
-    },
-    "fdc-168422": {
-      "name": "Pfifferling",
-      "aliases": ["Eierschwamm", "Rehling"]
-    },
-    "fdc-168423": {
-      "name": "Morchel",
-      "aliases": ["Speisemorchel"]
-    },
-    "fdc-168427": {
-      "name": "Linsensprossen",
-      "aliases": ["Linsenkeimlinge"]
-    },
-    "fdc-168431": {
-      "name": "Roter Blattsalat",
-      "aliases": ["Rotblättriger Salat"]
-    },
-    "fdc-168446": {
-      "name": "Kartoffelmehl"
-    },
-    "fdc-168454": {
-      "name": "Steckrübe",
-      "aliases": ["Kohlrübe", "Wruke", "Erdkohlrabi"]
-    },
-    "fdc-168487": {
-      "name": "Taroblätter",
-      "aliases": ["Taro, Blätter"]
-    },
-    "fdc-168490": {
-      "name": "Pfeilwurz",
-      "aliases": ["Arrowroot"]
-    },
-    "fdc-168491": {
-      "name": "Chrysanthemenblätter",
-      "aliases": ["Speisechrysantheme"]
-    },
-    "fdc-168564": {
-      "name": "Radicchio"
-    },
-    "fdc-168565": {
-      "name": "Zucchini, klein (Baby-Zucchini)",
-      "aliases": ["Baby-Zucchini"]
-    },
-    "fdc-168566": {
-      "name": "Tomatillo",
-      "aliases": ["Tomatillos"]
-    },
-    "fdc-168568": {
-      "name": "Babykarotten",
-      "aliases": ["Mini-Karotten", "Mini-Möhren"]
-    },
+    "fdc-168407": { "name": "Gartenkresse", "aliases": ["Kresse"] },
+    "fdc-168412": { "name": "Endivie", "aliases": ["Endiviensalat"] },
+    "fdc-168419": { "name": "Jutemalve, Blätter", "aliases": ["Mulukhiyya", "Jute"] },
+    "fdc-168421": { "name": "Grünkohl", "aliases": ["Braunkohl", "Krauskohl", "Winterkohl"] },
+    "fdc-168422": { "name": "Pfifferling", "aliases": ["Eierschwamm", "Rehling"] },
+    "fdc-168423": { "name": "Morchel", "aliases": ["Speisemorchel"] },
+    "fdc-168427": { "name": "Linsensprossen", "aliases": ["Linsenkeimlinge"] },
+    "fdc-168431": { "name": "Roter Blattsalat", "aliases": ["Rotblättriger Salat"] },
+    "fdc-168446": { "name": "Kartoffelmehl" },
+    "fdc-168454": { "name": "Steckrübe", "aliases": ["Kohlrübe", "Wruke", "Erdkohlrabi"] },
+    "fdc-168487": { "name": "Taroblätter", "aliases": ["Taro, Blätter"] },
+    "fdc-168490": { "name": "Pfeilwurz", "aliases": ["Arrowroot"] },
+    "fdc-168491": { "name": "Chrysanthemenblätter", "aliases": ["Speisechrysantheme"] },
+    "fdc-168564": { "name": "Radicchio" },
+    "fdc-168565": { "name": "Zucchini, klein (Baby-Zucchini)", "aliases": ["Baby-Zucchini"] },
+    "fdc-168566": { "name": "Tomatillo", "aliases": ["Tomatillos"] },
+    "fdc-168568": { "name": "Babykarotten", "aliases": ["Mini-Karotten", "Mini-Möhren"] },
     "fdc-168574": {
       "name": "Dicke Bohnen, in der Hülse",
       "aliases": ["Saubohnen", "Ackerbohnen", "Puffbohnen"]
     },
-    "fdc-168575": {
-      "name": "Weinblätter",
-      "aliases": ["Weinlaub"]
-    },
-    "fdc-168576": {
-      "name": "Jalapeño",
-      "aliases": ["Jalapeno"]
-    },
-    "fdc-168578": {
-      "name": "Ungarische Paprika",
-      "aliases": ["Ungarische Paprikaschote"]
-    },
-    "fdc-168583": {
-      "name": "Wasabi, Wurzel",
-      "aliases": ["Japanischer Meerrettich"]
-    },
-    "fdc-168587": {
-      "name": "Raukensamen, ganz, getrocknet"
-    },
-    "fdc-168588": {
-      "name": "Mandelmus, ohne Salz",
-      "aliases": ["Mandelbutter", "Mandelpaste"]
-    },
-    "fdc-168604": {
-      "name": "Tahini, Sesamsorte nicht angegeben",
-      "aliases": ["Sesampaste"]
-    },
+    "fdc-168575": { "name": "Weinblätter", "aliases": ["Weinlaub"] },
+    "fdc-168576": { "name": "Jalapeño", "aliases": ["Jalapeno"] },
+    "fdc-168578": { "name": "Ungarische Paprika", "aliases": ["Ungarische Paprikaschote"] },
+    "fdc-168583": { "name": "Wasabi, Wurzel", "aliases": ["Japanischer Meerrettich"] },
+    "fdc-168587": { "name": "Raukensamen, ganz, getrocknet" },
+    "fdc-168588": { "name": "Mandelmus, ohne Salz", "aliases": ["Mandelbutter", "Mandelpaste"] },
+    "fdc-168604": { "name": "Tahini, Sesamsorte nicht angegeben", "aliases": ["Sesampaste"] },
     "fdc-168694": {
       "name": "Rindfleisch, Keule, mit Fett",
       "aliases": ["Rinderkeule", "Rindfleisch aus der Keule"]
     },
-    "fdc-168835": {
-      "name": "Schokoladensirup, Fudge-Art",
-      "aliases": ["Fudge-Sauce"]
-    },
-    "fdc-168836": {
-      "name": "Maissirup, dunkel"
-    },
-    "fdc-168837": {
-      "name": "Maissirup, hell"
-    },
-    "fdc-168838": {
-      "name": "Pancake-Sirup, mit 2 % Ahornsirup"
-    },
-    "fdc-168839": {
-      "name": "Tafelsirup, Mischung aus Maissirup, Raffinadesirup und Zucker"
-    },
-    "fdc-168867": {
-      "name": "Maisgrieß, entkeimt, gelb, angereichert",
-      "aliases": ["Polenta"]
-    },
-    "fdc-168868": {
-      "name": "Maisgrieß, gelb, selbsttreibend, gebeutelt, pur, angereichert"
-    },
+    "fdc-168835": { "name": "Schokoladensirup, Fudge-Art", "aliases": ["Fudge-Sauce"] },
+    "fdc-168836": { "name": "Maissirup, dunkel" },
+    "fdc-168837": { "name": "Maissirup, hell" },
+    "fdc-168838": { "name": "Pancake-Sirup, mit 2 % Ahornsirup" },
+    "fdc-168839": { "name": "Tafelsirup, Mischung aus Maissirup, Raffinadesirup und Zucker" },
+    "fdc-168867": { "name": "Maisgrieß, entkeimt, gelb, angereichert", "aliases": ["Polenta"] },
+    "fdc-168868": { "name": "Maisgrieß, gelb, selbsttreibend, gebeutelt, pur, angereichert" },
     "fdc-168869": {
       "name": "Maisgrieß, gelb, selbsttreibend, gebeutelt, mit Weizenmehl, angereichert"
     },
-    "fdc-168870": {
-      "name": "Maisgrieß, gelb, selbsttreibend, entkeimt, angereichert"
-    },
-    "fdc-168872": {
-      "name": "Haferkleie"
-    },
+    "fdc-168870": { "name": "Maisgrieß, gelb, selbsttreibend, entkeimt, angereichert" },
+    "fdc-168872": { "name": "Haferkleie" },
     "fdc-168877": {
       "name": "Langkornreis, weiß, angereichert",
       "aliases": ["Reis, weiß, Langkorn"]
     },
-    "fdc-168879": {
-      "name": "Mittelkornreis, weiß, angereichert"
-    },
-    "fdc-168885": {
-      "name": "Roggenmehl, dunkel"
-    },
-    "fdc-168886": {
-      "name": "Roggenmehl, mittel"
-    },
-    "fdc-168887": {
-      "name": "Roggenmehl, hell"
-    },
-    "fdc-168888": {
-      "name": "Triticalemehl, Vollkorn"
-    },
-    "fdc-168889": {
-      "name": "Weizen, Hard Red Spring",
-      "aliases": ["Sommerweizen, hart, rot"]
-    },
-    "fdc-168890": {
-      "name": "Weizen, Hard Red Winter",
-      "aliases": ["Winterweizen, hart, rot"]
-    },
-    "fdc-168891": {
-      "name": "Weizen, Soft Red Winter",
-      "aliases": ["Winterweizen, weich, rot"]
-    },
-    "fdc-168892": {
-      "name": "Weizenkeim",
-      "aliases": ["Weizenkeime"]
-    },
+    "fdc-168879": { "name": "Mittelkornreis, weiß, angereichert" },
+    "fdc-168885": { "name": "Roggenmehl, dunkel" },
+    "fdc-168886": { "name": "Roggenmehl, mittel" },
+    "fdc-168887": { "name": "Roggenmehl, hell" },
+    "fdc-168888": { "name": "Triticalemehl, Vollkorn" },
+    "fdc-168889": { "name": "Weizen, Hard Red Spring", "aliases": ["Sommerweizen, hart, rot"] },
+    "fdc-168890": { "name": "Weizen, Hard Red Winter", "aliases": ["Winterweizen, hart, rot"] },
+    "fdc-168891": { "name": "Weizen, Soft Red Winter", "aliases": ["Winterweizen, weich, rot"] },
+    "fdc-168892": { "name": "Weizenkeim", "aliases": ["Weizenkeime"] },
     "fdc-168894": {
       "name": "Weizenmehl, Allzweck",
       "aliases": ["Weizenmehl", "Mehl", "Weizenmehl, weiß"]
@@ -334,41 +159,21 @@
       "name": "Weizenmehl, Allzweck, selbsttreibend",
       "aliases": ["Weizenmehl mit Backpulver"]
     },
-    "fdc-168896": {
-      "name": "Weizenmehl, Brotmehl",
-      "aliases": ["Brotmehl"]
-    },
-    "fdc-168898": {
-      "name": "Reismehl, braun",
-      "aliases": ["Reismehl, Vollkorn"]
-    },
+    "fdc-168896": { "name": "Weizenmehl, Brotmehl", "aliases": ["Brotmehl"] },
+    "fdc-168898": { "name": "Reismehl, braun", "aliases": ["Reismehl, Vollkorn"] },
     "fdc-168899": {
       "name": "Nudeln, glutenfrei, aus Mais, trocken",
       "aliases": ["Pasta, glutenfrei"]
     },
-    "fdc-168920": {
-      "name": "Maiskörner, weiß"
-    },
-    "fdc-168921": {
-      "name": "Maismehl, Vollkorn, blau",
-      "aliases": ["Harina de maíz morado"]
-    },
-    "fdc-168923": {
-      "name": "Maisgrieß, weiß, selbsttreibend, gebeutelt, pur, angereichert"
-    },
+    "fdc-168920": { "name": "Maiskörner, weiß" },
+    "fdc-168921": { "name": "Maismehl, Vollkorn, blau", "aliases": ["Harina de maíz morado"] },
+    "fdc-168923": { "name": "Maisgrieß, weiß, selbsttreibend, gebeutelt, pur, angereichert" },
     "fdc-168924": {
       "name": "Maisgrieß, weiß, selbsttreibend, gebeutelt, mit Weizenmehl, angereichert"
     },
-    "fdc-168925": {
-      "name": "Maisgrieß, weiß, selbsttreibend, entkeimt, angereichert"
-    },
-    "fdc-168927": {
-      "name": "Nudeln, trocken",
-      "aliases": ["Pasta", "Teigwaren"]
-    },
-    "fdc-168929": {
-      "name": "Maisgrieß, entkeimt, gelb, nicht angereichert"
-    },
+    "fdc-168925": { "name": "Maisgrieß, weiß, selbsttreibend, entkeimt, angereichert" },
+    "fdc-168927": { "name": "Nudeln, trocken", "aliases": ["Pasta", "Teigwaren"] },
+    "fdc-168929": { "name": "Maisgrieß, entkeimt, gelb, nicht angereichert" },
     "fdc-168931": {
       "name": "Rundkornreis, weiß, nicht angereichert",
       "aliases": ["Reis, weiß, Rundkorn"]
@@ -377,54 +182,25 @@
       "name": "Grieß (Semolina), nicht angereichert",
       "aliases": ["Hartweizengrieß", "Semola"]
     },
-    "fdc-168936": {
-      "name": "Weizenmehl, Allzweck, ungebleicht"
-    },
-    "fdc-168943": {
-      "name": "Sorghummehl, Vollkorn"
-    },
+    "fdc-168936": { "name": "Weizenmehl, Allzweck, ungebleicht" },
+    "fdc-168943": { "name": "Sorghummehl, Vollkorn" },
     "fdc-169052": {
       "name": "Butter-Margarine-Mischung, 80 % Fett, Stangenform, ohne Salz",
       "aliases": ["Mischstreichfett"]
     },
-    "fdc-169078": {
-      "name": "Hüttenkäse, mit Gemüse",
-      "aliases": ["Cottage Cheese mit Gemüse"]
-    },
-    "fdc-169079": {
-      "name": "Frischkäse, fettarm",
-      "aliases": ["Rahmfrischkäse, fettarm"]
-    },
-    "fdc-169086": {
-      "name": "Litschi",
-      "aliases": ["Litchi", "Lychee"]
-    },
-    "fdc-169103": {
-      "name": "Orangenschale",
-      "aliases": ["Orangenzeste", "Orangenabrieb"]
-    },
-    "fdc-169105": {
-      "name": "Mandarine",
-      "aliases": ["Mandarinen", "Tangerine"]
-    },
+    "fdc-169078": { "name": "Hüttenkäse, mit Gemüse", "aliases": ["Cottage Cheese mit Gemüse"] },
+    "fdc-169079": { "name": "Frischkäse, fettarm", "aliases": ["Rahmfrischkäse, fettarm"] },
+    "fdc-169086": { "name": "Litschi", "aliases": ["Litchi", "Lychee"] },
+    "fdc-169103": { "name": "Orangenschale", "aliases": ["Orangenzeste", "Orangenabrieb"] },
+    "fdc-169105": { "name": "Mandarine", "aliases": ["Mandarinen", "Tangerine"] },
     "fdc-169108": {
       "name": "Passionsfrucht, violett",
       "aliases": ["Maracuja", "Purpurgranadilla"]
     },
-    "fdc-169129": {
-      "name": "Pitanga (Surinam-Kirsche)",
-      "aliases": ["Surinamkirsche"]
-    },
-    "fdc-169139": {
-      "name": "Navybohnen, gekeimt",
-      "aliases": ["Weiße Bohnen, gekeimt"]
-    },
-    "fdc-169203": {
-      "name": "Pfeilkraut, Knolle"
-    },
-    "fdc-169213": {
-      "name": "Kidneybohnen, gekeimt"
-    },
+    "fdc-169129": { "name": "Pitanga (Surinam-Kirsche)", "aliases": ["Surinamkirsche"] },
+    "fdc-169139": { "name": "Navybohnen, gekeimt", "aliases": ["Weiße Bohnen, gekeimt"] },
+    "fdc-169203": { "name": "Pfeilkraut, Knolle" },
+    "fdc-169213": { "name": "Kidneybohnen, gekeimt" },
     "fdc-169219": {
       "name": "Feldsalat",
       "aliases": ["Rapunzel", "Rapunzelsalat", "Ackersalat", "Nüsslisalat", "Vogerlsalat"]
@@ -433,456 +209,176 @@
       "name": "Augenbohnen, frisch (unreife Samen)",
       "aliases": ["Schwarzaugenbohnen, frisch"]
     },
-    "fdc-169222": {
-      "name": "Spargelbohne",
-      "aliases": ["Langbohne", "Meterbohne"]
-    },
-    "fdc-169224": {
-      "name": "Augenbohnen, Blattspitzen"
-    },
-    "fdc-169230": {
-      "name": "Knoblauch",
-      "aliases": ["Knoblauchzehe"]
-    },
-    "fdc-169231": {
-      "name": "Ingwer, frisch",
-      "aliases": ["Ingwerwurzel"]
-    },
-    "fdc-169234": {
-      "name": "Helmbohnen, unreife Samen",
-      "aliases": ["Hyazinthbohne"]
-    },
-    "fdc-169237": {
-      "name": "Judasohr",
-      "aliases": ["Mu-Err", "Mu-Err-Pilz", "Holunderpilz"]
-    },
-    "fdc-169246": {
-      "name": "Lauch",
-      "aliases": ["Porree"]
-    },
-    "fdc-169247": {
-      "name": "Romanasalat",
-      "aliases": ["Römersalat", "Romana-Salat"]
-    },
-    "fdc-169249": {
-      "name": "Grüner Blattsalat",
-      "aliases": ["Blattsalat", "Schnittsalat"]
-    },
-    "fdc-169250": {
-      "name": "Lotuswurzel"
-    },
-    "fdc-169251": {
-      "name": "Champignon, weiß",
-      "aliases": ["Champignons", "Zuchtchampignon"]
-    },
-    "fdc-169260": {
-      "name": "Okra",
-      "aliases": ["Okraschote", "Gombo"]
-    },
-    "fdc-169270": {
-      "name": "Kürbisblüten"
-    },
-    "fdc-169272": {
-      "name": "Kürbisblätter"
-    },
-    "fdc-169274": {
-      "name": "Portulak",
-      "aliases": ["Gemüseportulak", "Sommerportulak"]
-    },
-    "fdc-169276": {
-      "name": "Radieschen",
-      "aliases": ["Radies"]
-    },
-    "fdc-169282": {
-      "name": "Sojabohnen, grün",
-      "aliases": ["Edamame"]
-    },
-    "fdc-169284": {
-      "name": "Sojasprossen",
-      "aliases": ["Sojabohnensprossen"]
-    },
+    "fdc-169222": { "name": "Spargelbohne", "aliases": ["Langbohne", "Meterbohne"] },
+    "fdc-169224": { "name": "Augenbohnen, Blattspitzen" },
+    "fdc-169230": { "name": "Knoblauch", "aliases": ["Knoblauchzehe"] },
+    "fdc-169231": { "name": "Ingwer, frisch", "aliases": ["Ingwerwurzel"] },
+    "fdc-169234": { "name": "Helmbohnen, unreife Samen", "aliases": ["Hyazinthbohne"] },
+    "fdc-169237": { "name": "Judasohr", "aliases": ["Mu-Err", "Mu-Err-Pilz", "Holunderpilz"] },
+    "fdc-169246": { "name": "Lauch", "aliases": ["Porree"] },
+    "fdc-169247": { "name": "Romanasalat", "aliases": ["Römersalat", "Romana-Salat"] },
+    "fdc-169249": { "name": "Grüner Blattsalat", "aliases": ["Blattsalat", "Schnittsalat"] },
+    "fdc-169250": { "name": "Lotuswurzel" },
+    "fdc-169251": { "name": "Champignon, weiß", "aliases": ["Champignons", "Zuchtchampignon"] },
+    "fdc-169260": { "name": "Okra", "aliases": ["Okraschote", "Gombo"] },
+    "fdc-169270": { "name": "Kürbisblüten" },
+    "fdc-169272": { "name": "Kürbisblätter" },
+    "fdc-169274": { "name": "Portulak", "aliases": ["Gemüseportulak", "Sommerportulak"] },
+    "fdc-169276": { "name": "Radieschen", "aliases": ["Radies"] },
+    "fdc-169282": { "name": "Sojabohnen, grün", "aliases": ["Edamame"] },
+    "fdc-169284": { "name": "Sojasprossen", "aliases": ["Sojabohnensprossen"] },
     "fdc-169291": {
       "name": "Zucchini",
       "aliases": ["Zucchini, mit Schale", "Zucchino", "Zucchetti"]
     },
-    "fdc-169303": {
-      "name": "Süßkartoffelblätter"
-    },
-    "fdc-169331": {
-      "name": "Brokkoli, Stiele",
-      "aliases": ["Broccoli, Stiele"]
-    },
-    "fdc-169335": {
-      "name": "Kopfkohl, gewöhnlich, frisch geerntet"
-    },
-    "fdc-169336": {
-      "name": "Kopfkohl, gewöhnlich, gelagert"
-    },
-    "fdc-169376": {
-      "name": "Champignon, weiß, UV-bestrahlt"
-    },
-    "fdc-169382": {
-      "name": "Enoki",
-      "aliases": ["Samtfußrübling", "Winterpilz"]
-    },
-    "fdc-169385": {
-      "name": "Fenchel",
-      "aliases": ["Knollenfenchel", "Gemüsefenchel"]
-    },
-    "fdc-169387": {
-      "name": "Rucola",
-      "aliases": ["Rauke", "Salatrauke"]
-    },
-    "fdc-169389": {
-      "name": "Blumenkohl, grün"
-    },
-    "fdc-169394": {
-      "name": "Bananenpaprika",
-      "aliases": ["Bananenpfeffer"]
-    },
-    "fdc-169395": {
-      "name": "Serrano-Chili",
-      "aliases": ["Serrano"]
-    },
+    "fdc-169303": { "name": "Süßkartoffelblätter" },
+    "fdc-169331": { "name": "Brokkoli, Stiele", "aliases": ["Broccoli, Stiele"] },
+    "fdc-169335": { "name": "Kopfkohl, gewöhnlich, frisch geerntet" },
+    "fdc-169336": { "name": "Kopfkohl, gewöhnlich, gelagert" },
+    "fdc-169376": { "name": "Champignon, weiß, UV-bestrahlt" },
+    "fdc-169382": { "name": "Enoki", "aliases": ["Samtfußrübling", "Winterpilz"] },
+    "fdc-169385": { "name": "Fenchel", "aliases": ["Knollenfenchel", "Gemüsefenchel"] },
+    "fdc-169387": { "name": "Rucola", "aliases": ["Rauke", "Salatrauke"] },
+    "fdc-169389": { "name": "Blumenkohl, grün" },
+    "fdc-169394": { "name": "Bananenpaprika", "aliases": ["Bananenpfeffer"] },
+    "fdc-169395": { "name": "Serrano-Chili", "aliases": ["Serrano"] },
     "fdc-169398": {
       "name": "Epazote",
       "aliases": ["Mexikanisches Teekraut", "Wohlriechender Gänsefuß"]
     },
-    "fdc-169401": {
-      "name": "Yautía",
-      "aliases": ["Tannia", "Malanga"]
-    },
-    "fdc-169407": {
-      "name": "Wassermelonenkerne, getrocknet"
-    },
-    "fdc-169408": {
-      "name": "Japanische Kastanien, getrocknet"
-    },
-    "fdc-169410": {
-      "name": "Tahini, aus rohem Sesam, steingemahlen",
-      "aliases": ["Sesampaste"]
-    },
+    "fdc-169401": { "name": "Yautía", "aliases": ["Tannia", "Malanga"] },
+    "fdc-169407": { "name": "Wassermelonenkerne, getrocknet" },
+    "fdc-169408": { "name": "Japanische Kastanien, getrocknet" },
+    "fdc-169410": { "name": "Tahini, aus rohem Sesam, steingemahlen", "aliases": ["Sesampaste"] },
     "fdc-169491": {
       "name": "Rindfleisch, Schulter zum Schmoren, mit Fett",
       "aliases": ["Rinderschulter", "Rinderbug", "Rindfleisch zum Schmoren"]
     },
-    "fdc-169577": {
-      "name": "Pancake-Sirup, kalorienreduziert"
-    },
-    "fdc-169578": {
-      "name": "Pancake-Sirup",
-      "aliases": ["Pfannkuchensirup"]
-    },
-    "fdc-169593": {
-      "name": "Kakaopulver, ungesüßt",
-      "aliases": ["Kakao", "Backkakao"]
-    },
+    "fdc-169577": { "name": "Pancake-Sirup, kalorienreduziert" },
+    "fdc-169578": { "name": "Pancake-Sirup", "aliases": ["Pfannkuchensirup"] },
+    "fdc-169593": { "name": "Kakaopulver, ungesüßt", "aliases": ["Kakao", "Backkakao"] },
     "fdc-169655": {
       "name": "Kristallzucker",
       "aliases": ["Zucker", "Haushaltszucker", "Streuzucker", "Feinkristallzucker"]
     },
-    "fdc-169656": {
-      "name": "Staubzucker",
-      "aliases": ["Puderzucker", "Flormelis"]
-    },
-    "fdc-169658": {
-      "name": "Ahornzucker"
-    },
+    "fdc-169656": { "name": "Staubzucker", "aliases": ["Puderzucker", "Flormelis"] },
+    "fdc-169658": { "name": "Ahornzucker" },
     "fdc-169659": {
       "name": "Maissirup, fructosereich (HFCS)",
       "aliases": ["Glukose-Fruktose-Sirup"]
     },
-    "fdc-169660": {
-      "name": "Malzsirup",
-      "aliases": ["Malzextrakt"]
-    },
-    "fdc-169661": {
-      "name": "Ahornsirup"
-    },
-    "fdc-169662": {
-      "name": "Sorghumsirup"
-    },
-    "fdc-169694": {
-      "name": "Masa-Maismehl, weiß, angereichert",
-      "aliases": ["Masa Harina"]
-    },
-    "fdc-169695": {
-      "name": "Maismehl, gelb, entkeimt, nicht angereichert"
-    },
-    "fdc-169696": {
-      "name": "Masa-Maismehl, weiß, nicht angereichert",
-      "aliases": ["Masa Harina"]
-    },
-    "fdc-169697": {
-      "name": "Maisgrieß, Vollkorn, gelb",
-      "aliases": ["Polenta"]
-    },
-    "fdc-169699": {
-      "name": "Couscous, trocken"
-    },
-    "fdc-169702": {
-      "name": "Hirse",
-      "aliases": ["Hirsekörner"]
-    },
-    "fdc-169705": {
-      "name": "Hafer",
-      "aliases": ["Haferkörner"]
-    },
-    "fdc-169706": {
-      "name": "Mittelkornreis, braun",
-      "aliases": ["Naturreis", "Vollkornreis"]
-    },
-    "fdc-169714": {
-      "name": "Reismehl, weiß, nicht angereichert"
-    },
-    "fdc-169715": {
-      "name": "Grieß (Semolina), angereichert",
-      "aliases": ["Hartweizengrieß"]
-    },
-    "fdc-169717": {
-      "name": "Tapioka-Perlen, trocken",
-      "aliases": ["Tapioka"]
-    },
-    "fdc-169719": {
-      "name": "Weizen, Hard White",
-      "aliases": ["Weizen, hart, weiß"]
-    },
-    "fdc-169720": {
-      "name": "Weizen, Soft White",
-      "aliases": ["Weizen, weich, weiß"]
-    },
-    "fdc-169721": {
-      "name": "Hartweizen",
-      "aliases": ["Durum", "Durumweizen"]
-    },
-    "fdc-169722": {
-      "name": "Weizenkleie"
-    },
-    "fdc-169724": {
-      "name": "Weizenmehl, Tortilla-Mischung"
-    },
-    "fdc-169725": {
-      "name": "Weizensprossen",
-      "aliases": ["Weizenkeimlinge"]
-    },
-    "fdc-169726": {
-      "name": "Wildreis"
-    },
-    "fdc-169731": {
-      "name": "Eiernudeln, trocken, angereichert"
-    },
+    "fdc-169660": { "name": "Malzsirup", "aliases": ["Malzextrakt"] },
+    "fdc-169661": { "name": "Ahornsirup" },
+    "fdc-169662": { "name": "Sorghumsirup" },
+    "fdc-169694": { "name": "Masa-Maismehl, weiß, angereichert", "aliases": ["Masa Harina"] },
+    "fdc-169695": { "name": "Maismehl, gelb, entkeimt, nicht angereichert" },
+    "fdc-169696": { "name": "Masa-Maismehl, weiß, nicht angereichert", "aliases": ["Masa Harina"] },
+    "fdc-169697": { "name": "Maisgrieß, Vollkorn, gelb", "aliases": ["Polenta"] },
+    "fdc-169699": { "name": "Couscous, trocken" },
+    "fdc-169702": { "name": "Hirse", "aliases": ["Hirsekörner"] },
+    "fdc-169705": { "name": "Hafer", "aliases": ["Haferkörner"] },
+    "fdc-169706": { "name": "Mittelkornreis, braun", "aliases": ["Naturreis", "Vollkornreis"] },
+    "fdc-169714": { "name": "Reismehl, weiß, nicht angereichert" },
+    "fdc-169715": { "name": "Grieß (Semolina), angereichert", "aliases": ["Hartweizengrieß"] },
+    "fdc-169717": { "name": "Tapioka-Perlen, trocken", "aliases": ["Tapioka"] },
+    "fdc-169719": { "name": "Weizen, Hard White", "aliases": ["Weizen, hart, weiß"] },
+    "fdc-169720": { "name": "Weizen, Soft White", "aliases": ["Weizen, weich, weiß"] },
+    "fdc-169721": { "name": "Hartweizen", "aliases": ["Durum", "Durumweizen"] },
+    "fdc-169722": { "name": "Weizenkleie" },
+    "fdc-169724": { "name": "Weizenmehl, Tortilla-Mischung" },
+    "fdc-169725": { "name": "Weizensprossen", "aliases": ["Weizenkeimlinge"] },
+    "fdc-169726": { "name": "Wildreis" },
+    "fdc-169731": { "name": "Eiernudeln, trocken, angereichert" },
     "fdc-169733": {
       "name": "Spinat-Eiernudeln, trocken, angereichert",
       "aliases": ["Spinatnudeln"]
     },
-    "fdc-169740": {
-      "name": "Gerstenmalzmehl"
-    },
-    "fdc-169741": {
-      "name": "Hafermehl, teilweise entkleit"
-    },
-    "fdc-169748": {
-      "name": "Maismehl, Vollkorn, weiß"
-    },
-    "fdc-169749": {
-      "name": "Masa-Maismehl, gelb, angereichert",
-      "aliases": ["Masa Harina"]
-    },
-    "fdc-169750": {
-      "name": "Maisgrieß, Vollkorn, weiß",
-      "aliases": ["Polenta"]
-    },
-    "fdc-169754": {
-      "name": "Weizenmehl, Allzweck, calciumangereichert"
-    },
-    "fdc-169755": {
-      "name": "Eiernudeln, trocken, nicht angereichert"
-    },
+    "fdc-169740": { "name": "Gerstenmalzmehl" },
+    "fdc-169741": { "name": "Hafermehl, teilweise entkleit" },
+    "fdc-169748": { "name": "Maismehl, Vollkorn, weiß" },
+    "fdc-169749": { "name": "Masa-Maismehl, gelb, angereichert", "aliases": ["Masa Harina"] },
+    "fdc-169750": { "name": "Maisgrieß, Vollkorn, weiß", "aliases": ["Polenta"] },
+    "fdc-169754": { "name": "Weizenmehl, Allzweck, calciumangereichert" },
+    "fdc-169755": { "name": "Eiernudeln, trocken, nicht angereichert" },
     "fdc-169756": {
       "name": "Langkornreis, weiß, nicht angereichert",
       "aliases": ["Reis, weiß, Langkorn"]
     },
-    "fdc-169760": {
-      "name": "Mittelkornreis, weiß, nicht angereichert"
-    },
-    "fdc-169761": {
-      "name": "Weizenmehl, Allzweck, nicht angereichert"
-    },
-    "fdc-169867": {
-      "name": "Mais-Raps-Öl"
-    },
+    "fdc-169760": { "name": "Mittelkornreis, weiß, nicht angereichert" },
+    "fdc-169761": { "name": "Weizenmehl, Allzweck, nicht angereichert" },
+    "fdc-169867": { "name": "Mais-Raps-Öl" },
     "fdc-169868": {
       "name": "Magermilch, calciumangereichert",
       "aliases": ["Skim Milk", "fettfreie Milch"]
     },
-    "fdc-169878": {
-      "name": "Sirup, zuckerfrei"
-    },
-    "fdc-169894": {
-      "name": "Butterersatz, fettfrei, Pulver",
-      "aliases": ["Butteraroma-Pulver"]
-    },
+    "fdc-169878": { "name": "Sirup, zuckerfrei" },
+    "fdc-169894": { "name": "Butterersatz, fettfrei, Pulver", "aliases": ["Butteraroma-Pulver"] },
     "fdc-169908": {
       "name": "Loquat",
       "aliases": ["Japanische Wollmispel", "Wollmispel", "Nispero"]
     },
-    "fdc-169913": {
-      "name": "Maulbeere",
-      "aliases": ["Maulbeeren"]
-    },
-    "fdc-169915": {
-      "name": "Ohelo-Beere",
-      "aliases": ["Ohelo"]
-    },
-    "fdc-169957": {
-      "name": "Mungbohnensprossen",
-      "aliases": ["Mungbohnenkeimlinge"]
-    },
+    "fdc-169913": { "name": "Maulbeere", "aliases": ["Maulbeeren"] },
+    "fdc-169915": { "name": "Ohelo-Beere", "aliases": ["Ohelo"] },
+    "fdc-169957": { "name": "Mungbohnensprossen", "aliases": ["Mungbohnenkeimlinge"] },
     "fdc-169961": {
       "name": "Grüne Bohnen",
       "aliases": ["Brechbohnen", "Schnittbohnen", "Fisolen", "Haricots verts"]
     },
-    "fdc-169974": {
-      "name": "Klettenwurzel",
-      "aliases": ["Gobo"]
-    },
-    "fdc-169975": {
-      "name": "Weißkohl",
-      "aliases": ["Weißkraut", "Kopfkohl", "Kappes", "Kraut"]
-    },
-    "fdc-169985": {
-      "name": "Maniok",
-      "aliases": ["Cassava", "Yuca", "Kassava"]
-    },
-    "fdc-169988": {
-      "name": "Staudensellerie",
-      "aliases": ["Stangensellerie", "Bleichsellerie"]
-    },
-    "fdc-169990": {
-      "name": "Stangensalat",
-      "aliases": ["Spargelsalat", "Celtuce"]
-    },
+    "fdc-169974": { "name": "Klettenwurzel", "aliases": ["Gobo"] },
+    "fdc-169975": { "name": "Weißkohl", "aliases": ["Weißkraut", "Kopfkohl", "Kappes", "Kraut"] },
+    "fdc-169985": { "name": "Maniok", "aliases": ["Cassava", "Yuca", "Kassava"] },
+    "fdc-169988": { "name": "Staudensellerie", "aliases": ["Stangensellerie", "Bleichsellerie"] },
+    "fdc-169990": { "name": "Stangensalat", "aliases": ["Spargelsalat", "Celtuce"] },
     "fdc-169991": {
       "name": "Mangold",
       "aliases": ["Schnittmangold", "Stielmangold", "Krautstiel"]
     },
-    "fdc-169993": {
-      "name": "Zichorienwurzel",
-      "aliases": ["Wegwarte-Wurzel", "Zichorie"]
-    },
+    "fdc-169993": { "name": "Zichorienwurzel", "aliases": ["Wegwarte-Wurzel", "Zichorie"] },
     "fdc-169997": {
       "name": "Koriandergrün",
       "aliases": ["Korianderblätter", "Koriander", "Cilantro"]
     },
-    "fdc-169998": {
-      "name": "Zuckermais, gelb",
-      "aliases": ["Mais", "Maiskolben"]
-    },
-    "fdc-170000": {
-      "name": "Zwiebel",
-      "aliases": ["Speisezwiebel", "Küchenzwiebel", "Zwiebeln"]
-    },
+    "fdc-169998": { "name": "Zuckermais, gelb", "aliases": ["Mais", "Maiskolben"] },
+    "fdc-170000": { "name": "Zwiebel", "aliases": ["Speisezwiebel", "Küchenzwiebel", "Zwiebeln"] },
     "fdc-170005": {
       "name": "Lauchzwiebel",
       "aliases": ["Frühlingszwiebel", "Jungzwiebel", "Frühlingszwiebeln"]
     },
-    "fdc-170025": {
-      "name": "Straucherbsen, frisch",
-      "aliases": ["Taubenerbsen"]
-    },
+    "fdc-170025": { "name": "Straucherbsen, frisch", "aliases": ["Taubenerbsen"] },
     "fdc-170028": {
       "name": "Kartoffel",
       "aliases": ["Kartoffel, mit Schale", "Erdapfel", "Grundbirne", "Kartoffeln"]
     },
-    "fdc-170073": {
-      "name": "Jicama",
-      "aliases": ["Yamsbohne", "Mexikanische Rübe"]
-    },
-    "fdc-170078": {
-      "name": "Eppaw (nordamerikanische Wurzelknolle)"
-    },
-    "fdc-170095": {
-      "name": "Rettichsprossen",
-      "aliases": ["Rettichkeimlinge"]
-    },
-    "fdc-170106": {
-      "name": "Chilischote, rot",
-      "aliases": ["Chili, rot", "Chili"]
-    },
+    "fdc-170073": { "name": "Jicama", "aliases": ["Yamsbohne", "Mexikanische Rübe"] },
+    "fdc-170078": { "name": "Eppaw (nordamerikanische Wurzelknolle)" },
+    "fdc-170095": { "name": "Rettichsprossen", "aliases": ["Rettichkeimlinge"] },
+    "fdc-170106": { "name": "Chilischote, rot", "aliases": ["Chili, rot", "Chili"] },
     "fdc-170108": {
       "name": "Paprikaschote, rot",
       "aliases": ["Paprika, rot", "Gemüsepaprika, rot"]
     },
-    "fdc-170148": {
-      "name": "Hanfsamen, geschält",
-      "aliases": ["Hanfnüsse"]
-    },
-    "fdc-170150": {
-      "name": "Sesam, ganz, getrocknet",
-      "aliases": ["Sesamsamen"]
-    },
+    "fdc-170148": { "name": "Hanfsamen, geschält", "aliases": ["Hanfnüsse"] },
+    "fdc-170150": { "name": "Sesam, ganz, getrocknet", "aliases": ["Sesamsamen"] },
     "fdc-170155": {
       "name": "Sonnenblumenkernmus, ohne Salz",
       "aliases": ["Sonnenblumenkernbutter"]
     },
-    "fdc-170156": {
-      "name": "Sonnenblumenkernmehl, teilentölt"
-    },
-    "fdc-170163": {
-      "name": "Cashewmus, ohne Salz",
-      "aliases": ["Cashewbutter"]
-    },
-    "fdc-170169": {
-      "name": "Kokosnussfleisch",
-      "aliases": ["Kokosfleisch"]
-    },
-    "fdc-170172": {
-      "name": "Kokosmilch, roh",
-      "aliases": ["Kokosmilch, frisch gepresst"]
-    },
-    "fdc-170174": {
-      "name": "Kokoswasser"
-    },
-    "fdc-170177": {
-      "name": "Hickorynüsse, getrocknet",
-      "aliases": ["Hickorynuss"]
-    },
-    "fdc-170184": {
-      "name": "Pistazie",
-      "aliases": ["Pistazien"]
-    },
-    "fdc-170186": {
-      "name": "Schwarznüsse, getrocknet",
-      "aliases": ["Schwarze Walnüsse"]
-    },
-    "fdc-170191": {
-      "name": "Sesammus (Sesampaste)",
-      "aliases": ["Sesampaste"]
-    },
-    "fdc-170283": {
-      "name": "Gerste, geschält",
-      "aliases": ["Gerstenkörner"]
-    },
-    "fdc-170284": {
-      "name": "Perlgraupen",
-      "aliases": ["Gerstengraupen", "Graupen", "Rollgerste"]
-    },
-    "fdc-170286": {
-      "name": "Buchweizen"
-    },
-    "fdc-170288": {
-      "name": "Maiskörner, gelb"
-    },
-    "fdc-170289": {
-      "name": "Maiskleie"
-    },
-    "fdc-170290": {
-      "name": "Maismehl, Vollkorn, gelb"
-    },
-    "fdc-170375": {
-      "name": "Rote-Bete-Blätter",
-      "aliases": ["Rübenblätter"]
-    },
+    "fdc-170156": { "name": "Sonnenblumenkernmehl, teilentölt" },
+    "fdc-170163": { "name": "Cashewmus, ohne Salz", "aliases": ["Cashewbutter"] },
+    "fdc-170169": { "name": "Kokosnussfleisch", "aliases": ["Kokosfleisch"] },
+    "fdc-170172": { "name": "Kokosmilch, roh", "aliases": ["Kokosmilch, frisch gepresst"] },
+    "fdc-170174": { "name": "Kokoswasser" },
+    "fdc-170177": { "name": "Hickorynüsse, getrocknet", "aliases": ["Hickorynuss"] },
+    "fdc-170184": { "name": "Pistazie", "aliases": ["Pistazien"] },
+    "fdc-170186": { "name": "Schwarznüsse, getrocknet", "aliases": ["Schwarze Walnüsse"] },
+    "fdc-170191": { "name": "Sesammus (Sesampaste)", "aliases": ["Sesampaste"] },
+    "fdc-170283": { "name": "Gerste, geschält", "aliases": ["Gerstenkörner"] },
+    "fdc-170284": { "name": "Perlgraupen", "aliases": ["Gerstengraupen", "Graupen", "Rollgerste"] },
+    "fdc-170286": { "name": "Buchweizen" },
+    "fdc-170288": { "name": "Maiskörner, gelb" },
+    "fdc-170289": { "name": "Maiskleie" },
+    "fdc-170290": { "name": "Maismehl, Vollkorn, gelb" },
+    "fdc-170375": { "name": "Rote-Bete-Blätter", "aliases": ["Rübenblätter"] },
     "fdc-170377": {
       "name": "Dicke Bohnen, frisch",
       "aliases": ["Saubohnen", "Ackerbohnen", "Puffbohnen"]
@@ -891,94 +387,40 @@
       "name": "Stängelkohl",
       "aliases": ["Cime di Rapa", "Broccoletti", "Rapini", "Brokkoli-Rabe"]
     },
-    "fdc-170385": {
-      "name": "Pestwurz (Fuki)",
-      "aliases": ["Fuki"]
-    },
-    "fdc-170400": {
-      "name": "Knollensellerie",
-      "aliases": ["Sellerieknolle", "Sellerie"]
-    },
-    "fdc-170404": {
-      "name": "Chicorée",
-      "aliases": ["Brüsseler Endivie", "Witloof"]
-    },
+    "fdc-170385": { "name": "Pestwurz (Fuki)", "aliases": ["Fuki"] },
+    "fdc-170400": { "name": "Knollensellerie", "aliases": ["Sellerieknolle", "Sellerie"] },
+    "fdc-170404": { "name": "Chicorée", "aliases": ["Brüsseler Endivie", "Witloof"] },
     "fdc-170416": {
       "name": "Petersilie",
       "aliases": ["Petersilie, frisch", "Blattpetersilie", "Petersilienblätter"]
     },
-    "fdc-170417": {
-      "name": "Pastinake",
-      "aliases": ["Pastinaken", "Hammelmöhre"]
-    },
-    "fdc-170419": {
-      "name": "Erbsen, grün",
-      "aliases": ["Grüne Erbsen", "Gartenerbsen"]
-    },
-    "fdc-170422": {
-      "name": "Erbsensprossen",
-      "aliases": ["Erbsenkeimlinge"]
-    },
+    "fdc-170417": { "name": "Pastinake", "aliases": ["Pastinaken", "Hammelmöhre"] },
+    "fdc-170419": { "name": "Erbsen, grün", "aliases": ["Grüne Erbsen", "Gartenerbsen"] },
+    "fdc-170422": { "name": "Erbsensprossen", "aliases": ["Erbsenkeimlinge"] },
     "fdc-170427": {
       "name": "Paprikaschote, grün",
       "aliases": ["Paprika, grün", "Gemüsepaprika, grün"]
     },
-    "fdc-170432": {
-      "name": "Kermesbeeren-Triebe",
-      "aliases": ["Phytolacca-Triebe"]
-    },
-    "fdc-170456": {
-      "name": "Tomate, grün",
-      "aliases": ["Tomaten, grün"]
-    },
-    "fdc-170457": {
-      "name": "Tomate",
-      "aliases": ["Tomaten", "Tomate, rot", "Paradeiser"]
-    },
+    "fdc-170432": { "name": "Kermesbeeren-Triebe", "aliases": ["Phytolacca-Triebe"] },
+    "fdc-170456": { "name": "Tomate, grün", "aliases": ["Tomaten, grün"] },
+    "fdc-170457": { "name": "Tomate", "aliases": ["Tomaten", "Tomate, rot", "Paradeiser"] },
     "fdc-170465": {
       "name": "Speiserübe",
       "aliases": ["Weiße Rübe", "Mairübe", "Navette", "Herbstrübe", "Rübe"]
     },
-    "fdc-170476": {
-      "name": "Flügelbohnen, frisch",
-      "aliases": ["Goabohnen"]
-    },
+    "fdc-170476": { "name": "Flügelbohnen, frisch", "aliases": ["Goabohnen"] },
     "fdc-170483": {
       "name": "Moringa-Schoten",
       "aliases": ["Drumsticks", "Meerrettichbaum-Schoten"]
     },
-    "fdc-170487": {
-      "name": "Sommerkürbis, alle Sorten",
-      "aliases": ["Sommerkürbisse"]
-    },
-    "fdc-170497": {
-      "name": "Chilischote, grün",
-      "aliases": ["Chili, grün"]
-    },
-    "fdc-170499": {
-      "name": "Schalotte",
-      "aliases": ["Schalotten", "Eschalotte"]
-    },
-    "fdc-170553": {
-      "name": "Brotnuss, getrocknet",
-      "aliases": ["Maya-Nuss", "Ramón-Nuss"]
-    },
-    "fdc-170556": {
-      "name": "Kürbiskerne, getrocknet",
-      "aliases": ["Kürbissamenkerne"]
-    },
-    "fdc-170562": {
-      "name": "Sonnenblumenkerne, getrocknet",
-      "aliases": ["Sonnenblumenkerne"]
-    },
-    "fdc-170568": {
-      "name": "Mandeln, blanchiert",
-      "aliases": ["Geschälte Mandeln"]
-    },
-    "fdc-170570": {
-      "name": "Butternüsse, getrocknet",
-      "aliases": ["Graue Walnuss"]
-    },
+    "fdc-170487": { "name": "Sommerkürbis, alle Sorten", "aliases": ["Sommerkürbisse"] },
+    "fdc-170497": { "name": "Chilischote, grün", "aliases": ["Chili, grün"] },
+    "fdc-170499": { "name": "Schalotte", "aliases": ["Schalotten", "Eschalotte"] },
+    "fdc-170553": { "name": "Brotnuss, getrocknet", "aliases": ["Maya-Nuss", "Ramón-Nuss"] },
+    "fdc-170556": { "name": "Kürbiskerne, getrocknet", "aliases": ["Kürbissamenkerne"] },
+    "fdc-170562": { "name": "Sonnenblumenkerne, getrocknet", "aliases": ["Sonnenblumenkerne"] },
+    "fdc-170568": { "name": "Mandeln, blanchiert", "aliases": ["Geschälte Mandeln"] },
+    "fdc-170570": { "name": "Butternüsse, getrocknet", "aliases": ["Graue Walnuss"] },
     "fdc-170574": {
       "name": "Esskastanien, ungeschält",
       "aliases": ["Maronen", "Kastanien", "Edelkastanien"]
@@ -987,151 +429,61 @@
       "name": "Kokosraspeln, gesüßt, abgepackt",
       "aliases": ["Kokosflocken, gesüßt"]
     },
-    "fdc-170580": {
-      "name": "Kokoscreme, roh",
-      "aliases": ["Kokosrahm"]
-    },
-    "fdc-170590": {
-      "name": "Pili-Nüsse, getrocknet",
-      "aliases": ["Pilinuss"]
-    },
-    "fdc-170591": {
-      "name": "Pinienkerne, getrocknet",
-      "aliases": ["Pinienkerne"]
-    },
-    "fdc-170646": {
-      "name": "Pancake-Sirup, mit 2 % Ahornsirup und Kaliumzusatz"
-    },
-    "fdc-170684": {
-      "name": "Arrowrootmehl",
-      "aliases": ["Pfeilwurzmehl", "Arrowroot"]
-    },
-    "fdc-170687": {
-      "name": "Buchweizenmehl, Vollkorn"
-    },
-    "fdc-170688": {
-      "name": "Bulgur, trocken"
-    },
-    "fdc-170851": {
-      "name": "Ricotta, aus Vollmilch"
-    },
-    "fdc-170874": {
-      "name": "Buttermilch, fettarm (gesäuert)"
-    },
-    "fdc-170876": {
-      "name": "Vollmilchpulver, mit Vitamin D",
-      "aliases": ["Trockenvollmilch"]
-    },
+    "fdc-170580": { "name": "Kokoscreme, roh", "aliases": ["Kokosrahm"] },
+    "fdc-170590": { "name": "Pili-Nüsse, getrocknet", "aliases": ["Pilinuss"] },
+    "fdc-170591": { "name": "Pinienkerne, getrocknet", "aliases": ["Pinienkerne"] },
+    "fdc-170646": { "name": "Pancake-Sirup, mit 2 % Ahornsirup und Kaliumzusatz" },
+    "fdc-170684": { "name": "Arrowrootmehl", "aliases": ["Pfeilwurzmehl", "Arrowroot"] },
+    "fdc-170687": { "name": "Buchweizenmehl, Vollkorn" },
+    "fdc-170688": { "name": "Bulgur, trocken" },
+    "fdc-170851": { "name": "Ricotta, aus Vollmilch" },
+    "fdc-170874": { "name": "Buttermilch, fettarm (gesäuert)" },
+    "fdc-170876": { "name": "Vollmilchpulver, mit Vitamin D", "aliases": ["Trockenvollmilch"] },
     "fdc-170881": {
       "name": "Kakaomilch, fettarm, mit Vitamin A und D",
       "aliases": ["Schokomilch"]
     },
-    "fdc-170885": {
-      "name": "Molke, sauer, flüssig",
-      "aliases": ["Sauermolke"]
-    },
+    "fdc-170885": { "name": "Molke, sauer, flüssig", "aliases": ["Sauermolke"] },
     "fdc-170895": {
       "name": "Eiweiß, getrocknet, stabilisiert, glukosereduziert",
       "aliases": ["Eiklar, getrocknet"]
     },
-    "fdc-170900": {
-      "name": "Mozzarella, wasserarm, teilentrahmt, gerieben"
-    },
+    "fdc-170900": { "name": "Mozzarella, wasserarm, teilentrahmt, gerieben" },
     "fdc-170921": {
       "name": "Koriandergrün, getrocknet",
       "aliases": ["Korianderblätter, getrocknet"]
     },
-    "fdc-170922": {
-      "name": "Koriandersamen",
-      "aliases": ["Koriander", "Koriandersaat"]
-    },
-    "fdc-170925": {
-      "name": "Dillsamen",
-      "aliases": ["Dillsaat"]
-    },
-    "fdc-170927": {
-      "name": "Macis, gemahlen",
-      "aliases": ["Muskatblüte"]
-    },
-    "fdc-170928": {
-      "name": "Majoran, getrocknet"
-    },
-    "fdc-170930": {
-      "name": "Petersilie, getrocknet"
-    },
-    "fdc-170933": {
-      "name": "Weißer Pfeffer",
-      "aliases": ["Pfeffer, weiß"]
-    },
-    "fdc-170935": {
-      "name": "Salbei, gemahlen",
-      "aliases": ["Salbei"]
-    },
-    "fdc-170936": {
-      "name": "Bohnenkraut, gemahlen",
-      "aliases": ["Bohnenkraut"]
-    },
-    "fdc-171012": {
-      "name": "Sojaöl, teilweise gehärtet"
-    },
-    "fdc-171017": {
-      "name": "Sonnenblumenöl, linolsäurereich (unter 60 %)"
-    },
-    "fdc-171024": {
-      "name": "Baumwollsaatöl",
-      "aliases": ["Baumwollsamenöl"]
-    },
-    "fdc-171025": {
-      "name": "Sonnenblumenöl, linolsäurereich (ca. 65 %)"
-    },
+    "fdc-170922": { "name": "Koriandersamen", "aliases": ["Koriander", "Koriandersaat"] },
+    "fdc-170925": { "name": "Dillsamen", "aliases": ["Dillsaat"] },
+    "fdc-170927": { "name": "Macis, gemahlen", "aliases": ["Muskatblüte"] },
+    "fdc-170928": { "name": "Majoran, getrocknet" },
+    "fdc-170930": { "name": "Petersilie, getrocknet" },
+    "fdc-170933": { "name": "Weißer Pfeffer", "aliases": ["Pfeffer, weiß"] },
+    "fdc-170935": { "name": "Salbei, gemahlen", "aliases": ["Salbei"] },
+    "fdc-170936": { "name": "Bohnenkraut, gemahlen", "aliases": ["Bohnenkraut"] },
+    "fdc-171012": { "name": "Sojaöl, teilweise gehärtet" },
+    "fdc-171017": { "name": "Sonnenblumenöl, linolsäurereich (unter 60 %)" },
+    "fdc-171024": { "name": "Baumwollsaatöl", "aliases": ["Baumwollsamenöl"] },
+    "fdc-171025": { "name": "Sonnenblumenöl, linolsäurereich (ca. 65 %)" },
     "fdc-171026": {
       "name": "Distelöl, linolsäurereich (über 70 %)",
       "aliases": ["Safloröl, linolsäurereich"]
     },
-    "fdc-171027": {
-      "name": "Distelöl, ölsäurereich",
-      "aliases": ["Safloröl, ölsäurereich"]
-    },
-    "fdc-171028": {
-      "name": "Traubenkernöl"
-    },
-    "fdc-171033": {
-      "name": "Pflanzenöl, Natreon-Raps, hochstabil, ölsäurereich (70 %)"
-    },
-    "fdc-171081": {
-      "name": "Pute, ganz, mit Haut",
-      "aliases": ["Truthahn", "Puter"]
-    },
-    "fdc-171248": {
-      "name": "Ricotta, aus teilentrahmter Milch"
-    },
-    "fdc-171256": {
-      "name": "Saure Sahne, fettreduziert",
-      "aliases": ["Sauerrahm", "Saurer Rahm"]
-    },
+    "fdc-171027": { "name": "Distelöl, ölsäurereich", "aliases": ["Safloröl, ölsäurereich"] },
+    "fdc-171028": { "name": "Traubenkernöl" },
+    "fdc-171033": { "name": "Pflanzenöl, Natreon-Raps, hochstabil, ölsäurereich (70 %)" },
+    "fdc-171081": { "name": "Pute, ganz, mit Haut", "aliases": ["Truthahn", "Puter"] },
+    "fdc-171248": { "name": "Ricotta, aus teilentrahmter Milch" },
+    "fdc-171256": { "name": "Saure Sahne, fettreduziert", "aliases": ["Sauerrahm", "Saurer Rahm"] },
     "fdc-171272": {
       "name": "Magermilchpulver, instant, mit Vitamin A und D",
       "aliases": ["Instant-Magermilchpulver"]
     },
-    "fdc-171279": {
-      "name": "Muttermilch, reif",
-      "aliases": ["Frauenmilch"]
-    },
-    "fdc-171280": {
-      "name": "Büffelmilch (Indischer Büffel)",
-      "aliases": ["Büffelmilch"]
-    },
-    "fdc-171282": {
-      "name": "Molke, süß, flüssig",
-      "aliases": ["Süßmolke"]
-    },
-    "fdc-171287": {
-      "name": "Ei, frisch",
-      "aliases": ["Hühnerei, frisch"]
-    },
-    "fdc-171293": {
-      "name": "Eiscreme, leicht, Softeis, Schokolade"
-    },
+    "fdc-171279": { "name": "Muttermilch, reif", "aliases": ["Frauenmilch"] },
+    "fdc-171280": { "name": "Büffelmilch (Indischer Büffel)", "aliases": ["Büffelmilch"] },
+    "fdc-171282": { "name": "Molke, süß, flüssig", "aliases": ["Süßmolke"] },
+    "fdc-171287": { "name": "Ei, frisch", "aliases": ["Hühnerei, frisch"] },
+    "fdc-171293": { "name": "Eiscreme, leicht, Softeis, Schokolade" },
     "fdc-171302": {
       "name": "Kondensmilch, 2 % Fett, mit Vitamin A und D",
       "aliases": ["Evaporated Milk", "Dosenmilch"]
@@ -1140,162 +492,59 @@
       "name": "Kakaomilch, fettfrei, mit Vitamin A und D",
       "aliases": ["Schokomilch, fettfrei"]
     },
-    "fdc-171318": {
-      "name": "Kerbel, getrocknet"
-    },
-    "fdc-171322": {
-      "name": "Dill, getrocknet",
-      "aliases": ["Dillspitzen, getrocknet"]
-    },
-    "fdc-171326": {
-      "name": "Muskatnuss, gemahlen",
-      "aliases": ["Muskat", "Muskatnusspulver"]
-    },
-    "fdc-171331": {
-      "name": "Geflügelgewürz"
-    },
-    "fdc-171333": {
-      "name": "Rosmarin, getrocknet"
-    },
-    "fdc-171400": {
-      "name": "Rindertalg",
-      "aliases": ["Rindstalg", "Talg"]
-    },
-    "fdc-171411": {
-      "name": "Sojaöl",
-      "aliases": ["Sojabohnenöl"]
-    },
-    "fdc-171412": {
-      "name": "Kokosöl",
-      "aliases": ["Kokosfett"]
-    },
-    "fdc-171422": {
-      "name": "Palmkernöl",
-      "aliases": ["Palmkernfett"]
-    },
-    "fdc-171423": {
-      "name": "Mohnöl",
-      "aliases": ["Mohnsamenöl"]
-    },
-    "fdc-171424": {
-      "name": "Tomatenkernöl"
-    },
-    "fdc-171425": {
-      "name": "Teesamenöl",
-      "aliases": ["Teeöl"]
-    },
-    "fdc-171426": {
-      "name": "Sojalecithin",
-      "aliases": ["Lecithin"]
-    },
-    "fdc-171429": {
-      "name": "Sheaöl",
-      "aliases": ["Karitéöl", "Sheabutter"]
-    },
-    "fdc-171442": {
-      "name": "Leinöl, mit Leinsamenstücken"
-    },
+    "fdc-171318": { "name": "Kerbel, getrocknet" },
+    "fdc-171322": { "name": "Dill, getrocknet", "aliases": ["Dillspitzen, getrocknet"] },
+    "fdc-171326": { "name": "Muskatnuss, gemahlen", "aliases": ["Muskat", "Muskatnusspulver"] },
+    "fdc-171331": { "name": "Geflügelgewürz" },
+    "fdc-171333": { "name": "Rosmarin, getrocknet" },
+    "fdc-171400": { "name": "Rindertalg", "aliases": ["Rindstalg", "Talg"] },
+    "fdc-171411": { "name": "Sojaöl", "aliases": ["Sojabohnenöl"] },
+    "fdc-171412": { "name": "Kokosöl", "aliases": ["Kokosfett"] },
+    "fdc-171422": { "name": "Palmkernöl", "aliases": ["Palmkernfett"] },
+    "fdc-171423": { "name": "Mohnöl", "aliases": ["Mohnsamenöl"] },
+    "fdc-171424": { "name": "Tomatenkernöl" },
+    "fdc-171425": { "name": "Teesamenöl", "aliases": ["Teeöl"] },
+    "fdc-171426": { "name": "Sojalecithin", "aliases": ["Lecithin"] },
+    "fdc-171429": { "name": "Sheaöl", "aliases": ["Karitéöl", "Sheabutter"] },
+    "fdc-171442": { "name": "Leinöl, mit Leinsamenstücken" },
     "fdc-171447": {
       "name": "Hähnchen, mit Haut",
       "aliases": ["Huhn", "Hühnchen", "Hähnchen, ganz"]
     },
-    "fdc-171474": {
-      "name": "Hähnchenbrust, mit Haut",
-      "aliases": ["Hühnerbrust"]
-    },
-    "fdc-171631": {
-      "name": "Salsiccia, Schwein, mild",
-      "aliases": ["Italienische Bratwurst"]
-    },
-    "fdc-171686": {
-      "name": "Acerola",
-      "aliases": ["Acerolakirsche", "Westindische Kirsche"]
-    },
-    "fdc-171711": {
-      "name": "Heidelbeere",
-      "aliases": ["Blaubeere", "Heidelbeeren", "Blaubeeren"]
-    },
-    "fdc-171727": {
-      "name": "Holunderbeere",
-      "aliases": ["Holunder", "Holunderbeeren"]
-    },
-    "fdc-171955": {
-      "name": "Kabeljau, Atlantik",
-      "aliases": ["Dorsch"]
-    },
-    "fdc-172015": {
-      "name": "Maisgrieß, entkeimt, weiß, nicht angereichert"
-    },
-    "fdc-172023": {
-      "name": "Hirsemehl"
-    },
-    "fdc-172183": {
-      "name": "Eiweiß, frisch",
-      "aliases": ["Eiklar"]
-    },
-    "fdc-172184": {
-      "name": "Eigelb, frisch",
-      "aliases": ["Eidotter", "Dotter"]
-    },
-    "fdc-172188": {
-      "name": "Vollei, getrocknet",
-      "aliases": ["Eipulver"]
-    },
-    "fdc-172193": {
-      "name": "Milch, 2 % Fett, mit Magermilchtrockenmasse, ohne Vitamin-A-Zusatz"
-    },
-    "fdc-172195": {
-      "name": "Magermilchpulver, normal, mit Vitamin A und D"
-    },
-    "fdc-172196": {
-      "name": "Magermilchpulver, instant, ohne Vitamin-A-und-D-Zusatz"
-    },
-    "fdc-172205": {
-      "name": "Milch, 2 % Fett, ohne Vitamin-A-und-D-Zusatz"
-    },
-    "fdc-172207": {
-      "name": "Frischkäse, fettfrei",
-      "aliases": ["Rahmfrischkäse, fettfrei"]
-    },
+    "fdc-171474": { "name": "Hähnchenbrust, mit Haut", "aliases": ["Hühnerbrust"] },
+    "fdc-171631": { "name": "Salsiccia, Schwein, mild", "aliases": ["Italienische Bratwurst"] },
+    "fdc-171686": { "name": "Acerola", "aliases": ["Acerolakirsche", "Westindische Kirsche"] },
+    "fdc-171711": { "name": "Heidelbeere", "aliases": ["Blaubeere", "Heidelbeeren", "Blaubeeren"] },
+    "fdc-171727": { "name": "Holunderbeere", "aliases": ["Holunder", "Holunderbeeren"] },
+    "fdc-171955": { "name": "Kabeljau, Atlantik", "aliases": ["Dorsch"] },
+    "fdc-172015": { "name": "Maisgrieß, entkeimt, weiß, nicht angereichert" },
+    "fdc-172023": { "name": "Hirsemehl" },
+    "fdc-172183": { "name": "Eiweiß, frisch", "aliases": ["Eiklar"] },
+    "fdc-172184": { "name": "Eigelb, frisch", "aliases": ["Eidotter", "Dotter"] },
+    "fdc-172188": { "name": "Vollei, getrocknet", "aliases": ["Eipulver"] },
+    "fdc-172193": { "name": "Milch, 2 % Fett, mit Magermilchtrockenmasse, ohne Vitamin-A-Zusatz" },
+    "fdc-172195": { "name": "Magermilchpulver, normal, mit Vitamin A und D" },
+    "fdc-172196": { "name": "Magermilchpulver, instant, ohne Vitamin-A-und-D-Zusatz" },
+    "fdc-172205": { "name": "Milch, 2 % Fett, ohne Vitamin-A-und-D-Zusatz" },
+    "fdc-172207": { "name": "Frischkäse, fettfrei", "aliases": ["Rahmfrischkäse, fettfrei"] },
     "fdc-172216": {
       "name": "Käse, mexikanische Mischung, fettreduziert",
       "aliases": ["Queso Mexicano"]
     },
-    "fdc-172217": {
-      "name": "Vollmilch, 3,25 % Fett, ohne Vitamin-A-und-D-Zusatz"
-    },
-    "fdc-172225": {
-      "name": "Buttermilch, aus Vollmilch"
-    },
+    "fdc-172217": { "name": "Vollmilch, 3,25 % Fett, ohne Vitamin-A-und-D-Zusatz" },
+    "fdc-172225": { "name": "Buttermilch, aus Vollmilch" },
     "fdc-172239": {
       "name": "Grüne Minze, getrocknet",
       "aliases": ["Krauseminze, getrocknet", "Spearmint"]
     },
-    "fdc-172328": {
-      "name": "Sonnenblumenöl, linolsäurereich, teilweise gehärtet"
-    },
-    "fdc-172329": {
-      "name": "Shortening, Brotbacken, Soja (gehärtet) und Baumwollsaat"
-    },
-    "fdc-172330": {
-      "name": "Shortening, Kuchenmischung, Soja und Baumwollsaat (gehärtet)"
-    },
-    "fdc-172331": {
-      "name": "Frittierfett, hochbelastbar, Palm (gehärtet)"
-    },
-    "fdc-172332": {
-      "name": "Shortening, Haushalt, Soja (gehärtet) und Palm"
-    },
-    "fdc-172333": {
-      "name": "Frittierfett, hochbelastbar, Soja (gehärtet), Linolsäure unter 1 %"
-    },
-    "fdc-172335": {
-      "name": "Muskatbutter"
-    },
-    "fdc-172336": {
-      "name": "Rapsöl",
-      "aliases": ["Canolaöl"]
-    },
+    "fdc-172328": { "name": "Sonnenblumenöl, linolsäurereich, teilweise gehärtet" },
+    "fdc-172329": { "name": "Shortening, Brotbacken, Soja (gehärtet) und Baumwollsaat" },
+    "fdc-172330": { "name": "Shortening, Kuchenmischung, Soja und Baumwollsaat (gehärtet)" },
+    "fdc-172331": { "name": "Frittierfett, hochbelastbar, Palm (gehärtet)" },
+    "fdc-172332": { "name": "Shortening, Haushalt, Soja (gehärtet) und Palm" },
+    "fdc-172333": { "name": "Frittierfett, hochbelastbar, Soja (gehärtet), Linolsäure unter 1 %" },
+    "fdc-172335": { "name": "Muskatbutter" },
+    "fdc-172336": { "name": "Rapsöl", "aliases": ["Canolaöl"] },
     "fdc-172338": {
       "name": "Sonnenblumenöl, ölsäurereich (70 % und mehr)",
       "aliases": ["High-Oleic-Sonnenblumenöl"]
@@ -1308,283 +557,102 @@
       "name": "Butter, fettreduziert, Stangenform, ohne Salz",
       "aliases": ["Leichte Butter, ungesalzen"]
     },
-    "fdc-172345": {
-      "name": "Speckfett",
-      "aliases": ["Bratfett vom Speck"]
-    },
-    "fdc-172370": {
-      "name": "Pflanzenöl, Soja, raffiniert"
-    },
-    "fdc-172385": {
-      "name": "Hähnchen-Oberschenkel, mit Haut",
-      "aliases": ["Hühnerschenkel"]
-    },
-    "fdc-172420": {
-      "name": "Linsen"
-    },
-    "fdc-172423": {
-      "name": "Lupinen, trocken"
-    },
-    "fdc-172425": {
-      "name": "Mattenbohnen, trocken",
-      "aliases": ["Mothbohnen"]
-    },
-    "fdc-172428": {
-      "name": "Spalterbsen, grün",
-      "aliases": ["Erbsen, grün, geschält, trocken"]
-    },
-    "fdc-172430": {
-      "name": "Erdnüsse, alle Sorten",
-      "aliases": ["Erdnuss"]
-    },
-    "fdc-172432": {
-      "name": "Erdnüsse, Valencia"
-    },
-    "fdc-172434": {
-      "name": "Erdnüsse, Virginia"
-    },
-    "fdc-172436": {
-      "name": "Straucherbsen, trocken",
-      "aliases": ["Taubenerbsen, trocken"]
-    },
-    "fdc-172445": {
-      "name": "Sojaschrot, entfettet"
-    },
-    "fdc-172479": {
-      "name": "Lammfleisch, gemischte Teilstücke, mit Fett",
-      "aliases": ["Lamm"]
-    },
-    "fdc-172684": {
-      "name": "Roggenbrot"
-    },
-    "fdc-172686": {
-      "name": "Weizenbrot",
-      "aliases": ["Weißbrot"]
-    },
-    "fdc-172803": {
-      "name": "Backpulver, doppeltwirkend, mit Natriumaluminiumsulfat"
-    },
-    "fdc-172804": {
-      "name": "Backpulver, doppeltwirkend, reines Phosphat"
-    },
-    "fdc-172805": {
-      "name": "Backpulver, natriumarm"
-    },
-    "fdc-173043": {
-      "name": "Physalis",
-      "aliases": ["Kapstachelbeere", "Andenbeere"]
-    },
-    "fdc-173190": {
-      "name": "Rotwein",
-      "aliases": ["Rotwein, Tafelwein"]
-    },
-    "fdc-173262": {
-      "name": "Sorghummehl, raffiniert, nicht angereichert"
-    },
-    "fdc-173410": {
-      "name": "Butter, gesalzen"
-    },
-    "fdc-173411": {
-      "name": "Butter, aufgeschlagen, gesalzen"
-    },
-    "fdc-173412": {
-      "name": "Butterschmalz",
-      "aliases": ["Butterreinfett", "Ghee"]
-    },
-    "fdc-173425": {
-      "name": "Vollei, getrocknet, stabilisiert, glukosereduziert"
-    },
+    "fdc-172345": { "name": "Speckfett", "aliases": ["Bratfett vom Speck"] },
+    "fdc-172370": { "name": "Pflanzenöl, Soja, raffiniert" },
+    "fdc-172385": { "name": "Hähnchen-Oberschenkel, mit Haut", "aliases": ["Hühnerschenkel"] },
+    "fdc-172420": { "name": "Linsen" },
+    "fdc-172423": { "name": "Lupinen, trocken" },
+    "fdc-172425": { "name": "Mattenbohnen, trocken", "aliases": ["Mothbohnen"] },
+    "fdc-172428": { "name": "Spalterbsen, grün", "aliases": ["Erbsen, grün, geschält, trocken"] },
+    "fdc-172430": { "name": "Erdnüsse, alle Sorten", "aliases": ["Erdnuss"] },
+    "fdc-172432": { "name": "Erdnüsse, Valencia" },
+    "fdc-172434": { "name": "Erdnüsse, Virginia" },
+    "fdc-172436": { "name": "Straucherbsen, trocken", "aliases": ["Taubenerbsen, trocken"] },
+    "fdc-172445": { "name": "Sojaschrot, entfettet" },
+    "fdc-172479": { "name": "Lammfleisch, gemischte Teilstücke, mit Fett", "aliases": ["Lamm"] },
+    "fdc-172684": { "name": "Roggenbrot" },
+    "fdc-172686": { "name": "Weizenbrot", "aliases": ["Weißbrot"] },
+    "fdc-172803": { "name": "Backpulver, doppeltwirkend, mit Natriumaluminiumsulfat" },
+    "fdc-172804": { "name": "Backpulver, doppeltwirkend, reines Phosphat" },
+    "fdc-172805": { "name": "Backpulver, natriumarm" },
+    "fdc-173043": { "name": "Physalis", "aliases": ["Kapstachelbeere", "Andenbeere"] },
+    "fdc-173190": { "name": "Rotwein", "aliases": ["Rotwein, Tafelwein"] },
+    "fdc-173262": { "name": "Sorghummehl, raffiniert, nicht angereichert" },
+    "fdc-173410": { "name": "Butter, gesalzen" },
+    "fdc-173411": { "name": "Butter, aufgeschlagen, gesalzen" },
+    "fdc-173412": { "name": "Butterschmalz", "aliases": ["Butterreinfett", "Ghee"] },
+    "fdc-173425": { "name": "Vollei, getrocknet, stabilisiert, glukosereduziert" },
     "fdc-173427": {
       "name": "Eiweißpulver, stabilisiert, glukosereduziert",
       "aliases": ["Eiklarpulver"]
     },
-    "fdc-173428": {
-      "name": "Eigelb, getrocknet",
-      "aliases": ["Eidotterpulver"]
-    },
-    "fdc-173430": {
-      "name": "Butter, ungesalzen",
-      "aliases": ["Süßrahmbutter, ungesalzen"]
-    },
-    "fdc-173431": {
-      "name": "Parmesan, gerieben",
-      "aliases": ["Parmigiano, gerieben"]
-    },
-    "fdc-173432": {
-      "name": "Magermilch, ohne Vitamin-A-und-D-Zusatz",
-      "aliases": ["Skim Milk"]
-    },
-    "fdc-173441": {
-      "name": "Milch, 1 % Fett, ohne Vitamin-A-und-D-Zusatz"
-    },
+    "fdc-173428": { "name": "Eigelb, getrocknet", "aliases": ["Eidotterpulver"] },
+    "fdc-173430": { "name": "Butter, ungesalzen", "aliases": ["Süßrahmbutter, ungesalzen"] },
+    "fdc-173431": { "name": "Parmesan, gerieben", "aliases": ["Parmigiano, gerieben"] },
+    "fdc-173432": { "name": "Magermilch, ohne Vitamin-A-und-D-Zusatz", "aliases": ["Skim Milk"] },
+    "fdc-173441": { "name": "Milch, 1 % Fett, ohne Vitamin-A-und-D-Zusatz" },
     "fdc-173454": {
       "name": "Vollmilchpulver, ohne Vitamin-D-Zusatz",
       "aliases": ["Trockenvollmilch"]
     },
-    "fdc-173459": {
-      "name": "Muscle Milk, Proteinpulver auf Milchbasis (Markenprodukt)"
-    },
-    "fdc-173465": {
-      "name": "Eiscreme, Softeis, Schokolade"
-    },
-    "fdc-173467": {
-      "name": "Eiscreme, fettfrei, ohne Zuckerzusatz, andere Sorten als Schokolade"
-    },
-    "fdc-173473": {
-      "name": "Rosmarin",
-      "aliases": ["Rosmarin, frisch"]
-    },
-    "fdc-173474": {
-      "name": "Pfefferminze",
-      "aliases": ["Pfefferminze, frisch"]
-    },
-    "fdc-173475": {
-      "name": "Grüne Minze, frisch",
-      "aliases": ["Krauseminze, frisch"]
-    },
-    "fdc-173563": {
-      "name": "Cupuaçuöl",
-      "aliases": ["Cupuaçu-Butter"]
-    },
-    "fdc-173565": {
-      "name": "Sojaöl (teilweise gehärtet) und Baumwollsaatöl"
-    },
-    "fdc-173567": {
-      "name": "Frittierfett, hochbelastbar, Rindertalg und Baumwollsaat"
-    },
-    "fdc-173568": {
-      "name": "Shortening, Konditorei, Kokos und/oder Palmkern (gehärtet)"
-    },
-    "fdc-173570": {
-      "name": "Ucuubabutter"
-    },
-    "fdc-173571": {
-      "name": "Putenfett",
-      "aliases": ["Truthahnfett"]
-    },
+    "fdc-173459": { "name": "Muscle Milk, Proteinpulver auf Milchbasis (Markenprodukt)" },
+    "fdc-173465": { "name": "Eiscreme, Softeis, Schokolade" },
+    "fdc-173467": { "name": "Eiscreme, fettfrei, ohne Zuckerzusatz, andere Sorten als Schokolade" },
+    "fdc-173473": { "name": "Rosmarin", "aliases": ["Rosmarin, frisch"] },
+    "fdc-173474": { "name": "Pfefferminze", "aliases": ["Pfefferminze, frisch"] },
+    "fdc-173475": { "name": "Grüne Minze, frisch", "aliases": ["Krauseminze, frisch"] },
+    "fdc-173563": { "name": "Cupuaçuöl", "aliases": ["Cupuaçu-Butter"] },
+    "fdc-173565": { "name": "Sojaöl (teilweise gehärtet) und Baumwollsaatöl" },
+    "fdc-173567": { "name": "Frittierfett, hochbelastbar, Rindertalg und Baumwollsaat" },
+    "fdc-173568": { "name": "Shortening, Konditorei, Kokos und/oder Palmkern (gehärtet)" },
+    "fdc-173570": { "name": "Ucuubabutter" },
+    "fdc-173571": { "name": "Putenfett", "aliases": ["Truthahnfett"] },
     "fdc-173581": {
       "name": "Butter, fettreduziert, Stangenform, mit Salz",
       "aliases": ["Leichte Butter, gesalzen"]
     },
-    "fdc-173686": {
-      "name": "Lachs, Atlantik, wild",
-      "aliases": ["Atlantischer Lachs"]
-    },
-    "fdc-173727": {
-      "name": "Adzukibohnen",
-      "aliases": ["Azukibohnen"]
-    },
-    "fdc-173734": {
-      "name": "Schwarze Bohnen",
-      "aliases": ["Black Beans"]
-    },
-    "fdc-173738": {
-      "name": "Französische Bohnen, trocken"
-    },
-    "fdc-173742": {
-      "name": "Kidneybohnen, California Red"
-    },
-    "fdc-173744": {
-      "name": "Kidneybohnen, rot",
-      "aliases": ["Rote Kidneybohnen"]
-    },
-    "fdc-173745": {
-      "name": "Navybohnen",
-      "aliases": ["Marinebohnen"]
-    },
-    "fdc-173748": {
-      "name": "Rosa Bohnen"
-    },
-    "fdc-173749": {
-      "name": "Kleine weiße Bohnen"
-    },
-    "fdc-173751": {
-      "name": "Gelbe Bohnen"
-    },
-    "fdc-173756": {
-      "name": "Kichererbsen",
-      "aliases": ["Garbanzo"]
-    },
+    "fdc-173686": { "name": "Lachs, Atlantik, wild", "aliases": ["Atlantischer Lachs"] },
+    "fdc-173727": { "name": "Adzukibohnen", "aliases": ["Azukibohnen"] },
+    "fdc-173734": { "name": "Schwarze Bohnen", "aliases": ["Black Beans"] },
+    "fdc-173738": { "name": "Französische Bohnen, trocken" },
+    "fdc-173742": { "name": "Kidneybohnen, California Red" },
+    "fdc-173744": { "name": "Kidneybohnen, rot", "aliases": ["Rote Kidneybohnen"] },
+    "fdc-173745": { "name": "Navybohnen", "aliases": ["Marinebohnen"] },
+    "fdc-173748": { "name": "Rosa Bohnen" },
+    "fdc-173749": { "name": "Kleine weiße Bohnen" },
+    "fdc-173751": { "name": "Gelbe Bohnen" },
+    "fdc-173756": { "name": "Kichererbsen", "aliases": ["Garbanzo"] },
     "fdc-173758": {
       "name": "Augenbohnen, trocken",
       "aliases": ["Schwarzaugenbohnen", "Kuhbohnen"]
     },
-    "fdc-173815": {
-      "name": "Kalbfleisch, gemischte Teilstücke, mit Fett",
-      "aliases": ["Kalb"]
-    },
+    "fdc-173815": { "name": "Kalbfleisch, gemischte Teilstücke, mit Fett", "aliases": ["Kalb"] },
     "fdc-173817": {
       "name": "Kalbfleisch, gemischte Teilstücke, mager",
       "aliases": ["Mageres Kalbfleisch"]
     },
-    "fdc-173963": {
-      "name": "Schwarze Johannisbeere",
-      "aliases": ["Cassis", "Ahlbeere"]
-    },
+    "fdc-173963": { "name": "Schwarze Johannisbeere", "aliases": ["Cassis", "Ahlbeere"] },
     "fdc-173964": {
       "name": "Rote und weiße Johannisbeere",
       "aliases": ["Johannisbeere, rot", "Ribisel", "Träuble"]
     },
-    "fdc-174036": {
-      "name": "Rinderhackfleisch, 20 % Fett",
-      "aliases": ["Hackfleisch vom Rind"]
-    },
-    "fdc-174182": {
-      "name": "Sardelle, europäisch",
-      "aliases": ["Anchovis"]
-    },
-    "fdc-174210": {
-      "name": "Garnelen, gemischte Arten",
-      "aliases": ["Garnele", "Shrimps"]
-    },
-    "fdc-174216": {
-      "name": "Miesmuschel",
-      "aliases": ["Miesmuscheln", "Blaue Muschel"]
-    },
-    "fdc-174252": {
-      "name": "Limabohnen, groß, trocken"
-    },
-    "fdc-174255": {
-      "name": "Limabohnen, klein (Baby), trocken"
-    },
-    "fdc-174256": {
-      "name": "Mungbohnen, trocken",
-      "aliases": ["Mungobohnen"]
-    },
-    "fdc-174259": {
-      "name": "Urdbohnen, trocken",
-      "aliases": ["Mungo-Bohnen", "Black Gram"]
-    },
-    "fdc-174263": {
-      "name": "Erdnüsse, Spanish"
-    },
-    "fdc-174270": {
-      "name": "Sojabohnen, trocken"
-    },
-    "fdc-174273": {
-      "name": "Sojamehl, vollfett"
-    },
-    "fdc-174281": {
-      "name": "Spargelbohnen, trocken"
-    },
-    "fdc-174283": {
-      "name": "Flügelbohnen, trocken"
-    },
-    "fdc-174284": {
-      "name": "Rote Linsen",
-      "aliases": ["Linsen, rot"]
-    },
-    "fdc-174311": {
-      "name": "Lammkeule, mit Fett",
-      "aliases": ["Keule vom Lamm"]
-    },
-    "fdc-174683": {
-      "name": "Weintrauben, europäische Sorten, rot oder grün"
-    },
-    "fdc-174837": {
-      "name": "Weißwein",
-      "aliases": ["Weißwein, Tafelwein"]
-    },
+    "fdc-174036": { "name": "Rinderhackfleisch, 20 % Fett", "aliases": ["Hackfleisch vom Rind"] },
+    "fdc-174182": { "name": "Sardelle, europäisch", "aliases": ["Anchovis"] },
+    "fdc-174210": { "name": "Garnelen, gemischte Arten", "aliases": ["Garnele", "Shrimps"] },
+    "fdc-174216": { "name": "Miesmuschel", "aliases": ["Miesmuscheln", "Blaue Muschel"] },
+    "fdc-174252": { "name": "Limabohnen, groß, trocken" },
+    "fdc-174255": { "name": "Limabohnen, klein (Baby), trocken" },
+    "fdc-174256": { "name": "Mungbohnen, trocken", "aliases": ["Mungobohnen"] },
+    "fdc-174259": { "name": "Urdbohnen, trocken", "aliases": ["Mungo-Bohnen", "Black Gram"] },
+    "fdc-174263": { "name": "Erdnüsse, Spanish" },
+    "fdc-174270": { "name": "Sojabohnen, trocken" },
+    "fdc-174273": { "name": "Sojamehl, vollfett" },
+    "fdc-174281": { "name": "Spargelbohnen, trocken" },
+    "fdc-174283": { "name": "Flügelbohnen, trocken" },
+    "fdc-174284": { "name": "Rote Linsen", "aliases": ["Linsen, rot"] },
+    "fdc-174311": { "name": "Lammkeule, mit Fett", "aliases": ["Keule vom Lamm"] },
+    "fdc-174683": { "name": "Weintrauben, europäische Sorten, rot oder grün" },
+    "fdc-174837": { "name": "Weißwein", "aliases": ["Weißwein, Tafelwein"] },
     "fdc-174928": {
       "name": "Semmelbrösel",
       "aliases": ["Paniermehl", "Brösel", "Panierbrösel", "Brotbrösel"]
@@ -1593,270 +661,108 @@
       "name": "Natron",
       "aliases": ["Backnatron", "Natriumhydrogencarbonat", "Speisenatron"]
     },
-    "fdc-175041": {
-      "name": "Weinstein",
-      "aliases": ["Cremor tartari", "Kaliumhydrogentartrat"]
-    },
-    "fdc-175043": {
-      "name": "Trockenhefe",
-      "aliases": ["Backhefe, trocken", "Trockenbackhefe"]
-    },
-    "fdc-175116": {
-      "name": "Hering, Atlantik",
-      "aliases": ["Atlantischer Hering"]
-    },
-    "fdc-175159": {
-      "name": "Thunfisch, Gelbflossen",
-      "aliases": ["Gelbflossenthunfisch"]
-    },
-    "fdc-175186": {
-      "name": "Black-Turtle-Bohnen",
-      "aliases": ["Schwarze Bohnen"]
-    },
-    "fdc-175189": {
-      "name": "Cranberrybohnen",
-      "aliases": ["Borlottibohnen", "Roman Beans"]
-    },
-    "fdc-175193": {
-      "name": "Kidneybohnen, alle Sorten"
-    },
-    "fdc-175196": {
-      "name": "Kidneybohnen, Royal Red"
-    },
-    "fdc-175202": {
-      "name": "Weiße Bohnen"
-    },
+    "fdc-175041": { "name": "Weinstein", "aliases": ["Cremor tartari", "Kaliumhydrogentartrat"] },
+    "fdc-175043": { "name": "Trockenhefe", "aliases": ["Backhefe, trocken", "Trockenbackhefe"] },
+    "fdc-175116": { "name": "Hering, Atlantik", "aliases": ["Atlantischer Hering"] },
+    "fdc-175159": { "name": "Thunfisch, Gelbflossen", "aliases": ["Gelbflossenthunfisch"] },
+    "fdc-175186": { "name": "Black-Turtle-Bohnen", "aliases": ["Schwarze Bohnen"] },
+    "fdc-175189": { "name": "Cranberrybohnen", "aliases": ["Borlottibohnen", "Roman Beans"] },
+    "fdc-175193": { "name": "Kidneybohnen, alle Sorten" },
+    "fdc-175196": { "name": "Kidneybohnen, Royal Red" },
+    "fdc-175202": { "name": "Weiße Bohnen" },
     "fdc-175205": {
       "name": "Dicke Bohnen, trocken",
       "aliases": ["Ackerbohnen", "Favabohnen", "Saubohnen"]
     },
-    "fdc-175208": {
-      "name": "Augenbohnen, Catjang, trocken"
-    },
-    "fdc-175210": {
-      "name": "Helmbohnen, trocken",
-      "aliases": ["Hyazinthbohnen"]
-    },
-    "fdc-175290": {
-      "name": "Kalbshackfleisch",
-      "aliases": ["Hackfleisch vom Kalb"]
-    },
+    "fdc-175208": { "name": "Augenbohnen, Catjang, trocken" },
+    "fdc-175210": { "name": "Helmbohnen, trocken", "aliases": ["Hyazinthbohnen"] },
+    "fdc-175290": { "name": "Kalbshackfleisch", "aliases": ["Hackfleisch vom Kalb"] },
     "fdc-group-alcoholic-beverage-wine-table": {
       "name": "Wein",
       "aliases": ["Tischwein", "Tafelwein"]
     },
-    "fdc-group-apples": {
-      "name": "Äpfel",
-      "aliases": ["Apfel, alle Sorten"]
-    },
-    "fdc-group-barley": {
-      "name": "Gerste"
-    },
-    "fdc-group-beans": {
-      "name": "Bohnen"
-    },
-    "fdc-group-beans-kidney": {
-      "name": "Kidneybohnen",
-      "aliases": ["Rote Bohnen"]
-    },
-    "fdc-group-beef": {
-      "name": "Rindfleisch",
-      "aliases": ["Rind"]
-    },
-    "fdc-group-bread": {
-      "name": "Brot"
-    },
+    "fdc-group-apples": { "name": "Äpfel", "aliases": ["Apfel, alle Sorten"] },
+    "fdc-group-barley": { "name": "Gerste" },
+    "fdc-group-beans": { "name": "Bohnen" },
+    "fdc-group-beans-kidney": { "name": "Kidneybohnen", "aliases": ["Rote Bohnen"] },
+    "fdc-group-beef": { "name": "Rindfleisch", "aliases": ["Rind"] },
+    "fdc-group-bread": { "name": "Brot" },
     "fdc-group-broadbeans": {
       "name": "Dicke Bohnen",
       "aliases": ["Saubohnen", "Ackerbohnen", "Puffbohnen"]
     },
-    "fdc-group-butter": {
-      "name": "Butter"
-    },
-    "fdc-group-butter-light-stick": {
-      "name": "Butter, fettreduziert, Stangenform"
-    },
-    "fdc-group-cabbage-common": {
-      "name": "Kopfkohl, gewöhnlich"
-    },
-    "fdc-group-cheese": {
-      "name": "Käse"
-    },
-    "fdc-group-cheese-cottage": {
-      "name": "Hüttenkäse",
-      "aliases": ["Cottage Cheese"]
-    },
-    "fdc-group-cheese-cottage-lowfat-1-milkfat": {
-      "name": "Hüttenkäse, fettarm (1 % Fett)"
-    },
+    "fdc-group-butter": { "name": "Butter" },
+    "fdc-group-butter-light-stick": { "name": "Butter, fettreduziert, Stangenform" },
+    "fdc-group-cabbage-common": { "name": "Kopfkohl, gewöhnlich" },
+    "fdc-group-cheese": { "name": "Käse" },
+    "fdc-group-cheese-cottage": { "name": "Hüttenkäse", "aliases": ["Cottage Cheese"] },
+    "fdc-group-cheese-cottage-lowfat-1-milkfat": { "name": "Hüttenkäse, fettarm (1 % Fett)" },
     "fdc-group-cheese-parmesan": {
       "name": "Parmesan",
       "aliases": ["Parmigiano", "Parmigiano Reggiano"]
     },
-    "fdc-group-cheese-ricotta": {
-      "name": "Ricotta"
-    },
-    "fdc-group-chicken-broilers-or-fryers": {
-      "name": "Hähnchen",
-      "aliases": ["Huhn", "Hühnchen"]
-    },
-    "fdc-group-corn-flour": {
-      "name": "Maismehl"
-    },
-    "fdc-group-corn-flour-masa": {
-      "name": "Masa-Maismehl",
-      "aliases": ["Masa Harina"]
-    },
-    "fdc-group-corn-flour-whole-grain": {
-      "name": "Maismehl, Vollkorn"
-    },
-    "fdc-group-corn-flour-yellow": {
-      "name": "Maismehl, gelb"
-    },
-    "fdc-group-corn-grain": {
-      "name": "Maiskörner"
-    },
-    "fdc-group-cornmeal": {
-      "name": "Maisgrieß, alle Sorten",
-      "aliases": ["Polenta"]
-    },
-    "fdc-group-cornmeal-degermed": {
-      "name": "Maisgrieß, entkeimt"
-    },
-    "fdc-group-cornmeal-degermed-enriched": {
-      "name": "Maisgrieß, entkeimt, angereichert"
-    },
-    "fdc-group-cornmeal-degermed-unenriched": {
-      "name": "Maisgrieß, entkeimt, nicht angereichert"
-    },
-    "fdc-group-cornmeal-white-self-rising": {
-      "name": "Maisgrieß, weiß, selbsttreibend"
-    },
+    "fdc-group-cheese-ricotta": { "name": "Ricotta" },
+    "fdc-group-chicken-broilers-or-fryers": { "name": "Hähnchen", "aliases": ["Huhn", "Hühnchen"] },
+    "fdc-group-corn-flour": { "name": "Maismehl" },
+    "fdc-group-corn-flour-masa": { "name": "Masa-Maismehl", "aliases": ["Masa Harina"] },
+    "fdc-group-corn-flour-whole-grain": { "name": "Maismehl, Vollkorn" },
+    "fdc-group-corn-flour-yellow": { "name": "Maismehl, gelb" },
+    "fdc-group-corn-grain": { "name": "Maiskörner" },
+    "fdc-group-cornmeal": { "name": "Maisgrieß, alle Sorten", "aliases": ["Polenta"] },
+    "fdc-group-cornmeal-degermed": { "name": "Maisgrieß, entkeimt" },
+    "fdc-group-cornmeal-degermed-enriched": { "name": "Maisgrieß, entkeimt, angereichert" },
+    "fdc-group-cornmeal-degermed-unenriched": { "name": "Maisgrieß, entkeimt, nicht angereichert" },
+    "fdc-group-cornmeal-white-self-rising": { "name": "Maisgrieß, weiß, selbsttreibend" },
     "fdc-group-cornmeal-white-self-rising-bolted": {
       "name": "Maisgrieß, weiß, selbsttreibend, gebeutelt"
     },
-    "fdc-group-cornmeal-whole-grain": {
-      "name": "Maisgrieß, Vollkorn"
-    },
-    "fdc-group-cornmeal-yellow-self-rising": {
-      "name": "Maisgrieß, gelb, selbsttreibend"
-    },
+    "fdc-group-cornmeal-whole-grain": { "name": "Maisgrieß, Vollkorn" },
+    "fdc-group-cornmeal-yellow-self-rising": { "name": "Maisgrieß, gelb, selbsttreibend" },
     "fdc-group-cornmeal-yellow-self-rising-bolted": {
       "name": "Maisgrieß, gelb, selbsttreibend, gebeutelt"
     },
-    "fdc-group-cowpeas": {
-      "name": "Augenbohnen",
-      "aliases": ["Schwarzaugenbohnen", "Kuhbohnen"]
-    },
+    "fdc-group-cowpeas": { "name": "Augenbohnen", "aliases": ["Schwarzaugenbohnen", "Kuhbohnen"] },
     "fdc-group-cream": {
       "name": "Sahne, alle Arten",
       "aliases": ["Rahm", "Obers", "Sahne und Sauerrahm"]
     },
-    "fdc-group-currants": {
-      "name": "Johannisbeeren",
-      "aliases": ["Ribisel"]
-    },
-    "fdc-group-egg": {
-      "name": "Hühnerei",
-      "aliases": ["Ei", "Eier"]
-    },
-    "fdc-group-egg-white": {
-      "name": "Eiweiß",
-      "aliases": ["Eiklar"]
-    },
+    "fdc-group-currants": { "name": "Johannisbeeren", "aliases": ["Ribisel"] },
+    "fdc-group-egg": { "name": "Hühnerei", "aliases": ["Ei", "Eier"] },
+    "fdc-group-egg-white": { "name": "Eiweiß", "aliases": ["Eiklar"] },
     "fdc-group-egg-white-dried": {
       "name": "Eiweiß, getrocknet",
       "aliases": ["Eiklar, getrocknet"]
     },
-    "fdc-group-egg-whole": {
-      "name": "Ei",
-      "aliases": ["Vollei", "Eier", "Hühnerei, ganz"]
-    },
-    "fdc-group-egg-yolk": {
-      "name": "Eigelb",
-      "aliases": ["Eidotter", "Dotter"]
-    },
-    "fdc-group-fat": {
-      "name": "Fett",
-      "aliases": ["Tierfett", "Bratfett"]
-    },
-    "fdc-group-fish": {
-      "name": "Fisch"
-    },
-    "fdc-group-fish-oil": {
-      "name": "Fischöle",
-      "aliases": ["Tran"]
-    },
-    "fdc-group-grapes": {
-      "name": "Weintrauben",
-      "aliases": ["Trauben"]
-    },
-    "fdc-group-ice-cream": {
-      "name": "Eiscreme",
-      "aliases": ["Speiseeis", "Eis"]
-    },
-    "fdc-group-lamb": {
-      "name": "Lammfleisch",
-      "aliases": ["Lamm"]
-    },
-    "fdc-group-leavening-agents": {
-      "name": "Backtriebmittel",
-      "aliases": ["Triebmittel"]
-    },
-    "fdc-group-leavening-agents-baking-powder": {
-      "name": "Backpulver"
-    },
+    "fdc-group-egg-whole": { "name": "Ei", "aliases": ["Vollei", "Eier", "Hühnerei, ganz"] },
+    "fdc-group-egg-yolk": { "name": "Eigelb", "aliases": ["Eidotter", "Dotter"] },
+    "fdc-group-fat": { "name": "Fett", "aliases": ["Tierfett", "Bratfett"] },
+    "fdc-group-fish": { "name": "Fisch" },
+    "fdc-group-fish-oil": { "name": "Fischöle", "aliases": ["Tran"] },
+    "fdc-group-grapes": { "name": "Weintrauben", "aliases": ["Trauben"] },
+    "fdc-group-ice-cream": { "name": "Eiscreme", "aliases": ["Speiseeis", "Eis"] },
+    "fdc-group-lamb": { "name": "Lammfleisch", "aliases": ["Lamm"] },
+    "fdc-group-leavening-agents": { "name": "Backtriebmittel", "aliases": ["Triebmittel"] },
+    "fdc-group-leavening-agents-baking-powder": { "name": "Backpulver" },
     "fdc-group-leavening-agents-baking-powder-double-acting": {
       "name": "Backpulver, doppeltwirkend"
     },
-    "fdc-group-lettuce": {
-      "name": "Salat",
-      "aliases": ["Kopfsalat", "Blattsalat"]
-    },
-    "fdc-group-lima-beans": {
-      "name": "Limabohnen",
-      "aliases": ["Mondbohnen"]
-    },
+    "fdc-group-lettuce": { "name": "Salat", "aliases": ["Kopfsalat", "Blattsalat"] },
+    "fdc-group-lima-beans": { "name": "Limabohnen", "aliases": ["Mondbohnen"] },
     "fdc-group-margarine-like": {
       "name": "Margarineähnliche Streichfette",
       "aliases": ["Mischstreichfette"]
     },
-    "fdc-group-mayonnaise": {
-      "name": "Mayonnaise, alle Sorten",
-      "aliases": ["Mayo", "Majonäse"]
-    },
-    "fdc-group-milk": {
-      "name": "Milch"
-    },
-    "fdc-group-milk-buttermilk-fluid": {
-      "name": "Buttermilch, flüssig"
-    },
-    "fdc-group-milk-buttermilk-fluid-cultured": {
-      "name": "Buttermilch, gesäuert"
-    },
-    "fdc-group-milk-chocolate": {
-      "name": "Kakaomilch",
-      "aliases": ["Schokomilch"]
-    },
-    "fdc-group-milk-dry": {
-      "name": "Milchpulver",
-      "aliases": ["Trockenmilch"]
-    },
-    "fdc-group-milk-dry-nonfat": {
-      "name": "Magermilchpulver"
-    },
-    "fdc-group-milk-dry-nonfat-instant": {
-      "name": "Magermilchpulver, instant"
-    },
-    "fdc-group-milk-dry-whole": {
-      "name": "Vollmilchpulver"
-    },
-    "fdc-group-milk-fluid": {
-      "name": "Milch, flüssig"
-    },
-    "fdc-group-milk-nonfat-fluid": {
-      "name": "Magermilch, flüssig"
-    },
+    "fdc-group-mayonnaise": { "name": "Mayonnaise, alle Sorten", "aliases": ["Mayo", "Majonäse"] },
+    "fdc-group-milk": { "name": "Milch" },
+    "fdc-group-milk-buttermilk-fluid": { "name": "Buttermilch, flüssig" },
+    "fdc-group-milk-buttermilk-fluid-cultured": { "name": "Buttermilch, gesäuert" },
+    "fdc-group-milk-chocolate": { "name": "Kakaomilch", "aliases": ["Schokomilch"] },
+    "fdc-group-milk-dry": { "name": "Milchpulver", "aliases": ["Trockenmilch"] },
+    "fdc-group-milk-dry-nonfat": { "name": "Magermilchpulver" },
+    "fdc-group-milk-dry-nonfat-instant": { "name": "Magermilchpulver, instant" },
+    "fdc-group-milk-dry-whole": { "name": "Vollmilchpulver" },
+    "fdc-group-milk-fluid": { "name": "Milch, flüssig" },
+    "fdc-group-milk-nonfat-fluid": { "name": "Magermilch, flüssig" },
     "fdc-group-milk-reduced-fat-fluid-2-milkfat": {
       "name": "Milch, 2 % Fett",
       "aliases": ["Teilentrahmte Milch"]
@@ -1865,193 +771,69 @@
       "name": "Vollmilch, 3,25 % Fett",
       "aliases": ["Vollmilch"]
     },
-    "fdc-group-mushrooms": {
-      "name": "Pilze",
-      "aliases": ["Champignons"]
-    },
-    "fdc-group-noodles-egg": {
-      "name": "Eiernudeln",
-      "aliases": ["Eierteigwaren"]
-    },
-    "fdc-group-noodles-egg-dry": {
-      "name": "Eiernudeln, trocken"
-    },
-    "fdc-group-nuts": {
-      "name": "Nüsse"
-    },
-    "fdc-group-nuts-chestnuts": {
-      "name": "Kastanien",
-      "aliases": ["Esskastanien", "Maronen"]
-    },
-    "fdc-group-oil": {
-      "name": "Öl",
-      "aliases": ["Speiseöl", "Pflanzenöl, allgemein"]
-    },
-    "fdc-group-oil-flaxseed": {
-      "name": "Leinöl",
-      "aliases": ["Leinsamenöl"]
-    },
+    "fdc-group-mushrooms": { "name": "Pilze", "aliases": ["Champignons"] },
+    "fdc-group-noodles-egg": { "name": "Eiernudeln", "aliases": ["Eierteigwaren"] },
+    "fdc-group-noodles-egg-dry": { "name": "Eiernudeln, trocken" },
+    "fdc-group-nuts": { "name": "Nüsse" },
+    "fdc-group-nuts-chestnuts": { "name": "Kastanien", "aliases": ["Esskastanien", "Maronen"] },
+    "fdc-group-oil": { "name": "Öl", "aliases": ["Speiseöl", "Pflanzenöl, allgemein"] },
+    "fdc-group-oil-flaxseed": { "name": "Leinöl", "aliases": ["Leinsamenöl"] },
     "fdc-group-oil-safflower-salad-or-cooking": {
       "name": "Distelöl, Speiseöl",
       "aliases": ["Safloröl"]
     },
-    "fdc-group-oil-sunflower": {
-      "name": "Sonnenblumenöl"
-    },
-    "fdc-group-oil-sunflower-linoleic": {
-      "name": "Sonnenblumenöl, linolsäurereich"
-    },
-    "fdc-group-oil-vegetable": {
-      "name": "Pflanzenöl",
-      "aliases": ["Speiseöl"]
-    },
-    "fdc-group-pasta": {
-      "name": "Nudeln",
-      "aliases": ["Pasta", "Teigwaren"]
-    },
-    "fdc-group-peanuts": {
-      "name": "Erdnüsse",
-      "aliases": ["Erdnuss"]
-    },
-    "fdc-group-peas": {
-      "name": "Erbsen",
-      "aliases": ["Gartenerbsen"]
-    },
-    "fdc-group-peppers": {
-      "name": "Paprika und Chili",
-      "aliases": ["Paprika", "Chili"]
-    },
-    "fdc-group-peppers-hot-chili": {
-      "name": "Chilischoten",
-      "aliases": ["Chili"]
-    },
+    "fdc-group-oil-sunflower": { "name": "Sonnenblumenöl" },
+    "fdc-group-oil-sunflower-linoleic": { "name": "Sonnenblumenöl, linolsäurereich" },
+    "fdc-group-oil-vegetable": { "name": "Pflanzenöl", "aliases": ["Speiseöl"] },
+    "fdc-group-pasta": { "name": "Nudeln", "aliases": ["Pasta", "Teigwaren"] },
+    "fdc-group-peanuts": { "name": "Erdnüsse", "aliases": ["Erdnuss"] },
+    "fdc-group-peas": { "name": "Erbsen", "aliases": ["Gartenerbsen"] },
+    "fdc-group-peppers": { "name": "Paprika und Chili", "aliases": ["Paprika", "Chili"] },
+    "fdc-group-peppers-hot-chili": { "name": "Chilischoten", "aliases": ["Chili"] },
     "fdc-group-peppers-sweet": {
       "name": "Paprikaschoten",
       "aliases": ["Paprika", "Gemüsepaprika"]
     },
-    "fdc-group-pork": {
-      "name": "Schweinefleisch",
-      "aliases": ["Schwein"]
-    },
-    "fdc-group-pork-cured": {
-      "name": "Schweinefleisch, gepökelt"
-    },
-    "fdc-group-pork-fresh": {
-      "name": "Schweinefleisch, frisch"
-    },
-    "fdc-group-rice": {
-      "name": "Reis"
-    },
-    "fdc-group-rice-brown": {
-      "name": "Reis, braun",
-      "aliases": ["Naturreis", "Vollkornreis"]
-    },
-    "fdc-group-rice-flour": {
-      "name": "Reismehl"
-    },
-    "fdc-group-rice-white": {
-      "name": "Reis, weiß"
-    },
-    "fdc-group-rice-white-long-grain-regular": {
-      "name": "Langkornreis, weiß"
-    },
-    "fdc-group-rice-white-medium-grain": {
-      "name": "Mittelkornreis, weiß"
-    },
-    "fdc-group-rye-flour": {
-      "name": "Roggenmehl"
-    },
-    "fdc-group-seeds": {
-      "name": "Samen und Kerne",
-      "aliases": ["Saaten"]
-    },
-    "fdc-group-seeds-sesame-butter": {
-      "name": "Sesammus"
-    },
-    "fdc-group-seeds-sesame-butter-tahini": {
-      "name": "Tahini",
-      "aliases": ["Sesammus, Tahini"]
-    },
-    "fdc-group-semolina": {
-      "name": "Grieß (Semolina)",
-      "aliases": ["Hartweizengrieß"]
-    },
-    "fdc-group-shortening-frying": {
-      "name": "Frittierfett"
-    },
-    "fdc-group-sorghum-flour": {
-      "name": "Sorghummehl"
-    },
-    "fdc-group-soybeans": {
-      "name": "Sojabohnen"
-    },
-    "fdc-group-spearmint": {
-      "name": "Grüne Minze",
-      "aliases": ["Krauseminze"]
-    },
-    "fdc-group-spices": {
-      "name": "Gewürze"
-    },
-    "fdc-group-spices-pepper": {
-      "name": "Pfeffer"
-    },
-    "fdc-group-squash": {
-      "name": "Kürbis (Squash)",
-      "aliases": ["Kürbisgewächse"]
-    },
-    "fdc-group-squash-summer": {
-      "name": "Sommerkürbis",
-      "aliases": ["Sommerkürbisse"]
-    },
-    "fdc-group-sugars": {
-      "name": "Zucker"
-    },
-    "fdc-group-syrups": {
-      "name": "Sirupe"
-    },
-    "fdc-group-syrups-corn": {
-      "name": "Maissirup"
-    },
-    "fdc-group-syrups-table-blends": {
-      "name": "Tafelsirup-Mischungen"
-    },
-    "fdc-group-tomatoes": {
-      "name": "Tomaten",
-      "aliases": ["Paradeiser"]
-    },
-    "fdc-group-veal": {
-      "name": "Kalbfleisch",
-      "aliases": ["Kalb"]
-    },
+    "fdc-group-pork": { "name": "Schweinefleisch", "aliases": ["Schwein"] },
+    "fdc-group-pork-cured": { "name": "Schweinefleisch, gepökelt" },
+    "fdc-group-pork-fresh": { "name": "Schweinefleisch, frisch" },
+    "fdc-group-rice": { "name": "Reis" },
+    "fdc-group-rice-brown": { "name": "Reis, braun", "aliases": ["Naturreis", "Vollkornreis"] },
+    "fdc-group-rice-flour": { "name": "Reismehl" },
+    "fdc-group-rice-white": { "name": "Reis, weiß" },
+    "fdc-group-rice-white-long-grain-regular": { "name": "Langkornreis, weiß" },
+    "fdc-group-rice-white-medium-grain": { "name": "Mittelkornreis, weiß" },
+    "fdc-group-rye-flour": { "name": "Roggenmehl" },
+    "fdc-group-seeds": { "name": "Samen und Kerne", "aliases": ["Saaten"] },
+    "fdc-group-seeds-sesame-butter": { "name": "Sesammus" },
+    "fdc-group-seeds-sesame-butter-tahini": { "name": "Tahini", "aliases": ["Sesammus, Tahini"] },
+    "fdc-group-semolina": { "name": "Grieß (Semolina)", "aliases": ["Hartweizengrieß"] },
+    "fdc-group-shortening-frying": { "name": "Frittierfett" },
+    "fdc-group-sorghum-flour": { "name": "Sorghummehl" },
+    "fdc-group-soybeans": { "name": "Sojabohnen" },
+    "fdc-group-spearmint": { "name": "Grüne Minze", "aliases": ["Krauseminze"] },
+    "fdc-group-spices": { "name": "Gewürze" },
+    "fdc-group-spices-pepper": { "name": "Pfeffer" },
+    "fdc-group-squash": { "name": "Kürbis (Squash)", "aliases": ["Kürbisgewächse"] },
+    "fdc-group-squash-summer": { "name": "Sommerkürbis", "aliases": ["Sommerkürbisse"] },
+    "fdc-group-sugars": { "name": "Zucker" },
+    "fdc-group-syrups": { "name": "Sirupe" },
+    "fdc-group-syrups-corn": { "name": "Maissirup" },
+    "fdc-group-syrups-table-blends": { "name": "Tafelsirup-Mischungen" },
+    "fdc-group-tomatoes": { "name": "Tomaten", "aliases": ["Paradeiser"] },
+    "fdc-group-veal": { "name": "Kalbfleisch", "aliases": ["Kalb"] },
     "fdc-group-veal-composite-of-trimmed-retail-cuts": {
       "name": "Kalbfleisch, gemischte Teilstücke"
     },
-    "fdc-group-vinegar": {
-      "name": "Essig",
-      "aliases": ["Speiseessig"]
-    },
-    "fdc-group-wheat": {
-      "name": "Weizen"
-    },
-    "fdc-group-wheat-flour": {
-      "name": "Weizenmehl",
-      "aliases": ["Mehl"]
-    },
-    "fdc-group-wheat-flour-white": {
-      "name": "Weizenmehl, weiß"
-    },
-    "fdc-group-wheat-flour-white-all-purpose": {
-      "name": "Weizenmehl, weiß, Allzweck"
-    },
+    "fdc-group-vinegar": { "name": "Essig", "aliases": ["Speiseessig"] },
+    "fdc-group-wheat": { "name": "Weizen" },
+    "fdc-group-wheat-flour": { "name": "Weizenmehl", "aliases": ["Mehl"] },
+    "fdc-group-wheat-flour-white": { "name": "Weizenmehl, weiß" },
+    "fdc-group-wheat-flour-white-all-purpose": { "name": "Weizenmehl, weiß, Allzweck" },
     "fdc-group-wheat-flour-white-all-purpose-enriched": {
       "name": "Weizenmehl, weiß, Allzweck, angereichert"
     },
-    "fdc-group-whey": {
-      "name": "Molke"
-    },
-    "fdc-group-winged-beans": {
-      "name": "Flügelbohnen",
-      "aliases": ["Goabohnen"]
-    }
+    "fdc-group-whey": { "name": "Molke" },
+    "fdc-group-winged-beans": { "name": "Flügelbohnen", "aliases": ["Goabohnen"] }
   }
 }

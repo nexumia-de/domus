@@ -135,6 +135,12 @@ export const appStrings = {
       `About ${portions} portions: ${whole} whole, ${rest} left over.`,
     portionsNeedsOutput: 'Portions need an output weight.',
   },
+  characters: {
+    label: 'What it is like',
+    filterLabel: 'What it is like',
+    any: 'Anything',
+    none: 'No dish is like that.',
+  },
   dishes: {
     listLabel: 'All dishes',
     unknown: 'That dish is not in the notebook.',

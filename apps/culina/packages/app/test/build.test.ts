@@ -86,7 +86,9 @@ test('the catalogue is its own file, precached, and main.js does not carry it', 
   const catalogue = readFileSync(new URL('catalogue.json', dist), 'utf8');
   expect(JSON.parse(catalogue).format).toBe('culina-ingredient-catalogue');
   const main = readFileSync(new URL('main.js', dist), 'utf8');
-  expect(main).not.toContain('fdc-169230');
+  // A row's own text, not its id: the role and character tables name catalogue ids in the script.
+  expect(catalogue).toContain('FDC ID 169230, portion');
+  expect(main).not.toContain('FDC ID 169230, portion');
   expect(main).toContain('catalogue.json');
 });
 

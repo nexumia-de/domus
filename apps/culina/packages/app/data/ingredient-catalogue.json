@@ -24,7 +24,7 @@
   "ownNamesDataset": {
     "name": "Own German names for the catalogue: translation of the USDA description by the project",
     "file": "tools/catalogue/names-de-own.json",
-    "sha256": "e2b5e59ae8645803c0be991446ebf6d9b56fb5925db9d0d9320bfa928d736225",
+    "sha256": "cecb722426549ec1af3f0bcbdfc776cac41ef4ad8d762f25d962fe7674ab46a7",
     "retrieved": "2026-11-19",
     "licence": "AGPL-3.0-or-later (the licence of this repository)"
   },

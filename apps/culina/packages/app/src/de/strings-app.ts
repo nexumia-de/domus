@@ -143,6 +143,12 @@ export const appStringsDe: typeof appStrings = {
       `Etwa ${portions} Portionen: ${whole} ganze, ${rest} übrig.`,
     portionsNeedsOutput: 'Portionen brauchen ein Ergebnisgewicht.',
   },
+  characters: {
+    label: 'Wie es ist',
+    filterLabel: 'Wie es ist',
+    any: 'Egal',
+    none: 'Kein Gericht ist so.',
+  },
   dishes: {
     listLabel: 'Alle Gerichte',
     unknown: 'Dieses Gericht steht nicht im Notizbuch.',

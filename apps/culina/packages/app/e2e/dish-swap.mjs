@@ -15,7 +15,7 @@ const fillings = (page) => page.locator('.slots-table .line-link').allInnerTexts
 const totals = (page) => page.locator('.slots-table td.num:last-child').allInnerTexts();
 const pickRows = (page) => page.locator('.pick-row .pick-text').allInnerTexts();
 
-const component = async (page, origin, name, role, ingredient, grams, word) => {
+export const component = async (page, origin, name, role, ingredient, grams, word) => {
   await open(page, origin, 'components/new');
   await formReady(page);
   await page.getByLabel('Name', { exact: true }).fill(name);
@@ -28,7 +28,7 @@ const component = async (page, origin, name, role, ingredient, grams, word) => {
   await page.getByRole('heading', { level: 1, name }).waitFor();
 };
 
-const addSlot = async (page, n, name, grams) => {
+export const addSlot = async (page, n, name, grams) => {
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill(name);
   await page.getByRole('button', { name: `${name} component`, exact: true }).click();
@@ -166,7 +166,8 @@ const swap = async (page) => {
     `${label}: the assembly step uses the swapped filling with its amount`,
   );
   await page.getByRole('link', { name: 'Back to the dish' }).first().click();
-  await page.getByRole('heading', { level: 1, name: 'Swap plate' }).waitFor();
+  // The cook screen has the dish's name as its heading too: wait for the dish's own table.
+  await page.locator('.slots-table').waitFor();
   check(
     same(await fillings(page), ['Swap patties', 'Swap rice']),
     `${label}: back on the dish the swap is still there`,
