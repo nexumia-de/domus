@@ -28,7 +28,10 @@ function ok<T extends { ok: boolean }>(result: T, vector: Vector): Extract<T, { 
 
 function expand(vector: Vector): void {
   const i = vector.inputs;
-  const options = i.output_g === undefined ? {} : { outputG: i.output_g as number };
+  const options = {
+    ...(i.output_g === undefined ? {} : { outputG: i.output_g as number }),
+    ...(i.without_yield === undefined ? {} : { withoutYield: i.without_yield as 'input' }),
+  };
   const result = expandComponent(
     i.components as Component[],
     i.id as string,
@@ -42,6 +45,8 @@ function expand(vector: Vector): void {
     raw_g: number;
     factor: number;
     unmeasured: { path: string[]; index: number; ref_id: string }[];
+    unconverted?: { path: string[]; index: number; ref_id: string; cause: string }[];
+    unweighed?: string[];
   };
   expect(got.raw.length, 'raw length').toBe(e.raw.length);
   e.raw.forEach((want, n) => {
@@ -57,6 +62,16 @@ function expand(vector: Vector): void {
     got.unmeasured.map((u) => ({ path: u.path, index: u.index, ref_id: u.ref.id })),
     'unmeasured',
   ).toEqual(e.unmeasured);
+  expect(
+    got.unconverted.map((u) => ({
+      path: u.path,
+      index: u.index,
+      ref_id: u.ref.id,
+      cause: u.cause.code,
+    })),
+    'unconverted',
+  ).toEqual(e.unconverted ?? []);
+  expect(got.unweighed, 'unweighed').toEqual(e.unweighed ?? []);
 }
 
 function yields(vector: Vector): void {
@@ -66,10 +81,18 @@ function yields(vector: Vector): void {
   );
   if (vector.error_code !== undefined) return expectError(result, vector);
   const got = ok(result, vector);
-  const e = vector.expected as Fields & { known: boolean; unmeasured?: number[] };
+  const e = vector.expected as Fields & {
+    known: boolean;
+    unmeasured?: number[];
+    unconverted?: number[];
+  };
   near(got.inputG, e.input_g as number, vector.tolerance, 'input_g');
   expect(got.yield.known, 'known').toBe(e.known);
   expect(got.unmeasured, 'unmeasured').toEqual(e.unmeasured ?? []);
+  expect(
+    got.unconverted.map((u) => u.index),
+    'unconverted',
+  ).toEqual(e.unconverted ?? []);
   if (got.yield.known) {
     near(got.yield.outputG, e.output_g as number, vector.tolerance, 'output_g');
     near(got.yield.lossG, e.loss_g as number, vector.tolerance, 'loss_g');

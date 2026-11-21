@@ -237,13 +237,73 @@ output field; it cannot be used by weight inside another component, and the
 screens say so where that matters (below). **Test:** `test/components-view.test.ts`,
 `e2e/components.mjs`.
 
-**Engine errors never crash a screen.** A cycle, an unknown component, a unit
-that needs a density, a missing output weight or an unusable number gives one
+**Engine errors never crash a screen.** A cycle, an unknown component, a
+percent line whose base cannot be weighed, an output weight asked of a
+component that has none, or an unusable number gives one
 quiet sentence in the place of the amounts ("These components use each other
 in a circle: ...", "The output of X is not weighed yet, so it cannot be
 scaled."), and the rest of the screen renders. **Test:**
 `test/components-view.test.ts` with the engine's error vectors and a broken
 fixture.
+
+**Amounts as a cook writes them (since 2026-11-21).** A tester found that
+one onion written as "1 pcs" (an ingredient without a piece weight) replaced
+the lines, the yield and the raw list with one sentence, and that the steps
+then named the lines by their ids ("Simmering: fdc-group-tomatoes"),
+because the step lines took their names from the same engine result as the
+amounts. Now:
+
+- **One line that cannot be weighed is one line.** The engine lists it in
+  `unconverted` and leaves it out of the sums, as a line without amount
+  ([engine rules](engine-rules.md#line-grams)). The Lines table shows it as
+  written ("1 pcs", "1 Stück") with a quiet note ("no piece weight recorded,
+  not in the sums"); the yield's input adds up the other lines and says "The
+  input counts only the lines whose amount can be weighed."; the raw list
+  adds up the rest and lists it under "Not weighed"; the editor shows the
+  same note in place of the line's figure; the dish and cook screens show
+  it with its amount (pieces scaled and rounded to a half) and the note
+  beside its own; the nutrition lists it as not counted. Only a percent line
+  that rests on such a line still gives the one sentence.
+- **A name is never an id.** Every line, on every screen, takes its name
+  from the notebook (`refName`), whatever the engine says about the amounts
+  (`lineViews` in `src/components/steps-view.ts`). An id shows only where
+  the record itself is gone.
+- **One rule for an unweighed component in a dish.** The dish's total list
+  and its cook screen both take one run of a component without a weighed
+  output as weighing what goes into it (the engine's `withoutYield:
+'input'` and `runGrams`), so they give the same amounts; the total list
+  says quietly "The output of X is not weighed: one run is taken as
+  weighing what goes in." Before, the total list left the component out
+  ("Not added up") while the cook screen computed it. The component's own
+  screen still scales by a factor until it has an output weight.
+- **Pieces and spoons.** A piece count is shown to a whole or a half, the
+  exact count quietly beside where they differ ("5½ pcs (5.33)"); a volume
+  the source wrote in a spoon or cup is shown in that measure to a quarter
+  ("½ tbsp", "1 cup"), the millilitres beside where they differ. Both rules
+  are the engine's (`roundPieces`, `roundMeasure`,
+  [engine rules](engine-rules.md#rounding)) and change only what is shown:
+  the derived amounts, the sums and the nutrition keep the exact figures.
+- **Unit names.** Every unit has a name per language in one table
+  (`strings.units`, written through `src/shared/units.ts`): the unit
+  selects of the editors and the stock, the stock rows, the finder's
+  shortfalls and the history ("1 Stück → 100 g"). German: g, kg, oz, lb,
+  ml, l, TL, EL, Tasse, Flüssigunze (brit.), Gill (brit.), Pint (brit.),
+  Quart (brit.), Stück; English: tsp, tbsp, cup, fl oz (UK), gill (UK),
+  pint (UK), quart (UK), pcs. The stored value stays the unit id.
+
+**Test:** `test/amounts-written.test.ts` (the tester's sauce: rows, input,
+step names, cook amounts, dish total list and cook screen by one rule,
+pieces and spoons, unit names), `test/components-view.test.ts`,
+`test/dishes-view.test.ts`; in the engine `test/components.test.ts` and the
+vectors `expand-unconverted-*`, `expand-without-yield-*`,
+`expand-error-cannot-convert-percent-base`, `yield-unconverted-line`,
+`round-pieces-*`, `round-measure-*`, `household-measure-*`;
+`e2e/amounts-written.mjs` (the sauce and a dish at 360 px in English and
+German: lines, input, raw list, step names, both cook screens, the
+dish's total list and note, the editor's unit names). Not proved: a real
+phone, desktop width, the stock and history screens in a browser (the unit
+names there are checked through `unitName` only); the rounding steps (a
+half, a quarter) are an assumption without a source.
 
 **Amounts equal the engine.** `test/components-view.test.ts` reads
 `expand-three-level`, `expand-fractional-sub-component`,
@@ -524,10 +584,14 @@ and never go below 1; text that is not a number above 0 gets the hint "Enter
 a number above 0." and keeps the last results. The totals are per-portion
 amounts times the portions; the list "What goes in, all the way down" expands
 each component slot by the engine with its total as the wanted output (the
-nested-yield rule) and adds the ingredient slots. A slot whose component has
-no output weight cannot be scaled: it stays in the table, the sum leaves it
-out and a "Not added up" list says why; the other slots still add up. Lines
-without an amount are listed apart. **Test:** `test/dishes-view.test.ts`,
+nested-yield rule) and adds the ingredient slots. A component without an
+output weight is taken as weighing what goes into it, the same rule as the
+cook screen, with a quiet note under the list
+([amounts as a cook writes them](#components)); a slot that still cannot be
+expanded (a circle, a component that is gone) stays in the table, the sum
+leaves it out and a "Not added up" list says why; the other slots still add
+up. Lines without an amount, and lines that cannot be weighed, are listed
+apart. **Test:** `test/dishes-view.test.ts`,
 `e2e/components.mjs` (4, 6, 7, 2.5 portions against the engine).
 
 **Navigation.** A component link in a slot or in a component line is an
@@ -1139,7 +1203,10 @@ view logic is in `src/classics/` (no DOM), the screens in
   a tap (`<details>`), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
   rounded for display with the shared helpers (`formatMass` for grams,
-  `formatNumber` otherwise). A range is shown as "100 ml to 150 ml" (the
+  `formatNumber` otherwise), and by the engine's display rules for pieces (to a
+  half, the exact count beside) and for a spoon or cup the source wrote (that
+  measure to a quarter, "½ tbsp"; [amounts as a cook writes them](#components)).
+  A range is shown as "100 ml to 150 ml" (the
   source's range, not the middle the engine uses for copies); a settled line is
   marked "settled by us".
 - **What a line shows and what is behind the Source tap.** Running text is

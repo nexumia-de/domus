@@ -1,0 +1,13 @@
+{
+  "id": "household-measure-tablespoonful",
+  "description": "A source word of 14.78676478125 ml is a tablespoon",
+  "inputs": {
+    "kind": "household_measure",
+    "ml": 14.78676478125
+  },
+  "expected": {
+    "measure": "tbsp"
+  },
+  "tolerance": 1e-9,
+  "source": "The US tablespoon of data/units.json, as the shipped classics define \"tablespoonful\"."
+}

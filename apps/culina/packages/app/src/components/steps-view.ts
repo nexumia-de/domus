@@ -1,15 +1,18 @@
 // The steps of an own component: the words a step can be called by (a technique that is taught, or
 // a plain action), the one line a step is shown as, and the steps for cooking, in the shape the
 // step-by-step screen of the shipped dishes reads. Pure: no DOM.
-import { ACTIONS, pickText, stepWord, techniqueNotes } from '@culina/engine';
+import { ACTIONS, pickText, runGrams, stepWord, techniqueNotes } from '@culina/engine';
 import type { Lang, Step, Technique } from '@culina/engine';
 import { temperatureText, timeText } from '../classics/amounts';
 import type { StepView } from '../classics/cook-view';
 import type { LineView } from '../classics/dish-view';
 import type { ComponentRecord, DishRecord, Notebook } from '../records';
 import { formatMass } from '../shared/mass';
+import { scaledWritten } from '../shared/units';
+import { strings } from '../strings';
 import { slotRows } from '../dishes/slots';
 import { lineRows } from './lines';
+import { refName } from './names';
 
 export interface WordOption {
   /** `t:<id>` for a technique, `a:<id>` for a plain action: the value a step form holds. */
@@ -57,16 +60,34 @@ const said = (step: Step, lang: Lang, techniques: readonly Technique[]): string 
     .filter((part): part is string => part !== undefined && part !== '')
     .join(' · ');
 
+/**
+ * The lines of a component with their amounts times `factor`. The name never depends on the
+ * amounts: it comes from the notebook even where the engine cannot add the component up. A line
+ * that cannot be weighed shows its own amount as written (pieces to the half).
+ */
 const lineViews = (nb: Notebook, component: ComponentRecord, factor = 1): LineView[] => {
   const rows = lineRows(nb, component);
   return component.lines.map((line, index): LineView => {
     const row = rows.ok ? rows.rows[index] : undefined;
+    const amount =
+      row?.g !== undefined
+        ? formatMass(row.g * factor, 'g')
+        : row?.unconverted !== undefined
+          ? scaledWritten(row.unconverted.written, factor)
+          : undefined;
+    // A line that cannot be weighed says so quietly beside its own note.
+    const note = [
+      line.note,
+      row?.unconverted === undefined ? undefined : strings.notebook.lacks[row.unconverted.lacks],
+    ]
+      .filter((part): part is string => part !== undefined && part !== '')
+      .join(' · ');
     return {
       ...(line.key === undefined ? {} : { key: line.key }),
       ...(line.ref.kind === 'ingredient' ? { ingredient: line.ref.id } : {}),
-      name: row?.name ?? line.ref.id,
-      ...(row?.g === undefined ? {} : { amount: formatMass(row.g * factor, 'g') }),
-      ...(line.note === undefined ? {} : { note: line.note }),
+      name: refName(nb, line.ref),
+      ...(amount === undefined ? {} : { amount }),
+      ...(note === '' ? {} : { note }),
       settled: false,
       optional: false,
     };
@@ -197,24 +218,14 @@ export interface DishCookOptions {
 }
 
 /**
- * How many runs of a component a slot needs: the grams the slot asks for over the component's
- * output (its recorded yield, else the sum of its lines). 1 when either is unknown.
+ * How many runs of a component a slot needs: the grams the slot asks for over what one run weighs
+ * (the engine's `runGrams`: its recorded yield, else what goes in), the same rule as the dish's
+ * total list (`dishRaw`). 1 when either is unknown.
  */
 const runs = (nb: Notebook, component: ComponentRecord, wantedG: number | undefined): number => {
   if (wantedG === undefined) return 1;
-  const rows = lineRows(nb, component);
-  const inputG = rows.ok ? rows.rows.reduce((sum, row) => sum + (row.g ?? 0), 0) : 0;
-  const recorded = component.yield?.amount;
-  const yieldG =
-    recorded === undefined
-      ? undefined
-      : recorded.unit === 'kg'
-        ? recorded.value * 1000
-        : recorded.unit === 'g'
-          ? recorded.value
-          : undefined;
-  const outputG = yieldG ?? inputG;
-  return outputG > 0 ? wantedG / outputG : 1;
+  const run = runGrams(component, nb.facts, 'input');
+  return run.ok && run.g !== undefined ? wantedG / run.g : 1;
 };
 
 /**
@@ -276,7 +287,7 @@ export function dishParts(
     return {
       ...(slot.key === undefined ? {} : { key: slot.key }),
       ...(slot.ref.kind === 'ingredient' ? { ingredient: slot.ref.id } : {}),
-      name: row?.name ?? slot.ref.id,
+      name: row?.name ?? refName(nb, slot.ref),
       ...(row?.totalG === undefined ? {} : { amount: formatMass(row.totalG, 'g') }),
       settled: false,
       optional: slot.optional === true,

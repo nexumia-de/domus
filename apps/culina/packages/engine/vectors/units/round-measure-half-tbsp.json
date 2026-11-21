@@ -1,0 +1,15 @@
+{
+  "id": "round-measure-half-tbsp",
+  "description": "7.393 ml (half of a US tablespoon) shows as 0.5 tbsp",
+  "inputs": {
+    "kind": "round_measure",
+    "ml": 7.393382391,
+    "measure": "tbsp"
+  },
+  "expected": {
+    "value": 0.5,
+    "exact": true
+  },
+  "tolerance": 1e-9,
+  "source": "7.393382391 / 14.78676478125 = 0.5. Display rule (assumption, unverified, no source): a household measure to the nearest quarter, at least a quarter; sizes from data/units.json."
+}

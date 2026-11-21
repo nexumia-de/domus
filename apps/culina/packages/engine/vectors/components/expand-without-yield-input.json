@@ -1,0 +1,87 @@
+{
+  "id": "expand-without-yield-input",
+  "description": "withoutYield input: a component without a recorded yield is taken as weighing its converted input",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "output_g": 224,
+    "without_yield": "input",
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 400,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 1,
+              "unit": "count"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            },
+            "amount": {
+              "value": 30,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salt"
+            },
+            "amount": {
+              "value": 18,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 200
+      },
+      {
+        "ingredient_id": "butter",
+        "g": 15
+      },
+      {
+        "ingredient_id": "salt",
+        "g": 9
+      }
+    ],
+    "raw_g": 224,
+    "factor": 0.5,
+    "unmeasured": [],
+    "unconverted": [
+      {
+        "path": ["sauce"],
+        "index": 1,
+        "ref_id": "onion",
+        "cause": "needs-unit-weight"
+      }
+    ],
+    "unweighed": ["sauce"]
+  },
+  "tolerance": 1e-6,
+  "source": "No yield is recorded; one run is taken as weighing its converted input, 400 + 30 + 18 = 448 g (the onion lacks a piece weight and is not in it). 224 g is half a run. Synthetic."
+}

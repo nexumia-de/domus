@@ -4,6 +4,7 @@ import type { DiffLine, VersionChange, VersionDiff, VersionField } from '@culina
 import { refName, roleLabel } from '../components/names';
 import type { Notebook } from '../records';
 import { strings } from '../strings';
+import { unitName } from '../shared/units';
 
 const t = strings.versions;
 
@@ -12,10 +13,8 @@ export interface DiffRow {
   text: string;
 }
 
-const unitText = (unit: string): string => (unit === 'percent' ? '%' : unit);
-
 const amountText = (line: DiffLine): string =>
-  line.amount === undefined ? t.toTaste : `${line.amount.value} ${unitText(line.amount.unit)}`;
+  line.amount === undefined ? t.toTaste : `${line.amount.value} ${unitName(line.amount.unit)}`;
 
 const lineText = (nb: Notebook, line: DiffLine, role: string | undefined): string => {
   const prefix = role === undefined ? '' : `${roleLabel(role)}: `;

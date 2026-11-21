@@ -54,7 +54,7 @@ export const mergeRaw = (
   return [...rows.values()];
 };
 
-/** The lines without an amount, with the component each is in. */
+/** The lines without an amount (or that cannot be weighed), with the component each is in. */
 export const unmeasuredRows = (nb: Notebook, lines: readonly UnmeasuredLine[]): UnmeasuredRow[] =>
   lines.map((u) => ({
     name: refName(nb, u.ref),
@@ -62,7 +62,15 @@ export const unmeasuredRows = (nb: Notebook, lines: readonly UnmeasuredLine[]): 
   }));
 
 export type RawView =
-  | { ok: true; rows: RawRow[]; rawG: number; unmeasured: UnmeasuredRow[]; factor: number }
+  | {
+      ok: true;
+      rows: RawRow[];
+      rawG: number;
+      unmeasured: UnmeasuredRow[];
+      /** Lines whose amount cannot be weighed: left out of the rows and the total. */
+      unconverted: UnmeasuredRow[];
+      factor: number;
+    }
   | { ok: false; message: string };
 
 /** Expands through the engine and applies the factor of a `factor` scale to the amounts. */
@@ -84,6 +92,7 @@ export const rawView = (nb: Notebook, component: ComponentRecord, scale: Scale):
     rows,
     rawG: result.rawG * times,
     unmeasured: unmeasuredRows(nb, result.unmeasured),
+    unconverted: unmeasuredRows(nb, result.unconverted),
     factor: result.factor * times,
   };
 };

@@ -16,6 +16,7 @@ import { storeText } from '../editor/store-text';
 import { shelfLifeOf } from './lookup';
 import { removeWithUndo } from './stock-screen';
 import { useSome } from './use-some';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.stock;
 const STATES: Option[] = [
@@ -30,7 +31,7 @@ const PLACES: Option[] = [
   { value: 'fridge', label: t.storage.fridge },
   { value: 'freezer', label: t.storage.freezer },
 ];
-const UNITS: Option[] = AMOUNT_UNITS.map((u) => ({ value: u, label: u }));
+const UNITS: Option[] = unitOptions(AMOUNT_UNITS);
 
 const dateField = (label: string, value: string) => {
   const field = textField(label, value);

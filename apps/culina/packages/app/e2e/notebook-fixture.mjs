@@ -107,17 +107,24 @@ export const slotTable = (id, portions) =>
 export const dishRawTable = (id, portions) => {
   const raw = [];
   const skipped = [];
+  const unweighed = [];
   for (const s of dish(id).slots) {
     const total = engine.toGrams(s.amount, nb.facts[s.ref.id]).g * portions;
     if (s.ref.kind === 'ingredient') {
       raw.push({ ingredientId: s.ref.id, g: total });
       continue;
     }
-    const r = engine.expandComponent(nb.components, s.ref.id, nb.facts, { outputG: total });
-    if (r.ok) raw.push(...r.raw);
-    else skipped.push([s.ref.id, r.error.code]);
+    // The dish takes a component without a weighed output as weighing what goes in, as the app does.
+    const r = engine.expandComponent(nb.components, s.ref.id, nb.facts, {
+      outputG: total,
+      withoutYield: 'input',
+    });
+    if (r.ok) {
+      raw.push(...r.raw);
+      unweighed.push(...r.unweighed);
+    } else skipped.push([s.ref.id, r.error.code]);
   }
-  return { table: rawTable(raw), skipped };
+  return { table: rawTable(raw), skipped, unweighed };
 };
 
 /** What portions of a weight say, as the screen words it. */

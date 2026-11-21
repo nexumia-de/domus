@@ -3,7 +3,17 @@
 export * from './model';
 
 export { convert, toGrams } from './amounts/convert';
-export { displayStep, roundMass } from './amounts/round';
+export {
+  displayStep,
+  householdMeasureOf,
+  HOUSEHOLD_MEASURES,
+  MEASURE_STEP,
+  PIECE_STEP,
+  roundMass,
+  roundMeasure,
+  roundPieces,
+} from './amounts/round';
+export type { HouseholdMeasure, ShownNumberResult } from './amounts/round';
 export { UNIT_IDS, isUnitId, unitFactor, unitKind } from './amounts/units';
 export type {
   Amount,
@@ -85,7 +95,8 @@ export { convertComponentLines } from './components/convert';
 export type { ConvertLinesResult, LineEntry } from './components/convert';
 export { componentLineGrams } from './components/lines';
 export { portionsFromYield, portionWeight } from './components/portions';
-export { componentYield } from './components/yield';
+export { componentYield, runGrams } from './components/yield';
+export type { RunGramsResult } from './components/yield';
 export type {
   Component,
   ComponentError,
@@ -101,6 +112,8 @@ export type {
   PortionsResult,
   PortionWeightResult,
   RawIngredient,
+  UnconvertedIndex,
+  UnconvertedLine,
   UnmeasuredLine,
   YieldFigures,
   YieldResult,

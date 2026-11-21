@@ -134,7 +134,31 @@ gives 2.68; the multiple is trimmed to 15 digits so that 27 · 0.1 is
 `displayStep(g)` is the default step: 0.1 g below 10 g, otherwise 1 g.
 **Assumption, unverified**: household scales read 1 g and precision
 scales 0.1 g; no source says so. The caller may pass any step to
-`roundMass`. Nothing else in the engine rounds.
+`roundMass`.
+
+**Pieces and household measures for display.** Two more display rules,
+stated once here and used by every screen that shows such an amount; they
+change only what is shown, never a stored or derived number, and the sums
+and the nutrition keep the exact figures:
+
+- `roundPieces(count)`: a piece count to the nearest half, at least a half
+  (`PIECE_STEP` 0.5), with `exact` false where that differs from the count;
+  the screen then writes the exact count quietly beside ("5½ pcs (5.33)").
+- `roundMeasure(ml, measure)`: a volume in a household measure (`tsp`,
+  `tbsp`, `cup`, the US sizes of the unit table) to the nearest quarter, at
+  least a quarter (`MEASURE_STEP` 0.25), with `exact` as above (the screen
+  writes the millilitres beside where it is false: "¼ tsp (1.6 ml)").
+  `exact` allows a relative difference of 1e-8, below the 10 significant
+  digits a derived amount carries.
+- `householdMeasureOf(ml)`: the household measure whose size equals a
+  source word's size (to 10 significant digits), so a classic's
+  "tablespoonful" taken as the US tablespoon is shown in tablespoons.
+- **Assumption, unverified**: a cook takes whole pieces or halves, and
+  measuring spoons and cups come in quarters; no source says so.
+
+Both round through `roundMass`; nothing else in the engine rounds.
+Vectors: `round-pieces-*`, `round-measure-*`, `household-measure-*` in
+`vectors/units/`.
 
 # Scaling by weight
 
@@ -398,12 +422,19 @@ measure-neutral.
 
 `componentLineGrams(component, factsByIngredient)` gives the grams of
 every line of one component, in line order, with `unmeasured` (the
-indexes of lines without amount: kept, never an error and never guessed)
-and `inputG` (the sum of the measured lines).
+indexes of lines without amount: kept, never an error and never guessed),
+`unconverted` and `inputG` (the sum of the lines with grams).
 
 - Mass, volume and count go through `toGrams` with the facts of the line's
-  ingredient; a failure is `cannot-convert` with the `index` of the line
-  and the conversion error as `cause`.
+  ingredient. Where the ingredient lacks the fact the unit needs
+  (`needs-density`, `needs-unit-weight`, `not-convertible`: one onion
+  without a piece weight, a cup of something without a density) the line
+  is listed in `unconverted` as `{ index, cause }` and left out of
+  `inputG`, as a line without amount is: one such line never stops the
+  component. Any other conversion failure (a value that is not a number
+  above 0, an unknown unit) is `cannot-convert` with the `index` of the line
+  and the conversion error as `cause`; so is an unconverted line whose role
+  is the `percentBase` when percent lines rest on it.
 - A `percent` line is its percent of the summed grams of the lines that
   are not in percent and whose role is the component's `percentBase`. It
   is `no-percent-base` when `percentBase` is absent or that sum is 0. A
@@ -431,7 +462,9 @@ app code does that arithmetic.
 - `to: 'weight'`: every percent line becomes grams of the base; the other
   lines are kept as entered, in their unit.
 - A line without amount stays without. Errors are those of
-  `componentLineGrams` (`cannot-convert` for a volume without density,
+  `componentLineGrams`, and `cannot-convert` (with the `index` and `cause`)
+  for a line listed in `unconverted`: rewriting needs the grams of every
+  measured line (`cannot-convert` for a volume without density,
   `component-needs-mass`, `invalid-value`).
 - The new numbers are trimmed to 10 significant digits, so converting
   there and back does not collect binary noise; a number never becomes 0.
@@ -452,7 +485,13 @@ the tree to the raw ingredients.
   component's yield in grams.
 - A sub-component, or with `outputG` the top component, without a
   recorded yield is `no-yield` with the `componentId` that lacks it and
-  the `path` to it. Nothing is assumed.
+  the `path` to it. Nothing is assumed, unless the caller asks with
+  `withoutYield: 'input'`: then one run of such a component is taken as
+  weighing what goes in (`runGrams`: its lines with grams, a sub-component
+  line with the mass used; an input of 0 is still `no-yield`), and its id
+  is listed in `unweighed` so the caller can say so. The app asks for it
+  where a dish needs an amount of a component (the total list and the cook
+  screen use the same rule); the component screen's own scaling does not.
 - `cycle` carries the `path` of ids from the start id to the first
   repeated id (`a`, `b`, `a`); `unknown-component` carries the missing id
   and the path; `duplicate-id` the id; `invalid-value` (field `outputG`
@@ -464,8 +503,9 @@ the tree to the raw ingredients.
   own lines first, then its sub-components in line order). The role is the
   one on the line that names the ingredient. `rawG` is their sum.
 - `unmeasured` lists `{ path, index, ref }` for lines without amount
-  anywhere in the tree: the raw amounts then lack them and the caller
-  must show that.
+  anywhere in the tree, `unconverted` the same with the `cause` for lines
+  whose amount lacks a fact to be weighed: the raw amounts then lack them
+  and the caller must show that.
 - `flourAndWater(raw, { baseRole, waterRoles })` adds up the raw
   ingredients by role (defaults as in [hydration](#hydration)); the
   result is the `composition` of a preferment line for `hydration`, and
@@ -476,11 +516,15 @@ the tree to the raw ingredients.
 
 `componentYield(component, factsByIngredient)` gives `inputG` (the
 component's own measured lines; a sub-component line counts with the mass
-used), `unmeasured` and a `yield`: `{ known: true, outputG, lossG,
+used), `unmeasured`, `unconverted` and a `yield`: `{ known: true, outputG, lossG,
 yieldPct }` with loss = input - output (negative when weight is gained)
 and yield % = 100 · output / input, or `{ known: false }` when no yield
 is recorded. There is no default and no estimate. `zero-input` only when
 a yield is recorded and the input is 0.
+
+`runGrams(component, factsByIngredient, withoutYield?)` is what one run
+weighs where it must be scaled: the recorded yield (`weighed: true`), else
+with `withoutYield: 'input'` the input (`weighed: false`), else no grams.
 
 # Edible portion
 
@@ -939,6 +983,10 @@ does no arithmetic:
   `ref`. A line's `note` (cooking help) and `sourceNote` (a remark about the
   source) come through in the language asked; a step keeps its `sourceNote` in
   both.
+- A volume whose source word has the size of a household measure
+  (`householdMeasureOf`: the table's `tsp`, `tbsp`, `cup`, or a classic's
+  word with the same factor) also carries `measure` on its line or slot;
+  `amount` stays in millilitres. It is for display only (`roundMeasure`).
 - Names and notes come in `lang`; steps keep both languages. Errors:
   `invalid-portions`, `unknown-unit` (with `unit`), `invalid-amount`, each with
   the `path` of the amount.

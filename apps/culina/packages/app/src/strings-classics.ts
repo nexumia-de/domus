@@ -65,7 +65,6 @@ export const classicsStrings = {
   asNeeded: 'as needed',
   settledMark: 'settled by us',
   amountRange: (a: string, b: string): string => `${a} to ${b}`,
-  pieces: (n: string): string => `${n} pcs`,
   optional: 'optional',
   remarksHeading: 'Remarks on the source',
   remarkLine: (name: string, original?: string, remark?: string): string =>

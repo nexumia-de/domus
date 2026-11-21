@@ -54,6 +54,7 @@ import { picker } from './picker';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
 import { asNextVersion, tastingText } from '../../editor/version-save';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.editor;
 const isForm = (value: unknown): value is DishForm =>
@@ -246,11 +247,7 @@ const build = (
     });
     mark(amount.control, parseEntry(slot.amount).kind === 'invalid');
     const units: readonly string[] = slot.ref?.kind === 'component' ? MASS_ONLY : AMOUNT_UNITS;
-    const unit = bareSelect(
-      `${t.unitLabel}, ${label}`,
-      units.map((u) => ({ value: u, label: u })),
-      slot.unit,
-    );
+    const unit = bareSelect(`${t.unitLabel}, ${label}`, unitOptions(units), slot.unit);
     unit.addEventListener('change', () => {
       slot.unit = unit.value as AmountUnit;
       changed();

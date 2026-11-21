@@ -36,6 +36,19 @@ export function convertComponentLines(
   }
   const grams = componentLineGrams(component, factsByIngredient);
   if (!grams.ok) return grams;
+  // Rewriting needs the grams of every measured line: one that lacks a fact stops it.
+  const lacking = grams.unconverted[0];
+  if (lacking !== undefined) {
+    return {
+      ok: false,
+      error: {
+        code: 'cannot-convert',
+        componentId: component.id,
+        index: lacking.index,
+        cause: lacking.cause,
+      },
+    };
+  }
   const byIndex = new Map(grams.lines.map((l) => [l.index, l.g]));
   let baseG = 0;
   for (const [index, line] of component.lines.entries()) {

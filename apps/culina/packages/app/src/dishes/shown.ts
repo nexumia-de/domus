@@ -138,7 +138,11 @@ export function shownOfDish(
   const nutrition = ownNutritionView(
     {
       raw: counted.rows,
-      unmeasured: [...counted.unmeasured.map((u) => u.name), ...counted.skipped.map((s) => s.name)],
+      unmeasured: [
+        ...counted.unmeasured.map((u) => u.name),
+        ...counted.unconverted.map((u) => u.name),
+        ...counted.skipped.map((s) => s.name),
+      ],
       optional: rows
         .filter((r) => r.optional)
         .map((r) => ({ name: r.name, ...(r.totalG === undefined ? {} : { g: r.totalG }) })),

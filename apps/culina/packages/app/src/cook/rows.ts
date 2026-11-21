@@ -4,9 +4,9 @@
 import type { MakeableCandidate, MakeableLineReport } from '@culina/engine';
 import { roleInvite, roleLabel } from '../components/names';
 import { hashFor } from '../router';
-import { formatNumber } from '../shared/mass';
 import { strings } from '../strings';
 import type { Lookup } from './lookup';
+import { writtenAmount } from '../shared/units';
 
 const t = strings.cook;
 
@@ -43,8 +43,7 @@ export const hrefOf = (c: { kind: MakeableCandidate['kind']; id: string }): stri
 export const daysText = (daysLeft: number): string =>
   daysLeft < 0 ? t.pastUseBy : daysLeft === 0 ? t.useByToday : t.daysLeft(daysLeft);
 
-const amountText = (a: { value: number; unit: string }): string =>
-  `${formatNumber(a.value, 3)} ${a.unit}`;
+const amountText = (a: { value: number; unit: string }): string => writtenAmount(a);
 
 /** What a line is called: its ingredient or component, else the role of a template. */
 const lineName = (look: Lookup, line: MakeableLineReport): string =>

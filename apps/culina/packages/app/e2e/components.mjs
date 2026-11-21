@@ -317,7 +317,7 @@ const phone = async (browser, origin) => {
     `${label}: a factor of 2 doubles the amounts (${oilRaw.map((r) => r.join(' ')).join('; ')})`,
   );
 
-  // Open slot and a slot that cannot be scaled
+  // Open slot and a slot whose component is not weighed
   await open(page, origin, `dishes/${PLATE}`);
   const openText = await page.locator('.slot-open').allInnerTexts();
   check(
@@ -342,14 +342,16 @@ const phone = async (browser, origin) => {
   );
   const plateRaw = fx.dishRawTable(PLATE, 2);
   check(
-    same(await cells(page, '.raw-table'), plateRaw.table) && plateRaw.skipped.length === 1,
-    `${label}: the dish without a weighed herb oil still adds up the other slots like the engine`,
+    same(await cells(page, '.raw-table'), plateRaw.table) &&
+      plateRaw.skipped.length === 0 &&
+      same(plateRaw.unweighed, ['example-herb-oil']),
+    `${label}: the dish adds up the unweighed herb oil as what goes into it, like the engine`,
   );
   check(
-    (await page.locator('.raw-extra li').allTextContents()).some((t) =>
-      /Herb oil is not weighed yet/.test(t),
+    (await page.locator('.raw .note-quiet').allTextContents()).some((t) =>
+      /Herb oil is not weighed: one run is taken as weighing what goes in/.test(t),
     ),
-    `${label}: the slot that cannot be scaled says so in plain words`,
+    `${label}: a quiet note says the herb oil is not weighed`,
   );
   check(
     same(
