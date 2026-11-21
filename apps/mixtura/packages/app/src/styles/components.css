@@ -245,7 +245,7 @@
   flex: 1;
 }
 
-/* ---- Notice (calm reminder), button row, toast ---- */
+/* ---- Notice (calm reminder), button row ---- */
 
 .notice {
   display: flex;
@@ -267,32 +267,4 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
-}
-
-.toast {
-  position: fixed;
-  left: var(--sp-4);
-  right: var(--sp-4);
-  bottom: calc(88px + env(safe-area-inset-bottom));
-  max-width: 480px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-2) var(--sp-4);
-  min-height: var(--target);
-  background: var(--text);
-  color: var(--bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  /* Above the sheets (20), so its Undo is seen and reachable over one. */
-  z-index: 30;
-}
-
-.toast span {
-  flex: 1;
-}
-
-.toast .btn {
-  color: var(--text);
 }

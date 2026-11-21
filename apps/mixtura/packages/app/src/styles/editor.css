@@ -166,10 +166,6 @@
   background: var(--surface-2);
 }
 
-.draft-tag {
-  margin-right: var(--sp-2);
-}
-
 .draft-tag[hidden] {
   display: none;
 }

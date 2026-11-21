@@ -13,7 +13,7 @@ import { rankedStock } from '../../stock/rank-async';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { listKey } from '../../shell/scroll';
 import { strings } from '../../strings';
-import { showToast } from '../../toast';
+import { say } from '../../shell/frame';
 import { browseState } from '../browse/load';
 import { failedStatus, loadingStatus } from '../drinks/pane';
 import { incrementalRows } from '../drinks/rows';
@@ -74,7 +74,7 @@ export function buyNextView(context: ScreenContext): ScreenView {
   const haveIt = (c: Candidate): void => {
     const undo = changeStock(context, [{ id: c.id, next: withPresent(entryRecords, c.id, true) }]);
     if (undo.length > 0) {
-      showToast(context.store, strings.buyNext.added(c.name), () => changeStock(context, undo));
+      say(strings.buyNext.added(c.name), () => changeStock(context, undo));
     }
   };
 

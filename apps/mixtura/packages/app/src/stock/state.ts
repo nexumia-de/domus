@@ -10,7 +10,7 @@ import { type AppData } from '../data';
 import { type Store } from '../state';
 import { toStoreError, type LocalStore, type StockFields, type StockRecord } from '../store';
 import { strings } from '../strings';
-import { showToast } from '../toast';
+import { say } from '../shell/frame';
 import { nowInstant } from '../today';
 import { combineSpaces, type RecordsBySpace } from './combine';
 import { resolveSelection, sameSetting, type Selection } from './spaces-rules';
@@ -228,7 +228,7 @@ export function changeStock(context: StockContext, changes: readonly StockChange
         setRecords(entry, before);
         bump(context.store);
       }
-      showToast(context.store, `${strings.data.notSaved}. ${toStoreError(error).message}`);
+      say(`${strings.data.notSaved}. ${toStoreError(error).message}`);
     }
   });
   return undo;

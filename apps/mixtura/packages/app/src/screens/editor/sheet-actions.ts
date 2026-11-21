@@ -6,7 +6,7 @@
 
 import { back, go, replace } from '../../navigation';
 import { formatHash, type Route } from '../../router';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import { newUserId, StoreError, type Ingredient } from '../../store';
 import { refreshBrowse } from '../browse/load';
 import { usedInCount } from './view-model';
@@ -75,9 +75,9 @@ function pickSubstitute(ctx: Ctx, lineKey: string, ingredientId: string): void {
   const line = ctx.session.draft.lines.find((l) => l.key === lineKey);
   const name = ctx.model.ingredientName(ingredientId) ?? ingredientId;
   if (!line) return closeSheet(ctx);
-  if (line.ingredientId === ingredientId) showToast(ctx.store, t.substitute.same);
+  if (line.ingredientId === ingredientId) say(t.substitute.same);
   else if ((line.substitutes ?? []).some((s) => s.ingredientId === ingredientId)) {
-    showToast(ctx.store, t.substitute.already(name));
+    say(t.substitute.already(name));
   } else {
     ctx.session.draft = updateLine(ctx.session.draft, lineKey, (l) => ({
       ...l,
@@ -85,7 +85,7 @@ function pickSubstitute(ctx: Ctx, lineKey: string, ingredientId: string): void {
     }));
     ctx.session.focus = `menu-${lineKey}`;
     changed(ctx, false);
-    showToast(ctx.store, t.substitute.added(name));
+    say(t.substitute.added(name));
   }
   closeSheet(ctx);
 }
@@ -181,10 +181,10 @@ export async function saveForm(ctx: Ctx): Promise<void> {
   await refreshBrowse(ctx.store, ctx.data.catalog());
   if (state.form.id === '' && state.lineKey) {
     pick(ctx, state.lineKey, record.id, state.substitute === true);
-    showToast(ctx.store, t.ingredient.created(record.name));
+    say(t.ingredient.created(record.name));
   } else {
     closeSheet(ctx);
-    showToast(ctx.store, t.ingredient.savedEdit(record.name));
+    say(t.ingredient.savedEdit(record.name));
   }
 }
 
@@ -208,7 +208,7 @@ export async function deleteIngredient(ctx: Ctx): Promise<void> {
   }
   await refreshBrowse(ctx.store, ctx.data.catalog());
   closeSheet(ctx);
-  showToast(ctx.store, t.ingredient.deleted(record.name), () => {
+  say(t.ingredient.deleted(record.name), () => {
     void local.ingredients.put(record).then(() => refreshBrowse(ctx.store, ctx.data.catalog()));
   });
 }

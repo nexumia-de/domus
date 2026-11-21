@@ -5,7 +5,7 @@
 
 import { type AppState } from './app-state';
 import { invalidateStock } from './stock/state';
-import { showToast } from './toast';
+import { say } from './shell/frame';
 import { strings } from './strings';
 import {
   countsOf,
@@ -44,7 +44,6 @@ export interface ExchangeHost {
   download(name: string, text: string): void;
 }
 
-export { TOAST_MS } from './toast';
 
 export function formatCounts(counts: Counts): string {
   const parts = KINDS.filter((k) => counts[k] > 0).map((k) => {
@@ -81,7 +80,7 @@ export function saveAsFile(name: string, text: string): void {
 
 export function createExchangeActions(host: ExchangeHost): ExchangeActions {
   const { app } = host;
-  const toast = (text: string, undo?: () => void): void => showToast(app, text, undo);
+  const toast = say;
   const fail = (error: unknown): void => {
     app.set({ importFlow: { kind: 'idle' } });
     toast(`${strings.data.notSaved}. ${toStoreError(error).message}`);

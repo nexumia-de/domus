@@ -41,7 +41,7 @@ import { stockStrings } from './stock-strings';
 import { madeBatch, usedUpNewest } from '../../stock/batches';
 import type { StockFields } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import { shareParts } from './share';
 
 function tag(vm: TagVM): HTMLElement {
@@ -220,7 +220,7 @@ export const screens: Screen[] = [
               const undo = changeStock(context, [
                 { id: ingredientId, next: withPresent(own, ingredientId, true) },
               ]);
-              showToast(store, stockStrings.marked(name), () => changeStock(context, undo));
+              say(stockStrings.marked(name), () => changeStock(context, undo));
             },
           }),
       };
@@ -228,9 +228,9 @@ export const screens: Screen[] = [
         records && !swapState ? shelfVM(state.model, drink.spec, records, today()) : undefined;
       const record = (next: StockFields | null, text: string): void => {
         if (!shelfVm) return;
-        if (!next) return void showToast(store, shelfStrings.alreadyRecorded);
+        if (!next) return void say(shelfStrings.alreadyRecorded);
         const undo = changeStock(context, [{ id: shelfVm.ingredientId, next }]);
-        showToast(store, text, () => changeStock(context, undo));
+        say(text, () => changeStock(context, undo));
       };
       const made = (date: string): void =>
         record(

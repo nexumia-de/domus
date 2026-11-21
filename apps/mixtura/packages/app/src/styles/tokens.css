@@ -28,6 +28,12 @@
   --radius: 12px;
   --radius-sm: 8px;
   --target: 44px;
+  /* What the shared frame reads (packages/host/docs/frame.md#tokens). */
+  --header-h: 56px;
+  --error-bg: #f9dcd6;
+  --error-text: #7a1c10;
+  --toast-bottom: calc(88px + env(safe-area-inset-bottom));
+  --toast-z: 30;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +50,8 @@
     --accent-soft: #3a2616;
     --focus: #f2ede6;
     --shadow: 0 1px 2px rgb(0 0 0 / 50%), 0 4px 12px rgb(0 0 0 / 40%);
+    --error-bg: #4a1f1a;
+    --error-text: #ffb4a8;
   }
 }
 
@@ -60,4 +68,6 @@
   --accent-soft: #3a2616;
   --focus: #f2ede6;
   --shadow: 0 1px 2px rgb(0 0 0 / 50%), 0 4px 12px rgb(0 0 0 / 40%);
+  --error-bg: #4a1f1a;
+  --error-text: #ffb4a8;
 }

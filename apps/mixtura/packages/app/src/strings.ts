@@ -10,6 +10,7 @@ const changes = (n: number): string => `${n} ${n === 1 ? 'change' : 'changes'}`;
 export const strings = {
   appName: 'Drink Builder',
   navLabel: 'Main',
+  sync: { failedShort: 'Sync failed.', retry: 'Retry' },
   back: 'Back',
   titles: {
     drinks: 'Drinks',

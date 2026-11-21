@@ -56,12 +56,6 @@ export type ShareState =
   | { kind: 'too-long' }
   | { kind: 'failed' };
 
-export interface Toast {
-  id: number;
-  text: string;
-  undo?: () => void;
-}
-
 export interface AppState {
   route: Route;
   theme: Theme;
@@ -94,7 +88,6 @@ export interface AppState {
   importFlow: ImportFlow;
   /** The share sheet of the spec screen (share/actions.ts). */
   share: ShareState;
-  toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
   /** Counts rankings that arrived from the ranking worker (stock/rank-async.ts); a change redraws. */
@@ -129,7 +122,6 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importBackup: false,
     importFlow: { kind: 'idle' },
     share: { kind: 'closed' },
-    toast: null,
     browseRev: 0,
     rankRev: 0,
     stockRev: 0,

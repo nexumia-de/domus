@@ -12,7 +12,7 @@ import { today } from '../../today';
 import { deriveStock, drinkCounts } from '../../stock/derived';
 import { changeStock, stockState, withPresent, type StockChange } from '../../stock/state';
 import { strings } from '../../strings';
-import { showToast } from '../../toast';
+import { say } from '../../shell/frame';
 import { browseState } from '../browse/load';
 import type { BrowseModel } from '../browse/model';
 import { failedStatus, loadingStatus } from '../drinks/pane';
@@ -112,8 +112,8 @@ export function stockView(context: ScreenContext): ScreenView {
     const undo = changeStock(context, changes);
     const stays = stillPresent(stockState(context), off);
     const said = stays.length === 0 ? text : `${text}. ${stays.text}`;
-    if (undo.length > 0) showToast(context.store, said, () => changeStock(context, undo));
-    else if (stays.length > 0) showToast(context.store, stays.text);
+    if (undo.length > 0) say(said, () => changeStock(context, undo));
+    else if (stays.length > 0) say(stays.text);
   };
   // The check box shows the combined state and always acts on the entry space's own record.
   const toggle = (node: StockNode): void => {

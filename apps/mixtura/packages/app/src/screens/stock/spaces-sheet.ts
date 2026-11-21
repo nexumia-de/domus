@@ -14,7 +14,7 @@ import { stockState } from '../../stock/state';
 import { nowInstant } from '../../today';
 import { strings } from '../../strings';
 import { closeSheet, sheetIs } from './sheet-address';
-import { syncText } from './sync-text';
+import { statusText } from '@nexumia-de/hospes';
 
 const t = strings.spaces;
 
@@ -53,7 +53,8 @@ export function spacesSheet(context: ScreenContext, writable: boolean): HTMLElem
 
   const row = (space: (typeof spaces)[number]): HTMLElement => {
     const on = ticked.includes(space.id);
-    const status = syncText(
+    const status = statusText(
+      strings.spaces.status,
       context.data.sync.status(space.id) ??
         (space.deviceOnly ? { kind: 'device-only' } : undefined),
       now,

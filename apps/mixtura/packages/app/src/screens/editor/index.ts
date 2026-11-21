@@ -172,7 +172,7 @@ function view(context: ScreenContext): ScreenView {
     title,
     body: page.body,
     actions: page.actions,
-    headerAction: page.tag,
+    subtitle: page.tag,
     list: drinksPane(context, 'detail', found?.spec.lineageId),
   };
 }

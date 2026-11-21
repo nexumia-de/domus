@@ -8,7 +8,7 @@ import { back, go, replace } from '../../navigation';
 import { formatHash, type Route } from '../../router';
 import { type AppState } from '../../app-state';
 import { type Store } from '../../state';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import type { SpecLine } from '../browse/types';
 import { openSwapLine, setSwapField, setSwapQuery, showMoreOffers } from './session';
 import {
@@ -93,7 +93,7 @@ export function swapActions(
     resetAll() {
       const before = swap;
       replace(store, addressOf(route, noSwap, null));
-      showToast(store, swapStrings.toastReset, () =>
+      say(swapStrings.toastReset, () =>
         replace(store, addressOf(route, before, null)),
       );
     },

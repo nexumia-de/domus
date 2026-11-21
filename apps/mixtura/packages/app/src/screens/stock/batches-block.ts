@@ -10,7 +10,7 @@ import { addBatch, batchDates, batchesOf, removeBatch } from '../../stock/batche
 import { type SpaceBlock } from '../../stock/spaces-view';
 import { changeStock, withPresent } from '../../stock/state';
 import { strings } from '../../strings';
-import { showToast } from '../../toast';
+import { say } from '../../shell/frame';
 import type { BrowseModel } from '../browse/model';
 import { batchStrings as t } from './batch-strings';
 import { statusText } from './batch-text';
@@ -59,7 +59,7 @@ export function batchBlock(c: BlockContext, block: SpaceBlock): HTMLElement {
   const apply = (next: ReturnType<typeof addBatch>, text: string): void => {
     const undo = changeStock(context, [{ id, spaceId, next }]);
     problems.delete(spaceId);
-    if (undo.length > 0) showToast(context.store, text, () => changeStock(context, undo));
+    if (undo.length > 0) say(text, () => changeStock(context, undo));
   };
   const add = (date: string): void => {
     if (date === '') problems.set(spaceId, t.dateMissing);
