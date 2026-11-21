@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (frame, Mixtura)
+
+- **Frame extended for Mixtura**: `back` of the header may run a handler (`{ run }`) instead of linking, and header actions take attributes and any app-drawn icon; icon `add`; `worstStatus` for an app that shows several spaces; `--toast-bottom` and `--toast-z` tokens; `hidden` wins over the display of the banner, icon button and subtitle (before, a hidden banner showed in an app without a global `[hidden]` rule). Emptio unchanged in use. [Frame](frame.md). `test/frame.test.ts` pins `worstStatus`.
+
 ## 2026-11-21 (frame)
 
 - **The frame**: `src/frame/` with `createHeader`, `headerLink`, `headerButton`, `createSyncIndicator`, `syncDisplay`, `createToaster` and `frame.css`, as entries `@nexumia-de/hospes/frame` and `/frame.css`, written with Emptio's new frame (the first user; Mixtura and Culina follow). New exports only. [Frame](frame.md). `test/frame.test.ts`.

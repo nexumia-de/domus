@@ -21,6 +21,20 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-21: the shared frame, Emptio and Mixtura (pull requests 19 and this one)
+
+| Part                                                                                                      | Done by            | Checked by                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Emptio's frame, filter and sort, `packages/host/src/frame` (pull request 19)                              | agent 1, mid model | lead ran `npm run check` and Emptio's browser checks locally (pass) and read `toaster.ts` and `sync-indicator.ts`; lead did not read Emptio's screens line by line            |
+| Mixtura on the frame, frame extensions (`worstStatus`, back handler, `[hidden]` fix), new `e2e/frame.mjs` | agent 2, mid model | lead read the agent's report, resolved the merge of `docs/decisions/shared-shell.md` and ran `npm run check`; lead did not read Mixtura's shell or its adapted browser checks |
+| This entry                                                                                                | lead               | nobody                                                                                                                                                                        |
+
+**What the checks found, and where it was fixed.** Mixtura's browser checks found the header left `inert` after a sheet closed (fixed in `render.ts`) and a hidden sync banner that showed in an app without a global `[hidden]` rule (fixed in the shared `frame.css`). The swap check "under 50 ms" failed once at 84 and 94 ms while about 13 browser runs went in parallel and passed alone at 18 ms; not changed.
+
+**Test counts** (lead's run of `npm run check`): model 638, host 226, gjs 9, Mixtura 1677 and 490, Culina 1094 and 506, Emptio 38, 41 and 2, Household 72 (the agent's report called the model's 638 Mixtura's). Mixtura's browser suite at 360 x 720 and 1200 x 800 and Emptio's pass in the agent's runs.
+
+**What nobody verified.** A real phone, a screen reader, a real storage failing (the banner check uses a space whose cycle fails before any request), the 4x-throttled `e2e:slow` script.
+
 ## 2026-11-21: Culina's native app
 
 | Part                                                                                                                                           | Done by          | Checked by                                                                                                                                                                                                        |

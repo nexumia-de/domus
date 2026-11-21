@@ -173,7 +173,7 @@ const first = await focusedText();
 await page.keyboard.press('Enter');
 await page.waitForFunction(() => location.hash.startsWith('#/drinks/'));
 expect(
-  (await page.locator('.pane h1:visible').last().innerText()).length > 0 && first.length > 0,
+  (await page.locator('.fr-header h1').last().innerText()).length > 0 && first.length > 0,
   'Enter opens the focused drink',
 );
 

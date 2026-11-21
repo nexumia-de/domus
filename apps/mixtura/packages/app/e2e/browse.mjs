@@ -61,7 +61,7 @@ const count = async () => /^(\d+)/.exec(await page.locator('.list-count').innerT
 const total = async () => /(\d+) drinks$/.exec(await page.locator('.list-count').innerText())?.[1];
 const titleIs = (name) =>
   page
-    .locator('.pane h1:visible', { hasText: new RegExp(`^${name}$`) })
+    .locator('.fr-header h1', { hasText: new RegExp(`^${name}$`) })
     .last()
     .waitFor({ timeout: 5000 });
 const hash = () => page.evaluate(() => location.hash);
@@ -281,7 +281,7 @@ expect(Math.abs(after - before) < 4, `Back restores the list position (${before}
 await page.goto(`${site.url}#/drinks/daiquiri`);
 await page.locator('.balance').waitFor();
 expect(
-  (await page.locator('.pane h1:visible').last().innerText()) === 'Daiquiri',
+  (await page.locator('.fr-header h1').last().innerText()) === 'Daiquiri',
   'the spec is titled by its drink',
 );
 const body = await page.locator('.spec').innerText();
@@ -570,7 +570,7 @@ await context.setOffline(true);
 await page.reload({ waitUntil: 'load' });
 await page.locator('.balance').waitFor();
 expect(
-  (await page.locator('.pane h1:visible').last().innerText()) === 'Daiquiri',
+  (await page.locator('.fr-header h1').last().innerText()) === 'Daiquiri',
   'a spec URL reloads with the network off',
 );
 expect((await page.locator('.spec').innerText()).includes('Assumed range'), 'with its figures');

@@ -42,7 +42,7 @@ await page.goto(`${site.url}#/settings`);
 await page.getByRole('button', { name: 'Dark', exact: true }).click();
 await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark');
 await page.reload({ waitUntil: 'load' });
-await page.locator('nav.nav').waitFor();
+await page.locator('.fr-header h1').waitFor();
 expect(
   (await page.evaluate(() => document.documentElement.dataset.theme)) === 'dark',
   'a setting written to the local store survives a reload',

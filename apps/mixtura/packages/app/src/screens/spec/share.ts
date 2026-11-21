@@ -3,9 +3,9 @@
 // sheet). A built-in drink has nothing to send: no button, and a sheet address
 // typed by hand opens nothing (docs/screens-specs.md#share-a-drink).
 
+import { headerButton } from '@nexumia-de/hospes/frame';
 import { shareSheet } from '../../components/share-sheet';
 import * as glyph from '../../components/glyphs';
-import { h } from '../../dom';
 import { back, go, replace } from '../../navigation';
 import { type Route } from '../../router';
 import { type ScreenContext } from '../../screen';
@@ -48,17 +48,11 @@ export function shareParts(
     if (wide()) replace(store, to);
     else back(store, to);
   };
-  const headerAction = h(
-    'button',
-    {
-      class: 'btn btn--icon',
-      type: 'button',
-      'aria-label': shareStrings.buttonAria(spec.name),
-      title: shareStrings.button,
-      'data-focus': 'share',
-      onclick: () => (wide() ? replace : go)(store, specAddress(route, servings, 'share')),
-    },
+  const headerAction = headerButton(
+    shareStrings.buttonAria(spec.name),
     glyph.share(),
+    () => (wide() ? replace : go)(store, specAddress(route, servings, 'share')),
+    { 'data-focus': 'share', title: shareStrings.button },
   );
   if (!open) return { headerAction };
   return {

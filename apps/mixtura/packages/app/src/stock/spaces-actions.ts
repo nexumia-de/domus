@@ -7,7 +7,7 @@
 
 import { toStoreError } from '../store';
 import { strings } from '../strings';
-import { showToast } from '../toast';
+import { say } from '../shell/frame';
 import * as rules from './spaces-rules';
 import {
   enqueueWrite,
@@ -39,7 +39,7 @@ function commit(context: StockContext, cache: Cache, next: rules.Selection): voi
         known: next.spaces.map((s) => s.id),
       });
     } catch (error) {
-      showToast(context.store, `${strings.data.notSaved}. ${toStoreError(error).message}`);
+      say(`${strings.data.notSaved}. ${toStoreError(error).message}`);
       invalidateStock(context.store);
     }
   });

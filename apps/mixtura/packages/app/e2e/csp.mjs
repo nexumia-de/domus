@@ -93,7 +93,7 @@ await page.locator('nav.nav').waitFor();
 const walk = async (label) => {
   for (const route of routes) {
     await page.goto(`${site.url}${route}`);
-    await page.locator('.pane h1:visible').last().waitFor();
+    await page.locator('.fr-header h1').last().waitFor();
     if (route === '#/stock/buy-next') {
       await page.locator('.buy-item, .status, [role="status"]').first().waitFor();
       const worker = await page.waitForEvent('worker', { timeout: 100 }).catch(() => null);

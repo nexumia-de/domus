@@ -5,7 +5,7 @@
 import { replace } from '../../navigation';
 import { type ScreenContext } from '../../screen';
 import { newUserId, restoreVersion, systemClock } from '../../store';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import { refreshBrowse } from '../browse/load';
 import { versionStrings as vs } from './strings';
 
@@ -24,8 +24,8 @@ export async function restore(context: ScreenContext, lineageId: string, n: numb
     if (!saved) return;
     await refreshBrowse(store, data.catalog());
     replace(store, `#/drinks/${encodeURIComponent(lineageId)}/versions`);
-    showToast(store, vs.restored(saved.name, n, saved.version));
+    say(vs.restored(saved.name, n, saved.version));
   } catch (error) {
-    showToast(store, vs.restoreFailed((error as Error).message));
+    say(vs.restoreFailed((error as Error).message));
   }
 }

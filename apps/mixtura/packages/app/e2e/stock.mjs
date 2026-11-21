@@ -47,7 +47,7 @@ const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${hei
 const docShot = async (name) => {
   if (!docs) return;
   // The toast would hide rows; the next change brings it back.
-  await page.evaluate(() => document.querySelector('.toast')?.remove());
+  await page.evaluate(() => document.querySelector('.fr-toast')?.replaceChildren());
   await page.screenshot({ path: join(DOCS, `app-${name}-${width}x${height}.png`) });
 };
 const toast = () => page.getByTestId('toast');
@@ -491,7 +491,7 @@ await page.locator('#f-parentId').selectOption({ index: 1 });
 await page.getByRole('button', { name: 'Save Ingredient' }).click();
 await page.getByText('Created Qwx Syrup and marked it in stock').waitFor();
 await page.getByRole('button', { name: 'Undo' }).click();
-await page.waitForFunction(() => !document.querySelector('.toast'));
+await page.waitForFunction(() => !document.querySelector('.fr-toast:not(:empty)'));
 await page.goto(`${site.url}#/stock?q=Qwx`);
 await page.getByText('No ingredient matches.').waitFor();
 expect(true, 'Undo takes the created ingredient and its mark back');

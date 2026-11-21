@@ -48,7 +48,7 @@ navigation, toasts and sync display. Three reasons:
 ## Plan (one session per step)
 
 1. Emptio's web app on the frame: done (pull request 19).
-2. Mixtura's web app: header, toast and sync on the frame first (its
+2. Mixtura's web app: **done** (2026-11-21, branch `mixtura-frame`): header, toast and sync on the frame first (its
    store-driven toast calls `createToaster`), then its navigation and
    settings; its browser checks adapted (the app is fixed, not the
    checks).

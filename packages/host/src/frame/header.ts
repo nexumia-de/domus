@@ -6,8 +6,11 @@ import { FRAME_ICONS, type FrameIconName } from './icons';
 
 export interface HeaderPage {
   title: string;
-  /** A subpage: the arrow goes there (a hash or a path), labelled for readers. */
-  back?: { href: string; label: string };
+  /**
+   * A subpage: the arrow goes there (a hash or a path) or runs `run` (an app with its own
+   * history); labelled for readers. `attrs` are put on the button, for example a focus key.
+   */
+  back?: { label: string; attrs?: HeaderAttrs } & ({ href: string } | { run: () => void });
   /** Under the title, small: for example the shown space. */
   subtitle?: Node;
   /** Right-hand side, in order: `headerLink`, `headerButton` or the sync button. */
@@ -21,27 +24,40 @@ export interface FrameHeader {
   show(page: HeaderPage): void;
 }
 
-const iconNode = (icon: FrameIconName | SVGSVGElement): SVGSVGElement =>
-  typeof icon === 'string' ? drawIcon(FRAME_ICONS[icon]) : icon;
+/** Extra attributes of a header action (a focus key, a test id); the apps decide which. */
+export type HeaderAttrs = Record<string, string>;
+
+/** An own icon by name, or an icon the app drew (it gets the frame's icon class). */
+const iconNode = (icon: FrameIconName | SVGElement): SVGElement => {
+  if (typeof icon === 'string') return drawIcon(FRAME_ICONS[icon]);
+  icon.classList.add('fr-icon');
+  return icon;
+};
 
 /** An icon-only link of the header: a tooltip and an accessible name, 44 px to touch. */
 export function headerLink(
   label: string,
-  icon: FrameIconName | SVGSVGElement,
+  icon: FrameIconName | SVGElement,
   href: string,
+  attrs: HeaderAttrs = {},
 ): HTMLAnchorElement {
-  return el('a', { class: 'fr-icon-btn', href, 'aria-label': label, title: label }, iconNode(icon));
+  return el(
+    'a',
+    { class: 'fr-icon-btn', href, 'aria-label': label, title: label, ...attrs },
+    iconNode(icon),
+  );
 }
 
 /** An icon-only button of the header. */
 export function headerButton(
   label: string,
-  icon: FrameIconName | SVGSVGElement,
+  icon: FrameIconName | SVGElement,
   run: () => void,
+  attrs: HeaderAttrs = {},
 ): HTMLButtonElement {
   const button = el(
     'button',
-    { class: 'fr-icon-btn', type: 'button', 'aria-label': label, title: label },
+    { class: 'fr-icon-btn', type: 'button', 'aria-label': label, title: label, ...attrs },
     iconNode(icon),
   );
   button.addEventListener('click', run);
@@ -61,7 +77,12 @@ export function createHeader(): FrameHeader {
       heading.textContent = page.title;
       subtitle.replaceChildren(...(page.subtitle ? [page.subtitle] : []));
       subtitle.hidden = page.subtitle === undefined;
-      const back = page.back ? [headerLink(page.back.label, 'back', page.back.href)] : [];
+      const { back: to } = page;
+      const back = !to
+        ? []
+        : 'run' in to
+          ? [headerButton(to.label, 'back', to.run, to.attrs)]
+          : [headerLink(to.label, 'back', to.href, to.attrs)];
       node.replaceChildren(...back, place, actions);
       actions.replaceChildren(...(page.actions ?? []));
     },

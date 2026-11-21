@@ -2,7 +2,8 @@
  * The shared frame of the household apps: header, icon buttons, sync banner, toast. It has no
  * colours of its own; it reads the tokens every app defines (docs/frame.md#tokens): --surface,
  * --surface-2, --text, --text-muted, --accent, --border, --divider, --error-bg, --error-text,
- * --target, --header-h, --radius, --radius-sm, --sp-1 to --sp-4, --fs-sm, --fs-lg.
+ * --target, --header-h, --radius, --radius-sm, --sp-1 to --sp-4, --fs-sm, --fs-lg; optional:
+ * --accent-soft, --content-w, --toast-bottom, --toast-z.
  */
 .fr-header {
   display: flex;
@@ -143,9 +144,9 @@
 .fr-toast {
   position: absolute;
   right: var(--sp-3);
-  bottom: var(--sp-3);
+  bottom: var(--toast-bottom, var(--sp-3));
   left: var(--sp-3);
-  z-index: 5;
+  z-index: var(--toast-z, 5);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -171,4 +172,11 @@
 
 .fr-toast-action {
   color: var(--accent);
+}
+
+/* `hidden` must win over the display of the rules above. */
+.fr-banner[hidden],
+.fr-icon-btn[hidden],
+.fr-subtitle[hidden] {
+  display: none;
 }

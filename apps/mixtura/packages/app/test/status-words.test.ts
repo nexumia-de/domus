@@ -1,6 +1,11 @@
-// The sync status of a space's stock in words, for the Spaces sheet.
+// The words Mixtura gives the shared sync status text (the Spaces sheet and the header icon).
 import { expect, test } from 'vitest';
-import { syncText } from '../src/screens/stock/sync-text';
+import { statusText } from '@nexumia-de/hospes';
+import { strings } from '../src/strings';
+
+const syncText = (
+  ...args: Parameters<typeof statusText> extends [unknown, ...infer R] ? R : never
+) => statusText(strings.spaces.status, ...args);
 
 test('the status in words', () => {
   const at = '2026-11-20T09:00:00.000Z';

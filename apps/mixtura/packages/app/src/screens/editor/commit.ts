@@ -4,7 +4,7 @@
 // on screen and says why in words (docs/screens-specs.md#spec-editor).
 
 import { back, replace } from '../../navigation';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import {
   asDiffSpec,
   newUserId,
@@ -72,7 +72,7 @@ export async function save(ctx: Ctx, confirmed = false): Promise<void> {
   const target = session.draft.target;
   if (target.kind === 'edit') {
     if (!dirty(session)) {
-      showToast(store, t.nothingToSave);
+      say(t.nothingToSave);
       return;
     }
     if (!confirmed && contentChanged(ctx, check)) {
@@ -102,8 +102,7 @@ export async function save(ctx: Ctx, confirmed = false): Promise<void> {
     await local.drafts.delete(draftKeyOf(session.key)).catch(() => undefined);
     dropSession(session);
     await refreshBrowse(store, data.catalog());
-    showToast(
-      store,
+    say(
       saved.outcome === 'version'
         ? t.savedVersion(saved.name, saved.version)
         : saved.outcome === 'status'
@@ -143,7 +142,7 @@ export function discard(ctx: Ctx): void {
     ?.drafts.delete(draftKeyOf(session.key))
     .catch(() => undefined);
   bump(store);
-  showToast(store, t.discarded, () => {
+  say(t.discarded, () => {
     session.draft = previous;
     changed(ctx, true);
   });
@@ -181,7 +180,7 @@ export async function deleteDrink(ctx: Ctx): Promise<void> {
   dropSession(session);
   await refreshBrowse(store, data.catalog());
   replace(store, '#/drinks');
-  showToast(store, t.deleted(name), () => {
+  say(t.deleted(name), () => {
     void (async () => {
       for (const version of versions) await local.specs.put(version);
       if (ingredient) await local.ingredients.put(ingredient);

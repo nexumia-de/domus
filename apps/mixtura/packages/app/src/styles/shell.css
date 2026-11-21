@@ -2,6 +2,7 @@
 /* ---- Shell: bottom navigation on a phone, rail from 840 px ---- */
 
 .app {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100dvh;
@@ -100,6 +101,10 @@
 }
 
 @media (min-width: 840px) {
+  :root {
+    --toast-bottom: var(--sp-3);
+  }
+
   .app {
     flex-direction: row;
   }
@@ -139,27 +144,25 @@
   }
 }
 
-/* ---- App bar and bottom action bar ---- */
+/* ---- Header (the shared frame, hospes frame.css) and bottom action bar ---- */
 
-.appbar {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  min-height: 56px;
-  padding: 0 var(--sp-2);
-  background: var(--surface);
-  border-bottom: 1px solid var(--divider);
+/* Titles wrap, never cut off: text at 200 % (docs/design.md, Text size and reflow). */
+.fr-title {
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
 }
 
-.appbar h1 {
-  flex: 1;
-  min-width: 0;
+.fr-subtitle .tag {
   margin: 0;
-  padding: var(--sp-2);
-  font-size: var(--fs-lg);
-  font-weight: 700;
-  /* Titles wrap, never cut off: text at 200 % (docs/design.md, Text size and reflow). */
-  overflow-wrap: anywhere;
+}
+
+/* The list pane's own action (New Drink) is in the header; with a drink open on a phone the list is hidden. */
+@media (max-width: 839px) {
+  .wide-only {
+    display: none;
+  }
 }
 
 .actionbar {

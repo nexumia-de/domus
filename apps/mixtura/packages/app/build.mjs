@@ -5,6 +5,7 @@
 import { createHash } from 'node:crypto';
 import { copyFileSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { build, transform } from 'esbuild';
 import { headersFile, metaPolicy } from './headers.mjs';
 import { assembleSeed } from './seed-assemble.mjs';
@@ -66,9 +67,15 @@ const styles = [
   'spec-extras',
   'app',
 ];
-const css = styles
-  .map((name) => readFileSync(join('src', 'styles', `${name}.css`), 'utf8'))
-  .join('\n');
+// The shared frame's styles come first; the app's own tokens and rules follow.
+const frameCss = readFileSync(
+  fileURLToPath(import.meta.resolve('@nexumia-de/hospes/frame.css')),
+  'utf8',
+);
+const css = [
+  frameCss,
+  ...styles.map((name) => readFileSync(join('src', 'styles', `${name}.css`), 'utf8')),
+].join('\n');
 writeFileSync(join(out, 'app.css'), (await transform(css, { loader: 'css', minify: true })).code);
 
 const copied = [

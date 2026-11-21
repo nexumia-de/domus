@@ -11,7 +11,7 @@ import { type ScreenContext } from '../../screen';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { newUserId, StoreError } from '../../store';
 import { strings } from '../../strings';
-import { showToast } from '../../toast';
+import { say } from '../../shell/frame';
 import { refreshBrowse } from '../browse/load';
 import type { BrowseModel } from '../browse/model';
 import {
@@ -82,14 +82,14 @@ async function save(context: ScreenContext, model: BrowseModel): Promise<void> {
     { id: record.id, next: withPresent(records.records, record.id, true) },
   ]);
   replace(context.store, stockAddress(context, null, { keepQ: false }));
-  showToast(context.store, strings.stock.created(record.name), () => {
+  say(strings.stock.created(record.name), () => {
     changeStock(context, undo);
     void local.ingredients
       .delete(record.id)
       .then(() => refreshBrowse(context.store, context.data.catalog()))
       .catch((error: unknown) => {
         const reason = error instanceof StoreError ? error.message : (error as Error).message;
-        showToast(context.store, t.saveFailed(reason));
+        say(t.saveFailed(reason));
       });
   });
 }

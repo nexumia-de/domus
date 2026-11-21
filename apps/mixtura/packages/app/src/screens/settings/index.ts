@@ -182,7 +182,7 @@ export const screens: Screen[] = [
   {
     id: 'settings',
     destination: 'settings',
-    pushed: false,
+    pushed: true,
     match: (route) => route.path.length === 1 && route.path[0] === 'settings',
     view: (context) => ({ title: strings.titles.settings, body: settings(context) }),
   },

@@ -20,15 +20,17 @@ export interface ScreenView {
   title: string;
   /** Scrolling content of the detail pane. */
   body: Node;
-  /** A small element at the right of the detail pane's header (the editor's draft tag). */
+  /** An action of the header, left of the sync icon (Share). */
   headerAction?: Node;
+  /** Small, under the title (the editor's draft tag). */
+  subtitle?: Node;
   /** Bottom action bar of a pushed screen; replaces the navigation on a phone. */
   actions?: Node;
   /**
    * Two panes (Drinks, Templates, Stock): the list pane is shown beside
    * the body from 840 px; on a phone `phone` says which one is visible.
    */
-  list?: { title: string; body: Node; phone: 'list' | 'detail'; action?: Node };
+  list?: { title: string; body: Node; phone: 'list' | 'detail'; action?: HTMLElement };
 }
 
 export interface Screen {

@@ -41,7 +41,7 @@ await throttle(page, args);
 for (const [name, address] of screens) {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
   if (name === 'drinks') await page.locator('.list-rows li').first().waitFor();
   const file = `dark-${name}-${width}x${height}.png`;
   await page.screenshot({ path: join(OUT, file) });

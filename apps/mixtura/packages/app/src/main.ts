@@ -7,6 +7,7 @@ import { watchShareLinks } from './share/watch';
 import { applyTheme, loadPrefs } from './prefs';
 import { screens } from './screens';
 import { loadShortcuts } from './shortcuts-pref';
+import { createFrame } from './shell/frame';
 import { render, type Shell } from './shell/render';
 import { createStore } from './state';
 import { registerServiceWorker } from './sw-register';
@@ -23,6 +24,7 @@ if (root) {
     screens,
     store,
     data: connection.data,
+    frame: createFrame(() => connection.data),
     applyUpdate: () => undefined,
     retryData: connection.retry,
   };
