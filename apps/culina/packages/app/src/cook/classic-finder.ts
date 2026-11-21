@@ -67,6 +67,7 @@ export const classicsWithin = (
     ...(base.facts === undefined ? {} : { facts: base.facts }),
     // The shipped substitute effects, as for an own dish (engine vectors declared-substitute*).
     ...(base.substitutes === undefined ? {} : { substitutes: base.substitutes }),
+    ...(base.parts === undefined ? {} : { parts: base.parts }),
     classics,
     lang,
     options: { maxMissing },

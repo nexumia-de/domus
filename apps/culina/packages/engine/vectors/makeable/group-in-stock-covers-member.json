@@ -1,0 +1,122 @@
+{
+  "id": "group-in-stock-covers-member",
+  "description": "A group in stock (butter) covers a line that names a member (salted butter); the amount is compared as for any item and the line names the group in `through`",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-21",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "egg"
+      },
+      {
+        "id": "egg-whole",
+        "parentId": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "egg-whole-fresh",
+        "parentId": "egg-whole"
+      },
+      {
+        "id": "egg-yolk",
+        "parentId": "egg"
+      },
+      {
+        "id": "egg-yolk-dried",
+        "parentId": "egg-yolk"
+      },
+      {
+        "id": "egg-white",
+        "parentId": "egg"
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      }
+    ],
+    "components": [
+      {
+        "id": "cookies",
+        "name": "Cookies",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salted-butter"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ],
+        "version": {
+          "family": "cookies",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "butter"
+        },
+        "amount": {
+          "value": 100,
+          "unit": "g"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "kind": "component",
+        "id": "cookies",
+        "complete": true,
+        "lacking": 0,
+        "substitutions": [],
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "salted-butter"
+            },
+            "status": "have",
+            "source": "stock",
+            "items": ["s1"],
+            "through": {
+              "rule": "group",
+              "asked": "salted-butter",
+              "inStock": "butter",
+              "itemId": "s1"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree and of stored fields; ingredients, amounts and recipes are made up and no kitchen figure is involved."
+}

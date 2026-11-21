@@ -995,9 +995,27 @@ Texts: `src/strings-stock.ts`. Since 2026-11-20 the stock is the collection
   again unticks (`present: false`, the record stays), with the toast and
   Undo. "Always there" is a button on a ticked row (a check mark and a
   bar as well as colour); that item counts as present until unticked.
-  Nothing is offered by default: no staples list is shipped; "Always there"
-  can be set on any item. A tick is a box with a check mark, not only a
-  colour. **Test:** `e2e/stock.mjs`, `test/stock-notebook.test.ts`.
+  "Always there" can be set on any item. A tick is a box with a check mark,
+  not only a colour. **The catalogue search offers first** the entry whose
+  name (in any language) is the search text itself, then names that start
+  with it, then the rest (`rankFound`, `src/catalogue/tree.ts`): "Kartoffel"
+  offers the potato before potato flour, "Tomaten" the tomatoes before the
+  canned tomato products (a tester's finding of 2026-11-21: he took the first
+  entry and had potato flour in stock). **Test:** `e2e/stock.mjs`,
+  `e2e/everyday-stock.mjs`, `test/stock-staples-parts.test.ts`,
+  `test/stock-notebook.test.ts`.
+- **Staples** (on the list, 2026-11-21). While table salt or black pepper has
+  no stock item, a short section "Staples" names the ones not ticked ("Salt,
+  table, Spices, pepper, black count as there only once ticked. Tick them as
+  always there and the finder stops asking for them.") with one button, "Tick
+  the staples", which copies the catalogue entries into the notebook and ticks
+  them as always there, with the toast and Undo; the section goes once both
+  are ticked. Nothing is assumed silently: until the tap they are not there,
+  and the finder names salt as lacking (33 lines of the shipped dishes ask for
+  salt, 13 for black pepper). The list is `src/stock/staples.ts`, two entries;
+  water is no staple, the finder treats it as the kitchen's
+  ([engine rules](engine-rules.md#what-the-stock-allows)). **Test:**
+  `e2e/everyday-stock.mjs`, `test/stock-staples-parts.test.ts`.
 - **The list** (`#/stock`). Sorted by use by where one is known (nearest
   first), then by name. A row shows the name and only what was entered
   (amount, state, "always there") and the remaining days in plain words:
@@ -1059,7 +1077,8 @@ screen, which belongs to the Notebook (own or shipped). Texts:
 - **One adapter.** `src/cook/input.ts` builds the engine's input from the
   notebook cache: the ingredient tree (a `parentId` that names no
   ingredient is left out), every version of components and dishes, the seed
-  templates, the stock as stored, the facts for conversion and today. No
+  templates, the stock as stored, the facts for conversion, the parts of
+  whole foods and today. No
   arithmetic in the app: every number and status comes from `makeable`.
   Today is the shell's injected clock (`?e2e-now=` in tests), read in
   `src/cook/source.ts` only, and shown on the screen as "As of 18 Nov 2026".
@@ -1088,19 +1107,38 @@ screen, which belongs to the Notebook (own or shipped). Texts:
   roles covered, or "no roles recorded"); "Lacks: Thyme, Cream (100 g there,
   200 g needed)" for both origins; the substitutes, "with Salted butter in
   place of Unsalted butter" (a sibling, or a shipped substitute effect, for
-  own and shipped dishes alike); items that are there with no known amount,
+  own and shipped dishes alike), and where a group or a whole in stock covers a
+  line by the engine's group or part rule, "Egg in stock counts for Egg,
+  whole" or "Egg, yolk from the Egg, whole in stock", so a broad tick is named
+  and not hidden; items that are there with no known amount,
   "Cream is there; how much is not known."; for an own dish the open roles
   the stock can fill, "You could add a crunch: Walnut", only where the stock
   has an ingredient or component with that role (the same offer is shown on
   the dish screen beside "Open: add a crunch"); for a shipped dish a line the
   catalogue has no ingredient for yet is not counted and is named apart,
-  "Not in the catalogue yet, so not counted: Bouquet garni". Water is never
-  asked for. For the shipped dishes the ingredient tree is the notebook's
-  completed by the shipped catalogue (the notebook wins on an id), loaded on
-  the first draw and drawn again when it is there; their names are in the
-  content language. Wording is neutral: "lacks", "could add", never an alarm
-  word or colour. **Test:** `test/cook-one-list.test.ts`,
-  `test/cook-finder.test.ts`, `e2e/cook.mjs`, `e2e/classics-finder.mjs`.
+  "Not in the catalogue yet, so not counted: Bouquet garni" (a `wanted` line,
+  such as "Cheese (cacio)", is not matched to any stock, even to cheese in
+  stock: the catalogue has no food for it). Water is never asked for: a shipped
+  dish names it as `wanted` and is not asked, a ratio card's role water and an
+  own line whose ingredient has the role water are the kitchen's (engine
+  rule). For both origins the ingredient tree is the notebook's completed by
+  the shipped catalogue (the notebook wins on an id; since 2026-11-21 also for
+  the own candidates, so that a group ticked in the stock has its members and
+  the engine's group rule can see them), loaded on the first draw and drawn
+  again when it is there; the names of shipped dishes are in the content
+  language. The parts of whole foods come from `data/ingredient-parts.json`
+  (one entry: a whole egg has a yolk and a white; each entry a judgement with
+  its `basis`), read in `src/cook/parts.ts`. A ratio card is named as on the
+  Ratios screen ("Nudelteig", not "Pasta dough"); a role word in a sentence is
+  lower case in English and keeps its capital in German ("deckt Fett, Mehl
+  ab", `roleInSentence`); the heading of "What uses" names the ingredient in
+  the app's language ("Was Hühnerei verwendet"). Wording is neutral: "lacks",
+  "could add", never an alarm word or colour. **Test:**
+  `test/cook-one-list.test.ts`, `test/cook-finder.test.ts`,
+  `test/cook-rows-words.test.ts`, `test/finder-everyday-stock.test.ts` (the
+  real catalogue and the 48 real classics), `e2e/cook.mjs`,
+  `e2e/classics-finder.mjs`, `e2e/everyday-stock.mjs` (German, the real
+  content, the stock route).
 - **The one filter on top**, the same as on the Dishes list
   ([one filter over every dish](#one-filter-over-every-dish)): "From" (mine,
   shipped), "What it is like" (character), course, cuisine, "Without meat and

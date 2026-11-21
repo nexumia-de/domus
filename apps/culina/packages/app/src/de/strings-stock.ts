@@ -29,6 +29,11 @@ export const stockStringsDe: typeof stockStrings = {
   removed: (name: string): string => `${name} aus dem Vorrat entfernt.`,
   usedUp: (name: string): string => `${name} ist aufgebraucht.`,
   restored: (name: string): string => `${name} ist wieder im Vorrat.`,
+  staplesHeading: 'Grundzutaten',
+  staplesHint: (names: string): string =>
+    `${names} zählen erst als da, wenn sie angehakt sind. Hake sie als immer da an, dann fragt die Suche nicht mehr nach ihnen.`,
+  staplesTick: 'Grundzutaten anhaken',
+  staplesTicked: (names: string): string => `${names}: immer da.`,
   undo: 'Rückgängig',
   remove: 'Entfernen',
   removeLabel: (name: string): string => `${name} aus dem Vorrat entfernen`,

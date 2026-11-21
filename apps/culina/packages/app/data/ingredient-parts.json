@@ -1,0 +1,12 @@
+{
+  "format": "culina-ingredient-parts",
+  "formatVersion": 1,
+  "note": "Which catalogue foods are parts of a whole food, for the finder: a stock item of the whole (or of a food below it) covers a dish line that names the part exactly, with no amount (the whole's amount says nothing exact about the part's). The USDA data says nothing of parts; every entry is a judgement of the person who wrote it, stated in `basis`, never derived from a name.",
+  "entries": [
+    {
+      "whole": "fdc-group-egg-whole",
+      "parts": ["fdc-group-egg-yolk", "fdc-group-egg-white"],
+      "basis": "A judgement of the project, no source looked up: inside the shell a whole egg is its white and its yolk, and a cook separates one egg into one white and one yolk. Dried whites and yolks are not parts of a fresh egg and are not listed."
+    }
+  ]
+}

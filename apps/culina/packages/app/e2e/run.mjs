@@ -12,6 +12,7 @@ import { dishCharacters } from './dish-characters.mjs';
 import { dishSwap } from './dish-swap.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
+import { everydayStock } from './everyday-stock.mjs';
 import { exportImport } from './export-import.mjs';
 import { german } from './german.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
@@ -53,6 +54,7 @@ try {
   await exportImport(browser, server);
   await stock(browser, server);
   await cook(browser, server);
+  await everydayStock(browser, server);
   await classics(browser, server);
   await classicsFinder(browser, server);
   await importCatalogue(browser, server);

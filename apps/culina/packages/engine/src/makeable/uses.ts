@@ -1,6 +1,7 @@
 // Which own components and dishes use an ingredient, or one it can stand in for: the question
 // "what uses the leeks". The rules are the ones that decide a line: the same ingredient, a line
-// that names a class above it, and (when siblings are allowed) a leaf line beside it.
+// that names a class above it, a line that names a member below it (a group in stock), a line that
+// names a part of it (`input.parts`), and (when siblings are allowed) a leaf line beside it.
 import { familyHeads } from '../versions/chain';
 import { isA } from '../model';
 import { buildContext } from './context';
@@ -14,6 +15,15 @@ export type UsesIngredientResult =
 /** Whether an item of `ingredientId` could satisfy a line that names the ingredient `askedId`. */
 function standsFor(ctx: Context, ingredientId: string, askedId: string): boolean {
   if (ingredientId === askedId || isA(ctx.tree, ingredientId, askedId)) return true;
+  if (ctx.group && isA(ctx.tree, askedId, ingredientId)) return true;
+  if (
+    ctx.parts.some(
+      (p) =>
+        p.parts.includes(askedId) &&
+        (ingredientId === p.whole || isA(ctx.tree, ingredientId, p.whole)),
+    )
+  )
+    return true;
   if (!ctx.sibling) return false;
   const asked = ctx.tree.byId.get(askedId);
   if (asked?.parentId === undefined) return false;
@@ -43,11 +53,12 @@ function refUses(ctx: Context, ingredientId: string, ref: Ref, seen: ReadonlySet
 }
 
 /**
- * @param input - As for `makeable`; the ingredients, components, dishes and the
- *   `siblingSubstitution` option are read, the stock is only checked.
+ * @param input - As for `makeable`; the ingredients, components, dishes, parts and the
+ *   `siblingSubstitution` and `groupInStock` options are read, the stock is only checked.
  * @param ingredientId - The ingredient to start from.
  * @returns The family heads of components and dishes with a line (or a slot, or a line of a
- *   component they are made of) that names the ingredient, a class above it, or, when sibling
+ *   component they are made of) that names the ingredient, a class above it, a member below it
+ *   (with `groupInStock`), a part of it, or, when sibling
  *   substitution is on, a leaf beside it; in the ranking's name and id order. Ratio templates
  *   are not listed. Or the input's tree or date error.
  */

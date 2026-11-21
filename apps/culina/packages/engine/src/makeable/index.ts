@@ -17,6 +17,7 @@ import type {
 } from './types';
 
 export { rank as rankCandidates } from './rank';
+export { KITCHEN_ROLE } from './context';
 export type { RankedCandidate } from './rank';
 export { stockForRole } from './for-role';
 export { usesIngredient } from './uses';

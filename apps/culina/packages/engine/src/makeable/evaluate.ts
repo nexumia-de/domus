@@ -1,6 +1,8 @@
 // One line against the stock, and a list of lines (a component, a dish, a made sub-component).
 // Order of tiers: the line's own items (exact, descendant, same component family), then for a
-// component a made sub-component, then for a leaf ingredient a sibling, then a declared substitute.
+// component a made sub-component, for an ingredient a group in stock above it, then a whole whose
+// part it is, then for a leaf ingredient a sibling, then a declared substitute. Water (an ingredient
+// with the role water) is the kitchen's and never asked.
 // A sibling never changes the needed amount; a declared substitute does only by its own factor
 // (where the source gives one). Both are consulted only where the own tier has nothing.
 import { toGrams } from '../amounts/convert';
@@ -10,8 +12,9 @@ import { yieldGrams } from '../components/yield';
 import { scaleByFactor } from '../scale/scale';
 import { compareStock } from './amount';
 import type { Compared } from './amount';
+import { isKitchen } from './context';
 import type { Context, Item } from './context';
-import { declaredItems, eligibleItems, siblingItems } from './eligible';
+import { declaredItems, eligibleItems, groupItems, partItems, siblingItems } from './eligible';
 import type {
   MakeableLineReport,
   MakeableLineStatus,
@@ -124,7 +127,43 @@ export function evaluateLine(
     ...extra,
   });
 
-  if (own.items.length > 0) return stock(resolveTier(ctx, own.items, spec.amount, askedId));
+  // Water: stock of it is read as for any line; what it cannot cover, the kitchen does.
+  const kitchen = spec.ref.kind === 'ingredient' && isKitchen(ctx, askedId);
+  const fromKitchen: MakeableLineReport = { ...head, status: 'have', source: 'kitchen', items: [] };
+  if (own.items.length > 0) {
+    const c = resolveTier(ctx, own.items, spec.amount, askedId);
+    return kitchen && c.status !== 'have' ? fromKitchen : stock(c);
+  }
+  if (kitchen) return fromKitchen;
+
+  const group = groupItems(ctx, want);
+  if (group !== undefined) {
+    const c = resolveTier(ctx, group.items, spec.amount, askedId);
+    const through = {
+      rule: 'group' as const,
+      asked: askedId,
+      inStock: group.inStock,
+      itemId: (c.used[0] as Item).id,
+    };
+    return stock(c, { through });
+  }
+
+  const whole = partItems(ctx, want);
+  if (whole !== undefined) {
+    // The whole's amount says nothing exact about the part's: with an amount the line is
+    // there with the amount unknown, unless an always-there item covers it.
+    const always = whole.items.find((i) => i.always === true);
+    const used = always ?? (whole.items[0] as Item);
+    const status =
+      spec.amount === undefined || always !== undefined ? 'have' : 'have-amount-unknown';
+    const through = {
+      rule: 'part' as const,
+      asked: askedId,
+      inStock: whole.inStock,
+      itemId: used.id,
+    };
+    return stock({ status, used: [used] }, { through });
+  }
 
   const comp = spec.ref.kind === 'component' ? ctx.components.get(askedId) : undefined;
   if (comp !== undefined) {

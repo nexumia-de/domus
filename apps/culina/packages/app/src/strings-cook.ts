@@ -64,12 +64,19 @@ export const cookStrings = {
   reasonNoDate: 'nothing it uses has a use-by date',
   reasonRoles: (roles: string): string => `covers ${roles}`,
   reasonNoRoles: 'no roles recorded',
+  /** A role word inside a sentence: lower case in English ("covers fat, flour"). */
+  roleInSentence: (label: string): string => `${label}`.toLowerCase(),
   lacksHeading: 'Lacks',
   lacksShort: (name: string, have: string, need: string): string =>
     `${name} (${have} there, ${need} needed)`,
   lacksOtherState: (name: string): string => `${name} (there, in another state)`,
   substitution: (substitute: string, asked: string): string =>
     `with ${substitute} in place of ${asked}`,
+  /** A group in stock covers a line that names a member of it. */
+  throughGroup: (inStock: string, asked: string): string =>
+    `${inStock} in stock counts for ${asked}`,
+  /** A whole in stock covers a line that names a part of it. */
+  throughPart: (whole: string, part: string): string => `${part} from the ${whole} in stock`,
   amountUnknown: (name: string): string => `${name} is there; how much is not known.`,
   offer: (invite: string, names: string): string => `You could add ${invite}: ${names}`,
   /** The entry's whole link, for a screen reader. */

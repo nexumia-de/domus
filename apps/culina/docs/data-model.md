@@ -641,10 +641,21 @@ a food, its roles, and `basis`: every one is marked as a judgement, with the
 ratio card that uses the role). The app adds the roles when it reads the
 catalogue, so a copy in the notebook has them (an entry that already has roles
 keeps its own, and a copy made before has none). Water has no catalogue entry
-and no row; a stock item of water is marked always there. A test checks that
+and no row; the finder treats the ratio role water as the kitchen's
+([engine rules](engine-rules.md#what-the-stock-allows)). A test checks that
 every id is in the catalogue and every role is one a ratio card or a dish
 knows. The dish lines of the classics carry no role table of their own: a
 line's `role` is the slot's, as before.
+
+**The parts table** (`packages/app/data/ingredient-parts.json`, format
+`culina-ingredient-parts` 1, read by `src/cook/parts.ts`, 2026-11-21) says
+which catalogue foods are parts of a whole, for the finder's part rule
+([engine rules](engine-rules.md#what-the-stock-allows)): each entry has
+`whole` (an id), `parts` (ids) and `basis` (a judgement with its source). One
+entry: the whole egg (`fdc-group-egg-whole`) has the yolk and the white
+(`fdc-group-egg-yolk`, `fdc-group-egg-white`). The USDA data says nothing of
+parts; nothing is derived from a name. A test checks that every id is in the
+catalogue and every entry has a basis.
 
 ## Technique
 

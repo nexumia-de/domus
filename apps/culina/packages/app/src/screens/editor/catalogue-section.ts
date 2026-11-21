@@ -7,6 +7,7 @@ import { adoptEntry } from '../../catalogue/adopt';
 import { loadCatalogue } from '../../catalogue/load';
 import {
   catalogueTree,
+  rankFound,
   searchTree,
   shortName,
   type CatalogueNode,
@@ -14,7 +15,7 @@ import {
 } from '../../catalogue/tree';
 import { getIngredient } from '../../notebook';
 import { appLang } from '../../shared/locale';
-import { displayName, foundThrough, startsWithAnyName } from '../../shared/names';
+import { displayName, foundThrough } from '../../shared/names';
 import type { IngredientRecord } from '../../records';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -144,11 +145,7 @@ export const catalogueSection = (
     }
     const found = searchTree(roots, needle, (e) => getIngredient(e.id) === undefined);
     if (found.length === 0) return void body.append(quiet(t.catalogueNone));
-    const starts = found.filter((f) => startsWithAnyName(f.entry, needle));
-    const shown = [...starts, ...found.filter((f) => !starts.includes(f))].slice(
-      0,
-      CATALOGUE_LIMIT,
-    );
+    const shown = rankFound(found, needle).slice(0, CATALOGUE_LIMIT);
     const list = el('ul', 'rows picker-rows');
     list.append(...shown.map((f) => row(f, undefined)));
     body.append(list);

@@ -8,7 +8,7 @@ import type { DishEntry } from '../browse/entry';
 import type { DishFilter } from '../browse/filter';
 import type { CookFilters } from '../prefs';
 import type { IngredientRecord } from '../records';
-import { classicsWithin, WIDE } from './classic-finder';
+import { classicsWithin, WIDE, withCatalogue } from './classic-finder';
 import { classicLookup } from './classic-rows';
 import { cookInput } from './input';
 import type { CookSource } from './input';
@@ -88,7 +88,14 @@ export const find = (
   filters: CookFilters,
   options: FindOptions = {},
 ): Found => {
-  const input = cookInput(source, today, { maxMissing: filters.lacking });
+  // The tree of the own candidates is the notebook's completed by the catalogue, as for the
+  // classics: a group copied into the notebook (by a tick in the stock) then has its members, so the
+  // engine's group rule can see what a member asks or plays.
+  const full: CookSource =
+    options.shipped === undefined
+      ? source
+      : { ...source, ingredients: withCatalogue(source.ingredients, options.shipped.catalogue) };
+  const input = cookInput(full, today, { maxMissing: filters.lacking });
   const result = makeable(input);
   if (!result.ok) return { ok: false };
   let uses: Set<string> | undefined;
@@ -107,11 +114,11 @@ export const find = (
   const list = oneList(result.candidates, shipped.candidates, entries, narrowing);
   let nearest: AnyCandidate[] = [];
   if (list.dishes.length + list.parts.length === 0) {
-    const wide = makeable(cookInput(source, today, { maxMissing: WIDE }));
+    const wide = makeable(cookInput(full, today, { maxMissing: WIDE }));
     const wideClassics = classicsAt(source, today, WIDE, options);
     if (wide.ok) nearest = nearestOf(wide.candidates, wideClassics.candidates, entries, narrowing);
   }
-  const look = lookupOf(source);
+  const look = lookupOf(full);
   const lang = options.shipped?.lang ?? 'en';
   return {
     ok: true,

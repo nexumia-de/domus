@@ -724,14 +724,56 @@ a template role), `status` is one of:
 
 The first tier that has an item decides the line: (1) the line's own
 items; (2) for a component line, a sub-component made from its own lines;
-(3) for an ingredient line, a sibling. Substitution is therefore consulted
-only where there is nothing of the line's own, never to top up a short
-amount.
+(3) for an ingredient line, a group in stock above it; (4) a whole in stock
+whose part the line names; (5) a sibling; (6) a declared substitute.
+Substitution is therefore consulted only where there is nothing of the
+line's own, never to top up a short amount.
 
 - **The tree is the class mechanism.** A line that names a parent
   ingredient ("butter") is satisfied by any stocked descendant ("salted
-  butter"), which is no substitution. A generic item in stock does not
-  satisfy a line that names a specific child.
+  butter"), which is no substitution: a member covers a line that asks for
+  its group.
+- **A group in stock covers its members** (`options.groupInStock`, default
+  `true`; since 2026-11-21). A stock item of an ingredient that has members
+  below it in the tree ("Egg", "Wheat flour") covers a line that names any
+  of them ("Egg, whole", "Wheat flour, white, all-purpose, enriched"), at any
+  depth. The nearest group above the line with a fitting item wins (then the
+  item used first); state and amount are judged as for the line's own items
+  (a group that is too little is `short`). The status is the ordinary one
+  (`have`, `have-amount-unknown`, `short`), not a substitution, and the line
+  carries `through: { rule: 'group', asked, inStock, itemId }` so a screen
+  names it. Why: a cook who ticks "Egg" has eggs and expects the egg noodles;
+  the picker offers the group first for the plain word, and the old rule ("a
+  generic item in stock does not satisfy a line that names a specific
+  child") left a tester with twelve everyday foods and no shipped dish (cause
+  of 28 of the lacking lines he saw, 2026-11-21). **What it does not cover:**
+  the tree comes from the commas of USDA's names, not from a cook's kinds, so
+  a group can hold foods a cook would not count: "Cream" holds sour cream,
+  "Milk" holds buttermilk and milk powder, "Cheese" every cheese. The rule
+  counts them; `through` names the pair ("Cream in stock counts for Cream,
+  sour, reduced fat") so the user sees it. A narrower rule needs data that
+  says which members a group stands for; the catalogue has none. Vectors
+  `group-in-stock-*`, the old rule as `group-in-stock-off`.
+- **A whole in stock covers its parts** (`input.parts`, default none). A
+  line that names a part exactly, as a `{ whole, parts }` entry lists it, is
+  covered by stock of the whole or below it ("Egg, whole, fresh" for "Egg,
+  yolk"). Only data says what is a part of what, never a name; the app's table
+  is `packages/app/data/ingredient-parts.json` (a whole egg: yolk and white,
+  each entry with its basis). The whole's amount says nothing exact about the
+  part's, so a line with an amount is `have-amount-unknown` (an always-there
+  item makes it `have`); `through: { rule: 'part', ... }`. **Not covered:** a
+  variant of a part (dried yolk from a fresh egg), how many parts a whole
+  gives, and a part used up by another line of the same dish. Vectors
+  `part-*`.
+- **Water is the kitchen's** (since 2026-11-21). A template role `water`, and
+  an ingredient line whose ingredient has the role `water` (own or
+  inherited), is there with no item: `status: 'have'`, `source: 'kitchen'`.
+  Water in stock is read first, as for any line; what it cannot cover the
+  kitchen does. A kitchen line adds no role and is not the "one line that is
+  there" a partial candidate needs, so a bread card is not listed on water
+  alone. This is data, not a name: an ingredient called water without the
+  role is asked for like any other. Vectors `kitchen-water-*`,
+  `template-water-*`.
 - **Sibling substitution** (`options.siblingSubstitution`, default `true`):
   a line that names a leaf ingredient (no children) with a parent may be
   satisfied by an item of another child of that parent, or below it. A
@@ -787,7 +829,11 @@ cannot be short. Ingredient `roles` and template roles share one id space
 ingredient whose roles, own or inherited from the tree (materia's
 `inheritedValue`), include it; where a derivative swapped the role to an
 ingredient class, by an ingredient in that class. The item used first is
-the one reported. Templates are resolved with `resolveTemplate`; the
+the one reported. Where none fits, a group in stock above an ingredient that
+plays the role (or is in the class) covers it, nearest member first, with
+`through` naming that member ("Egg" in stock for the egg of the pasta dough,
+whose role is on "Egg, whole"); vector `template-group-covers-role`. The role
+`water` is the kitchen's (above). Templates are resolved with `resolveTemplate`; the
 ingredient data that ships does not yet carry roles, so templates are
 findable once the user's or the shipped ingredients do.
 
@@ -830,8 +876,9 @@ screen can offer candidates for an open slot.
 `options.siblingSubstitution` are read) lists the family heads of
 components and dishes that use the ingredient or one it can stand in for,
 by the rules that decide a line: a line naming the ingredient, a line
-naming a class above it (the tree), and, with sibling substitution on, a
-line naming a leaf beside it. A line or slot that names a component counts
+naming a class above it (the tree), with `groupInStock` on a line naming a
+member below it, a line naming a part of it (`input.parts`), and, with
+sibling substitution on, a line naming a leaf beside it. A line or slot that names a component counts
 when that component (its head) does, through any depth; optional lines
 count. Result `{ ok: true, records: [{ kind, id }] }` in name, then id
 order, or the tree or date error of `makeable`. Ratio templates are not
@@ -889,7 +936,11 @@ listed, as for an own dish.
   once each, in file order.
 - **Water** (`isWater`: a `wanted` text whose English or German begins with
   water, cold water, ice-cold water, "Wasser", "kaltes Wasser") is neither
-  asked for nor named: a kitchen has it.
+  asked for nor named: a kitchen has it (the same judgement as the kitchen's
+  water of `makeable`, which reads the role, not a text).
+- `input.parts` and `options.groupInStock` are passed through to `makeable`
+  unchanged, so a group or a whole in stock covers a classic's line as an own
+  one's.
 - A line without an amount is only asked for by presence; an amount in a unit
   the stock cannot be converted to is `have-amount-unknown`, as for any dish.
 - A component that names itself is expanded once.

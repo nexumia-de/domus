@@ -7,7 +7,13 @@ import { familyHeads } from '../versions/chain';
 import type { BaseIngredient, IngredientTreeOf } from '@nexumia-de/materia';
 import type { ComponentRef } from '../components/types';
 import type { Substitute } from '../substitutes/types';
-import type { MakeableComponent, MakeableError, MakeableInput, MakeableStockItem } from './types';
+import type {
+  MakeableComponent,
+  MakeableError,
+  MakeableInput,
+  MakeablePart,
+  MakeableStockItem,
+} from './types';
 
 type TreeIngredient = BaseIngredient & { roles?: readonly string[] };
 
@@ -23,6 +29,9 @@ export interface Context {
   tree: IngredientTreeOf<TreeIngredient>;
   facts: NonNullable<MakeableInput['facts']>;
   sibling: boolean;
+  /** A group in stock covers a line naming a member (`options.groupInStock`). */
+  group: boolean;
+  parts: readonly MakeablePart[];
   substitutes: readonly Substitute[];
   items: readonly Item[];
   components: ReadonlyMap<string, MakeableComponent>;
@@ -74,6 +83,8 @@ export function buildContext(input: MakeableInput): Built {
     tree: tree.tree,
     facts: input.facts ?? {},
     sibling: input.options?.siblingSubstitution ?? true,
+    group: input.options?.groupInStock ?? true,
+    parts: input.parts ?? [],
     substitutes: input.substitutes ?? [],
     items,
     components: heads,
@@ -88,6 +99,13 @@ export function rolesOf(ctx: Context, ingredientId: string): readonly string[] {
   const found = inheritedValue(ctx.tree, ingredientId, 'roles');
   return found.value ?? [];
 }
+
+/** The role that every kitchen covers without stock: water. */
+export const KITCHEN_ROLE = 'water';
+
+/** Whether the ingredient's roles (own or inherited) include water: a kitchen has it. */
+export const isKitchen = (ctx: Context, ingredientId: string): boolean =>
+  rolesOf(ctx, ingredientId).includes(KITCHEN_ROLE);
 
 /** Items by earliest use-by, none last, then id: the order in which they would be used. */
 export function byUseBy<T extends { day?: number; id: string }>(items: readonly T[]): T[] {
