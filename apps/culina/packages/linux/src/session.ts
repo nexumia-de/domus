@@ -1,31 +1,43 @@
 // The running app without a screen: the shipped content (the classics, the techniques and the
 // ingredient catalogue, read through the web app's own readers), the stock of the shown space
 // (the web app's stock space on the host package's loop), what the stock allows, the ticks of a
-// person, and the cooking filters. The screens read `state()` and are told when it changed.
+// person, the one filter over the dishes (the web app's `DishFilter` on the web app's entries) and
+// the finder's filters. The screens read `state()` and are told when it changed.
 // No `gi://` here, so Node tests run it.
 import type { Lang } from '@culina/engine';
 import type { SpaceView, Store, SyncStatus } from '@nexumia-de/hospes';
 import {
+  CHARACTER_TABLE,
   COOK_KEY,
+  COUNTRIES,
+  COURSE_ORDER,
+  DISH_FILTER_KEY,
   SPACE_KEY,
   classicLookup,
   classicRow,
   classics,
   createStockSpace,
+  entryOfClassic,
   findClassics,
   itemsFromRecords,
   loadCatalogue,
   loadContent,
   lookupOf,
+  matchesFilter,
+  offeredBy,
   parseCookFilters,
+  parseDishFilter,
   restoreEdit,
   tickEdit,
   untickEdit,
   type ClassicRow,
   type CookFilters,
   type CookSource,
+  type DishEntry,
+  type DishFilter,
   type IngredientRecord,
   type KeyValueStore,
+  type Offered,
   type StockRecord,
   type StockSpace,
   type StockSpaceOptions,
@@ -33,7 +45,12 @@ import {
 } from '@culina/app/core';
 
 /** The keys of the preferences file; the style is the app's, the others are the web app's. */
-export const PREFS = { style: 'style', cook: COOK_KEY, space: SPACE_KEY } as const;
+export const PREFS = {
+  style: 'style',
+  cook: COOK_KEY,
+  space: SPACE_KEY,
+  dishes: DISH_FILTER_KEY,
+} as const;
 
 export interface SessionState {
   /** `loading` until the first read; `failed` when the files cannot be read; `no-content` when the built-in data is damaged. */
@@ -88,11 +105,21 @@ export interface Session {
   load(): Promise<void>;
   /** Uses the stock of another space and remembers the choice. */
   choose(spaceId: string): Promise<void>;
-  /** The kept filters of the finder. */
+  /** Every dish as the web app's entry, in the order of the content (empty until `open`). */
+  entries(): readonly DishEntry[];
+  /** The choices the filter offers: the characters, courses and cuisines the dishes have. */
+  offered(): Offered;
+  /** The dishes that pass the filter, in the order of the content. */
+  dishes(filter: DishFilter): DishEntry[];
+  /** The kept filter over the dishes (the web app's key, shared by the list and the finder). */
+  dishFilter(): DishFilter;
+  /** Keeps the filter and tells the listeners, so that every page shows it. */
+  setDishFilter(filter: DishFilter): void;
+  /** The kept filters of the finder; only `lacking` is used here, the rest is the dish filter. */
   filters(): CookFilters;
   setFilters(filters: CookFilters): void;
-  /** What the stock allows among the classics. */
-  cookable(filters: CookFilters): Cookable;
+  /** What the stock allows among the classics that pass the dish filter. */
+  cookable(filters: CookFilters, dish?: DishFilter): Cookable;
   /** Marks an ingredient as there. @returns false when nothing could be written. */
   tick(ingredientId: string): Promise<boolean>;
   /** Marks it as not there. @returns what Undo needs, or undefined when it was not there or nothing could be written. */
@@ -112,6 +139,15 @@ export function createSession(options: SessionOptions): Session {
   let current: SessionState = { phase: 'loading', spaces: [], stock: [] };
   let content = true;
   let stopped = false;
+  let made: DishEntry[] | undefined;
+  /** The entries, made once the catalogue is read (the characters need it). */
+  const allEntries = (): DishEntry[] => {
+    if (made === undefined) {
+      const lookup = (id: string): IngredientRecord | undefined => names.get(id);
+      made = classics().map((classic) => entryOfClassic(classic, lookup, lang));
+    }
+    return made;
+  };
 
   const tell = (): void => {
     for (const listener of [...listeners]) listener();
@@ -165,6 +201,7 @@ export function createSession(options: SessionOptions): Session {
       const entries = await loadCatalogue(asFetch(options.catalogue));
       names = new Map((entries ?? []).map((entry) => [entry.id, entry]));
       content = shipped.classics.length > 0 && names.size > 0;
+      made = undefined;
       return content;
     },
     catalogue: () => names,
@@ -178,18 +215,47 @@ export function createSession(options: SessionOptions): Session {
       await space.load();
     },
     choose: (spaceId) => space.choose(spaceId),
+    entries: () => allEntries(),
+    offered: () =>
+      offeredBy(allEntries(), {
+        characters: CHARACTER_TABLE.map((entry) => entry.id),
+        courses: COURSE_ORDER,
+        cuisines: COUNTRIES,
+      }),
+    dishes: (filter) => allEntries().filter((entry) => matchesFilter(entry, filter)),
+    dishFilter: () => parseDishFilter(prefs.get(PREFS.dishes)),
+    setDishFilter(filter) {
+      prefs.set(PREFS.dishes, JSON.stringify(filter));
+      // Every page that shows the filter or what it narrows draws again.
+      tell();
+    },
     filters: () => parseCookFilters(prefs.get(PREFS.cook)),
     setFilters(filters) {
       prefs.set(PREFS.cook, JSON.stringify(filters));
     },
-    cookable(filters) {
+    cookable(filters, dish = {}) {
       const source: CookSource = {
         ingredients: [],
         components: [],
         dishes: [],
         stock: current.stock,
       };
-      const found = findClassics(classics(), source, names, options.today(), filters, lang);
+      // The dish filter chooses the classics; of the finder's own filters only how much may lack
+      // is used, so an older kept country or meat choice does not narrow behind the user's back.
+      const kept = new Set(
+        allEntries()
+          .filter((entry) => matchesFilter(entry, dish))
+          .map((entry) => entry.id),
+      );
+      const chosen = classics().filter((classic) => kept.has(classic.id));
+      const found = findClassics(
+        chosen,
+        source,
+        names,
+        options.today(),
+        { lacking: filters.lacking },
+        lang,
+      );
       if (!found.ok) return { ok: false };
       const look = classicLookup(found.ingredients, lookupOf(source), lang);
       return {

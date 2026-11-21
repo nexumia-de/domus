@@ -1,7 +1,6 @@
 // The controls of the one filter over every dish (browse/filter.ts): selects of 44 px for the
 // origin, the character, the course and the cuisine, and two ticks. A select is only drawn when
 // it has something to offer. The caller keeps the filter and draws its list again on a change.
-import type { Course } from '@culina/engine';
 import type { Origin } from '../browse/entry';
 import type { DishFilter, Offered } from '../browse/filter';
 import { characterLabel } from '../characters/view';
@@ -160,15 +159,5 @@ export const dishFilterControls = (
   return group;
 };
 
-/** The order in which courses are offered (the engine's `Course`). */
-export const COURSE_ORDER: readonly Course[] = [
-  'starter',
-  'soup',
-  'main',
-  'side',
-  'dessert',
-  'baking',
-  'sauce',
-  'breakfast',
-  'snack',
-];
+/** The order in which courses are offered; kept in browse/filter.ts, where the native app reaches it too. */
+export { COURSE_ORDER } from '../browse/filter';

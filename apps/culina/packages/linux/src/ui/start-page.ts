@@ -1,12 +1,16 @@
-// The first page: the classics by country, and the way to what the stock allows; the space and
-// its sync status are the header's subtitle.
+// The first page: every dish in one list under the one filter "what you feel like" (character,
+// course, cuisine, without meat and fish, only with every amount; the cuisine is the way to one
+// country), and the way to what the stock allows; the space and its sync status are the header's
+// subtitle.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import { statusText } from '@nexumia-de/hospes';
-import { classics, countryChoices } from '@culina/app/core';
+import { isEmptyFilter, type DishFilter } from '@culina/app/core';
+import { entryLine } from '../dish-choices';
 import { barButton, clear, column, titled, type Page, type Ui } from './context';
 import { cookablePage } from './cookable-page';
-import { countryPage } from './country-page';
+import { dishFilterRow, type DishFilterRow } from './dish-filter';
+import { dishPage } from './dish-page';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function startPage(ui: Ui, menu: any): Page {
@@ -29,6 +33,8 @@ export function startPage(ui: Ui, menu: any): Page {
   const page = new Adw.NavigationPage({ title: t.appName, tag: 'start', child: view });
 
   let shown = '';
+  let filterRow: DishFilterRow | undefined;
+  const results = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 18 });
   function update(): void {
     const state = session.state();
     const space = state.space;
@@ -44,6 +50,7 @@ export function startPage(ui: Ui, menu: any): Page {
     );
     if (state.phase === 'failed' || state.phase === 'no-content') {
       shown = '';
+      filterRow = undefined;
       clear(body);
       const status = new Adw.StatusPage({
         icon_name: 'dialog-error-symbolic',
@@ -62,31 +69,69 @@ export function startPage(ui: Ui, menu: any): Page {
       body.append(status);
       return;
     }
-    // The list is the same until the content changes; a status change alone does not rebuild it.
-    const signature = String(classics().length);
+    // Nothing until the stock and the content are read (a wake can read the stock first).
+    if (state.phase !== 'ready' || session.entries().length === 0) return;
+    if (filterRow === undefined) {
+      // Made once the content is read: the choices are what the dishes offer.
+      shown = '';
+      clear(body);
+      filterRow = dishFilterRow(ui, (next) => session.setDishFilter(next));
+      body.append(
+        new Gtk.Label({
+          label: s.classics.startTitle,
+          xalign: 0,
+          css_classes: ['title-2'],
+          wrap: true,
+        }),
+      );
+      const filters = new Gtk.ListBox({
+        selection_mode: Gtk.SelectionMode.NONE,
+        css_classes: ['boxed-list'],
+      });
+      filters.append(filterRow.row);
+      body.append(filters);
+      body.append(results);
+    }
+    const filter = session.dishFilter();
+    // The list is the same until the filter changes; a status change alone does not rebuild it.
+    const signature = JSON.stringify(filter);
     if (signature === shown) return;
     shown = signature;
-    clear(body);
-    body.append(
-      new Gtk.Label({
-        label: s.classics.startTitle,
-        xalign: 0,
-        css_classes: ['title-2'],
-        wrap: true,
-      }),
-    );
-    const group = new Adw.PreferencesGroup({
-      title: s.classics.classicsHeading,
-    });
-    for (const choice of countryChoices(classics())) {
+    // The filter may have been changed on another page ("what can I cook").
+    filterRow.show(filter);
+    clear(results);
+    const dishes = session.dishes(filter);
+    if (dishes.length === 0) {
+      const none = new Adw.StatusPage({ title: s.browse.none, icon_name: 'edit-find-symbolic' });
+      if (!isEmptyFilter(filter)) none.set_child(resetButton());
+      results.append(none);
+      return;
+    }
+    const group = new Adw.PreferencesGroup({ title: s.browse.count(dishes.length) });
+    if (!isEmptyFilter(filter)) group.set_header_suffix(resetButton(true));
+    for (const entry of dishes) {
       const row = new Adw.ActionRow({ use_markup: false, activatable: true });
-      row.set_title(s.classics.countries[choice.country]);
-      row.set_subtitle(t.dishes(choice.count));
+      row.set_title(entry.name);
+      row.set_subtitle(entryLine(s, entry));
       row.add_suffix(new Gtk.Image({ icon_name: 'go-next-symbolic' }));
-      row.connect('activated', () => ui.push(countryPage(ui, choice.country)));
+      row.connect('activated', () => ui.push(dishPage(ui, entry.id)));
       group.add(row);
     }
-    body.append(group);
+    results.append(group);
+  }
+  /** "Show all": drops every choice of the filter. */
+  function resetButton(flat = false): any {
+    const button = new Gtk.Button({
+      label: s.browse.reset,
+      halign: Gtk.Align.CENTER,
+      valign: Gtk.Align.CENTER,
+      css_classes: flat ? ['flat', 'culina-target'] : ['pill', 'culina-target'],
+    });
+    button.connect('clicked', () => {
+      const empty: DishFilter = {};
+      session.setDishFilter(empty);
+    });
+    return button;
   }
   update();
   return { page, update };

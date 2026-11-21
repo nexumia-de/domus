@@ -65,9 +65,9 @@ export const textsEn: Texts = {
     stock: 'What is there',
     nothingAtHand: 'Nothing is there yet',
     nothingAtHandHint:
-      'Mark what is in the kitchen, and the classics it allows show up here. The stock is the one of the shown space, shared with Drink Builder and Shopping List.',
-    nothingFits: 'No classic fits these choices.',
-    sectionNearest: 'The nearest classics',
+      'Mark what is in the kitchen, and the dishes it allows show up here. The stock is the one of the shown space, shared with Drink Builder and Shopping List.',
+    nothingFits: 'No dish fits these choices.',
+    sectionNearest: 'The nearest dishes',
   },
   stock: {
     title: 'What is there',
@@ -122,9 +122,9 @@ export const textsDe: Texts = {
     stock: 'Vorrat',
     nothingAtHand: 'Noch nichts da',
     nothingAtHandHint:
-      'Markiere, was in der Küche ist, und die Klassiker, die das erlaubt, erscheinen hier. Der Vorrat ist der des gezeigten Space, geteilt mit Drink Builder und Einkaufsliste.',
-    nothingFits: 'Kein Klassiker passt zu diesen Einstellungen.',
-    sectionNearest: 'Die nächsten Klassiker',
+      'Markiere, was in der Küche ist, und die Gerichte, die das erlaubt, erscheinen hier. Der Vorrat ist der des gezeigten Space, geteilt mit Drink Builder und Einkaufsliste.',
+    nothingFits: 'Kein Gericht passt zu diesen Einstellungen.',
+    sectionNearest: 'Die nächsten Gerichte',
   },
   stock: {
     title: 'Vorrat',

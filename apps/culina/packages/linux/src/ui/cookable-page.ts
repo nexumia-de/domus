@@ -1,17 +1,12 @@
-// What can I cook: the classics the stock of the shown space allows, judged by the engine, and
-// the nearest ones when none fits. The filters are the web app's (how much may lack, the country,
-// without meat and fish) and are kept in the preferences file. "What is there" in the bottom bar
-// opens the stock.
+// What can I cook: the dishes the stock of the shown space allows, judged by the engine, and
+// the nearest ones when none fits. How much may lack is the finder's own choice; which dishes are
+// asked is the one filter of the start page ("what you feel like"), the same kept filter. Both
+// are kept in the preferences file. "What is there" in the bottom bar opens the stock.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import {
-  CLASSIC_COUNTRIES,
-  MAX_LACKING,
-  type ClassicCountry,
-  type ClassicRow,
-  type CookFilters,
-} from '@culina/app/core';
+import { MAX_LACKING, type ClassicRow, type CookFilters } from '@culina/app/core';
 import { barButton, clear, column, titled, type Page, type Ui } from './context';
+import { dishFilterRow } from './dish-filter';
 import { dishPage } from './dish-page';
 import { stockPage } from './stock-page';
 
@@ -35,35 +30,15 @@ export function cookablePage(ui: Ui): Page {
     ),
     selected: kept.lacking,
   });
-  const countries: (ClassicCountry | undefined)[] = [undefined, ...CLASSIC_COUNTRIES];
-  const country = new Adw.ComboRow({
-    title: s.cook.countryLabel,
-    model: Gtk.StringList.new(
-      countries.map((c) => (c === undefined ? s.cook.countryAny : s.classics.countries[c])),
-    ),
-    selected: countries.indexOf(kept.country),
-  });
-  const meat = new Adw.ComboRow({
-    title: s.cook.meatLabel,
-    model: Gtk.StringList.new([s.cook.meatAny, s.cook.meatFree]),
-    selected: kept.meatFree === true ? 1 : 0,
-  });
+  const dishFilter = dishFilterRow(ui, (next) => session.setDishFilter(next));
   const filters = new Adw.PreferencesGroup({ title: t.cookable.filters });
   filters.add(lacking);
-  filters.add(country);
-  filters.add(meat);
+  filters.add(dishFilter.row);
   const results = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 18 });
   body.append(filters);
   body.append(results);
 
-  const read = (): CookFilters => {
-    const chosen = countries[country.get_selected()];
-    return {
-      lacking: lacking.get_selected(),
-      ...(chosen === undefined ? {} : { country: chosen }),
-      ...(meat.get_selected() === 1 ? { meatFree: true as const } : {}),
-    };
-  };
+  const read = (): CookFilters => ({ lacking: lacking.get_selected() });
 
   const row = (found: ClassicRow, needs: boolean): any => {
     const line = new Adw.ActionRow({ use_markup: false, activatable: true });
@@ -84,11 +59,13 @@ export function cookablePage(ui: Ui): Page {
     const state = session.state();
     head.title.set_subtitle(state.space?.deviceOnly === false ? state.space.name : '');
     const filtersNow = read();
-    const found = session.cookable(filtersNow);
+    const dishNow = session.dishFilter();
+    const found = session.cookable(filtersNow, dishNow);
     // What the list showed last: a status change alone does not rebuild the rows.
-    const signature = JSON.stringify([filtersNow, found, state.space?.id]);
+    const signature = JSON.stringify([filtersNow, dishNow, found, state.space?.id]);
     if (signature === shown) return;
     shown = signature;
+    dishFilter.show(dishNow);
     clear(results);
     if (!found.ok) {
       results.append(
@@ -97,7 +74,7 @@ export function cookablePage(ui: Ui): Page {
       return;
     }
     if (found.shown.length > 0) {
-      const group = new Adw.PreferencesGroup({ title: s.cook.classicsListLabel });
+      const group = new Adw.PreferencesGroup({ title: s.cook.listLabel });
       for (const candidate of found.shown) group.add(row(candidate, true));
       results.append(group);
       return;
@@ -114,12 +91,10 @@ export function cookablePage(ui: Ui): Page {
       results.append(group);
     }
   }
-  for (const control of [lacking, country, meat]) {
-    control.connect('notify::selected', () => {
-      session.setFilters(read());
-      update();
-    });
-  }
+  lacking.connect('notify::selected', () => {
+    session.setFilters(read());
+    update();
+  });
   update();
   return { page, update };
 }
