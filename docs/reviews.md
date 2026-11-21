@@ -21,6 +21,20 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-21: unification of toasts, header titles and native texts; Mixtura's stock write race
+
+| Part                                                                                                                                                                                                                         | Done by            | Checked by                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mixtura's stock writes start at once (pull request 25)                                                                                                                                                                       | agent 1, mid model | lead read the diff of `state.ts` and `source.ts` and checked the ordering claim against `idb-store.ts` (`changeRecords` is one readwrite transaction) and `cycle.ts`, ran `npm run check` |
+| One toast timing (5 s, 8 s with Undo, held while focused), one header title rule (four lines, then ellipsis), native Emptio and Mixtura on `@nexumia-de/gjs/texts`, remaining steps in `shared-shell.md` (this pull request) | agent 2, mid model | lead read the agent's report, merged `main` and ran `npm run check`; lead did not read the diffs line by line                                                                             |
+| This entry                                                                                                                                                                                                                   | lead               | nobody                                                                                                                                                                                    |
+
+**What the checks found, and where it was fixed.** Holding a toast while a pointer rests on it made a toast cover Mixtura's "Add Batch" for good in `e2e/stock.mjs`; the hold is on focus only. A two- and a three-line header title cut "Daiquiri: versions" at 320 px with 200 % text in `e2e/reflow.mjs`; the rule is four lines.
+
+**Test counts** (lead's run of `npm run check`): model 638, host 226, gjs 11, Mixtura 1677 and 492, Mixtura native 13, Culina 1113 and 539, Culina native 10, Emptio 38 and 41, Emptio native 2, Household 72. Agent 2: Emptio browser checks 267 ok, Mixtura's all pass, native smoke and Broadway checks of Emptio and Mixtura pass in real GJS.
+
+**What nobody verified.** A phone, a screen reader, the German wording by a native speaker, the toast's focus hold beyond one Emptio browser check (the host frame tests have no DOM).
+
 ## 2026-11-21: characters of a dish in Culina, and meat and fish in its catalogue
 
 | Part                                                                                                                | Done by            | Checked by                                                                                                                                                                                                                                |
