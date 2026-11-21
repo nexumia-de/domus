@@ -27,9 +27,11 @@ export {
   DEFAULT_COOK_FILTERS,
   MAX_LACKING,
   SPACE_KEY,
-  parseCookFilters,
+  // The native Linux app still filters the classics by country and meat itself; under the names it
+  // imports, it gets the finder filters with those two choices (prefs.ts, ClassicFinderFilters).
+  parseClassicFinderFilters as parseCookFilters,
 } from './prefs';
-export type { ClassicCountry, CookFilters, KeyValueStore } from './prefs';
+export type { ClassicCountry, ClassicFinderFilters as CookFilters, KeyValueStore } from './prefs';
 export { createStockSpace } from './shared-stock/space';
 export type { StockSpace, StockSpaceOptions, StockSpaceState } from './shared-stock/space';
 export { itemsFromRecords } from './shared-stock/items';

@@ -928,67 +928,95 @@ navigation landmark): **What can I cook** (`#/cook`), **Use up first**
   arithmetic in the app: every number and status comes from `makeable`.
   Today is the shell's injected clock (`?e2e-now=` in tests), read in
   `src/cook/source.ts` only, and shown on the screen as "As of 18 Nov 2026".
-- **What can I cook.** The engine's candidates (own components and dishes,
-  ratio templates where the engine returns them) in the engine's exact
-  order; the filters only drop entries. "Complete only" is not a rule:
-  each entry shows "complete" or "lacks N" as text. Each entry is one link
-  to its recipe (a dish, a component or a ratio card) and shows: the
-  reason line, "uses the Leek with 1 day left; covers aromatic, sauce"
-  (the engine's urgency item and days, or "nothing it uses has a use-by
-  date", then the roles covered, or "no roles recorded"); "Lacks: Thyme,
-  Cream (100 g there, 200 g needed)"; the substitutes, "with Salted butter
-  in place of Unsalted butter"; items that are there with no known amount,
-  "Cream is there; how much is not known."; and for a dish the open roles
-  the stock can fill, "You could add a crunch: Walnut", only where the
-  stock has an ingredient or component with that role. The same offer is
-  shown on the dish screen beside "Open: add a crunch". Wording is neutral:
-  "lacks", "could add", never an alarm word or colour.
-- **Filters**, kept in `localStorage` (`culina.cook`, like the theme; no
-  storage means the defaults): "Show" is the engine's threshold, complete
-  only or lacking at most 1, 2 or 3 (default 1); "Covers the role" keeps
-  entries whose covered roles include the chosen one. The same three choices
-  apply to the classics below; "Country" and "Meat and fish" are kept in the
-  same entry and belong to the classics only.
-- **Classic dishes**, a section below the own list ("Classic dishes",
-  `src/screens/cook/classics-section.ts`; not on the "uses an ingredient"
-  view). Each shipped classic is derived (`deriveClassic`, 2 portions) and
-  judged by the engine's finder on the stock (`classicsMakeable`,
-  [engine rules](engine-rules.md#the-shipped-classics-in-the-finder)); the
-  app only filters (country: Germany, Italy, France, Spain or all; "Without
-  meat and fish") and shows. The entry reads like an own dish (status,
-  reason, substitutes, unknown amounts) with the country and, where it
-  applies, "without meat and fish" in the kind line, and what is missing as
-  "Needs: Oil, Salt" (never "lacks"/"wrong"). Water is never asked for. A
-  line the catalogue has no ingredient for yet is not counted and is named
-  apart: "Not in the catalogue yet, so not counted: Bouquet garni". The
-  ingredient tree is the notebook's completed by the shipped catalogue (the
-  notebook wins on an id), loaded on the first draw and drawn again when it
-  is there; names are in the content language. Each entry is one link to
-  `#/classic/<id>`. With nothing that fits: "No classic fits these choices."
-  (or the quiet sentence for no stock) and the three nearest, "<name> needs
-  <list>". **Test:** `test/cook-classics.test.ts`, `e2e/classics-finder.mjs`.
+- **What can I cook: one list.** Own dishes and the shipped dishes are
+  one list, whatever their origin (owner's goal of 2026-11-21). The engine
+  judges both: own components, dishes and ratio templates with `makeable`,
+  each shipped dish derived (`deriveClassic`, 2 portions) with
+  `classicsMakeable` ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)).
+  **The order is a rule:** both finders rank by the same contract (urgency,
+  then roles covered, then name, id and kind as plain string comparison), a
+  total order, so the app merges them by ranking the union again with the
+  engine's `rankCandidates` ([ranking contract](engine-rules.md#what-the-stock-allows));
+  the filters only drop entries (`src/cook/one-list.ts`). **Two groups:**
+  "Dishes" (own and shipped) first, then "Components and ratios" (own
+  components and ratio cards, in the same ranking), because a component or a
+  ratio card is not a dish: it has no course, cuisine or character, so the
+  second group is shown only while the dish filter chooses nothing or only
+  "My dishes"; otherwise a quiet line says it is left out. Each entry is one
+  link (an own dish, a component, a ratio card, or `#/classic/<id>` for a
+  shipped dish) and shows: a quiet line with the origin word ("mine",
+  "shipped"; only where both origins are in the group) and the country of a
+  shipped dish, or the kind ("component", "ratio") in the second group;
+  "complete" or "lacks N" as text ("Complete only" is not a rule); the reason
+  line, "uses the Leek with 1 day left; covers aromatic, sauce" (the engine's
+  urgency item and days, or "nothing it uses has a use-by date", then the
+  roles covered, or "no roles recorded"); "Lacks: Thyme, Cream (100 g there,
+  200 g needed)" for both origins; the substitutes, "with Salted butter in
+  place of Unsalted butter"; items that are there with no known amount,
+  "Cream is there; how much is not known."; for an own dish the open roles
+  the stock can fill, "You could add a crunch: Walnut", only where the stock
+  has an ingredient or component with that role (the same offer is shown on
+  the dish screen beside "Open: add a crunch"); for a shipped dish a line the
+  catalogue has no ingredient for yet is not counted and is named apart,
+  "Not in the catalogue yet, so not counted: Bouquet garni". Water is never
+  asked for. For the shipped dishes the ingredient tree is the notebook's
+  completed by the shipped catalogue (the notebook wins on an id), loaded on
+  the first draw and drawn again when it is there; their names are in the
+  content language. Wording is neutral: "lacks", "could add", never an alarm
+  word or colour. **Test:** `test/cook-one-list.test.ts`,
+  `test/cook-finder.test.ts`, `e2e/cook.mjs`, `e2e/classics-finder.mjs`.
+- **The one filter on top**, the same as on the Dishes list
+  ([one filter over every dish](#one-filter-over-every-dish)): "From" (mine,
+  shipped), "What it is like" (character), course, cuisine, "Without meat and
+  fish", "Only with every amount given", read on the `DishEntry` of each
+  dish (`entryOfDish`, `entryOfClassic`) and kept under `culina.dishes`: a
+  choice made on the finder is the Dishes list's and the other way round. A
+  select offers only values some dish has. When the controls are drawn again
+  after a change, the control that had focus keeps it. Below it the finder's
+  own two choices, kept in `culina.cook` (no storage means the defaults):
+  "Show" is the engine's threshold, complete only or lacking at most 1, 2 or
+  3 (default 1); "Covers the role" keeps entries whose covered roles include
+  the chosen one. Both apply to own and shipped entries alike.
+- **The old country and meat choices.** An older version kept "Country"
+  and "Meat and fish" for the classics in `culina.cook`. On the first open
+  of Cook they are carried into the dish filter once (the country as the
+  cuisine, the meat choice as "Without meat and fish"; a choice the dish
+  filter already has wins) and taken out of `culina.cook`; an unreadable
+  entry is the default, never an error (`src/cook/carry.ts`, test
+  `test/cook-carry.test.ts`, `e2e/cook.mjs`). The native Linux app still
+  keeps its own country and meat filter in its preferences file; that is
+  not this change.
 - **Start from one ingredient** (`#/cook/<ingredientId>/with`, heading
   "What uses Leek"): a section at the top lists the ticked ingredients and
   a search over the notebook's ingredients by every name (English and
   German, through `shared/names.ts`). The list keeps the engine's order and
   only own components and dishes that use the ingredient or one it can
-  stand in for (`usesIngredient`); "Show everything" leaves it.
+  stand in for (`usesIngredient`); "Show everything" leaves it. No shipped
+  dish is listed here: the engine has no "uses" question for them yet. The
+  dish filter applies to the own dishes (its "From" is not offered here).
 - **Use up first.** The stock items that have a use-by date, nearest first
   (the engine's `useUpFirst`), each with days left in words and links to
-  the components and dishes that use it, counted within the same "lacking
-  at most" choice; an item nothing uses says so. Tapping the item opens it
+  what uses it among the entries of What can I cook under the same choices:
+  the same "lacking at most" and role, and the same dish filter, so own and
+  shipped dishes count, and components and ratio cards while no dish filter
+  is chosen (in the one ranking, by the engine's `usedItems`). A line says
+  when a filter applies; an item nothing in the list uses says so. Tapping the item opens it
   in the stock screen (`#/stock/<id>/edit`).
 - **Empty states**, each with the way forward: nothing ticked yet (link
-  "Tick what is there"); nothing in the notebook yet, when nothing is
-  found and there is no component or dish (links to add a component and to
-  import); nothing matches, with the three nearest candidates and what each
-  lacks (the engine at a wide threshold, fewest lacking first).
+  "Tick what is there"); nothing in the notebook yet, when the notebook has
+  no component or dish and the engine finds nothing of one's own (links to
+  add a component and to import; said below the list when shipped dishes
+  are listed, in place of it when none is); nothing matches, with the three
+  nearest under the same choices, own or shipped, and what each lacks (both
+  engines at a wide threshold, fewest lacking first, the one ranking within
+  the same number); with nothing near at all, only "Nothing matches these
+  choices.".
 - **Catalogue ingredients only.** The generated catalogue carries no roles;
   the [role table](data-model.md#roles) adds a few when the catalogue is
   read, so a ratio card is makeable from stock of catalogue foods. With no
-  recipe of one's own and no ratio card that fits there is nothing to rank
-  in the own list and the screen shows "Your notebook has no components or
-  dishes yet." with its links (the classics below are listed regardless).
+  recipe of one's own and no ratio card that fits the screen shows "Your
+  notebook has no components or dishes yet." with its links (shipped dishes
+  that fit are listed regardless).
 - **Layout.** At 360 x 720 and from 720 px; no horizontal scroll, targets at
   least 44 px, nothing focused on open. **Offline:** the finder reads the
   local notebook. No "add to list": shopping lists are the planned sister

@@ -51,7 +51,11 @@ export const applyTheme = (root: AttributeTarget, theme: Theme): void => {
   else root.setAttribute('data-theme', theme);
 };
 
-/** The filters of the finder, kept in localStorage like the theme: the role and how much may lack. */
+/**
+ * The finder's own two choices, kept in localStorage like the theme: the role and how much may
+ * lack. What the user feels like (origin, character, course, cuisine, without meat and fish) is the
+ * one dish filter (`browse/filter.ts`, key `culina.dishes`), shared with the Dishes list.
+ */
 export const COOK_KEY = 'culina.cook';
 
 export const MAX_LACKING = 3;
@@ -61,40 +65,49 @@ export interface CookFilters {
   role?: string;
   /** Lines that may be lacking, 0 to `MAX_LACKING`. */
   lacking: number;
+}
+
+/** The countries of the shipped classics. */
+export const CLASSIC_COUNTRIES = ['de', 'it', 'fr', 'es'] as const;
+export type ClassicCountry = (typeof CLASSIC_COUNTRIES)[number];
+
+/**
+ * The finder filters of the native Linux app, which still filters the classics by country and by
+ * "without meat and fish" itself (it keeps them in its own preferences file).
+ */
+export interface ClassicFinderFilters extends CookFilters {
   /** Classics of this country only; undefined: all four. */
   country?: ClassicCountry;
   /** True: only classics without meat and fish. */
   meatFree?: true;
 }
 
-/** The countries of the shipped classics (the filter's choices). */
-export const CLASSIC_COUNTRIES = ['de', 'it', 'fr', 'es'] as const;
-export type ClassicCountry = (typeof CLASSIC_COUNTRIES)[number];
-
 export const DEFAULT_COOK_FILTERS: CookFilters = { lacking: 1 };
 
-/** Anything unreadable is the default; a value out of range is the default for that field. */
-export const parseCookFilters = (value: unknown): CookFilters => {
+const rawOf = (value: unknown): Record<string, unknown> | undefined => {
   let raw: unknown = value;
   if (typeof value === 'string') {
     try {
       raw = JSON.parse(value);
     } catch {
-      return { ...DEFAULT_COOK_FILTERS };
+      return undefined;
     }
   }
-  if (typeof raw !== 'object' || raw === null) return { ...DEFAULT_COOK_FILTERS };
-  const { role, lacking, country, meatFree } = raw as {
-    role?: unknown;
-    lacking?: unknown;
-    country?: unknown;
-    meatFree?: unknown;
-  };
-  const chosen = CLASSIC_COUNTRIES.find((c) => c === country);
+  return typeof raw === 'object' && raw !== null && !Array.isArray(raw)
+    ? (raw as Record<string, unknown>)
+    : undefined;
+};
+
+/**
+ * Anything unreadable is the default; a value out of range is the default for that field. The
+ * country and the meat choice an older version kept here are not read (see `oldCookChoices`).
+ */
+export const parseCookFilters = (value: unknown): CookFilters => {
+  const raw = rawOf(value);
+  if (raw === undefined) return { ...DEFAULT_COOK_FILTERS };
+  const { role, lacking } = raw;
   return {
     ...(typeof role === 'string' && role !== '' ? { role } : {}),
-    ...(chosen === undefined ? {} : { country: chosen }),
-    ...(meatFree === true ? { meatFree: true as const } : {}),
     lacking:
       typeof lacking === 'number' &&
       Number.isInteger(lacking) &&
@@ -104,6 +117,29 @@ export const parseCookFilters = (value: unknown): CookFilters => {
         : DEFAULT_COOK_FILTERS.lacking,
   };
 };
+
+/** The choices an older version kept in `culina.cook` that belong to the dish filter now. */
+export interface OldCookChoices {
+  country?: ClassicCountry;
+  meatFree?: true;
+}
+
+/** Reads the old country and meat choice; anything else, or nothing, is none. */
+export const oldCookChoices = (value: unknown): OldCookChoices => {
+  const raw = rawOf(value);
+  if (raw === undefined) return {};
+  const country = CLASSIC_COUNTRIES.find((c) => c === raw['country']);
+  return {
+    ...(country === undefined ? {} : { country }),
+    ...(raw['meatFree'] === true ? { meatFree: true as const } : {}),
+  };
+};
+
+/** As `parseCookFilters`, with the country and the meat choice (for the native Linux app). */
+export const parseClassicFinderFilters = (value: unknown): ClassicFinderFilters => ({
+  ...parseCookFilters(value),
+  ...oldCookChoices(value),
+});
 
 export const readCookFilters = (store: KeyValueStore | null): CookFilters => {
   try {
