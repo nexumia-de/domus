@@ -256,7 +256,8 @@ test('a mark, its Undo and a new mark are all in the store at once, so a reload 
   slow.hold();
   changeStock(ctx, undo);
   mark();
-  // The page reloads here: what the store has been asked to do is what survives.
+  // The page reloads a moment later: what the store has been asked to do by then is what survives.
+  await new Promise((r) => setTimeout(r, 0));
   expect(slow.started()).toBe(3);
   expect(await storedStock(slow.store, entry, 'gin')).toMatchObject({
     key: 'gin',

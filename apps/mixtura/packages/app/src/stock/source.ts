@@ -108,14 +108,16 @@ export async function writeStock(
   for (const record of records) {
     bySpace.set(record.spaceId, [...(bySpace.get(record.spaceId) ?? []), record]);
   }
-  for (const [spaceId, list] of bySpace) {
-    await localChange(shared, spaceId, STOCK_COLLECTION, now, (stored) => ({
+  // All spaces at once: each transaction is asked for now, in the order of the calls.
+  const writes = [...bySpace].map(([spaceId, list]) =>
+    localChange(shared, spaceId, STOCK_COLLECTION, now, (stored) => ({
       put: list.flatMap((r) =>
         'deleted' in r
           ? []
           : [{ key: r.ingredientId, value: withForeignFields(valueOf(r), stored, r.ingredientId) }],
       ),
       remove: list.flatMap((r) => ('deleted' in r ? [r.ingredientId] : [])),
-    }));
-  }
+    })),
+  );
+  await Promise.all(writes);
 }

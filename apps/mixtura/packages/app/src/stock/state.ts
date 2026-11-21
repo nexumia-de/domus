@@ -62,7 +62,7 @@ export interface Cache {
 
 let epoch = 0;
 let cache: Cache | undefined;
-/** Writes run one after the other, so a quick Undo cannot overtake the mark it undoes. */
+/** Every write that is under way; settles when all of them have. */
 let queue: Promise<void> = Promise.resolve();
 
 const bump = (app: Store<AppState>): void => app.set({ stockRev: app.get().stockRev + 1 });
@@ -74,9 +74,16 @@ export function invalidateStock(app: Store<AppState>): void {
   bump(app);
 }
 
-/** Runs a write after the ones started before it; a failure is the task's to handle. */
+/**
+ * Starts a write now and tracks it; a failure is the task's to handle. A write does not wait for
+ * the ones before it: the store creates its transactions in the order they are asked for, so a
+ * quick Undo cannot overtake the mark it undoes, and a page that reloads at once has every write
+ * asked for already in the store. Waiting for the earlier write first lost the last mark of a
+ * mark, Undo, mark in quick succession (packages/host/docs/sync-orderings.md).
+ */
 export function enqueueWrite(task: () => Promise<void>): void {
-  queue = queue.then(task);
+  const run = task().catch(() => undefined);
+  queue = Promise.all([queue, run]).then(() => undefined);
 }
 
 /** The state derived from the spaces and records of the cache. */
