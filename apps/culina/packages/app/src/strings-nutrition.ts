@@ -28,7 +28,7 @@ export const nutritionStrings = {
   tooFew: 'Nutrition cannot be worked out: too few ingredients have an amount and nutrient data.',
   moreSummary: 'What was left out, and how it is counted',
   reasons: {
-    wanted: 'not in the catalogue yet',
+    wanted: 'no catalogue entry',
     'no-amount': 'no amount',
     'cannot-convert': 'weight not known',
     'no-nutrition': 'no nutrient data',
@@ -39,5 +39,5 @@ export const nutritionStrings = {
   method: 'Amounts as the recipe gives them, raw; no cooking loss and no edible portion applied.',
   rounding: 'Rounded in the steps of 21 CFR 101.9(c), the US rule for nutrition labels.',
   source: 'Nutrients per 100 g: USDA FoodData Central, SR Legacy (public domain).',
-  notALabel: 'Not a food label: anyone who sells food needs the label rules.',
+  notALabel: 'A help for your own kitchen, not a nutrition label for selling food.',
 };

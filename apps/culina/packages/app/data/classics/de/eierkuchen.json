@@ -2,7 +2,7 @@
   "id": "eierkuchen",
   "name": {
     "en": "Egg pancake (omelette)",
-    "de": "Eierkuchen (Omelette)"
+    "de": "Eierkuchen (Omelett)"
   },
   "originalName": "Omelette, No. 1",
   "country": "de",
@@ -36,7 +36,7 @@
       "id": "eierkuchen-batter",
       "name": {
         "en": "Egg pancake (omelette)",
-        "de": "Eierkuchen (Omelette)"
+        "de": "Eierkuchen (Omelett)"
       },
       "role": "main",
       "lines": [
@@ -65,7 +65,7 @@
           },
           "note": {
             "en": "Heaping tablespoonful.",
-            "de": "Gehäuft."
+            "de": "Ein gehäufter Esslöffel."
           },
           "sourceNote": {
             "en": "The source allows fine flour or cornstarch.",
@@ -85,7 +85,7 @@
           },
           "note": {
             "en": "Large cupful of warm milk, mixed with a little water.",
-            "de": "Groß. Warme Milch, mit etwas Wasser verdünnt."
+            "de": "Eine große Tasse warme Milch, mit etwas Wasser verdünnt."
           }
         },
         {
@@ -135,7 +135,7 @@
         {
           "text": {
             "en": "Beat the eggs, the starch, the milk with a little water, the mace and the salt thoroughly.",
-            "de": "Eier, Stärke, Milch mit etwas Wasser, Muskatblüte und Salz gründlich schlagen."
+            "de": "Eier, Stärke, Milch mit etwas Wasser, Muskatblüte (Macis) und Salz gründlich schlagen."
           },
           "action": "whisk",
           "uses": ["egg", "starch", "milk", "water", "mace", "salt"]
@@ -159,7 +159,7 @@
         {
           "text": {
             "en": "Cook over low heat until the top is dry and the edge has come away from the pan. It stays very soft: do not turn it.",
-            "de": "Bei schwacher Hitze garen, bis die Oberseite trocken ist und sich am Rand von der Pfanne löst. Sie bleibt ganz weich: nicht wenden."
+            "de": "Bei schwacher Hitze garen, bis die Oberseite trocken ist und sich der Eierkuchen am Rand von der Pfanne löst. Er bleibt ganz weich: nicht wenden."
           },
           "technique": "pan-fry",
           "uses": ["butter"]

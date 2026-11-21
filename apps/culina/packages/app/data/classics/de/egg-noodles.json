@@ -136,7 +136,7 @@
         {
           "text": {
             "en": "Cut the dough into four parts and roll each part as thin as paper.",
-            "de": "Den Teig in vier Teile schneiden und jedes Teil so dünn wie Papier ausrollen."
+            "de": "Den Teig in vier Stücke schneiden und jedes Stück so dünn wie Papier ausrollen."
           },
           "technique": "roll-dough",
           "uses": ["flour"]

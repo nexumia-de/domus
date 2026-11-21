@@ -2,8 +2,10 @@
 // and the method come first. One short line (author, title, year) and the link, in the user's
 // language; then, only here, what the source says in its own words and our remarks about it.
 import type { DishView } from '../../classics/dish-view';
+import { appLang } from '../../shared/locale';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import { citeText } from './cite';
 
 const t = strings.classics;
 
@@ -13,8 +15,8 @@ export const sourceDetails = (view: DishView): HTMLDetailsElement => {
   const block = el('details', 'source-block foot-block');
   block.append(el('summary', undefined, t.sourceHeading));
   block.append(
-    el('p', undefined, t.sourceLine(source.author, source.title, source.year)),
-    el('p', 'muted', t.sourcePlace(source.place)),
+    el('p', undefined, t.sourceLine(source.author, citeText(source.title, appLang), source.year)),
+    el('p', 'muted', t.sourcePlace(citeText(source.place, appLang))),
   );
   if (source.licence !== undefined) block.append(el('p', 'muted', t.sourceLicence(source.licence)));
   const link = el('a', 'source-link', t.sourceLink);

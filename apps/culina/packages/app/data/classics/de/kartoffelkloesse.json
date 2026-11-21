@@ -125,7 +125,7 @@
         {
           "text": {
             "en": "Beat the egg whites to a froth.",
-            "de": "Das Eiweiß zu Schaum schlagen."
+            "de": "Das Eiweiß zu Schnee schlagen."
           },
           "technique": "whip-egg-whites",
           "uses": ["eggs"]
@@ -141,7 +141,7 @@
         {
           "text": {
             "en": "Stir in the beaten egg whites.",
-            "de": "Den steifen Eierschaum unterrühren."
+            "de": "Den steifen Eischnee unterrühren."
           },
           "action": "stir",
           "uses": ["eggs"]
@@ -205,6 +205,6 @@
   },
   "note": {
     "en": "Serve with currant juice instead of browned butter if liked; the source gives it as an alternative and it is not transcribed. The source sizes the potatoes and the flour only in soupplates and basting spoons, which are not given in units: they are written without amount. The book's version No. 20, with butter, egg yolks and bread, is not used.",
-    "de": "Statt gebräunter Butter kann man auch Johannisbeersaft dazu reichen; die Quelle nennt ihn als Alternative, er ist hier nicht übertragen. Kartoffeln und Mehl sind nur in Suppentellern und Bratlöffeln angegeben, die sich nicht in Mengen umrechnen lassen: sie stehen ohne Menge."
+    "de": "Statt gebräunter Butter kann man auch Johannisbeersaft dazu reichen; die Quelle nennt ihn als Alternative, er ist hier nicht übertragen. Kartoffeln und Mehl sind nur in Suppentellern und Bratlöffeln angegeben, die sich nicht in Mengen umrechnen lassen: Sie stehen ohne Menge."
   }
 }

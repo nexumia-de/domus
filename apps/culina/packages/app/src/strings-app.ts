@@ -53,6 +53,8 @@ export const appStrings = {
     liquid: 'Liquid',
     yeast: 'Yeast',
     salt: 'Salt',
+    // A role of the example ingredients (onion, carrot, celery).
+    aromatic: 'Aromatic',
   },
   /** "Open: add ..." for a role the dish does not fill yet. */
   roleInvite: {
@@ -124,7 +126,7 @@ export const appStrings = {
     yieldLabel: 'Yield',
     outputSource: (source: string): string => `Output: ${source}`,
     outputUnknown: 'Output not weighed yet',
-    outputUnknownHelp: 'Scale it by a factor until it has an output weight.',
+    outputUnknownHelp: 'Until you weigh the finished output, it scales by a factor only.',
     inputPartial: 'The input counts only the lines that have an amount.',
     scaleHeading: 'Scale',
     outputWanted: 'Output wanted (g)',
@@ -193,7 +195,7 @@ export const appStrings = {
     pickDishNote: 'One dish by chance, yours or shipped, among those that fit your choice above.',
     pickDishReady: 'Only what the stock allows now',
     pickDishRoll: 'Surprise me',
-    pickDishResult: 'Your dish',
+    pickDishResult: 'Suggestion',
     pickDishAgainLabel: 'Roll again: another dish',
     pickDishAmong: (n: number): string =>
       n === 1 ? 'The only dish that fits.' : `By chance among ${n} dishes.`,
@@ -621,7 +623,7 @@ export const appStrings = {
     replaceConfirm: 'Yes, replace',
     replaceCancel: 'Cancel',
     merged: (added: number, taken: number): string =>
-      `Imported: ${added} added, ${taken} replaced by the file's.`,
+      `Imported: ${added} added, ${taken} replaced by the version in the file.`,
     replaced: (count: number): string =>
       `Imported: everything here is now the ${count} records of the file.`,
     undo: 'Undo',
@@ -718,6 +720,8 @@ export const appStrings = {
     courseAny: 'Any course',
     cuisineLabel: 'Cuisine',
     cuisineAny: 'Any cuisine',
+    /** A cuisine by the adjective of its country, never the country's name. */
+    cuisines: { de: 'German', it: 'Italian', fr: 'French', es: 'Spanish' },
     meatFree: 'Without meat and fish',
     completeOnly: 'Only with every amount given',
     reset: 'Show all',

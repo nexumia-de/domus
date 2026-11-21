@@ -52,7 +52,7 @@
           },
           "note": {
             "en": "'A few sprigs' (ciocchette).",
-            "de": "'Einige Zweige'."
+            "de": "‚Einige Zweige‘."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -83,7 +83,7 @@
           },
           "sourceNote": {
             "en": "The source says 'un battutino di lardone' (a small chopped piece, not sized); the 1891 scan reads 'tutino di lardone'. No amount is written.",
-            "de": "Die Quelle sagt 'un battutino di lardone' (ein kleines gehacktes Stück, nicht bemessen); der Scan von 1891 liest 'tutino di lardone'. Keine Menge steht da."
+            "de": "Die Quelle sagt ‚un battutino di lardone‘ (ein kleines gehacktes Stück, nicht bemessen); der Scan von 1891 liest ‚tutino di lardone‘. Daher keine Menge."
           }
         },
         {
@@ -122,8 +122,8 @@
             "de": "Wasser"
           },
           "sourceNote": {
-            "en": "The source says broth or water, with no amount. Water is written, our choice; the validator takes settled entries only for amounts.",
-            "de": "Die Quelle sagt Brühe oder Wasser, ohne Menge. Geschrieben ist Wasser, unsere Wahl; der Validator nimmt Festlegungen nur für Mengen."
+            "en": "The source says broth or water, with no amount. Water is chosen (our judgement).",
+            "de": "Die Quelle sagt Brühe oder Wasser, ohne Menge. Gewählt ist Wasser (unser Urteil)."
           }
         }
       ],
@@ -139,7 +139,7 @@
         {
           "text": {
             "en": "Put the chicken on the heat in the lard.",
-            "de": "Das Huhn in das Schweinefett auf den Herd legen."
+            "de": "Das Huhn mit dem Schweinefett in den Topf geben und auf den Herd stellen."
           },
           "action": "heat",
           "uses": ["chicken", "lard"]
@@ -194,7 +194,7 @@
           },
           "note": {
             "en": "'Some' raw potatoes.",
-            "de": "'Einige' rohe Kartoffeln."
+            "de": "‚Einige‘ rohe Kartoffeln."
           },
           "sourceNote": {
             "en": "No amount given.",
@@ -209,7 +209,7 @@
           },
           "sourceNote": {
             "en": "The source offers oil, lard or butter; oil is written, our choice of the first of the three named.",
-            "de": "Die Quelle nennt Öl, Schweinefett oder Butter; geschrieben ist Öl, unsere Wahl unter den dreien."
+            "de": "Die Quelle nennt Öl, Schweinefett oder Butter; gewählt ist Öl (unser Urteil)."
           }
         }
       ],
@@ -225,7 +225,7 @@
         {
           "text": {
             "en": "Fry the wedges in oil in a separate pan.",
-            "de": "Die Spalten in einer separaten Pfanne in Öl anbraten."
+            "de": "Die Spalten in einer eigenen Pfanne in Öl anbraten."
           },
           "technique": "pan-fry",
           "uses": ["potato", "oil"]
@@ -279,6 +279,6 @@
   },
   "note": {
     "en": "Artusi's recipe 166 (1985 edition: No. 263). The source gives no weight for the bird and no cooking time. The source says that butter may replace the lard for a more delicate taste; the 1985 edition confirms the sentence, so the lard is written.",
-    "de": "Artusis Rezept Nr. 166 (Ausgabe 1985: Nr. 263). Die Quelle nennt kein Gewicht für das Huhn und keine Garzeit. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; die Ausgabe von 1985 bestätigt den Satz, daher ist das Schweinefett geschrieben."
+    "de": "Artusis Rezept Nr. 166 (Ausgabe 1985: Nr. 263). Die Quelle nennt kein Gewicht für das Huhn und keine Garzeit. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; die Ausgabe von 1985 bestätigt den Satz, daher steht das Schweinefett im Rezept."
   }
 }

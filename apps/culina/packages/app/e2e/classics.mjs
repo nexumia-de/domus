@@ -90,14 +90,17 @@ const flow = async (browser, origin, width) => {
   check(
     (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.' &&
       (await page.getByLabel('Cuisine', { exact: true }).locator('option:checked').innerText()) ===
-        'France',
+        'French',
     `${label}: an empty country shows a quiet empty state, the country named`,
   );
   await openWith(page, origin, 'classics/de');
   await heading(page, 'Dishes').waitFor();
   const row = (await page.locator('.dish-row').innerText()).replace(/\s+/g, ' ');
   check(
-    row.includes(PAN.name.en) && row.includes('Main course') && row.includes('Germany'),
+    row.includes(PAN.name.en) &&
+      row.includes('Main course') &&
+      row.includes('German') &&
+      !row.includes('Germany'),
     `${label}: the dish row has name, course and cuisine (${row})`,
   );
   await layout(page, `${label} country`);

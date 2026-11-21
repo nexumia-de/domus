@@ -54,7 +54,7 @@ export const dishBrowse = async (browser, server) => {
     .locator('.entry-meta')
     .innerText();
   check(
-    panMeta === 'Main course · Germany · Shipped',
+    panMeta === 'Main course · German · Shipped',
     `${label}: a shipped row says course, cuisine and origin (${panMeta})`,
   );
   check(
@@ -80,7 +80,7 @@ export const dishBrowse = async (browser, server) => {
     `${label}: with one origin chosen, no row repeats it (${ownMeta.join(' | ')})`,
   );
   await choose(page, 'From', { label: 'All dishes' });
-  await choose(page, 'Cuisine', { label: 'Italy' });
+  await choose(page, 'Cuisine', { label: 'Italian' });
   check(same(await names(page), [SECOND.name.en]), `${label}: Italy (${await names(page)})`);
   await choose(page, 'Cuisine', { label: 'Any cuisine' });
   await choose(page, 'Course', { label: 'Soup' });
@@ -106,7 +106,7 @@ export const dishBrowse = async (browser, server) => {
   );
   // The example dishes state a main course and no cuisine, so a cuisine leaves none of them.
   await choose(page, 'From', { label: 'My dishes' });
-  await choose(page, 'Cuisine', { label: 'Italy' });
+  await choose(page, 'Cuisine', { label: 'Italian' });
   check(
     (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.',
     `${label}: nothing found says so`,
@@ -120,7 +120,7 @@ export const dishBrowse = async (browser, server) => {
   );
 
   // The choice survives a reload and is the same on Start.
-  await choose(page, 'Cuisine', { label: 'Germany' });
+  await choose(page, 'Cuisine', { label: 'German' });
   await page.reload();
   await page.locator('.dish-row').first().waitFor();
   check(

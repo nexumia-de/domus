@@ -1328,6 +1328,18 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   formats and knows no language. The strings that build a time or a temperature take the number as
   text already formatted, so a new text cannot print a decimal point by itself. **Test:**
   `test/locale.test.ts`, `e2e/german.mjs`.
+- **Dates.** A stored date is shown through `formatDate` in `shared/locale.ts`: `18.11.2026` in
+  German, `18 Nov 2026` in English, written by hand so that every browser shows the same (version
+  line, tasting notes in the history, last export, the import's export date and tasting labels).
+  The field where a tasting date is typed still takes `2026-11-18`. **Test:** `test/cite.test.ts`,
+  `e2e/german.mjs` (the version line), `e2e/export-import.mjs` (the last export).
+- **Cuisines and sources.** A cuisine is named by its adjective (`strings.browse.cuisines`: "Italian",
+  "Italienische Küche"), read by `cuisineLabel` and the history; the country's name stays for the
+  lists by country. A source's title and place are shown through `citeText`
+  (`screens/classics/cite.ts`): the transcriber's line numbers and file names never, and in German
+  Kap., Abschn., Aufl., S., Nr.; a technique note lists each source once. The year after a title is
+  left out when the title already ends with it. The German wording was reviewed on 2026-11-21
+  ([german review](german-review.md)). **Test:** `test/cite.test.ts`, `e2e/german.mjs`.
 - **Ratios.** The names and notes of the shipped ratios are in `strings.ratios.seed` and the role words
   ("flour", "water", ...) in `strings.roles`, English and German with the same keys
   (`test/ratios-view.test.ts` checks that every shipped ratio and role has both); the table columns, the
@@ -1406,6 +1418,10 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   and visible focus are WCAG 2.4.3 and 2.4.7[^wcag].
   **Test:** `e2e/smoke.mjs` (Tab to the skip link, ring on the
   first stop, which is the gear on a phone, Enter navigates and focuses the heading).
+  After a change of screen the heading takes focus for screen readers; the ring on it shows only
+  when a key led there. `:focus-visible` cannot tell that for a focus by script, so the shell keeps
+  the last kind of input (key or pointer) and marks the heading `focus-quiet` after a tap or a
+  click (`shell/shell.ts`). **Test:** `e2e/german.mjs` (no ring after a tap, a ring after Enter).
 - **Names.** Every link, button, input and summary has an accessible
   name; icons are decorative. **Test:** `e2e/smoke.mjs`.
 - **Texts for the experienced cook.** Short, no tutorials; guidance only

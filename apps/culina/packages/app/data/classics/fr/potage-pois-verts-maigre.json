@@ -2,7 +2,7 @@
   "id": "potage-pois-verts-maigre",
   "name": {
     "en": "Green pea soup, meatless",
-    "de": "Grüne-Erbsen-Suppe, fleischlos"
+    "de": "Grüne Erbsensuppe, fleischlos"
   },
   "originalName": "Potage de pois verts au maigre",
   "country": "fr",
@@ -90,8 +90,8 @@
             "de": "Wasser (das Kochwasser der Erbsen)"
           },
           "sourceNote": {
-            "en": "The gras version moistens the purée with 2 litres of chicken consommé (gouffe.txt line 19440). The meatless text gives no amount for the cooking water of the peas.",
-            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet (gouffe.txt Zeile 19440). Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
+            "en": "The gras version moistens the purée with 2 litres of chicken consommé. The meatless text gives no amount for the cooking water of the peas.",
+            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet. Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
           }
         }
       ],
@@ -289,6 +289,6 @@
   },
   "note": {
     "en": "Meatless green pea soup. The pea purée follows the gras version (Purée de pois verts au gras, p. 371), to which the text refers; there the chicken consommé is replaced by the cooking water of the peas. The amounts of the purée and the rice are those of the gras version. No meat and no meat stock occur in the meatless version as read.",
-    "de": "Grüne-Erbsen-Suppe ohne Fleisch. Das Erbsenpüree folgt der fetten Fassung (Purée de pois verts au gras, S. 371), auf die der Text verweist; dort wird die Hühnerkonsommé durch das Kochwasser der Erbsen ersetzt. Die Mengen für Püree und Reis stammen aus der fetten Fassung. In der fleischlosen Fassung kommen laut Lektüre weder Fleisch noch Fleischbrühe vor."
+    "de": "Grüne Erbsensuppe ohne Fleisch. Das Erbsenpüree folgt der fetten Fassung (Purée de pois verts au gras, S. 371), auf die der Text verweist; dort wird die Hühnerkonsommé durch das Kochwasser der Erbsen ersetzt. Die Mengen für Püree und Reis stammen aus der fetten Fassung. In der fleischlosen Fassung kommen laut Lektüre weder Fleisch noch Fleischbrühe vor."
   }
 }

@@ -214,7 +214,7 @@
           "amountWord": "as-needed",
           "sourceNote": {
             "en": "Source wording: \"quanto occorre\".",
-            "de": "Quellenwortlaut: \"quanto occorre\"."
+            "de": "Quellenwortlaut: „quanto occorre“."
           }
         },
         {
@@ -226,7 +226,7 @@
           "amountWord": "as-needed",
           "sourceNote": {
             "en": "Source wording: \"acqua diaccia quanto basta\".",
-            "de": "Quellenwortlaut: \"acqua diaccia quanto basta\"."
+            "de": "Quellenwortlaut: „acqua diaccia quanto basta“."
           }
         }
       ],
@@ -287,6 +287,6 @@
   },
   "note": {
     "en": "The source's text for this recipe ends at dipping the wedges in the batter; the frying itself is not written in it, and the title reads 'Fritto'. The batter's last addition, the beaten egg white, is cut off in the 1891 OCR and is taken from the 1985 edition (No. 156). Frying fat and temperature are not given.",
-    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet 'Fritto'. Die letzte Zugabe zum Teig, das geschlagene Eiweiß, ist in der OCR der Ausgabe von 1891 abgeschnitten und stammt aus der Ausgabe von 1985 (Nr. 156). Fett und Temperatur zum Ausbacken sind nicht angegeben."
+    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet ‚Fritto‘. Die letzte Zugabe zum Teig, das geschlagene Eiweiß, ist in der OCR der Ausgabe von 1891 abgeschnitten und stammt aus der Ausgabe von 1985 (Nr. 156). Fett und Temperatur zum Ausbacken sind nicht angegeben."
   }
 }

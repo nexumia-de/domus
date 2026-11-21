@@ -3,11 +3,13 @@ import { EXPORT_KINDS, pickText } from '@culina/engine';
 import { techniques } from '../../classics/content';
 import { currentLang } from '../../classics/lang';
 import type { ExportKind, ExportRecord, FullRecordSets } from '@culina/engine';
+import { formatDate } from '../../shared/locale';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 export const recordLabel = (kind: ExportKind, record: ExportRecord): string => {
-  if (kind === 'tastings') return `${String(record.date)} ${String(record.text).slice(0, 40)}`;
+  if (kind === 'tastings')
+    return `${formatDate(String(record.date))} ${String(record.text).slice(0, 40)}`;
   if (kind === 'skills') {
     const technique = techniques().find((t) => t.id === record.technique);
     return technique === undefined

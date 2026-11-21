@@ -16,8 +16,20 @@ export interface Shell {
   refresh(): void;
 }
 
+/**
+ * How the person last reached for the page: a key, or a pointer (mouse, touch, pen). The heading
+ * takes focus by script after every change of screen, for screen readers; `:focus-visible` cannot
+ * tell for a focus by script whether a key or a tap led to it, so the ring is drawn by this.
+ */
+let lastInput: 'key' | 'pointer' = 'key';
+const trackInput = (): void => {
+  document.addEventListener('keydown', () => (lastInput = 'key'), { capture: true });
+  document.addEventListener('pointerdown', () => (lastInput = 'pointer'), { capture: true });
+};
+
 /** Landmarks: header (banner), nav, main. The screen replaces the content of main. */
 export const mountShell = (root: HTMLElement): Shell => {
+  trackInput();
   const skip = el('a', 'skip-link', strings.skipToContent);
   skip.href = '#main';
   skip.addEventListener('click', (event) => {
@@ -64,7 +76,11 @@ export const mountShell = (root: HTMLElement): Shell => {
       document.title = `${heading?.textContent ?? ''} - ${strings.appName}`;
       if (heading) {
         heading.tabIndex = -1;
-        if (focusHeading) heading.focus();
+        if (focusHeading) {
+          // After a tap or a click the focus is there for a screen reader, without a ring.
+          heading.classList.toggle('focus-quiet', lastInput === 'pointer');
+          heading.focus();
+        }
       }
       window.scrollTo(0, 0);
     },

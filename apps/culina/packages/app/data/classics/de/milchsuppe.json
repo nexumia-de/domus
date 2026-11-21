@@ -120,7 +120,7 @@
         {
           "text": {
             "en": "Stir constantly over a hot fire until it is cooked.",
-            "de": "Über starker Hitze ständig rühren, bis sie gar ist."
+            "de": "Bei starker Hitze ständig rühren, bis die Suppe gar ist."
           },
           "technique": "thicken-with-starch",
           "uses": ["milk", "starch", "yolk"]
@@ -155,7 +155,7 @@
           },
           "sourceNote": {
             "en": "The source gives no number for the whites; they come from the 2 eggs of the yolks.",
-            "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern der Eigelb."
+            "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern, deren Eigelb in die Suppe kommt."
           },
           "settled": true
         },

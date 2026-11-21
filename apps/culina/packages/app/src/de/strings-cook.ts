@@ -60,8 +60,8 @@ export const cookStringsDe: typeof cookStrings = {
       : daysLeft === 0
         ? `nutzt ${item}, heute verbrauchen`
         : `nutzt ${item}, noch ${daysLeft === 1 ? '1 Tag' : `${daysLeft} Tage`}`,
-  reasonNoDate: 'nichts davon hat ein Verbrauchsdatum',
-  reasonRoles: (roles: string): string => `deckt ${roles} ab`,
+  reasonNoDate: 'ohne Verbrauchsdatum',
+  reasonRoles: (roles: string): string => `Rollen: ${roles}`,
   reasonNoRoles: 'keine Rollen erfasst',
   lacksHeading: 'Noch nötig',
   lacksShort: (name: string, have: string, need: string): string =>

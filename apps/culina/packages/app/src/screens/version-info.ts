@@ -11,6 +11,7 @@ import {
 } from '../notebook';
 import type { ComponentRecord, DishRecord } from '../records';
 import { hashFor } from '../router';
+import { formatDate } from '../shared/locale';
 import { el } from '../shell/el';
 import { showToast } from '../shell/toast';
 import { strings } from '../strings';
@@ -37,7 +38,7 @@ export const versionLines = (kind: VersionKind, record: Rec): HTMLElement => {
     el(
       'p',
       'muted version-line',
-      t.versionLine(numberOf(kind, record.id) ?? 1, record.version.date),
+      t.versionLine(numberOf(kind, record.id) ?? 1, formatDate(record.version.date)),
     ),
   );
   if (record.version.change !== undefined)

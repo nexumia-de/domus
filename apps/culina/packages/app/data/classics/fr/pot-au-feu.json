@@ -71,7 +71,7 @@
           },
           "sourceNote": {
             "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot. The list's amount is stored; see settled.",
-            "de": "Die Zutatenliste nennt 4 Liter; die Zubereitung nennt 3 Liter für den kleinen Topf. Gespeichert ist die Menge der Zutatenliste; siehe settled."
+            "de": "Die Zutatenliste nennt 4 Liter; die Zubereitung nennt 3 Liter für den kleinen Topf. Es gilt die Menge der Zutatenliste."
           },
           "settled": true
         },
@@ -364,7 +364,7 @@
     "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html, Hachette title page) compared with gouffe.txt. Agreed: all list amounts, 6 and 3 litres of water in the method, 60 or 30 g salt, 3 and 1.5 decilitres of cold water, 5 and 3 hours; \"1 50\" reads 150 g in both. Changed: the broth is a steady boil (\"ébullition continue\"), not a simmer; persons four or five, so four is settled. The 4 and 3 litres stay as the list and the method give them."
   },
   "note": {
-    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two (gouffe.txt lines 2290-2297). The list gives 4 litres of water; the method gives 3 litres for the small pot (see settled). The cold water added at the first boil is 1.5 decilitres (0.1 litre each) for the small pot; it stands in the step text, not as a line. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
-    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen (gouffe.txt Zeilen 2290-2297). Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf (siehe settled). Das kalte Wasser beim ersten Aufkochen sind 1,5 Deziliter (je 0,1 Liter) für den kleinen Topf; es steht im Schritt, nicht als Zeile. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
+    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two. The list gives 4 litres of water; the method gives 3 litres for the small pot. The cold water added at the first boil is 1.5 decilitres (0.1 litre each) for the small pot; it stands in the step text, not as a line. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
+    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen. Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf. Das kalte Wasser beim ersten Aufkochen sind 1,5 Deziliter (je 0,1 Liter) für den kleinen Topf; es steht im Schritt, nicht als Zeile. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
   }
 }

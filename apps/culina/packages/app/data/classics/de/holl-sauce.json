@@ -103,8 +103,8 @@
             "id": "fdc-group-butter"
           },
           "sourceNote": {
-            "en": "The English prints the fraction as a percent sign (%); the German edition reads 4 Pfd. (davidis.txt) and 8 Pfd. (second scan). The amount is not confirmed, so none is given.",
-            "de": "Die englische Ausgabe druckt den Bruch als Prozentzeichen (%); die deutsche Ausgabe liest 4 Pfd. (davidis.txt) und 8 Pfd. (zweiter Scan). Die Menge ist nicht bestätigt und steht deshalb nicht da."
+            "en": "The English prints the fraction as a percent sign (%); the German edition reads 4 Pfd. (first scan) and 8 Pfd. (second scan). The amount is not confirmed, so none is given.",
+            "de": "Die englische Ausgabe druckt den Bruch als Prozentzeichen (%); die deutsche Ausgabe liest 4 Pfd. (erster Scan) und 8 Pfd. (zweiter Scan). Die Menge ist nicht bestätigt und steht deshalb nicht da."
           }
         },
         {
@@ -135,7 +135,7 @@
         {
           "text": {
             "en": "Add the mace and stir until the sauce comes to a boil.",
-            "de": "Muskatblüte zugeben und rühren, bis die Sauce aufkocht."
+            "de": "Muskatblüte (Macis) zugeben und rühren, bis die Sauce aufkocht."
           },
           "technique": "thicken-with-starch",
           "uses": ["mace", "flour"]
