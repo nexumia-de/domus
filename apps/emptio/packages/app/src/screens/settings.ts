@@ -97,7 +97,6 @@ export function settingsScreen(ctx: Ctx): Screen {
   const node = h(
     'div',
     { class: 'screen screen-settings' },
-    h('h1', {}, t.settings.title),
     h('h2', {}, t.settings.spaces),
     h('p', { class: 'muted' }, t.settings.spacesIntro),
     spaces,
@@ -134,5 +133,5 @@ export function settingsScreen(ctx: Ctx): Screen {
     h('p', { class: 'muted' }, `${t.settings.categoriesSource} ${STARTING_CATEGORIES_SOURCE}`),
   );
   drawSpaces();
-  return { node, update: drawSpaces };
+  return { node, title: () => t.settings.title, update: drawSpaces };
 }

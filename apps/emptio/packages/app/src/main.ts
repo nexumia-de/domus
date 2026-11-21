@@ -1,8 +1,15 @@
 import { adapterFor, createIdbStore } from '@nexumia-de/hospes';
+import {
+  createHeader,
+  createSyncIndicator,
+  createToaster,
+  drawIcon,
+  headerLink,
+} from '@nexumia-de/hospes/frame';
 import { createApp } from './app';
-import { button, h } from './dom';
+import { h } from './dom';
 import { GITHUB_API } from './env';
-import { icon } from './icons';
+import { CATEGORIES_ICON } from './icons';
 import { KEYS, browserPrefs, langChoiceOf, langFor } from './prefs';
 import { hashFor, parseHash, type Route } from './router';
 import { categoriesScreen } from './screens/categories';
@@ -35,9 +42,9 @@ if (root) {
     isOnline,
   });
 
-  // What was said last, for screen readers and for the eye; an Undo lives as long as the line.
-  const live = h('div', { class: 'live', role: 'status', 'aria-live': 'polite' });
-  let liveTimer: ReturnType<typeof setTimeout> | undefined;
+  // What was said last: a short toast over the lower edge of the content, with Undo where there
+  // is one; for screen readers it is a live region.
+  const toaster = createToaster();
   const ctx: Ctx = {
     app,
     t,
@@ -45,19 +52,7 @@ if (root) {
     prefs,
     now,
     isOnline,
-    say(text, undo) {
-      clearTimeout(liveTimer);
-      live.replaceChildren(h('span', {}, text));
-      if (undo) {
-        live.append(
-          button(undo.label, () => {
-            live.replaceChildren();
-            undo.run();
-          }),
-        );
-      }
-      liveTimer = setTimeout(() => live.replaceChildren(), undo ? 10_000 : 5_000);
-    },
+    say: (text, undo) => toaster.say(text, undo),
     go(hash) {
       window.location.hash = hash;
     },
@@ -70,32 +65,30 @@ if (root) {
     event.preventDefault();
     main.focus();
   });
-  const header = h(
-    'header',
-    { class: 'app-header' },
-    h('a', { class: 'app-title', href: hashFor.list }, t.appName),
+  const header = createHeader();
+  const sync = createSyncIndicator({
+    words: t.status,
+    now,
+    retryLabel: t.status.retry,
+    say: (text) => ctx.say(text),
+    retry: () => app.wake(),
+  });
+  const settingsLink = headerLink(t.nav.settings, 'settings', hashFor.settings);
+  const categoriesLink = headerLink(
+    t.nav.categories,
+    drawIcon(CATEGORIES_ICON),
+    hashFor.categories,
   );
-  // The destinations: a bar at the bottom on a phone, a rail at the side on a wide screen.
-  const links = (
-    [
-      ['list', hashFor.list, t.nav.list],
-      ['categories', hashFor.categories, t.nav.categories],
-      ['settings', hashFor.settings, t.nav.settings],
-    ] as const
-  ).map(([name, href, label]) => ({
-    name,
-    node: h('a', { class: 'nav-link', href }, icon(name), h('span', { class: 'nav-label' }, label)),
-  }));
-  const nav = h(
-    'nav',
-    { class: 'app-nav', 'aria-label': t.appName },
-    ...links.map((link) => link.node),
-  );
-  // What a screen keeps in reach of the thumb, above the navigation (the add field).
+  // What a screen keeps in reach of the thumb: the add field. The only permanent thing below.
   const dock = h('div', { class: 'app-dock' });
-  // The frame fills the window; only `main` scrolls, so header, dock and navigation stay.
+  // The frame fills the window; only `main` scrolls, so header and dock stay.
   root.classList.add('app-frame');
-  root.append(skip, header, h('div', { class: 'app-body' }, main, live), dock, nav);
+  root.append(
+    skip,
+    h('div', { class: 'app-top' }, header.node, sync.banner),
+    h('div', { class: 'app-body' }, main, toaster.node),
+    dock,
+  );
 
   const screenFor = (route: Route): Screen => {
     switch (route.name) {
@@ -111,29 +104,65 @@ if (root) {
   };
 
   let screen: Screen | undefined;
+  let route: Route = parseHash(window.location.hash);
+
+  /** With more than one space the list says which one it shows, and switches. */
+  function spaceSwitch(): HTMLElement | undefined {
+    const { space, spaces } = app.state();
+    if (route.name !== 'list' || space === undefined || spaces.length < 2) return undefined;
+    const select = h(
+      'select',
+      { class: 'space-select', 'aria-label': t.list.listOf },
+      ...spaces.map((s) => h('option', { value: s.id, selected: s.id === space.id }, s.name)),
+    );
+    select.addEventListener('change', () => void app.choose(select.value));
+    return select;
+  }
+
+  /** The header says where we are and what can be done here; the sync icon follows the state. */
+  function drawHeader(): void {
+    const focused = document.activeElement?.classList.contains('space-select') === true;
+    const state = app.state();
+    sync.update(state.space ? app.status(state.space.id) : undefined, isOnline());
+    if (focused) return;
+    const subtitle = spaceSwitch();
+    header.show({
+      title: screen?.title() ?? t.appName,
+      ...(route.name === 'list' ? {} : { back: { href: hashFor.list, label: t.nav.back } }),
+      ...(subtitle ? { subtitle } : {}),
+      actions: [sync.button, ...(route.name === 'list' ? [categoriesLink] : []), settingsLink],
+    });
+    categoriesLink.toggleAttribute('aria-current', false);
+    settingsLink.toggleAttribute('aria-current', false);
+    const here =
+      route.name === 'categories'
+        ? categoriesLink
+        : route.name === 'settings'
+          ? settingsLink
+          : null;
+    here?.setAttribute('aria-current', 'page');
+  }
+
   function show(focusHeading: boolean): void {
-    const route = parseHash(window.location.hash);
+    route = parseHash(window.location.hash);
     screen = screenFor(route);
     main.replaceChildren(screen.node);
     dock.replaceChildren(...(screen.dock ? [screen.dock] : []));
-    // An entry is a page of the list.
-    const at = route.name === 'entry' ? 'list' : route.name;
-    for (const link of links) {
-      if (link.name === at) link.node.setAttribute('aria-current', 'page');
-      else link.node.removeAttribute('aria-current');
-    }
-    const heading = screen.node.querySelector('h1');
-    const name = heading?.textContent ?? '';
-    document.title = name === '' || name === t.appName ? t.appName : `${name} - ${t.appName}`;
-    if (heading && focusHeading) {
-      heading.tabIndex = -1;
-      heading.focus();
+    drawHeader();
+    const name = screen.title();
+    document.title = route.name === 'list' ? t.appName : `${name} - ${t.appName}`;
+    if (focusHeading) {
+      header.heading.tabIndex = -1;
+      header.heading.focus();
     }
     main.scrollTop = 0;
   }
 
   window.addEventListener('hashchange', () => show(true));
-  app.subscribe(() => screen?.update());
+  app.subscribe(() => {
+    screen?.update();
+    drawHeader();
+  });
   window.addEventListener('online', () => app.wake());
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') app.wake();

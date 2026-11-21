@@ -10,9 +10,21 @@ import {
   type Priority,
 } from '@emptio/engine';
 import { button, h } from '../dom';
-import { addToList, clearBought, restoreEntries, setBought } from '../list/actions';
+import { addToList, clearBought, removeEntries, restoreEntries, setBought } from '../list/actions';
 import { categoriesOf, orderOf } from '../list/categories';
-import { statusText } from '../list/status';
+import {
+  SORTS,
+  arrange,
+  countsOf,
+  grouped,
+  shownOf,
+  shownText,
+  sortOf,
+  type View,
+} from '../list/view';
+import { drawIcon } from '@nexumia-de/hospes/frame';
+import { SORT_ICON } from '../icons';
+import { KEYS } from '../prefs';
 import { hashFor } from '../router';
 import type { Ctx, Screen } from './context';
 
@@ -22,6 +34,11 @@ export function listScreen(ctx: Ctx): Screen {
   const { app, t } = ctx;
   const n = ++fieldIds;
   let priority: Priority = DEFAULT_PRIORITY;
+  /** How the open entries are shown on this device (docs/behaviour.md#filter-and-sort). */
+  const view: View = {
+    shown: shownOf(ctx.prefs.get(KEYS.shown)),
+    sort: sortOf(ctx.prefs.get(KEYS.sort)),
+  };
 
   const name = h('input', {
     id: `add-name-${n}`,
@@ -92,7 +109,14 @@ export function listScreen(ctx: Ctx): Screen {
     );
     if (done === undefined) return ctx.say(t.failure.write);
     if (done === null) return;
-    ctx.say(done.joined ? t.list.raised(what.name.trim()) : t.list.added(what.name.trim()));
+    const id = done.id;
+    if (done.joined) ctx.say(t.list.raised(what.name.trim()));
+    else {
+      ctx.say(t.list.added(what.name.trim()), {
+        label: t.list.undo,
+        run: () => void app.act((deps, spaceId) => removeEntries(deps, spaceId, [id])),
+      });
+    }
     name.value = '';
     amount.value = '';
     priority = DEFAULT_PRIORITY;
@@ -130,10 +154,45 @@ export function listScreen(ctx: Ctx): Screen {
   }
   name.addEventListener('input', drawSuggestions);
 
-  const spaceLine = h('div', { class: 'space-line' });
+  // The urgencies shown and the order: one slim row above the list.
+  const filterChips = PRIORITIES.map((step) => {
+    const count = h('span', { class: 'filter-count' });
+    const chip = h(
+      'button',
+      { type: 'button', class: `filter-chip chip-${step}`, 'aria-pressed': false },
+      t.priority[step],
+      count,
+    );
+    chip.addEventListener('click', () => {
+      view.shown = view.shown.includes(step)
+        ? view.shown.filter((s) => s !== step)
+        : PRIORITIES.filter((s) => s === step || view.shown.includes(s));
+      ctx.prefs.set(KEYS.shown, shownText(view.shown));
+      draw();
+    });
+    return { step, chip, count };
+  });
+  const sortSelect = h(
+    'select',
+    { class: 'sort-select', 'aria-label': t.list.sortLabel },
+    ...SORTS.map((s) => h('option', { value: s }, t.list.sorts[s])),
+  );
+  sortSelect.value = view.sort;
+  sortSelect.addEventListener('change', () => {
+    view.sort = sortOf(sortSelect.value);
+    ctx.prefs.set(KEYS.sort, view.sort);
+    draw();
+  });
+  const sortPick = h('label', { class: 'sort-pick' }, drawIcon(SORT_ICON), sortSelect);
+  const tools = h(
+    'div',
+    { class: 'list-tools', role: 'group', 'aria-label': t.list.filterLabel },
+    ...filterChips.map((c) => c.chip),
+    sortPick,
+  );
   const body = h('div', { class: 'list-body' });
 
-  function row(entry: Entry): HTMLElement {
+  function row(entry: Entry, withPriority = false): HTMLElement {
     const box = h('input', {
       type: 'checkbox',
       class: 'tick',
@@ -168,37 +227,17 @@ export function listScreen(ctx: Ctx): Screen {
           entry.name,
           entry.amount === undefined ? null : h('span', { class: 'entry-amount' }, entry.amount),
         ),
+        withPriority
+          ? h('span', { class: `entry-prio prio-${entry.priority}` }, t.priority[entry.priority])
+          : null,
         entry.note === undefined ? null : h('span', { class: 'entry-note' }, entry.note),
       ),
     );
   }
 
-  function drawSpaceLine(): void {
-    const { space, spaces } = app.state();
-    if (space === undefined) return spaceLine.replaceChildren();
-    const status = statusText(t.status, app.status(space.id), ctx.now(), ctx.isOnline());
-    let who: HTMLElement;
-    if (spaces.length > 1) {
-      const select = h(
-        'select',
-        { class: 'field space-select', 'aria-label': t.list.listOf },
-        ...spaces.map((s) => h('option', { value: s.id, selected: s.id === space.id }, s.name)),
-      );
-      select.addEventListener('change', () => void app.choose(select.value));
-      who = select;
-    } else who = h('span', { class: 'space-name' }, space.name);
-    // The select keeps its focus while only the status changes.
-    const old = spaceLine.querySelector('select');
-    if (old && document.activeElement === old && spaces.length > 1) {
-      spaceLine.querySelector('.space-status')?.replaceChildren(status);
-      return;
-    }
-    spaceLine.replaceChildren(who, h('span', { class: 'space-status' }, status));
-  }
-
   function draw(): void {
     const state = app.state();
-    drawSpaceLine();
+    tools.hidden = state.phase !== 'ready';
     if (state.phase === 'loading') {
       form.hidden = true;
       return body.replaceChildren(h('p', { class: 'muted' }, t.list.loading));
@@ -216,10 +255,17 @@ export function listScreen(ctx: Ctx): Screen {
       categoriesOf(state.changes, ctx.lang, t.categories.unnamed).map((c) => [c.id, c.name]),
     );
     const sorted = homeOrder(state.entries, order);
-    const open = sorted.filter((entry) => entry.bought === undefined);
+    const everyOpen = sorted.filter((entry) => entry.bought === undefined);
     const bought = sorted.filter((entry) => entry.bought !== undefined);
+    const open = arrange(state.entries, view, order);
+    const counts = countsOf(everyOpen);
+    for (const { step, chip, count } of filterChips) {
+      const on = view.shown.includes(step);
+      chip.setAttribute('aria-pressed', String(on));
+      count.textContent = String(counts[step]);
+    }
     const parts: HTMLElement[] = [];
-    if (open.length === 0 && bought.length === 0) {
+    if (everyOpen.length === 0 && bought.length === 0) {
       parts.push(
         h(
           'div',
@@ -228,8 +274,22 @@ export function listScreen(ctx: Ctx): Screen {
           h('p', { class: 'muted' }, t.list.emptyHint),
         ),
       );
+    } else if (open.length === 0 && everyOpen.length > 0) {
+      parts.push(
+        h(
+          'div',
+          { class: 'empty' },
+          h('p', {}, t.list.nothingShown),
+          h('p', { class: 'muted' }, t.list.nothingShownHint),
+        ),
+      );
     }
-    for (const step of PRIORITIES) {
+    if (!grouped(view.sort) && open.length > 0) {
+      parts.push(
+        h('ul', { class: 'entries entries-flat' }, ...open.map((entry) => row(entry, true))),
+      );
+    }
+    for (const step of grouped(view.sort) ? PRIORITIES : []) {
       const ofStep = open.filter((entry) => entry.priority === step);
       if (ofStep.length === 0) continue;
       const section = h(
@@ -242,17 +302,34 @@ export function listScreen(ctx: Ctx): Screen {
       let list: HTMLElement | undefined;
       for (const entry of ofStep) {
         const position = categoryPosition(order, entry.categoryId);
-        if (position !== at || list === undefined) {
+        if (view.sort === 'store' && (position !== at || list === undefined)) {
           at = position;
           list = h('ul', { class: 'entries' });
           section.append(
             h('h3', { class: 'category-title' }, names.get(order[position] ?? '') ?? ''),
             list,
           );
+        } else if (list === undefined) {
+          list = h('ul', { class: 'entries' });
+          section.append(list);
         }
         list.append(row(entry));
       }
       parts.push(section);
+    }
+    // What the choice hides is counted, one tap shows it.
+    if (!view.shown.includes('sometime') && counts.sometime > 0) {
+      parts.push(
+        h(
+          'div',
+          { class: 'more-line' },
+          button(t.list.moreSometime(counts.sometime), () => {
+            view.shown = PRIORITIES.filter((s) => s === 'sometime' || view.shown.includes(s));
+            ctx.prefs.set(KEYS.shown, shownText(view.shown));
+            draw();
+          }),
+        ),
+      );
     }
     if (bought.length > 0) {
       parts.push(
@@ -279,7 +356,7 @@ export function listScreen(ctx: Ctx): Screen {
                   }),
             ),
           ),
-          h('ul', { class: 'entries' }, ...bought.map(row)),
+          h('ul', { class: 'entries' }, ...bought.map((entry) => row(entry))),
         ),
       );
     }
@@ -293,13 +370,7 @@ export function listScreen(ctx: Ctx): Screen {
     }
   }
 
-  const node = h(
-    'div',
-    { class: 'screen screen-list' },
-    h('h1', { class: 'visually-hidden' }, t.appName),
-    spaceLine,
-    body,
-  );
+  const node = h('div', { class: 'screen screen-list' }, tools, body);
   draw();
-  return { node, dock: form, update: draw };
+  return { node, title: () => t.list.title, dock: form, update: draw };
 }

@@ -126,7 +126,6 @@ export function categoriesScreen(ctx: Ctx): Screen {
   const node = h(
     'div',
     { class: 'screen screen-categories' },
-    h('h1', {}, t.categories.title),
     h('p', { class: 'muted' }, t.categories.intro),
     list,
     h('label', { class: 'form-label', for: 'new-category' }, t.categories.addLabel),
@@ -135,6 +134,7 @@ export function categoriesScreen(ctx: Ctx): Screen {
   draw();
   return {
     node,
+    title: () => t.categories.title,
     update() {
       if (renaming === undefined) draw();
     },

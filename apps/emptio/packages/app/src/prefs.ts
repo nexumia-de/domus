@@ -1,7 +1,14 @@
 // What this device remembers outside the list: language, theme and which
 // space's list is shown. Kept in localStorage, which may be missing or throw;
 // the app then follows the device. No secret and no token is kept here.
-export const KEYS = { theme: 'emptio.theme', lang: 'emptio.lang', space: 'emptio.space' } as const;
+export const KEYS = {
+  theme: 'emptio.theme',
+  lang: 'emptio.lang',
+  space: 'emptio.space',
+  /** The urgencies shown on the list, as "now,soon" (the choice of this device only). */
+  shown: 'emptio.shown',
+  sort: 'emptio.sort',
+} as const;
 
 export const THEMES = ['system', 'light', 'dark'] as const;
 export type Theme = (typeof THEMES)[number];

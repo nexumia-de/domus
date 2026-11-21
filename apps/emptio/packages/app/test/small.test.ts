@@ -44,13 +44,13 @@ describe('the status in words', () => {
 
   test('each kind', () => {
     expect(statusText(t, { kind: 'device-only' }, later, true)).toBe('On this device only');
-    expect(statusText(t, { kind: 'in-step', at }, later, true)).toBe('In step · 5 min ago');
-    expect(statusText(t, { kind: 'in-step', at }, at, true)).toBe('In step · just now');
+    expect(statusText(t, { kind: 'in-step', at }, later, true)).toBe('Synced 5 min ago');
+    expect(statusText(t, { kind: 'in-step', at }, at, true)).toBe('Synced just now');
     expect(statusText(t, { kind: 'in-step', at }, '2026-11-20T12:00:00Z', true)).toBe(
-      'In step · 3 h ago',
+      'Synced 3 h ago',
     );
     expect(statusText(t, { kind: 'in-step', at }, '2026-11-25T12:00:00Z', true)).toBe(
-      'In step · 2026-11-20',
+      'Synced 2026-11-20',
     );
     expect(statusText(t, { kind: 'syncing' }, later, true)).toBe('Syncing …');
     expect(statusText(t, { kind: 'never' }, later, true)).toBe('Not synced yet');
