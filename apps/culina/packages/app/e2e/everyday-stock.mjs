@@ -115,7 +115,7 @@ export const everydayStock = async (browser, server) => {
     noodles.includes('Hühnerei im Vorrat zählt für Ei'),
     `${label}: the egg group in stock is named for the egg the noodles ask`,
   );
-  check(/deckt [A-ZÄÖÜ]/.test(noodles), `${label}: a role word keeps its capital (${noodles})`);
+  check(/Rollen: [A-ZÄÖÜ]/.test(noodles), `${label}: a role word keeps its capital (${noodles})`);
   const pasta = (await entry('pasta-dough').innerText()).replace(/\s+/g, ' ');
   check(
     pasta.includes('Nudelteig') && pasta.includes('vollständig'),
