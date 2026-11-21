@@ -8,7 +8,6 @@ const ALLOWED: readonly (readonly [string, number])[] = [
   ['Beef bone', 1],
   ['Beef bones', 1],
   ['Beef extract', 1],
-  ['Beef, from the joint', 1],
   ['Boiled meat (lesso)', 1],
   ['Bouquet garni', 1],
   ['Carnesecca (dry-cured pork)', 1],

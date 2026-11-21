@@ -96,6 +96,8 @@ describe('shipped dishes', () => {
 
   test('meat and fish are read from the USDA category of the line', () => {
     expect(of('sauerbraten')).toContain('with-meat');
+    // Its beef names the beef group, as the source names no cut.
+    expect(of('frikandelle')).toContain('with-meat');
     expect(of('marinierte-heringe')).toContain('with-fish');
     expect(of('gazpacho-andaluz')).not.toContain('with-meat');
   });

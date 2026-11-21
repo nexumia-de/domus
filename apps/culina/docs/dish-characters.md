@@ -152,7 +152,12 @@ On 2026-11-21, by the owner's word "build it so":
 - Step "order" first: the swap of a filling (pull request 11) is merged.
 - Step 3: 26 raw meats, poultry, fish and shellfish are named foods of the
   [catalogue](ingredient-catalogue.md#named-foods); 8 lines of the classics
-  point at them. The counts above are those before this.
+  point at them. The counts above are those before this. Counts of
+  2026-11-21 after linking (the beef of the Frikandelle to the beef
+  group, a ninth line): of the same 417 lines, 344 name a catalogue
+  ingredient (192 with an amount, 152 without), 66 are `wanted` (34
+  water, 32 other) and 7 a component; per dish in
+  [classic dishes](classic-dishes.md#the-48-shipped-dishes-against-the-catalogue-2026-11-21).
 - Steps 1 and 2: the engine function
   ([engine rules](engine-rules.md#characters)) and a table of 18 characters
   (`packages/app/data/dish-characters.json`): tomatoey, cheesy, eggy,
