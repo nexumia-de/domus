@@ -24,12 +24,28 @@ export interface Toaster {
 }
 
 export function createToaster(options: ToasterOptions = {}): Toaster {
-  const plainMs = options.plainMs ?? 3000;
-  const actionMs = options.actionMs ?? 4500;
+  const plainMs = options.plainMs ?? 5000;
+  const actionMs = options.actionMs ?? 8000;
   const setTimer = options.setTimer ?? ((fn, ms) => setTimeout(fn, ms));
   const clearTimer = options.clearTimer ?? ((handle) => clearTimeout(handle as number));
   const node = el('div', { class: 'fr-toast', role: 'status', 'aria-live': 'polite' });
   let timer: unknown;
+  let ms = plainMs;
+  // WCAG 2.2.1: the toast stays while a pointer is on it or focus is in it, and the time starts
+  // again when both are gone (a hand needs time to reach Undo).
+  const arm = (): void => {
+    clearTimer(timer);
+    timer = setTimer(clear, ms);
+  };
+  const hold = (): void => clearTimer(timer);
+  node.addEventListener('pointerenter', hold);
+  node.addEventListener('focusin', hold);
+  node.addEventListener('pointerleave', () => {
+    if (!node.contains(document.activeElement) && node.firstChild) arm();
+  });
+  node.addEventListener('focusout', () => {
+    if (!node.matches(':hover') && node.firstChild) arm();
+  });
 
   const clear = (): void => {
     clearTimer(timer);
@@ -50,7 +66,8 @@ export function createToaster(options: ToasterOptions = {}): Toaster {
         });
         node.append(button);
       }
-      timer = setTimer(clear, action ? actionMs : plainMs);
+      ms = action ? actionMs : plainMs;
+      arm();
     },
   };
 }

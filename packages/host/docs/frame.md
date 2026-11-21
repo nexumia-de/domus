@@ -29,8 +29,11 @@ pieces that were the same in every app.
   counts several spaces (Mixtura's stock): failed, syncing, never, in
   step, device only.
 - `createToaster()`: one toast at a time, in the colours of the theme,
-  gone after 3 s (4.5 s when it has an action), with an optional Undo.
-  Timers are options.
+  gone after 5 s (8 s when it has an action), with an optional Undo.
+  The same in every app. It stays while a pointer is on it or focus is
+  in it and the time starts again afterwards (WCAG 2.2.1: a hand needs
+  time to reach Undo; Emptio's former 3 s / 4.5 s were too short on a
+  phone). Timers are options.
 - Icons are own line drawings (`FRAME_ICONS`, `drawIcon`).
 
 ## Tokens
