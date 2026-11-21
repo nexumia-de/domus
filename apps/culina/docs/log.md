@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21
+
+- **Update**: the licence of the four French classics after Jules Gouffé (1877: pot-au-feu, oeufs à la neige, pommes au beurre, poulet bourguignonne) is "public domain" instead of "rights reserved, to be checked by the owner": Gouffé died in 1877, the title page's reservation has long expired; amounts are taken as facts and the method is in our own words, as before. Asked by the owner before the Culina Flatpak; the code stays AGPL-3.0-or-later, the notes keep their CC licences ([sources licence](decisions/sources-licence.md)).
+
 ## 2026-11-20
 
 - **Fix**: the bottom navigation keeps clear of Android's navigation bar and the header stays at the top on a phone, after the owner reported the footer below the screen in Chrome on Android, in the browser and installed. Since Chrome 135 the page is drawn under the system's bar ([Chrome's guide](https://developer.chrome.com/docs/css-ui/edge-to-edge)): the page says `viewport-fit=cover` and the bar has `padding-bottom: env(safe-area-inset-bottom)`. Not reproduced here (the emulation has no system bars) and not checked on a phone; no browser check pins it.

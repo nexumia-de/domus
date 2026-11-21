@@ -37,7 +37,7 @@ By kind: technique notes 96 entries (88 NC-SA, 3 BY, 5 BY-NC), handling rules 31
 
 - A build for commercial use would drop every source entry whose licence has the `NC` part (identifiers matching `-NC-` or ending in `-NC`), and with it every note that then has no source left, because a note without a source is not shipped ([technique schema](../data-model.md#technique)). Today that is 133 of the 149 entries; the 16 entries under CC-BY-4.0 stay, and what they carry would be the starting point.
 - The notes themselves are written in our own words, so what is non-commercial is the source relation, not our text; whether a note written from a non-commercial source may be used commercially is a legal question this record does not answer.
-- Share-alike (`SA`) would also need a look in that case. The sources of the classics (old cookbooks, one wiki page) are a separate matter: their `licence` is free text where the source states one, and four French dishes say "rights reserved, to be checked by the owner" ([classic dishes](../classic-dishes.md)). They are not part of the 149 and are not normalised here.
+- Share-alike (`SA`) would also need a look in that case. The sources of the classics (old cookbooks, one wiki page) are a separate matter: their `licence` is free text where the source states one, and four French dishes follow Jules Gouffé (1877), public domain because the author died in 1877; the "rights reserved" of the title page has long expired (owner, 2026-11-21; [classic dishes](../classic-dishes.md)). They are not part of the 149 and are not normalised here.
 - The ingredient catalogue (USDA, CC0 1.0 Universal), the Wikidata names (CC0) and the own German names (AGPL-3.0-or-later) are not affected.
 
 ## Not decided here
