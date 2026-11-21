@@ -138,17 +138,17 @@ export function shownOfDish(
   const nutrition = ownNutritionView(
     {
       raw: counted.rows,
-      unmeasured: [
-        ...counted.unmeasured.map((u) => u.name),
-        ...counted.unconverted.map((u) => u.name),
-        ...counted.skipped.map((s) => s.name),
-      ],
+      unmeasured: counted.unmeasured.map((u) => u.name),
+      // A slot that could not be added up, or a line in a unit that has no weight here, has an
+      // amount whose weight is unknown: it hides the figures.
+      unweighed: [...counted.unconverted.map((u) => u.name), ...counted.skipped.map((s) => s.name)],
       optional: rows
         .filter((r) => r.optional)
         .map((r) => ({ name: r.name, ...(r.totalG === undefined ? {} : { g: r.totalG }) })),
     },
     portions,
     ctx.lookup,
+    ctx.nameOf,
   );
   const own = parts[parts.length - 1];
   return {

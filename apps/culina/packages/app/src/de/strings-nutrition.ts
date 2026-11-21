@@ -28,6 +28,14 @@ export const nutritionStringsDe: typeof nutritionStrings = {
     `Die gezählten Zutaten machen ${percent} % des Gewichts aus, soweit es bekannt ist.`,
   tooFew:
     'Nährwerte lassen sich nicht berechnen: Nur wenige Zutaten haben Menge und Nährwertdaten.',
+  notShownLeftOut: (list: string): string =>
+    `Keine Werte: Nicht zählbar ist ${list}; eine Summe ohne das wäre irreführend.`,
+  asUsual: (list: string): string => `Wo das Rezept keine Sorte nennt, zählt die übliche: ${list}.`,
+  usualItem: (name: string, usual: string): string => `${name} als ${usual}`,
+  seasoningsNote:
+    'Nicht in den Werten: Gewürze, Wasser und Zutaten mit höchstens 50 kcal je 100 g; sie stehen unten.',
+  limits:
+    'Rohwerte für ein gegartes Gericht: ohne aufgenommenes Bratfett, ohne Verluste; alte Quellen nennen grobe Mengen.',
   moreSummary: 'Was nicht gezählt ist und wie gezählt wird',
   reasons: {
     wanted: 'ohne Katalogeintrag',

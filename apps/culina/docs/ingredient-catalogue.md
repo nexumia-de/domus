@@ -312,7 +312,8 @@ fewer than the name has).
    and lists the FDC id of every row it comes from. A source text that would
    pass 500 characters would leave the number out. Otherwise the parent has
    no number. A parent has no yields. The parent record carries
-   `x-group: { rows }`, the number of food rows below it.
+   `x-group: { rows }`, the number of food rows below it, and, for a parent
+   named in `tools/catalogue/usual.json`, `usual` ([usual member](#usual-member)).
 
 Result for SR Legacy 2018-04, counted on the file on 2026-11-21: 589 food rows (539 by the rule, 50 [named foods](#named-foods)) and 131 parents, 720 entries (a file of 479 kB, 61 kB gzipped; 716 entries before savoy and the tomato products, 681 before the meat and fish).
 420 food rows have a parent, 162 stand alone and 7 food rows are
@@ -322,6 +323,61 @@ levels. 19 food rows are parents of a variant. 55 parents carry a density
 and 5 a unit weight (the rule above; counting only the children that have
 a value, as a first reading would, gives 56 densities, among them "Peppers"
 from 2 of its 7 rows, which is why every row must have it).
+
+## Usual member
+
+Added 2026-11-21. A dish line often names a parent: Gouffé's "6 œufs" points at
+"Egg, whole", Artusi's "zucchero" at "Sugars", a "Tasse Milch" at "Milk",
+because the source names no kind. The parent rule above gives such a parent no
+number when its rows disagree, and they do: "Egg, whole" holds a fresh egg
+(143 kcal per 100 g, 44 g a piece) and two dried egg powders (592 and 615 kcal,
+no piece); "Milk" holds 33 rows from 34 to 496 kcal (skimmed to dried); "Butter"
+5 rows from 499 to 731 kcal. Taking a median or a range over such rows would
+mix products no cook means. So the line was not counted at all ("egg (weight
+unknown)", "butter (no nutrient data)"), and the herb omelette showed the 5 kcal
+of its salt and pepper.
+
+**The rule.** `tools/catalogue/usual.json` names, for a parent, the one row below
+it that a recipe naming no kind means, with the reason. The generator
+(`tools/catalogue/usual.mjs`, called by `build.mjs` after the names) checks that
+the parent exists and that the row is a food row below it (it stops with an
+error otherwise), and writes `x-group.usual = { id, source }` on the parent. The
+`source` says that the choice is a **judgement of the project**, names the FDC
+id and description of the member, gives the reason, and states the range of
+energy over the parent's food rows, read from the rows ("The 3 food rows below
+range from 143 to 615 kcal per 100 g."). **No number is copied** to the parent:
+its own `densityGPerMl`, `unitWeightG` and `x-nutrition` stay those of the
+agreement rule, because a child without its own value inherits its parent's and
+the usual member's piece weight is not true of dried egg. The engine reads the
+member's numbers through `x-group.usual` for a line that names the parent and
+nowhere else ([engine rules](engine-rules.md#nutrition), "The figures of a
+line").
+
+**Why a judgement and not a range.** USDA SR Legacy marks no row as the usual
+one; the dataset's "Egg, whole, raw, fresh" and "Egg, whole, dried" are equals
+in it. A range over the rows would be honest about the data and wrong about the
+dish (an omelette is not made with egg powder), and shown as a range it would
+read "190 to 810 kcal" for three eggs. The choice is made once per parent, in
+one file, with a reason a reader can disagree with.
+
+**The 20 parents** (only those a shipped dish line points at; each reason in
+`usual.json`): Egg, whole (fresh egg, FDC 171287); Egg, yolk (fresh, 172184);
+Egg, white (fresh, 172183); Butter (without salt, 173430: the sources salt on a
+line of their own); Milk (whole, 3.25 %, without added vitamins, 172217);
+Sugars (granulated, 169655); Cream and Cream, fluid (light whipping, about 31 %
+fat, 170858); Cheese, parmesan (shredded, 173431); Wheat flour and Wheat flour,
+white (all-purpose, unenriched, 169761); Oil (olive, 171413); Vinegar (red
+wine, 172240); Apples (with skin, no variety, 171688); Lettuce (cos or romaine,
+169247); Mushrooms (white, 169251); Peppers, sweet (green, 170427); Peas
+(green, 170419); Rice and Rice, white (white medium-grain, 168879).
+
+**What changed in the file.** A rebuild from the same datasets (SR Legacy JSON
+and SR28 FOOD_DES.txt downloaded again on 2026-11-21, SHA-256 as in the
+envelope; the unchanged generator first reproduced the shipped file byte for
+byte) changed exactly the 20 parent rows named in `usual.json`, each gaining
+`x-group.usual`; all other 700 entries are byte for byte as they were. Tests:
+`packages/app/test/catalogue-usual.test.ts` (the rule on synthetic rows, the
+refusals, and the shipped file against `usual.json`).
 
 ## Yields
 

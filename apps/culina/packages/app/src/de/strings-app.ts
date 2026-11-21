@@ -764,6 +764,8 @@ export const appStringsDe: typeof appStrings = {
       fr: 'Französische Küche',
       es: 'Spanische Küche',
     },
+    /** Dasselbe in der Auswahl unter „Küche“: kurz genug für 360 px. */
+    cuisineChoice: { de: 'Deutsch', it: 'Italienisch', fr: 'Französisch', es: 'Spanisch' },
     meatFree: 'Ohne Fleisch und Fisch',
     completeOnly: 'Nur mit allen Mengen',
     reset: 'Alle zeigen',

@@ -20,6 +20,10 @@ export const courseLabel = (course: string): string =>
 export const cuisineLabel = (cuisine: string): string =>
   (strings.browse.cuisines as Record<string, string>)[cuisine] ?? cuisine;
 
+/** The cuisine as an option of the select, whose label already says "Cuisine": the bare adjective. */
+const cuisineChoice = (cuisine: string): string =>
+  (strings.browse.cuisineChoice as Record<string, string>)[cuisine] ?? cuisine;
+
 interface Choice {
   value: string;
   label: string;
@@ -142,10 +146,10 @@ export const dishFilterControls = (
         'dish-filter-cuisine',
         t.cuisineLabel,
         t.cuisineAny,
-        offered.cuisines.map((c) => ({ value: c, label: cuisineLabel(c) })),
+        offered.cuisines.map((c) => ({ value: c, label: cuisineChoice(c) })),
         filter.cuisine,
         (v) => set('cuisine', v),
-        cuisineLabel,
+        cuisineChoice,
       ),
     );
 

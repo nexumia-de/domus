@@ -18,7 +18,7 @@ export const nutritionDetails = (): {
     const body: HTMLElement[] = [];
     if (shown.ok) {
       const { view } = shown;
-      if (view.tooFew) body.push(el('p', undefined, t.tooFew));
+      if (view.tooFew) body.push(el('p', undefined, view.why ?? t.tooFew));
       else {
         body.push(el('p', 'muted', t.portionsLine(view.portions)));
         const list = el('dl', 'nutrition-list');
@@ -29,13 +29,19 @@ export const nutritionDetails = (): {
         body.push(list);
         for (const note of view.notShown) body.push(el('p', 'muted', note));
         body.push(el('p', undefined, view.coverage));
+        if (view.asUsual !== undefined) body.push(el('p', 'muted', view.asUsual));
+        body.push(el('p', 'muted', t.limits));
         body.push(el('p', 'muted', t.source), el('p', 'muted', t.notALabel));
       }
       // What was left out, how it is counted and rounded: one tap away, not in the way.
       const more = el('details', 'nutrition-more note-more');
       more.append(el('summary', undefined, t.moreSummary));
       if (view.tooFew) more.append(el('p', undefined, view.coverage));
-      if (view.notCounted !== undefined) more.append(el('p', 'muted', view.notCounted));
+      if (view.notCounted !== undefined) {
+        if (!view.tooFew) more.append(el('p', 'muted', t.seasoningsNote));
+        more.append(el('p', 'muted', view.notCounted));
+      }
+      if (view.tooFew && view.asUsual !== undefined) more.append(el('p', 'muted', view.asUsual));
       if (view.massShare !== undefined) more.append(el('p', 'muted', view.massShare));
       more.append(el('p', 'muted', t.method), el('p', 'muted', t.rounding));
       if (view.tooFew) more.append(el('p', 'muted', t.source), el('p', 'muted', t.notALabel));

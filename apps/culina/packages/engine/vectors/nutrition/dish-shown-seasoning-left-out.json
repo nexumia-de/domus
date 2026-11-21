@@ -1,0 +1,99 @@
+{
+  "id": "dish-shown-seasoning-left-out",
+  "description": "Every line with an amount that is not a seasoning is counted: 200 g flour and 2 eggs of 50 g. A seasoning by the piece without unit weight (1 clove) and an optional line are left out; neither keeps the figures from being shown. Sums 900 kcal, 3740 kJ, 32 g protein, 12 g fat, 121 g carbohydrate; fibre 6 g; sodium 144 mg = 0.36 g salt; / 2 portions",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-dough",
+        "name": "Example dough",
+        "portions": 2,
+        "slots": [
+          {
+            "role": "base",
+            "ref": { "kind": "ingredient", "id": "inv-flour" },
+            "amount": { "value": 200, "unit": "g" }
+          },
+          {
+            "role": "binder",
+            "ref": { "kind": "ingredient", "id": "inv-egg" },
+            "amount": { "value": 2, "unit": "count" }
+          },
+          {
+            "role": "season",
+            "ref": { "kind": "ingredient", "id": "inv-clove" },
+            "amount": { "value": 1, "unit": "count" }
+          },
+          {
+            "role": "garnish",
+            "ref": { "kind": "ingredient", "id": "inv-flour" },
+            "amount": { "value": 10, "unit": "g" },
+            "optional": true
+          }
+        ]
+      },
+      "components": []
+    },
+    "facts": { "inv-egg": { "unitWeightG": 50 } },
+    "nutrition": {
+      "inv-flour": {
+        "kcal": 300,
+        "kJ": 1250,
+        "proteinG": 10,
+        "fatG": 1,
+        "carbohydrateG": 60,
+        "fibreG": 3,
+        "sodiumMg": 2
+      },
+      "inv-egg": {
+        "kcal": 300,
+        "kJ": 1240,
+        "proteinG": 12,
+        "fatG": 10,
+        "carbohydrateG": 1,
+        "fibreG": 0,
+        "sodiumMg": 140
+      },
+      "inv-clove": {
+        "kcal": 270,
+        "kJ": 1130,
+        "proteinG": 6,
+        "fatG": 13,
+        "carbohydrateG": 65,
+        "fibreG": 33,
+        "sodiumMg": 277
+      }
+    },
+    "seasonings": ["inv-clove"]
+  },
+  "expected": {
+    "portions": 2,
+    "perPortion": {
+      "kcal": 450,
+      "kJ": 1870,
+      "proteinG": 16,
+      "fatG": 6,
+      "carbohydrateG": 60.5,
+      "fibreG": 3,
+      "saltG": 0.18
+    },
+    "countedGPerPortion": 150,
+    "coverage": {
+      "counted": 2,
+      "total": 4,
+      "notCounted": [
+        {
+          "index": 2,
+          "ref": { "kind": "ingredient", "id": "inv-clove" },
+          "reason": "cannot-convert",
+          "missing": ["unitWeightG"]
+        },
+        { "index": 3, "ref": { "kind": "ingredient", "id": "inv-flour" }, "reason": "optional" }
+      ]
+    },
+    "notReported": [],
+    "shown": { "figures": true }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand (200 g flour: 600 kcal, 2500 kJ, 20 g protein, 2 g fat, 120 g carbohydrate, 6 g fibre, 4 mg sodium; 100 g egg: 300 kcal, 1240 kJ, 12, 10, 1, 0, 140 mg)."
+}

@@ -1189,12 +1189,12 @@ Vectors: `vectors/substitutes/` and `vectors/makeable/declared-substitute-*`
 # Nutrition
 
 Work package 11 of the [helper plan](helper-plan.md) (issue 94). Code:
-`src/nutrition/` (`types.ts`, `dish.ts`, `round.ts`). Both functions return
-`{ ok: true, ... }` or `{ ok: false, error }`, never throw, and read no clock or
+`src/nutrition/` (`types.ts`, `figures.ts`, `dish.ts`, `round.ts`). `dishNutrition` and `roundNutrition` return
+`{ ok: true, ... }` or `{ ok: false, error }` (`lineFigures` cannot fail); none throws or reads a clock or
 random number. The data is the catalogue's `x-nutrition`
 ([data model](data-model.md#ingredient), [catalogue](ingredient-catalogue.md#nutrition)).
 
-- `dishNutrition(derived, { facts, nutrition })` takes the `dish` and
+- `dishNutrition(derived, { facts, nutrition, seasonings? })` takes the `dish` and
   `components` of a `deriveClassic` result, the density and unit weight per
   ingredient id and the nutrients per 100 g per id. A component named by a slot
   (or by a line) is written out into its lines and its own amount is not used,
@@ -1218,7 +1218,50 @@ random number. The data is the catalogue's `x-nutrition`
   figure; otherwise they are absent and named in `notReported`. When nothing is
   counted the figures are zero and `coverage.counted` is 0; the caller says that
   there are no figures.
-- **Edible portion and cooking loss are not applied.** The amounts of a dish are
+- **The figures of a line** (`lineFigures(id, lookup)`, `src/nutrition/figures.ts`,
+  since 2026-11-21). For each of density, unit weight and nutrients per 100 g:
+  the record's own value; else the nearest own value of a record above it (a
+  parent carries a value only when it is true of every row below, by the
+  [grouping rule](ingredient-catalogue.md#grouping-rule)); else, when the record
+  is a group that names a **usual member** (`usualId`, the catalogue's
+  `x-group.usual.id`, [usual member](ingredient-catalogue.md#usual-member)) and
+  that member is really below it, the member's value by the same two steps. A
+  usual member's value serves the group only and is never handed down: "Egg,
+  whole, dried" does not get the piece weight of a fresh egg. The result says
+  where each value came from (`own`, `parent`, `usual`). So a line "6 eggs" that
+  points at `fdc-group-egg-whole` is weighed with 44 g and counted with the
+  figures of "Egg, whole, raw, fresh" (FDC 171287), and "a cup of milk" on
+  `fdc-group-milk` with the density and figures of whole milk (FDC 172217). The
+  amounts shown on the dish are not touched: `deriveClassic` keeps a count a
+  count; only the nutrition reads these facts.
+- **When figures are shown** (`shown`, since 2026-11-21). The result carries
+  `shown: { figures: true }` or `{ figures: false, why, lines }`. `why` is
+  `nothing-counted` (no line counted) or `left-out-matters`, with the lines
+  that keep the figures back. A line left out does **not** keep them back when
+  it is optional (not part of the dish as counted), a **seasoning** (its id is in
+  `input.seasonings`; the app passes the ingredients that USDA files under
+  "Spices and Herbs", on the record or its nearest parent with a category:
+  salt, pepper, spices, dried and fresh herbs, vinegar), an ingredient of at
+  most **`LOW_ENERGY_KCAL_PER_100G` = 50 kcal per 100 g** (whatever its amount,
+  it lowers the energy of what is counted by at most that per 100 g of it:
+  parsley, lemon juice and peel, celery, leafy and watery vegetables), or a
+  `wanted` line that names water (the regex of `isWater`; USDA gives tap water
+  0 kcal, FDC 173647). Anything else left out keeps the figures back, whatever
+  the reason (no amount, weight unknown, no figures, not in the catalogue, a
+  component not found). **Why so strict:** the energy of a portion is a sum, and
+  a sum without a main part does not read as "less exact" but as a different
+  dish: the herb omelette showed "5 kcal / 20 kJ" from its salt and pepper while
+  its eggs (weight unknown) and its 90 g of butter (no figures) were left out.
+  Counting lines did not catch it ("2 of 5" passed the old rule of two counted
+  and a quarter of all, `MIN_COUNTED` and `MIN_SHARE` in the app, now removed);
+  `MIN_MEASURED_FIGURES` (0.8 of the lines with a mass) belongs to the
+  [characters](#characters), counts lines too, and was never applied to the
+  nutrition. The rule here asks of each line left out whether it can carry
+  energy, which is what the figure is about. **Judgements, not sources:** the
+  50 kcal bound, seasonings by USDA's category, and that a line without
+  amount counts like any other (a source that gives butter "for the pan" or
+  sugar "to sprinkle" still adds energy). Not proved: that a seasoning with a
+  large amount is small (none of the shipped dishes has one).
   taken as given (raw, as bought). The [edible portion](#edible-portion) needs the
   state of each amount, which the shipped dishes do not state, and the catalogue
   has refuse yields only for 162 foods and none for cooked states. The docs

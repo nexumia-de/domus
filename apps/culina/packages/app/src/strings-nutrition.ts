@@ -26,6 +26,15 @@ export const nutritionStrings = {
   massShare: (percent: string): string =>
     `The counted ingredients make up ${percent} % of the weight where it is known.`,
   tooFew: 'Nutrition cannot be worked out: too few ingredients have an amount and nutrient data.',
+  notShownLeftOut: (list: string): string =>
+    `No figures are shown: ${list} cannot be counted, and a total without them would mislead.`,
+  asUsual: (list: string): string =>
+    `Where the recipe names no kind, the usual one is counted: ${list}.`,
+  usualItem: (name: string, usual: string): string => `${name} as ${usual}`,
+  seasoningsNote:
+    'Left out of the figures: seasonings, water and foods of at most 50 kcal per 100 g; they are named below.',
+  limits:
+    'Raw figures for a cooked dish: no frying fat taken up, no losses; old sources give rough amounts.',
   moreSummary: 'What was left out, and how it is counted',
   reasons: {
     wanted: 'no catalogue entry',

@@ -25,6 +25,11 @@ export interface DishNutritionInput {
   facts: FactsByIngredient;
   /** The figures per 100 g per ingredient id. */
   nutrition: NutritionById;
+  /**
+   * Ingredient ids that are seasonings (the app passes those USDA files under "Spices and
+   * Herbs"): a seasoning left out does not keep the figures from being shown.
+   */
+  seasonings?: readonly string[];
 }
 
 const CORE = ['kcal', 'kJ', 'proteinG', 'fatG', 'carbohydrateG'] as const;
@@ -91,7 +96,8 @@ const who = (line: DerivedLine | DerivedSlot): { ref?: ComponentRef; wanted?: st
  * ingredient without figures, an optional ingredient. Fibre and salt are reported only when every
  * counted line has the figure (`notReported` names the ones that are not). `massShare` is the
  * counted mass over the mass of all lines whose mass is known, and is absent when a line left out
- * has no known mass.
+ * has no known mass. `shown` says whether the figures may be shown: not when nothing is counted,
+ * and not when a line that matters is left out (see `mattersFor`).
  *
  * @param derived - The `dish` and `components` of a `deriveClassic` result.
  * @param input - Facts (density, unit weight) and figures per 100 g by ingredient id.
@@ -117,15 +123,20 @@ export function dishNutrition(
   let knownLeftG = 0;
   const unknownComponents = notCounted.length;
   let leftUnknown = unknownComponents > 0;
+  // A component the dish does not have may be anything: it matters.
+  const matters: NotCountedLine[] = [...notCounted];
+  const seasonings = new Set(input.seasonings ?? []);
   for (const leaf of all) {
     const { line } = leaf;
     const left = (reason: NotCountedReason, missing?: string[]): void => {
-      notCounted.push({
+      const entry: NotCountedLine = {
         ...place(leaf),
         ...who(line),
         reason,
         ...(missing === undefined ? {} : { missing }),
-      });
+      };
+      notCounted.push(entry);
+      if (mattersFor(line, reason, input, seasonings)) matters.push(entry);
     };
     const amount: Amount | undefined = line.amount;
     if (line.ref === undefined) {
@@ -196,8 +207,49 @@ export function dishNutrition(
       notCounted,
     },
     notReported,
+    shown:
+      counted === 0
+        ? { figures: false, why: 'nothing-counted', lines: [] }
+        : matters.length > 0
+          ? { figures: false, why: 'left-out-matters', lines: matters }
+          : { figures: true },
   };
 }
+
+/**
+ * A left-out ingredient with at most this much energy per 100 g does not keep the figures from
+ * being shown: whatever its amount, it lowers the energy of what is counted by no more than this
+ * per 100 g of it (herbs, lemon, leafy and watery vegetables). A judgement of the project, not a
+ * source; docs/engine-rules.md (Nutrition, When figures are shown).
+ */
+export const LOW_ENERGY_KCAL_PER_100G = 50;
+
+/**
+ * Water as a `wanted` line names it ("Water", "Cold water", "Wasser"): USDA gives tap water
+ * 0 kcal (SR Legacy 2018-04, FDC ID 173647, "Beverages, water, tap, drinking").
+ */
+const WATER = /^(?:(?:ice-?cold|cold|eis|kaltes) )?(?:water|wasser)\b/i;
+
+/**
+ * Whether a line left out keeps the figures from being shown (docs/engine-rules.md, Nutrition,
+ * "When figures are shown"). It does not when it is optional (not part of the dish as counted),
+ * a seasoning, an ingredient of at most `LOW_ENERGY_KCAL_PER_100G`, or water. Anything else left
+ * out (no amount, an amount whose weight is unknown, no figures, not in the catalogue) can be a
+ * main part of the dish's energy: a sum without it misleads.
+ */
+const mattersFor = (
+  line: DerivedLine | DerivedSlot,
+  reason: NotCountedReason,
+  input: DishNutritionInput,
+  seasonings: ReadonlySet<string>,
+): boolean => {
+  if (reason === 'optional') return false;
+  if (line.ref === undefined) return !(line.wanted !== undefined && WATER.test(line.wanted));
+  if (seasonings.has(line.ref.id)) return false;
+  const kcal = input.nutrition[line.ref.id]?.kcal;
+  if (usable(kcal) && kcal <= LOW_ENERGY_KCAL_PER_100G) return false;
+  return true;
+};
 
 const missingOf = (error: ConvertError): string[] | undefined =>
   error.missing ??

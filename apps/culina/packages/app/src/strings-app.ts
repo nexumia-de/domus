@@ -732,6 +732,8 @@ export const appStrings = {
     cuisineAny: 'Any cuisine',
     /** A cuisine by the adjective of its country, never the country's name. */
     cuisines: { de: 'German', it: 'Italian', fr: 'French', es: 'Spanish' },
+    /** The same in the cuisine select, under the label that already says cuisine: short enough for 360 px. */
+    cuisineChoice: { de: 'German', it: 'Italian', fr: 'French', es: 'Spanish' },
     meatFree: 'Without meat and fish',
     completeOnly: 'Only with every amount given',
     reset: 'Show all',

@@ -1,6 +1,6 @@
 {
   "id": "dish-coverage",
-  "description": "A component slot is written out; its lines are counted when they have an amount, grams and figures. Left out: no amount, tablespoon without density, no figures, wanted line, optional line. Counted 100 g flour + 4 x 50 g egg = 600 kcal, 2490 kJ, 34 g protein, 21 g fat, 62 g carbohydrate, 3 g fibre, 282 mg sodium = 0.705 g salt; divided by 4. No mass share: three lines left out have no known mass",
+  "description": "A component slot is written out; its lines are counted when they have an amount, grams and figures. Left out: no amount, tablespoon without density, no figures, wanted line, optional line. Counted 100 g flour + 4 x 50 g egg = 600 kcal, 2490 kJ, 34 g protein, 21 g fat, 62 g carbohydrate, 3 g fibre, 282 mg sodium = 0.705 g salt; divided by 4. No mass share: three lines left out have no known mass. Not shown: the spice (no amount), the herb (weight unknown) and the mystery ingredient have no figures and are no seasonings; the wanted Water and the optional line do not keep the figures from being shown",
   "inputs": {
     "kind": "nutrition_dish",
     "derived": {
@@ -192,7 +192,32 @@
         }
       ]
     },
-    "notReported": []
+    "notReported": [],
+    "shown": {
+      "figures": false,
+      "why": "left-out-matters",
+      "lines": [
+        {
+          "componentId": "sauce",
+          "index": 1,
+          "ref": { "kind": "ingredient", "id": "inv-spice" },
+          "reason": "no-amount"
+        },
+        {
+          "componentId": "sauce",
+          "index": 2,
+          "ref": { "kind": "ingredient", "id": "inv-herb" },
+          "reason": "cannot-convert",
+          "missing": ["densityGPerMl"]
+        },
+        {
+          "componentId": "sauce",
+          "index": 3,
+          "ref": { "kind": "ingredient", "id": "inv-mystery" },
+          "reason": "no-nutrition"
+        }
+      ]
+    }
   },
   "tolerance": 1e-9,
   "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."

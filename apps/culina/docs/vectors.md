@@ -271,10 +271,11 @@ food (the shipped numbers are read from USDA by the generator, never typed);
 expected values are computed by hand. `expected` is compared deeply with the
 vector's `tolerance`.
 
-| `kind`            | Inputs                                                                                                            | Expected                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `nutrition_dish`  | `derived` (`dish` with `portions` and `slots`, `components`, as `deriveClassic` gives them), `facts`, `nutrition` | `portions`, `perPortion`, `countedGPerPortion`, `coverage`, `notReported`; or `error_code` |
-| `nutrition_round` | `figures` (a `PortionNutrients`)                                                                                  | `rounded`; or `error_code` `invalid-value` with `error_detail.field`                       |
+| `kind`              | Inputs                                                                                                                                         | Expected                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `nutrition_dish`    | `derived` (`dish` with `portions` and `slots`, `components`, as `deriveClassic` gives them), `facts`, `nutrition`, optional `seasonings` (ids) | `portions`, `perPortion`, `countedGPerPortion`, `coverage`, `notReported`, `shown`; or `error_code` |
+| `nutrition_figures` | `records` (id to `FigureRecord`: `parentId`, `densityGPerMl`, `unitWeightG`, `nutrition`, `usualId`), `ids`                                    | per id the `lineFigures` result: `facts`, `nutrition`, `from`                                       |
+| `nutrition_round`   | `figures` (a `PortionNutrients`)                                                                                                               | `rounded`; or `error_code` `invalid-value` with `error_detail.field`                                |
 
 ## Kinds of substitute effects (issue 93)
 

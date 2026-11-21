@@ -493,6 +493,9 @@ const surprise = async (page, origin) => {
     `${label}: control: back on the screen with the same filter, "none found" is still there`,
   );
   await toList();
+  // The list folds its filter behind a summary line; open it when it is closed.
+  const fold = page.locator('details.dish-filter-fold');
+  if (!(await fold.evaluate((d) => d.open))) await fold.locator('summary').click();
   await page.getByLabel('What it is like', { exact: true }).selectOption('');
   await toPick();
   check(

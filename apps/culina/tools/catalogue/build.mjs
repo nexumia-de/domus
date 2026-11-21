@@ -15,6 +15,7 @@ import { groupRows } from './group.mjs';
 import { nutritionOf } from './nutrition.mjs';
 import { mergeOwnNames, ownNamesDataset } from './own-names.mjs';
 import { germanNames } from './wikidata.mjs';
+import { applyUsual } from './usual.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
 const extrasFile = fileURLToPath(new URL('./extras.json', import.meta.url));
@@ -24,6 +25,10 @@ export const EXTRAS = new Map(
 );
 /** Whether the food is a row of the catalogue: selected by the rule or named in extras.json. */
 export const isSelected = (food) => isBasic(food) || EXTRAS.has(food.fdcId);
+
+const usualFile = fileURLToPath(new URL('./usual.json', import.meta.url));
+/** The usual member of a parent whose rows do not agree (usual.json, a judgement). */
+export const USUAL = JSON.parse(readFileSync(usualFile, 'utf8'));
 
 const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
 const ownNamesFile = fileURLToPath(new URL('./names-de-own.json', import.meta.url));
@@ -162,7 +167,8 @@ const main = () => {
   const own = mergeOwnNames(generated, ownNames);
   if (own.unknown.length > 0)
     throw new Error(`names-de-own.json: unknown ids ${own.unknown.join(', ')}`);
-  const ingredients = own.ingredients;
+  // The usual member of a parent whose rows do not agree (a judgement, usual.json).
+  const ingredients = applyUsual(own.ingredients, USUAL);
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,

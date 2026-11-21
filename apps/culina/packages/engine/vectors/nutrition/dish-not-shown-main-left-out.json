@@ -1,0 +1,118 @@
+{
+  "id": "dish-not-shown-main-left-out",
+  "description": "The shape of the herb omelette before groups had figures: 6 eggs by count with no unit weight, 90 g of an ingredient without figures, 5 g salt and 3 g pepper counted, parsley without amount, a wanted stock with an amount and a wanted cold water without. Only the seasonings are counted (5 g x 0 kcal + 3 g x 250 kcal/100 g = 7.5 kcal, 31.5 kJ; / 2 portions). The figures are not shown: the eggs (150 kcal per 100 g), the 90 g without figures and the stock (not in the catalogue) are left out. The parsley (36 kcal per 100 g, at most LOW_ENERGY_KCAL_PER_100G) and the water do not keep the figures from being shown",
+  "inputs": {
+    "kind": "nutrition_dish",
+    "derived": {
+      "dish": {
+        "id": "example-omelette",
+        "name": "Example omelette",
+        "portions": 2,
+        "slots": [
+          {
+            "role": "main",
+            "ref": { "kind": "ingredient", "id": "inv-egg" },
+            "amount": { "value": 6, "unit": "count" }
+          },
+          {
+            "role": "season",
+            "ref": { "kind": "ingredient", "id": "inv-salt" },
+            "amount": { "value": 5, "unit": "g" }
+          },
+          {
+            "role": "season",
+            "ref": { "kind": "ingredient", "id": "inv-pepper" },
+            "amount": { "value": 3, "unit": "g" }
+          },
+          { "role": "herb", "ref": { "kind": "ingredient", "id": "inv-parsley" } },
+          {
+            "role": "fat",
+            "ref": { "kind": "ingredient", "id": "inv-fat" },
+            "amount": { "value": 90, "unit": "g" }
+          },
+          { "role": "liquid", "wanted": "Stock", "amount": { "value": 100, "unit": "ml" } },
+          { "role": "garnish", "wanted": "Cold water" }
+        ]
+      },
+      "components": []
+    },
+    "facts": {},
+    "nutrition": {
+      "inv-egg": { "kcal": 150, "kJ": 620, "proteinG": 12, "fatG": 10, "carbohydrateG": 1 },
+      "inv-salt": {
+        "kcal": 0,
+        "kJ": 0,
+        "proteinG": 0,
+        "fatG": 0,
+        "carbohydrateG": 0,
+        "fibreG": 0,
+        "sodiumMg": 39000
+      },
+      "inv-pepper": {
+        "kcal": 250,
+        "kJ": 1050,
+        "proteinG": 10,
+        "fatG": 3,
+        "carbohydrateG": 64,
+        "fibreG": 25,
+        "sodiumMg": 20
+      },
+      "inv-parsley": {
+        "kcal": 36,
+        "kJ": 151,
+        "proteinG": 3,
+        "fatG": 1,
+        "carbohydrateG": 6,
+        "fibreG": 3,
+        "sodiumMg": 56
+      }
+    },
+    "seasonings": ["inv-salt", "inv-pepper"]
+  },
+  "expected": {
+    "portions": 2,
+    "perPortion": {
+      "kcal": 3.75,
+      "kJ": 15.75,
+      "proteinG": 0.15,
+      "fatG": 0.045,
+      "carbohydrateG": 0.96,
+      "fibreG": 0.375,
+      "saltG": 2.43825
+    },
+    "countedGPerPortion": 4,
+    "coverage": {
+      "counted": 2,
+      "total": 7,
+      "notCounted": [
+        {
+          "index": 0,
+          "ref": { "kind": "ingredient", "id": "inv-egg" },
+          "reason": "cannot-convert",
+          "missing": ["unitWeightG"]
+        },
+        { "index": 3, "ref": { "kind": "ingredient", "id": "inv-parsley" }, "reason": "no-amount" },
+        { "index": 4, "ref": { "kind": "ingredient", "id": "inv-fat" }, "reason": "no-nutrition" },
+        { "index": 5, "wanted": "Stock", "reason": "wanted" },
+        { "index": 6, "wanted": "Cold water", "reason": "wanted" }
+      ]
+    },
+    "notReported": [],
+    "shown": {
+      "figures": false,
+      "why": "left-out-matters",
+      "lines": [
+        {
+          "index": 0,
+          "ref": { "kind": "ingredient", "id": "inv-egg" },
+          "reason": "cannot-convert",
+          "missing": ["unitWeightG"]
+        },
+        { "index": 4, "ref": { "kind": "ingredient", "id": "inv-fat" }, "reason": "no-nutrition" },
+        { "index": 5, "wanted": "Stock", "reason": "wanted" }
+      ]
+    }
+  },
+  "tolerance": 1e-9,
+  "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand (salt: 5 g x 39000 mg + 3 g x 20 mg per 100 g = 1950.6 mg sodium x 2.5 / 1000 / 2 = 2.43825 g)."
+}

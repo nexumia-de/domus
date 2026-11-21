@@ -355,7 +355,10 @@ export type {
 export { SALT_PER_SODIUM, dishNutrition } from './nutrition/dish';
 export type { DishNutritionInput } from './nutrition/dish';
 export { ROUNDING_SOURCE, roundNutrition } from './nutrition/round';
+export { lineFigures } from './nutrition/figures';
+export type { FigureLookup, FigureOrigin, FigureRecord, LineFigures } from './nutrition/figures';
 export type {
+  NutritionShown,
   NotCountedLine,
   NotCountedReason,
   NutrientsPer100g,

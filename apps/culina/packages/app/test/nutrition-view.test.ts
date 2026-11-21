@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { deriveClassic, dishNutrition, roundNutrition } from '@culina/engine';
 import type { Classic } from '@culina/engine';
-import { nutritionView, type Lookup } from '../src/classics/nutrition-view';
+import { nutritionView, ownNutritionView, type Lookup } from '../src/classics/nutrition-view';
 import type { IngredientRecord } from '../src/records';
 import { strings } from '../src/strings';
 import { FORBIDDEN } from './wording';
@@ -93,19 +93,37 @@ describe('the coverage', () => {
     expect(shown.coverage).toBe('Counted 1 of 3 ingredients.');
     expect(shown.notCounted).toContain('name of fdc-173410 (no nutrient data)');
   });
-  test('too few counted (none, one, or under a quarter): one short line instead of figures', () => {
-    // One of three is counted: the engine's figures exist, but they stand for one ingredient only.
-    const one: Lookup = (id) => (id === 'fdc-173410' ? byId.get(id) : undefined);
-    const few = view(PAN_DISH, 2, one);
+  test('an ingredient that matters left out: no figures, and the line says which', () => {
+    // The oil (200 to 300 ml) has no record here: its weight and energy are unknown, and it is no
+    // seasoning, so a sum of the rest would read as the dish's. Salt (no amount) does not hide it.
+    const noOil: Lookup = (id) => (id === 'fdc-171413' ? undefined : byId.get(id));
+    const few = view(PAN_DISH, 2, noOil);
     expect(few.tooFew).toBe(true);
     expect(few.rows).toEqual([]);
     expect(few.notShown).toEqual([]);
-    expect(few.notCounted).toContain('(');
-    expect(view(PAN_DISH, 2).tooFew).toBe(false);
-    expect(view(PAN_DISH, 2).rows.length).toBeGreaterThan(0);
-    expect(strings.nutrition.tooFew).toBe(
-      'Nutrition cannot be worked out: too few ingredients have an amount and nutrient data.',
+    expect(few.why).toBe(
+      'No figures are shown: name of fdc-171413 cannot be counted, and a total without them would mislead.',
     );
+    expect(view(PAN_DISH, 2).tooFew).toBe(false);
+    expect(view(PAN_DISH, 2).why).toBeUndefined();
+    expect(view(PAN_DISH, 2).rows.length).toBeGreaterThan(0);
+  });
+  test('a seasoning left out does not hide the figures', () => {
+    // Salt is filed by USDA under "Spices and Herbs"; here it has no amount, as in the source.
+    // A control: it held before the rule of 2026-11-21 too, and pins that the rule leaves it so.
+    expect(view(PAN_DISH, 2).notCounted).toBe('Not counted: name of fdc-173468 (no amount).');
+    expect(view(PAN_DISH, 2).tooFew).toBe(false);
+  });
+  test('a line that names a group is counted with its usual member, and says so', () => {
+    const asGroup: Classic = JSON.parse(
+      JSON.stringify(PAN_DISH).replace('"fdc-173410"', '"fdc-group-butter"'),
+    ) as Classic;
+    const shown = view(asGroup, 2);
+    expect(shown.coverage).toBe(view(PAN_DISH, 2).coverage);
+    expect(shown.asUsual).toBe(
+      'Where the recipe names no kind, the usual one is counted: name of fdc-group-butter as name of fdc-173430.',
+    );
+    expect(view(PAN_DISH, 2).asUsual).toBeUndefined();
   });
   test('nothing counted: no rows and no figures', () => {
     const none = view(PAN_DISH, 2, () => undefined);
@@ -171,5 +189,36 @@ describe('the wording', () => {
         /\b(healthy|unhealthy|high|low|good|great|light|heavy|daily|recommended|reference intake|% of)\b/i,
       );
     }
+  });
+});
+
+describe('an own dish', () => {
+  const raw = [{ ingredientId: 'fdc-group-egg-whole', name: 'Egg', g: 100 }];
+  test('a group is counted with its usual member, named in the user’s words', () => {
+    const shown = ownNutritionView({ raw, unmeasured: [], optional: [] }, 1, lookup, NAMES);
+    if (!shown.ok) throw new Error(shown.code);
+    expect(shown.view.tooFew).toBe(false);
+    // 100 g of fresh egg (FDC 171287): 143 kcal, 599 kJ.
+    expect(shown.view.rows[0]?.value).toBe('140 kcal / 600 kJ');
+    expect(shown.view.asUsual).toBe(
+      'Where the recipe names no kind, the usual one is counted: Egg as name of fdc-171287.',
+    );
+  });
+  test('a line without amount and a slot whose weight is unknown hide the figures', () => {
+    // An own line without amount reaches the view by its name only (no ingredient to judge it by).
+    // Not proved: that it is no seasoning; it hides the figures all the same.
+    const unmeasured = ownNutritionView({ raw, unmeasured: ['Parsley'], optional: [] }, 1, lookup);
+    if (!unmeasured.ok) throw new Error(unmeasured.code);
+    expect(unmeasured.view.tooFew).toBe(true);
+    const unweighed = ownNutritionView(
+      { raw, unmeasured: [], unweighed: ['Milk, 1 cup'], optional: [] },
+      1,
+      lookup,
+    );
+    if (!unweighed.ok) throw new Error(unweighed.code);
+    expect(unweighed.view.tooFew).toBe(true);
+    expect(unweighed.view.why).toBe(
+      'No figures are shown: Milk, 1 cup cannot be counted, and a total without them would mislead.',
+    );
   });
 });
