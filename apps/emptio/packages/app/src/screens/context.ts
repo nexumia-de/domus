@@ -18,6 +18,8 @@ export interface Ctx {
 /** A screen: its node, and `update` for a change of the app's state while it is shown. */
 export interface Screen {
   node: HTMLElement;
+  /** The title of the page, shown in the header (the body does not repeat it). */
+  title(): string;
   /** What stays at the bottom of the window while the screen scrolls. */
   dock?: HTMLElement;
   update(): void;

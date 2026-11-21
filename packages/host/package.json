@@ -9,7 +9,9 @@
     ".": "./src/index.ts",
     "./service-worker": "./src/service-worker.ts",
     "./testing/browser": "./testing/browser.mjs",
-    "./testing/fake-github": "./testing/fake-github.mjs"
+    "./testing/fake-github": "./testing/fake-github.mjs",
+    "./frame": "./src/frame/index.ts",
+    "./frame.css": "./src/frame/frame.css"
   },
   "engines": {
     "node": ">=22.12.0"

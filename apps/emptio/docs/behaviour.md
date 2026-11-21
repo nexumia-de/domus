@@ -24,15 +24,33 @@ Linux app shows the same list ([native Linux app](native-linux.md)).
 # The frame
 
 The app fills the window and is fixed to its edges
-(`styles/frame.css`): the header with the name on top, the content in
-between, and at the bottom the dock of the screen and the navigation
-(List, Categories, Settings; an entry counts as List). Only the content
-scrolls, so header and bottom bar are always there; the page itself
-never scrolls and no height in viewport units is used, which is not the
-visible height in every browser and installed app. From 720 px the
-navigation is a rail at the side. With little height and a name in the
-add field (a phone with its keyboard up) the navigation makes room for
-the list.
+(`styles/frame.css`). Principle: **header = place and actions, body =
+the list, bottom = the input.**
+
+- **Header** (the shared one of the host package,
+  [frame](../../../packages/host/docs/frame.md)): the title of the page
+  (Shopping list, Categories, Settings, the name of an entry), a back
+  arrow on the left of every subpage, and on the right the small sync
+  icon, and on the list the icons for Categories and Settings. There is
+  no bottom navigation. The body starts with content and never repeats
+  the title. With several spaces (or a shared one) the list's header says
+  which space it shows, under the title; several can be switched there.
+- **Sync icon**: one icon for the state (on this device only, not
+  synced yet, syncing, synced, error, offline) with the status in words
+  as its accessible name and tooltip; a tap says the details in a toast
+  ("Synced 2 min ago"). Only on an error a slim banner under the header
+  says "Sync failed." with Retry. Offline is not an error.
+- **Toast**: what was done last is a short message at the lower edge of
+  the content, above the add field, in the theme's tokens (`--surface-2`,
+  `--text`, accent for Undo), gone after 3 s (4.5 s with Undo). Adding an
+  entry offers Undo (removes it); raising one that was there, clearing
+  and removing offer Undo as before. A toast is a live region.
+- **Dock**: the add field is the only permanent element at the bottom.
+
+Only the content scrolls, so header and add field are always there; the
+page itself never scrolls and no height in viewport units is used, which
+is not the visible height in every browser and installed app. From 720 px
+the content stays centred and header and add field span the window.
 
 # The list
 
@@ -55,11 +73,34 @@ the list.
   be wrong; changing the category on the entry is remembered for the
   next time.
 - **Open entries** by priority, under each priority by category, then by
-  name ([rule 1](engine-rules.md#1-order-at-home)). A tick box of 44 px
-  marks an entry as bought; the rest of the row opens it.
+  name ([rule 1](engine-rules.md#1-order-at-home)), as chosen under
+  [filter and sort](#filter-and-sort). A tick box of 44 px marks an
+  entry as bought; the rest of the row opens it.
 - **Bought** entries stand below, the latest first, with their count.
-  "Clear bought" removes them and offers Undo for ten seconds.
-- What was done last is said in a line at the bottom (a live region).
+  "Clear bought" removes them and offers Undo.
+- What was done last is a [toast](#the-frame).
+
+# Filter and sort
+
+One slim row above the list: a chip for each urgency (Now, Soon,
+Sometime) with the count of open entries, and a sort button (native
+picker). Both are a choice of this device (`emptio.shown`,
+`emptio.sort` in its prefs); they only change what is shown, never an
+entry, the shared order or any other device.
+
+- **Show by urgency**: by default Now and Soon; Sometime is hidden but
+  counted (chip count, and "Show 3 more for Sometime" below the list,
+  one tap shows them). Each chip toggles. Nothing selected says so.
+  Bought entries are always listed.
+- **Sort**: _Store order_ (default, rule 1: urgency, then category with
+  its heading, then name); _Urgency_ (sections by urgency, by name, no
+  category headings); _Name_ (one flat list A to Z, the urgency on each
+  row); _Recently added_ (one flat list, newest first, urgency on each
+  row).
+
+The arrangement is `list/view.ts` (pure, `test/view.test.ts`); it is a
+display choice and not an engine rule, so it has no vector. A new
+entry of a hidden urgency is added all the same and counted.
 
 # An entry
 
@@ -80,7 +121,7 @@ Entries of a hidden or removed category are listed under Other.
 
 # Settings
 
-Which space's list is shown, with the sync status of each space and a
+Which space's list is shown (the title of the page is in the header, the back arrow leads to the list), with the sync status of each space and a
 link to it in the Household app; language (device, English, German; a
 change reloads the page); appearance (device, light, dark); what the app
 is. A choice that cannot be kept (no storage in the browser) is said.
@@ -143,7 +184,7 @@ has a storage no request leaves the address.
   sharing a list through a storage in memory. These use the memory
   store, an injected clock that only moves forward and a fake storage:
   they prove the logic, not IndexedDB, a real storage or real clocks.
-- **Browser** (`npm run e2e -w @emptio/app`, 189 checks on 2026-11-20):
+- **Browser** (`npm run e2e -w @emptio/app`, 264 checks on 2026-11-21):
   every screen at 360 × 720 in English and German and at 1200 × 800,
   tap targets of 44 px, no horizontal overflow, Tab reaches every
   control, real IndexedDB across a reload, offline with the service
@@ -151,7 +192,11 @@ has a storage no request leaves the address.
   GitHub's API (sealed files, a tick arriving without a reload within
   the polling time, the token going to that host only).
   The frame is checked in a low Chromium window only (header and
-  bottom bar stay, only the content scrolls).
+  add field stay, only the content scrolls). Also checked: the header
+  per page with back arrow, the sync icon and its error banner with
+  Retry (against the fake storage forced to fail), the toast in both
+  colour schemes, above the add field, with Undo and its 3 s, each
+  filter and sort and their survival of a reload.
   Not proven: the real GitHub, a phone with its keyboard up, an
   installed app, two real devices, another browser than
   Chromium, contrast, a screen reader, real touch.

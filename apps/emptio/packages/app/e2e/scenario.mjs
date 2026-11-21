@@ -1,6 +1,6 @@
 // Stage 1 of a run, on one device with nothing in it: the first start, adding, suggestions,
 // ticking, a reload (real IndexedDB) and "Clear bought". Later stages go on with what is left.
-import { add, tapAudit, ok, openApp, rowOf, rows, said } from './driver.mjs';
+import { add, tapAudit, ok, openApp, rowOf, rows, said, showAll } from './driver.mjs';
 
 const text = (page, selector) => page.locator(selector).first().innerText();
 const boughtTitle = (page, label) =>
@@ -17,20 +17,56 @@ export async function listStage(run, { page }) {
   });
   await openApp(page, server.origin);
   await page.waitForFunction(
-    (s) => document.querySelector('.space-status')?.textContent === s,
+    (s) => document.querySelector('.fr-sync')?.getAttribute('aria-label') === s,
     t.status.deviceOnly,
   );
 
   await ok(run, 'first start: the empty state', async () =>
     (await text(page, '.empty')).includes(t.list.empty),
   );
+  await ok(run, 'frame: the header says the page, the body does not repeat it', async () => {
+    const heading = await page.locator('h1').allInnerTexts();
+    return (
+      heading.length === 1 &&
+      heading[0] === t.list.title &&
+      (await page.locator('main h1, main h2').allInnerTexts()).every((s) => s !== t.list.title) &&
+      (await page.locator('.app-header, .app-nav, .space-line').count()) === 0
+    );
+  });
   await ok(
     run,
-    `first start: the space line says "${t.space.home}" and "${t.status.deviceOnly}"`,
-    async () =>
-      (await text(page, '.space-name')) === t.space.home &&
-      (await text(page, '.space-status')) === t.status.deviceOnly,
+    'frame: the header has no back arrow on the list; categories and settings are icons',
+    async () => {
+      const header = page.locator('.fr-header');
+      return (
+        (await header.getByRole('link', { name: t.nav.back, exact: true }).count()) === 0 &&
+        (await header.getByRole('link', { name: t.nav.settings, exact: true }).count()) === 1 &&
+        (await header.getByRole('link', { name: t.nav.categories, exact: true }).count()) === 1
+      );
+    },
   );
+  await ok(
+    run,
+    `header sync icon: "${t.status.deviceOnly}" as name and tooltip, 44 px, no status line in the body`,
+    async () => {
+      const button = page.locator('.fr-sync');
+      const box = await button.boundingBox();
+      return (
+        (await button.getAttribute('title')) === t.status.deviceOnly &&
+        (await button.getAttribute('data-sync')) === 'local' &&
+        (await button.locator('svg').count()) === 1 &&
+        box.width >= 44 &&
+        box.height >= 44 &&
+        (await page.locator('.space-status').count()) === 0 &&
+        (await page.locator('.fr-banner:not([hidden])').count()) === 0
+      );
+    },
+  );
+  await ok(run, 'header sync icon: a tap shows the details in a toast', async () => {
+    await page.locator('.fr-sync').click();
+    await said(page, t.status.deviceOnly);
+    return true;
+  });
   await ok(run, "first start: no request left the page's own origin", () => outside.length === 0);
   await ok(run, 'list: no small tap target, no overflow (empty)', async () => {
     const a = await tapAudit(page);
@@ -65,8 +101,8 @@ export async function listStage(run, { page }) {
         const main = document.querySelector('main');
         return (
           document.documentElement.scrollHeight === innerHeight &&
-          box('.app-header').top === 0 &&
-          Math.max(box('.app-nav').bottom, box('.app-dock').bottom) === innerHeight &&
+          box('.fr-header').top === 0 &&
+          box('.app-dock').bottom === innerHeight &&
           main.scrollHeight > main.clientHeight
         );
       }),
@@ -89,7 +125,7 @@ export async function listStage(run, { page }) {
     return (
       list.filter((r) => r.name.toLowerCase() === 'milk').length === 1 &&
       list.length === 2 &&
-      (await text(page, '.live')).includes(t.list.raised('MILK'))
+      (await text(page, '.fr-toast')).includes(t.list.raised('MILK'))
     );
   });
 
@@ -134,6 +170,7 @@ export async function clearStage(run, { page }) {
   const { t } = run;
   await page.goto(`${run.server.origin}/#/`);
   await page.waitForSelector('.entry');
+  await showAll(page);
   // Each tick redraws the list, so the first open tick is looked up again every time.
   const open = page.locator('.entry:not(.entry-bought) .tick');
   // (A plain click: `check()` would look at a box that the redraw has already replaced.)
@@ -156,7 +193,7 @@ export async function clearStage(run, { page }) {
     'Clear bought empties the list and says how many',
     async () => (await rows(page)).length === 0 && (await page.locator('.empty').count()) === 1,
   );
-  await page.locator('.live').getByRole('button', { name: t.list.undo, exact: true }).click();
+  await page.locator('.fr-toast').getByRole('button', { name: t.list.undo, exact: true }).click();
   await page.waitForSelector('.entry');
   await ok(run, 'Undo brings the cleared entries back, still bought', async () => {
     const list = await rows(page);

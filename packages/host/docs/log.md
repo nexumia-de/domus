@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (frame)
+
+- **The frame**: `src/frame/` with `createHeader`, `headerLink`, `headerButton`, `createSyncIndicator`, `syncDisplay`, `createToaster` and `frame.css`, as entries `@nexumia-de/hospes/frame` and `/frame.css`, written with Emptio's new frame (the first user; Mixtura and Culina follow). New exports only. [Frame](frame.md). `test/frame.test.ts`.
+
 ## 2026-11-21 (later)
 
 - **Sync status in words**: `status-text.ts` with `statusText`, `ago` and `StatusWords`, moved from Emptio's `list/status.ts` when Mixtura's native app needed the same line; the words stay each app's (Emptio's `strings.status`, Mixtura's native texts). Emptio re-exports it. New exports only. `test/status-text.test.ts` pins the kinds, the age steps, the unknown failure and offline with words of its own.

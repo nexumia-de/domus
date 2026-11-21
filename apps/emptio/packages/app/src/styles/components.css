@@ -1,4 +1,3 @@
-.back,
 .choice-link,
 .plain-link {
   display: inline-flex;
@@ -77,23 +76,104 @@ button.danger {
 
 /* The list */
 
-.space-line {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-2);
+.space-select {
+  max-width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--text-muted);
+  font: inherit;
   font-size: var(--fs-sm);
 }
 
-.space-name {
+/* The urgencies shown and the order: one row, no wrapping at 360 px. */
+.list-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.filter-chip {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-width: 0;
+  min-height: var(--target);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.filter-chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
   font-weight: 600;
 }
 
-.space-select {
-  width: auto;
-  max-width: 100%;
+.filter-chip.chip-now[aria-pressed='true'] {
+  border-color: var(--now);
+  background: var(--now-soft);
+}
+
+.filter-count {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+}
+
+.sort-pick {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+  border-radius: 50%;
+  color: var(--text);
+}
+
+.sort-pick:hover {
+  background: var(--surface-2);
+}
+
+.sort-pick:has(select:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* The native picker is the control; the drawing is what the eye sees. */
+.sort-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.more-line {
+  margin: var(--sp-3) 0;
+}
+
+.entry-prio {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.prio-now {
+  color: var(--now);
 }
 
 .add-row {

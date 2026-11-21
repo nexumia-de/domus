@@ -17,6 +17,7 @@ import {
   serveDir,
 } from '@nexumia-de/hospes/testing/browser';
 import { categoriesStage, entryStage } from './entry-scenario.mjs';
+import { toastStage, viewStage } from './frame-scenario.mjs';
 import { clearStage, listStage } from './scenario.mjs';
 import { offlineStage, screensStage, settingsStage } from './settings-scenario.mjs';
 import { syncStage } from './sync-scenario.mjs';
@@ -57,6 +58,8 @@ const runs = [
 const only = process.env.E2E_ONLY?.split(',');
 const stages = [
   listStage,
+  toastStage,
+  viewStage,
   entryStage,
   categoriesStage,
   screensStage,

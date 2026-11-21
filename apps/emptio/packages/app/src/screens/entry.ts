@@ -11,7 +11,8 @@ const APPS: Record<string, string> = { culina: "Cook's Notebook", mixtura: 'Drin
 export function entryScreen(ctx: Ctx, id: string): Screen {
   const { app, t } = ctx;
   const node = h('div', { class: 'screen screen-entry' });
-  const back = h('a', { class: 'back', href: hashFor.list }, `‹ ${t.nav.back}`);
+  /** What the header says: the entry's name once it is there. */
+  let title = t.entry.title;
   /** The form is built once, when the entry is first there: a sync must not wipe what is typed. */
   let built = false;
 
@@ -122,8 +123,6 @@ export function entryScreen(ctx: Ctx, id: string): Screen {
         });
     });
     node.replaceChildren(
-      back,
-      h('h1', {}, entry.name),
       form,
       h(
         'p',
@@ -139,14 +138,15 @@ export function entryScreen(ctx: Ctx, id: string): Screen {
     if (state.phase === 'loading') return;
     const entry = state.entries.find((e) => e.id === id);
     if (entry !== undefined) {
+      title = entry.name;
       if (!built) build(entry);
       return;
     }
     built = false;
-    node.replaceChildren(back, h('h1', {}, t.entry.title), h('p', {}, t.entry.gone));
+    title = t.entry.title;
+    node.replaceChildren(h('p', {}, t.entry.gone));
   }
 
-  node.append(back, h('h1', {}, t.entry.title));
   update();
-  return { node, update };
+  return { node, title: () => title, update };
 }
