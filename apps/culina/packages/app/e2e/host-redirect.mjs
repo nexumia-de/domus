@@ -9,7 +9,7 @@ export const hostRedirect = async (browser, server) => {
   const problems = watch(context, server.origin);
   const page = await context.newPage();
   const ratios = () =>
-    page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+    page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   const plain = await context.request.get(`${server.url}index.html`, { maxRedirects: 0 });
   check(plain.status() === 307, `${label}: the test host answers index.html with 307`);
   await page.goto(server.url);

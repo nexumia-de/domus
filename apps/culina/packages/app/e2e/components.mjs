@@ -107,19 +107,21 @@ const phone = async (browser, origin) => {
     await page.evaluate(() => document.activeElement === document.body),
     `${label}: dishes open with nothing focused (no text field)`,
   );
+  // The list holds the shipped dishes too (e2e/dish-browse.mjs); here only the notebook's rows.
+  const own = () => page.locator('.dish-row-own .entry-name').allTextContents();
   check(
     same(
-      await names(page),
+      await own(),
       fx.byName(fx.dishes).map((d) => d.name),
     ),
     `${label}: the dish list shows the ${fx.dishes.length} example dishes`,
   );
   check(
-    (await names(page)).every((n) => n.startsWith('Example')),
+    (await own()).every((n) => n.startsWith('Example')),
     `${label}: the example dishes are marked as examples in their name`,
   );
   await page.getByLabel('Search by name').fill('plate');
-  check(same(await names(page), [fx.dish(PLATE).name]), `${label}: dish search filters by name`);
+  check(same(await own(), [fx.dish(PLATE).name]), `${label}: dish search filters by name`);
   await page.getByLabel('Search by name').fill('');
   small = await smallTargets(page);
   check(small.length === 0, `${label}: dish list targets at least 44 x 44 ${small.join('; ')}`);

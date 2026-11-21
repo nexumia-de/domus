@@ -1,12 +1,12 @@
 // Smoke tests: shell, navigation, targets, theme, offline, no foreign requests.
 import { check, watch } from './harness.mjs';
 
-// The stock screens and the classics are shown under the Cook entry, the components and dishes under
-// the Notebook; Settings is the gear in the header on a phone and the last entry of the rail from 720 px.
+// The stock screens are shown under the Cook entry, the components and dishes under the Notebook;
+// the old address of the classics lands on the one list of dishes, so under the Notebook too; Settings is the gear in the header on a phone and the last entry of the rail from 720 px.
 const ROUTES = ['start', 'classics', 'ratios', 'components', 'dishes', 'cook', 'stock', 'settings'];
 const NAMES = {
   start: 'Start',
-  classics: 'Cook',
+  classics: 'Notebook',
   ratios: 'Ratios',
   components: 'Notebook',
   dishes: 'Notebook',
@@ -15,13 +15,13 @@ const NAMES = {
   settings: 'Settings',
 };
 const HEADINGS = {
-  start: 'What do you want to cook?',
+  start: 'What do you feel like?',
   ratios: 'Ratios',
   components: 'Components',
   dishes: 'Dishes',
   cook: 'What can I cook',
   settings: 'Settings',
-  classics: 'Classics by country',
+  classics: 'Dishes',
   stock: 'What is there',
 };
 
@@ -149,7 +149,7 @@ const shellAt = async (browser, origin, width, height) => {
   check(true, `${width}px: browser back returns to Ratios (one back stack)`);
 
   await page.goto(`${origin}/?no-sw#/nope`);
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   check(page.url().endsWith('#/start'), `${width}px: unknown route becomes #/start`);
 
   check(
@@ -216,7 +216,7 @@ const offline = async (browser, origin, label) => {
   const problems = watch(context, new URL(origin).origin);
   const page = await context.newPage();
   await page.goto(origin);
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   await controlled(page);
   check(true, `${label}: the service worker controls the page`);
   const names = await page.evaluate(() => caches.keys());
@@ -226,7 +226,7 @@ const offline = async (browser, origin, label) => {
   );
   await context.setOffline(true);
   await page.reload();
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   await page.getByRole('navigation').getByRole('link', { name: 'Notebook' }).click();
   await page.getByRole('heading', { level: 1, name: 'Components' }).waitFor();
   await page.getByRole('link', { name: 'Dishes', exact: true }).click();

@@ -689,7 +689,7 @@ export const appStringsDe: typeof appStrings = {
   browse: {
     filtersLabel: 'Worauf du Lust hast',
     originLabel: 'Von',
-    originAny: 'Meine und mitgelieferte',
+    originAny: 'Alle Gerichte',
     origin: { own: 'Meine Gerichte', shipped: 'Mitgelieferte Gerichte' },
     characterLabel: 'Wie es ist',
     characterAny: 'Egal',
@@ -702,6 +702,11 @@ export const appStringsDe: typeof appStrings = {
     reset: 'Alle zeigen',
     none: 'Kein Gericht passt zu dieser Auswahl.',
     count: (n: number): string => (n === 1 ? '1 Gericht' : `${n} Gerichte`),
+    /** Where a row's dish comes from, said when the list holds both. */
+    rowOrigin: { own: 'Mein Gericht', shipped: 'Mitgeliefert' },
+    /** The start screen: every dish under the one filter, then the tools. */
+    startTitle: 'Worauf hast du Lust?',
+    startListLabel: 'Passende Gerichte',
   },
   nutrition: nutritionStringsDe,
   // Texts for the store's error codes; the editing screens show them.

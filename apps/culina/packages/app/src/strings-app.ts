@@ -665,7 +665,7 @@ export const appStrings = {
   browse: {
     filtersLabel: 'What you feel like',
     originLabel: 'From',
-    originAny: 'Mine and shipped',
+    originAny: 'All dishes',
     origin: { own: 'My dishes', shipped: 'Shipped dishes' },
     characterLabel: 'What it is like',
     characterAny: 'Anything',
@@ -678,6 +678,11 @@ export const appStrings = {
     reset: 'Show all',
     none: 'No dish fits these choices.',
     count: (n: number): string => (n === 1 ? '1 dish' : `${n} dishes`),
+    /** Where a row's dish comes from, said when the list holds both. */
+    rowOrigin: { own: 'My dish', shipped: 'Shipped' },
+    /** The start screen: every dish under the one filter, then the tools. */
+    startTitle: 'What do you feel like?',
+    startListLabel: 'Dishes that fit',
   },
   nutrition: nutritionStrings,
   // Texts for the store's error codes; the editing screens show them.

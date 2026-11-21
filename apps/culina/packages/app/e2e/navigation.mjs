@@ -14,9 +14,8 @@ const LANGS = {
     views: ['What can I cook', 'Use up first', 'What is there'],
     notebookParts: ['Components', 'Dishes'],
     titles: {
-      start: 'What do you want to cook?',
+      start: 'What do you feel like?',
       cook: 'What can I cook',
-      classics: 'Classics by country',
       stock: 'What is there',
       useUp: 'Use up first',
       components: 'Components',
@@ -32,9 +31,8 @@ const LANGS = {
     views: ['Was kann ich kochen', 'Zuerst verbrauchen', 'Vorrat'],
     notebookParts: ['Komponenten', 'Gerichte'],
     titles: {
-      start: 'Was möchtest du kochen?',
+      start: 'Worauf hast du Lust?',
       cook: 'Was kann ich kochen',
-      classics: 'Klassiker nach Land',
       stock: 'Vorrat',
       useUp: 'Zuerst verbrauchen',
       components: 'Komponenten',
@@ -130,7 +128,8 @@ const gear = async (browser, origin, lang, width) => {
   for (const [route, title] of [
     ['start', L.titles.start],
     ['cook', L.titles.cook],
-    ['classics', L.titles.classics],
+    // The old address of the classics lands on the one list of dishes.
+    ['classics', L.titles.dishes],
     ['stock', L.titles.stock],
     ['components', L.titles.components],
     ['dishes', L.titles.dishes],
@@ -187,7 +186,8 @@ const parts = async (browser, origin, lang, width) => {
     ['cook', L.titles.cook, 'Cook', L.cookParts, L.cookParts[0]],
     ['cook/use-up', L.titles.useUp, 'Cook', L.cookParts, L.cookParts[0]],
     ['stock', L.titles.stock, 'Cook', L.cookParts, L.cookParts[0]],
-    ['classics', L.titles.classics, 'Cook', L.cookParts, L.cookParts[1]],
+    // The old address of the classics is the list of every dish, filtered to the shipped ones.
+    ['classics', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
     ['components', L.titles.components, 'Notebook', L.notebookParts, L.notebookParts[0]],
     ['dishes', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
   ];
@@ -214,7 +214,6 @@ const parts = async (browser, origin, lang, width) => {
     views.join() === L.views.join(),
     `${label}: the views of Cook are ${L.views.join(' | ')} (${views})`,
   );
-  // The country list and a dish keep Cook as their destination, cooking mode too.
   await context.close();
 };
 
@@ -233,7 +232,8 @@ const taps = async (browser, origin, lang) => {
     ['Components', '#/components', [() => nav(notebook)]],
     ['Dishes', '#/dishes', [() => nav(notebook), () => tab(L.notebookParts[1])]],
     ['Cook', '#/cook', [() => nav(cook)]],
-    ['Classics', '#/classics', [() => nav(cook), () => tab(L.cookParts[1])]],
+    // Cook's part "Classics" opens the one list of dishes with the shipped ones chosen.
+    ['Classics', '#/dishes', [() => nav(cook), () => tab(L.cookParts[1])]],
     ['Use up first', '#/cook/use-up', [() => nav(cook), () => tab(L.views[1])]],
     ['Stock', '#/stock', [() => nav(cook), () => tab(L.views[2])]],
     ['Settings', '#/settings', [() => page.locator('header .settings-link')]],
@@ -255,7 +255,7 @@ const taps = async (browser, origin, lang) => {
     ['ratios', L.titles.ratios],
     ['dishes', L.titles.dishes],
     ['settings', L.titles.settings],
-    ['classics', L.titles.classics],
+    ['classics', L.titles.dishes],
   ]) {
     await go(page, origin, route, title);
     await nav(cook).click();

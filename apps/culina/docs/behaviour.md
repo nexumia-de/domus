@@ -25,18 +25,21 @@ Mixtura[^mixtura].
 
 # Screens
 
-| Screen   | Route                                                                                                                        | Today                                                                                                                                                                                                           | Source                                               |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| Start    | `#/start`                                                                                                                    | What do you want to cook: the classics by country and the way into every tool ([below](#classics)); the start screen                                                                                            | `src/screens/classics/`                              |
-| Ratios   | `#/ratios`, `#/ratios/<id>`                                                                                                  | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                           | `src/screens/ratios.ts`                              |
-| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`, `#/dishes/random`                                          | Two parts, Components and Dishes: the lists and the screens of one entry ([components](#components), [dishes](#dishes))                                                                                         | `src/screens/components.ts`, `src/screens/dishes.ts` |
-| Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classics`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics by country with their dishes and cooking step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`         |
-| Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                                                                | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                         | `src/screens/stock/`                                 |
-| Settings | `#/settings` (the gear in the header)                                                                                        | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                             | `src/screens/settings.ts`                            |
+| Screen   | Route                                                                                  | Today                                                                                                                                                                                                                                                               | Source                                                      |
+| -------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Start    | `#/start`                                                                              | What do you feel like: the one filter and the list of every dish, the notebook's and the shipped ones, then the way into every tool ([below](#one-filter-over-every-dish)); the start screen                                                                        | `src/screens/classics/start.ts`, `src/screens/dish-list.ts` |
+| Ratios   | `#/ratios`, `#/ratios/<id>`                                                            | The ratio list and the ratio cards ([below](#ratios))                                                                                                                                                                                                               | `src/screens/ratios.ts`                                     |
+| Notebook | `#/components`, `#/components/<id>`, `#/dishes`, `#/dishes/<id>`, `#/dishes/random`    | Two parts, Components and Dishes: the lists and the screens of one entry; Dishes lists every dish, own and shipped ([components](#components), [dishes](#dishes), [the one list](#one-filter-over-every-dish))                                                      | `src/screens/components.ts`, `src/screens/dishes.ts`        |
+| Cook     | `#/cook`, `#/cook/use-up`, `#/cook/<id>/with`, `#/classic/<id>`, `#/classic/<id>/cook` | Two parts: with what I have (what can I cook, use up first, what uses one ingredient, the stock) and the classics, whose link opens the one list with the shipped dishes chosen; a shipped dish and cooking it step by step ([below](#cook), [classics](#classics)) | `src/screens/cook/`, `src/screens/classics/`                |
+| Stock    | `#/stock`, `#/stock/add`, `#/stock/<id>/edit`                                          | A view of Cook, "What is there": the list, the quick entry and the detail of one item ([below](#stock))                                                                                                                                                             | `src/screens/stock/`                                        |
+| Settings | `#/settings` (the gear in the header)                                                  | Theme (Follow system, Light, Dark), Your data (export, import, reminder; [below](#export-and-import)), the statement that data stays on the device, the engine name                                                                                                 | `src/screens/settings.ts`                                   |
 
 An unknown route (`#/nope`, empty) shows Start and rewrites the URL to
-`#/start` without a new history entry. **Test:** `test/router.test.ts`,
-`e2e/smoke.mjs`.
+`#/start` without a new history entry. The old addresses of the country
+lists, `#/classics` and `#/classics/<country>`, set the one filter to the
+shipped dishes (of that country) and are rewritten to `#/dishes`, also
+without a new history entry ([below](#one-filter-over-every-dish)).
+**Test:** `test/router.test.ts`, `e2e/smoke.mjs`, `e2e/dish-browse.mjs`.
 
 # Ratios
 
@@ -674,28 +677,29 @@ never stored ([analysis](dish-characters.md),
   chips are those of the dish **as shown**: a swapped filling changes them
   at once. A classic does not show "With meat" and "With fish": its line
   "Without meat and fish" is set by hand and stays the one statement.
-- **Filter of the Dishes list.** A select "What it is like" under the
-  search, 44 px, with "Anything" and the characters at least one dish has,
-  in the table's order; without any there is no select. A choice narrows
-  the list and works together with the search; nothing found says "No dish
-  is like that." The choice lives as long as the search text.
+- **Filter by character.** The select "What it is like" of the one filter
+  ([below](#one-filter-over-every-dish)), on Dishes and on Start: "Anything"
+  and the characters at least one dish has, own or shipped, in the table's
+  order. It replaced the single select of the Dishes list on 2026-11-21 and
+  is kept with the other choices, across a reload.
 - **The catalogue.** Groups and food categories above an ingredient come
   with the catalogue, which loads after the first draw; the dish is drawn
   again when it is there.
-- **Not built.** The filter in Cook and in the random pick, the user's own
-  correction of a character, cuisine and course on the user's dishes.
+- **Not built.** The user's own correction of a character, cuisine and
+  course on the user's dishes.
 
 **Test:** `test/characters.test.ts` (the table against the catalogue, the
 facts of a dish and of a classic, shipped dishes by name),
-`e2e/dish-characters.mjs` (chips, the filter, 360 px; the ingredients there
-are the user's own, so only a technique gives a character). Not verified:
+`e2e/dish-characters.mjs` (chips, the character choice over the user's
+dishes, 360 px; the ingredients there are the user's own, so only a
+technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
 # One filter over every dish
 
-Begun on 2026-11-21: the shipped classics and the dishes of the notebook
-become one list with one filter, instead of two parts of the app each with
-its own. The base is in place; the screens are moved onto it one by one.
+Since 2026-11-21 the shipped classics and the dishes of the notebook are
+one list with one filter, instead of two parts of the app each with its
+own; the origin is only a choice of the filter.
 
 - **One entry.** `src/browse/entry.ts` gives every dish the same entry,
   whatever its origin (`own` or `shipped`): name, link, course, cuisine,
@@ -710,11 +714,57 @@ its own. The base is in place; the screens are moved onto it one by one.
   choice only drops entries. It is kept in `localStorage`
   (`culina.dishes`), like the theme.
 - **One set of controls.** `src/screens/dish-filter.ts`: selects of 44 px,
-  drawn only where there is something to offer, and two ticks.
+  drawn only where there is something to offer, and two ticks. A stored
+  choice no dish has any more stays offered under its name, so that it can
+  be seen and dropped. The control that had focus keeps it when the
+  controls are drawn again after a change.
+- **One list** (`src/screens/dish-list.ts`, view logic in
+  `src/browse/list-view.ts`), the same on **Dishes** (`#/dishes`, under its
+  title, the parts of the Notebook, "Add a dish" and "Put a dish together at
+  random") and on **Start** (`#/start`, under the question "What do you feel
+  like?"). In this order: search by name, the filter (origin, character,
+  course, cuisine in two columns from 360 px; the two ticks), a count line
+  ("4 dishes"), the rows. Every dish whose entry passes the filter and the
+  search, sorted by name in the content language, own and shipped mixed.
+  A row is the name and a quiet line: course, cuisine, and the origin ("My
+  dish", "Shipped") while the list holds both and the filter does not fix
+  one. A row of a shipped dish opens `#/classic/<id>`; a row of an own dish
+  opens it as before, beside the list from 720 px with the row marked.
+  Nothing found says "No dish fits these choices." and offers **Show all**,
+  which empties the filter and the search. The shipped dishes and the
+  catalogue load after the first draw (the catalogue gives the characters
+  of the ingredients it places); the list and the controls are drawn again
+  once they are there. The search text is shared by the two screens and
+  lives until the page is closed; the filter is the stored one, so a choice
+  made on Start is the choice on Dishes and survives a reload. Where the
+  browser cannot store it, it holds until the page is closed. A notebook
+  without a dish of its own shows its "Add example data" under the list.
+- **Start at 360 x 720.** The question, the search, the filter and the
+  first rows are on the first screen; the ways into the tools (What can I
+  cook, What is there, Components, Dishes, Ratios) follow the list.
+- **The old country lists.** `#/classics` and `#/classics/<country>` are no
+  screens of their own any more: the router hands them to
+  `classicsRedirect` (`src/screens/classics/classics-list.ts`), which stores
+  the filter "Shipped dishes" (with the country as the cuisine; a country
+  the app does not know gives none, and every other choice is dropped) and
+  replaces the address with `#/dishes` without a new history entry. So the
+  part "Classics" at the top of Cook, the link back from a shipped dish and
+  old bookmarks open the one list with that choice; the navigation then
+  marks the Notebook.
 
 **Test:** `test/browse.test.ts` (the shipped classics and catalogue, a
-notebook built in memory, a plain object as the store). Not proved: the
-controls in a browser.
+notebook built in memory, a plain object as the store),
+`test/browse-list.test.ts` (order, each choice, combined choices, the line
+under a name, the filter of an old address; entries written by hand),
+`test/router.test.ts` (the redirect without a history entry),
+`e2e/dish-browse.mjs` (360 x 720, the two fictional shipped dishes and the
+example data: both origins in one list, each choice narrows, choices
+combine, Show all, the choice across a reload and between Start and Dishes,
+the first result on Start's first screen, a shipped row opens its dish,
+the old addresses, no horizontal scroll, 44 px targets). Not proved: the
+list with the real 48 shipped dishes in a browser beyond a look at a
+screenshot, desktop width beyond a look, German in a browser beyond
+`e2e/german.mjs` walking the screens, a screen reader on the count line.
 
 # Stock
 
@@ -879,18 +929,14 @@ view logic is in `src/classics/` (no DOM), the screens in
 `src/screens/classics/`. **Test:** `test/classics-view.test.ts`,
 `test/classics-notebook.test.ts`, `e2e/classics.mjs`.
 
-- **Start** (`#/start`, the screen the app opens on and the first navigation
-  entry, "Start"). The heading asks "What do you want to cook?". The first
-  choice is "Classics by country": Germany, Italy, France and Spain, each with
-  its number of dishes. Behind it, "Your tools" links to What can I cook, What
-  is there (the stock), Components, Dishes and Ratios, as before; nothing was
-  removed. The classics screens are shown under the Cook entry, in its
-  second part "Classics".
-- **List** (`#/classics/<country>`). Each dish with its name in the content
-  language, its course and "Without meat and fish" or "With meat or fish". A
-  country without a dish says so quietly ("No dishes from here yet"); the
-  app works with no dish at all. A dish id or a country that is not known gives
-  one quiet sentence.
+- **Start and the list.** The shipped dishes are listed with the
+  dishes of the notebook in the [one list](#one-filter-over-every-dish), on
+  Start and on Dishes; "Shipped dishes" and a cuisine are choices of its
+  filter. The country lists (`#/classics`, `#/classics/<country>`) became
+  that list with the filter set; their addresses keep working. A
+  collection without a dish leaves the list with the notebook's dishes, and
+  the app works with no dish at all. A dish id that is not known gives one
+  quiet sentence.
 - **Dish** (`#/classic/<id>`). In this order, so that the ingredients are on
   the first screen at 360 x 720: the name, the original name, course and meat
   flag; a portions stepper, default 2; the ingredient lines per component and
@@ -1067,20 +1113,22 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   five): **Start**, **Cook** (German Kochen), **Notebook** (Notizbuch) and
   **Ratios** (Verhältnisse), in that order. A route belongs to one of them
   (`navEntryFor` in `src/router.ts`): Cook holds the finder, the stock and the
-  classics with their cooking mode; the Notebook holds Components and Dishes,
+  shipped dishes with their cooking mode; the Notebook holds Components and Dishes,
   two parts shown as a row of two equal links at the top of their lists
   (`src/screens/section-tabs.ts`). The old routes (`#/components`, `#/dishes`,
   `#/classics`, `#/cook`, `#/stock`, `#/settings`) work as before, links,
   bookmarks and tests included, and the navigation marks the destination
-  they belong to. The Notebook entry opens on Components.
+  they belong to; `#/classics` and `#/classics/<country>` open the one list
+  of dishes with the shipped ones chosen, so the Notebook is marked there.
+  The Notebook entry opens on Components.
 - **Settings is the gear** at the right end of the header, a 44 px target
   named for assistive technology ("Settings", "Einstellungen") and marked
   `aria-current` on the Settings screen; it is the first stop after the skip link.
   It is there on every screen of a phone. From 720 px it is not in the header:
   Settings is the last entry of the side rail.
 - **Every former destination is at most two taps from Start**: Ratios, Cook
-  and Settings one, Components one, Dishes, Classics, Use up first and the
-  stock two (Start also has an entry for each tool); the stock is two taps
+  and Settings one, Components one, Dishes, the shipped dishes (Cook, then
+  "Classics"), Use up first and the stock two (Start also has an entry for each tool); the stock is two taps
   from every screen (Cook, then "What is there"). **Test:** `e2e/navigation.mjs`.
 - **Phone first.** Below 720 px width a bottom navigation bar with icon
   and label; from 720 px a side navigation with the same four destinations and

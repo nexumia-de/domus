@@ -7,8 +7,9 @@ import { brokenWords, overflow, smallTargets } from './measure.mjs';
 import { openWith, PAN, TECHNIQUE } from './classics-fixture.mjs';
 
 const ROUTES = {
-  start: ['Start', 'Was möchtest du kochen?'],
-  classics: ['Kochen', 'Klassiker nach Land'],
+  start: ['Start', 'Worauf hast du Lust?'],
+  // The old address of the classics lands on the one list of dishes.
+  classics: ['Notizbuch', 'Gerichte'],
   ratios: ['Verhältnisse', 'Verhältnisse'],
   components: ['Notizbuch', 'Komponenten'],
   dishes: ['Notizbuch', 'Gerichte'],
@@ -133,15 +134,20 @@ const narrow = async (browser, origin) => {
 
 const classicsFlow = async (page, origin, label) => {
   await openWith(page, origin, 'start');
-  await heading(page, 'Was möchtest du kochen?').waitFor();
-  await page.getByRole('link', { name: 'Deutschland, 1 Gericht' }).click();
-  await heading(page, 'Deutschland').waitFor();
+  await heading(page, 'Worauf hast du Lust?').waitFor();
   check(
-    (await page.locator('.classic-link').innerText()).includes('Hauptgericht'),
-    `${label}: the course is in German`,
+    (await page.locator('.dish-row-shipped').count()) === 2,
+    `${label}: Start lists the shipped dishes`,
+  );
+  await openWith(page, origin, 'classics/de');
+  await heading(page, 'Gerichte').waitFor();
+  const row = await page.locator('.dish-row').innerText();
+  check(
+    row.includes('Hauptgericht') && row.includes('Deutschland'),
+    `${label}: the course and the cuisine are in German (${row})`,
   );
   await layout(page, `${label} country`);
-  await page.locator('.classic-link').click();
+  await page.locator('.dish-row').click();
   await heading(page, PAN.name.de).waitFor();
   check(
     await page.getByRole('link', { name: 'Schritt für Schritt kochen' }).isVisible(),
@@ -239,7 +245,7 @@ export const german = async (browser, server) => {
   // Follow device with the browser locale de.
   const b = await fresh(browser, origin, { locale: 'de' });
   await openWith(b.page, origin, 'start');
-  await heading(b.page, 'Was möchtest du kochen?').waitFor();
+  await heading(b.page, 'Worauf hast du Lust?').waitFor();
   check(
     (await b.page.locator('html').getAttribute('lang')) === 'de',
     'German device: lang follows the browser locale',
