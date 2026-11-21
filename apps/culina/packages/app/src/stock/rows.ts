@@ -3,8 +3,8 @@
 // nearest first), then by name; an item with no use-by date follows the ones that have one.
 import { stockExpiry } from '@culina/engine';
 import type { ComponentRef, ShelfLifeEntry, StockExpiry } from '@culina/engine';
-import { formatNumber } from '../shared/mass';
 import { strings } from '../strings';
+import { writtenAmount } from '../shared/units';
 
 const t = strings.stock;
 
@@ -41,8 +41,9 @@ export const remainingText = (expiry: StockExpiry): string | undefined => {
   return expiry.daysLeft === 0 ? t.useByToday : t.daysLeft(expiry.daysLeft);
 };
 
+/** An amount in stock with its unit's name: "2 Stück". */
 export const amountText = (amount: { value: number; unit: string }): string =>
-  `${formatNumber(amount.value, 3)} ${amount.unit}`;
+  writtenAmount(amount);
 
 export const stockRows = (
   items: readonly Item[],

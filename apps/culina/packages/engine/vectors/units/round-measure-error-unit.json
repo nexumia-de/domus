@@ -1,0 +1,12 @@
+{
+  "id": "round-measure-error-unit",
+  "description": "ml is not a household measure",
+  "inputs": {
+    "kind": "round_measure",
+    "ml": 10,
+    "measure": "ml"
+  },
+  "error_code": "invalid-value",
+  "tolerance": 1e-9,
+  "source": "Only tsp, tbsp and cup are household measures."
+}

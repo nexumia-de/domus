@@ -1,0 +1,47 @@
+{
+  "id": "expand-error-cannot-convert-percent-base",
+  "description": "Percent lines rest on a base line whose ingredient lacks a density",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "dough",
+    "components": [
+      {
+        "id": "dough",
+        "percentBase": "flour",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "role": "flour",
+            "amount": {
+              "value": 500,
+              "unit": "ml"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "water"
+            },
+            "amount": {
+              "value": 70,
+              "unit": "percent"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "cannot-convert",
+  "error_detail": {
+    "componentId": "dough",
+    "index": 0,
+    "cause": {
+      "code": "needs-density"
+    }
+  },
+  "tolerance": 1e-6,
+  "source": "The water is 70 % of the flour, and the flour is in ml without a density: the base has no grams, so the percent line has none either. Synthetic."
+}

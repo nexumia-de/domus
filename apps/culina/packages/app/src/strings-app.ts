@@ -80,6 +80,15 @@ export const appStrings = {
     withoutAmountHeading: 'Without an amount',
     withoutAmount: (name: string, where: string): string => `${name} (in ${where})`,
     notAddedHeading: 'Not added up',
+    unconvertedHeading: 'Not weighed',
+    /** Beside a line whose unit needs a fact its ingredient lacks: it is left out of the sums. */
+    lacks: {
+      'needs-unit-weight': 'no piece weight recorded, not in the sums',
+      'needs-density': 'no density recorded, not in the sums',
+      'not-convertible': 'no density or piece weight recorded, not in the sums',
+    },
+    unweighed: (name: string): string =>
+      `The output of ${name} is not weighed: one run is taken as weighing what goes in.`,
     stateRaw: 'raw',
     stateCooked: 'cooked',
     statePrepared: 'prepared',
@@ -128,6 +137,7 @@ export const appStrings = {
     outputUnknown: 'Output not weighed yet',
     outputUnknownHelp: 'Until you weigh the finished output, it scales by a factor only.',
     inputPartial: 'The input counts only the lines that have an amount.',
+    inputUnweighed: 'The input counts only the lines whose amount can be weighed.',
     scaleHeading: 'Scale',
     outputWanted: 'Output wanted (g)',
     factorLabel: 'Factor (1 is the recipe as written)',
@@ -744,4 +754,24 @@ export const appStrings = {
     invalidRecord: 'This entry has a value that is not allowed, so it was not saved.',
     notFound: 'That entry no longer exists.',
   },
+  /** The name of every unit where one is shown or chosen; percent is written as %. */
+  units: {
+    g: 'g',
+    kg: 'kg',
+    oz: 'oz',
+    lb: 'lb',
+    ml: 'ml',
+    l: 'l',
+    tsp: 'tsp',
+    tbsp: 'tbsp',
+    cup: 'cup',
+    'imp-floz': 'fl oz (UK)',
+    'imp-gill': 'gill (UK)',
+    'imp-pint': 'pint (UK)',
+    'imp-quart': 'quart (UK)',
+    count: 'pcs',
+    percent: '%',
+  },
+  /** An amount rounded for display with the exact figure quietly beside: "5½ (5.33)". */
+  exactBeside: (shown: string, exact: string): string => `${shown} (${exact})`,
 };

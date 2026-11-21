@@ -1,0 +1,70 @@
+{
+  "id": "expand-without-yield-nested",
+  "description": "withoutYield input reaches a sub-component without yield",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "plate",
+    "without_yield": "input",
+    "components": [
+      {
+        "id": "plate",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          }
+        ]
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 150,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 50,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 75
+      },
+      {
+        "ingredient_id": "oil",
+        "g": 25
+      }
+    ],
+    "raw_g": 100,
+    "factor": 1,
+    "unmeasured": [],
+    "unconverted": [],
+    "unweighed": ["sauce"]
+  },
+  "tolerance": 1e-6,
+  "source": "The sauce has no yield; taken as its input, 200 g, 100 g of it is half a run. The plate is one run as written and needs no weight. Synthetic."
+}

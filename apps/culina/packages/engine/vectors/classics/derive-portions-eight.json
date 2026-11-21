@@ -151,7 +151,8 @@
           "amount": {
             "value": 29.57352956,
             "unit": "ml"
-          }
+          },
+          "measure": "tbsp"
         }
       ]
     },

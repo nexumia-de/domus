@@ -3,6 +3,7 @@
 import type { LinesView, LineRow } from '../components/lines';
 import { hashFor } from '../router';
 import { formatMass, formatNumber } from '../shared/mass';
+import { writtenAmount } from '../shared/units';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import { dataTable, type Cell } from './table';
@@ -30,6 +31,7 @@ const nameCell = (row: LineRow, linked: boolean): Cell => {
     row.purchasedG === undefined
       ? undefined
       : strings.components.buyAbout(formatMass(row.purchasedG, 'g')),
+    row.unconverted === undefined ? undefined : strings.notebook.lacks[row.unconverted.lacks],
     row.note,
   ].filter((part): part is string => part !== undefined);
   if (extra.length > 0) box.append(el('span', 'line-extra', extra.join(' · ')));
@@ -54,7 +56,12 @@ export const linesSection = (view: LinesView, known: (id: string) => boolean): H
   const rows = view.rows.map((row) => [
     nameCell(row, row.kind === 'component' && known(row.id)),
     {
-      content: row.g === undefined ? strings.notebook.toTaste : formatMass(row.g, 'g'),
+      content:
+        row.g !== undefined
+          ? formatMass(row.g, 'g')
+          : row.unconverted !== undefined
+            ? writtenAmount(row.unconverted.written)
+            : strings.notebook.toTaste,
       num: true,
     },
     ...(view.baseRole === undefined

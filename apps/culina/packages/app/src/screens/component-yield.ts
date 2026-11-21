@@ -37,5 +37,6 @@ export const yieldSection = (view: YieldView): HTMLElement => {
     section.append(list, el('p', 'muted', strings.components.outputSource(out.source)));
   }
   if (view.partial) section.append(el('p', 'muted', strings.components.inputPartial));
+  if (view.unweighable) section.append(el('p', 'muted', strings.components.inputUnweighed));
   return section;
 };

@@ -10,9 +10,10 @@ import type {
   ExpandResult,
   FactsByIngredient,
   RawIngredient,
+  UnconvertedLine,
   UnmeasuredLine,
 } from './types';
-import { yieldGrams } from './yield';
+import { runGrams } from './yield';
 
 type Fail = { ok: false; error: ComponentError };
 const fail = (error: ComponentError): Fail => ({ ok: false, error });
@@ -22,6 +23,18 @@ interface Walk {
   facts: FactsByIngredient;
   raw: Map<string, RawIngredient>;
   unmeasured: UnmeasuredLine[];
+  unconverted: UnconvertedLine[];
+  unweighed: string[];
+  withoutYield: ExpandOptions['withoutYield'];
+}
+
+/** One run of a component in grams for scaling, noting a run taken as its input. */
+function runOf(w: Walk, component: Component, path: string[]): number | Fail {
+  const run = runGrams(component, w.facts, w.withoutYield);
+  if (!run.ok) return run;
+  if (run.g === undefined) return fail({ code: 'no-yield', componentId: component.id, path });
+  if (!run.weighed && !w.unweighed.includes(component.id)) w.unweighed.push(component.id);
+  return run.g;
 }
 
 /** Adds one run of `id` times `factor` to the walk; the error, if any. */
@@ -32,6 +45,10 @@ function walk(w: Walk, id: string, factor: number, stack: string[]): Fail | unde
   for (const index of lines.unmeasured) {
     const ref = (component.lines[index] as ComponentLine).ref;
     w.unmeasured.push({ path: [...stack, id], index, ref });
+  }
+  for (const { index, cause } of lines.unconverted) {
+    const ref = (component.lines[index] as ComponentLine).ref;
+    w.unconverted.push({ path: [...stack, id], index, ref, cause });
   }
   for (const line of lines.lines) {
     if (line.ref.kind === 'ingredient') {
@@ -52,10 +69,9 @@ function walk(w: Walk, id: string, factor: number, stack: string[]): Fail | unde
     if (stack.includes(subId) || subId === id) {
       return fail({ code: 'cycle', path });
     }
-    const sub = yieldGrams(w.byId.get(subId) as Component);
-    if (!sub.ok) return sub;
-    if (sub.g === undefined) return fail({ code: 'no-yield', componentId: subId, path });
-    const failed = walk(w, subId, (factor * line.g) / sub.g, [...stack, id]);
+    const sub = runOf(w, w.byId.get(subId) as Component, path);
+    if (typeof sub !== 'number') return sub;
+    const failed = walk(w, subId, (factor * line.g) / sub, [...stack, id]);
     if (failed) return failed;
   }
   return undefined;
@@ -67,13 +83,16 @@ function walk(w: Walk, id: string, factor: number, stack: string[]): Fail | unde
  * amounts are for that much output (factor = outputG over the component's
  * yield). Raw ingredients are aggregated by ingredient, state and role in
  * first-seen order. Lines without amount anywhere in the tree are listed in
- * `unmeasured`, never guessed.
+ * `unmeasured`, lines whose amount lacks a fact to convert it in
+ * `unconverted`; neither is guessed. A component without a recorded yield
+ * whose weight is needed is `no-yield`, or with `withoutYield: 'input'` taken
+ * as weighing its input and listed in `unweighed`.
  *
  * @param components - All components that may be referenced.
  * @param id - The component to expand.
  * @param factsByIngredient - Density and unit weight per ingredient id.
- * @param options - `outputG`: the output weight wanted.
- * @returns `raw`, `rawG`, `unmeasured` and `factor`; or `unknown-component`, `cycle` (`path`), `duplicate-id`, `no-yield` (`componentId`, `path`), `invalid-value` or the errors of `componentLineGrams`.
+ * @param options - `outputG`: the output weight wanted; `withoutYield`.
+ * @returns `raw`, `rawG`, `unmeasured`, `unconverted`, `unweighed` and `factor`; or `unknown-component`, `cycle` (`path`), `duplicate-id`, `no-yield` (`componentId`, `path`), `invalid-value` or the errors of `componentLineGrams`.
  */
 export function expandComponent(
   components: readonly Component[],
@@ -89,17 +108,24 @@ export function expandComponent(
   const top = byId.get(id);
   if (top === undefined) return fail({ code: 'unknown-component', componentId: id, path: [id] });
   const { outputG } = options;
+  const w: Walk = {
+    byId,
+    facts: factsByIngredient,
+    raw: new Map(),
+    unmeasured: [],
+    unconverted: [],
+    unweighed: [],
+    withoutYield: options.withoutYield,
+  };
   let factor = 1;
   if (outputG !== undefined) {
     if (typeof outputG !== 'number' || !Number.isFinite(outputG) || outputG <= 0) {
       return fail({ code: 'invalid-value', componentId: id, field: 'outputG' });
     }
-    const own = yieldGrams(top);
-    if (!own.ok) return own;
-    if (own.g === undefined) return fail({ code: 'no-yield', componentId: id, path: [id] });
-    factor = outputG / own.g;
+    const own = runOf(w, top, [id]);
+    if (typeof own !== 'number') return own;
+    factor = outputG / own;
   }
-  const w: Walk = { byId, facts: factsByIngredient, raw: new Map(), unmeasured: [] };
   const failed = walk(w, id, factor, []);
   if (failed) return failed;
   const raw = [...w.raw.values()];
@@ -108,6 +134,8 @@ export function expandComponent(
     raw,
     rawG: raw.reduce((sum, r) => sum + r.g, 0),
     unmeasured: w.unmeasured,
+    unconverted: w.unconverted,
+    unweighed: w.unweighed,
     factor,
   };
 }

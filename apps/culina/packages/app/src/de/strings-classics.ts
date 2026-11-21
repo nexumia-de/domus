@@ -64,7 +64,6 @@ export const classicsStringsDe: typeof classicsStrings = {
   asNeeded: 'nach Bedarf',
   settledMark: 'von uns festgelegt',
   amountRange: (a: string, b: string): string => `${a} bis ${b}`,
-  pieces: (n: string): string => `${n} Stk.`,
   optional: 'optional',
   remarksHeading: 'Anmerkungen zur Quelle',
   remarkLine: (name: string, original?: string, remark?: string): string =>

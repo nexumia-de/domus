@@ -66,14 +66,17 @@ Field names are snake_case in the vectors and camelCase in the code; the
 runners map them. Error vectors carry `error_code` (and `error_line_id`
 where the error names a line) instead of `expected`.
 
-| `kind`         | Inputs                                                                                   | Expected                                                        |
-| -------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `convert`      | `amount` (`value`, `unit`), `to`, optional `facts` (`densityGPerMl`, `unitWeightG`)      | `value` in unit `to`                                            |
-| `round`        | `g`, optional `step_g` (absent: the default display step)                                | `g`                                                             |
-| `scale_factor` | `lines` (`id`, optional `amount`, `role`), `factor`, optional `salt_roles`               | `factor`, `values` (amount per line id), `unscaled`, `cautions` |
-| `scale_total`  | `lines`, `target_g`, optional `facts_by_id`, optional `salt_roles`                       | as `scale_factor`                                               |
-| `scale_line`   | `lines`, `line_id`, `have` (an amount), optional `facts_by_id`, optional `salt_roles`    | as `scale_factor`                                               |
-| `hydration`    | `lines` (`id`, `g`, `role`, optional `composition`, `component`), optional `water_roles` | `hydration_pct`, `flour_g`, `water_g`, `not_counted`            |
+| `kind`              | Inputs                                                                                   | Expected                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `convert`           | `amount` (`value`, `unit`), `to`, optional `facts` (`densityGPerMl`, `unitWeightG`)      | `value` in unit `to`                                            |
+| `round`             | `g`, optional `step_g` (absent: the default display step)                                | `g`                                                             |
+| `round_pieces`      | `count`                                                                                  | `value` (to a half, at least a half), `exact`                   |
+| `round_measure`     | `ml`, `measure` (`tsp`, `tbsp`, `cup`)                                                   | `value` (measures to a quarter, at least a quarter), `exact`    |
+| `household_measure` | `ml` (the size of one unit of a word)                                                    | `measure` (`tsp`, `tbsp`, `cup` or `null`)                      |
+| `scale_factor`      | `lines` (`id`, optional `amount`, `role`), `factor`, optional `salt_roles`               | `factor`, `values` (amount per line id), `unscaled`, `cautions` |
+| `scale_total`       | `lines`, `target_g`, optional `facts_by_id`, optional `salt_roles`                       | as `scale_factor`                                               |
+| `scale_line`        | `lines`, `line_id`, `have` (an amount), optional `facts_by_id`, optional `salt_roles`    | as `scale_factor`                                               |
+| `hydration`         | `lines` (`id`, `g`, `role`, optional `composition`, `component`), optional `water_roles` | `hydration_pct`, `flour_g`, `water_g`, `not_counted`            |
 
 `bakers_percent` and `scale_bakers` keep the fields above, with one
 mapping in the runner: `is_flour` true gives the role `flour`; in a
@@ -133,13 +136,13 @@ top-level fields are snake_case. Yield figures in vectors are synthetic
 and say so in `source`. Error vectors carry `error_code` and
 `error_detail` (`componentId`, `index`, `path`, `cause`, `state`, `field`).
 
-| `kind`             | Inputs                                                                                                                   | Expected                                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| `expand_component` | `components`, `id`, optional `output_g`, optional `facts_by_ingredient`                                                  | `raw` (`ingredient_id`, optional `state`, `role`, `g`, in order), `raw_g`, `factor`, `unmeasured` (`path`, `index`, `ref_id`) |
-| `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` (indexes)                         |
-| `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                        |
-| `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                   |
-| `convert_lines`    | `component`, `to` (`weight` or `percent`), optional `facts_by_ingredient`                                                | `lines`: the new `amount` (`value`, `unit`) per line in order, absent for a line without amount; the grams are checked equal  |
+| `kind`             | Inputs                                                                                                                   | Expected                                                                                                                                                                                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `expand_component` | `components`, `id`, optional `output_g`, optional `facts_by_ingredient`, optional `without_yield` (`input`)              | `raw` (`ingredient_id`, optional `state`, `role`, `g`, in order), `raw_g`, `factor`, `unmeasured` (`path`, `index`, `ref_id`); optional `unconverted` (the same and `cause`, the conversion code) and `unweighed` (component ids), both empty when absent |
+| `component_yield`  | `component`, optional `facts_by_ingredient`                                                                              | `input_g`, `known`, and when known `output_g`, `loss_g`, `yield_pct`; optional `unmeasured` and `unconverted` (indexes)                                                                                                                                   |
+| `edible_portion`   | `operation` (`to_edible`, `to_purchased`, `round_trip`, `lookup`), `yields` (`state`, `percent`, `source`), `state`, `g` | `g`; `edible_g` and `purchased_g` for `round_trip`; `known` and `percent` for `lookup`                                                                                                                                                                    |
+| `portions`         | `operation` `portions_from_yield` with `yield_g`, `portion_g`; or `portion_weight` with `yield_g`, `count`               | `portions`, `whole_portions`, `remainder_g`; or `portion_g`                                                                                                                                                                                               |
+| `convert_lines`    | `component`, `to` (`weight` or `percent`), optional `facts_by_ingredient`                                                | `lines`: the new `amount` (`value`, `unit`) per line in order, absent for a line without amount; the grams are checked equal                                                                                                                              |
 
 ## Kind of cross-record validation (issue 36)
 

@@ -1,0 +1,14 @@
+{
+  "id": "round-pieces-whole",
+  "description": "3 pieces stay 3 and are exact",
+  "inputs": {
+    "kind": "round_pieces",
+    "count": 3
+  },
+  "expected": {
+    "value": 3,
+    "exact": true
+  },
+  "tolerance": 1e-9,
+  "source": "3 is a whole number of halves. Display rule (assumption, unverified, no source): pieces to the nearest half, at least a half; the exact count is kept for sums."
+}

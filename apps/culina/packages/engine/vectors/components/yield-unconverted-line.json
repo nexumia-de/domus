@@ -1,0 +1,50 @@
+{
+  "id": "yield-unconverted-line",
+  "description": "A count line without piece weight is listed and not in the input",
+  "inputs": {
+    "kind": "component_yield",
+    "component": {
+      "id": "sauce",
+      "lines": [
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "tomato"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "onion"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "ref": {
+            "kind": "ingredient",
+            "id": "butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "input_g": 430,
+    "known": false,
+    "unmeasured": [],
+    "unconverted": [1]
+  },
+  "tolerance": 1e-6,
+  "source": "Input 400 + 30 = 430 g; the onion (line 1) is one piece without a piece weight. No yield recorded. Synthetic."
+}

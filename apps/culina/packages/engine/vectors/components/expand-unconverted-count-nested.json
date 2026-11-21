@@ -1,0 +1,118 @@
+{
+  "id": "expand-unconverted-count-nested",
+  "description": "A count line without piece weight inside a sub-component: listed with its path, the rest scales",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "plate",
+    "output_g": 400,
+    "facts_by_ingredient": {
+      "butter": {}
+    },
+    "components": [
+      {
+        "id": "plate",
+        "lines": [
+          {
+            "ref": {
+              "kind": "component",
+              "id": "sauce"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "pasta"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      },
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 400,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "onion"
+            },
+            "amount": {
+              "value": 1,
+              "unit": "count"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "butter"
+            },
+            "amount": {
+              "value": 30,
+              "unit": "g"
+            }
+          }
+        ],
+        "yield": {
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "source": "user (synthetic)"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 200
+      },
+      {
+        "ingredient_id": "butter",
+        "g": 15
+      },
+      {
+        "ingredient_id": "pasta",
+        "g": 200
+      }
+    ],
+    "raw_g": 415,
+    "factor": 1,
+    "unmeasured": [],
+    "unconverted": [
+      {
+        "path": ["plate", "sauce"],
+        "index": 1,
+        "ref_id": "onion",
+        "cause": "needs-unit-weight"
+      }
+    ],
+    "unweighed": []
+  },
+  "tolerance": 1e-6,
+  "source": "200 g of a sauce that yields 400 g is half a run: tomato 200 g, butter 15 g; the onion is one piece and has no piece weight, so it is listed and not added. Synthetic."
+}
