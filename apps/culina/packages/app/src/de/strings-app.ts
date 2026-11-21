@@ -195,6 +195,21 @@ export const appStringsDe: typeof appStrings = {
     pickNoRoles: 'Wähle mindestens eine Rolle.',
     pickNote: 'Der Zufall wählt je Rolle. Was zusammenpasst, weiß er nicht.',
     pickMake: 'Ein Gericht daraus machen',
+    pickDishHeading: 'Überrasch mich mit einem Gericht',
+    pickDishNote:
+      'Ein Gericht durch Zufall, deines oder mitgeliefert, unter denen, die zu deiner Wahl oben passen.',
+    pickDishReady: 'Nur was der Vorrat jetzt erlaubt',
+    pickDishRoll: 'Überrasch mich',
+    pickDishResult: 'Dein Gericht',
+    pickDishAgainLabel: 'Neu würfeln: ein anderes Gericht',
+    pickDishAmong: (n: number): string =>
+      n === 1 ? 'Das einzige Gericht, das passt.' : `Durch Zufall unter ${n} Gerichten.`,
+    pickDishNoneReady: 'Der Vorrat erlaubt jetzt keines dieser Gerichte.',
+    pickRolesHeading: 'Aus deinen Komponenten zusammenstellen',
+    pickFitsNote: 'Gewürfelt unter den Zusammenstellungen, die zu deiner Wahl oben passen.',
+    pickNoFit: 'Keine Zusammenstellung deiner Komponenten ist so.',
+    pickNoFitTried: (tries: number, total: number): string =>
+      `In ${tries} Würfen war keine Zusammenstellung deiner Komponenten so (von ${total}).`,
   },
   ratios: {
     searchLabel: 'Nach Namen suchen',
