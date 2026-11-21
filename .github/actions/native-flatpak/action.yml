@@ -3,7 +3,7 @@
 # and builds in it, with no step before it, so a bundle that npm builds cannot
 # reach the offline build, and its REUSE gate needs files this repository does
 # not have (no REUSE.toml, no docs/dependencies.md). Same tooling and steps
-# otherwise. Used by emptio-flatpak and mixtura-flatpak.
+# otherwise. Used by emptio-flatpak, mixtura-flatpak and culina-flatpak.
 name: Native app Flatpak
 description: Builds the Flatpak of a native app with flatpak-builder, checks the licence files and writes the bundles.
 inputs:

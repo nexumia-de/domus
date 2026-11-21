@@ -24,6 +24,9 @@ compatible with it.
 Both are bundled into each native app; their licence texts are in
 `licenses/` and each app's Flatpak manifest installs them under
 `/app/share/licenses/<app id>/noble-ciphers` and `noble-hashes`. The
+licence texts of Ajv and fast-deep-equal (the helpers of the generated
+validators that Mixtura's and Culina's native apps bundle) are kept there
+too. The
 package also uses the repository's [hospes](../../host) and
 [materia](../../model). The native apps run on GJS, GTK 4, libadwaita
 and libsoup 3 of the GNOME runtime (LGPL), which they use and do not

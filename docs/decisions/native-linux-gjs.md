@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Native Linux apps in GJS
-description: Decided by the owner on 2026-11-20 - the household apps get native Linux apps for Phosh built with the phosh toolkit, as real libadwaita screens in GJS that reuse the TypeScript engines and the sync code, Emptio first, then Mixtura (built 2026-11-21) and Culina, inside this repository and released into the shared Flatpak repository; the alternatives weighed (web view shell, Python), the agent's choices and what is open.
+description: Decided by the owner on 2026-11-20 - the household apps get native Linux apps for Phosh built with the phosh toolkit, as real libadwaita screens in GJS that reuse the TypeScript engines and the sync code, Emptio first, then Mixtura and Culina (both built 2026-11-21), inside this repository and released into the shared Flatpak repository; the alternatives weighed (web view shell, Python), the agent's choices and what is open.
 tags: [decision, linux, gtk, libadwaita, gjs, phosh, flatpak, native]
 generated: { by: claude-code, at: 2026-11-20 }
 sources:
@@ -75,6 +75,15 @@ ways were put to the owner with what each costs:
   never by copying. Mixtura's native app shows the built-in drinks and
   the stock of one space; what the user made in the browser stays in the
   browser's own database ([Mixtura's native app](../../apps/mixtura/docs/native-linux.md)[^mixtura]).
+- **Culina's native app** (2026-11-21, [native
+  app](../../apps/culina/docs/native-linux.md)) shows the shipped classics
+  and the stock of one space, and not the notebook. Its web code chooses
+  texts and the decimal mark from `navigator.languages` when it loads, so
+  `@nexumia-de/gjs/language` defines that from the device's locale and is
+  imported first; the other texts the three native apps share moved to
+  `@nexumia-de/gjs/texts` (Emptio and Mixtura still hold copies). The
+  web app's `core.ts` exports what a second shell needs; the one change in
+  web code was `itemsFromRecords`, taken out of `notebook/stock.ts`.
 - **Each native app joins a space by its invitation link.** There is no
   native Household app; a space is made and shared in a browser.
 - **The toolkit's GTK rules apply to the native packages only**; the web
@@ -110,6 +119,6 @@ ways were put to the owner with what each costs:
 ## Not verified
 
 CI built Emptio's Flatpak bundles for x86_64 and aarch64, but nobody
-installed one; Mixtura's were not built yet (`mixtura-flatpak` runs on
-the pull request); nothing ran on a phone, and the start time and
+installed one; Mixtura's and Culina's were not built yet (`mixtura-flatpak` and
+`culina-flatpak` run on the pull request); nothing ran on a phone, and the start time and
 memory in the table above were never measured.

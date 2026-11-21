@@ -58,5 +58,6 @@ links. Change history is in [log.md](log.md).
 
 # Development
 
+- [Native Linux app](native-linux.md) - Cook's Notebook as a GTK 4 and libadwaita app on GJS (`packages/linux`): the classics by country, a dish with amounts per portion, cooking step by step, what can I cook from the stock of the shown space and ticking that stock, joining a space by link; what it shares with the web app, what 0.1 leaves out, the alignment of the ingredient list, build, release, packaging and what nobody verified.
 - [Development](development.md) - Setup, commands, layout, the engine's purity rule, the app build, generated validators, tests and service worker, CI (jobs `check` and `e2e`) and the network hosts.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use.

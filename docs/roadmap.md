@@ -153,12 +153,23 @@ checks green. The apps' own goals are in their roadmaps
     jobs `mixtura-linux-check`, `mixtura-flatpak` and `mixtura-release`;
     the platform pieces moved out of Emptio into the shared package
     `packages/gjs` ([platform pieces](../packages/gjs/docs/platform.md)).
-    Every native app goes into the shared Flatpak repository (owner,
-    2026-11-21); each releases with a tag `<app>-v<version>`, and no tag is
-    pushed yet. **Not done**: Culina's native app (a session of its own);
-    the Flatpak bundles of Mixtura were never built and none of the
-    bundles was installed; nothing ran on a phone; the owner adds
-    `suitably/domus mixtura-v*` to phosh-apps' `apps.txt`.
+    **Culina is built** (2026-11-21, [native Linux
+    app](../apps/culina/docs/native-linux.md)): the classics by country, a
+    dish with the amounts per portion, cooking step by step, what can I
+    cook from the stock of the shown space and the switches of that stock,
+    preferences with joining by link, English and German, a Flatpak
+    manifest and the jobs `culina-linux-check`, `culina-flatpak` and
+    `culina-release`; the web app got `@culina/app/core`, the shared
+    package `packages/gjs` the language and the common texts. Every native
+    app goes into the shared Flatpak repository (owner, 2026-11-21); each
+    releases with a tag `<app>-v<version>`, and no tag is pushed yet.
+    **Not done**: the Flatpak bundles of Mixtura and Culina were never
+    built and none of the bundles was installed; nothing ran on a phone;
+    the owner adds `suitably/domus mixtura-v*` and `culina-v*` to
+    phosh-apps' `apps.txt`; Culina's notebook, nutrition, handling and
+    substitute notes and a skills store are not in the native app; Mixtura
+    and Emptio still hold copies of the texts that now live in
+    `@nexumia-de/gjs/texts`.
 
 Not planned: Dropbox, Google Drive and OneDrive. They need an app
 registration with each provider that the owner does not want to hold;

@@ -45,6 +45,17 @@ data of the checks and for tests; it is a separate entry
   or one of `empty`, `not-an-invitation`, `needs-token`, `already-here`.
 - **`prefs.ts`**: `filePrefs(files)`, the `get` and `set` of an app's
   small preferences (`prefs.json` beside the data).
+- **`language.ts`** (entry `@nexumia-de/gjs/language`): defines
+  `navigator.languages` from the device's locale, because GJS has none and
+  a web app's shared code (Culina's) chooses its texts and decimal mark from
+  it when its modules load. Imported first in an app's `main.ts`. Also
+  `deviceLang()`, German or English.
+- **`texts.ts`** (entry `@nexumia-de/gjs/texts`, pure): the texts the
+  native apps have in common in English and German: the style choice, the
+  spaces' headings, joining by link and its errors, the sync status words,
+  the retry and support words. Culina's native app uses it; Emptio's and
+  Mixtura's own strings still hold copies of the same texts (an open point
+  in [Culina's native app](../../../apps/culina/docs/native-linux.md)).
 - **`style.ts`**: `applyStyle('system' | 'light' | 'dark')` for
   libadwaita's colour scheme, and `addStyle(css)` for the app's one
   stylesheet (its accent colour and the 44 px controls).

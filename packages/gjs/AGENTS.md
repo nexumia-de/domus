@@ -37,6 +37,6 @@ apply to it, but every native app that uses it follows them.
 ## Before committing
 
 `npm run check:gjs` from the root, then `npm run smoke -w @emptio/linux`
-and `npm run smoke -w @mixtura/linux` (GJS needed), and
-`npm run check:emptio` and `npm run check:mixtura` for the apps that use
-it.
+`npm run smoke -w @mixtura/linux` and `npm run smoke -w @culina/linux`
+(GJS needed), and `npm run check:emptio`, `npm run check:mixtura` and
+`npm run check:culina` for the apps that use it.

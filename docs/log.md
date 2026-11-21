@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (Culina)
+
+- **Creation**: Culina's native Linux app (`apps/culina/packages/linux`, app id `de.nexumia.Culina`, visible name Cook's Notebook, release 0.1.0), the third native app, roadmap goal 11. The web app exports a screen-free `@culina/app/core`; `packages/gjs` gained `language` (the device's language for web code that reads `navigator.languages` at load) and `texts` (English and German texts the native apps share); the licence texts of Ajv and fast-deep-equal moved from Mixtura's `data/licenses/` to `packages/gjs/licenses/`. CI: `culina-linux-check`, `culina-flatpak` (x86_64, aarch64) and `culina-release` on a tag `culina-v*`; a change to `packages/gjs` now runs Culina too. [Culina's native app](../apps/culina/docs/native-linux.md), [gjs](../packages/gjs/docs/platform.md).
+
 ## 2026-11-21 (later)
 
 - **Creation**: Mixtura's native Linux app (`apps/mixtura/packages/linux`, app id `de.nexumia.Mixtura`, release 0.1.0), the second native app, roadmap goal 11. The platform pieces moved out of Emptio into the new shared package `packages/gjs` (`@nexumia-de/gjs`, with its tests, `npm run check:gjs`, root `check` and the boundaries unchanged); the sync status words moved to the host package. CI: `mixtura-linux-check`, `mixtura-flatpak` (x86_64, aarch64) and `mixtura-release` on a tag `mixtura-v*`, and `gjs-check`; Emptio's three jobs keep their names and now use the same composite actions (`.github/actions/`). Verified in real GJS 1.80 and Broadway here (smoke checks of both apps, 18 screen checks and a wide screenshot of Mixtura, 17 of Emptio); not verified: the Flatpak build, a phone, a real storage. [Decision](decisions/native-linux-gjs.md), [Mixtura's native app](../apps/mixtura/docs/native-linux.md), [gjs](../packages/gjs/docs/platform.md).
