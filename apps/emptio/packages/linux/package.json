@@ -8,10 +8,9 @@
   "dependencies": {
     "@emptio/app": "0.0.0",
     "@emptio/engine": "0.0.0",
+    "@nexumia-de/gjs": "0.1.0",
     "@nexumia-de/hospes": "0.1.0",
-    "@nexumia-de/materia": "0.3.0",
-    "@noble/ciphers": "2.4.0",
-    "@noble/hashes": "2.4.0"
+    "@nexumia-de/materia": "0.3.0"
   },
   "scripts": {
     "build": "node build.mjs",

@@ -1,30 +1,26 @@
 // The native app: GTK 4 and libadwaita on GJS, the same list, actions, texts
 // and sync as the web app (docs/native-linux.md).
 import Adw from 'gi://Adw?version=1';
-import Gdk from 'gi://Gdk?version=4.0';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import { exit, programArgs } from 'system';
 import { adapterFor, createFileStore } from '@nexumia-de/hospes';
 import {
-  KEYS,
-  createApp,
-  stringsDe,
-  stringsEn,
-  themeOf,
-  type Lang,
-  type Prefs,
-} from '@emptio/app/core';
-import { gioFiles } from './platform/gio-files';
-import { randomBytes } from './platform/random';
-import { soupFetch } from './platform/soup-fetch';
-import { installWebPlatform } from './platform/subtle';
+  addStyle,
+  applyStyle,
+  filePrefs,
+  gioFiles,
+  installWebPlatform,
+  randomBytes,
+  soupFetch,
+} from '@nexumia-de/gjs';
+import { KEYS, createApp, stringsDe, stringsEn, themeOf, type Lang } from '@emptio/app/core';
 import { nativeDe, nativeEn } from './strings';
 import { categoriesPage } from './ui/categories-page';
 import type { Page, Ui } from './ui/context';
 import { listPage } from './ui/list-page';
-import { applyStyle, showPreferences } from './ui/preferences';
+import { showPreferences } from './ui/preferences';
 
 declare const __APP_ID__: string;
 declare const __VERSION__: string;
@@ -42,28 +38,6 @@ const folder =
 const files = gioFiles(folder);
 const store = createFileStore(files);
 
-/** Style and the shown space, in one small file beside the data. */
-function filePrefs(): Prefs {
-  const read = (): Record<string, string> => {
-    try {
-      return JSON.parse(files.read('prefs.json') ?? '{}') as Record<string, string>;
-    } catch {
-      return {};
-    }
-  };
-  return {
-    get: (key) => read()[key] ?? null,
-    set(key, value) {
-      try {
-        files.write('prefs.json', JSON.stringify({ ...read(), [key]: value }));
-        return true;
-      } catch {
-        return false;
-      }
-    },
-  };
-}
-
 const application = new Adw.Application({
   application_id: __APP_ID__,
   flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
@@ -76,15 +50,9 @@ const STYLE = '.emptio-target { min-height: 44px; min-width: 44px; }';
 application.connect('activate', () => {
   const open = application.get_active_window();
   if (open) return open.present();
-  const css = new Gtk.CssProvider();
-  css.load_from_string(STYLE);
-  Gtk.StyleContext.add_provider_for_display(
-    Gdk.Display.get_default(),
-    css,
-    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
-  );
+  addStyle(STYLE);
 
-  const prefs = filePrefs();
+  const prefs = filePrefs(files);
   applyStyle(themeOf(prefs.get(KEYS.theme)));
   const now = (): string => new Date().toISOString();
   const fetch = soupFetch(`Emptio/${__VERSION__}`);

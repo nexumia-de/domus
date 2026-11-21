@@ -18,17 +18,18 @@ npm ci
 
 ## Commands
 
-| Command                      | What it does                                                                                                                      |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run check`              | format check, lint, typecheck, tests, build, in that order; stops at the first error                                              |
-| `npm run format`             | Prettier writes all files                                                                                                         |
-| `npm run format:check`       | Prettier checks all files                                                                                                         |
-| `npm run lint`               | ESLint (flat config, typescript-eslint, purity rule for the engine)                                                               |
-| `npm run typecheck`          | `tsc --noEmit` in both packages                                                                                                   |
-| `npm test`                   | vitest in both packages                                                                                                           |
-| `npm run build`              | `packages/engine/dist/` (`engine.mjs`, declarations, purity check) and `packages/app/dist/` (the app, see below)                  |
-| `npm run seed -- <checkout>` | regenerates `packages/engine/data/seed/` from a local checkout of the Bar Assistant data ([seed data](seed-data.md#regenerating)) |
-| `npm run e2e`                | builds, then walks the built app in Chromium at 360 x 720 and 1200 x 800                                                          |
+| Command                                                | What it does                                                                                                                        |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check`                                        | format check, lint, typecheck, tests, build, in that order; stops at the first error                                                |
+| `npm run format`                                       | Prettier writes all files                                                                                                           |
+| `npm run format:check`                                 | Prettier checks all files                                                                                                           |
+| `npm run lint`                                         | ESLint (flat config, typescript-eslint, purity rule for the engine)                                                                 |
+| `npm run typecheck`                                    | `tsc --noEmit` in both packages                                                                                                     |
+| `npm test`                                             | vitest in both packages                                                                                                             |
+| `npm run build`                                        | `packages/engine/dist/` (`engine.mjs`, declarations, purity check) and `packages/app/dist/` (the app, see below)                    |
+| `npm run seed -- <checkout>`                           | regenerates `packages/engine/data/seed/` from a local checkout of the Bar Assistant data ([seed data](seed-data.md#regenerating))   |
+| `npm run e2e`                                          | builds, then walks the built app in Chromium at 360 x 720 and 1200 x 800                                                            |
+| `npm run build`, `smoke`, `interact -w @mixtura/linux` | The native Linux app, its check in real GJS and its screens through Broadway ([native Linux app](native-linux.md#build-run-checks)) |
 
 ## Layout
 
@@ -40,6 +41,7 @@ npm ci
   does it in order, and a lint rule fails any deep import.
 - `packages/app` (`@mixtura/app`): the web app, built with esbuild, no UI
   framework. The shell and its source layout are in [App shell](#app-shell).
+- `packages/linux` (`@mixtura/linux`): the native Linux app; `src/session.ts` joins the engine, the web app's `core.ts` and the host package, `src/ui/` the pages, `data/` the desktop file, metainfo, icons and licence texts. The platform pieces it needs are in `packages/gjs`; `npm run check` here includes its tests and types.
 - `scripts/seed/`: the seed data converter and its fixture ([seed data](seed-data.md#converter)); not engine code.
 - `tsconfig.base.json` (strict) is extended by one `tsconfig.json` per package.
 - Every dependency is pinned exactly; see [dependencies](dependencies.md).

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21
+
+- **Creation**: the native Linux app `packages/linux` (`@mixtura/linux`, GTK 4, libadwaita, GJS; app id `de.nexumia.Mixtura`, first release 0.1.0), the second native app after Emptio's, by the owner's [decision](../../../docs/decisions/native-linux-gjs.md): Drinks (search, "can make" filter), Drink (ingredients, preparation, the engine's balance figures), Bottles (switches that write the stock records of the shown space), Preferences (style, units, spaces, joining by invitation link) and About, English and German; desktop file, metainfo, symbolic icon, Flatpak manifest, `release.toml`, and the CI jobs `mixtura-linux-check`, `mixtura-flatpak` and `mixtura-release` (tag `mixtura-v<version>`) into the shared Flatpak repository. The platform pieces moved out of Emptio into the shared package `packages/gjs`. In the web app: `packages/app/src/core.ts` (`@mixtura/app/core`, what a second shell imports) and `stock/marks.ts` (`withPresent`, `presentIds`, `StockRecords`, taken out of `stock/state.ts`, which re-exports them). 13 native tests, the smoke check and 18 screen checks and a wide screenshot in real GJS 1.80 and Broadway at 360 x 720; the Flatpak was not built and no phone was used. [Native Linux app](native-linux.md).
+
 ## 2026-11-20
 
 - **Fix** (2026-11-20): the frame of the app (`.app-root`) is fixed to the edges of the window instead of being `100dvh` high, after the owner reported a bottom bar or header cut off in the apps. The owner then named Chrome on Android, in the browser and installed, with the footer below the screen; Mixtura already keeps its bars clear of the system bars (`viewport-fit=cover`, safe areas). Not reproduced here and not checked on a phone, so no test pins the fix; the browser checks pass as before.

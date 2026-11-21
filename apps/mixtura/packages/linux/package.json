@@ -1,0 +1,26 @@
+{
+  "name": "@mixtura/linux",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Mixtura's native Linux app (GTK4, libadwaita, GJS): Drink Builder for Phosh and the desktop",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@mixtura/app": "0.0.0",
+    "@mixtura/engine": "0.0.0",
+    "@nexumia-de/gjs": "0.1.0",
+    "@nexumia-de/hospes": "0.1.0",
+    "@nexumia-de/materia": "0.3.0"
+  },
+  "scripts": {
+    "prebuild": "npm run build -w @mixtura/engine && node ../app/compile-schemas.mjs",
+    "build": "node build.mjs",
+    "pretest": "npm run build -w @mixtura/engine && node ../app/compile-schemas.mjs",
+    "test": "vitest run",
+    "pretypecheck": "npm run build -w @mixtura/engine && node ../app/compile-schemas.mjs",
+    "typecheck": "tsc --noEmit -p .",
+    "presmoke": "npm run build -w @mixtura/engine",
+    "smoke": "node scripts/smoke.mjs",
+    "interact": "node scripts/interact.mjs"
+  }
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.nexumia.Mixtura</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>Drink Builder</name>
+  <summary>A workbench for mixed drinks</summary>
+  <description>
+    <p>
+      Drink Builder shows what you can mix with the bottles you have. Mark
+      what is at hand, and the app lists the drinks you can make, the ones
+      that need a substitute and the ones missing a single ingredient. Every
+      drink shows its ingredients and its balance as numbers: alcohol by
+      volume after dilution, sugar and acid.
+    </p>
+    <p>
+      It works offline. The recipes are built in; what you have at hand
+      stays on your device unless the household shares a space over storage
+      it configured itself, on GitHub or on a WebDAV server of its choice.
+      There is no server of ours, no account and no telemetry.
+    </p>
+  </description>
+  <developer id="de.nexumia">
+    <name>suitably</name>
+  </developer>
+  <url type="homepage">https://github.com/suitably/domus</url>
+  <url type="bugtracker">https://github.com/suitably/domus/issues</url>
+  <url type="donation">https://liberapay.com/suitably</url>
+  <launchable type="desktop-id">de.nexumia.Mixtura.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+  <recommends>
+    <display_length compare="ge">360</display_length>
+  </recommends>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <releases>
+    <release version="0.1.0" date="2026-11-21">
+      <description>
+        <p>Drink Builder is now also an app for Linux phones and desktops: browse the drinks, mark your bottles and see what you can make.</p>
+      </description>
+    </release>
+  </releases>
+</component>

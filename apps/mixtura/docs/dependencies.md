@@ -77,6 +77,17 @@ dependencies (`workerd`, `miniflare`, `esbuild` and others) were not listed.
 | --------------------------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ajv` (generated validators only) | 8.17.1  | MIT     | The validators that check every store write ([store](store.md)) are generated at build time; the bundle holds them plus Ajv's `equal` and `ucs2length` helpers (with `fast-deep-equal`, MIT), not the compiler |
 
+## Shipped in the native app
+
+The native Linux app ([native Linux app](native-linux.md)) bundles what the web app does (the validators with Ajv's two helpers, the drinks and ingredients of the seed) and, besides, from the shared package [gjs](../../../packages/gjs/docs/dependencies.md):
+
+| Package          | Version | Licence | Use                                      |
+| ---------------- | ------- | ------- | ---------------------------------------- |
+| `@noble/ciphers` | 2.4.0   | MIT     | AES-256-GCM, where GJS has no Web Crypto |
+| `@noble/hashes`  | 2.4.0   | MIT     | HKDF-SHA-256 for the same                |
+
+The licence texts of the two libraries (in `packages/gjs/licenses/`), of Ajv and fast-deep-equal (3.1.3, MIT; `packages/linux/data/licenses/`) and of Bar Assistant's data (MIT, from `packages/engine/data/seed/LICENSE-bar-assistant.txt`) are installed by the Flatpak manifest under `/app/share/licenses/de.nexumia.Mixtura/<module>/`; the build job fails without them. The app runs on GJS, GTK 4, libadwaita and libsoup 3 of the GNOME runtime (LGPL), which it uses and does not ship.
+
 The QR encoder `qrcode-generator` (2.0.4, MIT) drew the QR code of an invite
 link. It was removed on 2026-11-20 with Mixtura's own sync; invites are the
 Household app's.

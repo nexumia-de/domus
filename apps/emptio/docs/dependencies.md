@@ -21,9 +21,10 @@ MIT or Apache-2.0, compatible with it.
 | `@noble/ciphers` | 2.4.0   | MIT     | AES-256-GCM for the native app, where GJS has no Web Crypto ([native Linux app](native-linux.md)) |
 | `@noble/hashes`  | 2.4.0   | MIT     | HKDF-SHA-256 for the same                                                                         |
 
-Both are bundled into the native app only; their licence texts are in
-`packages/linux/data/licenses/` and are installed by the Flatpak
-manifest. The web app has no runtime dependency outside this repository
+Both are bundled into the native app only; they are a dependency of the
+shared package `packages/gjs` now
+([dependencies](../../../packages/gjs/docs/dependencies.md)), whose
+`licenses/` holds their texts, installed by the Flatpak manifest. The web app has no runtime dependency outside this repository
 (hospes and materia). The native app runs on GJS, GTK 4, libadwaita and
 libsoup 3 of the GNOME runtime (LGPL), which it uses and does not ship.
 

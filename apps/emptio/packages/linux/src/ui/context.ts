@@ -1,6 +1,6 @@
 import type { App, Lang, Prefs, Strings } from '@emptio/app/core';
 
-/** What every page gets. `Gtk` and `Adw` objects are untyped here (platform/gi.d.ts). */
+/** What every page gets. `Gtk` and `Adw` objects are untyped here (packages/gjs/src/gi.d.ts). */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Ui {
   app: App;

@@ -14,15 +14,16 @@ sources:
 
 ## Layout
 
-| Folder           | Workspace names                                             | Came from          |
-| ---------------- | ----------------------------------------------------------- | ------------------ |
-| `packages/model` | `@nexumia-de/materia`                                       | nexumia-de/materia |
-| `packages/host`  | `@nexumia-de/hospes`                                        | new                |
-| `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app`                | nexumia-de/mixtura |
-| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`                   | nexumia-de/culina  |
-| `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`                   | nexumia-de/emptio  |
-| `apps/domus`     | `@domus/app`; Household, the app at the root of the address | new                |
-| `scripts`        | none; checks and the site build that span the parts         | new                |
+| Folder           | Workspace names                                                | Came from          |
+| ---------------- | -------------------------------------------------------------- | ------------------ |
+| `packages/model` | `@nexumia-de/materia`                                          | nexumia-de/materia |
+| `packages/host`  | `@nexumia-de/hospes`                                           | new                |
+| `packages/gjs`   | `@nexumia-de/gjs`; what the native Linux apps share            | new                |
+| `apps/mixtura`   | `mixtura`, `@mixtura/engine`, `@mixtura/app`, `@mixtura/linux` | nexumia-de/mixtura |
+| `apps/culina`    | `culina`, `@culina/engine`, `@culina/app`                      | nexumia-de/culina  |
+| `apps/emptio`    | `emptio`, `@emptio/engine`, `@emptio/app`, `@emptio/linux`     | nexumia-de/emptio  |
+| `apps/domus`     | `@domus/app`; Household, the app at the root of the address    | new                |
+| `scripts`        | none; checks and the site build that span the parts            | new                |
 
 Each part keeps its own `docs/`, `AGENTS.md`, ESLint and Prettier
 configuration and TypeScript base, as it had them
@@ -47,17 +48,18 @@ the engines of Mixtura and Culina import.
 
 From the root:
 
-| Command                 | What                                                         |
-| ----------------------- | ------------------------------------------------------------ |
-| `npm run check`         | everything below, in this order                              |
-| `npm run format:check`  | Prettier on the root files (not `apps/`, not `packages/`)    |
-| `npm run boundaries`    | no app imports another app, no shared package imports an app |
-| `npm run check:model`   | materia: format, lint, typecheck, tests, build               |
-| `npm run check:host`    | hospes: format, lint, typecheck, tests                       |
-| `npm run check:mixtura` | Mixtura: format, lint, typecheck, tests, build               |
-| `npm run check:culina`  | Culina: format, lint, typecheck, tests                       |
-| `npm run check:emptio`  | Emptio: format, lint, typecheck, tests                       |
-| `npm run check:domus`   | Household: format, lint, typecheck, tests                    |
+| Command                 | What                                                            |
+| ----------------------- | --------------------------------------------------------------- |
+| `npm run check`         | everything below, in this order                                 |
+| `npm run format:check`  | Prettier on the root files (not `apps/`, not `packages/`)       |
+| `npm run boundaries`    | no app imports another app, no shared package imports an app    |
+| `npm run check:model`   | materia: format, lint, typecheck, tests, build                  |
+| `npm run check:host`    | hospes: format, lint, typecheck, tests                          |
+| `npm run check:gjs`     | gjs: format, lint, typecheck, tests                             |
+| `npm run check:mixtura` | Mixtura: format, lint, typecheck, tests, build (native app too) |
+| `npm run check:culina`  | Culina: format, lint, typecheck, tests                          |
+| `npm run check:emptio`  | Emptio: format, lint, typecheck, tests                          |
+| `npm run check:domus`   | Household: format, lint, typecheck, tests                       |
 
 `npm run build:site` and `npm run e2e:site` build and check the whole
 address ([deployment](deployment.md)). The browser checks of Household
@@ -67,6 +69,20 @@ are `npm run e2e -w @domus/app` (against a fake GitHub API on localhost,
 Other scripts of a part run with `-w`, for example
 `npm run e2e -w mixtura` or `npm run build -w culina`. What they do is
 in the part's own `docs/development.md`.
+
+### CI for the native apps
+
+`.github/workflows/ci.yml` has, for each native app, three jobs with the
+same shape: `<app>-linux-check`, `<app>-flatpak` (x86_64 and aarch64) and
+`<app>-release` (on a tag `<app>-v<version>`). Their steps are three
+composite actions in `.github/actions/` (`native-linux-check`,
+`native-flatpak`, `native-release`); a job only says which app and where
+its files are. Adding a native app is three short jobs, a tag pattern in
+`on.push.tags` and the app's own package. The jobs are not one matrix
+because the path filter (`changes`) decides per app and a job's `if`
+cannot read a matrix value, and because the job names (`emptio-linux-check`,
+`emptio-flatpak (x86_64)`, `emptio-release`) stay as they were. A change
+under `packages/gjs` runs both apps' checks.
 
 ### Boundaries
 

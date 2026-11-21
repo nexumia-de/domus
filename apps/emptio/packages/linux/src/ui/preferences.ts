@@ -3,21 +3,10 @@
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import type { Store } from '@nexumia-de/hospes';
-import { KEYS, THEMES, statusText, themeOf, type Theme } from '@emptio/app/core';
-import { joinByLink } from '../join';
+import { KEYS, THEMES, statusText, themeOf } from '@emptio/app/core';
+import { applyStyle, joinByLink } from '@nexumia-de/gjs';
 import type { NativeStrings } from '../strings';
 import type { Ui } from './context';
-
-/** Follow System, Light or Dark, as the person chose and the prefs keep it. */
-export function applyStyle(theme: Theme): void {
-  const scheme =
-    theme === 'light'
-      ? Adw.ColorScheme.FORCE_LIGHT
-      : theme === 'dark'
-        ? Adw.ColorScheme.FORCE_DARK
-        : Adw.ColorScheme.DEFAULT;
-  Adw.StyleManager.get_default().set_color_scheme(scheme);
-}
 
 export function showPreferences(ui: Ui, n: NativeStrings, store: Store): void {
   const { app, t, prefs } = ui;

@@ -54,9 +54,10 @@ commands, each with `-w` and the package:
   host package's loops), `src/screens/` the four screens on a small DOM
   helper, `src/core.ts` what a second shell imports
   (`@emptio/app/core`). `e2e/` holds the browser checks.
-- `packages/linux` (`@emptio/linux`): the native app; `src/platform/`
-  what GJS lacks, `src/ui/` the pages, `data/` the desktop file,
-  metainfo, icons and licence texts.
+- `packages/linux` (`@emptio/linux`): the native app; `src/ui/` the pages,
+  `data/` the desktop file, metainfo and icons. What GJS lacks, joining by
+  link and the check tooling are in `packages/gjs`
+  ([platform pieces](../../../packages/gjs/docs/platform.md)).
 - The shared packages come from this repository: hospes for everything
   about spaces and sync, materia through it.
 

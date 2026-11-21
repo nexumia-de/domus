@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (later)
+
+- **Creation**: Mixtura's native Linux app (`apps/mixtura/packages/linux`, app id `de.nexumia.Mixtura`, release 0.1.0), the second native app, roadmap goal 11. The platform pieces moved out of Emptio into the new shared package `packages/gjs` (`@nexumia-de/gjs`, with its tests, `npm run check:gjs`, root `check` and the boundaries unchanged); the sync status words moved to the host package. CI: `mixtura-linux-check`, `mixtura-flatpak` (x86_64, aarch64) and `mixtura-release` on a tag `mixtura-v*`, and `gjs-check`; Emptio's three jobs keep their names and now use the same composite actions (`.github/actions/`). Verified in real GJS 1.80 and Broadway here (smoke checks of both apps, 18 screen checks and a wide screenshot of Mixtura, 17 of Emptio); not verified: the Flatpak build, a phone, a real storage. [Decision](decisions/native-linux-gjs.md), [Mixtura's native app](../apps/mixtura/docs/native-linux.md), [gjs](../packages/gjs/docs/platform.md).
+
 ## 2026-11-21
 
 - **Decision**: by the owner: Emptio, Mixtura and Culina all go into the shared Flatpak repository `flatpak.nexumia.de`. Each native app releases with a tag `<app>-v<version>`; Emptio's release job is built (`emptio-release`), phosh-apps reads `suitably/domus emptio-v*` (nexumia-de/phosh-apps pull request). Mixtura and Culina have no native app yet. [Decision](decisions/native-linux-gjs.md), [Emptio's releases](../apps/emptio/docs/native-linux.md#releases).

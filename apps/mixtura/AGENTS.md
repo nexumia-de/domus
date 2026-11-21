@@ -9,7 +9,9 @@ allow. Visible name: **Drink Builder**
 
 Mixtura is a web app (PWA) that is also installed on Android and Linux,
 not a GTK app ([decision](docs/decisions/pwa-own-data.md)); the GTK
-rules do not apply. Its sister app for cooking is
+rules do not apply. Its native Linux app (`packages/linux`,
+[docs](docs/native-linux.md)) is a GTK app and has its own
+[rules](packages/linux/AGENTS.md). Its sister app for cooking is
 [Culina](../culina). The rules of the [root](../../AGENTS.md) apply too.
 
 ## Architecture rules

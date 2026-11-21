@@ -1,0 +1,66 @@
+# Flatpak manifest of the native Drink Builder app. The JavaScript bundle is
+# built by npm before flatpak-builder runs (Flatpak builds are offline):
+#   npm ci && npm run build -w @mixtura/linux
+# from the repository root writes dist/de.nexumia.Mixtura.js next to this file.
+# Needs no permission beyond the display and the network: the data lives in
+# the app's own XDG data directory, and the storage the household configured
+# (GitHub API or a WebDAV server) is reached over HTTPS.
+id: de.nexumia.Mixtura
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: de.nexumia.Mixtura
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+modules:
+  - name: mixtura
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 de.nexumia.Mixtura.js -t ${FLATPAK_DEST}/share/${FLATPAK_ID}
+      - install -Dm755 de.nexumia.Mixtura.in ${FLATPAK_DEST}/bin/${FLATPAK_ID}
+      - install -Dm644 ${FLATPAK_ID}.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 ${FLATPAK_ID}.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - install -Dm644 ${FLATPAK_ID}.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      - install -Dm644 ${FLATPAK_ID}-symbolic.svg -t ${FLATPAK_DEST}/share/icons/hicolor/symbolic/apps
+      # AGPL-3.0 for the app; MIT for the two bundled @noble libraries, for the
+      # two helpers of Ajv's generated validators and for the built-in recipes
+      # and ingredients (Bar Assistant public data).
+      - install -Dm644 LICENSE -t ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/mixtura
+      - install -Dm644 noble-ciphers-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-ciphers/LICENSE
+      - install -Dm644 noble-hashes-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-hashes/LICENSE
+      - install -Dm644 ajv-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/ajv/LICENSE
+      - install -Dm644 fast-deep-equal-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/fast-deep-equal/LICENSE
+      - install -Dm644 bar-assistant-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/bar-assistant/LICENSE
+    sources:
+      # The pre-built bundle (CI downloads it into dist/ first).
+      - type: file
+        path: dist/de.nexumia.Mixtura.js
+      - type: file
+        path: data/de.nexumia.Mixtura.in
+      - type: file
+        path: data/de.nexumia.Mixtura.desktop
+      - type: file
+        path: data/de.nexumia.Mixtura.metainfo.xml
+      # The web app's icon, as it is.
+      - type: file
+        path: ../app/src/icons/icon.svg
+        dest-filename: de.nexumia.Mixtura.svg
+      - type: file
+        path: data/de.nexumia.Mixtura-symbolic.svg
+      - type: file
+        path: ../../../../LICENSE
+      # The two crypto libraries' licences are kept once, with the shared package.
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-ciphers-MIT.txt
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-hashes-MIT.txt
+      - type: file
+        path: data/licenses/ajv-MIT.txt
+      - type: file
+        path: data/licenses/fast-deep-equal-MIT.txt
+      - type: file
+        path: data/licenses/bar-assistant-MIT.txt

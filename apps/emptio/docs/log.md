@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (later)
+
+- **Update**: the platform pieces of the native app (Web Crypto subset, random bytes, `fetch` on libsoup, the file folder, `gi.d.ts`, joining by link, the preferences file, `applyStyle`) and the smoke and Broadway tooling moved to the shared package `packages/gjs`, because Mixtura's native app needs them too; the code is unchanged. Emptio imports `@nexumia-de/gjs`; its two tests of those pieces moved with them (it has two new ones of its own, for the texts), the licence texts of the two crypto libraries are installed from `packages/gjs/licenses/`, and the sync status words (`statusText`, `ago`) moved to the host package, which Emptio's `list/status.ts` re-exports. Emptio's tests, smoke check and 17 screen checks pass as before. Its CI jobs keep their names and now use composite actions shared with Mixtura's. [Native Linux app](native-linux.md).
+
 ## 2026-11-21
 
 - **Update**: releases of the native app, so it reaches the shared Flatpak repository (owner: Emptio, Mixtura and Culina all go there). First release 0.1.0 in the metainfo, which is now the only place of the version (`build.mjs` reads it for the About dialog instead of `package.json`); `release.toml` for the toolkit's `release.py`; a tag `emptio-v<version>` attaches both bundles to its GitHub Release (CI job `emptio-release`), which phosh-apps publishes. Not run yet: no tag exists. [Native Linux app](native-linux.md#releases).

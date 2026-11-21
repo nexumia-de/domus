@@ -6,7 +6,9 @@
 # domus (apps/<name>). Mixtura and Culina install the model from this repository, so
 # a model change runs them too; the host package uses the model and Mixtura
 # uses the host package, so a host change runs Mixtura and a model change runs
-# the host package. Emptio does not use the model yet. Domus (the Household
+# the host package. The shared package of the native Linux apps (packages/gjs)
+# uses the host package; a change to it runs Mixtura and Emptio (their native
+# packages), a change to the host package runs it. Emptio does not use the model yet. Domus (the Household
 # app at the root of the address) uses the model and the host package, so a
 # change to either runs it too, and a change to it runs the site check.
 #
@@ -19,8 +21,8 @@ on:
   pull_request:
   push:
     branches: [main]
-    # A native app's release (emptio-release below).
-    tags: ['emptio-v*']
+    # A native app's release (emptio-release, mixtura-release below).
+    tags: ['emptio-v*', 'mixtura-v*']
 
 permissions:
   contents: read
@@ -35,6 +37,7 @@ jobs:
     outputs:
       model: ${{ steps.paths.outputs.model }}
       host: ${{ steps.paths.outputs.host }}
+      gjs: ${{ steps.paths.outputs.gjs }}
       mixtura: ${{ steps.paths.outputs.mixtura }}
       culina: ${{ steps.paths.outputs.culina }}
       emptio: ${{ steps.paths.outputs.emptio }}
@@ -51,9 +54,9 @@ jobs:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          model=false; host=false; mixtura=false; culina=false; emptio=false; domus=false
+          model=false; host=false; gjs=false; mixtura=false; culina=false; emptio=false; domus=false
           if [ "$EVENT" != "pull_request" ]; then
-            model=true; host=true; mixtura=true; culina=true; emptio=true; domus=true
+            model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true
           else
             # HEAD is the merge of the pull request into its base, so this
             # lists what the pull request changes.
@@ -65,16 +68,18 @@ jobs:
                 apps/culina/*) culina=true ;;
                 apps/emptio/*) emptio=true ;;
                 apps/domus/*) domus=true ;;
-                packages/host/*) host=true; mixtura=true; culina=true; emptio=true; domus=true ;;
-                packages/model/*) model=true; host=true; mixtura=true; culina=true; emptio=true; domus=true ;;
+                packages/gjs/*) gjs=true; mixtura=true; emptio=true ;;
+                packages/host/*) host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
+                packages/model/*) model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
                 LICENSE | *.md) ;;
-                *) model=true; host=true; mixtura=true; culina=true; emptio=true; domus=true ;;
+                *) model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
               esac
             done < changed.txt
           fi
           {
             echo "model=$model"
             echo "host=$host"
+            echo "gjs=$gjs"
             echo "mixtura=$mixtura"
             echo "culina=$culina"
             echo "emptio=$emptio"
@@ -123,6 +128,23 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:host
+
+  # What the native Linux apps share (packages/gjs): the Web Crypto subset against
+  # Node's, joining by link, and the lint and types of the tooling. The apps' own
+  # native checks (emptio-linux-check, mixtura-linux-check) run it in real GJS.
+  gjs-check:
+    name: gjs-check
+    needs: changes
+    if: needs.changes.outputs.gjs == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check:gjs
 
   # What an app did when it installed the model from git: npm packs this
   # commit (running prepare) and installs the result into an empty project,
@@ -253,9 +275,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run e2e -w @emptio/app
 
-  # The native Linux app (GTK4, libadwaita, GJS): the bundle builds, starts
+  # The native Emptio app (GTK4, libadwaita, GJS): the bundle builds, starts
   # in GJS and its desktop file and metainfo validate. The bundle is handed to
-  # emptio-flatpak, because Flatpak builds are offline.
+  # emptio-flatpak, because Flatpak builds are offline. The steps are the
+  # composite action .github/actions/native-linux-check.
   emptio-linux-check:
     name: emptio-linux-check
     needs: emptio-check
@@ -263,38 +286,16 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: ./.github/actions/native-linux-check
         with:
-          node-version-file: .nvmrc
-          cache: npm
-      - name: Install GJS, GTK, libadwaita and the metadata validators
-        run: |
-          sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120 update -q
-          sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120 install -y -q \
-            gjs gir1.2-gtk-4.0 gir1.2-adw-1 gir1.2-soup-3.0 desktop-file-utils appstream
-      - run: npm ci
-      - run: npm run build -w @emptio/linux
-      - run: npm run smoke -w @emptio/linux
-      - name: Validate the desktop file and the metainfo
-        run: |
-          desktop-file-validate apps/emptio/packages/linux/data/*.desktop
-          appstreamcli validate --no-net apps/emptio/packages/linux/data/*.metainfo.xml
-          # Phosh hides an app without the form factor; the validator does not catch it.
-          grep -Eiq '^X-Purism-FormFactor=.*mobile;' apps/emptio/packages/linux/data/*.desktop
-      # The bundle of this commit, for the Flatpak job below.
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: emptio-linux-bundle
-          path: apps/emptio/packages/linux/dist/de.nexumia.Emptio.js
-          retention-days: 3
-          if-no-files-found: error
+          workspace: '@emptio/linux'
+          directory: apps/emptio/packages/linux
+          app-id: de.nexumia.Emptio
+          artifact: emptio-linux-bundle
 
-  # The Flatpak of the native app, x86_64 and aarch64 natively. The reusable
-  # workflow of phosh-toolkit is not used: it checks the repository out and
-  # builds in it, with no step before it, so a bundle that npm builds cannot
-  # reach the offline build, and its REUSE gate needs files this repository
-  # does not have (no REUSE.toml, no docs/dependencies.md). Same tooling and
-  # steps otherwise. A tag emptio-v<version> also releases it (emptio-release).
+  # The Flatpak of the native app, x86_64 and aarch64 natively (the steps are the
+  # composite action .github/actions/native-flatpak). A tag emptio-v<version> also
+  # releases it (emptio-release).
   emptio-flatpak:
     name: emptio-flatpak (${{ matrix.arch }})
     needs: emptio-linux-check
@@ -308,52 +309,15 @@ jobs:
             runner: ubuntu-24.04
           - arch: aarch64
             runner: ubuntu-24.04-arm
-    env:
-      APP_ID: de.nexumia.Emptio
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - uses: ./.github/actions/native-flatpak
         with:
-          name: emptio-linux-bundle
-          path: apps/emptio/packages/linux/dist
-      - name: Install Flatpak tooling
-        run: |
-          apt=(sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120)
-          "${apt[@]}" update -q
-          # librsvg2-common: the SVG pixbuf loader "appstreamcli compose" needs
-          # for the icon; elfutils: eu-strip. Both are only Recommends.
-          "${apt[@]}" install -y -q --no-install-recommends \
-            flatpak flatpak-builder librsvg2-common elfutils
-          # Ubuntu 24.04 restricts the user namespaces bubblewrap needs.
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-      - name: Build
-        run: |
-          flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse \
-            --force-clean --arch=${{ matrix.arch }} --bundle-sources --repo=repo \
-            build-dir apps/emptio/packages/linux/de.nexumia.Emptio.yml
-      - name: Check licence files
-        run: |
-          for dir in emptio noble-ciphers noble-hashes; do
-            files=$(find "build-dir/files/share/licenses/$APP_ID/$dir" -mindepth 1 -printf '%P ' 2>/dev/null || true)
-            [ -n "$files" ] || { echo "::error::No licence files in /app/share/licenses/$APP_ID/$dir"; exit 1; }
-            echo "$dir: $files"
-          done
-      - name: Bundle
-        run: |
-          flatpak build-bundle --arch=${{ matrix.arch }} \
-            --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
-            repo "$APP_ID-${{ matrix.arch }}.flatpak" "$APP_ID"
-          flatpak build-bundle --arch=${{ matrix.arch }} --runtime \
-            repo "$APP_ID-sources-${{ matrix.arch }}.flatpak" "$APP_ID.Sources"
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: de.nexumia.Emptio-${{ matrix.arch }}
-          path: |
-            de.nexumia.Emptio-${{ matrix.arch }}.flatpak
-            de.nexumia.Emptio-sources-${{ matrix.arch }}.flatpak
-          retention-days: 14
-          if-no-files-found: error
+          app-id: de.nexumia.Emptio
+          directory: apps/emptio/packages/linux
+          arch: ${{ matrix.arch }}
+          bundle-artifact: emptio-linux-bundle
+          licence-dirs: 'emptio noble-ciphers noble-hashes'
 
   # A tag emptio-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
@@ -367,54 +331,91 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
-    env:
-      METAINFO: apps/emptio/packages/linux/data/de.nexumia.Emptio.metainfo.xml
-      TAG: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Check the version and write the notes
-        run: |
-          python3 - <<'PY'
-          import os, xml.etree.ElementTree as ET
-          tag = os.environ["TAG"]
-          root = ET.parse(os.environ["METAINFO"]).getroot()
-          release = next(r for r in root.iter("release") if r.get("type", "stable") == "stable")
-          if tag != "emptio-v" + release.get("version"):
-              raise SystemExit(f"::error::{tag} does not match the newest metainfo release {release.get('version')}")
-          lines = ["- " + " ".join("".join(p.itertext()).split()) for p in release.iter("p")]
-          lines += ["- " + " ".join("".join(li.itertext()).split()) for li in release.iter("li")]
-          with open("notes.md", "w") as f:
-              f.write("\n".join(lines) + "\n")
-          PY
-          cat notes.md
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - uses: ./.github/actions/native-release
         with:
-          pattern: de.nexumia.Emptio-*
-          merge-multiple: true
-          path: bundles
-      - name: Attach the bundles to the release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          ls bundles
-          for arch in x86_64 aarch64; do
-            [ -f "bundles/de.nexumia.Emptio-$arch.flatpak" ] || { echo "::error::No bundle for $arch"; exit 1; }
-          done
-          gh release view "$TAG" > /dev/null 2>&1 ||
-            gh release create "$TAG" --verify-tag --title "Emptio ${TAG#emptio-v}" --notes-file notes.md
-          gh release upload "$TAG" bundles/*.flatpak --clobber
-      - name: Notify the publish repository
-        env:
-          GH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-        run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::notice::No PUBLISH_TOKEN; nexumia-de/phosh-apps picks this release up on its schedule."
-            exit 0
-          fi
-          gh api repos/nexumia-de/phosh-apps/dispatches -f event_type=app-updated
+          app: emptio
+          title: Emptio
+          app-id: de.nexumia.Emptio
+          metainfo: apps/emptio/packages/linux/data/de.nexumia.Emptio.metainfo.xml
+          tag: ${{ github.ref_name }}
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          publish-token: ${{ secrets.PUBLISH_TOKEN }}
+
+  # The native Mixtura app (GTK4, libadwaita, GJS): the bundle builds, starts
+  # in GJS and its desktop file and metainfo validate. The bundle is handed to
+  # mixtura-flatpak, because Flatpak builds are offline. The steps are the
+  # composite action .github/actions/native-linux-check.
+  mixtura-linux-check:
+    name: mixtura-linux-check
+    needs: mixtura-check
+    if: needs.changes.outputs.mixtura == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/native-linux-check
+        with:
+          workspace: '@mixtura/linux'
+          directory: apps/mixtura/packages/linux
+          app-id: de.nexumia.Mixtura
+          artifact: mixtura-linux-bundle
+
+  # The Flatpak of the native app, x86_64 and aarch64 natively (the steps are the
+  # composite action .github/actions/native-flatpak). A tag mixtura-v<version> also
+  # releases it (mixtura-release).
+  mixtura-flatpak:
+    name: mixtura-flatpak (${{ matrix.arch }})
+    needs: mixtura-linux-check
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/native-flatpak
+        with:
+          app-id: de.nexumia.Mixtura
+          directory: apps/mixtura/packages/linux
+          arch: ${{ matrix.arch }}
+          bundle-artifact: mixtura-linux-bundle
+          licence-dirs: 'mixtura noble-ciphers noble-hashes ajv fast-deep-equal bar-assistant'
+
+  # A tag mixtura-v<version> releases the native app: the version must be the
+  # newest stable <release> in the metainfo (release.toml), and both bundles
+  # of the tagged commit go to the GitHub Release of the tag. phosh-apps
+  # publishes the newest such release (apps.txt: suitably/domus mixtura-v*).
+  mixtura-release:
+    name: mixtura-release
+    needs: mixtura-flatpak
+    if: startsWith(github.ref, 'refs/tags/mixtura-v')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/native-release
+        with:
+          app: mixtura
+          title: Mixtura
+          app-id: de.nexumia.Mixtura
+          metainfo: apps/mixtura/packages/linux/data/de.nexumia.Mixtura.metainfo.xml
+          tag: ${{ github.ref_name }}
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          publish-token: ${{ secrets.PUBLISH_TOKEN }}
 
   # The Household app at the root of the address: format, lint, typecheck,
   # tests (the bundle, the wording of every failure, the create and join flows).

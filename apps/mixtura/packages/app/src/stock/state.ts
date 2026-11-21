@@ -15,11 +15,9 @@ import { nowInstant } from '../today';
 import { combineSpaces, type RecordsBySpace } from './combine';
 import { resolveSelection, sameSetting, type Selection } from './spaces-rules';
 import { loadStock, writeStock } from './source';
+import { presentIds, withPresent, type StockRecords } from './marks';
 import { presentAt } from './spaces-view';
 import { spaceWritten } from './written';
-
-/** The combined stock of the ticked spaces: one live record per ingredient. */
-export type StockRecords = ReadonlyMap<string, StockFields>;
 
 export type StockState =
   | { kind: 'loading' }
@@ -239,12 +237,4 @@ export function changeStock(context: StockContext, changes: readonly StockChange
 /** Waits for the writes started so far; for tests. */
 export const stockWrites = (): Promise<void> => queue;
 
-/** The record that marks an ingredient in stock or out, keeping its other fields. */
-export function withPresent(records: StockRecords, id: string, present: boolean): StockFields {
-  return { ...records.get(id), ingredientId: id, present };
-}
-
-/** Number of records that say "in stock" for ingredients the tree knows. */
-export function presentIds(records: StockRecords): string[] {
-  return [...records.values()].filter((r) => r.present).map((r) => r.ingredientId);
-}
+export { presentIds, withPresent, type StockRecords };

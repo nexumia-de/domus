@@ -4,7 +4,7 @@
 import { webcrypto } from 'node:crypto';
 import { afterEach, expect, test } from 'vitest';
 import { deriveSpace, openCollection, sealCollection } from '@nexumia-de/hospes';
-import { installWebPlatform, subtle } from '../src/platform/subtle';
+import { installWebPlatform, subtle } from '../src/subtle';
 
 const real = globalThis.crypto;
 /** Runs `work` with `crypto` replaced, as the host package sees it in GJS. */

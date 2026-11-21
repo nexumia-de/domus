@@ -21,5 +21,9 @@
   "devDependencies": {
     "ajv": "8.17.1",
     "fake-indexeddb": "6.2.8"
+  },
+  "exports": {
+    "./core": "./src/core.ts",
+    "./seed-assemble.mjs": "./seed-assemble.mjs"
   }
 }

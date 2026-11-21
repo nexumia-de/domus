@@ -260,6 +260,16 @@ the chosen space while it exists; otherwise the first shared space,
 unless only a space on this device holds the app's records; otherwise
 the first. Mixtura counts several spaces at once and has its own rules.
 
+## The status of a space in words (`status-text.ts`)
+
+`statusText(words, status, now, online)` turns a `SyncStatus` into one
+line and `ago(words, at, now)` into "just now", minutes, hours, then the
+date. The words are the app's (`StatusWords`: one text per kind, the
+failure texts by code with `other` for an unknown code); the file only
+picks and joins them, and offline hides a failure or "not synced yet"
+behind "Offline". Used by Emptio (web and native) and Mixtura's native
+app; tested in `test/status-text.test.ts`.
+
 ## Limits
 
 - **The secret is stored in clear on the device** (the `spaces` store).

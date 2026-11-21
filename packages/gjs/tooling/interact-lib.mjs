@@ -12,7 +12,6 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
-export const APP_ID = 'de.nexumia.Emptio';
 export const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 const portInUse = (port) =>
@@ -22,15 +21,18 @@ const portInUse = (port) =>
     socket.on('error', () => done(false));
   });
 
-// The largest surface element is the window's content area.
+// The window is the surface element with the most visible area. Its content can be taller than
+// the screen (a long list is drawn in full and clipped), so only the part inside the viewport counts.
 const findWindow = () => {
   let best = null;
   let area = 0;
   for (const top of document.body.children) {
     for (const el of top.querySelectorAll('div')) {
       const r = el.getBoundingClientRect();
-      if (r.width * r.height > area) {
-        area = r.width * r.height;
+      const w = Math.min(r.right, innerWidth) - Math.max(r.left, 0);
+      const h = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
+      if (w > 0 && h > 0 && w * h > area) {
+        area = w * h;
         best = r.toJSON();
       }
     }
@@ -45,12 +47,15 @@ export async function stopAll() {
 }
 
 export class Session {
-  /** @param {{ gjsFile: string, dataDir: string, width: number, height: number, work?: string }} o */
+  /**
+   * @param {{ appId: string, dataEnv: string, gjsFile: string, dataDir: string, width: number, height: number, lang?: 'en' | 'de' }} o
+   *   `dataEnv` is the variable that points the app at a folder of recorded data.
+   */
   constructor(o) {
     this.o = o;
     this.procs = [];
     this.busPid = undefined;
-    this.work = mkdtempSync(join(tmpdir(), 'emptio-interact-'));
+    this.work = mkdtempSync(join(tmpdir(), 'gjs-interact-'));
     this.log = '';
     live.add(this);
   }
@@ -103,9 +108,9 @@ export class Session {
       BROADWAY_DISPLAY: `:${display}`,
       GSETTINGS_BACKEND: 'memory',
       XDG_CONFIG_DIRS: `${join(this.work, 'xdg')}:/etc/xdg`,
-      EMPTIO_DATA_DIR: this.o.dataDir,
-      LANG: 'en_US.UTF-8',
-      LANGUAGE: 'en',
+      [this.o.dataEnv]: this.o.dataDir,
+      LANG: this.o.lang === 'de' ? 'de_DE.UTF-8' : 'en_US.UTF-8',
+      LANGUAGE: this.o.lang ?? 'en',
     });
     let win = null;
     for (const end = Date.now() + 30000; !win && Date.now() < end;) {
@@ -116,6 +121,7 @@ export class Session {
     if (!win) throw new Error('no window appeared within 30 s');
     await this.page.waitForTimeout(500);
     win = await this.page.evaluate(findWindow);
+    if (process.env.INTERACT_DEBUG) console.error('window', JSON.stringify(win));
     const filled = win.x <= 0 && win.y <= 0 && win.width >= width && win.height >= height;
     if (!filled) {
       // No window manager: a double click on the header bar maximizes (toolkit quirk).
@@ -153,9 +159,9 @@ export class Session {
         'call',
         '--session',
         '--dest',
-        APP_ID,
+        this.o.appId,
         '--object-path',
-        '/de/nexumia/Emptio',
+        `/${this.o.appId.replaceAll('.', '/')}`,
         '--method',
         'org.gtk.Actions.Activate',
         name,

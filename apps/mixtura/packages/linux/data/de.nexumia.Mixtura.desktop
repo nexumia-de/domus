@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Drink Builder
+Name[de]=Drink Builder
+Comment=A workbench for mixed drinks
+Comment[de]=Eine Werkbank für gemixte Getränke
+Exec=de.nexumia.Mixtura
+Icon=de.nexumia.Mixtura
+Terminal=false
+Categories=GTK;Utility;
+Keywords=cocktail;drinks;bar;recipes;mixology;cocktails;getränke;rezepte;
+Keywords[de]=Cocktail;Getränke;Bar;Rezepte;Mixen;
+StartupNotify=true
+X-Purism-FormFactor=Workstation;Mobile;
