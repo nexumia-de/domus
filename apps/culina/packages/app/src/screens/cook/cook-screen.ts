@@ -11,6 +11,7 @@ import { carryOldCookChoices } from '../../cook/carry';
 import { dishEntries, shippedNow } from '../../cook/entries';
 import { find } from '../../cook/finder';
 import type { Found } from '../../cook/finder';
+import { ingredientName } from '../../cook/lookup';
 import { isDish, originOf, partsInView } from '../../cook/one-list';
 import type { AnyCandidate } from '../../cook/one-list';
 import { cookToday, notebookSource } from '../../cook/source';
@@ -95,7 +96,7 @@ export const cookScreen = (ingredientId?: string): HTMLElement => {
   const heading = el(
     'h1',
     undefined,
-    chosen === undefined ? t.tabCook : t.withHeading(chosen.name),
+    chosen === undefined ? t.tabCook : t.withHeading(ingredientName(chosen)),
   );
   section.append(heading, cookTabs('cook'));
   const problem = storeProblem();

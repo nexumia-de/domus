@@ -212,17 +212,20 @@ Run by `test/makeable-vectors.test.ts` from `packages/engine/vectors/makeable/`.
 `expected` is a subset of the result: objects by field, arrays by position
 and length; `urgency: null` asserts no urgency.
 
-| `kind`            | `inputs`                                                                                                                                                                                          | `expected`                                                |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `substitutes` (declared substitute effects), `options` (`siblingSubstitution`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst`              |
-| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                                                                    | `items` (`itemId`, `ingredientId`, `useBy`)               |
-| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `options` (`siblingSubstitution`)                                                                | `records` (`kind`, `id`), exactly, in order               |
-| `rank_candidates` | `candidates` (`kind`, `id`, `name`, `roles`, optional `urgency.daysLeft`; own and classic kinds mixed)                                                                                            | `order` (`kind:id`), exactly, also for the reversed input |
+| `kind`            | `inputs`                                                                                                                                                                                                                                      | `expected`                                                |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `makeable`        | `today`, `ingredients`, optional `components`, `dishes`, `templates`, `stock`, `facts`, `substitutes` (declared substitute effects), `parts` (`whole`, `parts`), `options` (`siblingSubstitution`, `groupInStock`, `maxMissing`, `dishRoles`) | `candidates` (ranked), optional `useUpFirst`              |
+| `stock_for_role`  | `today`, `role`, `ingredients`, optional `components`, `stock`                                                                                                                                                                                | `items` (`itemId`, `ingredientId`, `useBy`)               |
+| `uses_ingredient` | `today`, `ingredientId`, `ingredients`, `stock` (may be empty), optional `components`, `dishes`, `parts`, `options` (`siblingSubstitution`, `groupInStock`)                                                                                   | `records` (`kind`, `id`), exactly, in order               |
+| `rank_candidates` | `candidates` (`kind`, `id`, `name`, `roles`, optional `urgency.daysLeft`; own and classic kinds mixed)                                                                                                                                        | `order` (`kind:id`), exactly, also for the reversed input |
 
 Errors use `error_code` and `error_detail` as elsewhere (`invalid-tree`,
 `invalid-date`, `cycle`, `invalid-template`). Covered: exact match, a
-parent line taking a descendant, a generic item not satisfying a specific
-line, sibling substitution on, off, earliest use-by and for a class line, a
+parent line taking a descendant, a group in stock covering a member
+(`group-in-stock-*`: nearest group, short, own first, before a sibling, state)
+and, with `groupInStock` off, not (`group-in-stock-off`), a whole covering a
+part (`part-*`), the kitchen's water (`kitchen-water-*`, `template-water-*`),
+a group covering a template role (`template-group-covers-role`), sibling substitution on, off, earliest use-by and for a class line, a
 short substitute keeping the amount, state mismatch (cooked line and raw
 item, raw item and prepared component), a prepared component in stock,
 presence-only stock, short amounts, batches adding up, conversion by the

@@ -1,0 +1,135 @@
+{
+  "id": "kitchen-water-short-stock",
+  "description": "Water in stock that is too little is covered by the kitchen, as an always-there item would be",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-21",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "egg"
+      },
+      {
+        "id": "egg-whole",
+        "parentId": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "egg-whole-fresh",
+        "parentId": "egg-whole"
+      },
+      {
+        "id": "egg-yolk",
+        "parentId": "egg"
+      },
+      {
+        "id": "egg-yolk-dried",
+        "parentId": "egg-yolk"
+      },
+      {
+        "id": "egg-white",
+        "parentId": "egg"
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      }
+    ],
+    "components": [
+      {
+        "id": "dough",
+        "name": "Dough",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "flour"
+            },
+            "amount": {
+              "value": 200,
+              "unit": "g"
+            },
+            "role": "starch"
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "water"
+            },
+            "amount": {
+              "value": 120,
+              "unit": "g"
+            },
+            "role": "liquid"
+          }
+        ],
+        "version": {
+          "family": "dough",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "flour"
+        },
+        "amount": {
+          "value": 500,
+          "unit": "g"
+        }
+      },
+      {
+        "id": "s2",
+        "ref": {
+          "kind": "ingredient",
+          "id": "water"
+        },
+        "amount": {
+          "value": 50,
+          "unit": "g"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "dough",
+        "complete": true,
+        "lines": [
+          {
+            "status": "have"
+          },
+          {
+            "status": "have",
+            "source": "kitchen",
+            "items": []
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree and of stored fields; ingredients, amounts and recipes are made up and no kitchen figure is involved."
+}

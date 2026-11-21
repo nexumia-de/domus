@@ -65,6 +65,7 @@ export const classicsWithin = (
     stock: base.stock,
     today: base.today,
     ...(base.facts === undefined ? {} : { facts: base.facts }),
+    ...(base.parts === undefined ? {} : { parts: base.parts }),
     classics,
     lang,
     options: { maxMissing },

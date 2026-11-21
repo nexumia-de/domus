@@ -11,6 +11,9 @@ import type {
 
 const there = (r: MakeableLineReport): boolean => r.status !== 'missing' && r.status !== 'short';
 
+/** A line that counts for "at least one is there": required, and not the kitchen's water. */
+const counts = (r: MakeableLineReport): boolean => !r.optional && r.source !== 'kitchen';
+
 /** Stock items a line uses; a made sub-component uses what its own lines use. */
 function usedBy(r: MakeableLineReport): string[] {
   const own = r.source === 'stock' ? r.items : [];
@@ -24,7 +27,13 @@ function substitutionsOf(r: MakeableLineReport): MakeableSubstitution[] {
 
 /** Roles of the lines that are there (a sub-component counts with the line's role, not its own). */
 const rolesOf = (lines: readonly MakeableLineReport[]): string[] =>
-  [...new Set(lines.filter(there).flatMap((l) => (l.role === undefined ? [] : [l.role])))].sort();
+  [
+    ...new Set(
+      lines
+        .filter((l) => there(l) && l.source !== 'kitchen')
+        .flatMap((l) => (l.role === undefined ? [] : [l.role])),
+    ),
+  ].sort();
 
 /** The used item with the earliest use-by; always-there items and items without a date never count. */
 function urgencyOf(ctx: Context, used: readonly string[]): MakeableUrgency | undefined {
@@ -52,7 +61,7 @@ export function summarize(
   maxMissing: number,
 ): MakeableCandidate | undefined {
   const lacking = lines.filter((l) => !l.optional && lacks(l.status)).length;
-  if (lacking > maxMissing || !lines.some((l) => !l.optional && there(l))) return undefined;
+  if (lacking > maxMissing || !lines.some((l) => counts(l) && there(l))) return undefined;
   const alwaysIds = new Set(ctx.items.filter((i) => i.always === true).map((i) => i.id));
   const used = [...new Set(lines.flatMap(usedBy))].filter((id) => !alwaysIds.has(id)).sort();
   const urgency = urgencyOf(ctx, used);

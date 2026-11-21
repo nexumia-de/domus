@@ -232,6 +232,7 @@ export type {
 
 export {
   DEFAULT_DISH_ROLES,
+  KITCHEN_ROLE,
   makeable,
   openDishRoles,
   rankCandidates,
@@ -253,6 +254,8 @@ export type {
   MakeableResult,
   MakeableStockItem,
   MakeableSubstitution,
+  MakeableThrough,
+  MakeablePart,
   MakeableUrgency,
   MakeableUseUp,
   RankedCandidate,

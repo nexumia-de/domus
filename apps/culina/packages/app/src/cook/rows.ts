@@ -3,6 +3,7 @@
 // candidate; the words come from the strings. Pure: names and offers come in.
 import type { MakeableCandidate, MakeableLineReport } from '@culina/engine';
 import { roleInvite, roleLabel } from '../components/names';
+import { templateName } from '../ratios/names';
 import { hashFor } from '../router';
 import { formatNumber } from '../shared/mass';
 import { strings } from '../strings';
@@ -25,7 +26,7 @@ export interface CookRow {
   reason: string;
   /** The lines that are lacking, named. */
   lacks: string[];
-  /** "with salted butter in place of butter". */
+  /** "with salted butter in place of butter", and "Egg in stock counts for Egg, whole". */
   substitutions: string[];
   /** Items that are there with no known amount. */
   unknown: string[];
@@ -48,7 +49,7 @@ const amountText = (a: { value: number; unit: string }): string =>
 
 /** What a line is called: its ingredient or component, else the role of a template. */
 const lineName = (look: Lookup, line: MakeableLineReport): string =>
-  line.ref !== undefined ? look.name(line.ref) : roleLabel(line.role ?? '').toLowerCase();
+  line.ref !== undefined ? look.name(line.ref) : t.roleInSentence(roleLabel(line.role ?? ''));
 
 const lacksText = (look: Lookup, line: MakeableLineReport): string => {
   const name = lineName(look, line);
@@ -76,8 +77,17 @@ const reasonOf = (c: MakeableCandidate, look: Lookup): string => {
   const second =
     c.roles.length === 0
       ? t.reasonNoRoles
-      : t.reasonRoles(c.roles.map((r) => roleLabel(r).toLowerCase()).join(', '));
+      : t.reasonRoles(c.roles.map((r) => t.roleInSentence(roleLabel(r))).join(', '));
   return `${first}; ${second}`;
+};
+
+/** "Egg in stock counts for Egg, whole": a group or a whole in stock that covers a line. */
+const throughText = (look: Lookup, line: MakeableLineReport): string[] => {
+  const via = line.through;
+  if (via === undefined) return [];
+  const inStock = look.name({ kind: 'ingredient', id: via.inStock });
+  const asked = look.name({ kind: 'ingredient', id: via.asked });
+  return [via.rule === 'group' ? t.throughGroup(inStock, asked) : t.throughPart(inStock, asked)];
 };
 
 /**
@@ -96,7 +106,8 @@ export const cookRow = (
     key: keyOf(candidate),
     kind: candidate.kind,
     id: candidate.id,
-    name: candidate.name,
+    // A shipped ratio card has its name in the user's language, as on the Ratios screen.
+    name: candidate.kind === 'template' ? templateName(candidate) : candidate.name,
     href: hrefOf(candidate),
     complete: candidate.complete,
     lacking: candidate.lacking,
@@ -105,12 +116,15 @@ export const cookRow = (
     lacks: required
       .filter((l) => l.status === 'missing' || l.status === 'short')
       .map((l) => lacksText(look, l)),
-    substitutions: candidate.substitutions.map((s) =>
-      t.substitution(
-        look.name({ kind: 'ingredient', id: s.substitute }),
-        look.name({ kind: 'ingredient', id: s.asked }),
+    substitutions: [
+      ...candidate.substitutions.map((s) =>
+        t.substitution(
+          look.name({ kind: 'ingredient', id: s.substitute }),
+          look.name({ kind: 'ingredient', id: s.asked }),
+        ),
       ),
-    ),
+      ...[...new Set(all.flatMap((l) => throughText(look, l)))],
+    ],
     unknown: all
       .filter((l) => l.status === 'have-amount-unknown')
       .map((l) => t.amountUnknown(lineName(look, l))),

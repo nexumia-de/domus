@@ -66,11 +66,16 @@ export const cookStringsDe: typeof cookStrings = {
   reasonNoDate: 'nichts davon hat ein Verbrauchsdatum',
   reasonRoles: (roles: string): string => `deckt ${roles} ab`,
   reasonNoRoles: 'keine Rollen erfasst',
+  // Ein Substantiv behält im Satz seinen großen Anfangsbuchstaben ("deckt Fett, Mehl ab").
+  roleInSentence: (label: string): string => `${label}`,
   lacksHeading: 'Noch nötig',
   lacksShort: (name: string, have: string, need: string): string =>
     `${name} (${have} da, ${need} nötig)`,
   lacksOtherState: (name: string): string => `${name} (da, in anderem Zustand)`,
   substitution: (substitute: string, asked: string): string => `mit ${substitute} statt ${asked}`,
+  throughGroup: (inStock: string, asked: string): string =>
+    `${inStock} im Vorrat zählt für ${asked}`,
+  throughPart: (whole: string, part: string): string => `${part} aus ${whole} im Vorrat`,
   amountUnknown: (name: string): string => `${name} ist da; wie viel, ist nicht bekannt.`,
   offer: (invite: string, names: string): string => `Du könntest ${invite} ergänzen: ${names}`,
   openLabel: (name: string): string => `${name} öffnen`,
