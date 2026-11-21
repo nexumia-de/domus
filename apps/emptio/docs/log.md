@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21
+
+- **Update**: releases of the native app, so it reaches the shared Flatpak repository (owner: Emptio, Mixtura and Culina all go there). First release 0.1.0 in the metainfo, which is now the only place of the version (`build.mjs` reads it for the About dialog instead of `package.json`); `release.toml` for the toolkit's `release.py`; a tag `emptio-v<version>` attaches both bundles to its GitHub Release (CI job `emptio-release`), which phosh-apps publishes. Not run yet: no tag exists. [Native Linux app](native-linux.md#releases).
+
 ## 2026-11-20
 
 - **Update**: after the owner used the app ("does not look like an app yet", "what is typed gets no category"). The app has a frame fixed to the window ([behaviour](behaviour.md#the-frame)): header, scrolling content, the add field docked at the bottom, a bottom navigation with drawn icons (a rail from 720 px); the back links of Categories and Settings went with it. A typed name gets the category of the usual item it means from a new list of about 750 German and English names ([categories](categories.md#usual-items), [rule 4](engine-rules.md#4-category-of-a-new-entry) step 3, eight new vectors); the native app adds through the same action and so gets it too, which was not run. Checked in Chromium at 360 x 720 and 1200 x 800; not on a phone, not installed, not with a keyboard up.

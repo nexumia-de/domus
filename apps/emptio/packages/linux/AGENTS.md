@@ -22,9 +22,11 @@ too; the toolkit's GTK rules above apply to this package only.
   test against Node's Web Crypto.
 - **Recorded data for checks and screenshots** (`scripts/seed.mjs`,
   `EMPTIO_DATA_DIR`), never a person's.
-- Not set up in this repository, unlike a toolkit app repository: REUSE,
-  releases from changelog fragments, the toolkit's reusable Flatpak
-  workflow. `changelog.d/` is kept for when they are.
+- Releases come from `changelog.d/` through the toolkit's `release.py`
+  (`release.toml`) and a tag `emptio-v<version>`
+  ([releases](../../docs/native-linux.md#releases)). Not set up, unlike a
+  toolkit app repository: REUSE and the toolkit's reusable Flatpak
+  workflow.
 
 ## Before committing
 

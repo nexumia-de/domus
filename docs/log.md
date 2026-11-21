@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21
+
+- **Decision**: by the owner: Emptio, Mixtura and Culina all go into the shared Flatpak repository `flatpak.nexumia.de`. Each native app releases with a tag `<app>-v<version>`; Emptio's release job is built (`emptio-release`), phosh-apps reads `suitably/domus emptio-v*` (nexumia-de/phosh-apps pull request). Mixtura and Culina have no native app yet. [Decision](decisions/native-linux-gjs.md), [Emptio's releases](../apps/emptio/docs/native-linux.md#releases).
+
 ## 2026-11-20
 
 - **Update**: goal 8, Culina's stock on spaces: the collection `stock` of a space, shared with Mixtura; old items are moved once; the export no longer holds stock. How the two catalogues meet is written down as a proposal (a table with the shared catalogue package, not built). [Roadmap](roadmap.md), [decision](../apps/culina/docs/decisions/stock-in-spaces.md). The work of this day by several agents is in the [review record](reviews.md).

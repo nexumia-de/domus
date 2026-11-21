@@ -34,4 +34,11 @@
     <control>keyboard</control>
     <control>touch</control>
   </supports>
+  <releases>
+    <release version="0.1.0" date="2026-11-21">
+      <description>
+        <p>Shopping List is now also an app for Linux phones and desktops.</p>
+      </description>
+    </release>
+  </releases>
 </component>

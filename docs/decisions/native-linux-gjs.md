@@ -61,15 +61,18 @@ ways were put to the owner with what each costs:
 - **CI builds the Flatpak with its own job**, not the toolkit's reusable
   workflow: that one cannot take a file built before flatpak-builder
   runs and requires REUSE files.
+- **Every native app is published in the shared Flatpak repository**
+  (owner, 2026-11-21). Each releases on its own with a tag
+  `<app>-v<version>` (Emptio: `emptio-v0.1.0`); phosh-apps lists it as
+  `suitably/domus <app>-v*` and publishes the newest release of each
+  ([Emptio's releases](../../apps/emptio/docs/native-linux.md#releases)).
 
 ## Open
 
 - A native app keeps its own copy of a space's data, so the three apps
   on one phone each join the space; whether they should share one folder
   (as the web apps share one database) is to decide with the second app.
-- REUSE compliance, releases with changelog fragments and the listing in
-  the shared Flatpak repository, as the toolkit describes them for a
-  repository per app.
+- REUSE compliance, as the toolkit describes it for a repository per app.
 - Whether the web apps stay the first shell on a phone once the native
   ones exist.
 
