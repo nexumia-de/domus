@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "chicken",
-          "wanted": {
-            "en": "Young chicken (pollastro)",
-            "de": "Junges Huhn (Pollastro)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171447"
           },
           "amount": {
             "value": 1,

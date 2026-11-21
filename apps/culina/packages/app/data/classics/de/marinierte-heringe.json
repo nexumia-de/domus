@@ -37,9 +37,9 @@
       "lines": [
         {
           "key": "herring",
-          "wanted": {
-            "en": "Herring",
-            "de": "Hering"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-175116"
           },
           "amount": {
             "value": 12,

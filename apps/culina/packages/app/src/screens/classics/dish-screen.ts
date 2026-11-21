@@ -2,6 +2,10 @@
 // a portions stepper (the engine scales), the ingredient lines, "Cook step by step", the whole
 // method; then, closed behind a tap, the nutrition and the source (with how it was checked and our
 // remarks about it).
+import { factsOfClassic } from '../../characters/classic';
+import { characterLookup } from '../../characters/lookup';
+import { characterChips, characterIds } from '../../characters/view';
+import { characterRow } from '../character-chips';
 import { classicOf, techniques } from '../../classics/content';
 import { cookView } from '../../classics/cook-view';
 import { dishView } from '../../classics/dish-view';
@@ -20,6 +24,9 @@ import { insteadFor } from './substitute-block';
 
 const t = strings.classics;
 
+/** A shipped dish says by hand whether it is without meat and fish; the computed pair is not shown beside it. */
+const HAND_SET = ['with-meat', 'with-fish'];
+
 export const classicScreen = (id: string | undefined): HTMLElement => {
   const classic = id === undefined ? undefined : classicOf(id);
   const card = el('article', 'card classic-card');
@@ -37,11 +44,17 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   // it keeps being open if the user opened it.
   const sourceHost = el('div', 'source-host');
   const nutrition = nutritionDetails(classic);
+  const characterHost = el('div', 'character-host');
   const cook = el('a', 'btn primary cook-start', t.cookButton);
   cook.href = hashFor('classic', classic.id, 'cook');
   cook.addEventListener('click', () => setStep(classic.id, 0));
   const draw = (portions: number): void => {
     nutrition.draw(portions);
+    const ids = characterIds(factsOfClassic(classic, characterLookup)).filter(
+      (c) => !HAND_SET.includes(c),
+    );
+    const characters = characterRow(characterChips(ids, lang));
+    characterHost.replaceChildren(...(characters === undefined ? [] : [characters]));
     const nameOf = (ingredient: string): string => ingredientLabel(ingredient, lang);
     const shown = dishView(classic, portions, lang, nameOf);
     if (shown.ok) {
@@ -85,7 +98,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
       draw(n);
     },
   );
-  card.append(control.wrap, results, nutrition.element);
+  card.append(characterHost, control.wrap, results, nutrition.element);
   card.append(sourceHost);
   draw(portionsOf(classic.id));
   // The catalogue gives the ingredient names; draw again when it is there.

@@ -141,7 +141,8 @@ and white pepper (the spice rows give "tsp, ground", not "tsp"), fresh parsley
 and rosemary (the vegetable rule wants "raw" in the name), lemon juice
 (`juice` is an excluded word), bay leaf, red and white table wine (a
 beverage), tomato, bread, dry breadcrumbs, fennel, cauliflower, parsnip,
-shallot, basil, Gruyere, potato flour, dry pasta and green beans. These are
+shallot, basil, Gruyere, potato flour, dry pasta and green beans, and the meat,
+poultry, fish and shellfish below. These are
 **named foods**: `tools/catalogue/extras.json` lists their FDC ids, each with
 the reason (the dish lines it serves). Nothing else about them is typed.
 A named food is a row like any other: the same name rule, parents, yields and
@@ -157,9 +158,42 @@ shipped-file test lets named foods be the exception). **Adding one:** find the
 food in `sr.tsv` of the dataset, add the id and reason to `extras.json`,
 rebuild ([development](development.md#ingredient-catalogue)), then replace the
 dish line's `wanted` by its `ref`. What USDA does not have stays `wanted`:
-meat, fish, juniper, bouquet garni, soup vegetables, orange-flower water,
+juniper, bouquet garni, soup vegetables, orange-flower water,
 whole cloves (the dataset has ground only), chicken blood, brandy, stock and
 sauces. A food the rule excludes and that is not named stays out.
+
+**Meat, poultry, fish and shellfish (26 named foods, 2026-11-21).** The
+categories are not in the selection rule, so these are named foods, each raw
+and unprepared, no brand, read from the dataset like the others; the name is
+USDA's (the cut and the trim stay in it, for example "Beef, round, full cut,
+separable lean and fat, trimmed to 1/8\" fat, choice"). Their
+`x-fdc.category` is USDA's own, which a later feature can read to tell "with
+meat" from "with fish" without a word list: "Beef Products" (3: round, chuck
+pot roast, ground 80/20), "Pork Products" (6: backfat, shoulder, loin, ground,
+bacon, cured ham), "Poultry Products" (4: chicken with skin, breast, thigh,
+turkey), "Lamb, Veal, and Game Products" (5: lamb composite and leg, veal
+composite lean and fat and lean only, ground veal), "Finfish and Shellfish
+Products" (7: Atlantic herring, Atlantic salmon, Atlantic cod, yellowfin tuna,
+European anchovy, shrimp, blue mussel) and "Sausages and Luncheon Meats" (1:
+Italian pork sausage, mild). No selection or derivation rule changed: a named
+food bypasses the rule, and the existing parent rule groups them by the commas
+of the name ("Beef", "Pork, fresh", "Pork, cured", "Fish", "Veal, composite
+of trimmed retail cuts" and so on, nine new parents, each with its category).
+The portions give a density or a unit weight only where USDA has one (a cup of
+cured ham and of mussels, a medium shrimp and mussel); the rest are rows for
+mass amounts. Eight dish lines now point at them: the beef of the sauerbraten
+(round), of the cocido and of the pot-au-feu (the chuck pot roast, the
+dataset's cut for a pot), the fat pork of the sauerbraten (backfat), the
+herring of the marinated herrings, the chicken of the poulet bourguignonne and
+the pollastro of the pollo alla contadina (chicken with skin, cut up), and the
+lean veal of the stracotto (lean only), eight lines in all. Lines that stay
+`wanted` for want of a food that is clearly the one named: "Beef, from the
+joint" (the frikandelle: a joint is no cut), beef bone and bones, beef
+extract, kidney suet, herring milt, boiled meat (lesso), meat stock and broth,
+chicken blood, "Fatty ham (prosciutto grasso)" and carnesecca (the dataset has
+no dry-cured Italian pork; its cured ham is a US wet-cured ham, which is
+not claimed to be either). Judgement: "Beef for the pot" points at the chuck
+arm pot roast because the dataset names that cut for a pot roast.
 
 Judgements made when matching a line to a food: "Pepper" (no colour) is black
 pepper; "Peppergrass" is garden cress (the existing row); "Claret" and "Red
@@ -223,7 +257,7 @@ fewer than the name has).
    no number. A parent has no yields. The parent record carries
    `x-group: { rows }`, the number of food rows below it.
 
-Result for SR Legacy 2018-04: 560 food rows (539 by the rule, 21 [named foods](#named-foods)) and 121 parents, 681 entries (a catalogue of about 300 kB, 34 kB gzipped; 245 kB and 28 kB before the German names).
+Result for SR Legacy 2018-04: 586 food rows (539 by the rule, 47 [named foods](#named-foods)) and 130 parents, 716 entries (a catalogue of about 300 kB, 34 kB gzipped, 681 entries before the meat and fish; 245 kB and 28 kB before the German names).
 380 food rows have a parent, 153 stand alone and 6 food rows are
 roots of a group. The tree has 6 levels (212 entries at the top, 283, 111,
 37, 10 and 2 below). 53 parents are at the top, 43, 16 and 4 at the next
@@ -277,8 +311,8 @@ English stays the canonical language of the data and the code; German is
 supported on top, so a search for "Mehl" finds flour and a shopping list
 app can search the same file in German. Every entry has a German name,
 from two sources that the entry's `source` tells apart: **Wikidata** for
-164 of 681 entries (this section up to [the result](#german-names-result)) and **the
-project's own translation** for the other 517 ([below](#own-translation)).
+164 of 716 entries (this section up to [the result](#german-names-result)) and **the
+project's own translation** for the other 552 ([below](#own-translation)).
 The Wikidata names come from Wikidata, whose
 structured data is public domain: "All structured data (i.e. the main,
 Property, Lexeme, and EntitySchema namespaces) is released into the public
@@ -343,7 +377,7 @@ each food row, the first that fails ends it (the counts are for the 539 rows):
    has a longer list than a cook needs the list stays long: nothing is
    chosen by hand.
 
-<a id="german-names-result"></a>**Result.** 146 of 539 foods (152 of 560 with the named foods) have a German name (72 through a class item
+<a id="german-names-result"></a>**Result.** 146 of 539 foods (152 of 560 with the first 21 named foods; none of the 26 meats and fish added later has a Wikidata name) have a German name (72 through a class item
 with several NDB numbers), 83 of them also aliases. A name's `source` is
 "Wikidata Q..., label de and aliases, NDB ..., snapshot 2026-11-18 or 2026-11-19".
 
@@ -397,7 +431,7 @@ they are kept because a search by them is right.
 
 ### Own translation
 
-The 517 entries without a Wikidata name (foods 408, groups 109) have a
+The 552 entries without a Wikidata name (foods 434, groups 118) have a
 German name that the project translated from the USDA description on
 2026-11-19. They are a hand-kept overlay,
 `tools/catalogue/names-de-own.json`: an id maps to `{ name, aliases? }`, the
@@ -409,6 +443,11 @@ reason. The catalogue's envelope repeats the head as `ownNamesDataset` with
 the SHA-256 of the overlay, and every merged entry has the `source`
 "Own translation of the USDA description by the project, 2026-11-19", so
 an own name is told from a Wikidata label by its source.
+
+The 35 names added on 2026-11-21 for the 26 meats and fish and their nine
+parents are in the same overlay, so their `source` still says 2026-11-19, the
+overlay's date; no Wikidata snapshot was refreshed for them (they have no NDB
+join), and none is claimed.
 
 **Rules of the translation.**
 
@@ -470,7 +509,7 @@ USDA's `foodCategory.description` of the SR Legacy JSON (for example "Dairy
 and Egg Products", "Spices and Herbs") is written out for every food
 row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
 `x-group.category` only when every food row below it has the same one
-(107 of 116 parents). It is not mapped to shop aisles or anything else.
+(121 of 130 parents). It is not mapped to shop aisles or anything else.
 
 ## Nutrition
 
@@ -493,17 +532,21 @@ likewise, each on its own, and only when every row has them. The value is the
 median, and the parent's `source` names the rule. Many parents do not agree
 (milk holds skimmed, dry and human milk; eggs hold fresh and dried), so a dish
 line that names such a parent has no nutrition and is reported as not counted.
-36 of 121 parents and all 560 foods carry nutrition.
+36 of 130 parents and all 586 foods carry nutrition.
 
 ## What the catalogue does not have
 
-- No meat, fish, poultry, baked goods, beverages, soups, sauces, canned,
-  frozen, cooked or prepared foods, and no brand products, apart from the
-  21 [named foods](#named-foods) (bread, breadcrumbs and wine among them).
+- No baked goods, beverages, soups, sauces, canned, frozen, cooked or
+  prepared foods, no cuts of meat beyond a short list, and no brand
+  products, apart from the 47 [named foods](#named-foods) (bread,
+  breadcrumbs, wine and 26 raw meats and fish among them). Meat, poultry,
+  fish and shellfish are only those 26: no game, no duck or goose, no
+  offal, no cured meat except bacon and a cured ham, no dry-cured pork
+  (prosciutto, carnesecca), no smoked or salted fish.
 - No shelf life, seasons or allergens, no nutrition beyond the seven
   [nutrients](#nutrition) above (no vitamins or minerals), and no roles in the
   file (the app's [role table](data-model.md#roles) adds a few when it reads it); yields only
-  where SR28 gives a refuse percentage (153 foods), none for cooked states.
+  where SR28 gives a refuse percentage (173 foods), none for cooked states.
 - No density for foods whose only volume portion is a bulk form (chopped,
   sliced, shredded), no unit weight where the source gives several sizes
   or no single piece; many ingredients appear with a density but no unit
@@ -512,7 +555,7 @@ line that names such a parent has no nutrition and is reported as not counted.
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English as the canonical language; a German name for every entry, 164 from Wikidata and 517 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
+- English as the canonical language; a German name for every entry, 164 from Wikidata and 552 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
   only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added
   vitamins, margarines, oils); the source's variants are kept, and the
