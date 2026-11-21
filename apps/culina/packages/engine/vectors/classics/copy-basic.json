@@ -1,6 +1,6 @@
 {
   "id": "copy-basic",
-  "description": "Copy of the base classic for 2 portions: the component gets the first id, the dish the second; the slot refers to the new component id; the source wording and the range go into the line notes; every record is version 1 of its own family with the origin",
+  "description": "Copy of the base classic for 2 portions: the component gets the first id, the dish the second; the slot refers to the new component id; the source wording and the range go into the line notes; every record is version 1 of its own family with the origin; the dish keeps the course and the country as its cuisine",
   "inputs": {
     "kind": "classic_copy",
     "classic": {
@@ -212,6 +212,8 @@
       "id": "u-00000000-0000-4000-8000-000000000002",
       "name": "Example dish",
       "portions": 2,
+      "course": "main",
+      "cuisine": "de",
       "slots": [
         {
           "role": "main",

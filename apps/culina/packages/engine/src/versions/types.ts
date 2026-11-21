@@ -73,7 +73,16 @@ export interface LineChange {
 }
 
 export type VersionField =
-  'name' | 'role' | 'templateId' | 'percentBase' | 'yield' | 'method' | 'portions' | 'note';
+  | 'name'
+  | 'role'
+  | 'templateId'
+  | 'percentBase'
+  | 'yield'
+  | 'method'
+  | 'portions'
+  | 'course'
+  | 'cuisine'
+  | 'note';
 
 export interface FieldChange {
   type: 'field';
@@ -109,6 +118,10 @@ export interface DiffComponent extends Versioned {
 export interface DiffDish extends Versioned {
   name: string;
   portions?: number;
+  /** A course id; the diff gives the id, the screen its name. */
+  course?: string;
+  /** A country code; the diff gives the code, the screen its name. */
+  cuisine?: string;
   slots: readonly { role: string; ref: ComponentRef; amount?: Amount; optional?: boolean }[];
   note?: string;
 }

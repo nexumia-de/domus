@@ -1,6 +1,6 @@
 // A diff as sentences for the history screen: one row per changed line or field. Names come
 // from the notebook, so a reference to a component shows its current name.
-import type { DiffLine, VersionChange, VersionDiff } from '@culina/engine';
+import type { DiffLine, VersionChange, VersionDiff, VersionField } from '@culina/engine';
 import { refName, roleLabel } from '../components/names';
 import type { Notebook } from '../records';
 import { strings } from '../strings';
@@ -25,11 +25,25 @@ const lineText = (nb: Notebook, line: DiffLine, role: string | undefined): strin
 const flat = (text: string | undefined): string =>
   text === undefined ? t.empty : text.replace(/\n/g, ' / ');
 
+/** A course or cuisine by its name; every other field as the diff gives it. */
+const fieldValue = (field: VersionField, value: string | undefined): string | undefined => {
+  if (value === undefined) return undefined;
+  const names: Record<string, string> | undefined =
+    field === 'course'
+      ? strings.classics.course
+      : field === 'cuisine'
+        ? strings.classics.countries
+        : undefined;
+  return names?.[value] ?? value;
+};
+
 const rowOf = (nb: Notebook, change: VersionChange, withRole: boolean): DiffRow => {
   if (change.type === 'field') {
+    const before = fieldValue(change.field, change.before);
+    const after = fieldValue(change.field, change.after);
     return {
       kind: 'field',
-      text: `${t.fields[change.field]}: ${flat(change.before)} → ${flat(change.after)}`,
+      text: `${t.fields[change.field]}: ${flat(before)} → ${flat(after)}`,
     };
   }
   const role = (line: DiffLine | undefined): string | undefined =>

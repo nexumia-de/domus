@@ -1,5 +1,6 @@
 // The dish editor's form state (also the draft) and its translations to and from a record.
-import type { ComponentRef } from '@culina/engine';
+import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
+import type { ComponentRef, Country, Course } from '@culina/engine';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
 import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
@@ -30,6 +31,10 @@ export interface DishForm {
   isNew: boolean;
   name: string;
   portions: string;
+  /** A course id, or empty for not stated; a draft written before it existed has none. */
+  course?: string;
+  /** A country code, or empty for not stated. */
+  cuisine?: string;
   note: string;
   slots: SlotForm[];
   /** The assembly steps; a draft written before they existed has none. */
@@ -53,6 +58,8 @@ export const newDishForm = (id: string): DishForm => ({
   isNew: true,
   name: '',
   portions: '2',
+  course: '',
+  cuisine: '',
   note: '',
   slots: [],
   steps: [],
@@ -63,6 +70,8 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   isNew: false,
   name: dish.name,
   portions: dish.portions === undefined ? '' : String(dish.portions),
+  course: dish.course ?? '',
+  cuisine: dish.cuisine ?? '',
   note: dish.note ?? '',
   slots: dish.slots.map((s) => ({
     role: s.role,
@@ -75,6 +84,14 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   steps: (dish.steps ?? []).map(stepFormOf),
   version: dish.version,
 });
+
+/** A course the schema knows, else none: the select offers no other. */
+export const asCourse = (value: string | undefined): Course | undefined =>
+  COURSE_IDS.find((c) => c === value);
+
+/** A cuisine the schema knows (a country code the app names), else none. */
+export const asCuisine = (value: string | undefined): Country | undefined =>
+  COUNTRY_CODES.find((c) => c === value);
 
 const wholePortions = (text: string): number | undefined => {
   const entry = parseEntry(text);
@@ -117,12 +134,16 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
     .map((step) => stepRecordOf(step, keys));
   const portions = wholePortions(form.portions);
   const note = form.note.trim();
+  const course = asCourse(form.course);
+  const cuisine = asCuisine(form.cuisine);
   return {
     ok: true,
     record: {
       id: form.id,
       name: form.name.trim(),
       ...(portions === undefined ? {} : { portions }),
+      ...(course === undefined ? {} : { course }),
+      ...(cuisine === undefined ? {} : { cuisine }),
       slots,
       ...(steps.length === 0 ? {} : { steps }),
       version: form.version ?? { family: form.id, date: today },
