@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-21 (evening)
+
+- **Decision**: by the owner: one shared app shell ([decision](decisions/shared-shell.md)). Why every app had its own (separate repositories until 2026-11-19, the sharing rule applied to logic only, no check), what is shared from now on, the plan in five steps (Emptio done in pull request 19; Mixtura, Culina, shared navigation and settings, native apps). Open after this session: pull requests 18 (Culina native) and 19 (Emptio frame) wait for CI, which stopped running (Actions minutes of the private repository, presumably); the owner makes the repository public or raises the limit.
+
 ## 2026-11-21 (Culina)
 
 - **Creation**: Culina's native Linux app (`apps/culina/packages/linux`, app id `de.nexumia.Culina`, visible name Cook's Notebook, release 0.1.0), the third native app, roadmap goal 11. The web app exports a screen-free `@culina/app/core`; `packages/gjs` gained `language` (the device's language for web code that reads `navigator.languages` at load) and `texts` (English and German texts the native apps share); the licence texts of Ajv and fast-deep-equal moved from Mixtura's `data/licenses/` to `packages/gjs/licenses/`. CI: `culina-linux-check`, `culina-flatpak` (x86_64, aarch64) and `culina-release` on a tag `culina-v*`; a change to `packages/gjs` now runs Culina too. [Culina's native app](../apps/culina/docs/native-linux.md), [gjs](../packages/gjs/docs/platform.md).
