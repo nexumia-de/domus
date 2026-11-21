@@ -65,7 +65,7 @@
           },
           "note": {
             "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice.",
-            "de": "\"1 cuillerée à bouche de jus de citron\": ein Esslöffel Zitronensaft."
+            "de": "„1 cuillerée à bouche de jus de citron“: ein Esslöffel Zitronensaft."
           },
           "sourceNote": {
             "en": "The book does not state a size for it, so no amount is given.",
@@ -80,7 +80,7 @@
           },
           "note": {
             "en": "\"même quantité d'eau\": the same amount of water as the lemon juice.",
-            "de": "\"même quantité d'eau\": dieselbe Menge Wasser wie Zitronensaft."
+            "de": "„même quantité d'eau“: dieselbe Menge Wasser wie Zitronensaft."
           }
         },
         {
@@ -270,7 +270,7 @@
           },
           "sourceNote": {
             "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given.",
-            "de": "\"0 décilitres de bouillon\" im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Die Quelle nennt eine lesbare Menge nicht; daher steht hier keine Menge."
+            "de": "„0 décilitres de bouillon“ im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Eine lesbare Menge gibt es daher nicht."
           }
         },
         {
@@ -281,7 +281,7 @@
           },
           "note": {
             "en": "\"3 décilitres de vin rouge\": the décilitre is 0.1 litre, so the amount is 300 ml.",
-            "de": "\"3 décilitres de vin rouge\": das Deziliter ist 0,1 Liter; die Menge ist daher 300 ml."
+            "de": "„3 décilitres de vin rouge“: der Deziliter ist 0,1 Liter; die Menge ist daher 300 ml."
           },
           "amount": {
             "value": 300,
@@ -297,7 +297,7 @@
           },
           "sourceNote": {
             "en": "\"1 bouquet garni\": the book gives no size for the bouquet.",
-            "de": "\"1 bouquet garni\": das Buch gibt keine Größe für das Bouquet an."
+            "de": "„1 bouquet garni“: das Buch gibt keine Größe für das Bouquet an."
           }
         },
         {
@@ -500,7 +500,7 @@
     "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 9550-9604 and 3728-3790. Agreed: blood, 30 g butter, 3 pincées, 2 prises, 40 g flour, 3 minutes, 3 décilitres of wine, 400 g onions, juice of 15 mushrooms, half an hour; the arrangement. Changed: red wine now 300 ml; the arrangement names legs, wing tips, wings and thighs as the fricassée does. Unreadable: the stock (\"0 décilitres\"; a G in the second scan), so no amount."
   },
   "note": {
-    "en": "Gouffé's chicken in the Burgundy style. Not sized in the book: the stock (printed \"0 décilitres\"; the first digit is not legible in either scan), the blood, the bouquet garni and the lemon juice of the mushrooms (one tablespoon). The red wine is 3 décilitres, which is 300 ml. The cutting and the dressing follow the book's fricassée (gouffe.txt lines 9492-9503; the cut is illustrated in two figures). The mushrooms follow the book's turned mushrooms (printed p. 71, gouffe.txt lines 3728-3790). The blood binding follows the book's Liaison au sang (printed p. 89, gouffe.txt lines 4714-4721).",
-    "de": "Gouffés Huhn nach Burgunderart. Im Buch nicht bemessen: die Brühe (gedruckt \"0 décilitres\"; die erste Ziffer ist in beiden Scans nicht lesbar), das Blut, das Bouquet garni und der Zitronensaft für die Pilze (ein Esslöffel). Der Rotwein sind 3 Deziliter, also 300 ml. Das Zerlegen und das Anrichten folgen der Fricassée des Buches (gouffe.txt Zeilen 9492-9503; der Schnitt steht in zwei Abbildungen). Die Pilze folgen den gedrehten Champignons des Buches (gedruckt S. 71, gouffe.txt Zeilen 3728-3790). Die Bindung mit Blut folgt der Liaison au sang des Buches (gedruckt S. 89, gouffe.txt Zeilen 4714-4721)."
+    "en": "Gouffé's chicken in the Burgundy style. Not sized in the book: the stock (printed \"0 décilitres\"; the first digit is not legible in either scan), the blood, the bouquet garni and the lemon juice of the mushrooms (one tablespoon). The red wine is 3 décilitres, which is 300 ml. The cutting and the dressing follow the book's fricassée (the cut is illustrated in two figures). The mushrooms follow the book's turned mushrooms (printed p. 71). The blood binding follows the book's Liaison au sang (printed p. 89).",
+    "de": "Gouffés Huhn nach Burgunderart. Im Buch nicht bemessen: die Brühe (gedruckt „0 décilitres“; die erste Ziffer ist in beiden Scans nicht lesbar), das Blut, das Bouquet garni und der Zitronensaft für die Pilze (ein Esslöffel). Der Rotwein sind 3 Deziliter, also 300 ml. Das Zerlegen und das Anrichten folgen der Fricassée des Buches (der Schnitt steht in zwei Abbildungen). Die Pilze folgen den gedrehten Champignons des Buches (gedruckt S. 71). Die Bindung mit Blut folgt der Liaison au sang des Buches (gedruckt S. 89)."
   }
 }

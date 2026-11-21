@@ -1,11 +1,13 @@
 // The summary of a file's content: counts per kind, and a readable label for a record.
 import { EXPORT_KINDS } from '@culina/engine';
 import type { ExportKind, ExportRecord, FullRecordSets } from '@culina/engine';
+import { formatDate } from '../../shared/locale';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 export const recordLabel = (kind: ExportKind, record: ExportRecord): string => {
-  if (kind === 'tastings') return `${String(record.date)} ${String(record.text).slice(0, 40)}`;
+  if (kind === 'tastings')
+    return `${formatDate(String(record.date))} ${String(record.text).slice(0, 40)}`;
   const name = record.name;
   return typeof name === 'string' && name !== '' ? name : record.id;
 };

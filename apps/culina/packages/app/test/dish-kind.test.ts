@@ -109,7 +109,7 @@ describe('the stored record', () => {
     const rows = diffRows({} as Notebook, diff.diff, true);
     expect(rows.map((r) => r.text)).toEqual([
       'Course: empty → Main course',
-      'Cuisine: Italy → empty',
+      'Cuisine: Italian → empty',
     ]);
     expect(must(rows[0]).kind).toBe('field');
   });

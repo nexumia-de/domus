@@ -26,10 +26,11 @@ export const nutritionStringsDe: typeof nutritionStrings = {
   notCounted: (list: string): string => `Nicht gezählt: ${list}.`,
   massShare: (percent: string): string =>
     `Die gezählten Zutaten machen ${percent} % des Gewichts aus, soweit es bekannt ist.`,
-  tooFew: 'Nährwerte nicht berechenbar: zu wenige Zutaten mit Menge und Nährwertdaten.',
+  tooFew:
+    'Nährwerte lassen sich nicht berechnen: Nur wenige Zutaten haben Menge und Nährwertdaten.',
   moreSummary: 'Was nicht gezählt ist und wie gezählt wird',
   reasons: {
-    wanted: 'noch nicht im Katalog',
+    wanted: 'ohne Katalogeintrag',
     'no-amount': 'ohne Menge',
     'cannot-convert': 'Gewicht unbekannt',
     'no-nutrition': 'keine Nährwertdaten',
@@ -41,5 +42,5 @@ export const nutritionStringsDe: typeof nutritionStrings = {
   rounding: 'Gerundet nach 21 CFR 101.9(c), der US-Regel für Nährwertangaben.',
   source: 'Nährstoffe pro 100 g: USDA FoodData Central, SR Legacy (gemeinfrei).',
   notALabel:
-    'Keine Nährwertkennzeichnung: Wer Lebensmittel verkauft, braucht die Kennzeichnungsregeln.',
+    'Eine Hilfe für die eigene Küche, keine Nährwertkennzeichnung für den Verkauf von Lebensmitteln.',
 };

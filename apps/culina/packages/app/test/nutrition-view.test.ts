@@ -79,7 +79,7 @@ describe('the coverage', () => {
   test('a line not in the catalogue yet is named by its own words', () => {
     const shown = view(SECOND_DISH, 2);
     expect(shown.coverage).toBe('Counted 1 of 2 ingredients.');
-    expect(shown.notCounted).toContain('Example broth stock (not in the catalogue yet)');
+    expect(shown.notCounted).toContain('Example broth stock (no catalogue entry)');
   });
   test('a catalogue entry without nutrient data is left out with that reason', () => {
     const bare: Lookup = (id) => {

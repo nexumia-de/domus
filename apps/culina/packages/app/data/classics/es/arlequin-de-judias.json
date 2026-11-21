@@ -43,7 +43,7 @@
           },
           "note": {
             "en": "Two kinds: long, fine green pods without visible seed, and fresh beans, shelled. A handful of each (\"un puñado de cada clase\").",
-            "de": "Zwei Sorten: lange, feine grüne Schoten ohne sichtbare Kerne und frische, ausgepalte Bohnen. Je eine Handvoll (\"un puñado de cada clase\")."
+            "de": "Zwei Sorten: lange, feine grüne Schoten ohne sichtbare Kerne und frische, ausgepalte Bohnen. Je eine Handvoll („un puñado de cada clase“)."
           },
           "sourceNote": {
             "en": "A handful is not sized in the book, so no amount.",
@@ -63,7 +63,7 @@
           },
           "sourceNote": {
             "en": "Fresh cow's butter, for one libra of beans in the book's words (\"para una libra del manjar\"); the libra is not sized in the book.",
-            "de": "Frische Kuhbutter, nach dem Buch für eine Libra Bohnen (\"para una libra del manjar\"); die Libra ist im Buch nicht bemessen."
+            "de": "Frische Kuhbutter, nach dem Buch für eine Libra Bohnen („para una libra del manjar“); die Libra ist im Buch nicht bemessen."
           }
         },
         {
@@ -74,7 +74,7 @@
           },
           "note": {
             "en": "Finely chopped (\"finas hierbas recortadas\").",
-            "de": "Fein geschnitten (\"finas hierbas recortadas\")."
+            "de": "Fein geschnitten („finas hierbas recortadas“)."
           },
           "sourceNote": {
             "en": "The book does not size them, so no amount.",
@@ -103,7 +103,7 @@
           },
           "note": {
             "en": "A pinch (\"una chispa de clavo\").",
-            "de": "Eine Prise (\"una chispa de clavo\")."
+            "de": "Eine Prise („una chispa de clavo“)."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -118,7 +118,7 @@
           },
           "note": {
             "en": "Grated (\"nuez moscada rallada\").",
-            "de": "Gerieben (\"nuez moscada rallada\")."
+            "de": "Gerieben („nuez moscada rallada“)."
           },
           "sourceNote": {
             "en": "No amount.",
@@ -149,7 +149,7 @@
           },
           "sourceNote": {
             "en": "The source says not to be sparing with it (\"no hay que escasear el perejil picado\"). No amount.",
-            "de": "Die Quelle sagt, man solle nicht sparen (\"no hay que escasear el perejil picado\"). Keine Menge."
+            "de": "Die Quelle sagt, man solle nicht sparen („no hay que escasear el perejil picado“). Keine Menge."
           }
         }
       ],
@@ -224,6 +224,6 @@
   },
   "note": {
     "en": "Replaces Ángel Muro's 'Ensalada de pimientos', which has no amounts in the source. Only the butter is measured, and the book gives the beans as handfuls. The fifteen minutes are the book's cooking time for the beans.",
-    "de": "Ersetzt Ángel Muros 'Ensalada de pimientos', die in der Quelle keine Mengen hat. Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
+    "de": "Ersetzt Ángel Muros ‚Ensalada de pimientos‘, die in der Quelle keine Mengen hat. Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
   }
 }

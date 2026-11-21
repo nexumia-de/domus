@@ -76,7 +76,7 @@
           },
           "sourceNote": {
             "en": "\"2 cuillerées à bouche d'eau froide\": the book gives no size for a tablespoon, so no amount is given.",
-            "de": "\"2 cuillerées à bouche d'eau froide\": das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge."
+            "de": "„2 cuillerées à bouche d'eau froide“: das Buch gibt für einen Esslöffel keine Größe an, daher steht hier keine Menge."
           }
         },
         {
@@ -115,7 +115,7 @@
           },
           "note": {
             "en": "\"une cuillerée à bouche d'eau froide\", added after the third part of the butter, so that the sauce does not turn.",
-            "de": "\"une cuillerée à bouche d'eau froide\", nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt."
+            "de": "„une cuillerée à bouche d'eau froide“, nach dem dritten Teil der Butter zugegeben, damit die Sauce nicht gerinnt."
           },
           "sourceNote": {
             "en": "No size is given for the spoon.",
@@ -150,7 +150,7 @@
         {
           "text": {
             "en": "Take the pan off the heat and add the cold water and the egg yolks, removing the germs and leaving no white.",
-            "de": "Den Topf vom Herd nehmen und das kalte Wasser und die Eigelbe zugeben; die Keime entfernen und kein Eiweiß lassen."
+            "de": "Den Topf vom Herd nehmen und das kalte Wasser und die Eigelbe zugeben; dabei die Hagelschnüre entfernen; es darf kein Eiweiß daran bleiben."
           },
           "action": "add",
           "uses": ["water", "yolk"]
@@ -250,7 +250,7 @@
     "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 4912-4970. Agreed: 120 g butter, 5 g salt, 3 g white pepper, 2 yolks, 20 g portions, 3 mm, the coffee spoon. Changed: the tablespoon is sized by the book only for flour (line 3085), so the vinegar and water lines have no amount; wording kept in the notes."
   },
   "note": {
-    "en": "Made with egg yolk and butter only. The book advises against adding flour or starch to a hollandaise, since the yolk and the butter alone are its base (gouffe.txt lines 4961-4968).",
-    "de": "Nur mit Eigelb und Butter. Das Buch rät davon ab, Mehl oder Stärke zur Hollandaise zu geben, da allein Eigelb und Butter ihre Grundlage sind (gouffe.txt Zeilen 4961-4968)."
+    "en": "Made with egg yolk and butter only. The book advises against adding flour or starch to a hollandaise, since the yolk and the butter alone are its base.",
+    "de": "Nur mit Eigelb und Butter. Das Buch rät davon ab, Mehl oder Stärke zur Hollandaise zu geben, da allein Eigelb und Butter ihre Grundlage sind."
   }
 }

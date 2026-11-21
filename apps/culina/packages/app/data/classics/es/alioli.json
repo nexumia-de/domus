@@ -61,11 +61,11 @@
           },
           "note": {
             "en": "A crumb of bread the size of a walnut (\"del tamaño de una nuez\"), soaked.",
-            "de": "Eine Brotkrume von der Größe einer Walnuss (\"del tamaño de una nuez\"), eingeweicht."
+            "de": "Eine Brotkrume von der Größe einer Walnuss („del tamaño de una nuez“), eingeweicht."
           },
           "sourceNote": {
             "en": "The size is a comparison, not a measure, so the line has no amount. Original: \"un migón de pan del tamaño de una nuez\".",
-            "de": "Das ist ein Vergleich, kein Maß, daher keine Menge. Quelle: \"un migón de pan del tamaño de una nuez\"."
+            "de": "Das ist ein Vergleich, kein Maß, daher keine Menge. Quelle: „un migón de pan del tamaño de una nuez“."
           }
         },
         {
@@ -76,7 +76,7 @@
           },
           "note": {
             "en": "Six or seven spoons (\"seis ó siete cucharadas de aceite\"), added drop by drop.",
-            "de": "Sechs oder sieben Löffel (\"seis ó siete cucharadas de aceite\"), tropfenweise zugegeben."
+            "de": "Sechs oder sieben Löffel („seis ó siete cucharadas de aceite“), tropfenweise zugegeben."
           },
           "sourceNote": {
             "en": "The book does not give the size of the spoon, so the line has no amount.",
@@ -163,6 +163,6 @@
   },
   "note": {
     "en": "Muro's own formula, which he calls a Mediterranean sauce derived from mayonnaise. The garlic is pounded, the bread soaked, and the oil added drop by drop. Two lines have no amount because the source gives a comparison (the bread) or a spoon of unknown size (the oil).",
-    "de": "Muros eigene Formel; er nennt sie eine mittelmeerische Sauce aus der Mayonnaise. Der Knoblauch wird zerstoßen, das Brot eingeweicht und das Öl tropfenweise zugegeben. Zwei Zeilen haben keine Menge, weil die Quelle beim Brot einen Vergleich und beim Öl einen Löffel unbekannter Größe angibt."
+    "de": "Muros eigene Formel; er nennt sie eine mediterrane Sauce, die von der Mayonnaise abstammt. Der Knoblauch wird zerstoßen, das Brot eingeweicht und das Öl tropfenweise zugegeben. Zwei Zeilen haben keine Menge, weil die Quelle beim Brot einen Vergleich und beim Öl einen Löffel unbekannter Größe angibt."
   }
 }

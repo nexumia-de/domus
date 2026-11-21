@@ -43,7 +43,7 @@
           },
           "note": {
             "en": "Floury potatoes (\"de clase farinácea\").",
-            "de": "Mehligkochende Kartoffeln (\"de clase farinácea\")."
+            "de": "Mehligkochende Kartoffeln („de clase farinácea“)."
           },
           "sourceNote": {
             "en": "The book gives one cuartillo of water for each two libras of potatoes. The libra is not sized in the book, so no amount.",
@@ -62,7 +62,7 @@
           },
           "sourceNote": {
             "en": "Source wording: \"[unreadable] cuartillo de agua salada para cada dos libras de patatas\". The word before 'cuartillo' is not legible in the scan, so the line has no amount.",
-            "de": "Quellenwortlaut: \"[unleserlich] cuartillo de agua salada para cada dos libras de patatas\". Das Wort vor 'cuartillo' ist im Scan nicht lesbar, daher ohne Menge."
+            "de": "Quellenwortlaut: „[unleserlich] cuartillo de agua salada para cada dos libras de patatas“. Das Wort vor ‚cuartillo‘ ist im Scan nicht lesbar, daher ohne Menge."
           }
         },
         {
@@ -94,7 +94,7 @@
           },
           "note": {
             "en": "Very fresh cow's butter (\"manteca muy fresca de vacas\").",
-            "de": "Sehr frische Kuhbutter (\"manteca muy fresca de vacas\")."
+            "de": "Sehr frische Kuhbutter („manteca muy fresca de vacas“)."
           },
           "sourceNote": {
             "en": "The book gives two onzas or 60 grams.",
@@ -121,7 +121,7 @@
           },
           "note": {
             "en": "Two spoonfuls of milk, to beat the yolk (\"dos cucharadas de leche\").",
-            "de": "Zwei Löffel Milch, um das Eigelb zu schlagen (\"dos cucharadas de leche\")."
+            "de": "Zwei Löffel Milch, um das Eigelb zu schlagen („dos cucharadas de leche“)."
           },
           "sourceNote": {
             "en": "The spoon is not sized in the book, so no amount.",
@@ -244,7 +244,7 @@
     "note": "Second reading of the same scan (same OCR; weak). Compared the recipe (muro.txt 30656-30712, pp. 681-682). Changed: the water has no amount (the word before 'cuartillo' is not legible in the scan, the OCR is the same); steamed, then cut; milk boiled beforehand; water on high heat with no boiling stated. Kept: 60 g butter (the asterisk in 'gramo*' garbles the last letter; the figure agrees with two onzas and the onza of 30 g at muro.txt line 4040); half a cuartillo of milk."
   },
   "note": {
-    "en": "Replaces Ángel Muro's 'Patatas á lo pobre' (no amounts in the source; see the transcription evidence file). Mashed potatoes from the same chapter, with the book's own quantities. The book does not size the libra, so the potato weight has no amount.",
-    "de": "Ersetzt Ángel Muros 'Patatas á lo pobre' (keine Mengen in der Quelle; siehe Belegdatei). Kartoffelpüree aus demselben Kapitel mit den Mengen des Buches. Das Buch bemisst die Libra nicht, daher hat das Kartoffelgewicht keine Menge."
+    "en": "Replaces Ángel Muro's 'Patatas á lo pobre' (no amounts in the source). Mashed potatoes from the same chapter, with the book's own quantities. The book does not size the libra, so the potato weight has no amount.",
+    "de": "Ersetzt Ángel Muros ‚Patatas á lo pobre‘ (keine Mengen in der Quelle). Kartoffelpüree aus demselben Kapitel mit den Mengen des Buches. Das Buch bemisst die Libra nicht, daher hat das Kartoffelgewicht keine Menge."
   }
 }

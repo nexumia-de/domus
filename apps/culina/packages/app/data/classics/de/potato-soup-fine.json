@@ -183,7 +183,7 @@
         {
           "text": {
             "en": "Add the fried potatoes, without the butter, and the salt.",
-            "de": "Die gebratenen Kartoffeln ohne die Butter und das Salz zugeben."
+            "de": "Die gebratenen Kartoffeln ohne die Butter zugeben, dazu das Salz."
           },
           "action": "add",
           "uses": ["potatoes", "salt"]

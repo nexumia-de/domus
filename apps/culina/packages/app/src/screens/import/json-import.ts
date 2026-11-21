@@ -6,6 +6,7 @@ import { candidateIngredients } from '../../exchange/candidates';
 import { liveRecords } from '../../exchange/export-file';
 import { applyMerge, applyReplace, undoImport } from '../../exchange/json-apply';
 import { proposeMatches, setupMerge, type FileMatch } from '../../exchange/merge-model';
+import { formatDate } from '../../shared/locale';
 import { showToast } from '../../shell/toast';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -44,7 +45,7 @@ export async function renderJsonImport(
   host.replaceChildren(sections);
   sections.append(el('h2', undefined, text.summaryHeading));
   if (content.exportedAt !== undefined) {
-    sections.append(el('p', 'muted', text.exportedOn(content.exportedAt.slice(0, 10))));
+    sections.append(el('p', 'muted', text.exportedOn(formatDate(content.exportedAt))));
   }
   // An older file's stock is not imported: stock is the shared collection of a space now.
   if (content.stockLeftOut !== undefined) {
@@ -106,7 +107,7 @@ export async function renderJsonImport(
           status.textContent = storeText(done.error.code);
           return;
         }
-        status.textContent = text.merged(done.added, done.taken);
+        status.textContent = '';
         showToast(text.merged(done.added, done.taken), undoAction);
         host.replaceChildren(el('p', 'note', text.merged(done.added, done.taken)));
       });

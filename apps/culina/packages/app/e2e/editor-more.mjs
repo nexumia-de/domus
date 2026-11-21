@@ -83,7 +83,7 @@ const dish = async (page, origin) => {
     `${label}: Course and Cuisine are selects of 44 px that start at "Not stated" (${JSON.stringify(kindBoxes)})`,
   );
   await course.selectOption({ label: 'Main course' });
-  await cuisine.selectOption({ label: 'Italy' });
+  await cuisine.selectOption({ label: 'Italian' });
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill('herb oil');
   await page.getByRole('button', { name: /Example: Herb oil/ }).click();
@@ -114,7 +114,7 @@ const dish = async (page, origin) => {
   // The one quiet line of both origins: course, cuisine, the meat flag where it is known, the origin.
   const kindLine = (await page.locator('.dish-quiet').textContent())?.trim();
   check(
-    kindLine?.startsWith('Main course · Italy') === true && kindLine.endsWith('In my notebook'),
+    kindLine?.startsWith('Main course · Italian') === true && kindLine.endsWith('In my notebook'),
     `${label}: the dish screen shows course and cuisine in one quiet line (${kindLine})`,
   );
   const rows = await page

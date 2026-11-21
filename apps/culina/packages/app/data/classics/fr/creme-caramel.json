@@ -181,14 +181,14 @@
         {
           "text": {
             "en": "Put a metal lid on the pan, with heat on top of the lid as well.",
-            "de": "Einen Metalldeckel auf den Topf legen, und auch auf den Deckel Hitze geben."
+            "de": "Einen Metalldeckel auf den Topf legen und auch auf den Deckel Hitze geben."
           },
           "action": "cover"
         },
         {
           "text": {
             "en": "Keep the heat low so that the water only simmers; it must not boil. Cook for 15 minutes and check that the custard is set.",
-            "de": "Die Hitze niedrig halten, sodass das Wasser nur leicht simmert; es darf nicht kochen. 15 Minuten garen und prüfen, ob die Creme gestockt ist."
+            "de": "Die Hitze niedrig halten, sodass das Wasser nur leicht siedet; es darf nicht kochen. 15 Minuten garen und prüfen, ob die Creme gestockt ist."
           },
           "technique": "water-bath",
           "time": {

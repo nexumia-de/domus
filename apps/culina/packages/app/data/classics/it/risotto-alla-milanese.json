@@ -183,7 +183,7 @@
         {
           "text": {
             "en": "Cook until the rice is dry, adding the rest of the butter.",
-            "de": "Garen, bis der Reis trocken ist, und den restlichen Teil der Butter dazugeben."
+            "de": "Garen, bis der Reis trocken ist, und die restliche Butter dazugeben."
           },
           "technique": "cook-rice",
           "uses": ["rice", "butter", "water"]
@@ -191,7 +191,7 @@
         {
           "text": {
             "en": "Before taking it off the heat, stir in the grated parmesan and serve with more parmesan.",
-            "de": "Vor dem Herd den geriebenen Parmesan unterrühren und mit mehr Parmesan servieren."
+            "de": "Kurz bevor der Topf vom Herd kommt, den geriebenen Parmesan unterrühren und mit mehr Parmesan servieren."
           },
           "action": "stir",
           "uses": ["parmesan"]
@@ -215,6 +215,6 @@
   },
   "note": {
     "en": "The cooking is that of No. 50 as No. 52 refers to it; the peas and the cheese of No. 50 are not part of this dish. The source names hot water as the cooking liquid (No. 50). It asks for broth for a richer result and for dissolving the saffron, but does not name its kind; water is written, so the dish has no meat (our judgement). The persons statement is for five persons, in No. 50 (for the same 500 g of rice).",
-    "de": "Das Garen folgt Nr. 50, auf die Nr. 52 verweist; die Erbsen und der Käse von Nr. 50 gehören nicht zu diesem Gericht. Die Quelle nennt heißes Wasser als Garflüssigkeit (Nr. 50). Sie verlangt Brühe für ein reicheres Ergebnis und zum Auflösen des Safrans, nennt aber nicht deren Art; geschrieben ist Wasser, daher ist das Gericht ohne Fleisch (unser Urteil). Die Angabe für fünf Personen steht in Nr. 50 (für dieselben 500 g Reis)."
+    "de": "Das Garen folgt Nr. 50, auf die Nr. 52 verweist; die Erbsen und der Käse von Nr. 50 gehören nicht zu diesem Gericht. Die Quelle nennt heißes Wasser als Garflüssigkeit (Nr. 50). Sie verlangt Brühe für ein reicheres Ergebnis und zum Auflösen des Safrans, nennt aber nicht deren Art; gewählt ist Wasser, daher ist das Gericht ohne Fleisch (unser Urteil). Die Angabe für fünf Personen steht in Nr. 50 (für dieselben 500 g Reis)."
   }
 }

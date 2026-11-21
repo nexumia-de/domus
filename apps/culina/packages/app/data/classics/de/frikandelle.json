@@ -66,8 +66,8 @@
             "de": "Nierenfett oder frisches Schweinefett."
           },
           "sourceNote": {
-            "en": "The source allows either. The English gives a fraction of a pound (garbled as %). The German edition reads 3 Pfd. (davidis.txt) and 4 Pfd. (second scan). Not confirmed, so no amount is given.",
-            "de": "Die Quelle lässt beides zu. Die englische Ausgabe nennt einen Bruch eines Pfundes (verstümmelt als %). Die deutsche Ausgabe liest 3 Pfd. (davidis.txt) und 4 Pfd. (zweiter Scan). Nicht bestätigt, deshalb ohne Menge."
+            "en": "The source allows either. The English gives a fraction of a pound (garbled as %). The German edition reads 3 Pfd. (first scan) and 4 Pfd. (second scan). Not confirmed, so no amount is given.",
+            "de": "Die Quelle lässt beides zu. Die englische Ausgabe nennt einen Bruch eines Pfundes (verstümmelt als %). Die deutsche Ausgabe liest 3 Pfd. (erster Scan) und 4 Pfd. (zweiter Scan). Nicht bestätigt, deshalb ohne Menge."
           }
         },
         {
@@ -214,7 +214,7 @@
         {
           "text": {
             "en": "Bake in the oven until light brown, basting often, for up to 1 hour.",
-            "de": "Im Ofen gelb braten, oft begießen, bis zu 1 Stunde."
+            "de": "Im Ofen goldgelb braten, oft begießen, bis zu 1 Stunde."
           },
           "technique": "bake",
           "uses": ["butter"]

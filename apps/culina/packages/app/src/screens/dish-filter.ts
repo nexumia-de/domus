@@ -13,9 +13,12 @@ import { nextId } from './fields';
 export const courseLabel = (course: string): string =>
   (strings.classics.course as Record<string, string>)[course] ?? course;
 
-/** The name of a cuisine: the country of a code the app knows, else the word as given. */
+/**
+ * The name of a cuisine: the adjective of a country the app knows ("Italian", "Italienische
+ * Küche"), else the word as given. The country's own name stays for the lists by country.
+ */
 export const cuisineLabel = (cuisine: string): string =>
-  (strings.classics.countries as Record<string, string>)[cuisine] ?? cuisine;
+  (strings.browse.cuisines as Record<string, string>)[cuisine] ?? cuisine;
 
 interface Choice {
   value: string;

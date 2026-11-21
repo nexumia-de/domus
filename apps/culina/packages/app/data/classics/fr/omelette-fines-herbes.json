@@ -115,7 +115,7 @@
         {
           "text": {
             "en": "Beat with a fork for about one minute, until the whites are broken and mixed with the yolks. Beating longer makes the eggs watery and the omelette less soft.",
-            "de": "Etwa eine Minute mit der Gabel schlagen, bis das Eiweiß zerteilt und mit dem Eigelb vermischt ist. Länger schlagen macht die Eier wässrig und die Omelette weniger weich."
+            "de": "Etwa eine Minute mit der Gabel schlagen, bis das Eiweiß zerteilt und mit dem Eigelb vermischt ist. Länger schlagen macht die Eier wässrig und das Omelett weniger weich."
           },
           "action": "whisk",
           "uses": ["egg", "salt", "pepper", "parsley"],
@@ -127,7 +127,7 @@
         {
           "text": {
             "en": "Melt the butter in the omelette pan over high heat, without letting it colour.",
-            "de": "Die Butter in der Omelettepfanne bei starker Hitze schmelzen, ohne dass sie Farbe nimmt."
+            "de": "Die Butter in der Omelettpfanne bei starker Hitze schmelzen, ohne dass sie Farbe nimmt."
           },
           "action": "melt",
           "uses": ["butter"]
@@ -151,7 +151,7 @@
         {
           "text": {
             "en": "Fold both edges of the omelette over itself to give it an oval shape.",
-            "de": "Beide Ränder der Omelette über sich selbst falten, damit sie oval wird."
+            "de": "Das Omelett von beiden Rändern her zur Mitte einschlagen, damit es oval wird."
           },
           "action": "shape",
           "uses": ["egg"]
@@ -159,7 +159,7 @@
         {
           "text": {
             "en": "Toss it lightly over the heat so that it colours, then turn it out onto the plate.",
-            "de": "Kurz über der Hitze schwenken, damit sie Farbe nimmt, dann auf den Teller stürzen."
+            "de": "Kurz über der Hitze schwenken, damit es Farbe nimmt, dann auf den Teller stürzen."
           },
           "action": "turn-out",
           "uses": ["egg"]
@@ -190,6 +190,6 @@
   },
   "note": {
     "en": "The source gives the omelette as a soft or set one: when a soft omelette is wanted, it is folded before the eggs are too firm, coloured briefly and served. The book's remarks on the omelette pan and on the number of eggs (lines 14762-14790) are not part of the recipe. The text names only parsley as herb.",
-    "de": "Das Buch nennt zwei Arten: eine weiche Omelette, die man faltet, bevor die Eier zu fest sind, kurz bräunt und serviert, und eine gar gestockte. Die Hinweise des Buches zur Pfanne und zur Zahl der Eier stehen nicht im Rezept. Im Text ist nur Petersilie als Kraut genannt."
+    "de": "Das Buch nennt zwei Arten: ein weiches Omelett, das man faltet, bevor die Eier zu fest sind, kurz bräunt und serviert, und ein durchgegartes. Die Hinweise des Buches zur Pfanne und zur Zahl der Eier stehen nicht im Rezept. Im Text ist nur Petersilie als Kraut genannt."
   }
 }

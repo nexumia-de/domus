@@ -7,6 +7,7 @@ import {
   writeReminderDays,
 } from '../exchange/backup-prefs';
 import { hashFor } from '../router';
+import { formatDate } from '../shared/locale';
 import { refreshBackupBanner } from '../shell/backup-banner';
 import { el } from '../shell/el';
 import { strings } from '../strings';
@@ -16,7 +17,7 @@ const text = strings.settings;
 
 const lastExportLine = (): string => {
   const at = readLastExport();
-  return at === undefined ? text.neverExported : text.lastExport(at.slice(0, 10));
+  return at === undefined ? text.neverExported : text.lastExport(formatDate(at));
 };
 
 const reminderGroup = (note: HTMLElement): HTMLElement => {

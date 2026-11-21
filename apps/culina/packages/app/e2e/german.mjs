@@ -143,7 +143,7 @@ const classicsFlow = async (page, origin, label) => {
   await heading(page, 'Gerichte').waitFor();
   const row = await page.locator('.dish-row').innerText();
   check(
-    row.includes('Hauptgericht') && row.includes('Deutschland'),
+    row.includes('Hauptgericht') && row.includes('Deutsche Küche') && !row.includes('Deutschland'),
     `${label}: the course and the cuisine are in German (${row})`,
   );
   await layout(page, `${label} country`);
@@ -207,8 +207,91 @@ const classicsFlow = async (page, origin, label) => {
   );
 };
 
+/**
+ * Places a careful German reader corrected (docs/german-review.md), on the real shipped content:
+ * a source line without the transcriber's file and with German abbreviations, each technique
+ * source once, the omelette as "das Omelett", a German date, and the heading after a change of
+ * screen without a ring after a tap but with one after a key.
+ */
+const readerFixes = async (browser, origin) => {
+  const label = 'German reading';
+  const { context, page, problems } = await fresh(browser, origin, { locale: 'de' });
+  await page.goto(`${origin}/?no-sw#/classic/omelette-fines-herbes`);
+  await heading(page, 'Kräuteromelett').waitFor();
+  const steps = await page.locator('main').innerText();
+  check(
+    steps.includes('Das Omelett von beiden Rändern her zur Mitte einschlagen') &&
+      !steps.includes('die Omelette'),
+    `${label}: the omelette is "das Omelett" in every step`,
+  );
+  await page.locator('.source-block summary').click();
+  const source = await page.locator('.source-block').innerText();
+  check(
+    !source.includes('.txt') && source.includes('S. 273-274') && !source.includes('pp.'),
+    `${label}: the place has German page words and no transcript file (${source.slice(0, 200)})`,
+  );
+  check(
+    (source.match(/1877/g) ?? []).length === 1 && source.includes('4. Aufl.'),
+    `${label}: the year stands once and the edition is "4. Aufl."`,
+  );
+  await layout(page, `${label} omelette`);
+
+  await page.goto(`${origin}/?no-sw#/classic/pot-au-feu`);
+  await heading(page, 'Pot-au-feu (kleiner Topf)').waitFor();
+  await page.getByRole('link', { name: 'Schritt für Schritt kochen' }).click();
+  await step(page, 1, 20).waitFor();
+  for (let n = 2; n <= 4; n += 1) {
+    await page.getByRole('button', { name: 'Weiter' }).click();
+    await step(page, n, 20).waitFor();
+  }
+  await page.locator('.technique-more summary').click();
+  const items = await page.locator('.technique-sources li').allInnerTexts();
+  check(
+    new Set(items).size === items.length &&
+      items.some((t) => t.includes('38. Aufl.')) &&
+      items.every((t) => !/\b(pp?|chapter|section)\b\.?\s/.test(t)),
+    `${label}: each technique source once, with German citation words (${items.join(' / ')})`,
+  );
+  await layout(page, `${label} technique note`);
+
+  // A heading focused after a tap has no ring; after a key it has one.
+  await page.goto(`${origin}/?no-sw#/start`);
+  await heading(page, 'Worauf hast du Lust?').waitFor();
+  await page.locator('nav .nav-link:visible', { hasText: 'Kochen' }).click();
+  await heading(page, 'Was kann ich kochen').waitFor();
+  const ring = () =>
+    page.evaluate(() => {
+      const h = document.querySelector('main h1');
+      return document.activeElement === h ? getComputedStyle(h).outlineStyle : 'not focused';
+    });
+  check((await ring()) === 'none', `${label}: after a tap the focused heading shows no ring`);
+  await page.locator('nav .nav-link:visible', { hasText: 'Start' }).focus();
+  await page.keyboard.press('Enter');
+  await heading(page, 'Worauf hast du Lust?').waitFor();
+  const keyRing = await ring();
+  check(
+    keyRing !== 'none' && keyRing !== 'not focused',
+    `${label}: after a key the focused heading shows its ring (${keyRing})`,
+  );
+
+  // Dates in the German form.
+  await page.goto(`${origin}/?no-sw#/settings`);
+  await page.getByRole('button', { name: 'Beispieldaten hinzufügen' }).click();
+  await page.getByText('Beispieleinträge wurden deinem Notizbuch hinzugefügt.').waitFor();
+  await page.goto(`${origin}/?no-sw#/components/example-pan-sauce`);
+  await heading(page, 'Beispiel: Pfannensoße mit Brühe als Grundlage').waitFor();
+  const version = await page.locator('.version-line').innerText();
+  check(
+    /^Version 1 · \d{2}\.\d{2}\.\d{4}$/.test(version.trim()),
+    `${label}: the version line has the German date (${version})`,
+  );
+  check(problems.length === 0, `${label}: no console errors ${problems.join('; ')}`);
+  await context.close();
+};
+
 export const german = async (browser, server) => {
   const origin = server.origin;
+  await readerFixes(browser, origin);
 
   // Chosen through the setting: the choice is kept and the app reloads in German.
   const a = await fresh(browser, origin);

@@ -96,7 +96,7 @@
         {
           "text": {
             "en": "Cook until the beans are done: press one between the fingers, it should bend without crushing.",
-            "de": "Garen, bis die Bohnen gar sind: eine zwischen den Fingern drücken, sie soll sich biegen lassen, ohne zu zerdrücken."
+            "de": "Kochen, bis die Bohnen gar sind: Eine zwischen den Fingern drücken; sie soll sich biegen lassen, ohne zu zerfallen."
           },
           "action": "cook",
           "uses": ["beans"]

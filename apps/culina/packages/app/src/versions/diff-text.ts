@@ -32,7 +32,7 @@ const fieldValue = (field: VersionField, value: string | undefined): string | un
     field === 'course'
       ? strings.classics.course
       : field === 'cuisine'
-        ? strings.classics.countries
+        ? strings.browse.cuisines
         : undefined;
   return names?.[value] ?? value;
 };

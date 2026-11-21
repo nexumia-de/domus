@@ -47,8 +47,9 @@ export const classicsStrings = {
   unknownDish: 'This dish is not in the list.',
   originalName: (name: string): string => `Original name: ${name}`,
   sourceHeading: 'Source',
+  // The year only once: some titles end with the imprint and its year already.
   sourceLine: (author: string, title: string, year: number): string =>
-    `${author}, ${title}, ${year}`,
+    `${title}`.includes(`${year}`) ? `${author}, ${title}` : `${author}, ${title}, ${year}`,
   sourcePlace: (place: string): string => `Place: ${place}`,
   sourceLink: 'Open the source',
   sourceLicence: (licence: string): string => `Licence: ${licence}`,

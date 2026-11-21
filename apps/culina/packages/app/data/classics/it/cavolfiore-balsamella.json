@@ -215,7 +215,7 @@
           },
           "sourceNote": {
             "en": "The book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'. The sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
-            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'. Der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest ‚tanna‘. Der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest ‚una cucchiaiata di farina‘."
           }
         },
         {
@@ -282,6 +282,6 @@
   },
   "note": {
     "en": "The book serves this as an entremet or with a meat stew. The béchamel is No. 89 in the 1891 first edition (the OCR prints '80' as its heading); the 1985 edition numbers the cauliflower No. 431 and the béchamel No. 137. No time and no oven temperature are given. The source's text for the browning says only 'rosolatene la superficie'.",
-    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift '80'); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur 'die Oberfläche bräunen'."
+    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift ‚80‘); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur ‚die Oberfläche bräunen‘."
   }
 }
