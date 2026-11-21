@@ -1,0 +1,42 @@
+{
+  "id": "rank-merge-ties",
+  "description": "Equal urgency and roles: by name as plain string comparison (capitals before small letters), then id, then kind, so an own dish and a classic of the same name and id still have one fixed order",
+  "inputs": {
+    "kind": "rank_candidates",
+    "candidates": [
+      {
+        "kind": "dish",
+        "id": "x",
+        "name": "Gnocchi",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 2 }
+      },
+      {
+        "kind": "classic",
+        "id": "x",
+        "name": "Gnocchi",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 2 }
+      },
+      {
+        "kind": "classic",
+        "id": "a",
+        "name": "gnocchi",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 2 }
+      },
+      {
+        "kind": "dish",
+        "id": "b",
+        "name": "Gnocchi",
+        "roles": ["main"],
+        "urgency": { "daysLeft": 2 }
+      }
+    ]
+  },
+  "expected": {
+    "order": ["dish:b", "classic:x", "dish:x", "classic:a"]
+  },
+  "tolerance": 0,
+  "source": "Invented for this vector; the contract is in docs/engine-rules.md#what-the-stock-allows (ranking contract)."
+}

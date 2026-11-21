@@ -31,7 +31,8 @@ export const cookStrings = {
     const [y, m, d] = date.split('-').map(Number);
     return `As of ${d} ${MONTHS[(m ?? 1) - 1]} ${y}`;
   },
-  intro: 'Ranked by what has to be used soonest, then by how many roles it covers.',
+  intro:
+    'Your dishes and the shipped ones in one list, ranked by what has to be used soonest, then by how many roles each covers.',
   // Filters
   filtersLabel: 'Filters',
   roleLabel: 'Covers the role',
@@ -45,6 +46,13 @@ export const cookStrings = {
   },
   // Entries
   listLabel: 'What the stock allows',
+  /** The two groups of the list: dishes of both origins, then components and ratio cards. */
+  dishesHeading: 'Dishes',
+  partsHeading: 'Components and ratios',
+  partsListLabel: 'Components and ratios the stock allows',
+  partsHidden: 'Components and ratio cards are left out while a dish filter is chosen.',
+  /** The quiet origin word of an entry, shown where both origins are in the list. */
+  originWord: { own: 'mine', shipped: 'shipped' },
   complete: 'complete',
   lacks: (n: number): string => `lacks ${n}`,
   kind: { component: 'component', dish: 'dish', template: 'ratio', classic: 'classic' },
@@ -70,10 +78,8 @@ export const cookStrings = {
   offer: (invite: string, names: string): string => `You could add ${invite}: ${names}`,
   /** The entry's whole link, for a screen reader. */
   openLabel: (name: string): string => `Open ${name}`,
-  // The shipped classics, beside the notebook's own dishes
-  classicsHeading: 'Classic dishes',
-  classicsIntro: 'The shipped classics, judged against what is there by the same rules.',
-  classicsFiltersLabel: 'Filters for the classics',
+  // The shipped classics. The country and meat texts and "Needs" are read by the native Linux app,
+  // which still filters the classics by itself; the web app uses the one dish filter.
   countryLabel: 'Country',
   countryAny: 'All countries',
   meatLabel: 'Meat and fish',
@@ -81,14 +87,8 @@ export const cookStrings = {
   meatFree: 'Without meat and fish',
   classicsListLabel: 'What the stock allows for the classics',
   needsHeading: 'Needs',
-  withoutMeatMark: 'without meat and fish',
   /** The lines the catalogue has no ingredient for yet; they are not counted. */
   notInCatalogue: (names: string): string => `Not in the catalogue yet, so not counted: ${names}`,
-  classicsEmptyNothingTicked:
-    'Nothing is ticked yet, so no classic can be matched to what is there.',
-  classicsEmpty: 'No classic fits these choices.',
-  classicsNearestHeading: 'The nearest classics',
-  classicsNearest: (name: string, needs: string): string => `${name} needs ${needs}`,
   // Start from one ingredient
   startSummary: 'Start from one ingredient',
   startHint: 'Own components and dishes that use it, or something it can stand in for.',
@@ -99,7 +99,8 @@ export const cookStrings = {
   startNoStock: 'Nothing ticked yet, so search by name.',
   startFoundThrough: (name: string): string => `also called ${name}`,
   withHeading: (name: string): string => `What uses ${name}`,
-  withNote: 'Only your own components and dishes that use it or something it can stand in for.',
+  withNote:
+    'Only your own components and dishes that use it or something it can stand in for; the dish filter applies to the dishes.',
   withClear: 'Show everything',
   withUnknown: 'That ingredient is no longer in your notebook.',
   // Empty states
@@ -118,7 +119,8 @@ export const cookStrings = {
   useUpThreshold: (lacking: number): string =>
     lacking === 0 ? 'Counting only what is complete.' : `Counting what lacks at most ${lacking}.`,
   useUpNoDates: 'No item has a use-by date yet. A date can be added on the item.',
-  useUpNothing: 'Nothing in your notebook uses it yet.',
+  useUpNothing: 'Nothing in the list uses it yet.',
+  useUpFiltered: 'Counted within the dish filter chosen on What can I cook.',
   useUpUsedBy: 'Used by',
   useUpOpenItem: (name: string): string => `${name} in stock`,
   problem:

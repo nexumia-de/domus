@@ -1,6 +1,6 @@
-// The classics in the finder: the adapter hands the engine what a direct call gets, the filters
-// only drop entries, a `wanted` line is named apart and never counts, and every entry opens its
-// dish view. On the fictional example classics.
+// The classics in the finder as the native Linux app asks (findClassics): the adapter hands the
+// engine what a direct call gets, the filters only drop entries, a `wanted` line is named apart
+// and never counts, and every entry opens its dish view. On the fictional example classics.
 import { classicsMakeable } from '@culina/engine';
 import type { Classic, ClassicsMakeableInput } from '@culina/engine';
 import { expect, test } from 'vitest';
@@ -8,7 +8,7 @@ import { findClassics, withCatalogue } from '../src/cook/classic-finder';
 import { classicLookup, classicRow } from '../src/cook/classic-rows';
 import type { CookSource } from '../src/cook/input';
 import { lookupOf } from '../src/cook/lookup';
-import { parseCookFilters } from '../src/prefs';
+import { parseClassicFinderFilters, parseCookFilters } from '../src/prefs';
 import type { IngredientRecord } from '../src/records';
 import { EXAMPLE_CLASSICS, PAN_DISH, SECOND_DISH } from './classics-fixture';
 import { must } from './must';
@@ -107,11 +107,11 @@ test('with nothing that matches, the nearest are named, fewest lacking first', (
   expect(lacking).toEqual([...lacking].sort((a, b) => a - b));
 });
 
-test('the kept filters read the country and the meat choice, and drop what is not one', () => {
-  expect(parseCookFilters({ lacking: 2, country: 'it', meatFree: true })).toEqual({
+test('the web finder no longer reads a country or meat choice; the Linux variant still does', () => {
+  const old = { lacking: 2, country: 'it', meatFree: true };
+  expect(parseCookFilters(old)).toEqual({ lacking: 2 });
+  expect(parseClassicFinderFilters(old)).toEqual({ lacking: 2, country: 'it', meatFree: true });
+  expect(parseClassicFinderFilters({ lacking: 2, country: 'xx', meatFree: 'yes' })).toEqual({
     lacking: 2,
-    country: 'it',
-    meatFree: true,
   });
-  expect(parseCookFilters({ lacking: 2, country: 'xx', meatFree: 'yes' })).toEqual({ lacking: 2 });
 });
