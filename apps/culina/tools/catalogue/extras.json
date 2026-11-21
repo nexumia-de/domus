@@ -76,6 +76,12 @@
     { "id": 174210, "why": "shrimp, a basic of the kitchen, no dish line" },
     { "id": 174216, "why": "mussels, a basic of the kitchen, no dish line" },
     { "id": 174182, "why": "anchovy, a basic of the kitchen, no dish line" },
-    { "id": 171631, "why": "raw sausage (Italian pork), a basic of the kitchen, no dish line" }
+    { "id": 171631, "why": "raw sausage (Italian pork), a basic of the kitchen, no dish line" },
+    { "id": 170388, "why": "savoy cabbage, 1 dish line" },
+    {
+      "id": 170054,
+      "why": "tomato sauce, 1 dish line, and with the paste the group of 2 dish lines"
+    },
+    { "id": 170459, "why": "tomato paste, with the sauce the group of 2 dish lines" }
   ]
 }

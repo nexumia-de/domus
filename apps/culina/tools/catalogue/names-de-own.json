@@ -32,6 +32,7 @@
     "fdc-169719": "US wheat class, name kept",
     "fdc-169720": "US wheat class, name kept",
     "fdc-169894": "US product",
+    "fdc-170054": "US canned tomato sauce, a seasoned thin purée; not claimed equal to passierte Tomaten or to a cooked Italian sauce",
     "fdc-170078": "unknown plant; descriptive",
     "fdc-170432": "Phytolacca americana shoots; descriptive",
     "fdc-170553": "Brosimum alicastrum seeds",
@@ -349,6 +350,7 @@
       "name": "Kartoffel",
       "aliases": ["Kartoffel, mit Schale", "Erdapfel", "Grundbirne", "Kartoffeln"]
     },
+    "fdc-170054": { "name": "Tomatensauce, aus der Dose", "aliases": ["Tomatensauce"] },
     "fdc-170073": { "name": "Jicama", "aliases": ["Yamsbohne", "Mexikanische Rübe"] },
     "fdc-170078": { "name": "Eppaw (nordamerikanische Wurzelknolle)" },
     "fdc-170095": { "name": "Rettichsprossen", "aliases": ["Rettichkeimlinge"] },
@@ -388,6 +390,7 @@
       "aliases": ["Cime di Rapa", "Broccoletti", "Rapini", "Brokkoli-Rabe"]
     },
     "fdc-170385": { "name": "Pestwurz (Fuki)", "aliases": ["Fuki"] },
+    "fdc-170388": { "name": "Wirsing", "aliases": ["Wirsingkohl", "Welschkohl"] },
     "fdc-170400": { "name": "Knollensellerie", "aliases": ["Sellerieknolle", "Sellerie"] },
     "fdc-170404": { "name": "Chicorée", "aliases": ["Brüsseler Endivie", "Witloof"] },
     "fdc-170416": {
@@ -404,6 +407,7 @@
     "fdc-170432": { "name": "Kermesbeeren-Triebe", "aliases": ["Phytolacca-Triebe"] },
     "fdc-170456": { "name": "Tomate, grün", "aliases": ["Tomaten, grün"] },
     "fdc-170457": { "name": "Tomate", "aliases": ["Tomaten", "Tomate, rot", "Paradeiser"] },
+    "fdc-170459": { "name": "Tomatenmark, ohne Salzzusatz", "aliases": ["Tomatenmark"] },
     "fdc-170465": {
       "name": "Speiserübe",
       "aliases": ["Weiße Rübe", "Mairübe", "Navette", "Herbstrübe", "Rübe"]
@@ -820,6 +824,10 @@
     "fdc-group-syrups": { "name": "Sirupe" },
     "fdc-group-syrups-corn": { "name": "Maissirup" },
     "fdc-group-syrups-table-blends": { "name": "Tafelsirup-Mischungen" },
+    "fdc-group-tomato-products-canned": {
+      "name": "Tomatenkonserven",
+      "aliases": ["Tomatenprodukte aus der Dose"]
+    },
     "fdc-group-tomatoes": { "name": "Tomaten", "aliases": ["Paradeiser"] },
     "fdc-group-veal": { "name": "Kalbfleisch", "aliases": ["Kalb"] },
     "fdc-group-veal-composite-of-trimmed-retail-cuts": {
