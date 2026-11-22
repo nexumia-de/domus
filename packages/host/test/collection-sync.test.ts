@@ -296,14 +296,15 @@ test('every collection of an app gets its own file in one run', async () => {
   await localChange(a.shared, space.id, 'categories', now, () => ({
     put: [{ key: 'c1', value: { name: 'Garden' } }],
   }));
+  // Waits for a whole cycle, not a fixed time: under load 30 ms did not cover both collections.
   await a.sync.refresh();
-  await settle();
+  expect(await a.sync.syncSpace(space.id)).toBe('synced');
   expect([...storage.files.keys()].sort()).toEqual([
     `${space.id}/categories.json`,
     `${space.id}/entries.json`,
   ]);
   await b.sync.refresh();
-  await settle();
+  expect(await b.sync.syncSpace(space.id)).toBe('synced');
   expect(await stored(b.shared, space.id, 'e1', 'entries')).toMatchObject({
     value: { name: 'Milk' },
   });
