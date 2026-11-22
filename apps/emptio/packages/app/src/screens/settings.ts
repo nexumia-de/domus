@@ -1,4 +1,5 @@
-// Settings: which space's list is shown and how each is kept in step, language,
+// Settings: which space's list is shown and how each is kept in step, the
+// KitchenOwl list of the shown space, language,
 // appearance, and what the app is.
 import { STARTING_CATEGORIES_SOURCE } from '@emptio/engine';
 import { h } from '../dom';
@@ -15,10 +16,12 @@ import {
   type Theme,
 } from '../prefs';
 import type { Ctx, Screen } from './context';
+import { kitchenowlSection } from './kitchenowl';
 
 export function settingsScreen(ctx: Ctx): Screen {
   const { app, t, prefs } = ctx;
   const spaces = h('div', { class: 'spaces' });
+  const kitchenowl = kitchenowlSection(ctx);
 
   function drawSpaces(): void {
     const state = app.state();
@@ -101,6 +104,7 @@ export function settingsScreen(ctx: Ctx): Screen {
     h('p', { class: 'muted' }, t.settings.spacesIntro),
     spaces,
     h('p', {}, h('a', { class: 'plain-link', href: householdHref() }, t.settings.household)),
+    kitchenowl.node,
     h('h2', {}, t.settings.language),
     select<LangChoice>(
       'lang',
@@ -133,5 +137,9 @@ export function settingsScreen(ctx: Ctx): Screen {
     h('p', { class: 'muted' }, `${t.settings.categoriesSource} ${STARTING_CATEGORIES_SOURCE}`),
   );
   drawSpaces();
-  return { node, title: () => t.settings.title, update: drawSpaces };
+  const update = (): void => {
+    drawSpaces();
+    kitchenowl.update();
+  };
+  return { node, title: () => t.settings.title, update };
 }

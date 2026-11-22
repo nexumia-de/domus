@@ -1,11 +1,13 @@
 // Preferences: the style, which space's list is shown and how each is kept in
-// step, and joining a space by its invitation link.
+// step, joining a space by its invitation link, and the KitchenOwl list of the
+// shown space.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import type { Store } from '@nexumia-de/hospes';
 import { KEYS, THEMES, statusText, themeOf } from '@emptio/app/core';
 import { applyStyle, joinByLink } from '@nexumia-de/gjs';
 import type { Ui } from './context';
+import { kitchenowlGroup } from './kitchenowl-group';
 
 export function showPreferences(ui: Ui, store: Store): void {
   const { app, n, prefs } = ui;
@@ -69,6 +71,7 @@ export function showPreferences(ui: Ui, store: Store): void {
   join.add(link);
   join.add(token);
   page.add(join);
+  page.add(kitchenowlGroup(ui, dialog));
 
   dialog.add(page);
   dialog.present(ui.window);

@@ -285,6 +285,15 @@ async function main() {
       s.activate('about');
       await s.page.waitForTimeout(1000);
       await s.shot(shotName('10-about'));
+      await s.page.keyboard.press('Escape');
+      await sleep(500);
+      // The preferences with the KitchenOwl group at the bottom (look; not judged by the script).
+      s.activate('preferences');
+      await s.page.waitForTimeout(1000);
+      await s.page.mouse.move(180, 400);
+      for (let i = 0; i < 10; i++) await s.page.mouse.wheel(0, 400);
+      await s.page.waitForTimeout(800);
+      await s.shot(shotName('12-preferences-kitchenowl'));
     } finally {
       await s.stop();
     }
