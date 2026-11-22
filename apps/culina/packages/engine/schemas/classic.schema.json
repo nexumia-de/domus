@@ -24,6 +24,10 @@
     "name": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
     },
+    "kind": {
+      "description": "A base to build on (components with slots; a component of a slot's role that fills no slot is an alternative for it) or a dish as the source gives it. Without kind a file is a dish.",
+      "enum": ["base", "dish"]
+    },
     "originalName": { "type": "string", "minLength": 1, "maxLength": 120 },
     "country": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/country"

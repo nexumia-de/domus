@@ -75,11 +75,24 @@ test('the build writes the page, one script, one stylesheet, the manifest, icons
     'manifest.webmanifest',
     'catalogue.json',
     'classics.json',
+    'classics-pack.json',
     'sw.js',
   ]) {
     expect(files, file).toContain(file);
   }
   expect(files.filter((f) => f.startsWith('icons/')).length).toBeGreaterThanOrEqual(4);
+});
+
+test('the import pack is its own file, precached, and holds every file of data/pack', () => {
+  const pack = JSON.parse(readFileSync(new URL('classics-pack.json', dist), 'utf8')) as {
+    format: string;
+    classics: { id: string }[];
+  };
+  expect(pack.format).toBe('culina-classics-pack');
+  const files = readdirSync(new URL('data/pack/', app), { recursive: true }).filter((f) =>
+    String(f).endsWith('.json'),
+  );
+  expect(pack.classics).toHaveLength(files.length);
 });
 
 test('the catalogue is its own file, precached, and main.js does not carry it', () => {

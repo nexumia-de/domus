@@ -326,6 +326,7 @@ export type {
   Unmeasured,
 } from './classics/derive';
 export { copyClassic } from './classics/copy';
+export { componentsInDish, componentsUsed, isBase, slotAlternatives } from './classics/base';
 export type { CopiedComponent, CopiedDish, CopyOptions, CopyResult, Origin } from './classics/copy';
 export { resolveSourceUnit } from './classics/units';
 export type { UnitSize } from './classics/units';
@@ -343,6 +344,7 @@ export type {
   AmountWord,
   Classic,
   ClassicComponent,
+  ClassicKind,
   ClassicLine,
   ClassicSlot,
   ClassicUnit,

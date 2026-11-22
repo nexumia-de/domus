@@ -30,6 +30,7 @@ invented**: no real recipe and no real book. Do not copy them into a dish.
 | Technique  | `packages/engine/data/techniques/<id>.json`      | `<id>.json` |
 | Substitute | `packages/engine/data/substitutes/<id>.json`     | `<id>.json` |
 | Dish       | `packages/app/data/classics/<country>/<id>.json` | `<id>.json` |
+| Pack dish  | `packages/app/data/pack/<country>/<id>.json`     | `<id>.json` |
 
 The country folder is `de`, `it`, `fr` or `es`. An id is a lower-case slug
 (`pommes-puree`), unique among all dishes (or all techniques), equal to the file
@@ -271,6 +272,7 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
 | Field          | What to write                                                                                                                                                                     |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`           | The slug; the file name.                                                                                                                                                          |
+| `kind`         | `base` for a base to build on ([below](#a-base)), `dish` or nothing for a dish as the source gives it.                                                                            |
 | `name`         | `{ en, de }`: how the dish is called in each language.                                                                                                                            |
 | `originalName` | The name in the source's own language and spelling.                                                                                                                               |
 | `country`      | `de`, `it`, `fr` or `es`; the folder the file is in.                                                                                                                              |
@@ -448,10 +450,37 @@ image), `second-edition` (with a second scan or edition) or `second-reader`
 compared. It must be someone who did not transcribe the dish. The app shows
 one sentence for the method inside Source; the note stays in the file.
 
+# A base
+
+A base is a shipped file to build one's own dishes on: a sauce, a dough,
+a frame such as tacos ([decision](decisions/bases-and-pack.md)). It is a
+dish file with `"kind": "base"` and follows every rule above; in
+addition:
+
+- **At least one slot is filled by a component** of the file
+  (`base-without-component` otherwise).
+- **A component that no slot reaches is an alternative** for the slots
+  of its `role`, when a component fills such a slot: for a slot `main`
+  filled by `beans`, a component `squash` with `"role": "main"` that no
+  slot and no line names is offered in its place. Its lines may name
+  other components (a dressing); those count as used. A component of a
+  role no slot has, or without a role, is unused, as in a dish.
+- **There is no list of alternatives.** Give the alternative its role
+  and leave it out of the slots. Keep copies it into the notebook with
+  its role, where Swap offers it; the finder does not ask for it.
+- **An alternative comes from the base's one source**, as every line.
+  A variant only another source gives becomes its own base, not a
+  component here.
+
+The import pack (`packages/app/data/pack/<country>/`) holds dish files
+in the same format and under the same tests; a base never lies there,
+and an id lies in one folder only.
+
 # Validating one file
 
 ```sh
 npm run validate:content -- packages/app/data/classics/de/<id>.json
+npm run validate:content -- packages/app/data/pack/de/<id>.json
 ```
 
 The command first generates what it needs and git ignores (the compiled
