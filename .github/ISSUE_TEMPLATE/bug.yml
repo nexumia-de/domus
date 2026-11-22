@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in one of the household apps does not work as expected.
+labels: [bug]
+body:
+  # The ids what, app, version and device are filled in by the apps' Report a Problem dialog
+  # (docs/feedback.md); keep them and the options of app and device as they are.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app
+        2. …
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      options:
+        - Drink Builder
+        - Cook's Notebook
+        - Shopping List
+        - Household
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: From the About dialog of the Linux app, e.g. "0.2.1"; "web" for the apps in the browser.
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - Phone (Phosh)
+        - Desktop
+        - Phone (browser)
+        - Desktop (browser)
+        - Other
+    validations:
+      required: true

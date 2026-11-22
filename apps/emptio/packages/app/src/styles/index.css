@@ -1,5 +1,6 @@
 @import './tokens.css';
 @import './base.css';
 @import '@nexumia-de/hospes/frame.css';
+@import '@nexumia-de/hospes/report-dialog.css';
 @import './frame.css';
 @import './components.css';

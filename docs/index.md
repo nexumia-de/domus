@@ -24,6 +24,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 - [What only the owner can do](owner-checks.md) - The checks that need a device, the owner's accounts, a book or a legal check, collected from the closed issues; none was run by an agent.
 - [Deployment](deployment.md) - The one address domus.nexumia.de: layout of the site, headers per folder, the browser check that the apps stay apart, the deploy job, the owner's steps.
+- [Report a problem from the apps](feedback.md) - The in-app Report a Problem dialog of every app: the shared code in hospes and gjs, the issue forms and their field ids, where the token is kept (keyring on Linux, localStorage in the browser), what is sent and what is checked.
 - [Reviews](reviews.md) - The record of changes several agents made together: who did which part, who checked what, what the checks found, the counts, what nobody verified; first entry goal 6.
 - [Development](development.md) - The layout, the one workspace, the checks from the root, how the histories were imported, what still points at the old repositories.
 

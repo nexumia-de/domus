@@ -1,6 +1,8 @@
-// Settings and About (built by #17). Choosing a value applies at once.
+// Settings and About (built by #17), with Report a Problem. Choosing a value applies at once.
 
 import { ALCOHOL_PRESETS, type AlcoholPreset } from '@mixtura/engine';
+import { feedbackEn } from '@nexumia-de/hospes';
+import { openReportDialog } from '@nexumia-de/hospes/frame';
 import { type Theme, type Units } from '../../app-state';
 import { type YesNo } from '../../store';
 import { h, icon } from '../../dom';
@@ -167,6 +169,22 @@ function about(): HTMLElement {
     h('span', {}, `${a.version} ${version}`),
     h('span', {}, a.licence),
     h('span', { class: 'hint' }, a.updates),
+    // Report a problem or an idea as a GitHub issue (docs/feedback.md in the root).
+    h(
+      'button',
+      {
+        class: 'btn btn--tonal',
+        type: 'button',
+        onclick: () =>
+          openReportDialog({
+            texts: feedbackEn,
+            appName: strings.appName,
+            app: 'Drink Builder',
+            version,
+          }),
+      },
+      feedbackEn.open,
+    ),
   );
 }
 

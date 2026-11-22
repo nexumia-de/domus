@@ -1,7 +1,9 @@
 // Settings: which space's list is shown and how each is kept in step, the
 // KitchenOwl list of the shown space, language,
-// appearance, and what the app is.
+// appearance, what the app is, and reporting a problem.
 import { STARTING_CATEGORIES_SOURCE } from '@emptio/engine';
+import { feedbackDe, feedbackEn } from '@nexumia-de/hospes';
+import { openReportDialog } from '@nexumia-de/hospes/frame';
 import { button, h } from '../dom';
 import { householdHref } from '../env';
 import { statusText } from '../list/status';
@@ -20,6 +22,7 @@ import { kitchenowlSection } from './kitchenowl';
 
 export function settingsScreen(ctx: Ctx): Screen {
   const { app, t, prefs } = ctx;
+  const feedback = ctx.lang === 'de' ? feedbackDe : feedbackEn;
   const spaces = h('div', { class: 'spaces' });
   const kitchenowl = kitchenowlSection(ctx);
 
@@ -167,6 +170,19 @@ export function settingsScreen(ctx: Ctx): Screen {
     notKept,
     h('h2', {}, t.settings.about),
     h('p', {}, t.settings.aboutText),
+    // Report a problem or an idea as a GitHub issue (docs/feedback.md in the root).
+    h(
+      'p',
+      {},
+      button(feedback.open, () =>
+        openReportDialog({
+          texts: feedback,
+          appName: t.appName,
+          app: 'Shopping List',
+          version: 'web',
+        }),
+      ),
+    ),
     h('p', { class: 'muted' }, t.settings.licence),
     h('p', { class: 'muted' }, `${t.settings.categoriesSource} ${STARTING_CATEGORIES_SOURCE}`),
   );

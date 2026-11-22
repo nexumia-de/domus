@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and at the end of the web app's Settings; the dialog is the shared one.
+
 ## 2026-11-22
 
 - **Creation**: recipe from an AI on the import screen ([behaviour](behaviour.md#the-import-screen), first step of issue 40 of suitably/domus, asked for by the owner to use the app today): a button copies a prompt that asks the user's own language model for Cooklang, and a paste field sends the answer through the existing Cooklang step. Browser check in `e2e/cooklang-flow.mjs` (prompt shown, empty paste, pasted answer read like a file). Not proved: what a real model writes for the prompt; no model was tried.

@@ -1,4 +1,5 @@
-import { isDeviceOnly } from '@nexumia-de/hospes';
+import { feedbackDe, feedbackEn, isDeviceOnly } from '@nexumia-de/hospes';
+import { openReportDialog } from '@nexumia-de/hospes/frame';
 import { h } from '../dom';
 import { problemOf } from '../logic/failures';
 import { fragmentOf, parseInviteText } from '../logic/invite';
@@ -65,6 +66,16 @@ export function homeScreen(ctx: Ctx): HTMLElement {
   });
   sync.append(join);
   page.append(sync);
+
+  // Report a problem or an idea as a GitHub issue (docs/feedback.md in the root).
+  const feedback = ctx.lang === 'de' ? feedbackDe : feedbackEn;
+  page.append(
+    buttonRow(
+      button(feedback.open, () =>
+        openReportDialog({ texts: feedback, appName: t.appName, app: 'Household', version: 'web' }),
+      ),
+    ),
+  );
 
   void (async () => {
     try {
