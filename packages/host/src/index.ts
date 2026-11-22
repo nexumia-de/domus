@@ -13,6 +13,7 @@ export { fileUrl, folderUrls, pathSegments } from './webdav-url';
 export { createGithubAdapter, type GithubOptions } from './github';
 export {
   DEFAULT_REPOSITORY_NAME,
+  DEFAULT_TOKEN_NAME,
   findRepositories,
   setupLinks,
   testGithub,

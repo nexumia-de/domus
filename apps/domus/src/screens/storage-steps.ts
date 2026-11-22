@@ -93,7 +93,7 @@ export function storageSteps(
   // GitHub: three guided steps
   const githubStep = (): HTMLElement[] => {
     const g = t.create.github;
-    const links = setupLinks();
+    const links = setupLinks({ tokenName: g.tokenName });
     const token = secretField(t.fields.tokenLabel, {
       hint: g.tokenHint,
       showAria: t.fields.showTokenAria,

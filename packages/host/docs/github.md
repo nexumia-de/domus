@@ -128,14 +128,20 @@ content is sealed).
   this endpoint lists exactly the selected repositories for a fine-grained token
   limited to selected repositories is the behaviour as far as known;
   **unverified**.
-- `setupLinks({ name?, tokenName? })` gives `repositoryUrl`
+- `setupLinks({ name?, tokenName?, tokenDescription? })` gives `repositoryUrl`
   (`https://github.com/new?name=<name>&visibility=private`, default name
   `domus-sync`) and `tokenUrl`
-  (`https://github.com/settings/personal-access-tokens/new`). **Unverified:**
-  that the "new repository" form accepts `name` and `visibility` by link, and
-  whether the token form accepts a name, description or permissions by link; no
-  parameter for it is guessed, so `tokenName` is accepted and unused and the
-  screen tells the person which values to enter.
+  (`https://github.com/settings/personal-access-tokens/new?name=…&description=…&expires_in=366&contents=write`,
+  default token name `Domus`, cut to GitHub's 40 characters; the app passes
+  its own word, "Household" or "Haushalt"). Both are GitHub's documented query
+  parameters: `name`, `description`, `visibility` for a new repository
+  ([GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)),
+  `name`, `description`, `expires_in` (days, 1–366) and one parameter per
+  permission for a fine-grained token
+  ([GitHub Changelog 2025-08-26](https://github.blog/changelog/2025-08-26-template-urls-for-fine-grained-pats-and-updated-permissions-ui/)).
+  The token's repository selection has no parameter, so the screen still
+  says to choose "Only select repositories". **Not checked in a browser
+  logged in to GitHub.**
 
 ## The registry (`storage.ts`)
 

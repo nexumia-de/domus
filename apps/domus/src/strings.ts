@@ -108,14 +108,15 @@ export const stringsEn = {
         'Open GitHub’s form with the name already filled in and create the repository as private. An existing private repository works too; then you can skip this step.',
       step1Button: 'Open “new repository” on GitHub',
       step2: 'A token for that repository only',
-      step2Text: 'Open GitHub’s form and go through it like this:',
+      step2Text:
+        'Open GitHub’s form: name, a year’s validity and the permission are filled in. Then:',
       step2Button: 'Open “new token” on GitHub',
       step2List: [
-        'Give the token a name, for example Household, and choose how long it lasts.',
         'Under “Repository access” choose “Only select repositories” and pick the repository.',
-        'Under “Permissions” open “Repository permissions” and set “Contents” to “Read and write”.',
+        'Check that “Contents” says “Read and write”; change the name or validity if you like.',
         'Click “Generate token” and copy the token.',
       ],
+      tokenName: 'Household',
       step3: 'Paste the token here',
       tokenHint:
         'It stays on this device. It is sent only to GitHub, and it is never put into an address.',
@@ -250,9 +251,8 @@ export const stringsEn = {
       'The invite does not include access to the storage. Enter your own below, then join.',
     githubSteps: 'You need a token for this repository, made like this:',
     githubStepsList: [
-      'Open GitHub’s “new token” form.',
+      'Open GitHub’s “new token” form; name, validity and “Contents: Read and write” are filled in.',
       'Under “Repository access” choose “Only select repositories” and pick this repository.',
-      'Under “Permissions” open “Repository permissions” and set “Contents” to “Read and write”.',
       'Generate the token, copy it and paste it below.',
     ],
     openTokenPage: 'Open “new token” on GitHub',

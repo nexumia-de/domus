@@ -131,10 +131,23 @@ test('findRepositories failures', async () => {
   });
 });
 
-test('setupLinks: the repository form is prefilled, the token form is the plain address', () => {
-  expect(setupLinks({ name: 'my repo' })).toEqual({
-    repositoryUrl: 'https://github.com/new?name=my%20repo&visibility=private',
-    tokenUrl: 'https://github.com/settings/personal-access-tokens/new',
+test('setupLinks: both forms are prefilled by GitHub’s documented parameters', () => {
+  const links = setupLinks({ name: 'my repo', tokenName: 'Haushalt' });
+  expect(links.repositoryUrl).toBe('https://github.com/new?name=my%20repo&visibility=private');
+  const token = new URL(links.tokenUrl);
+  expect(token.origin + token.pathname).toBe(
+    'https://github.com/settings/personal-access-tokens/new',
+  );
+  expect(Object.fromEntries(token.searchParams)).toEqual({
+    name: 'Haushalt',
+    description: 'Sync of my repo',
+    expires_in: '366',
+    contents: 'write',
   });
   expect(setupLinks().repositoryUrl).toContain('name=domus-sync');
+  expect(new URL(setupLinks().tokenUrl).searchParams.get('name')).toBe('Domus');
+  // GitHub limits the name to 40 characters.
+  expect(
+    new URL(setupLinks({ tokenName: 'x'.repeat(60) }).tokenUrl).searchParams.get('name'),
+  ).toHaveLength(40);
 });
