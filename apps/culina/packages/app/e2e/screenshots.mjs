@@ -1,4 +1,5 @@
-// Writes the documentation screenshots to docs/screenshots/ (scale 2): `npm run screenshots -w @culina/app`.
+// Writes the documentation screenshots to docs/screenshots/ (scale 2): `npm run screenshots -w @culina/app`;
+// `npm run screenshots -w @culina/app -- <text>` writes only the files whose name contains the text.
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { store as storeCookFixture } from './cook-fixture.mjs';
@@ -18,6 +19,8 @@ const filled = async (page) => {
   await page.getByLabel('salt (g)').fill('8');
 };
 const SAUCE = 'components/example-pan-sauce';
+const SHIPPED = 'components/oeufs-a-la-neige.snow-eggs';
+const shippedListed = (page) => page.locator('.component-row-shipped').first().waitFor();
 const editorReady = (page) => page.getByLabel('Name', { exact: true }).waitFor();
 const picking = async (page) => {
   await editorReady(page);
@@ -95,12 +98,17 @@ const stocked = async (page) => {
   await page.reload();
   await page.getByRole('heading', { level: 1 }).waitFor();
 };
-// The finder: the fixture notebook and stock of e2e/cook.mjs, written through the store's test hook.
+// Cook and the finder: the fixture notebook and stock of e2e/cook.mjs, written through the store's
+// test hook.
 const cooked = async (page) => {
   await storeCookFixture(page);
   await page.reload();
   await page.getByRole('heading', { level: 1 }).waitFor();
   await page.locator('.cook-screen').waitFor();
+};
+const haveOn = async (page) => {
+  await cooked(page);
+  await page.getByLabel('Only with what I have').check();
 };
 const LATER = `&e2e-now=${new Date(Date.now() + 40 * 86_400_000).toISOString()}`;
 // [file, width, height, colour scheme, route, steps after load, whole page, with example data, extra query]
@@ -157,6 +165,29 @@ const shots = [
   ['ratio-card-360x720-dark.png', 360, 720, 'dark', CARD, filled, true],
   ['ratio-card-1000x700-light.png', 1000, 700, 'light', CARD, filled, true],
   ['component-360x720-light.png', 360, 720, 'light', SAUCE, undefined, false, true],
+  // The list with the shipped components (the real shipped content) and one of them, read-only.
+  [
+    'components-list-360x720-light.png',
+    360,
+    720,
+    'light',
+    'components',
+    shippedListed,
+    false,
+    true,
+  ],
+  [
+    'components-list-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'components',
+    shippedListed,
+    false,
+    true,
+  ],
+  ['component-shipped-360x720-light.png', 360, 720, 'light', SHIPPED, undefined, true, true],
+  ['component-shipped-1000x700-light.png', 1000, 700, 'light', SHIPPED, undefined, false, true],
   [
     'dish-360x720-light.png',
     360,
@@ -260,6 +291,8 @@ const shots = [
     false,
     STOCK_NOW,
   ],
+  // Cook with "Only with what I have" on (docs/decisions/cook-screen.md).
+  ['cook-have-360x720-light.png', 360, 720, 'light', 'cook', haveOn, true, false, STOCK_NOW],
   [
     'cook-ingredient-360x720-light.png',
     360,
@@ -283,9 +316,10 @@ const secondStep = async (page) => {
 };
 const cooking = `classic/${PAN.id}/cook`;
 const classicShots = [
-  ['classics-start-360x720-light.png', 360, 720, 'light', 'start', undefined, true],
-  ['classics-start-360x720-dark.png', 360, 720, 'dark', 'start', undefined, true],
-  ['classics-start-1000x700-light.png', 1000, 700, 'light', 'start', undefined, true],
+  // Cook, the one list of every dish, on the fictional dishes (#/start went: cook-screen.md).
+  ['classics-cook-360x720-light.png', 360, 720, 'light', 'cook', undefined, true],
+  ['classics-cook-360x720-dark.png', 360, 720, 'dark', 'cook', undefined, true],
+  ['classics-cook-1000x700-light.png', 1000, 700, 'light', 'cook', undefined, true],
   ['classics-country-360x720-light.png', 360, 720, 'light', 'classics/de', undefined, true],
   ['classics-dish-360x720-light.png', 360, 720, 'light', `classic/${PAN.id}`, undefined, true],
   ['classics-dish-1000x700-light.png', 1000, 700, 'light', `classic/${PAN.id}`, undefined, true],
@@ -313,7 +347,7 @@ for (const [
   fullPage,
   withExamples,
   query,
-] of shots) {
+] of shots.filter(([file]) => file.includes(process.argv[2] ?? ''))) {
   const context = await browser.newContext({
     viewport: { width, height },
     deviceScaleFactor: 2,

@@ -1,35 +1,47 @@
-// The Components screen: the list, and the detail of one component beside it or as its own screen.
-import { componentMeta } from '../components/meta';
+// The Components screen: the notebook's components and the shipped ones in one list
+// (component-list.ts), and the detail of one beside it or as its own screen. A shipped component
+// (`#/components/<classic id>.<component id>`) has its own read-only detail (shipped-component.ts).
+import { classics } from '../classics/content';
+import { currentLang } from '../classics/lang';
+import { componentRows } from '../components/list';
+import { shippedEntries } from '../components/shipped';
 import { getComponent, listComponents, notebook } from '../notebook';
 import { strings } from '../strings';
 import { notebookExtras } from './notebook-extras';
 import { componentDetail } from './component-detail';
-import type { ListState } from './entry-list';
+import { componentList, type ComponentListState } from './component-list';
+import type { ListText } from './entry-list';
 import { notebookScreen } from './notebook-screen';
+import { shippedComponentDetail } from './shipped-component';
 
-/** The search text survives navigation between the list and the details. */
-const state: ListState = { query: '' };
+/** The search text and the origin choice survive navigation between the list and the details. */
+const state: ComponentListState = { query: '' };
+
+const text = (): ListText => ({
+  title: strings.screens.components.title,
+  searchLabel: strings.notebook.searchLabel,
+  listLabel: strings.components.listLabel,
+  empty: strings.screens.components.empty,
+  emptyNotebook: strings.empty.components,
+  guidanceSummary: strings.screens.components.guidanceSummary,
+  guidance: strings.screens.components.guidance,
+});
 
 export const componentsScreen = (param?: string): HTMLElement =>
   notebookScreen(
     {
       route: 'components',
-      entries: listComponents().map((c) => ({ id: c.id, name: c.name, meta: componentMeta(c) })),
-      state,
-      text: {
-        title: strings.screens.components.title,
-        searchLabel: strings.notebook.searchLabel,
-        listLabel: strings.components.listLabel,
-        empty: strings.screens.components.empty,
-        emptyNotebook: strings.empty.components,
-        guidanceSummary: strings.screens.components.guidanceSummary,
-        guidance: strings.screens.components.guidance,
-      },
+      pane: (options) =>
+        componentList(
+          componentRows(listComponents(), shippedEntries(classics(), currentLang())),
+          state,
+          text(),
+          options,
+        ),
       detail: (id) => {
         const component = getComponent(id);
-        return component === undefined
-          ? undefined
-          : componentDetail(notebook(component), component);
+        if (component !== undefined) return componentDetail(notebook(component), component);
+        return shippedComponentDetail(id);
       },
       unknown: strings.components.unknown,
       chooseOne: strings.components.chooseOne,

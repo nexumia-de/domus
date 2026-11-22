@@ -1,16 +1,10 @@
-/* The classics: the start screen, the lists, the dish, cooking step by step, the settings rows. */
-.start-block {
-  margin: 0 0 var(--sp-5);
-}
-
-.start-block h2,
+/* The classics: the lists, the dish, cooking step by step, the settings rows. */
 .skills-section h2 {
   margin: var(--sp-4) 0 var(--sp-2);
   font-size: var(--fs-md);
 }
 
 .country-list .row-link,
-.start-tools .row-link,
 .classic-link {
   align-items: center;
   min-height: var(--target);

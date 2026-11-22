@@ -6,6 +6,7 @@ import { catalogue } from './catalogue.mjs';
 import { classics } from './classics.mjs';
 import { classicsFinder } from './classics-finder.mjs';
 import { components } from './components.mjs';
+import { componentsShipped } from './components-shipped.mjs';
 import { cook } from './cook.mjs';
 import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
@@ -39,6 +40,7 @@ try {
   await smoke(browser, server, subServer);
   await ratios(browser, server);
   await components(browser, server);
+  await componentsShipped(browser, server);
   await hostRedirect(browser, redirectServer);
   await editor(browser, server);
   await editorMore(browser, server);

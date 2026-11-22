@@ -50,11 +50,11 @@ test.each([
   expect(set.nav.settings).toBe(set.settings.title);
   // The parts of the Notebook are titled like the screens they open.
   expect(set.screens.components.title).not.toBe(set.screens.dishes.title);
-  // Four destinations, one word each: nothing in the labels to break at.
+  // Three destinations, one word each: nothing in the labels to break at.
   expect(Object.keys(set.nav).sort()).toEqual(
-    ['cook', 'label', 'notebook', 'ratios', 'settings', 'start'].sort(),
+    ['cook', 'label', 'notebook', 'ratios', 'settings'].sort(),
   );
-  for (const key of ['start', 'cook', 'notebook', 'ratios'] as const) {
+  for (const key of ['cook', 'notebook', 'ratios'] as const) {
     expect(set.nav[key]).toMatch(/^\S+$/);
     expect(set.nav[key]).not.toContain('\u00AD');
   }

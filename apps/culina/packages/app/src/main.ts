@@ -4,6 +4,7 @@ import { startNotebook, stockOnline, subscribe, wakeStock } from './notebook';
 import { e2eNow } from './store/e2e-clock';
 import { startRouter } from './router';
 import { classicsRedirect } from './screens/classics/classics-list';
+import { cookRedirect } from './screens/cook/redirect';
 import { mountShell } from './shell/shell';
 import { strings } from './strings';
 import { registerServiceWorker } from './sw-register';
@@ -30,7 +31,8 @@ if (root) {
     startRouter(
       window,
       ({ route, param, action, initial }) => shell.show(route, param, !initial, action),
-      classicsRedirect,
+      // The old addresses: the classics' lists, and #/cook/use-up (#/start opens the default, Cook).
+      (route, param) => classicsRedirect(route, param) ?? cookRedirect(route, param),
     );
   });
   registerServiceWorker();

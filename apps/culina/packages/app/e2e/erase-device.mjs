@@ -100,7 +100,7 @@ export const eraseDevice = async (browser, server) => {
     `${label}: this app's preferences are gone, another app's key stays (${left.keys.join(', ')})`,
   );
   check(
-    left.theme === null && left.hash === '#/start',
+    left.theme === null && left.hash === '#/cook',
     `${label}: the app starts again at its first screen with the default theme (${left.theme} ${left.hash})`,
   );
   check(

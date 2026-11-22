@@ -4,8 +4,6 @@ import type { NavEntry } from '../router';
 export type IconName = NavEntry | 'settings';
 
 const PATHS: Record<IconName, string> = {
-  // A bowl with a rim and a line of steam.
-  start: '<path d="M4 12h16a8 8 0 0 1-16 0zM12 3v5"/>',
   // Two dots over two dots: a ratio sign.
   ratios:
     '<circle cx="12" cy="7" r="1.5"/><circle cx="12" cy="17" r="1.5"/><path d="M4 12h5M15 12h5"/>',

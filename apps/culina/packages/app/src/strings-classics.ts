@@ -1,27 +1,13 @@
-// Texts of the classics: the start screen, the lists by country, the dish, cooking step by step,
-// keeping a dish in the notebook, and the settings for skills and content language. Wording never
+// Texts of the classics: the native Linux app's start page, the lists by country, the dish,
+// cooking step by step, keeping a dish in the notebook, and the settings for skills and content language. Wording never
 // judges a dish. The content of a dish or a technique is in the file of that dish, in two languages.
 import type { Country, Course, TechniqueLevel } from '@culina/engine';
 
 export const classicsStrings = {
-  // Start screen
+  // The title of the native Linux app's start page
   startTitle: 'What do you want to cook?',
-  startIntro: 'Pick a classic dish and cook it step by step, or use one of your tools.',
-  classicsHeading: 'Classics by country',
-  countryLink: (country: string, count: number): string =>
-    `${country}, ${count === 1 ? '1 dish' : `${count} dishes`}`,
-  toolsHeading: 'Your tools',
-  toolsHint: 'Ratios, your components and dishes, and what you can cook from what is there.',
-  tools: {
-    ratios: 'Ratios',
-    components: 'Components',
-    dishes: 'Dishes',
-    cook: 'What can I cook',
-    stock: 'What is there',
-  },
   // Lists
   classicsTitle: 'Classics',
-  backToStart: 'Back to Start',
   backToCountry: (country: string): string => `Back to ${country}`,
   countries: { de: 'Germany', it: 'Italy', fr: 'France', es: 'Spain' } satisfies Record<
     Country,

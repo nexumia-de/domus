@@ -7,7 +7,6 @@ import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { stockRows, type StockRow } from '../../stock/rows';
 import { strings } from '../../strings';
-import { cookTabs } from '../cook/tabs';
 import { storeText } from '../editor/store-text';
 import { stockLookup } from './lookup';
 import { stockSpaceSection } from './stock-space';
@@ -56,7 +55,10 @@ const row = (r: StockRow): HTMLElement => {
 
 export const stockScreen = (): HTMLElement => {
   const section = el('section', 'screen stock-screen');
-  section.append(el('h1', undefined, t.title), cookTabs('stock'));
+  // Its own screen, reached from Cook (docs/decisions/cook-screen.md); the way back is plain.
+  const back = el('a', 'back-link', strings.cook.backToCook);
+  back.href = hashFor('cook');
+  section.append(back, el('h1', undefined, t.title));
   // Stock lives in the database all apps share, not in the notebook's own store.
   if (stockUnavailable()) {
     section.append(el('p', 'note-quiet', t.unavailable));

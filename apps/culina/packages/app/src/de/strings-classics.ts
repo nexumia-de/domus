@@ -3,26 +3,10 @@
 import type { classicsStrings } from '../strings-classics';
 
 export const classicsStringsDe: typeof classicsStrings = {
-  // Start screen
+  // The title of the native Linux app's start page
   startTitle: 'Was möchtest du kochen?',
-  startIntro:
-    'Wähle einen Klassiker und koch ihn Schritt für Schritt, oder nimm eines deiner Werkzeuge.',
-  classicsHeading: 'Klassiker nach Land',
-  countryLink: (country: string, count: number): string =>
-    `${country}, ${count === 1 ? '1 Gericht' : `${count} Gerichte`}`,
-  toolsHeading: 'Deine Werkzeuge',
-  toolsHint:
-    'Verhältnisse, deine Komponenten und Gerichte und was du aus dem Vorrat kochen kannst.',
-  tools: {
-    ratios: 'Verhältnisse',
-    components: 'Komponenten',
-    dishes: 'Gerichte',
-    cook: 'Was kann ich kochen',
-    stock: 'Vorrat',
-  },
   // Lists
   classicsTitle: 'Klassiker',
-  backToStart: 'Zurück zum Start',
   backToCountry: (country: string): string => `Zurück zu ${country}`,
   countries: { de: 'Deutschland', it: 'Italien', fr: 'Frankreich', es: 'Spanien' },
   listLabel: (country: string): string => `Klassiker aus ${country}`,

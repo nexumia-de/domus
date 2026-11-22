@@ -1,8 +1,10 @@
-// The one list of dishes as the Dishes list and the start screen show it: which entries pass the
-// filter and the search, in which order, and what the quiet line under each name says. Pure: no
-// DOM and no texts; the screen turns the meta into words (screens/dish-list.ts).
+// The one list of dishes as Cook shows it (docs/decisions/cook-screen.md): which entries pass the
+// filter, the search and "Only with what I have", in which order (by name, or "Use up first"), and
+// what the quiet line under each name says. Pure: no DOM and no texts; the screen turns the meta
+// into words (screens/dish-list.ts), the finder's answers come in as keys and marks.
 import type { Lang } from '@culina/engine';
 import { isCountry } from '../classics/list-view';
+import type { UseUpMark } from '../cook/one-list';
 import type { DishEntry, Origin } from './entry';
 import { isEmptyFilter, matchesFilter, matchesQuery, type DishFilter } from './filter';
 
@@ -12,6 +14,8 @@ export interface RowMeta {
   cuisine?: string;
   /** Only said when the list holds dishes of both origins (the filter does not fix one). */
   origin?: Origin;
+  /** In the order "Use up first": the dated item the dish uses that sets its place. */
+  useUp?: { itemId: string; daysLeft: number };
 }
 
 export interface ListRow {
@@ -32,29 +36,53 @@ export interface DishListView {
 export const bothOrigins = (entries: readonly DishEntry[]): boolean =>
   entries.some((e) => e.origin === 'own') && entries.some((e) => e.origin === 'shipped');
 
-const metaOf = (entry: DishEntry, withOrigin: boolean): RowMeta => ({
+const metaOf = (entry: DishEntry, withOrigin: boolean, mark?: UseUpMark): RowMeta => ({
   ...(entry.course === undefined ? {} : { course: entry.course }),
   ...(entry.cuisine === undefined ? {} : { cuisine: entry.cuisine }),
   ...(withOrigin ? { origin: entry.origin } : {}),
+  ...(mark === undefined ? {} : { useUp: { itemId: mark.itemId, daysLeft: mark.daysLeft } }),
 });
 
+/** What Cook adds to the filter and the search, each from the finder (src/dishes/). */
+export interface CookNarrowing {
+  /** "Only with what I have": the keys of the dishes the stock covers (`readyNowKeys`). */
+  ready?: ReadonlySet<string>;
+  /** The order "Use up first": the marks of the dishes that use a dated item (`useUpMarks`). */
+  useUp?: ReadonlyMap<string, UseUpMark>;
+}
+
 /**
- * The rows for a filter and a search text: every entry that passes both, sorted by name in the
- * content language (own and shipped dishes mixed), the key breaking a tie so the order is stable.
+ * The rows for a filter and a search text: every entry that passes both (and, when given, is
+ * ready), sorted by name in the content language (own and shipped dishes mixed), the key breaking a
+ * tie so the order is stable. With `useUp` the dishes that use a dated item come first, in the
+ * engine's order, and the rest follow by name.
  */
 export const dishListView = (
   entries: readonly DishEntry[],
   filter: DishFilter,
   query: string,
   lang: Lang,
+  cook: CookNarrowing = {},
 ): DishListView => {
   const collator = new Intl.Collator(lang, { sensitivity: 'base', numeric: true });
   const withOrigin = filter.origin === undefined && bothOrigins(entries);
+  const { ready, useUp } = cook;
+  const rankOf = (e: DishEntry): number => useUp?.get(e.key)?.rank ?? Infinity;
   const rows = entries
-    .filter((e) => matchesFilter(e, filter) && matchesQuery(e, query))
-    .sort((a, b) => collator.compare(a.name, b.name) || (a.key < b.key ? -1 : 1))
-    .map((entry) => ({ entry, meta: metaOf(entry, withOrigin) }));
-  const narrowed = !isEmptyFilter(filter) || query.trim() !== '';
+    .filter(
+      (e) =>
+        matchesFilter(e, filter) &&
+        matchesQuery(e, query) &&
+        (ready === undefined || ready.has(e.key)),
+    )
+    .sort(
+      (a, b) =>
+        (useUp === undefined || rankOf(a) === rankOf(b) ? 0 : rankOf(a) < rankOf(b) ? -1 : 1) ||
+        collator.compare(a.name, b.name) ||
+        (a.key < b.key ? -1 : 1),
+    )
+    .map((entry) => ({ entry, meta: metaOf(entry, withOrigin, useUp?.get(entry.key)) }));
+  const narrowed = !isEmptyFilter(filter) || query.trim() !== '' || ready !== undefined;
   return { rows, total: entries.length, narrowed };
 };
 

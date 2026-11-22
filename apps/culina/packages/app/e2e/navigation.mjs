@@ -1,23 +1,23 @@
-// The navigation: four destinations (Start, Cook, Notebook, Ratios) in the bottom bar, Settings as a
-// gear in the header, in English and German, at 320 and 360 px (and, with E2E_WIDE_FONT=1, in the
-// wide font the CI runner has). Each label is on one line and nothing is cut off. The Notebook
-// carries its two parts at the top; Cook ("what the stock allows") has no parts, only its three
-// views. Every address of Cook marks Cook, every dish (own or shipped) marks the Notebook. Every
-// former destination is reachable from Start in at most two taps, the stock from anywhere in two.
+// The navigation: three destinations (Cook, Notebook, Ratios; docs/decisions/cook-screen.md) in the
+// bottom bar, Settings as a gear in the header, in English and German, at 320 and 360 px (and, with
+// E2E_WIDE_FONT=1, in the wide font the CI runner has). Each label is on one line and nothing is cut
+// off. The Notebook carries its two parts at the top; Cook is one screen with no parts and no views,
+// with the way to the stock. Every address of Cook marks Cook, every dish (own or shipped) marks the
+// Notebook. The old addresses #/start, #/cook/use-up and #/classics land on Cook without a new
+// history entry. Every former destination is reachable from Cook in at most two taps, the stock
+// from anywhere in two.
 import { check, watch } from './harness.mjs';
 import { overflow } from './measure.mjs';
 
 const LANGS = {
   en: {
-    names: ['Start', 'Cook', 'Notebook', 'Ratios'],
+    names: ['Cook', 'Notebook', 'Ratios'],
     settings: 'Settings',
-    views: ['What can I cook', 'Use up first', 'What is there'],
+    stockLink: 'What is there',
     notebookParts: ['Components', 'Dishes'],
     titles: {
-      start: 'What do you feel like?',
-      cook: 'What can I cook',
+      cook: 'Cook',
       stock: 'What is there',
-      useUp: 'Use up first',
       components: 'Components',
       dishes: 'Dishes',
       ratios: 'Ratios',
@@ -25,15 +25,13 @@ const LANGS = {
     },
   },
   de: {
-    names: ['Start', 'Kochen', 'Notizbuch', 'Verhältnisse'],
+    names: ['Kochen', 'Notizbuch', 'Verhältnisse'],
     settings: 'Einstellungen',
-    views: ['Was kann ich kochen', 'Zuerst verbrauchen', 'Vorrat'],
+    stockLink: 'Vorrat',
     notebookParts: ['Komponenten', 'Gerichte'],
     titles: {
-      start: 'Worauf hast du Lust?',
-      cook: 'Was kann ich kochen',
+      cook: 'Kochen',
       stock: 'Vorrat',
-      useUp: 'Zuerst verbrauchen',
       components: 'Komponenten',
       dishes: 'Gerichte',
       ratios: 'Verhältnisse',
@@ -75,7 +73,6 @@ const bar = async (browser, origin, lang, width) => {
   const label = `${lang} ${width}px`;
   const { context, page, problems } = await open(browser, origin, lang, width);
   for (const [route, title] of [
-    ['start', L.titles.start],
     ['cook', L.titles.cook],
     ['components', L.titles.components],
     ['ratios', L.titles.ratios],
@@ -117,9 +114,9 @@ const bar = async (browser, origin, lang, width) => {
     const o = await overflow(page);
     check(o.scroll <= 0, `${label} #/${route}: no horizontal scroll (${o.scroll})`);
   }
-  // Only four entries on a phone: Settings is the gear.
+  // Only three entries on a phone: Settings is the gear.
   const visible = await page.locator('.nav-link:visible').count();
-  check(visible === 4, `${label}: the bar has four entries on a phone (${visible})`);
+  check(visible === 3, `${label}: the bar has three entries on a phone (${visible})`);
   check(problems.length === 0, `${label}: no console errors ${problems.join('; ')}`);
   await context.close();
 };
@@ -130,10 +127,10 @@ const gear = async (browser, origin, lang, width) => {
   const label = `${lang} ${width}px`;
   const { context, page } = await open(browser, origin, lang, width);
   for (const [route, title] of [
-    ['start', L.titles.start],
     ['cook', L.titles.cook],
-    // The old address of the classics lands on the one list of dishes.
-    ['classics', L.titles.dishes],
+    // The old addresses of the start screen and the classics land on Cook, the one list of dishes.
+    ['start', L.titles.cook],
+    ['classics', L.titles.cook],
     ['stock', L.titles.stock],
     ['components', L.titles.components],
     ['dishes', L.titles.dishes],
@@ -175,7 +172,7 @@ const gear = async (browser, origin, lang, width) => {
   await context.close();
 };
 
-/** Parts at the top of the Notebook, the views of Cook; the old routes keep working and mark their destination. */
+/** Parts at the top of the Notebook; Cook is one screen; the old routes keep working and mark their destination. */
 const parts = async (browser, origin, lang, width) => {
   const L = LANGS[lang];
   const label = `${lang} ${width}px`;
@@ -186,35 +183,40 @@ const parts = async (browser, origin, lang, width) => {
       .evaluateAll((n) => n.map((x) => x.textContent));
   const tabs = () => page.locator('.section-tabs').first().getByRole('link').allTextContents();
   const marked = () => page.locator('.section-tabs [aria-current="page"]').allTextContents();
-  // Cook has no parts at the top: its three views, the current one marked.
-  const views = () => page.locator('.cook-tab').allTextContents();
-  const viewMarked = () => page.locator('.cook-tab[aria-current="page"]').allTextContents();
-  const COOK = [
-    ['cook', L.titles.cook, L.views[0]],
-    ['cook/use-up', L.titles.useUp, L.views[1]],
-    ['stock', L.titles.stock, L.views[2]],
-  ];
-  for (const [route, title, now] of COOK) {
-    await go(page, origin, route, title);
+  // Cook, and every old address of it, is the one screen: no parts and no views at the top, the
+  // way to the stock, the address replaced by #/cook without a new history entry.
+  for (const route of ['cook', 'start', 'cook/use-up', 'classics', 'classics/it']) {
+    await page.goto('about:blank');
+    const before = await page.evaluate(() => history.length);
+    await go(page, origin, route, L.titles.cook);
+    const added = (await page.evaluate(() => history.length)) - before;
     check(
-      (await current()).join() === L.names[1],
-      `${label} #/${route}: the bar marks ${L.names[1]} (${await current()})`,
+      hashOf(page) === '#/cook' && added === 1,
+      `${label} #/${route}: lands on #/cook, the address replaced, no entry of its own (${hashOf(page)}, ${added} added)`,
     );
     check(
-      (await page.locator('.section-tabs').count()) === 0 &&
-        (await views()).join() === L.views.join() &&
-        (await viewMarked()).join() === now,
-      `${label} #/${route}: no parts at the top, the views ${L.views.join(' | ')} with ${now} marked (${await views()} / ${await viewMarked()})`,
+      (await current()).join() === L.names[0],
+      `${label} #/${route}: the bar marks ${L.names[0]} (${await current()})`,
+    );
+    check(
+      (await page.locator('.section-tabs, .cook-tab').count()) === 0 &&
+        (await page.locator('main a', { hasText: new RegExp(`^${L.stockLink}$`) }).count()) === 1,
+      `${label} #/${route}: no parts or views at the top, one way to the stock`,
     );
   }
+  await go(page, origin, 'stock', L.titles.stock);
+  check(
+    (await current()).join() === L.names[0] && (await page.locator('.cook-tab').count()) === 0,
+    `${label} #/stock: the stock is its own screen under ${L.names[0]} (${await current()})`,
+  );
   // The other addresses of Cook mark Cook; a shipped dish and its cooking mode mark the Notebook,
   // as an own dish does.
   for (const [route, name] of [
-    ['cook/not-an-ingredient/with', L.names[1]],
-    ['stock/add', L.names[1]],
-    ['stock/not-an-item/edit', L.names[1]],
-    ['classic/sauerbraten', L.names[2]],
-    ['classic/sauerbraten/cook', L.names[2]],
+    ['cook/not-an-ingredient/with', L.names[0]],
+    ['stock/add', L.names[0]],
+    ['stock/not-an-item/edit', L.names[0]],
+    ['classic/sauerbraten', L.names[1]],
+    ['classic/sauerbraten/cook', L.names[1]],
   ]) {
     await goAny(page, origin, route);
     check(
@@ -223,14 +225,12 @@ const parts = async (browser, origin, lang, width) => {
     );
   }
   const CASES = [
-    // The old address of the classics is the list of every dish, filtered to the shipped ones.
-    ['classics', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
     ['components', L.titles.components, 'Notebook', L.notebookParts, L.notebookParts[0]],
     ['dishes', L.titles.dishes, 'Notebook', L.notebookParts, L.notebookParts[1]],
   ];
   for (const [route, title, , names, now] of CASES) {
     await go(page, origin, route, title);
-    const name = L.names[2];
+    const name = L.names[1];
     check(
       (await current()).join() === name,
       `${label} #/${route}: the bar marks ${name} (${await current()})`,
@@ -247,59 +247,53 @@ const parts = async (browser, origin, lang, width) => {
   await context.close();
 };
 
-/** Every former destination is reachable from Start in at most two taps. */
+/** Every former destination is reachable from Cook in at most two taps. */
 const taps = async (browser, origin, lang) => {
   const L = LANGS[lang];
   const label = `${lang} taps`;
   const { context, page } = await open(browser, origin, lang, 360);
   const nav = (name) => page.locator('nav .nav-link:visible', { hasText: new RegExp(`^${name}$`) });
-  const tab = (name) =>
-    page.locator('.section-tab, .cook-tab', { hasText: new RegExp(`^${name}$`) });
-  const [start, cook, notebook, ratios] = L.names;
+  const tab = (name) => page.locator('.section-tab', { hasText: new RegExp(`^${name}$`) });
+  const stock = () => page.locator('main a', { hasText: new RegExp(`^${L.stockLink}$`) });
+  const [cook, notebook, ratios] = L.names;
   const CASES = [
-    ['Start', '#/start', [() => nav(start)]],
+    ['Cook', '#/cook', [() => nav(cook)]],
     ['Ratios', '#/ratios', [() => nav(ratios)]],
     ['Components', '#/components', [() => nav(notebook)]],
     ['Dishes', '#/dishes', [() => nav(notebook), () => tab(L.notebookParts[1])]],
-    ['Cook', '#/cook', [() => nav(cook)]],
-    ['Use up first', '#/cook/use-up', [() => nav(cook), () => tab(L.views[1])]],
-    ['Stock', '#/stock', [() => nav(cook), () => tab(L.views[2])]],
+    ['Stock', '#/stock', [stock]],
     ['Settings', '#/settings', [() => page.locator('header .settings-link')]],
   ];
   for (const [name, hash, clicks] of CASES) {
-    await go(page, origin, 'start', L.titles.start);
+    await go(page, origin, 'cook', L.titles.cook);
     for (const target of clicks) await target().click();
     await page.waitForFunction((h) => location.hash === h, hash);
     check(
       clicks.length <= 2 && hashOf(page) === hash,
-      `${label}: ${name} is ${clicks.length} tap(s) from Start (${hashOf(page)})`,
+      `${label}: ${name} is ${clicks.length} tap(s) from Cook (${hashOf(page)})`,
     );
   }
-  // The stock from anywhere: Start's own entry, and two taps through Cook.
-  const link = page.locator('.start-tools a', { hasText: L.views[2] });
-  await go(page, origin, 'start', L.titles.start);
-  check((await link.count()) === 1, `${label}: Start has an entry for the stock`);
+  // The stock from anywhere: two taps through Cook.
   for (const [route, title] of [
     ['ratios', L.titles.ratios],
     ['dishes', L.titles.dishes],
     ['settings', L.titles.settings],
-    ['classics', L.titles.dishes],
   ]) {
     await go(page, origin, route, title);
     await nav(cook).click();
-    await tab(L.views[2]).click();
+    await stock().click();
     await page.waitForFunction(() => location.hash === '#/stock');
     check(true, `${label}: the stock is two taps from #/${route}`);
   }
   await context.close();
 };
 
-/** From 720 px: the same four destinations in the side rail, Settings at its bottom, no gear. */
+/** From 720 px: the same three destinations in the side rail, Settings at its bottom, no gear. */
 const rail = async (browser, origin, lang) => {
   const L = LANGS[lang];
   const label = `${lang} 1000px`;
   const { context, page } = await open(browser, origin, lang, 1000, 700);
-  await go(page, origin, 'start', L.titles.start);
+  await go(page, origin, 'cook', L.titles.cook);
   const names = await page.locator('.nav-link:visible .nav-label').allTextContents();
   check(
     names.join() === [...L.names, L.settings].join(),

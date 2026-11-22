@@ -1,8 +1,9 @@
 // The one list of every dish in a browser, at 360 x 720: the two example dishes of the notebook
 // ("Add example data") and the two FICTIONAL shipped dishes of e2e/classics-fixture.mjs in one list
-// on Dishes and on Start; each choice of the filter narrows, choices combine, nothing found offers
-// "Show all"; the choice survives a reload and is the same on both screens; a shipped row opens its
-// dish; the old addresses of the classics land on the list with their filter. No horizontal
+// on Cook (docs/decisions/cook-screen.md); each choice of the filter narrows, choices combine,
+// nothing found offers "Show all"; the choice survives a reload; the Notebook's Dishes are the own
+// dishes only; a shipped row opens its dish; the old addresses of the classics and of Start land on
+// Cook with their filter. "Only with what I have" and "Use up first" are in e2e/cook.mjs. No horizontal
 // scroll, 44 px targets, nothing focused on open, no console error. Not proved here: the real 48
 // shipped dishes, desktop width, German (the texts are the same keys), a real phone.
 import { check, watch } from './harness.mjs';
@@ -58,8 +59,8 @@ export const dishBrowse = async (browser, server) => {
   const page = await context.newPage();
   await seed(page, origin);
 
-  // Dishes: both origins in one list, by name.
-  await openWith(page, origin, 'dishes');
+  // Cook: both origins in one list, by name.
+  await openWith(page, origin, 'cook');
   await page.locator('.dish-row').first().waitFor();
   check(
     await page.evaluate(() => document.activeElement === document.body),
@@ -86,11 +87,11 @@ export const dishBrowse = async (browser, server) => {
     `${label}: the shared controls replace the old single select`,
   );
   check(
-    (await page.getByRole('link', { name: 'Add a dish' }).count()) === 1 &&
-      (await page.getByRole('link', { name: 'Put a dish together at random' }).count()) === 1,
-    `${label}: "Add a dish" and the random pick stay`,
+    (await page.locator('.section-tabs').count()) === 0 &&
+      (await page.getByRole('link', { name: 'What is there', exact: true }).count()) === 1,
+    `${label}: Cook is one screen, with the way to the stock`,
   );
-  await layout(page, 'Dishes');
+  await layout(page, 'Cook');
 
   // Each choice narrows.
   await choose(page, 'From', { label: 'Mine' });
@@ -147,7 +148,7 @@ export const dishBrowse = async (browser, server) => {
     `${label}: Show all resets the controls`,
   );
 
-  // The choice survives a reload and is the same on Start.
+  // The choice survives a reload, and the old address of Start shows the same.
   await choose(page, 'Cuisine', { label: 'German' });
   await page.reload();
   await page.locator('.dish-row').first().waitFor();
@@ -157,32 +158,38 @@ export const dishBrowse = async (browser, server) => {
     `${label}: the choice survives a reload (${await names(page)})`,
   );
   await openWith(page, origin, 'start');
-  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'Cook', exact: true }).waitFor();
+  await page.locator('.dish-row').first().waitFor();
   check(
-    (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === 'de' &&
+    hashOf(page) === '#/cook' &&
+      (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === 'de' &&
       same(await names(page), [PAN.name.en]),
-    `${label}: Start shows the same choice and list (${await names(page)})`,
+    `${label}: #/start is Cook with the same choice and list (${hashOf(page)}: ${await names(page)})`,
   );
   await choose(page, 'Cuisine', { label: 'Any cuisine' });
-  // The first screen of Start: the question, the filter and the first results above the bar.
+  // The first screen of Cook as it opens, the filter folded behind its summary line (the fold's
+  // purpose, docs/design.md): the switch, the order, the filter and the first result above the bar.
+  // Unfolded, the filter's own controls take that room (this check measured Start unfolded until
+  // Cook added the switch and the order: docs/decisions/cook-screen.md).
+  await page.locator('details.dish-filter-fold summary').click();
   const first = await page.locator('.dish-row').first().boundingBox();
   const bar = await page.locator('.app-nav').boundingBox();
   check(
     first !== null && bar !== null && first.y + first.height <= bar.y,
-    `${label}: Start shows the first result on its first screen (${first?.y} + ${first?.height} / ${bar?.y})`,
+    `${label}: Cook shows the first result on its first screen (${first?.y} + ${first?.height} / ${bar?.y})`,
   );
-  check(
-    (await page.locator('.start-tools a').count()) === 5,
-    `${label}: the ways into the tools follow the list`,
-  );
-  await layout(page, 'Start');
+  // The Notebook's Dishes: the own dishes for editing, no second list of every dish.
   await openWith(page, origin, 'dishes');
-  check(same(await names(page), ALL), `${label}: a change on Start is the choice on Dishes`);
-  const firstOnDishes = await page.locator('.dish-row').first().boundingBox();
+  await page.getByRole('heading', { level: 1, name: 'Dishes', exact: true }).waitFor();
   check(
-    firstOnDishes !== null && firstOnDishes.y + firstOnDishes.height <= bar.y,
-    `${label}: Dishes shows the first result on its first screen (${firstOnDishes?.y} + ${firstOnDishes?.height} / ${bar?.y})`,
+    same(await page.locator('.entry-row .entry-name').allInnerTexts(), OWN) &&
+      (await page.locator('.dish-row, .dish-filter-fold').count()) === 0 &&
+      (await page.getByRole('link', { name: 'Add a dish' }).count()) === 1 &&
+      (await page.getByRole('link', { name: 'Put a dish together at random' }).count()) === 1,
+    `${label}: the Notebook's Dishes are the own dishes, with "Add a dish" and the random pick`,
   );
+  await openWith(page, origin, 'cook');
+  check(same(await names(page), ALL), `${label}: back on Cook, every dish again`);
 
   // A shipped row opens the classic.
   await page.locator('.dish-row', { hasText: SECOND.name.en }).click();
@@ -191,7 +198,7 @@ export const dishBrowse = async (browser, server) => {
 
   // The old addresses of the classics: the list with their filter, no new history entry.
   await page.evaluate(() => (location.hash = '#/classics/de'));
-  await page.waitForFunction(() => location.hash === '#/dishes');
+  await page.waitForFunction(() => location.hash === '#/cook');
   await page.locator('.dish-row').first().waitFor();
   check(
     same(await names(page), [PAN.name.en]) &&
@@ -202,7 +209,7 @@ export const dishBrowse = async (browser, server) => {
   await page.waitForFunction((id) => location.hash === `#/classic/${id}`, SECOND.id);
   check(true, `${label}: the old address left no history entry of its own`);
   await openWith(page, origin, 'classics');
-  await page.waitForFunction(() => location.hash === '#/dishes');
+  await page.waitForFunction(() => location.hash === '#/cook');
   check(
     same(await names(page), [PAN.name.en, SECOND.name.en].sort()),
     `${label}: #/classics is every shipped dish (${await names(page)})`,
@@ -221,7 +228,7 @@ export const backToList = async (browser, origin) => {
   const problems = watch(context, origin);
   const page = await context.newPage();
   await seed(page, origin);
-  await openWith(page, origin, 'start');
+  await openWith(page, origin, 'cook');
   await choose(page, 'Course', { label: 'Main course' });
   await page.getByLabel('Without meat and fish').check();
   const before = await page.evaluate(() => localStorage.getItem('culina.dishes'));
@@ -235,19 +242,19 @@ export const backToList = async (browser, origin) => {
   );
   await back.click();
   await page
-    .getByRole('heading', { level: 1, name: 'What do you feel like?' })
+    .getByRole('heading', { level: 1, name: 'Cook', exact: true })
     .waitFor({ timeout: 5000 })
     .catch(() => undefined);
   check(
-    hashOf(page) === '#/start',
-    `${where}: back from a shipped dish is Start again (${hashOf(page)})`,
+    hashOf(page) === '#/cook',
+    `${where}: back from a shipped dish is Cook again (${hashOf(page)})`,
   );
   check(
     (await page.evaluate(() => localStorage.getItem('culina.dishes'))) === before &&
       same(await names(page), shownBefore),
     `${where}: the filter is untouched (${await page.evaluate(() => localStorage.getItem('culina.dishes'))})`,
   );
-  // An own dish opened from Start goes back to Start too. (The example dishes are not known to be
+  // An own dish opened from Cook goes back to Cook too. (The example dishes are not known to be
   // without meat, so that choice is dropped first.)
   await openFilter(page);
   await page.getByLabel('Without meat and fish').uncheck();
@@ -259,18 +266,18 @@ export const backToList = async (browser, origin) => {
     .click();
   await page.waitForFunction(() => location.hash !== '' && !location.hash.startsWith('#/dishes/'));
   check(
-    hashOf(page) === '#/start',
-    `${where}: back from an own dish is Start again (${hashOf(page)})`,
+    hashOf(page) === '#/cook',
+    `${where}: back from an own dish is Cook again (${hashOf(page)})`,
   );
-  // Opened from its own address (no list before it): the way back is the one list.
+  // Opened from its own address (no list before it): the way back is the one list, Cook.
   await openWith(page, origin, `classic/${PAN.id}`);
   const href = await page
     .locator('.dish-card a.back-to-list, .dish-card a.family-link')
     .first()
     .getAttribute('href');
   check(
-    href === '#/dishes',
-    `${where}: without a list before it, the way back is the list of dishes (${href})`,
+    href === '#/cook',
+    `${where}: without a list before it, the way back of a shipped dish is Cook (${href})`,
   );
   const toClassics = await page.evaluate(() =>
     [...document.querySelectorAll('a[href^="#/classics"]')].map((a) => a.textContent),
@@ -292,7 +299,7 @@ export const fits = async (browser, origin) => {
     // The example data is added in English; the language is then set as the setting does.
     await seed(page, origin);
     await page.evaluate((l) => localStorage.setItem('culina.lang', l), lang);
-    await openWith(page, origin, 'start');
+    await openWith(page, origin, 'cook');
     await page.locator('.dish-row').first().waitFor();
     await openFilter(page);
     const selects = await page.locator('.dish-filter select').count();
@@ -318,7 +325,7 @@ export const loading = async (browser, origin) => {
     await held;
     await route.continue();
   });
-  await openWith(page, origin, 'start');
+  await openWith(page, origin, 'cook');
   await page.waitForTimeout(300);
   check(
     (await page.locator('.dish-show-all').count()) === 0 &&

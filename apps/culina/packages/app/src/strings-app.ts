@@ -10,7 +10,6 @@ export const appStrings = {
   skipToContent: 'Skip to content',
   nav: {
     label: 'Main',
-    start: 'Start',
     cook: 'Cook',
     notebook: 'Notebook',
     ratios: 'Ratios',
@@ -146,6 +145,19 @@ export const appStrings = {
     portionsResult: (portions: string, whole: string, rest: string): string =>
       `About ${portions} portions: ${whole} whole, ${rest} left over.`,
     portionsNeedsOutput: 'Portions need an output weight.',
+    // The components of the shipped dishes in the same list, read-only (components/shipped.ts).
+    originAny: 'All components',
+    groupOwn: 'In my notebook',
+    groupShipped: 'Shipped with the app',
+    /** Under a shipped component's name: the dish or base it belongs to. */
+    partOf: (dish: string): string => `Part of ${dish}`,
+    shippedPortions: 'The amounts are for these portions of the whole dish.',
+    keepWorking: 'Keeping the component…',
+    keepNote: 'It becomes version 1 of your own component, with its source named.',
+    keepCannot: (names: string): string =>
+      `This component cannot be kept yet: the notebook does not know ${names}. The recipe stays here to cook.`,
+    keepProblem: 'The component could not be kept this time. The recipe is unchanged.',
+    kept: (name: string): string => `${name} is now in your notebook`,
   },
   characters: {
     label: 'What it is like',
@@ -760,8 +772,7 @@ export const appStrings = {
     count: (n: number): string => (n === 1 ? '1 dish' : `${n} dishes`),
     /** Where a row's dish comes from, said when the list holds both. */
     rowOrigin: { own: 'My dish', shipped: 'Shipped' },
-    /** The start screen: every dish under the one filter, then the tools. */
-    startTitle: 'What do you feel like?',
+    /** Cook's one list of every dish under the one filter (docs/decisions/cook-screen.md). */
     startListLabel: 'Dishes that fit',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Mine', shipped: 'Shipped' },

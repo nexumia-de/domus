@@ -12,9 +12,9 @@ import {
 
 test('every route round-trips through its hash', () => {
   for (const route of ROUTES) expect(routeFromHash(hashFor(route))).toBe(route);
-  // Start and the classics lead the routes; the stock screens stay routes of their own under Cook.
+  // Start is gone (docs/decisions/cook-screen.md); the stock screens stay routes of their own under
+  // Cook.
   expect(ROUTES).toEqual([
-    'start',
     'classics',
     'classic',
     'ratios',
@@ -26,10 +26,10 @@ test('every route round-trips through its hash', () => {
   ]);
 });
 
-test('an empty or unknown hash is the default route, Start', () => {
-  expect(DEFAULT_ROUTE).toBe('start');
-  for (const hash of ['', '#', '#/', '#/nope', '#nope', '#/Ratios', '#/ratio']) {
-    expect(routeFromHash(hash)).toBe('start');
+test('an empty or unknown hash is the default route, Cook; so is the old start screen', () => {
+  expect(DEFAULT_ROUTE).toBe('cook');
+  for (const hash of ['', '#', '#/', '#/nope', '#nope', '#/Ratios', '#/ratio', '#/start']) {
+    expect(routeFromHash(hash)).toBe('cook');
   }
 });
 
@@ -69,9 +69,18 @@ test('an unknown hash is rewritten without a new history entry', () => {
   const { host } = fakeHost('#/nope');
   const seen: string[] = [];
   startRouter(host, ({ route }) => seen.push(route));
-  expect(seen).toEqual(['start']);
-  expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/start');
-  expect(host.location.hash).toBe('#/start');
+  expect(seen).toEqual(['cook']);
+  expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/cook');
+  expect(host.location.hash).toBe('#/cook');
+});
+
+test('the old start screen #/start opens Cook without a new history entry', () => {
+  const { host } = fakeHost('#/start');
+  const seen: string[] = [];
+  startRouter(host, ({ route, param, action }) => seen.push(`${route}:${param}:${action}`));
+  expect(seen).toEqual(['cook:undefined:undefined']);
+  expect(host.history.replaceState).toHaveBeenCalledTimes(1);
+  expect(host.history.replaceState).toHaveBeenCalledWith(null, '', '#/cook');
 });
 
 test('a redirected address is replaced without a new history entry, on load and on navigation', () => {

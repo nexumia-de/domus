@@ -179,8 +179,8 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   const classic: Classic | undefined = id === undefined ? undefined : classicOf(id);
   const card = el('article', 'card dish-card classic-card');
   if (classic === undefined) {
-    const back = el('a', 'family-link', t.backToStart);
-    back.href = hashFor('start');
+    const back = el('a', 'family-link', strings.cook.backToCook);
+    back.href = hashFor('cook');
     card.append(back, el('h1', undefined, t.classicsTitle), el('p', 'note-quiet', t.unknownDish));
     return card;
   }
@@ -188,7 +188,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
   return dishPage({
     id: classic.id,
     card,
-    back: backToList('family-link'),
+    back: backToList('family-link', 'cook'),
     title: classic.id,
     startPortions: portionsOf(classic.id),
     shown: (portions) => shownOfClassic(classic, portions, context()),
@@ -260,7 +260,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
   return dishPage({
     id: dish.id,
     card,
-    back: backToList('back-link'),
+    back: backToList('back-link', 'dishes'),
     title: dish.name,
     startPortions: dish.portions ?? 1,
     shown: (portions) => ({

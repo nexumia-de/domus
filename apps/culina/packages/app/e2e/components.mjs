@@ -29,7 +29,8 @@ const cells = (page, selector) =>
     selector,
   );
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const names = (page) => page.locator('.entry-row .entry-name').allTextContents();
+// The list holds the shipped components too (e2e/components-shipped.mjs); here only the notebook's rows.
+const names = (page) => page.locator('.component-row-own .entry-name').allTextContents();
 
 /** Table rows as [name, ...numbers]: the tag, role label and notes in the name cell are cut. */
 const nameOf = (page, selector) =>
@@ -107,14 +108,19 @@ const phone = async (browser, origin) => {
     await page.evaluate(() => document.activeElement === document.body),
     `${label}: dishes open with nothing focused (no text field)`,
   );
-  // The list holds the shipped dishes too (e2e/dish-browse.mjs); here only the notebook's rows.
-  const own = () => page.locator('.dish-row-own .entry-name').allTextContents();
+  // The Notebook's Dishes are the own dishes only, a plain list by name: every dish under the one
+  // filter is Cook (docs/decisions/cook-screen.md, e2e/dish-browse.mjs).
+  const own = () => names(page);
   check(
     same(
       await own(),
       fx.byName(fx.dishes).map((d) => d.name),
     ),
     `${label}: the dish list shows the ${fx.dishes.length} example dishes`,
+  );
+  check(
+    (await page.locator('.dish-row, .dish-filter-fold').count()) === 0,
+    `${label}: the Notebook's Dishes are no second list to browse: no shipped dish, no dish filter`,
   );
   check(
     (await own()).every((n) => n.startsWith('Example')),

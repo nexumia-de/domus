@@ -1,11 +1,13 @@
 // An everyday stock on the real shipped content, in German at 360 x 720, by the route a tester took
 // on 2026-11-21: Vorrat, "Vorrat anhaken", twelve foods searched by their German names, each the
 // entry the catalogue offers first; then "Grundzutaten anhaken" (salt and pepper as always there);
-// then "Was kann ich kochen" with "Nur vollständige". Checks: the potato is offered for "Kartoffel"
-// (not potato flour); shipped dishes are complete (egg noodles among them) and the egg group in stock
-// is named for the egg they ask; the ratio cards have their German names and ask no water; role
-// words keep their capital; the staples offer goes once ticked; no horizontal scroll, targets of at
-// least 44 px, no console error. Not proved here: a real phone, amounts in stock, desktop width.
+// then Kochen with "Nur mit dem, was da ist" (docs/decisions/cook-screen.md; until 2026-11-22 "Was
+// kann ich kochen" with "Nur vollständige"). Checks: the potato is offered for "Kartoffel" (not
+// potato flour); shipped dishes the stock covers are listed, with no English name and no judging
+// word; the staples offer goes once ticked; no horizontal scroll, targets of at least 44 px, no
+// console error. The egg group counting for the egg, the ratio cards' German names and the role
+// words' capitals are the finder's reasons, kept in test/finder-everyday-stock.test.ts. Not proved
+// here: a real phone, amounts in stock, desktop width.
 import { check, watch } from './harness.mjs';
 import { FORBIDDEN, overflow, smallTargets } from './measure.mjs';
 import { stockItems } from './stock-helpers.mjs';
@@ -98,36 +100,27 @@ export const everydayStock = async (browser, server) => {
   const rows = await page.locator('.stock-rows').innerText();
   check(rows.includes('immer da'), `${label}: salt and pepper show as always there`);
 
-  // The finder, complete only.
+  // Cook, only with what is there: shipped dishes the stock covers, in German. (The reasons the
+  // finder gave per entry, the egg group counting for the egg, are on "What uses <ingredient>" and
+  // in test/finder-everyday-stock.test.ts; Cook's list shows dishes, not those reasons:
+  // docs/decisions/cook-screen.md.)
   await page.goto(`${origin}/${query}#/cook`);
-  await page.getByRole('heading', { level: 1, name: 'Was kann ich kochen' }).waitFor();
-  await page.getByLabel('Anzeigen').selectOption('0');
-  await page.locator('.cook-entry').first().waitFor();
-  const entry = (id) => page.locator(`.cook-entry[data-id="${id}"]`);
-  const shipped = await page.locator('.cook-entry[data-origin="shipped"]').count();
-  check(shipped >= 7, `${label}: complete only lists shipped dishes (${shipped})`);
-  const noodles = (await entry('egg-noodles').innerText()).replace(/\s+/g, ' ');
-  check(
-    noodles.includes('Eiernudeln') && noodles.includes('vollständig'),
-    `${label}: the egg noodles are complete (${noodles})`,
+  await page.getByRole('heading', { level: 1, name: 'Kochen' }).waitFor();
+  await page.locator('.dish-row').first().waitFor();
+  await page.getByLabel('Nur mit dem, was da ist').check();
+  await page.locator('.dish-row-shipped').first().waitFor();
+  const shipped = await page.locator('.dish-row-shipped').count();
+  const every = await page.evaluate(
+    () => JSON.parse(localStorage.getItem('culina.cookList') ?? '{}').have === true,
   );
   check(
-    noodles.includes('Hühnerei im Vorrat zählt für Ei'),
-    `${label}: the egg group in stock is named for the egg the noodles ask`,
-  );
-  check(/Rollen: [A-ZÄÖÜ]/.test(noodles), `${label}: a role word keeps its capital (${noodles})`);
-  const pasta = (await entry('pasta-dough').innerText()).replace(/\s+/g, ' ');
-  check(
-    pasta.includes('Nudelteig') && pasta.includes('vollständig'),
-    `${label}: the pasta dough card has its German name and is complete (${pasta})`,
+    shipped >= 1 && every,
+    `${label}: only with what is there lists shipped dishes the stock covers (${shipped})`,
   );
   const all = await page.locator('main').innerText();
-  check(
-    !/Pasta dough|Pound cake|Noch nötig: [^\n]*Wasser/.test(all),
-    `${label}: no English card name, no water asked`,
-  );
-  check(!FORBIDDEN.test(all), `${label}: the finder's wording judges nothing`);
-  await measure(page, 'finder');
+  check(!/Pasta dough|Pound cake/.test(all), `${label}: no English name on Cook`);
+  check(!FORBIDDEN.test(all), `${label}: Cook's wording judges nothing`);
+  await measure(page, 'cook');
 
   check(
     problems.length === 0,

@@ -1,5 +1,5 @@
 import { icon } from '../icons/icons';
-import { hashFor, NAV_ENTRIES, NAV_ROUTE, navEntryFor, type Route } from '../router';
+import { hashFor, NAV_ENTRIES, NAV_ROUTE, navEntryFor, type NavEntry, type Route } from '../router';
 import { strings } from '../strings';
 import { el } from './el';
 
@@ -8,20 +8,22 @@ export interface Nav {
   /** The gear in the header: Settings, reachable from every screen. */
   settingsLink: HTMLAnchorElement;
   /**
-   * Marks the active destination with aria-current="page" (the stock screens and the classics mark
-   * Cook, components and dishes mark the Notebook) and the Settings links on the settings screens.
+   * Marks the active destination with aria-current="page" (the stock screens and the finder from one
+   * ingredient mark Cook; components and every dish screen mark the Notebook) and the Settings links
+   * on the settings screens.
    */
   setCurrent(route: Route): void;
 }
 
-const link = (className: string, name: 'start' | 'cook' | 'notebook' | 'ratios' | 'settings') => {
+const link = (className: string, name: NavEntry | 'settings') => {
   const a = el('a', className);
   a.href = hashFor(name === 'settings' ? 'settings' : NAV_ROUTE[name]);
   return a;
 };
 
 /**
- * One navigation landmark: four destinations as the bottom bar on phones, as the side rail from 720 px
+ * One navigation landmark: three destinations (Cook, Notebook, Ratios; docs/decisions/cook-screen.md)
+ * as the bottom bar on phones, as the side rail from 720 px
  * (CSS only), where Settings is the last entry of the rail. On a phone Settings is the gear in the
  * header (`settingsLink`); the rail entry is hidden there, and the gear is hidden on the rail.
  */

@@ -1,4 +1,4 @@
-// The classics in a browser, on the fictional example dishes: start -> the list (old country address) -> dish -> step by
+// The classics in a browser, on the fictional example dishes: Cook -> the list (old country address) -> dish -> step by
 // step -> mark a skill as learned -> the note is gone on the next dish -> Settings "Teach again" ->
 // keep in the notebook. At 360 x 720 and at desktop size: no horizontal scroll, targets of at least
 // 44 x 44, no console error, nothing focused when a screen opens, focus moves on a step change.
@@ -17,7 +17,8 @@ import {
 import { nutritionSection } from './classics-nutrition.mjs';
 
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
-const START = 'What do you feel like?';
+// The first screen: Cook, the one list of every dish (docs/decisions/cook-screen.md).
+const START = 'Cook';
 
 const fresh = async (browser, origin, width) => {
   const context = await browser.newContext({
@@ -75,30 +76,25 @@ const catalogueDrawn = (page) =>
 const flow = async (browser, origin, width) => {
   const label = `${width}px classics`;
   const { context, page, problems } = await fresh(browser, origin, width);
-  await openWith(page, origin, 'start');
+  await openWith(page, origin, 'cook');
   await heading(page, START).waitFor();
   check(
     await page.evaluate(() => document.activeElement === document.body),
     `${label}: nothing is focused on open`,
   );
-  for (const tool of ['Ratios', 'Components', 'Dishes', 'What can I cook', 'What is there']) {
-    check(
-      (await page.locator('main').getByRole('link', { name: tool, exact: true }).count()) === 1,
-      `${label}: the tool "${tool}" is still reachable from Start`,
-    );
-  }
-  // Start lists the shipped dishes in the one list of every dish (e2e/dish-browse.mjs has the
+  // Cook lists the shipped dishes in the one list of every dish (e2e/dish-browse.mjs has the
   // filter); the old country lists are that list with a filter.
+  await page.locator('.dish-row-shipped').first().waitFor();
   const shown = await page.locator('.dish-row-shipped .entry-name').allInnerTexts();
   check(
     JSON.stringify(shown) === JSON.stringify([PAN.name.en, SECOND.name.en]),
-    `${label}: Start lists the shipped dishes (${shown.join(' | ')})`,
+    `${label}: Cook lists the shipped dishes (${shown.join(' | ')})`,
   );
-  await layout(page, `${label} start`);
+  await layout(page, `${label} cook`);
 
   // The old address of an empty country: the list says nothing fits and offers Show all.
   await openWith(page, origin, 'classics/fr');
-  await heading(page, 'Dishes').waitFor();
+  await heading(page, START).waitFor();
   // Until the catalogue is read the list only says it is reading; then it says nothing fits.
   await page.locator('.dish-rows .empty').waitFor();
   check(
@@ -110,7 +106,8 @@ const flow = async (browser, origin, width) => {
     `${label}: an empty country shows a quiet empty state, the country named`,
   );
   await openWith(page, origin, 'classics/de');
-  await heading(page, 'Dishes').waitFor();
+  await heading(page, START).waitFor();
+  await page.locator('.dish-row').first().waitFor();
   const row = (await page.locator('.dish-row').innerText()).replace(/\s+/g, ' ');
   check(
     row.includes(PAN.name.en) &&
@@ -571,7 +568,7 @@ const empty = async (browser, origin) => {
   await page.route('**/classics.json', (route) =>
     route.fulfill({ contentType: 'application/json', body: '{}' }),
   );
-  await page.goto(`${origin}/?no-sw#/start`);
+  await page.goto(`${origin}/?no-sw#/cook`);
   await heading(page, START).waitFor();
   // Until the catalogue is read the list only says it is reading.
   await page.locator('.dish-rows .empty').waitFor();

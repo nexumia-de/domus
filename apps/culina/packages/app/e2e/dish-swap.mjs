@@ -492,16 +492,19 @@ const surprise = async (page, origin) => {
     (await page.locator('.pick-no-fit').count()) === 1,
     `${label}: control: back on the screen with the same filter, "none found" is still there`,
   );
-  await toList();
+  // The one list with the filter is Cook (docs/decisions/cook-screen.md), reached in the app.
+  await page.getByRole('navigation').getByRole('link', { name: 'Cook', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'Cook', exact: true }).waitFor();
   // The list folds its filter behind a summary line; open it when it is closed.
   const fold = page.locator('details.dish-filter-fold');
   if (!(await fold.evaluate((d) => d.open))) await fold.locator('summary').click();
   await page.getByLabel('What it is like', { exact: true }).selectOption('');
-  await toPick();
+  await page.evaluate(() => (location.hash = '#/dishes/random'));
+  await page.getByRole('heading', { level: 1, name: 'Random pick' }).waitFor();
   check(
     (await page.locator('.pick-no-fit').count()) === 0 &&
       (await page.locator('.pick-row').count()) === 0,
-    `${label}: a character dropped on the list drops the "none found" judged under it`,
+    `${label}: a character dropped on Cook's list drops the "none found" judged under it`,
   );
 };
 

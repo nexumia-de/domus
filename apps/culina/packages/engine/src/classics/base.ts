@@ -11,8 +11,11 @@ export const isBase = (classic: Classic): boolean => classic.kind === 'base';
 const subComponents = (c: ClassicComponent | undefined): string[] =>
   (c?.lines ?? []).flatMap((l) => (l.ref?.kind === 'component' ? [l.ref.id] : []));
 
-/** The ids of the components reached from `start`, through the lines of components, each once. */
-const reach = (classic: Classic, start: readonly string[]): Set<string> => {
+/**
+ * The ids of the components reached from `start`, through the lines of components, each once; the
+ * start ids are in it when the file has them.
+ */
+export const componentsReached = (classic: Classic, start: readonly string[]): Set<string> => {
   const byId = new Map((classic.components ?? []).map((c) => [c.id, c]));
   const seen = new Set<string>();
   const todo = [...start];
@@ -27,7 +30,7 @@ const reach = (classic: Classic, start: readonly string[]): Set<string> => {
 
 /** The ids of the components the dish uses: those a slot reaches, directly or through other components. */
 export const componentsInDish = (classic: Classic): Set<string> =>
-  reach(
+  componentsReached(
     classic,
     classic.slots.flatMap((s) => (s.ref?.kind === 'component' ? [s.ref.id] : [])),
   );
@@ -52,5 +55,5 @@ export const componentsUsed = (classic: Classic): Set<string> => {
   const inDish = componentsInDish(classic);
   if (!isBase(classic)) return inDish;
   const alternatives = classic.slots.flatMap((s) => slotAlternatives(classic, s).map((c) => c.id));
-  return new Set([...inDish, ...reach(classic, alternatives)]);
+  return new Set([...inDish, ...componentsReached(classic, alternatives)]);
 };

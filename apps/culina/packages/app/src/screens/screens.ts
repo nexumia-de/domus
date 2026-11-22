@@ -1,12 +1,11 @@
-import { USE_UP, type Action, type Route } from '../router';
+import type { Action, Route } from '../router';
 import { classicsScreen } from './classics/classics-list';
-import { startScreen } from './classics/start';
 import { historyScreen } from './history';
 import { importScreen } from './import/import-screen';
 import { cookClassicScreen, cookComponentScreen, cookDishScreen } from './component-cook';
 import { componentsScreen } from './components';
 import { cookScreen } from './cook/cook-screen';
-import { useUpScreen } from './cook/use-up';
+import { cookListScreen } from './cook/cook-list';
 import { randomDishScreen } from './dish-random';
 import { classicScreen } from './dish-detail';
 import { dishesScreen } from './dishes';
@@ -19,13 +18,13 @@ import { stockEditScreen } from './stock/stock-edit';
 import { stockScreen } from './stock/stock-screen';
 
 const SCREENS: Record<Route, (param?: string) => HTMLElement> = {
-  start: startScreen,
   classics: classicsScreen,
   classic: classicScreen,
   ratios: ratiosScreen,
   components: componentsScreen,
   dishes: dishesScreen,
-  cook: (param) => (param === USE_UP ? useUpScreen() : cookScreen()),
+  // #/cook/use-up is replaced by #/cook before a screen is drawn (cookRedirect in main.ts).
+  cook: () => cookListScreen(),
   stock: stockScreen,
   settings: settingsScreen,
 };

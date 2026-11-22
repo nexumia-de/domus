@@ -1,31 +1,29 @@
-/* The finder: the three views of Cook, the filters, the entries and the use-up list. */
-.cook-tab-list {
+/* Cook (docs/decisions/cook-screen.md): the one list's switch and order, the way to the stock,
+   and the finder from one ingredient with its filters and entries. */
+.cook-title-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 var(--sp-3);
-  margin: 0 0 var(--sp-3);
-  padding: 0;
-  list-style: none;
-  border-bottom: 1px solid var(--divider);
-}
-
-.cook-tab {
-  display: inline-flex;
   align-items: center;
-  min-height: var(--target);
-  padding: 0 var(--sp-1);
-  border-bottom: var(--sp-1) solid transparent;
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  text-decoration: none;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-2);
 }
 
-/* The current view: a bar and the strong text colour, not colour alone. */
-.cook-tab[aria-current='page'] {
-  border-bottom-color: var(--accent);
-  color: var(--text);
-  font-weight: 700;
+.cook-title-row h1 {
+  margin: 0;
+}
+
+.cook-list-choices {
+  margin: var(--sp-2) 0 var(--sp-3);
+}
+
+.cook-list-choices .cook-filters {
+  margin-top: 0;
+}
+
+.cook-list-note .cook-empty,
+.cook-no-dates {
+  margin: 0 0 var(--sp-3);
 }
 
 .cook-asof {
@@ -81,35 +79,6 @@
   margin-inline-end: var(--sp-2);
 }
 
-.use-up-uses {
-  padding: 0 var(--sp-3) var(--sp-2);
-}
-
-.use-up-uses p {
-  margin: 0;
-}
-
-.use-up-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--sp-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.use-up-links li + li {
-  border-top: 0;
-}
-
-.use-up-recipe {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target);
-  color: var(--accent);
-  font-weight: 600;
-}
-
 .slot-offer {
   display: block;
   color: var(--text-muted);
@@ -119,8 +88,4 @@
 .cook-group-heading {
   margin: var(--sp-4) 0 var(--sp-2);
   font-size: var(--fs-md);
-}
-
-.cook-parts-hidden {
-  margin-top: var(--sp-3);
 }

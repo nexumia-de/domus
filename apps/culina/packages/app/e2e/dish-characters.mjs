@@ -1,6 +1,7 @@
 // The characters of a dish in a browser, on two dishes built here (patties that are pan-fried
 // with a mash, and the mash alone): the chips on the dish, and the character choice of the one
-// filter on the Dishes list, which offers only the characters a dish has and narrows the list. The ingredients here are
+// filter on Cook's list (docs/decisions/cook-screen.md), which offers only the characters a dish
+// has and narrows the list. The ingredients here are
 // the user's own, without a place in the catalogue, so only a technique gives a character; the
 // rules by ingredient are checked without a browser (test/characters.test.ts).
 import { addSlot, component } from './dish-swap.mjs';
@@ -42,7 +43,7 @@ export const dishCharacters = async (browser, server) => {
   );
   await layout(page, `${label}, dish`);
 
-  await open(page, origin, 'dishes');
+  await open(page, origin, 'cook');
   // The list holds the shipped dishes too; their characters come from the catalogue, which loads
   // after the first draw. Only the dishes of the notebook are looked at here.
   // The filter is folded behind its summary line; open it.

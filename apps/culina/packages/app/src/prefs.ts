@@ -127,6 +127,51 @@ export const writeCookFilters = (store: KeyValueStore | null, filters: CookFilte
   }
 };
 
+/**
+ * The two choices of Cook's one list (docs/decisions/cook-screen.md), kept like the theme: "Only
+ * with what I have" and the order, by name or "Use up first". What the user feels like is the one
+ * dish filter (`culina.dishes`); the finder's own two choices are `culina.cook`.
+ */
+export const COOK_LIST_KEY = 'culina.cookList';
+
+export const COOK_ORDERS = ['name', 'use-up'] as const;
+export type CookOrder = (typeof COOK_ORDERS)[number];
+
+export interface CookList {
+  /** Only the dishes whose every required line the stock covers today. */
+  have: boolean;
+  order: CookOrder;
+}
+
+export const DEFAULT_COOK_LIST: CookList = { have: false, order: 'name' };
+
+/** Anything unreadable is the default; each field falls back on its own. */
+export const parseCookList = (value: unknown): CookList => {
+  const raw = rawOf(value);
+  if (raw === undefined) return { ...DEFAULT_COOK_LIST };
+  const order = COOK_ORDERS.find((o) => o === raw.order);
+  return { have: raw.have === true, order: order ?? DEFAULT_COOK_LIST.order };
+};
+
+export const readCookList = (store: KeyValueStore | null): CookList => {
+  try {
+    return parseCookList(store?.getItem(COOK_LIST_KEY));
+  } catch {
+    return { ...DEFAULT_COOK_LIST };
+  }
+};
+
+/** False when the choice could not be kept (no storage, quota, private mode). */
+export const writeCookList = (store: KeyValueStore | null, list: CookList): boolean => {
+  try {
+    if (!store) return false;
+    store.setItem(COOK_LIST_KEY, JSON.stringify(list));
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 /** Which space's stock this device shows (docs/decisions/stock-in-spaces.md); a space id. */
 export const SPACE_KEY = 'culina.space';
 
