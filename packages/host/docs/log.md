@@ -2,7 +2,9 @@
 
 ## 2026-11-22
 
-- **Manual loops**: `createSyncLoop` and `createCollectionSync` take `manual: true` (cycles only when asked: no start cycle, no interval, no watch); the loop has `runNow()` and the collection sync `syncSpace(spaceId)`, both waited for, so an app can put its own work between two cycles of a space. New options and exports only; Mixtura and Culina are unchanged. First user: Emptio, which syncs its storage before and after each KitchenOwl cycle. [Spaces](spaces.md#the-loops-of-an-app-collection-syncts), [orderings](sync-orderings.md). Three tests in `watch.test.ts`, one in `collection-sync.test.ts`.
+- **Update** [GitHub](github.md): `setupLinks` fills in the new-token form too (name, description, a year's expiry, Contents: read and write) by GitHub's documented query parameters, at the owner's request; the setup and join screens list only the steps left (choose the repository, generate). Test: `setupLinks` in `test/github-connection.test.ts`.
+
+* **Manual loops**: `createSyncLoop` and `createCollectionSync` take `manual: true` (cycles only when asked: no start cycle, no interval, no watch); the loop has `runNow()` and the collection sync `syncSpace(spaceId)`, both waited for, so an app can put its own work between two cycles of a space. New options and exports only; Mixtura and Culina are unchanged. First user: Emptio, which syncs its storage before and after each KitchenOwl cycle. [Spaces](spaces.md#the-loops-of-an-app-collection-syncts), [orderings](sync-orderings.md). Three tests in `watch.test.ts`, one in `collection-sync.test.ts`.
 
 ## 2026-11-21 (frame, Mixtura)
 

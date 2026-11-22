@@ -136,21 +136,33 @@ export async function findRepositories(
 export interface SetupLinks {
   /** GitHub's "new repository" form with the name and `visibility=private` in the address. */
   repositoryUrl: string;
-  /** GitHub's "new fine-grained token" form; not prefilled (docs/github.md). */
+  /**
+   * GitHub's "new fine-grained token" form with name, description, a year's expiry and
+   * Contents: read and write in the address; the repository selection has no parameter.
+   */
   tokenUrl: string;
 }
 
 export const DEFAULT_REPOSITORY_NAME = 'domus-sync';
+export const DEFAULT_TOKEN_NAME = 'Domus';
 
 /**
- * The two links of the setup screen. Prefilling the token form is unverified (GitHub's
- * documentation could not be reached), so `tokenUrl` is the plain address and `tokenName`
- * is accepted but unused until that is checked.
+ * The two links of the setup screen, both forms filled in by GitHub's documented query
+ * parameters (docs/github.md): `name`, `visibility` for the repository; `name`,
+ * `description`, `expires_in` (days, at most 366) and `contents=write` for the token.
  */
-export function setupLinks(options: { name?: string; tokenName?: string } = {}): SetupLinks {
+export function setupLinks(
+  options: { name?: string; tokenName?: string; tokenDescription?: string } = {},
+): SetupLinks {
   const name = options.name ?? DEFAULT_REPOSITORY_NAME;
+  const token = new URLSearchParams({
+    name: (options.tokenName ?? DEFAULT_TOKEN_NAME).slice(0, 40),
+    description: (options.tokenDescription ?? `Sync of ${name}`).slice(0, 1024),
+    expires_in: '366',
+    contents: 'write',
+  });
   return {
     repositoryUrl: `https://github.com/new?name=${encodeURIComponent(name)}&visibility=private`,
-    tokenUrl: 'https://github.com/settings/personal-access-tokens/new',
+    tokenUrl: `https://github.com/settings/personal-access-tokens/new?${token.toString()}`,
   };
 }

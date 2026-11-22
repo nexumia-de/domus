@@ -75,7 +75,11 @@ export function joinScreen(ctx: Ctx, fragment: string): HTMLElement {
         element.append(
           h('p', {}, t.join.githubSteps),
           list,
-          linkButton(t.join.openTokenPage, setupLinks().tokenUrl, { external: true }),
+          linkButton(
+            t.join.openTokenPage,
+            setupLinks({ tokenName: t.create.github.tokenName }).tokenUrl,
+            { external: true },
+          ),
         );
       }
       element.append(form.element);
