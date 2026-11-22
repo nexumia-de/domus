@@ -1,7 +1,13 @@
 // The character rules on facts worked out by hand: presence, the share by mass and where it is
 // not judged, techniques, the figures per 100 g, `unless`, and the order of the table.
 import { describe, expect, test } from 'vitest';
-import { dishCharacters, shareOf } from '../src/index';
+import {
+  correctCharacters,
+  correctionOf,
+  correctionText,
+  dishCharacters,
+  shareOf,
+} from '../src/index';
 import type { CharacterFacts, CharacterRule } from '../src/index';
 
 const TOMATO: CharacterRule = {
@@ -232,5 +238,75 @@ describe('more ingredients and the course', () => {
     expect(ids({ ...facts([], ['pan-fry']), course: 'main' }, [fried])).toEqual(['fried']);
     expect(ids({ ...facts([], ['pan-fry']), course: 'soup' }, [fried])).toEqual([]);
     expect(ids(facts([], ['pan-fry']), [fried])).toEqual(['fried']);
+  });
+});
+
+describe("the cook's correction", () => {
+  const ORDER = ['tomatoey', 'garlicky', 'fried', 'creamy'];
+
+  test('without a correction the computed characters stay, in the order of the table', () => {
+    expect(correctCharacters(['fried', 'tomatoey'], undefined, ORDER)).toEqual([
+      'tomatoey',
+      'fried',
+    ]);
+    expect(correctCharacters(['fried'], {}, ORDER)).toEqual(['fried']);
+  });
+
+  test('a removed character is not shown, an added one is, in the order of the table', () => {
+    expect(
+      correctCharacters(['tomatoey', 'fried'], { add: ['creamy'], remove: ['fried'] }, ORDER),
+    ).toEqual(['tomatoey', 'creamy']);
+  });
+
+  test('removing what no rule gives and adding what a rule gives change nothing', () => {
+    expect(
+      correctCharacters(['tomatoey'], { add: ['tomatoey'], remove: ['fried'] }, ORDER),
+    ).toEqual(['tomatoey']);
+  });
+
+  test('an id in both lists is shown', () => {
+    expect(correctCharacters([], { add: ['fried'], remove: ['fried'] }, ORDER)).toEqual(['fried']);
+    expect(correctCharacters(['fried'], { add: ['fried'], remove: ['fried'] }, ORDER)).toEqual([
+      'fried',
+    ]);
+  });
+
+  test('an id the table does not know is left out', () => {
+    expect(correctCharacters(['smoky'], { add: ['gone'] }, ORDER)).toEqual([]);
+  });
+
+  test('a later change of the recipe still shows: the correction is not the whole set', () => {
+    const correction = { remove: ['fried'] };
+    expect(correctCharacters(['fried'], correction, ORDER)).toEqual([]);
+    expect(correctCharacters(['fried', 'garlicky'], correction, ORDER)).toEqual(['garlicky']);
+  });
+
+  test('the correction that leads from the computed to the shown set', () => {
+    expect(correctionOf(['tomatoey', 'fried'], ['tomatoey', 'creamy'], ORDER)).toEqual({
+      add: ['creamy'],
+      remove: ['fried'],
+    });
+    expect(correctionOf(['fried'], ['fried', 'creamy', 'garlicky'], ORDER)).toEqual({
+      add: ['garlicky', 'creamy'],
+    });
+    expect(correctionOf(['fried', 'tomatoey'], ['tomatoey', 'fried'], ORDER)).toBeUndefined();
+    expect(correctionOf([], ['gone'], ORDER)).toBeUndefined();
+  });
+
+  test('applying the correction of a shown set gives that set again', () => {
+    const computed = ['tomatoey', 'fried'];
+    for (const shown of [[], ['creamy'], ['tomatoey', 'fried'], ORDER]) {
+      expect(correctCharacters(computed, correctionOf(computed, shown, ORDER), ORDER)).toEqual(
+        ORDER.filter((id) => shown.includes(id)),
+      );
+    }
+  });
+
+  test('as one text: added first, then removed', () => {
+    expect(correctionText({ add: ['creamy'], remove: ['fried', 'baked'] })).toBe(
+      '+creamy, -fried, -baked',
+    );
+    expect(correctionText(undefined)).toBeUndefined();
+    expect(correctionText({})).toBeUndefined();
   });
 });

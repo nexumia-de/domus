@@ -152,6 +152,14 @@ export const appStrings = {
     filterLabel: 'What it is like',
     any: 'Anything',
     none: 'No dish is like that.',
+    editHeading: 'What it is like',
+    editHint:
+      'Worked out from the fillings and the steps, each rule a judgement. Tick what this dish is like.',
+    added: 'added by you',
+    removed: 'taken away by you',
+    reset: 'As worked out',
+    diffAdded: (name: string): string => `added: ${name}`,
+    diffRemoved: (name: string): string => `taken away: ${name}`,
   },
   dishes: {
     listLabel: 'All dishes',
@@ -541,6 +549,7 @@ export const appStrings = {
       portions: 'Portions',
       course: 'Course',
       cuisine: 'Cuisine',
+      characters: 'What it is like',
       note: 'Note',
     },
     toTaste: 'to taste',

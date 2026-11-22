@@ -403,17 +403,18 @@ step that has none of them:
 Role slots filled by components or ingredients. Schema: `dish.schema.json`.
 One stored record is one [version](#version).
 
-| Field      | Type            | Required | Meaning                                                                       |
-| ---------- | --------------- | -------- | ----------------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                               |
-| `name`     | string          | yes      | Visible name                                                                  |
-| `portions` | integer         | no       | Number of portions the dish makes                                             |
-| `course`   | string          | no       | Where it sits in a meal: the course list of a [classic](#classic)             |
-| `cuisine`  | string          | no       | Whose kitchen it is: `de`, `it`, `fr` or `es`                                 |
-| `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional`, `key` |
-| `steps`    | array of object | no       | The assembly: what is done with the fillings; see below                       |
-| `version`  | object          | yes      | See [Version](#version)                                                       |
-| `note`     | string          | no       | Free text                                                                     |
+| Field        | Type            | Required | Meaning                                                                       |
+| ------------ | --------------- | -------- | ----------------------------------------------------------------------------- |
+| `id`         | id              | yes      | See [ids](#ids)                                                               |
+| `name`       | string          | yes      | Visible name                                                                  |
+| `portions`   | integer         | no       | Number of portions the dish makes                                             |
+| `course`     | string          | no       | Where it sits in a meal: the course list of a [classic](#classic)             |
+| `cuisine`    | string          | no       | Whose kitchen it is: `de`, `it`, `fr` or `es`                                 |
+| `characters` | object          | no       | The cook's correction of the computed characters: `add`, `remove`; see below  |
+| `slots`      | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional`, `key` |
+| `steps`      | array of object | no       | The assembly: what is done with the fillings; see below                       |
+| `version`    | object          | yes      | See [Version](#version)                                                       |
+| `note`       | string          | no       | Free text                                                                     |
 
 Weight per portion, the roles covered ("no crunch") and what is missing
 from stock are derived. A slot's amount is mass, volume or count, not
@@ -434,6 +435,21 @@ list and the filter. Allowing more later is additive (a wider enum,
 and names from the browser's `Intl.DisplayNames`); a narrower list
 later would not be. An export with another code is refused by the
 schema like any other value it does not know.
+
+**The correction of the characters (since 2026-11-22).** The
+[characters](behaviour.md#characters) of a dish are computed and never
+stored. What is stored is only the cook's correction, where there is
+one: `characters.add` lists ids of the character table the dish shows
+although no rule gives them, `characters.remove` computed ones it does
+not show. Each list has at least one id, each id once; an object without
+a list is not written. The shown set is the computed one without
+`remove`, with `add`, in the order of the table
+([engine rules](engine-rules.md#the-cooks-correction)); an id the table no
+longer knows is ignored, so a row can leave the table without a
+migration. It belongs to the version like the other fields.
+**Why a difference and not the whole set:** a stored set would freeze
+the dish; with a difference a changed recipe still changes the
+characters the cook did not touch.
 
 **Assembly (since 2026-11-20).** `steps` are [steps](#steps) of the same
 shape as a component's, for what is done once the fillings are made

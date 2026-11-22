@@ -175,6 +175,17 @@ describe('invalid cases named by the issue', () => {
     expect(fails('dish', (d: Doc) => (d.cuisine = 'jp'))).toBe(true);
     expect(fails('dish', (d: Doc) => (d.cuisine = 'IT'))).toBe(true);
   });
+  test("a dish may store the cook's correction of its characters, never an empty one", () => {
+    expect(fails('dish', (d: Doc) => delete d.characters)).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['creamy'] }))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = { remove: ['fried', 'baked'] }))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = {}))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: [] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['creamy', 'creamy'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['Not An Id'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { set: ['creamy'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = ['creamy']))).toBe(true);
+  });
   test('the course and country lists of the engine equal the schema', () => {
     const common = read(`${schemaDir}common.schema.json`) as {
       $defs: { course: { enum: string[] }; country: { enum: string[] } };

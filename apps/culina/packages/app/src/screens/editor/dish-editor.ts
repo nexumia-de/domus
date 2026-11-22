@@ -1,10 +1,12 @@
 // The dish editor: name, portions, course and cuisine, role slots with a filling (component or ingredient) and an
-// amount per portion. Same draft and save rules as the component editor.
+// amount per portion, and the cook's correction of the characters. Same draft and save rules as the component editor.
 import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
+import { loadNames } from '../../classics/names';
 import { roleLabel } from '../../components/names';
 import { courseLabel, cuisineLabel } from '../dish-filter';
 import { selectField } from '../fields';
 import { stepsEditor } from './component-steps-editor';
+import { charactersEditor } from './dish-characters-editor';
 import { openRoles } from '../../dishes/roles';
 import {
   dishFormFromRecord,
@@ -128,7 +130,14 @@ const build = (
   const roleOpen = new WeakSet<SlotForm>();
   let focusAfter: string[] | undefined;
   let rowProblems: ReadonlyMap<number, readonly RowProblem[]> = new Map();
-  const changed = (): void => session.change();
+  // The characters are worked out from the draft: every change of it draws their ticks again.
+  const characters = charactersEditor(form, () => session.change());
+  const changed = (): void => {
+    session.change();
+    characters.refresh();
+  };
+  // The catalogue gives the groups above an ingredient: worked out again once it is there.
+  void loadNames().then(() => characters.refresh());
 
   const name = textField(t.nameLabel, form.name);
   const nameError = fieldError(name.control);
@@ -356,6 +365,7 @@ const build = (
     focusAfter = undefined;
     // The assembly steps list the fillings: keep them in step with the slots.
     assembly.syncLines();
+    characters.refresh();
   };
   draw();
 
@@ -444,6 +454,7 @@ const build = (
     slotsError.node,
     el('h2', undefined, t.assemblyHeading),
     assembly.element,
+    characters.element,
     versionFields(form, changed),
     editorActions({
       isNew: form.isNew,

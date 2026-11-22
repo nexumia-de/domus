@@ -1,10 +1,17 @@
 // One entry for every dish the app knows, whatever its origin: a dish of the notebook or a shipped
 // classic. The lists, the finder and the random pick filter these entries by the same rules
 // (./filter.ts). Pure: no DOM; the notebook, the classics and the ingredient lookup come in.
-import { COUNTRY_CODES, COURSE_IDS, deriveClassic, pickText } from '@culina/engine';
+import {
+  COUNTRY_CODES,
+  COURSE_IDS,
+  correctCharacters,
+  deriveClassic,
+  pickText,
+} from '@culina/engine';
 import type { Classic, Course, Lang } from '@culina/engine';
 import { catalogueBelow } from '../characters/below';
 import type { Below, Lookup } from '../characters/classes';
+import { CHARACTER_ORDER } from '../characters/correction';
 import { factsOfClassic } from '../characters/classic';
 import { factsOfDish } from '../characters/dish';
 import { meatFreeOf } from '../characters/meat-free';
@@ -34,7 +41,7 @@ export interface DishEntry {
    * does not keep it.
    */
   meatFree?: boolean;
-  /** The ids of its characters, in the order of the table. */
+  /** The ids of its characters, in the order of the table; for a dish of the notebook after the cook's correction. */
   characters: readonly string[];
   /** True when every line that names an ingredient has an amount; for a dish of the notebook, every slot. */
   complete: boolean;
@@ -55,7 +62,8 @@ export const entryOfDish = (
   below: Below = catalogueBelow,
 ): DishEntry => {
   const facts = factsOfDish(nb, dish, lookup, below);
-  const characters = characterIds(facts);
+  // The cook's correction of this dish counts everywhere the characters are read: chips, filter.
+  const characters = correctCharacters(characterIds(facts), dish.characters, CHARACTER_ORDER);
   const meatFree = meatFreeOf(facts, lookup, below);
   return {
     key: entryKey('own', dish.id),

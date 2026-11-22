@@ -949,8 +949,29 @@ never stored ([analysis](dish-characters.md),
   show on shipped dishes, a soup is never fried, a baked soufflé is not
   creamy; the table of changes, the counts and what was left as it is are in
   [dish characters](dish-characters.md#every-shipped-dish-read-as-a-cook-would-2026-11-21).
-- **Not built.** The user's own correction of a character, cuisine and
-  course on the user's dishes.
+- **The cook's correction (since 2026-11-22).** Every rule is a judgement
+  and can be wrong on a dish, so the dish editor has a section **What it is
+  like** under the assembly: one tick box of 44 px per character of the
+  table, ticked where the dish shows it, the title of each the rule's
+  basis. Unticking a computed character takes it away from this dish;
+  ticking one no rule gives adds it; such a row says "taken away by you" or
+  "added by you", and **As worked out** drops every correction. The ticks
+  are worked out from the draft as it stands (the filled slots, their
+  amounts, the course), again on every change and when the catalogue is
+  there. Stored is only the difference
+  ([data model](data-model.md#dish)), so a changed recipe still changes
+  the characters the cook did not touch. The corrected set is what the
+  chips, the one filter, the finder and the pick of a dish read
+  (`entryOfDish`); a combination of the random pick is no stored dish and
+  is judged by the rules alone. It is a field of the version: the history
+  says "What it is like: empty → added: Creamy". A shipped dish is
+  read-only and is corrected on its copy. Code: `src/editor/dish-characters.ts`,
+  `src/characters/correction.ts`, `src/screens/editor/dish-characters-editor.ts`.
+  **Test:** `test/dish-character-correction.test.ts` (entry and filter,
+  the ticks, the form, schema, export and import, the history),
+  `e2e/editor-more.mjs` (tick, the mark, focus, save, chip, read back, at
+  360 px). Not verified: a screen reader on the ticks, the German texts in
+  a browser, the native Linux app (it shows no dish of the notebook).
 
 **Test:** `test/characters.test.ts` (the table against the catalogue, the
 facts of a dish and of a classic, shipped dishes by name),

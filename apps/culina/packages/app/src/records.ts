@@ -12,6 +12,7 @@ import type {
   NutrientsPer100g,
   Step,
 } from '@culina/engine';
+import type { StoredCorrection } from './characters/correction';
 import type { NamesByLanguage } from './shared/names';
 
 export interface IngredientRecord {
@@ -102,6 +103,8 @@ export interface DishRecord {
   course?: Course;
   /** The country whose kitchen it belongs to, where the cook states it. */
   cuisine?: Country;
+  /** The cook's correction of the computed characters; the computed set is never stored. */
+  characters?: StoredCorrection;
   slots: SlotRecord[];
   /** The assembly: what is done with the fillings; a step uses slots by their key. */
   steps?: Step[];

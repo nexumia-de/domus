@@ -1,6 +1,7 @@
 // The dish editor's form state (also the draft) and its translations to and from a record.
 import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
 import type { ComponentRef, Country, Course } from '@culina/engine';
+import { normalCorrection, type StoredCorrection } from '../characters/correction';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
 import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
@@ -35,6 +36,8 @@ export interface DishForm {
   course?: string;
   /** A country code, or empty for not stated. */
   cuisine?: string;
+  /** The cook's correction of the characters, as the record stores it; absent for none. */
+  characters?: StoredCorrection;
   note: string;
   slots: SlotForm[];
   /** The assembly steps; a draft written before they existed has none. */
@@ -72,6 +75,7 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   portions: dish.portions === undefined ? '' : String(dish.portions),
   course: dish.course ?? '',
   cuisine: dish.cuisine ?? '',
+  ...(dish.characters === undefined ? {} : { characters: dish.characters }),
   note: dish.note ?? '',
   slots: dish.slots.map((s) => ({
     role: s.role,
@@ -136,6 +140,7 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
   const note = form.note.trim();
   const course = asCourse(form.course);
   const cuisine = asCuisine(form.cuisine);
+  const characters = normalCorrection(form.characters);
   return {
     ok: true,
     record: {
@@ -144,6 +149,7 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
       ...(portions === undefined ? {} : { portions }),
       ...(course === undefined ? {} : { course }),
       ...(cuisine === undefined ? {} : { cuisine }),
+      ...(characters === undefined ? {} : { characters }),
       slots,
       ...(steps.length === 0 ? {} : { steps }),
       version: form.version ?? { family: form.id, date: today },

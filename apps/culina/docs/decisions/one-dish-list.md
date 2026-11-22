@@ -80,21 +80,23 @@ one choice among others.
    is the same rule as for characters, which are computed when a dish is
    shown and never stored ([behaviour](../behaviour.md#characters)).
 
-### State on 2026-11-21
+### State on 2026-11-22
 
 | Part                                       | State                                         |
 | ------------------------------------------ | --------------------------------------------- |
 | Entry, filter, controls, the stored choice | built (commit 82f45dc, `test/browse.test.ts`) |
-| The lists and the start screen             | being built on 2026-11-21                     |
-| The finder with the one filter             | being built on 2026-11-21                     |
-| The random pick with the one filter        | being built on 2026-11-21                     |
-| One dish screen and one cook screen        | being built on 2026-11-21                     |
-| Course and cuisine on own dishes           | being built on 2026-11-21                     |
-| The dish lines linked to the catalogue     | being built on 2026-11-21                     |
-| The native Linux app                       | being built on 2026-11-21                     |
+| The lists and the start screen             | built (pull request 30)                       |
+| The finder with the one filter             | built (pull request 30)                       |
+| The random pick with the one filter        | built (pull request 30)                       |
+| One dish screen and one cook screen        | built (pull request 30)                       |
+| Course and cuisine on own dishes           | built (pull request 30)                       |
+| The dish lines linked to the catalogue     | built (pull request 30)                       |
+| The native Linux app                       | built (pull request 30)                       |
 
-Until course and cuisine exist on own dishes, an own dish has neither, and
-a choice of course or cuisine keeps only shipped dishes.
+All parts were merged with pull request 30 of suitably/domus on
+2026-11-21; the table said "being built" until the triage of 2026-11-22
+read the code. An own dish that states no course or cuisine is not kept
+by a choice of either.
 
 ## Rejected
 
@@ -161,11 +163,10 @@ owner's question does not start from the origin.
   of cooking per dish comes close to the rule "no meal plans and no food
   diary" in [AGENTS.md](../../AGENTS.md). Whether such state may be kept,
   and in which form, is the owner's to decide; nothing is built for it.
-- **The user's correction of a character.** Still open, as in the
-  [analysis](../dish-characters.md#what-was-built). It would be the one
-  stored field of characters (`characters: { add, remove }` on a dish).
-  A shipped dish cannot be corrected without a copy, because it is
-  read-only.
+- **The user's correction of a character.** Built on 2026-11-22
+  ([behaviour](../behaviour.md#characters)): the one stored field of
+  characters (`characters: { add, remove }` on a dish). A shipped dish
+  cannot be corrected without a copy, because it is read-only.
 - **The library sync.** Own dishes do not sync yet
   ([roadmap](../roadmap.md), goal 6). The one list does not change that:
   shipped dishes need no sync, since every device has the same file.

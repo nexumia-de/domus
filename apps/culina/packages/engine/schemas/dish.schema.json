@@ -28,6 +28,34 @@
       "description": "The country whose kitchen the dish belongs to, where the cook states it; a copied classic keeps its country here.",
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/country"
     },
+    "characters": {
+      "description": "The cook's correction of the characters Culina computes for the dish (docs/dish-characters.md): ids of the character table to show although no rule gives them (`add`) and computed ones not to show (`remove`). The computed set itself is never stored. An id the table no longer knows is ignored.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "add": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+          }
+        },
+        "remove": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+          }
+        }
+      }
+    },
     "slots": {
       "type": "array",
       "minItems": 1,
