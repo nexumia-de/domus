@@ -6,3 +6,15 @@
 metainfo = "data/de.nexumia.Emptio.metainfo.xml"
 fragments = "changelog.d"
 tag-prefix = "emptio-v"
+
+# Screenshots the Flatpak job takes from the built app (docs/releases.md in
+# phosh-toolkit): the recorded data of scripts/seed.mjs, which the check job
+# writes to dist/screenshot-data. Locally:
+#   node scripts/seed.mjs dist/screenshot-data en
+[screenshots]
+env = { EMPTIO_DATA_DIR = "{root}/dist/screenshot-data" }
+expose = ["{root}/dist/screenshot-data"]
+
+[[screenshots.shot]]
+name = "list"
+caption = "The shopping list, sorted by when it is needed"

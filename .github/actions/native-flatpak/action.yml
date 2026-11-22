@@ -3,7 +3,11 @@
 # and builds in it, with no step before it, so a bundle that npm builds cannot
 # reach the offline build, and its REUSE gate needs files this repository does
 # not have (no REUSE.toml, no docs/dependencies.md). Same tooling and steps
-# otherwise. Used by emptio-flatpak, mixtura-flatpak and culina-flatpak.
+# otherwise, including the screenshots: the x86_64 build takes the shots of
+# the app's release.toml from the built Flatpak with the toolkit's release.py
+# (docs/releases.md in phosh-toolkit) and uploads them as
+# "<app id>-screenshots", which the release attaches. Used by emptio-flatpak,
+# mixtura-flatpak and culina-flatpak.
 name: Native app Flatpak
 description: Builds the Flatpak of a native app with flatpak-builder, checks the licence files and writes the bundles.
 inputs:
@@ -21,6 +25,9 @@ inputs:
     required: true
   licence-dirs:
     description: Space-separated folders under /app/share/licenses/<app id> that must hold a licence file.
+    required: true
+  toolkit-ref:
+    description: Tag of phosh-toolkit whose release.py and screenshot.sh take the screenshots.
     required: true
 runs:
   using: composite
@@ -44,6 +51,23 @@ runs:
     - name: Build
       shell: bash
       run: |
+        # flatpak-builder runs "appstreamcli compose", which downloads every
+        # screenshot URL of the metainfo and silently drops the ones that
+        # fail; a tag's screenshots are attached only after this build, so
+        # all would be dropped. --no-net keeps them (as the toolkit's
+        # flatpak.yml does); the Screenshots step checks each is taken.
+        bin=$RUNNER_TEMP/appstream-no-net
+        mkdir -p "$bin"
+        cat > "$bin/appstreamcli" <<'EOF'
+        #!/bin/sh
+        if [ "$1" = compose ]; then
+          shift
+          exec /usr/bin/appstreamcli compose --no-net "$@"
+        fi
+        exec /usr/bin/appstreamcli "$@"
+        EOF
+        chmod +x "$bin/appstreamcli"
+        export PATH=$bin:$PATH
         flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse \
           --force-clean --arch=${{ inputs.arch }} --bundle-sources --repo=repo \
           build-dir ${{ inputs.directory }}/${{ inputs.app-id }}.yml
@@ -68,6 +92,38 @@ runs:
           repo "$APP_ID-${{ inputs.arch }}.flatpak" "$APP_ID"
         flatpak build-bundle --arch=${{ inputs.arch }} --runtime \
           repo "$APP_ID-sources-${{ inputs.arch }}.flatpak" "$APP_ID.Sources"
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      if: inputs.arch == 'x86_64'
+      with:
+        repository: nexumia-de/phosh-toolkit
+        ref: ${{ inputs.toolkit-ref }}
+        path: .phosh-toolkit
+    - name: Screenshots
+      if: inputs.arch == 'x86_64'
+      shell: bash
+      env:
+        APP_ID: ${{ inputs.app-id }}
+        ROOT: ${{ github.workspace }}/${{ inputs.directory }}
+      run: |
+        apt=(sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120)
+        "${apt[@]}" install -y -q --no-install-recommends libgtk-4-bin dbus-daemon libglib2.0-bin
+        scripts=$PWD/.phosh-toolkit/scripts
+        npm install --prefix "$scripts" --no-audit --no-fund
+        (cd "$scripts" && npx playwright install --with-deps chromium)
+        export NODE_PATH=$scripts/node_modules
+        flatpak remote-add --user --no-gpg-verify ci-build repo
+        flatpak install --user -y --noninteractive ci-build "$APP_ID"
+        # Every screenshot the built metainfo lists must be taken.
+        python3 "$scripts/release.py" --root "$ROOT" screenshots --out screenshots \
+          --check-metainfo "build-dir/files/share/metainfo/$APP_ID.metainfo.xml" \
+          -- flatpak run "$APP_ID"
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      if: inputs.arch == 'x86_64'
+      with:
+        name: ${{ inputs.app-id }}-screenshots
+        path: screenshots/*.png
+        retention-days: 14
+        if-no-files-found: error
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: ${{ inputs.app-id }}-${{ inputs.arch }}

@@ -85,7 +85,12 @@ ways were put to the owner with what each costs:
   web app's `core.ts` exports what a second shell needs; the one change in
   web code was `itemsFromRecords`, taken out of `notebook/stock.ts`.
 - **Each native app joins a space by its invitation link.** There is no
-  native Household app; a space is made and shared in a browser.
+  native Household app; a space is made and shared in a browser. The
+  three apps on one device do not share their spaces: each keeps
+  `$XDG_DATA_HOME/<app>` in its own Flatpak sandbox and needs the
+  invitation link once (owner, 2026-11-22: no sandbox permission or
+  other workaround to make them share; the web apps share one database
+  because they share one address).
 - **The toolkit's GTK rules apply to the native packages only**; the web
   apps and libraries stay outside them.
 - **CI builds the Flatpak with its own job**, not the toolkit's reusable
@@ -103,13 +108,6 @@ ways were put to the owner with what each costs:
 
 ## Open
 
-- A native app keeps its own copy of a space's data, so the three apps
-  on one phone each join the space; whether they should share one folder
-  (as the web apps share one database) is still to decide, now that two
-  exist: Emptio and Mixtura each keep `$XDG_DATA_HOME/<app>` and each
-  needs the invitation link once. A shared folder would need the apps to
-  agree on one file store and one process at a time (the file store
-  expects one), which the Flatpak sandboxes do not give by default.
 - The drinks a person made in the web app are not in a space and so not
   in the native app; whether the native app should read the web app's
   export file, or those drinks should be synced too, is the owner's call.
