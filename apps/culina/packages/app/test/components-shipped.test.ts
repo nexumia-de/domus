@@ -6,7 +6,8 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import type { Classic } from '@culina/engine';
 import { dishView } from '../src/classics/dish-view';
 import { keepShippedComponent } from '../src/classics/keep';
-import { componentGroups, componentRows } from '../src/components/list';
+import { componentRows } from '../src/components/list';
+import { notebookGroups } from '../src/shared/notebook-rows';
 import {
   parseShippedKey,
   shippedEntries,
@@ -104,15 +105,15 @@ describe('the one list', () => {
   });
 
   test('the origin choice leaves a group out; the search finds a shipped one by its dish', () => {
-    expect(componentGroups(rows, 'own', '').shipped).toBeUndefined();
-    expect(componentGroups(rows, 'shipped', '').own).toBeUndefined();
-    const both = componentGroups(rows, undefined, 'second dish');
+    expect(notebookGroups(rows, 'own', '').shipped).toBeUndefined();
+    expect(notebookGroups(rows, 'shipped', '').own).toBeUndefined();
+    const both = notebookGroups(rows, undefined, 'second dish');
     expect(both.own).toEqual([]);
     expect(both.shipped?.map((r) => r.name)).toEqual(['Example broth']);
   });
 
   test('without shipped components there is only the notebook group', () => {
-    expect(componentGroups(componentRows([own], []), undefined, '')).toEqual({
+    expect(notebookGroups(componentRows([own], []), undefined, '')).toEqual({
       own: [expect.objectContaining({ id: OWN_ID })],
     });
   });

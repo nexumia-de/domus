@@ -218,8 +218,8 @@ its own page; from 720 px the list stays beside it, the open entry marked
 with `aria-current`. **Test:** `e2e/components.mjs` at 360 and 1000 px.
 
 **Shipped components in the same list** (since 2026-11-22, issue 44 point 4,
-decided by the owner). The list (`src/screens/component-list.ts`, rows in
-`src/components/list.ts`) holds the notebook's components and every component
+decided by the owner). The list (`src/screens/notebook-list.ts`, the same
+pane as the Notebook's Dishes; rows in `src/components/list.ts`) holds the notebook's components and every component
 of every shipped dish and base, a base's alternatives included
 (`shippedEntries` in `src/components/shipped.ts`): 59 from the 48 dishes on
 this day. Two groups, each under a heading: "In my notebook" first (in its
@@ -1101,17 +1101,28 @@ own; the origin is only a choice of the filter.
   page is closed; the filter is the stored one, shared with the random pick,
   and survives a reload. Where the browser cannot store it, it holds until
   the page is closed.
-- **The Notebook's Dishes are no second list.** `#/dishes` lists the
-  user's own dishes by name, with the search, "Add a dish" and "Put a dish
-  together at random", like Components (`src/screens/dishes.ts` on
-  `entry-list.ts`); no shipped dish and no dish filter there. A notebook
-  without a dish of its own offers its example data there.
+- **The Notebook's Dishes are no second list to browse.** `#/dishes` is
+  the plain list of the Components part (`src/screens/notebook-list.ts`,
+  rows in `src/dishes/list.ts`, groups and search in
+  `src/shared/notebook-rows.ts`), after the owner's point 3 of issue 44
+  ("Notebook = own and shipped components and dishes, for editing and
+  building on. Its Dishes part is no second browse list."): the user's own
+  dishes in their order under "In my notebook", then the shipped dishes by
+  name under "Shipped with the app"; a row has the name and a quiet line
+  (course, cuisine, and "Shipped" on a shipped one); the search by name, the
+  select **From** (All dishes, Mine, Shipped, kept while the page is open),
+  "Add a dish" and "Put a dish together at random". A shipped row opens the
+  shipped dish's screen (`#/classic/<id>`), read-only with Keep in my
+  notebook. No dish filter, no "Only with what I have", no "Use up first":
+  those are Cook's. A notebook without a dish of its own says so in its
+  group and offers its example data there.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
   (also after the cook screen and back); opened any other way (a bookmark, a
-  link from elsewhere, the Notebook's Dishes) it leads to the list the dish
-  belongs to: an own dish to `#/dishes`, a shipped one to `#/cook`. A history
+  link from elsewhere) it leads to the list the dish belongs to: an own dish
+  to `#/dishes`, a shipped one to `#/cook`. Opened from a row of the
+  Notebook's Dishes (own or shipped), it is the browser's back to that list. A history
   entry marked by an older version (from Start or the old Dishes list) is
   still a way back. It never changes the filter. The own dish's link hides
   from 720 px, where the list stands beside it.
@@ -1141,7 +1152,9 @@ filter with a store that throws; entries written by hand),
 example data: both origins in one list on Cook, each choice narrows, choices
 combine, Show all, the choice across a reload and on the old address
 `#/start`, the first result on the first screen of Cook with the filter
-folded, the Notebook's Dishes as own dishes only, a shipped row opens its
+folded, the Notebook's Dishes as own and shipped dishes in a plain list
+without the filter, "Mine" there, a shipped row of it opening its dish with
+Keep and leading back to it, a shipped row of Cook opens its
 dish, the old addresses, the way back to Cook with the filter untouched, no option of a select cut off in English and German, no "nothing
 fits" while the catalogue is held back, the focus after Show all, no
 horizontal scroll, 44 px targets). The private-mode fallback is proved only

@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: One Cook screen, three destinations
-description: Decided by the owner on 2026-11-22 (issue 44 of suitably/domus). Start and the separate finder screen go; Cook is one screen, the one dish list with the one filter, a switch "Only with what I have" judged by the finder, "Use up first" as an order of that list, and the stock one tap away; the navigation has Cook, Notebook and Ratios; the Notebook holds the components and the own dishes for editing and building on; the old addresses keep working as redirects; what the agent chose where the owner's text left room.
+description: Decided by the owner on 2026-11-22 (issue 44 of suitably/domus). Start and the separate finder screen go; Cook is one screen, the one dish list with the one filter, a switch "Only with what I have" judged by the finder, "Use up first" as an order of that list, and the stock one tap away; the navigation has Cook, Notebook and Ratios; the Notebook holds own and shipped components and dishes for editing and building on, each part a plain list; the old addresses keep working as redirects; what the agent chose where the owner's text left room.
 tags: [decision, navigation, cook, finder, dishes, stock]
 generated: { by: claude-code, at: 2026-11-22 }
 sources:
@@ -91,14 +91,21 @@ Each is the agent's choice, for the owner's review.
   is replaced by `#/cook`; `#/classics` and `#/classics/<country>` set their
   filter and are replaced by `#/cook` (before, `#/dishes`). An address
   from outside may change a kept choice; a link inside the app never does.
-- **The Notebook's Dishes are the own dishes only**, as a plain list by
-  name with the search, "Add a dish" and "Put a dish together at random",
-  like Components. The shipped dishes are found on Cook (filter "From:
-  Shipped") and changed by "Keep in my notebook", which makes an own copy.
-  The owner's point 3 names shipped dishes in the Notebook too; listing them
-  there by name would be a second list of the same dishes, which point 3
-  rules out, so they are left out of it. The shipped components are added
-  to Components by a separate change.
+- **The Notebook's Dishes are own and shipped dishes in a plain list**,
+  like Components: the own dishes under "In my notebook", the shipped ones
+  by name under "Shipped with the app", each shipped row marked "Shipped"
+  and opening the shipped dish's screen (read-only, with "Keep in my
+  notebook"); the search by name, the select "From" (All, Mine, Shipped),
+  "Add a dish" and "Put a dish together at random". No dish filter, no
+  "Only with what I have", no "Use up first": those are Cook's. The reason
+  is the owner's own text of point 3: "Notebook = own and shipped
+  components and dishes, for editing and building on. Its Dishes part is
+  no second browse list." A first version of this change listed the own
+  dishes only, reading "no second browse list" as "no shipped dishes"; the
+  owner's text names shipped dishes in the Notebook, so the list holds
+  them, and "no second browse list" is met by leaving out what makes Cook a
+  browse list (the filter, the switch, the order). The same list pane
+  serves Components, which lists the shipped components the same way.
 - **The dish screens stay under the Notebook** in the navigation, own and
   shipped, as before; the way back from a dish opened on Cook is Cook.
 

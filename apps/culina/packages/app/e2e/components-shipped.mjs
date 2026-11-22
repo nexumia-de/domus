@@ -22,7 +22,7 @@ const open = async (page, origin, hash) => {
   await page.getByRole('heading', { level: 1 }).waitFor();
 };
 const texts = (page, selector) => page.locator(selector).allTextContents();
-const shippedRows = '.component-row-shipped';
+const shippedRows = '.notebook-row-shipped';
 
 const phone = async (browser, origin) => {
   const label = '360px shipped components';
@@ -42,7 +42,7 @@ const phone = async (browser, origin) => {
     `${label}: each shipped row is marked "Shipped" and names its dish (${metas[0]})`,
   );
   check(
-    (await texts(page, '.component-group-heading')).join('|') ===
+    (await texts(page, '.notebook-group-heading')).join('|') ===
       'In my notebook|Shipped with the app',
     `${label}: two groups, the notebook's first`,
   );
@@ -58,7 +58,7 @@ const phone = async (browser, origin) => {
   const from = page.getByLabel('From');
   await from.selectOption('shipped');
   check(
-    (await page.locator('.component-group-heading').count()) === 0 &&
+    (await page.locator('.notebook-group-heading').count()) === 0 &&
       (await page.locator(shippedRows).count()) === TOTAL &&
       (await page.getByRole('button', { name: 'Add example data' }).count()) === 0,
     `${label}: "Shipped" leaves the notebook's group out`,
@@ -157,7 +157,7 @@ const desk = async (browser, origin) => {
   const page = await context.newPage();
   await open(page, origin, `components/${KEEPABLE}`);
   check(
-    (await page.locator('[aria-current="page"].component-row-shipped .entry-name').innerText()) ===
+    (await page.locator('[aria-current="page"].notebook-row-shipped .entry-name').innerText()) ===
       'Snow eggs',
     `${label}: the list stands beside the shipped component, its row marked`,
   );

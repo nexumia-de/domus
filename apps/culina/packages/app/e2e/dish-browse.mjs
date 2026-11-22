@@ -1,8 +1,8 @@
 // The one list of every dish in a browser, at 360 x 720: the two example dishes of the notebook
 // ("Add example data") and the two FICTIONAL shipped dishes of e2e/classics-fixture.mjs in one list
 // on Cook (docs/decisions/cook-screen.md); each choice of the filter narrows, choices combine,
-// nothing found offers "Show all"; the choice survives a reload; the Notebook's Dishes are the own
-// dishes only; a shipped row opens its dish; the old addresses of the classics and of Start land on
+// nothing found offers "Show all"; the choice survives a reload; the Notebook's Dishes are own and
+// shipped dishes in a plain list, without the filter; a shipped row opens its dish; the old addresses of the classics and of Start land on
 // Cook with their filter. "Only with what I have" and "Use up first" are in e2e/cook.mjs. No horizontal
 // scroll, 44 px targets, nothing focused on open, no console error. Not proved here: the real 48
 // shipped dishes, desktop width, German (the texts are the same keys), a real phone.
@@ -178,15 +178,44 @@ export const dishBrowse = async (browser, server) => {
     first !== null && bar !== null && first.y + first.height <= bar.y,
     `${label}: Cook shows the first result on its first screen (${first?.y} + ${first?.height} / ${bar?.y})`,
   );
-  // The Notebook's Dishes: the own dishes for editing, no second list of every dish.
+  // The Notebook's Dishes (the owner's issue 44 point 3): own and shipped dishes for editing and
+  // building on, one plain list in two groups; no dish filter, nothing of Cook.
   await openWith(page, origin, 'dishes');
   await page.getByRole('heading', { level: 1, name: 'Dishes', exact: true }).waitFor();
+  const shippedNames = [PAN.name.en, SECOND.name.en].sort((a, b) => a.localeCompare(b, 'en'));
   check(
-    same(await page.locator('.entry-row .entry-name').allInnerTexts(), OWN) &&
-      (await page.locator('.dish-row, .dish-filter-fold').count()) === 0 &&
+    same(await page.locator('.notebook-row-own .entry-name').allInnerTexts(), OWN) &&
+      same(await page.locator('.notebook-row-shipped .entry-name').allInnerTexts(), shippedNames) &&
+      (await page.locator('.dish-row, .dish-filter-fold, .cook-order-row').count()) === 0 &&
       (await page.getByRole('link', { name: 'Add a dish' }).count()) === 1 &&
       (await page.getByRole('link', { name: 'Put a dish together at random' }).count()) === 1,
-    `${label}: the Notebook's Dishes are the own dishes, with "Add a dish" and the random pick`,
+    `${label}: the Notebook's Dishes list own and shipped dishes, with "Add a dish" and the random pick, without the dish filter`,
+  );
+  check(
+    (await page.locator('.notebook-row-shipped .entry-meta').allInnerTexts()).every((m) =>
+      m.split(' · ').includes('Shipped'),
+    ),
+    `${label}: a shipped row in the Notebook's Dishes is marked "Shipped"`,
+  );
+  await page.getByLabel('From').selectOption('own');
+  check(
+    (await page.locator('.notebook-row-shipped').count()) === 0 &&
+      (await page.locator('.notebook-row-own').count()) === OWN.length,
+    `${label}: "Mine" leaves the shipped dishes out of the Notebook's Dishes`,
+  );
+  await page.getByLabel('From').selectOption('');
+  await page.locator('.notebook-row-shipped', { hasText: PAN.name.en }).click();
+  await page.getByRole('heading', { level: 1, name: PAN.name.en }).waitFor();
+  check(
+    hashOf(page) === `#/classic/${PAN.id}` &&
+      (await page.getByRole('button', { name: 'Keep in my notebook' }).count()) === 1,
+    `${label}: a shipped row of the Notebook opens the shipped dish's screen, with Keep`,
+  );
+  await page.getByRole('link', { name: 'Back to the list' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Dishes', exact: true }).waitFor();
+  check(
+    hashOf(page) === '#/dishes',
+    `${label}: back from that dish returns to the Notebook's Dishes`,
   );
   await openWith(page, origin, 'cook');
   check(same(await names(page), ALL), `${label}: back on Cook, every dish again`);

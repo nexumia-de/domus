@@ -1,5 +1,5 @@
 // The Components screen: the notebook's components and the shipped ones in one list
-// (component-list.ts), and the detail of one beside it or as its own screen. A shipped component
+// (notebook-list.ts), and the detail of one beside it or as its own screen. A shipped component
 // (`#/components/<classic id>.<component id>`) has its own read-only detail (shipped-component.ts).
 import { classics } from '../classics/content';
 import { currentLang } from '../classics/lang';
@@ -9,15 +9,14 @@ import { getComponent, listComponents, notebook } from '../notebook';
 import { strings } from '../strings';
 import { notebookExtras } from './notebook-extras';
 import { componentDetail } from './component-detail';
-import { componentList, type ComponentListState } from './component-list';
-import type { ListText } from './entry-list';
+import { notebookList, type NotebookListState, type NotebookListText } from './notebook-list';
 import { notebookScreen } from './notebook-screen';
 import { shippedComponentDetail } from './shipped-component';
 
 /** The search text and the origin choice survive navigation between the list and the details. */
-const state: ComponentListState = { query: '' };
+const state: NotebookListState = { query: '' };
 
-const text = (): ListText => ({
+const text = (): NotebookListText => ({
   title: strings.screens.components.title,
   searchLabel: strings.notebook.searchLabel,
   listLabel: strings.components.listLabel,
@@ -25,6 +24,7 @@ const text = (): ListText => ({
   emptyNotebook: strings.empty.components,
   guidanceSummary: strings.screens.components.guidanceSummary,
   guidance: strings.screens.components.guidance,
+  originAny: strings.components.originAny,
 });
 
 export const componentsScreen = (param?: string): HTMLElement =>
@@ -32,7 +32,8 @@ export const componentsScreen = (param?: string): HTMLElement =>
     {
       route: 'components',
       pane: (options) =>
-        componentList(
+        notebookList(
+          'components-pane',
           componentRows(listComponents(), shippedEntries(classics(), currentLang())),
           state,
           text(),

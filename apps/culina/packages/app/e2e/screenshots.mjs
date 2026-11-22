@@ -20,7 +20,7 @@ const filled = async (page) => {
 };
 const SAUCE = 'components/example-pan-sauce';
 const SHIPPED = 'components/oeufs-a-la-neige.snow-eggs';
-const shippedListed = (page) => page.locator('.component-row-shipped').first().waitFor();
+const shippedListed = (page) => page.locator('.notebook-row-shipped').first().waitFor();
 const editorReady = (page) => page.getByLabel('Name', { exact: true }).waitFor();
 const picking = async (page) => {
   await editorReady(page);
@@ -186,6 +186,9 @@ const shots = [
     false,
     true,
   ],
+  // The Notebook's Dishes: own and shipped dishes in one plain list.
+  ['dishes-list-360x720-light.png', 360, 720, 'light', 'dishes', shippedListed, false, true],
+  ['dishes-list-1000x700-light.png', 1000, 700, 'light', 'dishes', shippedListed, false, true],
   ['component-shipped-360x720-light.png', 360, 720, 'light', SHIPPED, undefined, true, true],
   ['component-shipped-1000x700-light.png', 1000, 700, 'light', SHIPPED, undefined, false, true],
   [

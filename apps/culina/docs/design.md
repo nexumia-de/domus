@@ -196,15 +196,22 @@ warning token, and none was added. Rules of use:
 [behaviour](behaviour.md#components).
 
 The Components list holds the shipped components too (since 2026-11-22): the
-search and the select **From** stand in one grid (`.component-filters`, two
+search and the select **From** stand in one grid (`.notebook-filters`, two
 columns from 24 rem, so stacked at 360 px), then two groups under an h2 each
-(`.component-group-heading`, the size of the Cook screen's group headings).
+(`.notebook-group-heading`, the size of the Cook screen's group headings).
 A shipped row is a row like an own one; only its muted line says "Shipped" and
 names the dish, so the list reads as one. Grouping by dish (48 headings for 59
 rows) was not chosen: the rows of a dish stand together by the sort, and the
 search finds them by the dish's name. A shipped component's screen is the card
 of an own component with the recipe blocks of the dish screen (lines, method,
 source at the foot) and the quiet Keep button of the dish screen.
+
+The Notebook's Dishes use the same pane (`src/screens/notebook-list.ts`): own
+dishes, then the shipped ones by name, the search and **From**; under the title
+"Add a dish" and "Put a dish together at random". It has none of Cook's
+controls (the folded filter, the switch, the order), so the two screens do not
+look alike: Cook is for choosing what to cook, the Notebook for keeping and
+changing.
 
 # Cook screens
 
@@ -346,6 +353,8 @@ Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 | Component, 360 x 720         | ![Component](screenshots/component-360x720-light.png)                           |
 | Components list, 360 x 720   | ![Components list](screenshots/components-list-360x720-light.png)               |
 | Components list, 1000 x 700  | ![Components list, desktop](screenshots/components-list-1000x700-light.png)     |
+| Notebook dishes, 360 x 720   | ![Notebook dishes](screenshots/dishes-list-360x720-light.png)                   |
+| Notebook dishes, 1000 x 700  | ![Notebook dishes, desktop](screenshots/dishes-list-1000x700-light.png)         |
 | Shipped component, 360       | ![Shipped component](screenshots/component-shipped-360x720-light.png)           |
 | Shipped component, 1000      | ![Shipped component, desktop](screenshots/component-shipped-1000x700-light.png) |
 | Dish, 360 x 720 light        | ![Dish, light](screenshots/dish-360x720-light.png)                              |

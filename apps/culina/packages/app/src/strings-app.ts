@@ -67,6 +67,9 @@ export const appStrings = {
   notebook: {
     sectionsLabel: 'Parts of the Notebook',
     searchLabel: 'Search by name',
+    /** The two groups of a Notebook list (Components, Dishes): the user's own, then the shipped ones. */
+    groupOwn: 'In my notebook',
+    groupShipped: 'Shipped with the app',
     toTaste: 'to taste',
     invalidNumber: 'Enter a number above 0.',
     colIngredient: 'Ingredient',
@@ -147,8 +150,6 @@ export const appStrings = {
     portionsNeedsOutput: 'Portions need an output weight.',
     // The components of the shipped dishes in the same list, read-only (components/shipped.ts).
     originAny: 'All components',
-    groupOwn: 'In my notebook',
-    groupShipped: 'Shipped with the app',
     /** Under a shipped component's name: the dish or base it belongs to. */
     partOf: (dish: string): string => `Part of ${dish}`,
     shippedPortions: 'The amounts are for these portions of the whole dish.',

@@ -293,15 +293,16 @@
   font-size: var(--fs-sm);
 }
 
-/* The Components list: the search and the origin choice side by side where there is room, and the
-   two groups (the notebook's, the shipped ones) under a heading each. */
-.component-filters {
+/* The Notebook lists (Components, Dishes): the search and the origin choice side by side where
+   there is room, and the two groups (the notebook's, the shipped ones) under a heading each. */
+.notebook-filters {
+  margin-top: var(--sp-3);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 0 var(--sp-3);
 }
 
-.component-group-heading {
+.notebook-group-heading {
   margin: var(--sp-4) 0 var(--sp-2);
   font-size: var(--fs-md);
 }

@@ -1,4 +1,5 @@
-// The way back from a dish to the list it was opened from (Cook's one list), with the filter as
+// The way back from a dish to the list it was opened from (Cook's one list or the Notebook's
+// Dishes), with the filter as
 // the user left it: a link inside the app never changes the filter. A row of the list notes where
 // it was tapped; the dish screen then marks its history entry with that list, so that "Back to
 // the list" is the browser's back while the entry before it is that list (also after a reload or
@@ -10,7 +11,7 @@ import { hashFor, type Route } from '../router';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 
-/** Cook's one list; `dishes` only in a history entry marked by an older version. */
+/** Cook's one list, or the Notebook's Dishes (own and shipped, a plain list). */
 export type ListScreen = 'cook' | 'dishes';
 
 interface FromList {
@@ -25,7 +26,7 @@ export const noteOpenedFromList = (list: ListScreen, hash: string): void => {
   tapped = { list, hash };
 };
 
-/** The list a history entry is marked with; `start` and `dishes` were lists of older versions. */
+/** The list a history entry is marked with; `start` was the list of an older version. */
 const listOf = (state: unknown): ListScreen | undefined => {
   const list: unknown = (state as { fromList?: unknown } | null)?.fromList;
   if (list === 'cook' || list === 'start') return 'cook';
