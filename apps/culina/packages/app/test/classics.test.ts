@@ -7,9 +7,9 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
 import { TECHNIQUES, validateClassic } from '@culina/engine';
 import type { Classic, Technique } from '@culina/engine';
-import { CLASSICS, classicById, classicsOf } from '../src/classics';
+import { CLASSICS, PACK, classicById, classicsOf } from '../src/classics';
 import { listWanted, describeWanted } from './classics-wanted';
-import { CLASSIC_DIR, jsonFiles } from './content-texts';
+import { CLASSIC_DIR, PACK_DIR, jsonFiles } from './content-texts';
 import { must } from './must';
 
 const schemaDir = fileURLToPath(new URL('../../engine/schemas/', import.meta.url));
@@ -64,6 +64,37 @@ describe('every shipped classic', () => {
       });
       expect(result, `${at}: ${JSON.stringify(result)}`).toEqual({ ok: true });
     }
+  });
+});
+
+describe('the import pack (docs/decisions/bases-and-pack.md)', () => {
+  test('holds one entry per file, in path order, country folder and id agree', () => {
+    expect(PACK.map((c) => `${c.country}/${c.id}.json`)).toEqual(
+      jsonFiles(PACK_DIR).map((f) => f.split('/').slice(-2).join('/')),
+    );
+  });
+  test('only country folders exist', () => {
+    const dirs = readdirSync(PACK_DIR, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name);
+    for (const dir of dirs) expect(['de', 'es', 'fr', 'it']).toContain(dir);
+  });
+  test('every dish meets the schema and the rules, as a shipped one', () => {
+    for (const classic of PACK) {
+      const at = `pack ${classic.country}/${classic.id}`;
+      expect(classicSchema(classic), `${at}: ${JSON.stringify(classicSchema.errors)}`).toBe(true);
+      const result = validateClassic(classic, {
+        techniques: TECHNIQUES,
+        ingredientIds: catalogueIds,
+      });
+      expect(result, `${at}: ${JSON.stringify(result)}`).toEqual({ ok: true });
+    }
+  });
+  test('holds no base, and no id is both shipped and in the pack', () => {
+    expect(PACK.filter((c) => c.kind === 'base').map((c) => c.id)).toEqual([]);
+    const shipped = new Set(CLASSICS.map((c) => c.id));
+    expect(PACK.filter((c) => shipped.has(c.id)).map((c) => c.id)).toEqual([]);
+    expect(new Set(PACK.map((c) => c.id)).size).toBe(PACK.length);
   });
 });
 

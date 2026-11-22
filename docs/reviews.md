@@ -21,6 +21,32 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-22: what marks a base in Culina, and the import pack (issue 39, step 1)
+
+The owner asked the lead to do this step alone, without other agents.
+The lead wrote the decision record, the engine and app code, the tests
+and the documents. No other agent took part, so nobody reviewed the
+step; this entry exists because the owner asked for one per pull request.
+
+| Part                                                                                                                                                              | Done by | Checked by                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| [Decision: bases and the pack](../apps/culina/docs/decisions/bases-and-pack.md)                                                                                   | lead    | nobody                                                                                         |
+| `kind` in the classic schema; `src/classics/base.ts` (in the dish, alternatives, used); the validator's `base-without-component`; the finder ignores alternatives | lead    | nobody; `test/classics-base.test.ts` (8 tests); its finder test fails without the change (run) |
+| The pack folder, `dist/classics-pack.json`, `readPack` and `fetchPack`, the pack tests, the validator script                                                      | lead    | nobody                                                                                         |
+| The documents                                                                                                                                                     | lead    | nobody                                                                                         |
+
+**What the checks found.** `test/schemas.test.ts` failed until the
+data model listed `kind`: the documents had not kept up, and were fixed.
+
+**Test counts** (lead's run of `npm run check:culina`): engine 1191, app
+802, native 17; the whole of `npm run check` passed; browser checks 1852 ok, none failed.
+
+**What nobody verified.** No real base exists yet, so the rule was tried
+only on invented files; the dish screen still lists an alternative as a
+component of the dish, which matters once part 1 gives a base one. The
+pack folder is empty, so the build, the reader and the tests ran on no
+real pack dish. Nothing is shown to the user yet.
+
 ## 2026-11-21: one list of dishes in Culina, and what a tester found
 
 The owner asked for the shipped classics and the notebook's dishes to

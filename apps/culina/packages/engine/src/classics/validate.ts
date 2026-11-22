@@ -11,6 +11,7 @@ import type { Technique } from '../techniques/types';
 import type { Classic, SourceAmount } from './types';
 import { resolveSourceUnit } from './units';
 import { settledFindings } from './validate-settled';
+import { componentsUsed, isBase } from './base';
 
 /** What a classic is checked against. */
 export interface ClassicContext {
@@ -32,7 +33,8 @@ interface Item {
  * ids unique and not `slots`, every component reference exists and none is circular or unused, every
  * ingredient id is in the catalogue (when `ingredientIds` is given), every unit resolves (the table or
  * the classic's `units`) and a defined unit is used and does not shadow a table unit, a component line
- * has a mass, a range ends above its start, every step's technique exists, its plain action is a shipped one and its `uses` name lines,
+ * has a mass, a range ends above its start, a base has a slot filled by a component and its unreached
+ * components are alternatives (the role of such a slot), every step's technique exists, its plain action is a shipped one and its `uses` name lines,
  * and settled lines, settled persons and `settled` entries agree.
  *
  * @param classic - A classic, as in its JSON file (valid against `classic.schema.json`).
@@ -111,15 +113,15 @@ export function validateClassic(classic: Classic, context: ClassicContext): Cont
   for (const ring of findCycles([...componentIds], subs)) {
     out.push(found('cycle', 'components', ring.join('>')));
   }
-  const referenced = new Set([
-    ...classic.slots.flatMap((s) => (s.ref?.kind === 'component' ? [s.ref.id] : [])),
-    ...components.flatMap((c) =>
-      c.lines.flatMap((l) => (l.ref?.kind === 'component' ? [l.ref.id] : [])),
-    ),
-  ]);
+  // In a base, a component no slot reaches is an alternative when it has the role of a slot
+  // filled by a component (./base.ts); in a dish every component must be reached.
+  const usedComponents = componentsUsed(classic);
   components.forEach((c, i) => {
-    if (!referenced.has(c.id)) out.push(found('unused-component', `components[${i}].id`, c.id));
+    if (!usedComponents.has(c.id)) out.push(found('unused-component', `components[${i}].id`, c.id));
   });
+  if (isBase(classic) && !classic.slots.some((s) => s.ref?.kind === 'component')) {
+    out.push(found('base-without-component', 'slots'));
+  }
 
   out.push(...settledFindings(classic));
   return contentResult(out);

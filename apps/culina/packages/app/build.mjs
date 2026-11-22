@@ -16,7 +16,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { compileSchemas } from './compile-schemas.mjs';
-import { makeClassics, shippedContent } from './make-classics.mjs';
+import { makeClassics, packContent, shippedContent } from './make-classics.mjs';
 import { makeTechniques } from '../engine/scripts/make-techniques.mjs';
 import { makeSubstitutes } from '../engine/scripts/make-substitutes.mjs';
 
@@ -67,6 +67,9 @@ writeFileSync(
 // The shipped classics, technique notes and handling rules, read from the data folders: its own file too, loaded
 // at start and precached; main.js carries none of them.
 writeFileSync(join(dist, 'classics.json'), JSON.stringify(shippedContent()));
+// The import pack: dishes offered to the user, not shown until taken (docs/decisions/bases-and-pack.md);
+// precached like the rest, so taking it works offline. Not fetched at start.
+writeFileSync(join(dist, 'classics-pack.json'), JSON.stringify(packContent()));
 for (const name of ['icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']) {
   cpSync(join(src, 'assets', name), join(dist, 'icons', name));
 }

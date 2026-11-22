@@ -1,7 +1,9 @@
 import { afterEach, expect, test } from 'vitest';
 import {
   classics,
+  fetchPack,
   loadContent,
+  readPack,
   readContent,
   resetContent,
   substitutes,
@@ -43,4 +45,29 @@ test('loading fills the lists; a failed load leaves the app with zero dishes', a
   expect(classics()).toHaveLength(1);
   expect(techniques()).toEqual([]);
   expect(substitutes()).toEqual([]);
+});
+
+const pack = { format: 'culina-classics-pack', formatVersion: 1, classics: [{ id: 'p' }] };
+
+test('a pack file is read, a classics file or anything else is not', () => {
+  expect(readPack(pack)).toHaveLength(1);
+  expect(readPack({ ...pack, formatVersion: 2 })).toBeUndefined();
+  expect(readPack({ ...pack, classics: 'x' })).toBeUndefined();
+  expect(readPack(file)).toBeUndefined();
+  expect(readPack(null)).toBeUndefined();
+});
+
+test('fetching the pack gives its dishes, a failure none, and the shown list is not touched', async () => {
+  const asked: string[] = [];
+  const got = await fetchPack((url) => {
+    asked.push(url);
+    return Promise.resolve({ ok: true, json: () => Promise.resolve(pack) });
+  });
+  expect(asked).toEqual(['classics-pack.json']);
+  expect(got).toHaveLength(1);
+  expect(classics()).toEqual([]);
+  expect(await fetchPack(() => Promise.reject(new Error('offline')))).toEqual([]);
+  expect(
+    await fetchPack(() => Promise.resolve({ ok: false, json: () => Promise.resolve(pack) })),
+  ).toEqual([]);
 });

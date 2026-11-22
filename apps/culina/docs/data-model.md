@@ -794,6 +794,7 @@ guide is [classic format](classic-format.md).
 | Field          | Type            | Required | Meaning                                                                                  |
 | -------------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
 | `id`           | id              | yes      | See [ids](#ids); equal to the file name                                                  |
+| `kind`         | string          | no       | `base` (a base to build on) or `dish`; without it a dish                                 |
 | `name`         | text in 2 langs | yes      | Visible name                                                                             |
 | `originalName` | string          | yes      | The name in the source's language                                                        |
 | `country`      | string          | yes      | `de`, `it`, `fr` or `es`; the folder                                                     |
@@ -834,6 +835,11 @@ guide is [classic format](classic-format.md).
   a slot); the line or slot may have no `amount`, and the entry then records a
   choice (its `value` is free text) instead of a number; settled persons (`basis: settled`) have an entry with target
   `persons`. The engine checks that both sides exist.
+- **A base** (`kind: base`, [decision](decisions/bases-and-pack.md)) has
+  a slot filled by a component; a component no slot reaches whose `role`
+  is that of such a slot is an alternative for it. No list of
+  alternatives is stored. The import pack is dish files of the same shape
+  in `packages/app/data/pack/<country>/`, never a base.
 - **No `version`, no `yield`.** A classic is not a stored record, and the
   output weight is something only the cook who weighs it can know.
 

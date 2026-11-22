@@ -86,8 +86,15 @@ export interface Settled {
   target?: string;
 }
 
+/**
+ * What a shipped file is: a `base` to build one's own dishes on (components with slots, and
+ * alternatives held for a slot), or a `dish` as one source gives it. A file without `kind` is a dish.
+ */
+export type ClassicKind = 'base' | 'dish';
+
 export interface Classic {
   id: string;
+  kind?: ClassicKind;
   name: I18nText;
   originalName: string;
   country: Country;

@@ -79,5 +79,7 @@ The agent proposed bases over a full set of classics; the owner agreed
   [roadmap](../roadmap.md) describe Culina as a recipe app.
 - The [helper decision](mentor.md) carries a note that its purpose is
   replaced; its rules on sources and teaching stand.
+- How a base and the pack are marked in the data:
+  [bases and the pack](bases-and-pack.md) (2026-11-22).
 - New issue for the bases; issue 38 on hold; issue 33 (Davidis 1849)
   stands, since the German classics stay.

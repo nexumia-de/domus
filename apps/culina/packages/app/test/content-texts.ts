@@ -32,6 +32,8 @@ export const TECHNIQUE_DIR = engine('data/techniques');
 export const HANDLING_DIR = engine('data/handling');
 export const SUBSTITUTE_DIR = engine('data/substitutes');
 export const CLASSIC_DIR = app('data/classics');
+/** The import pack: dish files offered to the user, held to the same rules as the shipped ones. */
+export const PACK_DIR = app('data/pack');
 /** The fictional examples: always present, so the scan is never empty. */
 export const EXAMPLE_FILES = [
   engine('schemas/examples/technique.valid.json'),
@@ -59,11 +61,12 @@ export function textsOf(files: readonly string[]): ContentText[] {
   return out;
 }
 
-/** The texts of every shipped technique, handling rule, substitute and classic. */
+/** The texts of every shipped technique, handling rule, substitute and classic, and of the pack. */
 export const shippedTexts = (): ContentText[] =>
   textsOf([
     ...jsonFiles(TECHNIQUE_DIR),
     ...jsonFiles(HANDLING_DIR),
     ...jsonFiles(SUBSTITUTE_DIR),
     ...jsonFiles(CLASSIC_DIR),
+    ...jsonFiles(PACK_DIR),
   ]);

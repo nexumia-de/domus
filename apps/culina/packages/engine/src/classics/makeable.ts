@@ -8,6 +8,7 @@ import type { MakeableCandidate, MakeableDish, MakeableError, MakeableInput } fr
 import { rank } from '../makeable/rank';
 import { pickText } from '../text/i18n';
 import type { I18nText, Lang } from '../text/i18n';
+import { componentsInDish } from './base';
 import { deriveClassic } from './derive';
 import type { DerivedLine, DerivedSlot, DeriveErrorCode } from './derive';
 import type { Classic, Country, Course } from './types';
@@ -103,8 +104,13 @@ export function classicsMakeable(input: ClassicsMakeableInput): ClassicsMakeable
       ...(portions === undefined ? {} : { portions }),
     });
     if (!derived.ok) return { ok: false, error: { code: derived.error.code, classic: classic.id } };
-    const names = [...(classic.components ?? []).flatMap((c) => c.lines), ...classic.slots].flatMap(
-      (l) => (l.wanted === undefined || isWater(l.wanted) ? [] : [pickText(l.wanted, language)]),
+    // Only what the dish uses: the alternatives of a base are not asked for.
+    const inDish = componentsInDish(classic);
+    const lines = (classic.components ?? [])
+      .filter((c) => inDish.has(c.id))
+      .flatMap((c) => c.lines);
+    const names = [...lines, ...classic.slots].flatMap((l) =>
+      l.wanted === undefined || isWater(l.wanted) ? [] : [pickText(l.wanted, language)],
     );
     const date = '1970-01-01';
     const dish: MakeableDish = {

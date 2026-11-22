@@ -80,5 +80,30 @@ export const handlingRulesList = (): readonly HandlingRule[] =>
 export const substitutes = (): readonly Substitute[] =>
   override()?.substitutes ?? shipped.substitutes;
 
+const PACK_FORMAT = 'culina-classics-pack';
+
+/** The dishes of a pack file, or undefined if it is not one. Shape is checked at build time. */
+export const readPack = (file: unknown): readonly Classic[] | undefined => {
+  if (typeof file !== 'object' || file === null) return undefined;
+  const { format, formatVersion, classics: list } = file as Record<string, unknown>;
+  if (format !== PACK_FORMAT || formatVersion !== 1 || !Array.isArray(list)) return undefined;
+  return list as Classic[];
+};
+
+/**
+ * Fetches the import pack (classics-pack.json, precached) when the user asks for it; it is not
+ * read at start. Any failure gives no dishes, never an error.
+ */
+export const fetchPack = async (
+  fetcher: Fetcher = (url) => fetch(url),
+): Promise<readonly Classic[]> => {
+  try {
+    const response = await fetcher('classics-pack.json');
+    return (response.ok ? readPack(await response.json()) : undefined) ?? [];
+  } catch {
+    return [];
+  }
+};
+
 /** One classic by id, or `undefined`. */
 export const classicOf = (id: string): Classic | undefined => classics().find((c) => c.id === id);

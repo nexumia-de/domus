@@ -25,6 +25,7 @@ export type ContentFindingCode =
   | 'same-ingredient'
   | 'unknown-component'
   | 'unused-component'
+  | 'base-without-component'
   | 'reserved-id'
   | 'cycle'
   | 'settled-without-entry'

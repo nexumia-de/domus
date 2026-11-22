@@ -7,5 +7,7 @@ export function shippedContent(): {
   handling: unknown[];
   substitutes: unknown[];
 };
-/** Writes the generated index of the dishes the tests read; returns how many dishes it lists. */
+/** The content of dist/classics-pack.json: the dishes of the import pack. */
+export function packContent(): { format: string; formatVersion: number; classics: unknown[] };
+/** Writes the generated index of the dishes and the pack the tests read; returns how many dishes it lists. */
 export function makeClassics(): number;

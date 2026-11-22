@@ -1,6 +1,7 @@
 // Validates one technique file, handling rule file or dish file: the JSON Schema, then the engine's rules (cross
 // references, units, settled values, texts in both languages), then a derive for 2 portions.
 //   npm run validate:content -- packages/app/data/classics/de/<id>.json
+//   npm run validate:content -- packages/app/data/pack/de/<id>.json
 //   npm run validate:content -- packages/engine/data/techniques/<id>.json
 //   npm run validate:content -- packages/engine/data/handling/<id>.json
 // The engine is TypeScript, so it is bundled with esbuild into a temporary folder first.
@@ -30,12 +31,12 @@ const kind = parts.includes('techniques')
   ? 'technique'
   : parts.includes('handling')
     ? 'handling'
-    : parts.includes('classics')
+    : parts.includes('classics') || parts.includes('pack')
       ? 'classic'
       : '';
 if (kind === '') {
   console.error(
-    'The file must be in data/techniques/, data/handling/ or data/classics/<country>/.',
+    'The file must be in data/techniques/, data/handling/, data/classics/<country>/ or data/pack/<country>/.',
   );
   process.exit(2);
 }
@@ -53,6 +54,8 @@ if (!validate(doc)) {
   for (const e of validate.errors) say(`schema ${e.instancePath || '/'}: ${e.message}`);
 }
 if (basename(path) !== `${doc.id}.json`) say(`the file name must be ${doc.id}.json`);
+if (parts.includes('pack') && doc.kind === 'base')
+  say('a base belongs in data/classics/, not the pack');
 if (kind === 'classic' && basename(dirname(path)) !== doc.country) {
   say(
     `the file must be in the folder of its country (${doc.country}), not ${basename(dirname(path))}`,
