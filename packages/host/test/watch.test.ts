@@ -119,6 +119,61 @@ describe('createSyncLoop', () => {
     expect(log.runs).toBe(2);
   });
 
+  test('manual: nothing at start, no interval, no watch; asked cycles still run', async () => {
+    let signal: (() => void) | undefined;
+    const adapter = {
+      watch: (_path: string, fn: () => void) => {
+        signal = fn;
+        return () => undefined;
+      },
+    };
+    const { c, loop, log } = setup({ manual: true, adapter, path: 'p' });
+    loop.start();
+    await settle();
+    await c.advance(600_000);
+    expect(log.runs).toBe(0);
+    expect(signal).toBeUndefined();
+    expect(c.pending()).toBe(0);
+    loop.syncNow();
+    await settle();
+    expect(log.runs).toBe(1);
+    loop.poke();
+    await c.advance(2_000);
+    expect(log.runs).toBe(2);
+    await c.advance(600_000);
+    expect(log.runs).toBe(2);
+  });
+
+  test('runNow resolves with the result of its cycle; during a run it waits for one more', async () => {
+    const { loop, log, hold, release } = setup({ manual: true }, (n) => ({ ok: n !== 3 }));
+    expect(await loop.runNow()).toBe(false);
+    loop.start();
+    expect(await loop.runNow()).toBe(true);
+    expect(log.runs).toBe(1);
+    hold(true);
+    const first = loop.runNow();
+    await settle();
+    const second = loop.runNow();
+    let secondDone = false;
+    void second.then(() => (secondDone = true));
+    hold(false);
+    await release();
+    // The second request ran one more cycle after the first (n = 3, failed); both waited for it.
+    expect(await first).toBe(false);
+    expect(log.runs).toBe(3);
+    expect(secondDone).toBe(true);
+    expect(await second).toBe(false);
+    loop.stop();
+    expect(await loop.runNow()).toBe(false);
+  });
+
+  test('runNow offline runs nothing and says false', async () => {
+    const { loop, log } = setup({ manual: true, isOnline: () => false });
+    loop.start();
+    expect(await loop.runNow()).toBe(false);
+    expect(log.runs).toBe(0);
+  });
+
   test('poke waits 2 s and several pokes make one cycle', async () => {
     const { c, loop, log } = setup();
     loop.start();

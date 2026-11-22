@@ -228,7 +228,7 @@ has no screen and no framework in it.
 
 ## The loops of an app (`collection-sync.ts`)
 
-`createCollectionSync({ store, collections, adapter, now, onChange, intervalMs?, isVisible?, isOnline? })`
+`createCollectionSync({ store, collections, adapter, now, onChange, intervalMs?, manual?, isVisible?, isOnline? })`
 is what an app starts once. It reads the spaces of the device and keeps
 one loop per shared space; a run of the loop is one cycle for each of
 the app's `collections` (Mixtura and Culina `stock`, Emptio `list` and
@@ -250,7 +250,19 @@ the app's `collections` (Mixtura and Culina `stock`, Emptio `list` and
   fails with the first failure and the records a good cycle changed are
   still told.
 - `intervalMs` is the app's choice inside the decided 15 to 30 seconds
-  (default 20 s; Emptio 15 s).
+  (default 20 s).
+- `manual: true`: the loops run a cycle only when the app asks
+  (`changed`, `syncNow`, `syncSpace`): none at the start, no interval, no
+  watch. For an app that decides itself when to sync and in which order
+  with other work; Emptio since 2026-11-22, which runs its storage around
+  each KitchenOwl cycle and syncs only when opened, after a change or
+  when asked, by its owner's decision ([Emptio's sync](../../../apps/emptio/docs/behaviour.md#sync)).
+- `syncSpace(spaceId)` runs one cycle of that space and waits for it:
+  `synced`, `failed`, `device-only`, or `unknown` before `refresh` saw
+  the space. It uses the loop's `runNow()`, so it never runs beside
+  another cycle of the same space: a cycle in flight finishes, then one
+  more runs, and the answer is that last cycle's (or the failure of the
+  one in flight).
 
 ## Which space an app shows (`space-choice.ts`)
 

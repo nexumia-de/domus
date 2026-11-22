@@ -21,6 +21,8 @@ export const stringsDe: Strings = {
     nothingShownHint: 'Oben eine andere Dringlichkeit wählen.',
     addLabel: 'Was eingekauft werden soll',
     addPlaceholder: 'Etwas hinzufügen',
+    pull: 'Zum Abgleichen ziehen',
+    release: 'Loslassen zum Abgleichen',
     add: 'Hinzufügen',
     amountLabel: 'Menge (freiwillig)',
     amountPlaceholder: 'zum Beispiel 2 Packungen',
@@ -86,6 +88,11 @@ export const stringsDe: Strings = {
     theme: 'Darstellung',
     themes: { system: 'Wie das Gerät', light: 'Hell', dark: 'Dunkel' },
     notKept: 'Diese Wahl konnte auf diesem Gerät nicht gespeichert werden.',
+    sync: 'Abgleich',
+    autoSync: 'Automatisch abgleichen',
+    autoSyncHint:
+      'Beim Öffnen der App, wenn sie in den Vordergrund kommt, und kurz nach jeder Änderung. Aus: nur, wenn du die Liste nach unten ziehst oder Jetzt abgleichen wählst.',
+    syncNow: 'Jetzt abgleichen',
     about: 'Über die App',
     aboutText:
       'Die Einkaufsliste liegt auf diesem Gerät. Die App sendet nichts, außer ein Space hat einen Speicher, den der Haushalt eingerichtet hat, oder ist mit einem KitchenOwl-Server verbunden.',
@@ -122,6 +129,8 @@ export const stringsDe: Strings = {
       unauthorized: 'der Server hat das Token abgelehnt',
       'not-found': 'die Liste wurde auf dem Server nicht gefunden',
       refused: 'der Server gab eine Antwort, die diese Version nicht versteht',
+      household:
+        'der Abgleich des Haushalts ist gerade fehlgeschlagen, und KitchenOwl wartet darauf, damit keine alte Liste gesendet wird',
     },
   },
   space: { home: 'Zuhause', unnamed: 'Space ohne Namen' },

@@ -33,6 +33,8 @@ export interface CollectionSyncOptions {
   isOnline?: () => boolean;
   /** Interval between cycles while the page is in front; the loop's default (20 s) when absent. */
   intervalMs?: number;
+  /** Cycles only when the app asks (`changed`, `syncNow`, `syncSpace`); see the loop's `manual`. */
+  manual?: boolean;
   /** For tests: the loop's timers. */
   setTimer?: (fn: () => void, ms: number) => unknown;
   clearTimer?: (handle: unknown) => void;
@@ -48,6 +50,11 @@ export interface CollectionSync {
   changed(spaceId: string): void;
   /** A cycle now for every shared space (the page came to the front, the connection is back). */
   syncNow(): void;
+  /**
+   * One cycle of this space now, waited for: `synced`, `failed`, `device-only` (nothing to
+   * sync), or `unknown` before `refresh` saw the space. Never rejects.
+   */
+  syncSpace(spaceId: string): Promise<'synced' | 'failed' | 'device-only' | 'unknown'>;
   status(spaceId: string): SyncStatus | undefined;
   stop(): void;
 }
@@ -139,6 +146,7 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
       ...(options.isVisible ? { isVisible: options.isVisible } : {}),
       ...(options.isOnline ? { isOnline: options.isOnline } : {}),
       ...(options.intervalMs === undefined ? {} : { intervalMs: options.intervalMs }),
+      ...(options.manual === true ? { manual: true } : {}),
       ...(options.setTimer ? { setTimer: options.setTimer } : {}),
       ...(options.clearTimer ? { clearTimer: options.clearTimer } : {}),
     });
@@ -224,6 +232,14 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
     changed: (spaceId) => running.get(spaceId)?.loop?.poke(),
     syncNow() {
       for (const entry of running.values()) entry.loop?.syncNow();
+    },
+    async syncSpace(spaceId) {
+      const entry = running.get(spaceId);
+      if (entry === undefined) return 'unknown';
+      if (entry.deviceOnly) return 'device-only';
+      // No loop: the storage could not be used.
+      if (entry.loop === undefined) return 'failed';
+      return (await entry.loop.runNow().catch(() => false)) ? 'synced' : 'failed';
     },
     status(spaceId) {
       const entry = running.get(spaceId);

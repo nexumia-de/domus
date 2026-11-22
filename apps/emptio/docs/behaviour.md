@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Behaviour as built
-description: What the shopping list does since 2026-11-20 - the list at home with the add field, suggestions, ticking and clearing with Undo, the entry screen, categories, settings, which space's list is shown, how a shared list is kept in step (15 seconds, two seconds after a change), offline, what the tests and browser checks prove and what they do not, and what is not built.
+description: What the shopping list does since 2026-11-20 - the list at home with the add field, suggestions, ticking and clearing with Undo, the entry screen, categories, settings, which space's list is shown, how a shared list is kept in step (at the start, at the front, two seconds after a change, by pulling or Sync now; a switch), offline, what the tests and browser checks prove and what they do not, and what is not built.
 tags: [behaviour, screens, list, sync, spaces, offline, tests]
 generated: { by: claude-code, at: 2026-11-20 }
 sources:
@@ -143,19 +143,40 @@ setting (`emptio.space` in localStorage).
 
 # Sync
 
-The app has no sync code of its own. `createCollectionSync` of the host
-package[^host] runs one loop per shared space on the collections `list`
-and `list-categories`:
+The app syncs when it is opened and when a person acts, not on a timer
+(owner's decision of 2026-11-22, instead of every 15 seconds). One
+**run** goes through every space of the device, one after the other:
 
-- at the start, **every 15 seconds** while the page is in front (the
-  short end of the decided 15 to 30 seconds[^decision], because a list is
-  read while shopping together), two seconds after a change, when the
-  page comes to the front and when the connection is back; a back-off
-  after failures;
-- reading uses the storage's cheap polling (GitHub: `If-None-Match`);
-- the status of the shown space stands above the list in a few words;
-  fixing a failure (a new token, another storage) is the Household
-  app's.
+1. the space with its storage (`syncSpace` of the host package's
+   `createCollectionSync`[^host] in manual mode, on the collections
+   `list`, `list-categories` and `kitchenowl`);
+2. the [KitchenOwl](kitchenowl.md) cycle, if the space is connected; it
+   is skipped when step 1 failed, so it never works on an old list;
+3. the storage again, if the KitchenOwl cycle changed the space.
+
+One run at a time; a request during a run gives one more run after it.
+
+**Sync automatically** (Settings on the web, Preferences on Linux; on
+unless this device turned it off, key `emptio.autoSync`): a run at the
+start, when the page or window comes to the front, when the connection
+is back, and two seconds after a change (several changes make one run).
+Off: nothing is sent until the person asks; changes stay on the device.
+
+Asking for a run, whatever the switch says:
+
+- pull the list down from its top (web: a touch gesture on the list, with
+  a hint "Pull to sync"/"Release to sync"; Linux: the list's
+  `edge-overshot` at the top, with a toast);
+- **Sync now**: in Settings and in the details of the header's sync icon
+  (web), in the main menu with Ctrl+R (Linux), and in the KitchenOwl group.
+
+The gesture is for touch only; the buttons serve a mouse, a keyboard and
+a screen reader. Reading uses the storage's cheap conditional read (GitHub:
+`If-None-Match`). The status of the shown space is the header's sync
+icon; fixing a failure (a new token, another storage) is the Household
+app's. The decided freshness of 15 to 30 seconds[^decision] does not
+hold for Emptio any more: what another device changed is seen when the
+app comes to the front or the person pulls.
 
 Every action works out its change inside one atomic step from the
 records as stored at that moment (`localChange`), never from what a
@@ -164,9 +185,8 @@ cycle or another tab in between is not overwritten and fields this app
 does not know are kept. The orderings are in
 [list orderings](list-orderings.md).
 
-A space connected to KitchenOwl also has the collection `kitchenowl`
-in the loop, and its list is kept in step with the KitchenOwl list on
-the same 15 seconds ([KitchenOwl sync](kitchenowl.md)).
+A space connected to KitchenOwl keeps its list in step with the
+KitchenOwl list in step 2 of every run ([KitchenOwl sync](kitchenowl.md)).
 
 # Offline and installing
 
@@ -193,8 +213,10 @@ has a storage no request leaves the address.
   tap targets of 44 px, no horizontal overflow, Tab reaches every
   control, real IndexedDB across a reload, offline with the service
   worker, and two browser contexts sharing a space against a fake of
-  GitHub's API (sealed files, a tick arriving without a reload within
-  the polling time, the token going to that host only).
+  GitHub's API (sealed files, no read without a request, a tick arriving
+  without a reload after the list is pulled down by dispatched touch
+  events, the token going to that host only), and the switch _Sync
+  automatically_ (44 px, kept on the device).
   The frame is checked in a low Chromium window only (header and
   add field stay, only the content scrolls). Also checked: the header
   per page with back arrow, the sync icon and its error banner with

@@ -29,7 +29,8 @@ are sub-issues of it; there are no milestones
    shared catalogue.
 2. **Shared.** Built on 2026-11-20: the list is two collections of a
    space, sealed, over storage the household configured in the
-   Household app, read again every 15 seconds. Not run against a real
+   Household app, read again every 15 seconds (since 2026-11-22 when
+   opened, after a change or when asked). Not run against a real
    storage yet. From here it can replace KitchenOwl in the household,
    which is why it comes before stores.
 

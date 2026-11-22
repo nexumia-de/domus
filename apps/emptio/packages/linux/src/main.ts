@@ -101,6 +101,7 @@ application.connect('activate', () => {
   };
 
   const menu = new Gio.Menu();
+  menu.append(t.settings.syncNow, 'app.sync');
   menu.append(n.menu.categories, 'app.categories');
   menu.append(n.menu.preferences, 'app.preferences');
   menu.append(n.menu.about, 'app.about');
@@ -118,6 +119,8 @@ application.connect('activate', () => {
     made.connect('activate', run);
     application.add_action(made);
   };
+  action('sync', () => void app.syncNow());
+  application.set_accels_for_action('app.sync', ['<Control>r']);
   action('categories', () => push(categoriesPage(ui)));
   action('preferences', () => showPreferences(ui, store));
   action('about', () => {

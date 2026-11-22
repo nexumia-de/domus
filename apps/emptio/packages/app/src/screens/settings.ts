@@ -2,7 +2,7 @@
 // KitchenOwl list of the shown space, language,
 // appearance, and what the app is.
 import { STARTING_CATEGORIES_SOURCE } from '@emptio/engine';
-import { h } from '../dom';
+import { button, h } from '../dom';
 import { householdHref } from '../env';
 import { statusText } from '../list/status';
 import {
@@ -97,6 +97,39 @@ export function settingsScreen(ctx: Ctx): Screen {
     return h('label', { class: 'form-field' }, h('span', { class: 'form-label' }, label), node);
   }
 
+  // Whether the app syncs by itself (docs/behaviour.md#sync); the choice of this device.
+  const auto = h('input', {
+    type: 'checkbox',
+    role: 'switch',
+    class: 'switch',
+    id: 'auto-sync',
+    'aria-describedby': 'auto-sync-hint',
+    checked: app.autoSync(),
+  });
+  auto.addEventListener('change', () => {
+    notKept.hidden = app.setAutoSync(auto.checked);
+    notKept.textContent = t.settings.notKept;
+  });
+  const syncSection = [
+    h('h2', {}, t.settings.sync),
+    h(
+      'label',
+      { class: 'switch-row' },
+      h(
+        'span',
+        { class: 'switch-text' },
+        h('span', { class: 'switch-name' }, t.settings.autoSync),
+        h('span', { class: 'switch-hint', id: 'auto-sync-hint' }, t.settings.autoSyncHint),
+      ),
+      auto,
+    ),
+    h(
+      'p',
+      {},
+      button(t.settings.syncNow, () => void app.syncNow()),
+    ),
+  ];
+
   const node = h(
     'div',
     { class: 'screen screen-settings' },
@@ -104,6 +137,7 @@ export function settingsScreen(ctx: Ctx): Screen {
     h('p', { class: 'muted' }, t.settings.spacesIntro),
     spaces,
     h('p', {}, h('a', { class: 'plain-link', href: householdHref() }, t.settings.household)),
+    ...syncSection,
     kitchenowl.node,
     h('h2', {}, t.settings.language),
     select<LangChoice>(
@@ -139,6 +173,7 @@ export function settingsScreen(ctx: Ctx): Screen {
   drawSpaces();
   const update = (): void => {
     drawSpaces();
+    auto.checked = app.autoSync();
     kitchenowl.update();
   };
   return { node, title: () => t.settings.title, update };

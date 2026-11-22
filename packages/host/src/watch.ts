@@ -1,7 +1,7 @@
 // When to run a sync cycle, without a screen or a UI framework: on start,
 // on an interval (or on the storage's own change signal), after a local
 // change (debounced), never two at once, with a back-off after failures.
-// Every timer is injected. See docs/spaces.md.
+// In manual mode only when asked. Every timer is injected. See docs/spaces.md.
 import type { StorageAdapter } from '@nexumia-de/materia';
 
 export interface SyncLoopOptions {
@@ -18,6 +18,11 @@ export interface SyncLoopOptions {
   isVisible?: () => boolean;
   /** Nothing runs while this says false; the interval tries again later. */
   isOnline?: () => boolean;
+  /**
+   * Cycles run only when asked (`poke`, `syncNow`, `runNow`): none at start, no interval, no
+   * watch. For an app that decides itself when to sync (Emptio, docs/spaces.md).
+   */
+  manual?: boolean;
 }
 
 export interface SyncLoop {
@@ -29,6 +34,12 @@ export interface SyncLoop {
   poke(): void;
   /** Asks for a cycle now (for example when the page comes to the front). */
   syncNow(): void;
+  /**
+   * A cycle now, waited for; resolves with whether the last cycle of the run went through. A cycle
+   * in flight finishes first and one more runs after it (unless the one in flight fails, which is
+   * then the answer). False when stopped or offline.
+   */
+  runNow(): Promise<boolean>;
 }
 
 export const DEFAULT_INTERVAL_MS = 20_000;
@@ -46,10 +57,15 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
   const watching = options.adapter?.watch !== undefined && options.path !== undefined;
   const base = watching ? Math.max(intervalMs, WATCH_SAFETY_MS) : intervalMs;
 
+  const manual = options.manual === true;
   let started = false;
   let running = false;
   let again = false;
   let failures = 0;
+  /** Whether the last cycle went through. */
+  let lastOk = false;
+  /** The run of cycles in flight; a request during it is served by its last cycle. */
+  let inflight: Promise<void> | undefined;
   let tick: unknown;
   let poke: unknown;
   let unwatch: (() => void) | undefined;
@@ -61,7 +77,7 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
   };
 
   const scheduleTick = (): void => {
-    if (!started) return;
+    if (!started || manual) return;
     if (tick !== undefined) clearTimer(tick);
     const delay = Math.min(MAX_BACKOFF_MS, base * 2 ** failures);
     // After failures the back-off applies even to the safety interval, up to its cap.
@@ -75,17 +91,23 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
     );
   };
 
-  const cycle = async (): Promise<void> => {
-    if (!started) return;
+  const cycle = (): Promise<void> => {
+    if (!started) return Promise.resolve();
     if (running) {
       again = true;
-      return;
+      return inflight ?? Promise.resolve();
     }
     if (options.isOnline && !options.isOnline()) {
+      lastOk = false;
       scheduleTick();
-      return;
+      return Promise.resolve();
     }
     running = true;
+    inflight = runCycles();
+    return inflight;
+  };
+
+  const runCycles = async (): Promise<void> => {
     try {
       for (;;) {
         again = false;
@@ -99,6 +121,7 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
           ok = false;
         }
         failures = ok ? 0 : failures + 1;
+        lastOk = ok;
         if (!started) return;
         if (pending) schedulePoke();
         // A request that came during the run runs once now; after a failure
@@ -107,6 +130,7 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
       }
     } finally {
       running = false;
+      inflight = undefined;
     }
     scheduleTick();
   };
@@ -125,6 +149,7 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
       if (started) return;
       started = true;
       failures = 0;
+      if (manual) return;
       if (watching && options.adapter?.watch && options.path !== undefined) {
         unwatch = options.adapter.watch(options.path, () => {
           if (!options.isVisible || options.isVisible()) void cycle();
@@ -142,6 +167,12 @@ export function createSyncLoop(options: SyncLoopOptions): SyncLoop {
     poke: schedulePoke,
     syncNow() {
       void cycle();
+    },
+    async runNow() {
+      if (!started) return false;
+      if (options.isOnline && !options.isOnline()) return false;
+      await cycle();
+      return started && lastOk;
     },
   };
 }

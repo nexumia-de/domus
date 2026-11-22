@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22
+
+- **Manual loops**: `createSyncLoop` and `createCollectionSync` take `manual: true` (cycles only when asked: no start cycle, no interval, no watch); the loop has `runNow()` and the collection sync `syncSpace(spaceId)`, both waited for, so an app can put its own work between two cycles of a space. New options and exports only; Mixtura and Culina are unchanged. First user: Emptio, which syncs its storage before and after each KitchenOwl cycle. [Spaces](spaces.md#the-loops-of-an-app-collection-syncts), [orderings](sync-orderings.md). Three tests in `watch.test.ts`, one in `collection-sync.test.ts`.
+
 ## 2026-11-21 (frame, Mixtura)
 
 - **Frame extended for Mixtura**: `back` of the header may run a handler (`{ run }`) instead of linking, and header actions take attributes and any app-drawn icon; icon `add`; `worstStatus` for an app that shows several spaces; `--toast-bottom` and `--toast-z` tokens; `hidden` wins over the display of the banner, icon button and subtitle (before, a hidden banner showed in an app without a global `[hidden]` rule). Emptio unchanged in use. [Frame](frame.md). `test/frame.test.ts` pins `worstStatus`.

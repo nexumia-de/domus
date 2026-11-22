@@ -8,6 +8,8 @@ export const KEYS = {
   /** The urgencies shown on the list, as "now,soon" (the choice of this device only). */
   shown: 'emptio.shown',
   sort: 'emptio.sort',
+  /** `off` when the app syncs only when asked (docs/behaviour.md#sync); on otherwise. */
+  autoSync: 'emptio.autoSync',
 } as const;
 
 export const THEMES = ['system', 'light', 'dark'] as const;
@@ -51,6 +53,9 @@ export function browserPrefs(): Prefs {
     return prefsOn(null);
   }
 }
+
+/** Syncing by itself is on unless this device turned it off. */
+export const autoSyncOf = (value: unknown): boolean => value !== 'off';
 
 export const themeOf = (value: unknown): Theme => THEMES.find((t) => t === value) ?? 'system';
 export const langChoiceOf = (value: unknown): LangChoice =>

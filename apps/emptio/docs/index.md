@@ -15,7 +15,7 @@ links. Change history is in [log.md](log.md).
 
 # Specifications
 
-- [Behaviour as built](behaviour.md) - The list, an entry, categories, settings, which space is shown, sync every 15 seconds, offline, what is checked and what is not built.
+- [Behaviour as built](behaviour.md) - The list, an entry, categories, settings, which space is shown, sync when opened, after a change or when asked, offline, what is checked and what is not built.
 - [KitchenOwl sync](kitchenowl.md) - Two-way sync of a space's list with a KitchenOwl list: mapping, links, one cycle, setup, CORS for the web app, the API calls, what is lost and not proven.
 - [Native Linux app](native-linux.md) - The GTK 4 and libadwaita app on GJS: what it shares with the web app, what GJS lacks and how it is filled, pages, joining a space, build, packaging, what is not checked.
 
