@@ -37,14 +37,21 @@
   <screenshots>
     <screenshot type="default">
       <caption>The shopping list, sorted by when it is needed</caption>
-      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.0/list-phone-light.png</image>
+      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.1/list-phone-light.png</image>
     </screenshot>
     <screenshot>
       <caption>The shopping list, sorted by when it is needed</caption>
-      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.0/list-desktop-light.png</image>
+      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.1/list-desktop-light.png</image>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.2.1" date="2026-11-22">
+      <description>
+        <ul>
+          <li>The KitchenOwl server address is no longer refused as "no web address" in the Linux app.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-11-22">
       <description>
         <ul>
