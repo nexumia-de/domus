@@ -34,7 +34,9 @@ are sub-issues of it; there are no milestones
    which is why it comes before stores.
 
    Beside the goals: a **native Linux app** in GJS since 2026-11-20
-   ([native Linux app](native-linux.md)).
+   ([native Linux app](native-linux.md)), and since 2026-11-22 **sync
+   with KitchenOwl**, both ways, so the household can use both apps
+   side by side ([KitchenOwl sync](kitchenowl.md)).
 
 3. **Stores.** Stores with the default route of their chain (Rewe,
    Aldi, Rossmann, a general one), "I am at", hiding what a store does

@@ -40,6 +40,8 @@ if (root) {
     adapter: (storage) => adapterFor(storage, { apiBase: GITHUB_API }),
     isVisible: () => document.visibilityState !== 'hidden',
     isOnline,
+    // Only to the KitchenOwl server a space was connected to (docs/kitchenowl.md).
+    fetch: (url, init) => globalThis.fetch(url, init),
   });
 
   // What was said last: a short toast over the lower edge of the content, with Undo where there

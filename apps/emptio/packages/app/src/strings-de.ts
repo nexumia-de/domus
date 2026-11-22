@@ -88,9 +88,41 @@ export const stringsDe: Strings = {
     notKept: 'Diese Wahl konnte auf diesem Gerät nicht gespeichert werden.',
     about: 'Über die App',
     aboutText:
-      'Die Einkaufsliste liegt auf diesem Gerät. Die App sendet nichts, außer ein Space hat einen Speicher, den der Haushalt eingerichtet hat.',
+      'Die Einkaufsliste liegt auf diesem Gerät. Die App sendet nichts, außer ein Space hat einen Speicher, den der Haushalt eingerichtet hat, oder ist mit einem KitchenOwl-Server verbunden.',
     licence: 'Freie Software unter der Lizenz AGPL-3.0-or-later.',
     categoriesSource: 'Anfangskategorien:',
+  },
+  kitchenowl: {
+    title: 'KitchenOwl',
+    intro: (space: string) =>
+      `Hält die Liste von ${space} mit einer Liste deines KitchenOwl-Servers gleich: Was auf einer Liste dazukommt oder abgehakt wird, kommt auch auf der anderen dazu oder wird abgehakt. Priorität, Kategorie und Notiz bleiben in der Einkaufsliste. Jedes Gerät des Spaces macht mit.`,
+    address: 'Serveradresse',
+    token: 'Langlebiges Token',
+    tokenHint: 'Wird in den Einstellungen deines KitchenOwl-Kontos erstellt.',
+    check: 'Prüfen',
+    checking: 'Wird geprüft …',
+    household: 'Haushalt',
+    list: 'Liste',
+    connect: 'Verbinden',
+    connected: (list: string, address: string) => `Verbunden mit ${list} auf ${address}.`,
+    syncNow: 'Jetzt abgleichen',
+    disconnect: 'Trennen',
+    disconnected: 'KitchenOwl getrennt. Die Liste bleibt, wie sie ist.',
+    undo: 'Rückgängig',
+    badAddress: 'Das ist keine Webadresse. Sie beginnt mit https://',
+    noLists: 'Dieser Haushalt hat keine Liste.',
+    status: {
+      never: 'Noch nicht abgeglichen',
+      inStep: (ago: string) => `Abgeglichen ${ago}`,
+      failed: (why: string) => `Letzter Abgleich fehlgeschlagen: ${why}`,
+    },
+    failures: {
+      unreachable:
+        'der Server war nicht erreichbar. Im Browser muss der Server diese Adresse erlauben (CORS).',
+      unauthorized: 'der Server hat das Token abgelehnt',
+      'not-found': 'die Liste wurde auf dem Server nicht gefunden',
+      refused: 'der Server gab eine Antwort, die diese Version nicht versteht',
+    },
   },
   space: { home: 'Zuhause', unnamed: 'Space ohne Namen' },
   status: {
