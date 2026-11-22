@@ -8,8 +8,10 @@ import { listStore } from './editor-helpers.mjs';
 import { check, distDir, watch } from './harness.mjs';
 import { overflow, smallTargets } from './measure.mjs';
 
-const content = JSON.parse(readFileSync(`${distDir}classics.json`, 'utf8'));
-const TOTAL = content.classics.reduce((n, c) => n + (c.components ?? []).length, 0);
+// Read when the checks run, after the build: run.mjs imports every check before it builds dist/.
+let shipped;
+const content = () => (shipped ??= JSON.parse(readFileSync(`${distDir}classics.json`, 'utf8')));
+const total = () => content().classics.reduce((n, c) => n + (c.components ?? []).length, 0);
 // Snow eggs: a component whose line names another (the custard), with no wanted line.
 const DISH = 'oeufs-a-la-neige';
 const KEEPABLE = `${DISH}.snow-eggs`;
@@ -34,8 +36,8 @@ const phone = async (browser, origin) => {
   await page.locator(shippedRows).first().waitFor();
   const metas = await texts(page, `${shippedRows} .entry-meta`);
   check(
-    TOTAL > 0 && metas.length === TOTAL,
-    `${label}: every component of the shipped dishes is listed (${metas.length} of ${TOTAL})`,
+    total() > 0 && metas.length === total(),
+    `${label}: every component of the shipped dishes is listed (${metas.length} of ${total()})`,
   );
   check(
     metas.every((m) => m.split(' · ').includes('Shipped')),
@@ -59,7 +61,7 @@ const phone = async (browser, origin) => {
   await from.selectOption('shipped');
   check(
     (await page.locator('.notebook-group-heading').count()) === 0 &&
-      (await page.locator(shippedRows).count()) === TOTAL &&
+      (await page.locator(shippedRows).count()) === total() &&
       (await page.getByRole('button', { name: 'Add example data' }).count()) === 0,
     `${label}: "Shipped" leaves the notebook's group out`,
   );
@@ -70,7 +72,7 @@ const phone = async (browser, origin) => {
   );
   await from.selectOption('');
 
-  const dishName = content.classics.find((c) => c.id === DISH).name.en;
+  const dishName = content().classics.find((c) => c.id === DISH).name.en;
   await page.getByLabel('Search by name').fill(dishName.slice(0, 12).toUpperCase());
   check(
     (await texts(page, `${shippedRows} .entry-name`)).join('|') === 'Snow eggs|Custard',
@@ -174,7 +176,7 @@ const german = async (browser, origin) => {
   await page.locator(shippedRows).first().waitFor();
   const metas = await texts(page, `${shippedRows} .entry-meta`);
   check(
-    metas.length === TOTAL && metas.every((m) => m.split(' · ').includes('Mitgeliefert')),
+    metas.length === total() && metas.every((m) => m.split(' · ').includes('Mitgeliefert')),
     `${label}: each shipped row is marked "Mitgeliefert" (${metas[0]})`,
   );
   await open(page, origin, `components/${KEEPABLE}`);
