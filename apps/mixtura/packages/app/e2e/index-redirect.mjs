@@ -31,7 +31,7 @@ expect(redirected === true, 'index.html was precached through the redirect (the 
 
 const opens = async (path, label) => {
   const response = await page.goto(`${site.url}${path}`, { waitUntil: 'load' });
-  await page.locator('nav.nav').waitFor();
+  await page.locator('.fr-header h1').waitFor();
   expect(response?.status() === 200, `${label}: the app opens`);
 };
 await opens('index.html#/settings', 'online, index.html');

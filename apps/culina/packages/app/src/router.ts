@@ -1,6 +1,8 @@
 /**
- * Hash router: the start screen #/start, the classics #/classics/<country> and #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
- * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, and the
+ * Hash router: the start screen #/start, the old addresses #/classics[/<country>] (redirected to
+ * #/dishes by main.ts), the classic #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
+ * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, the random pick
+ * #/dishes/random, and the
  * history screens #/components/<id>/history, #/dishes/<id>/history, the import screen
  * #/settings/import, the stock screens #/stock, #/stock/add and #/stock/<id>/edit, and the
  * finder #/cook, #/cook/use-up and #/cook/<ingredientId>/with. The back stack is the browser
@@ -20,13 +22,42 @@ export const ROUTES = [
 export type Route = (typeof ROUTES)[number];
 export const DEFAULT_ROUTE: Route = 'start';
 
-/** The entries of the navigation: the stock screens belong to Cook, so Stock has none of its own. */
-export const NAV_ENTRIES = ['start', 'ratios', 'components', 'dishes', 'cook', 'settings'] as const;
+/**
+ * The four destinations of the navigation. Settings is not one of them: it is the gear in the header
+ * (and the last entry of the side rail). The finder and the stock screens belong to Cook, the
+ * components and every dish (own or shipped, with its cooking mode) to the Notebook.
+ */
+export const NAV_ENTRIES = ['start', 'cook', 'notebook', 'ratios'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
 
-/** The navigation entry a route is shown under: the classics belong to Start. */
-export const navEntryFor = (route: Route): NavEntry =>
-  route === 'stock' ? 'cook' : route === 'classics' || route === 'classic' ? 'start' : route;
+/** The route a navigation entry opens; the Notebook opens on its Components section. */
+export const NAV_ROUTE: Record<NavEntry, Route> = {
+  start: 'start',
+  cook: 'cook',
+  notebook: 'components',
+  ratios: 'ratios',
+};
+
+/** The destination a route is shown under; Settings (the gear) is none of them. */
+export const navEntryFor = (route: Route): NavEntry | undefined => {
+  switch (route) {
+    case 'start':
+      return 'start';
+    case 'cook':
+    case 'stock':
+      return 'cook';
+    // A shipped dish is a dish like an own one (one list, one dish screen): under the Notebook.
+    case 'classics':
+    case 'classic':
+    case 'components':
+    case 'dishes':
+      return 'notebook';
+    case 'ratios':
+      return 'ratios';
+    case 'settings':
+      return undefined;
+  }
+};
 
 /** The second segment of the cook route that is a view, not an ingredient. */
 export const USE_UP = 'use-up';
@@ -43,13 +74,14 @@ const WITH_PARAM: readonly Route[] = [
 ];
 
 /** The editors: a new record, or the record in `param` edited; `with`: the finder from one ingredient. */
-export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with' | 'cook';
+export type Action = 'new' | 'edit' | 'history' | 'import' | 'add' | 'with' | 'cook' | 'random';
 const WITH_ACTION: readonly Route[] = ['components', 'dishes'];
 
 export const hashFor = (route: Route, param?: string, action?: Action): string => {
   if (action === 'new') return `#/${route}/new`;
   if (action === 'import') return `#/${route}/import`;
   if (action === 'add') return `#/${route}/add`;
+  if (action === 'random') return `#/${route}/random`;
   if (!param) return `#/${route}`;
   const base = `#/${route}/${encodeURIComponent(param)}`;
   return action === 'edit' || action === 'history' || action === 'with' || action === 'cook'
@@ -91,6 +123,12 @@ export const actionFromHash = (hash: string): Action | undefined => {
   if (!WITH_ACTION.includes(routeFromHash(hash))) return undefined;
   const [, second, third] = segments(hash);
   if (second === 'new' && third === undefined) return 'new';
+  // #/dishes/random: a dish put together by chance. Like `new`, the word is not an id.
+  if (second === 'random' && third === undefined && routeFromHash(hash) === 'dishes') {
+    return 'random';
+  }
+  // #/components/<id>/cook and #/dishes/<id>/cook: an own component or dish step by step.
+  if (second && third === 'cook') return 'cook';
   return second && (third === 'edit' || third === 'history') ? third : undefined;
 };
 
@@ -98,7 +136,8 @@ export const actionFromHash = (hash: string): Action | undefined => {
 export const paramFromHash = (hash: string): string | undefined => {
   if (!WITH_PARAM.includes(routeFromHash(hash))) return undefined;
   const raw = segments(hash)[1];
-  if (!raw || actionFromHash(hash) === 'new' || actionFromHash(hash) === 'add') return undefined;
+  const action = actionFromHash(hash);
+  if (!raw || action === 'new' || action === 'add' || action === 'random') return undefined;
   try {
     return decodeURIComponent(raw);
   } catch {
@@ -122,14 +161,29 @@ export interface Navigation {
   initial: boolean;
 }
 
-/** Calls `onRoute` now and on every hash change; rewrites an unknown hash to the real route. */
-export const startRouter = (host: RouterHost, onRoute: (navigation: Navigation) => void): void => {
+/**
+ * An old address that stands for another: it may do its own work (store a choice) and gives the
+ * hash to show instead, or undefined to keep the address.
+ */
+export type Redirect = (route: Route, param: string | undefined) => string | undefined;
+
+/**
+ * Calls `onRoute` now and on every hash change; rewrites an unknown hash to the real route, and an
+ * address `redirect` replaces to its new one, both without a new history entry.
+ */
+export const startRouter = (
+  host: RouterHost,
+  onRoute: (navigation: Navigation) => void,
+  redirect?: Redirect,
+): void => {
   const go = (initial: boolean): void => {
-    const route = routeFromHash(host.location.hash);
-    const param = paramFromHash(host.location.hash);
-    const action = actionFromHash(host.location.hash);
+    const asked = host.location.hash;
+    const hash = redirect?.(routeFromHash(asked), paramFromHash(asked)) ?? asked;
+    const route = routeFromHash(hash);
+    const param = paramFromHash(hash);
+    const action = actionFromHash(hash);
     const canonical = hashFor(route, param, action);
-    if (host.location.hash !== canonical) host.history.replaceState(null, '', canonical);
+    if (asked !== canonical) host.history.replaceState(null, '', canonical);
     onRoute({
       route,
       ...(param === undefined ? {} : { param }),

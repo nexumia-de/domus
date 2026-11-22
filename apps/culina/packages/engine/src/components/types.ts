@@ -25,12 +25,26 @@ export interface ComponentLine {
   key?: string;
 }
 
+/**
+ * How long a made component keeps in one place, and how: "in portions, airtight". Every entry has
+ * a source; the user's own entry is `user`.
+ */
+export interface KeepEntry {
+  storage: 'pantry' | 'fridge' | 'freezer';
+  days: number;
+  source: string;
+  /** How it is kept, in the user's words. */
+  note?: string;
+}
+
 /** A component: lines, the weighed output and the role whose mass is 100 percent. */
 export interface Component {
   id: string;
   /** Role whose summed mass (lines not in percent) is 100 percent for percent lines. */
   percentBase?: string;
   lines: readonly ComponentLine[];
+  /** How long it keeps once made, per storage place; absent when nothing is recorded. */
+  keeps?: readonly KeepEntry[];
   /** Steps with bilingual text; the stored `method` text stays valid beside them. */
   steps?: readonly Step[];
   /** The output weight as weighed; absent when unknown. There is no default. */
@@ -79,9 +93,28 @@ export interface LineGrams {
   g: number;
 }
 
+/**
+ * A line whose amount is written but cannot be converted to grams, because its ingredient lacks
+ * the fact the unit needs (a density for a volume, a piece weight for a count). It is kept out of
+ * the sums, as a line without amount is, and never guessed.
+ */
+export interface UnconvertedIndex {
+  index: number;
+  /** `needs-density`, `needs-unit-weight` or `not-convertible` (with `missing`). */
+  cause: ConvertError;
+}
+
 /** Result of `componentLineGrams`. */
 export type LinesResult =
-  { ok: true; lines: LineGrams[]; unmeasured: number[]; inputG: number } | ComponentFail;
+  | {
+      ok: true;
+      lines: LineGrams[];
+      unmeasured: number[];
+      /** Lines with an amount that lacks the fact to convert it; not in `inputG`. */
+      unconverted: UnconvertedIndex[];
+      inputG: number;
+    }
+  | ComponentFail;
 
 /** An ingredient in the expansion, aggregated by id, state and role. */
 export interface RawIngredient {
@@ -98,10 +131,21 @@ export interface UnmeasuredLine {
   ref: ComponentRef;
 }
 
+/** A line somewhere in the tree whose amount cannot be converted to grams (see `UnconvertedIndex`). */
+export interface UnconvertedLine extends UnmeasuredLine {
+  cause: ConvertError;
+}
+
 /** Options of `expandComponent`. */
 export interface ExpandOptions {
   /** Output weight wanted in grams; absent: one run of the recipe as written. */
   outputG?: number;
+  /**
+   * What a component without a recorded yield weighs when one is needed. Absent: nothing is
+   * assumed and it is `no-yield`. `'input'`: one run is taken as weighing what went in (its
+   * measured lines), and the component is listed in `unweighed`.
+   */
+  withoutYield?: 'input';
 }
 
 /** Result of `expandComponent`. */
@@ -111,6 +155,10 @@ export type ExpandResult =
       raw: RawIngredient[];
       rawG: number;
       unmeasured: UnmeasuredLine[];
+      /** Lines anywhere in the tree whose amount lacks the fact to convert it; not in `raw`. */
+      unconverted: UnconvertedLine[];
+      /** Components taken as weighing their input (`withoutYield: 'input'`), in first-seen order. */
+      unweighed: string[];
       /** Multiple of one run: 1 without `outputG`. */
       factor: number;
     }
@@ -122,7 +170,14 @@ export type YieldFigures =
 
 /** Result of `componentYield`. */
 export type YieldResult =
-  { ok: true; inputG: number; unmeasured: number[]; yield: YieldFigures } | ComponentFail;
+  | {
+      ok: true;
+      inputG: number;
+      unmeasured: number[];
+      unconverted: UnconvertedIndex[];
+      yield: YieldFigures;
+    }
+  | ComponentFail;
 
 /** Result of the portion functions. */
 export type PortionsResult =

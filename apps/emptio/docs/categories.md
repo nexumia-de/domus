@@ -1,7 +1,7 @@
 ---
 type: Reference
-title: Starting categories and household goods
-description: The 19 categories a household starts with, in English and German, curated by the project; how the food groups of the USDA data map to them; usual household goods that are in no food catalogue; and the third-party taxonomies that were looked at and not used.
+title: Starting categories and usual items
+description: The 19 categories a household starts with, in English and German, curated by the project; how the food groups of the USDA data map to them; the list of usual items that gives a typed name its category; and the third-party taxonomies that were looked at and not used.
 tags: [categories, data, licences, household-goods]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -19,7 +19,7 @@ sources:
     url: ../../culina/tools/catalogue/derive.mjs
 ---
 
-# Starting categories and household goods
+# Starting categories and usual items
 
 # The categories
 
@@ -106,21 +106,27 @@ produce, flour is in "Cereal Grains and Pasta" but belongs to
 `baking`). The catalogue package therefore needs a category per food
 with the group as the default and exceptions by hand.
 
-# Household goods
+# Usual items
 
-In no food catalogue. A starting list for the search, curated by the
-project like the categories (own work, same licence); it becomes data
-of the app with the adding screen (issue 16).
+`packages/engine/data/usual-items.json`: per category the names of what
+a household usually buys, in German and English (about 750 names), foods
+and household goods alike. A typed name that the household never had
+gets its category from this list
+([rule 4](engine-rules.md#4-category-of-a-new-entry)); it is not offered
+as a suggestion. It stands in for the shared food catalogue
+([architecture](architecture.md#catalogue)) until that exists, and stays
+for household goods, which are in no food catalogue.
 
-| Category    | Items                                                                                                                                           |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cleaning`  | Dish soap, dishwasher tabs, laundry detergent, fabric softener, all-purpose cleaner, toilet cleaner, sponges                                    |
-| `household` | Toilet paper, kitchen roll, tissues, bin bags, freezer bags, baking paper, aluminium foil, cling film, batteries, light bulbs, candles, matches |
-| `care`      | Toothpaste, toothbrushes, shower gel, shampoo, soap, deodorant, razor blades, cotton pads, plasters, sunscreen                                  |
-| `baby`      | Nappies, wet wipes                                                                                                                              |
-| `pets`      | Cat food, dog food, cat litter                                                                                                                  |
+**Source and licence**: curated by the project on 2026-11-20 from what
+German households usually buy in supermarkets and drugstores; own work
+under the repository's licence, stated in the file. Nothing was taken
+from another list. The German names are not yet reviewed by a native
+speaker.
 
-German names follow with the German texts of the app.
+A name stands under one category only; the engine's tests check that,
+and that every name of the list is found under its own category by the
+rule. What the list does not know stays in Other until the household
+gives it a category once.
 
 # Looked at and not used
 

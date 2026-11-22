@@ -25,6 +25,11 @@ export default tseslint.config(
     languageOptions: { globals: globals.node },
   },
   {
+    // Playwright scripts pass functions to the page, so they see browser globals too.
+    files: ['packages/app/e2e/**/*.mjs', 'packages/linux/scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+  {
     files: ['packages/engine/src/**/*.ts'],
     rules: {
       'no-console': 'error',

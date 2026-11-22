@@ -1,0 +1,33 @@
+{
+  "id": "expand-error-no-yield-without-option",
+  "description": "Without withoutYield nothing is assumed for a component without yield",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "output_g": 224,
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 400,
+              "unit": "g"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "error_code": "no-yield",
+  "error_detail": {
+    "componentId": "sauce",
+    "path": ["sauce"]
+  },
+  "tolerance": 1e-6,
+  "source": "The default: a weight wanted of a component that has no recorded yield is no-yield. Synthetic."
+}

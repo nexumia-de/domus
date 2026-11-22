@@ -1,4 +1,5 @@
-// The four top-level destinations, always in this order.
+// The top-level destinations: the first three are in the bottom bar (the rail on wide screens),
+// Settings is the icon in the header.
 
 import { icon } from './dom';
 import { type Route } from './router';
@@ -13,7 +14,9 @@ export interface Destination {
   root: string;
   /** First path segments that belong to it. */
   segments: readonly string[];
-  icon: () => SVGElement;
+  /** In the bottom bar; Settings is in the header instead and has no icon here. */
+  inBar: boolean;
+  icon?: () => SVGElement;
 }
 
 export const destinations: readonly Destination[] = [
@@ -22,6 +25,7 @@ export const destinations: readonly Destination[] = [
     label: strings.titles.drinks,
     root: '#/drinks',
     segments: ['drinks'],
+    inBar: true,
     icon: () => icon([['path', { d: 'M5 4h14l-7 9zM12 13v7M8 20h8' }]]),
   },
   {
@@ -29,6 +33,7 @@ export const destinations: readonly Destination[] = [
     label: strings.titles.templates,
     root: '#/templates',
     segments: ['templates'],
+    inBar: true,
     icon: () =>
       icon([
         ['rect', { x: '4', y: '4', width: '7', height: '7' }],
@@ -42,6 +47,7 @@ export const destinations: readonly Destination[] = [
     label: strings.titles.stock,
     root: '#/stock',
     segments: ['stock'],
+    inBar: true,
     icon: () => icon([['path', { d: 'M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8' }]]),
   },
   {
@@ -49,16 +55,7 @@ export const destinations: readonly Destination[] = [
     label: strings.titles.settings,
     root: '#/settings',
     segments: ['settings', 'about'],
-    icon: () =>
-      icon([
-        ['circle', { cx: '12', cy: '12', r: '3' }],
-        [
-          'path',
-          {
-            d: 'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1',
-          },
-        ],
-      ]),
+    inBar: false,
   },
 ];
 
@@ -67,6 +64,8 @@ export function destinationOf(route: Route): DestId | null {
   return destinations.find((d) => first !== undefined && d.segments.includes(first))?.id ?? null;
 }
 
+/** Where Back goes when the app was opened on a screen of the destination: Settings returns to the drinks. */
 export function rootOf(id: DestId): string {
+  if (id === 'settings') return '#/drinks';
   return destinations.find((d) => d.id === id)?.root ?? '#/drinks';
 }

@@ -5,7 +5,6 @@ import { StoreError, toStoreError } from './errors';
 import { systemClock, type Clock } from './clock';
 import { newUserId } from './ids';
 import { migrate, type Migration, migrations } from './migrations';
-import { DEFAULT_PLACE_NAME } from './places';
 import { DB_NAME, SCHEMA_VERSION } from './schema';
 
 export interface OpenOptions {
@@ -19,8 +18,6 @@ export interface OpenOptions {
   clock?: Clock;
   /** Makes ids for records a migration creates; defaults to user ids. */
   newId?: () => string;
-  /** Name of the default place migration 4 makes; the app passes its fixed string. */
-  placeName?: string;
   /**
    * Called after another tab upgraded or deleted the database and this
    * connection was closed so it could proceed: the store is unusable from
@@ -96,7 +93,8 @@ export async function openDatabase(options: OpenOptions = {}): Promise<IDBDataba
             legacyPrefs,
             clock: options.clock ?? systemClock,
             newId: options.newId ?? newUserId,
-            placeName: options.placeName ?? DEFAULT_PLACE_NAME,
+            // Migration 4 makes a place with this name; migration 6 removes it again.
+            placeName: 'Home',
           },
           event.oldVersion,
           version,

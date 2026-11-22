@@ -1,9 +1,10 @@
 // Runs every vector in vectors/makeable against the public entry (docs/vectors.md): what the
-// stock allows, ranked, the stock that can play a role and what uses an ingredient. The expected value is a subset of
-// the result (arrays by position and length); `urgency: null` means no urgency.
+// stock allows, ranked, the ranking of a mixed list, the stock that can play a role and what uses an
+// ingredient. The expected value is a subset of the result (arrays by position and length);
+// `urgency: null` means no urgency.
 import { describe, expect, test } from 'vitest';
-import { makeable, stockForRole, usesIngredient } from '../src/index';
-import type { MakeableInput } from '../src/index';
+import { makeable, rankCandidates, stockForRole, usesIngredient } from '../src/index';
+import type { MakeableInput, RankedCandidate } from '../src/index';
 import { expectError, loadVectors } from './vector-files';
 import type { Vector } from './vector-files';
 
@@ -34,6 +35,15 @@ function run(vector: Vector): void {
     if (vector.error_code !== undefined) return expectError(result as never, vector);
     if (!result.ok) throw new Error(`${vector.id}: ${result.error.code}`);
     expect(result.records).toEqual((vector.expected as { records: unknown[] }).records);
+    return;
+  }
+  if (input.kind === 'rank_candidates') {
+    // Also reversed: the order must not depend on the input's.
+    const list = (vector.inputs as unknown as { candidates: RankedCandidate[] }).candidates;
+    const keys = (l: readonly RankedCandidate[]) => l.map((c) => `${c.kind}:${c.id}`);
+    const want = (vector.expected as { order: string[] }).order;
+    expect(keys(rankCandidates(list))).toEqual(want);
+    expect(keys(rankCandidates([...list].reverse()))).toEqual(want);
     return;
   }
   if (input.kind === 'stock_for_role') {

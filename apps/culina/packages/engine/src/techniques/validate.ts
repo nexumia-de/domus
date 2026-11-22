@@ -2,10 +2,17 @@
 import { contentResult, found } from '../content/types';
 import type { ContentFinding, ContentResult } from '../content/types';
 import { isI18nText } from '../text/i18n';
+import { TECHNIQUE_LEVELS } from './types';
 import type { Technique } from './types';
 
 /** The most words a source sentence may have (helper plan, rules for content). */
 export const MAX_SENTENCE_WORDS = 25;
+
+/** A finding when `level` is not one of the five words (`TECHNIQUE_LEVELS`). Shared by the notes, the handling rules and the substitutes. */
+export const levelFindings = (level: string): ContentFinding[] =>
+  (TECHNIQUE_LEVELS as readonly string[]).includes(level)
+    ? []
+    : [found('unknown-level', 'level', level)];
 
 const words = (text: string): number => text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -14,6 +21,7 @@ function findings(technique: Technique): ContentFinding[] {
   for (const field of ['name', 'watch', 'why'] as const) {
     if (!isI18nText(technique[field])) out.push(found('text-incomplete', field));
   }
+  out.push(...levelFindings(technique.level));
   if (technique.sources.length === 0) out.push(found('no-source', 'sources'));
   technique.sources.forEach((source, i) => {
     const n = words(source.sentence);

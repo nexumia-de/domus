@@ -14,7 +14,7 @@ const amounts = (page) =>
   page.evaluate(() =>
     Object.fromEntries(
       [...document.querySelectorAll('.amounts tbody tr')].map((tr) => [
-        tr.children[0].textContent,
+        tr.children[0].textContent.toLowerCase(),
         tr.children[1].textContent,
       ]),
     ),
@@ -53,7 +53,7 @@ const phone = async (browser, origin, label) => {
   );
   const row = await page.locator('.ratio-row', { hasText: 'Pie dough' }).innerText();
   check(
-    /3 : 2 : 1/.test(row) && /flour : fat : water/.test(row),
+    /3 : 2 : 1/.test(row) && /flour : fat : water/i.test(row),
     `${label}: row shows "3 : 2 : 1" with roles`,
   );
   const search = page.getByLabel('Search by name');
@@ -99,7 +99,7 @@ const phone = async (browser, origin, label) => {
   );
   const table = await page.evaluate(() =>
     [...document.querySelectorAll('.parts tbody tr')].map((tr) =>
-      [...tr.children].map((c) => c.textContent),
+      [...tr.children].map((c, i) => (i === 0 ? c.textContent.toLowerCase() : c.textContent)),
     ),
   );
   check(
@@ -112,8 +112,8 @@ const phone = async (browser, origin, label) => {
     `${label}: parts table with percent of the anchor ${JSON.stringify(table)}`,
   );
   check(
-    (await page.locator('.source').innerText()).startsWith('Source: docs/ratios.md'),
-    `${label}: source line`,
+    (await page.locator('.source').innerText()) === 'Source: Michael Ruhlman, Ratio, p. 17',
+    `${label}: source line names author, title and page, not a repository path`,
   );
   check(
     (await page.locator('.family').count()) === 0,
@@ -275,7 +275,7 @@ const phone = async (browser, origin, label) => {
   const summary = page.getByText('Compare my amounts');
   await summary.click();
   const salt = page.getByLabel('salt (g)');
-  await page.getByLabel('flour (g)').fill('500');
+  await page.getByLabel('Flour (g)').fill('500');
   for (const [g, phrase] of [
     ['8', 'below the usual range by 0.2'],
     ['9', 'within the usual range'],

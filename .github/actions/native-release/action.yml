@@ -1,0 +1,88 @@
+# The release of a native Linux app, after checkout, on a tag <app>-v<version>:
+# the version must be the newest stable <release> in the metainfo (release.toml),
+# and both bundles of the tagged commit go to the GitHub Release of the tag.
+# phosh-apps publishes the newest such release of each app (apps.txt:
+# suitably/domus <app>-v*). Used by emptio-release, mixtura-release and culina-release.
+name: Native app release
+description: Checks the tag against the metainfo, attaches the Flatpak bundles to the GitHub Release and notifies the publish repository.
+inputs:
+  app:
+    description: App name in the tag, e.g. emptio.
+    required: true
+  title:
+    description: Name in the release title, e.g. Emptio.
+    required: true
+  app-id:
+    description: Application id, e.g. de.nexumia.Emptio.
+    required: true
+  metainfo:
+    description: Path of the metainfo file.
+    required: true
+  tag:
+    description: The pushed tag.
+    required: true
+  token:
+    description: GitHub token that may write releases of this repository.
+    required: true
+  repository:
+    description: This repository, owner/name.
+    required: true
+  publish-token:
+    description: Token that may dispatch to the publish repository; empty is allowed.
+    required: false
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Check the version and write the notes
+      shell: bash
+      env:
+        APP: ${{ inputs.app }}
+        METAINFO: ${{ inputs.metainfo }}
+        TAG: ${{ inputs.tag }}
+      run: |
+        python3 - <<'PY'
+        import os, xml.etree.ElementTree as ET
+        tag = os.environ["TAG"]
+        root = ET.parse(os.environ["METAINFO"]).getroot()
+        release = next(r for r in root.iter("release") if r.get("type", "stable") == "stable")
+        if tag != os.environ["APP"] + "-v" + release.get("version"):
+            raise SystemExit(f"::error::{tag} does not match the newest metainfo release {release.get('version')}")
+        lines = ["- " + " ".join("".join(p.itertext()).split()) for p in release.iter("p")]
+        lines += ["- " + " ".join("".join(li.itertext()).split()) for li in release.iter("li")]
+        with open("notes.md", "w") as f:
+            f.write("\n".join(lines) + "\n")
+        PY
+        cat notes.md
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      with:
+        pattern: ${{ inputs.app-id }}-*
+        merge-multiple: true
+        path: bundles
+    - name: Attach the bundles to the release
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        GH_REPO: ${{ inputs.repository }}
+        APP_ID: ${{ inputs.app-id }}
+        APP: ${{ inputs.app }}
+        TITLE: ${{ inputs.title }}
+        TAG: ${{ inputs.tag }}
+      run: |
+        ls bundles
+        for arch in x86_64 aarch64; do
+          [ -f "bundles/$APP_ID-$arch.flatpak" ] || { echo "::error::No bundle for $arch"; exit 1; }
+        done
+        gh release view "$TAG" > /dev/null 2>&1 ||
+          gh release create "$TAG" --verify-tag --title "$TITLE ${TAG#"$APP"-v}" --notes-file notes.md
+        gh release upload "$TAG" bundles/*.flatpak --clobber
+    - name: Notify the publish repository
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.publish-token }}
+      run: |
+        if [ -z "$GH_TOKEN" ]; then
+          echo "::notice::No PUBLISH_TOKEN; nexumia-de/phosh-apps picks this release up on its schedule."
+          exit 0
+        fi
+        gh api repos/nexumia-de/phosh-apps/dispatches -f event_type=app-updated

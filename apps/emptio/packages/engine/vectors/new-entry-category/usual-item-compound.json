@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "A compound takes the category of the item it ends with",
+  "input": { "name": "Vollmilch 3,5 %", "earlier": [] },
+  "expected": { "categoryId": "dairy" }
+}

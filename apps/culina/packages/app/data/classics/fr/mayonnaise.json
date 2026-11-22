@@ -71,8 +71,12 @@
             "id": "fdc-170932"
           },
           "note": {
-            "en": "A little cayenne pepper. The source gives no amount.",
-            "de": "Ein wenig Cayennepfeffer. Die Quelle nennt keine Menge."
+            "en": "A little cayenne pepper.",
+            "de": "Ein wenig Cayennepfeffer."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -118,8 +122,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Three tablespoonfuls of boiling water. The units table holds only US tablespoons, and the book does not state its size, so the line has no amount.",
-            "de": "Drei Esslöffel kochendes Wasser. Die Einheitentabelle enthält nur US-Esslöffel, und das Buch nennt seine Größe nicht; die Zeile hat daher keine Menge."
+            "en": "Three tablespoonfuls of boiling water.",
+            "de": "Drei Esslöffel kochendes Wasser."
+          },
+          "sourceNote": {
+            "en": "The units table holds only US tablespoons, and the book does not state its size, so the line has no amount.",
+            "de": "Die Einheitentabelle enthält nur US-Esslöffel, und das Buch nennt seine Größe nicht; die Zeile hat daher keine Menge."
           }
         }
       ],
@@ -129,6 +137,7 @@
             "en": "Put the yolks of six raw eggs in a basin, after removing the cores.",
             "de": "Die Dotter von sechs rohen Eiern in eine Schüssel geben, vorher die Hagelschnüre entfernen."
           },
+          "action": "prepare",
           "uses": ["egg-yolk"]
         },
         {
@@ -136,6 +145,7 @@
             "en": "Season the yolks with the salt and a little cayenne.",
             "de": "Die Dotter mit Salz und ein wenig Cayennepfeffer würzen."
           },
+          "action": "season",
           "uses": ["egg-yolk", "salt", "cayenne"]
         },
         {
@@ -143,6 +153,7 @@
             "en": "Whisk briskly while you pour in the vinegar, gradually.",
             "de": "Kräftig schlagen und dabei den Essig nach und nach zugießen."
           },
+          "action": "whisk",
           "uses": ["egg-yolk", "vinegar"]
         },
         {
@@ -158,19 +169,22 @@
             "en": "Finish with the lemon juice and the boiling water.",
             "de": "Mit dem Zitronensaft und dem kochenden Wasser fertigstellen."
           },
+          "action": "add",
           "uses": ["lemon", "water"]
         },
         {
           "text": {
             "en": "Leave it to rest for a few hours; it thickens while it stands.",
             "de": "Einige Stunden ruhen lassen; sie wird beim Stehen dicker."
-          }
+          },
+          "action": "stand"
         },
         {
           "text": {
             "en": "Cover it to keep the dust away.",
             "de": "Abdecken, damit kein Staub hineinkommt."
-          }
+          },
+          "action": "cover"
         }
       ]
     }

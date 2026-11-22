@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!--
+      connect-src: the stock is synced with the storage of a space (docs/decisions/stock-in-spaces.md).
+      GitHub's API is one storage; a WebDAV storage is a server of the household's choosing, so any
+      https address. Without a space that has a storage no request leaves the origin.
+    -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.github.com https:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#151311" media="(prefers-color-scheme: dark)" />

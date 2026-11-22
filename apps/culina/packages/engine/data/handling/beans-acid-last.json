@@ -1,0 +1,28 @@
+{
+  "id": "beans-acid-last",
+  "target": "fdc-group-beans",
+  "text": {
+    "en": "Add acidic ingredients such as tomato, vinegar or wine to beans only once they are soft.",
+    "de": "Saure Zutaten wie Tomate, Essig oder Wein erst zu Bohnen geben, wenn sie weich sind."
+  },
+  "why": {
+    "en": "Acid slows the softening of pulses; in an acidic liquid beans can stay firm through long cooking.",
+    "de": "Säure verlangsamt das Weichwerden von Hülsenfrüchten; in saurer Flüssigkeit können Bohnen auch bei langem Garen fest bleiben."
+  },
+  "technique": "boil",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Seeds, Maintaining the Texture of Cooked Beans, p. 488",
+      "isbn": "9780340831496",
+      "sentence": "Acids make the cell-wall hemicelluloses more stable and less dissolvable"
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 1 Gemüse, Linsen - Verkürzen der Kochzeit, p. 318",
+      "isbn": "9783805708388",
+      "sentence": "Saure Zutaten erst am Ende der Garzeit zufügen."
+    }
+  ]
+}

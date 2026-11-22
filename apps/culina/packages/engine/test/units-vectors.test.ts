@@ -3,13 +3,17 @@ import { describe, expect, test } from 'vitest';
 import {
   convert,
   displayStep,
+  householdMeasureOf,
   roundMass,
+  roundMeasure,
+  roundPieces,
   scaleByFactor,
   scaleFromLine,
   scaleToTotal,
 } from '../src/index';
 import type {
   Amount,
+  HouseholdMeasure,
   FactsById,
   IngredientFacts,
   ScalableLine,
@@ -66,6 +70,24 @@ function run(vector: Vector): void {
       near(result.g, (vector.expected as { g: number }).g, vector.tolerance, 'g');
       return;
     }
+    case 'round_pieces':
+    case 'round_measure': {
+      const result =
+        i.kind === 'round_pieces'
+          ? roundPieces(i.count as number)
+          : roundMeasure(i.ml as number, i.measure as HouseholdMeasure);
+      if (vector.error_code !== undefined) return expectError(result, vector);
+      if (!result.ok) throw new Error(`${vector.id}: ${JSON.stringify(result.error)}`);
+      const e = vector.expected as { value: number; exact: boolean };
+      near(result.value, e.value, vector.tolerance, 'value');
+      expect(result.exact, 'exact').toBe(e.exact);
+      return;
+    }
+    case 'household_measure':
+      expect(householdMeasureOf(i.ml as number) ?? null).toBe(
+        (vector.expected as { measure: string | null }).measure,
+      );
+      return;
     case 'scale_factor':
       return runScale(
         scaleByFactor(i.lines as ScalableLine[], i.factor as number, options),

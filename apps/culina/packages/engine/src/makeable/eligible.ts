@@ -113,3 +113,74 @@ export function declaredItems(
   }
   return undefined;
 }
+
+/** How many steps `id` is below `ancestor` in the tree; undefined when it is not below it. */
+export function depthBelow(ctx: Context, id: string, ancestor: string): number | undefined {
+  let steps = 0;
+  const seen = new Set<string>();
+  for (let at = ctx.tree.byId.get(id)?.parentId; at !== undefined;) {
+    steps += 1;
+    if (at === ancestor) return steps;
+    if (seen.has(at)) return undefined;
+    seen.add(at);
+    at = ctx.tree.byId.get(at)?.parentId;
+  }
+  return undefined;
+}
+
+/**
+ * A group in stock: a line that names an ingredient may take an item of a group above it (an
+ * ancestor in the tree). The nearest group with a fitting item wins, then the item used first; all
+ * items of that group are returned. Empty when the rule is off or the line names a component.
+ */
+export function groupItems(
+  ctx: Context,
+  want: Wanted,
+): { inStock: string; items: Item[] } | undefined {
+  if (!ctx.group || want.ref.kind !== 'ingredient') return undefined;
+  const asked = want.ref.id;
+  let best: { inStock: string; depth: number } | undefined;
+  for (const item of byUseBy(ctx.items)) {
+    if (item.ref.kind !== 'ingredient' || !stateFits(want, item)) continue;
+    const depth = depthBelow(ctx, asked, item.refId);
+    if (depth !== undefined && (best === undefined || depth < best.depth)) {
+      best = { inStock: item.refId, depth };
+    }
+  }
+  if (best === undefined) return undefined;
+  const chosen = best.inStock;
+  return {
+    inStock: chosen,
+    items: byUseBy(
+      ctx.items.filter(
+        (i) => i.ref.kind === 'ingredient' && i.refId === chosen && stateFits(want, i),
+      ),
+    ),
+  };
+}
+
+/**
+ * A whole in stock: a line that names a part exactly (as `input.parts` lists it) may take an item
+ * of the whole or below it. The whole whose item is used first wins; all items of that ingredient
+ * are returned. Empty when no part is declared for the line or the line names a component.
+ */
+export function partItems(
+  ctx: Context,
+  want: Wanted,
+): { inStock: string; items: Item[] } | undefined {
+  if (ctx.parts.length === 0 || want.ref.kind !== 'ingredient') return undefined;
+  const asked = want.ref.id;
+  const wholes = ctx.parts.filter((p) => p.parts.includes(asked)).map((p) => p.whole);
+  if (wholes.length === 0) return undefined;
+  const fitting = byUseBy(
+    ctx.items.filter(
+      (i) =>
+        i.ref.kind === 'ingredient' &&
+        stateFits(want, i) &&
+        wholes.some((w) => i.refId === w || isA(ctx.tree, i.refId, w)),
+    ),
+  );
+  const first = fitting[0];
+  if (first === undefined) return undefined;
+  return { inStock: first.refId, items: fitting.filter((i) => i.refId === first.refId) };
+}

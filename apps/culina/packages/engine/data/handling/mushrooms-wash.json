@@ -1,0 +1,23 @@
+{
+  "id": "mushrooms-wash",
+  "target": "fdc-group-mushrooms",
+  "text": {
+    "en": "Mushrooms may be rinsed under water; dry them well before they go into the pan.",
+    "de": "Pilze dürfen unter Wasser abgespült werden; vor dem Braten gut trocknen."
+  },
+  "why": {
+    "en": "In a kitchen test rinsed mushrooms took up only about 2 % of their weight in water and cooked as fast as wiped ones.",
+    "de": "In einem Küchenversuch nahmen abgespülte Pilze nur etwa 2 % ihres Gewichts an Wasser auf und garten so schnell wie abgewischte."
+  },
+  "technique": "saute",
+  "level": "tested",
+  "sources": [
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 2 SOUPS, STEWS, and the Science of Stock, section Can I Wash My ’Shrooms?",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "most of the water you add by washing mushrooms clings only to the surface."
+    }
+  ]
+}

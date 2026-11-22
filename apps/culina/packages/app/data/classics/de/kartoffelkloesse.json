@@ -42,8 +42,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "2 soupplatefuls of grated potatoes, boiled the day before in their jackets. The book does not size a soupplateful: no amount.",
-            "de": "2 Suppenteller geriebene Kartoffeln, am Vortag in der Schale gekocht. Das Buch gibt die Größe eines Suppentellers nicht an: keine Menge."
+            "en": "2 soupplatefuls of grated potatoes, boiled the day before in their jackets.",
+            "de": "2 Suppenteller geriebene Kartoffeln, am Vortag in der Schale gekocht."
+          },
+          "sourceNote": {
+            "en": "The book does not size a soupplateful: no amount.",
+            "de": "Das Buch gibt die Größe eines Suppentellers nicht an: keine Menge."
           }
         },
         {
@@ -53,8 +57,12 @@
             "id": "fdc-group-wheat-flour-white"
           },
           "note": {
-            "en": "4 basting spoonfuls of flour. The book does not size a basting spoonful: no amount.",
-            "de": "4 Bratlöffel Mehl. Das Buch gibt die Größe eines Bratlöffels nicht an: keine Menge."
+            "en": "4 basting spoonfuls of flour.",
+            "de": "4 Bratlöffel Mehl."
+          },
+          "sourceNote": {
+            "en": "The book does not size a basting spoonful: no amount.",
+            "de": "Das Buch gibt die Größe eines Bratlöffels nicht an: keine Menge."
           }
         },
         {
@@ -84,8 +92,12 @@
           },
           "settled": true,
           "note": {
-            "en": "Melted butter is used; the source allows lard as the alternative.",
-            "de": "Zerlassene Butter wird verwendet; die Quelle erlaubt Schmalz als Alternative."
+            "en": "Melted butter is used.",
+            "de": "Zerlassene Butter wird verwendet."
+          },
+          "sourceNote": {
+            "en": "The source allows lard as the alternative.",
+            "de": "Die Quelle erlaubt Schmalz als Alternative."
           }
         },
         {
@@ -107,12 +119,13 @@
             "en": "The day before, boil the potatoes in their skins and grate them.",
             "de": "Am Vortag die Kartoffeln in der Schale kochen und reiben."
           },
+          "technique": "boil",
           "uses": ["potatoes"]
         },
         {
           "text": {
             "en": "Beat the egg whites to a froth.",
-            "de": "Das Eiweiß zu Schaum schlagen."
+            "de": "Das Eiweiß zu Schnee schlagen."
           },
           "technique": "whip-egg-whites",
           "uses": ["eggs"]
@@ -122,13 +135,15 @@
             "en": "Stir the potatoes with the flour, the nutmeg, the salt, the melted butter and the eggs until well mixed.",
             "de": "Die Kartoffeln mit Mehl, Muskatnuss, Salz, der zerlassenen Butter und den Eiern gut verrühren."
           },
+          "action": "stir",
           "uses": ["potatoes", "flour", "nutmeg", "salt", "fat", "eggs"]
         },
         {
           "text": {
             "en": "Stir in the beaten egg whites.",
-            "de": "Den steifen Eierschaum unterrühren."
+            "de": "Den steifen Eischnee unterrühren."
           },
+          "action": "stir",
           "uses": ["eggs"]
         },
         {
@@ -141,8 +156,13 @@
         },
         {
           "text": {
-            "en": "Cook the dumplings in boiling salted water. The source gives a fraction of an hour that is not legible in the scans.",
-            "de": "Die Klöße in kochendem Salzwasser garen. Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
+            "en": "Cook the dumplings in boiling salted water.",
+            "de": "Die Klöße in kochendem Salzwasser garen."
+          },
+          "action": "cook",
+          "sourceNote": {
+            "en": "The source gives a fraction of an hour that is not legible in the scans.",
+            "de": "Die Quelle nennt einen Bruch einer Stunde; er ist in den Scans nicht lesbar."
           }
         },
         {
@@ -150,6 +170,7 @@
             "en": "Serve with browned butter.",
             "de": "Mit gebräunter Butter servieren."
           },
+          "action": "serve",
           "uses": ["fat"]
         }
       ]
@@ -184,6 +205,6 @@
   },
   "note": {
     "en": "Serve with currant juice instead of browned butter if liked; the source gives it as an alternative and it is not transcribed. The source sizes the potatoes and the flour only in soupplates and basting spoons, which are not given in units: they are written without amount. The book's version No. 20, with butter, egg yolks and bread, is not used.",
-    "de": "Statt gebräunter Butter kann man auch Johannisbeersaft dazu reichen; die Quelle nennt ihn als Alternative, er ist hier nicht übertragen. Kartoffeln und Mehl sind nur in Suppentellern und Bratlöffeln angegeben, die sich nicht in Mengen umrechnen lassen: sie stehen ohne Menge."
+    "de": "Statt gebräunter Butter kann man auch Johannisbeersaft dazu reichen; die Quelle nennt ihn als Alternative, er ist hier nicht übertragen. Kartoffeln und Mehl sind nur in Suppentellern und Bratlöffeln angegeben, die sich nicht in Mengen umrechnen lassen: Sie stehen ohne Menge."
   }
 }

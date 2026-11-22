@@ -40,6 +40,22 @@ in [how chefs work](chef-practice.md) and
    catalogue by role.
 6. **Sync.** The same mechanism as Mixtura in three units (place,
    library, profile), encrypted, over storage the user configured
-   ([decision](decisions/sync.md)).
-7. **Later.** Curated affinities with sources, cost, prep lists,
+   ([decision](decisions/sync.md)). Partly done on 2026-11-20: **stock**
+   is the shared collection `stock` of a space, synced by the host
+   package with the household's other apps
+   ([decision](decisions/stock-in-spaces.md)); places are spaces now.
+   Not done: the library (components, dishes, own ingredients, tasting
+   notes) and the profile.
+7. **One list of dishes.** Decided on 2026-11-21
+   ([decision](decisions/one-dish-list.md)): own and shipped dishes in
+   one list with one filter (origin, character, course, cuisine, without
+   meat and fish, only with every amount), used by the lists, the start
+   screen, the finder and the random pick; one dish and one cook screen;
+   course and cuisine on own dishes. Built on 2026-11-21 (pull request
+   30), and the user's correction of a character on 2026-11-22. Open after it, in the order of the
+   [plan for "what do I feel like"](feel-like-plan.md): something like
+   this dish, time and effort, favourites (the owner's to decide under the
+   rule "no food diary"), taste effects and seasonal produce (both wait
+   for a source).
+8. **Later.** Curated affinities with sources, cost, prep lists,
    allergens.

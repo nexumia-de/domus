@@ -10,7 +10,7 @@
   },
   "why": {
     "en": "Fresh pasta is delicate, so it is cooked to order.",
-    "de": "Frische Nudeln sind zart und werden deshalb erst auf Bestellung gekocht, also kurz vor dem Servieren."
+    "de": "Frische Nudeln sind zart und werden deshalb erst kurz vor dem Servieren gekocht."
   },
   "level": "textbook",
   "sources": [
@@ -18,15 +18,27 @@
       "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Fresh pasta is so delicate and cooks so rapidly (sometimes in as little as 15 seconds) that it should be cooked to order."
     },
     {
       "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "The basic form is the sfoglia, a thin, flat sheet of dough that is cut into ribbons, circles or squares."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Cereal Doughs and Batters, Egg Pasta and Fresh Pasta, p. 574",
+      "isbn": "9780340831496",
+      "sentence": "Fresh pasta cooks quickly, in a few seconds or minutes depending on thickness."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 4 Teigwaren - Nudeln und Strudel, 4.9 Nudeln kochen (margin note), p. 366",
+      "isbn": "9783805708388",
+      "sentence": "Selbst gemachte Pasta fresca (frische Nudeln) auch."
     }
   ]
 }

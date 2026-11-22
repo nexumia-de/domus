@@ -1,0 +1,2193 @@
+{
+  "id": "collection-plan",
+  "kind": "collection-plan",
+  "description": "planCollectionSync with now 2026-11-19T12:00:00.000Z and 90 days (cut-off 2026-08-21T12:00:00.000Z). Order of the steps: other space, other collection, bad now; the stale device rule; the merge; pruning. No remote file: always written. Equal: nothing to do. Remote newer, local newer, one side only, a tombstone wins. Other space and other collection. Pruning in a cycle sets prunedBefore and writes; the remote's prunedBefore is kept when nothing is pruned now, and the later of the two is written. The stale device rule (the device last synced before the remote's prunedBefore): an old local record the remote lacks entirely expires; one edited after syncedAt survives; one the remote has (as record or tombstone) merges normally; a first sync, an unreadable syncedAt and a syncedAt not earlier than prunedBefore expire nothing. Rejected entries. Bad now. A bad horizon prunes nothing. syncedAt is the now as given. localChanged is not set by syncedAt alone.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "no remote file",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "no remote file, an empty collection is written too",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      }
+    },
+    {
+      "name": "equal",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T11:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "remote newer",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "value": 2
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "value": 2
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "local newer",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "value": 2
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "value": 2
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "value": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "local only record",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "remote only record",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "remote tombstone wins",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "deleted": true
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "local tombstone wins",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "deleted": true
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "deleted": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "unsorted local input is no change",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "other space",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s2",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "error": "other-space"
+      }
+    },
+    {
+      "name": "other collection",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "list",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "error": "other-collection"
+      }
+    },
+    {
+      "name": "other space is checked before bad now",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s2",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "x",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "error": "other-space"
+      }
+    },
+    {
+      "name": "pruning in a cycle sets prunedBefore and writes",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": ["a"],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "pruning without a remote file",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": ["a"],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "a recent tombstone is not pruned and sets no prunedBefore",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "deleted": true
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "the remote prunedBefore is kept when nothing is pruned now",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "a local only record is written with the remote prunedBefore",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "pruning with an earlier remote prunedBefore writes the new cut-off",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": ["a"],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "pruning with a later remote prunedBefore keeps the later one",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-09-15T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": ["a"],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: an old local record the remote lacks expires",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": ["a"],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: an old local tombstone the remote lacks expires too",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": ["a"],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: a record changed exactly at syncedAt expires",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-06-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": ["a"],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: a record edited after syncedAt survives",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-07-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-07-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-07-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: a record the remote has merges normally",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-02T00:00:00.000Z",
+              "value": 2
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-02T00:00:00.000Z",
+              "value": 2
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "stale device: a tombstone the remote has is not an expiry",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-10-01T00:00:00.000Z",
+              "deleted": true
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-10-01T00:00:00.000Z",
+              "deleted": true
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "first sync: nothing expires",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "syncedAt equal to prunedBefore: nothing expires",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-08-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "syncedAt later than prunedBefore: nothing expires",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-09-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "an unreadable syncedAt counts as never synced",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "sometime"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "the stale rule needs a prunedBefore on the remote",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "stale device: expired keys are sorted",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "q",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "c",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-06-01T00:00:00.000Z"
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-01T00:00:00.000Z"
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": [],
+        "expired": ["c", "q"],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "rejected entries by key, both sides rewritten",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "x",
+              "updatedAt": "bad",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "y",
+              "updatedAt": "bad",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": true,
+        "rejected": ["local:x", "remote:y"],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        },
+        "write": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "bad now",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "noon",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "error": "bad-now"
+      }
+    },
+    {
+      "name": "bad now of another type",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": 5,
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "error": "bad-now"
+      }
+    },
+    {
+      "name": "a bad horizon prunes nothing and sets no prunedBefore",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00.000Z",
+          "horizonDays": 0
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-05-01T00:00:00.000Z",
+              "deleted": true
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "syncedAt is the now as given",
+      "input": {
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "remote": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        },
+        "options": {
+          "now": "2026-11-19T12:00:00Z",
+          "horizonDays": 90
+        }
+      },
+      "expected": {
+        "localChanged": false,
+        "rejected": [],
+        "expired": [],
+        "pruned": [],
+        "local": {
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "syncedAt": "2026-11-19T12:00:00Z"
+        }
+      }
+    }
+  ]
+}

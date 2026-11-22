@@ -9,7 +9,9 @@ tasting notes. Visible name:
 of this repository: [docs/index.md](docs/index.md).
 
 Culina is a web app (PWA) that is also installed on Android and Linux,
-not a GTK app; the GTK rules do not apply. Its sister app for drinks,
+not a GTK app; the GTK rules do not apply. The exception is its native
+Linux app (`packages/linux`, [docs](docs/native-linux.md)), a GTK app with
+its own `AGENTS.md`. Its sister app for drinks,
 [Mixtura](../mixtura), is built first
 ([decision](docs/decisions/after-mixtura.md)). The rules of the
 [root](../../AGENTS.md) apply too.
@@ -23,10 +25,11 @@ not a GTK app; the GTK rules do not apply. Its sister app for drinks,
   what Mixtura needs too moves to materia.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
-- **Recipes**: classics shipped by country, each following one named
-  source (amounts as facts, method in our own words, no copied text, no
-  bulk import of a site), and the user's own components and dishes with
-  versions. No meal plans and no food diary. No shopping list inside
+- **Recipes**: shipped dishes, read-only, each with its country and
+  following one named source (amounts as facts, method in our own words,
+  no copied text, no bulk import of a site), and the user's own
+  components and dishes with versions; both in one list with one filter
+  ([one dish list](docs/decisions/one-dish-list.md)). No meal plans and no food diary. No shopping list inside
   Culina: that is the sister app emptio; Culina only offers to hand
   missing ingredients to it
   ([helper](docs/decisions/mentor.md),

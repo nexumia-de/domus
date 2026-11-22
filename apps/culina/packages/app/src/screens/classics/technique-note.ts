@@ -4,7 +4,9 @@
 import type { Lang, Technique, TechniqueLevel, TechniqueSource } from '@culina/engine';
 import { pickText } from '@culina/engine';
 import { el } from '../../shell/el';
+import { appLang } from '../../shared/locale';
 import { strings } from '../../strings';
+import { citeText } from './cite';
 
 const t = strings.classics;
 
@@ -29,15 +31,30 @@ export const noteCard = (kind: string, content: NoteContent): HTMLElement => {
   const more = el('details', `${kind}-more note-more`);
   more.append(el('summary', undefined, t.noteMore));
   if (content.why !== undefined) more.append(el('p', undefined, content.why));
-  more.append(el('p', 'muted', t.noteLevel[content.level]), el('h4', undefined, t.noteSources));
+  more.append(el('h4', undefined, t.noteSources));
   const sources = el('ul', `${kind}-sources note-sources`);
+  // A source is kept once per sentence it backs; the reader sees each place once.
+  const shown = new Set<string>();
   for (const source of content.sources) {
+    const line = t.noteSource(
+      t.noteLevel[source.level ?? content.level],
+      citeText(source.title, appLang),
+      citeText(source.place, appLang),
+    );
+    const key = `${line}|${source.url ?? ''}|${source.isbn ?? ''}`;
+    if (shown.has(key)) continue;
+    shown.add(key);
     const item = el('li');
-    const link = el('a', undefined, t.noteSource(source.title, source.place));
-    link.href = source.url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    item.append(link);
+    if (source.url === undefined) {
+      // A printed book: nothing to link to, the ISBN names the edition.
+      item.append(source.isbn === undefined ? line : t.noteSourceBook(line, source.isbn));
+    } else {
+      const link = el('a', undefined, line);
+      link.href = source.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      item.append(link);
+    }
     sources.append(item);
   }
   more.append(sources);

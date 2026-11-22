@@ -14,7 +14,7 @@
     "year": 1877,
     "place": "Première partie, \"Pommes au beurre\", printed p. 292",
     "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
-    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+    "licence": "Public domain: Jules Gouffé died in 1877; the title page's \"Droits de propriété et de traduction réservés\" has long expired"
   },
   "persons": {
     "value": 4,
@@ -67,8 +67,12 @@
             "id": "fdc-group-sugars"
           },
           "note": {
-            "en": "\"sucre pilé\", crushed sugar. The book gives no amount.",
-            "de": "\"sucre pilé\", gestoßener Zucker. Das Buch gibt keine Menge an."
+            "en": "\"sucre pilé\", crushed sugar.",
+            "de": "„sucre pilé“, gestoßener Zucker."
+          },
+          "sourceNote": {
+            "en": "The book gives no amount.",
+            "de": "Das Buch gibt keine Menge an."
           }
         },
         {
@@ -82,7 +86,7 @@
             "unit": "g",
             "original": "40 grammes de beurre"
           },
-          "note": {
+          "sourceNote": {
             "en": "The book greases the dish with a layer of butter of 3 millimetres; the amount for the layer is not stated.",
             "de": "Das Buch fettet die Form mit einer Butterschicht von 3 Millimetern; die Menge für die Schicht nennt es nicht."
           }
@@ -94,6 +98,7 @@
             "en": "Take out the cores and the pips with an apple corer.",
             "de": "Kerngehäuse und Kerne mit dem Apfelausstecher entfernen."
           },
+          "action": "trim",
           "uses": ["apple"]
         },
         {
@@ -101,6 +106,7 @@
             "en": "Peel the apples, but keep them whole.",
             "de": "Die Äpfel schälen, aber ganz lassen."
           },
+          "action": "peel",
           "uses": ["apple"]
         },
         {
@@ -108,6 +114,7 @@
             "en": "Butter a round tinned iron dish with a layer of butter about 3 millimetres thick.",
             "de": "Eine runde Form aus verzinntem Eisen mit einer etwa 3 Millimeter dicken Butterschicht einfetten."
           },
+          "action": "grease",
           "uses": ["butter"]
         },
         {
@@ -115,6 +122,7 @@
             "en": "Sprinkle the cinnamon over the apples and fill the hole of each apple with crushed sugar.",
             "de": "Den Zimt über die Äpfel streuen und das Loch jedes Apfels mit gestoßenem Zucker füllen."
           },
+          "action": "fill",
           "uses": ["cinnamon", "sugar", "apple"]
         },
         {
@@ -122,6 +130,7 @@
             "en": "Melt 40 g of butter and pour it over the apples.",
             "de": "40 g Butter schmelzen und über die Äpfel gießen."
           },
+          "action": "pour",
           "uses": ["butter"]
         },
         {
@@ -136,6 +145,8 @@
             "en": "After 20 minutes, check that the apples are cooked, then serve.",
             "de": "Nach 20 Minuten prüfen, ob die Äpfel gar sind, dann servieren."
           },
+          "action": "serve",
+          "uses": ["apple"],
           "time": {
             "value": 20,
             "unit": "min"

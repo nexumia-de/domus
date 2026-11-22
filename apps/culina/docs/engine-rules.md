@@ -134,7 +134,31 @@ gives 2.68; the multiple is trimmed to 15 digits so that 27 · 0.1 is
 `displayStep(g)` is the default step: 0.1 g below 10 g, otherwise 1 g.
 **Assumption, unverified**: household scales read 1 g and precision
 scales 0.1 g; no source says so. The caller may pass any step to
-`roundMass`. Nothing else in the engine rounds.
+`roundMass`.
+
+**Pieces and household measures for display.** Two more display rules,
+stated once here and used by every screen that shows such an amount; they
+change only what is shown, never a stored or derived number, and the sums
+and the nutrition keep the exact figures:
+
+- `roundPieces(count)`: a piece count to the nearest half, at least a half
+  (`PIECE_STEP` 0.5), with `exact` false where that differs from the count;
+  the screen then writes the exact count quietly beside ("5½ pcs (5.33)").
+- `roundMeasure(ml, measure)`: a volume in a household measure (`tsp`,
+  `tbsp`, `cup`, the US sizes of the unit table) to the nearest quarter, at
+  least a quarter (`MEASURE_STEP` 0.25), with `exact` as above (the screen
+  writes the millilitres beside where it is false: "¼ tsp (1.6 ml)").
+  `exact` allows a relative difference of 1e-8, below the 10 significant
+  digits a derived amount carries.
+- `householdMeasureOf(ml)`: the household measure whose size equals a
+  source word's size (to 10 significant digits), so a classic's
+  "tablespoonful" taken as the US tablespoon is shown in tablespoons.
+- **Assumption, unverified**: a cook takes whole pieces or halves, and
+  measuring spoons and cups come in quarters; no source says so.
+
+Both round through `roundMass`; nothing else in the engine rounds.
+Vectors: `round-pieces-*`, `round-measure-*`, `household-measure-*` in
+`vectors/units/`.
 
 # Scaling by weight
 
@@ -329,8 +353,10 @@ least 100 on `brine`). Which percentage is usual for a use stays in
 `template.schema.json`. **Rule:** only rows of [ratios](ratios.md)[^ratios]
 with status confirmed or corrected, read as page or book (not excerpt
 only), that are parts by weight or a baker's percentage. `source` names
-the section, the row, its status and the source title; a test checks the
-prefix `docs/ratios.md`, unique ids and that each resolves. A range is
+the section, the row, its status and the source title, a pointer into the
+repository that the app never shows; a test checks the prefix `docs/ratios.md`,
+unique ids and that each resolves. `references` (author, title, page where the
+data has it) is what a ratio card shows as its source. A range is
 there only where the row gives one. `anchor` (the first role, egg for
 custard, oil for the vinaigrette) is a choice for the percentages, not a
 number from a source. Two seed templates are derivatives that change
@@ -396,12 +422,19 @@ measure-neutral.
 
 `componentLineGrams(component, factsByIngredient)` gives the grams of
 every line of one component, in line order, with `unmeasured` (the
-indexes of lines without amount: kept, never an error and never guessed)
-and `inputG` (the sum of the measured lines).
+indexes of lines without amount: kept, never an error and never guessed),
+`unconverted` and `inputG` (the sum of the lines with grams).
 
 - Mass, volume and count go through `toGrams` with the facts of the line's
-  ingredient; a failure is `cannot-convert` with the `index` of the line
-  and the conversion error as `cause`.
+  ingredient. Where the ingredient lacks the fact the unit needs
+  (`needs-density`, `needs-unit-weight`, `not-convertible`: one onion
+  without a piece weight, a cup of something without a density) the line
+  is listed in `unconverted` as `{ index, cause }` and left out of
+  `inputG`, as a line without amount is: one such line never stops the
+  component. Any other conversion failure (a value that is not a number
+  above 0, an unknown unit) is `cannot-convert` with the `index` of the line
+  and the conversion error as `cause`; so is an unconverted line whose role
+  is the `percentBase` when percent lines rest on it.
 - A `percent` line is its percent of the summed grams of the lines that
   are not in percent and whose role is the component's `percentBase`. It
   is `no-percent-base` when `percentBase` is absent or that sum is 0. A
@@ -429,7 +462,9 @@ app code does that arithmetic.
 - `to: 'weight'`: every percent line becomes grams of the base; the other
   lines are kept as entered, in their unit.
 - A line without amount stays without. Errors are those of
-  `componentLineGrams` (`cannot-convert` for a volume without density,
+  `componentLineGrams`, and `cannot-convert` (with the `index` and `cause`)
+  for a line listed in `unconverted`: rewriting needs the grams of every
+  measured line (`cannot-convert` for a volume without density,
   `component-needs-mass`, `invalid-value`).
 - The new numbers are trimmed to 10 significant digits, so converting
   there and back does not collect binary noise; a number never becomes 0.
@@ -450,7 +485,13 @@ the tree to the raw ingredients.
   component's yield in grams.
 - A sub-component, or with `outputG` the top component, without a
   recorded yield is `no-yield` with the `componentId` that lacks it and
-  the `path` to it. Nothing is assumed.
+  the `path` to it. Nothing is assumed, unless the caller asks with
+  `withoutYield: 'input'`: then one run of such a component is taken as
+  weighing what goes in (`runGrams`: its lines with grams, a sub-component
+  line with the mass used; an input of 0 is still `no-yield`), and its id
+  is listed in `unweighed` so the caller can say so. The app asks for it
+  where a dish needs an amount of a component (the total list and the cook
+  screen use the same rule); the component screen's own scaling does not.
 - `cycle` carries the `path` of ids from the start id to the first
   repeated id (`a`, `b`, `a`); `unknown-component` carries the missing id
   and the path; `duplicate-id` the id; `invalid-value` (field `outputG`
@@ -462,8 +503,9 @@ the tree to the raw ingredients.
   own lines first, then its sub-components in line order). The role is the
   one on the line that names the ingredient. `rawG` is their sum.
 - `unmeasured` lists `{ path, index, ref }` for lines without amount
-  anywhere in the tree: the raw amounts then lack them and the caller
-  must show that.
+  anywhere in the tree, `unconverted` the same with the `cause` for lines
+  whose amount lacks a fact to be weighed: the raw amounts then lack them
+  and the caller must show that.
 - `flourAndWater(raw, { baseRole, waterRoles })` adds up the raw
   ingredients by role (defaults as in [hydration](#hydration)); the
   result is the `composition` of a preferment line for `hydration`, and
@@ -474,11 +516,15 @@ the tree to the raw ingredients.
 
 `componentYield(component, factsByIngredient)` gives `inputG` (the
 component's own measured lines; a sub-component line counts with the mass
-used), `unmeasured` and a `yield`: `{ known: true, outputG, lossG,
+used), `unmeasured`, `unconverted` and a `yield`: `{ known: true, outputG, lossG,
 yieldPct }` with loss = input - output (negative when weight is gained)
 and yield % = 100 · output / input, or `{ known: false }` when no yield
 is recorded. There is no default and no estimate. `zero-input` only when
 a yield is recorded and the input is 0.
+
+`runGrams(component, factsByIngredient, withoutYield?)` is what one run
+weighs where it must be scaled: the recorded yield (`weighed: true`), else
+with `withoutYield: 'input'` the input (`weighed: false`), else no grams.
 
 # Edible portion
 
@@ -722,14 +768,56 @@ a template role), `status` is one of:
 
 The first tier that has an item decides the line: (1) the line's own
 items; (2) for a component line, a sub-component made from its own lines;
-(3) for an ingredient line, a sibling. Substitution is therefore consulted
-only where there is nothing of the line's own, never to top up a short
-amount.
+(3) for an ingredient line, a group in stock above it; (4) a whole in stock
+whose part the line names; (5) a sibling; (6) a declared substitute.
+Substitution is therefore consulted only where there is nothing of the
+line's own, never to top up a short amount.
 
 - **The tree is the class mechanism.** A line that names a parent
   ingredient ("butter") is satisfied by any stocked descendant ("salted
-  butter"), which is no substitution. A generic item in stock does not
-  satisfy a line that names a specific child.
+  butter"), which is no substitution: a member covers a line that asks for
+  its group.
+- **A group in stock covers its members** (`options.groupInStock`, default
+  `true`; since 2026-11-21). A stock item of an ingredient that has members
+  below it in the tree ("Egg", "Wheat flour") covers a line that names any
+  of them ("Egg, whole", "Wheat flour, white, all-purpose, enriched"), at any
+  depth. The nearest group above the line with a fitting item wins (then the
+  item used first); state and amount are judged as for the line's own items
+  (a group that is too little is `short`). The status is the ordinary one
+  (`have`, `have-amount-unknown`, `short`), not a substitution, and the line
+  carries `through: { rule: 'group', asked, inStock, itemId }` so a screen
+  names it. Why: a cook who ticks "Egg" has eggs and expects the egg noodles;
+  the picker offers the group first for the plain word, and the old rule ("a
+  generic item in stock does not satisfy a line that names a specific
+  child") left a tester with twelve everyday foods and no shipped dish (cause
+  of 28 of the lacking lines he saw, 2026-11-21). **What it does not cover:**
+  the tree comes from the commas of USDA's names, not from a cook's kinds, so
+  a group can hold foods a cook would not count: "Cream" holds sour cream,
+  "Milk" holds buttermilk and milk powder, "Cheese" every cheese. The rule
+  counts them; `through` names the pair ("Cream in stock counts for Cream,
+  sour, reduced fat") so the user sees it. A narrower rule needs data that
+  says which members a group stands for; the catalogue has none. Vectors
+  `group-in-stock-*`, the old rule as `group-in-stock-off`.
+- **A whole in stock covers its parts** (`input.parts`, default none). A
+  line that names a part exactly, as a `{ whole, parts }` entry lists it, is
+  covered by stock of the whole or below it ("Egg, whole, fresh" for "Egg,
+  yolk"). Only data says what is a part of what, never a name; the app's table
+  is `packages/app/data/ingredient-parts.json` (a whole egg: yolk and white,
+  each entry with its basis). The whole's amount says nothing exact about the
+  part's, so a line with an amount is `have-amount-unknown` (an always-there
+  item makes it `have`); `through: { rule: 'part', ... }`. **Not covered:** a
+  variant of a part (dried yolk from a fresh egg), how many parts a whole
+  gives, and a part used up by another line of the same dish. Vectors
+  `part-*`.
+- **Water is the kitchen's** (since 2026-11-21). A template role `water`, and
+  an ingredient line whose ingredient has the role `water` (own or
+  inherited), is there with no item: `status: 'have'`, `source: 'kitchen'`.
+  Water in stock is read first, as for any line; what it cannot cover the
+  kitchen does. A kitchen line adds no role and is not the "one line that is
+  there" a partial candidate needs, so a bread card is not listed on water
+  alone. This is data, not a name: an ingredient called water without the
+  role is asked for like any other. Vectors `kitchen-water-*`,
+  `template-water-*`.
 - **Sibling substitution** (`options.siblingSubstitution`, default `true`):
   a line that names a leaf ingredient (no children) with a parent may be
   satisfied by an item of another child of that parent, or below it. A
@@ -785,7 +873,11 @@ cannot be short. Ingredient `roles` and template roles share one id space
 ingredient whose roles, own or inherited from the tree (materia's
 `inheritedValue`), include it; where a derivative swapped the role to an
 ingredient class, by an ingredient in that class. The item used first is
-the one reported. Templates are resolved with `resolveTemplate`; the
+the one reported. Where none fits, a group in stock above an ingredient that
+plays the role (or is in the class) covers it, nearest member first, with
+`through` naming that member ("Egg" in stock for the egg of the pasta dough,
+whose role is on "Egg, whole"); vector `template-group-covers-role`. The role
+`water` is the kitchen's (above). Templates are resolved with `resolveTemplate`; the
 ingredient data that ships does not yet carry roles, so templates are
 findable once the user's or the shipped ingredients do.
 
@@ -797,10 +889,18 @@ it; a candidate with no dated item has no urgency and is the least urgent.
 
 **Ranking contract.** Candidates are ordered by urgency first (earliest
 use-by first, none last), then by the number of distinct roles covered
-(more first), then by name and id as plain string comparison; the order
-does not depend on the order of the input. Complete and partial candidates
-share the list (`complete`, `lacking` tell them apart); the reasons are the
-urgency's item and `roles`.
+(more first), then by name, id and kind as plain string comparison; the
+order does not depend on the order of the input. Complete and partial
+candidates share the list (`complete`, `lacking` tell them apart); the
+reasons are the urgency's item and `roles`. The contract is exported as
+`rankCandidates(list)`, generic over anything with `kind`, `id`, `name`,
+`roles` and an optional `urgency.daysLeft`: `makeable` and
+`classicsMakeable` both return their candidates in this order, and because
+it is a total order the union of their lists ranked again is the merge of
+both by the same rule (the app's one list of own and shipped dishes).
+Vectors `rank-merge-own-and-classic`, `rank-merge-ties` (kind
+`rank_candidates`, each also run on the reversed input); property in
+`test/makeable.test.ts`.
 
 **Use up first.** `useUpFirst` lists the stock items that have a use-by,
 earliest first, each with the candidates that use it (in ranking order);
@@ -820,8 +920,9 @@ screen can offer candidates for an open slot.
 `options.siblingSubstitution` are read) lists the family heads of
 components and dishes that use the ingredient or one it can stand in for,
 by the rules that decide a line: a line naming the ingredient, a line
-naming a class above it (the tree), and, with sibling substitution on, a
-line naming a leaf beside it. A line or slot that names a component counts
+naming a class above it (the tree), with `groupInStock` on a line naming a
+member below it, a line naming a part of it (`input.parts`), and, with
+sibling substitution on, a line naming a leaf beside it. A line or slot that names a component counts
 when that component (its head) does, through any depth; optional lines
 count. Result `{ ok: true, records: [{ kind, id }] }` in name, then id
 order, or the tree or date error of `makeable`. Ratio templates are not
@@ -860,13 +961,17 @@ writes the dish out as slots (every classic component is expanded into its
 own lines, so the finder names the ingredient that lacks, not the component;
 a line takes the role of the slot that names its component; the line's state
 is not asked) and hands the dish to `makeable`. The input is `makeable`'s
-(`ingredients`, `stock`, `today`, `facts`, `options`) with `classics`,
-optional `portions` and `lang`; the app passes the notebook's tree completed
-by the catalogue. The result is `{ ok: true, candidates }` or
+(`ingredients`, `stock`, `today`, `facts`, `substitutes`, `options`) with
+`classics`, optional `portions` and `lang`; the app passes the notebook's tree
+completed by the catalogue and the shipped substitute effects, as for an own
+dish, so a declared substitute stands in on a shipped dish's line by the same
+rule (vectors `declared-substitute`, `declared-substitute-absent`). The result is `{ ok: true, candidates }` or
 `{ ok: false, error }` with the `makeable` or `deriveClassic` code and the
 `classic` id. A candidate is the finder's dish candidate with `kind: 'classic'`,
 `country`, `course`, `vegetarian` and `notInCatalogue`; the order is the
-finder's (urgency, roles covered, name, id) across all classics, and
+finder's (`rankCandidates`: urgency, roles covered, name, id, kind) across
+all classics, so a list of own candidates and classics ranked again with
+`rankCandidates` is ordered by one rule, and
 `maxMissing` (default 0) and "at least one line that is there" decide what is
 listed, as for an own dish.
 
@@ -875,7 +980,11 @@ listed, as for an own dish.
   once each, in file order.
 - **Water** (`isWater`: a `wanted` text whose English or German begins with
   water, cold water, ice-cold water, "Wasser", "kaltes Wasser") is neither
-  asked for nor named: a kitchen has it.
+  asked for nor named: a kitchen has it (the same judgement as the kitchen's
+  water of `makeable`, which reads the role, not a text).
+- `input.parts` and `options.groupInStock` are passed through to `makeable`
+  unchanged, so a group or a whole in stock covers a classic's line as an own
+  one's.
 - A line without an amount is only asked for by presence; an amount in a unit
   the stock cannot be converted to is `have-amount-unknown`, as for any dish.
 - A component that names itself is expanded once.
@@ -899,12 +1008,12 @@ records. A validator returns `{ ok: true }` or
 `{ ok: false, error: { code: 'invalid', findings } }`, every finding a
 `code`, a `path` and where it helps a `value`.
 
-| Function                                        | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `validateTechnique`, `validateTechniques`       | texts complete in both languages (`text-incomplete`: white space counts as empty), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `validateHandlingRule`, `validateHandlingRules` | as `validateTechnique` for `text` and `why`, plus a known `technique` and `target` when the context gives them (`unknown-technique`, `unknown-ingredient`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `validateSteps`                                 | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `validateClassic`                               | the step rules for every component, texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (a settled line or slot may have no amount: its entry then records a choice) (`settled-without-entry`, `settled-target`, `persons-unsettled`, `persons-entry`) |
+| Function                                        | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `validateTechnique`, `validateTechniques`       | texts complete in both languages (`text-incomplete`: white space counts as empty), a `level` among the five words (`unknown-level`), at least one source (`no-source`), each source sentence at most 25 words (`sentence-too-long`), no id twice (`duplicate-id`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `validateHandlingRule`, `validateHandlingRules` | as `validateTechnique` for `text` and `why`, plus a known `technique` and `target` when the context gives them (`unknown-technique`, `unknown-ingredient`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `validateSteps`                                 | line keys unique (`duplicate-key`), each step's text complete, its `technique` known (`unknown-technique`), each `uses` key a line (`unknown-line`), a range ending above its start (`bad-range`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `validateClassic`                               | the step rules for every component with the shipped plain actions (`unknown-action`), texts complete (names, `wanted`, notes), component ids unique and not `slots` (`duplicate-id`, `reserved-id`), component references exist (`unknown-component`), no cycle (`cycle`), no unused component (`unused-component`), ingredient ids in the catalogue when the ids are passed (`unknown-ingredient`), every unit resolves (`unknown-unit`), a defined unit is used and does not shadow a table unit (`unused-unit`, `unit-shadows`), a line that refers to a component is a mass (`unit-kind`), a range ends above its start (`bad-range`), settled lines and persons have their entries and every entry its target (a settled line or slot may have no amount: its entry then records a choice) (`settled-without-entry`, `settled-target`, `persons-unsettled`, `persons-entry`), `amountWord` only on a line without an amount (`amount-word`), the texts of `sourceNote` complete |
 
 **Deriving a classic.** `deriveClassic(classic, { portions?, lang })`
 returns the dish and the components in the shapes the model has, so the app
@@ -920,9 +1029,17 @@ does no arithmetic:
   no other rounding (rounding is the display's explicit step).
 - A range keeps its middle in `amount` and is listed in `ranges` with `min` and
   `max`, so the app can show "2 to 3" and the arithmetic uses one number.
-- A line without an amount stays without one and is listed in `unmeasured`
-  (shown as "to taste" or "as needed"); a `wanted` line is carried with its
-  name in the language asked and without a `ref`.
+- A line without an amount stays without one and is listed in `unmeasured`;
+  it carries its `amountWord` (`to-taste` or `as-needed`) where the classic
+  says so, and the app shows nothing for a missing amount otherwise; a
+  `wanted` line is carried with its name in the language asked and without a
+  `ref`. A line's `note` (cooking help) and `sourceNote` (a remark about the
+  source) come through in the language asked; a step keeps its `sourceNote` in
+  both.
+- A volume whose source word has the size of a household measure
+  (`householdMeasureOf`: the table's `tsp`, `tbsp`, `cup`, or a classic's
+  word with the same factor) also carries `measure` on its line or slot;
+  `amount` stays in millilitres. It is for display only (`roundMeasure`).
 - Names and notes come in `lang`; steps keep both languages. Errors:
   `invalid-portions`, `unknown-unit` (with `unit`), `invalid-amount`, each with
   the `path` of the amount.
@@ -963,7 +1080,9 @@ its own id), with the source named in `version.change` and in the vendor field
 component ids, an ingredient `ref` at `ingredientIds[id]` where the ingredient
 was adopted under another id, else at the catalogue id. The source's own
 wording and a range go into the line's note (`(1 Pfund)`, `(125-150 ml)`), a
-slot's range shows as its middle only. The ids come from `newId` and the day from
+slot's range shows as its middle only. The source's remarks (`sourceNote` of a
+line, of a step) stay with the classic: a copy is the cook's own and names its
+source in `x-origin`. The ids come from `newId` and the day from
 `date`, so the function is pure. A classic with a `wanted` line cannot be
 copied (`wanted-ingredient`, listing the names): the notebook has no
 ingredient for it. `wantedLines(classic)` lists them.
@@ -981,6 +1100,63 @@ way in the app (`packages/app/make-classics.mjs`).
 Vectors: `vectors/techniques/`, `vectors/classics/`, `vectors/skills/`, `vectors/handling/`
 ([vector format](vectors.md#kinds-of-techniques-classics-and-skills-issue-87)).
 
+## Proposing a step from a sentence
+
+`proposeStep(text, lines)` (`src/steps/propose.ts`, since 2026-11-20) reads one
+sentence of a recipe, in English or German, and proposes the parts of a
+[step](data-model.md#steps). It is for an importer: the recipe arrives as free
+text and is stored as steps of the kit, and the user confirms each proposal.
+There is no language model and no scoring; each rule fits in a sentence.
+
+- **What is done.** `data/step-words.json` lists words for every technique and
+  every plain action, in both languages (written by the project, a matching
+  aid, not teaching). A pattern matches where its words stand next to each
+  other in the sentence, each beginning a word of it: `anbrat` matches
+  "anbraten", and `braten` does not match "anbraten". The technique or action
+  whose pattern stands **first** in the sentence is proposed; at the same
+  place the pattern of more words wins ("scharf anbraten" over "anbraten",
+  "Mehl anschwitzen" as a roux over "anschwitzen"), then the longer one, then
+  the technique.
+- **What goes in.** A line is used when every word of one of its names stands
+  in the sentence, alone or with a plural or case ending (`s`, `es`, `n`, `e`,
+  `en`, `er`, `ern`, and `y` to `ies`). A name counts up to its first comma, so
+  the catalogue's "Potatoes, white, flesh and skin" is found as "potatoes".
+  A name is a whole word: "eine" is no egg, "Buttermilch" no butter.
+- **Time.** The first number or range ("30 bis 40", "2-3", "10 to 15") before
+  a unit of time (s, min, h and their words).
+- **Temperature.** A number or range before `°C`, `°F` or "degrees
+  Celsius/Fahrenheit"; "Grad" alone is Celsius. A bare degree sign or
+  "degrees" names no scale and gives no temperature.
+
+Where no rule applies nothing is proposed, and the importer keeps the sentence
+as the note of the step. **Limits, pinned by a test:** the list knows words,
+not grammar. A noun that is also a verb is taken for the verb ("put the milk and
+the lemon peel into a pot" proposes Peel), a participle for its verb ("die
+gekochten Kartoffeln schneiden" proposes Boiling), and a separated German verb
+("brate das Fleisch an") is not found. **Test:** `test/steps-propose.test.ts`;
+one test holds the word lists to the techniques and the plain actions, so a
+new technique without words fails.
+
+**Tried on the 447 steps of the shipped dishes** (2026-11-20,
+`tools/content/propose-steps.mjs`, `npm run propose:steps`). Each step was
+given its word by reading; against those 445 words the proposal from the
+English sentence was the same for 215, another word for 159 and none for 71
+with the lists as they were, and is the same for 244, another for 157 and
+none for 44 with the lists as they are (from the German sentence 176 before,
+207 now). So it is right for about half of the sentences of an old cookbook
+and is an aid, not a decision. What was changed from the reading: "garen" no
+longer counts as the proof of a dough ("gare"); "heat" counts only as a verb
+with its object ("heat the", "heat gently"), and "off the heat", "vom Feuer"
+are the new action take off the heat; the English "form" no longer matches
+the German "Form" (a mould); "binden" alone proposes nothing (it is also
+tying); "cook" is a plain action only with its object or manner ("cook the",
+"cook until"); "beat", "pour", "sprinkle", "dust", "pound", "pass" and "dress"
+have a word. What stays wrong, and why: the first word wins, so a step that
+adds something and then does the thing that matters is "add"; a participle is
+taken for the verb ("boiled potatoes", "boiling water", "melted butter",
+"browned butter"); "mixture" is "mix"; the lists cannot know that a technique's
+note does not fit.
+
 # Substitute effects
 
 Work package 10 of the [helper plan](helper-plan.md) (issue 93). Code:
@@ -993,7 +1169,7 @@ never throws; none reads a clock or a random number.
 - `validateSubstitute(substitute, { ingredientIds? })` and
   `validateSubstitutes(list, { ingredientIds? })` return the findings of
   [content](#techniques-steps-and-classics): `text-incomplete` (`changes` empty
-  in a language), `no-source`, `sentence-too-long` (more than 25 words),
+  in a language), `unknown-level`, `no-source`, `sentence-too-long` (more than 25 words),
   `same-ingredient` (`from` equals `to`), `bad-range` (`factor` not a positive
   number), `unknown-ingredient` (only with `ingredientIds`, the catalogue) and,
   for a list, `duplicate-id`. The shape is checked by `substitute.schema.json`.
@@ -1013,12 +1189,12 @@ Vectors: `vectors/substitutes/` and `vectors/makeable/declared-substitute-*`
 # Nutrition
 
 Work package 11 of the [helper plan](helper-plan.md) (issue 94). Code:
-`src/nutrition/` (`types.ts`, `dish.ts`, `round.ts`). Both functions return
-`{ ok: true, ... }` or `{ ok: false, error }`, never throw, and read no clock or
+`src/nutrition/` (`types.ts`, `figures.ts`, `dish.ts`, `round.ts`). `dishNutrition` and `roundNutrition` return
+`{ ok: true, ... }` or `{ ok: false, error }` (`lineFigures` cannot fail); none throws or reads a clock or
 random number. The data is the catalogue's `x-nutrition`
 ([data model](data-model.md#ingredient), [catalogue](ingredient-catalogue.md#nutrition)).
 
-- `dishNutrition(derived, { facts, nutrition })` takes the `dish` and
+- `dishNutrition(derived, { facts, nutrition, seasonings? })` takes the `dish` and
   `components` of a `deriveClassic` result, the density and unit weight per
   ingredient id and the nutrients per 100 g per id. A component named by a slot
   (or by a line) is written out into its lines and its own amount is not used,
@@ -1042,7 +1218,50 @@ random number. The data is the catalogue's `x-nutrition`
   figure; otherwise they are absent and named in `notReported`. When nothing is
   counted the figures are zero and `coverage.counted` is 0; the caller says that
   there are no figures.
-- **Edible portion and cooking loss are not applied.** The amounts of a dish are
+- **The figures of a line** (`lineFigures(id, lookup)`, `src/nutrition/figures.ts`,
+  since 2026-11-21). For each of density, unit weight and nutrients per 100 g:
+  the record's own value; else the nearest own value of a record above it (a
+  parent carries a value only when it is true of every row below, by the
+  [grouping rule](ingredient-catalogue.md#grouping-rule)); else, when the record
+  is a group that names a **usual member** (`usualId`, the catalogue's
+  `x-group.usual.id`, [usual member](ingredient-catalogue.md#usual-member)) and
+  that member is really below it, the member's value by the same two steps. A
+  usual member's value serves the group only and is never handed down: "Egg,
+  whole, dried" does not get the piece weight of a fresh egg. The result says
+  where each value came from (`own`, `parent`, `usual`). So a line "6 eggs" that
+  points at `fdc-group-egg-whole` is weighed with 44 g and counted with the
+  figures of "Egg, whole, raw, fresh" (FDC 171287), and "a cup of milk" on
+  `fdc-group-milk` with the density and figures of whole milk (FDC 172217). The
+  amounts shown on the dish are not touched: `deriveClassic` keeps a count a
+  count; only the nutrition reads these facts.
+- **When figures are shown** (`shown`, since 2026-11-21). The result carries
+  `shown: { figures: true }` or `{ figures: false, why, lines }`. `why` is
+  `nothing-counted` (no line counted) or `left-out-matters`, with the lines
+  that keep the figures back. A line left out does **not** keep them back when
+  it is optional (not part of the dish as counted), a **seasoning** (its id is in
+  `input.seasonings`; the app passes the ingredients that USDA files under
+  "Spices and Herbs", on the record or its nearest parent with a category:
+  salt, pepper, spices, dried and fresh herbs, vinegar), an ingredient of at
+  most **`LOW_ENERGY_KCAL_PER_100G` = 50 kcal per 100 g** (whatever its amount,
+  it lowers the energy of what is counted by at most that per 100 g of it:
+  parsley, lemon juice and peel, celery, leafy and watery vegetables), or a
+  `wanted` line that names water (the regex of `isWater`; USDA gives tap water
+  0 kcal, FDC 173647). Anything else left out keeps the figures back, whatever
+  the reason (no amount, weight unknown, no figures, not in the catalogue, a
+  component not found). **Why so strict:** the energy of a portion is a sum, and
+  a sum without a main part does not read as "less exact" but as a different
+  dish: the herb omelette showed "5 kcal / 20 kJ" from its salt and pepper while
+  its eggs (weight unknown) and its 90 g of butter (no figures) were left out.
+  Counting lines did not catch it ("2 of 5" passed the old rule of two counted
+  and a quarter of all, `MIN_COUNTED` and `MIN_SHARE` in the app, now removed);
+  `MIN_MEASURED_FIGURES` (0.8 of the lines with a mass) belongs to the
+  [characters](#characters), counts lines too, and was never applied to the
+  nutrition. The rule here asks of each line left out whether it can carry
+  energy, which is what the figure is about. **Judgements, not sources:** the
+  50 kcal bound, seasonings by USDA's category, and that a line without
+  amount counts like any other (a source that gives butter "for the pan" or
+  sugar "to sprinkle" still adds energy). Not proved: that a seasoning with a
+  large amount is small (none of the shipped dishes has one).
   taken as given (raw, as bought). The [edible portion](#edible-portion) needs the
   state of each amount, which the shipped dishes do not state, and the catalogue
   has refuse yields only for 162 foods and none for cooked states. The docs
@@ -1063,6 +1282,75 @@ random number. The data is the catalogue's `x-nutrition`
   figure is `invalid-value` with the `field`.
 
 Vectors: `vectors/nutrition/` ([vector format](vectors.md#kinds-of-nutrition-issue-94)).
+
+# Characters
+
+`dishCharacters(facts, rules)` (`src/characters/evaluate.ts`) says which
+characters a dish has. Pure: the facts of the dish and the rules come in as
+arguments; the table with its catalogue ids is the app's
+(`packages/app/data/dish-characters.json`), every row a judgement.
+
+**Facts.** `lines`: one per ingredient line, components written out, with
+`classes` (the ingredient's id, its ancestors, `category:<USDA food
+category>`), `g` when the mass is known and fat and energy per 100 g when
+the catalogue has them. `techniques`: the technique ids of the steps.
+`stepsKnown`: whether a step names what is done. `course`: the course the
+dish states (since 2026-11-21; a shipped dish always states one, a dish of
+the notebook none yet).
+
+**A rule** has `when` (any clause gives the character) and `unless` (any
+clause takes it away). Every condition of a clause must hold:
+
+| Condition           | Holds when                                                                                                     |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `ingredients`       | a line has one of the classes (presence)                                                                       |
+| `minShare`          | with `ingredients`: their share of the measured mass reaches it; share unknown: holds unless `presence: false` |
+| `alsoIngredients`   | each of its lists has a line of one of its classes as well (presence, no share)                                |
+| `techniques`        | a step names one of them                                                                                       |
+| `withoutTechniques` | no step names one of them, and `stepsKnown`                                                                    |
+| `courses`           | the dish states one of them; a dish without a course never matches                                             |
+| `fat`, `kcal`       | the figure per 100 g of the measured mass is within `min` and `max`                                            |
+
+`alsoIngredients` and `courses` were added on 2026-11-21 for rules that need
+two ingredients together (egg yolk with oil in a cold emulsion; potatoes or
+rice with milk) and the course (a dessert with sugar is sweet; a soup is
+never fried), see [dish characters](dish-characters.md#every-shipped-dish-read-as-a-cook-would-2026-11-21).
+
+**Coverage.** A share is judged when at least half of the lines have a mass
+(`MIN_MEASURED`) and every line of the classes asked has one; otherwise it
+is unknown. Fat and energy are judged when at least four of five lines have
+a mass (`MIN_MEASURED_FIGURES`) and every measured line has the figure: a
+figure of the whole dish is wrong as soon as a main ingredient is left out.
+The result carries `coverage` (lines, measured, covered) and for each
+character the clause that held and by what (`share` with its value,
+`presence`, `technique`, `course`, `figures`).
+
+**Mass of a shipped line** (the app's `conversionOf`, not the engine): the
+ingredient's own density and unit weight; else those of the nearest
+ingredient above it (as the nutrition view converts); else, for a group, the
+one value every food below it that states one agrees on. The egg groups
+state no weight; the one egg below each that does gives 44 g (whole), 17 g
+(yolk), 33 g (white), USDA portions. Foods that disagree (apples, milks)
+give none, and the line stays without mass. The nutrition view does not use
+the last step, so it still lists egg lines as not counted.
+
+**Not proven.** No vectors: `test/characters.test.ts` holds hand-computed
+cases. The thresholds are in the table, not here, and come from no source.
+
+## The cook's correction
+
+A dish may store what the cook corrects (`characters: { add, remove }`,
+[data model](data-model.md#dish)); `src/characters/correct.ts` applies it.
+`correctCharacters(computed, correction, order)`: the computed ids without
+`remove`, with `add`, in the order of the table (`order`). An id in both
+lists is shown: the cook said the dish is so. An id that `order` does not
+have is left out, so a row can leave the table. `correctionOf(computed,
+shown, order)` is the way back: the difference that turns the computed
+set into the shown one, `undefined` when they are equal.
+`correctionText` gives the comparison of two versions one text, `+id` for
+added and `-id` for taken away (`diffDishVersions`, field `characters`,
+after `cuisine`). **Test:** `test/characters.test.ts`, the vector
+`vectors/versions/diff-dish-characters.json`.
 
 # Vectors
 

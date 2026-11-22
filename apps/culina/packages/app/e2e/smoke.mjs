@@ -1,23 +1,27 @@
 // Smoke tests: shell, navigation, targets, theme, offline, no foreign requests.
 import { check, watch } from './harness.mjs';
 
-// The stock screens are shown under the Cook entry, which is the one marked in the navigation.
+// The stock screens are shown under the Cook entry, the components and dishes under the Notebook;
+// the old address of the classics lands on the one list of dishes, so under the Notebook too; Settings is the gear in the header on a phone and the last entry of the rail from 720 px.
 const ROUTES = ['start', 'classics', 'ratios', 'components', 'dishes', 'cook', 'stock', 'settings'];
 const NAMES = {
   start: 'Start',
-  classics: 'Start',
+  classics: 'Notebook',
   ratios: 'Ratios',
-  components: 'Components',
-  dishes: 'Dishes',
+  components: 'Notebook',
+  dishes: 'Notebook',
   cook: 'Cook',
   stock: 'Cook',
   settings: 'Settings',
 };
 const HEADINGS = {
-  ...NAMES,
-  start: 'What do you want to cook?',
-  classics: 'Classics by country',
+  start: 'What do you feel like?',
+  ratios: 'Ratios',
+  components: 'Components',
+  dishes: 'Dishes',
   cook: 'What can I cook',
+  settings: 'Settings',
+  classics: 'Dishes',
   stock: 'What is there',
 };
 
@@ -34,10 +38,16 @@ const measure = (page) =>
       clientW: document.documentElement.clientWidth,
       nav: box('nav'),
       main: box('main'),
-      targets: [...document.querySelectorAll('nav a, summary, .choice')].map((n) => {
-        const r = n.getBoundingClientRect();
-        return { name: n.textContent.trim(), w: r.width, h: r.height };
-      }),
+      targets: [...document.querySelectorAll('nav a, header a, summary, .choice')]
+        .filter((n) => n.getBoundingClientRect().width > 0)
+        .map((n) => {
+          const r = n.getBoundingClientRect();
+          return {
+            name: (n.getAttribute('aria-label') ?? n.textContent).trim(),
+            w: r.width,
+            h: r.height,
+          };
+        }),
     };
   });
 
@@ -69,10 +79,17 @@ const shellAt = async (browser, origin, width, height) => {
       small.length === 0,
       `${width}px #/${route}: targets at least 44 x 44 (${m.targets.length} checked)${small.length ? ' ' + JSON.stringify(small) : ''}`,
     );
-    const current = await page.locator('nav [aria-current="page"]').allTextContents();
+    // The one visible entry marked: Settings is the gear on a phone and the rail's last entry beside it.
+    const current = await page
+      .locator(
+        '.nav-link[aria-current="page"]:visible, .settings-link[aria-current="page"]:visible',
+      )
+      .evaluateAll((nodes) =>
+        nodes.map((n) => (n.getAttribute('aria-label') ?? n.textContent).trim()),
+      );
     check(
-      current.length === 1 && current[0].trim() === NAMES[route],
-      `${width}px #/${route}: aria-current on ${NAMES[route]}`,
+      current.length === 1 && current[0] === NAMES[route],
+      `${width}px #/${route}: aria-current on ${NAMES[route]} (${current})`,
     );
   }
 
@@ -106,7 +123,9 @@ const shellAt = async (browser, origin, width, height) => {
   const ring = await page.evaluate(() => {
     const s = getComputedStyle(document.activeElement);
     return {
-      text: document.activeElement.textContent.trim(),
+      text: (
+        document.activeElement.getAttribute('aria-label') ?? document.activeElement.textContent
+      ).trim(),
       width: parseFloat(s.outlineWidth),
       style: s.outlineStyle,
     };
@@ -115,8 +134,10 @@ const shellAt = async (browser, origin, width, height) => {
     ring.style !== 'none' && ring.width >= 3,
     `${width}px: visible focus ring on "${ring.text}"`,
   );
+  // Phone: skip link, the gear, then Start, Cook and the Notebook; from 720 px the gear is not there.
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
+  if (phone) await page.keyboard.press('Tab');
   await page.keyboard.press('Enter');
   await page.getByRole('heading', { level: 1, name: 'Components' }).waitFor();
   const focused = await page.evaluate(
@@ -128,7 +149,7 @@ const shellAt = async (browser, origin, width, height) => {
   check(true, `${width}px: browser back returns to Ratios (one back stack)`);
 
   await page.goto(`${origin}/?no-sw#/nope`);
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   check(page.url().endsWith('#/start'), `${width}px: unknown route becomes #/start`);
 
   check(
@@ -195,7 +216,7 @@ const offline = async (browser, origin, label) => {
   const problems = watch(context, new URL(origin).origin);
   const page = await context.newPage();
   await page.goto(origin);
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
   await controlled(page);
   check(true, `${label}: the service worker controls the page`);
   const names = await page.evaluate(() => caches.keys());
@@ -205,8 +226,10 @@ const offline = async (browser, origin, label) => {
   );
   await context.setOffline(true);
   await page.reload();
-  await page.getByRole('heading', { level: 1, name: 'What do you want to cook?' }).waitFor();
-  await page.getByRole('navigation').getByRole('link', { name: 'Dishes' }).click();
+  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
+  await page.getByRole('navigation').getByRole('link', { name: 'Notebook' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Components' }).waitFor();
+  await page.getByRole('link', { name: 'Dishes', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'Dishes' }).waitFor();
   await page.goto(new URL('#/settings', page.url()).href);
   await page.reload();

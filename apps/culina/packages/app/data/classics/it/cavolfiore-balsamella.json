@@ -40,8 +40,12 @@
             "original": "una grossa palla di cavolfiore"
           },
           "note": {
-            "en": "One large head (una grossa palla); the source gives no weight.",
-            "de": "Ein großer Kopf (una grossa palla); die Quelle nennt kein Gewicht."
+            "en": "One large head (una grossa palla).",
+            "de": "Ein großer Kopf (una grossa palla)."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle nennt kein Gewicht."
           }
         },
         {
@@ -51,8 +55,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Salted water for cooking; no amount given.",
-            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+            "en": "Salted water for cooking.",
+            "de": "Salzwasser zum Kochen."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -68,7 +76,7 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -87,8 +95,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "A scant pinch (un pizzico scarso); the size of a pinch is not given in the book.",
-            "de": "Eine knappe Prise (un pizzico scarso); die Größe einer Prise ist im Buch nicht angegeben."
+            "en": "A scant pinch (un pizzico scarso).",
+            "de": "Eine knappe Prise (un pizzico scarso)."
+          },
+          "sourceNote": {
+            "en": "The size of a pinch is not given in the book.",
+            "de": "Die Größe einer Prise ist im Buch nicht angegeben."
           }
         },
         {
@@ -97,7 +109,7 @@
             "kind": "component",
             "id": "balsamella"
           },
-          "note": {
+          "sourceNote": {
             "en": "The béchamel of No. 89 of the book.",
             "de": "Die Béchamelsauce aus Nr. 89 des Buches."
           }
@@ -109,6 +121,7 @@
             "en": "Remove the leaves and the green ribs. Cut a deep cross into the stalk.",
             "de": "Blätter und grüne Rippen entfernen. Den Strunk tief kreuzweise einschneiden."
           },
+          "action": "trim",
           "uses": ["cauliflower"]
         },
         {
@@ -124,6 +137,7 @@
             "en": "Cut it into small pieces.",
             "de": "In kleine Stücke schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["cauliflower"]
         },
         {
@@ -131,6 +145,7 @@
             "en": "Season it with butter, salt and pepper.",
             "de": "Mit Butter, Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["butter", "salt", "pepper"]
         },
         {
@@ -138,6 +153,7 @@
             "en": "Put it in a dish that withstands heat and sprinkle with the parmesan.",
             "de": "In eine feuerfeste Platte geben und mit dem Parmesan bestreuen."
           },
+          "action": "sprinkle",
           "uses": ["parmesan"]
         },
         {
@@ -145,6 +161,7 @@
             "en": "Cover it all with the béchamel.",
             "de": "Alles mit der Béchamelsauce bedecken."
           },
+          "action": "pour",
           "uses": ["bechamel"]
         },
         {
@@ -158,7 +175,8 @@
           "text": {
             "en": "Serve it hot.",
             "de": "Heiß servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     },
@@ -177,8 +195,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "A piece the size of an egg (del volume di un uovo); the book gives no weight, so no amount.",
-            "de": "Ein Stück von der Größe eines Eis (del volume di un uovo); das Buch nennt kein Gewicht, daher keine Menge."
+            "en": "A piece the size of an egg (del volume di un uovo).",
+            "de": "Ein Stück von der Größe eines Eis (del volume di un uovo)."
+          },
+          "sourceNote": {
+            "en": "The book gives no weight, so no amount.",
+            "de": "Das Buch nennt kein Gewicht, daher keine Menge."
           }
         },
         {
@@ -188,8 +210,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'; the sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
-            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest 'tanna'; der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest 'una cucchiaiata di farina'."
+            "en": "One spoonful (una cucchiaiata).",
+            "de": "Ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount. The 1891 OCR reads 'tanna'. The sentence names the flour (il burro e la farina), and the 1985 edition reads 'una cucchiaiata di farina'.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge. Die OCR der Ausgabe von 1891 liest ‚tanna‘. Der Satz nennt das Mehl (il burro e la farina), und die Ausgabe von 1985 liest ‚una cucchiaiata di farina‘."
           }
         },
         {
@@ -219,6 +245,7 @@
             "en": "Add the milk little by little, stirring all the time, until it is a thick, milky cream.",
             "de": "Die Milch nach und nach unter ständigem Rühren zugeben, bis eine dicke, milchfarbene Creme entsteht."
           },
+          "action": "add",
           "uses": ["milk"]
         },
         {
@@ -226,6 +253,7 @@
             "en": "If it is stiff, add milk. If it is runny, return it to the heat with a little butter kneaded with flour.",
             "de": "Ist sie fest, Milch zugeben. Ist sie dünnflüssig, mit etwas mit Mehl verkneteter Butter erneut auf den Herd stellen."
           },
+          "action": "add",
           "uses": ["milk", "butter", "flour"]
         }
       ]
@@ -254,6 +282,6 @@
   },
   "note": {
     "en": "The book serves this as an entremet or with a meat stew. The béchamel is No. 89 in the 1891 first edition (the OCR prints '80' as its heading); the 1985 edition numbers the cauliflower No. 431 and the béchamel No. 137. No time and no oven temperature are given. The source's text for the browning says only 'rosolatene la superficie'.",
-    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift '80'); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur 'die Oberfläche bräunen'."
+    "de": "Das Buch serviert es als Zwischengericht oder zu einem Fleischragout. Die Béchamelsauce ist Nr. 89 in der Erstausgabe von 1891 (die OCR druckt als Überschrift ‚80‘); die Ausgabe von 1985 zählt den Blumenkohl als Nr. 431 und die Béchamelsauce als Nr. 137. Keine Zeit und keine Ofentemperatur angegeben. Die Quelle sagt zum Bräunen nur ‚die Oberfläche bräunen‘."
   }
 }

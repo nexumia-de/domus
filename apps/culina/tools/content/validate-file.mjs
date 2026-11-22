@@ -12,6 +12,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import { build } from 'esbuild';
 import { compileSchemas } from '../../packages/app/compile-schemas.mjs';
 import { makeClassics } from '../../packages/app/make-classics.mjs';
+import { makeSubstitutes } from '../../packages/engine/scripts/make-substitutes.mjs';
 import { makeTechniques } from '../../packages/engine/scripts/make-techniques.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
@@ -63,6 +64,7 @@ if (kind === 'classic' && basename(dirname(path)) !== doc.country) {
 compileSchemas();
 makeClassics();
 makeTechniques();
+makeSubstitutes();
 
 const tmp = mkdtempSync(join(tmpdir(), 'culina-content-'));
 try {

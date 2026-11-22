@@ -25,10 +25,13 @@ export const validators: RecordValidators = {
   templates: compile('template'),
   components: compile('component'),
   dishes: compile('dish'),
-  stock: compile('stock'),
   affinities: compile('affinity'),
   tastings: compile('tasting'),
+  skills: compile('skill'),
 };
+
+/** The stock item schema: no kind of the export file since version 2, still Culina's item shape. */
+export const stockValidator = compile('stock');
 
 /** The export envelope schema, to check that the hand-written header rules agree with it. */
 export const envelopeValidator = compile('export');

@@ -1,6 +1,8 @@
 // Export and import in a real browser: create data, export, wipe the site
 // data (a fresh browser context), import, compare; a broken file changes
-// nothing; Undo; the backup reminder; no request leaves the origin.
+// nothing; Undo; the backup reminder; no request leaves the origin. Stock is
+// not in the file (it is kept with the space): an import leaves it alone, and
+// an older file that has stock says that it is not imported.
 //
 //   node e2e/exchange.mjs [width height] [--docs]
 /* global document, indexedDB -- in functions the page runs */
@@ -8,6 +10,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { readStock, seedStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -21,8 +24,10 @@ const shot = (page, name) =>
 const example = JSON.parse(
   readFileSync(resolve('..', 'engine', 'schemas', 'examples', 'valid', 'export-full.json'), 'utf8'),
 );
-const KINDS = ['ingredients', 'templates', 'specs', 'places', 'stock', 'affinities'];
-const keyOf = (k) => (k === 'stock' ? (r) => `${r.placeId} ${r.ingredientId}` : (r) => r.id);
+const KINDS = ['ingredients', 'templates', 'specs', 'affinities'];
+const keyOf = () => (r) => r.id;
+/** A place of a format 2 file. */
+const PLACE = 'u-9b8a7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d';
 const user = Object.fromEntries(KINDS.map((k) => [k, example[k]]));
 const norm = (list, key) => [...list].sort((a, b) => (key(a) < key(b) ? -1 : 1));
 const same = (a, b) =>
@@ -87,8 +92,6 @@ const put = (page, stores) =>
         open.onsuccess = () => {
           const db = open.result;
           const tx = db.transaction(Object.keys(data), 'readwrite');
-          // The file's places replace the default place the app made.
-          if (data.places) tx.objectStore('places').clear();
           for (const [name, list] of Object.entries(data)) {
             for (const r of list) tx.objectStore(name).put(r);
           }
@@ -134,10 +137,14 @@ let exported;
   await download.saveAs(path);
   exported = JSON.parse(readFileSync(path, 'utf8'));
   expect(
-    exported.app === 'mixtura' && exported.formatVersion === 2 && !!exported.exportedAt,
+    exported.app === 'mixtura' && exported.formatVersion === 3 && !!exported.exportedAt,
     'the file has app, format version and instant',
   );
   expect(same(exported, user), 'the file holds exactly the user data');
+  expect(
+    !('stock' in exported) && !('spaces' in exported) && !('places' in exported),
+    'no stock and no spaces in the file',
+  );
   expect(
     !JSON.stringify(exported).includes('"theme"') && !('settings' in exported),
     'no settings and no seed data in the file',
@@ -181,29 +188,29 @@ const file = join(OUT, `export-${width}.json`);
     'toast: Imported with counts',
   );
   const after = await dump(page);
-  // A merge keeps the default place the app made, beside the places of the file.
-  expect(
-    same({ ...after, places: [] }, { ...user, places: [] }) &&
-      user.places.every((p) => after.places.some((a) => a.id === p.id)) &&
-      after.places.length === user.places.length + 1,
-    'the imported data equals the original',
-  );
+  expect(same(after, user), 'the imported data equals the original');
   await shot(page, 'data-imported');
   await page.getByRole('button', { name: 'Undo' }).click();
   await page.getByText('Import undone').waitFor();
   const undone = await dump(page);
   expect(
-    KINDS.every((k) => undone[k].length === (k === 'places' ? 1 : 0)),
+    KINDS.every((k) => undone[k].length === 0),
     'Undo restores the empty state',
   );
   expect(
     undone.meta.every((r) => r.key !== 'importBackup'),
     'the import backup is gone after undo',
   );
-  // Replace, then the backup row and its removal.
+  // Replace, then the backup row and its removal. Stock is not part of it.
+  const space = await seedStock(page, ['lime-juice'], { make: true });
   await page.getByTestId('import-input').setInputFiles(file);
   await page.getByRole('button', { name: 'Replace Everything' }).click();
   await page.getByText(/^Imported/).waitFor();
+  const kept = await readStock(page, space);
+  expect(
+    kept.length === 1 && kept[0].ingredientId === 'lime-juice' && kept[0].present === true,
+    'Replace Everything leaves the stock of the space alone',
+  );
   await page.getByRole('button', { name: 'Delete Import Backup' }).waitFor();
   await page.getByRole('button', { name: 'Delete Import Backup' }).click();
   await page.getByRole('button', { name: 'Delete Import Backup' }).waitFor({ state: 'detached' });
@@ -218,17 +225,7 @@ const file = join(OUT, `export-${width}.json`);
 {
   const page = await newPage();
   await openData(page);
-  const [home] = (await dump(page)).places;
-  await put(page, {
-    stock: [
-      {
-        placeId: home.id,
-        ingredientId: 'lime-juice',
-        updatedAt: '2026-11-18T08:00:00Z',
-        present: true,
-      },
-    ],
-  });
+  await seedStock(page, ['lime-juice'], { make: true });
   const cases = [
     ['not json', '{nope', 'The file cannot be read'],
     ['other app', JSON.stringify({ app: 'culina' }), 'The file is not a Mixtura export.'],
@@ -253,14 +250,14 @@ const file = join(OUT, `export-${width}.json`);
     );
     const data = await dump(page);
     expect(
-      data.stock.length === 1 && data.specs.length === 0,
+      (await readStock(page)).length === 1 && data.specs.length === 0,
       `${name}: the database is unchanged`,
     );
   }
   const newer = join(OUT, `broken-${width}.json`);
   writeFileSync(newer, JSON.stringify({ ...example, formatVersion: 7 }));
   await page.getByTestId('import-input').setInputFiles(newer);
-  await page.getByText('It is format 7; this app reads up to 2.').waitFor();
+  await page.getByText('It is format 7; this app reads up to 3.').waitFor();
   expect(true, 'the newer-format text names both versions');
   const big = join(OUT, `big-${width}.json`);
   writeFileSync(big, ' '.repeat(10 * 1024 * 1024 + 1));
@@ -268,6 +265,46 @@ const file = join(OUT, `export-${width}.json`);
   await page.getByText('The file is too large').waitFor();
   expect(true, 'a file above the size limit is refused');
   await shot(page, 'data-import-error');
+  await page.context().close();
+}
+
+// 3b. A file of an older format with places and stock: converted, its stock is not imported
+// and the preview says so.
+for (const formatVersion of [2, 1]) {
+  const page = await newPage();
+  await openData(page);
+  const space = await seedStock(page, ['lime-juice'], { make: true });
+  const old = { ...example, formatVersion };
+  old.stock =
+    formatVersion === 1
+      ? [{ ingredientId: 'gin', present: true }]
+      : [{ placeId: PLACE, ingredientId: 'gin', updatedAt: '2026-11-17T09:10:00Z', present: true }];
+  if (formatVersion === 2) {
+    old.places = [{ id: PLACE, name: 'Cabin', updatedAt: '2026-11-17T09:00:00Z' }];
+  }
+  const path = join(OUT, `format-${formatVersion}-${width}.json`);
+  writeFileSync(path, JSON.stringify(old));
+  await page.getByTestId('import-input').setInputFiles(path);
+  const preview = page.getByTestId('import-preview');
+  await preview.waitFor();
+  const text = await preview.innerText();
+  expect(
+    text.includes(`older version (format ${formatVersion})`) &&
+      text.includes('Stock in it is not imported'),
+    `format ${formatVersion}: the preview says that the file's stock is not imported`,
+  );
+  expect(
+    !/stock entr|\bplaces?\b/i.test(text),
+    `format ${formatVersion}: no stock among the counts`,
+  );
+  await page.getByRole('button', { name: 'Replace Everything' }).click();
+  await page.getByText(/^Imported/).waitFor();
+  expect(same(await dump(page), user), `format ${formatVersion}: the own data is imported`);
+  const stock = await readStock(page);
+  expect(
+    stock.length === 1 && stock[0].spaceId === space && stock[0].ingredientId === 'lime-juice',
+    `format ${formatVersion}: the stock of the space is as before, nothing of the file in it`,
+  );
   await page.context().close();
 }
 

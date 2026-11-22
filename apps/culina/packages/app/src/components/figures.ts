@@ -10,6 +10,8 @@ export type YieldView =
       inputG: number;
       /** Lines without an amount: the input lacks them. */
       partial: boolean;
+      /** Lines whose amount cannot be weighed (no density or piece weight): the input lacks them. */
+      unweighable: boolean;
       output:
         | { known: true; outputG: number; lossG: number; yieldPct: number; source: string }
         | { known: false };
@@ -24,6 +26,7 @@ export const yieldView = (nb: Notebook, component: ComponentRecord): YieldView =
     ok: true,
     inputG: result.inputG,
     partial: result.unmeasured.length > 0,
+    unweighable: result.unconverted.length > 0,
     output: figures.known
       ? {
           known: true,

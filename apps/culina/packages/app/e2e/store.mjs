@@ -1,10 +1,12 @@
 // The local store in a browser: records survive a reload and a service worker update, and
-// the store makes no request that leaves the origin. The page is
+// the store makes no request that leaves the origin. A stock item of the version before
+// 2026-11-20 (in Culina's own database) moves into the shared database `domus` at the next start. The page is
 // opened with `?e2e-store`, which exposes the open store as a promise on
 // `globalThis.__culinaStore` (src/store/e2e-hook.ts; inert without that query).
 import { readFileSync, writeFileSync } from 'node:fs';
 import { check, distDir, watch } from './harness.mjs';
 import { controlled } from './smoke.mjs';
+import { domusStock } from './stock-helpers.mjs';
 
 const ONION = { id: 'u-aaaa', name: 'Onion', parentId: 'alliums' };
 const STOCK = {
@@ -39,6 +41,19 @@ const read = (page) =>
 
 const sameAsPut = (found) =>
   JSON.stringify(found) === JSON.stringify({ ingredients: [ONION], stock: [STOCK] });
+/** After the move: the ingredient stays, the old item is a record of the shared collection. */
+const MOVED = { present: true, amount: { value: 400, unit: 'g' }, state: 'raw' };
+const moved = async (page) => {
+  const found = await read(page);
+  const rows = await domusStock(page);
+  const values = rows.flatMap((row) => row.records.filter((r) => !r.deleted));
+  return (
+    JSON.stringify(found) === JSON.stringify({ ingredients: [ONION], stock: [] }) &&
+    values.length === 1 &&
+    values[0].key === 'u-aaaa' &&
+    JSON.stringify(values[0].value) === JSON.stringify(MOVED)
+  );
+};
 
 export const store = async (browser, server) => {
   const context = await browser.newContext();
@@ -54,7 +69,12 @@ export const store = async (browser, server) => {
     check(sameAsPut(await read(page)), 'store: they are read back');
 
     await page.reload();
-    check(sameAsPut(await read(page)), 'store: they survive a reload');
+    await page.getByRole('heading', { level: 1 }).waitFor();
+    await page.waitForFunction(() => globalThis.__culinaStock.records().then((r) => 'u-aaaa' in r));
+    check(
+      await moved(page),
+      'store: they survive a reload, and the old stock item moved into the shared database domus',
+    );
 
     const line = await page.getByText(/^Storage: /).textContent();
     check(Boolean(line), `store: Settings shows one storage line (${line})`);
@@ -73,7 +93,8 @@ export const store = async (browser, server) => {
     );
     check(true, 'store: the service worker updated (new cache, old cache deleted)');
     await page.reload();
-    check(sameAsPut(await read(page)), 'store: they survive a service worker update');
+    await page.getByRole('heading', { level: 1 }).waitFor();
+    check(await moved(page), 'store: they survive a service worker update');
   } finally {
     writeFileSync(swPath, swOriginal);
   }

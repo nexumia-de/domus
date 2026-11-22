@@ -3,7 +3,17 @@
 export * from './model';
 
 export { convert, toGrams } from './amounts/convert';
-export { displayStep, roundMass } from './amounts/round';
+export {
+  displayStep,
+  householdMeasureOf,
+  HOUSEHOLD_MEASURES,
+  MEASURE_STEP,
+  PIECE_STEP,
+  roundMass,
+  roundMeasure,
+  roundPieces,
+} from './amounts/round';
+export type { HouseholdMeasure, ShownNumberResult } from './amounts/round';
 export { UNIT_IDS, isUnitId, unitFactor, unitKind } from './amounts/units';
 export type {
   Amount,
@@ -85,7 +95,8 @@ export { convertComponentLines } from './components/convert';
 export type { ConvertLinesResult, LineEntry } from './components/convert';
 export { componentLineGrams } from './components/lines';
 export { portionsFromYield, portionWeight } from './components/portions';
-export { componentYield } from './components/yield';
+export { componentYield, runGrams } from './components/yield';
+export type { RunGramsResult } from './components/yield';
 export type {
   Component,
   ComponentError,
@@ -101,15 +112,19 @@ export type {
   PortionsResult,
   PortionWeightResult,
   RawIngredient,
+  UnconvertedIndex,
+  UnconvertedLine,
   UnmeasuredLine,
   YieldFigures,
   YieldResult,
+  KeepEntry,
 } from './components/types';
 
 export { toEdible, toPurchased, yieldFor } from './yields/edible';
 export type { EdibleResult, IngredientYield, YieldError, YieldLookup } from './yields/edible';
 
 export { stockExpiry } from './stock/expiry';
+export { shelfLifeApplies } from './stock/types';
 export { useBySuggestions } from './stock/suggest';
 export { useAmount } from './stock/use';
 export type { UseResult } from './stock/use';
@@ -189,7 +204,7 @@ export type { Choice, Conflict, MergePlan } from './exchange/merge';
 export { remapIngredients } from './exchange/remap';
 export { matchIngredients, nameWords, normaliseName } from './exchange/match';
 export type { Candidate, NameMatch } from './exchange/match';
-export { EXPORT_KINDS } from './exchange/types';
+export { EXPORT_KINDS, KIND_SINCE } from './exchange/types';
 export type {
   ExportContent,
   ExportEnvelope,
@@ -230,8 +245,10 @@ export type {
 
 export {
   DEFAULT_DISH_ROLES,
+  KITCHEN_ROLE,
   makeable,
   openDishRoles,
+  rankCandidates,
   stockForRole,
   usesIngredient,
 } from './makeable';
@@ -250,8 +267,11 @@ export type {
   MakeableResult,
   MakeableStockItem,
   MakeableSubstitution,
+  MakeableThrough,
+  MakeablePart,
   MakeableUrgency,
   MakeableUseUp,
+  RankedCandidate,
   RoleStockItem,
   StockForRoleResult,
   UsesIngredientResult,
@@ -262,13 +282,19 @@ export type { I18nText, Lang } from './text/i18n';
 export { contentResult } from './content/types';
 export type { ContentFinding, ContentFindingCode, ContentResult } from './content/types';
 export { validateSteps } from './steps/validate';
-export type { StepsOwner } from './steps/validate';
-export type { Step, StepTemperature, StepTime } from './steps/types';
+export type { StepOptions, StepsOwner } from './steps/validate';
+export { stepWord } from './steps/types';
+export type { Step, StepTemperature, StepTime, StepWord, TextStep } from './steps/types';
+export { STEP_VOCABULARY, proposeStep } from './steps/propose';
+export type { ProposalLine, StepProposal, StepVocabulary } from './steps/propose';
+export { ACTIONS, actionById } from './actions/shipped';
+export type { Action } from './actions/types';
 
 export { TECHNIQUES, techniqueById } from './techniques/shipped';
 export { techniqueNotes } from './techniques/notes';
 export type { NotesResult, TechniqueNote } from './techniques/notes';
 export { MAX_SENTENCE_WORDS, validateTechnique, validateTechniques } from './techniques/validate';
+export { TECHNIQUE_LEVELS } from './techniques/types';
 export type { Technique, TechniqueLevel, TechniqueSource } from './techniques/types';
 
 export { validateHandlingRule, validateHandlingRules } from './handling/validate';
@@ -312,7 +338,9 @@ export type {
 } from './classics/makeable';
 export { wantedLines } from './classics/wanted';
 export type { WantedLine } from './classics/wanted';
+export { COUNTRY_CODES, COURSE_IDS } from './classics/types';
 export type {
+  AmountWord,
   Classic,
   ClassicComponent,
   ClassicLine,
@@ -327,7 +355,10 @@ export type {
 export { SALT_PER_SODIUM, dishNutrition } from './nutrition/dish';
 export type { DishNutritionInput } from './nutrition/dish';
 export { ROUNDING_SOURCE, roundNutrition } from './nutrition/round';
+export { lineFigures } from './nutrition/figures';
+export type { FigureLookup, FigureOrigin, FigureRecord, LineFigures } from './nutrition/figures';
 export type {
+  NutritionShown,
   NotCountedLine,
   NotCountedReason,
   NutrientsPer100g,
@@ -339,3 +370,18 @@ export type {
   PortionNutrients,
   RoundNutritionResult,
 } from './nutrition/types';
+
+export { MIN_MEASURED, MIN_MEASURED_FIGURES, dishCharacters, shareOf } from './characters/evaluate';
+export { correctCharacters, correctionOf, correctionText } from './characters/correct';
+export type { CharacterCorrection } from './characters/correct';
+export type {
+  CharacterClause,
+  CharacterCoverage,
+  CharacterFacts,
+  CharacterLine,
+  CharacterReason,
+  CharacterRule,
+  CharactersResult,
+  DishCharacter,
+  FigureBound,
+} from './characters/types';

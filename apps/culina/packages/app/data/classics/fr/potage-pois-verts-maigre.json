@@ -2,7 +2,7 @@
   "id": "potage-pois-verts-maigre",
   "name": {
     "en": "Green pea soup, meatless",
-    "de": "Grüne-Erbsen-Suppe, fleischlos"
+    "de": "Grüne Erbsensuppe, fleischlos"
   },
   "originalName": "Potage de pois verts au maigre",
   "country": "fr",
@@ -89,9 +89,9 @@
             "en": "Water (the cooking water of the peas)",
             "de": "Wasser (das Kochwasser der Erbsen)"
           },
-          "note": {
-            "en": "The gras version moistens the purée with 2 litres of chicken consommé (gouffe.txt line 19440). The meatless text gives no amount for the cooking water of the peas.",
-            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet (gouffe.txt Zeile 19440). Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
+          "sourceNote": {
+            "en": "The gras version moistens the purée with 2 litres of chicken consommé. The meatless text gives no amount for the cooking water of the peas.",
+            "de": "Das Püree der fetten Fassung wird mit 2 Litern Hühnerkonsommé angefeuchtet. Der fleischlose Text nennt keine Menge für das Kochwasser der Erbsen."
           }
         }
       ],
@@ -109,6 +109,7 @@
             "en": "Add salt, the onion and the carrot.",
             "de": "Salz, die Zwiebel und die Karotte zugeben."
           },
+          "action": "add",
           "uses": ["salt", "onion", "carrot"]
         },
         {
@@ -116,6 +117,7 @@
             "en": "Take out the carrot and press the rest through a fine cloth sieve.",
             "de": "Die Karotte herausnehmen und den Rest durch ein feines Tuchsieb streichen."
           },
+          "action": "strain",
           "uses": ["carrot"]
         },
         {
@@ -123,19 +125,22 @@
             "en": "Put the purée in a pan with the sugar and moisten it with the cooking water of the peas.",
             "de": "Das Püree mit dem Zucker in einen Topf geben und mit dem Kochwasser der Erbsen angießen."
           },
+          "action": "add",
           "uses": ["sugar", "liquid"]
         },
         {
           "text": {
             "en": "Stir over the heat so that the purée does not stick.",
             "de": "Auf dem Herd rühren, damit das Püree nicht ansetzt."
-          }
+          },
+          "action": "stir"
         },
         {
           "text": {
             "en": "At the first boil, move the pan to the side of the stove.",
             "de": "Beim ersten Aufkochen den Topf an den Rand des Herdes stellen."
-          }
+          },
+          "action": "remove-from-heat"
         }
       ]
     },
@@ -165,7 +170,7 @@
             "unit": "g",
             "original": "1 hecto de riz"
           },
-          "note": {
+          "sourceNote": {
             "en": "The amount is that of the gras version, where the rice is blanched first; the meatless version gives only the cooking method.",
             "de": "Die Menge stammt aus der fetten Fassung, wo der Reis zuerst blanchiert wird; die fleischlose Fassung nennt nur die Garweise."
           }
@@ -177,8 +182,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "For cooking the rice. The source gives no amount.",
-            "de": "Zum Garen des Reises. Die Quelle nennt keine Menge."
+            "en": "For cooking the rice.",
+            "de": "Zum Garen des Reises."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -188,8 +197,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "Butter for cooking the rice. The source gives no amount.",
-            "de": "Butter zum Garen des Reises. Die Quelle nennt keine Menge."
+            "en": "Butter for cooking the rice.",
+            "de": "Butter zum Garen des Reises."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -204,8 +217,12 @@
             "original": "60 grammes de beurre"
           },
           "note": {
-            "en": "Added at the end; the meatless version says to finish as the gras soup.",
-            "de": "Am Ende zugegeben; die fleischlose Fassung sagt, man fertige wie die fette Suppe."
+            "en": "Added at the end.",
+            "de": "Am Ende zugegeben."
+          },
+          "sourceNote": {
+            "en": "The meatless version says to finish as the gras soup.",
+            "de": "Die fleischlose Fassung sagt, man fertige wie die fette Suppe."
           }
         }
       ],
@@ -223,6 +240,7 @@
             "en": "Drain the rice and put it in the tureen with the purée.",
             "de": "Den Reis abgießen und mit dem Püree in die Suppenschüssel geben."
           },
+          "action": "drain",
           "uses": ["rice", "puree"]
         },
         {
@@ -230,13 +248,15 @@
             "en": "Add the butter and stir well until it has melted.",
             "de": "Die Butter zugeben und gut unterrühren, bis sie geschmolzen ist."
           },
+          "action": "add",
           "uses": ["butter"]
         },
         {
           "text": {
             "en": "Serve.",
             "de": "Servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     }
@@ -269,6 +289,6 @@
   },
   "note": {
     "en": "Meatless green pea soup. The pea purée follows the gras version (Purée de pois verts au gras, p. 371), to which the text refers; there the chicken consommé is replaced by the cooking water of the peas. The amounts of the purée and the rice are those of the gras version. No meat and no meat stock occur in the meatless version as read.",
-    "de": "Grüne-Erbsen-Suppe ohne Fleisch. Das Erbsenpüree folgt der fetten Fassung (Purée de pois verts au gras, S. 371), auf die der Text verweist; dort wird die Hühnerkonsommé durch das Kochwasser der Erbsen ersetzt. Die Mengen für Püree und Reis stammen aus der fetten Fassung. In der fleischlosen Fassung kommen laut Lektüre weder Fleisch noch Fleischbrühe vor."
+    "de": "Grüne Erbsensuppe ohne Fleisch. Das Erbsenpüree folgt der fetten Fassung (Purée de pois verts au gras, S. 371), auf die der Text verweist; dort wird die Hühnerkonsommé durch das Kochwasser der Erbsen ersetzt. Die Mengen für Püree und Reis stammen aus der fetten Fassung. In der fleischlosen Fassung kommen laut Lektüre weder Fleisch noch Fleischbrühe vor."
   }
 }

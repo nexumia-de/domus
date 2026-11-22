@@ -12,10 +12,46 @@ const t = strings.classics;
 
 let keeping = false;
 
-/** Writes to the live status line of the finish panel, which a redraw may have replaced. */
-const say = (text: string): void => {
-  const live = document.querySelector('.classic-finish [role="status"]');
-  if (live !== null) live.textContent = text;
+/**
+ * "Keep in my notebook": copies the classic into the notebook (`keepClassic`) and opens the new
+ * dish. `scope` is the selector of the box that holds the button and its live status line, which
+ * a redraw may have replaced. Used at the end of cooking and on the dish screen.
+ */
+export const keepButton = (
+  classic: Classic,
+  portions: () => number,
+  lang: Lang,
+  scope: string,
+  className: string,
+): HTMLButtonElement => {
+  const say = (text: string): void => {
+    const live = document.querySelector(`${scope} [role="status"]`);
+    if (live !== null) live.textContent = text;
+  };
+  const keep = el('button', `btn ${className} keep-button`, t.keepButton);
+  keep.type = 'button';
+  keep.addEventListener('click', () => {
+    if (keeping) return;
+    keeping = true;
+    keep.disabled = true;
+    say(t.keepWorking);
+    void keepClassic(classic, portions(), lang)
+      .then((done) => {
+        if (done.ok) {
+          window.location.hash = hashFor('dishes', done.dishId);
+          return;
+        }
+        if (done.reason === 'wanted') say(t.keepCannot(done.names.join(', ')));
+        else if (done.reason === 'store' && !done.result.ok) say(storeText(done.result.error.code));
+        else say(t.keepProblem);
+      })
+      .finally(() => {
+        keeping = false;
+        const live = document.querySelector<HTMLButtonElement>(`${scope} .keep-button`);
+        if (live !== null) live.disabled = false;
+      });
+  });
+  return keep;
 };
 
 export const finishPanel = (classic: Classic, portions: number, lang: Lang): HTMLElement => {
@@ -29,29 +65,7 @@ export const finishPanel = (classic: Classic, portions: number, lang: Lang): HTM
     panel.append(el('p', 'note-quiet keep-cannot', t.keepCannot(names)), status);
     return panel;
   }
-  const keep = el('button', 'btn primary keep-button', t.keepButton);
-  keep.type = 'button';
-  keep.addEventListener('click', () => {
-    if (keeping) return;
-    keeping = true;
-    keep.disabled = true;
-    say(t.keepWorking);
-    void keepClassic(classic, portions, lang)
-      .then((done) => {
-        if (done.ok) {
-          window.location.hash = hashFor('dishes', done.dishId);
-          return;
-        }
-        if (done.reason === 'wanted') say(t.keepCannot(done.names.join(', ')));
-        else if (done.reason === 'store' && !done.result.ok) say(storeText(done.result.error.code));
-        else say(t.keepProblem);
-      })
-      .finally(() => {
-        keeping = false;
-        const live = document.querySelector<HTMLButtonElement>('.classic-finish .keep-button');
-        if (live !== null) live.disabled = false;
-      });
-  });
+  const keep = keepButton(classic, () => portions, lang, '.classic-finish', 'primary');
   panel.append(keep, el('p', 'muted', t.keepNote), status);
   return panel;
 };

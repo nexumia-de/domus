@@ -135,6 +135,7 @@
             "en": "Mix the flour and the milk in a saucepan.",
             "de": "Mehl und Milch in einem Topf verrühren."
           },
+          "action": "mix",
           "uses": ["flour", "milk"]
         },
         {
@@ -142,6 +143,7 @@
             "en": "Add a little salt, pepper and nutmeg.",
             "de": "Ein wenig Salz, Pfeffer und Muskat zugeben."
           },
+          "action": "season",
           "uses": ["salt", "pepper", "nutmeg"]
         },
         {
@@ -156,25 +158,28 @@
           "text": {
             "en": "Take the saucepan off the heat.",
             "de": "Den Topf vom Herd nehmen."
-          }
+          },
+          "action": "remove-from-heat"
         },
         {
           "text": {
             "en": "Add the Parmesan, the butter and the ten egg yolks.",
             "de": "Parmesan, Butter und die zehn Eigelb einrühren."
           },
+          "action": "add",
           "uses": ["parmesan", "butter", "yolk"]
         },
         {
           "text": {
             "en": "Press the whole through a fine cloth sieve.",
             "de": "Die Masse durch ein feines Tuchsieb streichen."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
             "en": "Whisk the ten egg whites to a stiff froth.",
-            "de": "Die zehn Eiweiß zu steifem Schaum schlagen."
+            "de": "Die zehn Eiweiß zu steifem Schnee schlagen."
           },
           "technique": "whip-egg-whites",
           "uses": ["white"]
@@ -191,7 +196,8 @@
           "text": {
             "en": "Fill a silver timbale whose sides are lined with a strip of buttered paper.",
             "de": "Eine Silbertimbale, deren Rand mit einem Streifen gebutterten Papiers ausgelegt ist, füllen."
-          }
+          },
+          "action": "fill"
         },
         {
           "text": {

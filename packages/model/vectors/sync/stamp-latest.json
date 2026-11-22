@@ -1,0 +1,135 @@
+{
+  "id": "stamp-latest",
+  "kind": "latest-stamp",
+  "description": "latestStamp: the greatest readable updatedAt of a list as text with three fraction digits, compared as time (not as text); tombstones count; unreadable times are skipped; null (how this file writes undefined) when the list is empty or nothing is readable.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "empty list",
+      "input": {
+        "records": []
+      },
+      "expected": {
+        "stamp": null
+      }
+    },
+    {
+      "name": "one record",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-19T10:00:00Z",
+            "value": 1
+          }
+        ]
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.000Z"
+      }
+    },
+    {
+      "name": "the greatest wins",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-19T10:00:00Z",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-19T11:00:00.5Z",
+            "value": 1
+          },
+          {
+            "key": "c",
+            "updatedAt": "2026-11-18T23:00:00Z",
+            "value": 1
+          }
+        ]
+      },
+      "expected": {
+        "stamp": "2026-11-19T11:00:00.500Z"
+      }
+    },
+    {
+      "name": "compared as time, not as text",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-19T10:00:00Z",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-19T10:00:00.5Z",
+            "value": 1
+          }
+        ]
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.500Z"
+      }
+    },
+    {
+      "name": "a tombstone counts",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-19T10:00:00Z",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-20T10:00:00Z",
+            "deleted": true
+          }
+        ]
+      },
+      "expected": {
+        "stamp": "2026-11-20T10:00:00.000Z"
+      }
+    },
+    {
+      "name": "unreadable times are skipped",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "bad",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-19T10:00:00.123456Z",
+            "value": 1
+          }
+        ]
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.123Z"
+      }
+    },
+    {
+      "name": "nothing readable",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "bad",
+            "value": 1
+          },
+          {
+            "key": "b"
+          }
+        ]
+      },
+      "expected": {
+        "stamp": null
+      }
+    }
+  ]
+}

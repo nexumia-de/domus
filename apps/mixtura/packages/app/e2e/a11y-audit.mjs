@@ -131,7 +131,7 @@ export const audit = (page) =>
       }
     }
 
-    // ---- Headings: one h1 per pane, no skipped level.
+    // ---- Headings: one h1 per page, no skipped level.
     const headings = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')].filter(visible);
     let last = 0;
     for (const heading of headings) {
@@ -142,11 +142,10 @@ export const audit = (page) =>
     }
     // An open modal sheet makes the page behind it inert: the sheet is the whole page then.
     const modal = document.querySelector('[role="dialog"][aria-modal="true"]') !== null;
-    const panes = modal ? [] : [...document.querySelectorAll('.pane')].filter(visible);
-    for (const pane of panes) {
-      const ones = [...pane.querySelectorAll('h1')].filter(visible).length;
-      if (ones !== 1 && !pane.closest('[role="dialog"]')) out.push(`${ones} h1 in one pane`);
-    }
+    // The page's one h1 is the header's title (the panes are content only).
+    const ones = headings.filter((heading) => heading.tagName === 'H1').length;
+    if (!modal && ones !== 1) out.push(`${ones} h1 on the page`);
+    if (!modal && document.querySelector('.pane h1') !== null) out.push('an h1 inside a pane');
     if (headings.length === 0) out.push('no heading');
 
     // ---- Landmarks: a navigation and a main, and every control inside one.
@@ -195,8 +194,6 @@ export const audit = (page) =>
       // Controls whose text is one plain label; composite rows (a name plus counts) are not judged.
       if (name === null || el.children.length > 0 || !visible(el)) continue;
       const text = words(el.textContent || '');
-      // Known: the variant link names the drink first (screens/spec/variant-strings.ts); open follow-up.
-      if (name.startsWith('Start a riff on ')) continue;
       if (text && !words(name).includes(text)) {
         out.push(
           `label in name: ${label(el)} has visible text "${text}" outside its accessible name`,

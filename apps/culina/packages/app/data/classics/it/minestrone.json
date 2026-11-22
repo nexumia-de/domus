@@ -35,8 +35,12 @@
             "de": "Gekochtes Fleisch (Lesso)"
           },
           "note": {
-            "en": "'The usual boiled meat'. The source gives neither kind nor weight.",
-            "de": "'Das übliche Lesso'. Die Quelle nennt weder Sorte noch Gewicht."
+            "en": "'The usual boiled meat'.",
+            "de": "‚Das übliche Lesso‘."
+          },
+          "sourceNote": {
+            "en": "The source gives neither kind nor weight.",
+            "de": "Die Quelle nennt weder Sorte noch Gewicht."
           }
         },
         {
@@ -46,8 +50,12 @@
             "de": "Fleischbrühe"
           },
           "note": {
-            "en": "The beans and the soup are cooked in broth; no amount is given.",
-            "de": "Bohnen und Suppe werden in Brühe gegart; keine Menge angegeben."
+            "en": "The beans and the soup are cooked in broth.",
+            "de": "Bohnen und Suppe werden in Brühe gegart."
+          },
+          "sourceNote": {
+            "en": "No amount is given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -57,19 +65,27 @@
             "de": "Frische Bohnen (ausgelöst)"
           },
           "note": {
-            "en": "'A handful' of shelled fresh beans; the source gives no weight and no size of the handful.",
-            "de": "'Eine Handvoll' ausgelöste frische Bohnen; die Quelle gibt weder Gewicht noch die Größe der Handvoll an."
+            "en": "'A handful' of shelled fresh beans.",
+            "de": "‚Eine Handvoll‘ ausgelöste frische Bohnen."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight and no size of the handful.",
+            "de": "Die Quelle gibt weder Gewicht noch die Größe der Handvoll an."
           }
         },
         {
           "key": "savoy",
-          "wanted": {
-            "en": "Savoy cabbage",
-            "de": "Wirsingkohl"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170388"
           },
           "note": {
-            "en": "Cut into thin strips; no amount.",
-            "de": "In dünne Streifen geschnitten; keine Menge."
+            "en": "Cut into thin strips.",
+            "de": "In dünne Streifen geschnitten."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -86,8 +102,12 @@
             "id": "fdc-169991"
           },
           "note": {
-            "en": "'A little' chard; no amount.",
-            "de": "'Wenig' Mangold; keine Menge."
+            "en": "'A little' chard.",
+            "de": "‚Wenig‘ Mangold."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -121,8 +141,12 @@
             "id": "fdc-170416"
           },
           "note": {
-            "en": "'A pinch'; the source gives no weight for it.",
-            "de": "'Ein Pizzico'; die Quelle gibt dafür kein Gewicht an."
+            "en": "'A pinch'.",
+            "de": "Eine Prise (un pizzico)."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight for it.",
+            "de": "Die Quelle gibt dafür kein Gewicht an."
           }
         },
         {
@@ -170,19 +194,27 @@
             "id": "fdc-170000"
           },
           "note": {
-            "en": "'Very little' onion; no amount.",
-            "de": "'Ganz wenig' Zwiebel; keine Menge."
+            "en": "'Very little' onion.",
+            "de": "‚Ganz wenig‘ Zwiebel."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
           },
           "note": {
-            "en": "'A little'; the source gives no amount.",
-            "de": "'Ein wenig'; die Quelle gibt keine Menge an."
+            "en": "Tomato sauce or paste, 'a little'.",
+            "de": "Tomatensauce oder Tomatenmark, ‚ein wenig‘."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         },
         {
@@ -206,8 +238,12 @@
             "id": "fdc-group-rice-white"
           },
           "note": {
-            "en": "'Enough' rice to make the soup nearly dry; no amount.",
-            "de": "'Reichlich' Reis, bis die Suppe fast trocken ist; keine Menge."
+            "en": "'Enough' rice to make the soup nearly dry.",
+            "de": "‚Reichlich‘ Reis, bis die Suppe fast trocken ist."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -217,8 +253,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'A good pinch'; no amount.",
-            "de": "'Ein guter Pizzico'; keine Menge."
+            "en": "'A good pinch'.",
+            "de": "Eine gute Prise (un buon pizzico)."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],
@@ -243,13 +283,16 @@
           "text": {
             "en": "If the beans are dried, half-cook them in water first.",
             "de": "Sind die Bohnen getrocknet, vorher in Wasser halb garen."
-          }
+          },
+          "action": "cook",
+          "uses": ["beans"]
         },
         {
           "text": {
             "en": "Cut the savoy cabbage, the spinach and a little chard into thin strips.",
             "de": "Wirsing, Spinat und etwas Mangold in dünne Streifen schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -257,6 +300,7 @@
             "en": "Soak the greens in cold water.",
             "de": "Das Grüne in kaltem Wasser einweichen."
           },
+          "action": "soak",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -264,6 +308,7 @@
             "en": "Put the greens in a dry pot on the heat until their water comes out, then drain them well, pressing them with a ladle.",
             "de": "Das Grüne in einem trockenen Topf auf den Herd stellen, bis das Wasser austritt; dann gut abgießen und mit der Kelle ausdrücken."
           },
+          "action": "drain",
           "uses": ["savoy", "spinach", "chard"]
         },
         {
@@ -271,6 +316,7 @@
             "en": "Chop the fatty ham, the garlic and the parsley together.",
             "de": "Den fetten Schinken, den Knoblauch und die Petersilie zusammen fein hacken."
           },
+          "technique": "knife-cuts",
           "uses": ["ham", "garlic", "parsley"]
         },
         {
@@ -286,6 +332,7 @@
             "en": "Cut the celery, the carrot, the potato, the zucchini and the onion into thin short strips.",
             "de": "Sellerie, Karotte, Kartoffel, Zucchini und Zwiebel in dünne kurze Streifen schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["celery", "carrot", "potato", "zucchini", "onion"]
         },
         {
@@ -293,6 +340,7 @@
             "en": "Add them to the pot with the chopped mix.",
             "de": "Sie zusammen mit der gehackten Mischung in den Topf geben."
           },
+          "action": "add",
           "uses": ["celery", "carrot", "potato", "zucchini", "onion", "ham", "garlic", "parsley"]
         },
         {
@@ -300,6 +348,7 @@
             "en": "Add the beans.",
             "de": "Die Bohnen dazugeben."
           },
+          "action": "add",
           "uses": ["beans"]
         },
         {
@@ -307,6 +356,7 @@
             "en": "Add a little tomato sauce or paste.",
             "de": "Etwas Tomatensauce oder Tomatenmark dazugeben."
           },
+          "action": "add",
           "uses": ["tomato"]
         },
         {
@@ -314,6 +364,7 @@
             "en": "Season with pepper and salt.",
             "de": "Mit Pfeffer und Salz würzen."
           },
+          "action": "season",
           "uses": ["pepper", "salt"]
         },
         {
@@ -335,8 +386,9 @@
         {
           "text": {
             "en": "Just before taking it off the heat, add a good pinch of parmesan.",
-            "de": "Kurz bevor es vom Herd kommt, einen guten Pizzico Parmesan dazugeben."
+            "de": "Kurz bevor die Suppe vom Herd kommt, eine gute Prise Parmesan dazugeben."
           },
+          "action": "add",
           "uses": ["parmesan"]
         }
       ]

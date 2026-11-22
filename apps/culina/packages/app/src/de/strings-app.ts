@@ -14,10 +14,9 @@ export const appStringsDe: typeof appStrings = {
   nav: {
     label: 'Hauptmenü',
     start: 'Start',
-    ratios: 'Verhältnisse',
-    components: 'Komponenten',
-    dishes: 'Gerichte',
     cook: 'Kochen',
+    notebook: 'Notizbuch',
+    ratios: 'Verhältnisse',
     settings: 'Einstellungen',
   },
   screens: {
@@ -50,6 +49,18 @@ export const appStringsDe: typeof appStrings = {
     acid: 'Säure',
     garnish: 'Garnitur',
     starch: 'Stärke',
+    // Die Rollen der Verhältniskarten.
+    flour: 'Mehl',
+    water: 'Wasser',
+    egg: 'Ei',
+    fat: 'Fett',
+    sugar: 'Zucker',
+    oil: 'Öl',
+    liquid: 'Flüssigkeit',
+    yeast: 'Hefe',
+    salt: 'Salz',
+    // A role of the example ingredients (onion, carrot, celery).
+    aromatic: 'Würzgemüse',
   },
   /** "Offen: ... ergänzen" for a role the dish does not fill yet (accusative). */
   roleInvite: {
@@ -61,11 +72,12 @@ export const appStringsDe: typeof appStrings = {
     starch: 'eine Stärkebeilage',
   },
   notebook: {
+    sectionsLabel: 'Teile des Notizbuchs',
     searchLabel: 'Nach Namen suchen',
     toTaste: 'nach Geschmack',
     invalidNumber: 'Gib eine Zahl über 0 ein.',
     colIngredient: 'Zutat',
-    rawHeading: 'Was alles hineingeht, bis ganz nach unten',
+    rawHeading: 'Alle Zutaten',
     rawAsWritten: 'Für einen Ansatz wie notiert.',
     rawOutput: (g: string): string => `Für ${g} Ergebnis.`,
     rawFactor: (factor: string): string => `Für das ${factor}-Fache des Rezepts wie notiert.`,
@@ -74,6 +86,14 @@ export const appStringsDe: typeof appStrings = {
     withoutAmountHeading: 'Ohne Menge',
     withoutAmount: (name: string, where: string): string => `${name} (in ${where})`,
     notAddedHeading: 'Nicht addiert',
+    unconvertedHeading: 'Nicht gewogen',
+    lacks: {
+      'needs-unit-weight': 'kein Stückgewicht erfasst, nicht in den Summen',
+      'needs-density': 'keine Dichte erfasst, nicht in den Summen',
+      'not-convertible': 'weder Dichte noch Stückgewicht erfasst, nicht in den Summen',
+    },
+    unweighed: (name: string): string =>
+      `Das Ergebnis von ${name} ist nicht gewogen: ein Durchgang zählt so viel, wie hineingeht.`,
     stateRaw: 'roh',
     stateCooked: 'gegart',
     statePrepared: 'zubereitet',
@@ -83,7 +103,7 @@ export const appStringsDe: typeof appStrings = {
       unknownComponent: (name: string): string =>
         `Eine hier verwendete Komponente steht nicht im Notizbuch: ${name}.`,
       cannotConvert: (line: string): string =>
-        `${line} ist in einer Einheit angegeben, die eine Dichte oder ein Stückgewicht braucht, und das ist nicht erfasst.`,
+        `Für ${line} ist weder ein Stückgewicht noch eine Dichte erfasst.`,
       noYield: (name: string): string =>
         `Das Ergebnis von ${name} ist noch nicht gewogen, deshalb lässt es sich nicht skalieren.`,
       noPercentBase: (role: string): string =>
@@ -102,6 +122,15 @@ export const appStringsDe: typeof appStrings = {
     subTag: 'Komponente',
     linesHeading: 'Zeilen',
     notesHeading: 'Zubereitung und Notizen',
+    stepsHeading: 'Schritte',
+    cookSteps: 'Schritt für Schritt kochen',
+    backToComponent: 'Zurück zur Komponente',
+    noSteps: 'Diese Komponente hat noch keine Schritte.',
+    cookDone: 'Das war der letzte Schritt.',
+    keepsHeading: 'Haltbarkeit',
+    keepsLine: (place: string, days: number): string =>
+      `${place}: ${days} ${days === 1 ? 'Tag' : 'Tage'}`,
+    madeIt: 'Fertig: in den Vorrat legen',
     colAmount: 'Menge',
     colPercent: (base: string): string => `% von ${base}`,
     buyAbout: (g: string): string => `etwa ${g} einkaufen`,
@@ -112,9 +141,11 @@ export const appStringsDe: typeof appStrings = {
     gainLabel: 'Zuwachs',
     yieldLabel: 'Ausbeute',
     outputSource: (source: string): string => `Ergebnis: ${source}`,
-    outputUnknown: 'Ergebnis noch nicht gewogen',
-    outputUnknownHelp: 'Skaliere mit einem Faktor, bis es ein Ergebnisgewicht hat.',
+    outputUnknown: 'Gewicht des Ergebnisses noch unbekannt',
+    outputUnknownHelp:
+      'Bis du das fertige Ergebnis wiegst, lässt es sich nur mit einem Faktor skalieren.',
     inputPartial: 'Der Einsatz zählt nur die Zeilen mit Menge.',
+    inputUnweighed: 'Der Einsatz zählt nur die Zeilen, deren Menge sich wiegen lässt.',
     scaleHeading: 'Skalieren',
     outputWanted: 'Gewünschtes Ergebnis (g)',
     factorLabel: 'Faktor (1 ist das Rezept wie notiert)',
@@ -124,11 +155,33 @@ export const appStringsDe: typeof appStrings = {
       `Etwa ${portions} Portionen: ${whole} ganze, ${rest} übrig.`,
     portionsNeedsOutput: 'Portionen brauchen ein Ergebnisgewicht.',
   },
+  characters: {
+    label: 'Art',
+    filterLabel: 'Art',
+    any: 'Egal',
+    none: 'Kein Gericht ist so.',
+    editHeading: 'Art',
+    editHint:
+      'Aus Füllungen und Schritten ermittelt, jede Regel eine Einschätzung. Hake an, wie dieses Gericht ist.',
+    added: 'von dir ergänzt',
+    removed: 'von dir entfernt',
+    reset: 'Wie ermittelt',
+    diffAdded: (name: string): string => `ergänzt: ${name}`,
+    diffRemoved: (name: string): string => `entfernt: ${name}`,
+  },
   dishes: {
     listLabel: 'Alle Gerichte',
     unknown: 'Dieses Gericht steht nicht im Notizbuch.',
     chooseOne: 'Wähle ein Gericht, um zu sehen, wie es gemacht wird.',
     back: 'Alle Gerichte',
+    assemblyHeading: 'Zusammenbau',
+    cookSteps: 'Schritt für Schritt kochen',
+    backToDish: 'Zurück zum Gericht',
+    noSteps: 'Dieses Gericht hat noch keine Schritte.',
+    cookDone: 'Das war der letzte Schritt.',
+    originOwn: 'In meinem Notizbuch',
+    originShipped: 'Mit der App geliefert',
+    fromStock: (name: string): string => `Aus dem Vorrat: ${name}`,
     slotsHeading: 'Rollen',
     colFilling: 'Belegung',
     colPerPortion: 'Pro Portion',
@@ -141,6 +194,44 @@ export const appStringsDe: typeof appStrings = {
     optional: 'optional',
     noAmount: (name: string): string => `${name} hat keine Menge, deshalb wird es nicht addiert.`,
     openSlot: (what: string): string => `Offen: ${what} ergänzen`,
+    swap: 'Tauschen',
+    swapFor: (name: string): string => `Tauschen: ${name}`,
+    swapChoose: (name: string): string => `Statt ${name}:`,
+    swapped: 'vorerst getauscht',
+    swapNotice: 'Vorerst getauscht. Nichts ist gespeichert.',
+    swapKeep: 'Als meine Version behalten',
+    swapReset: 'Zurück zur gespeicherten Belegung',
+    swapChange: (to: string, from: string): string => `${to} statt ${from}`,
+    pickLink: 'Ein Gericht zufällig zusammenstellen',
+    pickTitle: 'Zufallswahl',
+    pickRoles: 'Welche Rollen',
+    pickOnlyStock: 'Nur was fertig im Vorrat ist',
+    pickRoll: 'Würfeln',
+    pickHeading: 'Die Auswahl',
+    pickAgain: 'Neu würfeln',
+    pickAgainFor: (role: string): string => `Neu würfeln: ${role}`,
+    pickNone: 'Noch keine deiner Komponenten hat diese Rolle.',
+    pickNoneStock: 'Mit dieser Rolle ist nichts im Vorrat.',
+    pickOnly: 'Die einzige für diese Rolle.',
+    pickInStock: 'im Vorrat',
+    pickNoRoles: 'Wähle mindestens eine Rolle.',
+    pickNote: 'Der Zufall wählt je Rolle. Was zusammenpasst, weiß er nicht.',
+    pickMake: 'Ein Gericht daraus machen',
+    pickDishHeading: 'Überrasch mich mit einem Gericht',
+    pickDishNote:
+      'Ein zufälliges Gericht, eigenes oder mitgeliefertes, aus denen, die zu deiner Wahl oben passen.',
+    pickDishReady: 'Nur was der Vorrat jetzt erlaubt',
+    pickDishRoll: 'Überrasch mich',
+    pickDishResult: 'Vorschlag',
+    pickDishAgainLabel: 'Neu würfeln: ein anderes Gericht',
+    pickDishAmong: (n: number): string =>
+      n === 1 ? 'Das einzige Gericht, das passt.' : `Zufällig aus ${n} Gerichten gewählt.`,
+    pickDishNoneReady: 'Der Vorrat erlaubt jetzt keines dieser Gerichte.',
+    pickRolesHeading: 'Aus deinen Komponenten zusammenstellen',
+    pickFitsNote: 'Gewürfelt aus den Zusammenstellungen, die zu deiner Wahl oben passen.',
+    pickNoFit: 'Keine Zusammenstellung deiner Komponenten ist so.',
+    pickNoFitTried: (tries: number, total: number): string =>
+      `In ${tries} Würfen war keine Zusammenstellung deiner Komponenten so (von ${total}).`,
   },
   ratios: {
     searchLabel: 'Nach Namen suchen',
@@ -153,7 +244,35 @@ export const appStringsDe: typeof appStrings = {
     colParts: 'Teile',
     colPercent: (anchor: string): string => `% von ${anchor}`,
     usualRange: (min: string, max: string): string => `üblich ${min}–${max}`,
-    sourceLabel: 'Quelle',
+    sourceLine: (list: string): string => `Quelle: ${list}`,
+    reference: (author: string, title: string, page?: string): string =>
+      page === undefined ? `${author}, ${title}` : `${author}, ${title}, S. ${page}`,
+    seed: {
+      'bread-dough-ratio': {
+        name: 'Brotteig, Verhältnis',
+        note: 'Nach Gewicht, dazu Hefe und Salz.',
+      },
+      'pasta-dough': { name: 'Nudelteig', note: 'Das Ei wird gewogen, nicht gezählt.' },
+      'pie-dough': { name: 'Pie-Teig' },
+      'cookie-dough': { name: 'Keksteig' },
+      'pound-cake': { name: 'Sandkuchen', note: 'Die Quelle nennt Butter als Fett.' },
+      vinaigrette: { name: 'Vinaigrette' },
+      roux: { name: 'Mehlschwitze', note: 'Die Quelle nennt geklärte Butter als Fett.' },
+      'roux-whole-butter': {
+        name: 'Mehlschwitze mit ganzer Butter',
+        note: 'Die Quelle nennt ganze Butter als Fett.',
+      },
+      'free-standing-custard': { name: 'Frei stehende Eiercreme' },
+      'bread-dough-bakers-percent': {
+        name: 'Brotteig, Bäckerprozente',
+        note: 'Hefe ist Frischhefe. Nur das Salz hat einen Bereich.',
+      },
+      'neapolitan-pizza-dough': {
+        name: 'Neapolitanischer Pizzateig',
+        note: 'Das Salz ist die Mitte des Bereichs 2,8 bis 3,1 aus der Quelle; der Bereich ist die Angabe der Quelle.',
+      },
+      'ciabatta-stiff-biga': { name: 'Ciabatta mit fester Biga' },
+    },
     familyHeading: 'Familie',
     parentLabel: 'Abwandlung von',
     variationsLabel: 'Abwandlungen',
@@ -203,7 +322,12 @@ export const appStringsDe: typeof appStrings = {
     examplesAdded: 'Beispieleinträge wurden deinem Notizbuch hinzugefügt.',
     dataHeading: 'Deine Daten',
     dataHint:
-      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast. Nichts wird irgendwohin gesendet.',
+      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast, und deine als gelernt markierten Fertigkeiten.',
+    notInFileStock: (space: string | undefined): string =>
+      space === undefined
+        ? 'Nicht in der Datei: der Vorrat, gehalten in einem Space mit den anderen Apps des Haushalts.'
+        : `Nicht in der Datei: der Vorrat von „${space}“, gehalten mit den anderen Apps des Haushalts.`,
+    notInFileOther: 'Auch nicht: nicht gespeicherte Entwürfe und die Einstellungen dieses Geräts.',
     exportButton: 'Alles exportieren',
     exportNothing: 'Es gibt noch nichts zu exportieren.',
     exportedNote: 'Die Datei wurde zum Speichern an deinen Browser übergeben.',
@@ -215,6 +339,24 @@ export const appStringsDe: typeof appStrings = {
     reminderDays: (days: number): string => `Nach ${days} Tagen mit Änderungen`,
     reminderNotSaved:
       'Die Auswahl ließ sich auf diesem Gerät nicht speichern. Sie gilt, bis die App geschlossen wird.',
+    eraseButton: 'Alles auf diesem Gerät löschen',
+    eraseHint:
+      'Entfernt dein Notizbuch, die markierten Fertigkeiten, Entwürfe und die Einstellungen dieser App von diesem Gerät.',
+    eraseUndo:
+      'Das lässt sich nicht rückgängig machen: Exportiere zuerst, um eine Kopie zu behalten.',
+    eraseAsk: (what: string): string => `Von diesem Gerät löschen: ${what}?`,
+    eraseDrafts: (n: number): string =>
+      n === 1 ? '1 nicht gespeicherter Entwurf' : `${n} nicht gespeicherte Entwürfe`,
+    erasePrefs: 'die Einstellungen dieser App (Darstellung, Sprache, Filter, Erinnerung)',
+    eraseNothing: 'Von dieser App ist auf diesem Gerät nichts zu löschen.',
+    eraseStockStays: (space: string): string =>
+      `Der Vorrat von „${space}“ bleibt: Er wird mit den anderen Apps des Haushalts geteilt.`,
+    eraseStockWhere:
+      'Um ihn von diesem Gerät zu entfernen, entferne den Space in der App Haushalt.',
+    eraseHousehold: 'Den Space in der App Haushalt öffnen',
+    eraseExportFirst: 'Zuerst exportieren',
+    eraseConfirm: 'Alles löschen',
+    eraseCancel: 'Abbrechen',
   },
   // The reminder banner: quiet, never a dialog.
   backup: {
@@ -278,7 +420,38 @@ export const appStringsDe: typeof appStrings = {
     yieldLabel: 'Ergebnis, gewogen',
     yieldHelp: 'Lass es leer, bis du das Ergebnis gewogen hast.',
     notesLabel: 'Zubereitung und Notizen, eine pro Zeile',
+    stepsHeading: 'Schritte',
+    stepsHelp:
+      'Wähle, was getan wird, und hake ab, was hineinkommt. Eine Technik zeigt beim Kochen ihren Hinweis.',
+    addStep: 'Schritt hinzufügen',
+    stepLegend: (n: number): string => `Schritt ${n}`,
+    wordLabel: 'Was getan wird',
+    wordNone: 'Nichts gewählt',
+    wordSkills: 'Techniken (mit Hinweis)',
+    wordPlain: 'Einfache Handgriffe',
+    stepUses: 'Was hineinkommt',
+    stepNoLines: 'Füge zuerst oben Zutaten hinzu.',
+    stepTime: 'Zeit',
+    stepTimeUnit: 'Zeiteinheit',
+    stepTemperature: 'Temperatur',
+    stepTemperatureUnit: 'Temperatureinheit',
+    stepNote: 'Notiz (optional)',
+    stepText: 'Text der Quelle',
+    stepUp: (n: number): string => `Schritt ${n} nach oben`,
+    stepDown: (n: number): string => `Schritt ${n} nach unten`,
+    stepRemove: (n: number): string => `Schritt ${n} entfernen`,
+    keepsHeading: 'Haltbarkeit',
+    keepsHelp: 'Wie lange es fertig hält, und wie. Das sind deine eigenen Angaben.',
+    addKeep: 'Lagerort hinzufügen',
+    keepLegend: (n: number): string => `Lagerort ${n}`,
+    keepPlace: 'Lagerort',
+    keepDays: 'Tage',
+    keepNote: 'Wie (optional)',
+    keepRemove: (n: number): string => `Lagerort ${n} entfernen`,
     portionsLabel: 'Portionen',
+    courseLabel: 'Gang',
+    cuisineLabel: 'Küche',
+    notStated: 'Nicht angegeben',
     noteLabel: 'Notiz',
     slotsHeading: 'Rollen',
     slotRole: 'Rolle',
@@ -286,6 +459,10 @@ export const appStringsDe: typeof appStrings = {
     slotAmount: 'Menge pro Portion',
     fillingPlaceholder: 'Komponente oder Zutat wählen',
     addSlot: 'Rolle hinzufügen',
+    assemblyHeading: 'Zusammenbau',
+    assemblyHelp: 'Was mit den Belegungen geschieht, wenn sie fertig sind.',
+    assemblyUses: 'Welche Belegungen',
+    assemblyNoSlots: 'Füge zuerst oben Rollen hinzu.',
     openRoleHint: (what: string): string => `Offen: ${what} ergänzen`,
     pickerSearch: 'Im Notizbuch suchen',
     pickerEmpty: 'Nichts in deinem Notizbuch hat diesen Namen.',
@@ -330,6 +507,7 @@ export const appStringsDe: typeof appStrings = {
       `Aus dem Verhältnis ${name} gemacht. Die üblichen Spannen stehen auf seiner Karte.`,
     prefillNote: 'Die Mengen stammen aus dem Rechner. Wähle für jede Zeile eine Zutat.',
     needs: {
+      summary: 'Prüfe die markierten Felder, um zu speichern.',
       name: 'Gib einen Namen ein, um zu speichern.',
       noLines: 'Füge mindestens eine Zeile hinzu, um zu speichern.',
       noSlots: 'Füge mindestens eine Rolle hinzu, um zu speichern.',
@@ -343,6 +521,12 @@ export const appStringsDe: typeof appStrings = {
       portions: 'Portionen müssen eine ganze Zahl über 0 sein, oder leer.',
       cycle:
         'Eine Komponente kann sich nicht selbst enthalten, weder direkt noch über eine andere.',
+      step: (n: number): string =>
+        `Schritt ${n}: Wähle, was getan wird, oder schreibe eine Notiz, um zu speichern.`,
+      stepNumber: (n: number): string =>
+        `Schritt ${n}: Zeit und Temperatur müssen Zahlen über 0 sein, oder leer.`,
+      keep: (n: number): string =>
+        `Lagerort ${n}: Gib ganze Tage an und jeden Lagerort nur einmal, um zu speichern.`,
     },
   },
   // Versions, history, tasting notes and variations.
@@ -384,6 +568,9 @@ export const appStringsDe: typeof appStrings = {
       yield: 'Ausbeute',
       method: 'Zubereitung',
       portions: 'Portionen',
+      course: 'Gang',
+      cuisine: 'Küche',
+      characters: 'Art',
       note: 'Notiz',
     },
     toTaste: 'nach Geschmack',
@@ -436,15 +623,19 @@ export const appStringsDe: typeof appStrings = {
     summaryHeading: 'Was die Datei enthält',
     exportedOn: (date: string): string => `Exportiert am ${date}`,
     nothingInFile: 'Die Datei enthält keine Einträge.',
+    stockLeftOut: (n: number): string =>
+      `Die Datei stammt aus einer älteren Version und enthält ${n} ${n === 1 ? 'Vorratseintrag' : 'Vorratseinträge'}. Sie werden ausgelassen: Der Vorrat gehört jetzt zu einem Raum, geteilt mit den anderen Apps, und wird nicht aus einer Datei übernommen.`,
     kinds: {
       ingredients: 'Zutaten',
       templates: 'Verhältnisse',
       components: 'Komponentenversionen',
       dishes: 'Gerichteversionen',
-      stock: 'Vorratseinträge',
       affinities: 'Kombinationen',
       tastings: 'Verkostungsnotizen',
+      skills: 'Lernmarkierungen',
     },
+    skillsNotInFile:
+      'Die Datei ist älter und enthält keine Lernmarkierungen; die hier als gelernt markierten Fertigkeiten bleiben.',
     modeLegend: 'Wie übernehmen',
     modeMerge: 'Mit dem Vorhandenen zusammenführen',
     modeMergeHint:
@@ -477,7 +668,7 @@ export const appStringsDe: typeof appStrings = {
     replaceConfirm: 'Ja, ersetzen',
     replaceCancel: 'Abbrechen',
     merged: (added: number, taken: number): string =>
-      `Importiert: ${added} hinzugefügt, ${taken} durch die der Datei ersetzt.`,
+      `Importiert: ${added} hinzugefügt, ${taken} durch die Fassung aus der Datei ersetzt.`,
     replaced: (count: number): string =>
       `Importiert: Alles hier sind jetzt die ${count} Einträge der Datei.`,
     undo: 'Rückgängig',
@@ -563,6 +754,46 @@ export const appStringsDe: typeof appStrings = {
   stock: stockStringsDe,
   cook: cookStringsDe,
   classics: classicsStringsDe,
+  // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.
+  browse: {
+    filtersLabel: 'Worauf du Lust hast',
+    originLabel: 'Von',
+    originAny: 'Alle Gerichte',
+    origin: { own: 'Meine Gerichte', shipped: 'Mitgelieferte Gerichte' },
+    characterLabel: 'Art',
+    characterAny: 'Egal',
+    courseLabel: 'Gang',
+    courseAny: 'Jeder Gang',
+    cuisineLabel: 'Küche',
+    cuisineAny: 'Jede Küche',
+    /** A cuisine by the adjective of its country, never the country's name. */
+    cuisines: {
+      de: 'Deutsche Küche',
+      it: 'Italienische Küche',
+      fr: 'Französische Küche',
+      es: 'Spanische Küche',
+    },
+    /** Dasselbe in der Auswahl unter „Küche“: kurz genug für 360 px. */
+    cuisineChoice: { de: 'Deutsch', it: 'Italienisch', fr: 'Französisch', es: 'Spanisch' },
+    meatFree: 'Ohne Fleisch und Fisch',
+    completeOnly: 'Nur mit allen Mengen',
+    reset: 'Alle zeigen',
+    none: 'Kein Gericht passt zu dieser Auswahl.',
+    count: (n: number): string => (n === 1 ? '1 Gericht' : `${n} Gerichte`),
+    /** Where a row's dish comes from, said when the list holds both. */
+    rowOrigin: { own: 'Mein Gericht', shipped: 'Mitgeliefert' },
+    /** The start screen: every dish under the one filter, then the tools. */
+    startTitle: 'Worauf hast du Lust?',
+    startListLabel: 'Passende Gerichte',
+    /** The origin as the select offers it, short enough for half a phone's width. */
+    originChoice: { own: 'Meine', shipped: 'Mitgelieferte' },
+    /** The folded filter's summary when nothing is chosen. */
+    anything: 'Alles',
+    /** While the shipped dishes and the catalogue are read, instead of "nothing fits". */
+    loading: 'Die Gerichte werden gelesen …',
+    /** The way back from a dish to the list it was opened from. */
+    backToList: 'Zurück zur Liste',
+  },
   nutrition: nutritionStringsDe,
   // Texts for the store's error codes; the editing screens show them.
   store: {
@@ -577,4 +808,22 @@ export const appStringsDe: typeof appStrings = {
       'Dieser Eintrag hat einen Wert, der nicht erlaubt ist, deshalb wurde er nicht gespeichert.',
     notFound: 'Dieser Eintrag existiert nicht mehr.',
   },
+  units: {
+    g: 'g',
+    kg: 'kg',
+    oz: 'oz',
+    lb: 'lb',
+    ml: 'ml',
+    l: 'l',
+    tsp: 'TL',
+    tbsp: 'EL',
+    cup: 'Tasse',
+    'imp-floz': 'Flüssigunze (brit.)',
+    'imp-gill': 'Gill (brit.)',
+    'imp-pint': 'Pint (brit.)',
+    'imp-quart': 'Quart (brit.)',
+    count: 'Stück',
+    percent: '%',
+  },
+  exactBeside: (shown: string, exact: string): string => `${shown} (${exact})`,
 };

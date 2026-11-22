@@ -1,9 +1,12 @@
 /* App frame, safe areas, status page, reduced motion. */
 
+/* Fixed to the edges of the window, not given a height: `100dvh` is not what is visible in every
+   browser and installed app, and then the navigation at the bottom is cut off. */
 .app-root {
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  height: 100dvh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
 }
 

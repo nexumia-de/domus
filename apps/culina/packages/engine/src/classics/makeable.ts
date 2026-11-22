@@ -124,19 +124,19 @@ export function classicsMakeable(input: ClassicsMakeableInput): ClassicsMakeable
       if (candidate.kind === 'dish') out.push({ candidate, classic, names: [...new Set(names)] });
     }
   }
-  const order = new Map(rank(out.map((o) => o.candidate)).map((c, i) => [c.id, i]));
-  const sorted = [...out].sort(
-    (a, b) => (order.get(a.candidate.id) ?? 0) - (order.get(b.candidate.id) ?? 0),
-  );
+  // The same ranking contract as `makeable`, so a list of own dishes and classics can be ranked
+  // as one (`rankCandidates`).
   return {
     ok: true,
-    candidates: sorted.map(({ candidate, classic, names }) => ({
-      ...candidate,
-      kind: 'classic',
-      country: classic.country,
-      course: classic.course,
-      vegetarian: classic.vegetarian,
-      notInCatalogue: names,
-    })),
+    candidates: rank(
+      out.map(({ candidate, classic, names }) => ({
+        ...candidate,
+        kind: 'classic' as const,
+        country: classic.country,
+        course: classic.course,
+        vegetarian: classic.vegetarian,
+        notInCatalogue: names,
+      })),
+    ),
   };
 }

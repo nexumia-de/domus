@@ -84,8 +84,12 @@
             "id": "fdc-171320"
           },
           "note": {
-            "en": "One small stick of cinnamon (una astillita de canela). The size is not read in the book, so the line has no amount.",
-            "de": "Ein kleines Stück Zimtstange (una astillita de canela). Die Größe steht nicht im Buch, daher ohne Menge."
+            "en": "One small stick of cinnamon (una astillita de canela).",
+            "de": "Ein kleines Stück Zimtstange (una astillita de canela)."
+          },
+          "sourceNote": {
+            "en": "The size is not read in the book, so the line has no amount.",
+            "de": "Die Größe steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -107,8 +111,12 @@
             "id": "fdc-172686"
           },
           "note": {
-            "en": "Bread cut into thin slices and put in the tureen (el pan cortado). The source gives no amount.",
-            "de": "Brot in dünne Scheiben geschnitten und in die Suppenschüssel gelegt (el pan cortado). Die Quelle gibt keine Menge an."
+            "en": "Bread cut into thin slices and put in the tureen (el pan cortado).",
+            "de": "Brot in dünne Scheiben geschnitten und in die Suppenschüssel gelegt (el pan cortado)."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         }
       ],
@@ -118,6 +126,7 @@
             "en": "Put the bread, cut into thin slices, into the tureen.",
             "de": "Das Brot in dünnen Scheiben in die Suppenschüssel legen."
           },
+          "action": "add",
           "uses": ["bread"]
         },
         {
@@ -133,12 +142,13 @@
             "en": "Take a third of the cooked milk in another pot, off the heat, and dissolve the six egg yolks in it.",
             "de": "Ein Drittel der gekochten Milch in einem anderen Topf abseits der Hitze mit den sechs Eigelb verrühren."
           },
+          "action": "mix",
           "uses": ["milk", "egg-yolk"]
         },
         {
           "text": {
             "en": "Heat it gently, stirring without stopping, until it thickens a little.",
-            "de": "Sanft erhitzen und ohne Pause rühren, bis es leicht andickt."
+            "de": "Sanft erhitzen und ohne Pause rühren, bis die Mischung leicht andickt."
           },
           "technique": "thicken-with-egg",
           "uses": ["egg-yolk"]
@@ -148,6 +158,7 @@
             "en": "Pour the rest of the milk over the bread in the tureen.",
             "de": "Den Rest der Milch über das Brot in der Suppenschüssel gießen."
           },
+          "action": "pour",
           "uses": ["milk", "bread"]
         },
         {
@@ -155,6 +166,7 @@
             "en": "At serving, stir the thickened egg mixture into the soup.",
             "de": "Beim Servieren die angedickte Eiermischung in die Suppe rühren."
           },
+          "action": "stir",
           "uses": ["egg-yolk"]
         }
       ]

@@ -191,7 +191,11 @@ A shell without own modules has no third-party modules to list.
   and a missing storage API are ignored, tested at three base paths and
   without service worker (`e2e/subpath.mjs`, `e2e/no-sw.mjs`).
 - No network permission: the app makes no request the user did not start
-  ([decision](decisions/pwa-own-data.md)). Export and import go through
+  ([decision](decisions/pwa-own-data.md)). Since 2026-11-20 this holds
+  only without a shared space: the stock of a shared space is synced with
+  its storage, which needs the network
+  ([stock in spaces](decisions/stock-in-spaces.md)); a shell without
+  network permission would keep such a space out of step. Not tested. Export and import go through
   the file chooser portal, which a download link inside WebKitGTK may not
   trigger by itself: **on device**.
 - Navigation is outside the shell's control, so the shell must refuse to

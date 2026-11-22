@@ -17,20 +17,36 @@ export interface StockItem {
   always?: boolean;
   preparedOn?: string;
   useBy?: string;
+  /** Where it lies: the shelf life of that place is the one that counts. */
+  storage?: StoragePlace;
   note?: string;
 }
 
 /** The storage places of the ingredient schema. */
 export type StoragePlace = 'pantry' | 'fridge' | 'freezer';
 
-/** One recorded shelf life of an ingredient: the part of `shelfLife` the stock rules read. */
+/**
+ * One recorded shelf life: of an ingredient in a state (the part of `shelfLife` the stock rules
+ * read), or of a component, which has no state of its own and so applies to its item in any state.
+ */
 export interface ShelfLifeEntry {
-  state: FoodState;
+  state?: FoodState;
   storage: StoragePlace;
   days: number;
 }
 
-/** Where a use-by date comes from: the user's entry, or the ingredient's recorded shelf life. */
+/**
+ * True when a recorded shelf life applies to an item: its state is the item's (or it names none),
+ * and its place is the item's (or the item names none).
+ */
+export const shelfLifeApplies = (
+  entry: ShelfLifeEntry,
+  item: Pick<StockItem, 'state' | 'storage'>,
+): boolean =>
+  (entry.state === undefined || entry.state === item.state) &&
+  (item.storage === undefined || entry.storage === item.storage);
+
+/** Where a use-by date comes from: the user's entry, or the recorded shelf life of the ingredient or component. */
 export type ExpiryBasis = 'entered' | 'shelf-life';
 
 /** `none`: no use-by date is known; the others as materia's `expiry`. */

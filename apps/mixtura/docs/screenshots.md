@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Screenshots
-description: Overview of the current app screens at 360x720 and 1200x800 in light and dark, how they are generated, and the separate mock-up screenshots from the design phase.
+description: Overview of the app screens at 360x720 and 1200x800 in light and dark, how they are generated, which pictures may be out of date since Mixtura's own sync was removed on 2026-11-20, and the separate mock-up screenshots from the design phase.
 tags: [screenshots, ui, testing]
 generated: { by: claude-code/2.1.326, at: 2026-11-17 }
 sources:
@@ -25,15 +25,12 @@ Build first (`npm run build`), then in `packages/app`, with
 ([development](development.md)):
 
 ```sh
-for s in walk exchange browse list-keys stock places swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
+for s in walk exchange browse list-keys stock spaces swap editor alcohol dark; do for size in "360 720" "1200 800"; do node e2e/$s.mjs $size --docs; done; done
 ```
 
-The Sync screens come from `e2e/sync.mjs`, which needs both Docker servers
-([sync backends](sync-backends.md#the-test-server)):
-
-```sh
-for size in "360 720" "1200 800"; do node e2e/sync.mjs $size --docs; done
-```
+`e2e/spaces.mjs` writes `app-stock-spaces-*`. Those files were not made
+yet when this page was last changed (2026-11-20); the pictures of the
+earlier Places sheet are still listed below and are marked.
 
 A script writes only the files it names, so a file that no script
 writes is stale: add its screen to a script or delete it, and keep this
@@ -100,6 +97,8 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 
 ## Stock and Buy Next
 
+The four `app-stock-spaces-*` rows show the line and the Spaces sheet as they are since 2026-11-20 ([spaces](screens-stock-settings.md#spaces)), taken by `e2e/spaces.mjs --docs` with a second space seeded.
+
 | Screen                    | 360x720                                                                                                                                                                        | 1200x800                                                                                                                                                                          |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `app-stock`               | <a href="screenshots/app-stock-360x720.png"><img src="screenshots/app-stock-360x720.png" alt="app-stock at 360x720" width="180"></a>                                           | <a href="screenshots/app-stock-1200x800.png"><img src="screenshots/app-stock-1200x800.png" alt="app-stock at 1200x800" width="400"></a>                                           |
@@ -107,26 +106,27 @@ Bottom bar at 360 px, rail from 840 px, the update banner and the theme setting.
 | `app-stock-in-stock`      | <a href="screenshots/app-stock-in-stock-360x720.png"><img src="screenshots/app-stock-in-stock-360x720.png" alt="app-stock-in-stock at 360x720" width="180"></a>                | <a href="screenshots/app-stock-in-stock-1200x800.png"><img src="screenshots/app-stock-in-stock-1200x800.png" alt="app-stock-in-stock at 1200x800" width="400"></a>                |
 | `app-stock-create`        | <a href="screenshots/app-stock-create-360x720.png"><img src="screenshots/app-stock-create-360x720.png" alt="app-stock-create at 360x720" width="180"></a>                      | <a href="screenshots/app-stock-create-1200x800.png"><img src="screenshots/app-stock-create-1200x800.png" alt="app-stock-create at 1200x800" width="400"></a>                      |
 | `app-stock-batches`       | <a href="screenshots/app-stock-batches-360x720.png"><img src="screenshots/app-stock-batches-360x720.png" alt="app-stock-batches at 360x720" width="180"></a>                   | <a href="screenshots/app-stock-batches-1200x800.png"><img src="screenshots/app-stock-batches-1200x800.png" alt="app-stock-batches at 1200x800" width="400"></a>                   |
-| `app-stock-places-line`   | <a href="screenshots/app-stock-places-line-360x720.png"><img src="screenshots/app-stock-places-line-360x720.png" alt="app-stock-places-line at 360x720" width="180"></a>       | <a href="screenshots/app-stock-places-line-1200x800.png"><img src="screenshots/app-stock-places-line-1200x800.png" alt="app-stock-places-line at 1200x800" width="400"></a>       |
-| `app-stock-places-sheet`  | <a href="screenshots/app-stock-places-sheet-360x720.png"><img src="screenshots/app-stock-places-sheet-360x720.png" alt="app-stock-places-sheet at 360x720" width="180"></a>    | <a href="screenshots/app-stock-places-sheet-1200x800.png"><img src="screenshots/app-stock-places-sheet-1200x800.png" alt="app-stock-places-sheet at 1200x800" width="400"></a>    |
-| `app-stock-places-rows`   | <a href="screenshots/app-stock-places-rows-360x720.png"><img src="screenshots/app-stock-places-rows-360x720.png" alt="app-stock-places-rows at 360x720" width="180"></a>       | <a href="screenshots/app-stock-places-rows-1200x800.png"><img src="screenshots/app-stock-places-rows-1200x800.png" alt="app-stock-places-rows at 1200x800" width="400"></a>       |
-| `app-stock-places-detail` | <a href="screenshots/app-stock-places-detail-360x720.png"><img src="screenshots/app-stock-places-detail-360x720.png" alt="app-stock-places-detail at 360x720" width="180"></a> | <a href="screenshots/app-stock-places-detail-1200x800.png"><img src="screenshots/app-stock-places-detail-1200x800.png" alt="app-stock-places-detail at 1200x800" width="400"></a> |
+| `app-stock-spaces-line`   | <a href="screenshots/app-stock-spaces-line-360x720.png"><img src="screenshots/app-stock-spaces-line-360x720.png" alt="app-stock-spaces-line at 360x720" width="180"></a>       | <a href="screenshots/app-stock-spaces-line-1200x800.png"><img src="screenshots/app-stock-spaces-line-1200x800.png" alt="app-stock-spaces-line at 1200x800" width="400"></a>       |
+| `app-stock-spaces-sheet`  | <a href="screenshots/app-stock-spaces-sheet-360x720.png"><img src="screenshots/app-stock-spaces-sheet-360x720.png" alt="app-stock-spaces-sheet at 360x720" width="180"></a>    | <a href="screenshots/app-stock-spaces-sheet-1200x800.png"><img src="screenshots/app-stock-spaces-sheet-1200x800.png" alt="app-stock-spaces-sheet at 1200x800" width="400"></a>    |
+| `app-stock-spaces-rows`   | <a href="screenshots/app-stock-spaces-rows-360x720.png"><img src="screenshots/app-stock-spaces-rows-360x720.png" alt="app-stock-spaces-rows at 360x720" width="180"></a>       | <a href="screenshots/app-stock-spaces-rows-1200x800.png"><img src="screenshots/app-stock-spaces-rows-1200x800.png" alt="app-stock-spaces-rows at 1200x800" width="400"></a>       |
+| `app-stock-spaces-detail` | <a href="screenshots/app-stock-spaces-detail-360x720.png"><img src="screenshots/app-stock-spaces-detail-360x720.png" alt="app-stock-spaces-detail at 360x720" width="180"></a> | <a href="screenshots/app-stock-spaces-detail-1200x800.png"><img src="screenshots/app-stock-spaces-detail-1200x800.png" alt="app-stock-spaces-detail at 1200x800" width="400"></a> |
 | `app-stock-near-date`     | <a href="screenshots/app-stock-near-date-360x720.png"><img src="screenshots/app-stock-near-date-360x720.png" alt="app-stock-near-date at 360x720" width="180"></a>             | <a href="screenshots/app-stock-near-date-1200x800.png"><img src="screenshots/app-stock-near-date-1200x800.png" alt="app-stock-near-date at 1200x800" width="400"></a>             |
 | `app-stock-empty`         | <a href="screenshots/app-stock-empty-360x720.png"><img src="screenshots/app-stock-empty-360x720.png" alt="app-stock-empty at 360x720" width="180"></a>                         | <a href="screenshots/app-stock-empty-1200x800.png"><img src="screenshots/app-stock-empty-1200x800.png" alt="app-stock-empty at 1200x800" width="400"></a>                         |
 | `app-buy-next`            | <a href="screenshots/app-buy-next-360x720.png"><img src="screenshots/app-buy-next-360x720.png" alt="app-buy-next at 360x720" width="180"></a>                                  | <a href="screenshots/app-buy-next-1200x800.png"><img src="screenshots/app-buy-next-1200x800.png" alt="app-buy-next at 1200x800" width="400"></a>                                  |
 | `app-buy-next-open`       | <a href="screenshots/app-buy-next-open-360x720.png"><img src="screenshots/app-buy-next-open-360x720.png" alt="app-buy-next-open at 360x720" width="180"></a>                   | <a href="screenshots/app-buy-next-open-1200x800.png"><img src="screenshots/app-buy-next-open-1200x800.png" alt="app-buy-next-open at 1200x800" width="400"></a>                   |
 
-## Sync
+## Sync (removed)
 
-From `e2e/sync.mjs --docs` (needs the two Docker servers, [screens: sync](screens-sync.md#end-to-end-test)); test data only, the passphrase shown is generated for the run. Light theme.
+Mixtura's Sync page and its sheets were removed on 2026-11-20
+([stock in spaces](decisions/stock-in-spaces.md)); sync is set up in the
+Household app. The script that took the pictures (`e2e/sync.mjs`) and the
+pictures themselves (`app-sync-*`) are gone too.
 
-| Screen             | 360x720                                                                                                                                                                                 | 1200x800                                                                                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `app-sync-page`    | <a href="screenshots/app-sync-page-360x720.png"><img src="screenshots/app-sync-page-360x720.png" alt="Sync page: storages, places and their state lines at 360x720" width="180"></a>    | <a href="screenshots/app-sync-page-1200x800.png"><img src="screenshots/app-sync-page-1200x800.png" alt="Sync page: storages, places and their state lines at 1200x800" width="400"></a>    |
-| `app-sync-storage` | <a href="screenshots/app-sync-storage-360x720.png"><img src="screenshots/app-sync-storage-360x720.png" alt="Add Storage with the result of Test Connection at 360x720" width="180"></a> | <a href="screenshots/app-sync-storage-1200x800.png"><img src="screenshots/app-sync-storage-1200x800.png" alt="Add Storage with the result of Test Connection at 1200x800" width="400"></a> |
-| `app-sync-bind`    | <a href="screenshots/app-sync-bind-360x720.png"><img src="screenshots/app-sync-bind-360x720.png" alt="Sync This Place with the generated passphrase at 360x720" width="180"></a>        | <a href="screenshots/app-sync-bind-1200x800.png"><img src="screenshots/app-sync-bind-1200x800.png" alt="Sync This Place with the generated passphrase at 1200x800" width="400"></a>        |
-| `app-sync-share`   | <a href="screenshots/app-sync-share-360x720.png"><img src="screenshots/app-sync-share-360x720.png" alt="Share: invite link, QR code and the four values at 360x720" width="180"></a>    | <a href="screenshots/app-sync-share-1200x800.png"><img src="screenshots/app-sync-share-1200x800.png" alt="Share: invite link, QR code and the four values at 1200x800" width="400"></a>    |
-| `app-sync-join`    | <a href="screenshots/app-sync-join-360x720.png"><img src="screenshots/app-sync-join-360x720.png" alt="Join a Place at 360x720" width="180"></a>                                         | <a href="screenshots/app-sync-join-1200x800.png"><img src="screenshots/app-sync-join-1200x800.png" alt="Join a Place at 1200x800" width="400"></a>                                         |
+Pictures of Settings taken before that day (`shell-settings-dark-*`,
+`dark-settings-*`, `app-alcohol-settings-*`, `settings-data-row-*`) may
+still show the row "Sync" where the row "Household" is now, and the
+`data-*` pictures may count stock entries; they were not looked at one by
+one and not regenerated.
 
 ## Spec editor
 

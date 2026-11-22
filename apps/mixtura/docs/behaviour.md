@@ -82,11 +82,22 @@ by the tests of the repository.
 
 **One structure** (owner question Q2 in [design](design.md#open-questions)):
 
-- **Four top-level destinations**, always in the same order: **Drinks**
+- **Three top-level destinations**, always in the same order: **Drinks**
   (the list of all specs, the home), **Templates**, **Stock** (with the
-  second view **Buy Next**), **Settings**. Below 840 px they are a
-  bottom navigation bar (56 px high, icon and label); from 840 px a rail
-  on the left.
+  second view **Buy Next**). Below 840 px they are a bottom navigation
+  bar (56 px high, icon and label); from 840 px a rail on the left
+  under the header.
+- **The header** is the shared frame (`@nexumia-de/hospes/frame`,
+  [frame](../../../packages/host/docs/frame.md), [decision](../../../docs/decisions/shared-shell.md)):
+  one bar across the window with the page title (the page's one `h1`),
+  a back arrow on a pushed screen, the page's own action (Share on a
+  drink of your own, New Drink on the lists), a small **sync icon** and
+  **Settings**. The sync icon shows the worst state of the spaces that
+  count on Stock; a tap says the details in a toast; a slim banner with
+  Retry appears only on a real error (offline is not one). The body
+  starts with content, never repeats the title. **Settings** is a
+  pushed page (Back returns to where it was opened; the bar is hidden
+  on a phone) and is not in the bar.
 - **Pushed screens** open on top of a destination: spec, swap mode,
   editor, versions, family, template detail, ingredient picker. A pushed
   screen replaces the bottom navigation with its own action bar
@@ -109,7 +120,7 @@ by the tests of the repository.
   back gesture leaves the app (nothing intercepts it). Swap mode and the
   editor intercept back only when they hold changes: back then keeps the
   draft (editor) or drops the swap (swap mode, it was never saved) and
-  shows an Undo toast; no confirm dialog.
+  shows a toast with Undo (the shared toast: 5 s, 8 s when it has Undo); no confirm dialog.
 - **Deep links.** Every screen has a URL; the app uses hash routes so
   static hosting needs no rewrite rules (Q5). The URL is the shareable
   address of the screen and restores it on open.
@@ -124,10 +135,9 @@ by the tests of the repository.
 | Versions | `#/drinks/<spec id>/versions`, diff `…/versions?a=2&b=3` |
 | Family | `#/drinks/<spec id>/family` |
 | Templates | `#/templates`, detail `#/templates/<template id>` |
-| Stock | `#/stock`, search and show `#/stock?q=…&show=in`; sheets `?sheet=places`, `?sheet=batches&ing=<id>` |
+| Stock | `#/stock`, search and show `#/stock?q=…&show=in`; sheets `?sheet=spaces`, `?sheet=batches&ing=<id>` |
 | Buy Next | `#/stock/buy-next`, `?strict=1` without substitutes, `?open=<ingredient id>` for the unlocked drinks |
-| Settings | `#/settings`, export and import `#/settings/data`, sync `#/settings/sync` |
-| Sync | `#/settings/sync`; sheets `?sheet=storage`, `?sheet=join` (with `code=<place id>` for Join Again), `?sheet=bind`, `?sheet=move`, `?sheet=share`, `?sheet=passphrase` with `place=<place id>`; never a passphrase or password in the address; see [screens: sync](screens-sync.md) |
+| Settings | `#/settings`, export and import `#/settings/data`; the Household row leaves the app for `../` (spaces and sync are set up there) |
 | Shared drink | `#/share/<payload>` opens once and becomes `#/share` while the preview shows; see [export format](export-format.md#share-link) |
 | About | `#/about` |
 
@@ -139,15 +149,16 @@ to the list, never an empty screen.
 
 # State and reload
 
-| State                                           | Where it lives                                          | After a reload                                                                     |
-| ----------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Screen and its parameters, filters, query, swap | URL                                                     | Restored from the URL                                                              |
-| Scroll position of a list                       | session storage, per URL                                | Restored                                                                           |
-| Open sheet                                      | URL entry `&sheet=filters`                              | Reopens                                                                            |
-| Editor draft                                    | local store, key `draft/<address id>` (`draft/new`)     | Banner "Draft kept" and the fields restored; Discard draft is in the overflow menu |
-| Stock, specs, versions, user settings           | local store ([PWA decision](decisions/pwa-own-data.md)) | Unchanged                                                                          |
-| Unit system, theme                              | local store (settings)                                  | Applied before first paint (theme) to avoid a flash                                |
-| Balance, makeable, ranking, scaled amounts      | not stored, derived                                     | Computed again from the data                                                       |
+| State                                           | Where it lives                                                                                      | After a reload                                                                     |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Screen and its parameters, filters, query, swap | URL                                                                                                 | Restored from the URL                                                              |
+| Scroll position of a list                       | session storage, per URL                                                                            | Restored                                                                           |
+| Open sheet                                      | URL entry `&sheet=filters`                                                                          | Reopens                                                                            |
+| Editor draft                                    | local store, key `draft/<address id>` (`draft/new`)                                                 | Banner "Draft kept" and the fields restored; Discard draft is in the overflow menu |
+| Specs, versions, user settings                  | local store ([PWA decision](decisions/pwa-own-data.md))                                             | Unchanged                                                                          |
+| Stock                                           | the collection `stock` of a space, shared database of the apps ([store](store.md#stock-in-a-space)) | Unchanged; a sync cycle may bring changes of another device                        |
+| Unit system, theme                              | local store (settings)                                                                              | Applied before first paint (theme) to avoid a flash                                |
+| Balance, makeable, ranking, scaled amounts      | not stored, derived                                                                                 | Computed again from the data                                                       |
 
 A draft is the only unsaved work the app keeps, and it keeps it because
 losing a half-typed spec on a phone call is the failure to avoid.

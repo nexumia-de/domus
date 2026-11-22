@@ -8,6 +8,7 @@ import {
   newComponentForm,
   problemsOf,
   type ComponentForm,
+  type LineForm,
   type Problem,
 } from '../../editor/component-form';
 import { inCycle } from '../../editor/cycle';
@@ -28,14 +29,26 @@ import {
   today,
 } from '../../notebook';
 import { hashFor } from '../../router';
+import { parseEntry } from '../../shared/parse';
 import { el } from '../../shell/el';
 import { showToast } from '../../shell/toast';
 import { strings } from '../../strings';
 import { linesEditor } from './component-lines-editor';
+import { keepsEditor } from './component-keeps-editor';
+import { stepsEditor } from './component-steps-editor';
 import { removeWithUndo } from './delete';
 import { draftSession } from './draft-session';
 import { editorActions } from './editor-actions';
-import { areaField, bareSelect, button, mark, textField } from './form-bits';
+import {
+  areaField,
+  bareSelect,
+  button,
+  fieldError,
+  focusFirstError,
+  mark,
+  textField,
+  type RowProblem,
+} from './form-bits';
 import { ratioInfo } from './ratio-info';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
@@ -58,6 +71,12 @@ const needsText = (p: Problem): string => {
       return t.needs.yield;
     case 'cycle':
       return t.needs.cycle;
+    case 'step':
+      return t.needs.step(p.index + 1);
+    case 'step-number':
+      return t.needs.stepNumber(p.index + 1);
+    case 'keep':
+      return t.needs.keep(p.index + 1);
   }
 };
 
@@ -110,8 +129,10 @@ const build = (
   };
 
   const name = textField(t.nameLabel, form.name);
+  const nameError = fieldError(name.control);
   name.control.addEventListener('input', () => {
     form.name = name.control.value;
+    if (form.name.trim() !== '') nameError.clear();
     changed();
   });
   const role = bareSelect(
@@ -163,18 +184,20 @@ const build = (
   };
   const switchTo = (to: 'weight' | 'percent'): void => apply(switchEntry(form, to, facts()));
 
+  /** The name of a line whose ingredient or component is picked. */
+  const pickedName = (line: LineForm): string | undefined => {
+    if (line.ref === undefined) return undefined;
+    const nb = notebook();
+    return line.ref.kind === 'ingredient'
+      ? nb.ingredientName(line.ref.id)
+      : (nb.components.find((c) => c.id === line.ref?.id)?.name ?? line.ref.id);
+  };
+
   const fillReference = (): void => {
     reference.replaceChildren(new Option(t.referenceChoose, ''));
-    const nb = notebook();
     form.lines.forEach((line, index) => {
       const label =
-        line.ref === undefined
-          ? line.role === undefined
-            ? undefined
-            : roleLabel(line.role)
-          : line.ref.kind === 'ingredient'
-            ? nb.ingredientName(line.ref.id)
-            : (nb.components.find((c) => c.id === line.ref?.id)?.name ?? line.ref.id);
+        pickedName(line) ?? (line.role === undefined ? undefined : roleLabel(line.role));
       if (label !== undefined) reference.append(new Option(label, String(index)));
     });
     const at = referenceIndex(form);
@@ -198,6 +221,8 @@ const build = (
     button(t.addIngredient, 'quiet', () => lines.add('ingredient')),
     button(t.addSubComponent, 'quiet', () => lines.add('component')),
   );
+  // What concerns the lines as a whole (none yet, a cycle) stands under the buttons that fix it.
+  const linesError = fieldError(addRow.querySelector('button') ?? undefined);
 
   const yieldAmount = textField(t.yieldLabel, form.yieldAmount, true);
   const yieldUnit = bareSelect(
@@ -205,9 +230,11 @@ const build = (
     MASS_ONLY.map((u) => ({ value: u, label: u })),
     form.yieldUnit,
   );
+  const yieldError = fieldError(yieldAmount.control);
   yieldAmount.control.addEventListener('input', () => {
     form.yieldAmount = yieldAmount.control.value;
     delete form.yieldSource;
+    if (parseEntry(form.yieldAmount).kind !== 'invalid') yieldError.clear();
     changed();
   });
   yieldUnit.addEventListener('change', () => {
@@ -217,6 +244,9 @@ const build = (
   });
   const yieldRow = el('div', 'line-amount');
   yieldRow.append(yieldAmount.wrap, yieldUnit);
+
+  const steps = stepsEditor(form, () => form.lines, changed, pickedName);
+  const keeps = keepsEditor(form, changed);
 
   const notes = areaField(t.notesLabel, form.method);
   notes.control.addEventListener('input', () => {
@@ -238,6 +268,7 @@ const build = (
       problemsOf(form).some((p) => p.code === 'yield'),
     );
     lines.figures();
+    steps.syncLines();
     info?.update();
   };
 
@@ -250,6 +281,35 @@ const build = (
     onDelete: () => void remove(),
     status,
   });
+
+  /** Each problem at the field it concerns; the bar says only that there is something to check. */
+  const showProblems = (problems: readonly Problem[]): void => {
+    nameError.clear();
+    linesError.clear();
+    yieldError.clear();
+    const rows = new Map<number, RowProblem[]>();
+    const stepProblems = new Map<number, string[]>();
+    const keepProblems = new Set<number>();
+    const lineProblems: string[] = [];
+    for (const p of problems) {
+      if (p.code === 'keep') keepProblems.add(p.index);
+      else if (p.code === 'step' || p.code === 'step-number') {
+        stepProblems.set(p.index, [...(stepProblems.get(p.index) ?? []), needsText(p)]);
+      } else if (p.code === 'name') nameError.show(needsText(p));
+      else if (p.code === 'yield') yieldError.show(needsText(p));
+      else if (p.code === 'ingredient' || p.code === 'amount') {
+        const at = rows.get(p.index) ?? [];
+        at.push({ target: p.code === 'ingredient' ? 'pick' : 'amount', text: needsText(p) });
+        rows.set(p.index, at);
+      } else lineProblems.push(needsText(p));
+    }
+    if (lineProblems.length > 0) linesError.show(lineProblems.join(' '));
+    lines.showProblems(rows);
+    steps.showProblems(stepProblems);
+    keeps.showProblems(keepProblems);
+    status.textContent = t.needs.summary;
+    focusFirstError(screen);
+  };
 
   const save = async (): Promise<void> => {
     const built = formToRecord(form, today());
@@ -264,9 +324,10 @@ const build = (
       problems.push({ code: 'cycle' });
     }
     if (!built.ok || problems.length > 0) {
-      status.textContent = problems.map(needsText).join(' ');
+      showProblems(problems);
       return;
     }
+    status.textContent = '';
     const record = asNextVersion(
       built.record,
       form.isNew,
@@ -300,6 +361,7 @@ const build = (
 
   screen.append(
     name.wrap,
+    nameError.node,
     roleWrap,
     entry,
     referenceWrap,
@@ -307,9 +369,15 @@ const build = (
     el('h2', undefined, t.linesHeading),
     lines.element,
     addRow,
+    linesError.node,
+    el('h2', undefined, t.stepsHeading),
+    steps.element,
     el('h2', undefined, t.yieldHeading),
     yieldRow,
+    yieldError.node,
     el('p', 'muted', t.yieldHelp),
+    el('h2', undefined, t.keepsHeading),
+    keeps.element,
     notes.wrap,
   );
   if (info) screen.append(info.element);

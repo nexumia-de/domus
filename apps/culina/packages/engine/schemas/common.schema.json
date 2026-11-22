@@ -26,8 +26,16 @@
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
     },
-    "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
-    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
     "source": {
       "description": "Where a number or entity comes from: the word user for the user's own entry, otherwise a citation.",
       "type": "string",
@@ -38,8 +46,12 @@
       "description": "State of food: raw as bought or picked, cooked, or prepared (a made component).",
       "enum": ["raw", "cooked", "prepared"]
     },
-    "storage": { "enum": ["pantry", "fridge", "freezer"] },
-    "massUnit": { "enum": ["g", "kg", "oz", "lb"] },
+    "storage": {
+      "enum": ["pantry", "fridge", "freezer"]
+    },
+    "massUnit": {
+      "enum": ["g", "kg", "oz", "lb"]
+    },
     "amountUnit": {
       "description": "Mass units, volume units (need a density) and count (needs a unit weight). The conversion table is part of the engine rules.",
       "enum": [
@@ -64,8 +76,13 @@
       "required": ["value", "unit"],
       "additionalProperties": false,
       "properties": {
-        "value": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "$ref": "#/$defs/massUnit" }
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "$ref": "#/$defs/massUnit"
+        }
       }
     },
     "amount": {
@@ -73,21 +90,33 @@
       "required": ["value", "unit"],
       "additionalProperties": false,
       "properties": {
-        "value": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "$ref": "#/$defs/amountUnit" }
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "$ref": "#/$defs/amountUnit"
+        }
       }
     },
     "lineAmount": {
       "description": "An amount, or a percentage of the component's reference mass (baker's percentage).",
       "oneOf": [
-        { "$ref": "#/$defs/amount" },
+        {
+          "$ref": "#/$defs/amount"
+        },
         {
           "type": "object",
           "required": ["value", "unit"],
           "additionalProperties": false,
           "properties": {
-            "value": { "type": "number", "exclusiveMinimum": 0 },
-            "unit": { "const": "percent" }
+            "value": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "unit": {
+              "const": "percent"
+            }
           }
         }
       ]
@@ -98,8 +127,16 @@
       "required": ["en", "de"],
       "additionalProperties": false,
       "properties": {
-        "en": { "type": "string", "minLength": 1, "maxLength": 2000 },
-        "de": { "type": "string", "minLength": 1, "maxLength": 2000 }
+        "en": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "de": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
       }
     },
     "lineKey": {
@@ -114,9 +151,17 @@
       "required": ["value", "unit"],
       "additionalProperties": false,
       "properties": {
-        "value": { "type": "number", "exclusiveMinimum": 0 },
-        "to": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "enum": ["s", "min", "h"] }
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "to": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "enum": ["s", "min", "h"]
+        }
       }
     },
     "stepTemperature": {
@@ -125,27 +170,71 @@
       "required": ["value", "unit"],
       "additionalProperties": false,
       "properties": {
-        "value": { "type": "number" },
-        "to": { "type": "number" },
-        "unit": { "enum": ["C", "F"] }
+        "value": {
+          "type": "number"
+        },
+        "to": {
+          "type": "number"
+        },
+        "unit": {
+          "enum": ["C", "F"]
+        }
       }
     },
     "step": {
-      "description": "One step of a method: bilingual text, optionally the technique it teaches, the lines it uses (by line key), and time and temperature as given.",
+      "description": "One step of a method. It says what is done in one of four ways, alone or together: a bilingual text (the shipped dishes, and their copies), the technique it teaches, a plain action from the shipped list, or a note in the user's own words. Optionally the lines it uses (by line key), and time and temperature as given. A step names a technique or an action, not both.",
       "type": "object",
-      "required": ["text"],
       "additionalProperties": false,
       "properties": {
-        "text": { "$ref": "#/$defs/i18nText" },
-        "technique": { "$ref": "#/$defs/id" },
+        "text": {
+          "$ref": "#/$defs/i18nText"
+        },
+        "technique": {
+          "$ref": "#/$defs/id"
+        },
+        "action": {
+          "description": "A plain action of the shipped list (set aside, drain, serve): it names the step and teaches nothing.",
+          "$ref": "#/$defs/id"
+        },
         "uses": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": { "$ref": "#/$defs/lineKey" }
+          "items": {
+            "$ref": "#/$defs/lineKey"
+          }
         },
-        "time": { "$ref": "#/$defs/stepTime" },
-        "temperature": { "$ref": "#/$defs/stepTemperature" }
+        "time": {
+          "$ref": "#/$defs/stepTime"
+        },
+        "temperature": {
+          "$ref": "#/$defs/stepTemperature"
+        },
+        "note": {
+          "description": "The user's own remark on the step, in one language: what the structure cannot say (until golden, half of the butter).",
+          "$ref": "#/$defs/text"
+        },
+        "sourceNote": {
+          "description": "A remark about the source for this step (a time that is not legible): shown only in the dish's source section.",
+          "$ref": "#/$defs/i18nText"
+        }
+      },
+      "anyOf": [
+        {
+          "required": ["text"]
+        },
+        {
+          "required": ["technique"]
+        },
+        {
+          "required": ["action"]
+        },
+        {
+          "required": ["note"]
+        }
+      ],
+      "not": {
+        "required": ["technique", "action"]
       }
     },
     "sourcedNumber": {
@@ -153,9 +242,32 @@
       "required": ["value", "source"],
       "additionalProperties": false,
       "properties": {
-        "value": { "type": "number", "exclusiveMinimum": 0 },
-        "source": { "$ref": "#/$defs/source" }
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
       }
+    },
+    "course": {
+      "description": "Where a dish sits in a meal: the courses a shipped classic states, one list for classics and the notebook's dishes.",
+      "enum": [
+        "starter",
+        "soup",
+        "main",
+        "side",
+        "dessert",
+        "baking",
+        "sauce",
+        "breakfast",
+        "snack"
+      ]
+    },
+    "country": {
+      "description": "A country code the app has a name for: the countries of the shipped classics, and the cuisine of a dish.",
+      "enum": ["de", "it", "fr", "es"]
     },
     "ref": {
       "description": "Reference to an ingredient or to a component (a sub-recipe or a made item).",
@@ -163,8 +275,12 @@
       "required": ["kind", "id"],
       "additionalProperties": false,
       "properties": {
-        "kind": { "enum": ["ingredient", "component"] },
-        "id": { "$ref": "#/$defs/id" }
+        "kind": {
+          "enum": ["ingredient", "component"]
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        }
       }
     },
     "version": {
@@ -173,11 +289,21 @@
       "required": ["family", "date"],
       "additionalProperties": false,
       "properties": {
-        "family": { "$ref": "#/$defs/id" },
-        "parent": { "$ref": "#/$defs/id" },
-        "date": { "$ref": "#/$defs/date" },
-        "change": { "$ref": "#/$defs/text" },
-        "reason": { "$ref": "#/$defs/text" }
+        "family": {
+          "$ref": "#/$defs/id"
+        },
+        "parent": {
+          "$ref": "#/$defs/id"
+        },
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "change": {
+          "$ref": "#/$defs/text"
+        },
+        "reason": {
+          "$ref": "#/$defs/text"
+        }
       }
     }
   }

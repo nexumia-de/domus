@@ -1,0 +1,342 @@
+{
+  "id": "prune-tombstones",
+  "kind": "prune",
+  "description": "pruneTombstones with now 2026-11-19T12:00:00.000Z and 90 days (cut-off 2026-08-21T12:00:00.000Z). A tombstone strictly earlier than the cut-off is removed, one exactly at it is kept, one a millisecond earlier is removed; live records are never removed whatever their age; records with an unreadable time are left as they are; the removed keys are sorted; the records keep their input order. A horizon that is not a positive integer, or an unreadable now, prunes nothing and gives no cut-off.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "nothing old",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-18T12:00:00.000Z",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-09T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-18T12:00:00.000Z",
+            "value": 1
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-09T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": [],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "exactly at the cut-off is kept",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-08-21T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-08-21T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": [],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "one millisecond earlier is removed",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-08-21T11:59:59.999Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [],
+        "pruned": ["a"],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "an old live record is kept",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2020-01-01T00:00:00.000Z",
+            "value": 1
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2020-01-01T00:00:00.000Z",
+            "value": 1
+          }
+        ],
+        "pruned": [],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "mixed, removed keys sorted, order kept",
+      "input": {
+        "records": [
+          {
+            "key": "c",
+            "updatedAt": "2026-05-03T12:00:00.000Z",
+            "deleted": true
+          },
+          {
+            "key": "z",
+            "updatedAt": "2026-01-23T12:00:00.000Z",
+            "value": 1
+          },
+          {
+            "key": "a",
+            "updatedAt": "2026-08-20T12:00:00.000Z",
+            "deleted": true
+          },
+          {
+            "key": "m",
+            "updatedAt": "2026-11-14T12:00:00.000Z",
+            "deleted": true
+          },
+          {
+            "key": "x",
+            "updatedAt": "bad",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "z",
+            "updatedAt": "2026-01-23T12:00:00.000Z",
+            "value": 1
+          },
+          {
+            "key": "m",
+            "updatedAt": "2026-11-14T12:00:00.000Z",
+            "deleted": true
+          },
+          {
+            "key": "x",
+            "updatedAt": "bad",
+            "deleted": true
+          }
+        ],
+        "pruned": ["a", "c"],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "a tombstone without fraction at the cut-off is kept",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-08-21T12:00:00Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-08-21T12:00:00Z",
+            "deleted": true
+          }
+        ],
+        "pruned": [],
+        "prunedBefore": "2026-08-21T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "one day",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2026-11-17T12:00:00.000Z",
+            "deleted": true
+          },
+          {
+            "key": "b",
+            "updatedAt": "2026-11-19T00:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 1
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "b",
+            "updatedAt": "2026-11-19T00:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": ["a"],
+        "prunedBefore": "2026-11-18T12:00:00.000Z"
+      }
+    },
+    {
+      "name": "horizon zero prunes nothing",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 0
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": []
+      }
+    },
+    {
+      "name": "negative horizon prunes nothing",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": -5
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": []
+      }
+    },
+    {
+      "name": "fractional horizon prunes nothing",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": 1.5
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": []
+      }
+    },
+    {
+      "name": "horizon of another type prunes nothing",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "2026-11-19T12:00:00.000Z",
+        "horizonDays": "90"
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": []
+      }
+    },
+    {
+      "name": "unreadable now prunes nothing",
+      "input": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "now": "today",
+        "horizonDays": 90
+      },
+      "expected": {
+        "records": [
+          {
+            "key": "a",
+            "updatedAt": "2025-07-07T12:00:00.000Z",
+            "deleted": true
+          }
+        ],
+        "pruned": []
+      }
+    }
+  ]
+}

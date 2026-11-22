@@ -1,0 +1,296 @@
+{
+  "id": "stamp-next",
+  "kind": "stamp",
+  "description": "nextStamp: the clock when it is later than the newest stamp seen (or there is none), otherwise that stamp plus one millisecond; always three fraction digits. Rollovers of second, minute, hour, day, month, year and 29 February; fractions of 0 to 4 digits in the latest; a clock behind by seconds and by days; unreadable inputs (an unreadable latest counts as absent, an unreadable now gives null; null is how this file writes undefined).",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "later clock",
+      "input": {
+        "now": "2026-11-19T10:00:00Z",
+        "latest": "2026-11-19T09:00:00.000Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.000Z"
+      }
+    },
+    {
+      "name": "no latest, fraction kept",
+      "input": {
+        "now": "2026-11-19T10:00:00.5Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.500Z"
+      }
+    },
+    {
+      "name": "clock one millisecond later",
+      "input": {
+        "now": "2026-11-19T10:00:00.001Z",
+        "latest": "2026-11-19T10:00:00.000Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.001Z"
+      }
+    },
+    {
+      "name": "equal",
+      "input": {
+        "now": "2026-11-19T10:00:00.000Z",
+        "latest": "2026-11-19T10:00:00.000Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.001Z"
+      }
+    },
+    {
+      "name": "equal, latest written without fraction",
+      "input": {
+        "now": "2026-11-19T10:00:00.000Z",
+        "latest": "2026-11-19T10:00:00Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.001Z"
+      }
+    },
+    {
+      "name": "clock behind by seconds",
+      "input": {
+        "now": "2026-11-19T10:00:00.000Z",
+        "latest": "2026-11-19T10:00:05.250Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:05.251Z"
+      }
+    },
+    {
+      "name": "clock behind by days",
+      "input": {
+        "now": "2026-11-19T10:00:00Z",
+        "latest": "2026-11-22T08:15:30.100Z"
+      },
+      "expected": {
+        "stamp": "2026-11-22T08:15:30.101Z"
+      }
+    },
+    {
+      "name": "latest without fraction",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.001Z"
+      }
+    },
+    {
+      "name": "latest with one digit",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00.5Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.501Z"
+      }
+    },
+    {
+      "name": "latest with two digits",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00.25Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.251Z"
+      }
+    },
+    {
+      "name": "latest with three digits",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00.250Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.251Z"
+      }
+    },
+    {
+      "name": "latest with more digits is cut to milliseconds",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00.1239Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.124Z"
+      }
+    },
+    {
+      "name": "clock equal to a latest with more digits",
+      "input": {
+        "now": "2026-11-19T10:00:00.123Z",
+        "latest": "2026-11-19T10:00:00.1239Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.124Z"
+      }
+    },
+    {
+      "name": "rollover of the second",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:00.999Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:01.000Z"
+      }
+    },
+    {
+      "name": "rollover of the minute",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:00:59.999Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:01:00.000Z"
+      }
+    },
+    {
+      "name": "rollover of the hour",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T10:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2026-11-19T11:00:00.000Z"
+      }
+    },
+    {
+      "name": "rollover of the day",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-19T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2026-11-20T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "rollover of the month",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-11-30T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2026-12-01T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "rollover of the year",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2026-12-31T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2027-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "rollover into 29 February",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2028-02-28T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2028-02-29T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "rollover out of 29 February",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2028-02-29T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2028-03-01T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "no 29 February in 2027",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2027-02-28T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2027-03-01T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "no 29 February in 2100",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "2100-02-28T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": "2100-03-01T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "unreadable now",
+      "input": {
+        "now": "yesterday",
+        "latest": "2026-11-19T10:00:00.000Z"
+      },
+      "expected": {
+        "stamp": null
+      }
+    },
+    {
+      "name": "now of another type",
+      "input": {
+        "now": 12345,
+        "latest": "2026-11-19T10:00:00.000Z"
+      },
+      "expected": {
+        "stamp": null
+      }
+    },
+    {
+      "name": "now with an impossible date",
+      "input": {
+        "now": "2026-02-30T10:00:00Z"
+      },
+      "expected": {
+        "stamp": null
+      }
+    },
+    {
+      "name": "unreadable latest counts as absent",
+      "input": {
+        "now": "2026-11-19T10:00:00Z",
+        "latest": "soon"
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.000Z"
+      }
+    },
+    {
+      "name": "latest of another type counts as absent",
+      "input": {
+        "now": "2026-11-19T10:00:00Z",
+        "latest": 7
+      },
+      "expected": {
+        "stamp": "2026-11-19T10:00:00.000Z"
+      }
+    },
+    {
+      "name": "the last instant a timestamp can name has no successor",
+      "input": {
+        "now": "2026-01-01T00:00:00Z",
+        "latest": "9999-12-31T23:59:59.999Z"
+      },
+      "expected": {
+        "stamp": null
+      }
+    }
+  ]
+}

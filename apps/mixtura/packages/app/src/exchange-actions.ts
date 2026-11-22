@@ -5,7 +5,7 @@
 
 import { type AppState } from './app-state';
 import { invalidateStock } from './stock/state';
-import { showToast } from './toast';
+import { say } from './shell/frame';
 import { strings } from './strings';
 import {
   countsOf,
@@ -44,11 +44,8 @@ export interface ExchangeHost {
   download(name: string, text: string): void;
 }
 
-export { TOAST_MS } from './toast';
-
 export function formatCounts(counts: Counts): string {
-  // Places are not shown until the place screens exist (#131): one place is the same as before.
-  const parts = KINDS.filter((k) => k !== 'places' && counts[k] > 0).map((k) => {
+  const parts = KINDS.filter((k) => counts[k] > 0).map((k) => {
     const [one, many] = strings.data.kinds[k];
     return `${counts[k]} ${counts[k] === 1 ? one : many}`;
   });
@@ -61,10 +58,10 @@ const sum = (a: Counts, b: Counts): Counts => {
   return out;
 };
 
-/** What an applied plan brought in: added plus replaced records. */
-/** The total the screens show: places are left out until the place screens exist (#131). */
-export const shownTotal = (counts: Counts): number => total({ ...counts, places: 0 });
+/** The total the screens show. */
+export const shownTotal = (counts: Counts): number => total(counts);
 
+/** What an applied plan brought in: added plus replaced records. */
 export const importedCounts = (plan: Plan): Counts => sum(plan.added, plan.replaced);
 
 /** The browser's download: a Blob behind a temporary link. */
@@ -82,7 +79,7 @@ export function saveAsFile(name: string, text: string): void {
 
 export function createExchangeActions(host: ExchangeHost): ExchangeActions {
   const { app } = host;
-  const toast = (text: string, undo?: () => void): void => showToast(app, text, undo);
+  const toast = say;
   const fail = (error: unknown): void => {
     app.set({ importFlow: { kind: 'idle' } });
     toast(`${strings.data.notSaved}. ${toStoreError(error).message}`);
@@ -129,11 +126,7 @@ export function createExchangeActions(host: ExchangeHost): ExchangeActions {
       try {
         // Size is checked before the file is read into memory.
         const text = file.size > MAX_FILE_BYTES ? '' : await file.text();
-        const selection = await local.placeSelection();
-        const placeForOldStock = selection.places.find((p) => p.id === selection.entry);
-        const result = parseExportFile(text, file.size, {
-          migrationInput: { ...(placeForOldStock && { placeForOldStock }) },
-        });
+        const result = parseExportFile(text, file.size);
         if (!result.ok) {
           app.set({ importFlow: { kind: 'error', failure: result.failure } });
           return;

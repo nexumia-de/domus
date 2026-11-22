@@ -1,5 +1,5 @@
 // The whole recipe as text: the ingredient lines per component, what goes with them, and the
-// method. Shown on the dish screen and, one tap away, on the step-by-step screen.
+// method. Shown on the dish screen of either origin and, one tap away, on the step-by-step screen.
 import type { ComponentView, LineView } from '../../classics/dish-view';
 import type { StepView } from '../../classics/cook-view';
 import { el } from '../../shell/el';
@@ -9,12 +9,13 @@ import type { LineExtra } from './substitute-block';
 const t = strings.classics;
 
 export const lineItem = (line: LineView, extra?: LineExtra): HTMLElement => {
-  const item = el('li', 'recipe-line');
-  const amount = el('span', 'recipe-amount num', line.amount ?? line.unmeasured ?? '');
+  const written = line.amount ?? line.amountWord;
+  // A line without an amount shows its name alone: nothing is made up for it.
+  const item = el('li', written === undefined ? 'recipe-line recipe-line-bare' : 'recipe-line');
   const name = el('span', 'recipe-name', line.name);
-  item.append(amount, name);
+  if (written === undefined) item.append(name);
+  else item.append(el('span', 'recipe-amount num', written), name);
   const extras = [
-    line.original === undefined ? undefined : `(${line.original})`,
     line.note,
     line.optional ? t.optional : undefined,
     line.settled ? t.settledMark : undefined,
@@ -55,7 +56,7 @@ export const ingredientsBlock = (
 /** The method: the steps in order, grouped under the component they belong to. */
 export const methodBlock = (steps: readonly StepView[]): HTMLElement | undefined => {
   if (steps.length === 0) return undefined;
-  const block = el('section', 'recipe-block');
+  const block = el('section', 'recipe-block method-block');
   block.append(el('h2', undefined, t.stepsHeading));
   let list: HTMLOListElement | undefined;
   let last: string | undefined;
@@ -68,7 +69,7 @@ export const methodBlock = (steps: readonly StepView[]): HTMLElement | undefined
       last = step.component;
     }
     const extras = [step.time, step.temperature].filter((x): x is string => x !== undefined);
-    list.append(el('li', undefined, [step.text, ...extras].join(' · ')));
+    list.append(el('li', undefined, step.listed ?? [step.text, ...extras].join(' · ')));
   }
   return block;
 };

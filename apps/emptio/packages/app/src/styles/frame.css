@@ -1,0 +1,68 @@
+/*
+ * The frame of the app: header (the shared one, host package), the scrolling content with its toast, and the dock (the add field). No navigation bar: the places are in the header. It is fixed
+ * to the edges of the window instead of being given a height, so that it is exactly what is
+ * visible in every browser and when installed: the page itself never scrolls, only `main`.
+ */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-frame {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'top' 'body' 'dock';
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+.app-top {
+  grid-area: top;
+  min-width: 0;
+}
+
+.app-body {
+  grid-area: body;
+  position: relative;
+  min-height: 0;
+}
+
+.app-main {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--sp-3) var(--sp-4) var(--sp-6);
+}
+
+.app-main > .screen {
+  max-width: var(--content-w);
+  margin: 0 auto;
+}
+
+/* What a screen keeps in reach of the thumb: the add field of the list. */
+.app-dock {
+  grid-area: dock;
+  min-width: 0;
+}
+
+.app-dock > * {
+  max-width: calc(var(--content-w) + 2 * var(--sp-4));
+  margin: 0 auto;
+  padding: var(--sp-2) var(--sp-4);
+}
+
+.app-dock:not(:empty) {
+  border-top: 1px solid var(--divider);
+  background: var(--surface);
+}
+
+/* A wide window: the content stays in the middle; header and add field span the window. */
+@media (min-width: 720px) {
+  .app-main {
+    padding-top: var(--sp-5);
+  }
+}

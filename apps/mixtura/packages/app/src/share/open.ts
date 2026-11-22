@@ -1,8 +1,8 @@
 // Opening a share link: decode, then the same parse and plan as a file
 // import in merge mode, and the same preview (components/import-preview.ts).
-// A share file brings drinks, templates and ingredients only: places, stock
-// and pairings are dropped after reading, so a link can never create or
-// change a place (docs/export-format.md#share-link).
+// A share file brings drinks, templates and ingredients only: pairings are
+// dropped after reading, and the format holds no stock
+// (docs/export-format.md#share-link).
 
 import { type AppState, type ShareFailure } from '../app-state';
 import { type ExchangeActions } from '../exchange-actions';
@@ -54,7 +54,7 @@ export async function openShare(host: OpenHost, payload: string): Promise<void> 
     if (!decoded.ok) return stop(decoded.reason);
     const result = parseExportFile(decoded.text, decoded.text.length);
     if (!result.ok) return stop(parseReason(result.failure));
-    const file: ExportFile = { ...result.file, places: [], stock: [], affinities: [] };
+    const file: ExportFile = { ...result.file, affinities: [] };
     const head = sharedSpec(file);
     if (file.specs.length === 0) return stop('not-drink');
     app.set({

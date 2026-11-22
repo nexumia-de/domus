@@ -1,0 +1,15 @@
+{
+  "id": "round-measure-one-cup",
+  "description": "236.588 ml shows as 1 cup",
+  "inputs": {
+    "kind": "round_measure",
+    "ml": 236.5882365,
+    "measure": "cup"
+  },
+  "expected": {
+    "value": 1,
+    "exact": true
+  },
+  "tolerance": 1e-9,
+  "source": "236.5882365 / 236.5882365 = 1. Display rule (assumption, unverified, no source): a household measure to the nearest quarter, at least a quarter; sizes from data/units.json."
+}

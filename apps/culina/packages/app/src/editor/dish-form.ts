@@ -1,7 +1,17 @@
 // The dish editor's form state (also the draft) and its translations to and from a record.
-import type { ComponentRef } from '@culina/engine';
+import { COUNTRY_CODES, COURSE_IDS } from '@culina/engine';
+import type { ComponentRef, Country, Course } from '@culina/engine';
+import { normalCorrection, type StoredCorrection } from '../characters/correction';
 import type { DishRecord, SlotRecord, VersionInfo } from '../records';
+import { appLang, withDecimalMark } from '../shared/locale';
 import { parseEntry } from '../shared/parse';
+import {
+  isBlankStep,
+  stepFormOf,
+  stepProblemsOf,
+  stepRecordOf,
+  type StepForm,
+} from './component-form';
 import type { VersionNote } from './version-save';
 import type { AmountUnit } from './units';
 
@@ -13,6 +23,8 @@ export interface SlotForm {
   amount: string;
   unit: AmountUnit;
   optional?: boolean;
+  /** Names the slot for the assembly steps; kept from the record, given when a step first uses it. */
+  key?: string;
 }
 
 export interface DishForm {
@@ -20,8 +32,16 @@ export interface DishForm {
   isNew: boolean;
   name: string;
   portions: string;
+  /** A course id, or empty for not stated; a draft written before it existed has none. */
+  course?: string;
+  /** A country code, or empty for not stated. */
+  cuisine?: string;
+  /** The cook's correction of the characters, as the record stores it; absent for none. */
+  characters?: StoredCorrection;
   note: string;
   slots: SlotForm[];
+  /** The assembly steps; a draft written before they existed has none. */
+  steps?: StepForm[];
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
@@ -32,15 +52,20 @@ export type DishProblem =
   | { code: 'no-slots' }
   | { code: 'filling'; index: number }
   | { code: 'amount'; index: number }
-  | { code: 'portions' };
+  | { code: 'portions' }
+  | { code: 'step'; index: number }
+  | { code: 'step-number'; index: number };
 
 export const newDishForm = (id: string): DishForm => ({
   id,
   isNew: true,
   name: '',
   portions: '2',
+  course: '',
+  cuisine: '',
   note: '',
   slots: [],
+  steps: [],
 });
 
 export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
@@ -48,16 +73,29 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   isNew: false,
   name: dish.name,
   portions: dish.portions === undefined ? '' : String(dish.portions),
+  course: dish.course ?? '',
+  cuisine: dish.cuisine ?? '',
+  ...(dish.characters === undefined ? {} : { characters: dish.characters }),
   note: dish.note ?? '',
   slots: dish.slots.map((s) => ({
     role: s.role,
     ref: s.ref,
-    amount: s.amount === undefined ? '' : String(s.amount.value),
+    amount: s.amount === undefined ? '' : withDecimalMark(String(s.amount.value), appLang),
     unit: (s.amount?.unit ?? 'g') as AmountUnit,
     ...(s.optional === true ? { optional: true } : {}),
+    ...(s.key === undefined ? {} : { key: s.key }),
   })),
+  steps: (dish.steps ?? []).map(stepFormOf),
   version: dish.version,
 });
+
+/** A course the schema knows, else none: the select offers no other. */
+export const asCourse = (value: string | undefined): Course | undefined =>
+  COURSE_IDS.find((c) => c === value);
+
+/** A cuisine the schema knows (a country code the app names), else none. */
+export const asCuisine = (value: string | undefined): Country | undefined =>
+  COUNTRY_CODES.find((c) => c === value);
 
 const wholePortions = (text: string): number | undefined => {
   const entry = parseEntry(text);
@@ -75,6 +113,7 @@ export const dishProblems = (form: DishForm): DishProblem[] => {
     if (slot.ref === undefined) out.push({ code: 'filling', index });
     if (parseEntry(slot.amount).kind === 'invalid') out.push({ code: 'amount', index });
   });
+  out.push(...stepProblemsOf(form.steps));
   return out;
 };
 
@@ -90,17 +129,29 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
       ref: slot.ref as ComponentRef,
       ...(entry.kind === 'ok' ? { amount: { value: entry.value, unit: slot.unit } } : {}),
       ...(slot.optional === true ? { optional: true } : {}),
+      ...(slot.key === undefined ? {} : { key: slot.key }),
     };
   });
+  const keys = new Set(slots.flatMap((slot) => (slot.key === undefined ? [] : [slot.key])));
+  const steps = (form.steps ?? [])
+    .filter((step) => !isBlankStep(step))
+    .map((step) => stepRecordOf(step, keys));
   const portions = wholePortions(form.portions);
   const note = form.note.trim();
+  const course = asCourse(form.course);
+  const cuisine = asCuisine(form.cuisine);
+  const characters = normalCorrection(form.characters);
   return {
     ok: true,
     record: {
       id: form.id,
       name: form.name.trim(),
       ...(portions === undefined ? {} : { portions }),
+      ...(course === undefined ? {} : { course }),
+      ...(cuisine === undefined ? {} : { cuisine }),
+      ...(characters === undefined ? {} : { characters }),
       slots,
+      ...(steps.length === 0 ? {} : { steps }),
       version: form.version ?? { family: form.id, date: today },
       ...(note === '' ? {} : { note }),
     },

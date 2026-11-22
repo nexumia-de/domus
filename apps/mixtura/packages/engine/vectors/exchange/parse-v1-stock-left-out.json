@@ -1,0 +1,34 @@
+{
+  "id": "parse-v1-stock-left-out",
+  "kind": "parse",
+  "title": "A version 1 file is read; its stock is not part of the result",
+  "document": {
+    "app": "mixtura",
+    "formatVersion": 1,
+    "exportedAt": "2026-11-17T09:30:00Z",
+    "ingredients": [],
+    "templates": [],
+    "specs": [],
+    "affinities": [],
+    "stock": [
+      {
+        "ingredientId": "lemon",
+        "present": true
+      }
+    ]
+  },
+  "bytes": 300,
+  "expected": {
+    "ok": true,
+    "migratedFrom": 1,
+    "keys": [
+      "affinities",
+      "app",
+      "exportedAt",
+      "formatVersion",
+      "ingredients",
+      "specs",
+      "templates"
+    ]
+  }
+}

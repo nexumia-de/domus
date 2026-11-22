@@ -30,9 +30,9 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef for the pot (lean and fat)",
-            "de": "Rindfleisch für den Topf (mager und mit Fett)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169491"
           },
           "amount": {
             "value": 750,
@@ -40,8 +40,12 @@
             "original": "750 gramos de carne"
           },
           "note": {
-            "en": "The beef must be very fresh (p. 59). The source names no cut for this pot; the forequarter pieces and the hind-quarter pieces are both named there.",
-            "de": "Das Fleisch muss ganz frisch sein (S. 59). Die Quelle nennt für diesen Topf kein Stück; Teile aus dem Vorder- und dem Hinterviertel werden dort genannt."
+            "en": "The beef must be very fresh.",
+            "de": "Das Fleisch muss ganz frisch sein."
+          },
+          "sourceNote": {
+            "en": "Page 59. The source names no cut for this pot; the forequarter pieces and the hind-quarter pieces are both named there.",
+            "de": "Seite 59. Die Quelle nennt für diesen Topf kein Stück; Teile aus dem Vorder- und dem Hinterviertel werden dort genannt."
           }
         },
         {
@@ -67,11 +71,11 @@
             "unit": "l",
             "original": "4 litros de agua"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot (p. 60). The list is used.",
             "de": "Die Zutatenliste nennt 4 Liter; der Ablauf nennt für den kleinen Topf 3 Liter (S. 60). Es gilt die Liste."
-          }
+          },
+          "settled": true
         },
         {
           "key": "cold-water",
@@ -86,7 +90,7 @@
           },
           "note": {
             "en": "Added when the foam rises, for the small pot: one decilitre and a half (a decilitre is 0.1 litre). The large pot gets three decilitres.",
-            "de": "Zugegeben, sobald der Schaum steigt, für den kleinen Topf: eineinhalb Deziliter (ein Deziliter sind 0,1 Liter). Der große Topf bekommt drei Deziliter."
+            "de": "Zugegeben, sobald der Schaum steigt, für den kleinen Topf: eineinhalb Deziliter (ein Deziliter ist 0,1 Liter). Der große Topf bekommt drei Deziliter."
           }
         },
         {
@@ -161,8 +165,12 @@
             "original": "1 clavo de especia"
           },
           "note": {
-            "en": "A whole clove, stuck into the onion. The catalogue has only ground cloves.",
-            "de": "Eine ganze Nelke, in die Zwiebel gesteckt. Der Katalog führt nur gemahlene Nelken."
+            "en": "A whole clove, stuck into the onion.",
+            "de": "Eine ganze Nelke, in die Zwiebel gesteckt."
+          },
+          "sourceNote": {
+            "en": "The catalogue has only ground cloves.",
+            "de": "Der Katalog führt nur gemahlene Nelken."
           }
         },
         {
@@ -184,6 +192,7 @@
             "en": "Take the bones out of the meat, tie the meat with string, and break the bones.",
             "de": "Die Knochen aus dem Fleisch lösen, das Fleisch mit Küchengarn binden und die Knochen zerbrechen."
           },
+          "action": "prepare",
           "uses": ["beef", "bone"]
         },
         {
@@ -191,6 +200,7 @@
             "en": "Put the bones in the pot first, the meat on top, and pour in the water, which should be very clear or filtered.",
             "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf, dann das Wasser eingießen; es soll sehr klar oder gefiltert sein."
           },
+          "technique": "stock-cold-start",
           "uses": ["beef", "bone", "water"]
         },
         {
@@ -198,6 +208,7 @@
             "en": "Set the pot on the fire and add the salt.",
             "de": "Den Topf aufs Feuer stellen und das Salz zugeben."
           },
+          "action": "season",
           "uses": ["salt"]
         },
         {
@@ -220,6 +231,7 @@
             "en": "Wipe the rim of the pot, add the vegetables, and let it boil again.",
             "de": "Den Topfrand abwischen, das Gemüse zugeben und wieder aufkochen lassen."
           },
+          "action": "add",
           "uses": ["carrot", "onion", "leek", "celery", "clove", "turnip"]
         },
         {
@@ -238,13 +250,15 @@
             "en": "Take the meat out and put it on a dish. Taste the broth to see that it is well seasoned for the soup; add more salt only in the tureen. The broth should always be a little low in salt, as it is salted again when reheated.",
             "de": "Das Fleisch herausnehmen und auf eine Platte legen. Die Brühe probieren, sie soll für die Suppe gut gesalzen sein; mehr Salz nur in der Suppenschüssel zugeben. Die Brühe soll immer etwas salzarm sein, da sie beim Wiedererwärmen nachgesalzen wird."
           },
+          "action": "take-out",
           "uses": ["beef"]
         },
         {
           "text": {
             "en": "Skim the fat off the hot broth with the ladle, taking as little broth as possible.",
             "de": "Das Fett mit der Kelle von der heißen Brühe abnehmen und dabei möglichst wenig Brühe mitnehmen."
-          }
+          },
+          "technique": "skim"
         }
       ]
     }

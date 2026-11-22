@@ -13,7 +13,9 @@ import { fileURLToPath } from 'node:url';
 import { deriveDensity, deriveUnitWeight, isBasic, nameOf } from './derive.mjs';
 import { groupRows } from './group.mjs';
 import { nutritionOf } from './nutrition.mjs';
+import { mergeOwnNames, ownNamesDataset } from './own-names.mjs';
 import { germanNames } from './wikidata.mjs';
+import { applyUsual } from './usual.mjs';
 import { deriveYields, readRefuse, REFUSE_SOURCE } from './yields.mjs';
 
 const extrasFile = fileURLToPath(new URL('./extras.json', import.meta.url));
@@ -24,7 +26,12 @@ export const EXTRAS = new Map(
 /** Whether the food is a row of the catalogue: selected by the rule or named in extras.json. */
 export const isSelected = (food) => isBasic(food) || EXTRAS.has(food.fdcId);
 
+const usualFile = fileURLToPath(new URL('./usual.json', import.meta.url));
+/** The usual member of a parent whose rows do not agree (usual.json, a judgement). */
+export const USUAL = JSON.parse(readFileSync(usualFile, 'utf8'));
+
 const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
+const ownNamesFile = fileURLToPath(new URL('./names-de-own.json', import.meta.url));
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
   new URL('../../packages/app/data/ingredient-catalogue.json', import.meta.url),
@@ -148,12 +155,20 @@ const main = () => {
   if (!Array.isArray(foods)) throw new Error('no SRLegacyFoods list in the file');
   const snapshotText = readFileSync(snapshotFile);
   const wikidata = JSON.parse(snapshotText.toString('utf8'));
-  const ingredients = buildCatalogue(
+  const generated = buildCatalogue(
     foods,
     release,
     readRefuse(refuseText.toString('latin1')),
     wikidata,
   );
+  // The hand-kept German names fill what Wikidata left; a Wikidata name is never replaced.
+  const ownNamesText = readFileSync(ownNamesFile);
+  const ownNames = JSON.parse(ownNamesText.toString('utf8'));
+  const own = mergeOwnNames(generated, ownNames);
+  if (own.unknown.length > 0)
+    throw new Error(`names-de-own.json: unknown ids ${own.unknown.join(', ')}`);
+  // The usual member of a parent whose rows do not agree (a judgement, usual.json).
+  const ingredients = applyUsual(own.ingredients, USUAL);
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,
@@ -178,6 +193,10 @@ const main = () => {
       licence:
         'CC0 1.0 Universal (public domain), as stated on https://www.wikidata.org/wiki/Wikidata:Licensing',
     },
+    ownNamesDataset: ownNamesDataset(
+      ownNames,
+      createHash('sha256').update(ownNamesText).digest('hex'),
+    ),
     generatedBy: 'tools/catalogue/build.mjs',
     ingredients,
   };

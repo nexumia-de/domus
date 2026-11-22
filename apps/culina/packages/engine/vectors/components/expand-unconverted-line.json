@@ -1,0 +1,57 @@
+{
+  "id": "expand-unconverted-line",
+  "description": "A volume line of an ingredient without density is listed, the other lines expand",
+  "inputs": {
+    "kind": "expand_component",
+    "id": "sauce",
+    "components": [
+      {
+        "id": "sauce",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "tomato"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "oil"
+            },
+            "amount": {
+              "value": 100,
+              "unit": "ml"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 1e-6,
+  "source": "Oil is given in ml and the ingredient has no density, so its grams are unknown: it is listed in unconverted and left out of raw, which holds the tomato alone (100 g). Synthetic.",
+  "expected": {
+    "raw": [
+      {
+        "ingredient_id": "tomato",
+        "g": 100
+      }
+    ],
+    "raw_g": 100,
+    "factor": 1,
+    "unmeasured": [],
+    "unconverted": [
+      {
+        "path": ["sauce"],
+        "index": 1,
+        "ref_id": "oil",
+        "cause": "needs-density"
+      }
+    ],
+    "unweighed": []
+  }
+}

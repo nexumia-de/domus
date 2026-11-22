@@ -4,6 +4,7 @@
 // the current entry, so Back leaves the list instead of undoing keystrokes.
 
 import * as glyph from '../../components/glyphs';
+import { headerLink } from '@nexumia-de/hospes/frame';
 import { menuButton } from '../../components/menu-button';
 import { searchField } from '../../components/search-field';
 import { h } from '../../dom';
@@ -132,7 +133,7 @@ export function drinksListPane(
   context: ScreenContext,
   model: BrowseModel,
   selected?: string,
-): { title: string; body: Node; action: Node } {
+): { title: string; body: Node; action: HTMLElement } {
   installDrinksKeys(context.store);
   const filters = parseFilters(context.route.query);
   const stock = stockState(context);
@@ -248,15 +249,6 @@ export function drinksListPane(
   return {
     title: strings.titles.drinks,
     body,
-    action: h(
-      'a',
-      {
-        class: 'btn btn--icon',
-        href: '#/drinks/new',
-        'aria-label': strings.buttons.newDrinkIcon,
-        title: strings.buttons.newDrinkIcon,
-      },
-      glyph.plus(),
-    ),
+    action: headerLink(strings.buttons.newDrinkIcon, 'add', '#/drinks/new'),
   };
 }

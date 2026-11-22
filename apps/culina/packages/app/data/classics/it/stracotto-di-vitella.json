@@ -30,16 +30,16 @@
       "lines": [
         {
           "key": "veal",
-          "wanted": {
-            "en": "Lean veal, with bone or trimmings",
-            "de": "Mageres Kalbfleisch, mit Knochen oder Abschnitten"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173817"
           },
           "amount": {
             "value": 500,
             "unit": "g",
             "original": "Carne magra di vitella, grammi 500"
           },
-          "note": {
+          "sourceNote": {
             "en": "Including the bone or the trimmings, as the source says.",
             "de": "Mit Knochen oder Abschnitten, wie die Quelle sagt."
           }
@@ -56,8 +56,12 @@
             "original": "Carnesecca, grammi 50"
           },
           "note": {
-            "en": "Cut into small dice. The source says it may replace the Tuscan oil in whole or in part; no oil amount is given, so no oil line is written.",
-            "de": "In kleine Würfel geschnitten. Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen; eine Ölmenge steht nicht da, daher ist keine Ölzeile geschrieben."
+            "en": "Cut into small dice.",
+            "de": "In kleine Würfel geschnitten."
+          },
+          "sourceNote": {
+            "en": "The source says it may replace the Tuscan oil in whole or in part. No oil amount is given, so no oil line is written.",
+            "de": "Die Quelle sagt, sie dürfe das toskanische Öl ganz oder teilweise ersetzen. Eine Ölmenge nennt sie nicht, daher gibt es keine Zeile für Öl."
           }
         },
         {
@@ -115,17 +119,25 @@
             "id": "fdc-group-wheat-flour-white-all-purpose"
           },
           "note": {
-            "en": "'A pinch' of flour; the source gives no weight. It binds the sauce and must not burn.",
-            "de": "'Ein Pizzico' Mehl; die Quelle gibt kein Gewicht an. Es bindet die Sauce und darf nicht anbrennen."
+            "en": "'A pinch' of flour. It binds the sauce and must not burn.",
+            "de": "Eine Prise (un pizzico) Mehl. Es bindet die Sauce und darf nicht anbrennen."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle gibt kein Gewicht an."
           }
         },
         {
           "key": "tomato",
-          "wanted": {
-            "en": "Tomato sauce or paste",
-            "de": "Tomatensauce oder Tomatenmark"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-tomato-products-canned"
           },
           "note": {
+            "en": "Tomato sauce or paste.",
+            "de": "Tomatensauce oder Tomatenmark."
+          },
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -137,8 +149,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Added little by little; no amount given.",
-            "de": "Nach und nach zugegeben; keine Menge angegeben."
+            "en": "Added little by little.",
+            "de": "Nach und nach zugegeben."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -162,8 +178,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'Sparingly'; more can be added at the table. No amount.",
-            "de": "'Sparsam'; bei Tisch kann mehr nachgegeben werden. Keine Menge."
+            "en": "'Sparingly'. More can be added at the table.",
+            "de": "‚Sparsam‘. Bei Tisch kann mehr nachgegeben werden."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],
@@ -173,6 +193,7 @@
             "en": "Cut the onion, the carrot and the celery roughly.",
             "de": "Zwiebel, Karotte und Sellerie grob schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["onion", "carrot", "celery"]
         },
         {
@@ -180,6 +201,7 @@
             "en": "Cut the carnesecca into small dice.",
             "de": "Die Carnesecca in kleine Würfel schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["carnesecca"]
         },
         {
@@ -187,6 +209,7 @@
             "en": "Put everything on the heat together.",
             "de": "Alles zusammen auf den Herd stellen."
           },
+          "action": "heat",
           "uses": ["veal", "carnesecca", "butter", "onion", "carrot", "celery"]
         },
         {
@@ -194,6 +217,7 @@
             "en": "Season with salt and pepper.",
             "de": "Mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["salt", "pepper"]
         },
         {
@@ -207,8 +231,9 @@
         {
           "text": {
             "en": "Dust the meat with a pinch of flour.",
-            "de": "Das Fleisch mit einem Pizzico Mehl bestäuben."
+            "de": "Das Fleisch mit einer Prise Mehl bestäuben."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -216,6 +241,7 @@
             "en": "Stir so that the flour does not burn.",
             "de": "Umrühren, damit das Mehl nicht anbrennt."
           },
+          "action": "stir",
           "uses": ["flour"]
         },
         {
@@ -223,6 +249,7 @@
             "en": "Pour tomato sauce or paste over the meat.",
             "de": "Tomatensauce oder Tomatenmark über das Fleisch gießen."
           },
+          "action": "pour",
           "uses": ["tomato"]
         },
         {
@@ -237,7 +264,8 @@
           "text": {
             "en": "Pass the sauce through a sieve.",
             "de": "Die Sauce durch ein Sieb streichen."
-          }
+          },
+          "action": "strain"
         }
       ]
     },
@@ -261,7 +289,7 @@
             "unit": "g",
             "original": "250 a 300 grammi di maccheroni"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source gives the sauce for this amount of pasta.",
             "de": "Die Quelle gibt die Sauce für diese Menge Nudeln an."
           }
@@ -273,8 +301,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "For dressing the pasta; no amount given.",
-            "de": "Zum Anmachen der Nudeln; keine Menge angegeben."
+            "en": "For dressing the pasta.",
+            "de": "Zum Anmachen der Nudeln."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -284,8 +316,12 @@
             "id": "fdc-group-cheese-parmesan"
           },
           "note": {
-            "en": "'Sparingly'; no amount.",
-            "de": "'Sparsam'; keine Menge."
+            "en": "'Sparingly'.",
+            "de": "‚Sparsam‘."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         }
       ],
@@ -303,6 +339,7 @@
             "en": "Drain them well and keep them for a moment in the sauce near the heat.",
             "de": "Gut abgießen und kurz in der Sauce bei Hitze warm halten."
           },
+          "action": "drain",
           "uses": ["pasta"]
         },
         {
@@ -310,6 +347,7 @@
             "en": "Dress them with butter and a little parmesan; more parmesan can be added at the table.",
             "de": "Mit Butter und etwas Parmesan anmachen; bei Tisch kann mehr Parmesan dazugegeben werden."
           },
+          "action": "serve",
           "uses": ["butter-dressing", "parmesan-dressing"]
         }
       ]
@@ -345,6 +383,6 @@
   },
   "note": {
     "en": "Artusi's recipe 161. The sauce is meant for pasta or for a risotto with sauce; the rice variant is not written here. Artusi says that dried mushrooms may be added for flavour; no amount is given, so they are not written. The cooking time is not stated. The pasta line is the source's own quantity for this sauce.",
-    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht geschrieben. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher sind sie nicht geschrieben. Eine Garzeit nennt die Quelle nicht."
+    "de": "Artusis Rezept Nr. 161. Die Sauce ist für Nudeln oder für ein Risotto mit Sauce gedacht; die Reisvariante ist hier nicht übertragen. Getrocknete Pilze dürfen laut Quelle für den Geschmack zugegeben werden; die Quelle nennt keine Menge, daher stehen sie nicht im Rezept. Eine Garzeit nennt die Quelle nicht."
   }
 }

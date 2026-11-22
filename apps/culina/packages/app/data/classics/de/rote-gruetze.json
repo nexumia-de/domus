@@ -67,8 +67,12 @@
             "original": "the juice of 1 quart of berries"
           },
           "note": {
-            "en": "Fresh fruit: the amount is the juice of 1 quart of berries. The source names blackberries, and currant or raspberry juice in the main version.",
-            "de": "Frisches Obst: die Menge ist der Saft von 1 Quart Beeren. Die Quelle nennt Brombeeren sowie Johannisbeer- oder Himbeersaft in der Hauptform."
+            "en": "Fresh fruit: the amount is the juice of 1 quart of berries.",
+            "de": "Frisches Obst: die Menge ist der Saft von 1 Quart Beeren."
+          },
+          "sourceNote": {
+            "en": "The source names blackberries, and currant or raspberry juice in the main version.",
+            "de": "Die Quelle nennt Brombeeren sowie Johannisbeer- oder Himbeersaft in der Hauptform."
           }
         },
         {
@@ -109,8 +113,12 @@
           },
           "settled": true,
           "note": {
-            "en": "Potato flour is used; the source also allows rice flour or potato sago.",
-            "de": "Kartoffelmehl wird verwendet; die Quelle erlaubt auch Reismehl oder Kartoffelsago."
+            "en": "Potato flour is used.",
+            "de": "Kartoffelmehl wird verwendet."
+          },
+          "sourceNote": {
+            "en": "The source also allows rice flour or potato sago.",
+            "de": "Die Quelle erlaubt auch Reismehl oder Kartoffelsago."
           }
         },
         {
@@ -125,8 +133,12 @@
             "original": "1 cupful of fresh berries"
           },
           "note": {
-            "en": "Sugared for a few hours before; the source gives no amount of sugar for them.",
-            "de": "Einige Stunden vorher gezuckert; die Quelle nennt keine Zuckermenge dafür."
+            "en": "Sugared for a few hours before.",
+            "de": "Einige Stunden vorher gezuckert."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount of sugar for them.",
+            "de": "Die Quelle nennt keine Zuckermenge dafür."
           }
         }
       ],
@@ -136,6 +148,7 @@
             "en": "Leave the berries on a dish so that their juice runs out.",
             "de": "Die Beeren auf einen Teller legen, damit der Saft austritt."
           },
+          "action": "stand",
           "uses": ["berries"]
         },
         {
@@ -143,6 +156,7 @@
             "en": "Put the juice, the claret and the sugar into a pot and bring to the boil.",
             "de": "Saft, Rotwein und Zucker in einen Topf geben und aufkochen."
           },
+          "action": "heat",
           "uses": ["berries", "claret", "sugar"]
         },
         {
@@ -158,19 +172,22 @@
             "en": "Stir the sugared fresh berries into the pudding.",
             "de": "Die gezuckerten frischen Beeren in den Pudding rühren."
           },
+          "action": "stir",
           "uses": ["sugared-berries"]
         },
         {
           "text": {
             "en": "Rinse a mould with cold water and fill it with the pudding.",
             "de": "Eine Form mit kaltem Wasser ausspülen und mit dem Pudding füllen."
-          }
+          },
+          "action": "fill"
         },
         {
           "text": {
             "en": "When it has cooled, turn the pudding out onto a dish.",
             "de": "Wenn er abgekühlt ist, den Pudding auf eine Platte stürzen."
-          }
+          },
+          "action": "turn-out"
         }
       ]
     }
@@ -204,6 +221,6 @@
   },
   "note": {
     "en": "The fresh-berry variant of the Red Rice Flour Pudding: a berry pudding thickened with starch and wine, turned out of a mould. The source's sauce of whipped cream or vanilla sauce is not transcribed; the sugared berries are added to the pudding, the source says only \"proceed as above\".",
-    "de": "Die Variante mit frischen Beeren des Roten Reismehl-Puddings: ein mit Stärke und Wein gebundener Beerenpudding, aus der Form gestürzt. Die Sauce aus geschlagener Sahne oder Vanillesauce ist nicht übertragen; die gezuckerten Beeren kommen in den Pudding, die Quelle sagt dazu nur \"wie oben verfahren\"."
+    "de": "Die Variante mit frischen Beeren des Roten Reismehl-Puddings: ein mit Stärke und Wein gebundener Beerenpudding, aus der Form gestürzt. Die Sauce aus geschlagener Sahne oder Vanillesauce ist nicht übertragen; die gezuckerten Beeren kommen in den Pudding, die Quelle sagt dazu nur „wie oben verfahren“."
   }
 }

@@ -2,7 +2,7 @@
 // (with suggestions from a recorded shelf life), always there and a note, all optional; plus
 // "Use some" to subtract an amount, and Remove. Nothing is focused on open.
 import { stockExpiry, useBySuggestions } from '@culina/engine';
-import type { FoodState, UnitId } from '@culina/engine';
+import type { FoodState, StoragePlace, UnitId } from '@culina/engine';
 import { AMOUNT_UNITS } from '../../editor/units';
 import { getStockItem, saveStockItem, stockName, today } from '../../notebook';
 import { hashFor } from '../../router';
@@ -16,6 +16,7 @@ import { storeText } from '../editor/store-text';
 import { shelfLifeOf } from './lookup';
 import { removeWithUndo } from './stock-screen';
 import { useSome } from './use-some';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.stock;
 const STATES: Option[] = [
@@ -24,7 +25,13 @@ const STATES: Option[] = [
   { value: 'cooked', label: t.state.cooked },
   { value: 'prepared', label: t.state.prepared },
 ];
-const UNITS: Option[] = AMOUNT_UNITS.map((u) => ({ value: u, label: u }));
+const PLACES: Option[] = [
+  { value: '', label: t.storageNone },
+  { value: 'pantry', label: t.storage.pantry },
+  { value: 'fridge', label: t.storage.fridge },
+  { value: 'freezer', label: t.storage.freezer },
+];
+const UNITS: Option[] = unitOptions(AMOUNT_UNITS);
 
 const dateField = (label: string, value: string) => {
   const field = textField(label, value);
@@ -52,6 +59,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
   const amountRow = el('div', 'line-amount');
   amountRow.append(amount.wrap, unit);
   const state = selectField(t.stateLabel, STATES, values.state);
+  const place = selectField(t.storageLabel, PLACES, values.storage);
   const prepared = dateField(t.preparedLabel, values.preparedOn);
   const preparedRow = el('div', 'stock-date-row');
   preparedRow.append(
@@ -89,6 +97,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
     amount: amount.control.value,
     unit: unit.value as UnitId,
     state: state.control.value as FoodState | '',
+    storage: place.control.value as StoragePlace | '',
     always: isAlways,
     preparedOn: prepared.control.value,
     useBy: useBy.control.value,
@@ -104,6 +113,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
     const offered = useBySuggestions(
       {
         ...(current.state === '' ? {} : { state: current.state }),
+        ...(current.storage === '' ? {} : { storage: current.storage }),
         ...(current.preparedOn === '' ? {} : { preparedOn: current.preparedOn }),
       },
       shelf,
@@ -120,9 +130,13 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
       }
       suggest.append(el('p', 'note-quiet', t.suggestNote));
     }
-    if (current.useBy === '' && current.preparedOn !== '' && current.state !== '') {
+    if (current.useBy === '' && current.preparedOn !== '') {
       const e = stockExpiry(
-        { preparedOn: current.preparedOn, state: current.state },
+        {
+          preparedOn: current.preparedOn,
+          ...(current.state === '' ? {} : { state: current.state }),
+          ...(current.storage === '' ? {} : { storage: current.storage }),
+        },
         today(),
         shelf,
       );
@@ -131,7 +145,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
       }
     }
   };
-  for (const control of [prepared.control, state.control, useBy.control]) {
+  for (const control of [prepared.control, state.control, place.control, useBy.control]) {
     control.addEventListener('input', suggestions);
     control.addEventListener('change', suggestions);
   }
@@ -166,6 +180,7 @@ export const stockEditScreen = (id: string | undefined): HTMLElement => {
   form.append(
     amountRow,
     state.wrap,
+    place.wrap,
     preparedRow,
     useByRow,
     suggest,

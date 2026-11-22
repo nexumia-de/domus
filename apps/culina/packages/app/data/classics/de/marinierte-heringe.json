@@ -37,9 +37,9 @@
       "lines": [
         {
           "key": "herring",
-          "wanted": {
-            "en": "Herring",
-            "de": "Hering"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-175116"
           },
           "amount": {
             "value": 12,
@@ -72,9 +72,9 @@
         },
         {
           "key": "mustard",
-          "wanted": {
-            "en": "White mustard seed",
-            "de": "Weiße Senfkörner"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170929"
           },
           "amount": {
             "value": 1,
@@ -82,8 +82,12 @@
             "original": "1 ounce of white mustard seeds"
           },
           "note": {
-            "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead.",
-            "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen."
+            "en": "White mustard seeds, whole.",
+            "de": "Weiße Senfkörner, ganz."
+          },
+          "sourceNote": {
+            "en": "The second edition gives 3 ounces; the source's 1 ounce is used. To be decided by the lead. The catalogue has only ground mustard seed, of no named kind.",
+            "de": "Die deutsche Ausgabe nennt 3 Unzen; verwendet wird die 1 Unze der Quelle. Entscheidung offen. Der Katalog führt nur gemahlene Senfsaat ohne genannte Sorte."
           }
         },
         {
@@ -117,8 +121,12 @@
             "id": "fdc-170000"
           },
           "note": {
-            "en": "Small onions; no amount given.",
-            "de": "Kleine Zwiebeln; keine Menge angegeben."
+            "en": "Small onions.",
+            "de": "Kleine Zwiebeln."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -127,7 +135,7 @@
             "kind": "ingredient",
             "id": "fdc-168407"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given. The German name is our translation of the English word.",
             "de": "Keine Menge angegeben. Der deutsche Name ist unsere Übersetzung des englischen Wortes."
           }
@@ -138,7 +146,7 @@
             "en": "Tarragon",
             "de": "Estragon"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -149,7 +157,7 @@
             "kind": "ingredient",
             "id": "fdc-173470"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -160,7 +168,7 @@
             "kind": "ingredient",
             "id": "fdc-170917"
           },
-          "note": {
+          "sourceNote": {
             "en": "No amount given.",
             "de": "Keine Menge angegeben."
           }
@@ -171,7 +179,7 @@
             "kind": "ingredient",
             "id": "fdc-group-vinegar"
           },
-          "note": {
+          "sourceNote": {
             "en": "No volume given.",
             "de": "Keine Menge angegeben."
           }
@@ -183,8 +191,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "For freshening the herring; the source says milk or water, and water is chosen here.",
-            "de": "Zum Wässern der Heringe; die Quelle nennt Milch oder Wasser, hier wird Wasser gewählt."
+            "en": "For freshening the herring.",
+            "de": "Zum Wässern der Heringe."
+          },
+          "sourceNote": {
+            "en": "The source says milk or water, and water is chosen here.",
+            "de": "Die Quelle nennt Milch oder Wasser, hier wird Wasser gewählt."
           }
         }
       ],
@@ -194,6 +206,7 @@
             "en": "Clean the herring and take out the milt without opening the body.",
             "de": "Die Heringe reinigen und die Milch herausnehmen, ohne den Körper zu öffnen."
           },
+          "action": "trim",
           "uses": ["herring", "milt"]
         },
         {
@@ -201,6 +214,7 @@
             "en": "Wash them carefully and lay them in water for two days to freshen them.",
             "de": "Die Heringe sorgfältig waschen und zwei Tage in Wasser legen, damit sie frisch werden."
           },
+          "action": "soak",
           "uses": ["herring", "water"]
         },
         {
@@ -208,6 +222,7 @@
             "en": "Pound the nutmeg, the mustard seed, the shallots and the peppercorns very fine.",
             "de": "Muskatnuss, Senfkörner, Schalotten und Pfefferkörner sehr fein stoßen."
           },
+          "action": "crush",
           "uses": ["nutmeg", "mustard", "shallot", "peppercorn"]
         },
         {
@@ -215,6 +230,7 @@
             "en": "Put part of this mixture into each herring.",
             "de": "In jeden Hering einen Teil dieser Mischung geben."
           },
+          "action": "fill",
           "uses": ["herring", "nutmeg", "mustard", "shallot", "peppercorn"]
         },
         {
@@ -222,6 +238,7 @@
             "en": "Lay the herring in a jar in layers with the small onions, the peppergrass, the tarragon, the thyme and the bay leaves.",
             "de": "Die Heringe lagenweise in ein Glas legen, dazwischen kleine Zwiebeln, Kresse, Estragon, Thymian und Lorbeerblätter geben."
           },
+          "action": "fill",
           "uses": ["herring", "onion", "peppergrass", "tarragon", "thyme", "bay"]
         },
         {

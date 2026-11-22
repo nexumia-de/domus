@@ -13,7 +13,8 @@ Every rule is a pure function of `packages/engine`, reached through
 ([vector format](vectors.md)). Time and ids come in as input. The
 entities are in the [data model](data-model.md).
 
-Rules 1, 4 and 5 are built in Goal 1 and have vectors today; 2 and 3
+Rules 1, 4 and 5, the order of the categories and what the add field
+offers are built and have vectors; 2 and 3
 are stated exactly and built in Goal 3; 6 to 8 are outlines that are
 completed when their goal starts.
 
@@ -25,10 +26,15 @@ with combining marks removed, `ß` as `ss`, lower case, spaces at the
 ends removed and runs of spaces as one. Keys are compared by code
 units. No locale of the device is used.
 
+# The order of the categories
+
+The starting order without the categories the household hid, then the
+household's own by the sort key of their name and then by id, then
+`other`, which is always there and always last (`categoryOrder`).
+
 # 1. Order at home
 
-Input: entries and the order of the categories (the starting order,
-own categories after it by the sort key of their name).
+Input: entries and the order of the categories.
 
 1. Open entries come first, sorted by: priority (`now`, `soon`,
    `sometime`); position of the category (a category that is not in the
@@ -60,7 +66,23 @@ with a category), and the household's earlier entries.
    and the same sort key, the category of the latest such entry (by
    `addedAt`). The household's choice wins over the catalogue.
 2. Otherwise the category the catalogue gives the ingredient.
-3. Otherwise `other`.
+3. Otherwise the category of the usual item the name means
+   (`usualCategory`, the list is in
+   [categories](categories.md#usual-items)). Names are compared by
+   their sort key, word by word:
+   1. the longest run of the name's words that is an item ("Bio-Milch
+      3,5 %" is milk), the last such run on a tie;
+   2. otherwise, from the last word to the first, the item a word is a
+      plural of ("Tomaten", "eggs": the item followed by `e`, `n`, `s`,
+      `en`, `es`, `er` or `nen`), or the longest item the word ends
+      with, the head of a German compound ("Vollmilch" is milk,
+      "Wildschwein" is Schwein and not Wein). Only items of one word
+      and four letters or more are looked for inside a word.
+4. Otherwise `other`.
+
+Step 3 is a guess from a short list and is wrong for some names (a
+compound whose head is another department). The household corrects it
+on the entry, and step 1 keeps that choice from then on.
 
 # 5. Twice the same
 
@@ -78,6 +100,15 @@ The open entry is kept with:
 - the notes by the same rule as the amounts;
 - the origins of both, each kind and title once, the old ones first;
 - its own id, name, category, `addedAt` and `notAt`.
+
+# What the add field offers
+
+Input: the typed text and the household's entries, open and bought
+(`suggest`). Each thing once ([twice the same](#5-twice-the-same)), with
+the name and category of its latest entry; it counts as open when one
+of its entries is. Names whose sort key starts with the key of the text
+come first, then names with a word that starts with it, then names that
+contain it; inside each group by sort key. An empty text gives nothing.
 
 # 6. Route proposal
 

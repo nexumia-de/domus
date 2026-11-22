@@ -1,0 +1,333 @@
+{
+  "id": "sealed-parse",
+  "kind": "sealed-parse",
+  "description": "parseSealed (version 2, no key derivation fields): a complete file is accepted and unknown fields (also a kdf) are dropped. Errors: not-json; not-an-envelope for non-objects and other formats; newer-version for a version number above 2 (before the rest); invalid for version 1 (the passphrase envelope, removed), version 0, a missing or empty cipher name, nonce or data that is not base64 (empty, outside the alphabet, more than two = at the end).",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "complete",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": true,
+        "sealed": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      }
+    },
+    {
+      "name": "unknown fields dropped",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy",
+            "more": true
+          },
+          "data": "Y2lwaGVydGV4dA==",
+          "extra": 1,
+          "kdf": {
+            "name": "x"
+          }
+        }
+      },
+      "expected": {
+        "ok": true,
+        "sealed": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      }
+    },
+    {
+      "name": "not json",
+      "input": {
+        "text": "nope"
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-json"
+      }
+    },
+    {
+      "name": "an array",
+      "input": {
+        "json": []
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-envelope"
+      }
+    },
+    {
+      "name": "another format",
+      "input": {
+        "json": {
+          "format": "materia-unit",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-an-envelope"
+      }
+    },
+    {
+      "name": "newer version",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 3,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "newer version wins over other problems",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 9
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "version 1 is invalid here",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 1,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "a complete version 1 file is invalid here",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 1,
+          "kdf": {
+            "name": "PBKDF2",
+            "hash": "SHA-256",
+            "iterations": 600000,
+            "salt": "c2FsdHNhbHRzYWx0c2E="
+          },
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "version 0",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 0,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no version",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no cipher",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "empty cipher name",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "nonce not base64",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "no nonce"
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "empty nonce",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": ""
+          },
+          "data": "Y2lwaGVydGV4dA=="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "data empty",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": ""
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "data with three =",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": "QQ==="
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "data of another type",
+      "input": {
+        "json": {
+          "format": "materia-sync",
+          "version": 2,
+          "cipher": {
+            "name": "AES-GCM",
+            "nonce": "bm9uY2Vub25jZTEy"
+          },
+          "data": 5
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "household-measure-none",
+  "description": "A quart is not a household measure",
+  "inputs": {
+    "kind": "household_measure",
+    "ml": 946.352946
+  },
+  "expected": {
+    "measure": null
+  },
+  "tolerance": 1e-9,
+  "source": "Only the sizes of tsp, tbsp and cup are household measures."
+}

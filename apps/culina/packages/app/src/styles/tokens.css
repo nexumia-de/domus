@@ -21,7 +21,6 @@
   --focus: #1d1a17;
 
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --fs-xxs: 0.675rem;
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
   --fs-md: 1rem;
@@ -39,6 +38,7 @@
 
   --target: 44px;
   --nav-h: 64px;
+  --header-h: 56px;
   --side-w: 220px;
   --content-w: 720px;
   --focus-width: 3px;

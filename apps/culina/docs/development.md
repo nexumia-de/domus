@@ -26,17 +26,19 @@ TypeScript, installed for that build only).
 
 ## Commands
 
-| Command                              | What it does                                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                                    |
-| `npm run format`                     | Prettier writes all files                                                                              |
-| `npm run format:check`               | Prettier checks all files                                                                              |
-| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                                    |
-| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                        |
-| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                            |
-| `npm run build`                      | esbuild writes `packages/app/dist/`                                                                    |
-| `npm run e2e`                        | generates what `npm test` generates, builds, serves `dist/` and runs the Playwright checks in Chromium |
-| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file))         |
+| Command                              | What it does                                                                                                                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check`                      | format check, lint, typecheck, tests, in that order; stops at error                                                                                                           |
+| `npm run format`                     | Prettier writes all files                                                                                                                                                     |
+| `npm run format:check`               | Prettier checks all files                                                                                                                                                     |
+| `npm run lint`                       | ESLint (flat config, typescript-eslint, purity rule for the engine)                                                                                                           |
+| `npm run typecheck`                  | `tsc --noEmit` in both packages                                                                                                                                               |
+| `npm test`                           | vitest in both packages (the app tests build `dist/` first)                                                                                                                   |
+| `npm run build`                      | esbuild writes `packages/app/dist/`                                                                                                                                           |
+| `npm run e2e`                        | generates what `npm test` generates, builds, serves `dist/` and runs the Playwright checks in Chromium                                                                        |
+| `E2E_WIDE_FONT=1 npm run e2e`        | the same with DejaVu Sans as the system font, like the CI runner ([below](#browser-checks-with-a-wide-font))                                                                  |
+| `npm run validate:content -- <file>` | validates one technique or dish file ([classic format](classic-format.md#validating-one-file))                                                                                |
+| `npm run propose:steps -- [<dish>]`  | prints what `proposeStep` suggests for each step of the shipped dishes beside what the file says; `--count` gives the counts only ([classic format](classic-format.md#steps)) |
 
 ## Layout
 
@@ -136,10 +138,24 @@ placement, no horizontal scroll on every screen, targets of at least 44 x
 offline reload with the service worker controlling the page, no console
 error, no CSP violation, no request to another origin) and
 `e2e/install.mjs` (installability table, in [behaviour](behaviour.md#installability-check))
-and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px) and `e2e/german.mjs` (the app in German at 360 x 720, chosen through the setting and through the browser locale `de`; see [behaviour](behaviour.md#classics)).
+and `e2e/store.mjs` (records survive a reload and a service worker update, no foreign request) and `e2e/catalogue.mjs` (the ingredient catalogue in the picker, see [behaviour](behaviour.md#editor)) and `e2e/classics.mjs` (the classics on fictional example content handed in with `?e2e-content`: start, country, dish, step by step, "I know this", the note gone on the next dish, Teach again, keep in the notebook, content language, at 360 and 1000 px) and `e2e/navigation.mjs` (the four destinations and the gear in English and German at 320, 360 and 1000 px: order, one-line labels, targets, the parts of Cook and the Notebook, every old destination at most two taps from Start, the stock two taps from anywhere) and `e2e/german.mjs` (the app in German at 360 x 720, chosen through the setting and through the browser locale `de`; see [behaviour](behaviour.md#classics)).
 Chromium comes from `PLAYWRIGHT_CHROMIUM_PATH` when that variable is set,
 otherwise from Playwright (`npx playwright install chromium`).
 `npm run screenshots -w @culina/app` rewrites `docs/screenshots/`.
+
+### Browser checks with a wide font
+
+The default sans font of a machine decides how wide a label gets: with six entries on a developer machine with Inter the
+navigation fitted at 360 px, on the CI runner (ubuntu, DejaVu Sans as the fallback) it did not, and the
+page scrolled sideways. With four entries (Verhältnisse, the longest label, fits one line at 320 px) the check stays, because it is what keeps the labels short. `E2E_WIDE_FONT=1 npm run e2e` starts Chromium with a temporary fontconfig file
+(`e2e/harness.mjs`) that makes DejaVu Sans the `sans-serif` and `system-ui` font; it needs the package
+`fonts-dejavu-core` and fails with a message when the font is missing. No font is added to the
+repository. Run both before a change to the shell, the navigation or the type sizes:
+
+```
+npm run e2e -w culina
+E2E_WIDE_FONT=1 npm run e2e -w culina
+```
 
 ## Ingredient catalogue
 
@@ -182,6 +198,14 @@ the same command rebuilds them. After adding one, refresh the German names
 (below) so that the snapshot keeps the NDB numbers of the new rows, run
 `npx prettier --write tools/catalogue/wikidata-de.json`, and rebuild the
 catalogue after that (the file's SHA-256 is in the catalogue's envelope).
+
+The German names that Wikidata does not have are the hand-kept overlay
+`tools/catalogue/names-de-own.json`
+([own translation](ingredient-catalogue.md#own-translation)). The generator
+merges it; with the USDA data not at hand, `node tools/catalogue/merge-own-names.mjs`
+merges it into the shipped file offline and gives the same bytes. A new
+catalogue entry needs a line in the overlay, or the test
+`catalogue-german-own.test.ts` fails with its id.
 
 Hosts tested on 2026-11-18, both answered 200 through the proxy:
 

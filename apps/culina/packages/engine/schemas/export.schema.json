@@ -14,7 +14,7 @@
       "const": "culina-export"
     },
     "formatVersion": {
-      "const": 1
+      "const": 3
     },
     "seedVersion": {
       "description": "Version of the seed data the exported ids refer to.",
@@ -49,12 +49,6 @@
         "$ref": "dish.schema.json"
       }
     },
-    "stock": {
-      "type": "array",
-      "items": {
-        "$ref": "stock.schema.json"
-      }
-    },
     "affinities": {
       "type": "array",
       "items": {
@@ -65,6 +59,12 @@
       "type": "array",
       "items": {
         "$ref": "tasting.schema.json"
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "$ref": "skill.schema.json"
       }
     }
   }

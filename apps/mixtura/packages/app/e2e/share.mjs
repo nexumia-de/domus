@@ -11,6 +11,7 @@ import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { readSpaces, readStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const [width = 1200, height = 800] = args.filter((a) => /^\d+$/.test(a)).map(Number);
@@ -37,7 +38,7 @@ const newPage = async (permissions = []) => {
 const open = async (page, address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const dump = (page) =>
   page.evaluate(
@@ -47,7 +48,7 @@ const dump = (page) =>
         request.onerror = () => rej(request.error);
         request.onsuccess = () => {
           const db = request.result;
-          const names = ['specs', 'ingredients', 'places', 'stock', 'templates'];
+          const names = ['specs', 'ingredients', 'templates'];
           const tx = db.transaction(names);
           const out = {};
           let left = names.length;
@@ -244,25 +245,28 @@ expect(
   after.ingredients.length === 1 && after.ingredients[0].id === custom.id,
   'the custom ingredient came along, the unused ones did not',
 );
+const spacesAfter = await readSpaces(receiver);
 expect(
-  after.stock.length === 0 && after.places.length === 1,
-  'no stock, and no place was made or changed',
+  (await readStock(receiver)).length === 0 &&
+    spacesAfter.length <= 1 &&
+    spacesAfter.every((s) => s.name === 'Home' && s.storage.type === 'device'),
+  'no stock came along, and no space beside the one the app makes',
 );
 await receiver.getByRole('link', { name: /^Family/ }).waitFor();
 await shot(receiver, 'added');
 // Undo is offered as for a file import.
 expect(
-  (await receiver.locator('.toast').innerText()).includes('Imported'),
+  (await receiver.locator('.fr-toast').innerText()).includes('Imported'),
   'the toast says what was added',
 );
 expect(
-  (await receiver.locator('.toast button', { hasText: 'Undo' }).count()) === 1,
+  (await receiver.locator('.fr-toast button', { hasText: 'Undo' }).count()) === 1,
   'the toast offers Undo',
 );
 
 // Reload: the normal start, nothing applied twice.
 await receiver.reload({ waitUntil: 'load' });
-await receiver.locator('.pane h1:visible').last().waitFor();
+await receiver.locator('.fr-header h1').last().waitFor();
 expect(
   (await receiver.evaluate(() => location.hash)).startsWith('#/drinks'),
   'a reload after reading shows the normal start',
@@ -282,7 +286,7 @@ expect(
   'Add Drink is off when nothing would change',
 );
 await receiver.getByRole('button', { name: 'Close' }).click();
-await receiver.locator('.pane h1:visible').last().waitFor();
+await receiver.locator('.fr-header h1').last().waitFor();
 const again = await dump(receiver);
 expect(again.specs.length === 2 && again.ingredients.length === 1, 'nothing is duplicated');
 

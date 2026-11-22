@@ -5,12 +5,12 @@
     "de": "Nudeln kochen"
   },
   "watch": {
-    "en": "Bring the water to a rapid boil and add all the pasta at once.",
-    "de": "Das Wasser sprudelnd aufkochen und alle Nudeln auf einmal hineingeben."
+    "en": "Bring the water to a rapid boil, salt it and add all the pasta at once; the trade's rule is 10 g of salt and 1 litre of water for 100 g of pasta. Oil in the water is not needed.",
+    "de": "Das Wasser sprudelnd aufkochen, salzen und alle Nudeln auf einmal hineingeben; die Regel der Küche ist 10 g Salz und 1 Liter Wasser auf 100 g Nudeln. Öl im Wasser ist nicht nötig."
   },
   "why": {
-    "en": "Salt added after cooking does not season the pasta in the same way.",
-    "de": "Salz, das erst nach dem Kochen dazukommt, würzt die Nudeln nicht auf dieselbe Weise."
+    "en": "Salt added after cooking does not season the pasta in the same way. Oil floats on the water and does not keep the pasta apart.",
+    "de": "Salz, das erst nach dem Kochen dazukommt, würzt die Nudeln nicht auf dieselbe Weise. Öl schwimmt auf dem Wasser und hält die Nudeln nicht auseinander."
   },
   "level": "textbook",
   "sources": [
@@ -18,15 +18,34 @@
       "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "The water should be brought to a rapid boil, then all the pasta should be added at once."
     },
     {
       "title": "Fruits, Vegetables and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6.2 Purchasing, Storing and Cooking Pasta Products, section Boiling",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Adding salt to the pasta after it is cooked will not provide the same seasoning effect."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 4 Teigwaren - Nudeln und Strudel, 4.9 Nudeln kochen, p. 366",
+      "isbn": "9783805708388",
+      "sentence": "Das erreicht man, indem 10g Salz pro 100g Nudeln und 1000g Wasser verwendet werden."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - 4 Teigwaren - Nudeln und Strudel, 4.9 Nudeln kochen - Schaumbildung verhindern, p. 366",
+      "isbn": "9783805708388",
+      "sentence": "Öl gehört nicht in das Nudelwasser, sondern sollte für das Umschwenken nach dem Garen verwendet werden."
+    },
+    {
+      "title": "The Food Lab (J. Kenji López-Alt), W. W. Norton 2015, e-book",
+      "place": "chapter 7 TOMATO SAUCE, MACARONI, and the Science of Pasta, section SHOULD I ADD OIL TO MY PASTA WATER?",
+      "isbn": "9780393249866",
+      "level": "tested",
+      "sentence": "no matter how much oil you have your pasta behaves exactly the same way underneath."
     }
   ]
 }

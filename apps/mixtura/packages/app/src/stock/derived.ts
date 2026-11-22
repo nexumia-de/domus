@@ -17,7 +17,7 @@ import {
   type UnlockResult,
 } from '@mixtura/engine';
 import type { BrowseModel } from '../screens/browse/model';
-import type { StockRecords } from './state';
+import type { StockRecords } from './marks';
 
 export type Availability =
   | { kind: 'makeable' }

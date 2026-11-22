@@ -1,0 +1,123 @@
+{
+  "id": "part-amount-unknown",
+  "description": "A part covered by its whole with an amount on the line is there with the amount unknown: the whole's amount says nothing exact about the part's",
+  "inputs": {
+    "kind": "makeable",
+    "today": "2026-11-21",
+    "ingredients": [
+      {
+        "id": "fat"
+      },
+      {
+        "id": "butter",
+        "parentId": "fat"
+      },
+      {
+        "id": "salted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "unsalted-butter",
+        "parentId": "butter"
+      },
+      {
+        "id": "egg"
+      },
+      {
+        "id": "egg-whole",
+        "parentId": "egg",
+        "roles": ["egg"]
+      },
+      {
+        "id": "egg-whole-fresh",
+        "parentId": "egg-whole"
+      },
+      {
+        "id": "egg-yolk",
+        "parentId": "egg"
+      },
+      {
+        "id": "egg-yolk-dried",
+        "parentId": "egg-yolk"
+      },
+      {
+        "id": "egg-white",
+        "parentId": "egg"
+      },
+      {
+        "id": "flour",
+        "roles": ["flour"]
+      },
+      {
+        "id": "water",
+        "roles": ["water"]
+      }
+    ],
+    "components": [
+      {
+        "id": "mayo",
+        "name": "Mayo",
+        "lines": [
+          {
+            "ref": {
+              "kind": "ingredient",
+              "id": "egg-yolk"
+            },
+            "amount": {
+              "value": 2,
+              "unit": "count"
+            }
+          }
+        ],
+        "version": {
+          "family": "mayo",
+          "date": "2026-11-01"
+        }
+      }
+    ],
+    "stock": [
+      {
+        "id": "s1",
+        "ref": {
+          "kind": "ingredient",
+          "id": "egg-whole-fresh"
+        },
+        "amount": {
+          "value": 6,
+          "unit": "count"
+        }
+      }
+    ],
+    "parts": [
+      {
+        "whole": "egg-whole",
+        "parts": ["egg-yolk", "egg-white"]
+      }
+    ],
+    "options": {
+      "siblingSubstitution": false
+    }
+  },
+  "expected": {
+    "candidates": [
+      {
+        "id": "mayo",
+        "complete": true,
+        "lines": [
+          {
+            "status": "have-amount-unknown",
+            "items": ["s1"],
+            "through": {
+              "rule": "part",
+              "asked": "egg-yolk",
+              "inStock": "egg-whole-fresh",
+              "itemId": "s1"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is a comparison of ids in the ingredient tree and of stored fields; ingredients, amounts and recipes are made up and no kitchen figure is involved."
+}

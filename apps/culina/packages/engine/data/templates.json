@@ -4,6 +4,13 @@
     "name": "Bread dough, ratio",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Bread dough (confirmed, book p. 17); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -21,6 +28,13 @@
     "name": "Pasta dough",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Pasta dough (confirmed, book p. 17); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -38,6 +52,13 @@
     "name": "Pie dough",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Pie dough (confirmed, book p. 17 and page); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -58,6 +79,13 @@
     "name": "Cookie dough",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Cookie dough (confirmed, book PT36 and p. 17); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -78,6 +106,12 @@
     "name": "Pound cake",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Pound cake (confirmed, book PT54); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -103,6 +137,12 @@
     "name": "Vinaigrette",
     "anchor": "oil",
     "source": "docs/ratios.md#ratios-by-weight, row Vinaigrette (confirmed, book PT140); Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio"
+      }
+    ],
     "parts": [
       {
         "role": "oil",
@@ -119,6 +159,13 @@
     "name": "Roux",
     "anchor": "flour",
     "source": "docs/ratios.md#ratios-by-weight, row Roux (corrected, book p. 17 and PT94), 3 flour : 2 clarified butter; Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -135,6 +182,13 @@
     "id": "roux-whole-butter",
     "name": "Roux with whole butter",
     "source": "docs/ratios.md#ratios-by-weight, row Roux (corrected, book p. 17 and PT94), 1 : 1 with whole butter for small amounts; Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio",
+        "page": "17"
+      }
+    ],
     "parentId": "roux",
     "changes": [
       {
@@ -155,6 +209,12 @@
     "name": "Free-standing custard",
     "anchor": "egg",
     "source": "docs/ratios.md#ratios-by-weight, row Custard (confirmed, book PT253), free-standing custard; Ruhlman, Ratio",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio"
+      }
+    ],
     "parts": [
       {
         "role": "liquid",
@@ -170,6 +230,17 @@
     "id": "bread-dough-bakers-percent",
     "name": "Bread dough, baker's percentages",
     "source": "docs/ratios.md#ratios-by-weight, row Bread dough note (book PT14: 100 % flour, 60 % water, 3 % fresh yeast, 2 % salt); docs/ratios.md#bakers-percentages, row Bread salt (confirmed, book p. 43, range 1.8-2 %); Ruhlman, Ratio; Hamelman, Bread",
+    "references": [
+      {
+        "author": "Michael Ruhlman",
+        "title": "Ratio"
+      },
+      {
+        "author": "Jeffrey Hamelman",
+        "title": "Bread",
+        "page": "43"
+      }
+    ],
     "parentId": "bread-dough-ratio",
     "changes": [
       {
@@ -204,6 +275,12 @@
     "name": "Neapolitan pizza dough",
     "anchor": "flour",
     "source": "docs/ratios.md#bakers-percentages, rows Pizza hydration (corrected, page: 1000 / 1800 = 55.6 %) and Pizza salt (page: 2.8-3.1 %); Regulation (EU) 97/2010, TSG Pizza Napoletana",
+    "references": [
+      {
+        "author": "European Commission",
+        "title": "Regulation (EU) No 97/2010, Pizza Napoletana (TSG)"
+      }
+    ],
     "parts": [
       {
         "role": "flour",
@@ -229,6 +306,13 @@
     "name": "Ciabatta with stiff biga",
     "anchor": "flour",
     "source": "docs/ratios.md#bakers-percentages, row Ciabatta hydration (corrected, book: water 73 %, salt 2 %); Hamelman, Bread, p. 93",
+    "references": [
+      {
+        "author": "Jeffrey Hamelman",
+        "title": "Bread",
+        "page": "93"
+      }
+    ],
     "parts": [
       {
         "role": "flour",

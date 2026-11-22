@@ -8,6 +8,11 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 
 # Your own recipe book, a finder from what is there, and what stays outside
 
+**Note of 2026-11-21:** the finder of point 3 no longer looks at own
+dishes alone. Own and shipped dishes are one list with one filter, and the
+finder uses that filter ([one dish list](one-dish-list.md)). The rest of
+this record stands.
+
 ## Context
 
 The rule "Not a recipe manager" was written before the notebook existed.

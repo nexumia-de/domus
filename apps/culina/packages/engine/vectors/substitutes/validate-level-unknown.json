@@ -1,0 +1,38 @@
+{
+  "id": "validate-level-unknown",
+  "description": "A substitute with a level that is not one of the five words is refused",
+  "inputs": {
+    "kind": "substitute_validate",
+    "substitute": {
+      "id": "thicken-a",
+      "from": "starch-a",
+      "to": "starch-b",
+      "factor": 0.5,
+      "changes": {
+        "en": "Invented effect for a test vector.",
+        "de": "Erfundene Wirkung für einen Testvektor."
+      },
+      "level": "folklore",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "Invented sentence for a test vector."
+        }
+      ]
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ingredients, factors and sources; no real recipe and no kitchen figure is involved.",
+  "error_code": "invalid",
+  "error_detail": {
+    "findings": [
+      {
+        "code": "unknown-level",
+        "path": "level",
+        "value": "folklore"
+      }
+    ]
+  }
+}

@@ -12,6 +12,7 @@ import { strings } from '../../strings';
 import { bareSelect, button, mark, textField } from '../editor/form-bits';
 import { storeText } from '../editor/store-text';
 import { removeWithUndo } from './stock-screen';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.stock;
 
@@ -26,11 +27,7 @@ export const useSome = (
   const box = el('section', 'stock-use');
   const inStock = el('p', 'note-quiet', t.useHint(amountText(item.amount)));
   const used = textField(t.useLabel, '', true);
-  const unit = bareSelect(
-    t.unitLabel,
-    AMOUNT_UNITS.map((u) => ({ value: u, label: u })),
-    item.amount.unit,
-  );
+  const unit = bareSelect(t.unitLabel, unitOptions(AMOUNT_UNITS), item.amount.unit);
   const row = el('div', 'line-amount');
   row.append(used.wrap, unit);
   const status = el('p', 'hint');

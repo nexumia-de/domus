@@ -1,0 +1,78 @@
+{
+  "id": "sealed-aad",
+  "kind": "sealed-aad",
+  "description": "sealedAad: materia-sync/2/<space>/<collection>, tying a file to its place; null (how this file writes undefined) when the space is empty or the collection is empty or breaks the name rule.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "plain",
+      "input": {
+        "space": "s1",
+        "collection": "stock"
+      },
+      "expected": {
+        "aad": "materia-sync/2/s1/stock"
+      }
+    },
+    {
+      "name": "a long space id and a hyphenated collection",
+      "input": {
+        "space": "Ab3_-xYz0123456789",
+        "collection": "shopping-list"
+      },
+      "expected": {
+        "aad": "materia-sync/2/Ab3_-xYz0123456789/shopping-list"
+      }
+    },
+    {
+      "name": "empty space",
+      "input": {
+        "space": "",
+        "collection": "stock"
+      },
+      "expected": {
+        "aad": null
+      }
+    },
+    {
+      "name": "empty collection",
+      "input": {
+        "space": "s1",
+        "collection": ""
+      },
+      "expected": {
+        "aad": null
+      }
+    },
+    {
+      "name": "collection with a capital",
+      "input": {
+        "space": "s1",
+        "collection": "Stock"
+      },
+      "expected": {
+        "aad": null
+      }
+    },
+    {
+      "name": "collection with a slash",
+      "input": {
+        "space": "s1",
+        "collection": "a/b"
+      },
+      "expected": {
+        "aad": null
+      }
+    },
+    {
+      "name": "collection starting with a digit",
+      "input": {
+        "space": "s1",
+        "collection": "1st"
+      },
+      "expected": {
+        "aad": null
+      }
+    }
+  ]
+}

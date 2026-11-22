@@ -3,7 +3,7 @@
 import { contentResult, found } from '../content/types';
 import type { ContentFinding, ContentResult } from '../content/types';
 import { isI18nText } from '../text/i18n';
-import { MAX_SENTENCE_WORDS } from '../techniques/validate';
+import { levelFindings, MAX_SENTENCE_WORDS } from '../techniques/validate';
 import type { Substitute } from './types';
 
 /** What a check may know besides the substitute itself. */
@@ -26,6 +26,7 @@ function findings(s: Substitute, checks: SubstituteChecks): ContentFinding[] {
       out.push(found('unknown-ingredient', field, s[field]));
     }
   }
+  out.push(...levelFindings(s.level));
   if (s.sources.length === 0) out.push(found('no-source', 'sources'));
   s.sources.forEach((source, i) => {
     const n = words(source.sentence);

@@ -127,33 +127,19 @@ others return result objects as documented in their module files
 | `expiry` | `(input: ExpiryInput): Expiry` | Where a made batch stands against the user's shelf life: `fresh`, `use-soon`, `past` or `unknown`, with the use-by date and the days left; dates and today are arguments. |
 | `limitingShelfLife` | `(tree: IngredientTree, specs: SpecLookup, id: string): LimitingShelfLife` | The shortest shelf life among a prepared ingredient and the prepared ingredients inside it, with the ingredient that sets it. |
 | `USE_SOON_DAYS` | `2` | The window of `use-soon` in days; an assumption, unverified. |
-| `buildDocument` | `(doc: PlaceDocument): string` | The stable text of a place document: fixed key order, records and entities sorted by key. |
-| `buildEnvelope` | `(envelope: Envelope): string` | The stable text of an encrypted sync file, fields in a fixed order. |
-| `combinePlaces` | `<V>(byPlace: Record<string, readonly SyncRecord<V>[]>, ticked: readonly string[]): CombinedEntry<V>[]` | The union of the ticked places: one entry per key with its holders; tombstones and unticked places do not count. |
-| `DOCUMENT_FORMAT` | `'materia-place'` | The format name of a place document. |
-| `DOCUMENT_VERSION` | `1` | The version of the place document format. |
-| `ENVELOPE_FORMAT` | `'materia-sync'` | The format name of an encrypted sync file. |
-| `ENVELOPE_VERSION` | `1` | The version of the sync envelope format. |
-| `envelopeAad` | `(envelope: Pick<Envelope, 'format'                                                                                                              | 'version'>): string` | The additional data the cipher binds to the ciphertext: `materia-sync/1`. |
-| `mergePlace` | `(local: Place, remote: Place): { place: Place; changedLocal: boolean; changedRemote: boolean }` | Merges two copies of one place; the newest name wins. |
-| `mergeRecords` | `<V>(local: readonly SyncRecord<V>[], remote: readonly SyncRecord<V>[]): MergeResult<V>` | Merges local and remote records; the same result when swapped, tombstones are never removed. |
-| `parseDocument` | `(json: string): { ok: true; document: PlaceDocument } \| { ok: false; error: DocumentError }` | Parses and validates the plain text of a place document. |
-| `parseEnvelope` | `(json: string): { ok: true; envelope: Envelope } \| { ok: false; error: EnvelopeError }` | Parses and validates the stored text of an encrypted sync file. |
-| `planSync` | `<V, E>(local: LocalPlaceState<V, E>, remote: PlaceDocument<V, E> \| undefined): SyncPlan<V, E> \| { error: 'other-place' }` | Merges the local state with the remote document and says what to write. |
 | `buildExport` | `(snapshot: Snapshot, meta: { exportedAt: string; seedVersion?: string }): ExportFile` | The export object for the user's records, sorted by key; the instant comes from the host. |
 | `buildShareFile` | `(snapshot: Snapshot, specId: string, exportedAt: string): ShareResult` | The small export file for one drink of the user's own: the version, its own parent versions, its own template, the user ingredients its lines name (prepared ones with what they need); `{ ok: false, failure: { kind: 'unknown-spec', specId } }` for an id that is no user spec. |
 | `countsOf` | `(snapshot: Snapshot): Counts` | How many records of each kind a snapshot holds. |
 | `exportFileName` | `(exportedAt: string): string` | `mixtura-backup-<date>.json` from the exported instant. |
-| `formatMigrations` | `readonly FormatMigration[]` | The pure steps from export format n to n + 1; the first moves the stock of a version 1 file into one place. |
+| `formatMigrations` | `readonly FormatMigration[]` | The pure steps from export format n to n + 1; the first hands the file on, the second takes `places` and `stock` out of it. |
 | `FORMAT_VERSION` | `number` | The export format version this build writes and reads. |
 | `isNoOp` | `(plan: Plan): boolean` | True when a plan adds, replaces and removes nothing. |
 | `isUserId` | `(id: string): boolean` | True for `u-` and a lower-case UUID; seed ids never match. |
-| `KINDS` | `readonly ['ingredients', 'templates', 'specs', 'places', 'stock', 'affinities']` | The six kinds of records in an export, in file order. |
+| `KINDS` | `readonly ['ingredients', 'templates', 'specs', 'affinities']` | The four kinds of records in an export, in file order. |
 | `MAX_FILE_BYTES` | `number` | Largest export file the importer reads (10 MiB). |
-| `migrateFile` | `(file: Record<string, unknown>, from: number, to?: number, list?: readonly FormatMigration[], input?: MigrationInput): Record<string, unknown>` | Upgrades an older export file step by step; throws when a step is missing. |
+| `migrateFile` | `(file: Record<string, unknown>, from: number, to?: number, list?: readonly FormatMigration[]): Record<string, unknown>` | Upgrades an older export file step by step; throws when a step is missing. |
 | `parseExportFile` | `(text: string, bytes: number, schemaProblems: SchemaCheck, options?: ExportParseOptions): ParseResult` | Reads an export file: size, forbidden keys, version, migration, the host's schema check, user ids, repeats, riff loops. |
 | `planImport` | `(current: Snapshot, incoming: Snapshot, mode: ImportMode): Plan` | What a merge or replace would do: counts per kind, records to write and to delete. |
-| `stockKey` | `(record: { placeId: string; ingredientId: string }): string` | The key of a stock record: place and ingredient. |
 | `totalCount` | `(counts: Counts): number` | The sum of a counts object over all kinds. |
 
 ## Drink-specific (`src/drink.ts`)
@@ -183,17 +169,20 @@ others return result objects as documented in their module files
 | `scaleLines`         | `(lines: readonly BalanceLine[], servings: number, options?: ScaleOptions): { ok: true; value: BalanceLine[]; } \| { ok: false; errors: BatchError[]; }` | Scales all lines to a number of servings.                                                                                                                                                                     |
 | `shelfLife`          | `(tree: IngredientTree, ids: readonly string[]): ShelfLife`                                                                                              | The shelf life of a batch: the shortest of its parts.                                                                                                                                                         |
 
-### Sync names re-exported from materia
+### Sync: nothing re-exported
 
-`buildDocument`, `parseDocument`, `buildEnvelope`, `parseEnvelope`,
-`envelopeAad`, `mergeRecords`, `mergePlace`, `combinePlaces` and `planSync`
-with the format constants are the general parts of stock sync
-([decision](decisions/stock-sync.md)); their types are re-exported by
-name, and so are materia's `StorageAdapter`, `ReadResult`, `WriteResult` and
-`AdapterFailure` (the WebDAV adapter implements the interface,
-[sync backends](sync-backends.md)). The app reaches them only through `@mixtura/engine`; the Web Crypto
-cipher that fills materia's `Cipher` port is app code
-([sync encryption](sync-encryption.md)).
+The engine exports no sync function. Until 2026-11-20 it re-exported
+materia's `buildDocument`, `parseDocument`, `buildEnvelope`,
+`parseEnvelope`, `envelopeAad`, `mergeRecords`, `mergePlace`,
+`combinePlaces` and `planSync` with the `DOCUMENT_*` and `ENVELOPE_*`
+constants, and had `stockKey` of its own, for Mixtura's own stock sync.
+That sync is removed ([stock in spaces](decisions/stock-in-spaces.md)):
+the cycle, the cipher and the adapters are in the host package
+`@nexumia-de/hospes` ([spaces](../../../packages/host/docs/spaces.md),
+[WebDAV adapter](../../../packages/host/docs/webdav.md)), which the app
+imports directly ([store](store.md#sync)). Of the sync types only
+`SyncRecord` is still re-exported by name, for the rows the app reads
+from a space's collection.
 
 ## Export and import
 
@@ -201,7 +190,8 @@ Part of the general model (`src/exchange/`, [export format](export-format.md)).
 The file's shape, building the export object, reading and validating a
 file, format migrations and the merge or replace plan are pure and live
 here; reading the database, applying a plan in one transaction, the
-backup, Undo and file handling stay in the app ([store](store.md#exchange)).
+backup, Undo and file handling stay in the app
+([export format](export-format.md#one-transaction-import-backup-undo)).
 
 - `parseExportFile` takes the schema check as an argument
   (`SchemaCheck`: the parsed file in, one problem line per violation out).
@@ -211,11 +201,11 @@ backup, Undo and file handling stay in the app ([store](store.md#exchange)).
   version, migration, user ids, repeated records and version slots, riff
   loops) is the engine's.
 - Refusals are values: `too-large`, `unreadable`, `not-mixtura`, `newer`,
-  `needs-place` (a version 1 file and no `migrationInput.placeForOldStock`),
-  `invalid`; nothing throws for a bad file.
-- `planImport` compares records by id (stock by `placeId` and
-  `ingredientId`) and records as equal up to key order. A merge replaces
-  a spec, place or stock record only by one with a newer `updatedAt`. The order of two `updatedAt` instants
+  `invalid`; nothing throws for a bad file. A file of version 1 or 2 is
+  read without its stock and places; the result names the version it was
+  migrated from.
+- `planImport` compares records by id and records as equal up to key
+  order. A merge replaces a spec only by one with a newer `updatedAt`. The order of two `updatedAt` instants
   is worked out from the fixed UTC form of the schema, without a `Date`.
 - `buildShareFile` builds the file behind a share link from the user's own
   records only (the `u-` id test of `isUserId`; seed parents, templates

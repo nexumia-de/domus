@@ -3,6 +3,7 @@ import { resolveTemplate } from '@culina/engine';
 import type { RatioTemplate } from '@culina/engine';
 import { groupFamilies } from '../ratios/families';
 import { shortRatio } from '../ratios/format';
+import { templateName } from '../ratios/names';
 import { filterTemplates } from '../ratios/search';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
@@ -18,7 +19,7 @@ const row = (templates: readonly RatioTemplate[], template: RatioTemplate, curre
   const a = el('a', 'ratio-row row-link');
   a.href = hashFor('ratios', template.id);
   if (template.id === current) a.setAttribute('aria-current', 'page');
-  a.append(el('span', 'ratio-name', template.name));
+  a.append(el('span', 'ratio-name', templateName(template)));
   const resolved = resolveTemplate(templates, template.id);
   if (resolved.ok) {
     const short = shortRatio(resolved.template.parts);

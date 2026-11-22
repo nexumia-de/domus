@@ -12,13 +12,18 @@ sources:
     title: Culina, decision "Sync in three units, after stock" (a place is the same place in Mixtura and Culina)
     url: ../../culina/docs/decisions/sync.md
   - id: mixtura-backends
-    title: Mixtura, docs/sync-backends.md (WebDAV adapter, CORS, user setup with Docker)
-    url: ../../mixtura/docs/sync-backends.md
+    title: "Host package: the WebDAV adapter (Mixtura's own sync, where it came from, was removed on 2026-11-20)"
+    url: ../../../packages/host/docs/webdav.md
 ---
 
 # How Emptio is built
 
-A plan, not yet a specification: nothing here is built. Why the app
+A plan of 2026-11-18. Since 2026-11-20 goals 1 and 2 are built, and
+where they differ from this plan the [behaviour](behaviour.md) and the
+[data model](data-model.md) say what holds: places are spaces, the list
+is two collections of a space and not a file of its own, storage and
+invites are the Household app's, and the app is served from
+`domus.nexumia.de/emptio/`. Why the app
 exists is in [existing tools](existing-tools.md); the route through a
 store is in [store layouts](store-layouts.md); the order of work is in
 the [roadmap](roadmap.md).

@@ -280,6 +280,7 @@ describe('the committed snapshot and the shipped file', () => {
     for (const entry of shipped.ingredients) {
       const de = entry.names?.de;
       if (de === undefined || entry.id.startsWith('fdc-group-')) continue;
+      if (de.source.startsWith('Own translation')) continue; // the own overlay, tested apart
       count += 1;
       const item = /Wikidata (Q\d+)/.exec(de.source)?.[1] ?? '';
       expect(byItem.get(item)?.de, entry.id).toBe(de.name);
@@ -291,7 +292,7 @@ describe('the committed snapshot and the shipped file', () => {
   test('every parent name is the name of all the foods below it', () => {
     const names = new Map(shipped.ingredients.map((e) => [e.id, e]));
     for (const group of shipped.ingredients.filter(
-      (e) => e.id.startsWith('fdc-group-') && e.names,
+      (e) => e.id.startsWith('fdc-group-') && e.names && !e.names.de.source.startsWith('Own'),
     )) {
       expect(group.names?.de.source, group.id).toContain('Derived by tools/catalogue/build.mjs');
       expect(names.has(group.id)).toBe(true);

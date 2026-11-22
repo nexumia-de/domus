@@ -1,0 +1,464 @@
+.choice-link,
+.plain-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+}
+
+/* Fields and buttons */
+
+.field {
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+textarea.field {
+  resize: vertical;
+}
+
+button {
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.form-field {
+  display: block;
+  margin-bottom: var(--sp-3);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-4) 0;
+}
+
+.notice {
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+}
+
+.notice-error {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+/* The list */
+
+.space-select {
+  max-width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--fs-sm);
+}
+
+/* The urgencies shown and the order: one row, no wrapping at 360 px. */
+.list-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.filter-chip {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-width: 0;
+  min-height: var(--target);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.filter-chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.filter-chip.chip-now[aria-pressed='true'] {
+  border-color: var(--now);
+  background: var(--now-soft);
+}
+
+.filter-count {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+}
+
+.sort-pick {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+  border-radius: 50%;
+  color: var(--text);
+}
+
+.sort-pick:hover {
+  background: var(--surface-2);
+}
+
+.sort-pick:has(select:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* The native picker is the control; the drawing is what the eye sees. */
+.sort-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.more-line {
+  margin: var(--sp-3) 0;
+}
+
+.entry-prio {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.prio-now {
+  color: var(--now);
+}
+
+.add-row {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.add-row .field {
+  flex: 1;
+  min-width: 0;
+}
+
+.add-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.add-more .chips {
+  flex: none;
+  max-width: 100%;
+}
+
+.add-more .field {
+  flex: 1;
+  min-width: 10rem;
+}
+
+/* One row that scrolls sideways, so that the dock keeps its height whatever is offered. */
+.suggestions {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+}
+
+.suggestion {
+  flex: none;
+}
+
+.suggestions:not(:empty) {
+  margin-bottom: var(--sp-2);
+}
+
+.suggestion {
+  border-color: var(--divider);
+  background: var(--surface-2);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chips legend:not(.visually-hidden) {
+  float: left;
+  width: 100%;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  position: relative;
+  min-height: var(--target);
+  padding: 0 var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+/* The chip is the control: its ground, border and weight say which one is chosen. */
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.chip-now:has(input:checked) {
+  border-color: var(--now);
+  background: var(--now-soft);
+}
+
+.chip:has(input:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.step-title {
+  margin-top: var(--sp-4);
+}
+
+.step-now .step-title {
+  color: var(--now);
+}
+
+.step-sometime .step-title,
+.step-bought .step-title {
+  color: var(--sometime);
+}
+
+.category-title {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.entries {
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.entry {
+  display: flex;
+  align-items: stretch;
+}
+
+.entry + .entry {
+  border-top: 1px solid var(--divider);
+}
+
+.tick {
+  /* Drawn by hand, so the whole 44 px square is the control and takes the tap. */
+  appearance: none;
+  display: grid;
+  flex: none;
+  place-content: center;
+  width: var(--target);
+  min-height: var(--target);
+  margin: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+}
+
+.tick::before {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  content: '';
+}
+
+.tick:checked::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  /* The mark is cut out of the filled box, so it has the colour of the row behind it. */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    18% 52%,
+    41% 76%,
+    84% 30%,
+    73% 20%,
+    41% 55%,
+    29% 42%,
+    18% 52%
+  );
+}
+
+.entry-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) 0;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.entry-amount {
+  margin-left: var(--sp-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.entry-note {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.entry-bought .entry-name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.bought-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+
+.bought-head .step-title {
+  margin: 0;
+}
+
+.empty {
+  padding: var(--sp-5) 0;
+  text-align: center;
+}
+
+/* Categories and settings */
+
+.category {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.category-hidden .category-name {
+  color: var(--text-muted);
+}
+
+.category-actions,
+.category-rename {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.category-rename {
+  width: 100%;
+}
+
+.category-rename .field {
+  flex: 1;
+  min-width: 10rem;
+}
+
+.categories {
+  margin-bottom: var(--sp-5);
+}
+
+.tag {
+  margin-left: var(--sp-2);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+}
+
+.choice {
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.choice-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--target);
+  cursor: pointer;
+}
+
+.choice-name {
+  display: block;
+  font-weight: 600;
+}
+
+.choice-status {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}

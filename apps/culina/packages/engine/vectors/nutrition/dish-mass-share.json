@@ -93,7 +93,21 @@
         }
       ]
     },
-    "notReported": []
+    "notReported": [],
+    "shown": {
+      "figures": false,
+      "why": "left-out-matters",
+      "lines": [
+        {
+          "index": 1,
+          "ref": {
+            "kind": "ingredient",
+            "id": "inv-mystery"
+          },
+          "reason": "no-nutrition"
+        }
+      ]
+    }
   },
   "tolerance": 1e-9,
   "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."

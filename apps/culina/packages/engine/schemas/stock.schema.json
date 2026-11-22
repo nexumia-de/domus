@@ -28,6 +28,10 @@
     "useBy": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
     },
+    "storage": {
+      "description": "Where the item lies. With it, the recorded shelf life of that place is the one that counts.",
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/storage"
+    },
     "note": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
     },

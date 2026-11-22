@@ -4,8 +4,8 @@
   "to": "fdc-group-wheat-flour",
   "factor": 2,
   "changes": {
-    "en": "About twice the amount is needed. The sauce looks slightly matt instead of glossy, because flour contains protein.",
-    "de": "Etwa die doppelte Menge wird gebraucht. Die Sauce wirkt leicht matt statt glänzend, weil Mehl Eiweiß enthält."
+    "en": "About one and a half times to twice the amount is needed; the sources differ. The sauce looks slightly matt instead of glossy, because flour contains protein.",
+    "de": "Etwa die anderthalbfache bis doppelte Menge wird gebraucht; die Quellen nennen Verschiedenes. Die Sauce wirkt leicht matt statt glänzend, weil Mehl Eiweiß enthält."
   },
   "level": "textbook",
   "sources": [
@@ -13,15 +13,27 @@
       "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
       "place": "chapter 1.3 Sauces and Thickening Agents, section Cornstarch",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "One unit of cornstarch thickens about twice as much liquid as an equal unit of flour."
     },
     {
       "title": "Flavors of the Saucier: Stocks, Sauces and Soups (Zeringue and Thibodeaux)",
       "place": "chapter 1.3 Sauces and Thickening Agents, section Starches",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Cornstarch, arrowroot, and potato starch are almost pure starches and produce shiny sauces, whereas flour contains protein, which gives flour-thickened sauces a slightly mat appearance."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Different Starches and Their Qualities - Wheat Flour, p. 614",
+      "isbn": "9780340831496",
+      "sentence": "A common rule of thumb is to use 1.5 times as much flour as starch."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Sauces, Different Starches and Their Qualities - Wheat Flour, p. 614",
+      "isbn": "9780340831496",
+      "sentence": "The suspended particles of gluten protein make flour-based sauces especially opaque and give their surface a matte appearance"
     }
   ]
 }

@@ -10,6 +10,7 @@ import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { seedStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -40,7 +41,7 @@ const shot = (name) =>
 const open = async (address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const sheetClosed = () => page.waitForFunction(() => !location.hash.includes('sheet='));
 const dump = () =>
@@ -66,35 +67,8 @@ const dump = () =>
         };
       }),
   );
-const setStock = (ids) =>
-  page.evaluate(
-    (list) =>
-      new Promise((res) => {
-        const r = indexedDB.open('mixtura');
-        r.onsuccess = () => {
-          // Stock is kept per place (docs/store.md): the rows go into the default place.
-          const tx = r.result.transaction(['stock', 'places'], 'readwrite');
-          const s = tx.objectStore('stock');
-          s.clear();
-          const places = tx.objectStore('places').getAll();
-          places.onsuccess = () => {
-            for (const id of list) {
-              s.put({
-                placeId: places.result[0].id,
-                ingredientId: id,
-                updatedAt: '2026-11-18T10:00:00.000Z',
-                present: true,
-              });
-            }
-          };
-          tx.oncomplete = () => {
-            r.result.close();
-            res();
-          };
-        };
-      }),
-    ids,
-  );
+// Stock is kept per space: the rows go into the space the app made.
+const setStock = (ids) => seedStock(page, ids, { replace: true });
 const cards = () => page.locator('[data-line-card]');
 const addLine = async (search, amount) => {
   await page.getByRole('button', { name: 'Add Ingredient' }).click();
@@ -201,7 +175,7 @@ await picker.locator('[data-offer="bourbon-whiskey"]').click();
 await picker.waitFor({ state: 'detached' });
 expect((await page.locator('[data-substitute]').count()) === 1, 'no duplicate substitute');
 expect(
-  (await page.locator('.toast, [role="status"]').allInnerTexts()).join(' ').includes('already'),
+  (await page.locator('.fr-toast, [role="status"]').allInnerTexts()).join(' ').includes('already'),
   'it says so',
 );
 

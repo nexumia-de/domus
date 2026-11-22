@@ -85,26 +85,40 @@ describe('the dish view', () => {
     expect(lines.map((l) => l.amount)).toEqual(['100 g', '100 ml to 150 ml', undefined]);
     expect(must(shown(8).components[0]).lines[0]?.amount).toBe('400 g');
   });
-  test('keeps a line without an amount, with the words for it, and does not say it twice', () => {
+  test('keeps a line without an amount; the words for it only where the source says them', () => {
     const salt = must(shown(2).components[0]).lines[2];
     expect(salt).toMatchObject({
       name: 'name of fdc-173468',
-      unmeasured: 'to taste',
+      amountWord: 'to taste',
       settled: false,
     });
     expect(salt?.note).toBeUndefined();
+    expect(salt?.amount).toBeUndefined();
+    // Without `amountWord` a line shows its name alone: no "to taste" is made up.
+    const bare = structuredClone(PAN_DISH);
+    const line = must(bare.components?.[0]).lines[2] as { amountWord?: string };
+    delete line.amountWord;
+    const view = dishView(bare, 2, 'en', NAMES);
+    expect(view.ok && view.view.components[0]?.lines[2]?.amountWord).toBeUndefined();
+  });
+  test('keeps the remarks about the source apart from the line', () => {
+    const view = shown(2);
+    const salt = must(view.components[0]).lines[2];
+    expect(salt?.sourceNote).toBe('Invented example: the source says to taste.');
+    expect(view.sourceRemarks.lines).toContainEqual({
+      name: 'name of fdc-173468',
+      remark: 'Invented example: the source says to taste.',
+    });
+    expect(view.sourceRemarks.lines).toContainEqual({
+      name: 'name of fdc-173410',
+      original: '2 Example-measures',
+    });
   });
   test('marks what was settled and keeps the source wording', () => {
     const lines = must(shown(2).components[0]).lines;
     expect(lines[1]?.settled).toBe(true);
     expect(lines[0]?.original).toBe('2 Example-measures');
-    expect(shown(2).settled).toEqual([
-      {
-        what: 'Amount of oil',
-        value: '200 to 300 ml',
-        reason: 'Invented example: the source says some.',
-      },
-    ]);
+    expect(shown(2)).not.toHaveProperty('settled');
   });
   test('gives the persons, the source, the check and the content language', () => {
     const view = shown(2, 'de');
@@ -113,11 +127,11 @@ describe('the dish view', () => {
     expect(view.persons).toEqual({ value: 4, basis: 'stated' });
     expect(view.source.author).toBe('Example Author');
     expect(view.check.method).toBe('second-reader');
-    expect(must(view.components[0]).lines[2]?.unmeasured).toBe('to taste');
+    expect(must(view.components[0]).lines[2]?.amountWord).toBe('to taste');
   });
   test('names a component slot by its component and a wanted line by its name', () => {
     expect(shown(2).slots[0]?.name).toBe('Example sauce');
-    expect(shown(2).slots[0]?.unmeasured).toBeUndefined();
+    expect(shown(2).slots[0]?.amountWord).toBeUndefined();
     const second = dishView(SECOND_DISH, 2, 'en', NAMES);
     expect(second.ok && second.view.components[0]?.lines[0]?.name).toBe('Example broth stock');
   });
@@ -139,7 +153,7 @@ describe('the steps', () => {
     expect(all[0]?.lines.map((l) => l.amount)).toEqual(['100 g']);
     expect(all[1]?.temperature).toBe('170 to 180 °C');
     expect(all[1]?.lines.map((l) => l.amount)).toEqual(['100 ml to 150 ml']);
-    expect(all[2]?.lines[0]?.unmeasured).toBe('to taste');
+    expect(all[2]?.lines[0]?.amountWord).toBe('to taste');
   });
   test('show the technique note until the skill is learned, on any dish', () => {
     expect(steps().map((s) => s.note)).toEqual([true, false, false]);
@@ -195,7 +209,7 @@ describe('the routes of the classics', () => {
     expect(actionFromHash('#/classic/example-pan-dish')).toBeUndefined();
     expect(hashFor('classic', 'example-pan-dish', 'cook')).toBe('#/classic/example-pan-dish/cook');
     expect(hashFor('classics', 'de')).toBe('#/classics/de');
-    expect(navEntryFor('classics')).toBe('start');
-    expect(navEntryFor('classic')).toBe('start');
+    expect(navEntryFor('classics')).toBe('notebook');
+    expect(navEntryFor('classic')).toBe('notebook');
   });
 });

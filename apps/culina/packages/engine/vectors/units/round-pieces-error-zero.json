@@ -1,0 +1,11 @@
+{
+  "id": "round-pieces-error-zero",
+  "description": "No pieces is not a count to show",
+  "inputs": {
+    "kind": "round_pieces",
+    "count": 0
+  },
+  "error_code": "invalid-value",
+  "tolerance": 1e-9,
+  "source": "A count to show is finite and greater than 0."
+}

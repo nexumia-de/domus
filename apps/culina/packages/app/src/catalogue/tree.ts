@@ -2,7 +2,7 @@
 // Pure: the picker draws what these functions return. An entry whose parent is not in the file is
 // a root, so a file that is cut or out of date still lists everything.
 import type { IngredientRecord } from '../records';
-import { matchesAnyName } from '../shared/names';
+import { fold, matchesAnyName, searchableNames, startsWithAnyName } from '../shared/names';
 
 export interface CatalogueNode {
   entry: IngredientRecord;
@@ -74,6 +74,22 @@ export const searchTree = (
     return { entry: node.entry, hit, children, below };
   };
   return roots.flatMap((root) => visit(root) ?? []);
+};
+
+/**
+ * The top-level results in the order the picker offers them: an entry with a name that is the
+ * search text itself first ("Kartoffel" is the potato, not potato flour), then entries with a name
+ * that starts with it, then the rest; the file's order within each.
+ */
+export const rankFound = (found: readonly Found[], needle: string): Found[] => {
+  const text = fold(needle.trim());
+  const rank = (f: Found): number =>
+    f.hit && searchableNames(f.entry).some((n) => fold(n.name) === text)
+      ? 0
+      : startsWithAnyName(f.entry, needle.trim())
+        ? 1
+        : 2;
+  return [0, 1, 2].flatMap((r) => found.filter((f) => rank(f) === r));
 };
 
 /** The name without the parent's name in front: "white" for "Wheat flour, white" under "Wheat flour". */

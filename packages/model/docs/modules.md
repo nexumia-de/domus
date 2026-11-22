@@ -12,14 +12,14 @@ materia is the part of Mixtura's engine that knows no drink rule. It
 was moved here on 2026-11-18 so that Culina can use it without copying
 it. Everything is a pure function over plain data.
 
-| Folder (`src/`) | What it does                                                                                                                                                    |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ingredients/`  | The ingredient tree with levels, queries, cost, inherited properties, substitution classes, swap candidates, prepared ingredients with nesting and cycles       |
-| `templates/`    | Templates with role slots: lines to slots by role, ratios of measured slots against a reference role, ranking, variants by a class                              |
-| `specs/`        | Versions of a spec: diff of two versions, families of riffs, cycles, the summary of what a riff changed, renumbering of clashing version numbers                |
-| `stock/`        | What the stock allows: makeable specs with substitution, missing one, which ingredient or pair unlocks the most                                                 |
-| `shelf/`        | Whole-day calendar arithmetic, expiry states, the limiting shelf life of a prepared ingredient                                                                  |
-| `sync/`         | Pure parts of stock sync: record merge with tombstones, places and the combined view, place and unit documents, envelope, storage port, plans ([sync](sync.md)) |
+| Folder (`src/`) | What it does                                                                                                                                                                  |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ingredients/`  | The ingredient tree with levels, queries, cost, inherited properties, substitution classes, swap candidates, prepared ingredients with nesting and cycles                     |
+| `templates/`    | Templates with role slots: lines to slots by role, ratios of measured slots against a reference role, ranking, variants by a class                                            |
+| `specs/`        | Versions of a spec: diff of two versions, families of riffs, cycles, the summary of what a riff changed, renumbering of clashing version numbers                              |
+| `stock/`        | What the stock allows: makeable specs with substitution, missing one, which ingredient or pair unlocks the most                                                               |
+| `shelf/`        | Whole-day calendar arithmetic, expiry states, the limiting shelf life of a prepared ingredient                                                                                |
+| `sync/`         | Pure parts of sync: record merge with tombstones, the storage port, and for spaces the stamp, pruning, collection document and plan, sealed file and invite ([sync](sync.md)) |
 
 The folders import only each other; `src/index.ts` is the one public
 entry and the package's contract. `test/public-api.test.ts` pins its

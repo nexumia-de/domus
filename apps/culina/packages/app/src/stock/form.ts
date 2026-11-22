@@ -1,7 +1,7 @@
 // The detail form of one stock item as data: from the stored record to field texts, and from
 // field texts back to a record. The record is changed on a copy, so fields of another app stay;
 // a field left empty is removed from the copy.
-import type { Amount, FoodState, UnitId } from '@culina/engine';
+import type { Amount, FoodState, StoragePlace, UnitId } from '@culina/engine';
 import { AMOUNT_UNITS } from '../editor/units';
 import { parseEntry } from '../shared/parse';
 import type { StockRecord } from '../records';
@@ -10,6 +10,8 @@ export interface StockForm {
   amount: string;
   unit: UnitId;
   state: FoodState | '';
+  /** Where it lies; empty for not said. */
+  storage: StoragePlace | '';
   always: boolean;
   preparedOn: string;
   useBy: string;
@@ -20,6 +22,7 @@ export const formOf = (item: StockRecord): StockForm => ({
   amount: item.amount === undefined ? '' : String(item.amount.value),
   unit: item.amount?.unit ?? 'g',
   state: item.state ?? '',
+  storage: item.storage ?? '',
   always: item.always === true,
   preparedOn: item.preparedOn ?? '',
   useBy: item.useBy ?? '',
@@ -28,7 +31,7 @@ export const formOf = (item: StockRecord): StockForm => ({
 
 export type FormResult = { ok: true; record: StockRecord } | { ok: false; field: 'amount' };
 
-const DETAIL = new Set(['amount', 'state', 'always', 'preparedOn', 'useBy', 'note']);
+const DETAIL = new Set(['amount', 'state', 'storage', 'always', 'preparedOn', 'useBy', 'note']);
 
 /** The record with the form's values; nothing else of it is touched. */
 export const applyForm = (item: StockRecord, form: StockForm): FormResult => {
@@ -44,6 +47,7 @@ export const applyForm = (item: StockRecord, form: StockForm): FormResult => {
     ...Object.fromEntries(kept),
     ...(amount === undefined ? {} : { amount }),
     ...(form.state === '' ? {} : { state: form.state }),
+    ...(form.storage === '' ? {} : { storage: form.storage }),
     ...(form.always ? { always: true } : {}),
     ...(form.preparedOn === '' ? {} : { preparedOn: form.preparedOn }),
     ...(form.useBy === '' ? {} : { useBy: form.useBy }),

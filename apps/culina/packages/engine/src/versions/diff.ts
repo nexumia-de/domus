@@ -2,6 +2,7 @@
 // fields. Line matching comes from materia's `diffVersions`; what is compared (lines with
 // amounts and refs, yield, method, slots) is the kitchen part. Pure; the date is never read.
 import { diffVersions } from '../model';
+import { correctionText } from '../characters/correct';
 import type { DiffDomain, VersionLine, VersionSpec } from '../model';
 import type {
   DiffComponent,
@@ -116,7 +117,7 @@ export function diffComponentVersions(before: DiffComponent, after: DiffComponen
 
 /**
  * What changed from `before` to `after` in one dish: slots added, removed or changed, then
- * name, portions and note. Both must be versions of one family.
+ * name, portions, course, cuisine, the correction of the characters and note. Both must be versions of one family.
  */
 export function diffDishVersions(before: DiffDish, after: DiffDish): DiffResult {
   if (!sameFamily(before, after)) {
@@ -137,6 +138,9 @@ export function diffDishVersions(before: DiffDish, after: DiffDish): DiffResult 
   const fields: FieldReader<ReturnType<typeof spec>>[] = [
     ['name', read((d) => opt(d.name))],
     ['portions', read((d) => (d.portions === undefined ? undefined : String(d.portions)))],
+    ['course', read((d) => d.course)],
+    ['cuisine', read((d) => d.cuisine)],
+    ['characters', read((d) => correctionText(d.characters))],
     ['note', read((d) => opt(d.note))],
   ];
   return finish(run(spec(before), spec(after), fields));

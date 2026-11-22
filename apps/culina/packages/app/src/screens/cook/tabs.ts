@@ -1,5 +1,6 @@
-// The three views of Cook, as links at the top of each: what can I cook, use up first, what is there.
-// The current one is marked with aria-current, a bold label and a bar, not by colour alone.
+// The views at the top of Cook, which is "what the stock allows": what can I cook, use up first,
+// what is there. The current one is marked with aria-current, a bold label and a bar, not by
+// colour alone. A group, not a landmark: the page keeps its one navigation.
 import { hashFor, USE_UP } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -15,7 +16,6 @@ const VIEWS: readonly { view: CookView; hash: string; label: string }[] = [
 ];
 
 export const cookTabs = (current: CookView): HTMLElement => {
-  // A group, not a landmark: the page keeps its one navigation.
   const nav = el('div', 'cook-tabs');
   nav.setAttribute('role', 'group');
   nav.setAttribute('aria-label', t.viewsLabel);

@@ -20,7 +20,7 @@ const line = (id, amount, role) => ({
   ...(role ? { role } : {}),
 });
 
-/** Own records: three versions, a variation of the second, a dish, stock, two tasting notes. */
+/** Own records: three versions, a variation of the second, a dish, two tasting notes, skill state. */
 export const OWN = {
   ingredients: [
     {
@@ -72,10 +72,14 @@ export const OWN = {
       version: { family: DISH, date: '2026-11-10' },
     },
   ],
-  stock: [{ id: uid(30), ref: { kind: 'ingredient', id: FLOUR }, amount: g(1000), state: 'raw' }],
   tastings: [
     { id: NOTE1, ref: { kind: 'component', id: V2 }, date: '2026-11-06', text: 'Thick enough' },
     { id: NOTE2, ref: { kind: 'component', id: V3 }, date: '2026-11-10', text: 'Glossy' },
+  ],
+  // The skill state: one technique marked as learned, one mark taken back (format 3).
+  skills: [
+    { id: 'skill-pan-fry', technique: 'pan-fry', learned: true },
+    { id: 'skill-fold-in', technique: 'fold-in', learned: false },
   ],
 };
 
@@ -84,9 +88,9 @@ export const KINDS = [
   'templates',
   'components',
   'dishes',
-  'stock',
   'affinities',
   'tastings',
+  'skills',
 ];
 
 export const listStore = (page, kind) =>

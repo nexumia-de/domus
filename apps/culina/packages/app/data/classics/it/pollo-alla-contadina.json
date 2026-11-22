@@ -30,16 +30,16 @@
       "lines": [
         {
           "key": "chicken",
-          "wanted": {
-            "en": "Young chicken (pollastro)",
-            "de": "Junges Huhn (Pollastro)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171447"
           },
           "amount": {
             "value": 1,
             "unit": "count",
             "original": "Un pollastro"
           },
-          "note": {
+          "sourceNote": {
             "en": "The weight is not given in the source.",
             "de": "Das Gewicht steht nicht in der Quelle."
           }
@@ -51,8 +51,12 @@
             "id": "fdc-173473"
           },
           "note": {
-            "en": "'A few sprigs' (ciocchette); no amount.",
-            "de": "'Einige Zweige'; keine Menge."
+            "en": "'A few sprigs' (ciocchette).",
+            "de": "‚Einige Zweige‘."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -77,9 +81,9 @@
             "kind": "ingredient",
             "id": "fdc-171401"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source says 'un battutino di lardone' (a small chopped piece, not sized); the 1891 scan reads 'tutino di lardone'. No amount is written.",
-            "de": "Die Quelle sagt 'un battutino di lardone' (ein kleines gehacktes Stück, nicht bemessen); der Scan von 1891 liest 'tutino di lardone'. Keine Menge steht da."
+            "de": "Die Quelle sagt ‚un battutino di lardone‘ (ein kleines gehacktes Stück, nicht bemessen); der Scan von 1891 liest ‚tutino di lardone‘. Daher keine Menge."
           }
         },
         {
@@ -103,8 +107,12 @@
             "id": "fdc-170457"
           },
           "note": {
-            "en": "In pieces, seeds removed; no amount given.",
-            "de": "In Stücken, ohne Kerne; keine Menge angegeben."
+            "en": "In pieces, seeds removed.",
+            "de": "In Stücken, ohne Kerne."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -113,9 +121,9 @@
             "en": "Water",
             "de": "Wasser"
           },
-          "note": {
-            "en": "The source says broth or water, with no amount. Water is written, our choice; the validator takes settled entries only for amounts.",
-            "de": "Die Quelle sagt Brühe oder Wasser, ohne Menge. Geschrieben ist Wasser, unsere Wahl; der Validator nimmt Festlegungen nur für Mengen."
+          "sourceNote": {
+            "en": "The source says broth or water, with no amount. Water is chosen (our judgement).",
+            "de": "Die Quelle sagt Brühe oder Wasser, ohne Menge. Gewählt ist Wasser (unser Urteil)."
           }
         }
       ],
@@ -125,13 +133,15 @@
             "en": "Stud the chicken with the rosemary sprigs and the garlic pieces.",
             "de": "Das Huhn mit den Rosmarinzweigen und den Knoblauchstücken spicken."
           },
+          "action": "prepare",
           "uses": ["chicken", "rosemary", "garlic"]
         },
         {
           "text": {
             "en": "Put the chicken on the heat in the lard.",
-            "de": "Das Huhn in das Schweinefett auf den Herd legen."
+            "de": "Das Huhn mit dem Schweinefett in den Topf geben und auf den Herd stellen."
           },
+          "action": "heat",
           "uses": ["chicken", "lard"]
         },
         {
@@ -139,6 +149,7 @@
             "en": "Season it with salt and pepper, outside and inside.",
             "de": "Außen und innen mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["chicken", "salt", "pepper"]
         },
         {
@@ -154,6 +165,7 @@
             "en": "Add the tomato in pieces.",
             "de": "Die Tomate in Stücken dazugeben."
           },
+          "action": "add",
           "uses": ["tomato"]
         },
         {
@@ -161,6 +173,7 @@
             "en": "When the tomato has broken down, moisten the chicken with water.",
             "de": "Wenn die Tomate zerfallen ist, das Huhn mit Wasser angießen."
           },
+          "action": "add",
           "uses": ["water"]
         }
       ]
@@ -180,8 +193,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "'Some' raw potatoes; no amount given.",
-            "de": "'Einige' rohe Kartoffeln; keine Menge angegeben."
+            "en": "'Some' raw potatoes.",
+            "de": "‚Einige‘ rohe Kartoffeln."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -190,9 +207,9 @@
             "kind": "ingredient",
             "id": "fdc-171413"
           },
-          "note": {
+          "sourceNote": {
             "en": "The source offers oil, lard or butter; oil is written, our choice of the first of the three named.",
-            "de": "Die Quelle nennt Öl, Schweinefett oder Butter; geschrieben ist Öl, unsere Wahl unter den dreien."
+            "de": "Die Quelle nennt Öl, Schweinefett oder Butter; gewählt ist Öl (unser Urteil)."
           }
         }
       ],
@@ -202,12 +219,13 @@
             "en": "Cut the raw potatoes into wedges.",
             "de": "Die rohen Kartoffeln in Spalten schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["potato"]
         },
         {
           "text": {
             "en": "Fry the wedges in oil in a separate pan.",
-            "de": "Die Spalten in einer separaten Pfanne in Öl anbraten."
+            "de": "Die Spalten in einer eigenen Pfanne in Öl anbraten."
           },
           "technique": "pan-fry",
           "uses": ["potato", "oil"]
@@ -217,6 +235,7 @@
             "en": "Let the potatoes take flavour in the chicken's juices.",
             "de": "Die Kartoffeln im Saft des Huhns Geschmack annehmen lassen."
           },
+          "action": "stand",
           "uses": ["potato"]
         },
         {
@@ -224,6 +243,7 @@
             "en": "Serve the potatoes as a side dish with the chicken.",
             "de": "Die Kartoffeln als Beilage zum Huhn servieren."
           },
+          "action": "serve",
           "uses": ["potato"]
         }
       ]
@@ -259,6 +279,6 @@
   },
   "note": {
     "en": "Artusi's recipe 166 (1985 edition: No. 263). The source gives no weight for the bird and no cooking time. The source says that butter may replace the lard for a more delicate taste; the 1985 edition confirms the sentence, so the lard is written.",
-    "de": "Artusis Rezept Nr. 166 (Ausgabe 1985: Nr. 263). Die Quelle nennt kein Gewicht für das Huhn und keine Garzeit. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; die Ausgabe von 1985 bestätigt den Satz, daher ist das Schweinefett geschrieben."
+    "de": "Artusis Rezept Nr. 166 (Ausgabe 1985: Nr. 263). Die Quelle nennt kein Gewicht für das Huhn und keine Garzeit. Die Quelle sagt, Butter dürfe das Schweinefett für einen zarteren Geschmack ersetzen; die Ausgabe von 1985 bestätigt den Satz, daher steht das Schweinefett im Rezept."
   }
 }

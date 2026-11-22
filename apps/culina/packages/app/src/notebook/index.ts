@@ -10,6 +10,7 @@ export { newId } from './ids';
 export { reloadNotebook } from './load';
 export { startNotebook } from './start';
 export {
+  addStockItem,
   getStockItem,
   listStock,
   removeStockItem,
@@ -20,6 +21,7 @@ export {
   tick,
   untick,
 } from './stock';
+export type { StockUndo } from './stock';
 export { subscribe, today } from './state';
 export * from './versions';
 export {
@@ -31,3 +33,13 @@ export {
   saveTasting,
 } from './versions-actions';
 export { canonicalLines, familyView } from './family-view';
+export {
+  chooseStockSpace,
+  onStockStatus,
+  stockSpaces,
+  stockStatus,
+  stockOnline,
+  stockUnavailable,
+  wakeStock,
+} from './stock-spaces';
+export type { SpaceView, SyncStatus } from './stock-spaces';

@@ -1,9 +1,11 @@
 // Stock in a browser: tick several (an own ingredient, a catalogue ingredient, a component) without
 // leaving the screen, untick with Undo, always there, optional detail, use up part of an amount,
 // reload keeps it all, remaining days from a fixed date (`?e2e-now=`), a field of another app
-// survives an edit, offline, the navigation at 320 and 360 px, targets, no console error.
+// survives an edit, offline, targets, no console error (the navigation is in navigation.mjs). Stock
+// is the collection `stock` of a space in the shared database `domus` (stock-helpers.mjs).
 import { check, watch } from './harness.mjs';
-import { layout, listStore, putStore } from './editor-helpers.mjs';
+import { layout, listStore } from './editor-helpers.mjs';
+import { domusStock, putStock, stockItems, stockRecords } from './stock-helpers.mjs';
 import { overflow, smallTargets } from './measure.mjs';
 import { rowNamed } from './catalogue-helpers.mjs';
 import { seed } from './seed.mjs';
@@ -36,48 +38,13 @@ const rowText = async (page, name) =>
       .locator('.stock-link')
       .innerText()
   ).replace(/\s+/g, ' ');
-const stockRows = (page) => listStore(page, 'stock');
+const stockRows = (page) => stockItems(page);
+const itemCount = (page, n) =>
+  page.waitForFunction(
+    async (count) => (await globalThis.__culinaStock.items()).length === count,
+    n,
+  );
 const byRef = (rows, id) => rows.filter((r) => r.ref.id === id);
-
-const navigation = async (browser, origin, width) => {
-  const context = await browser.newContext({ viewport: { width, height: 640 } });
-  const page = await context.newPage();
-  await openAt(page, origin, 'stock');
-  const links = await page.evaluate(() =>
-    [...document.querySelectorAll('.nav-link')].map((a) => {
-      const text = a.querySelector('.nav-label');
-      const box = a.getBoundingClientRect();
-      return {
-        name: text.textContent,
-        w: box.width,
-        h: box.height,
-        lines: Math.round(
-          text.getBoundingClientRect().height /
-            parseFloat(getComputedStyle(text).lineHeight || '16'),
-        ),
-        clipped: text.scrollWidth > text.clientWidth,
-        right: box.right,
-      };
-    }),
-  );
-  check(
-    links.length === 6 &&
-      links.map((l) => l.name).join() === 'Start,Ratios,Components,Dishes,Cook,Settings',
-    `${width}px: the navigation has Start first and Cook between Dishes and Settings`,
-  );
-  check(
-    links.every((l) => l.w >= 44 && l.h >= 44 && !l.clipped && l.right <= width + 0.5),
-    `${width}px: bottom navigation fits with targets of 44 px and no clipped label ${JSON.stringify(links.map((l) => [l.name, Math.round(l.w), Math.round(l.h)]))}`,
-  );
-  const heights = await page.evaluate(() =>
-    [...document.querySelectorAll('.nav-label')].map((n) => n.getBoundingClientRect().height),
-  );
-  check(
-    new Set(heights).size === 1,
-    `${width}px: every navigation label is on one line (${heights})`,
-  );
-  await context.close();
-};
 
 const ticking = async (browser, origin) => {
   const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
@@ -142,9 +109,7 @@ const ticking = async (browser, origin) => {
     `${label}: a catalogue ingredient is adopted into the notebook and ticked (${adopted?.name})`,
   );
   await page.getByRole('button', { name: 'Undo' }).click();
-  await page.waitForFunction(
-    async () => (await (await globalThis.__culinaStore).store.list('stock')).records.length === 3,
-  );
+  await itemCount(page, 3);
   check(true, `${label}: Undo takes the catalogue tick away again`);
   await page.getByLabel('Search your notebook to tick').fill('');
 
@@ -153,10 +118,37 @@ const ticking = async (browser, origin) => {
   await page.getByText('Onion is no longer in stock.').waitFor();
   await isTicked(page, 'Onion', false);
   check(
-    byRef(await stockRows(page), 'onion').length === 0,
-    `${label}: unticking removes the item at once`,
+    byRef(await stockRows(page), 'onion').length === 0 &&
+      same((await stockRecords(page)).onion, { present: false }),
+    `${label}: unticking takes the item away at once; the record says present false`,
   );
   await layout(page, `${label} (toast)`);
+  // The page has room under its last row while the toast shows, so the toast never covers it.
+  const room = await page.evaluate(() => ({
+    padding: parseFloat(getComputedStyle(document.querySelector('.app-main')).paddingBottom),
+    toast: document.querySelector('.toast').getBoundingClientRect().height,
+  }));
+  check(
+    room.padding >= room.toast + 12,
+    `${label}: the page keeps room under its last row for the toast (${JSON.stringify(room)})`,
+  );
+  // Going to another screen ends the toast.
+  await page.waitForTimeout(700);
+  await page.getByRole('link', { name: 'Ratios' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Ratios', exact: true }).waitFor();
+  check(
+    (await page.locator('.toast').count()) === 0 &&
+      (await page.evaluate(() =>
+        document.documentElement.style.getPropertyValue('--toast-space'),
+      )) === '',
+    `${label}: the toast does not follow the user to another screen`,
+  );
+  await page.goBack();
+  await isTicked(page, 'Onion', false);
+  await tickBox(page, 'Onion').click();
+  await isTicked(page, 'Onion');
+  await tickBox(page, 'Onion').click();
+  await page.getByText('Onion is no longer in stock.').waitFor();
   await page.getByRole('button', { name: 'Undo' }).click();
   await isTicked(page, 'Onion');
   check(
@@ -195,9 +187,7 @@ const detail = async (browser, origin) => {
   await page.getByRole('button', { name: 'Always there: Carrot' }).click();
   await tickBox(page, 'Salt').click();
   await isTicked(page, 'Salt');
-  await page.waitForFunction(
-    async () => (await (await globalThis.__culinaStore).store.list('stock')).records.length === 3,
-  );
+  await itemCount(page, 3);
 
   await openAt(page, origin, 'stock');
   check(
@@ -307,16 +297,13 @@ const remaining = async (browser, origin) => {
   const page = await context.newPage();
   await seed(page, origin);
   await openAt(page, origin, 'stock');
-  const item = (id, ref, extra) => ({ id, ref: { kind: 'ingredient', id: ref }, ...extra });
-  for (const record of [
-    item('u-a', 'carrot'),
-    item('u-b', 'onion', { useBy: '2026-11-20' }),
-    item('u-c', 'butter', { useBy: '2026-11-25' }),
-    item('u-d', 'salt', { always: true }),
-    item('u-e', 'flour', { useBy: '2026-11-18' }),
-  ]) {
-    await putStore(page, 'stock', record);
-  }
+  await putStock(page, {
+    carrot: { present: true },
+    onion: { present: true, bestBefore: '2026-11-20' },
+    butter: { present: true, bestBefore: '2026-11-25' },
+    salt: { present: true, always: true },
+    flour: { present: true, bestBefore: '2026-11-18' },
+  });
   const texts = async (now) => {
     await openAt(page, origin, 'stock', now);
     const out = {};
@@ -363,19 +350,52 @@ const remaining = async (browser, origin) => {
   await layout(page, `${label} (days left)`);
 
   // Fields of another app survive an edit.
-  await putStore(page, 'stock', {
-    id: 'u-x',
-    ref: { kind: 'ingredient', id: 'celery' },
-    'x-emptio': { boughtOn: '2026-11-10', shop: 'Market' },
+  await putStock(page, {
+    celery: { present: true, moreBatches: ['2026-11-01'], 'x-emptio': { shop: 'Market' } },
   });
-  await openAt(page, origin, 'stock/u-x/edit');
+  await openAt(page, origin, 'stock/celery/edit');
   await page.getByLabel('Note').fill('crisper drawer');
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'What is there' }).waitFor();
-  const x = byRef(await stockRows(page), 'celery')[0];
+  const x = (await stockRecords(page)).celery;
   check(
-    same(x['x-emptio'], { boughtOn: '2026-11-10', shop: 'Market' }) && x.note === 'crisper drawer',
-    `${label}: a field of another app (x-emptio) survives an edit`,
+    same(x, {
+      present: true,
+      moreBatches: ['2026-11-01'],
+      'x-emptio': { shop: 'Market' },
+      note: 'crisper drawer',
+    }),
+    `${label}: fields of other apps (moreBatches, x-emptio) survive an edit (${JSON.stringify(x)})`,
+  );
+  await context.close();
+  return problems;
+};
+
+// A tick is in the database every app on the address shares, read with IndexedDB alone.
+const shared = async (browser, origin) => {
+  const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
+  const problems = watch(context, origin);
+  const page = await context.newPage();
+  await seed(page, origin);
+  await openAt(page, origin, 'stock/add');
+  await tickBox(page, 'Carrot').click();
+  await isTicked(page, 'Carrot');
+  await page.reload();
+  await page.getByRole('heading', { level: 1, name: 'Tick what is there' }).waitFor();
+  await isTicked(page, 'Carrot');
+  const rows = await domusStock(page);
+  const carrot = rows.flatMap((row) => row.records).find((r) => r.key === 'carrot');
+  check(
+    rows.length === 1 && carrot?.value?.present === true && /Z$/.test(carrot?.updatedAt ?? ''),
+    `${label}: after a reload the tick is a record of the collection stock in the database domus (${JSON.stringify(carrot)})`,
+  );
+  const own = await listStore(page, 'stock');
+  check(own.length === 0, `${label}: Culina's own database keeps no stock`);
+  await openAt(page, origin, 'stock');
+  check(
+    (await page.locator('.stock-space-name').innerText()) === 'Stock of Home' &&
+      (await page.locator('.stock-sync').innerText()) === 'Kept on this device only.',
+    `${label}: the stock screen names the space and says how it is kept`,
   );
   await context.close();
   return problems;
@@ -431,13 +451,12 @@ const desktop = async (browser, origin) => {
 
 export const stock = async (browser, server) => {
   const origin = server.origin;
-  await navigation(browser, origin, 320);
-  await navigation(browser, origin, 360);
   await desktop(browser, origin);
   const problems = [
     ...(await ticking(browser, origin)),
     ...(await detail(browser, origin)),
     ...(await remaining(browser, origin)),
+    ...(await shared(browser, origin)),
     ...(await offline(browser, origin)),
   ];
   check(

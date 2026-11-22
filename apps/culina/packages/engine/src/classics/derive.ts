@@ -1,12 +1,14 @@
 // Derives what the app shows and cooks from a classic: amounts converted from the source's units to
 // grams, millilitres or pieces and scaled from the source's persons to the portions asked for, in the
 // shapes the model already has. The app does no arithmetic.
+import { householdMeasureOf } from '../amounts/round';
+import type { HouseholdMeasure } from '../amounts/round';
 import type { Amount, UnitId } from '../amounts/types';
 import type { ComponentRef, FoodState } from '../components/types';
-import type { Step } from '../steps/types';
+import type { TextStep } from '../steps/types';
 import { pickText } from '../text/i18n';
 import type { Lang } from '../text/i18n';
-import type { Classic, ClassicLine, ClassicSlot, SourceAmount } from './types';
+import type { AmountWord, Classic, ClassicLine, ClassicSlot, SourceAmount } from './types';
 import { resolveSourceUnit } from './units';
 
 /** Portions of a dish when the user asks for none (helper plan: two). */
@@ -25,11 +27,19 @@ export interface DerivedLine {
   ref?: ComponentRef;
   /** The name of an ingredient the catalogue lacks. */
   wanted?: string;
-  /** Absent when the source gives none: shown as "to taste" or "as needed". */
+  /** Absent when the source gives none; then `amountWord` says "to taste" or "as needed" where the source does, else nothing is shown. */
   amount?: Amount;
+  /**
+   * Where the source wrote a volume in a spoon or a cup (its word's size is a `tsp`, `tbsp` or
+   * `cup` of the unit table): that measure, for display only (`roundMeasure`); `amount` stays ml.
+   */
+  measure?: HouseholdMeasure;
+  amountWord?: AmountWord;
   role?: string;
   state?: FoodState;
   note?: string;
+  /** A remark about the source, for the source section only. */
+  sourceNote?: string;
   /** The source's own wording, when the classic gives it. */
   original?: string;
 }
@@ -39,7 +49,7 @@ export interface DerivedComponent {
   name: string;
   role?: string;
   lines: DerivedLine[];
-  steps: Step[];
+  steps: TextStep[];
 }
 
 export interface DerivedSlot {
@@ -48,6 +58,8 @@ export interface DerivedSlot {
   ref?: ComponentRef;
   wanted?: string;
   amount?: Amount;
+  /** As on a line: the spoon or cup the source wrote, for display only. */
+  measure?: HouseholdMeasure;
   optional?: boolean;
   original?: string;
 }
@@ -99,7 +111,11 @@ const clean = (n: number): number => Number(n.toPrecision(10));
 
 const positive = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n) && n > 0;
 
-type Converted = { amount: Amount; range?: { min: Amount; max: Amount } };
+type Converted = {
+  amount: Amount;
+  range?: { min: Amount; max: Amount };
+  measure?: HouseholdMeasure;
+};
 
 /** Converts one source amount; the middle of a range is the amount. */
 function convert(a: SourceAmount, classic: Classic, factor: number): Converted | string {
@@ -108,17 +124,24 @@ function convert(a: SourceAmount, classic: Classic, factor: number): Converted |
   if (size === undefined) return 'unknown-unit';
   const unit = CANONICAL[size.kind];
   const at = (n: number): Amount => ({ value: clean(n * size.factor * factor), unit });
-  if (a.max === undefined) return { amount: at(a.value) };
+  const household = size.kind === 'volume' ? householdMeasureOf(size.factor) : undefined;
+  const measure = household === undefined ? {} : { measure: household };
+  if (a.max === undefined) return { amount: at(a.value), ...measure };
   const min = at(a.value);
   const max = at(a.max);
-  return { amount: { value: clean((min.value + max.value) / 2), unit }, range: { min, max } };
+  return {
+    amount: { value: clean((min.value + max.value) / 2), unit },
+    range: { min, max },
+    ...measure,
+  };
 }
 
 /**
  * Derives the dish and its components for a number of portions. Every amount is converted by the
  * unit table or the classic's own `units` (mass to grams, volume to millilitres, count to count)
  * and multiplied by portions divided by the source's persons; nothing is rounded beyond 10
- * significant digits. A range becomes its middle in `amount` and is listed in `ranges`; a line
+ * significant digits. A volume written in a word the size of a spoon or cup of the unit table
+ * also names that `measure`, for display. A range becomes its middle in `amount` and is listed in `ranges`; a line
  * without an amount stays without and is listed in `unmeasured`. Names and notes come in `lang`.
  *
  * @param classic - A classic that passed `validateClassic`.
@@ -140,7 +163,7 @@ export function deriveClassic(classic: Classic, options: DeriveOptions): DeriveR
     path: string,
     componentId: string | undefined,
     index: number,
-  ): { amount?: Amount; original?: string } | Failure => {
+  ): { amount?: Amount; measure?: HouseholdMeasure; original?: string } | Failure => {
     const base = componentId === undefined ? {} : { componentId };
     if (it.amount === undefined) {
       unmeasured.push({ ...base, index });
@@ -157,6 +180,7 @@ export function deriveClassic(classic: Classic, options: DeriveOptions): DeriveR
     if (done.range) ranges.push({ ...base, index, ...done.range });
     return {
       amount: done.amount,
+      ...(done.measure === undefined ? {} : { measure: done.measure }),
       ...(it.amount.original === undefined ? {} : { original: it.amount.original }),
     };
   };
@@ -178,6 +202,8 @@ export function deriveClassic(classic: Classic, options: DeriveOptions): DeriveR
         ...(line.role === undefined ? {} : { role: line.role }),
         ...(line.state === undefined ? {} : { state: line.state }),
         ...(line.note === undefined ? {} : { note: text(line.note) }),
+        ...(line.sourceNote === undefined ? {} : { sourceNote: text(line.sourceNote) }),
+        ...(line.amountWord === undefined ? {} : { amountWord: line.amountWord }),
       });
     }
     components.push({

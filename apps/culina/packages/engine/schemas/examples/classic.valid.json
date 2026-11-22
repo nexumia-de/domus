@@ -36,13 +36,21 @@
           "ref": { "kind": "ingredient", "id": "example-liquid" },
           "amount": { "value": 250, "max": 300, "unit": "ml" }
         },
-        { "key": "salt", "wanted": { "en": "Example salt", "de": "Beispielsalz" } },
+        {
+          "key": "salt",
+          "wanted": { "en": "Example salt", "de": "Beispielsalz" },
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Invented example: the source says to taste.",
+            "de": "Erfundenes Beispiel: die Quelle sagt nach Geschmack."
+          }
+        },
         {
           "key": "spice",
           "wanted": { "en": "Example spice", "de": "Beispielgewürz" },
           "amount": { "value": 1, "unit": "tsp" },
           "settled": true,
-          "note": { "en": "to taste", "de": "nach Geschmack" }
+          "note": { "en": "Stirred in last.", "de": "Zuletzt eingerührt." }
         }
       ],
       "steps": [
@@ -53,7 +61,11 @@
           },
           "technique": "example-technique",
           "uses": ["fat"],
-          "time": { "value": 5, "unit": "min" }
+          "time": { "value": 5, "unit": "min" },
+          "sourceNote": {
+            "en": "Invented example: the source gives the time as a fraction that is not legible.",
+            "de": "Erfundenes Beispiel: die Quelle nennt die Zeit als Bruch, der nicht lesbar ist."
+          }
         },
         {
           "text": {

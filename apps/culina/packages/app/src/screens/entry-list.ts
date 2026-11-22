@@ -1,5 +1,6 @@
-// The list pane of the component and dish screens: the action to add one, search by name, one
-// link per entry, a quiet empty state that invites, and the collapsible guidance.
+// The list pane of the Components screen (Dishes has its own, dish-list.ts): the action to add
+// one, search by name, one link per entry, a quiet empty state that invites, and the collapsible
+// guidance.
 import { filterByName } from '../shared/search';
 import { hashFor, type Route } from '../router';
 import { el } from '../shell/el';
@@ -14,6 +15,20 @@ export interface Entry {
 
 export interface ListState {
   query: string;
+}
+
+/** What a list pane is given by the screen around it (notebook-screen.ts). */
+export interface PaneOptions {
+  /** With it the pane carries the screen's h1; beside a detail it is a labelled region. */
+  asHeading: boolean;
+  current?: string;
+  note?: string;
+  /** The parts of the Notebook, right under the title. */
+  tabs?: Node;
+  /** Shown under the title: the way to add one. */
+  actions?: Node[];
+  /** Shown with the empty state: example data. */
+  emptyActions?: Node[];
 }
 
 export interface ListText {
@@ -39,27 +54,34 @@ const row = (route: Route, entry: Entry, current?: string): HTMLElement => {
   return item;
 };
 
-/** With `asHeading` the pane carries the screen's h1; beside a detail it is a labelled region. */
+/** The head of a list pane: the h1 or the region's label, the parts, a note and the actions. */
+export const paneHead = (pane: HTMLElement, text: ListText, options: PaneOptions): void => {
+  if (options.asHeading) pane.append(el('h1', undefined, text.title));
+  else pane.setAttribute('aria-label', text.listLabel);
+  if (options.tabs !== undefined) pane.append(options.tabs);
+  if (options.note !== undefined) pane.append(el('p', 'note-quiet', options.note));
+  if (options.actions !== undefined) pane.append(...options.actions);
+};
+
+/** The collapsible guidance at the foot of a list pane. */
+export const paneGuidance = (text: ListText): HTMLElement => {
+  const guidance = el('details', 'guidance');
+  guidance.append(
+    el('summary', undefined, text.guidanceSummary),
+    el('p', undefined, text.guidance),
+  );
+  return guidance;
+};
+
 export const entryList = (
   route: Route,
   entries: readonly Entry[],
   state: ListState,
   text: ListText,
-  options: {
-    asHeading: boolean;
-    current?: string;
-    note?: string;
-    /** Shown under the title: the way to add one. */
-    actions?: Node[];
-    /** Shown with the empty state: example data. */
-    emptyActions?: Node[];
-  },
+  options: PaneOptions,
 ): HTMLElement => {
   const pane = el('section', 'entry-list split-list');
-  if (options.asHeading) pane.append(el('h1', undefined, text.title));
-  else pane.setAttribute('aria-label', text.listLabel);
-  if (options.note !== undefined) pane.append(el('p', 'note-quiet', options.note));
-  if (options.actions !== undefined) pane.append(...options.actions);
+  paneHead(pane, text, options);
 
   const search = el('input', 'field');
   search.type = 'search';
@@ -94,11 +116,6 @@ export const entryList = (
   });
   draw();
 
-  const guidance = el('details', 'guidance');
-  guidance.append(
-    el('summary', undefined, text.guidanceSummary),
-    el('p', undefined, text.guidance),
-  );
-  pane.append(wrap, rows, guidance);
+  pane.append(wrap, rows, paneGuidance(text));
   return pane;
 };

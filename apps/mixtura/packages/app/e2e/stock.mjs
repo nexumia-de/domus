@@ -11,6 +11,7 @@ import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { readStock, seedStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -46,7 +47,7 @@ const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${hei
 const docShot = async (name) => {
   if (!docs) return;
   // The toast would hide rows; the next change brings it back.
-  await page.evaluate(() => document.querySelector('.toast')?.remove());
+  await page.evaluate(() => document.querySelector('.fr-toast')?.replaceChildren());
   await page.screenshot({ path: join(DOCS, `app-${name}-${width}x${height}.png`) });
 };
 const toast = () => page.getByTestId('toast');
@@ -490,7 +491,7 @@ await page.locator('#f-parentId').selectOption({ index: 1 });
 await page.getByRole('button', { name: 'Save Ingredient' }).click();
 await page.getByText('Created Qwx Syrup and marked it in stock').waitFor();
 await page.getByRole('button', { name: 'Undo' }).click();
-await page.waitForFunction(() => !document.querySelector('.toast'));
+await page.waitForFunction(() => !document.querySelector('.fr-toast:not(:empty)'));
 await page.goto(`${site.url}#/stock?q=Qwx`);
 await page.getByText('No ingredient matches.').waitFor();
 expect(true, 'Undo takes the created ingredient and its mark back');
@@ -498,20 +499,7 @@ expect(true, 'Undo takes the created ingredient and its mark back');
 // ---- Batches of a prepared ingredient (#101) ----
 await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));
 const SYRUP = 'u-7a0d6c1e-2b4f-4f0a-8e55-91a3c4d5e6f7';
-const dumpStock = () =>
-  page.evaluate(
-    () =>
-      new Promise((res) => {
-        const r = indexedDB.open('mixtura');
-        r.onsuccess = () => {
-          const g = r.result.transaction('stock').objectStore('stock').getAll();
-          g.onsuccess = () => {
-            r.result.close();
-            res(g.result);
-          };
-        };
-      }),
-  );
+const dumpStock = () => readStock(page);
 await openFresh('#/stock');
 await page.locator('.stock-tree').waitFor();
 await page.evaluate(
@@ -519,7 +507,7 @@ await page.evaluate(
     new Promise((res) => {
       const r = indexedDB.open('mixtura');
       r.onsuccess = () => {
-        const names = ['ingredients', 'specs', 'stock', 'places'];
+        const names = ['ingredients', 'specs'];
         const tx = r.result.transaction(names, 'readwrite');
         tx.objectStore('ingredients').put({
           id,
@@ -545,17 +533,6 @@ await page.evaluate(
             { ingredientId: 'water', amount: 100, unit: 'ml' },
           ],
         });
-        // Into the default place the app made.
-        const places = tx.objectStore('places').getAll();
-        places.onsuccess = () =>
-          tx.objectStore('stock').put({
-            placeId: places.result[0].id,
-            ingredientId: id,
-            updatedAt: '2026-11-17T12:00:00Z',
-            present: true,
-            openedOn: '2026-11-05',
-            moreBatches: ['2026-11-14'],
-          });
         tx.oncomplete = () => {
           r.result.close();
           res();
@@ -564,6 +541,16 @@ await page.evaluate(
     }),
   SYRUP,
 );
+// Its stock goes into the space the app made.
+await seedStock(page, [
+  {
+    ingredientId: SYRUP,
+    updatedAt: '2026-11-17T12:00:00.000Z',
+    present: true,
+    openedOn: '2026-11-05',
+    moreBatches: ['2026-11-14'],
+  },
+]);
 await openFresh('#/stock');
 const near = page.locator('[data-near-date]');
 await near.waitFor();

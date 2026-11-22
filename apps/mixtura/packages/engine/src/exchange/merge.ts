@@ -4,9 +4,8 @@
 //  - replace: the file becomes the data; records not in the file go;
 //    identical records are left alone and counted as skipped.
 //  - merge: add what is new; for the same key keep the existing record,
-//    except a spec, place or stock record with a newer `updatedAt` in the
-//    file, which replaces it (equal or older is skipped). Keys: `id`, and
-//    place plus ingredient for stock.
+//    except a spec with a newer `updatedAt` in the file, which replaces it
+//    (equal or older is skipped). The key is the `id`.
 // Spec versions are never dropped by a merge: a file record that would take
 // the (lineageId, version) slot of a different existing record is skipped.
 
@@ -33,8 +32,6 @@ const zero = (): Counts => ({
   ingredients: 0,
   templates: 0,
   specs: 0,
-  places: 0,
-  stock: 0,
   affinities: 0,
 });
 
@@ -108,9 +105,7 @@ export function planImport(current: Snapshot, incoming: Snapshot, mode: ImportMo
       const old = existing.get(key);
       if (old) {
         const takesOver =
-          kind === 'specs'
-            ? newer(record, old) && slots.get(slotOf(record)) === key
-            : (kind === 'places' || kind === 'stock') && newer(record, old);
+          kind === 'specs' && newer(record, old) && slots.get(slotOf(record)) === key;
         if (takesOver) {
           write.push(record);
           plan.replaced[kind]++;

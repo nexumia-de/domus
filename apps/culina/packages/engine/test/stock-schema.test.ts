@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
-import { validators } from './validators';
+import { stockValidator } from './validators';
 
 const read = (name: string): Record<string, unknown> =>
   JSON.parse(
@@ -12,7 +12,7 @@ const read = (name: string): Record<string, unknown> =>
       'utf8',
     ),
   ) as Record<string, unknown>;
-const validate = validators.stock;
+const validate = stockValidator;
 
 describe('stock item schema', () => {
   test('an item that says only what is there is valid', () => {

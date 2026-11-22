@@ -3,6 +3,7 @@ import type { EffectiveTemplate, UnitId } from '@culina/engine';
 import { setPrefill } from '../editor/prefill';
 import { hashFor } from '../router';
 import { calculate, cautionsOf, type CalcResult } from '../ratios/calc';
+import { ratioRole } from '../ratios/names';
 import { formatMass, MASS_UNITS, type MassUnit } from '../shared/mass';
 import { parseEntry } from '../shared/parse';
 import { el } from '../shell/el';
@@ -48,7 +49,7 @@ export const calculatorSection = (template: EffectiveTemplate): HTMLElement => {
 
   const roleSelect = selectField(
     strings.ratios.roleLabel,
-    template.parts.map((p) => ({ value: p.role, label: p.role })),
+    template.parts.map((p) => ({ value: p.role, label: ratioRole(p.role) })),
     template.anchor ?? template.parts[0]?.role ?? '',
   );
   const amount = numberField(fieldLabel.role);
@@ -82,7 +83,10 @@ export const calculatorSection = (template: EffectiveTemplate): HTMLElement => {
     const body = el('tbody');
     for (const row of last.rows) {
       const tr = el('tr');
-      tr.append(el('th', undefined, row.role), el('td', 'num', formatMass(row.g, unitNow)));
+      tr.append(
+        el('th', undefined, ratioRole(row.role)),
+        el('td', 'num', formatMass(row.g, unitNow)),
+      );
       tr.firstElementChild?.setAttribute('scope', 'row');
       body.append(tr);
     }

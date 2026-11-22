@@ -1,0 +1,34 @@
+{
+  "id": "validate-level-tested",
+  "description": "A handling rule at level tested (a kitchen test, the author ran an experiment) passes",
+  "inputs": {
+    "kind": "handling_validate",
+    "rule": {
+      "id": "r",
+      "target": "butter",
+      "text": {
+        "en": "Put it in early.",
+        "de": "Früh zugeben."
+      },
+      "why": {
+        "en": "The flavour needs time.",
+        "de": "Der Geschmack braucht Zeit."
+      },
+      "technique": "melting",
+      "level": "tested",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "Invented sentence for a test vector."
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

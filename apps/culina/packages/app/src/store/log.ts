@@ -17,6 +17,8 @@ export type StoreEvent =
   | 'open'
   | 'put'
   | 'remove'
+  | 'clear'
+  | 'erase'
   | 'put-many'
   | 'replace-all'
   | 'revert'

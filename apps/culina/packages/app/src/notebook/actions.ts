@@ -1,22 +1,16 @@
 // Writes: through the store first, the cache only after the store accepted the record. Every
 // write is validated by the store. Delete is a tombstone; undo puts the kept record again.
 import { fail, type Result } from '../store/types';
-import type {
-  ComponentRecord,
-  DishRecord,
-  IngredientRecord,
-  StockRecord,
-  TastingRecord,
-} from '../records';
+import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
 import { emit, sorted, state } from './state';
 
-export type WritableKind = 'ingredients' | 'components' | 'dishes' | 'tastings' | 'stock';
+/** Stock is not among them: it is written into the shared collection of a space (stock.ts). */
+export type WritableKind = 'ingredients' | 'components' | 'dishes' | 'tastings';
 type RecordOf = {
   ingredients: IngredientRecord;
   components: ComponentRecord;
   dishes: DishRecord;
   tastings: TastingRecord;
-  stock: StockRecord;
 };
 
 const cache = {
@@ -24,16 +18,11 @@ const cache = {
   components: () => state.components,
   dishes: () => state.dishes,
   tastings: () => state.tastings,
-  stock: () => state.stock,
 };
 
 const setList = (kind: WritableKind, list: { id: string; name?: string }[]): void => {
   if (kind === 'tastings') {
     state.tastings = list as unknown as TastingRecord[];
-    return;
-  }
-  if (kind === 'stock') {
-    state.stock = list as unknown as StockRecord[];
     return;
   }
   const next = sorted(list as { id: string; name: string }[]);

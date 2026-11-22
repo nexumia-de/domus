@@ -53,7 +53,7 @@ then recorded in [data model](data-model.md) with the reason.
 
 - **Technique** (shipped, read-only, beside `templates.json`): `id`,
   `name`, `watch` (the short note), `why`, `level` (`studied`,
-  `textbook`, `tradition`), `sources` (title, place, url, licence where
+  `textbook`, `tradition`; since 2026-11-19 also `tested` and `authority`, see [data model](data-model.md#evidence-levels)), `sources` (title, place, url, licence where
   one is stated). Texts are `{ en, de }`.
 - **Steps** on a component: ordered objects with `text { en, de }`,
   optional `technique`, the lines the step uses, optional time and

@@ -1,36 +1,69 @@
 import { icon } from '../icons/icons';
-import { hashFor, NAV_ENTRIES, navEntryFor, type NavEntry, type Route } from '../router';
+import { hashFor, NAV_ENTRIES, NAV_ROUTE, navEntryFor, type Route } from '../router';
 import { strings } from '../strings';
 import { el } from './el';
 
 export interface Nav {
   element: HTMLElement;
-  /** Marks the active destination with aria-current="page"; the stock screens mark Cook. */
+  /** The gear in the header: Settings, reachable from every screen. */
+  settingsLink: HTMLAnchorElement;
+  /**
+   * Marks the active destination with aria-current="page" (the stock screens and the classics mark
+   * Cook, components and dishes mark the Notebook) and the Settings links on the settings screens.
+   */
   setCurrent(route: Route): void;
 }
 
-/** One navigation landmark: bottom bar on phones, side navigation from 720 px (CSS only). */
+const link = (className: string, name: 'start' | 'cook' | 'notebook' | 'ratios' | 'settings') => {
+  const a = el('a', className);
+  a.href = hashFor(name === 'settings' ? 'settings' : NAV_ROUTE[name]);
+  return a;
+};
+
+/**
+ * One navigation landmark: four destinations as the bottom bar on phones, as the side rail from 720 px
+ * (CSS only), where Settings is the last entry of the rail. On a phone Settings is the gear in the
+ * header (`settingsLink`); the rail entry is hidden there, and the gear is hidden on the rail.
+ */
 export const createNav = (): Nav => {
   const nav = el('nav', 'app-nav');
   nav.setAttribute('aria-label', strings.nav.label);
   const list = el('ul', 'nav-list');
-  const links = new Map<NavEntry, HTMLAnchorElement>();
-  for (const route of NAV_ENTRIES) {
-    const link = el('a', 'nav-link');
-    link.href = hashFor(route);
-    link.append(icon(route), el('span', 'nav-label', strings.nav[route]));
+  const links = new Map<string, HTMLAnchorElement>();
+  for (const entry of NAV_ENTRIES) {
+    const a = link('nav-link', entry);
+    a.append(icon(entry), el('span', 'nav-label', strings.nav[entry]));
     const item = el('li');
-    item.append(link);
+    item.append(a);
     list.append(item);
-    links.set(route, link);
+    links.set(entry, a);
   }
+  const rail = link('nav-link', 'settings');
+  rail.append(icon('settings'), el('span', 'nav-label', strings.nav.settings));
+  const railItem = el('li', 'nav-settings');
+  railItem.append(rail);
+  list.append(railItem);
   nav.append(list);
+
+  const gear = el('a', 'settings-link');
+  gear.href = hashFor('settings');
+  // An icon-only control: its name is for assistive technology and for a tooltip.
+  gear.setAttribute('aria-label', strings.nav.settings);
+  gear.title = strings.nav.settings;
+  gear.append(icon('settings'));
+
   return {
     element: nav,
+    settingsLink: gear,
     setCurrent(current) {
-      for (const [route, link] of links) {
-        if (route === navEntryFor(current)) link.setAttribute('aria-current', 'page');
-        else link.removeAttribute('aria-current');
+      const entry = navEntryFor(current);
+      for (const [name, a] of links) {
+        if (name === entry) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      }
+      for (const a of [rail, gear]) {
+        if (current === 'settings') a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
       }
     },
   };

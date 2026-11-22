@@ -118,7 +118,7 @@ describe('the seed drinks as the app shows them', () => {
   const model = seedModel();
   const view = (id: string) => specVM(model, model.byLineage.get(id)!.spec, 'metric');
 
-  test('a drink with a template places its figures against the usual range', () => {
+  test('a drink with a template spaces its figures against the usual range', () => {
     const vm = view('daiquiri');
     expect(vm.tags[0]).toMatchObject({ text: 'Daiquiri template', href: '#/templates/daiquiri' });
     const abv = vm.balance.figures[0]!;

@@ -1,28 +1,31 @@
-// The start screen: it asks what to cook. The first choice is the classics by country; behind it the
-// tools that were there before (ratios, components, dishes, what can I cook, stock) stay reachable.
-import { classics } from '../../classics/content';
-import { countryChoices } from '../../classics/list-view';
+// The start screen: "What do you feel like?" The one filter and the list of every dish under it
+// (the same list as Dishes, ../dish-list.ts, with the same stored choice), then the ways into the
+// tools (ratios, components, dishes, what can I cook, stock), as before.
 import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
-import { countryLinks } from './country-links';
+import { dishList } from '../dish-list';
 
 const t = strings.classics;
 
+// In the order of the navigation: Cook (with the stock it works from), the Notebook, the ratios.
 const TOOLS = [
-  ['ratios', t.tools.ratios],
-  ['components', t.tools.components],
-  ['dishes', t.tools.dishes],
   ['cook', t.tools.cook],
   ['stock', t.tools.stock],
+  ['components', t.tools.components],
+  ['dishes', t.tools.dishes],
+  ['ratios', t.tools.ratios],
 ] as const;
 
 export const startScreen = (): HTMLElement => {
   const section = el('section', 'screen start-screen');
-  const classicsBlock = el('section', 'start-block');
-  classicsBlock.append(
-    el('h2', undefined, t.classicsHeading),
-    countryLinks(countryChoices(classics())),
+  const dishes = el('section', 'start-block start-dishes');
+  dishes.append(
+    dishList({
+      screen: 'start',
+      listLabel: strings.browse.startListLabel,
+      empty: [el('p', 'empty', strings.empty.dishes)],
+    }),
   );
   const tools = el('section', 'start-block');
   const list = el('ul', 'rows start-tools');
@@ -34,7 +37,6 @@ export const startScreen = (): HTMLElement => {
     list.append(item);
   }
   tools.append(el('h2', undefined, t.toolsHeading), el('p', 'muted', t.toolsHint), list);
-  section.append(el('h1', undefined, t.startTitle), el('p', 'muted', t.startIntro));
-  section.append(classicsBlock, tools);
+  section.append(el('h1', undefined, strings.browse.startTitle), dishes, tools);
   return section;
 };

@@ -34,7 +34,7 @@
             "kind": "ingredient",
             "id": "fdc-169385"
           },
-          "note": {
+          "sourceNote": {
             "en": "No weight or number given in the source.",
             "de": "Die Quelle nennt kein Gewicht und keine Anzahl."
           }
@@ -46,8 +46,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Salted water for cooking; no amount given.",
-            "de": "Salzwasser zum Kochen; keine Menge angegeben."
+            "en": "Salted water for cooking.",
+            "de": "Salzwasser zum Kochen."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -64,8 +68,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "For dusting the pieces; no amount given.",
-            "de": "Zum Bestäuben der Stücke; keine Menge angegeben."
+            "en": "For dusting the pieces.",
+            "de": "Zum Bestäuben der Stücke."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -74,7 +82,7 @@
             "kind": "component",
             "id": "pastella"
           },
-          "note": {
+          "sourceNote": {
             "en": "The batter of No. 100 of the book.",
             "de": "Der Teig aus Nr. 100 des Buches."
           }
@@ -86,6 +94,7 @@
             "en": "Cut the fennel into wedges.",
             "de": "Den Fenchel in Spalten schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["fennel"]
         },
         {
@@ -93,6 +102,7 @@
             "en": "Remove the hard outer leaves.",
             "de": "Die harten äußeren Blätter entfernen."
           },
+          "action": "trim",
           "uses": ["fennel"]
         },
         {
@@ -108,6 +118,7 @@
             "en": "Dry the wedges.",
             "de": "Die Spalten trocknen."
           },
+          "action": "dry",
           "uses": ["fennel"]
         },
         {
@@ -115,6 +126,7 @@
             "en": "Dust the wedges with flour.",
             "de": "Die Spalten mit Mehl bestäuben."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -154,8 +166,12 @@
             "id": "fdc-group-oil-vegetable"
           },
           "note": {
-            "en": "Fine oil (olio fine), one spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
-            "de": "Feines Öl (olio fine), ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+            "en": "Fine oil (olio fine), one spoonful (una cucchiaiata).",
+            "de": "Feines Öl (olio fine), ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge."
           }
         },
         {
@@ -165,8 +181,12 @@
             "de": "Obstbrand (Acquavite)"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata); the book gives no size for the spoon, so no amount.",
-            "de": "Ein Löffel (una cucchiaiata); das Buch nennt keine Größe für den Löffel, daher keine Menge."
+            "en": "One spoonful (una cucchiaiata).",
+            "de": "Ein Löffel (una cucchiaiata)."
+          },
+          "sourceNote": {
+            "en": "The book gives no size for the spoon, so no amount.",
+            "de": "Das Buch nennt keine Größe für den Löffel, daher keine Menge."
           }
         },
         {
@@ -191,9 +211,10 @@
             "kind": "ingredient",
             "id": "fdc-173468"
           },
-          "note": {
-            "en": "As much as needed (quanto occorre).",
-            "de": "So viel wie nötig (quanto occorre)."
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: \"quanto occorre\".",
+            "de": "Quellenwortlaut: „quanto occorre“."
           }
         },
         {
@@ -202,9 +223,10 @@
             "en": "Ice-cold water",
             "de": "Eiskaltes Wasser"
           },
-          "note": {
-            "en": "As much as needed (acqua diaccia quanto basta).",
-            "de": "So viel wie nötig (acqua diaccia quanto basta)."
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: \"acqua diaccia quanto basta\".",
+            "de": "Quellenwortlaut: „acqua diaccia quanto basta“."
           }
         }
       ],
@@ -214,25 +236,29 @@
             "en": "Mix the flour with the egg yolk and the other ingredients, adding the water little by little, to a batter that is not too runny.",
             "de": "Das Mehl mit dem Eigelb und den übrigen Zutaten mischen und das Wasser nach und nach zugeben, bis ein nicht zu dünner Teig entsteht."
           },
+          "action": "mix",
           "uses": ["flour", "egg", "oil", "brandy", "salt", "water"]
         },
         {
           "text": {
             "en": "Work it well with a ladle.",
             "de": "Mit der Kelle gut durcharbeiten."
-          }
+          },
+          "action": "stir"
         },
         {
           "text": {
             "en": "Let it rest for several hours.",
             "de": "Mehrere Stunden ruhen lassen."
-          }
+          },
+          "action": "stand"
         },
         {
           "text": {
             "en": "Just before using it, add the beaten egg white.",
             "de": "Kurz vor dem Gebrauch das geschlagene Eiweiß zugeben."
           },
+          "action": "add",
           "uses": ["egg"]
         }
       ]
@@ -261,6 +287,6 @@
   },
   "note": {
     "en": "The source's text for this recipe ends at dipping the wedges in the batter; the frying itself is not written in it, and the title reads 'Fritto'. The batter's last addition, the beaten egg white, is cut off in the 1891 OCR and is taken from the 1985 edition (No. 156). Frying fat and temperature are not given.",
-    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet 'Fritto'. Die letzte Zugabe zum Teig, das geschlagene Eiweiß, ist in der OCR der Ausgabe von 1891 abgeschnitten und stammt aus der Ausgabe von 1985 (Nr. 156). Fett und Temperatur zum Ausbacken sind nicht angegeben."
+    "de": "Der Text der Quelle endet bei diesem Rezept mit dem Eintauchen der Spalten in den Teig; das Ausbacken selbst steht darin nicht, der Titel lautet ‚Fritto‘. Die letzte Zugabe zum Teig, das geschlagene Eiweiß, ist in der OCR der Ausgabe von 1891 abgeschnitten und stammt aus der Ausgabe von 1985 (Nr. 156). Fett und Temperatur zum Ausbacken sind nicht angegeben."
   }
 }

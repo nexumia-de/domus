@@ -10,7 +10,7 @@
   },
   "why": {
     "en": "Egg proteins thicken the liquid as they set; above 85 °C (185 °F) the yolks curdle.",
-    "de": "Eiweiß im Ei bindet die Flüssigkeit, wenn es stockt; über 85 °C gerinnt das Eigelb."
+    "de": "Die Eiweißstoffe im Ei binden die Flüssigkeit, wenn sie stocken; über 85 °C gerinnt das Eigelb."
   },
   "level": "textbook",
   "sources": [
@@ -18,22 +18,40 @@
       "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
       "place": "chapter 1.3 Sauces and Thickening Agents, section Liaison",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Temper the egg yolk and cream mixture by slowly adding a small amount of the hot liquid while stirring continuously."
     },
     {
       "title": "Flavors of the Saucier: Stocks, Sauces, and Soups (Zeringue and Thibodeaux)",
       "place": "chapter 1.3 Sauces and Thickening Agents, section Liaison",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Flavors_of_the_Saucier%3A_Stocks_Sauces_and_Soups_(Zeringue_and_Thibodeaux)/01%3A_Chapters/1.03%3A_Sauces_and_Thickening_Agents",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Temperatures over 185°F (85°C) will cause the yolks to curdle."
     },
     {
       "title": "Introduction to Baking and Pastries (Rink and Thibodeaux)",
       "place": "chapter 1.6 Custards, section Cooked Custards",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Introduction_to_Baking_and_Pastries_(Rink_and_Thibodeaux)/01%3A_Chapters/1.06%3A_Custards",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "These types are cooked and the liquid used is thickened by the coagulation of the egg proteins that are added."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, Gentle Heat, p. 93",
+      "isbn": "9780340831496",
+      "sentence": "The gentler these dishes are heated, the greater the safety margin between thickening and curdling."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Suppen und Saucen - Suppen - 3 Gebundene Suppen, Wissenswertes über Herstellungsfehler, p. 621",
+      "isbn": "9783805708388",
+      "sentence": "Da nur eine leichte Bindung vorhanden ist, flocken die Eigelbe aus, es gerinnt das Eiweiß vom Eigelb."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Speiseeis und Backwaren als Desserts - Cremes, Abziehen zur Bindigkeit, p. 807",
+      "isbn": "9783805708388",
+      "sentence": "Dazu werden die Bestandteile unter stetem Rühren auf etwa 85 °C erwärmt."
     }
   ]
 }

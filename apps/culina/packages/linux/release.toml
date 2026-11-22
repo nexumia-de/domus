@@ -1,0 +1,8 @@
+# Releases of the native app with the toolkit's release.py (docs/releases.md
+# in phosh-toolkit). The version lives only in the metainfo; build.mjs reads
+# it for the About dialog. To release, from the repository root:
+#   python3 ../phosh-toolkit/scripts/release.py --root apps/culina/packages/linux prepare
+# merge, then push the tag culina-v<version> on that commit.
+metainfo = "data/de.nexumia.Culina.metainfo.xml"
+fragments = "changelog.d"
+tag-prefix = "culina-v"

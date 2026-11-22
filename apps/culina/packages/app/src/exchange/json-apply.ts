@@ -1,11 +1,15 @@
 // Writes an import to the store in one transaction and keeps what Undo needs. Nothing is written
 // unless every record is valid; the notebook cache is read again afterwards.
-import { EXPORT_KINDS, mergeWrites } from '@culina/engine';
+import { EXPORT_KINDS, KIND_SINCE, mergeWrites } from '@culina/engine';
 import type { Choice, ExportKind, FullRecordSets, MergePlan } from '@culina/engine';
 import { reloadNotebook } from '../notebook';
 import { state } from '../notebook/state';
 import type { Change } from '../store';
 import { fail, type Result } from '../store/types';
+
+/** The kinds a file of `fileVersion` can hold; "replace everything" touches these only. */
+export const heldKinds = (fileVersion: number): ExportKind[] =>
+  EXPORT_KINDS.filter((kind) => (KIND_SINCE[kind] ?? 1) <= fileVersion);
 
 /** What the last import changed, to put right while the Undo toast is on screen. */
 let lastChanges: Change[] | undefined;
@@ -32,12 +36,21 @@ export async function applyMerge(
   return { ok: true, added, taken: writes.length - added };
 }
 
-/** Makes the notebook exactly the file's records; the old ones stay reachable through Undo. */
-export async function applyReplace(file: FullRecordSets, prior: FullRecordSets): Promise<Result> {
+/**
+ * Makes the notebook exactly the file's records; the old ones stay reachable through Undo. Kinds
+ * the file's version could not hold (`heldKinds`) are left as they are: an older file has no skills.
+ */
+export async function applyReplace(
+  file: FullRecordSets,
+  prior: FullRecordSets,
+  fileVersion: number,
+): Promise<Result> {
   if (state.store === undefined) return fail({ code: 'unavailable' });
-  const done = await state.store.bulk.replaceAll(file);
+  const kinds = heldKinds(fileVersion);
+  const given = Object.fromEntries(kinds.map((kind) => [kind, file[kind]]));
+  const done = await state.store.bulk.replaceAll(given);
   if (!done.ok) return done;
-  lastChanges = EXPORT_KINDS.flatMap((kind) => [
+  lastChanges = kinds.flatMap((kind) => [
     ...prior[kind].map((r) => priorOf(prior, kind, r.id)),
     ...file[kind]
       .filter((r) => !prior[kind].some((p) => p.id === r.id))

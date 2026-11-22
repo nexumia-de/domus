@@ -45,25 +45,25 @@ export {
 } from './shelf/index';
 
 export {
-  buildDocument,
-  buildEnvelope,
-  combinePlaces,
-  DOCUMENT_FORMAT,
-  DOCUMENT_VERSION,
-  ENVELOPE_FORMAT,
-  ENVELOPE_VERSION,
-  envelopeAad,
+  buildCollection,
+  buildInvite,
+  buildSealed,
+  COLLECTION_FORMAT,
+  COLLECTION_VERSION,
+  INVITE_FORMAT,
+  INVITE_VERSION,
+  latestStamp,
+  nextStamp,
+  parseCollection,
+  parseInvite,
+  parseSealed,
+  planCollectionSync,
+  pruneTombstones,
+  SEALED_FORMAT,
+  SEALED_VERSION,
+  sealedAad,
   instantMs,
-  mergePlace,
   mergeRecords,
-  parseDocument,
-  parseEnvelope,
-  planSync,
-  buildUnit,
-  parseUnit,
-  planUnitSync,
-  UNIT_FORMAT,
-  UNIT_VERSION,
 } from './sync/index';
 
 export type * from './ingredients/prepared';
@@ -94,11 +94,10 @@ export type * from './shelf/dates';
 export type * from './shelf/expiry';
 export type * from './shelf/limiting';
 export type * from './sync/adapter';
-export type * from './sync/document';
-export type * from './sync/envelope';
-export type * from './sync/places';
-export type * from './sync/plan';
+export type * from './sync/collection';
+export type * from './sync/collection-plan';
+export type * from './sync/invite';
+export type * from './sync/prune';
+export type * from './sync/sealed';
 export type * from './sync/records';
-export type * from './sync/unit';
-export type * from './sync/unit-plan';
 export type * from './specs/renumber';

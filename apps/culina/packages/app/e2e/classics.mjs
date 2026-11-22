@@ -1,9 +1,9 @@
-// The classics in a browser, on the fictional example dishes: start -> country -> dish -> step by
+// The classics in a browser, on the fictional example dishes: start -> the list (old country address) -> dish -> step by
 // step -> mark a skill as learned -> the note is gone on the next dish -> Settings "Teach again" ->
 // keep in the notebook. At 360 x 720 and at desktop size: no horizontal scroll, targets of at least
 // 44 x 44, no console error, nothing focused when a screen opens, focus moves on a step change.
 import { check, watch } from './harness.mjs';
-import { overflow, smallTargets } from './measure.mjs';
+import { brokenWords, overflow, smallTargets } from './measure.mjs';
 import {
   engineGrams,
   openWith,
@@ -17,7 +17,7 @@ import {
 import { nutritionSection } from './classics-nutrition.mjs';
 
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
-const START = 'What do you want to cook?';
+const START = 'What do you feel like?';
 
 const fresh = async (browser, origin, width) => {
   const context = await browser.newContext({
@@ -33,6 +33,8 @@ const layout = async (page, label) => {
   check(o.scroll <= 0 && o.wide.length === 0, `${label}: no horizontal scroll ${o.wide.join(',')}`);
   const small = await smallTargets(page);
   check(small.length === 0, `${label}: targets at least 44 x 44 ${small.join('; ')}`);
+  const broken = await brokenWords(page, '.recipe-amount, td.num, th.num');
+  check(broken.length === 0, `${label}: no amount breaks inside a word ${broken}`);
 };
 const focused = (page) =>
   page.evaluate(() => `${document.activeElement?.tagName}:${document.activeElement?.textContent}`);
@@ -40,8 +42,35 @@ const skills = (page) =>
   page.evaluate(async () => (await (await globalThis.__culinaStore).store.list('skills')).records);
 const stored = (page, kind) =>
   page.evaluate(async (k) => (await (await globalThis.__culinaStore).store.list(k)).records, kind);
+/** Back and Next are on the screen without scrolling, above the bottom navigation, 44 px and up. */
+const cookBar = async (page, label) => {
+  await page.evaluate(() => scrollTo(0, 0));
+  const view = await page.evaluate(() => ({ h: innerHeight, scroll: scrollY }));
+  const nav = await page.locator('.app-nav').boundingBox();
+  const next = await page.getByRole('button', { name: /^(Next|Finish)$/ }).boundingBox();
+  const prev = await page.getByRole('button', { name: 'Back', exact: true }).boundingBox();
+  const inView = (b) =>
+    b !== null && b.y >= 0 && b.y + b.height <= view.h && b.height >= 44 && b.width >= 44;
+  const abovePhoneNav = nav === null || nav.y < 100 || next.y + next.height <= nav.y + 1;
+  check(
+    view.scroll === 0 && inView(next) && inView(prev) && abovePhoneNav,
+    `${label}: Back and Next are on the screen without scrolling, above the navigation (${JSON.stringify({ next, prev, nav: nav?.y })})`,
+  );
+};
 const step = (page, n, total) =>
   page.getByRole('heading', { level: 2, name: `Step ${n} of ${total}` });
+/**
+ * The cooking screen draws the handling notes and the "Instead" buttons of the step's lines once
+ * the catalogue has loaded (after the step heading): both need the catalogue's tree. Waits for the
+ * button on the butter line, so a count of handling notes is read after that draw, whether it
+ * should find one or none. (A name alone is no sign: once a dish is kept, the notebook has it.)
+ */
+const catalogueDrawn = (page) =>
+  page
+    .locator('.cook-step')
+    .getByRole('button', { name: /^(Instead|Statt)/ })
+    .first()
+    .waitFor();
 
 const flow = async (browser, origin, width) => {
   const label = `${width}px classics`;
@@ -58,50 +87,72 @@ const flow = async (browser, origin, width) => {
       `${label}: the tool "${tool}" is still reachable from Start`,
     );
   }
-  const countries = await page.locator('.country-list li').allInnerTexts();
+  // Start lists the shipped dishes in the one list of every dish (e2e/dish-browse.mjs has the
+  // filter); the old country lists are that list with a filter.
+  const shown = await page.locator('.dish-row-shipped .entry-name').allInnerTexts();
   check(
-    JSON.stringify(countries.map((t) => t.trim())) ===
-      JSON.stringify(['Germany, 1 dish', 'Italy, 1 dish', 'France, 0 dishes', 'Spain, 0 dishes']),
-    `${label}: the four countries with their counts (${countries.join(' | ')})`,
+    JSON.stringify(shown) === JSON.stringify([PAN.name.en, SECOND.name.en]),
+    `${label}: Start lists the shipped dishes (${shown.join(' | ')})`,
   );
   await layout(page, `${label} start`);
 
-  // Country list, and an empty country.
-  await page.getByRole('link', { name: 'France, 0 dishes' }).click();
-  await heading(page, 'France').waitFor();
+  // The old address of an empty country: the list says nothing fits and offers Show all.
+  await openWith(page, origin, 'classics/fr');
+  await heading(page, 'Dishes').waitFor();
+  // Until the catalogue is read the list only says it is reading; then it says nothing fits.
+  await page.locator('.dish-rows .empty').waitFor();
   check(
-    (await page.locator('.empty-country').count()) === 1,
-    `${label}: an empty country shows a quiet empty state`,
+    (await page.locator('.dish-rows .empty').innerText()) === 'No dish fits these choices.' &&
+      (await page
+        .getByLabel('Cuisine', { exact: true })
+        .locator('option:checked')
+        .textContent()) === 'French',
+    `${label}: an empty country shows a quiet empty state, the country named`,
   );
-  await page.goBack();
-  await page.getByRole('link', { name: 'Germany, 1 dish' }).click();
-  await heading(page, 'Germany').waitFor();
-  const row = (await page.locator('.classic-link').innerText()).replace(/\s+/g, ' ');
+  await openWith(page, origin, 'classics/de');
+  await heading(page, 'Dishes').waitFor();
+  const row = (await page.locator('.dish-row').innerText()).replace(/\s+/g, ' ');
   check(
     row.includes(PAN.name.en) &&
       row.includes('Main course') &&
-      row.includes('Without meat and fish'),
-    `${label}: the dish row has name, course and meat flag (${row})`,
+      row.includes('German') &&
+      !row.includes('Germany'),
+    `${label}: the dish row has name, course and cuisine (${row})`,
   );
   await layout(page, `${label} country`);
-  await page.getByRole('link', { name: 'Italy' }).count();
 
   // Dish view.
-  await page.locator('.classic-link').click();
+  await page.locator('.dish-row').click();
   await heading(page, PAN.name.en).waitFor();
   check(
     await page.getByText(`Original name: ${PAN.originalName}`).isVisible(),
     `${label}: the original name`,
   );
-  // The source and the second check are closed behind a tap, below the method.
-  for (const name of ['Source', 'Second check']) {
-    const summary = page.locator('.foot-block summary', { hasText: new RegExp(`^${name}$`) });
-    check(
-      (await summary.locator('..').getAttribute('open')) === null,
-      `${label}: ${name} is behind a tap`,
-    );
-    await summary.click();
-  }
+  check(
+    (await page.locator('.dish-quiet').innerText()).includes('Shipped with the app') &&
+      (await page
+        .locator('.classic-copy')
+        .getByRole('button', { name: 'Keep in my notebook' })
+        .count()) === 1,
+    `${label}: the quiet line names the origin, and the dish can be kept from its screen`,
+  );
+  // The source (with how it was checked and our remarks about it) is closed behind a tap, below the
+  // method. What we settled and the second check have no disclosure of their own any more.
+  const sourceSummary = page.locator('.foot-block summary', { hasText: /^Source$/ });
+  check(
+    (await sourceSummary.locator('..').getAttribute('open')) === null,
+    `${label}: Source is behind a tap`,
+  );
+  check(
+    (await page.locator('.settled-block, .check-block').count()) === 0,
+    `${label}: no disclosure holds only maintainer texts (settled reasons, check notes)`,
+  );
+  const lineText = (await page.locator('.recipe-block').first().innerText()).replace(/\s+/g, ' ');
+  check(
+    !lineText.includes('Example-measures') && !lineText.includes('Invented example'),
+    `${label}: the source's own wording and the remarks about the source are not in the lines`,
+  );
+  await sourceSummary.click();
   const text = await page.locator('.classic-card').innerText();
   check(
     text.includes(PAN.source.author) &&
@@ -138,33 +189,32 @@ const flow = async (browser, origin, width) => {
   const flat = lines.map((l) => l.replace(/\s+/g, ' '));
   check(
     flat.some((l) => l.includes('to taste')),
-    `${label}: a line without an amount says "to taste"`,
+    `${label}: a line without an amount says "to taste" where the data says so`,
   );
   check(
     flat.some((l) => l.includes('100 ml to 150 ml') && l.includes('settled by us')),
     `${label}: a range, marked as settled`,
   );
   check(
-    flat.some((l) => l.includes('(2 Example-measures)')),
-    `${label}: the source's own wording`,
+    !flat.some((l) => l.includes('(2 Example-measures)')),
+    `${label}: the source's own wording is not in the line (it is in the source section)`,
   );
   check(
     await page.getByText('Melt the fat over low heat. · 5 min').isVisible(),
     `${label}: the whole recipe is on this screen`,
   );
-  const settled = page.locator('.settled-block');
+  const sourceText = (await page.locator('.source-block').innerText()).replace(/\s+/g, ' ');
   check(
-    !((await settled.getAttribute('open')) !== null),
-    `${label}: what we settled is behind a tap`,
-  );
-  await settled.locator('summary').click();
-  check(
-    await settled.getByText('Amount of oil: 200 to 300 ml').isVisible(),
-    `${label}: the settled entry opens`,
+    sourceText.includes('Remarks on the source') &&
+      sourceText.includes('“2 Example-measures”') &&
+      sourceText.includes('Invented example: the source says to taste.'),
+    `${label}: the source section holds the source's own wording and the remarks about it`,
   );
   check(
-    await page.getByText('A second person read the same text.').isVisible(),
-    `${label}: the second check`,
+    sourceText.includes('A second person read the same text.') &&
+      !sourceText.includes('Example only: a real file says who read the page') &&
+      !sourceText.includes('the source says some'),
+    `${label}: how it was checked is one sentence; the maintainer texts are not shown`,
   );
   // Substitutes: a quiet button on a line that has some, opened under the line.
   const instead = page.getByRole('button', { name: 'Instead of Butter, salted' });
@@ -209,6 +259,7 @@ const flow = async (browser, origin, width) => {
   await page.getByRole('link', { name: 'Cook step by step' }).click();
   await heading(page, PAN.name.en).waitFor();
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check((await page.locator('.cook-step-text').count()) === 1, `${label}: one step on the screen`);
   check(await page.getByText('Time: 5 min').isVisible(), `${label}: the time of the step`);
   check(
@@ -261,6 +312,14 @@ const flow = async (browser, origin, width) => {
     `${label}: the rule's level and source`,
   );
   await layout(page, `${label} step 1`);
+  await cookBar(page, `${label} step 1 (two notes make it tall)`);
+  const cookText = (await page.locator('.cook-steps').innerText()).replace(/\s+/g, ' ');
+  check(
+    !cookText.includes('Example-measures') &&
+      !cookText.includes('Invented example') &&
+      !cookText.includes('Remarks on the source'),
+    `${label}: no remark about the source and no original wording in cooking mode`,
+  );
   await page.getByRole('button', { name: 'Next' }).click();
   await step(page, 2, 3).waitFor();
   check(
@@ -293,6 +352,7 @@ const flow = async (browser, origin, width) => {
     `${label}: a substitute without a factor shows only what the source says`,
   );
   await layout(page, `${label} step 2`);
+  await cookBar(page, label);
   const box = await page.getByRole('button', { name: 'Next' }).boundingBox();
   check(
     box.height >= 44 && box.width >= 100,
@@ -300,6 +360,7 @@ const flow = async (browser, origin, width) => {
   );
   await page.getByRole('button', { name: 'Back' }).click();
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(true, `${label}: Back returns to step 1`);
   await page.locator('.cook-whole summary').click();
   check(
@@ -368,6 +429,7 @@ const flow = async (browser, origin, width) => {
   // The next dish: the learned technique has no note; a wanted line explains why it cannot be kept.
   await openWith(page, origin, `classic/${SECOND.id}/cook`);
   await step(page, 1, 2).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.getByRole('heading', { name: NOTE }).count()) === 0,
     `${label}: the learned skill's note is not shown on the next dish`,
@@ -408,6 +470,7 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${SECOND.id}/cook`);
   await step(page, 1, 2).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.getByRole('heading', { name: NOTE }).count()) === 1,
     `${label}: the note shows again after Teach again`,
@@ -432,6 +495,7 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${PAN.id}/cook`);
   await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.locator('.handling-note').count()) === 0,
     `${label}: the rule is gone on another dish too`,
@@ -448,6 +512,8 @@ const flow = async (browser, origin, width) => {
   await page.getByRole('button', { name: `Teach again: ${TECHNIQUE.name.en}` }).click();
   await page.getByText(`The note for ${TECHNIQUE.name.en} is shown again.`).waitFor();
   await openWith(page, origin, `classic/${PAN.id}/cook`);
+  await step(page, 1, 3).waitFor();
+  await catalogueDrawn(page);
   check(
     (await page.locator('.handling-note').count()) === 1,
     `${label}: Teach again brings the rule back`,
@@ -463,6 +529,11 @@ const flow = async (browser, origin, width) => {
   );
   await openWith(page, origin, `classic/${PAN.id}`);
   await heading(page, PAN.name.de).waitFor();
+  check(
+    !(await page.getByText('Ein erfundenes Beispiel, kein Rezept.').isVisible()),
+    `${label}: the note on the dish is not among the ingredients (it is in the source section)`,
+  );
+  await page.locator('.source-block summary').click();
   check(
     await page.getByText('Ein erfundenes Beispiel, kein Rezept.').isVisible(),
     `${label}: dish texts follow the content language`,
@@ -481,7 +552,7 @@ const flow = async (browser, origin, width) => {
   await page.waitForFunction(() => document.documentElement.lang === 'en');
   await openWith(page, origin, `classics/it`);
   check(
-    (await page.locator('.classic-link').innerText()).includes(SECOND.name.en),
+    (await page.locator('.dish-row').innerText()).includes(SECOND.name.en),
     `${label}: Follow device shows English here`,
   );
   await layout(page, `${label} dish (German list reset)`);
@@ -502,10 +573,11 @@ const empty = async (browser, origin) => {
   );
   await page.goto(`${origin}/?no-sw#/start`);
   await heading(page, START).waitFor();
-  await page.getByRole('link', { name: /^Germany/ }).click();
-  await heading(page, 'Germany').waitFor();
+  // Until the catalogue is read the list only says it is reading.
+  await page.locator('.dish-rows .empty').waitFor();
   check(
-    (await page.locator('.empty-country').count()) === 1,
+    (await page.locator('.dish-row').count()) === 0 &&
+      (await page.locator('.dish-rows .empty').count()) === 1,
     `${label}: the app works with zero dishes`,
   );
   await page.goto(`${origin}/?no-sw#/classic/nothing`);
@@ -523,8 +595,46 @@ const empty = async (browser, origin) => {
   await context.close();
 };
 
+// A source that is a printed book: the shipped pot-au-feu, whose step 4 names "Starting a stock
+// cold", a note that rests on two books. A book is text with its ISBN, not a link.
+const bookSource = async (browser, origin) => {
+  const label = 'a note that rests on books';
+  const { context, page, problems } = await fresh(browser, origin, 360);
+  await page.goto(`${origin}/?no-sw#/classic/pot-au-feu`);
+  await heading(page, 'Pot-au-feu (small pot)').waitFor();
+  await page.getByRole('link', { name: 'Cook step by step' }).click();
+  await step(page, 1, 20).waitFor();
+  for (let n = 2; n <= 4; n += 1) {
+    await page.getByRole('button', { name: 'Next' }).click();
+    await step(page, n, 20).waitFor();
+  }
+  check(
+    await page.getByRole('heading', { name: 'Technique: Starting a stock cold' }).isVisible(),
+    `${label}: the step where the water goes in shows the note`,
+  );
+  await page.locator('.technique-more summary').click();
+  const items = await page.locator('.technique-sources li').allInnerTexts();
+  check(
+    items.length === 2 && items.every((t) => t.startsWith('Textbook · ')),
+    `${label}: two sources, each with its level (${items.length})`,
+  );
+  check(
+    items.some((t) => t.includes('McGee') && t.endsWith('(ISBN 9780340831496)')) &&
+      items.some((t) => t.includes('Der junge Koch') && t.endsWith('(ISBN 9783805708388)')),
+    `${label}: each book is named with the ISBN of the edition read`,
+  );
+  check(
+    (await page.locator('.technique-sources a').count()) === 0,
+    `${label}: a book is text, not a link`,
+  );
+  await layout(page, label);
+  check(problems.length === 0, `${label}: no console or request problem ${problems.join('; ')}`);
+  await context.close();
+};
+
 export const classics = async (browser, server) => {
   await flow(browser, server.origin, 360);
   await flow(browser, server.origin, 1000);
   await empty(browser, server.origin);
+  await bookSource(browser, server.origin);
 };

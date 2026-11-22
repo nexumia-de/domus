@@ -18,6 +18,13 @@ sources:
 
 # Deployment
 
+**Replaced on 2026-11-19.** Culina is no longer deployed on its own. It
+is served from `domus.nexumia.de/culina/` together with the other apps,
+and `culina.nexumia.de` redirects there
+([deployment of the repository](../../../docs/deployment.md)). The
+worker `culina`, its `wrangler.jsonc` and the deploy job below describe
+the time before.
+
 Every push to `main` that passed `check` and `e2e` is deployed to
 `culina.nexumia.de` by the job `deploy` of `.github/workflows/ci.yml`. The
 host is Cloudflare Workers static assets[^cf-assets]; it is an adapter, not a

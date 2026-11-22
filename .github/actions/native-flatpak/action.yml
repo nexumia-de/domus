@@ -1,0 +1,78 @@
+# The Flatpak of a native Linux app for one architecture, after checkout. The
+# reusable workflow of phosh-toolkit is not used: it checks the repository out
+# and builds in it, with no step before it, so a bundle that npm builds cannot
+# reach the offline build, and its REUSE gate needs files this repository does
+# not have (no REUSE.toml, no docs/dependencies.md). Same tooling and steps
+# otherwise. Used by emptio-flatpak, mixtura-flatpak and culina-flatpak.
+name: Native app Flatpak
+description: Builds the Flatpak of a native app with flatpak-builder, checks the licence files and writes the bundles.
+inputs:
+  app-id:
+    description: Application id, e.g. de.nexumia.Emptio.
+    required: true
+  directory:
+    description: Folder of the native package, e.g. apps/emptio/packages/linux.
+    required: true
+  arch:
+    description: x86_64 or aarch64.
+    required: true
+  bundle-artifact:
+    description: Name of the bundle artifact the check job uploaded.
+    required: true
+  licence-dirs:
+    description: Space-separated folders under /app/share/licenses/<app id> that must hold a licence file.
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      with:
+        name: ${{ inputs.bundle-artifact }}
+        path: ${{ inputs.directory }}/dist
+    - name: Install Flatpak tooling
+      shell: bash
+      run: |
+        apt=(sudo env DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=120)
+        "${apt[@]}" update -q
+        # librsvg2-common: the SVG pixbuf loader "appstreamcli compose" needs
+        # for the icon; elfutils: eu-strip. Both are only Recommends.
+        "${apt[@]}" install -y -q --no-install-recommends \
+          flatpak flatpak-builder librsvg2-common elfutils
+        # Ubuntu 24.04 restricts the user namespaces bubblewrap needs.
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+        flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    - name: Build
+      shell: bash
+      run: |
+        flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse \
+          --force-clean --arch=${{ inputs.arch }} --bundle-sources --repo=repo \
+          build-dir ${{ inputs.directory }}/${{ inputs.app-id }}.yml
+    - name: Check licence files
+      shell: bash
+      env:
+        APP_ID: ${{ inputs.app-id }}
+        DIRS: ${{ inputs.licence-dirs }}
+      run: |
+        for dir in $DIRS; do
+          files=$(find "build-dir/files/share/licenses/$APP_ID/$dir" -mindepth 1 -printf '%P ' 2>/dev/null || true)
+          [ -n "$files" ] || { echo "::error::No licence files in /app/share/licenses/$APP_ID/$dir"; exit 1; }
+          echo "$dir: $files"
+        done
+    - name: Bundle
+      shell: bash
+      env:
+        APP_ID: ${{ inputs.app-id }}
+      run: |
+        flatpak build-bundle --arch=${{ inputs.arch }} \
+          --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
+          repo "$APP_ID-${{ inputs.arch }}.flatpak" "$APP_ID"
+        flatpak build-bundle --arch=${{ inputs.arch }} --runtime \
+          repo "$APP_ID-sources-${{ inputs.arch }}.flatpak" "$APP_ID.Sources"
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: ${{ inputs.app-id }}-${{ inputs.arch }}
+        path: |
+          ${{ inputs.app-id }}-${{ inputs.arch }}.flatpak
+          ${{ inputs.app-id }}-sources-${{ inputs.arch }}.flatpak
+        retention-days: 14
+        if-no-files-found: error

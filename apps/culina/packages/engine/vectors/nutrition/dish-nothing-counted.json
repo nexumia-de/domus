@@ -75,7 +75,12 @@
         }
       ]
     },
-    "notReported": []
+    "notReported": [],
+    "shown": {
+      "figures": false,
+      "why": "nothing-counted",
+      "lines": []
+    }
   },
   "tolerance": 1e-9,
   "source": "Invented for this vector: the figures per 100 g are made up and describe no real food; expected values computed by hand."

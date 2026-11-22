@@ -5,7 +5,7 @@
 import type { Lang } from '@culina/engine';
 
 /** The language entries of a record, as the ingredient schema defines them. */
-export type NamesByLanguage = Record<string, { name: string; aliases?: string[] }>;
+export type NamesByLanguage = Record<string, { name: string; aliases?: string[]; source?: string }>;
 
 export interface Named {
   name: string;

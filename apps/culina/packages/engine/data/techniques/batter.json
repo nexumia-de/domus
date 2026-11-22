@@ -9,8 +9,8 @@
     "de": "Manchmal wird das Gargut vor dem Eintauchen in den Backteig mit Mehl bestäubt."
   },
   "why": {
-    "en": "A batter coating is smoother than breading and absorbs less oil.",
-    "de": "Ein Teigmantel ist glatter als Panade und nimmt weniger Öl auf."
+    "en": "A batter coating is smoother than breading and absorbs less oil. It stands between the food and the oil and dries into the crisp crust.",
+    "de": "Ein Teigmantel ist glatter als Panade und nimmt weniger Öl auf. Er steht zwischen Gargut und Öl und trocknet zur knusprigen Kruste."
   },
   "level": "textbook",
   "sources": [
@@ -18,15 +18,21 @@
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 8.1 Frying Methods, section Batters and Breading",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/08%3A_Frying/8.01%3A_Frying_Methods",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Items are sometimes dusted in flour before being battered."
     },
     {
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 8.1 Frying Methods, section Batters and Breading",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/08%3A_Frying/8.01%3A_Frying_Methods",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Batter coatings are smoother and have less surface area than most breaded coatings, so they tend to absorb less cooking oil."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Breadings and Batters, p. 162",
+      "isbn": "9780340831496",
+      "sentence": "These coatings do not “seal in” moisture."
     }
   ]
 }

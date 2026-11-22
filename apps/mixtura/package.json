@@ -10,8 +10,8 @@
   },
   "scripts": {
     "build": "npm run build -w @mixtura/engine && npm run build -w @mixtura/app",
-    "test": "npm test -w @mixtura/engine && npm test -w @mixtura/app",
-    "typecheck": "npm run typecheck -w @mixtura/engine && npm run typecheck -w @mixtura/app",
+    "test": "npm test -w @mixtura/engine && npm test -w @mixtura/app && npm test -w @mixtura/linux",
+    "typecheck": "npm run typecheck -w @mixtura/engine && npm run typecheck -w @mixtura/app && npm run typecheck -w @mixtura/linux",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

@@ -1,6 +1,6 @@
 // Skill state is a store kind: one personal record per technique, in the row shape of every kind;
-// a database from before it existed gets the new object store and keeps its rows; the export and
-// import of the other kinds leave it alone.
+// a database from before it existed gets the new object store and keeps its rows; a replace that
+// does not name the kind (a file older than format 3) leaves it alone.
 import type { IDBFactory } from 'fake-indexeddb';
 import { describe, expect, test } from 'vitest';
 import { skillRecord } from '@culina/engine';
@@ -61,7 +61,7 @@ describe('the skills kind', () => {
     expect(await store.list('skills')).toEqual({ ok: true, records: [] });
   });
 
-  test('replacing the notebook from an export file leaves the skills as they are', async () => {
+  test('replacing the notebook with records that name no skills leaves the skills as they are', async () => {
     const store = await open();
     await store.put('skills', skillRecord('melting', true));
     const none = {
@@ -81,10 +81,10 @@ describe('the skills kind', () => {
     expect(await store.list('ingredients')).toEqual({ ok: true, records: [ONION] });
   });
 
-  test('a skill change is no unexported change for the backup reminder', async () => {
+  test('a skill change is an unexported change for the backup reminder (in the file since format 3)', async () => {
     const store = await open();
     await store.put('skills', skillRecord('melting', true));
-    expect(await changeSpan(store)).toEqual({});
+    expect(await changeSpan(store)).toEqual({ first: T1, last: T1 });
   });
 });
 

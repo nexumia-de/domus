@@ -42,8 +42,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "As much flour as the eggs and milk take up. The source gives no amount.",
-            "de": "So viel Mehl, wie Eier und Milch aufnehmen. Die Quelle nennt keine Menge."
+            "en": "As much flour as the eggs and milk take up.",
+            "de": "So viel Mehl, wie Eier und Milch aufnehmen."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -95,8 +99,12 @@
             "id": "fdc-group-butter"
           },
           "note": {
-            "en": "Browned butter for serving. The source gives no amount.",
-            "de": "Gebräunte Butter zum Servieren. Die Quelle nennt keine Menge."
+            "en": "Browned butter for serving.",
+            "de": "Gebräunte Butter zum Servieren."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         }
       ],
@@ -106,6 +114,7 @@
             "en": "Put the flour into a dish and make a hollow in the middle.",
             "de": "Das Mehl in eine Schüssel geben und in der Mitte eine Mulde formen."
           },
+          "action": "prepare",
           "uses": ["flour"]
         },
         {
@@ -113,6 +122,7 @@
             "en": "Add the eggs and the milk and stir with a knife to a light dough.",
             "de": "Eier und Milch zugeben und mit einem Messer zu einem lockeren Teig rühren."
           },
+          "action": "mix",
           "uses": ["egg", "milk", "flour"]
         },
         {
@@ -126,7 +136,7 @@
         {
           "text": {
             "en": "Cut the dough into four parts and roll each part as thin as paper.",
-            "de": "Den Teig in vier Teile schneiden und jedes Teil so dünn wie Papier ausrollen."
+            "de": "Den Teig in vier Stücke schneiden und jedes Stück so dünn wie Papier ausrollen."
           },
           "technique": "roll-dough",
           "uses": ["flour"]
@@ -135,7 +145,8 @@
           "text": {
             "en": "Set the sheets aside to dry.",
             "de": "Die Teigplatten zum Trocknen beiseitelegen."
-          }
+          },
+          "action": "dry"
         },
         {
           "text": {
@@ -156,7 +167,8 @@
           "text": {
             "en": "Let the strips dry, or use them at once.",
             "de": "Die Streifen trocknen lassen oder sofort verwenden."
-          }
+          },
+          "action": "dry"
         },
         {
           "text": {
@@ -175,6 +187,7 @@
             "en": "Drain the noodles in a colander and pour boiling water through them.",
             "de": "Die Nudeln in einem Sieb abtropfen lassen und mit kochendem Wasser übergießen."
           },
+          "action": "drain",
           "uses": ["water"]
         },
         {
@@ -182,6 +195,7 @@
             "en": "Serve with browned butter.",
             "de": "Mit gebräunter Butter servieren."
           },
+          "action": "serve",
           "uses": ["butter"]
         }
       ]

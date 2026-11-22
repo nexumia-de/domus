@@ -4,7 +4,7 @@
 // sheet-actions.ts, saving in commit.ts.
 
 import { lineRole, type Role } from '@mixtura/engine';
-import { showToast } from '../../toasts';
+import { say } from '../../shell/frame';
 import { checkLine } from './check';
 import { emptyLine, insertLine, moveLine, removeLine, updateLine, withTemplate } from './draft';
 import { withUnit } from './amount-entry';
@@ -155,7 +155,7 @@ export function removeSubstitute(ctx: Ctx, key: string, index: number): void {
   );
   ctx.session.focus = `menu-${key}`;
   const name = ctx.model.ingredientName(sub.ingredientId) ?? sub.ingredientId;
-  showToast(ctx.store, t.substitute.removed(name), () => {
+  say(t.substitute.removed(name), () => {
     change(
       ctx,
       key,
@@ -191,7 +191,7 @@ export function remove(ctx: Ctx, key: string): void {
   ctx.session.menu = null;
   changed(ctx, true);
   const name = ctx.model.ingredientName(line.ingredientId) ?? t.emptySlot;
-  showToast(ctx.store, t.removed(name), () => {
+  say(t.removed(name), () => {
     ctx.session.draft = insertLine(ctx.session.draft, line, at);
     changed(ctx, true);
   });

@@ -1,6 +1,6 @@
 {
   "id": "round-trip-everything",
-  "description": "Three versions of a component, a variation, a dish, stock, ingredients and two tasting notes survive build, text and parse unchanged",
+  "description": "Three versions of a component, a variation, a dish, ingredients and two tasting notes survive build, text and parse unchanged",
   "inputs": {
     "kind": "export_round_trip",
     "records": {
@@ -170,20 +170,6 @@
           }
         }
       ],
-      "stock": [
-        {
-          "id": "u-00000000-0000-4000-8000-00000000001e",
-          "ref": {
-            "kind": "ingredient",
-            "id": "u-00000000-0000-4000-8000-000000000001"
-          },
-          "amount": {
-            "value": 1000,
-            "unit": "g"
-          },
-          "state": "raw"
-        }
-      ],
       "tastings": [
         {
           "id": "u-00000000-0000-4000-8000-000000000028",
@@ -203,18 +189,30 @@
           "date": "2026-11-10",
           "text": "Glossy"
         }
+      ],
+      "skills": [
+        {
+          "id": "skill-fold-in",
+          "technique": "fold-in",
+          "learned": false
+        },
+        {
+          "id": "skill-pan-fry",
+          "technique": "pan-fry",
+          "learned": true
+        }
       ]
     },
     "exportedAt": "2026-11-18T08:00:00Z"
   },
   "expected": {
-    "kinds": ["ingredients", "components", "dishes", "stock", "tastings"],
+    "kinds": ["ingredients", "components", "dishes", "tastings", "skills"],
     "counts": {
       "ingredients": 2,
       "components": 4,
       "dishes": 1,
-      "stock": 1,
-      "tastings": 2
+      "tastings": 2,
+      "skills": 2
     },
     "fileName": "cooks-notebook-2026-11-18.json"
   },

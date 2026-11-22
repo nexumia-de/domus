@@ -49,7 +49,7 @@ const fromRatio = async (page, origin) => {
   await page.getByLabel('Name', { exact: true }).fill('From a ratio');
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   check(
-    (await page.locator('.editor-end .hint').innerText()).includes(
+    (await page.locator('.line-edit .field-error').first().innerText()).includes(
       'Choose an ingredient for line 1 to save it.',
     ),
     `${label}: saving says quietly that each line needs its ingredient`,
@@ -68,6 +68,22 @@ const dish = async (page, origin) => {
   await layout(page, `${label} (empty)`);
   await page.getByLabel('Name', { exact: true }).fill('My plate');
   await page.getByLabel('Portions', { exact: true }).fill('3');
+  const course = page.getByLabel('Course', { exact: true });
+  const cuisine = page.getByLabel('Cuisine', { exact: true });
+  const kindBoxes = [await course.boundingBox(), await cuisine.boundingBox()];
+  const firstChoices = [
+    await course.locator('option').first().textContent(),
+    await cuisine.locator('option').first().textContent(),
+  ];
+  check(
+    kindBoxes.every((b) => b !== null && b.height >= 44 && b.x + b.width <= 360) &&
+      same(firstChoices, ['Not stated', 'Not stated']) &&
+      (await course.inputValue()) === '' &&
+      (await cuisine.inputValue()) === '',
+    `${label}: Course and Cuisine are selects of 44 px that start at "Not stated" (${JSON.stringify(kindBoxes)})`,
+  );
+  await course.selectOption({ label: 'Main course' });
+  await cuisine.selectOption({ label: 'Italian' });
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill('herb oil');
   await page.getByRole('button', { name: /Example: Herb oil/ }).click();
@@ -76,9 +92,34 @@ const dish = async (page, origin) => {
   await page.getByRole('button', { name: 'Add a slot' }).click();
   await page.getByLabel('Search your notebook').fill('parsley');
   await page.getByRole('button', { name: 'Parsley', exact: true }).click();
+  // The cook's correction of the characters: a tick per character; one no rule gives is added.
+  const creamy = page.locator('.dish-characters-edit input[data-character="creamy"]');
+  const tickBox = await creamy.boundingBox();
+  check(
+    (await page.locator('.dish-characters-edit input[type="checkbox"]').count()) > 10 &&
+      !(await creamy.isChecked()) &&
+      tickBox !== null &&
+      tickBox.height >= 44 &&
+      tickBox.width >= 44 &&
+      (await page.locator('.character-reset').isHidden()),
+    `${label}: "What it is like" has a tick of 44 px per character, creamy not ticked for this plate, nothing to reset (${JSON.stringify(tickBox)})`,
+  );
+  await creamy.check();
+  check(
+    (await page.locator('.character-tick[data-corrected="added"]').textContent())?.includes(
+      'added by you',
+    ) === true &&
+      (await creamy.evaluate((n) => n === document.activeElement)) &&
+      (await page.locator('.character-reset').isVisible()),
+    `${label}: a ticked character no rule gives says "added by you", keeps the focus and can be reset`,
+  );
   await layout(page, `${label} (two slots)`);
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'My plate' }).waitFor();
+  check(
+    (await page.locator('.character-chip[data-character="creamy"]').count()) === 1,
+    `${label}: the dish screen shows the added character as a chip`,
+  );
   const [stored] = (await listStore(page, 'dishes')).filter((d) => d.name === 'My plate');
   check(
     stored.portions === 3 &&
@@ -90,6 +131,18 @@ const dish = async (page, origin) => {
       stored.slots[1].ref.id === 'parsley' &&
       stored.version.family === stored.id,
     `${label}: the dish stores its slots, the component with 15 g per portion`,
+  );
+  check(
+    stored.course === 'main' &&
+      stored.cuisine === 'it' &&
+      same(stored.characters, { add: ['creamy'] }),
+    `${label}: the dish stores course "main", cuisine "it" and the added character (${stored.course}, ${stored.cuisine}, ${JSON.stringify(stored.characters)})`,
+  );
+  // The one quiet line of both origins: course, cuisine, the meat flag where it is known, the origin.
+  const kindLine = (await page.locator('.dish-quiet').textContent())?.trim();
+  check(
+    kindLine?.startsWith('Main course · Italian') === true && kindLine.endsWith('In my notebook'),
+    `${label}: the dish screen shows course and cuisine in one quiet line (${kindLine})`,
   );
   const rows = await page
     .locator('.slots-table tbody tr')
@@ -106,6 +159,16 @@ const dish = async (page, origin) => {
   check(
     (await page.getByLabel('Name', { exact: true }).inputValue()) === 'My plate',
     `${label}: Edit opens the stored dish`,
+  );
+  check(
+    (await page.getByLabel('Course', { exact: true }).inputValue()) === 'main' &&
+      (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === 'it',
+    `${label}: Edit reads course and cuisine back into the selects`,
+  );
+  check(
+    (await page.locator('.dish-characters-edit input[data-character="creamy"]').isChecked()) &&
+      (await page.locator('.character-tick[data-corrected]').count()) === 1,
+    `${label}: Edit reads the correction back: creamy ticked and marked as the one correction`,
   );
   await page.getByRole('button', { name: 'Move down, Line 1, Example: Herb oil' }).click();
   check(

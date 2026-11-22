@@ -47,7 +47,7 @@ const shot = (name) =>
 const open = async (address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const settle = () => page.waitForTimeout(450);
 /** Back from a sheet is a history move; wait until the address has caught up. */
@@ -60,7 +60,7 @@ const dump = () =>
         request.onerror = () => rej(request.error);
         request.onsuccess = () => {
           const db = request.result;
-          const names = ['specs', 'ingredients', 'drafts', 'stock', 'templates', 'affinities'];
+          const names = ['specs', 'ingredients', 'drafts', 'templates', 'affinities'];
           const tx = db.transaction(names);
           const out = {};
           let left = names.length;

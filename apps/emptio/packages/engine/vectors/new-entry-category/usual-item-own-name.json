@@ -1,0 +1,6 @@
+{
+  "kind": "new-entry-category",
+  "title": "An item of its own wins over the item it ends with: Zahnpasta is not pasta",
+  "input": { "name": "Zahnpasta", "earlier": [] },
+  "expected": { "categoryId": "care" }
+}

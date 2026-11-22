@@ -12,7 +12,7 @@ import { today } from '../../today';
 import { deriveStock, drinkCounts } from '../../stock/derived';
 import { changeStock, stockState, withPresent, type StockChange } from '../../stock/state';
 import { strings } from '../../strings';
-import { showToast } from '../../toast';
+import { say } from '../../shell/frame';
 import { browseState } from '../browse/load';
 import type { BrowseModel } from '../browse/model';
 import { failedStatus, loadingStatus } from '../drinks/pane';
@@ -20,8 +20,8 @@ import { status } from '../status';
 import { COMMON_STOCK } from './common';
 import { batchesFocus, batchesSheet, openBatches } from './batches-sheet';
 import { createOpen, createSheet, openCreate } from './create-sheet';
-import { placesLine } from './places-line';
-import { placesFocus, placesSheet } from './places-sheet';
+import { spacesLine } from './spaces-line';
+import { spacesFocus, spacesSheet } from './spaces-sheet';
 import { stillPresent } from './still-present';
 import { nearDateCard } from './near-date';
 import {
@@ -90,7 +90,7 @@ export function stockView(context: ScreenContext): ScreenView {
   }
   const { model } = browse;
   const { records, entryRecords, writable } = state;
-  const entryName = state.selection.places.find((p) => p.id === state.selection.entry)?.name ?? '';
+  const entryName = state.selection.spaces.find((p) => p.id === state.selection.entry)?.name ?? '';
   const q = (context.route.query.get('q') ?? '').trim();
   const show = parseShow(context.route.query.get('show'));
   const roots = buildStockTree(
@@ -106,16 +106,16 @@ export function stockView(context: ScreenContext): ScreenView {
   const toMark = markTargets(view.matches);
   const toClear = clearTargets(view.matches);
 
-  // A mark in the combined view goes to the entry place; when another place still has the
+  // A mark in the combined view goes to the entry space; when another space still has the
   // ingredient the check mark stays, and the toast says why.
   const apply = (changes: StockChange[], text: string, off: readonly string[] = []): void => {
     const undo = changeStock(context, changes);
     const stays = stillPresent(stockState(context), off);
     const said = stays.length === 0 ? text : `${text}. ${stays.text}`;
-    if (undo.length > 0) showToast(context.store, said, () => changeStock(context, undo));
-    else if (stays.length > 0) showToast(context.store, stays.text);
+    if (undo.length > 0) say(said, () => changeStock(context, undo));
+    else if (stays.length > 0) say(stays.text);
   };
-  // The check box shows the combined state and always acts on the entry place's own record.
+  // The check box shows the combined state and always acts on the entry space's own record.
   const toggle = (node: StockNode): void => {
     if (!writable) return;
     const own = entryRecords.get(node.id)?.present === true;
@@ -123,7 +123,7 @@ export function stockView(context: ScreenContext): ScreenView {
     const text = !on
       ? strings.stock.markedOut(node.name)
       : node.present
-        ? strings.places.addedAt(entryName)
+        ? strings.spaces.addedAt(entryName)
         : node.children.length > 0
           ? strings.stock.markedType(node.name)
           : strings.stock.marked(node.name);
@@ -180,7 +180,7 @@ export function stockView(context: ScreenContext): ScreenView {
     'div',
     { class: 'stack stock-screen' },
     views('stock'),
-    placesLine(context, state),
+    spacesLine(context, state),
     summary(model, context, present),
     nearDateCard(nearDate(model.tree, model.preparedSpecs, records, today()), (id) =>
       openBatches(context, id),
@@ -252,7 +252,7 @@ export function stockView(context: ScreenContext): ScreenView {
           writable,
           toggle,
           batches: (node) => openBatches(context, node.id),
-          places: (node) => openBatches(context, node.id, 'places'),
+          spaces: (node) => openBatches(context, node.id, 'spaces'),
           expand: (node) => {
             if (expanded.has(node.id)) expanded.delete(node.id);
             else expanded.add(node.id);
@@ -260,11 +260,11 @@ export function stockView(context: ScreenContext): ScreenView {
           },
         }),
     batchesSheet(context, model, state),
-    placesSheet(context, writable),
+    spacesSheet(context, writable),
     createSheet(context, model),
   );
   batchesFocus(context, body);
-  placesFocus(context, body);
+  spacesFocus(context, body);
   if (createOpen(context) && !createWasOpen) {
     requestAnimationFrame(() => body.querySelector<HTMLElement>('[data-sheet]')?.focus());
   }

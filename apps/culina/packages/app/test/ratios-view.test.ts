@@ -6,6 +6,9 @@ import { shortRatio } from '../src/ratios/format';
 import { formatNumber } from '../src/shared/mass';
 import { parseEntry } from '../src/shared/parse';
 import { filterTemplates } from '../src/ratios/search';
+import { ratioRole, templateName, templateNote, templateSource } from '../src/ratios/names';
+import { stringsDe, stringsEn } from '../src/strings';
+import { must } from './must';
 
 const root = (id: string, name: string): RatioTemplate => ({
   id,
@@ -121,9 +124,63 @@ test('short form in template order and trimmed numbers', () => {
     ]),
   ).toEqual({
     numbers: '3 : 2 : 1',
-    roles: 'flour : fat : water',
+    roles: 'Flour : Fat : Water',
   });
   expect(formatNumber(55.6)).toBe('55.6');
   expect(formatNumber((100 * 55.6) / 100)).toBe('55.6');
   expect(formatNumber(2.95)).toBe('2.95');
+});
+
+// The shipped ratios in the user's language: names, notes and role words from the strings, the source
+// as author, title and page (never the repository pointer).
+
+test('every shipped ratio has an English and a German name, and a role word for each role', () => {
+  const ids = SEED_TEMPLATES.map((t) => t.id).sort();
+  expect(Object.keys(stringsEn.ratios.seed).sort()).toEqual(ids);
+  expect(Object.keys(stringsDe.ratios.seed).sort()).toEqual(ids);
+  for (const t of SEED_TEMPLATES) {
+    expect(stringsEn.ratios.seed[t.id]?.name, t.id).toBe(t.name);
+    // "Vinaigrette" is the same word in both languages.
+    if (t.id !== 'vinaigrette') expect(stringsDe.ratios.seed[t.id]?.name, t.id).not.toBe(t.name);
+  }
+  const roles = new Set(
+    SEED_TEMPLATES.flatMap((t) => [
+      ...(t.parts ?? []).map((p) => p.role),
+      ...(t.changes ?? []).flatMap((c) => (c.op === 'swap' ? [] : [c.role])),
+    ]),
+  );
+  for (const role of roles) {
+    expect((stringsEn.roles as Record<string, string>)[role], `en ${role}`).toBeTruthy();
+    expect((stringsDe.roles as Record<string, string>)[role], `de ${role}`).toBeTruthy();
+    expect(ratioRole(role)).toBe((stringsEn.roles as Record<string, string>)[role]);
+  }
+  expect(stringsDe.roles.flour).toBe('Mehl');
+});
+
+test('the notes of the shipped ratios carry no id and no repository path, in both languages', () => {
+  const ids = new Set(SEED_TEMPLATES.map((t) => t.id));
+  for (const strings of [stringsEn, stringsDe]) {
+    for (const [id, entry] of Object.entries(strings.ratios.seed)) {
+      expect(entry.note ?? '', id).not.toMatch(/docs\/|\.md|excerpt/i);
+      for (const other of ids) expect(entry.note ?? '', id).not.toContain(other);
+    }
+  }
+});
+
+test('the source of a card is author, title and page; the repository pointer is never shown', () => {
+  for (const t of SEED_TEMPLATES) {
+    expect(t.references?.length, t.id).toBeGreaterThan(0);
+    expect(t.source, t.id).toMatch(/^docs\/ratios\.md/);
+    expect(templateSource(t), t.id).not.toContain('docs/');
+  }
+  const bread = must(SEED_TEMPLATES.find((t) => t.id === 'bread-dough-ratio'));
+  expect(templateSource(bread)).toBe('Source: Michael Ruhlman, Ratio, p. 17');
+  expect(stringsDe.ratios.reference('Michael Ruhlman', 'Ratio', '17')).toBe(
+    'Michael Ruhlman, Ratio, S. 17',
+  );
+  // A ratio of the user's own is shown as typed and has no source line.
+  const own = root('mine', 'My dough');
+  expect(templateName(own)).toBe('My dough');
+  expect(templateNote({ id: 'mine', note: 'As typed.' })).toBe('As typed.');
+  expect(templateSource(own)).toBeUndefined();
 });

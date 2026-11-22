@@ -1,6 +1,6 @@
 {
   "format": "culina-export",
-  "formatVersion": 1,
+  "formatVersion": 3,
   "exportedAt": "2026-11-17T12:00:00Z",
   "seedVersion": "0",
   "ingredients": [
@@ -9,12 +9,35 @@
       "name": "Onion",
       "parentId": "alliums",
       "roles": ["aromatic"],
-      "season": { "months": [8, 9, 10], "region": "own garden", "source": "user" },
+      "season": {
+        "months": [8, 9, 10],
+        "region": "own garden",
+        "source": "user"
+      },
       "allergens": [],
-      "yields": [{ "state": "raw", "percent": 90, "source": "user" }],
-      "shelfLife": [{ "state": "raw", "storage": "pantry", "days": 30, "source": "user" }],
-      "densityGPerMl": { "value": 0.6, "source": "user" },
-      "unitWeightG": { "value": 150, "source": "user" }
+      "yields": [
+        {
+          "state": "raw",
+          "percent": 90,
+          "source": "user"
+        }
+      ],
+      "shelfLife": [
+        {
+          "state": "raw",
+          "storage": "pantry",
+          "days": 30,
+          "source": "user"
+        }
+      ],
+      "densityGPerMl": {
+        "value": 0.6,
+        "source": "user"
+      },
+      "unitWeightG": {
+        "value": 150,
+        "source": "user"
+      }
     }
   ],
   "templates": [
@@ -24,9 +47,22 @@
       "anchor": "flour",
       "source": "ratios.md, Regulation (EU) 97/2010 (TSG Pizza Napoletana)",
       "parts": [
-        { "role": "flour", "parts": 100 },
-        { "role": "water", "parts": 56 },
-        { "role": "salt", "parts": 3, "range": { "min": 2.8, "max": 3.1 } }
+        {
+          "role": "flour",
+          "parts": 100
+        },
+        {
+          "role": "water",
+          "parts": 56
+        },
+        {
+          "role": "salt",
+          "parts": 3,
+          "range": {
+            "min": 2.8,
+            "max": 3.1
+          }
+        }
       ]
     }
   ],
@@ -38,27 +74,60 @@
       "percentBase": "flour",
       "lines": [
         {
-          "ref": { "kind": "ingredient", "id": "wheat-flour" },
-          "amount": { "value": 100, "unit": "percent" },
+          "ref": {
+            "kind": "ingredient",
+            "id": "wheat-flour"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "percent"
+          },
           "role": "flour"
         },
         {
-          "ref": { "kind": "ingredient", "id": "water" },
-          "amount": { "value": 60, "unit": "percent" },
+          "ref": {
+            "kind": "ingredient",
+            "id": "water"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "percent"
+          },
           "role": "water"
         },
         {
-          "ref": { "kind": "ingredient", "id": "salt" },
-          "amount": { "value": 2, "unit": "percent" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "salt"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "percent"
+          }
         },
         {
-          "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" },
-          "amount": { "value": 200, "unit": "g" }
+          "ref": {
+            "kind": "component",
+            "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          }
         }
       ],
-      "yield": { "amount": { "value": 1.7, "unit": "kg" }, "source": "user" },
+      "yield": {
+        "amount": {
+          "value": 1.7,
+          "unit": "kg"
+        },
+        "source": "user"
+      },
       "method": ["Mix, rest, fold, shape, bake."],
-      "version": { "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2", "date": "2026-11-17" }
+      "version": {
+        "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2",
+        "date": "2026-11-17"
+      }
     }
   ],
   "dishes": [
@@ -69,14 +138,30 @@
       "slots": [
         {
           "role": "main",
-          "ref": { "kind": "ingredient", "id": "carrot" },
-          "amount": { "value": 600, "unit": "g" }
+          "ref": {
+            "kind": "ingredient",
+            "id": "carrot"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          }
         },
         {
           "role": "sauce",
-          "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" }
+          "ref": {
+            "kind": "component",
+            "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3"
+          }
         },
-        { "role": "crunch", "ref": { "kind": "ingredient", "id": "hazelnut" }, "optional": true }
+        {
+          "role": "crunch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "hazelnut"
+          },
+          "optional": true
+        }
       ],
       "version": {
         "family": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
@@ -87,23 +172,15 @@
       }
     }
   ],
-  "stock": [
-    {
-      "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee1",
-      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee3" },
-      "amount": { "value": 400, "unit": "g" },
-      "state": "prepared",
-      "preparedOn": "2026-11-16",
-      "useBy": "2026-11-20"
-    }
-  ],
   "affinities": [
     {
       "id": "carrot-hazelnut",
       "a": "carrot",
       "b": "hazelnut",
       "strength": 2,
-      "context": { "technique": "roasting" },
+      "context": {
+        "technique": "roasting"
+      },
       "source": "user",
       "confidence": "low"
     }
@@ -111,9 +188,19 @@
   "tastings": [
     {
       "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee5",
-      "ref": { "kind": "component", "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2" },
+      "ref": {
+        "kind": "component",
+        "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee2"
+      },
       "date": "2026-11-18",
       "text": "Crumb open, crust good, needs a little more salt."
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-pan-fry",
+      "technique": "pan-fry",
+      "learned": true
     }
   ]
 }

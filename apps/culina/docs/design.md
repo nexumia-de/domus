@@ -113,14 +113,13 @@ each text node.
 System font stack `system-ui, -apple-system, 'Segoe UI', Roboto,
 'Helvetica Neue', Arial, sans-serif`; no web font, nothing loaded.
 
-| Token      | Size               | Use                                   |
-| ---------- | ------------------ | ------------------------------------- |
-| `--fs-xxs` | 0.675rem (10.8 px) | German navigation labels on the phone |
-| `--fs-xs`  | 0.75rem (12 px)    | Navigation labels on the phone        |
-| `--fs-sm`  | 0.875rem (14 px)   | Secondary text                        |
-| `--fs-md`  | 1rem (16 px)       | Body, side navigation, app name       |
-| `--fs-lg`  | 1.25rem (20 px)    | Screen headings                       |
-| `--fs-xl`  | 1.5rem (24 px)     | Reserved for a large empty headline   |
+| Token     | Size             | Use                                 |
+| --------- | ---------------- | ----------------------------------- |
+| `--fs-xs` | 0.75rem (12 px)  | Navigation labels on the phone      |
+| `--fs-sm` | 0.875rem (14 px) | Secondary text                      |
+| `--fs-md` | 1rem (16 px)     | Body, side navigation, app name     |
+| `--fs-lg` | 1.25rem (20 px)  | Screen headings                     |
+| `--fs-xl` | 1.5rem (24 px)   | Reserved for a large empty headline |
 
 Sizes are in `rem`, so the system's text size setting scales them.
 Weights: 400 body, 600 labels and summaries, 700 headings and the current
@@ -136,12 +135,27 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
   (every screen at 320, 360 and 1000 px).
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
-  header, one pane, **bottom navigation** (icon above label, sticky, 64 px
-  high; five entries, each as wide as its label needs, the rest shared, so
-  "Components" stays on one line at 320 px). From 720 px: **side navigation** (`--side-w` wide, icon beside
-  label) with the app name above it, content on the right at most
-  `--content-w` wide. **Test:** `e2e/smoke.mjs` (bottom bar at 360 px, side
-  column at 1000 px).
+  sticky header, one pane, **bottom navigation** (icon above label, sticky, 64 px
+  high). **Four destinations**, the usual three to five for a bottom bar:
+  Start, Cook, Notebook, Ratios (German Start, Kochen, Notizbuch,
+  Verhältnisse), each as wide as its one-word label needs, the rest shared.
+  Every label is on one line at 320 and 360 px, in the default font and in a
+  wide system font (DejaVu Sans on many Linux devices and on the CI runner), and is never cut
+  off, hidden, set smaller or wrapped; there are no soft hyphens (they were needed with six entries
+  and are gone with four). **Settings is a gear** at the right end of the
+  **header** (`--header-h` 56 px, the gear a `--target` square, named
+  "Settings" for assistive technology, marked `aria-current` on its screen), on
+  every screen. **Test:** `e2e/navigation.mjs` (also with the wide font,
+  [development](development.md#browser-checks-with-a-wide-font)), `e2e/german.mjs`.
+  From 720 px: **side navigation** (`--side-w` wide, icon beside
+  label) below the app name, with the same four destinations and Settings as its last
+  entry at the bottom of the rail (the header and the rail stay in view; the gear is
+  hidden there), content on the right at most `--content-w` wide. **Test:**
+  `e2e/smoke.mjs` (bottom bar at 360 px, side column at 1000 px), `e2e/navigation.mjs`.
+- **Parts of a destination.** The Notebook has two parts (components,
+  dishes), a row of equal links at the top of its screens (`.section-tabs`, bordered, 44 px high); the current one is
+  tinted, bold and has a bar, not colour alone, and the row is a group, not a
+  second navigation landmark.
 - **Touch targets at least 44 x 44 px**: navigation links, summaries and
   radio rows. **Test:** `e2e/smoke.mjs` measures them on every screen.
 - **Visible focus.** Every focusable element shows a `--focus-width`
@@ -171,8 +185,10 @@ its own. Rules of use: [behaviour](behaviour.md#ratios).
 # Component and dish screens
 
 Shared pieces (panes, fields, list rows, cards, tables, `num`) live in
-`common.css`; `notebook.css` adds the line, slot and raw tables (fixed
-layout, number columns of 5 to 6 rem), the small "component" tag (an outline,
+`common.css`; `notebook.css` adds the line, slot and raw tables (the number columns are as
+wide as their longest word needs, `width: 1%` in an auto layout, and never break
+inside a word, so "nach Geschmack" wraps between its words and a number stays with its unit at 320 and
+360 px; the name column takes the rest), the small "component" tag (an outline,
 no fill), the yield figures, the 44 px portion buttons and the open slot: a
 dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
@@ -181,13 +197,12 @@ warning token, and none was added. Rules of use:
 # Cook screens
 
 `#/cook`, `#/cook/use-up`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook)).
-Three view links at the top (14 px, 44 px high, the current one with a
-4 px bar of `--accent` and bold text), two selects for the filters, an
-entry list in the `.rows` style: name, kind and status as text, then the
-reason and the notes in muted text. No alarm colour; `styles/cook.css`.
-Below the own list the classics have their own h2 and two more selects
-(Country, Meat and fish, 44 px, in the same grid as the filters); their
-entries use the same row as an own dish.
+Three view links at the top (14 px, 44 px high, the current one with a 4 px
+bar of `--accent` and bold text; no row of parts above them), the one dish
+filter and the two selects of the finder (44 px, one grid), then two groups
+under an h2 each, "Dishes" (own and shipped) and "Components and ratios", in
+the `.rows` style: name, a quiet origin or kind word and status as text, then
+the reason and the notes in muted text. No alarm colour; `styles/cook.css`.
 Screenshots: `docs/screenshots/cook-*`.
 
 # Classics screens
@@ -195,15 +210,21 @@ Screenshots: `docs/screenshots/cook-*`.
 `#/start`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook`
 ([behaviour](behaviour.md#classics)). The navigation icon for Start is a bowl
 with a line of steam. Lists use the `.rows` style with 44 px rows. The recipe is
-a two-column grid per line: the amount (bold, left) and the name, with the
-source's wording, notes and "settled by us" in muted text below; no colour
+a two-column grid per line: the amount (bold, left, as wide as its longest word, at most 8 rem) and the name, with the
+cooking note and "settled by us" in muted text below; a line without an amount is its
+name alone from the left edge (`.recipe-line-bare`); the source's wording and the remarks about the
+source are not in the line (they are in Source); no colour
 carries a meaning. Cooking shows one step in `--fs-lg`, a progress bar in
-`--accent`, and Back and Next as 56 px buttons in a 1:2 grid; the technique note is a box with
+`--accent`, and Back and Next as 56 px buttons in a 1:2 grid **on a bar that
+sticks above the bottom navigation** (`.cook-buttons`: `--surface`, a `--border` line on top,
+`bottom: var(--nav-real-h)`, `--nav-real-h` being the measured height of the bar, which grows with
+two-line German labels); the technique note is a box with
 `--accent-soft` and a `--border` outline, its "why" behind a 44 px summary; a handling note is the same box under it, no louder. "Instead" is a quiet 44 px button in the second column of a line; its panel spans the line and holds one outlined card per replacement. The
 dish screen runs name, portions, ingredients, "Cook step by step", method, and
-then Nutrition per portion, Source, What we settled and Second check, each a closed `<details>`
+then Nutrition per portion and Source, each a closed `<details>`
 (`.foot-block`, 44 px summary) so that the ingredients are on the first screen
-at 360 x 720. The whole recipe is a `<details>` too. Nutrition is a two-column list (names left, numbers right, bold, a `--divider` line between rows) in plain text colour: no colour, bar or icon carries a meaning. Tokens only, in
+at 360 x 720; Source holds the one-line citation, the link, how it was checked and "Remarks on the source" as a
+plain list. What was left out of the nutrition is a second `<details>` inside it. The whole recipe is a `<details>` too. Nutrition is a two-column list (names left, numbers right, bold, a `--divider` line between rows) in plain text colour: no colour, bar or icon carries a meaning. Tokens only, in
 `styles/classics.css` and `styles/nutrition.css`. Screenshots: `docs/screenshots/classics-*`.
 
 # Stock screens
@@ -223,9 +244,13 @@ others `--surface` with a `--border` outline. A line or slot of the editor is
 a bordered card of the list-row family; the picker opens inside it. Percent
 lines show their unit as a fixed muted "%", with the grams they come to in
 `--text-muted` below. A value that cannot be stored gets the dashed outline
-of the number fields and a quiet sentence next to Save, never an alarm
-colour. The toast is a bordered `--surface` box with the accent bar, above the
-bottom navigation on a phone and in the corner from 720 px. No new token.
+of the number fields and a quiet sentence **at that field** (`.hint.field-error`, the left
+bar of the hint style, announced as an alert), never an alarm colour. Save and
+Discard are a bar that sticks above the bottom navigation (`.editor-bar`, `--surface`, a `--border`
+line on top, side by side at 360 px). The toast is a bordered `--surface` box with the accent bar, above the
+bottom navigation on a phone and in the corner from 720 px; it ends by itself after 10 s and when
+the user goes to another screen, and the page keeps room under its last row while it shows
+([behaviour](behaviour.md#toast-and-undo)). No new token.
 Rules of use: [behaviour](behaviour.md#editor).
 
 # Icons
@@ -236,9 +261,10 @@ round caps and joins, `currentColor` (so they follow the theme), no fill,
 `aria-hidden="true"` and `focusable="false"` because the label is visible
 beside them. An icon-only button, when one is added, gets an `aria-label`
 (`e2e/smoke.mjs` fails on any link, button, input or summary without a
-name). Navigation icons are in `src/icons/icons.ts`: Ratios (a ratio
-sign), Components (three layers), Dishes (a plate), Settings (two
-sliders). App icons are in `src/assets/`: `icon.svg` (rounded square,
+name; the gear in the header is such a button-like link and has one).
+Navigation icons are in `src/icons/icons.ts`: Start (a bowl), Cook (a pot), Notebook (an open
+book), Ratios (a ratio sign) and Settings (a gear with eight teeth, in the header on a phone
+and at the bottom of the side rail). App icons are in `src/assets/`: `icon.svg` (rounded square,
 Beet with a notebook and a bookmark), `icon-maskable.svg` (full bleed,
 content inside the central 80 % safe zone); the PNGs (192, 512 and
 maskable 512) are made by `scripts/make-icons.mjs` with Playwright's

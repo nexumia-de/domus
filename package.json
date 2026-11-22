@@ -18,24 +18,27 @@
     "format:check": "prettier --check .",
     "boundaries": "node scripts/check-boundaries.mjs",
     "check:model": "npm run check -w @nexumia-de/materia",
+    "check:host": "npm run check -w @nexumia-de/hospes",
+    "check:gjs": "npm run check -w @nexumia-de/gjs",
     "check:mixtura": "npm run check -w mixtura",
     "check:culina": "npm run check -w culina",
     "check:emptio": "npm run check -w emptio",
-    "check": "npm run format:check && npm run boundaries && npm run check:model && npm run check:mixtura && npm run check:culina && npm run check:emptio",
+    "check:domus": "npm run check -w @domus/app",
+    "check": "npm run format:check && npm run boundaries && npm run check:model && npm run check:host && npm run check:gjs && npm run check:mixtura && npm run check:culina && npm run check:emptio && npm run check:domus",
     "build:site": "node scripts/build-site.mjs",
     "e2e:site": "npm run build:site && node scripts/site-e2e.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "22.20.5",
-    "ajv": "8.17.1",
+    "ajv": "8.20.0",
     "esbuild": "0.28.2",
-    "eslint": "10.14.0",
+    "eslint": "10.15.0",
     "globals": "17.14.0",
-    "playwright": "1.65.0",
-    "prettier": "3.9.10",
+    "playwright": "1.65.1",
+    "prettier": "3.10.1",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.2",
-    "vitest": "5.1.0"
+    "typescript-eslint": "8.73.0",
+    "vitest": "5.1.1"
   }
 }

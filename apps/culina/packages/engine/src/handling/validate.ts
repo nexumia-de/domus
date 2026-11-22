@@ -3,7 +3,7 @@
 import { contentResult, found } from '../content/types';
 import type { ContentFinding, ContentResult } from '../content/types';
 import { isI18nText } from '../text/i18n';
-import { MAX_SENTENCE_WORDS } from '../techniques/validate';
+import { levelFindings, MAX_SENTENCE_WORDS } from '../techniques/validate';
 import type { HandlingRule } from './types';
 
 /** What a rule is checked against; each part is optional. */
@@ -21,6 +21,7 @@ function findings(rule: HandlingRule, context: HandlingContext): ContentFinding[
   for (const field of ['text', 'why'] as const) {
     if (!isI18nText(rule[field])) out.push(found('text-incomplete', field));
   }
+  out.push(...levelFindings(rule.level));
   if (rule.sources.length === 0) out.push(found('no-source', 'sources'));
   rule.sources.forEach((source, i) => {
     const n = words(source.sentence);

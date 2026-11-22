@@ -42,7 +42,7 @@ const open = async (address) => {
   // A fresh document: a hash change alone would be a navigation inside the app.
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const abv = () => page.locator('.balance .metric[aria-label="ABV"] .metric-value').innerText();
 const change = (key) => page.locator(`[data-change="${key}"]`).innerText();
@@ -103,9 +103,27 @@ const settle = () => page.waitForTimeout(150);
 await open('#/drinks/daiquiri');
 // The spec screen draws from the seed before the store has opened; on a slow
 // machine the database does not exist yet, so wait for it before the snapshot.
-await page.waitForFunction(async () =>
-  (await indexedDB.databases()).some((d) => d.name === 'mixtura'),
-);
+// The stock panel then reads the stock: the app makes its space in the shared
+// database and writes the device setting `spaces` behind it, the last write of
+// a first start. Wait for that one too, or it lands between the two snapshots.
+// The wait reads the stores from here, with the snapshot itself: an async predicate in the
+// page did not hold the check back (the snapshot was taken with no setting and no shared
+// database, and both arrived during the swaps).
+const firstStartDone = async () => {
+  const deadline = Date.now() + 20000;
+  let last = '';
+  for (;;) {
+    const now = await stored();
+    const { stores } = JSON.parse(now);
+    const written = stores['mixtura/settings'] > 0 && stores['domus/spaces'] > 0;
+    // Twice the same: nothing of the first start is still on its way.
+    if (written && now === last) return;
+    if (Date.now() > deadline) throw new Error(`The first start did not finish: ${now}`);
+    last = now;
+    await page.waitForTimeout(200);
+  }
+};
+await firstStartDone();
 const before = await stored();
 const savedAbv = await abv();
 expect(
@@ -362,7 +380,11 @@ await page.waitForFunction(() =>
 expect(pushed > 0, 'Undo opens the dropped swap again');
 
 // ---- Nothing stored ----
-expect((await stored()) === before, 'IndexedDB and local storage are untouched by swaps');
+const after = await stored();
+expect(
+  after === before,
+  `IndexedDB and local storage are untouched by swaps${after === before ? '' : `: before ${before}, after ${after}`}`,
+);
 
 // ---- An amount only: same template, same ranges, ticks for the saved values ----
 await open('#/drinks/daiquiri?swap=2::25ml');

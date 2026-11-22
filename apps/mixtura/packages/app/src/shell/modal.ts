@@ -12,7 +12,7 @@ export function inertBehindModal(app: HTMLElement): void {
     const parent = node.parentElement;
     if (!parent) return;
     for (const sibling of Array.from(parent.children)) {
-      if (sibling !== node && !sibling.classList.contains('toast')) {
+      if (sibling !== node && !sibling.classList.contains('fr-toast')) {
         sibling.setAttribute('inert', '');
       }
     }

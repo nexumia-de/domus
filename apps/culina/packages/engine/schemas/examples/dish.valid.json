@@ -2,6 +2,8 @@
   "id": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
   "name": "Roast carrots with yoghurt sauce",
   "portions": 2,
+  "course": "main",
+  "characters": { "add": ["crisp"], "remove": ["fried"] },
   "slots": [
     {
       "role": "main",

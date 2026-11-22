@@ -41,7 +41,7 @@ this file wins and the mock-up is fixed.
   title and one overflow menu. Destructive actions are never in the
   bottom bar and never one tap from a primary action.
 - **Undo instead of confirm.** A destructive action acts at once and
-  shows a toast with Undo for 8 seconds; there is no confirm dialog.
+  shows a toast with Undo (the shared frame's toast, 8 seconds with Undo, 5 without); there is no confirm dialog.
   Where the action cannot be reversed by the app itself (import), the
   app first keeps a copy and Undo restores it
   ([import](screens-stock-settings.md#export-and-import)).
@@ -141,8 +141,9 @@ Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16, `--sp-5` 24,
 
 # Components
 
-Names used by the mock-ups and the app: app bar, bottom navigation
-(four destinations), action bar, list row (title, one line of detail,
+Names used by the mock-ups and the app: header (the shared frame: title, back,
+actions, sync icon, Settings), bottom navigation
+(three destinations), action bar, list row (title, one line of detail,
 one end tag), card, tag, chip (filter, toggles with a check when on),
 segmented control, input, text area, toggle row (a check box, not a
 switch, so the on state has a shape), stepper, banner, toast with
@@ -222,13 +223,13 @@ goes when the evidence table says verified.
 
 For the owner; each has a proposal and nothing is decided silently.
 
-| #   | Question                 | Proposal                                                                                                                                                                                                         |
-| --- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | Accent colour            | Copper, `#9A4A12` / `#F0A468` (above).                                                                                                                                                                           |
-| Q2  | Navigation structure     | Bottom navigation with four destinations (Drinks, Templates, Stock, Settings), rail from 840 px; see [navigation](behaviour.md#navigation). Alternative: drinks list only as the home and Templates as a filter. |
-| Q3  | Default unit system      | Metric, as the [decision](decisions/units-and-display.md) proposes; the Settings screen asks nothing at first start.                                                                                             |
-| Q4  | Where Buy Next lives     | As a second view of the Stock destination (Stock / Buy Next), not a fifth destination.                                                                                                                           |
-| Q5  | Hash URLs (`#/drinks/…`) | Yes: static hosting on GitHub Pages needs no server rewrite and the installed app works the same.                                                                                                                |
+| #   | Question                 | Proposal                                                                                                                                                                                                                                            |
+| --- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | Accent colour            | Copper, `#9A4A12` / `#F0A468` (above).                                                                                                                                                                                                              |
+| Q2  | Navigation structure     | Bottom navigation with three destinations (Drinks, Templates, Stock; Settings moved to the header on 2026-11-21), rail from 840 px; see [navigation](behaviour.md#navigation). Alternative: drinks list only as the home and Templates as a filter. |
+| Q3  | Default unit system      | Metric, as the [decision](decisions/units-and-display.md) proposes; the Settings screen asks nothing at first start.                                                                                                                                |
+| Q4  | Where Buy Next lives     | As a second view of the Stock destination (Stock / Buy Next), not a fifth destination.                                                                                                                                                              |
+| Q5  | Hash URLs (`#/drinks/…`) | Yes: static hosting on GitHub Pages needs no server rewrite and the installed app works the same.                                                                                                                                                   |
 
 # Review checklist
 
@@ -237,8 +238,9 @@ and before every pull request that changes a screen. Every item is
 checked at 360 × 720 and at 1200 × 800, in light and in dark.
 
 - [ ] No horizontal scrolling at 360 px and at 320 px; no clipped or
-      overlapping text; titles, labels and names wrap, they are not
-      truncated with an ellipsis.
+      overlapping text; labels and names wrap, they are not truncated
+      with an ellipsis; the header title (the shared frame) wraps to four
+      lines and only then ends in an ellipsis.
 - [ ] Text scaling and reflow (WCAG 1.4.4, 1.4.10): with the root font size
       at 200 % the screen still reflows at 360 px and at 320 px without
       sideways scrolling; sizes around text are `rem` or `min-height`

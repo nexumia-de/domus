@@ -23,7 +23,7 @@
   padding: var(--sp-3);
 }
 
-.classic-card .cook-start {
+.dish-card .cook-start {
   margin: var(--sp-3) 0;
   text-decoration: none;
 }
@@ -66,7 +66,8 @@
 
 .recipe-line {
   display: grid;
-  grid-template-columns: minmax(5rem, 8rem) minmax(0, 1fr);
+  /* The amount is as wide as its longest word and no wider than 8rem. */
+  grid-template-columns: minmax(min-content, 8rem) minmax(0, 1fr);
   gap: 0 var(--sp-3);
   padding: var(--sp-2) 0;
   border-bottom: 1px solid var(--divider);
@@ -76,6 +77,16 @@
 .recipe-amount {
   text-align: start;
   font-weight: 600;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+}
+
+/* A line without an amount shows its name alone, from the left edge. */
+.recipe-line-bare .recipe-name,
+.recipe-line-bare .recipe-extra,
+.recipe-line-bare .line-instead {
+  grid-column: 1 / -1;
 }
 
 .recipe-extra {
@@ -126,11 +137,26 @@
   font-weight: 600;
 }
 
+/* Back and Next stay on the screen: they stick above the bottom navigation while the step is long. */
 .cook-buttons {
+  position: sticky;
+  bottom: var(--nav-real-h, var(--nav-h));
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: var(--sp-3);
-  margin: var(--sp-4) 0;
+  margin: var(--sp-4) calc(-1 * var(--sp-4));
+  padding: var(--sp-2) var(--sp-4);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+@media (min-width: 720px) {
+  .cook-buttons {
+    bottom: 0;
+    margin-inline: calc(-1 * var(--sp-5));
+    padding-inline: var(--sp-5);
+  }
 }
 
 .cook-buttons .btn {

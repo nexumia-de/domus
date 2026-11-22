@@ -4,7 +4,7 @@ import { strings } from '../strings';
 import { el } from './el';
 import { backupBanner, refreshBackupBanner } from './backup-banner';
 import { createNav } from './nav';
-import { mountToast } from './toast';
+import { dismissToast, mountToast } from './toast';
 
 export interface Shell {
   /**
@@ -16,8 +16,20 @@ export interface Shell {
   refresh(): void;
 }
 
+/**
+ * How the person last reached for the page: a key, or a pointer (mouse, touch, pen). The heading
+ * takes focus by script after every change of screen, for screen readers; `:focus-visible` cannot
+ * tell for a focus by script whether a key or a tap led to it, so the ring is drawn by this.
+ */
+let lastInput: 'key' | 'pointer' = 'key';
+const trackInput = (): void => {
+  document.addEventListener('keydown', () => (lastInput = 'key'), { capture: true });
+  document.addEventListener('pointerdown', () => (lastInput = 'pointer'), { capture: true });
+};
+
 /** Landmarks: header (banner), nav, main. The screen replaces the content of main. */
 export const mountShell = (root: HTMLElement): Shell => {
+  trackInput();
   const skip = el('a', 'skip-link', strings.skipToContent);
   skip.href = '#main';
   skip.addEventListener('click', (event) => {
@@ -26,8 +38,8 @@ export const mountShell = (root: HTMLElement): Shell => {
     main.focus();
   });
   const header = el('header', 'app-header');
-  header.append(el('p', 'app-title', strings.appName));
   const nav = createNav();
+  header.append(el('p', 'app-title', strings.appName), nav.settingsLink);
   const main = el('main', 'app-main');
   main.id = 'main';
   main.tabIndex = -1;
@@ -35,6 +47,15 @@ export const mountShell = (root: HTMLElement): Shell => {
   frame.append(header, nav.element, main);
   root.append(skip, frame);
   mountToast(root);
+  // The real height of the bottom bar (German labels take two lines): what sticks above it, and the
+  // toast, sit on top of it, not behind it.
+  const measureNav = (): void =>
+    document.documentElement.style.setProperty(
+      '--nav-real-h',
+      `${nav.element.getBoundingClientRect().height}px`,
+    );
+  measureNav();
+  if (typeof ResizeObserver === 'function') new ResizeObserver(measureNav).observe(nav.element);
   let shown: { route: Route; param: string | undefined; action: Action | undefined } | undefined;
 
   return {
@@ -46,6 +67,7 @@ export const mountShell = (root: HTMLElement): Shell => {
     },
     show(route, param, focusHeading, action) {
       shown = { route, param, action };
+      dismissToast();
       const screen = renderScreen(route, param, action);
       main.replaceChildren(backupBanner(), screen);
       void refreshBackupBanner();
@@ -54,7 +76,11 @@ export const mountShell = (root: HTMLElement): Shell => {
       document.title = `${heading?.textContent ?? ''} - ${strings.appName}`;
       if (heading) {
         heading.tabIndex = -1;
-        if (focusHeading) heading.focus();
+        if (focusHeading) {
+          // After a tap or a click the focus is there for a screen reader, without a ring.
+          heading.classList.toggle('focus-quiet', lastInput === 'pointer');
+          heading.focus();
+        }
       }
       window.scrollTo(0, 0);
     },

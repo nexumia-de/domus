@@ -1,7 +1,12 @@
 # Log
 
+## 2026-11-20
+
+- **Earlier sync model removed** ([sync](sync.md#the-earlier-model), [roadmap](../../../docs/roadmap.md) goal 6): with Mixtura on spaces no app used it any more. Removed from the public entry: `mergePlace`, `combinePlaces` (`Place`, `CombinedEntry`); `parseDocument`, `buildDocument`, `DOCUMENT_FORMAT`, `DOCUMENT_VERSION` (`PlaceDocument`, `DocumentError`); `planSync` (`LocalPlaceState`, `SyncPlan`); `parseUnit`, `buildUnit`, `UNIT_FORMAT`, `UNIT_VERSION` (`UnitDocument`, `UnitError`, `UnitInfo`, `UnitKind`); `planUnitSync` (`LocalUnitState`, `UnitSyncPlan`); `parseEnvelope`, `buildEnvelope`, `envelopeAad`, `ENVELOPE_FORMAT`, `ENVELOPE_VERSION` (`Envelope`, `EnvelopeError`, the `Cipher` port). Their files in `src/sync/` and the vectors `combine-places`, `place-merge`, `document-*`, `envelope-*`, `plan-sync`, `unit-*` are gone. Added: `SEALED_FORMAT` (`materia-sync`), which the sealed file took from the envelope; `SealedError` now names its four values itself. Nothing of the spaces model changed. The version stays 0.3.0.
+
 ## 2026-11-19
 
+- **Spaces: rules and formats added** ([sync](sync.md#spaces), [decision](../../../docs/decisions/one-origin-spaces-storages.md)): `nextStamp` and `latestStamp` (a stamp that never goes backwards), `pruneTombstones`, the collection document (`buildCollection`, `parseCollection`, `COLLECTION_FORMAT`, `COLLECTION_VERSION`), `planCollectionSync` with the stale device rule, the version 2 sealed file (`buildSealed`, `parseSealed`, `sealedAad`, `SEALED_VERSION`), the invite (`buildInvite`, `parseInvite`, `INVITE_FORMAT`, `INVITE_VERSION`), and an optional `watch` on `StorageAdapter`. Only additions: place and unit documents, `planSync`, `planUnitSync` and the version 1 envelope are unchanged. Vectors `stamp-*`, `prune-tombstones`, `collection-*`, `sealed-*`, `invite-*` in `vectors/sync/`.
 - **Update**: materia moved with its history into the repository domus as `packages/model`; the apps use it from there instead of a git tag ([decision](../../../docs/decisions/one-repository.md), [development](../../../docs/development.md)): one workspace and lockfile at the root, checks run from the root, links to the other parts are relative, CI is the root workflow.
 
 ## 2026-11-18

@@ -42,11 +42,15 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef, from the joint",
-            "de": "Rindfleisch aus dem Stück"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-beef"
           },
           "note": {
+            "en": "From the joint.",
+            "de": "Aus dem Stück."
+          },
+          "sourceNote": {
             "en": "The second form of No. 33, for when veal and pork are not to be had. The first form uses equal parts of beef, veal and medium fat pork and gives no total weight. The English gives 1½ pounds only as a garbled fraction (iy2); the German scans read 13 Pf. Not confirmed, so no amount is given.",
             "de": "Die zweite Form der Nr. 33, wenn Kalb- und Schweinefleisch nicht zu haben sind. Die erste Form nimmt gleiche Teile Rind, Kalb und mittelfetten Schweinespeck und nennt kein Gesamtgewicht. Die englische Ausgabe nennt 1½ Pfund nur als verstümmelten Bruch (iy2); die deutschen Scans lesen 13 Pf. Nicht bestätigt, deshalb ohne Menge."
           }
@@ -58,8 +62,12 @@
             "de": "Nierenfett"
           },
           "note": {
-            "en": "Kidney suet or fresh pork fat; the source allows either. The English gives a fraction of a pound (garbled as %); the German edition reads 3 Pfd. (davidis.txt) and 4 Pfd. (second scan). Not confirmed, so no amount is given.",
-            "de": "Nierenfett oder frisches Schweinefett; die Quelle lässt beides zu. Die englische Ausgabe nennt einen Bruch eines Pfundes (verstümmelt als %); die deutsche Ausgabe liest 3 Pfd. (davidis.txt) und 4 Pfd. (zweiter Scan). Nicht bestätigt, deshalb ohne Menge."
+            "en": "Kidney suet or fresh pork fat.",
+            "de": "Nierenfett oder frisches Schweinefett."
+          },
+          "sourceNote": {
+            "en": "The source allows either. The English gives a fraction of a pound (garbled as %). The German edition reads 3 Pfd. (first scan) and 4 Pfd. (second scan). Not confirmed, so no amount is given.",
+            "de": "Die Quelle lässt beides zu. Die englische Ausgabe nennt einen Bruch eines Pfundes (verstümmelt als %). Die deutsche Ausgabe liest 3 Pfd. (erster Scan) und 4 Pfd. (zweiter Scan). Nicht bestätigt, deshalb ohne Menge."
           }
         },
         {
@@ -122,7 +130,7 @@
             "kind": "ingredient",
             "id": "fdc-group-butter"
           },
-          "note": {
+          "sourceNote": {
             "en": "The second form names no amount of butter; the butter ratio belongs to the first form (English: 3 tablespoonfuls; German: 4). Not used here.",
             "de": "Die zweite Form nennt keine Buttermenge; das Butterverhältnis gehört zur ersten Form (englisch: 3 Esslöffel; deutsch: 4). Hier nicht übernommen."
           }
@@ -134,8 +142,12 @@
             "id": "fdc-group-cream"
           },
           "note": {
-            "en": "A few spoonfuls of thick cream, when possible; no amount given.",
-            "de": "Einige Löffel dicke Sahne, wenn möglich; keine Menge angegeben."
+            "en": "A few spoonfuls of thick cream, when possible.",
+            "de": "Einige Löffel dicke Sahne, wenn möglich."
+          },
+          "sourceNote": {
+            "en": "No amount given.",
+            "de": "Keine Menge angegeben."
           }
         },
         {
@@ -145,8 +157,12 @@
             "de": "Wacholderbeeren"
           },
           "note": {
-            "en": "Pulverised, sprinkled over the loaf before serving; the source says it can be done.",
-            "de": "Zerrieben, vor dem Servieren über das Fleisch gestreut; die Quelle sagt, es könne geschehen."
+            "en": "Pulverised, sprinkled over the loaf before serving.",
+            "de": "Zerrieben, vor dem Servieren über das Fleisch gestreut."
+          },
+          "sourceNote": {
+            "en": "The source says it can be done.",
+            "de": "Die Quelle sagt, es könne geschehen."
           }
         }
       ],
@@ -156,6 +172,7 @@
             "en": "Chop the beef and the suet very fine together.",
             "de": "Das Rindfleisch und das Fett zusammen sehr fein hacken."
           },
+          "technique": "knife-cuts",
           "uses": ["beef", "suet"]
         },
         {
@@ -163,6 +180,7 @@
             "en": "Mix in the eggs, salt, nutmeg, the crumbs and the cold water.",
             "de": "Eier, Salz, Muskat, die Brösel und das kalte Wasser gut untermischen."
           },
+          "action": "mix",
           "uses": ["egg", "salt", "nutmeg", "crumbs", "water"]
         },
         {
@@ -170,6 +188,7 @@
             "en": "Shape the mixture by hand into a smooth round or oblong loaf, dredge it with crumbs and crease the top with a knife.",
             "de": "Die Masse mit den Händen zu einem glatten runden oder länglichen Laib formen, mit Bröseln bestreuen und die Oberfläche mit dem Messer einritzen."
           },
+          "action": "shape",
           "uses": ["crumbs"]
         },
         {
@@ -177,20 +196,25 @@
             "en": "Have hot butter ready and put the loaf into it.",
             "de": "Heiße Butter bereitstellen und den Laib hineinlegen."
           },
+          "action": "heat",
           "uses": ["butter"]
         },
         {
           "text": {
-            "en": "If the oven is not hot enough, first fry the loaf on the stove with the pan covered; the time is not legible in the scans. Do not turn it.",
-            "de": "Ist der Ofen nicht heiß genug, den Braten zuerst auf dem Herd mit zugedecktem Topf braten; die Zeit ist in den Scans nicht lesbar. Nicht wenden."
+            "en": "If the oven is not hot enough, first fry the loaf on the stove with the pan covered. Do not turn it.",
+            "de": "Ist der Ofen nicht heiß genug, den Braten zuerst auf dem Herd mit zugedecktem Topf braten. Nicht wenden."
+          },
+          "sourceNote": {
+            "en": "The time is not legible in the scans.",
+            "de": "Die Zeit ist in den Scans nicht lesbar."
           },
           "technique": "pan-fry",
           "uses": ["butter"]
         },
         {
           "text": {
-            "en": "Bake in the oven until light brown, basting often. The source gives up to 1 hour.",
-            "de": "Im Ofen gelb braten, oft begießen. Die Quelle nennt bis zu 1 Stunde."
+            "en": "Bake in the oven until light brown, basting often, for up to 1 hour.",
+            "de": "Im Ofen goldgelb braten, oft begießen, bis zu 1 Stunde."
           },
           "technique": "bake",
           "uses": ["butter"]
@@ -200,6 +224,7 @@
             "en": "While it bakes, pour a few spoonfuls of thick cream over the loaf from time to time, when possible.",
             "de": "Während des Backens von Zeit zu Zeit einige Löffel dicke Sahne über den Laib gießen, wenn möglich."
           },
+          "action": "pour",
           "uses": ["cream"]
         },
         {
@@ -207,6 +232,7 @@
             "en": "Before serving, sprinkle the crushed juniper berries over the meat.",
             "de": "Vor dem Servieren die zerriebenen Wacholderbeeren über das Fleisch streuen."
           },
+          "action": "sprinkle",
           "uses": ["juniper"]
         }
       ]

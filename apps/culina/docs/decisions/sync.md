@@ -18,6 +18,12 @@ sources:
 
 # Sync in three units, after stock
 
+> **For stock, replaced on 2026-11-20** by [stock in spaces](stock-in-spaces.md):
+> places and their passphrases are spaces of the host package, set up in
+> the Household app, and Culina's stock is the shared collection `stock`
+> of a space. The library and the profile below are not built and not
+> changed by that decision.
+
 **Status: decided by the owner on 2026-11-18**, in answers to the
 agent's questions in the session. Points the agent chose are marked
 "agent".

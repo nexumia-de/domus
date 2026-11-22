@@ -1,0 +1,108 @@
+{
+  "id": "collection-build",
+  "kind": "collection-build",
+  "description": "buildCollection. Fixed key order format, version, space, collection, records, prunedBefore; records sorted by key, record field order key, updatedAt, deleted, value, value keys sorted; prunedBefore only when there is one. Each text parses back and builds to the same text.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "empty",
+      "input": {
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-collection\",\"version\":1,\"space\":\"s1\",\"collection\":\"stock\",\"records\":[]}"
+      }
+    },
+    {
+      "name": "sorted, ordered, with prunedBefore",
+      "input": {
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "value": {
+                "z": 1,
+                "a": {
+                  "y": 2,
+                  "b": 3
+                }
+              },
+              "updatedAt": "2026-11-18T10:05:00.000Z",
+              "key": "b"
+            },
+            {
+              "deleted": true,
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "key": "a"
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-collection\",\"version\":1,\"space\":\"s1\",\"collection\":\"stock\",\"records\":[{\"key\":\"a\",\"updatedAt\":\"2026-11-18T10:00:00.000Z\",\"deleted\":true},{\"key\":\"b\",\"updatedAt\":\"2026-11-18T10:05:00.000Z\",\"value\":{\"a\":{\"b\":3,\"y\":2},\"z\":1}}],\"prunedBefore\":\"2026-08-21T12:00:00.000Z\"}"
+      }
+    },
+    {
+      "name": "keys sorted as plain text, not by locale",
+      "input": {
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "b",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "B",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-collection\",\"version\":1,\"space\":\"s1\",\"collection\":\"stock\",\"records\":[{\"key\":\"B\",\"updatedAt\":\"2026-11-18T10:00:00.000Z\",\"value\":1},{\"key\":\"a\",\"updatedAt\":\"2026-11-18T10:00:00.000Z\",\"value\":1},{\"key\":\"b\",\"updatedAt\":\"2026-11-18T10:00:00.000Z\",\"value\":1}]}"
+      }
+    },
+    {
+      "name": "a null value is a value",
+      "input": {
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": null
+            }
+          ]
+        }
+      },
+      "expected": {
+        "text": "{\"format\":\"materia-collection\",\"version\":1,\"space\":\"s1\",\"collection\":\"stock\",\"records\":[{\"key\":\"a\",\"updatedAt\":\"2026-11-18T10:00:00.000Z\",\"value\":null}]}"
+      }
+    }
+  ]
+}

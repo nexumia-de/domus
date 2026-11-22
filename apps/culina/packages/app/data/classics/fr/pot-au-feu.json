@@ -14,7 +14,7 @@
     "year": 1877,
     "place": "Première partie, \"Pot-au-feu et bouillon de bœuf\", printed pp. 41-45",
     "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
-    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+    "licence": "Public domain: Jules Gouffé died in 1877; the title page's \"Droits de propriété et de traduction réservés\" has long expired"
   },
   "persons": {
     "value": 4,
@@ -32,16 +32,16 @@
       "lines": [
         {
           "key": "beef",
-          "wanted": {
-            "en": "Beef (for pot-au-feu)",
-            "de": "Rindfleisch (für Pot-au-feu)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169491"
           },
           "amount": {
             "value": 750,
             "unit": "g",
             "original": "750 grammes de viande"
           },
-          "note": {
+          "sourceNote": {
             "en": "The book names the cuts: tranche, tranche au petit os, gîte à la noix, culotte; also paleron and talon de collier.",
             "de": "Das Buch nennt die Stücke: Tranche, Tranche au petit os, Gîte à la noix, Culotte; außerdem Paleron und Talon de collier."
           }
@@ -69,11 +69,11 @@
             "unit": "l",
             "original": "4 litres d'eau"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The ingredient list gives 4 litres; the method gives 3 litres for the small pot. The list's amount is stored; see settled.",
-            "de": "Die Zutatenliste nennt 4 Liter; die Zubereitung nennt 3 Liter für den kleinen Topf. Gespeichert ist die Menge der Zutatenliste; siehe settled."
-          }
+            "de": "Die Zutatenliste nennt 4 Liter; die Zubereitung nennt 3 Liter für den kleinen Topf. Es gilt die Menge der Zutatenliste."
+          },
+          "settled": true
         },
         {
           "key": "salt",
@@ -137,14 +137,22 @@
         },
         {
           "key": "clove",
-          "wanted": {
-            "en": "Whole clove",
-            "de": "Gewürznelke"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171321"
           },
           "amount": {
             "value": 1,
             "unit": "count",
             "original": "1 clou de girofle"
+          },
+          "note": {
+            "en": "A whole clove.",
+            "de": "Eine ganze Nelke."
+          },
+          "sourceNote": {
+            "en": "The catalogue has only ground cloves.",
+            "de": "Der Katalog führt nur gemahlene Nelken."
           }
         },
         {
@@ -178,6 +186,7 @@
             "en": "Bone the piece of beef and tie it so the meat holds together.",
             "de": "Das Rindfleisch auslösen und binden, damit das Fleisch zusammenhält."
           },
+          "action": "prepare",
           "uses": ["beef", "bones"]
         },
         {
@@ -185,6 +194,7 @@
             "en": "Break the bones with a cleaver.",
             "de": "Die Knochen mit dem Beil zerschlagen."
           },
+          "action": "prepare",
           "uses": ["bones"]
         },
         {
@@ -192,6 +202,7 @@
             "en": "Put the bones into the pot first, the meat on top.",
             "de": "Zuerst die Knochen in den Topf legen, das Fleisch darauf."
           },
+          "action": "add",
           "uses": ["bones", "beef"]
         },
         {
@@ -199,19 +210,22 @@
             "en": "Pour in the filtered water: 3 litres for the small pot.",
             "de": "Das gefilterte Wasser eingießen: 3 Liter für den kleinen Topf."
           },
+          "technique": "stock-cold-start",
           "uses": ["water"]
         },
         {
           "text": {
             "en": "Put the pot on the heat.",
             "de": "Den Topf auf die Hitze stellen."
-          }
+          },
+          "action": "heat"
         },
         {
           "text": {
             "en": "Add the salt: 30 g for the small pot.",
             "de": "Das Salz zugeben: 30 g für den kleinen Topf."
           },
+          "action": "season",
           "uses": ["salt"]
         },
         {
@@ -225,7 +239,8 @@
           "text": {
             "en": "As soon as the scum rises, add 1.5 decilitres of cold water.",
             "de": "Sobald der Schaum aufsteigt, 1,5 Deziliter kaltes Wasser zugeben."
-          }
+          },
+          "action": "add"
         },
         {
           "text": {
@@ -238,7 +253,8 @@
           "text": {
             "en": "Bring to the boil again and skim again; three times in all.",
             "de": "Wieder aufkochen lassen und abschöpfen; insgesamt dreimal."
-          }
+          },
+          "technique": "skim"
         },
         {
           "text": {
@@ -251,6 +267,7 @@
             "en": "Stick the clove into one onion.",
             "de": "Die Nelke in eine Zwiebel stecken."
           },
+          "action": "prepare",
           "uses": ["clove", "onion"]
         },
         {
@@ -258,19 +275,22 @@
             "en": "Add the vegetables. This stops the boil for a moment.",
             "de": "Das Gemüse zugeben. Dadurch hört das Kochen kurz auf."
           },
+          "action": "add",
           "uses": ["onion", "carrot", "leek", "celery", "turnip", "parsnip"]
         },
         {
           "text": {
             "en": "Let it boil again, then set the pot on the corner of the stove, so that only a third of its base is over the fire hole.",
             "de": "Wieder aufkochen lassen, dann den Topf so auf die Ecke des Herdes stellen, dass nur ein Drittel des Bodens über dem Feuerloch steht."
-          }
+          },
+          "action": "heat"
         },
         {
           "text": {
             "en": "Cover the rest of the fire with ash.",
             "de": "Den übrigen Teil des Feuers mit Asche abdecken."
-          }
+          },
+          "action": "cover"
         },
         {
           "text": {
@@ -287,13 +307,17 @@
           "text": {
             "en": "When the broth is done, take the meat out and put it on a dish.",
             "de": "Wenn die Brühe fertig ist, das Fleisch herausnehmen und auf eine Platte legen."
-          }
+          },
+          "action": "take-out",
+          "uses": ["beef"]
         },
         {
           "text": {
             "en": "Take the vegetables out as soon as they are cooked and put them on the plate.",
             "de": "Das Gemüse herausnehmen, sobald es gar ist, und auf den Teller legen."
-          }
+          },
+          "action": "take-out",
+          "uses": ["onion", "carrot", "leek", "celery", "turnip", "parsnip"]
         },
         {
           "text": {
@@ -306,7 +330,8 @@
           "text": {
             "en": "Taste the broth and check the salt.",
             "de": "Die Brühe probieren und das Salz prüfen."
-          }
+          },
+          "action": "taste"
         }
       ]
     }
@@ -339,7 +364,7 @@
     "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html, Hachette title page) compared with gouffe.txt. Agreed: all list amounts, 6 and 3 litres of water in the method, 60 or 30 g salt, 3 and 1.5 decilitres of cold water, 5 and 3 hours; \"1 50\" reads 150 g in both. Changed: the broth is a steady boil (\"ébullition continue\"), not a simmer; persons four or five, so four is settled. The 4 and 3 litres stay as the list and the method give them."
   },
   "note": {
-    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two (gouffe.txt lines 2290-2297). The list gives 4 litres of water; the method gives 3 litres for the small pot (see settled). The cold water added at the first boil is 1.5 decilitres (0.1 litre each) for the small pot; it stands in the step text, not as a line. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
-    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen (gouffe.txt Zeilen 2290-2297). Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf (siehe settled). Das kalte Wasser beim ersten Aufkochen sind 1,5 Deziliter (je 0,1 Liter) für den kleinen Topf; es steht im Schritt, nicht als Zeile. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
+    "en": "Gouffé's small pot: the broth is for four or five persons, and the book says the amounts also suit a household of two. The list gives 4 litres of water; the method gives 3 litres for the small pot. The cold water added at the first boil is 1.5 decilitres (0.1 litre each) for the small pot; it stands in the step text, not as a line. The book advises against garlic. The fire is set as in the book's preliminary chapter, which is not read here.",
+    "de": "Gouffés kleiner Topf: die Brühe reicht für vier oder fünf Personen; das Buch sagt, die Mengen passen auch für einen Haushalt mit zwei Personen. Die Zutatenliste nennt 4 Liter Wasser, die Zubereitung 3 Liter für den kleinen Topf. Das kalte Wasser beim ersten Aufkochen sind 1,5 Deziliter (je 0,1 Liter) für den kleinen Topf; es steht im Schritt, nicht als Zeile. Das Buch rät vom Knoblauch ab. Die Feuerstelle richtet sich nach dem einleitenden Kapitel des Buches, das hier nicht gelesen ist."
   }
 }

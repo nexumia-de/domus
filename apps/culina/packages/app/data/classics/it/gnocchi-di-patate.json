@@ -40,8 +40,12 @@
             "original": "Patate grosse e gialle, grammi 400"
           },
           "note": {
-            "en": "Large yellow potatoes; the catalogue has white potatoes.",
-            "de": "Große gelbe Kartoffeln; der Katalog führt weiße Kartoffeln."
+            "en": "Large yellow potatoes.",
+            "de": "Große gelbe Kartoffeln."
+          },
+          "sourceNote": {
+            "en": "The catalogue has white potatoes.",
+            "de": "Der Katalog führt weiße Kartoffeln."
           }
         },
         {
@@ -86,13 +90,13 @@
         },
         {
           "key": "tomato-sauce",
-          "wanted": {
-            "en": "Tomato sauce",
-            "de": "Tomatensauce"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170054"
           },
           "note": {
             "en": "Optional, as you like.",
-            "de": "Optional, nach Belieben."
+            "de": "Nach Belieben."
           }
         }
       ],
@@ -110,6 +114,7 @@
             "en": "Peel the potatoes while they are still hot and pass them through a sieve.",
             "de": "Die Kartoffeln heiß schälen und durch ein Sieb streichen."
           },
+          "action": "peel",
           "uses": ["potatoes"]
         },
         {
@@ -133,6 +138,7 @@
             "en": "Cut the cylinder into pieces about three centimetres long.",
             "de": "Die Rolle in Stücke von etwa drei Zentimetern Länge schneiden."
           },
+          "technique": "knife-cuts",
           "uses": ["potatoes"]
         },
         {
@@ -140,6 +146,7 @@
             "en": "Dust the pieces lightly with flour.",
             "de": "Die Stücke leicht mit Mehl bestäuben."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -167,6 +174,7 @@
             "en": "Lift them out drained and dress them with the cheese, the butter and, as you like, the tomato sauce.",
             "de": "Die Gnocchi abgetropft herausnehmen und mit Käse, Butter und nach Belieben Tomatensauce anrichten."
           },
+          "action": "serve",
           "uses": ["cheese", "butter", "tomato-sauce"]
         }
       ]
@@ -195,6 +203,6 @@
   },
   "note": {
     "en": "The source also cooks the gnocchi in milk, without draining, for a more delicate dish; that variant is not transcribed. The printed heading reads 39 in the OCR; the number 59 is taken from the book's order and the selection.",
-    "de": "Die Quelle garte die Gnocchi auch in Milch, ohne sie abzugießen, für ein zarteres Gericht; diese Variante ist nicht übertragen. Die Überschrift ist in der OCR als 39 gelesen; die Nummer 59 folgt der Reihenfolge des Buches und der Auswahl."
+    "de": "Die Quelle gart die Gnocchi auch in Milch, ohne sie abzugießen, für ein zarteres Gericht; diese Variante ist nicht übertragen. Die Überschrift ist in der OCR als 39 gelesen; die Nummer 59 folgt der Reihenfolge des Buches und der Auswahl."
   }
 }

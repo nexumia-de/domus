@@ -14,7 +14,7 @@
     "year": 1877,
     "place": "Première partie, \"Volailles\", \"Poulet à la bourguignonne\", printed pp. 180-181",
     "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
-    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+    "licence": "Public domain: Jules Gouffé died in 1877; the title page's \"Droits de propriété et de traduction réservés\" has long expired"
   },
   "persons": {
     "value": 4,
@@ -52,7 +52,7 @@
             "unit": "count",
             "original": "le jus de 15 champignons"
           },
-          "note": {
+          "sourceNote": {
             "en": "The poulet uses the juice of 15 mushrooms, prepared as in the book's turned mushrooms (printed p. 71).",
             "de": "Das Huhn nimmt den Saft von 15 Champignons, zubereitet wie die gedrehten Champignons des Buches (gedruckt S. 71)."
           }
@@ -64,8 +64,12 @@
             "id": "fdc-167747"
           },
           "note": {
-            "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice. The book does not state a size for it, so no amount is given.",
-            "de": "\"1 cuillerée à bouche de jus de citron\": ein Esslöffel Zitronensaft. Das Buch gibt dafür keine Größe an, daher steht hier keine Menge."
+            "en": "\"1 cuillerée à bouche de jus de citron\": one tablespoon of lemon juice.",
+            "de": "„1 cuillerée à bouche de jus de citron“: ein Esslöffel Zitronensaft."
+          },
+          "sourceNote": {
+            "en": "The book does not state a size for it, so no amount is given.",
+            "de": "Das Buch gibt dafür keine Größe an, daher steht hier keine Menge."
           }
         },
         {
@@ -76,7 +80,7 @@
           },
           "note": {
             "en": "\"même quantité d'eau\": the same amount of water as the lemon juice.",
-            "de": "\"même quantité d'eau\": dieselbe Menge Wasser wie Zitronensaft."
+            "de": "„même quantité d'eau“: dieselbe Menge Wasser wie Zitronensaft."
           }
         },
         {
@@ -110,6 +114,7 @@
             "en": "Cut the earthy part off the stalks with a knife.",
             "de": "Den erdigen Teil der Stiele mit dem Messer abschneiden."
           },
+          "action": "trim",
           "uses": ["mushroom"]
         },
         {
@@ -117,6 +122,7 @@
             "en": "Rinse the mushrooms quickly in fresh water, then dry them at once on a cloth. Mushrooms that stay long in water lose taste and colour.",
             "de": "Die Champignons kurz in frischem Wasser waschen und sofort auf einem Tuch trocknen. Pilze, die lange im Wasser liegen, verlieren Geschmack und Farbe."
           },
+          "action": "wash",
           "uses": ["mushroom"]
         },
         {
@@ -124,6 +130,7 @@
             "en": "Put the lemon juice, the same amount of water and the salt into a pan of two litres.",
             "de": "Zitronensaft, dieselbe Menge Wasser und das Salz in einen Topf mit zwei Litern Inhalt geben."
           },
+          "action": "add",
           "uses": ["lemon-juice", "water", "salt"]
         },
         {
@@ -139,6 +146,7 @@
             "en": "Toss the mushrooms in the pan so that they take up the lemon and the salt.",
             "de": "Die Pilze im Topf schwenken, damit sie Zitrone und Salz aufnehmen."
           },
+          "action": "mix",
           "uses": ["mushroom", "lemon-juice", "salt"]
         },
         {
@@ -146,6 +154,7 @@
             "en": "Set the pan on high heat and add the butter.",
             "de": "Den Topf auf starke Hitze stellen und die Butter zugeben."
           },
+          "action": "heat",
           "uses": ["butter"]
         },
         {
@@ -165,6 +174,7 @@
             "en": "Put the mushrooms into a bowl and cover them with a round of paper.",
             "de": "Die Pilze in eine Schüssel geben und mit einem runden Papier abdecken."
           },
+          "action": "cover",
           "uses": ["mushroom"]
         }
       ]
@@ -179,9 +189,9 @@
       "lines": [
         {
           "key": "chicken",
-          "wanted": {
-            "en": "Chicken",
-            "de": "Huhn"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171447"
           },
           "amount": {
             "value": 1,
@@ -196,8 +206,12 @@
             "de": "Hühnerblut"
           },
           "note": {
-            "en": "The blood of the bird, kept while it is bled. The book gives no amount.",
-            "de": "Das Blut des Huhns, beim Ausbluten aufgefangen. Das Buch gibt keine Menge an."
+            "en": "The blood of the bird, kept while it is bled.",
+            "de": "Das Blut des Huhns, beim Ausbluten aufgefangen."
+          },
+          "sourceNote": {
+            "en": "The book gives no amount.",
+            "de": "Das Buch gibt keine Menge an."
           }
         },
         {
@@ -254,9 +268,9 @@
             "en": "Meat stock",
             "de": "Fleischbrühe"
           },
-          "note": {
+          "sourceNote": {
             "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given.",
-            "de": "\"0 décilitres de bouillon\" im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Die Quelle nennt eine lesbare Menge nicht; daher steht hier keine Menge."
+            "de": "„0 décilitres de bouillon“ im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Eine lesbare Menge gibt es daher nicht."
           }
         },
         {
@@ -267,7 +281,7 @@
           },
           "note": {
             "en": "\"3 décilitres de vin rouge\": the décilitre is 0.1 litre, so the amount is 300 ml.",
-            "de": "\"3 décilitres de vin rouge\": das Deziliter ist 0,1 Liter; die Menge ist daher 300 ml."
+            "de": "„3 décilitres de vin rouge“: der Deziliter ist 0,1 Liter; die Menge ist daher 300 ml."
           },
           "amount": {
             "value": 300,
@@ -281,9 +295,9 @@
             "en": "Bouquet garni",
             "de": "Bouquet garni"
           },
-          "note": {
+          "sourceNote": {
             "en": "\"1 bouquet garni\": the book gives no size for the bouquet.",
-            "de": "\"1 bouquet garni\": das Buch gibt keine Größe für das Bouquet an."
+            "de": "„1 bouquet garni“: das Buch gibt keine Größe für das Bouquet an."
           }
         },
         {
@@ -316,6 +330,7 @@
             "en": "Bleed the chicken into a bowl. Stir the blood for two minutes with a wooden spoon so that it does not clot.",
             "de": "Das Huhn ausbluten lassen. Das Blut zwei Minuten mit einem Holzlöffel rühren, damit es nicht gerinnt."
           },
+          "action": "prepare",
           "uses": ["chicken", "blood"]
         },
         {
@@ -323,6 +338,7 @@
             "en": "Pluck the chicken, remove the pin feathers, draw it and singe it.",
             "de": "Das Huhn rupfen, die Kiele entfernen, ausnehmen und absengen."
           },
+          "action": "prepare",
           "uses": ["chicken"]
         },
         {
@@ -330,6 +346,7 @@
             "en": "Cut the chicken into pieces, as the book's fricassée does; the book illustrates the cut in two figures.",
             "de": "Das Huhn wie bei der Fricassée des Buches in Stücke schneiden; das Buch zeigt den Schnitt in zwei Abbildungen."
           },
+          "action": "prepare",
           "uses": ["chicken"]
         },
         {
@@ -337,6 +354,7 @@
             "en": "Put the butter into the sauté pan and melt it.",
             "de": "Die Butter in die Sauteuse geben und schmelzen."
           },
+          "action": "melt",
           "uses": ["butter"]
         },
         {
@@ -344,6 +362,7 @@
             "en": "Place the chicken pieces in the melted butter, not on top of each other.",
             "de": "Die Hühnerteile in die geschmolzene Butter legen, ohne dass sie übereinanderliegen."
           },
+          "action": "add",
           "uses": ["chicken"]
         },
         {
@@ -351,6 +370,7 @@
             "en": "Season with the salt and the pepper.",
             "de": "Mit Salz und Pfeffer würzen."
           },
+          "action": "season",
           "uses": ["salt", "pepper"]
         },
         {
@@ -366,6 +386,7 @@
             "en": "Sprinkle the flour over the pieces.",
             "de": "Das Mehl über die Stücke streuen."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -373,6 +394,7 @@
             "en": "Stir for 3 minutes.",
             "de": "3 Minuten rühren."
           },
+          "action": "stir",
           "time": {
             "value": 3,
             "unit": "min"
@@ -384,6 +406,7 @@
             "en": "Add the stock, the red wine and the bouquet garni.",
             "de": "Brühe, Rotwein und das Bouquet garni zugeben."
           },
+          "action": "add",
           "uses": ["stock", "wine", "bouquet"]
         },
         {
@@ -391,6 +414,7 @@
             "en": "Add the small onions, blanched and fried in a pan.",
             "de": "Die kleinen Zwiebeln zugeben, blanchiert und in der Pfanne angebraten."
           },
+          "action": "add",
           "uses": ["onion"]
         },
         {
@@ -398,6 +422,7 @@
             "en": "Add the juice of the turned mushrooms.",
             "de": "Den Saft der gedrehten Champignons zugeben."
           },
+          "action": "add",
           "uses": ["mushrooms"]
         },
         {
@@ -415,13 +440,15 @@
           "text": {
             "en": "Check the cooking and the seasoning.",
             "de": "Garzeit und Würze prüfen."
-          }
+          },
+          "action": "taste"
         },
         {
           "text": {
             "en": "Add the turned mushrooms to the sauce.",
             "de": "Die gedrehten Champignons in die Sauce geben."
           },
+          "action": "add",
           "uses": ["mushrooms"]
         },
         {
@@ -429,6 +456,7 @@
             "en": "Mix the blood with a little of the sauce. Stir it into the pan until the first boil.",
             "de": "Das Blut mit etwas Sauce mischen. In den Topf rühren, bis es einmal aufkocht."
           },
+          "action": "stir",
           "uses": ["blood"]
         },
         {
@@ -436,6 +464,7 @@
             "en": "Arrange the pieces on the dish: the two back pieces in the middle, the two legs on them, the two neck pieces on the legs, the two wing tips on the necks. Lean the two wings and the two thighs against this tall square, and put the two breast pieces on top.",
             "de": "Die Stücke auf der Platte anordnen: die zwei Rückenstücke in die Mitte, darauf die zwei Beine, auf den Beinen die zwei Halsstücke, auf den Hälsen die zwei Flügelspitzen. Die zwei Flügel und die zwei Schenkel an dieses hohe Viereck lehnen; oben darauf die zwei Brustteile legen."
           },
+          "action": "serve",
           "uses": ["chicken"]
         },
         {
@@ -443,6 +472,7 @@
             "en": "Pour the sauce over the pieces and set the mushrooms in the four corners.",
             "de": "Die Sauce über die Stücke gießen und die Champignons in die vier Ecken setzen."
           },
+          "action": "pour",
           "uses": ["mushrooms"]
         }
       ]
@@ -470,7 +500,7 @@
     "note": "Second scan of the same 1877 fourth edition (gouffe-b28125629.html) compared with gouffe.txt, lines 9550-9604 and 3728-3790. Agreed: blood, 30 g butter, 3 pincées, 2 prises, 40 g flour, 3 minutes, 3 décilitres of wine, 400 g onions, juice of 15 mushrooms, half an hour; the arrangement. Changed: red wine now 300 ml; the arrangement names legs, wing tips, wings and thighs as the fricassée does. Unreadable: the stock (\"0 décilitres\"; a G in the second scan), so no amount."
   },
   "note": {
-    "en": "Gouffé's chicken in the Burgundy style. Not sized in the book: the stock (printed \"0 décilitres\"; the first digit is not legible in either scan), the blood, the bouquet garni and the lemon juice of the mushrooms (one tablespoon). The red wine is 3 décilitres, which is 300 ml. The cutting and the dressing follow the book's fricassée (gouffe.txt lines 9492-9503; the cut is illustrated in two figures). The mushrooms follow the book's turned mushrooms (printed p. 71, gouffe.txt lines 3728-3790). The blood binding follows the book's Liaison au sang (printed p. 89, gouffe.txt lines 4714-4721).",
-    "de": "Gouffés Huhn nach Burgunderart. Im Buch nicht bemessen: die Brühe (gedruckt \"0 décilitres\"; die erste Ziffer ist in beiden Scans nicht lesbar), das Blut, das Bouquet garni und der Zitronensaft für die Pilze (ein Esslöffel). Der Rotwein sind 3 Deziliter, also 300 ml. Das Zerlegen und das Anrichten folgen der Fricassée des Buches (gouffe.txt Zeilen 9492-9503; der Schnitt steht in zwei Abbildungen). Die Pilze folgen den gedrehten Champignons des Buches (gedruckt S. 71, gouffe.txt Zeilen 3728-3790). Die Bindung mit Blut folgt der Liaison au sang des Buches (gedruckt S. 89, gouffe.txt Zeilen 4714-4721)."
+    "en": "Gouffé's chicken in the Burgundy style. Not sized in the book: the stock (printed \"0 décilitres\"; the first digit is not legible in either scan), the blood, the bouquet garni and the lemon juice of the mushrooms (one tablespoon). The red wine is 3 décilitres, which is 300 ml. The cutting and the dressing follow the book's fricassée (the cut is illustrated in two figures). The mushrooms follow the book's turned mushrooms (printed p. 71). The blood binding follows the book's Liaison au sang (printed p. 89).",
+    "de": "Gouffés Huhn nach Burgunderart. Im Buch nicht bemessen: die Brühe (gedruckt „0 décilitres“; die erste Ziffer ist in beiden Scans nicht lesbar), das Blut, das Bouquet garni und der Zitronensaft für die Pilze (ein Esslöffel). Der Rotwein sind 3 Deziliter, also 300 ml. Das Zerlegen und das Anrichten folgen der Fricassée des Buches (der Schnitt steht in zwei Abbildungen). Die Pilze folgen den gedrehten Champignons des Buches (gedruckt S. 71). Die Bindung mit Blut folgt der Liaison au sang des Buches (gedruckt S. 89)."
   }
 }

@@ -68,3 +68,70 @@ export const mark = (control: HTMLElement, on: boolean): void => {
   if (on) control.setAttribute('aria-invalid', 'true');
   else control.removeAttribute('aria-invalid');
 };
+
+/** A message at the field it concerns. It is always in the page, empty; the text is announced when it is put in (role alert) and the field points at it. */
+export interface FieldError {
+  node: HTMLElement;
+  show(text: string): void;
+  clear(): void;
+}
+
+export const fieldError = (control?: HTMLElement): FieldError => {
+  const node = el('p', 'hint field-error');
+  node.id = nextId('error');
+  node.setAttribute('role', 'alert');
+  return {
+    node,
+    show(text) {
+      node.textContent = text;
+      if (control === undefined) return;
+      control.setAttribute('aria-describedby', node.id);
+      control.dataset.hasError = '';
+      if (control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement) {
+        mark(control, true);
+      }
+    },
+    clear() {
+      node.textContent = '';
+      if (control === undefined) return;
+      control.removeAttribute('aria-describedby');
+      delete control.dataset.hasError;
+    },
+  };
+};
+
+/** What a row of lines or slots can say at its fields: at the picker button or at the amount. */
+export interface RowProblem {
+  target: 'pick' | 'amount';
+  text: string;
+}
+
+/** Puts the problems of one row under it, each pointing from its field. */
+export const showRowProblems = (
+  row: HTMLElement,
+  problems: readonly RowProblem[],
+  controls: Record<RowProblem['target'], HTMLElement>,
+): void => {
+  for (const problem of problems) {
+    const error = fieldError(controls[problem.target]);
+    error.node.dataset.target = problem.target;
+    error.show(problem.text);
+    row.append(error.node);
+  }
+};
+
+/** Takes away the messages of one field of a row, when the user has changed it. */
+export const clearRowProblems = (
+  row: HTMLElement,
+  target: RowProblem['target'],
+  control: HTMLElement,
+): void => {
+  row.querySelectorAll(`.field-error[data-target="${target}"]`).forEach((n) => n.remove());
+  control.removeAttribute('aria-describedby');
+  delete control.dataset.hasError;
+};
+
+/** Moves the focus to the first field that has a message, so it scrolls into view and is read out. */
+export const focusFirstError = (root: HTMLElement): void => {
+  root.querySelector<HTMLElement>('[data-has-error]')?.focus();
+};

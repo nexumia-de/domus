@@ -2,13 +2,17 @@
 // Only the fields the screens use are typed; a record valid against its schema is accepted as is.
 import type {
   Component,
+  Country,
+  Course,
   FactsByIngredient,
   StockItem,
   FoodState,
   IngredientFacts,
   IngredientYield,
   NutrientsPer100g,
+  Step,
 } from '@culina/engine';
+import type { StoredCorrection } from './characters/correction';
 import type { NamesByLanguage } from './shared/names';
 
 export interface IngredientRecord {
@@ -29,6 +33,10 @@ export interface IngredientRecord {
   unitWeightG?: { value: number; source: string };
   /** Nutrients per 100 g, read from the dataset the catalogue is generated from. */
   'x-nutrition'?: { per100g: NutrientsPer100g; source?: string };
+  /** The USDA row the entry is generated from; `category` is USDA's food category. */
+  'x-fdc'?: { category?: string };
+  /** A generated parent; `category` is given when every food below it has the same one. */
+  'x-group'?: { category?: string };
   note?: string;
 }
 
@@ -62,6 +70,8 @@ export interface ComponentRecord extends Component {
 }
 
 export interface SlotRecord {
+  /** Names the slot so an assembly step can use it; unique in the dish. */
+  key?: string;
   role: string;
   ref: { kind: 'ingredient' | 'component'; id: string };
   amount?: {
@@ -89,16 +99,25 @@ export interface DishRecord {
   id: string;
   name: string;
   portions?: number;
+  /** Where the dish sits in a meal, where the cook states it. */
+  course?: Course;
+  /** The country whose kitchen it belongs to, where the cook states it. */
+  cuisine?: Country;
+  /** The cook's correction of the computed characters; the computed set is never stored. */
+  characters?: StoredCorrection;
   slots: SlotRecord[];
+  /** The assembly: what is done with the fillings; a step uses slots by their key. */
+  steps?: Step[];
   version: VersionInfo;
   note?: string;
 }
 
 /**
- * A stock record. Fields of other apps (`x-...`) are carried along: an edit changes a copy of the
- * stored record and never rebuilds it from the typed fields.
+ * A stock item as Culina shows it. It is not stored as such: the shared collection `stock` of a
+ * space holds one record per thing, and src/shared-stock/value.ts is the one boundary between the
+ * two. The id is the record's key, `key~n` for the n-th further batch.
  */
-export type StockRecord = StockItem & { [extra: `x-${string}`]: unknown };
+export type StockRecord = StockItem;
 
 export type { FoodState, IngredientFacts };
 

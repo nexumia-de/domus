@@ -1,0 +1,31 @@
+{
+  "id": "parse-an-older-reader-refuses-version-3",
+  "description": "A reader that knows up to version 2 (the app before 2026-11-21) refuses a version 3 file as newer, before reading its skills",
+  "inputs": {
+    "kind": "export_parse",
+    "current": 2,
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 3,
+      "skills": [
+        {
+          "id": "skill-fold-in",
+          "technique": "fold-in",
+          "learned": false
+        },
+        {
+          "id": "skill-pan-fry",
+          "technique": "pan-fry",
+          "learned": true
+        }
+      ]
+    }
+  },
+  "error_code": "newer-version",
+  "error_detail": {
+    "found": 3,
+    "supported": 2
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (export version 3 adds skills), no kitchen figure is involved."
+}

@@ -77,7 +77,7 @@
             "kind": "ingredient",
             "id": "fdc-group-cream-fluid"
           },
-          "note": {
+          "sourceNote": {
             "en": "Un poco de nata: a little cream, no amount given.",
             "de": "Un poco de nata: etwas Sahne, keine Menge angegeben."
           }
@@ -101,6 +101,7 @@
             "en": "Grind the chocolate to a powder.",
             "de": "Die Schokolade zu Pulver zerreiben."
           },
+          "action": "grate",
           "uses": ["chocolate"]
         },
         {
@@ -116,6 +117,7 @@
             "en": "When it is cold or nearly cold, beat in the five yolks a little at a time, thinning with the mixture, as in the coffee cream on the previous page.",
             "de": "Wenn die Masse kalt oder fast kalt ist, die fünf Eigelb nach und nach einschlagen und dabei mit der Masse verdünnen, wie bei der Kaffeecreme auf der Vorseite."
           },
+          "action": "whisk",
           "uses": ["yolk"]
         },
         {
@@ -123,6 +125,7 @@
             "en": "Pass the mixture through a sieve.",
             "de": "Die Masse durch ein Sieb streichen."
           },
+          "action": "strain",
           "uses": ["chocolate", "sugar", "milk", "yolk"]
         },
         {

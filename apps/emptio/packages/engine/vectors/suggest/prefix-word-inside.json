@@ -1,0 +1,32 @@
+{
+  "kind": "suggest",
+  "title": "Names that start with the text come first, then a word that starts with it, then names that contain it; umlauts and case do not count",
+  "input": {
+    "query": "ap",
+    "earlier": [
+      { "id": "e1", "name": "Grapes", "categoryId": "produce", "addedAt": "2026-11-01T08:00:00Z" },
+      { "id": "e2", "name": "Äpfel", "categoryId": "produce", "addedAt": "2026-11-02T08:00:00Z" },
+      {
+        "id": "e3",
+        "name": "Red apples",
+        "categoryId": "produce",
+        "addedAt": "2026-11-03T08:00:00Z"
+      },
+      {
+        "id": "e4",
+        "name": "Apricots",
+        "categoryId": "produce",
+        "addedAt": "2026-11-04T08:00:00Z"
+      },
+      { "id": "e5", "name": "Milk", "categoryId": "dairy", "addedAt": "2026-11-05T08:00:00Z" }
+    ]
+  },
+  "expected": {
+    "suggestions": [
+      { "name": "Äpfel", "categoryId": "produce", "open": true },
+      { "name": "Apricots", "categoryId": "produce", "open": true },
+      { "name": "Red apples", "categoryId": "produce", "open": true },
+      { "name": "Grapes", "categoryId": "produce", "open": true }
+    ]
+  }
+}

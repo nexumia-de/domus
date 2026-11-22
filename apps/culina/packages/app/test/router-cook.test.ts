@@ -3,6 +3,7 @@ import {
   actionFromHash,
   hashFor,
   NAV_ENTRIES,
+  NAV_ROUTE,
   navEntryFor,
   paramFromHash,
   routeFromHash,
@@ -29,10 +30,25 @@ test('an ingredient id with a space or slash survives the round trip', () => {
   expect(actionFromHash(hash)).toBe('with');
 });
 
-test('the navigation has Start and five entries; the stock screens are shown under Cook', () => {
-  expect(NAV_ENTRIES).toEqual(['start', 'ratios', 'components', 'dishes', 'cook', 'settings']);
-  for (const route of ROUTES) expect(NAV_ENTRIES).toContain(navEntryFor(route));
-  expect(navEntryFor('stock')).toBe('cook');
-  expect(navEntryFor('cook')).toBe('cook');
-  expect(navEntryFor('dishes')).toBe('dishes');
+test('the navigation has four destinations; every route is shown under one, Settings under none', () => {
+  expect(NAV_ENTRIES).toEqual(['start', 'cook', 'notebook', 'ratios']);
+  for (const route of ROUTES) {
+    const entry = navEntryFor(route);
+    if (route === 'settings') expect(entry).toBeUndefined();
+    else expect(NAV_ENTRIES).toContain(entry);
+  }
+  // Cook holds the finder and the stock; the Notebook the components and every dish, own or
+  // shipped (with its cooking mode), and the old address of the classics.
+  for (const route of ['cook', 'stock'] as const) expect(navEntryFor(route)).toBe('cook');
+  for (const route of ['components', 'dishes', 'classics', 'classic'] as const)
+    expect(navEntryFor(route)).toBe('notebook');
+  expect(navEntryFor('start')).toBe('start');
+  expect(navEntryFor('ratios')).toBe('ratios');
+});
+
+test('every entry opens a route, and the old routes still parse', () => {
+  expect(Object.keys(NAV_ROUTE).sort()).toEqual([...NAV_ENTRIES].sort());
+  expect(hashFor(NAV_ROUTE.notebook)).toBe('#/components');
+  for (const hash of ['#/components', '#/dishes', '#/classics', '#/cook', '#/stock', '#/settings'])
+    expect(hashFor(routeFromHash(hash))).toBe(hash);
 });

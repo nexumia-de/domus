@@ -1,7 +1,9 @@
 // Export and import in a browser: fill data, export (the download is captured), clear the
-// storage, import with "replace" and compare entity by entity; merge with a conflict, with a
+// storage, import with "Merge now" (the tester's steps of 2026-11-21) and with "replace" and compare
+// entity by entity, the skill state included; merge with a conflict, with a
 // version record in conflict and with an ingredient that is here already; a corrupt file and a
-// newer one change nothing; the backup reminder with an injected clock; then Cooklang.
+// newer one change nothing; a file of format 2 still imports; the backup reminder with an injected
+// clock; then Cooklang; and "Erase everything on this device" (e2e/erase-device.mjs).
 import { check, watch } from './harness.mjs';
 import { engine } from './notebook-fixture.mjs';
 import { layout } from './editor-helpers.mjs';
@@ -22,6 +24,7 @@ import {
   uid,
 } from './exchange-fixture.mjs';
 import { seed } from './seed.mjs';
+import { eraseDevice } from './erase-device.mjs';
 
 const label = '360px export and import';
 const DAY = 86_400_000;
@@ -97,8 +100,43 @@ const roundTrip = async (context, page, origin) => {
     `${label}: drafts are not in the export`,
   );
   check(
-    (await page.getByText(/^Last export: \d{4}-\d{2}-\d{2}$/).count()) === 1,
+    (await page.getByText(/^Last export: \d{1,2} [A-Z][a-z]{2} \d{4}$/).count()) === 1,
     `${label}: Settings shows the date of the last export`,
+  );
+
+  check(
+    (await page.locator('.not-in-file').allTextContents()).some((t) =>
+      t.startsWith('Not in the file: the stock of “Home”'),
+    ),
+    `${label}: Settings says the stock is not in the file and where it lives`,
+  );
+  check(
+    JSON.parse(file1.text).formatVersion === 3 && JSON.parse(file1.text).skills.length === 2,
+    `${label}: the file is format 3 and holds the skill state`,
+  );
+
+  // The tester's steps: delete the browser's data, then import with "Merge now".
+  await clearStorage(context, page, origin);
+  await openAt(page, origin, 'settings');
+  check(
+    Object.values(await listAll(page)).every((list) => list.length === 0),
+    `${label}: storage cleared, the notebook and the skill state are empty`,
+  );
+  await chooseFile(page, origin, file(file1.name, file1.text));
+  await page.locator('.plan').waitFor();
+  await page.getByRole('button', { name: 'Merge now' }).click();
+  await page.locator('.toast-text', { hasText: 'Imported:' }).waitFor();
+  const merged = await listAll(page);
+  for (const kind of Object.keys(before)) {
+    check(
+      same(merged[kind], before[kind]),
+      `${label}: ${kind} are identical after export, wipe and "Merge now" (${merged[kind].length})`,
+    );
+  }
+  await openAt(page, origin, 'settings');
+  check(
+    (await page.locator('.skill-list li').allTextContents()).some((t) => t.includes('Pan-frying')),
+    `${label}: the technique marked as learned is listed as learned again after the import`,
   );
 
   await clearStorage(context, page, origin);
@@ -120,8 +158,8 @@ const roundTrip = async (context, page, origin) => {
           ingredients: 'ingredients',
           components: 'component versions',
           dishes: 'dish versions',
-          stock: 'stock items',
           tastings: 'tasting notes',
+          skills: 'skill marks',
         }[kind]
       }`,
   );
@@ -330,12 +368,49 @@ const refusals = async (page, origin) => {
     'a file from a newer version',
     file(
       'x.json',
-      JSON.stringify({ format: 'culina-export', formatVersion: 2, components: [{ any: 'shape' }] }),
+      JSON.stringify({ format: 'culina-export', formatVersion: 4, components: [{ any: 'shape' }] }),
     ),
-    /newer version of the app \(format 2; this app reads up to 1\)/,
+    /newer version of the app \(format 4; this app reads up to 3\)/,
     before,
   );
   await layout(page, `${label} (refused file)`);
+
+  // A file of version 1 with stock is read; its stock is left out, and the preview says so.
+  const old = {
+    format: 'culina-export',
+    formatVersion: 1,
+    ingredients: [{ id: uid(81), name: 'Old flour' }],
+    stock: [{ id: uid(82), ref: { kind: 'ingredient', id: uid(81) } }],
+  };
+  await chooseFile(page, origin, file('old.json', JSON.stringify(old)));
+  await page.locator('.stock-left-out').waitFor();
+  const note = await page.locator('.stock-left-out').innerText();
+  const summary = await page.locator('.summary-list li').allTextContents();
+  check(
+    note.includes('holds 1 stock item. They are left out') && same(summary, ['1 ingredients']),
+    `${label}: an older file's stock is left out and the preview says so (${note} | ${summary})`,
+  );
+  check(same(await listAll(page), before), `${label}: reading the older file changed nothing`);
+
+  // A file of format 2 (before the skill state was in the file) still imports, and says that the
+  // skill marks here stay; "replace everything" with it leaves them.
+  const two = {
+    format: 'culina-export',
+    formatVersion: 2,
+    ingredients: [{ id: uid(83), name: 'Format two flour' }],
+  };
+  await chooseFile(page, origin, file('two.json', JSON.stringify(two)));
+  await page.locator('.skills-not-in-file').waitFor();
+  await page.getByRole('button', { name: 'Merge now' }).click();
+  await page.locator('.toast-text', { hasText: 'Imported: 1 added' }).waitFor();
+  const afterTwo = await listAll(page);
+  check(
+    afterTwo.ingredients.some((r) => r.id === uid(83)) && same(afterTwo.skills, before.skills),
+    `${label}: a format 2 file is merged and the skill state stays (${afterTwo.skills.length})`,
+  );
+  await page.locator('.toast-action').click();
+  await page.locator('.toast-text', { hasText: 'The import was undone.' }).waitFor();
+  check(same(await listAll(page), before), `${label}: Undo of the format 2 merge`);
 };
 
 const reminder = async (browser, server) => {
@@ -423,4 +498,5 @@ export const exportImport = async (browser, server) => {
   if (problems.length) console.log(problems.join('\n'));
   await context.close();
   await reminder(browser, server);
+  await eraseDevice(browser, server);
 };

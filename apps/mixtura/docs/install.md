@@ -105,8 +105,11 @@ the app then reloads once with the new version. Details:
 ## Where the data lives
 
 Everything you enter stays on your device, in the browser's storage for the
-address `https://mixtura.nexumia.de`; nothing is sent anywhere. That has
-consequences:[^mdn-storage]
+address `https://mixtura.nexumia.de`; nothing is sent anywhere, with one
+exception: the stock of a space the household shares is synced with the
+storage of that space, which is set up in the Household app
+([stock in spaces](decisions/stock-in-spaces.md)). Without a shared space
+no request goes to another host. That has consequences:[^mdn-storage]
 
 - **Clearing site data for the address deletes your data.** So does
   removing the installed app if the browser clears its storage then
@@ -122,8 +125,10 @@ consequences:[^mdn-storage]
 - An app installed from another browser has its own, separate data.
 
 Make a backup with Export Everything (Settings, Data): one file with all
-your specs, ingredients, stock and pairings, saved through the browser's
-normal download. Import File on another device or after the data was
+your specs, ingredients, templates and pairings, saved through the
+browser's normal download. Stock is not in the file: it is kept with its
+space, and the stock of a space that is on this device only has no backup
+yet ([stock in spaces](decisions/stock-in-spaces.md#export)). Import File on another device or after the data was
 cleared brings it back, with Undo ([export format](export-format.md)). The
 app reminds you calmly after 30 days with changes and no export.
 

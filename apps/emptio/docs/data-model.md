@@ -24,17 +24,23 @@ a removed one. `updatedAt` and every other time is a UTC timestamp
 `YYYY-MM-DDThh:mm:ss[.fff]Z`. Ids are made by the app (the engine gets
 them as input) and never reused.
 
-The records live in three collections of Emptio's own file in the
-household's place ([sync](architecture.md#sync-and-the-household)):
+The records live in collections of a **space** (a household, or this
+device alone), in the database `domus` that the apps on the address
+share, each collection one sealed file in the space's storage
+([spaces](../../../packages/host/docs/spaces.md),
+[behaviour](behaviour.md#spaces)). Since 2026-11-20; the plan of
+2026-11-18 had a file per app in a place.
 
-| Collection   | Key             | Holds                 | Built in |
-| ------------ | --------------- | --------------------- | -------- |
-| `entries`    | the entry id    | [Entry](#entry)       | Goal 1   |
-| `categories` | the category id | [Category](#category) | Goal 1   |
-| `stores`     | the store id    | [Store](#store)       | Goal 3   |
+| Collection        | Key             | Holds                 | Built in |
+| ----------------- | --------------- | --------------------- | -------- |
+| `list`            | the entry id    | [Entry](#entry)       | Goal 1   |
+| `list-categories` | the category id | [Category](#category) | Goal 1   |
+| `stores`          | the store id    | [Store](#store)       | Goal 3   |
 
-Before sync exists (Goal 1) the same records are kept in the local
-store, so sharing later needs no conversion.
+A space on this device only holds the same records before sync is set
+up, so sharing later needs no conversion. A collection is shared: a
+record whose value is not of the shape below is not shown and left
+untouched, and a value keeps fields this app does not know.
 
 # Entry
 

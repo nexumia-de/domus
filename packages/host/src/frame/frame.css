@@ -1,0 +1,185 @@
+/*
+ * The shared frame of the household apps: header, icon buttons, sync banner, toast. It has no
+ * colours of its own; it reads the tokens every app defines (docs/frame.md#tokens): --surface,
+ * --surface-2, --text, --text-muted, --accent, --border, --divider, --error-bg, --error-text,
+ * --target, --header-h, --radius, --radius-sm, --sp-1 to --sp-4, --fs-sm, --fs-lg; optional:
+ * --accent-soft, --content-w, --toast-bottom, --toast-z.
+ */
+.fr-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: var(--header-h);
+  padding: 0 var(--sp-2);
+  border-bottom: 1px solid var(--divider);
+  background: var(--surface);
+}
+
+.fr-header > .fr-icon-btn:first-child {
+  margin-right: 0;
+}
+
+.fr-place {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 var(--sp-2);
+}
+
+.fr-title {
+  margin: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.fr-title:focus {
+  outline: none;
+}
+
+.fr-subtitle {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.fr-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.fr-icon-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  min-width: var(--target);
+  height: var(--target);
+  min-height: var(--target);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.fr-icon-btn:hover {
+  background: var(--surface-2);
+}
+
+.fr-icon-btn[aria-current='page'] {
+  background: var(--accent-soft, var(--surface-2));
+  color: var(--accent);
+}
+
+.fr-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The state is the icon plus the accessible name; colour only supports it. */
+.fr-sync[data-sync='synced'],
+.fr-sync[data-sync='local'] {
+  color: var(--text-muted);
+}
+
+.fr-sync[data-sync='failed'] {
+  color: var(--error-text);
+}
+
+.fr-sync[data-sync='syncing'] .fr-icon {
+  animation: fr-spin 1.2s linear infinite;
+}
+
+@keyframes fr-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* An error only: one slim line under the header. */
+.fr-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-1) var(--sp-4);
+  background: var(--error-bg);
+  color: var(--error-text);
+  font-size: var(--fs-sm);
+}
+
+.fr-banner-action,
+.fr-toast-action {
+  flex: none;
+  min-height: var(--target);
+  padding: 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fr-banner-action {
+  color: var(--error-text);
+  text-decoration: underline;
+}
+
+/* What was said last: at the lower edge of the content, never over the add field. */
+.fr-toast {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--toast-bottom, var(--sp-3));
+  left: var(--sp-3);
+  z-index: var(--toast-z, 5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  max-width: var(--content-w, 36rem);
+  margin: 0 auto;
+  padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.18);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.fr-toast:empty {
+  display: none;
+}
+
+.fr-toast-text {
+  padding: var(--sp-2) 0;
+}
+
+.fr-toast-action {
+  color: var(--accent);
+}
+
+/* `hidden` must win over the display of the rules above. */
+.fr-banner[hidden],
+.fr-icon-btn[hidden],
+.fr-subtitle[hidden] {
+  display: none;
+}

@@ -87,3 +87,53 @@ describe('the wanted lines', () => {
     expect(listWanted().every((w) => classicById(w.classic) !== undefined)).toBe(true);
   });
 });
+
+describe('remarks about the source are kept apart from cooking help', () => {
+  type Line = { note?: { en: string; de: string }; amount?: unknown; amountWord?: string };
+  const lines = (): { at: string; line: Line }[] =>
+    CLASSICS.flatMap((c) =>
+      (c.components ?? []).flatMap((k) =>
+        k.lines.map((line, i) => ({ at: `${c.id}/${k.id}[${i}]`, line: line as Line })),
+      ),
+    );
+  // What only a remark about the source says; none of it belongs in a line or in a step.
+  const SOURCE_EN = /\b(source|book|scans?|editions?|OCR|legible|garbled|translation|validator)\b/i;
+  const SOURCE_DE = /\b(Quelle|Buch|Scans?|Ausgabe|OCR|lesbar|verstümmelt|Validator)\b/;
+
+  test('the cooking note of a line does not talk about the source', () => {
+    for (const { at, line } of lines()) {
+      if (line.note === undefined) continue;
+      expect(line.note.en, `${at} (en)`).not.toMatch(SOURCE_EN);
+      expect(line.note.de, `${at} (de)`).not.toMatch(SOURCE_DE);
+      expect(line.note.en, `${at}: the source's wording is not a cooking note`).not.toMatch(
+        /^Original:|no (amount|quantity|volume|weight)\b/i,
+      );
+    }
+  });
+  test('the text of a step does not talk about the scans or the edition', () => {
+    for (const c of CLASSICS)
+      for (const k of c.components ?? [])
+        for (const [i, step] of (k.steps ?? []).entries()) {
+          expect(step.text.en, `${c.id}/${k.id} step ${i + 1}`).not.toMatch(
+            /\b(source|scans?|editions?|OCR|legible)\b/i,
+          );
+          expect(step.text.de, `${c.id}/${k.id} step ${i + 1}`).not.toMatch(
+            /\b(Quelle|Scans?|Ausgabe|OCR|lesbar)\b/,
+          );
+        }
+  });
+  test('the remarks are kept in the data, in both languages', () => {
+    const remarks = lines().filter(({ line }) => 'sourceNote' in (line as object));
+    expect(remarks.length).toBeGreaterThan(100);
+    const steps = CLASSICS.flatMap((c) => c.components ?? []).flatMap((k) => k.steps ?? []);
+    expect(steps.filter((s) => s.sourceNote !== undefined).length).toBeGreaterThanOrEqual(3);
+  });
+  test('"to taste" and "as needed" are said only where the data says them, and never beside an amount', () => {
+    const words = lines().filter(({ line }) => line.amountWord !== undefined);
+    expect(words.length).toBeGreaterThan(0);
+    for (const { at, line } of words) {
+      expect(line.amount, at).toBeUndefined();
+      expect(['to-taste', 'as-needed'], at).toContain(line.amountWord);
+    }
+  });
+});

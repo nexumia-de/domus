@@ -1,0 +1,33 @@
+{
+  "name": "@nexumia-de/hospes",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The host code the apps share: sync on spaces (the secret, the sealed file on Web Crypto, local data in IndexedDB, the sync cycle) and the WebDAV and GitHub storage adapters on fetch",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./service-worker": "./src/service-worker.ts",
+    "./testing/browser": "./testing/browser.mjs",
+    "./testing/fake-github": "./testing/fake-github.mjs",
+    "./frame": "./src/frame/index.ts",
+    "./frame.css": "./src/frame/frame.css"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@nexumia-de/materia": "0.3.0"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.8"
+  }
+}

@@ -84,8 +84,12 @@
             "id": "fdc-170416"
           },
           "note": {
-            "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in. The size is not read in the book, so the line has no amount.",
-            "de": "Ein Bund Petersilie (ramillete de perejil), vor Butter und Mehl wieder herausgenommen. Die Größe steht nicht im Buch, daher ohne Menge."
+            "en": "A bouquet of parsley (ramillete de perejil), taken out again before the butter and flour go in.",
+            "de": "Ein Bund Petersilie (ramillete de perejil), wieder herausgenommen, bevor Butter und Mehl dazukommen."
+          },
+          "sourceNote": {
+            "en": "The size is not read in the book, so the line has no amount.",
+            "de": "Die Größe steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -95,8 +99,12 @@
             "id": "fdc-173468"
           },
           "note": {
-            "en": "Good seasoning of salt and pepper (una buena sazón de sal y pimienta). The source gives no amount.",
-            "de": "Gut gewürzt mit Salz und Pfeffer (una buena sazón de sal y pimienta). Die Quelle gibt keine Menge an."
+            "en": "Good seasoning of salt and pepper (una buena sazón de sal y pimienta).",
+            "de": "Gut gewürzt mit Salz und Pfeffer (una buena sazón de sal y pimienta)."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle gibt keine Menge an."
           }
         },
         {
@@ -125,8 +133,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucharada de harina), kneaded into the butter. The size of the spoon is not read in the book, so the line has no amount.",
-            "de": "Ein Löffel (una cucharada de harina), in die Butter geknetet. Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
+            "en": "One spoonful (una cucharada de harina), kneaded into the butter.",
+            "de": "Ein Löffel (una cucharada de harina), in die Butter geknetet."
+          },
+          "sourceNote": {
+            "en": "The size of the spoon is not read in the book, so the line has no amount.",
+            "de": "Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -148,8 +160,12 @@
             "de": "Wasser"
           },
           "note": {
-            "en": "Half a glass (medio vaso) to dissolve the yolks. The size of the glass is not read in the book, so the line has no amount.",
-            "de": "Ein halbes Glas (medio vaso) zum Auflösen des Eigelbs. Die Größe des Glases steht nicht im Buch, daher ohne Menge."
+            "en": "Half a glass (medio vaso) to dissolve the yolks.",
+            "de": "Ein halbes Glas (medio vaso) zum Auflösen des Eigelbs."
+          },
+          "sourceNote": {
+            "en": "The size of the glass is not read in the book, so the line has no amount.",
+            "de": "Die Größe des Glases steht nicht im Buch, daher ohne Menge."
           }
         }
       ],
@@ -159,6 +175,7 @@
             "en": "Put the peas, the onions, the lettuce hearts, the parsley bouquet, the butter, the salt and the pepper in a pot. Cook over low heat, stirring often with a wooden spatula so that the peas do not stick.",
             "de": "Die Erbsen, die Zwiebeln, die Salatherzen, den Petersilienstrauß, die Butter, Salz und Pfeffer in einen Topf geben. Bei schwacher Hitze garen und oft mit einem Holzspatel rühren, damit die Erbsen nicht ansetzen."
           },
+          "action": "cook",
           "uses": ["peas", "onion", "lettuce", "parsley", "butter", "salt", "pepper"]
         },
         {
@@ -166,6 +183,7 @@
             "en": "Take out the parsley and the lettuce. Leave the onions in the pot.",
             "de": "Petersilie und Salat herausnehmen. Die Zwiebeln im Topf lassen."
           },
+          "action": "take-out",
           "uses": ["parsley", "lettuce", "onion"]
         },
         {
@@ -185,6 +203,7 @@
             "en": "Take the pot off the heat and pour the sauce over the peas.",
             "de": "Den Topf von der Hitze nehmen und die Sauce über die Erbsen gießen."
           },
+          "action": "remove-from-heat",
           "uses": ["peas"]
         },
         {
@@ -192,6 +211,7 @@
             "en": "At serving, dissolve the two egg yolks in the water and add them.",
             "de": "Beim Servieren die zwei Eigelb im Wasser auflösen und dazugeben."
           },
+          "technique": "thicken-with-egg",
           "uses": ["egg-yolk", "water"]
         }
       ]
@@ -220,6 +240,6 @@
   },
   "note": {
     "en": "A replacement: the first choice of the selection (Zucchini in pisto) gives no amounts in the book, so it is not transcribed. The source gives the butter and flour as a sauce poured over the peas.",
-    "de": "Ein Ersatz: Die erste Wahl der Auswahl (Zucchini im Pisto) nennt im Buch keine Mengen und ist daher nicht übertragen. Die Quelle gibt Butter und Mehl als Sauce, die über die Erbsen gegossen wird."
+    "de": "Ein Ersatz: Die erste Wahl der Auswahl (Zucchini im Pisto) nennt im Buch keine Mengen und ist daher nicht übertragen. In der Quelle ergeben Butter und Mehl eine Sauce, die über die Erbsen gegossen wird."
   }
 }

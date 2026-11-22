@@ -11,6 +11,7 @@ import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { readStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -46,7 +47,7 @@ const shot = async (name, selector) => {
 const open = async (address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
 };
 const sheetClosed = () => page.waitForFunction(() => !location.hash.includes('sheet='));
 const dump = () =>
@@ -55,7 +56,7 @@ const dump = () =>
       new Promise((res) => {
         const r = indexedDB.open('mixtura');
         r.onsuccess = () => {
-          const names = ['specs', 'ingredients', 'stock'];
+          const names = ['specs', 'ingredients'];
           const tx = r.result.transaction(names);
           const out = {};
           let left = names.length;
@@ -159,7 +160,7 @@ expect(
 await noOverflow('on the batch card');
 await targets('in the batch card', '.shelf-card button, .shelf-card input');
 await shot('shelf-fresh', '.shelf-card');
-const stock = (await dump()).stock.find((s) => s.ingredientId === syrup.id);
+const stock = (await readStock(page)).find((s) => s.ingredientId === syrup.id);
 expect(
   stock.present === true && stock.openedOn === '2026-11-17',
   'the made-on date is the stock record',
@@ -199,7 +200,7 @@ expect(
   (await page.locator('.shelf-card').innerText()).includes('1 more batch at hand'),
   'the earlier batch is kept and the card says so',
 );
-let kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+let kept = (await readStock(page)).find((r) => r.ingredientId === syrup.id);
 expect(
   kept.openedOn === '2026-12-01' && JSON.stringify(kept.moreBatches) === '["2026-11-17"]',
   `the newest is openedOn, the earlier one moreBatches ${JSON.stringify(kept)}`,
@@ -220,7 +221,7 @@ await page.locator('[data-action="used-up"]').click();
 await page.locator('.shelf-card [data-batch-state="past"]').waitFor();
 await page.locator('[data-action="used-up"]').click();
 await page.locator('.shelf-card[data-shelf="none"]').waitFor();
-kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+kept = (await readStock(page)).find((r) => r.ingredientId === syrup.id);
 expect(
   kept.present === false && kept.openedOn === undefined && kept.moreBatches === undefined,
   'the last batch used up leaves no date behind',
@@ -228,7 +229,7 @@ expect(
 // A later "I made this" starts again, with no stale date.
 await page.locator('[data-action="made-today"]').click();
 await page.locator('.shelf-card [data-batch-state]').waitFor();
-kept = (await dump()).stock.find((r) => r.ingredientId === syrup.id);
+kept = (await readStock(page)).find((r) => r.ingredientId === syrup.id);
 expect(kept.moreBatches === undefined, 'no old date comes back');
 await page.locator('[data-action="made-today"]').click();
 await page.getByText('A batch made on that day is already recorded.').waitFor();

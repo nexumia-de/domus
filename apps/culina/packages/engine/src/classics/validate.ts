@@ -3,6 +3,7 @@
 import { contentResult, found } from '../content/types';
 import type { ContentFinding, ContentResult } from '../content/types';
 import { findCycles } from '../validate/graph';
+import { ACTIONS } from '../actions/shipped';
 import { isUnitId } from '../amounts/units';
 import { stepFindings } from '../steps/validate';
 import { isI18nText } from '../text/i18n';
@@ -31,7 +32,7 @@ interface Item {
  * ids unique and not `slots`, every component reference exists and none is circular or unused, every
  * ingredient id is in the catalogue (when `ingredientIds` is given), every unit resolves (the table or
  * the classic's `units`) and a defined unit is used and does not shadow a table unit, a component line
- * has a mass, a range ends above its start, every step's technique exists and its `uses` name lines,
+ * has a mass, a range ends above its start, every step's technique exists, its plain action is a shipped one and its `uses` name lines,
  * and settled lines, settled persons and `settled` entries agree.
  *
  * @param classic - A classic, as in its JSON file (valid against `classic.schema.json`).
@@ -42,6 +43,7 @@ export function validateClassic(classic: Classic, context: ClassicContext): Cont
   const out: ContentFinding[] = [];
   const componentIds = new Set<string>();
   const techniqueIds = new Set(context.techniques.map((t) => t.id));
+  const actionIds = new Set(ACTIONS.map((a) => a.id));
   const used = new Set<string>();
   const text = (path: string, value: unknown): void => {
     if (!isI18nText(value)) out.push(found('text-incomplete', path));
@@ -84,8 +86,16 @@ export function validateClassic(classic: Classic, context: ClassicContext): Cont
     c.lines.forEach((line, j) => {
       item(`components[${i}].lines[${j}]`, line);
       if (line.note !== undefined) text(`components[${i}].lines[${j}].note`, line.note);
+      if (line.sourceNote !== undefined) {
+        text(`components[${i}].lines[${j}].sourceNote`, line.sourceNote);
+      }
+      if (line.amountWord !== undefined && line.amount !== undefined) {
+        out.push(found('amount-word', `components[${i}].lines[${j}].amountWord`));
+      }
     });
-    out.push(...stepFindings(`components[${i}]`, c, techniqueIds));
+    out.push(
+      ...stepFindings(`components[${i}]`, c, techniqueIds, { textRequired: true, actionIds }),
+    );
   });
   classic.slots.forEach((slot, i) => item(`slots[${i}]`, slot));
 

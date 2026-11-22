@@ -100,7 +100,36 @@ const offline = async (browser, origin) => {
   await context.close();
 };
 
+/** In the German app the German name leads and the English one stands beside it; without a German name the English one is shown as it is. */
+const inGerman = async (browser, origin) => {
+  const label = 'catalogue in the German app';
+  const context = await browser.newContext({ viewport: { width: 360, height: 720 }, locale: 'de' });
+  await context.addInitScript(() => localStorage.setItem('culina.lang', 'de'));
+  const page = await context.newPage();
+  await page.goto(`${origin}/?no-sw#/components/new`);
+  await page.getByRole('button', { name: 'Zutat hinzufügen' }).waitFor();
+  await page.getByRole('button', { name: 'Zutat hinzufügen' }).click();
+  const box = page.getByLabel('Im Notizbuch suchen');
+  await box.fill('Rosenkohl');
+  await rows(page).first().waitFor();
+  const first = rows(page).first();
+  check(
+    (await first.locator('.entry-name').innerText()) === 'Rosenkohl' &&
+      (await first.locator('.entry-alt').innerText()) === SPROUTS.name &&
+      (await first.locator('.entry-alt').getAttribute('lang')) === 'en',
+    `${label}: "Rosenkohl" leads and the English name "${SPROUTS.name}" stands beside it`,
+  );
+  await box.fill('brussels');
+  await rows(page).first().waitFor();
+  check(
+    (await rows(page).first().locator('.entry-name').innerText()) === 'Rosenkohl',
+    `${label}: found by the English name, the German name is still the one shown`,
+  );
+  await context.close();
+};
+
 export const catalogueGerman = async (browser, origin) => {
   await online(browser, origin);
+  await inGerman(browser, origin);
   await offline(browser, origin);
 };

@@ -101,19 +101,19 @@ code and **copies nothing**: the schemas here are written for Culina's
 model. Where the shared code exists, the "general" columns below are
 replaced by a reference to it.
 
-| Entity                  | General model (Mixtura inventory module)                  | Kitchen-specific here                                                                     |
-| ----------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Amounts and units       | `amounts/`: number plus unit, conversion, scaling         | Kitchen unit set; mass is canonical; density and unit weight per ingredient               |
-| Ingredient              | `ingredients/` tree, inheritance, shelf life              | Yield per state (as purchased to edible), season, allergens, density, unit weight         |
-| Ratio template          | `templates/` roles, slots, matching, variants             | Parts by mass with an anchor role, ranges from sourced rows, derivatives as changes       |
-| Component               | `ingredients/prepared.ts`: nesting, cycles, yield         | Yield by weight, percentage lines, baker's percentage base, method steps                  |
-| Dish                    | `templates/slots.ts`: roles filled by things              | Dish roles (main, sauce, crunch, acid, garnish, starch) and portions                      |
-| Version                 | `specs/`: versions, family, diff                          | Diff fields are lines, yield and method                                                   |
-| Tasting note            | none                                                      | A note with a date on one version of a component or dish                                  |
-| Stock item              | `stock/` and `shelf/`: what is held, dates, fresh or past | Amount and state on stock, date prepared, use by                                          |
-| Affinity                | `affinity.schema.json` exists in Mixtura                  | Context is cuisine, season, technique; later (issue 27 and the pairing work), no code yet |
-| Export file             | `exchange/`: envelope, version check, migrations          | Culina's entity kinds                                                                     |
-| Nutrition, salt figures | none (balance is drink-only)                              | Kitchen rules, derived; see [nutrition](nutrition-evaluation.md)                          |
+| Entity                  | General model (Mixtura inventory module)                  | Kitchen-specific here                                                                      |
+| ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Amounts and units       | `amounts/`: number plus unit, conversion, scaling         | Kitchen unit set; mass is canonical; density and unit weight per ingredient                |
+| Ingredient              | `ingredients/` tree, inheritance, shelf life              | Yield per state (as purchased to edible), season, allergens, density, unit weight          |
+| Ratio template          | `templates/` roles, slots, matching, variants             | Parts by mass with an anchor role, ranges from sourced rows, derivatives as changes        |
+| Component               | `ingredients/prepared.ts`: nesting, cycles, yield         | Yield by weight, percentage lines, baker's percentage base, method steps                   |
+| Dish                    | `templates/slots.ts`: roles filled by things              | Dish roles (main, sauce, crunch, acid, garnish, starch) and portions                       |
+| Version                 | `specs/`: versions, family, diff                          | Diff fields are lines, yield and method                                                    |
+| Tasting note            | none                                                      | A note with a date on one version of a component or dish                                   |
+| Stock item              | `stock/` and `shelf/`: what is held, dates, fresh or past | Amount and state on stock, date prepared, use by; the shared collection `stock` of a space |
+| Affinity                | `affinity.schema.json` exists in Mixtura                  | Context is cuisine, season, technique; later (issue 27 and the pairing work), no code yet  |
+| Export file             | `exchange/`: envelope, version check, migrations          | Culina's entity kinds                                                                      |
+| Nutrition, salt figures | none (balance is drink-only)                              | Kitchen rules, derived; see [nutrition](nutrition-evaluation.md)                           |
 
 The shared model's seams matter for the shapes: roles are **data** (an id,
 not a closed union), the measure of a template is a parameter (here
@@ -254,16 +254,17 @@ A named formula by mass: parts per role, an anchor role, optional usual
 ranges, and derivatives that change a parent. Schema:
 `template.schema.json`.
 
-| Field      | Type            | Required | Meaning                                                                                                                                           |
-| ---------- | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                                                                                                   |
-| `name`     | string          | yes      | Visible name                                                                                                                                      |
-| `source`   | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`                                                                                                     |
-| `parentId` | id              | no       | The template this one derives from; with `changes`, instead of `parts`                                                                            |
-| `anchor`   | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages                                                                    |
-| `parts`    | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                                                                            |
-| `changes`  | array of object | no       | Derivatives only: `add` (role, parts, optional `range`), `set` (role, parts, optional `range`), `remove` (role), `swap` (role, `ingredientClass`) |
-| `note`     | string          | no       | Free text                                                                                                                                         |
+| Field        | Type            | Required | Meaning                                                                                                                                           |
+| ------------ | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | id              | yes      | See [ids](#ids)                                                                                                                                   |
+| `name`       | string          | yes      | Visible name                                                                                                                                      |
+| `source`     | source          | yes      | Row of [ratios](ratios.md)[^ratios] or `user`: a pointer into the repository, never shown                                                         |
+| `references` | array of object | no       | What the ratio card shows as its source: `author`, `title`, optional `page`                                                                       |
+| `parentId`   | id              | no       | The template this one derives from; with `changes`, instead of `parts`                                                                            |
+| `anchor`     | role id         | no       | Role whose parts are 100 percent in baker's terms; absent means no percentages                                                                    |
+| `parts`      | array of object | no       | Roots only: `role`, `parts` (above 0), optional `range` (`min`, `max`)                                                                            |
+| `changes`    | array of object | no       | Derivatives only: `add` (role, parts, optional `range`), `set` (role, parts, optional `range`), `remove` (role), `swap` (role, `ingredientClass`) |
+| `note`       | string          | no       | Free text                                                                                                                                         |
 
 - **Root or derivative, not both**: a template has `parts` and no
   `parentId`, or `parentId` and `changes` and no `parts` (checked by the
@@ -311,9 +312,19 @@ nesting. Schema: `component.schema.json`. One stored record is one
 | `lines`       | array of object | yes      | `ref` (ingredient or component), optional `amount`, `role`, `state`, `note` |
 | `yield`       | object          | no       | `amount` (mass) and `source`: the output weight as weighed                  |
 | `method`      | array of string | no       | Steps as text                                                               |
-| `steps`       | array of object | no       | Steps with bilingual text, technique and lines used; see [Steps](#steps)    |
+| `keeps`       | array of object | no       | How long the made component keeps, per storage place; see below             |
+| `steps`       | array of object | no       | Steps by technique or plain action, lines used, note; see [Steps](#steps)   |
 | `version`     | object          | yes      | See [Version](#version)                                                     |
 
+- **Keeps (since 2026-11-20, for meal prep).** `keeps` says how long the
+  made component keeps and how: one entry per storage place, each
+  `{ storage, days, source, note? }` with `storage` `pantry`, `fridge` or
+  `freezer`, `days` a whole number, and `note` the user's words for how
+  ("in portions, airtight"). Every entry has a `source`; the user's own
+  entry is `user`. **A shelf life is a food-safety figure:** a shipped
+  component gets one only from an authority that was read, and none is
+  shipped today. The stock rules read these entries as a shelf life
+  without a state ([stock item](#stock-item)).
 - **Lines.** A line may carry a `key`, a short slug that is unique in the component, so that a step can name it (see [Steps](#steps)). An amount is mass, volume or count, or `percent` of the
   `percentBase` mass. A line without an amount ("salt to taste") is kept
   and reported as unmeasured by anything derived.
@@ -348,11 +359,34 @@ nesting. Schema: `component.schema.json`. One stored record is one
 
 `steps` is the method for the helper: an ordered array, and `method`
 (plain text) stays valid beside it for the user's own recipes. A step is
-`{ text, technique?, uses?, time?, temperature? }`:
+`{ text?, technique?, action?, uses?, time?, temperature?, note? }`. It
+says what is done in at least one of four ways, and the schema refuses a
+step that has none of them:
 
-- `text` is [a text in both languages](#text-in-two-languages).
+- `text` is [a text in both languages](#text-in-two-languages). A shipped
+  dish always has it (its schema requires it, and so does the engine,
+  `text-incomplete`), and a copy of a shipped dish keeps it. A step the
+  user builds has none.
 - `technique` is the id of a [technique](#technique), which the helper
   explains once ([engine rules](engine-rules.md#techniques-steps-and-classics)).
+- `action` is the id of a **plain action** (since 2026-11-20): a word for
+  a step that teaches nothing, such as set aside, drain or serve. The 42
+  plain actions are shipped in `data/actions.json` with a name in both
+  languages (`ACTIONS`, `actionById`). **Why two lists:** a technique
+  needs what to watch, why, and a source; a plain action has none of
+  them, and it does not show among the skills that can be marked as
+  learned. A plain action becomes a technique when a source says
+  something about it: the id moves from one list to the other, and a
+  test keeps the two lists free of a shared id. A step names a technique
+  or an action, not both (`technique-and-action`); `stepWord` gives the
+  one it has. Every step of a shipped dish names one of the two (since
+  2026-11-20, [how to choose](classic-format.md#steps)); 12 of the 42
+  actions were added for them (cook, pour, sprinkle, crush, grease, trim,
+  prepare, turn, take out, turn out, take off the heat, let stand), and
+  `validateClassic` refuses an action that is not shipped
+  (`unknown-action`).
+- `note` is the user's own remark in one language, plain text: what the
+  structure cannot say ("until golden", "half of the butter").
 - `uses` lists the `key`s of the lines the step uses. **Why keys, not line
   numbers:** the plan says "the lines the step uses", and an index shifts
   as soon as a line is added or moved in the editor, so a step would point
@@ -369,18 +403,63 @@ nesting. Schema: `component.schema.json`. One stored record is one
 Role slots filled by components or ingredients. Schema: `dish.schema.json`.
 One stored record is one [version](#version).
 
-| Field      | Type            | Required | Meaning                                                                |
-| ---------- | --------------- | -------- | ---------------------------------------------------------------------- |
-| `id`       | id              | yes      | See [ids](#ids)                                                        |
-| `name`     | string          | yes      | Visible name                                                           |
-| `portions` | integer         | no       | Number of portions the dish makes                                      |
-| `slots`    | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional` |
-| `version`  | object          | yes      | See [Version](#version)                                                |
-| `note`     | string          | no       | Free text                                                              |
+| Field        | Type            | Required | Meaning                                                                       |
+| ------------ | --------------- | -------- | ----------------------------------------------------------------------------- |
+| `id`         | id              | yes      | See [ids](#ids)                                                               |
+| `name`       | string          | yes      | Visible name                                                                  |
+| `portions`   | integer         | no       | Number of portions the dish makes                                             |
+| `course`     | string          | no       | Where it sits in a meal: the course list of a [classic](#classic)             |
+| `cuisine`    | string          | no       | Whose kitchen it is: `de`, `it`, `fr` or `es`                                 |
+| `characters` | object          | no       | The cook's correction of the computed characters: `add`, `remove`; see below  |
+| `slots`      | array of object | yes      | `role`, `ref` (ingredient or component), optional `amount`, `optional`, `key` |
+| `steps`      | array of object | no       | The assembly: what is done with the fillings; see below                       |
+| `version`    | object          | yes      | See [Version](#version)                                                       |
+| `note`       | string          | no       | Free text                                                                     |
 
 Weight per portion, the roles covered ("no crunch") and what is missing
 from stock are derived. A slot's amount is mass, volume or count, not
 percent.
+
+**Course and cuisine (since 2026-11-21).** The two things a shipped
+classic states, so that one filter works over every dish
+([behaviour](behaviour.md#one-filter-over-every-dish)). Both are
+optional and belong to the version like the other fields: a change is a
+new version, and the history names it. `course` is one of the classic's
+courses (`$defs/course` of `common.schema.json`, the engine's
+`COURSE_IDS`); `cuisine` is a country code of `$defs/country`, the same
+four a classic's `country` takes (`COUNTRY_CODES`). A copy of a classic
+keeps its course, and its country as the cuisine.
+**Why only the four codes:** they are the countries the app has a name
+for in both languages; a free code would show as a bare `jp` in the
+list and the filter. Allowing more later is additive (a wider enum,
+and names from the browser's `Intl.DisplayNames`); a narrower list
+later would not be. An export with another code is refused by the
+schema like any other value it does not know.
+
+**The correction of the characters (since 2026-11-22).** The
+[characters](behaviour.md#characters) of a dish are computed and never
+stored. What is stored is only the cook's correction, where there is
+one: `characters.add` lists ids of the character table the dish shows
+although no rule gives them, `characters.remove` computed ones it does
+not show. Each list has at least one id, each id once; an object without
+a list is not written. The shown set is the computed one without
+`remove`, with `add`, in the order of the table
+([engine rules](engine-rules.md#the-cooks-correction)); an id the table no
+longer knows is ignored, so a row can leave the table without a
+migration. It belongs to the version like the other fields.
+**Why a difference and not the whole set:** a stored set would freeze
+the dish; with a difference a changed recipe still changes the
+characters the cook did not touch.
+
+**Assembly (since 2026-11-20).** `steps` are [steps](#steps) of the same
+shape as a component's, for what is done once the fillings are made
+("stretch the dough, top it, bake"). Where a component's step uses lines,
+an assembly step uses **slots**, by the slot's `key`: a short slug that is
+unique in the dish, given when a step first uses the slot (`s1`, `s2`,
+...). A dish whose fillings only lie side by side on the plate needs no
+assembly, or one step. Cooking a dish runs through its components in the
+order of its slots and then through these steps
+([behaviour](behaviour.md#dishes)).
 
 ## Version
 
@@ -448,11 +527,18 @@ same time never lose one.
 
 ## Stock item
 
-What the user has. Schema: `stock.schema.json`. An item can be nothing
-but "this ingredient (or prepared component) is there": only `id` and
-`ref` are required, and ticking in the app writes exactly that. The
-kitchen's detail stays in the model as optional fields and can be added
-to any item at any time. Items are stored; days left are derived.
+What the user has. Stock is not Culina's own data: it is the collection
+`stock` of a **space** in the database `domus` that all apps on the
+address share, the same collection as Mixtura's, synced with the space
+([stock in spaces](decisions/stock-in-spaces.md),
+[spaces on the host](../../../packages/host/docs/spaces.md)). Culina's own
+database keeps no stock; a device without a space gets one on this device
+only. Schema of the item as Culina shows it: `stock.schema.json`. An item
+can be nothing but "this ingredient (or prepared component) is there":
+ticking writes exactly that. The kitchen's detail stays optional and can
+be added to any item at any time. Days left are derived.
+
+**The item in memory** (what the screens and the engine read):
 
 | Field        | Type    | Required | Meaning                                                                      |
 | ------------ | ------- | -------- | ---------------------------------------------------------------------------- |
@@ -463,42 +549,75 @@ to any item at any time. Items are stored; days left are derived.
 | `always`     | boolean | no       | The user marks it as always there; it counts as present until it is unticked |
 | `preparedOn` | date    | no       | When it was cooked or made                                                   |
 | `useBy`      | date    | no       | The date the user entered                                                    |
+| `storage`    | string  | no       | Where it lies: `pantry`, `fridge` or `freezer`                               |
 | `note`       | string  | no       | Free text                                                                    |
 
-Stored as, for presence only and with every detail:
+`id` is not stored: it is the record's key for the first item and
+`key~n` for the n-th further batch.
+
+**The record in the collection** (one per thing; translated in one file,
+`packages/app/src/shared-stock/value.ts`):
+
+- **Key**: the ingredient's id, or for a component the id of its family
+  (the first version), whichever version was ticked. Culina shows a
+  record whose key is an ingredient of the notebook, else a component
+  family of the notebook; any other record is left untouched.
+- **Value**: `present` (boolean, required; `false` means not there), then
+  the first item's fields under the shared names where the meaning is the
+  same: `openedOn` for `preparedOn`, `bestBefore` for `useBy`, `note`; and
+  Culina's own optional fields under their names: `amount`, `state`,
+  `always`, `storage`. Further items of the same thing (batches kept
+  apart) are objects with the same fields in `batches`. A value without a
+  boolean `present` is not shown and left untouched; a field that does
+  not fit is not shown and stays stored.
+- **Fields of other apps** (Mixtura's `moreBatches`, any other) are kept:
+  every write is worked out inside one atomic change from the value as
+  stored then, replacing only `present`, `amount`, `state`, `always`,
+  `storage`, `openedOn`, `bestBefore`, `note` and `batches`.
+- **Unticking** writes `present: false` without Culina's fields; the
+  record stays, so a merge can tell "out" from "never entered".
+
+Stored as, for presence only and with two batches:
 
 ```json
-{ "id": "u-5c1d…", "ref": { "kind": "ingredient", "id": "carrot" } }
+{ "key": "carrot", "updatedAt": "2026-11-18T08:00:00.000Z", "value": { "present": true } }
 ```
 
 ```json
 {
-  "id": "u-9a4e…",
-  "ref": { "kind": "component", "id": "u-77b2…" },
-  "amount": { "value": 400, "unit": "g" },
-  "state": "prepared",
-  "always": false,
-  "preparedOn": "2026-11-16",
-  "useBy": "2026-11-20",
-  "note": "second shelf"
+  "key": "u-77b2…",
+  "updatedAt": "2026-11-18T08:00:00.000Z",
+  "value": {
+    "present": true,
+    "amount": { "value": 400, "unit": "g" },
+    "state": "prepared",
+    "openedOn": "2026-11-16",
+    "bestBefore": "2026-11-20",
+    "note": "second shelf",
+    "batches": [{ "state": "prepared", "openedOn": "2026-11-18", "storage": "freezer" }]
+  }
 }
 ```
 
-Shared with other apps: rows are materia's sync record (`{ key,
-updatedAt, value }` or `{ key, updatedAt, deleted }`), so stock can sync
-later and another app can add items. Fields starting with `x-` written
-by another app are kept: Culina changes a copy of the stored record and
-never rebuilds it from the fields it knows.
+Items from before 2026-11-20 (Culina's own kind `stock`, `{ id, ref, ... }`)
+are moved into the used space once at the first start after the update
+and then cleared from Culina's database
+([decision](decisions/stock-in-spaces.md#the-one-move-of-old-items),
+[orderings](stock-orderings.md)).
 
 Days left, "use soon" and "past", the limiting shelf life of a dish and
 "what can I make, ranked by what must go first" are derived. If `useBy`
-is absent, the engine may derive a date from `preparedOn` plus the shelf
-life of the ingredient for that state, only when the ingredient records
-exactly one value for the state; it never writes it back and invents no
-shelf life. With several storage places (pantry, fridge, freezer) the
-screen offers the dates as suggestions and the user chooses. Components
-have no shelf life of their own yet, so for them only an entered `useBy`
-counts.
+is absent, the engine may derive a date from `preparedOn` plus a recorded
+shelf life, only when exactly one value applies; it never writes it back
+and invents no shelf life. A recorded shelf life applies when its state
+is the item's and its place is the item's (`shelfLifeApplies`): an
+ingredient records it per state and place, a component per place only
+([`keeps`](#component)), so a component's entry applies in any state.
+`storage` on the item says where it lies (since 2026-11-20): with it,
+only the shelf life of that place counts, which is what makes a date
+derivable for a component that keeps 3 days in the fridge and 90 in the
+freezer. Without it, and with several places, the screen offers the
+dates as suggestions and the user chooses.
 
 ## Affinity
 
@@ -538,10 +657,21 @@ a food, its roles, and `basis`: every one is marked as a judgement, with the
 ratio card that uses the role). The app adds the roles when it reads the
 catalogue, so a copy in the notebook has them (an entry that already has roles
 keeps its own, and a copy made before has none). Water has no catalogue entry
-and no row; a stock item of water is marked always there. A test checks that
+and no row; the finder treats the ratio role water as the kitchen's
+([engine rules](engine-rules.md#what-the-stock-allows)). A test checks that
 every id is in the catalogue and every role is one a ratio card or a dish
 knows. The dish lines of the classics carry no role table of their own: a
 line's `role` is the slot's, as before.
+
+**The parts table** (`packages/app/data/ingredient-parts.json`, format
+`culina-ingredient-parts` 1, read by `src/cook/parts.ts`, 2026-11-21) says
+which catalogue foods are parts of a whole, for the finder's part rule
+([engine rules](engine-rules.md#what-the-stock-allows)): each entry has
+`whole` (an id), `parts` (ids) and `basis` (a judgement with its source). One
+entry: the whole egg (`fdc-group-egg-whole`) has the yolk and the white
+(`fdc-group-egg-yolk`, `fdc-group-egg-white`). The USDA data says nothing of
+parts; nothing is derived from a name. A test checks that every id is in the
+catalogue and every entry has a basis.
 
 ## Technique
 
@@ -551,18 +681,53 @@ Shipped read-only, one JSON file per technique in
 `technique.schema.json`; the guide for writing one is
 [classic format](classic-format.md#a-technique-file).
 
-| Field     | Type            | Required | Meaning                                                                       |
-| --------- | --------------- | -------- | ----------------------------------------------------------------------------- |
-| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                       |
-| `name`    | text in 2 langs | yes      | Visible name                                                                  |
-| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                 |
-| `why`     | text in 2 langs | yes      | Why it matters                                                                |
-| `level`   | string          | yes      | `studied`, `textbook` or `tradition`: how well the statement is known         |
-| `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` |
+| Field     | Type            | Required | Meaning                                                                             |
+| --------- | --------------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`      | id              | yes      | See [ids](#ids); equal to the file name                                             |
+| `name`    | text in 2 langs | yes      | Visible name                                                                        |
+| `watch`   | text in 2 langs | yes      | The short note: what to watch                                                       |
+| `why`     | text in 2 langs | yes      | Why it matters                                                                      |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels): how the statement is known     |
+| `sources` | array of object | yes      | At least one: `title`, `place`, a `url` or an `isbn`, `licence`, and the `sentence` |
 
+- **Page or book.** A source read on the web has a `url` and a `licence`
+  (an SPDX identifier). A printed book has the `isbn` of the edition read
+  (13 digits, no hyphens) instead: the app shows it as text without a link,
+  and it has no `licence`, because the book is cited as fact and nothing of
+  it is reused. The schema refuses a source with neither. Since 2026-11-20.
+- **Level of a source.** A source may carry its own `level` when it knows
+  the statement in another way than the note says, for example a kitchen
+  test (`tested`) cited beside a textbook; the app then labels that source
+  with its own level. Since 2026-11-20.
 - **Sentence.** Every source carries the sentence the note rests on, at most
   25 words, for the reviewer ([helper plan](helper-plan.md#rules-for-content)).
   The engine counts the words (`sentence-too-long`).
+- **Licence.** The `licence` of every shipped source is an SPDX identifier
+  (`CC-BY-NC-SA-4.0`, `CC-BY-4.0`, `CC-BY-NC-4.0`), never free text; the
+  schemas refuse a value with spaces, and `test/source-licences.test.ts` holds
+  the shipped data to it and to the counts of
+  [the decision](decisions/sources-licence.md). A later build without what is
+  non-commercial reads it.
+
+## Evidence levels
+
+The `level` of a technique note, a handling rule and a substitute says how the
+statement is known, in five words (`TECHNIQUE_LEVELS` in the engine; the three
+schemas carry the same list and a test keeps them equal; the validators name
+any other word, `unknown-level`). The app shows the level as a short label in
+front of the source ("Textbook · title, place"):
+
+| Level       | English      | German        | Meaning                                                                                   |
+| ----------- | ------------ | ------------- | ----------------------------------------------------------------------------------------- |
+| `studied`   | Study        | Studie        | A study measured it; only where a paper was read                                          |
+| `textbook`  | Textbook     | Lehrbuch      | A textbook states it                                                                      |
+| `tested`    | Kitchen test | Küchenversuch | The author ran an experiment and reports it, for example a tested-kitchen book            |
+| `authority` | Authority    | Behörde       | An official body states it (food safety), cited from the authority of the user's language |
+| `tradition` | Tradition    | Überlieferung | Kitchens' sources state it, no study                                                      |
+
+`tested` and `authority` were added on 2026-11-19. No shipped note was
+re-labelled: all 64 are `textbook`. A level above `textbook` needs a source that
+someone read in the book or on the page ([source books](source-books.md)).
 
 ## Handling rule
 
@@ -579,7 +744,7 @@ rule in `packages/engine/data/handling/<id>.json`, never stored. Schema:
 | `text`      | text in 2 langs | yes      | The rule in one or two short sentences: when it goes in, how it is treated               |
 | `why`       | text in 2 langs | yes      | The reason                                                                               |
 | `technique` | id              | yes      | The skill the rule belongs to; the rule is not shown once that technique is learned      |
-| `level`     | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                                 |
+| `level`     | string          | yes      | One of the five [evidence levels](#evidence-levels), as for a technique                  |
 | `sources`   | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence` (25 words) |
 
 - **Group targets.** A rule on a group shows for every ingredient below it in
@@ -606,7 +771,7 @@ sibling rule with them ([engine rules](engine-rules.md#substitute-effects)).
 | `to`      | string          | yes      | The catalogue ingredient or group id that replaces it; a group covers all below it     |
 | `factor`  | number          | no       | Amount of `to` per amount of `from`, in the same unit; only where the source gives one |
 | `changes` | text in 2 langs | yes      | What changes (taste, texture, amount, handling) in one or two short sentences          |
-| `level`   | string          | yes      | `studied`, `textbook` or `tradition`, as for a technique                               |
+| `level`   | string          | yes      | One of the five [evidence levels](#evidence-levels), as for a technique                |
 | `sources` | array of object | yes      | At least one: `title`, `place`, `url`, optional `licence`, and the `sentence`          |
 
 - **One direction per file.** A replacement that the source states both ways
@@ -657,8 +822,12 @@ guide is [classic format](classic-format.md).
 - **Lines** have `ref` (an ingredient of the catalogue, or a component of the
   same dish) **or** `wanted` (`{ en, de }`, while the catalogue lacks the
   ingredient; a later package brings these to zero), an optional `amount`
-  (none: shown as "to taste" or "as needed"), `role`, `state`, `note`
-  (a text in 2 langs), `key` and `settled`.
+  (none: the line shows its name alone), `amountWord` (only on a line
+  without `amount`, and only where the source says it: `to-taste` or
+  `as-needed`), `role`, `state`, `note` (cooking help, a text in 2 langs),
+  `sourceNote` (a remark about the source, a text in 2 langs, shown only in
+  the dish's source section), `key` and `settled`. A step may have a
+  `sourceNote` too.
 - **Settled.** A value we settled where the source is vague is an entry in
   `settled`. A line or slot whose amount we settled has `settled: true` and a
   `key`, and the entry's `target` is `<component id>/<key>` (`slots/<key>` for
@@ -685,18 +854,21 @@ the store kind `skills`. Schema: `skill.schema.json`.
   back writes `learned: false` and keeps the record.
 - Nothing else is stored; which notes show follows from it
   ([engine rules](engine-rules.md#techniques-steps-and-classics)).
-- **Not in the export file yet.** The export format is version 1 and a
-  reader refuses unknown collections; the store keeps `skills` apart from the
-  exported kinds (replace-all and the backup reminder ignore it). Whether the
-  export gets a `skills` collection is open.
+- **In the export file since format version 3** (2026-11-21,
+  [export file](#export-file)): merged by id like every kind (a mark that
+  differs is a conflict the user decides), replaced by "replace everything"
+  with a version 3 file, left as it is by an older file, and counted by the
+  backup reminder.
 
 ## Text in two languages
 
 Shipped helper content is written in English (canonical) and German as
 `{ "en": "...", "de": "..." }` (`i18nText` in `common.schema.json`). Both are
 required and not empty; the engine also refuses a text of white space only.
-A user's own recipe keeps plain strings; only steps are in two languages
-because a derived or copied classic keeps its steps as they are.
+A user's own recipe keeps plain strings; only the `text` of a step is in
+two languages, because a derived or copied classic keeps its steps as
+they are. A step the user builds has no text: it is shown from the name
+of its technique or action, which the app has in both languages.
 
 # Stored versus derived
 
@@ -727,15 +899,16 @@ export. One JSON file, generated by `tools/catalogue/build.mjs`
 ([ingredient catalogue](ingredient-catalogue.md)) and validated by
 `catalogue.schema.json`; the app serves it as `catalogue.json`.
 
-| Field           | Type     | Required | Meaning                                                                                              |
-| --------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `format`        | constant | yes      | `culina-ingredient-catalogue`                                                                        |
-| `formatVersion` | constant | yes      | `1`                                                                                                  |
-| `dataset`       | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                              |
-| `refuseDataset` | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from             |
-| `namesDataset`  | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from |
-| `generatedBy`   | string   | yes      | `tools/catalogue/build.mjs`                                                                          |
-| `ingredients`   | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                      |
+| Field             | Type     | Required | Meaning                                                                                              |
+| ----------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `format`          | constant | yes      | `culina-ingredient-catalogue`                                                                        |
+| `formatVersion`   | constant | yes      | `1`                                                                                                  |
+| `dataset`         | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                              |
+| `refuseDataset`   | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from             |
+| `namesDataset`    | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from |
+| `ownNamesDataset` | object   | no       | the same five fields for the project's own German names (`tools/catalogue/names-de-own.json`)        |
+| `generatedBy`     | string   | yes      | `tools/catalogue/build.mjs`                                                                          |
+| `ingredients`     | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                      |
 
 - **An entry is an ordinary ingredient record**: `id` (`fdc-<FDC id>`, a
   seed-style slug), `name`, optionally `densityGPerMl` and `unitWeightG`
@@ -757,8 +930,10 @@ export. One JSON file, generated by `tools/catalogue/build.mjs`
   `densityGPerMl` or `unitWeightG` only where every food row below agrees
   (its `source` names the rule and the FDC ids), `x-nutrition` only where
   the rows below agree on energy and the three macronutrients, and the extension field
-  `x-group` (`rows`, the number of food rows below, and `category` where all
-  of them share USDA's food category), and `names` only where all the foods
+  `x-group` (`rows`, the number of food rows below, `category` where all
+  of them share USDA's food category, and `usual: { id, source }` where
+  `tools/catalogue/usual.json` names the row a recipe naming no kind means,
+  [usual member](ingredient-catalogue.md#usual-member)), and `names` only where all the foods
   below have the same German name. A food row may be the
   parent of variants whose names extend its own. The `parentId` links form
   a forest without cycles and without unknown parents (a test runs
@@ -782,33 +957,33 @@ One JSON file with everything the user entered, validated by
 | Field           | Type     | Required | Meaning                    |
 | --------------- | -------- | -------- | -------------------------- |
 | `format`        | constant | yes      | `culina-export`            |
-| `formatVersion` | integer  | yes      | `1`                        |
+| `formatVersion` | integer  | yes      | `3`                        |
 | `seedVersion`   | string   | no       | Seed data the ids refer to |
 | `exportedAt`    | instant  | no       | Supplied by the host       |
 | `ingredients`   | array    | no       | Ingredient records         |
 | `templates`     | array    | no       | Template records           |
 | `components`    | array    | no       | Component records          |
 | `dishes`        | array    | no       | Dish records               |
-| `stock`         | array    | no       | Stock item records         |
 | `affinities`    | array    | no       | Affinity records           |
 | `tastings`      | array    | no       | Tasting note records       |
+| `skills`        | array    | no       | Skill state records        |
 
 ```json
 {
   "format": "culina-export",
-  "formatVersion": 1,
+  "formatVersion": 3,
   "seedVersion": "0",
   "exportedAt": "2026-11-17T12:00:00Z",
   "components": [],
-  "stock": []
+  "tastings": []
 }
 ```
 
 - `format` is the constant `culina-export`; `formatVersion` is an
   integer (the same name Mixtura uses; the issue called it
   `schemaVersion`). `seedVersion` names the seed data that ids refer to.
-- Arrays `ingredients`, `templates`, `components`, `dishes`, `stock`,
-  `affinities`, `tastings` are optional; the export holds user entities, seed entities
+- Arrays `ingredients`, `templates`, `components`, `dishes`,
+  `affinities`, `tastings`, `skills` are optional; the export holds user entities, seed entities
   stay in the seed.
 - **Forward compatibility.** A reader checks `format` and
   `formatVersion` **first** and refuses a higher version with a message
@@ -823,6 +998,21 @@ One JSON file with everything the user entered, validated by
   into `tastings` (issue 50) changes the format, and `formatVersion`
   stays 1 on purpose: nothing is released, so no export file of the old
   shape exists outside development and no migration is written.
+- **Version 2 (2026-11-20): no stock.** Stock is the shared collection
+  `stock` of a space, not Culina's data
+  ([stock in spaces](decisions/stock-in-spaces.md)): a replace import
+  would otherwise delete what another app or person put into the space.
+  A version 1 file is still read; the migration 1 to 2 leaves its `stock`
+  out, `parseExport` counts what it left out (`stockLeftOut`), and the
+  import preview says so.
+- **Version 3 (2026-11-21): with `skills`.** The [skill state](#skill-state)
+  (which techniques the user marked as learned, and marks taken back) is
+  the user's own and is now in the file. The migration 2 to 3 changes
+  nothing (a version 2 file has no skills); a version 2 file that holds
+  `skills` is refused (`unknown-field`), and an app that reads up to
+  version 2 refuses a version 3 file as newer (`newer-version`). The
+  reader returns the file's own version (`fileVersion`) so that "replace
+  everything" with an older file leaves the skill state as it is.
 - Identity: importing never overwrites a seed entity, and a user id that
   exists is merged or replaced by the user's choice. Built in issue 18 in
   the engine (`buildExport`, `parseExport`, `planMerge`; [exchange](exchange.md)),
@@ -921,7 +1111,12 @@ in [Stored versus derived](#stored-versus-derived) is computed.
 **Database.** One IndexedDB database `culina`. One object store per entity
 kind, named like the collections of the [export file](#export-file):
 `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
-`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. Two more: `meta` (`key` to `value`; today
+`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. The
+object store `stock` holds nothing since 2026-11-20: stock is the shared
+collection of a space in the database `domus`, and `stock` only held the
+items of the version before until their one move
+([stock item](#stock-item)); nothing writes it, and `clearKind('stock')`
+empties it after the move. Two more: `meta` (`key` to `value`; today
 only `schemaVersion`, an integer that starts at 1) and `backup` (empty
 except during a migration). No device id yet; sync adds it to `meta`
 without a migration.

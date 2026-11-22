@@ -11,6 +11,11 @@ export default tseslint.config(
     languageOptions: { globals: globals.node },
   },
   {
+    // The native app's Playwright scripts pass functions to the page, so they see browser globals too.
+    files: ['packages/linux/scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+  {
     // The engine is pure: no clock, no randomness, no logging, no DOM or
     // host globals, no import from the app (AGENTS.md). Time and random
     // numbers come in as input. packages/engine/test/purity.test.ts keeps

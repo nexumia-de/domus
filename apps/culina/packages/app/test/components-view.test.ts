@@ -151,7 +151,11 @@ test('engine errors never throw: one quiet sentence says what cannot be shown', 
     ['expand-error-cycle', 'a', /circle: a, b, a/],
     ['expand-error-unknown-component', '', /not in the notebook/],
     ['expand-error-no-yield-nested', 'dish', /output of sauce is not weighed yet/],
-    ['expand-error-cannot-convert', 'sauce', /oil is given in a unit that needs a density/],
+    [
+      'expand-error-cannot-convert-percent-base',
+      'dough',
+      /flour is given in a unit that needs a density/,
+    ],
     ['expand-error-no-percent-base', '', /Lines in percent need a base/],
   ];
   for (const [id, start, pattern] of cases) {
@@ -166,6 +170,23 @@ test('engine errors never throw: one quiet sentence says what cannot be shown', 
     expect(typeof lineRows(nb, top).ok).toBe('boolean');
     expect(typeof yieldView(nb, top).ok).toBe('boolean');
   }
+});
+
+test('one line that cannot be weighed carries its own note; the other lines, the input and the raw list show', () => {
+  const vector = readComponentVector('expand-unconverted-count-nested');
+  const nb = vectorNotebook(vector);
+  const sauce = componentOf(nb, 'sauce');
+  const lines = ok(lineRows(nb, sauce));
+  expect(lines.rows.map((r) => [r.name, r.g, r.unconverted])).toEqual([
+    ['tomato', 400, undefined],
+    ['onion', undefined, { written: { value: 1, unit: 'count' }, lacks: 'needs-unit-weight' }],
+    ['butter', 30, undefined],
+  ]);
+  const figures = ok(yieldView(nb, sauce));
+  expect([figures.inputG, figures.unweighable, figures.partial]).toEqual([430, true, false]);
+  const raw = ok(rawView(nb, componentOf(nb, 'plate'), { kind: 'asWritten' }));
+  expect(raw.rawG).toBeCloseTo(415, 9);
+  expect(raw.unconverted).toEqual([{ name: 'onion', where: 'sauce' }]);
 });
 
 test('a component output asked of one that has no output weight says so in plain words', () => {

@@ -51,7 +51,7 @@
             "unit": "quart",
             "original": "1 quart of fresh milk"
           },
-          "note": {
+          "sourceNote": {
             "en": "The second edition gives the quart only as a unit (Qt) without a legible number; the source's 1 quart is used.",
             "de": "Die deutsche Ausgabe nennt die Einheit Qt ohne lesbare Zahl; verwendet wird das 1 Quart der Quelle."
           }
@@ -86,10 +86,11 @@
             "kind": "ingredient",
             "id": "fdc-group-sugars"
           },
-          "note": {
+          "sourceNote": {
             "en": "No quantity given: to taste.",
             "de": "Keine Menge angegeben: nach Geschmack."
-          }
+          },
+          "amountWord": "to-taste"
         },
         {
           "key": "lemon",
@@ -98,8 +99,12 @@
             "id": "fdc-167749"
           },
           "note": {
-            "en": "Lemon peel. The source also allows a little vanilla or a few pounded bitter almonds; lemon peel is used here. No quantity given.",
-            "de": "Zitronenschale. Die Quelle erlaubt auch etwas Vanille oder einige gestoßene bittere Mandeln; hier wird Zitronenschale verwendet. Keine Menge angegeben."
+            "en": "Lemon peel.",
+            "de": "Zitronenschale."
+          },
+          "sourceNote": {
+            "en": "The source also allows a little vanilla or a few pounded bitter almonds. Lemon peel is used here. No quantity given.",
+            "de": "Die Quelle erlaubt auch etwas Vanille oder einige gestoßene bittere Mandeln. Hier wird Zitronenschale verwendet. Keine Menge angegeben."
           }
         }
       ],
@@ -109,12 +114,13 @@
             "en": "Put the milk, the cornstarch, the egg yolks, the sugar and the lemon peel into a pot.",
             "de": "Milch, Stärke, Eigelb, Zucker und Zitronenschale in einen Topf geben."
           },
+          "action": "add",
           "uses": ["milk", "starch", "yolk", "sugar", "lemon"]
         },
         {
           "text": {
             "en": "Stir constantly over a hot fire until it is cooked.",
-            "de": "Über starker Hitze ständig rühren, bis sie gar ist."
+            "de": "Bei starker Hitze ständig rühren, bis die Suppe gar ist."
           },
           "technique": "thicken-with-starch",
           "uses": ["milk", "starch", "yolk"]
@@ -123,7 +129,8 @@
           "text": {
             "en": "Pour the soup into the tureen.",
             "de": "Die Suppe in die Suppenschüssel gießen."
-          }
+          },
+          "action": "fill"
         }
       ]
     },
@@ -146,11 +153,11 @@
             "unit": "count",
             "original": "the whites of eggs"
           },
-          "settled": true,
-          "note": {
+          "sourceNote": {
             "en": "The source gives no number for the whites; they come from the 2 eggs of the yolks.",
-            "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern der Eigelb."
-          }
+            "de": "Die Quelle nennt keine Anzahl für das Eiweiß; es stammt von den 2 Eiern, deren Eigelb in die Suppe kommt."
+          },
+          "settled": true
         },
         {
           "key": "froth-sugar",
@@ -159,8 +166,12 @@
             "id": "fdc-group-sugars"
           },
           "note": {
-            "en": "To sprinkle; no quantity given.",
-            "de": "Zum Bestreuen; keine Menge angegeben."
+            "en": "To sprinkle.",
+            "de": "Zum Bestreuen."
+          },
+          "sourceNote": {
+            "en": "No quantity given.",
+            "de": "Keine Menge angegeben."
           }
         }
       ],
@@ -178,13 +189,15 @@
             "en": "Shape the froth into little balls, lay them on the soup and sprinkle them with sugar.",
             "de": "Den Schnee zu kleinen Klößchen formen, auf die Suppe legen und mit Zucker bestreuen."
           },
+          "action": "shape",
           "uses": ["whites", "froth-sugar"]
         },
         {
           "text": {
             "en": "Cover the tureen; the balls are done in a few minutes.",
             "de": "Die Suppenschüssel zudecken; die Klößchen sind in wenigen Minuten gar."
-          }
+          },
+          "action": "cover"
         }
       ]
     }

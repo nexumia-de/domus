@@ -1,0 +1,36 @@
+{
+  "id": "validate-level-authority",
+  "description": "A technique at level authority (an official body states it) passes",
+  "inputs": {
+    "kind": "technique_validate",
+    "technique": {
+      "id": "melting",
+      "name": {
+        "en": "Melting fat",
+        "de": "Fett schmelzen"
+      },
+      "watch": {
+        "en": "Keep the heat low.",
+        "de": "Die Hitze niedrig halten."
+      },
+      "why": {
+        "en": "Fat that browns tastes bitter.",
+        "de": "Fett, das bräunt, schmeckt bitter."
+      },
+      "level": "authority",
+      "sources": [
+        {
+          "title": "Example Textbook (fictional)",
+          "place": "chapter 1",
+          "url": "https://example.org/textbook",
+          "sentence": "Invented sentence for a test vector."
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented figures, no real recipe; the arithmetic is written in the description."
+}

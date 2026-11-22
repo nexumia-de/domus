@@ -25,20 +25,12 @@
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
     },
     "originalName": { "type": "string", "minLength": 1, "maxLength": 120 },
-    "country": { "enum": ["de", "it", "fr", "es"] },
+    "country": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/country"
+    },
     "vegetarian": { "type": "boolean" },
     "course": {
-      "enum": [
-        "starter",
-        "soup",
-        "main",
-        "side",
-        "dessert",
-        "baking",
-        "sauce",
-        "breakfast",
-        "snack"
-      ]
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/course"
     },
     "source": {
       "type": "object",
@@ -96,9 +88,15 @@
           },
           "lines": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/line" } },
           "steps": {
+            "description": "The steps of a shipped dish: each has its text in both languages.",
             "type": "array",
             "items": {
-              "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
+              "allOf": [
+                {
+                  "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/step"
+                },
+                { "type": "object", "required": ["text"] }
+              ]
             }
           }
         }
@@ -182,6 +180,7 @@
       "type": "object",
       "additionalProperties": false,
       "oneOf": [{ "required": ["ref"] }, { "required": ["wanted"] }],
+      "not": { "required": ["amount", "amountWord"] },
       "properties": {
         "key": {
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/lineKey"
@@ -200,7 +199,16 @@
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/state"
         },
         "note": {
+          "description": "Cooking help for the line: shown with it and when cooking.",
           "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "sourceNote": {
+          "description": "A remark about the source (no amount, an unreadable scan, a choice we made): shown only in the dish's source section, never in the line or when cooking.",
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+        },
+        "amountWord": {
+          "description": "Only on a line without an amount, and only where the source says so: to taste or as needed. Without it a line without an amount shows its name alone.",
+          "enum": ["to-taste", "as-needed"]
         },
         "settled": { "const": true }
       }

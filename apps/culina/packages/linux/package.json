@@ -1,0 +1,24 @@
+{
+  "name": "@culina/linux",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Culina's native Linux app (GTK4, libadwaita, GJS): Cook's Notebook for Phosh and the desktop",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@culina/app": "0.0.0",
+    "@culina/engine": "0.0.0",
+    "@nexumia-de/gjs": "0.1.0",
+    "@nexumia-de/hospes": "0.1.0"
+  },
+  "scripts": {
+    "prebuild": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
+    "build": "node build.mjs",
+    "pretest": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
+    "test": "vitest run",
+    "pretypecheck": "node ../app/compile-schemas.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",
+    "typecheck": "tsc --noEmit -p .",
+    "smoke": "node scripts/smoke.mjs",
+    "interact": "node scripts/interact.mjs"
+  }
+}

@@ -34,7 +34,7 @@
             "kind": "ingredient",
             "id": "fdc-173756"
           },
-          "note": {
+          "sourceNote": {
             "en": "The quantity and the cooking time are not given in the book.",
             "de": "Menge und Kochzeit stehen nicht im Buch."
           }
@@ -64,8 +64,12 @@
             "id": "fdc-168462"
           },
           "note": {
-            "en": "A handful of spinach (un puñado), cut roughly. The size of a handful is not read in the book, so the line has no amount.",
-            "de": "Eine Hand voll Spinat (un puñado), grob geschnitten. Die Größe einer Hand voll steht nicht im Buch, daher ohne Menge."
+            "en": "A handful of spinach (un puñado), cut roughly.",
+            "de": "Eine Handvoll Spinat (un puñado), grob geschnitten."
+          },
+          "sourceNote": {
+            "en": "The size of a handful is not read in the book, so the line has no amount.",
+            "de": "Die Größe einer Handvoll steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -74,7 +78,7 @@
             "kind": "ingredient",
             "id": "fdc-group-oil"
           },
-          "note": {
+          "sourceNote": {
             "en": "Oil (aceite), the kind is not named and no quantity is given.",
             "de": "Öl (aceite), die Sorte ist nicht genannt, keine Menge angegeben."
           }
@@ -86,8 +90,12 @@
             "id": "fdc-group-wheat-flour"
           },
           "note": {
-            "en": "One spoonful (una cucharada) of flour. The size of the spoon is not read in the book, so the line has no amount.",
-            "de": "Ein Löffel (una cucharada) Mehl. Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
+            "en": "One spoonful (una cucharada) of flour.",
+            "de": "Ein Löffel (una cucharada) Mehl."
+          },
+          "sourceNote": {
+            "en": "The size of the spoon is not read in the book, so the line has no amount.",
+            "de": "Die Größe des Löffels steht nicht im Buch, daher ohne Menge."
           }
         },
         {
@@ -117,6 +125,7 @@
             "en": "Cut the spinach roughly. Cook it apart, or together with the chickpeas.",
             "de": "Den Spinat grob schneiden. Getrennt oder zusammen mit den Kichererbsen garen."
           },
+          "action": "cook",
           "uses": ["spinach"]
         },
         {

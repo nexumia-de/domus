@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.nexumia.Emptio</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>Shopping List</name>
+  <summary>The household's shopping list</summary>
+  <description>
+    <p>
+      Shopping List keeps what the household needs to buy. Every item has one
+      of three priorities and a category, so the list is easy to scan in the
+      shop.
+    </p>
+    <p>
+      It works offline. The list stays on your device unless the household
+      shares a space over storage it configured itself, on GitHub or on a
+      WebDAV server of its choice. There is no server of ours, no account and
+      no telemetry.
+    </p>
+  </description>
+  <developer id="de.nexumia">
+    <name>suitably</name>
+  </developer>
+  <url type="homepage">https://github.com/suitably/domus</url>
+  <url type="bugtracker">https://github.com/suitably/domus/issues</url>
+  <url type="donation">https://liberapay.com/suitably</url>
+  <launchable type="desktop-id">de.nexumia.Emptio.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+  <recommends>
+    <display_length compare="ge">360</display_length>
+  </recommends>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <releases>
+    <release version="0.1.0" date="2026-11-21">
+      <description>
+        <p>Shopping List is now also an app for Linux phones and desktops.</p>
+      </description>
+    </release>
+  </releases>
+</component>

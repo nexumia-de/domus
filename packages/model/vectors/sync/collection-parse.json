@@ -1,0 +1,486 @@
+{
+  "id": "collection-parse",
+  "kind": "collection-parse",
+  "description": "parseCollection: a complete document is accepted, with and without prunedBefore, and unknown top-level fields are dropped. Errors: not-json for broken text; not-a-collection for non-objects and other formats (also a place or unit document); newer-version for a version number above 1 (checked before the rest); invalid for version 0 or a non-number, an empty or non-string space, a collection name that breaks the rule, records that are not an array of objects, and a prunedBefore that is not a timestamp. Single bad records are not an error here.",
+  "source": "docs/sync.md",
+  "cases": [
+    {
+      "name": "complete",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "prunedBefore": "2026-08-21T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "without prunedBefore",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": true,
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      }
+    },
+    {
+      "name": "unknown fields dropped",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ],
+          "extra": 1,
+          "note": "x"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "records are kept as they are, bad ones too",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "bad",
+              "value": 1
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ok": true,
+        "collection": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [
+            {
+              "key": "a",
+              "updatedAt": "2026-11-18T10:00:00.000Z",
+              "value": 1
+            },
+            {
+              "key": "b",
+              "updatedAt": "bad",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "not json",
+      "input": {
+        "text": "{nope"
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-json"
+      }
+    },
+    {
+      "name": "a number",
+      "input": {
+        "json": 5
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-a-collection"
+      }
+    },
+    {
+      "name": "an array",
+      "input": {
+        "json": []
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-a-collection"
+      }
+    },
+    {
+      "name": "null",
+      "input": {
+        "json": null
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-a-collection"
+      }
+    },
+    {
+      "name": "another format",
+      "input": {
+        "json": {
+          "format": "materia-unit",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-a-collection"
+      }
+    },
+    {
+      "name": "no format",
+      "input": {
+        "json": {
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "not-a-collection"
+      }
+    },
+    {
+      "name": "newer version",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 2,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "newer version wins over other problems",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 3
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "newer-version"
+      }
+    },
+    {
+      "name": "version 0",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 0,
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "version not a number",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": "1",
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "no version",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "space": "s1",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "empty space",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "",
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "space not text",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": 4,
+          "collection": "stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "collection with a capital",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "Stock",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "collection starting with a digit",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "1st",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "collection with a slash",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "a/b",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "collection empty",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "",
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "collection not text",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": null,
+          "records": []
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "records missing",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "records not an array",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": {}
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "a record that is not an object",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [1]
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "prunedBefore not a timestamp",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [],
+          "prunedBefore": "last week"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    },
+    {
+      "name": "prunedBefore of another type",
+      "input": {
+        "json": {
+          "format": "materia-collection",
+          "version": 1,
+          "space": "s1",
+          "collection": "stock",
+          "records": [],
+          "prunedBefore": 5
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": "invalid"
+      }
+    }
+  ]
+}

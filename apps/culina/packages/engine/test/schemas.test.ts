@@ -2,6 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
+import { COUNTRY_CODES, COURSE_IDS } from '../src/index';
 
 const schemaDir = fileURLToPath(new URL('../schemas/', import.meta.url));
 const docPath = fileURLToPath(new URL('../../../docs/data-model.md', import.meta.url));
@@ -142,9 +143,10 @@ describe('invalid cases named by the issue', () => {
     expect(fails('tasting', (d: Doc) => (d.text = ''))).toBe(true);
     expect(fails('tasting', (d: Doc) => (d['x-mood'] = 'happy'))).toBe(false);
   });
-  test('export: only formatVersion 1 is read, entities are checked inside', () => {
-    expect(fails('export', (d: Doc) => (d.formatVersion = 2))).toBe(true);
-    expect(fails('export', (d: Doc) => (d.stock[0].state = 'frozen'))).toBe(true);
+  test('export: only formatVersion 2 is read, entities are checked inside, stock is no part', () => {
+    expect(fails('export', (d: Doc) => (d.formatVersion = 1))).toBe(true);
+    expect(fails('export', (d: Doc) => (d.stock = []))).toBe(true);
+    expect(fails('export', (d: Doc) => (d.ingredients[0].name = ''))).toBe(true);
     expect(fails('export', (d: Doc) => (d.tastings[0].ref.kind = 'stock'))).toBe(true);
   });
   test('ingredient names: language tag keys, a name and a source each, no unknown field', () => {
@@ -164,6 +166,32 @@ describe('invalid cases named by the issue', () => {
     expect(fails('catalogue', (d: Doc) => delete d.ingredients[0].densityGPerMl.source)).toBe(true);
     expect(fails('catalogue', (d: Doc) => (d.ingredients[0].id = 'Not A Slug'))).toBe(true);
     expect(fails('catalogue', (d: Doc) => (d.ingredients[0]['x-fdc'] = { id: 1 }))).toBe(false);
+  });
+  test('a dish states a course and a cuisine of the lists a classic uses, or none', () => {
+    expect(fails('dish', (d: Doc) => delete d.course)).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'it'))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.course = 'brunch'))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.course = ''))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'jp'))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'IT'))).toBe(true);
+  });
+  test("a dish may store the cook's correction of its characters, never an empty one", () => {
+    expect(fails('dish', (d: Doc) => delete d.characters)).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['creamy'] }))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = { remove: ['fried', 'baked'] }))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.characters = {}))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: [] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['creamy', 'creamy'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { add: ['Not An Id'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = { set: ['creamy'] }))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.characters = ['creamy']))).toBe(true);
+  });
+  test('the course and country lists of the engine equal the schema', () => {
+    const common = read(`${schemaDir}common.schema.json`) as {
+      $defs: { course: { enum: string[] }; country: { enum: string[] } };
+    };
+    expect([...COURSE_IDS]).toEqual(common.$defs.course.enum);
+    expect([...COUNTRY_CODES]).toEqual(common.$defs.country.enum);
   });
 });
 

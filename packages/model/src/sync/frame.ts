@@ -1,8 +1,7 @@
 // The small pieces the document files share: checks of a parsed frame and
-// the stable text of a record list (docs/sync.md#the-document).
+// the stable text of a record list (docs/sync.md#the-collection-document).
 
 import { compareText, sortedValue } from './canonical';
-import { instantMs } from './instant';
 import type { SyncRecord } from './records';
 
 /** A parsed JSON object with unknown members. */
@@ -23,33 +22,24 @@ export const isObj = (x: unknown): x is Obj =>
  */
 export const text = (x: unknown): x is string => typeof x === 'string' && x !== '';
 
+/** The rule for a collection name, shared by the collection document and the sealed file. */
+export const COLLECTION_NAME = /^[a-z][a-z0-9-]*$/;
+
+const BASE64 = /^[A-Za-z0-9+/]+={0,2}$/;
+
+/**
+ * Tells whether a parsed value is non-empty base64 text.
+ * @param x The parsed value.
+ * @returns True for a string of the base64 alphabet with at most two `=` at the end.
+ */
+export const base64 = (x: unknown): x is string => typeof x === 'string' && BASE64.test(x);
+
 /**
  * Tells whether a parsed value is an array of plain objects.
  * @param x The parsed value.
  * @returns True for an array whose members are all plain objects.
  */
 export const objects = (x: unknown): x is Obj[] => Array.isArray(x) && x.every(isObj);
-
-/**
- * Reads the `moved` field of a document: a timestamp and an optional note.
- * @param x The parsed value of the field.
- * @returns The clean `{ at, note? }`, or `'bad'` when the field is broken.
- */
-export function parseMoved(x: unknown): { at: string; note?: string } | 'bad' {
-  if (!isObj(x) || instantMs(x.at) === undefined) return 'bad';
-  if (x.note !== undefined && typeof x.note !== 'string') return 'bad';
-  return x.note === undefined ? { at: x.at as string } : { at: x.at as string, note: x.note };
-}
-
-/**
- * Writes a `moved` field in its fixed key order.
- * @param moved The moved marker of a document.
- * @returns A copy with `at` first and the note only when there is one.
- */
-export const movedText = (moved: { at: string; note?: string }): { at: string; note?: string } => ({
-  at: moved.at,
-  ...(moved.note === undefined ? {} : { note: moved.note }),
-});
 
 const clean = (r: SyncRecord): unknown => ({
   key: r.key,

@@ -6,7 +6,7 @@ const amounts = (page) =>
   page.evaluate(() =>
     Object.fromEntries(
       [...document.querySelectorAll('.amounts tbody tr')].map((tr) => [
-        tr.children[0].textContent,
+        tr.children[0].textContent.toLowerCase(),
         tr.children[1].textContent,
       ]),
     ),
@@ -14,7 +14,7 @@ const amounts = (page) =>
 const table = (page) =>
   page.evaluate(() =>
     [...document.querySelectorAll('.parts tbody tr')].map((tr) =>
-      [...tr.children].map((c) => c.textContent),
+      [...tr.children].map((c, i) => (i === 0 ? c.textContent.toLowerCase() : c.textContent)),
     ),
   );
 const heading = (page, name) => page.getByRole('heading', { level: 1, name }).waitFor();
@@ -67,8 +67,9 @@ export const family = async (browser, origin) => {
     `${label}: 500 g flour gives 500 g fat`,
   );
   check(
-    (await page.locator('.source').innerText()).includes('1 : 1 with whole butter'),
-    `${label}: the variation keeps its own source line`,
+    (await page.locator('.source').innerText()) === 'Source: Michael Ruhlman, Ratio, p. 17' &&
+      !(await page.locator('.parts').evaluate((n) => n.parentElement.innerText)).includes('docs/'),
+    `${label}: the variation shows its source as author, title and page, no repository path`,
   );
   await page.goBack();
   await heading(page, 'Roux');

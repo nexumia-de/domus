@@ -3,12 +3,35 @@ import type { IngredientRecord } from '../records';
 
 const EXAMPLE = 'Example data, not a measured figure';
 
-const plain = (id: string, name: string, roles?: string[]): IngredientRecord => ({
-  id,
-  name,
-  ...(roles === undefined ? {} : { roles }),
-  note: 'Example ingredient',
-});
+/** German names of the example ingredients: example data, not the catalogue. */
+const DE: Record<string, string> = {
+  flour: 'Mehl',
+  water: 'Wasser',
+  salt: 'Salz',
+  yeast: 'Trockenhefe',
+  butter: 'Butter',
+  oil: 'Öl',
+  onion: 'Zwiebel',
+  carrot: 'Möhre',
+  celery: 'Staudensellerie',
+  parsley: 'Petersilie',
+  'lemon-juice': 'Zitronensaft',
+  'tomato-pepper-puree':
+    'Langsam gekochtes Tomaten-Paprika-Püree, zweimal passiert und mit einer Prise Zucker gewürzt',
+};
+
+const plain = (id: string, name: string, roles?: string[]): IngredientRecord => {
+  const german = DE[id];
+  return {
+    id,
+    name,
+    ...(german === undefined
+      ? {}
+      : { names: { de: { name: german, source: 'Example data, not a source' } } }),
+    ...(roles === undefined ? {} : { roles }),
+    note: 'Example ingredient',
+  };
+};
 
 export const INGREDIENTS: IngredientRecord[] = [
   plain('flour', 'Flour', ['flour']),

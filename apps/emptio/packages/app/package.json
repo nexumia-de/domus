@@ -6,10 +6,17 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "dependencies": {
-    "@emptio/engine": "0.0.0"
+    "@emptio/engine": "0.0.0",
+    "@nexumia-de/hospes": "0.1.0"
   },
   "scripts": {
+    "build": "node build.mjs",
+    "icons": "node scripts/make-icons.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "e2e": "node e2e/run.mjs"
+  },
+  "exports": {
+    "./core": "./src/core.ts"
   }
 }

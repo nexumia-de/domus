@@ -1,8 +1,9 @@
 import { loadContent } from './classics/content';
 import { currentLang } from './classics/lang';
-import { startNotebook, subscribe } from './notebook';
+import { startNotebook, stockOnline, subscribe, wakeStock } from './notebook';
 import { e2eNow } from './store/e2e-clock';
 import { startRouter } from './router';
+import { classicsRedirect } from './screens/classics/classics-list';
 import { mountShell } from './shell/shell';
 import { strings } from './strings';
 import { registerServiceWorker } from './sw-register';
@@ -21,8 +22,15 @@ if (root) {
     loadContent(),
   ]).then(() => {
     subscribe(shell.refresh);
-    startRouter(window, ({ route, param, action, initial }) =>
-      shell.show(route, param, !initial, action),
+    // Stock is shared with the household: read it again when the page comes to the front.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') wakeStock();
+    });
+    window.addEventListener('online', stockOnline);
+    startRouter(
+      window,
+      ({ route, param, action, initial }) => shell.show(route, param, !initial, action),
+      classicsRedirect,
     );
   });
   registerServiceWorker();

@@ -82,14 +82,14 @@ These come from the [helper plan](helper-plan.md#rules-for-content).
 }
 ```
 
-| Field     | What to write                                                                                                                                                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`      | The slug; the file name. Steps of dishes name it in `technique`.                                                                                                                                                            |
-| `name`    | `{ en, de }`: the technique as a cook says it ("Folding").                                                                                                                                                                  |
-| `watch`   | `{ en, de }`: **the short note** shown beside a step: what to watch. One short line.                                                                                                                                        |
-| `why`     | `{ en, de }`: why it matters, in one or two lines.                                                                                                                                                                          |
-| `level`   | `studied` (a study measured it), `textbook` (a textbook states it) or `tradition` (kitchens' sources state it, no study). A statement with no source at all is left out.                                                    |
-| `sources` | At least one. `title` and `place` (chapter, page, section) of the work, `url`, `licence` where one is stated, and `sentence`: the sentence of the source the note rests on, **at most 25 words**, in the source's language. |
+| Field     | What to write                                                                                                                                                                                                                                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug; the file name. Steps of dishes name it in `technique`.                                                                                                                                                                                                                                                                          |
+| `name`    | `{ en, de }`: the technique as a cook says it ("Folding").                                                                                                                                                                                                                                                                                |
+| `watch`   | `{ en, de }`: **the short note** shown beside a step: what to watch. One short line.                                                                                                                                                                                                                                                      |
+| `why`     | `{ en, de }`: why it matters, in one or two lines.                                                                                                                                                                                                                                                                                        |
+| `level`   | `studied` (a study measured it), `textbook` (a textbook states it), `tested` (the author ran an experiment and reports it), `authority` (an official body states it) or `tradition` (kitchens' sources state it, no study); see [evidence levels](data-model.md#evidence-levels). A statement with no source at all is left out.          |
+| `sources` | At least one. `title` and `place` (chapter, page, section) of the work, `url`, `licence` (an SPDX identifier such as `CC-BY-NC-SA-4.0`; every shipped source has one, see [sources licence](decisions/sources-licence.md)), and `sentence`: the sentence of the source the note rests on, **at most 25 words**, in the source's language. |
 
 A note that says more than its source is cut back by the lead. The tests check
 the two languages, the sentence length and that the file name is the id.
@@ -135,7 +135,7 @@ ingredient and fades when the user marks the technique as learned.
 | `text`      | `{ en, de }`: the rule in **one or two short sentences**: when it goes in, how it is treated. Own words, never the source's.                                                                                                              |
 | `why`       | `{ en, de }`: the reason, in one short sentence, from the same source.                                                                                                                                                                    |
 | `technique` | The id of one of the shipped techniques: the skill the rule belongs to. Choose the skill the cook practises while following the rule.                                                                                                     |
-| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tradition` when kitchens' sources state it.                                                                                           |
+| `level`     | As for a technique: `studied` only when a paper measured it, `textbook` when a textbook states it, `tested` when the author ran the experiment, `authority` when an official body states it, `tradition` when kitchens' sources state it. |
 | `sources`   | At least one, shaped as for a technique: `title`, `place`, `url`, `licence`, `sentence` (at most 25 words, verbatim).                                                                                                                     |
 
 The order of work: open a source, find the sentence, then write the rule from
@@ -191,13 +191,21 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
           "ref": { "kind": "ingredient", "id": "example-liquid" },
           "amount": { "value": 250, "max": 300, "unit": "ml" }
         },
-        { "key": "salt", "wanted": { "en": "Example salt", "de": "Beispielsalz" } },
+        {
+          "key": "salt",
+          "wanted": { "en": "Example salt", "de": "Beispielsalz" },
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Invented example: the source says to taste.",
+            "de": "Erfundenes Beispiel: die Quelle sagt nach Geschmack."
+          }
+        },
         {
           "key": "spice",
           "wanted": { "en": "Example spice", "de": "Beispielgewürz" },
           "amount": { "value": 1, "unit": "tsp" },
           "settled": true,
-          "note": { "en": "to taste", "de": "nach Geschmack" }
+          "note": { "en": "Stirred in last.", "de": "Zuletzt eingerührt." }
         }
       ],
       "steps": [
@@ -208,7 +216,11 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
           },
           "technique": "example-technique",
           "uses": ["fat"],
-          "time": { "value": 5, "unit": "min" }
+          "time": { "value": 5, "unit": "min" },
+          "sourceNote": {
+            "en": "Invented example: the source gives the time as a fraction that is not legible.",
+            "de": "Erfundenes Beispiel: die Quelle nennt die Zeit als Bruch, der nicht lesbar ist."
+          }
         },
         {
           "text": {
@@ -271,7 +283,7 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
 | `slots`        | The dish's role slots, each filled by a component of this file (`ref` kind `component`) or by an ingredient. `role` is `main`, `sauce`, `starch`, `crunch`, `acid`, `garnish` ... |
 | `settled`      | Everything we settled; an empty list when nothing.                                                                                                                                |
 | `check`        | The second check (below).                                                                                                                                                         |
-| `note`         | Optional `{ en, de }` note on the dish.                                                                                                                                           |
+| `note`         | Optional `{ en, de }` note on the dish: the transcriber's note on what was left out of the source; shown in Source ("Remarks on the source"), not at the top of the dish.         |
 
 ## Lines and slots
 
@@ -296,8 +308,26 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
 
 Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 **give one to every line that a step uses, or that is settled**), `role`,
-`state` (`raw`, `cooked`, `prepared`), `note` (`{ en, de }`, lines only) and
-`optional` (slots).
+`state` (`raw`, `cooked`, `prepared`), `note`, `sourceNote` and `amountWord`
+(lines only, below) and `optional` (slots).
+
+### Cooking help and remarks about the source are two fields
+
+A line has two texts, each `{ en, de }`, and they are shown in different places:
+
+| Field        | What it holds                                                                                                                                                                                                                                     | Where the app shows it                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `note`       | **Cooking help**: what the cook needs to know about this ingredient ("Boiled potatoes, cut into slices.", "For the buttered pan.", "Added only when cooking starts, as onions harden in vinegar.").                                               | With the line, and when cooking.                                                          |
+| `sourceNote` | **A remark about the source**: that the source gives no amount, that a number is not legible in a scan, what a second edition reads, which of the source's alternatives we chose, where a sentence is from. Our own words, with what it rests on. | Only inside **Source** at the foot of the dish, never in the line and never when cooking. |
+
+The test is one question: _would a cook standing at the stove want this?_ If it
+is about the book, the scan, the edition or our choice, it is a `sourceNote`. A
+sentence that says both is split in two. A step may have a `sourceNote` as well
+(a time that is not legible); its `text` is only the method. The wording test
+scans both. Nothing of the provenance is dropped: a remark is moved, not deleted.
+The maintainer texts `settled[].reason` and `check.note` are neither: they are
+written for the next transcriber, in English, may name files, and are **not
+shown in the app** at all.
 
 ## Amounts as the source gives them
 
@@ -307,9 +337,19 @@ Exactly one of the two. Further fields: `key` (a slug, unique in the component:
 - `unit` is an id of `units.json` (`g`, `kg`, `oz`, `lb`, `ml`, `l`, `tsp`,
   `tbsp`, `cup`, `count`) or a word defined in the file's `units`.
 - `original` (optional) is the short original wording, for example the
-  source's own "1 Pfund"; it is shown beside the converted amount.
-- **No amount in the source** ("salt", "some butter"): write the line **without**
-  `amount`; the app shows "to taste" or "as needed". Or settle a number (see below).
+  source's own "1 Pfund" or "a piece weighing from 5 to 6 pounds"; it is shown
+  **only inside Source** ("Remarks on the source"), in quotation marks, not
+  beside the amount.
+- **No amount in the source** ("salt", "some butter", "a spoonful of an unknown
+  size"): write the line **without** `amount`; the app then shows the **name
+  alone**, and says nothing about the missing amount in the line. Put the reason
+  in `sourceNote` ("The source gives no amount."). Or settle a number (see below).
+- **"To taste" and "as needed"** are said only where the source says them, and
+  then with `amountWord`: `"to-taste"` (al gusto, nach Geschmack) or `"as-needed"`
+  (quanto basta, nach Bedarf). `amountWord` is only for a line without `amount`
+  (the schema and the validator refuse both: `amount-word`). Do not use it for a
+  line whose source gives no amount: that is a missing amount, not "to taste".
+  The source's own words go into `sourceNote` ('Source wording: "al gusto".').
 - Never write a fraction as text ("1 1/2"): write `1.5`.
 
 ### Source unit words
@@ -335,15 +375,51 @@ is reported.
 ```json
 {
   "text": { "en": "...", "de": "..." },
-  "technique": "folding",
+  "technique": "fold-in",
   "uses": ["fat"],
   "time": { "value": 5, "unit": "min" },
   "temperature": { "value": 180, "unit": "C" }
 }
 ```
 
-`technique` names a technique file that exists; `uses` the `key`s of the lines
-the step uses; `time` (`s`, `min`, `h`) and `temperature` (`C`, `F`) **as the
+**Every step names what is done** (since 2026-11-20), by exactly one of two
+words:
+
+- `technique`: a technique file that exists. **A technique is a promise to
+  teach:** its note is shown beside the first step of the dish that names it,
+  so a step gets a technique only when that note fits what the cook does in
+  this step. "Brown the flour in the fat" is a roux; "Bring to the boil" inside
+  a skimming step is skimming; cutting a chicken into joints is not knife cuts
+  (the note is about pieces of one size).
+- `action`: a plain action of `packages/engine/data/actions.json` (42: add,
+  stir, season, pour, sprinkle, strain, take off the heat, serve ...). It names
+  the step and teaches nothing. **When in doubt, the plain action**, or the
+  nearest one: "prepare" for what has no word of its own (tie the meat, break
+  the bones, separate the eggs, line a mould).
+
+How to choose when a step does several things: the technique, if one fits;
+otherwise the action that handles the lines the step names ("take the pot off
+the heat and stir in the butter" is stir); otherwise the first. Salt, pepper
+and spices alone are "season", other things "add". Into a mould, a dish or a
+tureen is "fill"; over something or into the pan is "pour". A step that does
+nothing (a sign that the dish is done) has no word and stands, with the
+reason, in the list of `packages/app/test/classics-steps.test.ts`; that test
+holds every other step to one word. A plain action that is missing is proposed
+to the owner, not invented in a dish file: the validator refuses an unknown
+one (`unknown-action`). No technique is added without a sourced note.
+
+`npm run propose:steps -- <part of the path>` prints, for each step, what the
+word lists would propose from the English and the German sentence
+([engine rules](engine-rules.md#proposing-a-step-from-a-sentence)), beside
+what the file says. It is a word match and often not what the step means;
+the transcriber decides by reading.
+
+`sourceNote` (optional,
+`{ en, de }`) a remark about the source for this step, shown only in Source;
+`uses` the `key`s of the lines
+the step names (a step that names no ingredient of its component has no
+`uses`; "the dough", "the sauce" and water that is no line are no
+ingredient); `time` (`s`, `min`, `h`) and `temperature` (`C`, `F`) **as the
 source gives them**, one number or a range with `to`. A word ("moderate oven")
 or another scale goes into the text.
 
@@ -358,15 +434,19 @@ entry of `settled`: `what`, `value` (text), `reason`, and `target`:
 
 A settled line or slot may have no `amount`: then the entry records a choice,
 not a number, and its `value` is free text ("water, not broth: the source says
-either"). A line left without amount and without `settled` is "to taste". The
-validator checks that both sides exist and does not ask for an amount.
+either"). A line left without amount and without `settled` shows its name alone.
+The validator checks that both sides exist and does not ask for an amount. What
+the app shows of `settled`: only the mark "settled by us" on the line and, for
+persons, the sentence "The source names no number; we took 6 persons." in
+Source; the `reason` texts are not shown.
 
 ## The second check
 
 `check.method`: `page-image` (the numbers were compared with the opened page
 image), `second-edition` (with a second scan or edition) or `second-reader`
 (a second person read the same text). `check.note` says by whom and what was
-compared. It must be someone who did not transcribe the dish.
+compared. It must be someone who did not transcribe the dish. The app shows
+one sentence for the method inside Source; the note stays in the file.
 
 # Validating one file
 
@@ -429,15 +509,15 @@ example is invented.
 }
 ```
 
-| Field     | What to write                                                                                                                                                                                                   |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                      |
-| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                 |
-| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                       |
-| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out. |
-| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**     |
-| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tradition` where kitchens' sources state it. No source: the file is not written.                                              |
-| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                      |
+| Field     | What to write                                                                                                                                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | The slug, `<from>-to-<to>`; the file name.                                                                                                                                                                                                                     |
+| `from`    | The id of a catalogue ingredient or group that is replaced. A group covers everything below it.                                                                                                                                                                |
+| `to`      | The id of a catalogue ingredient or group that replaces it. Pick the narrowest one the source names (a source that says "regular corn syrup" does not name the group of all corn syrups).                                                                      |
+| `factor`  | Optional: how much of `to` replaces one unit of `from`, **only when the source states a number** (the source says "half the amount" or "1.25"). "Up to 50 % more" is a limit, not a factor: leave `factor` out.                                                |
+| `changes` | `{ en, de }`: what changes, in one or two short sentences, in your own words, from the source. Taste, texture, amount, handling. **If the source names the replacement but not the effect, say only that.**                                                    |
+| `level`   | `studied` only where a study measured it; `textbook` where a textbook states it; `tested` where the author ran the experiment; `authority` where an official body states it; `tradition` where kitchens' sources state it. No source: the file is not written. |
+| `sources` | At least one, each with `sentence`: the sentence of the source the statement rests on, at most 25 words, verbatim. A table row may stand as the sentence, with the table named in `place`.                                                                     |
 
 How to write one: open a source first, find the sentence that states the
 replacement and its effect (and the factor), and only then write `changes`. A

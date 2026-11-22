@@ -14,7 +14,7 @@
     "year": 1877,
     "place": "Première partie, \"Œufs à la neige\", printed p. 295; custard \"comme il est dit au gâteau de riz\", printed p. 290",
     "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt",
-    "licence": "Title page: rights reserved (Droits de propriété et de traduction réservés); to be checked by the owner"
+    "licence": "Public domain: Jules Gouffé died in 1877; the title page's \"Droits de propriété et de traduction réservés\" has long expired"
   },
   "persons": {
     "value": 4,
@@ -64,7 +64,7 @@
             "unit": "count",
             "original": "la râpure d'un demi-citron"
           },
-          "note": {
+          "sourceNote": {
             "en": "Grated zest of half a lemon, as the book states.",
             "de": "Abgeriebene Schale einer halben Zitrone, wie das Buch angibt."
           }
@@ -103,7 +103,7 @@
             "kind": "component",
             "id": "custard"
           },
-          "note": {
+          "sourceNote": {
             "en": "The custard, made as in the book's rice cake (see the custard component).",
             "de": "Die Creme, wie beim Reiskuchen des Buches bereitet (siehe Komponente Creme)."
           }
@@ -123,6 +123,7 @@
             "en": "Add the sugar and the grated lemon zest.",
             "de": "Zucker und abgeriebene Zitronenschale zugeben."
           },
+          "action": "add",
           "uses": ["sugar-milk", "lemon"]
         },
         {
@@ -130,6 +131,7 @@
             "en": "Separate the eggs. Keep the yolks for the custard.",
             "de": "Die Eier trennen. Die Eigelbe für die Creme aufheben."
           },
+          "action": "prepare",
           "uses": ["egg-white"]
         },
         {
@@ -145,6 +147,7 @@
             "en": "Add the sugar and mix it in.",
             "de": "Den Zucker zugeben und unterrühren."
           },
+          "action": "add",
           "uses": ["sugar-whites"]
         },
         {
@@ -152,6 +155,7 @@
             "en": "Put six portions of the whites into the boiling milk, each the size of an egg, not touching each other.",
             "de": "Sechs Portionen Eischnee, je so groß wie ein Ei, in die kochende Milch geben; sie dürfen sich nicht berühren."
           },
+          "action": "add",
           "uses": ["egg-white", "sugar-whites"]
         },
         {
@@ -169,25 +173,30 @@
           "text": {
             "en": "Turn the portions with a spoon so that they cook evenly. When they are firm, lift them onto a sieve to drain.",
             "de": "Die Portionen mit dem Löffel wenden, damit sie gleichmäßig garen. Wenn sie fest sind, auf ein Sieb heben und abtropfen lassen."
-          }
+          },
+          "action": "turn"
         },
         {
           "text": {
             "en": "Repeat until all the whites are used.",
             "de": "So weitermachen, bis aller Eischnee verbraucht ist."
-          }
+          },
+          "action": "cook",
+          "uses": ["egg-white"]
         },
         {
           "text": {
             "en": "When the portions are cool, arrange them high on the dish.",
             "de": "Wenn die Portionen abgekühlt sind, hoch auf die Platte setzen."
-          }
+          },
+          "action": "serve"
         },
         {
           "text": {
             "en": "Cover the portions with the custard, which must also be cool. Serve.",
             "de": "Die Portionen mit der Creme bedecken; sie muss ebenfalls kalt sein. Servieren."
           },
+          "action": "serve",
           "uses": ["custard"]
         }
       ]
@@ -231,8 +240,12 @@
             "id": "fdc-167749"
           },
           "note": {
-            "en": "\"I râpure de citron\": one grating of lemon. The book does not state its size, so no amount is given.",
-            "de": "\"I râpure de citron\": eine Reibung Zitrone. Das Buch nennt ihre Größe nicht, daher steht hier keine Menge."
+            "en": "\"I râpure de citron\": one grating of lemon.",
+            "de": "„I râpure de citron“: etwas abgeriebene Zitronenschale."
+          },
+          "sourceNote": {
+            "en": "The book does not state its size, so no amount is given.",
+            "de": "Das Buch nennt ihre Größe nicht, daher steht hier keine Menge."
           }
         },
         {
@@ -248,7 +261,7 @@
           },
           "note": {
             "en": "The décilitre is a metric unit: 0.1 litre, so 5 décilitres are 0.5 litre.",
-            "de": "Der Dezilitre ist eine metrische Einheit: 0,1 Liter, also 5 Dezilitre gleich 0,5 Liter."
+            "de": "Der Deziliter ist eine metrische Einheit: 0,1 Liter; 5 Deziliter sind also 0,5 Liter."
           }
         },
         {
@@ -274,6 +287,7 @@
             "en": "Put the yolks in a pan. Add the sugar, the lemon zest and the milk.",
             "de": "Die Eigelbe in einen Topf geben. Zucker, Zitronenschale und Milch zugeben."
           },
+          "action": "add",
           "uses": ["yolk", "sugar-custard", "lemon-zest", "milk-custard"]
         },
         {
@@ -289,6 +303,7 @@
             "en": "Take the pan off the heat and keep stirring for 5 minutes.",
             "de": "Den Topf vom Herd nehmen und weitere 5 Minuten rühren."
           },
+          "action": "remove-from-heat",
           "time": {
             "value": 5,
             "unit": "min"
@@ -298,20 +313,23 @@
           "text": {
             "en": "Strain through a fine sieve.",
             "de": "Durch ein feines Spitzsieb streichen."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
             "en": "Stir in the 30 g of sugar.",
             "de": "Die 30 g Zucker einrühren."
           },
+          "action": "stir",
           "uses": ["sugar-added"]
         },
         {
           "text": {
             "en": "Let the custard cool.",
             "de": "Die Creme abkühlen lassen."
-          }
+          },
+          "action": "cool"
         }
       ]
     }
@@ -338,7 +356,7 @@
     "note": "Second check by a reader who did not transcribe it (group fr1). Compared with a second scan of the same 1877 edition (archive.org b28125629, another copy), gouffe.txt lines 15715-15752 and 15488-15508: all numbers agree; the hecto reads \"1 liecto\" in the first scan and \"1 becto\" in the second. Changed: hecto = 100 g, décilitres = 0.5 l; \"very firm\" became \"firm\"."
   },
   "note": {
-    "en": "Gouffé's snow eggs. The custard is the sauce of the rice cake (Gâteau de riz au citron, printed p. 290, gouffe.txt lines 15492-15508), made as the book says: six yolks, 80 g of sugar, one grating of lemon, 5 décilitres of milk. The snow eggs' recipe then adds 30 g of sugar to it. The hecto and the décilitre are metric units (100 g and 0.1 litre), so the sugar of the whites is 100 g and the milk of the custard 0.5 litre; the lemon grating has no amount, as the book gives no size for it. The printed text reads \"1 liecto\" for 1 hecto (OCR).",
-    "de": "Gouffés Eier im Schnee. Die Creme ist die Sauce des Reiskuchens (Gâteau de riz au citron, gedruckt S. 290, gouffe.txt Zeilen 15492-15508), wie das Buch sagt bereitet: sechs Eigelbe, 80 g Zucker, eine Reibung Zitrone, 5 Deziliter Milch. Das Rezept gibt danach 30 g Zucker zu. Hekto und Dezilitre sind metrische Einheiten (100 g und 0,1 Liter); daher hat der Zucker des Eischnees 100 g, die Milch der Creme 0,5 Liter. Die Zitronenreibung hat keine Menge, da das Buch dafür keine Größe angibt. Der Druck liest \"1 liecto\" für 1 Hekto (OCR)."
+    "en": "Gouffé's snow eggs. The custard is the sauce of the rice cake (Gâteau de riz au citron, printed p. 290), made as the book says: six yolks, 80 g of sugar, one grating of lemon, 5 décilitres of milk. The snow eggs' recipe then adds 30 g of sugar to it. The hecto and the décilitre are metric units (100 g and 0.1 litre), so the sugar of the whites is 100 g and the milk of the custard 0.5 litre; the lemon grating has no amount, as the book gives no size for it. The printed text reads \"1 liecto\" for 1 hecto (OCR).",
+    "de": "Gouffés Eier im Schnee. Die Creme ist die Sauce des Reiskuchens (Gâteau de riz au citron, gedruckt S. 290), wie das Buch sagt bereitet: sechs Eigelbe, 80 g Zucker, etwas abgeriebene Zitronenschale, 5 Deziliter Milch. Das Rezept gibt danach 30 g Zucker zu. Hekto und Deziliter sind metrische Einheiten (100 g und 0,1 Liter); daher hat der Zucker des Eischnees 100 g, die Milch der Creme 0,5 Liter. Die Zitronenschale hat keine Menge, da das Buch dafür keine Größe angibt. Der Scan liest „1 liecto“ für 1 Hekto."
   }
 }

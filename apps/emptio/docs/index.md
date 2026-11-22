@@ -15,13 +15,17 @@ links. Change history is in [log.md](log.md).
 
 # Specifications
 
+- [Behaviour as built](behaviour.md) - The list, an entry, categories, settings, which space is shown, sync every 15 seconds, offline, what is checked and what is not built.
+- [Native Linux app](native-linux.md) - The GTK 4 and libadwaita app on GJS: what it shares with the web app, what GJS lacks and how it is filled, pages, joining a space, build, packaging, what is not checked.
+
 - [Data model](data-model.md) - Entry, category and store with fields and ids, what is derived, records in collections of Emptio's file in the place, limits of merging.
 - [Engine rules](engine-rules.md) - Sort key of a name, order at home and in a store, hiding, category of a new entry, adding what is already there; later rules in outline.
 - [Test vector format](vectors.md) - JSON shape of the worked examples, the three kinds that exist, how the files are checked.
 
 # Reference
 
-- [Starting categories and household goods](categories.md) - The 19 categories in English and German, the mapping from USDA food groups, usual household goods, taxonomies not used.
+- [Starting categories and usual items](categories.md) - The 19 categories in English and German, the mapping from USDA food groups, usual household goods, taxonomies not used.
+- [List orderings](list-orderings.md) - Unlucky orders of events around the list with the test that pins each, and the ones no test pins.
 - [Dependencies](dependencies.md) - Every dependency with exact version, licence and use; none at run time yet.
 
 # Development

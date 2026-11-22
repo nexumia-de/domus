@@ -1,0 +1,28 @@
+{
+  "id": "egg-white-sugar-after-foaming",
+  "target": "fdc-group-egg-white",
+  "text": {
+    "en": "When sugar goes into whipped egg whites, add it little by little once the whites have begun to foam.",
+    "de": "Kommt Zucker in den Eischnee, ihn nach und nach zugeben, sobald das Eiweiß zu schäumen begonnen hat."
+  },
+  "why": {
+    "en": "Sugar added at the start delays the foam and costs volume; added later it makes the foam stable and supple.",
+    "de": "Zucker von Anfang an verzögert den Schaum und kostet Volumen; später zugegeben macht er den Schaum stabil und geschmeidig."
+  },
+  "technique": "whip-egg-whites",
+  "level": "textbook",
+  "sources": [
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Eggs, The Effects of Other Ingredients - Sugar, p. 104",
+      "isbn": "9780340831496",
+      "sentence": "Added early in the process, it delays foaming, and it reduces the foam’s ultimate volume and lightness."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Speiseeis und Backwaren als Desserts - Teige und Massen, 2.4 Grundtechniken bei Massen - Schlagen, p. 844",
+      "isbn": "9783805708388",
+      "sentence": "Fettreste im Gefäß oder Reste von Eigelb verhindern eine stabile und ausgeprägte Schaumbildung."
+    }
+  ]
+}

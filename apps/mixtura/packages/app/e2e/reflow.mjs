@@ -21,12 +21,10 @@ const routes = [
   ['templates', '#/templates'],
   ['template', '#/templates/daiquiri'],
   ['stock', '#/stock'],
+  ['stock-spaces', '#/stock?sheet=spaces'],
   ['buy-next', '#/stock/buy-next'],
   ['settings', '#/settings'],
   ['data', '#/settings/data'],
-  ['sync', '#/settings/sync'],
-  ['sync-storage', '#/settings/sync?sheet=storage'],
-  ['sync-join', '#/settings/sync?sheet=join'],
   ['about', '#/about'],
   ['not-found', '#/nowhere'],
 ];
@@ -86,7 +84,7 @@ for (const [label, width, height, text] of sizes) {
   for (const [name, address] of routes) {
     await page.goto('about:blank');
     await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-    await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+    await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
     if (text) await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     await page.waitForTimeout(400);
     for (const finding of await page.evaluate(findings))

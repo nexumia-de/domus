@@ -1,6 +1,6 @@
-// The classics in the finder: the adapter hands the engine what a direct call gets, the filters
-// only drop entries, a `wanted` line is named apart and never counts, and every entry opens its
-// dish view. On the fictional example classics.
+// The classics in the finder as the native Linux app asks (findClassics): the adapter hands the
+// engine what a direct call gets, the filters only drop entries, a `wanted` line is named apart
+// and never counts, and every entry opens its dish view. On the fictional example classics.
 import { classicsMakeable } from '@culina/engine';
 import type { Classic, ClassicsMakeableInput } from '@culina/engine';
 import { expect, test } from 'vitest';
@@ -9,8 +9,10 @@ import { classicLookup, classicRow } from '../src/cook/classic-rows';
 import type { CookSource } from '../src/cook/input';
 import { lookupOf } from '../src/cook/lookup';
 import { parseCookFilters } from '../src/prefs';
+import type { CookFilters } from '../src/prefs';
 import type { IngredientRecord } from '../src/records';
-import { EXAMPLE_CLASSICS, PAN_DISH, SECOND_DISH } from './classics-fixture';
+import { loadContent, resetContent } from '../src/classics/content';
+import { EXAMPLE_CLASSICS, EXAMPLE_SUBSTITUTES, PAN_DISH, SECOND_DISH } from './classics-fixture';
 import { must } from './must';
 
 const TODAY = '2026-11-18';
@@ -33,7 +35,7 @@ const source = (...ids: string[]): CookSource => ({
 });
 const ask = (
   stock: CookSource,
-  filters = { lacking: 3 },
+  filters: CookFilters = { lacking: 3 },
   classics: readonly Classic[] = EXAMPLE_CLASSICS,
 ) => {
   const found = findClassics(classics, stock, catalogue, TODAY, filters, 'en');
@@ -84,19 +86,17 @@ test('an entry opens the dish view of the classic', () => {
   expect(row.key).toBe(`classic:${row.id}`);
 });
 
-test('the country and the meat filter only drop entries, in the engine order', () => {
+test('the role only drops entries, in the engine order; an old country or meat field is ignored', () => {
   const stock = source('fdc-173410', 'fdc-171413', 'fdc-173468');
   const all = ask(stock);
-  const de = ask(stock, { lacking: 3, country: 'de' } as never);
-  const free = ask(stock, { lacking: 3, meatFree: true } as never);
-  expect(all.shown.map((c) => c.id)).toEqual(expect.arrayContaining([PAN_DISH.id, SECOND_DISH.id]));
-  expect(de.shown.every((c) => c.country === 'de')).toBe(true);
-  expect(free.shown.every((c) => c.vegetarian)).toBe(true);
-  expect(de.shown.map((c) => c.id)).toEqual(
-    all.shown.filter((c) => c.country === 'de').map((c) => c.id),
+  const main = ask(stock, { lacking: 3, role: 'main' });
+  expect(main.shown.map((c) => c.id)).toEqual(
+    all.shown.filter((c) => c.roles.includes('main')).map((c) => c.id),
   );
-  expect(ask(stock, { lacking: 3, country: 'fr' } as never).shown).toEqual([]);
-  expect(de.matching).toBe(EXAMPLE_CLASSICS.filter((c) => c.country === 'de').length);
+  // What an older version stored beside the threshold is no filter any more.
+  expect(ask(stock, { lacking: 3, country: 'fr', meatFree: true } as never).shown).toEqual(
+    all.shown,
+  );
 });
 
 test('with nothing that matches, the nearest are named, fewest lacking first', () => {
@@ -107,11 +107,47 @@ test('with nothing that matches, the nearest are named, fewest lacking first', (
   expect(lacking).toEqual([...lacking].sort((a, b) => a - b));
 });
 
-test('the kept filters read the country and the meat choice, and drop what is not one', () => {
-  expect(parseCookFilters({ lacking: 2, country: 'it', meatFree: true })).toEqual({
-    lacking: 2,
-    country: 'it',
-    meatFree: true,
-  });
-  expect(parseCookFilters({ lacking: 2, country: 'xx', meatFree: 'yes' })).toEqual({ lacking: 2 });
+test('the kept finder choices read role and threshold only', () => {
+  expect(parseCookFilters({ lacking: 2, country: 'it', meatFree: true })).toEqual({ lacking: 2 });
+});
+
+test('a shipped substitute effect applies to a shipped dish as to an own one', async () => {
+  // The tree as the catalogue has it: oil and butter under their groups, for which the effects are declared.
+  const tree = new Map(
+    [
+      { id: 'fdc-group-oil', name: 'Oils' },
+      { id: 'fdc-group-butter', name: 'Butter' },
+      { id: 'fdc-171413', name: 'Oil, olive', parentId: 'fdc-group-oil' },
+      { id: 'fdc-173410', name: 'Butter, salted', parentId: 'fdc-group-butter' },
+      { id: 'fdc-173468', name: 'Salt, table' },
+    ].map((r) => [r.id, r as IngredientRecord]),
+  );
+  const stock = source('fdc-173410', 'fdc-173468');
+  const pan = () => {
+    const found = findClassics(EXAMPLE_CLASSICS, stock, tree, TODAY, { lacking: 3 }, 'en');
+    if (!found.ok) throw new Error('not ok');
+    return must(found.shown.find((c) => c.id === PAN_DISH.id));
+  };
+  const without = pan();
+  expect(without.substitutions).toEqual([]);
+  try {
+    await loadContent(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            format: 'culina-classics',
+            formatVersion: 1,
+            classics: EXAMPLE_CLASSICS,
+            techniques: [],
+            substitutes: EXAMPLE_SUBSTITUTES,
+          }),
+      }),
+    );
+    const withEffects = pan();
+    expect(withEffects.substitutions.map((s) => s.effect)).toEqual(['example-oil-to-butter']);
+    expect(withEffects.lacking).toBe(without.lacking - 1);
+  } finally {
+    resetContent();
+  }
 });

@@ -4,6 +4,7 @@ import { ALCOHOL_PRESETS, type AlcoholPreset } from '@mixtura/engine';
 import { type Theme, type Units } from '../../app-state';
 import { type YesNo } from '../../store';
 import { h, icon } from '../../dom';
+import { householdHref } from '../../household';
 import { type Screen, type ScreenContext } from '../../screen';
 import { strings } from '../../strings';
 import { saveShortcuts } from '../../shortcuts-pref';
@@ -151,7 +152,7 @@ function settings(context: ScreenContext): HTMLElement {
       'div',
       { class: 'card card--flush' },
       dataRow(state),
-      navRow('#/settings/sync', strings.titles.sync, s.syncHint),
+      navRow(householdHref(), s.household, s.householdHint),
       navRow('#/about', s.about, s.aboutHint),
     ),
   );
@@ -181,7 +182,7 @@ export const screens: Screen[] = [
   {
     id: 'settings',
     destination: 'settings',
-    pushed: false,
+    pushed: true,
     match: (route) => route.path.length === 1 && route.path[0] === 'settings',
     view: (context) => ({ title: strings.titles.settings, body: settings(context) }),
   },

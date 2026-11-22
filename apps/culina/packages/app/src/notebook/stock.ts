@@ -1,32 +1,88 @@
-// What is there: reads of the stock cache, and the writes of ticking, unticking, editing and
-// using up. Ticking writes an item with nothing but `id` and `ref`; everything else is added later.
-// A record is changed on a copy of the stored one, so fields of another app (`x-...`) survive.
+// What is there: the items of the shared collection `stock` of the used space, as Culina shows
+// them, and the writes of ticking, unticking, editing, adding a batch and removing. Every write is
+// worked out from the records as stored at that moment (src/shared-stock/edits.ts), so fields and
+// items of another app or device survive. A record is shown when its key is an ingredient of the
+// notebook, else the family of a component; any other record is left untouched.
 import type { ComponentRef } from '@culina/engine';
-import type { Result } from '../store/types';
+import {
+  addEdit,
+  removeEdit,
+  restoreEdit,
+  saveEdit,
+  tickEdit,
+  untickEdit,
+  type Decision,
+  type StockUndo,
+  type SyncRecord,
+} from '../shared-stock/edits';
+import { itemsFromRecords } from '../shared-stock/items';
+import type { Detail } from '../shared-stock/value';
+import { fail, type Result } from '../store/types';
 import type { StockRecord } from '../records';
 import { appLang } from '../shared/locale';
 import { displayName } from '../shared/names';
-import { removeRecord, saveRecord } from './actions';
 import { getIngredient } from './read';
-import { newId } from './ids';
 import { state } from './state';
 import { headOfFamily, versionRecord } from './versions';
 
-/** Every item, in store order. */
-export const listStock = (): readonly StockRecord[] => state.stock;
+export type { StockUndo };
+
+/** The key of a thing in the collection: an ingredient's id, a component's family id. */
+export const stockKeyOf = (ref: ComponentRef): string =>
+  ref.kind === 'ingredient'
+    ? ref.id
+    : (versionRecord('components', ref.id)?.version.family ?? ref.id);
+
+/** What a key stands for here: an ingredient, else a component family; undefined: not shown. */
+export const resolveStockKey = (key: string): ComponentRef | undefined => {
+  if (getIngredient(key) !== undefined) return { kind: 'ingredient', id: key };
+  const head = headOfFamily('components', key);
+  return head !== undefined && head.version.family === key
+    ? { kind: 'component', id: key }
+    : undefined;
+};
+
+const itemsOfRecords = (records: readonly SyncRecord[]): StockRecord[] =>
+  itemsFromRecords(records, resolveStockKey);
+
+/** How many records Culina shows (live, present, known); what the choice of space weighs. */
+export const shownCount = (records: readonly SyncRecord[]): number =>
+  new Set(itemsOfRecords(records).map((item) => stockKeyOf(item.ref))).size;
+
+// The items are worked out again only when the records or the notebook changed.
+let memo: { records: unknown; ingredients: unknown; components: unknown; items: StockRecord[] } = {
+  records: undefined,
+  ingredients: undefined,
+  components: undefined,
+  items: [],
+};
+
+/** Every item of the used space, in record order (the screens sort). */
+export const listStock = (): readonly StockRecord[] => {
+  const records = state.stockSpace?.state().records ?? [];
+  if (
+    memo.records !== records ||
+    memo.ingredients !== state.ingredients ||
+    memo.components !== state.components
+  ) {
+    memo = {
+      records,
+      ingredients: state.ingredients,
+      components: state.components,
+      items: itemsOfRecords(records),
+    };
+  }
+  return memo.items;
+};
 
 export const getStockItem = (id: string): StockRecord | undefined =>
-  state.stock.find((s) => s.id === id);
-
-/** A component is one thing in every version: its family. */
-const keyOf = (ref: ComponentRef): string =>
-  ref.kind === 'ingredient'
-    ? `ingredient:${ref.id}`
-    : `component:${versionRecord('components', ref.id)?.version.family ?? ref.id}`;
+  listStock().find((s) => s.id === id);
 
 /** The items of one ingredient or component (more than one when batches are kept apart). */
-export const stockOf = (ref: ComponentRef): StockRecord[] =>
-  state.stock.filter((s) => keyOf(s.ref) === keyOf(ref));
+export const stockOf = (ref: ComponentRef): StockRecord[] => {
+  const key = stockKeyOf(ref);
+  return listStock().filter((s) => stockKeyOf(s.ref) === key);
+};
 
 const ingredientNameOrUndefined = (id: string): string | undefined => {
   const record = getIngredient(id);
@@ -39,43 +95,59 @@ export const stockName = (item: { ref: ComponentRef }): string | undefined =>
     ? ingredientNameOrUndefined(item.ref.id)
     : headOfFamily('components', item.ref.id)?.name;
 
+/** Runs a decision on the used space; a gone item is `not-found`. */
+const change = async <T>(
+  decide: (records: readonly SyncRecord[]) => Decision<T>,
+): Promise<Result<{ outcome: T }>> => {
+  const space = state.stockSpace;
+  if (space === undefined) return fail({ code: 'unavailable' });
+  const done = await space.change(decide);
+  if (done.ok) return { ok: true, outcome: done.outcome };
+  return fail({ code: done.why === 'gone' ? 'not-found' : 'unavailable' });
+};
+
+const detailOfItem = (item: StockRecord): Detail => {
+  const detail: Partial<StockRecord> = { ...item };
+  delete detail.id;
+  delete detail.ref;
+  return detail;
+};
+
 /** Ticks: says that this is there, with nothing else. Does nothing if it already is. */
-export const tick = async (
+export const tick = async (ref: ComponentRef, always = false): Promise<Result> => {
+  const done = await change((records) => tickEdit(records, stockKeyOf(ref), always));
+  return done.ok ? { ok: true } : done;
+};
+
+/** Unticks: `present: false` for the thing; the result carries what Undo needs. */
+export const untick = async (ref: ComponentRef): Promise<Result<{ removed: StockUndo }>> => {
+  const done = await change((records) => untickEdit(records, stockKeyOf(ref)));
+  return done.ok ? { ok: true, removed: done.outcome } : done;
+};
+
+/** Removes one item; the last one of a thing unticks it. */
+export const removeStockItem = async (id: string): Promise<Result<{ removed: StockUndo }>> => {
+  const done = await change((records) => removeEdit(records, id));
+  return done.ok ? { ok: true, removed: done.outcome } : done;
+};
+
+/** Undo of an untick or a removal: Culina's fields as they were, other fields as they are. */
+export const restoreStock = async (undo: StockUndo): Promise<Result> => {
+  const done = await change((records) => restoreEdit(records, undo));
+  return done.ok ? { ok: true } : done;
+};
+
+/** Stores the detail of an item the caller built from the shown one. */
+export const saveStockItem = async (item: StockRecord): Promise<Result> => {
+  const done = await change((records) => saveEdit(records, item.id, detailOfItem(item)));
+  return done.ok ? { ok: true } : done;
+};
+
+/** Adds an item (a new batch of a made component); gives the id it is shown by. */
+export const addStockItem = async (
   ref: ComponentRef,
-  always = false,
-): Promise<Result<{ items: StockRecord[] }>> => {
-  const there = stockOf(ref);
-  if (there.length > 0) return { ok: true, items: there };
-  const item: StockRecord = { id: newId(), ref, ...(always ? { always: true } : {}) };
-  const done = await saveRecord('stock', item);
-  return done.ok ? { ok: true, items: [item] } : done;
+  detail: Detail,
+): Promise<Result<{ id: string }>> => {
+  const done = await change((records) => addEdit(records, stockKeyOf(ref), detail));
+  return done.ok ? { ok: true, id: done.outcome } : done;
 };
-
-/** Unticks: removes every item of the ingredient or component; the result carries them for Undo. */
-export const untick = async (ref: ComponentRef): Promise<Result<{ removed: StockRecord[] }>> =>
-  removeItems(stockOf(ref));
-
-export const removeStockItem = async (id: string): Promise<Result<{ removed: StockRecord[] }>> =>
-  removeItems(state.stock.filter((s) => s.id === id));
-
-const removeItems = async (items: StockRecord[]): Promise<Result<{ removed: StockRecord[] }>> => {
-  const removed: StockRecord[] = [];
-  for (const item of items) {
-    const done = await removeRecord('stock', item.id);
-    if (!done.ok) return done;
-    removed.push(item);
-  }
-  return { ok: true, removed };
-};
-
-/** Puts removed items back (Undo). */
-export const restoreStock = async (items: readonly StockRecord[]): Promise<Result> => {
-  for (const item of items) {
-    const done = await saveRecord('stock', item);
-    if (!done.ok) return done;
-  }
-  return { ok: true };
-};
-
-/** Stores a changed item (the caller built it from the stored record). */
-export const saveStockItem = (item: StockRecord): Promise<Result> => saveRecord('stock', item);

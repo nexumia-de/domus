@@ -8,6 +8,13 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 
 # Culina is a scripted kitchen helper that teaches until it is no longer needed
 
+**Note of 2026-11-21:** the known dishes of point 5 still ship with their
+country and their source. They are no longer shown by country in lists
+and screens of their own: they are part of one list with the user's
+dishes, and their country is a cuisine in its filter
+([one dish list](one-dish-list.md)). The start screen of point 9 asks what
+to cook over that one list. The rest of this record stands.
+
 ## Context
 
 Two sessions had built a notebook, a catalogue and a finder; the

@@ -45,14 +45,14 @@ export const classicsStringsDe: typeof classicsStrings = {
   unknownDish: 'Dieses Gericht steht nicht in der Liste.',
   originalName: (name: string): string => `Originalname: ${name}`,
   sourceHeading: 'Quelle',
+  // The year only once: some titles end with the imprint and its year already.
   sourceLine: (author: string, title: string, year: number): string =>
-    `${author}, ${title}, ${year}`,
+    `${title}`.includes(`${year}`) ? `${author}, ${title}` : `${author}, ${title}, ${year}`,
   sourcePlace: (place: string): string => `Fundstelle: ${place}`,
   sourceLink: 'Quelle öffnen',
   sourceLicence: (licence: string): string => `Lizenz: ${licence}`,
   personsStated: (n: number): string => `Die Quelle gibt ihre Mengen für ${n} Personen an.`,
-  personsSettled: (n: number): string =>
-    `Die Quelle nennt keine Zahl; wir haben ${n} Personen angesetzt.`,
+  personsSettled: (n: number): string => `Die Quelle nennt keine Zahl; angenommen: ${n} Personen.`,
   portionsLabel: 'Portionen',
   portionsFewer: 'Weniger Portionen',
   portionsMore: 'Mehr Portionen',
@@ -64,13 +64,14 @@ export const classicsStringsDe: typeof classicsStrings = {
   asNeeded: 'nach Bedarf',
   settledMark: 'von uns festgelegt',
   amountRange: (a: string, b: string): string => `${a} bis ${b}`,
-  pieces: (n: string): string => `${n} Stk.`,
   optional: 'optional',
-  settledSummary: 'Was wir festgelegt haben, wo die Quelle unklar ist',
-  settledNone: 'Nichts wurde festgelegt: Jede Menge stammt aus der Quelle.',
-  settledEntry: (what: string, value: string, reason: string): string =>
-    `${what}: ${value}. ${reason}`,
-  checkHeading: 'Zweite Prüfung',
+  remarksHeading: 'Anmerkungen zur Quelle',
+  remarkLine: (name: string, original?: string, remark?: string): string =>
+    [`${name}:`, original === undefined ? undefined : `„${original}“`, remark]
+      .filter((x) => x !== undefined)
+      .join(' '),
+  remarkDish: (note: string): string => `Gericht: ${note}`,
+  remarkStep: (n: number, remark: string): string => `Schritt ${n}: ${remark}`,
   checkMethod: {
     'page-image': 'Die Zahlen wurden mit dem Seitenbild verglichen.',
     'second-edition': 'Die Zahlen wurden mit einer zweiten Ausgabe oder einem Scan verglichen.',
@@ -85,13 +86,13 @@ export const classicsStringsDe: typeof classicsStrings = {
   usesHeading: 'Du brauchst',
   timeLabel: (text: string): string => `Zeit: ${text}`,
   temperatureLabel: (text: string): string => `Temperatur: ${text}`,
-  minutes: (a: number, b?: number): string =>
+  minutes: (a: string, b?: string): string =>
     b === undefined ? `${a} Min.` : `${a} bis ${b} Min.`,
-  seconds: (a: number, b?: number): string =>
+  seconds: (a: string, b?: string): string =>
     b === undefined ? `${a} Sek.` : `${a} bis ${b} Sek.`,
-  hours: (a: number, b?: number): string => (b === undefined ? `${a} Std.` : `${a} bis ${b} Std.`),
-  celsius: (a: number, b?: number): string => (b === undefined ? `${a} °C` : `${a} bis ${b} °C`),
-  fahrenheit: (a: number, b?: number): string => (b === undefined ? `${a} °F` : `${a} bis ${b} °F`),
+  hours: (a: string, b?: string): string => (b === undefined ? `${a} Std.` : `${a} bis ${b} Std.`),
+  celsius: (a: string, b?: string): string => (b === undefined ? `${a} °C` : `${a} bis ${b} °C`),
+  fahrenheit: (a: string, b?: string): string => (b === undefined ? `${a} °F` : `${a} bis ${b} °F`),
   back: 'Zurück',
   next: 'Weiter',
   finish: 'Fertig',
@@ -100,19 +101,23 @@ export const classicsStringsDe: typeof classicsStrings = {
   noteHeading: (name: string): string => `Technik: ${name}`,
   noteMore: 'Warum, und woher es kommt',
   noteLevel: {
-    studied: 'Untersucht: Eine begutachtete Studie hat es gemessen.',
-    textbook: 'Lehrbuch: Ein Kochlehrbuch nennt es.',
-    tradition: 'Überlieferung: Küchen machen es so; einen Test gibt es nicht.',
+    studied: 'Studie',
+    textbook: 'Lehrbuch',
+    tested: 'Küchenversuch',
+    authority: 'Behörde',
+    tradition: 'Überlieferung',
   },
   noteSources: 'Quellen',
-  noteSource: (title: string, place: string): string => `${title}, ${place}`,
+  noteSource: (level: string, title: string, place: string): string =>
+    `${level} · ${title}, ${place}`,
+  noteSourceBook: (line: string, isbn: string): string => `${line} (ISBN ${isbn})`,
   iKnowThis: 'Das kenne ich',
   learnedDone: (name: string): string =>
     `Als gelernt markiert: ${name}. Der Hinweis erscheint nicht mehr. In den Einstellungen kommt er zurück.`,
   // Handling note
-  handlingHeading: (name: string): string => `Umgang: ${name}`,
+  handlingHeading: (name: string): string => `Tipp zu ${name}`,
   // Substitutes
-  insteadButton: 'Stattdessen',
+  insteadButton: 'Ersatz',
   insteadLabel: (name: string): string => `Statt ${name}`,
   factorQuarter: 'Menge: etwa ein Viertel',
   factorThird: 'Menge: etwa ein Drittel',

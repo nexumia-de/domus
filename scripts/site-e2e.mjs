@@ -1,13 +1,14 @@
 // `npm run e2e:site`: serves ./dist on localhost and checks in Chromium that
 // the apps stay apart under one address: each has its own service worker
-// scope, cache, database and manifest, and none removes what another keeps.
+// scope, cache, database and manifest, and none removes what another keeps;
+// and that they meet in the one database they share, the spaces.
 // Chromium: PLAYWRIGHT_CHROMIUM_PATH when set, otherwise Playwright's own.
 /* global caches, document, indexedDB, navigator -- in functions the page runs */
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
 import { chromium } from 'playwright';
-import { apps } from './site.mjs';
+import { apps, home as rootApp } from './site.mjs';
 
 const dist = resolve(import.meta.dirname, '..', 'dist');
 const types = {
@@ -70,16 +71,52 @@ const open = async (app) => {
 };
 
 try {
+  // The root of the address is the Household app: it loads, lists both apps, and claims no scope.
   const home = await context.newPage();
   await home.goto(`${origin}/`);
+  await home.waitForSelector('.apps a');
   const links = await home.$$eval('.apps a', (list) => list.map((a) => a.getAttribute('href')));
   check(
     apps.every((app) => links.includes(`${app.name}/`)),
-    `the root page links every app (${links.join(', ')})`,
+    `the root app links every app (${links.join(', ')})`,
+  );
+  check(
+    (await home.title()) === 'Household' &&
+      (await home.locator('h1').innerText()) === 'Household' &&
+      (await home.locator('#sync-title').count()) === 1,
+    'the root app loads: title, heading and the Sync section',
   );
   check(
     (await home.evaluate(() => document.querySelector('link[rel=manifest]'))) === null,
-    'the root page has no manifest, so it claims no scope above the apps',
+    'the root app has no manifest link, so it claims no scope above the apps',
+  );
+  check(
+    (await home.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)) ===
+      0,
+    'the root app registers no service worker',
+  );
+  for (const path of ['manifest.webmanifest', 'sw.js']) {
+    const answer = await context.request.get(`${origin}/${path}`);
+    check(answer.status() === 404, `the root serves no /${path} (${answer.status()})`);
+  }
+  // The headers file the deploy uploads: every file of the root app is revalidated and has the
+  // baseline, and nothing of it touches an app's folder.
+  const headers = readFileSync(join(dist, '_headers'), 'utf8');
+  const rootFiles = [
+    '/',
+    ...readdirSync(dist)
+      .filter((f) => statSync(join(dist, f)).isFile() && f !== '_headers')
+      .map((f) => `/${f}`),
+  ];
+  for (const path of rootFiles) {
+    const rule = headers
+      .split('\n\n')
+      .find((block) => block.split('\n')[0] === path && block.includes('Cache-Control'));
+    check(rule !== undefined, `_headers: ${path} is served with no-cache`);
+  }
+  check(
+    headers.includes("/main.js\n  Content-Security-Policy: frame-ancestors 'none'"),
+    '_headers: the root app files carry the baseline',
   );
 
   // Open every app, then every app again: the second round activates nothing
@@ -134,9 +171,11 @@ try {
   const databases = await any.evaluate(async () =>
     (await indexedDB.databases()).map((db) => db.name),
   );
-  const wanted = apps.map((app) => app.db);
+  // An app without `db` keeps everything in the shared database of the root app.
+  const withDb = [...apps, rootApp].filter((app) => app.db !== undefined);
+  const wanted = withDb.map((app) => app.db);
   check(new Set(wanted).size === wanted.length, `database names differ (${wanted.join(', ')})`);
-  for (const app of apps) {
+  for (const app of withDb) {
     check(databases.includes(app.db), `${app.name}: its database exists (${databases.join(', ')})`);
   }
 
@@ -172,6 +211,32 @@ try {
     );
   }
   await second.close();
+
+  // The apps share the database of spaces: stock marked in Mixtura on a device that never set
+  // up sync is in a space on this device only, and the Household app shows that space.
+  const bar = await context.newPage();
+  await bar.goto(`${origin}/mixtura/#/stock`);
+  await bar.waitForFunction(
+    () => document.querySelector('[data-spaces-line]')?.textContent === 'Home',
+  );
+  check(true, 'mixtura: the stock is kept in a space called Home');
+  await bar.locator('[data-focus="spaces"]').click();
+  const link = bar.locator('[data-focus="spaces-household"]');
+  await link.waitFor();
+  check(
+    (await link.evaluate((a) => a.href)) === `${origin}/`,
+    'mixtura: the Spaces sheet links to the Household app at the root',
+  );
+  const status = await bar.locator('[data-space-sync]').innerText();
+  check(status === 'On this device only', `mixtura: the space is on this device only (${status})`);
+  const household = await context.newPage();
+  await household.goto(`${origin}/`);
+  await household.waitForSelector('[data-testid="space-card"]');
+  const card = await household.locator('[data-testid="space-card"]').innerText();
+  check(
+    /Home/.test(card) && /On this device only|Nur auf diesem Gerät/.test(card),
+    `household: lists the space Mixtura made (${card.replace(/\s+/g, ' ')})`,
+  );
 
   check(problems.length === 0, `no console errors, no foreign requests ${problems.join('; ')}`);
 } finally {

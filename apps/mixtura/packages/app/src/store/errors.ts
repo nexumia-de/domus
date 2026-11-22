@@ -18,7 +18,6 @@ export type StoreErrorKind =
   /** The entity is still referenced by others; `referrers` names them. */
   | 'referenced'
   /** A storage is still used by bindings; `details` names them. Remove the bindings first. */
-  | 'in-use'
   /** A migration threw; the upgrade was rolled back and the old data is untouched. */
   | 'migration'
   /** The bundled seed data did not load or has the wrong shape. */

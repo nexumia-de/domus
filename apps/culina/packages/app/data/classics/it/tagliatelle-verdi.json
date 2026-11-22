@@ -58,8 +58,12 @@
             "id": "fdc-group-wheat-flour-white-all-purpose-enriched"
           },
           "note": {
-            "en": "As much flour as the dough takes; the source gives no weight.",
-            "de": "So viel Mehl, wie der Teig aufnimmt; die Quelle nennt kein Gewicht."
+            "en": "As much flour as the dough takes.",
+            "de": "So viel Mehl, wie der Teig aufnimmt."
+          },
+          "sourceNote": {
+            "en": "The source gives no weight.",
+            "de": "Die Quelle nennt kein Gewicht."
           }
         },
         {
@@ -75,7 +79,7 @@
             "en": "Cheese (cacio)",
             "de": "Käse (Cacio)"
           },
-          "note": {
+          "sourceNote": {
             "en": "Dressing: cheese and butter, as the source's simplest option.",
             "de": "Zum Anrichten: Käse und Butter, die einfachste Möglichkeit der Quelle."
           }
@@ -102,6 +106,7 @@
             "en": "Squeeze the spinach well dry.",
             "de": "Den Spinat gut ausdrücken."
           },
+          "action": "dry",
           "uses": ["spinach"]
         },
         {
@@ -133,6 +138,7 @@
             "en": "Dust the sheet lightly with flour when it starts to stick.",
             "de": "Die Platte leicht mit Mehl bestäuben, wenn sie zu kleben beginnt."
           },
+          "action": "sprinkle",
           "uses": ["flour"]
         },
         {
@@ -140,6 +146,7 @@
             "en": "Wrap the sheet in a cloth and let it dry.",
             "de": "Die Platte in ein Tuch einschlagen und trocknen lassen."
           },
+          "action": "dry",
           "uses": ["flour"]
         },
         {
@@ -147,6 +154,7 @@
             "en": "Cut the sheet into strips a little wider than broth noodles.",
             "de": "Die Platte in Streifen schneiden, etwas breiter als Suppennudeln."
           },
+          "technique": "knife-cuts",
           "uses": ["flour"]
         },
         {
@@ -162,6 +170,7 @@
             "en": "As soon as the water boils, lift the pasta out and drain it.",
             "de": "Sobald das Wasser kocht, die Nudeln herausnehmen und abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["water"]
         },
         {
@@ -169,6 +178,7 @@
             "en": "Dress the pasta with the cheese and the butter.",
             "de": "Die Nudeln mit Käse und Butter anrichten."
           },
+          "action": "serve",
           "uses": ["cheese", "butter"]
         }
       ]
@@ -197,6 +207,6 @@
   },
   "note": {
     "en": "The source also offers the dressings of Nos. 58 and 44 (not transcribed); cheese and butter is the option named last. The source gives no weight for the flour or the spinach.",
-    "de": "Die Quelle nennt auch die Saucen der Nummern 58 und 44 (nicht übertragen); Käse und Butter ist die zuletzt genannte Möglichkeit. Die Quelle nennt kein Gewicht für Mehl oder Spinat."
+    "de": "Die Quelle nennt auch die Saucen der Nummern 58 und 44 (nicht übertragen); Käse und Butter sind die zuletzt genannte Möglichkeit. Die Quelle nennt kein Gewicht für Mehl oder Spinat."
   }
 }

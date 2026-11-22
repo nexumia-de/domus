@@ -4,6 +4,7 @@
 import { EXPORT_FORMAT, EXPORT_VERSION } from './build';
 import {
   EXPORT_KINDS,
+  KIND_SINCE,
   type ExportError,
   type ExportKind,
   type ExportMigration,
@@ -12,8 +13,27 @@ import {
   type RecordValidators,
 } from './types';
 
-/** The migrations from older export versions; none yet, the format has never changed. */
-export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [];
+/** The version from which a file holds no stock (docs/exchange.md#versions). */
+const WITHOUT_STOCK = 2;
+
+/**
+ * The migrations from older export versions. 1 -> 2 leaves `stock` out: stock is the shared
+ * collection of a space since version 2, and a replace import must not delete what another app
+ * or person put there.
+ */
+export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [
+  {
+    from: 1,
+    to: 2,
+    migrate: (file) => {
+      const out = { ...file };
+      delete out.stock;
+      return out;
+    },
+  },
+  // 2 -> 3 adds the collection `skills`; a file of version 2 has none, so nothing changes.
+  { from: 2, to: 3, migrate: (file) => file },
+];
 
 export interface ParseOptions {
   /** Test hook: the newest version this reader knows (default `EXPORT_VERSION`). */
@@ -83,13 +103,24 @@ export function parseExport(
   if (!isObject(parsed)) return fail({ code: 'not-an-export' });
   const version = versionOf(parsed, current);
   if (typeof version !== 'number') return version;
+  // Counted before the chain runs, so the host can say that the file's stock was left out.
+  const stock = parsed.stock;
+  const stockLeftOut =
+    options.migrations === undefined &&
+    version < WITHOUT_STOCK &&
+    current >= WITHOUT_STOCK &&
+    Array.isArray(stock)
+      ? stock.length
+      : 0;
   const done = migrated(parsed, version, current, options.migrations ?? EXPORT_MIGRATIONS);
   if ('error' in done) return done;
   const { file } = done;
 
+  // A kind the file's own version did not have is a field it cannot hold (skills in version 2).
+  const heldBy = (field: string): boolean =>
+    EXPORT_KINDS.some((k) => k === field && (KIND_SINCE[k] ?? 1) <= version);
   for (const field of Object.keys(file)) {
-    const known =
-      HEADER_FIELDS.has(field) || field.startsWith('x-') || EXPORT_KINDS.some((k) => k === field);
+    const known = HEADER_FIELDS.has(field) || field.startsWith('x-') || heldBy(field);
     if (!known) return fail({ code: 'unknown-field', field });
   }
   const { seedVersion, exportedAt } = file;
@@ -124,9 +155,11 @@ export function parseExport(
     ok: true,
     content: {
       formatVersion: current,
+      fileVersion: version,
       ...(typeof seedVersion === 'string' ? { seedVersion } : {}),
       ...(typeof exportedAt === 'string' ? { exportedAt } : {}),
       records,
+      ...(stockLeftOut > 0 ? { stockLeftOut } : {}),
     },
   };
 }

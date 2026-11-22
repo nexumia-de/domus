@@ -52,8 +52,12 @@
             "id": "fdc-170028"
           },
           "note": {
-            "en": "2 platefuls of sliced raw potatoes. The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
-            "de": "2 Teller voll rohe Kartoffelscheiben. Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
+            "en": "2 platefuls of sliced raw potatoes.",
+            "de": "2 Teller voll rohe Kartoffelscheiben."
+          },
+          "sourceNote": {
+            "en": "The size of a plate is not stated in the source, so no amount is given. The second edition says one plateful.",
+            "de": "Die Größe eines Tellers steht nicht in der Quelle, daher keine Menge. Die deutsche Ausgabe nennt einen Teller voll."
           }
         },
         {
@@ -99,8 +103,12 @@
             "de": "Suppengemüse"
           },
           "note": {
-            "en": "Some soup vegetables. The source gives no amount.",
-            "de": "Etwas Suppengemüse. Die Quelle nennt keine Menge."
+            "en": "Some soup vegetables.",
+            "de": "Etwas Suppengemüse."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
           }
         },
         {
@@ -165,6 +173,7 @@
             "en": "Cook the soup vegetables in the boiling water for 15 minutes.",
             "de": "Das Suppengemüse 15 Minuten im kochenden Wasser garen."
           },
+          "action": "cook",
           "time": {
             "value": 15,
             "unit": "min"
@@ -174,8 +183,9 @@
         {
           "text": {
             "en": "Add the fried potatoes, without the butter, and the salt.",
-            "de": "Die gebratenen Kartoffeln ohne die Butter und das Salz zugeben."
+            "de": "Die gebratenen Kartoffeln ohne die Butter zugeben, dazu das Salz."
           },
+          "action": "add",
           "uses": ["potatoes", "salt"]
         },
         {
@@ -183,6 +193,7 @@
             "en": "Cook the soup for half an hour.",
             "de": "Die Suppe eine halbe Stunde kochen."
           },
+          "action": "cook",
           "time": {
             "value": 0.5,
             "unit": "h"
@@ -192,7 +203,8 @@
           "text": {
             "en": "Pass the soup through a sieve.",
             "de": "Die Suppe durch ein Sieb streichen."
-          }
+          },
+          "action": "strain"
         },
         {
           "text": {
@@ -207,6 +219,7 @@
             "en": "Add the browned flour to the soup.",
             "de": "Das gebräunte Mehl in die Suppe geben."
           },
+          "action": "add",
           "uses": ["flour"]
         },
         {
@@ -214,13 +227,15 @@
             "en": "Stir in the beef extract and the claret and let the soup come to a boil.",
             "de": "Fleischextrakt und Rotwein einrühren und die Suppe einmal aufkochen lassen."
           },
+          "action": "stir",
           "uses": ["beef", "claret"]
         },
         {
           "text": {
             "en": "Serve with toasted bits of bread.",
             "de": "Mit gerösteten Brotwürfeln servieren."
-          }
+          },
+          "action": "serve"
         }
       ]
     }

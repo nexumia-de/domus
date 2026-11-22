@@ -13,7 +13,10 @@ import {
   listDishes,
   listIngredients,
 } from '../src/demo';
+import { componentsIn, dishesIn, ingredientsIn } from '../src/demo/german';
 import { DISH_ROLES, openRoles } from '../src/dishes/roles';
+import { displayName } from '../src/shared/names';
+import { must } from './must';
 
 const schemaDir = fileURLToPath(new URL('../../engine/schemas/', import.meta.url));
 const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false });
@@ -104,4 +107,44 @@ test('the access module answers by id and falls back to the id for a name', () =
       .map((i) => i.id)
       .sort(),
   );
+});
+
+test('the example set in German: every stored text is German, the records still valid, ids unchanged', () => {
+  const ingredients = ingredientsIn(listIngredients(), 'de');
+  const components = componentsIn(listComponents(), 'de');
+  const dishes = dishesIn(listDishes(), 'de');
+  for (const [name, records] of [
+    ['ingredient', ingredients],
+    ['component', components],
+    ['dish', dishes],
+  ] as const) {
+    const validate = validator(name);
+    for (const record of records) {
+      expect(validate(record), `${name} ${JSON.stringify(validate.errors)}`).toBe(true);
+    }
+  }
+  expect(components.map((c) => c.id)).toEqual(listComponents().map((c) => c.id));
+  for (const c of components) {
+    expect(c.name, c.id).toMatch(/^Beispiel: /);
+    if (c.yield !== undefined) expect(c.yield.source, c.id).toMatch(/^Beispieldaten/);
+    for (const m of c.method ?? []) expect(m, c.id).toMatch(/^Beispieltext/);
+    expect(`${c.version.change ?? ''}${c.version.reason ?? ''}`, c.id).not.toMatch(/Example/);
+  }
+  for (const d of dishes) {
+    expect(d.name, d.id).toMatch(/^Beispiel: /);
+    expect(d.note, d.id).toMatch(/^Beispielgericht/);
+  }
+  for (const i of ingredients) {
+    expect(i.note, i.id).toBe('Beispielzutat');
+    for (const y of i.yields ?? []) expect(y.source, i.id).toMatch(/^Beispieldaten/);
+  }
+  // The English set is what it was.
+  expect(componentsIn(listComponents(), 'en')).toEqual(listComponents());
+});
+
+test('every example ingredient that has a German name shows it in German', () => {
+  const named = listIngredients().filter((i) => i.names?.['de'] !== undefined);
+  expect(named.length).toBe(listIngredients().length);
+  expect(displayName(must(getIngredient('flour')), 'de')).toBe('Mehl');
+  expect(displayName(must(getIngredient('flour')), 'en')).toBe('Flour');
 });

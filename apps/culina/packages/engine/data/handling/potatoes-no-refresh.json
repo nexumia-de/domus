@@ -2,12 +2,12 @@
   "id": "potatoes-no-refresh",
   "target": "fdc-170028",
   "text": {
-    "en": "Drain boiled potatoes and leave them out of cold water.",
-    "de": "Gekochte Kartoffeln abgießen und nicht in kaltem Wasser abschrecken."
+    "en": "Drain boiled potatoes and leave them out of cold water; for mash, let them steam dry on the heat.",
+    "de": "Gekochte Kartoffeln abgießen und nicht in kaltem Wasser abschrecken; für Püree auf dem Herd ausdampfen lassen."
   },
   "why": {
-    "en": "Unlike most other vegetables, potatoes turn soggy when refreshed in cold water.",
-    "de": "Anders als die meisten anderen Gemüse werden Kartoffeln im kalten Wasser matschig."
+    "en": "Unlike most other vegetables, potatoes turn soggy when refreshed in cold water. Steaming off lowers their water content.",
+    "de": "Anders als die meisten anderen Gemüse werden Kartoffeln im kalten Wasser matschig. Ausdampfen senkt ihren Wassergehalt."
   },
   "technique": "boil",
   "level": "textbook",
@@ -16,8 +16,14 @@
       "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 4 Potatoes, section 4.2 Purchasing, Storing and Preparing Potatoes",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/04%3A_Potatoes/4.02%3A_Purchasing_storing_and_preparing_potatoes",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Unlike other vegetables, potatoes should not be refreshed in cold water; it makes them soggy."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "Zubereiten einfacher Speisen - Kartoffeln, Passierte Kartoffeln, p. 378",
+      "isbn": "9783805708388",
+      "sentence": "Dies verringert den Wassergehalt und ergibt später eine kompaktere Masse."
     }
   ]
 }

@@ -24,6 +24,11 @@ export const stockStrings = {
   removed: (name: string): string => `Removed ${name} from stock.`,
   usedUp: (name: string): string => `Used up ${name}.`,
   restored: (name: string): string => `${name} is back in stock.`,
+  staplesHeading: 'Staples',
+  staplesHint: (names: string): string =>
+    `${names} count as there only once ticked. Tick them as always there and the finder stops asking for them.`,
+  staplesTick: 'Tick the staples',
+  staplesTicked: (names: string): string => `${names}: always there.`,
   undo: 'Undo',
   remove: 'Remove',
   removeLabel: (name: string): string => `Remove ${name} from stock`,
@@ -40,6 +45,8 @@ export const stockStrings = {
   amountLabel: 'Amount',
   unitLabel: 'Unit',
   stateLabel: 'State',
+  storageLabel: 'Where it lies',
+  storageNone: 'Not stated',
   stateNone: 'Not stated',
   preparedLabel: 'Date prepared',
   preparedToday: 'Today',
@@ -66,4 +73,30 @@ export const stockStrings = {
   left: (amount: string): string => `${amount} left.`,
   // Quick entry beside the list
   notFound: 'That item is no longer in stock.',
+  // The space the stock belongs to, and how it is kept in step (docs/decisions/stock-in-spaces.md)
+  space: { home: 'Home', unnamed: 'Unnamed space' },
+  spaceLabel: 'Stock of',
+  spaceHint:
+    'Each space has its own stock, shared with the household’s other apps. Spaces are set up in the Household app.',
+  household: 'Spaces in the Household app',
+  unavailable:
+    'The stock cannot be opened: this browser gives no shared storage to the page (a private window?).',
+  status: {
+    deviceOnly: 'Kept on this device only.',
+    never: 'Not synced yet.',
+    syncing: 'Syncing …',
+    inStep: 'In step with the household.',
+    notInStep: (why: string): string => `Not in step: ${why}. See the Household app.`,
+    reasons: {
+      access: 'the storage refused the access',
+      notFound: 'the storage was not found',
+      unreachable: 'the storage could not be reached',
+      wait: 'the storage asks to wait',
+      conflict: 'another device was writing',
+      storage: 'this version does not know the storage',
+      otherSpace: 'the file in the storage belongs to another space',
+      newer: 'the file in the storage needs a newer version of the app',
+      unreadable: 'the file in the storage could not be read',
+    },
+  },
 };

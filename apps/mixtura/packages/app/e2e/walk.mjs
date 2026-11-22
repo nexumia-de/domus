@@ -41,11 +41,14 @@ const shot = (name) => page.screenshot({ path: join(OUT, `${name}-${width}x${hei
 const docShot = (name) =>
   docs ? page.screenshot({ path: join(DOCS, `${name}-${width}x${height}.png`) }) : undefined;
 const dest = (name) => page.locator('nav.nav').getByRole('link', { name, exact: true });
-const title = () => page.locator('.pane h1:visible').last().innerText();
+// Settings is not a destination of the bar: it is the icon in the header.
+const settingsLink = () =>
+  page.locator('.fr-header').getByRole('link', { name: 'Settings', exact: true });
+const title = () => page.locator('.fr-header h1').last().innerText();
 /** Waits for the title: history changes arrive asynchronously. */
 const titleIs = (name) =>
   page
-    .locator('.pane h1:visible', { hasText: new RegExp(`^${name}$`) })
+    .locator('.fr-header h1', { hasText: new RegExp(`^${name}$`) })
     .last()
     .waitFor({ timeout: 5000 });
 const noOverflow = async (where) => {
@@ -60,9 +63,12 @@ await page.evaluate(() => navigator.serviceWorker.ready);
 await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
 expect(true, 'the service worker controls the page');
 
-// The four destinations, in order, as bottom navigation or rail.
+// The three destinations, in order, as bottom navigation or rail; Settings is in the header.
 const labels = await page.locator('nav.nav a').allInnerTexts();
-expect(labels.join() === 'Drinks,Templates,Stock,Settings', 'four destinations in order');
+expect(
+  labels.join() === 'Drinks,Templates,Stock',
+  'three destinations in order; Settings is not among them',
+);
 // Measured inside the page: a late redraw replaces the element, and a locator's
 // boundingBox() answers null for the one it lost (seen on a slow CI runner).
 const box = await page.evaluate(() => {
@@ -79,7 +85,7 @@ const linkSizes = await page.evaluate(() =>
     return { width: r.width, height: r.height };
   }),
 );
-expect(linkSizes.length === 4, 'four navigation targets are measured');
+expect(linkSizes.length === 3, 'three navigation targets are measured');
 for (const size of linkSizes) {
   expect(size.width >= 44 && size.height >= 44, 'navigation target is at least 44 x 44');
 }
@@ -87,7 +93,16 @@ await shot('shell');
 await docShot('shell');
 await noOverflow('on Drinks');
 
-for (const name of ['Templates', 'Stock', 'Settings', 'Drinks']) {
+// The header: one h1 with the page title, Settings and the sync icon at least 44 x 44.
+expect((await page.locator('h1').count()) === 1, 'one h1 on the page: the header title');
+for (const control of [settingsLink(), page.locator('.fr-header .fr-sync')]) {
+  const target = await control.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return { width: r.width, height: r.height };
+  });
+  expect(target.width >= 44 && target.height >= 44, 'header action is at least 44 x 44');
+}
+for (const name of ['Templates', 'Stock', 'Drinks']) {
   await dest(name).click();
   expect((await title()) === name, `${name} opens with its title`);
   expect(
@@ -96,6 +111,19 @@ for (const name of ['Templates', 'Stock', 'Settings', 'Drinks']) {
   );
   await noOverflow(`on ${name}`);
 }
+
+// Settings: the icon in the header opens it as a page with Back; no bar entry is current.
+await settingsLink().click();
+await titleIs('Settings');
+expect((await settingsLink().getAttribute('aria-current')) === 'page', 'Settings icon is current');
+expect(
+  (await page.locator('nav.nav [aria-current="page"]').count()) === 0,
+  'no destination of the bar is current on Settings',
+);
+await noOverflow('on Settings');
+await page.getByRole('button', { name: 'Back' }).click();
+await titleIs('Drinks');
+expect(true, 'Back from Settings returns to where it was opened');
 
 // Pushed screen and back.
 await page.getByRole('link', { name: 'New Drink' }).click();
@@ -120,7 +148,7 @@ if (phone) {
   await titleIs('Drinks');
   expect(true, 'Escape goes back');
 } else {
-  await dest('Settings').click();
+  await settingsLink().click();
   await dest('Drinks').click();
   await titleIs('New Drink');
   expect(true, 'switching back restores the pushed screen');
@@ -134,7 +162,7 @@ await dest('Stock').click();
 await page.getByRole('link', { name: 'Buy Next' }).click();
 await titleIs('Buy Next');
 expect(true, 'Buy Next opens');
-await dest('Settings').click();
+await settingsLink().click();
 await page.getByRole('link', { name: /About/ }).click();
 await titleIs('About');
 expect(true, 'About is pushed from Settings');
@@ -148,7 +176,7 @@ await titleIs('Drinks');
 expect(true, 'the not-found page leads back');
 
 // Theme setting.
-await dest('Settings').click();
+await settingsLink().click();
 await page.getByRole('button', { name: 'Dark', exact: true }).click();
 expect(
   (await page.evaluate(() => document.documentElement.dataset.theme)) === 'dark',
@@ -162,7 +190,8 @@ expect(
   'the theme survives a reload',
 );
 await page.getByRole('button', { name: 'Follow System' }).click();
-await dest('Drinks').click();
+await page.getByRole('button', { name: 'Back' }).click();
+await titleIs('Drinks');
 
 // Offline: a reload still shows the app, every response from the service worker.
 await context.setOffline(true);
@@ -179,7 +208,8 @@ await titleIs('Settings');
 expect(true, 'a deep link works offline');
 expect(fromNetwork.length === 0, `offline: all responses from the service worker ${fromNetwork}`);
 await context.setOffline(false);
-await dest('Drinks').click();
+await page.getByRole('button', { name: 'Back' }).click();
+await titleIs('Drinks');
 
 // Update flow: a changed sw.js is a new build; the banner appears and the
 // page reloads only after Update.

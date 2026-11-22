@@ -42,8 +42,12 @@
             "id": "fdc-169961"
           },
           "note": {
-            "en": "Two kinds: long, fine green pods without visible seed, and fresh beans, shelled. A handful of each (\"un puñado de cada clase\"); a handful is not sized in the book, so no amount.",
-            "de": "Zwei Sorten: lange, feine grüne Schoten ohne sichtbare Kerne und frische, ausgepalte Bohnen. Je eine Handvoll (\"un puñado de cada clase\"); eine Handvoll ist im Buch nicht bemessen, daher keine Menge."
+            "en": "Two kinds: long, fine green pods without visible seed, and fresh beans, shelled. A handful of each (\"un puñado de cada clase\").",
+            "de": "Zwei Sorten: lange, feine grüne Schoten ohne sichtbare Kerne und frische, ausgepalte Bohnen. Je eine Handvoll („un puñado de cada clase“)."
+          },
+          "sourceNote": {
+            "en": "A handful is not sized in the book, so no amount.",
+            "de": "Eine Handvoll ist im Buch nicht bemessen, daher keine Menge."
           }
         },
         {
@@ -57,9 +61,9 @@
             "unit": "onza",
             "original": "dos onzas de manteca de vacas"
           },
-          "note": {
+          "sourceNote": {
             "en": "Fresh cow's butter, for one libra of beans in the book's words (\"para una libra del manjar\"); the libra is not sized in the book.",
-            "de": "Frische Kuhbutter, nach dem Buch für eine Libra Bohnen (\"para una libra del manjar\"); die Libra ist im Buch nicht bemessen."
+            "de": "Frische Kuhbutter, nach dem Buch für eine Libra Bohnen („para una libra del manjar“); die Libra ist im Buch nicht bemessen."
           }
         },
         {
@@ -69,8 +73,12 @@
             "de": "Feine Kräuter"
           },
           "note": {
-            "en": "Finely chopped (\"finas hierbas recortadas\"); the book does not size them, so no amount.",
-            "de": "Fein geschnitten (\"finas hierbas recortadas\"); das Buch gibt keine Menge an."
+            "en": "Finely chopped (\"finas hierbas recortadas\").",
+            "de": "Fein geschnitten („finas hierbas recortadas“)."
+          },
+          "sourceNote": {
+            "en": "The book does not size them, so no amount.",
+            "de": "Das Buch gibt keine Menge an."
           }
         },
         {
@@ -94,8 +102,12 @@
             "id": "fdc-171321"
           },
           "note": {
-            "en": "A pinch (\"una chispa de clavo\"); no amount.",
-            "de": "Eine Prise (\"una chispa de clavo\"); keine Menge."
+            "en": "A pinch (\"una chispa de clavo\").",
+            "de": "Eine Prise („una chispa de clavo“)."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -105,8 +117,12 @@
             "id": "fdc-171326"
           },
           "note": {
-            "en": "Grated (\"nuez moscada rallada\"); no amount.",
-            "de": "Gerieben (\"nuez moscada rallada\"); keine Menge."
+            "en": "Grated (\"nuez moscada rallada\").",
+            "de": "Gerieben („nuez moscada rallada“)."
+          },
+          "sourceNote": {
+            "en": "No amount.",
+            "de": "Keine Menge."
           }
         },
         {
@@ -128,8 +144,12 @@
             "id": "fdc-170416"
           },
           "note": {
-            "en": "Chopped. The source says not to be sparing with it (\"no hay que escasear el perejil picado\"); no amount.",
-            "de": "Fein gehackt. Die Quelle sagt, man solle nicht sparen (\"no hay que escasear el perejil picado\"); keine Menge."
+            "en": "Chopped.",
+            "de": "Fein gehackt."
+          },
+          "sourceNote": {
+            "en": "The source says not to be sparing with it (\"no hay que escasear el perejil picado\"). No amount.",
+            "de": "Die Quelle sagt, man solle nicht sparen („no hay que escasear el perejil picado“). Keine Menge."
           }
         }
       ],
@@ -151,6 +171,7 @@
             "en": "After the cooking time, take the beans out and drain them.",
             "de": "Nach der Garzeit die Bohnen herausnehmen und abtropfen lassen."
           },
+          "action": "drain",
           "uses": ["beans"]
         },
         {
@@ -158,6 +179,7 @@
             "en": "Keep the beans hot. Put them in a warm vegetable dish with the butter, the fine herbs, salt, pepper, a pinch of clove and the grated nutmeg.",
             "de": "Die Bohnen warm halten. In einer warmen Gemüseschüssel mit der Butter, den feinen Kräutern, Salz, Pfeffer, einer Prise Gewürznelke und der geriebenen Muskatnuss anrichten."
           },
+          "action": "season",
           "uses": ["beans", "butter", "herbs", "salt", "pepper", "clove", "nutmeg"]
         },
         {
@@ -165,6 +187,7 @@
             "en": "Cover the dish with a lid and shake it in the air so that the beans mix well with the melting butter.",
             "de": "Die Schüssel mit einem Deckel abdecken und schwenken, damit sich die Bohnen gut mit der schmelzenden Butter vermischen."
           },
+          "action": "mix",
           "uses": ["beans", "butter"]
         },
         {
@@ -172,6 +195,7 @@
             "en": "At serving, squeeze the juice of half a lemon over the beans. Use plenty of chopped parsley.",
             "de": "Beim Anrichten den Saft einer halben Zitrone über die Bohnen träufeln. Reichlich gehackte Petersilie verwenden."
           },
+          "action": "season",
           "uses": ["beans", "lemon", "parsley"]
         }
       ]
@@ -200,6 +224,6 @@
   },
   "note": {
     "en": "Replaces Ángel Muro's 'Ensalada de pimientos', which has no amounts in the source. Only the butter is measured, and the book gives the beans as handfuls. The fifteen minutes are the book's cooking time for the beans.",
-    "de": "Ersetzt Ángel Muros 'Ensalada de pimientos', die in der Quelle keine Mengen hat. Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
+    "de": "Ersetzt Ángel Muros ‚Ensalada de pimientos‘, die in der Quelle keine Mengen hat. Nur die Butter ist gemessen; das Buch gibt die Bohnen in Handvoll an. Die fünfzehn Minuten sind die Garzeit der Bohnen laut Buch."
   }
 }

@@ -7,7 +7,7 @@ import type { Lang } from '../text/i18n';
 import { pickText } from '../text/i18n';
 import { deriveClassic } from './derive';
 import type { DerivedLine, DerivedSlot, DeriveErrorCode } from './derive';
-import type { Classic } from './types';
+import type { Classic, Country, Course } from './types';
 import { wantedLines } from './wanted';
 
 export interface CopyOptions {
@@ -61,6 +61,10 @@ export interface CopiedDish {
   id: string;
   name: string;
   portions: number;
+  /** The classic's course. */
+  course: Course;
+  /** The classic's country. */
+  cuisine: Country;
   slots: { role: string; ref: ComponentRef; amount?: Amount; optional?: boolean }[];
   note?: string;
   version: Version;
@@ -76,6 +80,12 @@ export type CopyResult =
         | { code: 'wanted-ingredient'; wanted: string[] };
     };
 
+/** The source's remark about a step stays with the classic; the copy is the cook's own. */
+const withoutSourceNote = (step: Step): Step => {
+  const { sourceNote, ...rest } = step;
+  return sourceNote === undefined ? step : rest;
+};
+
 const noteOf = (
   note: string | undefined,
   line: DerivedLine,
@@ -89,7 +99,8 @@ const noteOf = (
  * Copies a classic into the notebook as version 1 of a new family per record, with its origin.
  * The records are the derived dish and components for `portions` (amounts in grams, millilitres or
  * counts); component references point at the new ids. A line keeps the source's wording as a note
- * `(1 Pfund)` and a range as `(2-3 g)`. The source is named in the version's `change` and in
+ * `(1 Pfund)` and a range as `(2-3 g)`. The dish keeps the classic's course, and its country as
+ * the cuisine. The source is named in the version's `change` and in
  * `x-origin`. A classic that still has a `wanted` line cannot be copied: the notebook has no
  * ingredient for it.
  *
@@ -144,7 +155,7 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
           ...(note === undefined ? {} : { note }),
         };
       }),
-      ...(c.steps.length === 0 ? {} : { steps: c.steps }),
+      ...(c.steps.length === 0 ? {} : { steps: c.steps.map(withoutSourceNote) }),
       version: version(id),
       'x-origin': origin,
     };
@@ -154,6 +165,8 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
     id: dishId,
     name: derived.dish.name,
     portions: derived.dish.portions,
+    course: classic.course,
+    cuisine: classic.country,
     slots: derived.dish.slots.map((s: DerivedSlot) => ({
       role: s.role,
       ref: ref(s.ref),

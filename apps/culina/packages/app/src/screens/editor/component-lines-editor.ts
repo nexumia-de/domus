@@ -17,9 +17,18 @@ import { formatMass, formatNumber } from '../../shared/mass';
 import { displayName } from '../../shared/names';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
-import { bareSelect, button, mark, textField } from './form-bits';
+import {
+  bareSelect,
+  button,
+  clearRowProblems,
+  mark,
+  showRowProblems,
+  textField,
+  type RowProblem,
+} from './form-bits';
 import { picker, type PickerItem } from './picker';
 import { parseEntry } from '../../shared/parse';
+import { unitOptions } from '../../shared/units';
 
 const t = strings.editor;
 
@@ -31,12 +40,15 @@ export interface LinesEditor {
   figures(): void;
   /** Opens the picker on a new empty line. */
   add(kind: 'ingredient' | 'component'): void;
+  /** Shows what cannot be saved at the line it concerns (by index). */
+  showProblems(problems: ReadonlyMap<number, readonly RowProblem[]>): void;
 }
 
 export const linesEditor = (form: ComponentForm, changed: () => void): LinesEditor => {
   const list = el('ol', 'line-edits');
   let open: { index: number; kind: 'ingredient' | 'component' } | undefined;
   let focusAfter: string[] | undefined;
+  let rowProblems: ReadonlyMap<number, readonly RowProblem[]> = new Map();
 
   const items = (kind: 'ingredient' | 'component', index: number): PickerItem[] => {
     if (kind === 'ingredient') {
@@ -104,6 +116,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
     );
     amount.control.addEventListener('input', () => {
       line.amount = amount.control.value;
+      clearRowProblems(li, 'amount', amount.control);
       mark(amount.control, parseEntry(line.amount).kind === 'invalid');
       changed();
       showFigures();
@@ -114,7 +127,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
         ? el('span', 'unit-fixed', t.percentUnit)
         : bareSelect(
             `${t.unitLabel}, ${t.lineName(index + 1, name ?? '')}`,
-            unitsFor(line).map((u) => ({ value: u, label: u })),
+            unitOptions(unitsFor(line)),
             line.unit,
           );
     if (unit instanceof HTMLSelectElement) {
@@ -140,6 +153,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
           const moved = form.lines.splice(index, 1)[0];
           if (moved === undefined) return;
           form.lines.splice(to, 0, moved);
+          rowProblems = new Map();
           if (open) open = undefined;
           focusAfter = [`[data-${key}="${to}"]`, `[data-${other}="${to}"]`];
           changed();
@@ -158,6 +172,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
       'quiet',
       () => {
         form.lines.splice(index, 1);
+        rowProblems = new Map();
         open = undefined;
         changed();
         draw();
@@ -168,6 +183,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
     actions.append(up, down, remove);
 
     li.append(pick, amounts, figure, actions);
+    showRowProblems(li, rowProblems.get(index) ?? [], { pick, amount: amount.control });
     if (open?.index === index) {
       li.append(
         picker({
@@ -177,6 +193,12 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
           catalogue: open.kind === 'ingredient',
           onPick(ref) {
             line.ref = ref;
+            rowProblems = new Map(
+              [...rowProblems].map(([i, ps]) => [
+                i,
+                i === index ? ps.filter((q) => q.target !== 'pick') : ps,
+              ]),
+            );
             if (
               ref.kind === 'component' &&
               !(MASS_ONLY as readonly string[]).includes(line.unit) &&
@@ -184,8 +206,12 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
             ) {
               line.unit = 'g';
             }
-            open = undefined;
-            focusAfter = [`[data-pick="${index}"]`];
+            // A catalogue pick is stored first and lands later; by then another line may have
+            // its picker open, which this pick must not close.
+            if (open?.index === index) {
+              open = undefined;
+              focusAfter = [`[data-pick="${index}"]`];
+            }
             changed();
             draw();
           },
@@ -218,6 +244,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
       ) {
         text = t.percentOf(formatNumber(figure.percent, 1), roleLabel(form.percentBase));
       }
+      if (figure?.lacks !== undefined) text = strings.notebook.lacks[figure.lacks];
       node.textContent = text;
     });
   };
@@ -240,6 +267,10 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
     element: list,
     redraw: draw,
     figures: showFigures,
+    showProblems(problems) {
+      rowProblems = problems;
+      draw();
+    },
     add(kind) {
       form.lines.push({ amount: '', unit: 'g' });
       open = { index: form.lines.length - 1, kind };

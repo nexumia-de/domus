@@ -56,12 +56,6 @@ export type ShareState =
   | { kind: 'too-long' }
   | { kind: 'failed' };
 
-export interface Toast {
-  id: number;
-  text: string;
-  undo?: () => void;
-}
-
 export interface AppState {
   route: Route;
   theme: Theme;
@@ -94,17 +88,12 @@ export interface AppState {
   importFlow: ImportFlow;
   /** The share sheet of the spec screen (share/actions.ts). */
   share: ShareState;
-  toast: Toast | null;
   /** Counts finished loads of the browse model (screens/browse/load.ts); a change redraws. */
   browseRev: number;
   /** Counts rankings that arrived from the ranking worker (stock/rank-async.ts); a change redraws. */
   rankRev: number;
-  /** Counts changes the stock screens draw from (stock records loaded or written, tree expanded); a change redraws. */
+  /** Counts changes the stock screens draw from (stock records loaded, written or synced, a sync status, tree expanded); a change redraws. */
   stockRev: number;
-  /** Counts changes the sync screens draw from (a cycle started or ended, a binding or storage changed); a change redraws. */
-  syncRev: number;
-  /** Counts finished loads of the sync view (sync/view.ts); a change redraws. */
-  syncViewRev: number;
   /** Counts changes of the editor's structure (a line added, a sheet opened, a draft restored); a change redraws. */
   editorRev: number;
   /** Temporary state of the spec screen (what-if volumes); never stored. */
@@ -133,13 +122,10 @@ export function initialState(hash: string, prefs: Pick<AppState, 'theme' | 'unit
     importBackup: false,
     importFlow: { kind: 'idle' },
     share: { kind: 'closed' },
-    toast: null,
     browseRev: 0,
     rankRev: 0,
     stockRev: 0,
     editorRev: 0,
-    syncRev: 0,
-    syncViewRev: 0,
     specView: initialSpecView,
     lastRoute: {},
   };

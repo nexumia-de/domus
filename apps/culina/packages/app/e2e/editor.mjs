@@ -318,11 +318,39 @@ const drafts = async (page, origin) => {
   await page.getByRole('button', { name: 'Add an ingredient' }).click();
   await page.getByRole('button', { name: 'Close' }).first().click();
   await page.getByRole('button', { name: 'Save', exact: true }).click();
+  const lineError = page.locator('.line-edit .field-error').first();
   check(
-    (await page.locator('.editor-end .hint').innerText()).includes(
-      'Choose an ingredient for line 1 to save it.',
-    ),
-    `${label}: a line without an ingredient is said quietly, not stored`,
+    (await lineError.innerText()).includes('Choose an ingredient for line 1 to save it.'),
+    `${label}: a line without an ingredient is said quietly at that line, not stored`,
+  );
+  check(
+    (await lineError.getAttribute('role')) === 'alert' &&
+      (await page.locator('.pick-btn').first().getAttribute('aria-describedby')) ===
+        (await lineError.getAttribute('id')),
+    `${label}: the message at the line is announced (role alert) and its button points at it`,
+  );
+  check(
+    await page.evaluate(() => document.activeElement?.matches('.pick-btn[data-has-error]')),
+    `${label}: the first field with a message takes the focus and points at its message`,
+  );
+  await page.getByLabel('Name', { exact: true }).fill('');
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  const nameError = page.locator('.field-error:not(:empty)').first();
+  check(
+    (await nameError.innerText()).includes('Give it a name to save it.') &&
+      (await page.getByLabel('Name', { exact: true }).getAttribute('aria-describedby')) ===
+        (await nameError.getAttribute('id')) &&
+      (await page.getByLabel('Name', { exact: true }).getAttribute('aria-invalid')) === 'true',
+    `${label}: a missing name is said right under the Name field, which is marked and points at it`,
+  );
+  const saveBox = await page.getByRole('button', { name: 'Save', exact: true }).boundingBox();
+  check(
+    saveBox !== null && saveBox.y + saveBox.height <= 720 && saveBox.height >= 44,
+    `${label}: Save is on the screen in the sticky bar (${JSON.stringify(saveBox)})`,
+  );
+  check(
+    (await page.locator('.editor-bar .hint').innerText()).includes('Check the fields marked above'),
+    `${label}: the bar says only that there is something to check`,
   );
   await page.getByRole('button', { name: 'Discard changes' }).click();
   await page.waitForFunction(() => document.querySelector('input.field')?.value === '');

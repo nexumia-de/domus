@@ -64,6 +64,25 @@
         }
       }
     },
+    "ownNamesDataset": {
+      "description": "The project's own German names (a translation of the USDA descriptions, kept by hand in tools/catalogue/names-de-own.json), merged by tools/catalogue/build.mjs or tools/catalogue/merge-own-names.mjs where Wikidata has no name. `sha256` is that file's; `retrieved` is the date of the translation.",
+      "type": "object",
+      "required": ["name", "file", "sha256", "retrieved", "licence"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        },
+        "file": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "retrieved": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "licence": {
+          "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
+        }
+      }
+    },
     "generatedBy": {
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/text"
     },

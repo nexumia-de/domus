@@ -4,11 +4,12 @@
 // --docs also to docs/screenshots/ at scale 2 as spec-stock-*.png.
 //
 //   node e2e/spec-stock.mjs [width height] [--docs] [--throttle=N] [--slow-frames=MS]
-/* global document, indexedDB, innerWidth -- in functions the page runs */
+/* global document, innerWidth -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
+import { presentIds, seedStock } from './stock-db.mjs';
 
 const args = process.argv.slice(2);
 const docs = args.includes('--docs');
@@ -43,56 +44,11 @@ const shot = async (name) => {
 const open = async (address) => {
   await page.goto('about:blank');
   await page.goto(`${site.url}${address}`, { waitUntil: 'load' });
-  await page.locator('.pane h1:visible').last().waitFor({ timeout: 5000 });
+  await page.locator('.fr-header h1').last().waitFor({ timeout: 5000 });
   await page.locator('.spec').waitFor();
 };
-const stockIds = () =>
-  page.evaluate(
-    () =>
-      new Promise((res) => {
-        const r = indexedDB.open('mixtura');
-        r.onsuccess = () => {
-          const g = r.result.transaction('stock').objectStore('stock').getAll();
-          g.onsuccess = () => {
-            r.result.close();
-            res(
-              g.result
-                .filter((x) => x.present)
-                .map((x) => x.ingredientId)
-                .sort(),
-            );
-          };
-        };
-      }),
-  );
-const setStock = async (ids) => {
-  await page.evaluate(
-    (list) =>
-      new Promise((res) => {
-        const r = indexedDB.open('mixtura');
-        r.onsuccess = () => {
-          const tx = r.result.transaction(['stock', 'places'], 'readwrite');
-          const s = tx.objectStore('stock');
-          s.clear();
-          const places = tx.objectStore('places').getAll();
-          places.onsuccess = () => {
-            for (const id of list)
-              s.put({
-                placeId: places.result[0].id,
-                ingredientId: id,
-                updatedAt: '2026-11-18T08:00:00Z',
-                present: true,
-              });
-          };
-          tx.oncomplete = () => {
-            r.result.close();
-            res();
-          };
-        };
-      }),
-    ids,
-  );
-};
+const stockIds = () => presentIds(page);
+const setStock = (ids) => seedStock(page, ids, { replace: true });
 const tag = () => page.locator('[data-stock-tag]');
 const noOverflow = async (where) => {
   const wide = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);

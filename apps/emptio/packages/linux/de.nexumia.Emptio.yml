@@ -1,0 +1,52 @@
+# Flatpak manifest of the native Shopping List app. The JavaScript bundle is
+# built by npm before flatpak-builder runs (Flatpak builds are offline):
+#   npm ci && npm run build -w @emptio/linux
+# from the repository root writes dist/de.nexumia.Emptio.js next to this file.
+# Needs no permission beyond the display and the network: the data lives in
+# the app's own XDG data directory, and the storage the household configured
+# (GitHub API or a WebDAV server) is reached over HTTPS.
+id: de.nexumia.Emptio
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: de.nexumia.Emptio
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+modules:
+  - name: emptio
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 de.nexumia.Emptio.js -t ${FLATPAK_DEST}/share/${FLATPAK_ID}
+      - install -Dm755 de.nexumia.Emptio.in ${FLATPAK_DEST}/bin/${FLATPAK_ID}
+      - install -Dm644 ${FLATPAK_ID}.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 ${FLATPAK_ID}.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - install -Dm644 ${FLATPAK_ID}.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      - install -Dm644 ${FLATPAK_ID}-symbolic.svg -t ${FLATPAK_DEST}/share/icons/hicolor/symbolic/apps
+      # AGPL-3.0 for the app, MIT for the two bundled @noble libraries.
+      - install -Dm644 LICENSE -t ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/emptio
+      - install -Dm644 noble-ciphers-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-ciphers/LICENSE
+      - install -Dm644 noble-hashes-MIT.txt ${FLATPAK_DEST}/share/licenses/${FLATPAK_ID}/noble-hashes/LICENSE
+    sources:
+      # The pre-built bundle (CI downloads it into dist/ first).
+      - type: file
+        path: dist/de.nexumia.Emptio.js
+      - type: file
+        path: data/de.nexumia.Emptio.in
+      - type: file
+        path: data/de.nexumia.Emptio.desktop
+      - type: file
+        path: data/de.nexumia.Emptio.metainfo.xml
+      - type: file
+        path: data/de.nexumia.Emptio.svg
+      - type: file
+        path: data/de.nexumia.Emptio-symbolic.svg
+      - type: file
+        path: ../../../../LICENSE
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-ciphers-MIT.txt
+      - type: file
+        path: ../../../../packages/gjs/licenses/noble-hashes-MIT.txt

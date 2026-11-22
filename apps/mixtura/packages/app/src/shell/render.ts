@@ -7,13 +7,14 @@ import { destinationOf, rootOf } from '../destinations';
 import { h } from '../dom';
 import { back } from '../navigation';
 import { resolve, type Screen, type ScreenContext } from '../screen';
+import { shownStatus } from '../stock/shown-status';
 import { type Store } from '../state';
 import { notFound } from './not-found';
 import { statusBanner, updateBanner } from './banner';
 import { nav } from './nav';
 import { trapFocus } from './focus-trap';
 import { inertBehindModal } from './modal';
-import { toast } from './toast';
+import { type Frame } from './frame';
 import { panes } from './panes';
 import { trackLeave } from './leave';
 import { captureScroll, restoreScroll } from './scroll';
@@ -22,6 +23,7 @@ export interface Shell {
   screens: readonly Screen[];
   store: Store<AppState>;
   data: AppData;
+  frame: Frame;
   applyUpdate: () => void;
   /** Opens the local store and loads the seed again. */
   retryData: () => void;
@@ -45,6 +47,8 @@ export function render(root: HTMLElement, shell: Shell): void {
 
   const active = document.activeElement;
   const focused = active?.getAttribute('data-focus');
+  // The toast's Undo is one node that lives through redraws; the redraw moves it, so it is given back.
+  const toastFocused = active?.classList.contains('fr-toast-action') === true;
   // A sheet holding the focus itself (it takes it when it opens) keeps it through a redraw.
   const sheetFocused = active?.getAttribute('data-sheet');
   const caret =
@@ -53,24 +57,39 @@ export function render(root: HTMLElement, shell: Shell): void {
       : null;
   active?.dispatchEvent(new Event('search-cancel'));
   const scroll = captureScroll(root);
+  shell.frame.show({
+    view,
+    route: state.route,
+    pushed,
+    onBack,
+    status: shownStatus(context),
+  });
   const app = h(
     'div',
     { class: 'app-root' },
+    ...shell.frame.top,
     updateBanner(state, shell.applyUpdate),
     statusBanner(state, shell.retryData),
     h(
       'div',
       { class: `app${pushed ? ' app--pushed' : ''}` },
       nav(state),
-      panes(view, pushed, onBack),
+      panes(view),
+      shell.frame.toast,
     ),
-    toast(state, () => store.set({ toast: null })),
   );
   root.replaceChildren(app);
+  // The header lives through redraws, so what a modal made inert last time is freed first.
+  for (const node of shell.frame.top) node.removeAttribute('inert');
   inertBehindModal(app);
   trapFocus(app);
   document.title = `${view.title} - Drink Builder`;
   restoreScroll(root, state.route, scroll, view.list !== undefined);
+  if (toastFocused) {
+    shell.frame.toast
+      .querySelector<HTMLElement>('.fr-toast-action')
+      ?.focus({ preventScroll: true });
+  }
   const again = focused ? root.querySelector<HTMLElement>(`[data-focus="${focused}"]`) : null;
   again?.focus({ preventScroll: true });
   if (!focused && sheetFocused !== null && sheetFocused !== undefined) {

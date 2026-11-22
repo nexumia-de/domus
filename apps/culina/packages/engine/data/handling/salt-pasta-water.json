@@ -6,8 +6,8 @@
     "de": "Das Salz ins Nudelkochwasser geben, nicht erst auf die gekochten Nudeln."
   },
   "why": {
-    "en": "The pasta takes up water and salt while it cooks; salt added afterwards does not season the same way.",
-    "de": "Die Nudeln nehmen beim Garen Wasser und Salz auf; später zugegebenes Salz würzt nicht auf dieselbe Weise."
+    "en": "The pasta takes up water and salt while it cooks; salt added afterwards does not season the same way. Salt in the water also limits the swelling of the starch, so the pasta loses less to the water and sticks less.",
+    "de": "Die Nudeln nehmen beim Garen Wasser und Salz auf; später zugegebenes Salz würzt nicht auf dieselbe Weise. Salz im Wasser begrenzt außerdem das Quellen der Stärke, sodass die Nudeln weniger ans Wasser verlieren und weniger kleben."
   },
   "technique": "cook-pasta",
   "level": "textbook",
@@ -16,15 +16,21 @@
       "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6 Pasta, section 6.2 Purchasing, Storing and Cooking Pasta Products",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Salt should be added to the water. Pasta absorbs water and salt during cooking."
     },
     {
       "title": "Fruits, Vegetables, and Farinaceous Products (Bienvenu and Thibodeaux)",
       "place": "chapter 6 Pasta, section 6.2 Purchasing, Storing and Cooking Pasta Products",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Fruits_Vegetables_and_Farinaceous_Products_(Bienvenu_and_Thibodeaux)/06%3A_Pasta/6.02%3A_Purchasing_Storing_and_Cooking_Pasta_Products",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Adding salt to the pasta after it is cooked will not provide the same seasoning effect."
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Cereal Doughs and Batters, Cooking Pasta and Noodles - Stickiness, p. 576",
+      "isbn": "9780340831496",
+      "sentence": "Salt in the cooking water not only flavors the noodles, but limits starch gelation and so reduces cooking losses and stickiness."
     }
   ]
 }

@@ -9,8 +9,8 @@
     "de": "Die Butter erhitzen, bis sie gerade zu zischen beginnt, dann bei mittlerer bis niedriger Hitze garen."
   },
   "why": {
-    "en": "Fat carries heat much better than air or water, so frying cooks faster than baking or boiling and gives a crisp crust.",
-    "de": "Fett leitet Wärme viel besser als Luft oder Wasser, darum gart Braten in Fett schneller als Backen oder Kochen und gibt eine knusprige Kruste."
+    "en": "Fat can be heated far above the boiling point of water, so the surface dries and browns into a crisp crust; a crowded pan cools and the food stews instead.",
+    "de": "Fett lässt sich weit über den Siedepunkt von Wasser erhitzen, darum trocknet die Oberfläche und bräunt zu einer knusprigen Kruste; eine überfüllte Pfanne kühlt ab, und das Gargut kocht im eigenen Saft."
   },
   "level": "textbook",
   "sources": [
@@ -18,29 +18,41 @@
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 10.1 Eggs, section Pan-Frying",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.01%3A_Eggs",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Add a small amount of clarified butter and heat until the fat just begins to sizzle."
     },
     {
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 10.1 Eggs, section Pan-Frying",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/10%3A_Breakfast_and_Roasting/10.01%3A_Eggs",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Continue cooking over medium-low heat until the eggs reach the appropriate degree of firmness."
     },
     {
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 8.1 Frying Methods",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/08%3A_Frying/8.01%3A_Frying_Methods",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "Fat is much better at transferring heat than either air or water, so frying cooks considerably faster than baking or boiling."
     },
     {
       "title": "Culinary Foundations (Cheramie and Thibodeaux)",
       "place": "chapter 8.1 Frying Methods",
       "url": "https://workforce.libretexts.org/Bookshelves/Food_Production_Service_and_Culinary_Arts/Culinary_Foundations_(Cheramie_and_Thibodeaux)/08%3A_Frying/8.01%3A_Frying_Methods",
-      "licence": "CC BY-NC-SA 4.0",
+      "licence": "CC-BY-NC-SA-4.0",
       "sentence": "In addition, the fat imparts a crispy crust and a richness and depth of flavor"
+    },
+    {
+      "title": "McGee on Food and Cooking (Harold McGee), Hodder & Stoughton 2004",
+      "place": "chapter Meat, Hot Oil: Shallow and Deep Frying, p. 160",
+      "isbn": "9780340831496",
+      "sentence": "These materials are less efficient than both metal and water at transferring heat, and yet more than twice as efficient as an oven."
+    },
+    {
+      "title": "Der junge Koch / Die junge Köchin (Brandes, Harten, Krödel, Voll, Wolffgang), 38th edition, Pfanneberg 2022",
+      "place": "In der Küche arbeiten: Speisen zubereiten - 2 Garen von Lebensmitteln, Braten, p. 277",
+      "isbn": "9783805708388",
+      "sentence": "Kann dieses nicht schnell genug verdampfen, sinkt die Temperatur beim Braten auf unter 140°C, sodass sich keine Röststoffe mehr bilden."
     }
   ]
 }

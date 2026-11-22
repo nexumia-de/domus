@@ -9,7 +9,6 @@ import {
   KINDS,
   parseExportFile,
   planImport,
-  type ExchangePlace,
   type ImportMode,
   type Kind,
   type Snapshot,
@@ -19,22 +18,22 @@ const dir = fileURLToPath(new URL('../vectors/exchange/', import.meta.url));
 const read = (name: string) => JSON.parse(readFileSync(`${dir}${name}`, 'utf8'));
 const files = readdirSync(dir).filter((f) => f.endsWith('.json'));
 
-type Partial5<T> = Partial<Record<Kind, T>>;
+type PartialKinds<T> = Partial<Record<Kind, T>>;
 
 interface PlanVector {
   id: string;
   kind: 'plan';
   title: string;
   mode: ImportMode;
-  current: Partial5<object[]>;
-  incoming: Partial5<object[]>;
+  current: PartialKinds<object[]>;
+  incoming: PartialKinds<object[]>;
   expected: {
-    added?: Partial5<number>;
-    replaced?: Partial5<number>;
-    skipped?: Partial5<number>;
-    removed?: Partial5<number>;
-    writes?: Partial5<string[]>;
-    deletes?: Partial5<string[]>;
+    added?: PartialKinds<number>;
+    replaced?: PartialKinds<number>;
+    skipped?: PartialKinds<number>;
+    removed?: PartialKinds<number>;
+    writes?: PartialKinds<string[]>;
+    deletes?: PartialKinds<string[]>;
   };
 }
 
@@ -47,14 +46,12 @@ interface ParseVector {
   options?: {
     limit?: number;
     schemaProblems?: string[];
-    /** The place for stock of a version 1 file; an object replaces the default, null gives none. */
-    placeForOldStock?: ExchangePlace | null;
   };
   expected: {
     ok: boolean;
     migratedFrom?: number | null;
-    places?: object[];
-    stock?: object[];
+    /** The top-level keys of the file as read, sorted. */
+    keys?: string[];
     failure?: string;
     found?: number;
     supported?: number;
@@ -64,22 +61,11 @@ interface ParseVector {
 
 type Vector = PlanVector | ParseVector;
 
-const snapshot = (part: Partial5<object[]>): Snapshot =>
+const snapshot = (part: PartialKinds<object[]>): Snapshot =>
   Object.fromEntries(KINDS.map((k) => [k, part[k] ?? []])) as unknown as Snapshot;
-const counts = (part: Partial5<number> = {}) =>
+const counts = (part: PartialKinds<number> = {}) =>
   Object.fromEntries(KINDS.map((k) => [k, part[k] ?? 0]));
-const keys = (records: object[]): string[] =>
-  records.map((r) => {
-    const { id, placeId, ingredientId } = r as Record<string, string>;
-    return id ?? `${placeId}/${ingredientId}`;
-  });
-
-/** The place the harness gives a version 1 file unless the vector says otherwise. */
-const DEFAULT_PLACE: ExchangePlace = {
-  id: 'u-7c0d1e2f-3a4b-4c5d-8e6f-0a1b2c3d4e5f',
-  name: 'Home',
-  updatedAt: '2026-11-18T08:00:00Z',
-};
+const keys = (records: object[]): string[] => records.map((r) => (r as { id: string }).id);
 
 test('both kinds have vectors and every file has its id as name', () => {
   const vectors = files.map((f) => read(f) as Vector);
@@ -109,16 +95,13 @@ describe.each(files)('%s', (file) => {
     }
     const text = typeof v.document === 'string' ? v.document : JSON.stringify(v.document);
     const problems = v.options?.schemaProblems ?? [];
-    const place = v.options?.placeForOldStock;
     const result = parseExportFile(text, v.bytes, () => problems, {
       ...(v.options?.limit !== undefined && { limit: v.options.limit }),
-      migrationInput: { ...(place !== null && { placeForOldStock: place ?? DEFAULT_PLACE }) },
     });
     expect(result.ok).toBe(v.expected.ok);
     if (result.ok) {
       expect(result.migratedFrom).toBe(v.expected.migratedFrom);
-      if (v.expected.places) expect(result.file.places).toEqual(v.expected.places);
-      if (v.expected.stock) expect(result.file.stock).toEqual(v.expected.stock);
+      if (v.expected.keys) expect(Object.keys(result.file).sort()).toEqual(v.expected.keys);
       return;
     }
     expect(result.failure.kind).toBe(v.expected.failure);

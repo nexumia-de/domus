@@ -1,7 +1,7 @@
 ---
 type: Research
 title: 'Spike: WebDAV from the browser'
-description: Whether a browser page can read and conditionally write a file on a real Nextcloud over WebDAV (no without CORS headers, yes with them), the exact CORS setup that worked, an ETag weakness of Nextcloud on fast writes, what the app's own Content-Security-Policy blocks, and the options for the owner.
+description: Measured on 2026-11-18, kept as history since Mixtura's own sync and the test server were removed on 2026-11-20 (the adapter is in the host package) - whether a browser page can read and conditionally write a file on a real Nextcloud over WebDAV (no without CORS headers, yes with them), the exact CORS setup that worked, an ETag weakness of Nextcloud on fast writes, what the app's own Content-Security-Policy blocks, and the options for the owner.
 tags: [sync, webdav, cors, nextcloud, spike]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 sources:
@@ -11,6 +11,17 @@ sources:
 ---
 
 # Spike: WebDAV from the browser
+
+**Status on 2026-11-20.** This document is kept as measured knowledge.
+Mixtura's own sync code, the test server (`tools/webdav-server`) and the
+CORS fronts (`tools/webdav-front`) were removed on 2026-11-20
+([stock in spaces](decisions/stock-in-spaces.md)); they are in the
+history. The WebDAV adapter lives in the host package
+([WebDAV adapter](../../../packages/host/docs/webdav.md)) and is offered
+by the Household app; it is tested against a fake only. Where the text
+below speaks of Mixtura's sync, places or the test server, it describes
+the time of the measurement. The numbers themselves were not measured
+again.
 
 Asked before stock sync is built: can the PWA, as a page in a browser,
 read a file from a WebDAV server and write it back with a condition, and
@@ -228,7 +239,7 @@ instance with public shares switched off.
 ## The test server: httpd with mod_dav
 
 Measured on 2026-11-18 for issue #133 on the server of `tools/webdav-server`
-([sync backends](sync-backends.md#the-test-server)): `httpd:2.4.71` (digest
+(removed on 2026-11-20, in the history): `httpd:2.4.71` (digest
 `sha256:32e9403360ab2f1047523e72f256527fb9aee68b342abf6ad03f0d629157f3d9`),
 `mod_dav` and `mod_dav_fs`, the CORS configuration of this spike, Docker 29,
 requests with `curl` and from Chromium 153 (the e2e script).
@@ -253,9 +264,10 @@ requests with `curl` and from Chromium 153 (the e2e script).
 Consequences: against this server `If-Match` is strict (no lost update, as
 opposed to Nextcloud) at the price of false conflicts inside the second after
 a write; the adapter and the cycle treat both cases the same way
-([limits](sync-backends.md#limits)). Chromium: with the app's service worker
+([limits](../../../packages/host/docs/webdav.md#limits)). Chromium: with the app's service worker
 controlling the page every read after the first failed until the worker left
-cross-origin requests alone ([service worker](sync-backends.md#service-worker)).
+cross-origin requests alone (the service worker answers only requests of the app's own origin,
+[development](development.md#content-security-policy)).
 Not measured: Firefox, Safari, other servers, an `arm64` image (the image index
 has `arm64`; only `amd64` was run).
 
