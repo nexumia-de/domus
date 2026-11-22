@@ -133,3 +133,18 @@ export const cookRow = (
     }),
   };
 };
+
+/**
+ * The words of Cook's order "Use up first" on a dish's row: the item that sets its place, and,
+ * for a dish that lacks lines (the order is asked at the finder's wide threshold), how many, in
+ * the finder's words ("uses the Leek with 1 day left", "lacks 2").
+ * @param words - The finder's texts, the app's language by default.
+ */
+export const useUpWords = (
+  mark: { itemId: string; daysLeft: number; lacking: number },
+  itemName: (itemId: string) => string,
+  words: typeof t = t,
+): string[] => [
+  words.reasonUses(itemName(mark.itemId), mark.daysLeft),
+  ...(mark.lacking > 0 ? [words.lacks(mark.lacking)] : []),
+];

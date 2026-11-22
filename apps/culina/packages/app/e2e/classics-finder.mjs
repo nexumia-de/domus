@@ -201,6 +201,18 @@ const flow = async (browser, origin, width) => {
   await character(page).selectOption({ label: 'Fried' });
   await settle(page);
   check(same(await idsOnScreen(page), [OWN.id]), `${label}: Fried keeps the fried own dish only`);
+  await character(page).selectOption({ label: 'Uncooked' });
+  await settle(page);
+  check(
+    same(await idsOnScreen(page), [PAN.id, SECOND.id]),
+    `${label}: Uncooked keeps the two classics, by name (${await idsOnScreen(page)})`,
+  );
+  const uncookedMeta = await page.locator(`${ROWS} .entry-meta`).allInnerTexts();
+  check(
+    uncookedMeta.length === 2 &&
+      uncookedMeta.every((m) => !m.includes('Shipped') && !m.includes('My dish')),
+    `${label}: with one origin left the origin word is not repeated (${uncookedMeta.join(' | ')})`,
+  );
   await character(page).selectOption('');
   await cuisine(page).selectOption('it');
   await settle(page);

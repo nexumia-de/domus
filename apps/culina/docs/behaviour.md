@@ -809,6 +809,14 @@ note of an existing line are kept as they are.
   root first, only the entries not in the notebook yet; a parent saves itself and
   its own parents. The notebook's ingredient tree is therefore whole, and a
   record the user already has, changed or not, is never written again. The
+  pick lands once it is stored, a moment later: by then the cook may be
+  typing the amount, and drawing the lines again keeps the focus, the caret
+  and every key in that field (and in a unit select); the focus moves to the
+  pick button only while it is still in the picker. Until 2026-11-22 it
+  always moved there, so the keys typed after the pick landed were lost and
+  the line could be saved without its amount (seen as "to taste" in
+  `e2e/catalogue.mjs`, about 1 run in 6; pinned by its check "an amount typed
+  while the pick lands", which fails on the old code every time). The
   catalogue is the file `catalogue.json` of the app's own origin, fetched the
   first time a picker opens and kept for the session; it is precached by the
   service worker, so the section works offline, and `main.js` does not carry
@@ -1088,7 +1096,8 @@ own; the origin is only a choice of the filter.
   rows. Every dish whose entry passes the filter and the search, sorted by
   name in the content language, own and shipped mixed. A row is the name and
   a quiet line: course, cuisine, and the origin ("My dish", "Shipped") while
-  the list holds both and the filter does not fix one. A row of a shipped
+  the rows shown hold both (with one origin left, by "From", a character
+  or a search, no row repeats it). A row of a shipped
   dish opens `#/classic/<id>`, a row of an own dish `#/dishes/<id>`. Nothing
   found says "No dish fits these choices." and offers **Show all**, which
   empties the filter and the search, lets go of "Only with what I have" (the
@@ -1270,8 +1279,12 @@ shipped, under the one filter, with:
   The finder is asked at its wide threshold, so a dish that lacks something
   is placed too (`useUpMarks` in `src/cook/one-list.ts`, asked by
   `src/dishes/use-up-order.ts`). The row then also says which item sets its
-  place, "uses the Leek with 1 day left" (or "past use by", "use by today").
-  With no dated item a quiet line says so.
+  place, "uses the Leek with 1 day left" (or "past use by", "use by today"),
+  and for a dish that lacks lines how many, "lacks 2" (German "noch 2
+  nötig"), since such a dish can stand above complete ones. With no dated
+  item a quiet line says so; when the finder cannot read the notebook (a
+  broken ingredient tree) the order places nothing and no such line is
+  shown, because nothing is known about the dates.
 - Both are kept on the device under `culina.cookList` (`{ have, order }`,
   `src/prefs.ts`; anything unreadable falls back field by field).
 - **The stock** is one tap away: "What is there" (German "Vorrat") beside

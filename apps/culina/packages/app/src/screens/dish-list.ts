@@ -27,9 +27,10 @@ import { characterLabel } from '../characters/view';
 import { currentLang } from '../classics/lang';
 import { COUNTRIES } from '../classics/list-view';
 import { loadNames } from '../classics/names';
+import { useUpWords } from '../cook/rows';
 import { notebookSource } from '../cook/source';
 import { readyNowKeys } from '../dishes/ready-now';
-import { useUpNow, type UseUpNow } from '../dishes/use-up-order';
+import { useUpNote, useUpNow, type UseUpNow } from '../dishes/use-up-order';
 import { browserStore, readCookList, writeCookList, type CookList } from '../prefs';
 import { el } from '../shell/el';
 import { strings } from '../strings';
@@ -70,9 +71,9 @@ const metaText = ({ meta }: ListRow, useUp: UseUpNow | undefined): string =>
     meta.course === undefined ? undefined : courseLabel(meta.course),
     meta.cuisine === undefined ? undefined : cuisineLabel(meta.cuisine),
     meta.origin === undefined ? undefined : strings.browse.rowOrigin[meta.origin],
-    meta.useUp === undefined || useUp === undefined
-      ? undefined
-      : strings.cook.reasonUses(useUp.itemName(meta.useUp.itemId), meta.useUp.daysLeft),
+    ...(meta.useUp === undefined || useUp === undefined
+      ? []
+      : useUpWords(meta.useUp, (id) => useUp.itemName(id))),
   ]
     .filter((part) => part !== undefined)
     .join(' · ');
@@ -232,7 +233,7 @@ export const dishList = (options: DishListOptions): HTMLElement => {
     const noStock = list.have && notebookSource().stock.length === 0;
     note.replaceChildren(
       ...(noStock ? [nothingTicked()] : []),
-      ...(useUp !== undefined && !useUp.anyDated
+      ...(useUpNote(useUp) === 'no-dates'
         ? [el('p', 'muted cook-no-dates', strings.cook.useUpNoDates)]
         : []),
     );

@@ -171,7 +171,12 @@ export const dishBrowse = async (browser, server) => {
   // purpose, docs/design.md): the switch, the order, the filter and the first result above the bar.
   // Unfolded, the filter's own controls take that room (this check measured Start unfolded until
   // Cook added the switch and the order: docs/decisions/cook-screen.md).
-  await page.locator('details.dish-filter-fold summary').click();
+  const fold = page.locator('details.dish-filter-fold');
+  if (await fold.evaluate((d) => d.open)) await fold.locator('summary').click();
+  check(
+    !(await fold.evaluate((d) => d.open)),
+    `${label}: the filter is folded before the first screen is measured`,
+  );
   const first = await page.locator('.dish-row').first().boundingBox();
   const bar = await page.locator('.app-nav').boundingBox();
   check(

@@ -6,11 +6,16 @@
 import { dishEntriesByKey } from '../browse/entries';
 import { WIDE } from '../cook/classic-finder';
 import { shippedNow } from '../cook/entries';
-import { find } from '../cook/finder';
+import { find, type Found } from '../cook/finder';
 import { useUpMarks, type UseUpMark } from '../cook/one-list';
 import { cookToday, notebookSource } from '../cook/source';
 
 export interface UseUpNow {
+  /**
+   * False when the finder could not read the notebook (a broken ingredient tree): then nothing is
+   * known about the dates, and the list says nothing about them.
+   */
+  ok: boolean;
   /** The dishes that use a dated item, by entry key. */
   marks: ReadonlyMap<string, UseUpMark>;
   /** True when some stock item has a use-by date. */
@@ -19,17 +24,11 @@ export interface UseUpNow {
   itemName(itemId: string): string;
 }
 
-const NONE: UseUpNow = { marks: new Map(), anyDated: false, itemName: (id) => id };
-
-export const useUpNow = (): UseUpNow => {
-  const found = find(
-    notebookSource(),
-    cookToday(),
-    { lacking: WIDE },
-    { entries: dishEntriesByKey(), shipped: shippedNow() },
-  );
-  if (!found.ok) return NONE;
+/** The order from the finder's answer; pure. */
+export const useUpOf = (found: Found): UseUpNow => {
+  if (!found.ok) return { ok: false, marks: new Map(), anyDated: false, itemName: (id) => id };
   return {
+    ok: true,
     marks: useUpMarks(found.dishes),
     anyDated: found.useUpFirst.length > 0,
     itemName(itemId) {
@@ -38,3 +37,20 @@ export const useUpNow = (): UseUpNow => {
     },
   };
 };
+
+/**
+ * The quiet note above the list in the order "Use up first": "no item has a use-by date" only
+ * when the finder could read the stock and found none; nothing when it could not read it.
+ */
+export const useUpNote = (useUp: UseUpNow | undefined): 'no-dates' | undefined =>
+  useUp !== undefined && useUp.ok && !useUp.anyDated ? 'no-dates' : undefined;
+
+export const useUpNow = (): UseUpNow =>
+  useUpOf(
+    find(
+      notebookSource(),
+      cookToday(),
+      { lacking: WIDE },
+      { entries: dishEntriesByKey(), shipped: shippedNow() },
+    ),
+  );

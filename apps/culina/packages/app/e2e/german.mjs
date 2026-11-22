@@ -148,6 +148,22 @@ const classicsFlow = async (page, origin, label) => {
       (await page.getByRole('link', { name: 'Vorrat', exact: true }).count()) === 1,
     `${label}: the switch, the order and the way to the stock are in German`,
   );
+  await page.getByLabel('Reihenfolge', { exact: true }).selectOption('use-up');
+  await page.getByLabel('Nur mit dem, was da ist').check();
+  const judged = [
+    (await page.locator('.dish-list').innerText()) +
+      (await page.locator('.cook-list-note').innerText()),
+  ];
+  await page.getByLabel('Nur mit dem, was da ist').uncheck();
+  judged.push(
+    (await page.locator('.dish-list').innerText()) +
+      (await page.locator('.cook-list-note').innerText()),
+  );
+  check(
+    judged.every((text) => !/wrong|too much|falsch|zu viel|error/i.test(text)),
+    `${label}: Cook's rows and notes do not judge (falsch, zu viel)`,
+  );
+  await page.getByLabel('Reihenfolge', { exact: true }).selectOption('name');
   await layout(page, `${label} cook`);
   await openWith(page, origin, 'classics/de');
   await heading(page, 'Kochen').waitFor();

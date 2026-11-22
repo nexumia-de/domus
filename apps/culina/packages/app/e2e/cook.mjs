@@ -111,6 +111,18 @@ const cookList = async (browser, origin) => {
   );
   const wording = (await page.locator('main').innerText()).match(FORBIDDEN);
   check(wording === null, `${where}: the wording never judges ${wording ?? ''}`);
+  // The rows and notes of Cook's list, with the switch on and off, in the order Use up first.
+  const rowsAndNotes = async () =>
+    (await page.locator('.dish-list').innerText()) +
+    (await page.locator('.cook-list-note').innerText());
+  await have(page).check();
+  const judged = [await rowsAndNotes()];
+  await have(page).uncheck();
+  judged.push(await rowsAndNotes());
+  check(
+    judged.every((text) => !/wrong|too much|falsch|zu viel|error/i.test(text)),
+    `${where}: Cook's rows and notes do not judge (wrong, too much, error)`,
+  );
   await layout(page, `${where} (use up first)`);
   // Two days later the leek is past its use-by: plain words.
   await reopen(page, origin, 'cook', '2026-11-20T08:00:00Z');

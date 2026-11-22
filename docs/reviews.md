@@ -21,6 +21,67 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-22: one Cook screen and shipped components in Culina (issue 44, web app)
+
+The owner decided issue 44; the lead split the web part in two and gave
+each to an agent in its own worktree, then had a different agent review
+each part. The lead combined the parts, ran the checks and committed.
+The writers were the high model, the reviewers the mid model.
+
+| Part                                                                                                                    | Done by                                        | Checked by                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| One Cook screen: the list, "only with what I have", "Use up first", the stock link, nav Cook/Notebook/Ratios, redirects | agent A                                        | reviewer A (no defect; six doubts, see below); A's fixes were checked by nobody but A and the lead's check runs    |
+| Shipped components in the Notebook: list, read-only detail, Keep (`copyClassicComponent`)                               | agent B                                        | reviewer B (no defect; three doubts, fixed by B); B's fixes were checked by nobody but B and the lead's check runs |
+| Notebook → Dishes as a plain list of own and shipped dishes (owner's point 3; agent A had left shipped dishes out)      | agent B, at the lead's request after combining | nobody but B and the lead's check runs                                                                             |
+| The decision record `apps/culina/docs/decisions/cook-screen.md`                                                         | agent A, amended by agent B                    | reviewer A read it against the code                                                                                |
+| Combining the parts, this entry                                                                                         | lead                                           | nobody                                                                                                             |
+
+**What the checks found, and where it was fixed.**
+
+- _Reviewer A._ "Use up first" placed a dish that lacks lines above a
+  complete one and its row did not say so: the row now says what is
+  missing ("· lacks 2"). When the finder fails, the list said "no
+  use-by dates": it now says nothing. Two browser checks had gone with
+  the old finder although their features remain (the character filter,
+  the origin word); re-added on the Cook list, and the second **found a
+  defect in the app**: the origin word followed all dishes, not the rows
+  shown; fixed in `list-view.ts` with a unit test. The wording check
+  was not run over the new rows; it is now. The first-screen check
+  toggled the fold; it now asserts the fold is closed. `readyNowKeys`
+  had no unit test; it has one.
+- _A check that failed once, found to be an app defect._ The catalogue
+  picker check ("the grams shown are the engine's") failed in a full
+  run. Agent A found that keys typed into the amount field while a pick
+  was being stored were lost, so a line was saved without its amount (4
+  failures in 22 runs before; the new check "an amount typed while the
+  pick lands keeps the focus and every key" fails every time on the old
+  code and passed 25 of 25 after). Fixed in the editors
+  (`form-bits.ts`), not in the check.
+- _Reviewer B._ The write order of Keep was claimed but not pinned (a
+  test now records it and fails on the swapped order); a store failure
+  half way leaves records behind, as Keep of a dish always did (now said
+  in behaviour.md); the search re-implemented `filterByName` (reused);
+  the German "cannot be kept yet" text was never rendered in a check (it
+  is now).
+- _Combining._ Agent B had removed the generic list helper that agent
+  A's Notebook Dishes used: typecheck failed; agent B rebuilt that list
+  on the shared notebook list.
+
+**Left for the owner** (in the decision record): `#/stock` stays its own
+screen, not a redirect; the old `#/cook` sets no filter; the switch
+counts only complete dishes; "Use up first" places incomplete dishes
+too.
+
+**Test counts** (lead's runs on the combined state): Culina engine 1195,
+app 837, native 17; browser checks 1877 ok, none failed; `npm run check`
+passed.
+
+**What nobody verified.** The native app (unchanged here; it follows in
+its own pull request). The 48 real shipped dishes against the switch and
+the order beyond one screenshot. A real phone, a screen reader, the
+German by a native speaker. The fixes of A and B after their reviews,
+beyond their own tests and the lead's runs.
+
 ## 2026-11-22: the move to nexumia-de/domus, prepared
 
 The lead wrote [the plan](move-to-nexumia-de.md) and searched the

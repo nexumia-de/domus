@@ -132,6 +132,11 @@ export interface UseUpMark {
   /** The stock item with the nearest use-by among those the dish uses (the engine's urgency). */
   itemId: string;
   daysLeft: number;
+  /**
+   * Required lines the dish lacks (0: complete). The order is asked at the finder's wide
+   * threshold, so a dish that lacks lines can stand above complete ones; the row says so.
+   */
+  lacking: number;
 }
 
 /**
@@ -147,6 +152,7 @@ export const useUpMarks = (candidates: readonly AnyCandidate[]): Map<string, Use
       rank: marks.size,
       itemId: c.urgency.itemId,
       daysLeft: c.urgency.daysLeft,
+      lacking: c.lacking,
     });
   }
   return marks;

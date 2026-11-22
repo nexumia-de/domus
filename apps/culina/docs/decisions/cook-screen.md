@@ -71,15 +71,25 @@ Each is the agent's choice, for the owner's review.
   (`rankCandidates`: the nearest use-by first, then roles covered, then
   name); the rest follow by name. With "Only with what I have" both apply.
   The row says which item sets its place ("uses the Leek with 1 day left"),
-  the words the finder used for its reason.
+  the words the finder used for its reason, and, for a dish that lacks
+  lines and so can stand above a complete one, how many ("lacks 2",
+  German "noch 2 nötig"; added after the review of 2026-11-22). When the
+  finder cannot read the notebook (a broken ingredient tree), the order
+  places nothing and the list says nothing about dates.
 - **Both choices are kept on the device** under `culina.cookList`, like the
   dish filter under `culina.dishes`. "Show all", where nothing fits, also
   lets go of "Only with what I have"; the order stays.
 - **The stock stays its own screen** (`#/stock`, `#/stock/add`,
   `#/stock/<id>/edit`, under Cook in the navigation), reached by "What is
-  there" beside Cook's title, with "Back to Cook" on the stock list. It is
-  not folded into Cook, so that adding and editing items keep their
-  addresses and screens.
+  there" beside Cook's title, with "Back to Cook" on the stock list; `#/stock`
+  is no redirect. It is not folded into Cook, so that adding and editing
+  items keep their addresses and screens. **For the owner's review.**
+- **The old `#/cook` sets no filter.** `#/cook` was the finder's address
+  and is now Cook's own address, the one the navigation entry opens. It
+  does not turn "Only with what I have" on, although the old finder only
+  showed what the stock allows: as the navigation's address it is opened by
+  every tap on Cook, so turning the switch on there would turn it on with
+  every tap and take away the user's choice. **For the owner's review.**
 - **"Start from one ingredient" stays** as a closed section under Cook's
   list, and `#/cook/<id>/with` ("What uses <ingredient>") stays the
   finder's screen for one ingredient, with its ranking, its reasons and its

@@ -12,10 +12,10 @@ import { isEmptyFilter, matchesFilter, matchesQuery, type DishFilter } from './f
 export interface RowMeta {
   course?: string;
   cuisine?: string;
-  /** Only said when the list holds dishes of both origins (the filter does not fix one). */
+  /** Only said when the rows shown hold dishes of both origins. */
   origin?: Origin;
   /** In the order "Use up first": the dated item the dish uses that sets its place. */
-  useUp?: { itemId: string; daysLeft: number };
+  useUp?: { itemId: string; daysLeft: number; lacking: number };
 }
 
 export interface ListRow {
@@ -40,7 +40,9 @@ const metaOf = (entry: DishEntry, withOrigin: boolean, mark?: UseUpMark): RowMet
   ...(entry.course === undefined ? {} : { course: entry.course }),
   ...(entry.cuisine === undefined ? {} : { cuisine: entry.cuisine }),
   ...(withOrigin ? { origin: entry.origin } : {}),
-  ...(mark === undefined ? {} : { useUp: { itemId: mark.itemId, daysLeft: mark.daysLeft } }),
+  ...(mark === undefined
+    ? {}
+    : { useUp: { itemId: mark.itemId, daysLeft: mark.daysLeft, lacking: mark.lacking } }),
 });
 
 /** What Cook adds to the filter and the search, each from the finder (src/dishes/). */
@@ -65,16 +67,18 @@ export const dishListView = (
   cook: CookNarrowing = {},
 ): DishListView => {
   const collator = new Intl.Collator(lang, { sensitivity: 'base', numeric: true });
-  const withOrigin = filter.origin === undefined && bothOrigins(entries);
   const { ready, useUp } = cook;
   const rankOf = (e: DishEntry): number => useUp?.get(e.key)?.rank ?? Infinity;
-  const rows = entries
-    .filter(
-      (e) =>
-        matchesFilter(e, filter) &&
-        matchesQuery(e, query) &&
-        (ready === undefined || ready.has(e.key)),
-    )
+  const kept = entries.filter(
+    (e) =>
+      matchesFilter(e, filter) &&
+      matchesQuery(e, query) &&
+      (ready === undefined || ready.has(e.key)),
+  );
+  // The origin is said only while the rows shown hold both: with one origin left (by any choice,
+  // a character as much as "From"), saying it on every row repeats what every row shares.
+  const withOrigin = bothOrigins(kept);
+  const rows = kept
     .sort(
       (a, b) =>
         (useUp === undefined || rankOf(a) === rankOf(b) ? 0 : rankOf(a) < rankOf(b) ? -1 : 1) ||
