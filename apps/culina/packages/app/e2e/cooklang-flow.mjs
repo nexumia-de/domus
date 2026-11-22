@@ -243,4 +243,23 @@ export const cooklang = async (page, origin, { openAt, file, listAll }) => {
       ),
     `${label}: exporting to Cooklang and importing it again gives the same lines, minus the roles Cooklang cannot carry`,
   );
+
+  // ---- the AI prompt and a pasted answer go through the same Cooklang step
+  await openAt(page, origin, 'settings/import', nowQuery);
+  check(
+    (await page.locator('.import-ai-prompt').inputValue()).includes('@name{amount%unit}'),
+    `${label}: the AI prompt is shown on the import screen`,
+  );
+  await page.getByRole('button', { name: 'Read the text' }).click();
+  check(
+    (await page.locator('.import > p[role=status]').innerText()) === 'Paste the answer first.',
+    `${label}: reading an empty paste field asks for the answer`,
+  );
+  await page.getByLabel('Answer of the AI (Cooklang)').fill(COOK);
+  await page.getByRole('button', { name: 'Read the text' }).click();
+  await page.getByText('Complete the recipe').waitFor();
+  check(
+    (await page.getByLabel('Ingredient for flour').inputValue()) === 'ingredient:flour',
+    `${label}: a pasted answer is read like a .cook file`,
+  );
 };
