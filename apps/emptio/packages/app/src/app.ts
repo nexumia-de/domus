@@ -21,13 +21,18 @@ import {
   entriesOf,
 } from './list/model';
 import type { ListDeps } from './list/actions';
-import { bridgeCycle, type BridgeResult } from './kitchenowl/bridge';
-import { createKitchenowlClient, type Fetch, type KitchenowlClient } from './kitchenowl/client';
+import { bridgeCycle } from './kitchenowl/bridge';
+import {
+  createKitchenowlClient,
+  type Fetch,
+  type KitchenowlClient,
+  type KitchenowlFailure,
+} from './kitchenowl/client';
 import { configOf, type KitchenowlConfig } from './kitchenowl/config';
-import { KEYS, type Prefs } from './prefs';
+import { KEYS, autoSyncOf, type Prefs } from './prefs';
 
-/** How often a shared list is read again while the app is in front (docs/behaviour.md#sync). */
-export const LIST_INTERVAL_MS = 15_000;
+/** How long after a change the run waits, so several changes make one (docs/behaviour.md#sync). */
+export const CHANGE_DELAY_MS = 2_000;
 
 export interface AppState {
   /** `loading` until the first read; `failed` when the shared database cannot be opened. */
@@ -41,10 +46,19 @@ export interface AppState {
   kitchenowl?: KitchenowlConfig;
 }
 
+/**
+ * Why a KitchenOwl cycle did not run or failed: one of the server's, or `household` when the
+ * space's own sync failed just before, so the cycle would work on an old list
+ * (docs/kitchenowl.md#when).
+ */
+export type KitchenowlStatusFailure = KitchenowlFailure | 'household';
+
 /** How the KitchenOwl list of a space was kept in step (docs/kitchenowl.md). */
 export interface KitchenowlStatus {
   /** The last cycle. */
-  last: Exclude<BridgeResult, { state: 'off' }>;
+  last:
+    | { state: 'synced'; changed: boolean }
+    | { state: 'failed'; failure: KitchenowlStatusFailure; changed: boolean };
   /** When a cycle last went through. */
   syncedAt?: string;
 }
@@ -55,7 +69,6 @@ export interface AppOptions extends ListDeps {
   adapter: CollectionSyncOptions['adapter'];
   /** The requests to a KitchenOwl instance; without it the app sends none. */
   fetch?: Fetch;
-  isVisible?: () => boolean;
   isOnline?: () => boolean;
   /** For tests: the loops' timers. */
   setTimer?: CollectionSyncOptions['setTimer'];
@@ -79,11 +92,18 @@ export interface App {
   status(spaceId: string): SyncStatus | undefined;
   /** The KitchenOwl status of a connected space; undefined when it is not connected or not run yet. */
   kitchenowl(spaceId: string): KitchenowlStatus | undefined;
-  /** Runs a KitchenOwl cycle for every connected space now. Never rejects. */
-  syncKitchenowl(): Promise<void>;
+  /**
+   * Syncs every space now, whatever the switch says: the space with its storage, then KitchenOwl,
+   * then the space again (docs/behaviour.md#sync). Resolves when done. Never rejects.
+   */
+  syncNow(): Promise<void>;
+  /** Whether the app syncs by itself: at the start, at the front and after a change. */
+  autoSync(): boolean;
+  /** Turns syncing by itself on or off; false when the choice could not be kept. */
+  setAutoSync(on: boolean): boolean;
   /** A client for a KitchenOwl server, to check an address and a token; null without `fetch`. */
   kitchenowlClient(url: string, token: string): KitchenowlClient | null;
-  /** The page came to the front or the connection is back. */
+  /** The page came to the front or the connection is back: a run, if the app syncs by itself. */
   wake(): void;
   stop(): void;
 }
@@ -106,10 +126,10 @@ export function createApp(options: AppOptions): App {
     collections: COLLECTIONS,
     adapter: options.adapter,
     now,
-    intervalMs: LIST_INTERVAL_MS,
+    // The app decides when to sync: the run below, never on an interval.
+    manual: true,
     // Records another device changed are read again; a status change only redraws.
     onChange: (what) => (what === 'records' ? void load() : tell()),
-    ...(options.isVisible ? { isVisible: options.isVisible } : {}),
     ...(options.isOnline ? { isOnline: options.isOnline } : {}),
     ...(options.setTimer ? { setTimer: options.setTimer } : {}),
     ...(options.clearTimer ? { clearTimer: options.clearTimer } : {}),
@@ -119,56 +139,89 @@ export function createApp(options: AppOptions): App {
   const clearTimer =
     options.clearTimer ??
     ((handle: unknown) => clearTimeout(handle as ReturnType<typeof setTimeout>));
-  const bridges = new Map<string, { busy: boolean; status?: KitchenowlStatus }>();
-  let bridgeTimer: unknown;
+  const bridges = new Map<string, KitchenowlStatus>();
+  let changeTimer: unknown;
+  /** The run in flight; a request during it runs one more after it. */
+  let running: Promise<void> | undefined;
+  let again = false;
 
-  /** One KitchenOwl cycle for every space that is connected (docs/kitchenowl.md#when). */
-  async function bridge(): Promise<void> {
+  const autoSync = (): boolean => autoSyncOf(prefs.get(KEYS.autoSync));
+
+  function setBridge(spaceId: string, last: KitchenowlStatus['last']): void {
+    const before = bridges.get(spaceId);
+    const syncedAt = last.state === 'synced' ? now() : before?.syncedAt;
+    bridges.set(spaceId, { last, ...(syncedAt === undefined ? {} : { syncedAt }) });
+  }
+
+  /**
+   * One space: its storage first, so the KitchenOwl cycle works on what the other devices wrote;
+   * then KitchenOwl; then the storage again if the cycle changed the space
+   * (docs/kitchenowl.md#when).
+   */
+  async function runSpace(spaceId: string): Promise<void> {
+    const pulled = await sync.syncSpace(spaceId);
     const fetch = options.fetch;
-    if (fetch === undefined || stopped || current.phase !== 'ready') return;
+    if (fetch === undefined || stopped) return;
+    const config = configOf((await store.readCollection(spaceId, KITCHENOWL)).records);
+    if (config === undefined) {
+      if (bridges.delete(spaceId)) tell();
+      return;
+    }
+    if (pulled === 'failed') {
+      // An old list would undo what another device did (a rename, an edit): wait for the storage.
+      setBridge(spaceId, { state: 'failed', failure: 'household', changed: false });
+      tell();
+      return;
+    }
+    const result = await bridgeCycle({ ...deps, fetch }, spaceId);
+    if (result.state === 'off') {
+      bridges.delete(spaceId);
+      tell();
+      return;
+    }
+    setBridge(spaceId, result);
+    if (result.changed) {
+      await load();
+      if (pulled === 'synced') await sync.syncSpace(spaceId);
+    } else tell();
+  }
+
+  async function runAll(): Promise<void> {
+    if (stopped || current.phase !== 'ready') return;
     if (options.isOnline && !options.isOnline()) return;
+    await sync.refresh();
     for (const space of current.spaces) {
-      const running = bridges.get(space.id) ?? { busy: false };
-      bridges.set(space.id, running);
-      if (running.busy) continue;
-      running.busy = true;
+      if (stopped) return;
       try {
-        const result = await bridgeCycle({ ...deps, fetch }, space.id);
-        const before = running.status;
-        if (result.state === 'off') {
-          delete running.status;
-        } else {
-          running.status = {
-            last: result,
-            ...(result.state === 'synced'
-              ? { syncedAt: now() }
-              : before?.syncedAt === undefined
-                ? {}
-                : { syncedAt: before.syncedAt }),
-          };
-        }
-        if (result.state !== 'off' && result.changed) {
-          await load();
-          sync.changed(space.id);
-        } else if (result.state !== 'off' || before !== undefined) {
-          tell();
-        }
+        await runSpace(space.id);
       } catch {
-        // The shared database failed; the next cycle tries again.
-      } finally {
-        running.busy = false;
+        // The shared database failed; the next run tries again.
       }
     }
   }
 
-  /** The next KitchenOwl cycle in `ms`, then one every interval while the page is in front. */
-  function scheduleBridge(ms: number): void {
-    if (options.fetch === undefined || stopped) return;
-    clearTimer(bridgeTimer);
-    bridgeTimer = setTimer(() => {
-      const visible = options.isVisible ? options.isVisible() : true;
-      void (visible ? bridge() : Promise.resolve()).finally(() => scheduleBridge(LIST_INTERVAL_MS));
-    }, ms);
+  /** A run of every space; one at a time, and a request during one runs one more after it. */
+  function run(): Promise<void> {
+    if (running) {
+      again = true;
+      return running;
+    }
+    running = (async () => {
+      do {
+        again = false;
+        await runAll();
+      } while (again && !stopped);
+    })().finally(() => {
+      running = undefined;
+    });
+    return running;
+  }
+
+  /** A run soon after a change, so several changes make one. */
+  function runAfterChange(): void {
+    if (stopped || !autoSync()) return;
+    clearTimer(changeTimer);
+    changeTimer = setTimer(() => void run(), CHANGE_DELAY_MS);
   }
 
   async function read(): Promise<AppState> {
@@ -219,7 +272,7 @@ export function createApp(options: AppOptions): App {
       // After the read, so the first space of a new device exists before the loops look.
       if (current.phase === 'ready') {
         await sync.refresh();
-        scheduleBridge(0);
+        if (autoSync()) await run();
       }
     },
     async choose(spaceId) {
@@ -237,13 +290,19 @@ export function createApp(options: AppOptions): App {
         return undefined;
       }
       await load();
-      sync.changed(space.id);
-      scheduleBridge(2_000);
+      runAfterChange();
       return result;
     },
     status: (spaceId) => sync.status(spaceId),
-    kitchenowl: (spaceId) => bridges.get(spaceId)?.status,
-    syncKitchenowl: () => bridge(),
+    kitchenowl: (spaceId) => bridges.get(spaceId),
+    syncNow: () => run(),
+    autoSync,
+    setAutoSync(on) {
+      const kept = prefs.set(KEYS.autoSync, on ? 'on' : 'off');
+      tell();
+      if (on) void run();
+      return kept;
+    },
     kitchenowlClient: (url, token) =>
       options.fetch === undefined
         ? null
@@ -253,13 +312,12 @@ export function createApp(options: AppOptions): App {
       // another tab may have changed the list.
       void load()
         .then(() => sync.refresh())
-        .then(() => sync.syncNow())
-        .then(() => scheduleBridge(0));
+        .then(() => (autoSync() ? run() : undefined));
     },
     stop() {
       stopped = true;
       sync.stop();
-      clearTimer(bridgeTimer);
+      clearTimer(changeTimer);
       listeners.clear();
     },
   };

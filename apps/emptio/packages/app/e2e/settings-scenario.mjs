@@ -88,6 +88,18 @@ export async function settingsStage(run, { page }) {
     return true;
   });
 
+  const auto = page.getByRole('switch', { name: t.settings.autoSync });
+  await ok(run, 'settings: Sync automatically is a switch, on at first, 44 px high', async () => {
+    const box = await auto.boundingBox();
+    return (await auto.isChecked()) && box.height >= 44 && box.width >= 44;
+  });
+  await auto.click();
+  await ok(run, 'settings: turning Sync automatically off is kept on this device', async () => {
+    const kept = await page.evaluate(() => localStorage.getItem('emptio.autoSync'));
+    return !(await auto.isChecked()) && kept === 'off';
+  });
+  await auto.click();
+
   const root = page.locator('html');
   await page.locator('#theme').selectOption('dark');
   await ok(

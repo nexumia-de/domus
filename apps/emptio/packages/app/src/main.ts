@@ -11,6 +11,7 @@ import { h } from './dom';
 import { GITHUB_API } from './env';
 import { CATEGORIES_ICON } from './icons';
 import { KEYS, browserPrefs, langChoiceOf, langFor } from './prefs';
+import { pullToSync } from './pull';
 import { hashFor, parseHash, type Route } from './router';
 import { categoriesScreen } from './screens/categories';
 import type { Ctx, Screen } from './screens/context';
@@ -38,7 +39,6 @@ if (root) {
     prefs,
     names: { home: t.space.home, unnamed: t.space.unnamed },
     adapter: (storage) => adapterFor(storage, { apiBase: GITHUB_API }),
-    isVisible: () => document.visibilityState !== 'hidden',
     isOnline,
     // Only to the KitchenOwl server a space was connected to (docs/kitchenowl.md).
     fetch: (url, init) => globalThis.fetch(url, init),
@@ -73,8 +73,9 @@ if (root) {
     now,
     bannerText: t.status.failedShort,
     retryLabel: t.status.retry,
-    say: (text) => ctx.say(text),
-    retry: () => app.wake(),
+    // The details offer a sync now, also when the app does not sync by itself.
+    say: (text) => ctx.say(text, { label: t.settings.syncNow, run: () => void app.syncNow() }),
+    retry: () => void app.syncNow(),
   });
   const settingsLink = headerLink(t.nav.settings, 'settings', hashFor.settings);
   const categoriesLink = headerLink(
@@ -82,6 +83,12 @@ if (root) {
     drawIcon(CATEGORIES_ICON),
     hashFor.categories,
   );
+  // Pulling the list down from its top syncs, whether the app syncs by itself or not.
+  const pull = pullToSync(main, {
+    enabled: () => route.name === 'list',
+    words: { pull: t.list.pull, release: t.list.release, syncing: t.status.syncing },
+    run: () => app.syncNow(),
+  });
   // What a screen keeps in reach of the thumb: the add field. The only permanent thing below.
   const dock = h('div', { class: 'app-dock' });
   // The frame fills the window; only `main` scrolls, so header and dock stay.
@@ -89,7 +96,7 @@ if (root) {
   root.append(
     skip,
     h('div', { class: 'app-top' }, header.node, sync.banner),
-    h('div', { class: 'app-body' }, main, toaster.node),
+    h('div', { class: 'app-body' }, pull, main, toaster.node),
     dock,
   );
 

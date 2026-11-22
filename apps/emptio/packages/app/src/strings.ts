@@ -15,6 +15,8 @@ export const stringsEn = {
     nothingShownHint: 'Pick another urgency above.',
     addLabel: 'What to buy',
     addPlaceholder: 'Add something',
+    pull: 'Pull to sync',
+    release: 'Release to sync',
     add: 'Add',
     amountLabel: 'Amount (optional)',
     amountPlaceholder: 'for example 2 packs',
@@ -80,6 +82,11 @@ export const stringsEn = {
     theme: 'Appearance',
     themes: { system: 'As the device', light: 'Light', dark: 'Dark' },
     notKept: 'This choice could not be kept on this device.',
+    sync: 'Sync',
+    autoSync: 'Sync automatically',
+    autoSyncHint:
+      'When the app opens or comes to the front, and shortly after every change. Off: only when you pull the list down or choose Sync now.',
+    syncNow: 'Sync now',
     about: 'About',
     aboutText:
       'Shopping List keeps the list on this device. It sends nothing anywhere unless a space has a storage the household set up or is connected to a KitchenOwl server.',
@@ -116,6 +123,8 @@ export const stringsEn = {
       unauthorized: 'the server refused the token',
       'not-found': 'the list was not found on the server',
       refused: 'the server gave an answer this version does not understand',
+      household:
+        'the sync of the household failed just before, and KitchenOwl waits for it so that no old list is sent',
     },
   },
   space: { home: 'Home', unnamed: 'Unnamed space' },

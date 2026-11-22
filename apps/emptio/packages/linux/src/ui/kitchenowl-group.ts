@@ -56,7 +56,7 @@ export function kitchenowlGroup(ui: Ui, dialog: any): any {
     group.add(row);
     const sync = actionRow(k.syncNow);
     sync.connect('activated', () => {
-      void app.syncKitchenowl().then(() => dialog.close());
+      void app.syncNow().then(() => dialog.close());
     });
     group.add(sync);
     const disconnect = actionRow(k.disconnect);
@@ -157,7 +157,7 @@ export function kitchenowlGroup(ui: Ui, dialog: any): any {
       .then(() => {
         dialog.close();
         ui.toast(k.connected(list.name, chosen.url));
-        return app.syncKitchenowl();
+        return app.syncNow();
       });
   });
   return group;

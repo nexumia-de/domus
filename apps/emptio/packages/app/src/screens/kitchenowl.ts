@@ -6,11 +6,12 @@ import { KitchenowlError, type KitchenowlFailure, type Named } from '../kitcheno
 import { connectKitchenowl, disconnectKitchenowl, instanceUrl } from '../kitchenowl/config';
 import { ago } from '../list/status';
 import type { Ctx } from './context';
+import type { KitchenowlStatusFailure } from '../app';
 
 export function kitchenowlSection(ctx: Ctx): { node: HTMLElement; update(): void } {
   const { app, t } = ctx;
   const k = t.kitchenowl;
-  const failureText = (failure: KitchenowlFailure): string => k.failures[failure];
+  const failureText = (failure: KitchenowlStatusFailure): string => k.failures[failure];
   const failureOf = (error: unknown): KitchenowlFailure =>
     error instanceof KitchenowlError ? error.failure : 'refused';
 
@@ -32,7 +33,7 @@ export function kitchenowlSection(ctx: Ctx): { node: HTMLElement; update(): void
     h(
       'p',
       { class: 'add-row' },
-      button(k.syncNow, () => void app.syncKitchenowl()),
+      button(k.syncNow, () => void app.syncNow()),
       button(k.disconnect, () => void disconnect(), { class: 'danger' }),
     ),
   );
@@ -156,7 +157,7 @@ export function kitchenowlSection(ctx: Ctx): { node: HTMLElement; update(): void
     await app.act((deps, id) => connectKitchenowl(deps, id, config));
     token.value = '';
     forget();
-    await app.syncKitchenowl();
+    await app.syncNow();
   }
 
   async function disconnect(): Promise<void> {

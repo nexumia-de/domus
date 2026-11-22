@@ -42,6 +42,14 @@ export function listPage(ui: Ui, menu: any): Page {
     vexpand: true,
     child: new Adw.Clamp({ maximum_size: 600, child: body }),
   });
+  // Pulling the list down past its top syncs (docs/behaviour.md#sync); the menu has Sync now too.
+  let pulling = false;
+  scrolled.connect('edge-overshot', (_scrolled: unknown, position: number) => {
+    if (position !== Gtk.PositionType.TOP || pulling) return;
+    pulling = true;
+    ui.toast(ui.n.status.syncing);
+    void app.syncNow().finally(() => (pulling = false));
+  });
   const status = new Adw.StatusPage({ vexpand: true });
   const stack = new Gtk.Stack();
   stack.add_named(scrolled, 'list');

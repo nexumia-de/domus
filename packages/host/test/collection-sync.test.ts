@@ -355,3 +355,40 @@ test("the interval of the loop is the app's to choose", async () => {
   expect(waits).toContain(5000);
   sync.stop();
 });
+
+test('manual: no cycle until asked; syncSpace runs one and says how it went', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const shared = sharedStore();
+  await shared.putSpace(space);
+  const local: StoredSpace = {
+    id: 'local',
+    secret: 'x',
+    name: 'Home',
+    storage: { type: 'device', address: '' },
+  };
+  await shared.putSpace(local);
+  const waits: number[] = [];
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['stock'],
+    adapter: () => storage.adapter,
+    now,
+    onChange: () => undefined,
+    manual: true,
+    setTimer: (_fn, ms) => waits.push(ms),
+    clearTimer: () => undefined,
+  });
+  expect(await sync.syncSpace(space.id)).toBe('unknown');
+  await sync.refresh();
+  await settle();
+  expect(storage.state.reads).toBe(0);
+  expect(waits).toEqual([]);
+  expect(await sync.syncSpace(local.id)).toBe('device-only');
+  expect(await sync.syncSpace(space.id)).toBe('synced');
+  expect(storage.state.reads).toBeGreaterThan(0);
+  expect(sync.status(space.id)).toMatchObject({ kind: 'in-step' });
+  storage.state.down = true;
+  expect(await sync.syncSpace(space.id)).toBe('failed');
+  sync.stop();
+});

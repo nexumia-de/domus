@@ -1,9 +1,18 @@
 // The small pure parts: the categories with their names,
-// the status in words, the router and the prefs.
+// the status in words, the router, the prefs and the pull gesture's distance.
 import { describe, expect, test } from 'vitest';
 import { categoriesOf, orderOf } from '../src/list/categories';
 import { statusText } from '../src/list/status';
-import { KEYS, applyTheme, langChoiceOf, langFor, prefsOn, themeOf } from '../src/prefs';
+import {
+  KEYS,
+  applyTheme,
+  autoSyncOf,
+  langChoiceOf,
+  langFor,
+  prefsOn,
+  themeOf,
+} from '../src/prefs';
+import { PULL_THRESHOLD_PX, pulledOut } from '../src/pull';
 import { hashFor, parseHash } from '../src/router';
 import { stringsEn } from '../src/strings';
 import { stringsDe } from '../src/strings-de';
@@ -125,5 +134,21 @@ describe('prefs', () => {
         ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, shape(v)]))
         : typeof value;
     expect(shape(stringsDe)).toEqual(shape(stringsEn));
+  });
+});
+
+describe('sync by itself and the pull', () => {
+  test('syncing by itself is on unless this device said off', () => {
+    expect(autoSyncOf(null)).toBe(true);
+    expect(autoSyncOf('on')).toBe(true);
+    expect(autoSyncOf('off')).toBe(false);
+  });
+
+  test('the hint follows half the finger, never up, and the threshold is within reach', () => {
+    expect(pulledOut(-40)).toBe(0);
+    expect(pulledOut(60)).toBe(30);
+    expect(pulledOut(2 * PULL_THRESHOLD_PX)).toBe(PULL_THRESHOLD_PX);
+    expect(pulledOut(1000)).toBeGreaterThanOrEqual(PULL_THRESHOLD_PX);
+    expect(pulledOut(1000)).toBe(88);
   });
 });

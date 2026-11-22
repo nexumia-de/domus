@@ -1,7 +1,7 @@
 // What the app is without a screen, for a second shell: the native Linux app
 // (packages/linux) shows the same list with the same actions, texts and sync.
 // Nothing here touches the DOM.
-export { LIST_INTERVAL_MS, createApp } from './app';
+export { CHANGE_DELAY_MS, createApp } from './app';
 export type { App, AppOptions, AppState } from './app';
 export {
   addCategory,
@@ -21,12 +21,12 @@ export { categoriesOf, orderOf } from './list/categories';
 export type { Category } from './list/categories';
 export { CATEGORIES, COLLECTIONS, LIST } from './list/model';
 export { ago, statusText } from './list/status';
-export { KEYS, THEMES, themeOf } from './prefs';
+export { KEYS, THEMES, autoSyncOf, themeOf } from './prefs';
 export type { Lang, Prefs, Theme } from './prefs';
 export { stringsEn } from './strings';
 export type { Strings } from './strings';
 export { stringsDe } from './strings-de';
-export type { KitchenowlStatus } from './app';
+export type { KitchenowlStatus, KitchenowlStatusFailure } from './app';
 export { bridgeCycle } from './kitchenowl/bridge';
 export type { BridgeResult } from './kitchenowl/bridge';
 export { KitchenowlError, createKitchenowlClient } from './kitchenowl/client';

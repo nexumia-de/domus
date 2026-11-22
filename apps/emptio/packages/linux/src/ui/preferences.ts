@@ -53,6 +53,22 @@ export function showPreferences(ui: Ui, store: Store): void {
   }
   page.add(spaces);
 
+  // Whether the app syncs by itself (docs/behaviour.md#sync); the choice of this device.
+  const syncing = new Adw.PreferencesGroup({ title: ui.t.settings.sync });
+  const auto = new Adw.SwitchRow({
+    title: ui.t.settings.autoSync,
+    subtitle: ui.t.settings.autoSyncHint,
+    active: app.autoSync(),
+  });
+  auto.connect('notify::active', () => {
+    if (auto.get_active() === app.autoSync()) return;
+    if (!app.setAutoSync(auto.get_active())) {
+      dialog.add_toast(new Adw.Toast({ title: ui.t.settings.notKept }));
+    }
+  });
+  syncing.add(auto);
+  page.add(syncing);
+
   const join = new Adw.PreferencesGroup({ title: n.join.title, description: n.join.description });
   const link = new Adw.EntryRow({ title: n.join.link, show_apply_button: true });
   const token = new Adw.PasswordEntryRow({ title: n.join.token });

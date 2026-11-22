@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: KitchenOwl sync
-description: How a space's list is kept in step with a list on the household's KitchenOwl server - what maps to what, the links, one cycle, when it runs, setting it up, CORS for the web app, the API calls used, what is lost, and what is not proven.
+description: How a space's list is kept in step with a list on the household's KitchenOwl server - what maps to what, the links, one cycle, several devices, when it runs, setting it up, CORS for the web app, the API calls used, what is lost, and what is not proven.
 tags: [kitchenowl, sync, connector, cors, list]
 generated: { by: claude-code/2.1.327, at: 2026-11-22 }
 sources:
@@ -79,16 +79,41 @@ space is one atomic step on the records as stored then: a tick only if
 the entry is still open, an amount only if it is still the one the plan
 saw, an import only if the id does not exist.
 
-Two devices may run a cycle at the same time: they import the same
-putting under the same id, add the same name (KitchenOwl keeps an item
-once per list) and write the same links, so the records merge to one.
+# Several devices
+
+Every device of the space runs the cycle; KitchenOwl's list is the one
+place they all see at once. The cycle only gets the space right if it
+starts from what the other devices wrote: a device that has not seen a
+rename yet finds the old item gone from KitchenOwl, ticks the entry and
+imports the new name; its records are the later ones, so they win
+whole, and the household ends with "Milk" ticked and "Oat milk" as a
+new entry without its priority. Before 2026-11-22 the cycle ran on its
+own timer beside the storage's loop and this happened
+(`app.test.ts` › 'a rename on one device is not undone by the KitchenOwl
+cycle of another' fails on that code).
+
+So a cycle runs only inside a run of the app
+([sync](behaviour.md#sync)): storage, then KitchenOwl, then storage, and
+not at all when the storage just failed (the status says so: failure
+`household`). What remains:
+
+- Two devices that run at the same moment (two people ticking in the
+  same few seconds): they import the same putting under the same id,
+  add the same name (KitchenOwl keeps an item once per list) and write
+  the same links, so the records merge to one. A rename or an edit
+  between the storage step of one and the KitchenOwl step of the other
+  can still be lost as above; accepted, the window is the few seconds of
+  the requests.
+- A space on this device only has no storage step; it is the only
+  device anyway.
 
 # When
 
-Every 15 seconds while the app is in front (the list's
-[interval](behaviour.md#sync)), at the start, when the page comes to the
-front or the connection is back, and two seconds after a change. Without
-a connection nothing is sent; only the app with a `fetch` option sends
+In every run of the app ([sync](behaviour.md#sync)): with _Sync
+automatically_ on, at the start, when the page comes to the front or the
+connection is back, and two seconds after a change; always when the
+person pulls the list down or chooses _Sync now_. No timer. Without a
+connection nothing is sent; only the app with a `fetch` option sends
 (both apps give one). The status is shown in the settings: "Synced …",
 or the last failure in words.
 

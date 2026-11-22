@@ -1,13 +1,34 @@
 // Stage 4 of a run: two devices of one household against the fake GitHub. A adds an entry and
-// the fake receives a sealed file; B (opened afterwards) shows the entry; B ticks it and A shows
-// the tick without a reload, within the polling time. What this does not prove: the real GitHub
+// the fake receives a sealed file; B (opened afterwards) shows the entry; B ticks it, A does not
+// read by itself and shows the tick when its list is pulled down (touch events dispatched by the
+// script, not a real finger). What this does not prove: the real GitHub
 // (its rate limits, its latency), two real devices, or a clock that differs between them.
 import { MAIN } from '@nexumia-de/hospes/testing/fake-github';
 import { everything, newDevice } from '@nexumia-de/hospes/testing/browser';
 import { add, ok, openApp, rowOf, rows } from './driver.mjs';
 
 const ADDRESS = 'me/household';
-const POLL_WAIT_MS = 25_000;
+const SYNC_WAIT_MS = 15_000;
+
+/** Pulls the list down from its top with touch events, as a finger would (src/pull.ts). */
+async function pullDown(page) {
+  await page.evaluate(async () => {
+    const main = document.querySelector('.app-main');
+    const touch = (y) => new Touch({ identifier: 1, target: main, clientX: 180, clientY: y });
+    const fire = (type, y) =>
+      main.dispatchEvent(
+        new TouchEvent(type, {
+          bubbles: true,
+          touches: type === 'touchend' ? [] : [touch(y)],
+          changedTouches: [touch(y)],
+        }),
+      );
+    fire('touchstart', 120);
+    for (let y = 140; y <= 320; y += 30) fire('touchmove', y);
+    await new Promise((r) => setTimeout(r, 50));
+    fire('touchend', 320);
+  });
+}
 
 async function device(run, secret) {
   const { browser, server, fake, width, height, locale, problems } = run;
@@ -118,14 +139,18 @@ export async function syncStage(run) {
   });
 
   await rowOf(b.page, 'Oat milk').locator('.tick').check();
-  await ok(
-    run,
-    `sync: A shows B's tick without a reload (within ${POLL_WAIT_MS / 1000} s)`,
-    async () => {
-      await a.page.waitForSelector('.entry-bought', { timeout: POLL_WAIT_MS });
-      return (await rows(a.page)).find((r) => r.name === 'Oat milk')?.bought === true;
-    },
-  );
+  // B syncs 2 s after its change; A has no timer and sees it when the list is pulled down.
+  await b.page.waitForTimeout(3_000);
+  await waitInStep(run, b.page);
+  await ok(run, 'sync: without a pull, A does not read on its own', async () => {
+    await a.page.waitForTimeout(3_000);
+    return (await a.page.locator('.entry-bought').count()) === 0;
+  });
+  await ok(run, "sync: pulling A's list down shows B's tick without a reload", async () => {
+    await pullDown(a.page);
+    await a.page.waitForSelector('.entry-bought', { timeout: SYNC_WAIT_MS });
+    return (await rows(a.page)).find((r) => r.name === 'Oat milk')?.bought === true;
+  });
   await ok(run, 'sync: after that, A is in step again', async () => {
     await waitInStep(run, a.page);
     return true;
