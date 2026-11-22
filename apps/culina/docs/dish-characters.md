@@ -170,7 +170,9 @@ On 2026-11-21, by the owner's word "build it so":
 - Step 5 in part: chips on a dish and on a classic, the filter of the
   Dishes list ([behaviour](behaviour.md#characters)).
 
-Open, each an issue: the user's correction of a character.
+The user's correction of a character was built on 2026-11-22
+([behaviour](behaviour.md#characters), issue 27 of suitably/domus): ticks
+in the dish editor, stored as `characters: { add, remove }`.
 
 Since 2026-11-21 the filter in Cook and in the random pick, and cuisine and
 course on the user's dishes, are part of the

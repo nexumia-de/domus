@@ -5,7 +5,7 @@
 // deep link work there.
 //
 //   node e2e/subpath.mjs
-/* global document, location, caches -- in functions the page runs */
+/* global document, location, caches, indexedDB -- in functions the page runs */
 import { launch } from './browser.mjs';
 import { expect, serve } from './serve.mjs';
 
@@ -109,6 +109,34 @@ for (const prefix of PREFIXES) {
   await page.waitForFunction(() => location.hash.includes('q=gin'));
   await page.locator('.stock-row').first().waitFor();
   await page.locator('input[name="q"]').press('Enter');
+  // The mark is in the shared database before the page goes away: a page left between the
+  // read and the write of the mark's transaction loses it (packages/host/docs/sync-orderings.md,
+  // CI mixtura-e2e on 2026-11-22). This script is about the sub-path, not that limit.
+  const markStored = () =>
+    page.evaluate(
+      () =>
+        new Promise((done) => {
+          const open = indexedDB.open('domus');
+          open.onerror = () => done(false);
+          open.onsuccess = () => {
+            const db = open.result;
+            const all = db.transaction('collections').objectStore('collections').getAll();
+            all.onerror = () => done(false);
+            all.onsuccess = () => {
+              db.close();
+              done(
+                all.result.some(
+                  (row) => row.name === 'stock' && row.records.some((r) => r.deleted !== true),
+                ),
+              );
+            };
+          };
+        }),
+    );
+  for (let tries = 0; !(await markStored()); tries++) {
+    if (tries === 50) throw new Error(`the mark by Enter is not stored under ${prefix}`);
+    await new Promise((done) => setTimeout(done, 100));
+  }
   await page.goto('about:blank');
   await page.goto(`${site.url}#/stock/buy-next`);
   await page.locator('.buy-item').first().waitFor();

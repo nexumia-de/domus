@@ -1337,6 +1337,21 @@ the last step, so it still lists egg lines as not counted.
 **Not proven.** No vectors: `test/characters.test.ts` holds hand-computed
 cases. The thresholds are in the table, not here, and come from no source.
 
+## The cook's correction
+
+A dish may store what the cook corrects (`characters: { add, remove }`,
+[data model](data-model.md#dish)); `src/characters/correct.ts` applies it.
+`correctCharacters(computed, correction, order)`: the computed ids without
+`remove`, with `add`, in the order of the table (`order`). An id in both
+lists is shown: the cook said the dish is so. An id that `order` does not
+have is left out, so a row can leave the table. `correctionOf(computed,
+shown, order)` is the way back: the difference that turns the computed
+set into the shown one, `undefined` when they are equal.
+`correctionText` gives the comparison of two versions one text, `+id` for
+added and `-id` for taken away (`diffDishVersions`, field `characters`,
+after `cuisine`). **Test:** `test/characters.test.ts`, the vector
+`vectors/versions/diff-dish-characters.json`.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,

@@ -21,5 +21,9 @@ the pair to Mixtura, and visible name **Cook's Notebook**.
 
 ## Consequences
 
-The names were not checked against existing apps or trademarks; that
-check is due before the first release.
+The names were not checked against existing apps or trademarks when
+they were chosen. On 2026-11-22 the npm registry and Flathub were read
+([name check](../name-check.md)): no package or app of either name; the
+app stores and the trademark registers could not be reached and are on
+the [owner's list](../../../../docs/owner-checks.md), due before the first
+release under these names.

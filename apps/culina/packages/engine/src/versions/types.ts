@@ -82,6 +82,7 @@ export type VersionField =
   | 'portions'
   | 'course'
   | 'cuisine'
+  | 'characters'
   | 'note';
 
 export interface FieldChange {
@@ -122,6 +123,8 @@ export interface DiffDish extends Versioned {
   course?: string;
   /** A country code; the diff gives the code, the screen its name. */
   cuisine?: string;
+  /** The cook's correction of the characters; the diff gives `+id` and `-id`, the screen the names. */
+  characters?: { add?: readonly string[]; remove?: readonly string[] };
   slots: readonly { role: string; ref: ComponentRef; amount?: Amount; optional?: boolean }[];
   note?: string;
 }

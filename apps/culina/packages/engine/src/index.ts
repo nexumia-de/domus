@@ -372,6 +372,8 @@ export type {
 } from './nutrition/types';
 
 export { MIN_MEASURED, MIN_MEASURED_FIGURES, dishCharacters, shareOf } from './characters/evaluate';
+export { correctCharacters, correctionOf, correctionText } from './characters/correct';
+export type { CharacterCorrection } from './characters/correct';
 export type {
   CharacterClause,
   CharacterCoverage,

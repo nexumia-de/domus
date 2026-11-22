@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-22
+
+- **Fix**: label in name (WCAG 2.5.3) for the variant link on a drink ([accessibility](accessibility.md)), the first point of nexumia-de/mixtura#121. The link shows "Start a Riff as Non-Alcoholic Sour" and was named "Start a riff on Daiquiri as ...", so the visible text was not in the name and voice control could not speak it. The name now begins with the visible text. The exception for it in `e2e/a11y-audit.mjs` is removed; without the fix the audit fails on the drink screen at 360 px, light and dark. Not verified: a screen reader or voice control on a device.
+- **Decision**, in the triage of the old repository's issues ([record](../../../docs/decisions/issue-triage-2026-11-22.md)): the litre stays read in the app (`screens/spec/volume-text.ts`) and does not become a unit of the engine's table, because a new unit id in a stored drink is refused by every older version of the app that reads the export.
+
 ## 2026-11-21 (shared texts)
 
 - **Update**: the native app's strings spread `sharedEn` / `sharedDe` from `@nexumia-de/gjs/texts` (style, spaces, join, failure words, sync status, support); the copies are gone, the wording is identical. `about.support` became `support`. Checked: typecheck, 13 tests, smoke and Broadway interaction check in real GJS.

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22
+
+- **Decision**: [triage of every open issue](decisions/issue-triage-2026-11-22.md), by an agent on the owner's instruction that none stays open and nothing is asked: 3 issues of this repository and 61 of the old repositories nexumia-de/culina, emptio and mixtura, which the import of 2026-11-19 superseded. Built: Culina's correction of a dish's characters (issue 27) and Mixtura's label in name for the variant link. Checked as far as the network allows: Culina's [name check](../apps/culina/docs/name-check.md). Everything that needs a device, an account, a book or a legal check is in [what only the owner can do](owner-checks.md). Not verified: nobody reviewed the decisions; three subagents started for the reading stopped at a usage limit and contributed nothing.
+
 ## 2026-11-21 (evening)
 
 - **Decision**: by the owner: one shared app shell ([decision](decisions/shared-shell.md)). Why every app had its own (separate repositories until 2026-11-19, the sharing rule applied to logic only, no check), what is shared from now on, the plan in five steps (Emptio done in pull request 19; Mixtura, Culina, shared navigation and settings, native apps). Open after this session: pull requests 18 (Culina native) and 19 (Emptio frame) wait for CI, which stopped running (Actions minutes of the private repository, presumably); the owner makes the repository public or raises the limit.

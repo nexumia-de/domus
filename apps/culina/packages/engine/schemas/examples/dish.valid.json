@@ -3,6 +3,7 @@
   "name": "Roast carrots with yoghurt sauce",
   "portions": 2,
   "course": "main",
+  "characters": { "add": ["crisp"], "remove": ["fried"] },
   "slots": [
     {
       "role": "main",

@@ -51,11 +51,11 @@ in [how chefs work](chef-practice.md) and
    one list with one filter (origin, character, course, cuisine, without
    meat and fish, only with every amount), used by the lists, the start
    screen, the finder and the random pick; one dish and one cook screen;
-   course and cuisine on own dishes. The base is built; the screens are
-   being built on 2026-11-21. Open after it, in the order of the
+   course and cuisine on own dishes. Built on 2026-11-21 (pull request
+   30), and the user's correction of a character on 2026-11-22. Open after it, in the order of the
    [plan for "what do I feel like"](feel-like-plan.md): something like
    this dish, time and effort, favourites (the owner's to decide under the
    rule "no food diary"), taste effects and seasonal produce (both wait
-   for a source); the user's correction of a character.
+   for a source).
 8. **Later.** Curated affinities with sources, cost, prep lists,
    allergens.

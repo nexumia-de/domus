@@ -160,6 +160,14 @@ export const appStringsDe: typeof appStrings = {
     filterLabel: 'Art',
     any: 'Egal',
     none: 'Kein Gericht ist so.',
+    editHeading: 'Art',
+    editHint:
+      'Aus Füllungen und Schritten ermittelt, jede Regel eine Einschätzung. Hake an, wie dieses Gericht ist.',
+    added: 'von dir ergänzt',
+    removed: 'von dir entfernt',
+    reset: 'Wie ermittelt',
+    diffAdded: (name: string): string => `ergänzt: ${name}`,
+    diffRemoved: (name: string): string => `entfernt: ${name}`,
   },
   dishes: {
     listLabel: 'Alle Gerichte',
@@ -562,6 +570,7 @@ export const appStringsDe: typeof appStrings = {
       portions: 'Portionen',
       course: 'Gang',
       cuisine: 'Küche',
+      characters: 'Art',
       note: 'Notiz',
     },
     toTaste: 'nach Geschmack',
