@@ -44,9 +44,16 @@ The agent proposed bases over a full set of classics; the owner agreed
    base follows a named source, amounts as facts, the method in our own
    words, as before. Bases are international; the cuisine stays a
    filter.
-3. **Classics stay, without a target count.** The 48 shipped classics
-   stay. Regional classics (issue 38) are on hold; only the region
-   field may come earlier.
+3. **Classics become bases or an import pack** (owner, 2026-11-22: "yes,
+   become basics, and add more, all possible ones there are"). The
+   shipped classics that are a base (sauces such as mayonnaise, alioli,
+   hollandaise, tomato sauce, béchamel; doughs and batters such as egg
+   noodles, pancakes, yeast dough, gnocchi; frames such as risotto,
+   soup, omelette, custard) become bases with slots and alternatives.
+   The others leave the shipped list and are offered as an optional
+   import pack, so their work is kept. The set of bases is to be broad,
+   covering every common base, built in batches. Regional classics
+   (issue 38) are on hold; only the region field may come earlier.
 4. **The user's own recipes come in by import** (own JSON, Cooklang;
    [decision](cooklang.md)) and by the editor; an import is version 1.
 5. **Teaching stays as help, no longer as the purpose.** The sourced
@@ -62,10 +69,6 @@ The agent proposed bases over a full set of classics; the owner agreed
   means a log of when a dish was cooked is not decided; such a log
   touches the rule "no food diary" in `AGENTS.md`, which stays until
   the owner changes it.
-- **Classics shipped or as an import pack.** Asked by the owner: should
-  the classics stay in the list for everyone, or come as a pack the
-  user loads? Until decided they stay shipped, in the one list with the
-  filter "origin" ([one dish list](one-dish-list.md)).
 - **Ingredients of bases.** The catalogue comes from USDA SR Legacy and
   lacks some products bases need (for example quark); a German source
   for them is not chosen.
