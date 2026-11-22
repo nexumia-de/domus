@@ -25,6 +25,7 @@ its own bundle. Change history is in [log.md](log.md).
 - [What only the owner can do](owner-checks.md) - The checks that need a device, the owner's accounts, a book or a legal check, collected from the closed issues; none was run by an agent.
 - [Deployment](deployment.md) - The one address domus.nexumia.de: layout of the site, headers per folder, the browser check that the apps stay apart, the deploy job, the owner's steps.
 - [Reviews](reviews.md) - The record of changes several agents made together: who did which part, who checked what, what the checks found, the counts, what nobody verified; first entry goal 6.
+- [Move to nexumia-de/domus](move-to-nexumia-de.md) - Prepared 2026-11-22 on the owner's request, nothing moved yet: transfer or copy into the empty nexumia-de/domus, the mapping of every address that names suitably/domus here and in the other nexumia-de repositories, the owner's steps.
 - [Development](development.md) - The layout, the one workspace, the checks from the root, how the histories were imported, what still points at the old repositories.
 
 # Parts

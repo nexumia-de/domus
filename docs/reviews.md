@@ -21,6 +21,17 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-22: the move to nexumia-de/domus, prepared
+
+The lead wrote [the plan](move-to-nexumia-de.md) and searched the
+repositories itself, in clones of every repository of nexumia-de it can
+read. One helper agent was asked to read GitHub's page on transfers and
+could not: docs.github.com is blocked, which the lead confirmed with
+curl (403 from the proxy). Nobody checked the plan.
+
+**What nobody verified.** What a transfer keeps; branches other than the
+default ones of the other repositories; Cloudflare's settings.
+
 ## 2026-11-22: what marks a base in Culina, and the import pack (issue 39, step 1)
 
 The owner asked the lead to do this step alone, without other agents.
