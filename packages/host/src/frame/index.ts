@@ -12,3 +12,7 @@ export type { Toaster, ToasterOptions, ToastAction } from './toaster';
 export { drawIcon, el } from './dom';
 export { FRAME_ICONS } from './icons';
 export type { FrameIconName } from './icons';
+export { openReportDialog } from './report-dialog';
+export type { ReportDialog, ReportDialogOptions } from './report-dialog';
+export { TOKEN_KEY, browserTokenStore } from './report-token';
+export type { TokenStore } from './report-token';

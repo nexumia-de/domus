@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest something one of the household apps should do.
+labels: [enhancement]
+body:
+  # The ids problem and app are filled in by the apps' Report a Problem dialog
+  # (docs/feedback.md); keep them and the options of app as they are.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to do
+      description: The situation and what is missing today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea
+      description: How the app could help. Screenshots of other apps are welcome.
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      options:
+        - Drink Builder
+        - Cook's Notebook
+        - Shopping List
+        - Household

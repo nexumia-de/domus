@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Creation**: issue reports ([feedback](../../../docs/feedback.md)): `src/feedback/` (`formUrl`, `issueBody`, `issueUrl`, `createIssue`, `feedbackEn`/`feedbackDe`, exported from the main entry) and in the frame the web dialog `openReportDialog` with `report-dialog.css` (new export `./report-dialog.css`) and `browserTokenStore` (localStorage). New exports only. 17 tests in `test/feedback.test.ts`.
+
 ## 2026-11-22
 
 - **Fix** (of a check): `test/collection-sync.test.ts`, "every collection of an app gets its own file in one run", waited a fixed 30 ms after `refresh` for the start cycle, which `refresh` does not wait for; under load the second collection was not stored yet (1 failure in 12 parallel runs, and once in a full `npm run check`). It now waits for a whole cycle with `syncSpace` (24 of 24 parallel runs pass). The sync was not changed: `refresh` starts loops and is documented so. Not changed: 16 more waits on `settle` in that file and 13 in `test/watch.test.ts` rest on the same fixed 30 ms and can race the same way under load.

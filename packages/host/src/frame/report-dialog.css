@@ -1,0 +1,265 @@
+/*
+ * The "Report a Problem" dialog (report-dialog.ts). No colours of its own: it reads the tokens of
+ * the frame (frame.md#tokens) and `--on-accent`, `--bg`, `--fs-md`, but no error colour: a failed
+ * send is said in a neutral banner, like libadwaita's (and Culina has no error tokens). On a phone
+ * it fills the screen; from 36rem on it is a centred sheet. Every control is at least `--target`
+ * high.
+ */
+.fr-dialog {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
+  height: 100%;
+  max-height: 100%;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.fr-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.fr-dialog::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+
+@media (min-width: 36rem) and (min-height: 36rem) {
+  .fr-dialog {
+    height: auto;
+    max-height: min(46rem, calc(100% - 2 * var(--sp-4)));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+}
+
+.fr-dialog *,
+.fr-dialog *::before,
+.fr-dialog *::after {
+  box-sizing: border-box;
+}
+
+.fr-dialog-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-4);
+  border-bottom: 1px solid var(--divider);
+}
+
+.fr-dialog-title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: var(--fs-lg);
+  overflow-wrap: anywhere;
+}
+
+.fr-dialog-close {
+  flex: none;
+  width: var(--target);
+  height: var(--target);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fr-dialog-close:hover {
+  background: var(--surface-2);
+}
+
+.fr-dialog-banner {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-4);
+  border-bottom: 1px solid var(--divider);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.fr-dialog-banner-action {
+  flex: none;
+  min-height: var(--target);
+  padding: 0 var(--sp-3);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fr-dialog-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-height: 0;
+  padding: var(--sp-4);
+  overflow-y: auto;
+}
+
+.fr-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.fr-dialog-label,
+.fr-dialog-saved-name {
+  font-weight: 700;
+}
+
+.fr-dialog-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.fr-dialog-subtitle {
+  margin: 0;
+  font-size: var(--fs-md, 1rem);
+}
+
+.fr-dialog-input {
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg, var(--surface));
+  color: var(--text);
+  font: inherit;
+}
+
+textarea.fr-dialog-input {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.fr-dialog-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fr-dialog-kinds legend {
+  margin-bottom: var(--sp-1);
+  padding: 0;
+}
+
+.fr-dialog-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--target);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.fr-dialog-kind input {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.fr-dialog-direct {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--divider);
+}
+
+.fr-dialog-link {
+  display: inline-block;
+  min-height: var(--target);
+  padding: var(--sp-2) 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.fr-dialog-saved {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.fr-dialog-saved > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.fr-dialog-actions {
+  display: flex;
+  flex: none;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4) calc(var(--sp-3) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--divider);
+}
+
+/* The main action is on the right, in thumb reach. */
+.fr-dialog-actions .fr-dialog-button {
+  flex: 1 1 0;
+}
+
+.fr-dialog-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--target);
+  min-height: var(--target);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.fr-dialog-button.fr-dialog-main {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.fr-dialog-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.fr-dialog-done {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.fr-dialog [hidden] {
+  display: none;
+}

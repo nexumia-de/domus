@@ -41,6 +41,12 @@ pieces that were the same in every app.
   not hold it: a toast under it would cover the button below for good.
   Timers are options.
 - Icons are own line drawings (`FRAME_ICONS`, `drawIcon`).
+- `openReportDialog({ texts, appName, app, version })`: the Report a
+  Problem dialog of the web apps, a modal `<dialog>` with its own
+  stylesheet `@nexumia-de/hospes/report-dialog.css`; the token is kept by
+  `browserTokenStore()` in localStorage
+  ([feedback](../../../docs/feedback.md)). Checked in Emptio's browser
+  check (`e2e/report-scenario.mjs`).
 
 ## Tokens
 

@@ -287,6 +287,17 @@ async function main() {
       await s.shot(shotName('10-about'));
       await s.page.keyboard.press('Escape');
       await sleep(500);
+      // The shared Report a Problem dialog (docs/feedback.md), in memory for the token.
+      const beforeReport = join(root, 'before-report.png');
+      await s.shot(beforeReport);
+      s.activate('report-problem');
+      await s.page.waitForTimeout(1000);
+      const report = shotName('13-report-problem') ?? join(root, 'report.png');
+      await s.shot(report);
+      const reportDiff = await difference(s, beforeReport, report);
+      check(reportDiff > 0.05, 'Report a Problem opens a dialog over the window', reportDiff);
+      await s.page.keyboard.press('Escape');
+      await sleep(500);
       // The preferences with the KitchenOwl group at the bottom (look; not judged by the script).
       s.activate('preferences');
       await s.page.waitForTimeout(1000);

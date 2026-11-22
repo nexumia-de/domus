@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and the About screen of the web app (`test/build.test.ts` allows the github.com pages the dialog opens); the dialog is the shared one.
+
 ## 2026-11-22
 
 - **Fix**: label in name (WCAG 2.5.3) for the variant link on a drink ([accessibility](accessibility.md)), the first point of nexumia-de/mixtura#121. The link shows "Start a Riff as Non-Alcoholic Sour" and was named "Start a riff on Daiquiri as ...", so the visible text was not in the name and voice control could not speak it. The name now begins with the visible text. The exception for it in `e2e/a11y-audit.mjs` is removed; without the fix the audit fails on the drink screen at 360 px, light and dark. Not verified: a screen reader or voice control on a device.

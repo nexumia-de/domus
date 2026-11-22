@@ -5,7 +5,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import { exit, programArgs } from 'system';
-import { adapterFor, createFileStore } from '@nexumia-de/hospes';
+import { adapterFor, createFileStore, feedbackDe, feedbackEn } from '@nexumia-de/hospes';
 import {
   addStyle,
   applyStyle,
@@ -13,6 +13,8 @@ import {
   gioFiles,
   installWebPlatform,
   randomBytes,
+  installReport,
+  reportIssueUrl,
   soupFetch,
 } from '@nexumia-de/gjs';
 import { KEYS, createApp, stringsDe, stringsEn, themeOf, type Lang } from '@emptio/app/core';
@@ -30,6 +32,7 @@ installWebPlatform(randomBytes);
 
 const lang: Lang = /^de([_.@-]|$)/.test(GLib.get_language_names()[0] ?? '') ? 'de' : 'en';
 const t = lang === 'de' ? stringsDe : stringsEn;
+const feedback = lang === 'de' ? feedbackDe : feedbackEn;
 const n = lang === 'de' ? nativeDe : nativeEn;
 
 // EMPTIO_DATA_DIR is for checks and screenshots: a folder of recorded data, never the person's.
@@ -37,6 +40,9 @@ const folder =
   GLib.getenv('EMPTIO_DATA_DIR') ?? GLib.build_filenamev([GLib.get_user_data_dir(), 'emptio']);
 const files = gioFiles(folder);
 const store = createFileStore(files);
+
+/** This app in the issue forms' `app` field (docs/feedback.md). */
+const REPORT_APP = 'Shopping List';
 
 const application = new Adw.Application({
   application_id: __APP_ID__,
@@ -104,7 +110,15 @@ application.connect('activate', () => {
   menu.append(t.settings.syncNow, 'app.sync');
   menu.append(n.menu.categories, 'app.categories');
   menu.append(n.menu.preferences, 'app.preferences');
+  menu.append(feedback.open, 'app.report-problem');
   menu.append(n.menu.about, 'app.about');
+  installReport(application, {
+    texts: feedback,
+    appName: t.appName,
+    app: REPORT_APP,
+    version: __VERSION__,
+    fetch,
+  });
   /** The pages that are shown or under the shown one; each redraws on a change. */
   const pages = new Set<Page>();
   const push = (made: Page): void => {
@@ -132,7 +146,7 @@ application.connect('activate', () => {
       comments: n.comments,
       license_type: Gtk.License.AGPL_3_0,
       website: 'https://github.com/suitably/domus',
-      issue_url: 'https://github.com/suitably/domus/issues',
+      issue_url: reportIssueUrl(REPORT_APP, __VERSION__),
     });
     about.add_link(n.support, 'https://liberapay.com/suitably');
     about.present(window);

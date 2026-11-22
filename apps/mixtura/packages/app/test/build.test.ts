@@ -135,8 +135,16 @@ test('no external URL appears in the built output', () => {
     // `GITHUB_API` is where a GitHub storage of a space is reached (src/env.ts, the host package):
     // requested only for a space whose storage the household set up in the Household app.
     const policySource = /^http:\/\/(localhost|127\.0\.0\.1):\*;?$/;
+    // GitHub's issue form and token form: pages the Report a Problem dialog opens in a new tab
+    // when the user asks (docs/feedback.md in the root), never requested by the app.
+    const reportPage = /^https:\/\/github\.com\//;
     const urls = (read(file).match(/https?:\/\/[^\s"'<>)]+/g) ?? []).filter(
-      (u) => u !== namespace && u !== GITHUB_API && !identifier.test(u) && !policySource.test(u),
+      (u) =>
+        u !== namespace &&
+        u !== GITHUB_API &&
+        !identifier.test(u) &&
+        !policySource.test(u) &&
+        !reportPage.test(u),
     );
     expect(urls, file).toEqual([]);
   }

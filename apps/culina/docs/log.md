@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and at the end of the web app's Settings; the dialog is the shared one.
+
 ## 2026-11-22
 
 - **Decision**: [what marks a base, and how the import pack works](decisions/bases-and-pack.md) (issue 39 of suitably/domus, step 1), by the lead under the owner's recipe app decision: `kind: base` in a shipped file; a base has a slot filled by a component, and a component of such a slot's role that no slot reaches is an alternative for it (the notebook's rule, no stored list); Keep copies alternatives with their role, the finder does not ask for them. The import pack is `packages/app/data/pack/<country>/`, built into `dist/classics-pack.json`, same tests, no base, no id in both folders; `fetchPack` reads it when asked. No file changed kind yet, and nothing is shown: the switch to take the pack comes with issue 39 part 2. Open, for the owner: whether the pack is taken at first start ([classic format](classic-format.md#a-base), [data model](data-model.md#classic), [engine rules](engine-rules.md)).
