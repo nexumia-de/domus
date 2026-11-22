@@ -44,9 +44,18 @@ runs:
         # Phosh hides an app without the form factor; the validator does not catch it.
         grep -Eiq '^X-Purism-FormFactor=.*mobile;' "${{ inputs.directory }}"/data/*.desktop
     # The bundle of this commit, for the Flatpak job.
+    # The recorded data the Flatpak job's screenshots show (release.toml,
+    # [screenshots]); never a person's. It travels with the bundle in dist/,
+    # which the manifest reads only the bundle file from.
+    - name: Seed the screenshot data
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: node scripts/seed.mjs dist/screenshot-data en
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: ${{ inputs.artifact }}
-        path: ${{ inputs.directory }}/dist/${{ inputs.app-id }}.js
+        path: |
+          ${{ inputs.directory }}/dist/${{ inputs.app-id }}.js
+          ${{ inputs.directory }}/dist/screenshot-data
         retention-days: 3
         if-no-files-found: error

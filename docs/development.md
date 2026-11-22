@@ -84,6 +84,25 @@ cannot read a matrix value, and because the job names (`emptio-linux-check`,
 `emptio-flatpak (x86_64)`, `emptio-release`) stay as they were. A change
 under `packages/gjs` runs both apps' checks.
 
+**Screenshots.** The x86_64 run of `native-flatpak` takes the shots of the
+app's `release.toml` (`[[screenshots.shot]]`) from the built Flatpak with
+phosh-toolkit's `release.py screenshots` and `screenshot.sh`, checked out
+at the tag in the job's `toolkit-ref`, and uploads them as the artifact
+`<app id>-screenshots` (phone 360 x 720 and desktop 1000 x 700, light and
+dark). The data is the app's recorded data: `native-linux-check` runs
+`scripts/seed.mjs` into `dist/screenshot-data` and ships it with the bundle,
+and the shot exposes it read-only to the sandbox (the apps write nothing
+on start; checked by comparing the folder before and after). The build
+composes the AppStream data with `--no-net`, so the screenshot URLs of a
+tag release, which exist only after the build, are kept; the step fails
+when the metainfo lists a shot that was not taken. `native-release`
+attaches the shots to the GitHub Release. The metainfo's `<screenshots>`
+is written by the release pull request (`release.py prepare`), so it
+arrives with an app's next release, not before.
+To look at the shots from a cloud session, the artifact download needs
+the host `productionresultssa4.blob.core.windows.net` (GitHub's artifact
+storage; added by the owner on 2026-11-22).
+
 ### Boundaries
 
 `scripts/check-boundaries.mjs` reads every `import`, `export … from`,

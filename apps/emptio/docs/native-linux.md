@@ -116,6 +116,19 @@ repository); without it a tag can still be pushed by hand. There is no nightly a
 second app id for the bundle, the desktop file, the metainfo and the
 icons.
 
+Screenshots for the store: one shot of the main page with the recorded
+data of `scripts/seed.mjs`, declared in `release.toml` and taken by the
+x86_64 Flatpak job from the built app ([CI for the native apps](../../../docs/development.md#ci-for-the-native-apps)).
+Locally, after `npm run build -w @emptio/linux`, from `packages/linux`:
+
+```sh
+node scripts/seed.mjs dist/screenshot-data en
+```
+
+```sh
+python3 ../../../../phosh-toolkit/scripts/release.py --root . screenshots --out shots -- gjs -m dist/de.nexumia.Emptio.js
+```
+
 # What is not checked
 
 - **The Flatpak was built by CI only** (`emptio-flatpak`, x86_64 and

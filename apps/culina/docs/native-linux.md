@@ -213,6 +213,19 @@ Flatpak repository (`flatpak.nexumia.de`; the owner adds the line
 `suitably/domus culina-v*` to its `apps.txt`, as for the other two). There
 is no nightly app yet.
 
+Screenshots for the store: one shot of the main page with the recorded
+data of `scripts/seed.mjs`, declared in `release.toml` and taken by the
+x86_64 Flatpak job from the built app ([CI for the native apps](../../../docs/development.md#ci-for-the-native-apps)).
+Locally, after `npm run build -w @culina/linux`, from `packages/linux`:
+
+```sh
+node scripts/seed.mjs dist/screenshot-data en
+```
+
+```sh
+python3 ../../../../phosh-toolkit/scripts/release.py --root . screenshots --out shots -- gjs -m dist/de.nexumia.Culina.js
+```
+
 # Packaging
 
 `data/` holds the desktop file (`X-Purism-FormFactor=Workstation;Mobile;`),
