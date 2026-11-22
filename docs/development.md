@@ -99,6 +99,9 @@ when the metainfo lists a shot that was not taken. `native-release`
 attaches the shots to the GitHub Release. The metainfo's `<screenshots>`
 is written by the release pull request (`release.py prepare`), so it
 arrives with an app's next release, not before.
+To look at the shots from a cloud session, the artifact download needs
+the host `productionresultssa4.blob.core.windows.net` (GitHub's artifact
+storage; added by the owner on 2026-11-22).
 
 ### Boundaries
 
