@@ -16,7 +16,9 @@ export interface StoredRecord {
 export const LIST = 'list';
 /** The collection of what the household changed about categories. */
 export const CATEGORIES = 'list-categories';
-export const COLLECTIONS: readonly string[] = [LIST, CATEGORIES];
+/** The collection of the KitchenOwl connection and its links (docs/kitchenowl.md). */
+export const KITCHENOWL = 'kitchenowl';
+export const COLLECTIONS: readonly string[] = [LIST, CATEGORIES, KITCHENOWL];
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);

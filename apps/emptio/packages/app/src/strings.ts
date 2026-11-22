@@ -82,9 +82,41 @@ export const stringsEn = {
     notKept: 'This choice could not be kept on this device.',
     about: 'About',
     aboutText:
-      'Shopping List keeps the list on this device. It sends nothing anywhere unless a space has a storage the household set up.',
+      'Shopping List keeps the list on this device. It sends nothing anywhere unless a space has a storage the household set up or is connected to a KitchenOwl server.',
     licence: 'Free software under the AGPL-3.0-or-later licence.',
     categoriesSource: 'Starting categories:',
+  },
+  kitchenowl: {
+    title: 'KitchenOwl',
+    intro: (space: string) =>
+      `Keeps the list of ${space} in step with a list of your KitchenOwl server: what is put on or ticked off one list is put on or ticked off the other. Priority, category and note stay in Shopping List. Every device of the space takes part.`,
+    address: 'Server address',
+    token: 'Long-lived token',
+    tokenHint: 'Made in the settings of your KitchenOwl account.',
+    check: 'Check',
+    checking: 'Checking …',
+    household: 'Household',
+    list: 'List',
+    connect: 'Connect',
+    connected: (list: string, address: string) => `Connected to ${list} on ${address}.`,
+    syncNow: 'Sync now',
+    disconnect: 'Disconnect',
+    disconnected: 'KitchenOwl disconnected. The list stays as it is.',
+    undo: 'Undo',
+    badAddress: 'This is no web address. It starts with https://',
+    noLists: 'This household has no list.',
+    status: {
+      never: 'Not synced yet',
+      inStep: (ago: string) => `Synced ${ago}`,
+      failed: (why: string) => `Last sync failed: ${why}`,
+    },
+    failures: {
+      unreachable:
+        'the server could not be reached. In the browser the server must allow this address (CORS).',
+      unauthorized: 'the server refused the token',
+      'not-found': 'the list was not found on the server',
+      refused: 'the server gave an answer this version does not understand',
+    },
   },
   space: { home: 'Home', unnamed: 'Unnamed space' },
   status: {

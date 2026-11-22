@@ -164,6 +164,10 @@ cycle or another tab in between is not overwritten and fields this app
 does not know are kept. The orderings are in
 [list orderings](list-orderings.md).
 
+A space connected to KitchenOwl also has the collection `kitchenowl`
+in the loop, and its list is kept in step with the KitchenOwl list on
+the same 15 seconds ([KitchenOwl sync](kitchenowl.md)).
+
 # Offline and installing
 
 A manifest and a service worker (the host package's

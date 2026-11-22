@@ -12,8 +12,18 @@ import {
   type SyncStatus,
 } from '@nexumia-de/hospes';
 import type { CategoryChange, Entry } from '@emptio/engine';
-import { CATEGORIES, COLLECTIONS, LIST, categoryChangesOf, entriesOf } from './list/model';
+import {
+  CATEGORIES,
+  COLLECTIONS,
+  KITCHENOWL,
+  LIST,
+  categoryChangesOf,
+  entriesOf,
+} from './list/model';
 import type { ListDeps } from './list/actions';
+import { bridgeCycle, type BridgeResult } from './kitchenowl/bridge';
+import { createKitchenowlClient, type Fetch, type KitchenowlClient } from './kitchenowl/client';
+import { configOf, type KitchenowlConfig } from './kitchenowl/config';
 import { KEYS, type Prefs } from './prefs';
 
 /** How often a shared list is read again while the app is in front (docs/behaviour.md#sync). */
@@ -27,12 +37,24 @@ export interface AppState {
   space?: SpaceView;
   entries: Entry[];
   changes: CategoryChange[];
+  /** The KitchenOwl list the shown space is connected to. */
+  kitchenowl?: KitchenowlConfig;
+}
+
+/** How the KitchenOwl list of a space was kept in step (docs/kitchenowl.md). */
+export interface KitchenowlStatus {
+  /** The last cycle. */
+  last: Exclude<BridgeResult, { state: 'off' }>;
+  /** When a cycle last went through. */
+  syncedAt?: string;
 }
 
 export interface AppOptions extends ListDeps {
   prefs: Prefs;
   names: { home: string; unnamed: string };
   adapter: CollectionSyncOptions['adapter'];
+  /** The requests to a KitchenOwl instance; without it the app sends none. */
+  fetch?: Fetch;
   isVisible?: () => boolean;
   isOnline?: () => boolean;
   /** For tests: the loops' timers. */
@@ -55,6 +77,12 @@ export interface App {
    */
   act<T>(action: (deps: ListDeps, spaceId: string) => Promise<T>): Promise<T | undefined>;
   status(spaceId: string): SyncStatus | undefined;
+  /** The KitchenOwl status of a connected space; undefined when it is not connected or not run yet. */
+  kitchenowl(spaceId: string): KitchenowlStatus | undefined;
+  /** Runs a KitchenOwl cycle for every connected space now. Never rejects. */
+  syncKitchenowl(): Promise<void>;
+  /** A client for a KitchenOwl server, to check an address and a token; null without `fetch`. */
+  kitchenowlClient(url: string, token: string): KitchenowlClient | null;
   /** The page came to the front or the connection is back. */
   wake(): void;
   stop(): void;
@@ -87,6 +115,62 @@ export function createApp(options: AppOptions): App {
     ...(options.clearTimer ? { clearTimer: options.clearTimer } : {}),
   });
 
+  const setTimer = options.setTimer ?? ((fn: () => void, ms: number) => setTimeout(fn, ms));
+  const clearTimer =
+    options.clearTimer ??
+    ((handle: unknown) => clearTimeout(handle as ReturnType<typeof setTimeout>));
+  const bridges = new Map<string, { busy: boolean; status?: KitchenowlStatus }>();
+  let bridgeTimer: unknown;
+
+  /** One KitchenOwl cycle for every space that is connected (docs/kitchenowl.md#when). */
+  async function bridge(): Promise<void> {
+    const fetch = options.fetch;
+    if (fetch === undefined || stopped || current.phase !== 'ready') return;
+    if (options.isOnline && !options.isOnline()) return;
+    for (const space of current.spaces) {
+      const running = bridges.get(space.id) ?? { busy: false };
+      bridges.set(space.id, running);
+      if (running.busy) continue;
+      running.busy = true;
+      try {
+        const result = await bridgeCycle({ ...deps, fetch }, space.id);
+        const before = running.status;
+        if (result.state === 'off') {
+          delete running.status;
+        } else {
+          running.status = {
+            last: result,
+            ...(result.state === 'synced'
+              ? { syncedAt: now() }
+              : before?.syncedAt === undefined
+                ? {}
+                : { syncedAt: before.syncedAt }),
+          };
+        }
+        if (result.state !== 'off' && result.changed) {
+          await load();
+          sync.changed(space.id);
+        } else if (result.state !== 'off' || before !== undefined) {
+          tell();
+        }
+      } catch {
+        // The shared database failed; the next cycle tries again.
+      } finally {
+        running.busy = false;
+      }
+    }
+  }
+
+  /** The next KitchenOwl cycle in `ms`, then one every interval while the page is in front. */
+  function scheduleBridge(ms: number): void {
+    if (options.fetch === undefined || stopped) return;
+    clearTimer(bridgeTimer);
+    bridgeTimer = setTimer(() => {
+      const visible = options.isVisible ? options.isVisible() : true;
+      void (visible ? bridge() : Promise.resolve()).finally(() => scheduleBridge(LIST_INTERVAL_MS));
+    }, ms);
+  }
+
   async function read(): Promise<AppState> {
     const stored = await ensureSpace(store, names.home);
     const spaces = stored.map((space) => viewOf(space, names.unnamed));
@@ -98,7 +182,15 @@ export function createApp(options: AppOptions): App {
     const space = pickSpace(spaces, prefs.get(KEYS.space), counts);
     if (space === undefined) return { phase: 'ready', spaces, entries: [], changes: [] };
     const changes = categoryChangesOf((await store.readCollection(space.id, CATEGORIES)).records);
-    return { phase: 'ready', spaces, space, entries: lists.get(space.id) ?? [], changes };
+    const kitchenowl = configOf((await store.readCollection(space.id, KITCHENOWL)).records);
+    return {
+      phase: 'ready',
+      spaces,
+      space,
+      entries: lists.get(space.id) ?? [],
+      changes,
+      ...(kitchenowl === undefined ? {} : { kitchenowl }),
+    };
   }
 
   async function load(): Promise<void> {
@@ -125,7 +217,10 @@ export function createApp(options: AppOptions): App {
     async load() {
       await load();
       // After the read, so the first space of a new device exists before the loops look.
-      if (current.phase === 'ready') await sync.refresh();
+      if (current.phase === 'ready') {
+        await sync.refresh();
+        scheduleBridge(0);
+      }
     },
     async choose(spaceId) {
       prefs.set(KEYS.space, spaceId);
@@ -143,19 +238,28 @@ export function createApp(options: AppOptions): App {
       }
       await load();
       sync.changed(space.id);
+      scheduleBridge(2_000);
       return result;
     },
     status: (spaceId) => sync.status(spaceId),
+    kitchenowl: (spaceId) => bridges.get(spaceId)?.status,
+    syncKitchenowl: () => bridge(),
+    kitchenowlClient: (url, token) =>
+      options.fetch === undefined
+        ? null
+        : createKitchenowlClient({ url, token, fetch: options.fetch }),
     wake() {
       // A space may have been made, joined or given a storage in the Household app, and
       // another tab may have changed the list.
       void load()
         .then(() => sync.refresh())
-        .then(() => sync.syncNow());
+        .then(() => sync.syncNow())
+        .then(() => scheduleBridge(0));
     },
     stop() {
       stopped = true;
       sync.stop();
+      clearTimer(bridgeTimer);
       listeners.clear();
     },
   };

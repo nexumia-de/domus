@@ -26,3 +26,16 @@ export type { Lang, Prefs, Theme } from './prefs';
 export { stringsEn } from './strings';
 export type { Strings } from './strings';
 export { stringsDe } from './strings-de';
+export type { KitchenowlStatus } from './app';
+export { bridgeCycle } from './kitchenowl/bridge';
+export type { BridgeResult } from './kitchenowl/bridge';
+export { KitchenowlError, createKitchenowlClient } from './kitchenowl/client';
+export type { Fetch, KitchenowlClient, KitchenowlFailure, Named } from './kitchenowl/client';
+export {
+  KITCHENOWL,
+  configOf,
+  connectKitchenowl,
+  disconnectKitchenowl,
+  instanceUrl,
+} from './kitchenowl/config';
+export type { KitchenowlConfig } from './kitchenowl/config';

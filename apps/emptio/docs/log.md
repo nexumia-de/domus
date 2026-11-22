@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22
+
+- **Add**: [KitchenOwl sync](kitchenowl.md). A space can be connected to a list of the household's KitchenOwl server (settings in the web app, preferences in the Linux app); the two lists are kept in step both ways every 15 seconds: adding, ticking, removing, amounts, renames. The connection and the links are a new collection `kitchenowl` of the space, so every device of the household takes part. The web app needs CORS headers from the household's reverse proxy (KitchenOwl's backend sends none). Owner's decision of the same day: beside the goals, two-way, both apps. Checked: 17 new unit tests against a KitchenOwl in memory and behind fake HTTP, 8 browser checks in each of the three runs, smoke and Broadway check of the Linux app with a screenshot of its preferences; not against a real KitchenOwl.
+
 ## 2026-11-21 (shared texts)
 
 - **Update**: the native app takes the style, spaces, join, sync status and support texts from `@nexumia-de/gjs/texts` and keeps only menu, spaces intro and About comment. Visible changes: sync status words are the shared ones ("In step · …" instead of the web's "Synced …"), and the own-device space is called "This device" instead of "Home", as in the other native apps. Checked: typecheck, 2 tests, smoke and Broadway interaction check in real GJS.

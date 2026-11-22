@@ -1,11 +1,14 @@
 // The running app without a screen: the first start, the shown space, a write
 // that fails, and two devices that share a list through a storage in memory.
-// Not proven here: IndexedDB, a real storage, a real clock, two real devices.
+// A space connected to KitchenOwl, through a fake server.
+// Not proven here: IndexedDB, a real storage, a real KitchenOwl, a real clock, two real devices.
 import { expect, test } from 'vitest';
 import { createMemoryStore, type Store, type StoredSpace } from '@nexumia-de/hospes';
 import { createApp, type App } from '../src/app';
 import { addCategory, addToList, clearBought, setBought } from '../src/list/actions';
 import { KEYS } from '../src/prefs';
+import { connectKitchenowl } from '../src/kitchenowl/config';
+import { fakeFetch, fakeKitchenowl } from './kitchenowl-fake';
 import {
   fakeStorage,
   memoryPrefs,
@@ -146,8 +149,10 @@ test('two devices share a list: an entry, a tick, a clearing and a category trav
   await a.act((deps, id) => addCategory(deps, id, 'Garden'));
   a.wake();
   await settle();
-  // Two sealed files, and the storage sees neither a name nor a category.
+  // Three sealed files (the KitchenOwl one empty), and the storage sees neither a name nor a
+  // category.
   expect([...storage.files.keys()].sort()).toEqual([
+    `${space.id}/kitchenowl.json`,
     `${space.id}/list-categories.json`,
     `${space.id}/list.json`,
   ]);
@@ -256,5 +261,60 @@ test('the list is read again every 15 seconds while a shared space is shown', as
   await app.load();
   await settle();
   expect(waits).toContain(15_000);
+  app.stop();
+});
+
+test('a space connected to KitchenOwl is kept in step by the app, and says how', async () => {
+  const store = createMemoryStore();
+  const ko = fakeKitchenowl();
+  ko.person.add('Bread');
+  let n = 0;
+  const app = createApp({
+    store,
+    now,
+    newId: () => `k${++n}`,
+    prefs: memoryPrefs(),
+    names,
+    adapter: () => {
+      throw new Error('no storage in this test');
+    },
+    fetch: fakeFetch(ko.client),
+    ...noTimers,
+  });
+  await app.load();
+  const space = app.state().space?.id ?? '';
+  // Not connected: nothing is asked.
+  await app.syncKitchenowl();
+  expect(ko.state.requests).toBe(0);
+  expect(app.kitchenowl(space)).toBeUndefined();
+
+  await app.act((deps, id) =>
+    connectKitchenowl(deps, id, {
+      url: 'https://ko.example',
+      token: 'llt',
+      householdId: 1,
+      listId: 7,
+    }),
+  );
+  await app.act((deps, id) => addToList(deps, id, { name: 'Milk' }));
+  await app.syncKitchenowl();
+  expect(
+    app
+      .state()
+      .entries.map((e) => e.name)
+      .sort(),
+  ).toEqual(['Bread', 'Milk']);
+  expect(ko.person.list().map((i) => i.name)).toEqual(['Bread', 'Milk']);
+  expect(app.kitchenowl(space)).toMatchObject({
+    last: { state: 'synced' },
+    syncedAt: expect.any(String),
+  });
+
+  ko.state.down = true;
+  await app.syncKitchenowl();
+  expect(app.kitchenowl(space)).toMatchObject({
+    last: { state: 'failed', failure: 'unreachable' },
+    syncedAt: expect.any(String),
+  });
   app.stop();
 });

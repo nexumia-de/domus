@@ -40,7 +40,7 @@ const text = (value: string | undefined): string | undefined => {
 };
 
 /** The fields of the data model on top of the stored value; an absent optional field is removed. */
-function valueFor(entry: Entry, stored: unknown): Record<string, unknown> {
+export function valueFor(entry: Entry, stored: unknown): Record<string, unknown> {
   const optional = new Set(['ingredientId', 'amount', 'note', 'bought', 'notAt']);
   const foreign =
     stored !== null && typeof stored === 'object'

@@ -21,6 +21,7 @@ import { toastStage, viewStage } from './frame-scenario.mjs';
 import { clearStage, listStage } from './scenario.mjs';
 import { offlineStage, screensStage, settingsStage } from './settings-scenario.mjs';
 import { syncStage } from './sync-scenario.mjs';
+import { kitchenowlStage } from './kitchenowl-scenario.mjs';
 
 const work = mkdtempSync(join(tmpdir(), 'emptio-e2e-'));
 const bundle = (entry, outfile, options) =>
@@ -116,6 +117,11 @@ try {
       if (!only || only.includes('syncStage')) await syncStage(run);
     } catch (error) {
       check(false, `${label}: syncStage aborted: ${String(error.message).split('\n')[0]}`);
+    }
+    try {
+      if (!only || only.includes('kitchenowlStage')) await kitchenowlStage(run);
+    } catch (error) {
+      check(false, `${label}: kitchenowlStage aborted: ${String(error.message).split('\n')[0]}`);
     }
     check(
       problems.length === 0,

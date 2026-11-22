@@ -31,11 +31,12 @@ share, each collection one sealed file in the space's storage
 [behaviour](behaviour.md#spaces)). Since 2026-11-20; the plan of
 2026-11-18 had a file per app in a place.
 
-| Collection        | Key             | Holds                 | Built in |
-| ----------------- | --------------- | --------------------- | -------- |
-| `list`            | the entry id    | [Entry](#entry)       | Goal 1   |
-| `list-categories` | the category id | [Category](#category) | Goal 1   |
-| `stores`          | the store id    | [Store](#store)       | Goal 3   |
+| Collection        | Key                   | Holds                                                  | Built in   |
+| ----------------- | --------------------- | ------------------------------------------------------ | ---------- |
+| `list`            | the entry id          | [Entry](#entry)                                        | Goal 1     |
+| `list-categories` | the category id       | [Category](#category)                                  | Goal 1     |
+| `stores`          | the store id          | [Store](#store)                                        | Goal 3     |
+| `kitchenowl`      | `config`, `item:<id>` | [KitchenOwl connection and links](kitchenowl.md#links) | 2026-11-22 |
 
 A space on this device only holds the same records before sync is set
 up, so sharing later needs no conversion. A collection is shared: a

@@ -66,6 +66,8 @@ application.connect('activate', () => {
     names: { home: n.preferences.homeSpace, unnamed: n.preferences.unnamedSpace },
     adapter: (storage) => adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline }),
     isOnline,
+    // Only to the KitchenOwl server a space was connected to (docs/kitchenowl.md).
+    fetch: (url, init) => fetch(url, init),
   });
 
   const nav = new Adw.NavigationView();
