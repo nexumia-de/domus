@@ -195,12 +195,14 @@ export async function scenario(browser, run) {
     'github: the first button opens the prefilled "new repository" page in a new tab',
   );
   ok(
-    hrefs[1]?.startsWith('https://github.com/settings/personal-access-tokens/new') &&
+    hrefs[1]?.startsWith('https://github.com/settings/personal-access-tokens/new?') &&
+      hrefs[1].includes('contents=write') &&
+      hrefs[1].includes(`name=${encodeURIComponent(t.create.github.tokenName)}`) &&
       hrefs[1].includes('noopener'),
-    'github: the second button opens the "new token" page in a new tab',
+    'github: the second button opens the prefilled "new token" page in a new tab',
   );
   ok(
-    (await a.locator('ol.steps li').count()) === 4,
+    (await a.locator('ol.steps li').count()) === t.create.github.step2List.length,
     'github: the token page comes with a numbered list of what to click',
   );
   ok(
@@ -447,7 +449,7 @@ export async function scenario(browser, run) {
   await c.waitForSelector('[data-testid=access-token]');
   ok(
     (await mainText(c)).includes(t.join.accessNeeded) &&
-      (await c.locator('ol.steps li').count()) === 4,
+      (await c.locator('ol.steps li').count()) === t.join.githubStepsList.length,
     'join: an invite without access asks for it and says how to get a token',
   );
   await looked(c, 'join-without-access');
@@ -730,7 +732,7 @@ export async function deviceOnly(browser, run) {
   await d.setViewportSize({ width, height });
   await d.click('[data-testid=type-github]');
   ok(
-    (await d.locator('ol.steps li').count()) === 4 &&
+    (await d.locator('ol.steps li').count()) === t.create.github.step2List.length &&
       (await d.locator('[data-testid=step-of]').innerText()) === t.create.stepOf(2, 3),
     "connect: GitHub's guided steps are those of Create a space",
   );
