@@ -8,6 +8,7 @@ import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { storeText } from '../editor/store-text';
+import { aiPasteBlock } from './ai-paste';
 import { renderCookImport } from './import-cook';
 import { renderJsonImport } from './json-import';
 
@@ -55,6 +56,6 @@ export const importScreen = (): HTMLElement => {
       else void renderJsonImport(host, read.content, status);
     });
   });
-  section.append(el('p', 'muted', text.intro), pick, status, host);
+  section.append(el('p', 'muted', text.intro), pick, aiPasteBlock(host, status), status, host);
   return section;
 };

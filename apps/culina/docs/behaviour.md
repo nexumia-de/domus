@@ -1763,6 +1763,16 @@ with the technique's name.
   keeps what it needs in memory; after the toast or a reload it is gone (hence the question before
   "replace").
 
+**Recipe from an AI** ([decision](decisions/ai-prompt-import.md), first step of issue 40). Below
+the file button: **Copy AI prompt** copies a prompt in the app's language
+(`src/screens/import/ai-prompt.ts`) that asks a language model of the user's choice for Cooklang,
+naming only the units the reader knows and asking not to invent amounts; the prompt is also shown
+read-only, so it can be selected when the clipboard is refused ("The prompt could not be copied;
+select it below and copy it."). The user pastes the answer into **Answer of the AI (Cooklang)** and
+presses **Read the text**: an empty field says "Paste the answer first."; otherwise the text goes
+through the Cooklang step below exactly like a `.cook` file named "Pasted recipe". No model runs in
+the app and nothing is sent anywhere. The own JSON import format of the decision is not built yet.
+
 **Cooklang files.** Nothing is saved until the step is complete and the user presses Save.
 The step shows what was read (ingredient lines, steps; cookware, timers and notes stay as words in the
 steps; `=` locks are not kept) and asks, in this order:
