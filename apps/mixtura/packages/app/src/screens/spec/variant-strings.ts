@@ -5,8 +5,9 @@ export const variantStrings = {
   intro: (template: string) =>
     `Starting points that follow the ${template} template with another kind of base.`,
   start: (name: string) => `Start a Riff as ${name}`,
+  /** Begins with the visible text of the link, so that it can be spoken by voice (WCAG 2.5.3). */
   startAria: (name: string, drink: string) =>
-    `Start a riff on ${drink} as ${name}: opens the editor with the variant's slots`,
+    `Start a Riff as ${name}, from ${drink}: opens the editor with the variant's slots`,
   replaces: (names: string, note: string | undefined) =>
     note
       ? `Replaces ${names} with a base of your choice: ${note}.`

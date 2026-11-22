@@ -194,8 +194,6 @@ export const audit = (page) =>
       // Controls whose text is one plain label; composite rows (a name plus counts) are not judged.
       if (name === null || el.children.length > 0 || !visible(el)) continue;
       const text = words(el.textContent || '');
-      // Known: the variant link names the drink first (screens/spec/variant-strings.ts); open follow-up.
-      if (name.startsWith('Start a riff on ')) continue;
       if (text && !words(name).includes(text)) {
         out.push(
           `label in name: ${label(el)} has visible text "${text}" outside its accessible name`,
