@@ -34,7 +34,27 @@
     <control>keyboard</control>
     <control>touch</control>
   </supports>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The shopping list, sorted by when it is needed</caption>
+      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.0/list-phone-light.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The shopping list, sorted by when it is needed</caption>
+      <image>https://github.com/suitably/domus/releases/download/emptio-v0.2.0/list-desktop-light.png</image>
+    </screenshot>
+  </screenshots>
   <releases>
+    <release version="0.2.0" date="2026-11-22">
+      <description>
+        <ul>
+          <li>The list can be kept in step with a list on your KitchenOwl server, in both directions.</li>
+          <li>The app's page in the software centre shows screenshots.</li>
+          <li>The sync status and the space on this device are now worded as in the other household apps.</li>
+          <li>The list syncs when you open the app and after a change instead of every few seconds; pull the list down or choose Sync now to sync at any time, and turn automatic syncing off in the preferences.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-11-21">
       <description>
         <p>Shopping List is now also an app for Linux phones and desktops.</p>
