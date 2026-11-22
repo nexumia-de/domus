@@ -107,6 +107,8 @@ export class Session {
       GDK_BACKEND: 'broadway',
       BROADWAY_DISPLAY: `:${display}`,
       GSETTINGS_BACKEND: 'memory',
+      // The report dialog's token never reaches a real keyring (docs/feedback.md).
+      DOMUS_TEST_KEYRING: 'memory',
       XDG_CONFIG_DIRS: `${join(this.work, 'xdg')}:/etc/xdg`,
       [this.o.dataEnv]: this.o.dataDir,
       LANG: this.o.lang === 'de' ? 'de_DE.UTF-8' : 'en_US.UTF-8',

@@ -7,3 +7,12 @@ export { randomBytes } from './random';
 export { soupFetch } from './soup-fetch';
 export { addStyle, applyStyle, type Style } from './style';
 export { installWebPlatform, subtle } from './subtle';
+export { createKeyring, type Keyring, type KeyringOptions } from './keyring';
+export {
+  GITHUB_TOKEN,
+  TEST_KEYRING,
+  installReport,
+  reportIssueUrl,
+  showReportDialog,
+  type ReportOptions,
+} from './report-dialog';

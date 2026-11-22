@@ -59,6 +59,17 @@ data of the checks and for tests; it is a separate entry
 - **`style.ts`**: `applyStyle('system' | 'light' | 'dark')` for
   libadwaita's colour scheme, and `addStyle(css)` for the app's one
   stylesheet (its accent colour and the 44 px controls).
+- **`keyring.ts`**: `createKeyring({ appId, labels, memoryEnv })`,
+  secrets by kind in the keyring through libsecret (loaded with
+  `imports.gi`, so a missing typelib does not stop the app; in the
+  Flatpak through the Secret portal). Without libsecret or a daemon a
+  secret is kept in memory for the session.
+- **`report-dialog.ts`**: `installReport(application, options)` adds
+  `app.report-problem` with the Report a Problem dialog, and
+  `reportIssueUrl(app, version)` is the About dialog's `issue_url`
+  ([feedback](../../../docs/feedback.md)). The token is the keyring's
+  kind `github-token`; `DOMUS_TEST_KEYRING=memory` keeps checks off the
+  real keyring.
 
 # What the checks prove
 

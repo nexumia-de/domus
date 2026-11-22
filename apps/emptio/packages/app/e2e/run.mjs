@@ -20,6 +20,7 @@ import { categoriesStage, entryStage } from './entry-scenario.mjs';
 import { toastStage, viewStage } from './frame-scenario.mjs';
 import { clearStage, listStage } from './scenario.mjs';
 import { offlineStage, screensStage, settingsStage } from './settings-scenario.mjs';
+import { reportStage } from './report-scenario.mjs';
 import { syncStage } from './sync-scenario.mjs';
 import { kitchenowlStage } from './kitchenowl-scenario.mjs';
 
@@ -64,6 +65,7 @@ const stages = [
   entryStage,
   categoriesStage,
   screensStage,
+  reportStage,
   clearStage,
   settingsStage,
   offlineStage,

@@ -5,7 +5,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import { exit, programArgs } from 'system';
-import { adapterFor, createFileStore } from '@nexumia-de/hospes';
+import { adapterFor, createFileStore, feedbackDe, feedbackEn } from '@nexumia-de/hospes';
 import {
   addStyle,
   applyStyle,
@@ -13,6 +13,8 @@ import {
   gioFiles,
   installWebPlatform,
   randomBytes,
+  installReport,
+  reportIssueUrl,
   soupFetch,
 } from '@nexumia-de/gjs';
 import type { DisplaySystem } from '@mixtura/engine';
@@ -31,12 +33,16 @@ installWebPlatform(randomBytes);
 
 const lang = /^de([_.@-]|$)/.test(GLib.get_language_names()[0] ?? '') ? 'de' : 'en';
 const t = lang === 'de' ? textsDe : textsEn;
+const feedback = lang === 'de' ? feedbackDe : feedbackEn;
 
 // MIXTURA_DATA_DIR is for checks and screenshots: a folder of recorded data, never the person's.
 const folder =
   GLib.getenv('MIXTURA_DATA_DIR') ?? GLib.build_filenamev([GLib.get_user_data_dir(), 'mixtura']);
 const files = gioFiles(folder);
 const store = createFileStore(files);
+
+/** This app in the issue forms' `app` field (docs/feedback.md). */
+const REPORT_APP = 'Drink Builder';
 
 const application = new Adw.Application({
   application_id: __APP_ID__,
@@ -128,7 +134,15 @@ application.connect('activate', () => {
 
   const menu = new Gio.Menu();
   menu.append(t.menu.preferences, 'app.preferences');
+  menu.append(feedback.open, 'app.report-problem');
   menu.append(t.menu.about, 'app.about');
+  installReport(application, {
+    texts: feedback,
+    appName: t.appName,
+    app: REPORT_APP,
+    version: __VERSION__,
+    fetch,
+  });
   const action = (name: string, run: () => void): void => {
     const made = new Gio.SimpleAction({ name });
     made.connect('activate', run);
@@ -144,7 +158,7 @@ application.connect('activate', () => {
       comments: t.about.comments,
       license_type: Gtk.License.AGPL_3_0,
       website: 'https://github.com/suitably/domus',
-      issue_url: 'https://github.com/suitably/domus/issues',
+      issue_url: reportIssueUrl(REPORT_APP, __VERSION__),
     });
     about.add_link(t.support, 'https://liberapay.com/suitably');
     // The recipes and ingredients are Bar Assistant's public data (MIT): its notice is shown.

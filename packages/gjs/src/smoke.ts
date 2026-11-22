@@ -12,7 +12,9 @@ import {
   syncCollection,
   type Store,
 } from '@nexumia-de/hospes';
+import { createIssue, type Report } from '@nexumia-de/hospes';
 import { gioFiles } from './gio-files';
+import { createKeyring } from './keyring';
 import { randomBytes } from './random';
 import { soupFetch } from './soup-fetch';
 import { installWebPlatform } from './subtle';
@@ -115,8 +117,66 @@ async function main(): Promise<void> {
   );
 }
 
+// Issue reports (docs/feedback.md): the keyring in memory and without a keyring daemon, and
+// the request on libsoup. Not proven: a real keyring, the Secret portal, the live GitHub API.
+async function reports(): Promise<void> {
+  const fetch = soupFetch('gjs-smoke');
+  GLib.setenv('SMOKE_KEYRING', 'memory', true);
+  const memory = createKeyring({
+    appId: 'de.nexumia.Smoke',
+    labels: {},
+    memoryEnv: 'SMOKE_KEYRING',
+  });
+  memory.store('github-token', 'github_pat_x');
+  const kept = memory.lookup('github-token');
+  memory.clear('github-token');
+  check(
+    kept === 'github_pat_x' && memory.lookup('github-token') === undefined,
+    'the keyring in memory keeps and forgets',
+  );
+  const real = createKeyring({ appId: 'de.nexumia.Smoke', labels: {} });
+  real.store('github-token', 'github_pat_y');
+  check(
+    real.lookup('github-token') === 'github_pat_y',
+    'a keyring that cannot store keeps the token for the session',
+  );
+  real.clear('github-token');
+
+  const report: Report = {
+    kind: 'problem',
+    title: 'T',
+    text: 'B',
+    app: 'Smoke',
+    version: '0',
+    device: 'Desktop',
+  };
+  const refused = await createIssue({
+    repo: 'x/y',
+    token: 'github_pat_wrong',
+    report,
+    fetch,
+    apiBase: api,
+  });
+  check(
+    !refused.ok && refused.failure === 'no-access',
+    `an issue the fake refuses is no access (${JSON.stringify(refused)})`,
+  );
+  const offline = await createIssue({
+    repo: 'x/y',
+    token: 't',
+    report,
+    fetch,
+    apiBase: 'http://127.0.0.1:9',
+  });
+  check(
+    !offline.ok && offline.failure === 'offline',
+    `an issue without an answer is offline (${JSON.stringify(offline)})`,
+  );
+}
+
 const loop = new GLib.MainLoop(null, false);
 main()
+  .then(reports)
   .catch((error: unknown) => check(false, `aborted: ${String(error)}`))
   .finally(() => loop.quit());
 loop.run();

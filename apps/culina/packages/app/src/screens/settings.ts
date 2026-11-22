@@ -1,3 +1,6 @@
+import { feedbackDe, feedbackEn } from '@nexumia-de/hospes';
+import { openReportDialog } from '@nexumia-de/hospes/frame';
+import { currentLang } from '../classics/lang';
 import { engineLine } from '../engine-info';
 import { applyTheme, browserStore, readTheme, THEMES, writeTheme, type Theme } from '../prefs';
 import { addExamples, storeProblem } from '../notebook';
@@ -66,6 +69,19 @@ export const settingsScreen = (): HTMLElement => {
     examples.append(el('h2', undefined, strings.settings.examplesHeading), add, status);
   }
 
+  // Report a problem or an idea as a GitHub issue (docs/feedback.md in the root).
+  const feedback = currentLang() === 'de' ? feedbackDe : feedbackEn;
+  const report = el('button', 'btn quiet', feedback.open);
+  report.type = 'button';
+  report.addEventListener('click', () =>
+    openReportDialog({
+      texts: feedback,
+      appName: strings.appName,
+      app: "Cook's Notebook",
+      version: 'web',
+    }),
+  );
+
   section.append(
     el('h1', undefined, strings.settings.title),
     group,
@@ -76,6 +92,7 @@ export const settingsScreen = (): HTMLElement => {
     el('p', 'muted', strings.settings.privacy),
     storage,
     el('p', 'muted', engineLine()),
+    report,
   );
   return section;
 };

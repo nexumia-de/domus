@@ -72,8 +72,13 @@ const frameCss = readFileSync(
   fileURLToPath(import.meta.resolve('@nexumia-de/hospes/frame.css')),
   'utf8',
 );
+const reportCss = readFileSync(
+  fileURLToPath(import.meta.resolve('@nexumia-de/hospes/report-dialog.css')),
+  'utf8',
+);
 const css = [
   frameCss,
+  reportCss,
   ...styles.map((name) => readFileSync(join('src', 'styles', `${name}.css`), 'utf8')),
 ].join('\n');
 writeFileSync(join(out, 'app.css'), (await transform(css, { loader: 'css', minify: true })).code);

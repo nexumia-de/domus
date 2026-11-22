@@ -96,3 +96,6 @@ export {
 } from './collection-sync';
 export { pickSpace, viewOf, type SpaceView } from './space-choice';
 export { ago, statusText, type StatusWords } from './status-text';
+
+// Report a problem from the app as a GitHub issue (docs/feedback.md).
+export * from './feedback/index';

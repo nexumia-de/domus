@@ -2,6 +2,10 @@
 
 - **Update** (2026-11-21, step 5 of the shared shell): Emptio's and Mixtura's native apps now take the style, spaces, join, status and support texts from `texts.ts`; their copies are gone. No change in this package.
 
+## 2026-11-22 (report a problem)
+
+- **Creation**: `keyring.ts` (`createKeyring` on libsecret, memory fallback, `DOMUS_TEST_KEYRING`) and `report-dialog.ts` (`installReport`, `reportIssueUrl`, the libadwaita Report a Problem dialog) for the three native apps ([feedback](../../../docs/feedback.md), [platform](platform.md)); the smoke check runs the keyring and the request on libsoup; the Broadway session sets `DOMUS_TEST_KEYRING=memory`.
+
 ## 2026-11-21 (Culina)
 
 - **Update**: for Culina's native app, the third: `language.ts` (`navigator.languages` from the device's locale for web code that reads it at load, and `deviceLang()`), `texts.ts` (English and German texts of the style, spaces, joining and sync status that the native apps share), with `test/texts.test.ts` (2 tests; 11 in the package now); the licence texts of Ajv and fast-deep-equal moved here from Mixtura's `data/licenses/` (the manifests of both apps read them from here). Mixtura's and Emptio's code did not change; their strings still hold their own copies of the shared texts. [Platform pieces](platform.md), [Culina's native app](../../../apps/culina/docs/native-linux.md).

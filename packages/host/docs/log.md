@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Creation**: issue reports ([feedback](../../../docs/feedback.md)): `src/feedback/` (`formUrl`, `issueBody`, `issueUrl`, `createIssue`, `feedbackEn`/`feedbackDe`, exported from the main entry) and in the frame the web dialog `openReportDialog` with `report-dialog.css` (new export `./report-dialog.css`) and `browserTokenStore` (localStorage). New exports only. 17 tests in `test/feedback.test.ts`.
+
 ## 2026-11-22
 
 - **Update** [GitHub](github.md): `setupLinks` fills in the new-token form too (name, description, a year's expiry, Contents: read and write) by GitHub's documented query parameters, at the owner's request; the setup and join screens list only the steps left (choose the repository, generate). Test: `setupLinks` in `test/github-connection.test.ts`.

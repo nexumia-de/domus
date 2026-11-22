@@ -11,7 +11,8 @@
     "./testing/browser": "./testing/browser.mjs",
     "./testing/fake-github": "./testing/fake-github.mjs",
     "./frame": "./src/frame/index.ts",
-    "./frame.css": "./src/frame/frame.css"
+    "./frame.css": "./src/frame/frame.css",
+    "./report-dialog.css": "./src/frame/report-dialog.css"
   },
   "engines": {
     "node": ">=22.12.0"

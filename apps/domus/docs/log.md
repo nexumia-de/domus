@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) at the end of the home page (the app has no settings or About); the dialog is the shared one.
+
 ## 2026-11-20
 
 - **Emptio on the home page**: the list of apps has a third card, Shopping List (`emptio/`). The browser harness and the fake of GitHub's API moved to the host package (`@nexumia-de/hospes/testing/*`), because Emptio's browser checks use them too; `e2e/run.mjs` and `scenario.mjs` import them from there.

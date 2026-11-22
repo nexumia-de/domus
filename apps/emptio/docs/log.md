@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (report a problem)
+
+- **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and Settings › About in the web app; checked by `npm run interact -w @emptio/linux` (the dialog opens) and `e2e/report-scenario.mjs`; the dialog is the shared one.
+
 ## 2026-11-22 (address on Linux)
 
 - **Fix**: the Linux app refused every KitchenOwl address with "This is no web address", because `instanceUrl` read it with `URL`, which GJS does not have (the `try` turned the missing class into "no address"). The address is now read by hand in the shared core, for both apps: `https`/`http`, host in lower case, no default port, no query, no `/api` ([KitchenOwl](kitchenowl.md#what-is-checked-and-what-is-not)). Reported by the owner. Pinned by `kitchenowl.test.ts` › 'the address is read without the URL class, which GJS (the Linux app) does not have'; checked in real GJS 1.80 with the bundled function.
