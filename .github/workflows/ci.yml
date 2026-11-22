@@ -318,7 +318,7 @@ jobs:
           arch: ${{ matrix.arch }}
           bundle-artifact: emptio-linux-bundle
           licence-dirs: 'emptio noble-ciphers noble-hashes'
-          toolkit-ref: v0.7.1
+          toolkit-ref: v0.7.2
 
   # A tag emptio-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
@@ -390,7 +390,7 @@ jobs:
           arch: ${{ matrix.arch }}
           bundle-artifact: mixtura-linux-bundle
           licence-dirs: 'mixtura noble-ciphers noble-hashes ajv fast-deep-equal bar-assistant'
-          toolkit-ref: v0.7.1
+          toolkit-ref: v0.7.2
 
   # A tag mixtura-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
@@ -462,7 +462,7 @@ jobs:
           arch: ${{ matrix.arch }}
           bundle-artifact: culina-linux-bundle
           licence-dirs: 'culina noble-ciphers noble-hashes ajv fast-deep-equal culina-data'
-          toolkit-ref: v0.7.1
+          toolkit-ref: v0.7.2
 
   # A tag culina-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
