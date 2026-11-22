@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22 (address on Linux)
+
+- **Fix**: the Linux app refused every KitchenOwl address with "This is no web address", because `instanceUrl` read it with `URL`, which GJS does not have (the `try` turned the missing class into "no address"). The address is now read by hand in the shared core, for both apps: `https`/`http`, host in lower case, no default port, no query, no `/api` ([KitchenOwl](kitchenowl.md#what-is-checked-and-what-is-not)). Reported by the owner. Pinned by `kitchenowl.test.ts` › 'the address is read without the URL class, which GJS (the Linux app) does not have'; checked in real GJS 1.80 with the bundled function.
+
 ## 2026-11-22 (sync on demand)
 
 - **Update**: the app syncs when opened and when a person acts, no longer every 15 seconds (owner's decision of the day). One run per request: storage, KitchenOwl, storage, and no KitchenOwl cycle when the storage just failed, so a device that has not seen another's rename no longer ticks the entry and imports the new name ([KitchenOwl, several devices](kitchenowl.md#several-devices)). New switch _Sync automatically_ (on by default; at the start, at the front, when the connection is back, 2 s after a change); pulling the list down and _Sync now_ (Settings and the sync icon's details on the web, main menu and Ctrl+R on Linux) sync whatever the switch says ([behaviour](behaviour.md#sync)). The host package's loops got a manual mode for it. Checked: 4 new tests in `app.test.ts`; the rename test fails on the code before (B ends with "Milk" ticked and a new "Oat milk" at priority soon) and the 13 KitchenOwl tests pass before and after; Linux smoke and interaction checks, screenshots of the menu and the preferences at 360 x 720. Not checked: the pull gesture on a real touch screen (web or Phosh), a real KitchenOwl.

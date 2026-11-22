@@ -37,21 +37,31 @@ const isId = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0;
 const isText = (value: unknown): value is string => typeof value === 'string';
 
+/** `scheme://authority` and the rest up to a query or fragment; no white space anywhere. */
+const ADDRESS = /^(https?):\/\/([^/?#\s]*)([^?#\s]*)(?:[?#]\S*)?$/i;
+/** A host name, an IPv4 address or a bracketed IPv6 address, and a port. */
+const AUTHORITY = /^(\[[0-9a-f:.]+\]|[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?)(?::(\d{1,5}))?$/i;
+const DEFAULT_PORT: Record<string, string> = { https: '443', http: '80' };
+
 /**
- * The address as typed, made comparable: `https` or `http`, no path ending in `/`, no `/api`.
+ * The address as typed, made comparable: `https` or `http`, the host in lower case, no default
+ * port, no path ending in `/`, no `/api`, no query. Read by hand, not with `URL`, which GJS (the
+ * Linux app) does not have.
  * @returns null when it is no web address.
  */
 export function instanceUrl(typed: string): string | null {
-  let url: URL;
-  try {
-    url = new URL(typed.trim());
-  } catch {
-    return null;
-  }
-  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null;
-  if (url.username !== '' || url.password !== '') return null;
-  const path = url.pathname.replace(/\/+$/, '').replace(/\/api$/, '');
-  return `${url.origin}${path}`;
+  const parts = ADDRESS.exec(typed.trim());
+  if (parts === null) return null;
+  const [, scheme = '', authority = '', rest = ''] = parts;
+  // A user or password in the address is refused: the token is the only credential.
+  const host = AUTHORITY.exec(authority);
+  if (host === null) return null;
+  const protocol = scheme.toLowerCase();
+  const port = host[2];
+  if (port !== undefined && Number(port) > 65535) return null;
+  const shownPort = port === undefined || port === DEFAULT_PORT[protocol] ? '' : `:${port}`;
+  const path = rest.replace(/\/+$/, '').replace(/\/api$/, '');
+  return `${protocol}://${(host[1] ?? '').toLowerCase()}${shownPort}${path}`;
 }
 
 export function isConfigValue(value: unknown): value is KitchenowlConfig {

@@ -3,7 +3,7 @@
 // other, amounts follow, a rename, two devices that bridge at once, a failure
 // half way. Not proven here: a real KitchenOwl server, its HTTP and CORS, a
 // real clock, real devices (the fake and the shared database are in memory).
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { createMemoryStore, type Store } from '@nexumia-de/hospes';
 import { addToList, editEntry, removeEntries, setBought } from '../src/list/actions';
 import { LIST, entriesOf } from '../src/list/model';
@@ -239,4 +239,21 @@ test('the address of an instance is made comparable, and only a web address is o
   expect(instanceUrl('ko.example')).toBeNull();
   expect(instanceUrl('ftp://ko.example')).toBeNull();
   expect(instanceUrl('https://me:pw@ko.example')).toBeNull();
+  expect(instanceUrl('HTTPS://KO.Example:443/')).toBe('https://ko.example');
+  expect(instanceUrl('http://ko.example:80')).toBe('http://ko.example');
+  expect(instanceUrl('https://[::1]:8443/api')).toBe('https://[::1]:8443');
+  expect(instanceUrl('https://ko.example/?a=1#b')).toBe('https://ko.example');
+  expect(instanceUrl('https://')).toBeNull();
+  expect(instanceUrl('https://ko example')).toBeNull();
+  expect(instanceUrl('https://ko.example:99999')).toBeNull();
+});
+
+test('the address is read without the URL class, which GJS (the Linux app) does not have', () => {
+  vi.stubGlobal('URL', undefined);
+  try {
+    expect(instanceUrl('https://ko.example/')).toBe('https://ko.example');
+    expect(instanceUrl('http://192.168.1.5:8080/api')).toBe('http://192.168.1.5:8080');
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });

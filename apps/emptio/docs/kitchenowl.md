@@ -176,7 +176,9 @@ call, which includes them); it is the smaller answer and still served.
 
 Checked (`packages/app/test/kitchenowl*.test.ts`, `app.test.ts`, the
 browser check `e2e/kitchenowl-scenario.mjs`): against a KitchenOwl in
-memory and a fake behind HTTP that follow the source. **Not** checked: a
+memory and a fake behind HTTP that follow the source. Since 2026-11-22 the address is read without `URL`, which GJS lacks; the
+Linux app had refused every address before (checked in GJS 1.80 with
+the bundled function). **Not** checked: a
 real KitchenOwl server, a real reverse proxy with CORS, `created_at` as
 the real server serialises it, the Linux app against a server (its
 preferences were looked at in a screenshot only).
