@@ -1,10 +1,11 @@
 # Culina
 
-A helper in the kitchen that teaches until it is no longer needed
-([decision](docs/decisions/mentor.md)): scripted, without a language
-model, from research and textbooks; ratios and templates, dishes built
-from components, cooking from what is there, and your own versions with
-tasting notes. Visible name:
+A recipe app: the user's recipes with versions, tasting notes and
+history, ideas what to cook, and shipped bases (sauces, doughs, frames
+such as tacos or pizza) to build one's own dishes on
+([decision](docs/decisions/scope-recipe-app.md)); scripted, without a
+language model; sourced technique notes, substitutes and ratios as
+help ([helper](docs/decisions/mentor.md)). Visible name:
 **Cook's Notebook** ([decision](docs/decisions/app-name.md)). Knowledge
 of this repository: [docs/index.md](docs/index.md).
 
@@ -25,7 +26,7 @@ its own `AGENTS.md`. Its sister app for drinks,
   what Mixtura needs too moves to materia.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
-- **Recipes**: shipped dishes, read-only, each with its country and
+- **Recipes**: shipped bases and dishes, read-only, each with its cuisine and
   following one named source (amounts as facts, method in our own words,
   no copied text, no bulk import of a site), and the user's own
   components and dishes with versions; both in one list with one filter
@@ -34,9 +35,9 @@ its own `AGENTS.md`. Its sister app for drinks,
   missing ingredients to it
   ([helper](docs/decisions/mentor.md),
   [recipe book](docs/decisions/recipe-book.md)).
-- **Teaching is scripted and sourced.** No language model. Every
+- **Help is scripted and sourced.** No language model. Every
   caution, question and explanation names a paper or textbook, or is
-  marked as a judgement. Teaching belongs to skills; a skill the user
+  marked as a judgement. Teaching notes belong to skills; a skill the user
   marked as learned is not taught again.
 - **Sources and licences.** Every ratio, pairing and data set names its
   source and licence. No data from FlavorDB or RecipeNLG.

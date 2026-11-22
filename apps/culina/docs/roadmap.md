@@ -31,8 +31,9 @@ in [how chefs work](chef-practice.md) and
 5. **Helper.** Built on 2026-11-19 after the
    [helper build plan](helper-plan.md), state at the top of the
    [log](log.md); the correction checklist and suggestions from a
-   tasting check are still open. Culina teaches until it is no longer needed
-   ([decision](decisions/mentor.md)): skills with scripted questions
+   tasting check are still open. Since 2026-11-22 the helper is help
+   inside a recipe app ([decision](decisions/scope-recipe-app.md)), not
+   its purpose ([helper decision](decisions/mentor.md)): skills with scripted questions
    and cautions from research and textbooks, a learned skill no longer
    taught; substitutes with their effect and handling rules per
    ingredient (when it goes in and why); the correction checklist and suggestions from a tasting
@@ -57,5 +58,9 @@ in [how chefs work](chef-practice.md) and
    this dish, time and effort, favourites (the owner's to decide under the
    rule "no food diary"), taste effects and seasonal produce (both wait
    for a source).
-8. **Later.** Curated affinities with sources, cost, prep lists,
+8. **Bases.** Sauces, doughs and frames (tacos, pizza, curry, …) as
+   components with slots, each from a named source, for the user's own
+   creations ([decision](decisions/scope-recipe-app.md)). Regional
+   classics are on hold.
+9. **Later.** Curated affinities with sources, cost, prep lists,
    allergens.

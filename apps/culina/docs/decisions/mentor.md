@@ -8,6 +8,12 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 
 # Culina is a scripted kitchen helper that teaches until it is no longer needed
 
+**Note of 2026-11-22:** the purpose of point 1, the end point of
+point 6 and the four stages of point 9 are replaced by the
+[recipe app decision](scope-recipe-app.md): Culina is a recipe app with
+history, ideas and bases to build on. The rules on sources, teaching
+notes, learned skills, substitutes and handling stand as help.
+
 **Note of 2026-11-21:** the known dishes of point 5 still ship with their
 country and their source. They are no longer shown by country in lists
 and screens of their own: they are part of one list with the user's
