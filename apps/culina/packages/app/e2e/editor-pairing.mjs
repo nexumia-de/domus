@@ -2,14 +2,23 @@
 // fetched and nothing offered while the dish is empty; with a first ingredient chosen, three to
 // eight ingredients are offered, each a button naming what it goes with; a tap adds it as a slot
 // with the ingredient copied from the catalogue into the notebook, and the offers are drawn again
-// without it; the same wording in German. What a cook thinks of the pairings is not judged here.
+// without it; the same wording in German. Also here, because they were found in the same look at
+// the editor: the fillings stand above course and cuisine, a new dish is not asked what changed,
+// and the random pick without own components shows a way on. What a cook thinks of the pairings
+// is not judged here.
 import { check, watch } from './harness.mjs';
 import { searchBox } from './catalogue-helpers.mjs';
 import { formReady, layout, listStore, open } from './editor-helpers.mjs';
 
 export const editorPairing = async (browser, server) => {
   for (const [lang, heading, addSlot, empty, hint] of [
-    ['en', 'Goes with', 'Add a slot', 'Choose a first ingredient', 'A hint, not a rule'],
+    [
+      'en',
+      'Goes with',
+      'Add an ingredient or component',
+      'Choose a first ingredient',
+      'A hint, not a rule',
+    ],
     ['de', 'Passt dazu', undefined, 'Wähle oben eine erste Zutat', 'Ein Hinweis, keine Regel'],
   ]) {
     const label = `360px editor goes with (${lang})`;
@@ -35,7 +44,41 @@ export const editorPairing = async (browser, server) => {
       (await section.innerText()).includes(empty) && fetched.length === 0,
       `${label}: an empty dish offers nothing and fetches nothing (${fetched.join(', ')})`,
     );
+    // The editor asks first for what goes into the dish; a new dish is not asked what changed.
+    const order = await page.evaluate(() => {
+      const top = (sel) => document.querySelector(sel)?.getBoundingClientRect().top;
+      return {
+        slots: top('.dish-editor .line-edits'),
+        course: top('.dish-course'),
+        changed: document.querySelectorAll('.version-fields input').length,
+        tasting: document.querySelectorAll('.version-fields textarea').length,
+      };
+    });
+    check(
+      order.slots < order.course,
+      `${label}: what goes into the dish stands above course and cuisine (${JSON.stringify(order)})`,
+    );
+    check(
+      order.changed === 0 && order.tasting === 1,
+      `${label}: a new dish is asked for a tasting note only, not for what changed`,
+    );
     if (addSlot === undefined) {
+      // The random pick in a notebook without components: no roll that can only say "none".
+      await open(page, server.origin, 'dishes/random');
+      const roles = page.locator('.pick-role-section');
+      await roles.waitFor();
+      check(
+        (await roles.locator('.pick-roll, input').count()) === 0 &&
+          (await roles.locator('a.pick-to-components').getAttribute('href')) === '#/components' &&
+          (await roles.innerText()).includes('noch keine Komponenten'),
+        `${label}: without own components the roll per role gives way to a link to the components`,
+      );
+      check(
+        (await page.locator('.pick-dish-roll').count()) === 1,
+        `${label}: "Surprise me with a dish" stays`,
+      );
+      await layout(page, `${label} random pick`);
+
       check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
       await context.close();
       continue;

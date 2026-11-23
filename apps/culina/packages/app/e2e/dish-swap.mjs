@@ -33,7 +33,7 @@ export const component = async (page, origin, name, role, ingredient, grams, wor
 };
 
 export const addSlot = async (page, n, name, grams) => {
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await page.getByLabel('Search your notebook').fill(name);
   await page.getByRole('button', { name: `${name} component`, exact: true }).click();
   await slot(page, n)

@@ -551,6 +551,12 @@ together from components, and a component names the role it usually fills
   rolls again. A dish rolled earlier that no longer fits a changed choice
   is no longer shown. The entries are read once when the screen opens (and
   again when the catalogue has loaded), not on every choice or roll.
+- **Without own components (since 2026-11-23)** the section "Put one
+  together from your components" shows no ticks and no roll: one sentence
+  says that the notebook has no components to put together yet, and a
+  link leads to the Components list, where a shipped one is kept or a new
+  one written. Before, the roll answered "No component of yours has this
+  role yet" for every role. **Test:** `e2e/editor-pairing.mjs` (German).
 - **The roll per role** ("Put one together from your components"). The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
@@ -611,7 +617,7 @@ together from components, and a component names the role it usually fills
   candidates, the stock question, the judge and the random numbers as
   arguments; the screen passes `Math.random`. The engine stays without
   randomness.
-- **In the dish editor**, a slot added with "Add a slot" takes the usual
+- **In the dish editor**, a slot added with "Add an ingredient or component" takes the usual
   role of the component picked for it, as long as nobody chose the slot's
   role by hand; before, it kept the first open role, so a mash picked into
   a new slot stood there as a sauce and had the sauces as alternatives.
@@ -849,9 +855,14 @@ note of an existing line are kept as they are.
   shown under the lines as information, in the neutral words of the ratio
   card, and never blocks saving. **Test:** `e2e/editor-more.mjs`.
 
-**Dish editor.** Name, portions (a whole number or empty), course and
-cuisine, a note, and role slots: a role, a filling (a component or an
-ingredient, from the same picker) and an amount per portion. A stored slot
+**Dish editor.** Name, portions (a whole number or empty), then what goes
+into the dish (the role slots: a role, a filling, a component or an
+ingredient from the same picker, and an amount per portion; heading "What
+goes into the dish", button "Add an ingredient or component"), then
+course, cuisine and a note. Until 2026-11-23 the slots stood below course,
+cuisine and note. A new dish or component is asked for a tasting note
+only under "This version"; "What changed" and "Why" are shown when a
+stored one is edited (`version-fields.ts`; `e2e/editor-pairing.mjs`). A stored slot
 always has a filling; a slot without one lives only in the draft. Open
 roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
 `e2e/editor-more.mjs`.
