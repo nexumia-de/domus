@@ -1,8 +1,8 @@
 // The one filter over the dishes, "what you feel like", as an expander row: a combo row each for
 // the character, the course and the cuisine (only when the dishes offer something), and a switch
 // row each for "without meat and fish" and "only with every amount". There is no origin row: the
-// native app has only shipped dishes. Closed, the row says the choices made. The start page and
-// "what can I cook" both use it; the filter is the session's, kept under the web app's key.
+// native app has only shipped dishes. Closed, the row says the choices made. Cook (the first page)
+// uses it; the filter is the session's, kept under the web app's key.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import type { DishFilter } from '@culina/app/core';

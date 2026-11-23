@@ -1,53 +1,55 @@
 // The running app without a screen: the shipped content (the classics, the techniques and the
 // ingredient catalogue, read through the web app's own readers), the stock of the shown space
-// (the web app's stock space on the host package's loop), what the stock allows, the ticks of a
-// person, the one filter over the dishes (the web app's `DishFilter` on the web app's entries) and
-// the finder's filters. The screens read `state()` and are told when it changed.
+// (the web app's stock space on the host package's loop), the ticks of a person, the one filter
+// over the dishes (the web app's `DishFilter` on the web app's entries) and Cook's one list with
+// "Only with what I have" and the order "Use up first" (the web app's `dishListView`, asked of the
+// finder with `readyKeysOf` and `useUpFrom`, kept under the web app's `culina.cookList`). The
+// screens read `state()` and are told when it changed.
 // No `gi://` here, so Node tests run it.
 import type { Lang } from '@culina/engine';
 import type { SpaceView, Store, SyncStatus } from '@nexumia-de/hospes';
 import {
   CHARACTER_TABLE,
-  COOK_KEY,
+  COOK_LIST_KEY,
   COUNTRIES,
   COURSE_ORDER,
   DISH_FILTER_KEY,
   SPACE_KEY,
-  classicLookup,
-  classicRow,
   classics,
   createStockSpace,
+  dishListView,
   entryOfClassic,
-  findClassics,
   itemsFromRecords,
   loadCatalogue,
   loadContent,
-  lookupOf,
   matchesFilter,
   offeredBy,
-  parseCookFilters,
+  parseCookList,
   parseDishFilter,
+  readyKeysOf,
   restoreEdit,
   tickEdit,
   untickEdit,
-  type ClassicRow,
-  type CookFilters,
+  useUpFrom,
+  type CookList,
   type CookSource,
   type DishEntry,
   type DishFilter,
   type IngredientRecord,
+  type ListRow,
   type KeyValueStore,
   type Offered,
   type StockRecord,
   type StockSpace,
   type StockSpaceOptions,
   type StockUndo,
+  type UseUpNow,
 } from '@culina/app/core';
 
 /** The keys of the preferences file; the style is the app's, the others are the web app's. */
 export const PREFS = {
   style: 'style',
-  cook: COOK_KEY,
+  cookList: COOK_LIST_KEY,
   space: SPACE_KEY,
   dishes: DISH_FILTER_KEY,
 } as const;
@@ -62,16 +64,17 @@ export interface SessionState {
   stock: readonly StockRecord[];
 }
 
-/** What the finder shows for the filters; the rows carry the dish's id. */
-export type Cookable =
-  | { ok: false }
-  | {
-      ok: true;
-      shown: ClassicRow[];
-      /** When `shown` is empty: the nearest classics, fewest lacking first. */
-      nearest: ClassicRow[];
-      hasStock: boolean;
-    };
+/** Cook's one list for a filter and the kept choices, as the web app's `dishListView` gives it. */
+export interface CookView {
+  /** The dishes that pass, by name, or in the order "Use up first". */
+  rows: ListRow[];
+  /** How many dishes there are before any choice. */
+  total: number;
+  /** In the order "Use up first": the finder's answer (the marks, whether any item is dated, names). */
+  useUp?: UseUpNow;
+  /** "Only with what I have" is on and nothing is ticked: the list gives way to the way to tick. */
+  noStock: boolean;
+}
 
 export interface SessionOptions {
   store: Store;
@@ -115,11 +118,12 @@ export interface Session {
   dishFilter(): DishFilter;
   /** Keeps the filter and tells the listeners, so that every page shows it. */
   setDishFilter(filter: DishFilter): void;
-  /** The kept filters of the finder; only `lacking` is used here, the rest is the dish filter. */
-  filters(): CookFilters;
-  setFilters(filters: CookFilters): void;
-  /** What the stock allows among the classics that pass the dish filter. */
-  cookable(filters: CookFilters, dish?: DishFilter): Cookable;
+  /** Cook's kept choices, "Only with what I have" and the order (the web app's key). */
+  cookList(): CookList;
+  /** Keeps them and tells the listeners. */
+  setCookList(list: CookList): void;
+  /** Cook's one list: the dishes that pass the filter and the choices, in the chosen order. */
+  cookView(filter: DishFilter, list: CookList): CookView;
   /** Marks an ingredient as there. @returns false when nothing could be written. */
   tick(ingredientId: string): Promise<boolean>;
   /** Marks it as not there. @returns what Undo needs, or undefined when it was not there or nothing could be written. */
@@ -140,6 +144,14 @@ export function createSession(options: SessionOptions): Session {
   let content = true;
   let stopped = false;
   let made: DishEntry[] | undefined;
+  let byKey: ReadonlyMap<string, DishEntry> | undefined;
+  /**
+   * The finder's answers for one stock on one day, asked once: the stock list is replaced, never
+   * changed, when the records change, so its identity says whether to ask again.
+   */
+  let asked:
+    | { stock: readonly StockRecord[]; today: string; ready?: Set<string>; useUp?: UseUpNow }
+    | undefined;
   /** The entries, made once the catalogue is read (the characters need it). */
   const allEntries = (): DishEntry[] => {
     if (made === undefined) {
@@ -202,6 +214,8 @@ export function createSession(options: SessionOptions): Session {
       names = new Map((entries ?? []).map((entry) => [entry.id, entry]));
       content = shipped.classics.length > 0 && names.size > 0;
       made = undefined;
+      byKey = undefined;
+      asked = undefined;
       return content;
     },
     catalogue: () => names,
@@ -229,40 +243,40 @@ export function createSession(options: SessionOptions): Session {
       // Every page that shows the filter or what it narrows draws again.
       tell();
     },
-    filters: () => parseCookFilters(prefs.get(PREFS.cook)),
-    setFilters(filters) {
-      prefs.set(PREFS.cook, JSON.stringify(filters));
+    cookList: () => parseCookList(prefs.get(PREFS.cookList)),
+    setCookList(list) {
+      prefs.set(PREFS.cookList, JSON.stringify(list));
+      tell();
     },
-    cookable(filters, dish = {}) {
+    cookView(filter, list) {
+      const entries = allEntries();
+      const today = options.today();
+      if (asked === undefined || asked.stock !== current.stock || asked.today !== today) {
+        asked = { stock: current.stock, today };
+      }
+      // The native app has no notebook: the source is the stock alone, the dishes the shipped ones.
       const source: CookSource = {
         ingredients: [],
         components: [],
         dishes: [],
         stock: current.stock,
       };
-      // The dish filter chooses the classics; of the finder's own filters only how much may lack
-      // is used, so an older kept country or meat choice does not narrow behind the user's back.
-      const kept = new Set(
-        allEntries()
-          .filter((entry) => matchesFilter(entry, dish))
-          .map((entry) => entry.id),
-      );
-      const chosen = classics().filter((classic) => kept.has(classic.id));
-      const found = findClassics(
-        chosen,
-        source,
-        names,
-        options.today(),
-        { lacking: filters.lacking },
-        lang,
-      );
-      if (!found.ok) return { ok: false };
-      const look = classicLookup(found.ingredients, lookupOf(source), lang);
+      const shipped = { classics: classics(), catalogue: names, lang };
+      if (list.have && asked.ready === undefined) asked.ready = readyKeysOf(source, today, shipped);
+      if (list.order === 'use-up' && asked.useUp === undefined) {
+        byKey ??= new Map(entries.map((entry) => [entry.key, entry]));
+        asked.useUp = useUpFrom(source, today, byKey, shipped);
+      }
+      const useUp = list.order === 'use-up' ? asked.useUp : undefined;
+      const view = dishListView(entries, filter, '', lang, {
+        ...(list.have && asked.ready !== undefined ? { ready: asked.ready } : {}),
+        ...(useUp === undefined ? {} : { useUp: useUp.marks }),
+      });
       return {
-        ok: true,
-        shown: found.shown.map((candidate) => classicRow(candidate, look)),
-        nearest: found.nearest.map((candidate) => classicRow(candidate, look)),
-        hasStock: current.stock.length > 0,
+        rows: view.rows,
+        total: view.total,
+        ...(useUp === undefined ? {} : { useUp }),
+        noStock: list.have && current.stock.length === 0,
       };
     },
     async tick(ingredientId) {

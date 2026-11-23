@@ -21,6 +21,33 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: one Cook page in Culina's native app (issue 44)
+
+One agent built it in its own worktree on top of pull request 55; a
+different agent (mid model) reviewed it; the writer added what the
+review found untested; the lead looked at the 360 x 720 screenshot of
+the page with "Use up first", merged, ran the checks and committed.
+
+| Part                                                                                               | Done by | Checked by                                                                                               |
+| -------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| The Cook page (`cook-list-page.ts`), the session's `cookView`, the exports from `@culina/app/core` | writer  | reviewer (no defect; five mutations of `session.ts`, four caught by the tests, the fifth now pinned too) |
+| The day guard test, two doc corrections                                                            | writer  | nobody but the writer and the lead's runs                                                                |
+| This entry                                                                                         | lead    | nobody                                                                                                   |
+
+**What the checks found.** The cache of the finder's answers is kept
+per stock list and day; dropping the day from it passed every test. A
+test now moves the injected day and fails without the guard. The page
+does not redraw by itself at midnight, only on its next event: written
+down in native-linux.md, not changed.
+
+**Test counts** (lead's runs): `npm run check:culina` (engine 1195, app
+837, native 19); `npm run check` passed; native build, smoke and
+interaction in GJS 60 ok, none failed; web browser checks 1877 ok.
+
+**What nobody verified.** Use-by dates written by the web app on another
+device reaching the native app through a real synced space. A phone,
+swipe back, a screen reader on the switch and the order.
+
 ## 2026-11-23: native apps: scrolling over text fields, creating and leaving a space
 
 The owner reported three defects of the native Linux apps: lists with

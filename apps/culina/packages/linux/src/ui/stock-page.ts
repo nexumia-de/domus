@@ -73,7 +73,7 @@ export function stockPage(ui: Ui): Page {
       body.append(
         new Gtk.Label({ label: t.stock.hint, wrap: true, xalign: 0, css_classes: ['dim-label'] }),
       );
-      const group = new Adw.PreferencesGroup({ title: t.cookable.stock });
+      const group = new Adw.PreferencesGroup({ title: t.stock.title });
       const names = [...at].map((id) => ({ id, name: ui.nameOf(id) }));
       names.sort((a, b) => a.name.localeCompare(b.name));
       for (const { id, name } of names) group.add(row(id, name, true));

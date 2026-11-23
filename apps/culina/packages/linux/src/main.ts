@@ -31,7 +31,7 @@ import { PREFS, createSession } from './session';
 import { textsDe, textsEn } from './strings';
 import type { Page, Ui } from './ui/context';
 import { STYLES, choiceOf, showPreferences } from './ui/preferences';
-import { startPage } from './ui/start-page';
+import { cookListPage } from './ui/cook-list-page';
 
 declare const __APP_ID__: string;
 declare const __VERSION__: string;
@@ -207,7 +207,7 @@ application.connect('activate', () => {
     if (isOnline()) session.wake();
   });
 
-  const start = startPage(ui, menu);
+  const start = cookListPage(ui, menu);
   pages.add(start);
   nav.add(start.page);
   window.present();
