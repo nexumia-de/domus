@@ -373,7 +373,7 @@ export const appStrings = {
   },
   empty: {
     components: 'Nothing here yet. Write your first component, or start from a ratio.',
-    dishes: 'Nothing here yet. Write your first dish from components and parts.',
+    dishes: 'Nothing of yours yet. Write a dish, or keep one from Cook to change it.',
     addExamples: 'Add example data',
     examplesHint: 'Example records, marked as examples; edit or delete them like your own.',
   },

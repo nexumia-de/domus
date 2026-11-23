@@ -1143,21 +1143,24 @@ own; the origin is only a choice of the filter.
   page is closed; the filter is the stored one, shared with the random pick,
   and survives a reload. Where the browser cannot store it, it holds until
   the page is closed.
-- **The Notebook's Dishes are no second list to browse.** `#/dishes` is
-  the plain list of the Components part (`src/screens/notebook-list.ts`,
-  rows in `src/dishes/list.ts`, groups and search in
-  `src/shared/notebook-rows.ts`), after the owner's point 3 of issue 44
-  ("Notebook = own and shipped components and dishes, for editing and
-  building on. Its Dishes part is no second browse list."): the user's own
-  dishes in their order under "In my notebook", then the shipped dishes by
-  name under "Shipped with the app"; a row has the name and a quiet line
-  (course, cuisine, and "Shipped" on a shipped one); the search by name, the
-  select **From** (All dishes, Mine, Shipped, kept while the page is open),
-  "Add a dish" and "Put a dish together at random". A shipped row opens the
-  shipped dish's screen (`#/classic/<id>`), read-only with Keep in my
-  notebook. No dish filter, no "Only with what I have", no "Use up first":
-  those are Cook's. A notebook without a dish of its own says so in its
-  group and offers its example data there.
+- **The Notebook's Dishes are the user's own (since 2026-11-23,
+  [decision](decisions/sauces-are-parts.md)).** `#/dishes` is a plain list
+  (`src/screens/notebook-list.ts`, rows in `src/dishes/list.ts`, search in
+  `src/shared/notebook-rows.ts`): the user's own dishes in their order; a
+  row has the name and a quiet line (course, cuisine); the search by name,
+  "Add a dish" and "Put a dish together at random". No shipped dish and no
+  choice of origin: the shipped dishes are on Cook, and "Keep in my
+  notebook" on one brings a copy here. No dish filter, no "Only with what I
+  have", no "Use up first": those are Cook's. A notebook without a dish of
+  its own says so, names Cook as the place to keep one from, and offers its
+  example data. Until 2026-11-23 the shipped dishes stood here too, under
+  "Shipped with the app", with a select "From". **Test:**
+  `test/dishes-notebook-list.test.ts`, `e2e/dish-browse.mjs`,
+  `e2e/kit-parts.mjs`.
+- **A sauce that is a base is no dish (since 2026-11-23).** The five
+  shipped bases of the course sauce are on no dish list, in the finder or
+  the random pick; they are in the Components list. Cook lists 43 of the 48
+  shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1194,9 +1197,8 @@ filter with a store that throws; entries written by hand),
 example data: both origins in one list on Cook, each choice narrows, choices
 combine, Show all, the choice across a reload and on the old address
 `#/start`, the first result on the first screen of Cook with the filter
-folded, the Notebook's Dishes as own and shipped dishes in a plain list
-without the filter, "Mine" there, a shipped row of it opening its dish with
-Keep and leading back to it, a shipped row of Cook opens its
+folded, the Notebook's Dishes as the own dishes in a plain list without the
+filter and without a choice of origin, a shipped row of Cook opens its
 dish, the old addresses, the way back to Cook with the filter untouched, no option of a select cut off in English and German, no "nothing
 fits" while the catalogue is held back, the focus after Show all, no
 horizontal scroll, 44 px targets). The private-mode fallback is proved only

@@ -10,7 +10,7 @@
 // Nothing here is written by a screen; the arrays handed out must not be changed.
 import type { Classic, Lang } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
-import { classics } from '../classics/content';
+import { dishClassics } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { catalogueEntries } from '../classics/names';
 import { allVersions, listDishes, listIngredients, notebook } from '../notebook';
@@ -33,11 +33,11 @@ const keptWhile = <T>(keys: () => readonly unknown[], make: () => T): (() => T) 
 };
 
 const shippedEntries = keptWhile(
-  () => [classics(), catalogueEntries(), listIngredients(), currentLang()],
+  () => [dishClassics(), catalogueEntries(), listIngredients(), currentLang()],
   (): readonly DishEntry[] => {
     derivations.shipped++;
     const lang: Lang = currentLang();
-    return classics().map((c: Classic) => entryOfClassic(c, characterLookup, lang));
+    return dishClassics().map((c: Classic) => entryOfClassic(c, characterLookup, lang));
   },
 );
 

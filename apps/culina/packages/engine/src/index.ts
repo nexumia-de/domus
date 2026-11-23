@@ -385,6 +385,7 @@ export {
   componentsReached,
   componentsUsed,
   isBase,
+  isDishOfItsOwn,
   slotAlternatives,
 } from './classics/base';
 export { copyClassicComponent } from './classics/copy-component';

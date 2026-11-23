@@ -9,6 +9,7 @@ import { expect, test } from 'vitest';
 import { createMemoryStore, ensureSpace } from '@nexumia-de/hospes';
 import {
   classics,
+  dishClassics,
   dishView,
   portionsOf,
   readyKeysOf,
@@ -105,7 +106,9 @@ test('Only with what I have keeps the dishes the finder finds complete, as ready
   ).toEqual([BUTTER, EGG, FLOUR, MILK, SALT].sort());
   const all = session.cookView({}, { have: false, order: 'name' });
   const ready = session.cookView({}, { have: true, order: 'name' });
-  expect(all.rows).toHaveLength(classics().length);
+  // A base that is a sauce is a part, not a dish: it is on no dish list.
+  expect(all.rows).toHaveLength(dishClassics().length);
+  expect(all.rows.some((row) => row.entry.key === 'shipped:alioli')).toBe(false);
   expect(ready.noStock).toBe(false);
   expect(ready.rows.length).toBeGreaterThan(0);
   expect(ready.rows.length).toBeLessThan(all.rows.length);
@@ -311,7 +314,8 @@ test('every dish is an entry of the web app, and the one filter narrows the list
   const { session } = await make();
   await session.load();
   const all = session.entries();
-  expect(all).toHaveLength(classics().length);
+  expect(all).toHaveLength(dishClassics().length);
+  expect(dishClassics().length).toBe(classics().length - 5);
   expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
   // What is offered comes from the dishes: the four countries in their order, courses, characters.
   const offered = session.offered();

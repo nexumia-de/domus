@@ -5,6 +5,7 @@
 // may carry its own on `globalThis.__culinaContent` (set before the app loads), so the browser
 // tests run on a fictional example; without that query nothing is read from there.
 import type { Classic, HandlingRule, Substitute, Technique } from '@culina/engine';
+import { isDishOfItsOwn } from '@culina/engine';
 
 const FORMAT = 'culina-classics';
 
@@ -68,6 +69,20 @@ export const resetContent = (): void => {
 
 /** Every classic that is shown. */
 export const classics = (): readonly Classic[] => override()?.classics ?? shipped.classics;
+
+let dishesOf: { all: readonly Classic[]; dishes: readonly Classic[] } | undefined;
+
+/**
+ * The classics that are dishes of their own: what the dish lists, the finder and the random pick
+ * show. A base that is a sauce is left out; it stays among `classics()` for the Components list
+ * and its own screen. The same array while the classics are the same, so caches keyed by
+ * identity hold.
+ */
+export const dishClassics = (): readonly Classic[] => {
+  const all = classics();
+  if (dishesOf?.all !== all) dishesOf = { all, dishes: all.filter(isDishOfItsOwn) };
+  return dishesOf.dishes;
+};
 
 /** Every technique the engine knows. */
 export const techniques = (): readonly Technique[] => override()?.techniques ?? shipped.techniques;

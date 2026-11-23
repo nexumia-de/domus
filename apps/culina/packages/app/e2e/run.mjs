@@ -23,6 +23,7 @@ import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
 import { importCatalogue } from './import-catalogue.mjs';
 import { install } from './install.mjs';
+import { kitParts } from './kit-parts.mjs';
 import { mealPrep } from './meal-prep.mjs';
 import { navigation } from './navigation.mjs';
 import { ratios } from './ratios.mjs';
@@ -54,6 +55,7 @@ try {
   await dishCharacters(browser, server);
   await dishPairing(browser, server);
   await editorPairing(browser, server);
+  await kitParts(browser, server);
   await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);

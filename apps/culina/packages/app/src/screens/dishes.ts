@@ -1,11 +1,7 @@
-// The Dishes part of the Notebook: the user's own dishes and the shipped ones, for editing and
-// building on, in one plain list with the search and the origin choice (notebook-list.ts, as
-// Components), and the detail of an own dish beside it or as its own screen. A shipped row opens
-// the shipped dish's own screen (#/classic/<id>), read-only with Keep in my notebook. It is no
-// second list to browse: the dish filter, "Only with what I have" and "Use up first" are Cook's
-// (docs/decisions/cook-screen.md).
-import { classics } from '../classics/content';
-import { currentLang } from '../classics/lang';
+// The Dishes part of the Notebook: the user's own dishes, for editing and building on, in a plain
+// list with the search (notebook-list.ts), and the detail of a dish beside it or as its own
+// screen. The shipped dishes are on Cook and only there; "Keep in my notebook" on a shipped dish
+// brings it here (docs/decisions/sauces-are-parts.md, which changes the cook-screen decision).
 import { dishRows } from '../dishes/list';
 import { getDish, listDishes, notebook } from '../notebook';
 import { hashFor } from '../router';
@@ -48,10 +44,7 @@ export const dishesScreen = (param?: string): HTMLElement =>
       pane: (options) =>
         notebookList(
           'dishes-pane',
-          dishRows(listDishes(), classics(), currentLang(), {
-            course: courseLabel,
-            cuisine: cuisineLabel,
-          }),
+          dishRows(listDishes(), { course: courseLabel, cuisine: cuisineLabel }),
           state,
           text(),
           options,

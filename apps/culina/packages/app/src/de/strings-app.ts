@@ -387,7 +387,8 @@ export const appStringsDe: typeof appStrings = {
   empty: {
     components:
       'Noch nichts hier. Schreibe deine erste Komponente oder starte mit einem Verhältnis.',
-    dishes: 'Noch nichts hier. Schreibe dein erstes Gericht aus Komponenten und Teilen.',
+    dishes:
+      'Noch nichts Eigenes. Lege ein Gericht an oder übernimm eines aus „Kochen“, um es zu ändern.',
     addExamples: 'Beispieldaten hinzufügen',
     examplesHint:
       'Beispieleinträge, als Beispiele markiert; bearbeite oder lösche sie wie deine eigenen.',
