@@ -1,5 +1,6 @@
 {
   "id": "creme-caramel",
+  "kind": "base",
   "name": {
     "en": "Crème caramel",
     "de": "Karamellcreme"
@@ -26,6 +27,7 @@
         "en": "Caramel",
         "de": "Karamell"
       },
+      "role": "sauce",
       "lines": [
         {
           "key": "sugar",
@@ -76,6 +78,7 @@
         "en": "Custard",
         "de": "Eiercreme"
       },
+      "role": "main",
       "lines": [
         {
           "key": "milk",

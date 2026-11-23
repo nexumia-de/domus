@@ -1,5 +1,6 @@
 {
   "id": "sauce-hollandaise",
+  "kind": "base",
   "name": {
     "en": "Hollandaise sauce",
     "de": "Sauce Hollandaise"

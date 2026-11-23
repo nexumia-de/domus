@@ -5,6 +5,7 @@
     "de": "Eierkuchen (Omelett)"
   },
   "originalName": "Omelette, No. 1",
+  "kind": "base",
   "country": "de",
   "vegetarian": true,
   "course": "main",

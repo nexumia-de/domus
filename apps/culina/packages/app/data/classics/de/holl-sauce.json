@@ -1,5 +1,6 @@
 {
   "id": "holl-sauce",
+  "kind": "base",
   "name": {
     "en": "Hollandaise sauce with wine",
     "de": "Holländische Sauce mit Wein"
@@ -23,7 +24,7 @@
     "teaspoonful": {
       "kind": "volume",
       "factor": 4.92892159375,
-      "read": "The American edition (see the pound above); taken as the US customary teaspoon of units.json (4.92892159375 ml). A judgement."
+      "read": "The American edition named in the source; taken as the US customary teaspoon of units.json (4.92892159375 ml). A judgement."
     }
   },
   "components": [
@@ -179,7 +180,7 @@
     {
       "what": "Number of persons",
       "value": "4",
-      "reason": "Our judgement: the source names no number of persons; the recipe is for the yolks of 3 eggs and half a pound of butter.",
+      "reason": "Our judgement: the source names no number of persons; the recipe is for the yolks of 3 eggs and an amount of butter the scan does not show (the fraction is printed as '%').",
       "target": "persons"
     }
   ],

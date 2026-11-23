@@ -8,6 +8,7 @@
   "country": "it",
   "vegetarian": true,
   "course": "side",
+  "kind": "base",
   "source": {
     "author": "Pellegrino Artusi",
     "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi, 1891)",
