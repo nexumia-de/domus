@@ -79,7 +79,10 @@ language); the drinks' and ingredients' names are the built-in data's own
   space at once and the drinks follow. "Clear all" acts at once with a
   toast offering Undo.
 - **Preferences**: style (Follow System, Light, Dark), units (metric,
-  US, imperial), the spaces with their status and which one is shown, and
+  US, imperial), the spaces with their status, which one is shown, **Leave** per space
+  (asks first; [what it does](../../../packages/gjs/docs/platform.md#spaces-in-the-preferences))
+  and **Create a Space** (a GitHub repository with a token, or a WebDAV
+  folder; the host package's `createSpace`, as in the Household app), and
   **Join a Space** by an invitation link (the link is made in the
   Household app in a browser; a token is asked for only when the
   invitation carries none).
@@ -94,19 +97,19 @@ Not in the native app, on purpose for the first release: the drinks
 the user made in the browser (they are in that browser's own database,
 not in a space), editing or making drinks, templates and the balance
 ranges, Buy Next, batches and shelf life, share links, export and import,
-the Household screens (making, sharing and removing a space), the choice
+inviting someone to a space (the invitation link is made in the Household app), the choice
 of language, a combined view of several spaces (the app shows one
 space; the web app can tick several).
 
 # Build, run, checks
 
-| Command                              | What it does                                                                                                                                                                            |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @mixtura/linux`    | Builds the engine and the validators, then esbuild makes `dist/de.nexumia.Mixtura.js` (about 0.9 MB with the seed); `gi://` stays imported. The GitHub address is compiled in           |
-| `gjs -m dist/de.nexumia.Mixtura.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `MIXTURA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                  |
-| `npm test -w @mixtura/linux`         | The session on the real seed and the shared database in memory (13 tests, with the texts); part of `npm run check:mixtura`                                                              |
-| `npm run smoke -w @mixtura/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost          |
-| `npm run interact -w @mixtura/linux` | Drives the app through GTK's Broadway backend with Playwright (18 checks and a wide screenshot) and checks the data files after each step; `SHOTS=<folder>` keeps a screenshot per step |
+| Command                              | What it does                                                                                                                                                                                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @mixtura/linux`    | Builds the engine and the validators, then esbuild makes `dist/de.nexumia.Mixtura.js` (about 0.9 MB with the seed); `gi://` stays imported. The GitHub address is compiled in                                                                   |
+| `gjs -m dist/de.nexumia.Mixtura.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `MIXTURA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                          |
+| `npm test -w @mixtura/linux`         | The session on the real seed and the shared database in memory (13 tests, with the texts); part of `npm run check:mixtura`                                                                                                                      |
+| `npm run smoke -w @mixtura/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost                                                                  |
+| `npm run interact -w @mixtura/linux` | Drives the app through GTK's Broadway backend with Playwright (18 checks, the shared create-and-leave steps of the Spaces group, and a wide screenshot) and checks the data files after each step; `SHOTS=<folder>` keeps a screenshot per step |
 
 # Releases
 
@@ -170,8 +173,8 @@ composite actions as Emptio's jobs
   account, which was not measured either.
 - **No sync against a real storage**: the smoke check syncs two folders
   through the fake of GitHub's API; the native app never joined a space
-  made by the web app, and a space made by the native app does not exist
-  (spaces are made in the Household app). The record format is the same
+  made by the web app, and a space made by the native app (possible since
+  2026-11-22) was synced against the fake of GitHub's API only. The record format is the same
   code as the web app's and is tested against the memory store only.
 - The `gi://` calls have no types; the smoke run, the interaction check
   and the screenshots are what checks them. The status words of a sync

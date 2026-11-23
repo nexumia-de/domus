@@ -9,14 +9,16 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { bundleApp } from './interact-build.mjs';
+import { bundleApp, bundleAppWith } from './interact-build.mjs';
 import { Session, sleep, stopAll } from '@nexumia-de/gjs/tooling/interact-lib';
+import { createAndLeave } from '@nexumia-de/gjs/tooling/interact-spaces';
 import {
   heightOf,
   isBlue,
   difference,
   isRed,
   pixelAt,
+  scrolledBy,
 } from '@nexumia-de/gjs/tooling/interact-pixels';
 
 const shots = process.env.SHOTS;
@@ -43,6 +45,20 @@ const SAVE = [180, 686];
 const UNDO = [268, 672];
 const CLEAR_BOUGHT = [296, 575];
 const FIRST_SWITCH = [311, 148];
+// The first category name at 1000x700, two letters into "Fruit & vegetables".
+const WIDE_FIRST_NAME = [243, 139];
+// The preferences (a bottom sheet at 360x720), the page Create a Space and the confirmation.
+const SPACES_AT = {
+  createRow: [180, 410],
+  repository: [150, 398],
+  token: [150, 453],
+  create: [180, 681],
+  leaveSecond: [301, 407],
+  cancel: [104, 477],
+  confirm: [254, 477],
+  leaveFirst: [301, 352],
+  confirmShort: [254, 443],
+};
 
 const keys = new Map();
 const seed = (name) => {
@@ -199,12 +215,17 @@ async function main() {
       await s.shot(shotName('05-saved'));
 
       await s.click(...ROW.bread);
+      // Said apart, so a failure of the next check tells a lost tap on the row from a wrong
+      // Remove: in 8 runs on 2026-11-22 the record was deleted at the first read, 400 ms
+      // after the click on Remove, every time.
+      check(!(await isListPage(s)), 'tapping Bread pushes its entry page');
       await s.click(...REMOVE);
       await sleep(400);
+      const removed = named(dir, 'Bread')?.deleted === true;
       check(
-        named(dir, 'Bread')?.deleted === true,
+        removed,
         'Remove marks the record deleted',
-        JSON.stringify(named(dir, 'Bread')),
+        `${JSON.stringify(named(dir, 'Bread'))}, ${removed || (await isListPage(s)) ? 'list page' : 'still the entry page'}`,
       );
       await s.shot(shotName('06-removed-toast'));
       await s.click(...UNDO);
@@ -309,6 +330,104 @@ async function main() {
       await s.stop();
     }
   }
+
+  // 13: a list of fields at 360x720, by touch. Every row of the categories is a text field; the
+  // finger starts on a category name, below the fold are more categories. The proof of the fix
+  // is the second check, "the drag focused no field": on the code before it, the touch focused
+  // the field under the finger (on Phosh that brings up the on-screen keyboard, which Broadway
+  // has not; the owner could not scroll there). The scroll distance is a control: in Broadway
+  // the list moved before the fix too.
+  {
+    const sdir = seed('scroll');
+    const s = forAScreen(360, 720, sdir, gjsFile);
+    try {
+      await s.start();
+      s.activate('categories');
+      await s.page.waitForTimeout(1000);
+      const before = shotName('13-categories-top') ?? join(root, 'scroll-before.png');
+      await s.shot(before);
+      const categories = () => JSON.stringify(read(sdir, '.list-categories.json'));
+      const kept = categories();
+      await s.touch(120, 560, 120, 210);
+      await sleep(1500); // the kinetic scrolling comes to rest
+      const after = shotName('13-categories-scrolled') ?? join(root, 'scroll-after.png');
+      await s.shot(after);
+      const moved = await scrolledBy(s, before, after);
+      say('info', `step 13: the list moved ${moved.dy} px for a drag of 350 px`);
+      // The finger moves 350 px; the list moved 216 to 486 px in the runs of 2026-11-22 (on the
+      // code before and after the fix), less when GTK starts the drag late. 100 px is the lower
+      // bound: more than a row (55 px), so a row below the fold came into view.
+      check(
+        moved.dy >= 100 && moved.rest < 0.05,
+        'control: a touch drag that starts on a category name scrolls the list up by more than a row',
+        `moved ${moved.dy} px, ${(moved.rest * 100).toFixed(1)} % of the band differ`,
+      );
+      // The proof: a drag is no tap, so no field took the focus and what is typed now goes nowhere.
+      await s.type('x');
+      await s.press('Enter');
+      await sleep(500);
+      check(
+        categories() === kept,
+        'the drag focused no field: typing and Enter afterwards rename no category',
+      );
+      await s.shot(shotName('13-categories-after-typing'));
+      // A tap on a name still edits it (a control: it held before the fix too).
+      await s.touch(120, 400);
+      await s.type('Z');
+      await s.press('Enter');
+      await sleep(500);
+      const renamed = read(sdir, '.list-categories.json').filter((r) =>
+        String(r.value?.name ?? '').includes('Z'),
+      );
+      check(
+        renamed.length === 1,
+        'a tap on a category name focuses it: typing and Enter rename that category',
+        categories(),
+      );
+    } finally {
+      await s.stop();
+    }
+  }
+
+  // 13b: with a mouse at 1000x700 a field works as GTK's own: a click on an unfocused name
+  // focuses it and puts the cursor where it was clicked (editOnTap defers the focus for touch
+  // only).
+  {
+    const mdir = seed('mouse');
+    const s = forAScreen(1000, 700, mdir, gjsFile);
+    try {
+      await s.start();
+      s.activate('categories');
+      await s.page.waitForTimeout(1000);
+      await s.shot(shotName('13b-categories-wide'));
+      await s.click(...WIDE_FIRST_NAME);
+      await s.type('Q');
+      await s.press('Enter');
+      await sleep(500);
+      await s.shot(shotName('13b-clicked-and-typed'));
+      const names = read(mdir, '.list-categories.json').map((r) => String(r.value?.name ?? ''));
+      const typed = names.find((name) => name.includes('Q'));
+      check(
+        typed !== undefined && !typed.endsWith('Q'),
+        'a mouse click on an unfocused category name focuses it with the cursor where it was clicked',
+        JSON.stringify(names),
+      );
+    } finally {
+      await s.stop();
+    }
+  }
+
+  // Spaces: create a space in the preferences (a fake GitHub on localhost, compiled in as the
+  // address), then leave it; the steps are the shared ones of the native apps.
+  await createAndLeave({
+    dir: seed('create'),
+    collection: 'list',
+    bundleWith: (api) => bundleAppWith(api, join(root, 'with-fake-github.js')),
+    session: (dir, file) => forAScreen(360, 720, dir, file),
+    shot: shotName,
+    check,
+    at: SPACES_AT,
+  });
 
   // Desktop size, one screenshot.
   {

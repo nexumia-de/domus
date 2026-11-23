@@ -95,6 +95,19 @@ export {
   type SyncStatus,
 } from './collection-sync';
 export { pickSpace, viewOf, type SpaceView } from './space-choice';
+export {
+  SPACE_COLLECTION,
+  SPACE_NAME_KEY,
+  SPACE_NAME_MAX,
+  cleanSpaceName,
+  createSpace,
+  githubVerdict,
+  isRepository,
+  isWebdavAddress,
+  type CreateSpaceDeps,
+  type CreateSpaceResult,
+  type GithubVerdict,
+} from './space-setup';
 export { ago, statusText, type StatusWords } from './status-text';
 
 // Report a problem from the app as a GitHub issue (docs/feedback.md).

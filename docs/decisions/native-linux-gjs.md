@@ -85,7 +85,10 @@ ways were put to the owner with what each costs:
   web app's `core.ts` exports what a second shell needs; the one change in
   web code was `itemsFromRecords`, taken out of `notebook/stock.ts`.
 - **Each native app joins a space by its invitation link.** There is no
-  native Household app; a space is made and shared in a browser. The
+  native Household app; a space is shared (invited to) in a browser.
+  Since 2026-11-22 (owner) the native apps can also make a space and
+  leave one, with the host's `createSpace` and the preferences group of
+  `packages/gjs` ([platform](../../packages/gjs/docs/platform.md#spaces-in-the-preferences)). The
   three apps on one device do not share their spaces: each keeps
   `$XDG_DATA_HOME/<app>` in its own Flatpak sandbox and needs the
   invitation link once (owner, 2026-11-22: no sandbox permission or

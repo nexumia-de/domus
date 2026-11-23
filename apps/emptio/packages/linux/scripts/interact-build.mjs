@@ -8,3 +8,12 @@ export async function bundleApp() {
   if (run.status !== 0) throw new Error(`build failed: ${run.stderr || run.stdout}`);
   return join(pkg, 'dist', 'de.nexumia.Emptio.js');
 }
+
+/**
+ * The app built against another GitHub address (a fake on localhost) into `outfile`, for the
+ * steps that create a space. The address is compiled in, as in a release.
+ */
+export async function bundleAppWith(githubApi, outfile) {
+  const { buildApp } = await import('../build.mjs');
+  return buildApp({ githubApi, outfile });
+}

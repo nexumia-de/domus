@@ -5,12 +5,19 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import { exit, programArgs } from 'system';
-import { adapterFor, createFileStore, feedbackDe, feedbackEn } from '@nexumia-de/hospes';
+import {
+  adapterFor,
+  createFileStore,
+  feedbackDe,
+  feedbackEn,
+  testGithub,
+} from '@nexumia-de/hospes';
 import {
   addStyle,
   applyStyle,
   filePrefs,
   gioFiles,
+  type CreateDeps,
   installWebPlatform,
   randomBytes,
   installReport,
@@ -64,13 +71,23 @@ application.connect('activate', () => {
   const fetch = soupFetch(`Emptio/${__VERSION__}`);
   const monitor = Gio.NetworkMonitor.get_default();
   const isOnline = (): boolean => monitor.get_network_available();
+  const adapter: CreateDeps['adapter'] = (storage) =>
+    adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline });
+  // What creating a space needs; the token goes to the compiled-in GitHub address only.
+  const setup: CreateDeps = {
+    store,
+    now,
+    adapter,
+    testGithub: (repository, token) =>
+      testGithub({ repository, token, apiBase: __GITHUB_API__, fetch, online: isOnline }),
+  };
   const app = createApp({
     store,
     now,
     newId: () => `e-${crypto.randomUUID()}`,
     prefs,
     names: { home: n.preferences.homeSpace, unnamed: n.preferences.unnamedSpace },
-    adapter: (storage) => adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline }),
+    adapter,
     isOnline,
     // Only to the KitchenOwl server a space was connected to (docs/kitchenowl.md).
     fetch: (url, init) => fetch(url, init),
@@ -136,7 +153,7 @@ application.connect('activate', () => {
   action('sync', () => void app.syncNow());
   application.set_accels_for_action('app.sync', ['<Control>r']);
   action('categories', () => push(categoriesPage(ui)));
-  action('preferences', () => showPreferences(ui, store));
+  action('preferences', () => showPreferences(ui, store, setup));
   action('about', () => {
     const about = new Adw.AboutDialog({
       application_name: t.appName,

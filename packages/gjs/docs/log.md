@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-22
+
+- **Fix and update** (the owner's three defects in the native apps): `rows.ts` (`editOnTap`: a text field in a list takes the focus on a tap, never on the touch that starts a scroll; [why](platform.md#text-fields-in-a-scrolling-list)), `create.ts` (`createFromForm`, pure, on the host package's new `createSpace`), `spaces.ts` (`spacesGroup`: show, leave and create a space in the preferences; [spaces](platform.md#spaces-in-the-preferences)), texts for creating and leaving in `texts.ts`. Tooling: `Session.touch`, `scrolledBy`, `interact-spaces.mjs` ([Broadway](tooling.md#broadway)). Tests: `test/create.test.ts` (6; 17 in the package now). All three native apps use the group and the rows.
+
 - **Update** (2026-11-21, step 5 of the shared shell): Emptio's and Mixtura's native apps now take the style, spaces, join, status and support texts from `texts.ts`; their copies are gone. No change in this package.
 
 ## 2026-11-22 (report a problem)

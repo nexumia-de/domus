@@ -160,6 +160,33 @@ it keeps in the space with its next cycle. An app keeps its shared collections i
 such a space from the first start, for example Mixtura its `stock`, so
 setting up sync moves no data.
 
+## Making a space
+
+`space-setup.ts`, shared by the Household app (`apps/domus`, which wraps
+it with its own failure words) and the native apps (`createFromForm` of
+`packages/gjs`). Moved here from the Household app on 2026-11-22, when
+the native apps became the second user.
+
+- `createSpace({ name, storage }, { store, now, adapter, random? })`: a
+  new secret and the id derived from it, the space stored with its
+  storage and access, the record `name` written in the collection
+  `space` (`SPACE_COLLECTION`, `SPACE_NAME_KEY`), and one cycle on it,
+  which writes the space's first file. A failed cycle takes the space off
+  the device again and returns the failure; anything thrown (a storage
+  the host cannot use, a store that fails) is thrown on after the space
+  was taken off again. A bad name is `bad-name` and stores nothing.
+- `cleanSpaceName(text)`: trimmed, inner spaces folded, 1 to 60
+  characters (`SPACE_NAME_MAX`), or undefined.
+- `isRepository(text)`: `owner/name` without `.` or `..` segments.
+  `isWebdavAddress(text)`: https, a host, no user name or password in it,
+  read without `URL` (GJS has none).
+- `githubVerdict(testGithub result)`: `ok`, `public` (works, but anyone
+  sees the files exist), `readonly` (the token cannot write) or `failed`
+  with the failure.
+
+Leaving a space is the store's `removeSpace`; there is no function of
+its own.
+
 ## One cycle (`cycle.ts`)
 
 `syncCollection({ space, collection, adapter, store, now, horizonDays = 90, attempts = 3 })`:

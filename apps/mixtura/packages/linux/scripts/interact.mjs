@@ -10,8 +10,9 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Session, sleep, stopAll } from '@nexumia-de/gjs/tooling/interact-lib';
+import { createAndLeave } from '@nexumia-de/gjs/tooling/interact-spaces';
 import { difference } from '@nexumia-de/gjs/tooling/interact-pixels';
-import { bundleApp } from './interact-build.mjs';
+import { bundleApp, bundleAppWith } from './interact-build.mjs';
 
 const shots = process.env.SHOTS;
 if (shots) mkdirSync(shots, { recursive: true });
@@ -230,6 +231,29 @@ async function main() {
       await s.stop();
     }
   }
+
+  // Spaces: create a space in the preferences (a fake GitHub on localhost, compiled in as the
+  // address), then leave it; the steps are the shared ones of the native apps. Coordinates at
+  // 360x720: the preferences are a bottom sheet whose top follows its content.
+  await createAndLeave({
+    dir: seed('spaces'),
+    collection: 'stock',
+    bundleWith: (api) => bundleAppWith(api, join(root, 'with-fake-github.js')),
+    session: (dir, file) => forAScreen(360, 720, dir, file),
+    shot: (name) => (shots ? shotName(name) : undefined),
+    check,
+    at: {
+      createRow: [180, 500],
+      repository: [150, 433],
+      token: [150, 488],
+      create: [180, 681],
+      leaveSecond: [301, 466],
+      cancel: [104, 477],
+      confirm: [254, 477],
+      leaveFirst: [301, 442],
+      confirmShort: [254, 443],
+    },
+  });
 
   // Desktop size, one screenshot.
   {

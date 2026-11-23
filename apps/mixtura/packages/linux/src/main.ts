@@ -5,12 +5,19 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import { exit, programArgs } from 'system';
-import { adapterFor, createFileStore, feedbackDe, feedbackEn } from '@nexumia-de/hospes';
+import {
+  adapterFor,
+  createFileStore,
+  feedbackDe,
+  feedbackEn,
+  testGithub,
+} from '@nexumia-de/hospes';
 import {
   addStyle,
   applyStyle,
   filePrefs,
   gioFiles,
+  type CreateDeps,
   installWebPlatform,
   randomBytes,
   installReport,
@@ -70,13 +77,23 @@ application.connect('activate', () => {
   const fetch = soupFetch(`DrinkBuilder/${__VERSION__}`);
   const monitor = Gio.NetworkMonitor.get_default();
   const isOnline = (): boolean => monitor.get_network_available();
+  const adapter: CreateDeps['adapter'] = (storage) =>
+    adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline });
+  // What creating a space needs; the token goes to the compiled-in GitHub address only.
+  const setup: CreateDeps = {
+    store,
+    now,
+    adapter,
+    testGithub: (repository, token) =>
+      testGithub({ repository, token, apiBase: __GITHUB_API__, fetch, online: isOnline }),
+  };
   const session = createSession({
     store,
     seed: __SEED__,
     now,
     prefs,
     names: { home: t.preferences.homeSpace, unnamed: t.preferences.unnamedSpace },
-    adapter: (storage) => adapterFor(storage, { apiBase: __GITHUB_API__, fetch, online: isOnline }),
+    adapter,
     isOnline,
   });
   const model = session.model();
@@ -148,7 +165,7 @@ application.connect('activate', () => {
     made.connect('activate', run);
     application.add_action(made);
   };
-  action('preferences', () => showPreferences(ui, store));
+  action('preferences', () => showPreferences(ui, store, setup));
   action('about', () => {
     const about = new Adw.AboutDialog({
       application_name: t.appName,

@@ -1,9 +1,10 @@
 // What the GitHub steps decide, apart from the screens: which repository a token
 // leads to, and what to say about the repository once it was looked at.
-import type {
-  FindRepositoriesResult,
-  GithubConnectionResult,
-  RepositoryEntry,
+import {
+  githubVerdict,
+  type FindRepositoriesResult,
+  type GithubConnectionResult,
+  type RepositoryEntry,
 } from '@nexumia-de/hospes';
 import type { Problem } from './failures';
 
@@ -39,14 +40,10 @@ export type Verdict =
   | { kind: 'readonly' }
   | { kind: 'failed'; problem: Problem };
 
+/** The host package's verdict (shared with the native apps), with a failure as the screens carry it. */
 export function verdictOf(test: GithubConnectionResult): Verdict {
-  if (test.state !== 'reachable') {
-    const failure = test.state;
-    return {
-      kind: 'failed',
-      problem: test.detail === undefined ? { failure } : { failure, detail: test.detail },
-    };
-  }
-  if (!test.canWrite) return { kind: 'readonly' };
-  return test.private ? { kind: 'ok' } : { kind: 'public' };
+  const verdict = githubVerdict(test);
+  if (verdict.kind !== 'failed') return verdict;
+  const { failure, detail } = verdict;
+  return { kind: 'failed', problem: detail === undefined ? { failure } : { failure, detail } };
 }

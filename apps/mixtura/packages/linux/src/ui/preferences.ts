@@ -1,8 +1,16 @@
 // Preferences: the style and the units, which space's bottles are shown and how each is
-// kept in step, and joining a space by its invitation link.
+// kept in step, leaving and creating a space (the shared group of `@nexumia-de/gjs`), and
+// joining a space by its invitation link.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import { applyStyle, joinByLink, type Style } from '@nexumia-de/gjs';
+import {
+  applyStyle,
+  editOnTap,
+  joinByLink,
+  spacesGroup,
+  type CreateDeps,
+  type Style,
+} from '@nexumia-de/gjs';
 import { statusText, type Store } from '@nexumia-de/hospes';
 import { PREFS } from '../session';
 import type { Ui } from './context';
@@ -15,7 +23,7 @@ export function choiceOf<T extends string>(list: readonly T[], value: string | n
   return list.find((item) => item === value) ?? (list[0] as T);
 }
 
-export function showPreferences(ui: Ui, store: Store): void {
+export function showPreferences(ui: Ui, store: Store, setup: CreateDeps): void {
   const { session, t, prefs } = ui;
   const p = t.preferences;
   const dialog = new Adw.PreferencesDialog({ title: t.menu.preferences });
@@ -45,33 +53,23 @@ export function showPreferences(ui: Ui, store: Store): void {
   look.add(units);
   page.add(look);
 
-  const spaces = new Adw.PreferencesGroup({ title: p.spaces, description: p.spacesIntro });
-  const state = session.state();
-  let first: unknown = null;
-  for (const space of state.spaces) {
-    const line = new Adw.ActionRow({ use_markup: false });
-    line.set_title(space.name);
-    line.set_subtitle(statusText(t.status, session.status(space.id), ui.now(), true));
-    const choose = new Gtk.CheckButton({
-      active: space.id === state.space?.id,
-      valign: Gtk.Align.CENTER,
-    });
-    if (first === null) first = choose;
-    else choose.set_group(first);
-    choose.connect('toggled', () => {
-      if (choose.get_active() && space.id !== session.state().space?.id) {
-        void session.choose(space.id);
-      }
-    });
-    line.add_prefix(choose);
-    line.set_activatable_widget(choose);
-    spaces.add(line);
-  }
-  page.add(spaces);
+  page.add(
+    spacesGroup({
+      host: session,
+      store,
+      setup,
+      texts: t,
+      intro: p.spacesIntro,
+      subtitle: (space) => statusText(t.status, session.status(space.id), ui.now(), true),
+      dialog,
+      toast: (text) => ui.toast(text),
+      targetClass: 'mixtura-target',
+    }),
+  );
 
   const join = new Adw.PreferencesGroup({ title: t.join.title, description: t.join.description });
-  const link = new Adw.EntryRow({ title: t.join.link, show_apply_button: true });
-  const token = new Adw.PasswordEntryRow({ title: t.join.token });
+  const link = editOnTap(new Adw.EntryRow({ title: t.join.link, show_apply_button: true }));
+  const token = editOnTap(new Adw.PasswordEntryRow({ title: t.join.token }));
   link.connect('apply', () => {
     void joinByLink(store, link.get_text(), token.get_text()).then(
       (done) => {
