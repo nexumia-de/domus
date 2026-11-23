@@ -59,7 +59,10 @@ was written on 2026-11-17, which recommended export only.
 
 1. **Own JSON is the lossless format** for export, import and backup.
 2. **Export to Cooklang**: one component per file, with the losses
-   listed under [What is lost](#what-is-lost).
+   listed under [What is lost](#what-is-lost). Since issue 41 (2026-11-23) a dish is
+   one file with one `= section` per component, and a file with sections is imported
+   as a dish ([AI prompt import](ai-prompt-import.md), point 6;
+   [exchange](../exchange.md#cooklang) has what a dish still loses).
 3. **Import from Cooklang**, with a step in which the user completes
    what the file does not say before anything is saved: the role of
    each line, the mass of amounts given by volume or count (or the

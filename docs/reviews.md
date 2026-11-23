@@ -21,6 +21,42 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: Cooklang sections become components of a dish (issue 41)
+
+One agent built it in its own worktree; a different agent (mid model)
+reviewed it; the writer fixed the findings; the lead merged and ran the
+checks.
+
+| Part                                                                                              | Done by | Checked by                                                                                                             |
+| ------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `cooklangParts`, `importDish`, `dishToCooklang` (engine, 9 new vectors); the import step per part | writer  | reviewer (no defect; four mutations of the engine, each caught by vectors or tests)                                    |
+| Saving a dish of parts in one transaction with Undo; the export of an own dish                    | writer  | reviewer read it; the move of the catalogue adoption into the transaction by nobody but the writer and the lead's runs |
+| This entry                                                                                        | lead    | nobody                                                                                                                 |
+
+**What the checks found, and where it was fixed.**
+
+- _Reviewer: a check that pinned a degraded value._ The download name
+  check asserted "download" when the browser runs without a UTF-8
+  locale (Chromium's naming, not the app's: the app sets the name).
+  It now skips the name there with a printed note and asserts the real
+  name under UTF-8.
+- _Reviewer: unpinned or silent._ The component export now writes its
+  structured steps (left out without a word before): pinned by a vector.
+  Two sections with one name became two components with one name: they
+  are named apart ("Teig (2)") with a test. The note a part becomes is
+  now shown; the assembly count tells steps from notes.
+- _Reviewer, pre-existing: a failed save left adopted catalogue entries
+  behind._ The adoption moved into the save's transaction; the test "a
+  save the store refuses leaves no catalogue entry behind" fails on the
+  code before (3 entries left) and passes after.
+
+**Test counts** (lead's runs): `npm run check:culina` (engine 1206, app
+843, native 19); browser checks 1893 ok under `LANG=C.UTF-8` (the
+writer: 1892 and the note line without it).
+
+**What nobody verified.** A real `.cook` file with sections from the
+Cook app or CookCLI; a phone; the German by a native speaker.
+
 ## 2026-11-23: one Cook page in Culina's native app (issue 44)
 
 One agent built it in its own worktree on top of pull request 55; a

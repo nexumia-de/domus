@@ -1,0 +1,119 @@
+{
+  "id": "import-dish-one-component-per-section",
+  "description": "A file with the sections Teig and Soße becomes a dish of two components, each version 1 of its own family with its section's lines and steps, filling one slot each in file order with the role the user confirmed; the volume left open is reported as unmeasured by its index in the whole file",
+  "inputs": {
+    "kind": "cooklang_import_dish",
+    "text": "---\ntitle: Spätzle mit Soße\nservings: 4\n---\n\n= Teig\n\nVerrühre @Mehl{250%g} mit @Eier{3}.\n\nSchabe den Teig ins Wasser.\n\n== Soße ==\n\nSchmelze @Butter{30%g} und rühre @Sahne{200%ml} ein.\n",
+    "decisions": [
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+        "amount": { "mode": "given" },
+        "role": "flour"
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000005" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000006" },
+        "amount": { "mode": "open" }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000050",
+      "name": "Spätzle mit Soße",
+      "date": "2026-11-23",
+      "change": "Imported from spaetzle.cook",
+      "portions": 4,
+      "components": [
+        {
+          "id": "u-00000000-0000-4000-8000-000000000051",
+          "name": "Teig",
+          "role": "main",
+          "percentBase": "flour"
+        },
+        {
+          "id": "u-00000000-0000-4000-8000-000000000052",
+          "name": "Soße",
+          "role": "sauce",
+          "yieldGrams": 220
+        }
+      ]
+    },
+    "facts": {}
+  },
+  "expected": {
+    "dish": {
+      "id": "u-00000000-0000-4000-8000-000000000050",
+      "name": "Spätzle mit Soße",
+      "portions": 4,
+      "slots": [
+        {
+          "role": "main",
+          "ref": { "kind": "component", "id": "u-00000000-0000-4000-8000-000000000051" }
+        },
+        {
+          "role": "sauce",
+          "ref": { "kind": "component", "id": "u-00000000-0000-4000-8000-000000000052" }
+        }
+      ],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000050",
+        "date": "2026-11-23",
+        "change": "Imported from spaetzle.cook"
+      }
+    },
+    "components": [
+      {
+        "id": "u-00000000-0000-4000-8000-000000000051",
+        "name": "Teig",
+        "percentBase": "flour",
+        "lines": [
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+            "amount": { "value": 250, "unit": "g" },
+            "role": "flour"
+          },
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000005" },
+            "amount": { "value": 3, "unit": "count" }
+          }
+        ],
+        "method": ["Verrühre Mehl mit Eier.", "Schabe den Teig ins Wasser."],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000051",
+          "date": "2026-11-23",
+          "change": "Imported from spaetzle.cook"
+        }
+      },
+      {
+        "id": "u-00000000-0000-4000-8000-000000000052",
+        "name": "Soße",
+        "lines": [
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+            "amount": { "value": 30, "unit": "g" }
+          },
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000006" },
+            "note": "200 ml"
+          }
+        ],
+        "yield": { "amount": { "value": 220, "unit": "g" }, "source": "user" },
+        "method": ["Schmelze Butter und rühre Sahne ein."],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000052",
+          "date": "2026-11-23",
+          "change": "Imported from spaetzle.cook"
+        }
+      }
+    ],
+    "unmeasured": [3]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the file uses the specification's syntax (README, Sections, Metadata); the decisions, names and roles are the user's (docs/decisions/ai-prompt-import.md, point 6)."
+}

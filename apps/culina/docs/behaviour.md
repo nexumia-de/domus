@@ -1926,17 +1926,68 @@ Save writes the new ingredients and the component in one transaction as **versio
 family** (date from the clock, change "Imported from <file>", `parent` only for a variation); the
 same file imported again is a new family or a variation, never an overwrite. A catalogue entry
 chosen for a name (or as the class to file a new ingredient under) is copied into the notebook
-with its parent chain in that save, the picker's way, and the lines point at the copy; Undo takes
+with its parent chain in that save, and the lines point at the copy; Undo takes
 the copies back too. Nothing is copied for a name left unconfirmed or when the step is left.
+**The copies are written in the same transaction as the import** (since 2026-11-23): a save the
+store refuses leaves none of them behind. Before, they were saved one by one ahead of the import,
+so a refused save left them in the notebook (pinned by "a save the store refuses leaves no
+catalogue entry behind" in `test/import-catalogue.test.ts`, which fails on the earlier code with 3
+entries left).
 A toast offers Undo.
 **Test:** `test/import-catalogue.test.ts`, `e2e/import-catalogue.mjs` (empty notebook, offline).
 
+**A file with sections** (`= Teig`, `== Soße ==`; issue 41,
+[decision](decisions/ai-prompt-import.md), point 6) **becomes a dish** of one component per
+section with ingredient lines ([exchange](exchange.md#cooklang) has the rule for every part and
+why). The step says so under what was read ("The file has sections: it becomes a dish of 2
+components.") and changes as follows:
+
+1. Name of the dish (prefilled from `title`, else the file name), **Portions (optional)**
+   (prefilled from the leading whole number of `servings`; a whole number above 0 or empty), and,
+   when a dish of that name exists, "A new dish" or "A variation of ...". No output weight and no
+   percent base for the dish.
+2. Which ingredient each name means: unchanged, once per name for the whole file.
+3. **Components of the dish**, one block per part in file order, headed by where it comes from
+   ("From the section Teig", "Before the first section", "From a section without a name"). A part
+   with lines has the component's **name** (prefilled with the section's name; text before the
+   first section with the file's title), its **Role in the dish** (the dish roles, prefilled
+   "Main element", so nothing is left unset; the cook changes it), its own **percent base** among
+   the roles of its lines, and then its lines with the same amount and role decisions as above.
+   Two parts that would get the same name ("= Teig" twice, or a section named like the file) are
+   named apart, "Teig (2)", since two components of one dish with one name cannot be told apart
+   and their Cooklang export would write one file stem for both; the fields stay editable, and a
+   name the cook types is not checked again.
+   A part without lines says what it becomes: "No ingredients: becomes the note of the dish."
+   (before the first section), followed by the note's text in quotes on one line (cut at a word
+   after 160 characters with "…"), or "No ingredients: its 2 steps and 1 note become part of the
+   assembly of the dish." (steps and notes counted apart; each becomes one assembly step).
+
+Save waits for every name, a name for every component, usable grams, roles and portions. It
+writes the new ingredients, each component (version 1 of its own family) and the dish (version 1,
+or a variation) in one transaction; the change of each is "Imported from <file>". The lines left
+open are reported as for one component; "Open the dish" leads to it. **Undo** in the toast takes
+back the dish, its components, the new ingredients and the adopted catalogue entries. A file
+without sections is one component, as above.
+**Test:** `e2e/cooklang-flow.mjs` (two sections become a dish of two components after Save, nothing
+before, a component without a name blocks Save, Undo removes them, export), `test/cook-model.test.ts`,
+engine vectors `parts-*` and `import-dish-*`. Screenshots: `docs/screenshots/import-cooklang-sections-360x720-light.png`, `...-1000x700-light.png`.
+
 ## Cooklang export
 
-A component's detail has "Export as Cooklang": one `.cook` file for the shown version; one quiet
+A component's detail has "Export as Cooklang": one `.cook` file for the shown version, with its
+method and its steps; one quiet
 sentence says what it cannot carry ([decision](decisions/cooklang.md#what-is-lost): ratios and
 percentages, roles, states, version history, other tasting notes, step characters that would read
 as markup).
+
+An own dish's detail has "Export as Cooklang" too (`dishDetail`; a shipped dish is drawn by
+`classicScreen` and has no such button, a kept copy is an own dish and has it): **one file for the dish**, one section per
+slot (a component's lines and steps; its current version, as the dish shows it), the dish's note
+before the first section and its assembly under "Assembly" ("Zusammenbau"). The sentence adds
+what a dish loses: how much of each component the dish takes and optional roles, the output
+weights of the components, course, cuisine and the correction of the characters
+([exchange](exchange.md#cooklang)). Read back, the file gives a dish with the same components,
+lines, note and assembly steps, minus what is listed as lost.
 
 **Text:** `strings.importing`, `strings.backup`, `strings.settings`, `strings.cooklang`.
 

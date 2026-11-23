@@ -1,0 +1,39 @@
+{
+  "id": "serialize-structured-steps-after-the-method",
+  "description": "A component's structured steps, one line each as the app shows them, are written as paragraphs after the method; markup in them is removed and reported as characters (before 2026-11-23 they were left out without a word)",
+  "inputs": {
+    "kind": "cooklang_serialize",
+    "component": {
+      "id": "u-00000000-0000-4000-8000-00000000000b",
+      "name": "Roux",
+      "lines": [
+        {
+          "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+          "amount": { "value": 30, "unit": "g" }
+        },
+        {
+          "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+          "amount": { "value": 30, "unit": "g" }
+        }
+      ],
+      "method": ["Melt the butter."],
+      "version": { "family": "u-00000000-0000-4000-8000-00000000000b" }
+    },
+    "names": {
+      "ingredients": {
+        "u-00000000-0000-4000-8000-000000000001": "Flour",
+        "u-00000000-0000-4000-8000-000000000002": "Butter"
+      },
+      "components": {}
+    },
+    "facts": {},
+    "steps": ["Sweat · Flour, Butter · 2 min", "Stir #constantly"]
+  },
+  "expected": {
+    "text": "---\ntitle: Roux\n---\n\nCombine @Flour{30%g} and @Butter{30%g}.\n\nMelt the butter.\n\nSweat · Flour, Butter · 2 min\n\nStir constantly\n",
+    "fileName": "Roux.cook",
+    "lost": ["characters"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the output follows the specification's syntax (README: steps are paragraphs); the step lines are given as the app's stepLines writes them."
+}

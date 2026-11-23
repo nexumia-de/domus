@@ -1,0 +1,72 @@
+{
+  "id": "import-dish-text-before-the-first-section-is-the-note",
+  "description": "Text before the first section without ingredient lines becomes the dish's note (one paragraph per step or note); a later section without lines becomes the dish's assembly steps, its name not kept",
+  "inputs": {
+    "kind": "cooklang_import_dish",
+    "text": "> A family recipe.\n\nHeat the oven.\n\n= Dough\n\nMix @flour{200%g} and @water{100%ml}.\n\n= Serving\n\nTop the dough.\n\nBake for ~{12%minutes}.\n",
+    "decisions": [
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000004" },
+        "amount": { "mode": "given" }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000060",
+      "name": "Flatbread",
+      "date": "2026-11-23",
+      "change": "Imported from flatbread.cook",
+      "components": [
+        { "id": "u-00000000-0000-4000-8000-000000000061", "name": "Dough", "role": "main" }
+      ]
+    },
+    "facts": {}
+  },
+  "expected": {
+    "dish": {
+      "id": "u-00000000-0000-4000-8000-000000000060",
+      "name": "Flatbread",
+      "slots": [
+        {
+          "role": "main",
+          "ref": { "kind": "component", "id": "u-00000000-0000-4000-8000-000000000061" }
+        }
+      ],
+      "steps": [{ "note": "Top the dough." }, { "note": "Bake for 12 minutes." }],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000060",
+        "date": "2026-11-23",
+        "change": "Imported from flatbread.cook"
+      },
+      "note": "A family recipe.\n\nHeat the oven."
+    },
+    "components": [
+      {
+        "id": "u-00000000-0000-4000-8000-000000000061",
+        "name": "Dough",
+        "lines": [
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+            "amount": { "value": 200, "unit": "g" }
+          },
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000004" },
+            "amount": { "value": 100, "unit": "ml" }
+          }
+        ],
+        "method": ["Mix flour and water."],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000061",
+          "date": "2026-11-23",
+          "change": "Imported from flatbread.cook"
+        }
+      }
+    ],
+    "unmeasured": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example in the specification's syntax (README, Sections, Notes, Timers). The spec says nothing of text before the first section; cooklang-rs keeps it as a section without a name. Without lines it cannot be a component, and as assembly it would come after the components it precedes, so it is the dish's note."
+}

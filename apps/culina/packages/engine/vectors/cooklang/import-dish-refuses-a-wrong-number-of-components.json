@@ -1,0 +1,31 @@
+{
+  "id": "import-dish-refuses-a-wrong-number-of-components",
+  "description": "Two sections with lines but one component entry: refused, nothing is made",
+  "inputs": {
+    "kind": "cooklang_import_dish",
+    "text": "= A\n\nAdd @flour{100%g}.\n\n= B\n\nAdd @butter{20%g}.\n",
+    "decisions": [
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+        "amount": { "mode": "given" }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000080",
+      "name": "Two parts",
+      "date": "2026-11-23",
+      "change": "Imported from two.cook",
+      "components": [
+        { "id": "u-00000000-0000-4000-8000-000000000081", "name": "A", "role": "main" }
+      ]
+    },
+    "facts": {}
+  },
+  "error_code": "component-count",
+  "tolerance": 0,
+  "source": "Synthetic example: the engine checks that the host gave one entry per part with lines."
+}

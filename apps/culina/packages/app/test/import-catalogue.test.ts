@@ -110,3 +110,19 @@ test('a class chosen from the catalogue for a new ingredient is adopted with its
   expect(getIngredient('fdc-1')?.parentId).toBe('fdc-group-butter');
   expect(listIngredients().find((i) => i.name === 'saffron')?.parentId).toBe('fdc-1');
 });
+
+test('a save the store refuses leaves no catalogue entry behind', async () => {
+  const m = model();
+  choose(
+    m,
+    'butter',
+    { type: 'existing', target: { kind: 'ingredient', id: 'fdc-1' } },
+    () => ({}),
+  );
+  createForUnset(m);
+  // A name longer than the schema allows: the component is refused in the same transaction.
+  const done = await saveCookImport({ model: m, name: 'x'.repeat(121), catalogue: BY_ID });
+  expect(done.ok).toBe(false);
+  expect(listIngredients()).toHaveLength(0);
+  expect(listComponents()).toHaveLength(0);
+});

@@ -1,0 +1,96 @@
+{
+  "id": "import-dish-text-before-the-first-section-with-lines-is-a-component",
+  "description": "Text before the first section with ingredient lines is a component of its own, first in the dish, with the name the user confirmed (the step offers the file's title)",
+  "inputs": {
+    "kind": "cooklang_import_dish",
+    "text": "---\ntitle: Pancakes\n---\n\nWhisk @flour{100%g} and @milk{200%g}.\n\n= Topping\n\nWarm @butter{20%g}.\n",
+    "decisions": [
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000006" },
+        "amount": { "mode": "given" }
+      },
+      {
+        "target": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+        "amount": { "mode": "grams", "grams": 25 }
+      }
+    ],
+    "options": {
+      "id": "u-00000000-0000-4000-8000-000000000070",
+      "name": "Pancakes",
+      "date": "2026-11-23",
+      "change": "Imported from pancakes.cook",
+      "components": [
+        { "id": "u-00000000-0000-4000-8000-000000000071", "name": "Pancakes", "role": "main" },
+        { "id": "u-00000000-0000-4000-8000-000000000072", "name": "Topping", "role": "sauce" }
+      ]
+    },
+    "facts": {}
+  },
+  "expected": {
+    "dish": {
+      "id": "u-00000000-0000-4000-8000-000000000070",
+      "name": "Pancakes",
+      "slots": [
+        {
+          "role": "main",
+          "ref": { "kind": "component", "id": "u-00000000-0000-4000-8000-000000000071" }
+        },
+        {
+          "role": "sauce",
+          "ref": { "kind": "component", "id": "u-00000000-0000-4000-8000-000000000072" }
+        }
+      ],
+      "version": {
+        "family": "u-00000000-0000-4000-8000-000000000070",
+        "date": "2026-11-23",
+        "change": "Imported from pancakes.cook"
+      }
+    },
+    "components": [
+      {
+        "id": "u-00000000-0000-4000-8000-000000000071",
+        "name": "Pancakes",
+        "lines": [
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000001" },
+            "amount": { "value": 100, "unit": "g" }
+          },
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000006" },
+            "amount": { "value": 200, "unit": "g" }
+          }
+        ],
+        "method": ["Whisk flour and milk."],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000071",
+          "date": "2026-11-23",
+          "change": "Imported from pancakes.cook"
+        }
+      },
+      {
+        "id": "u-00000000-0000-4000-8000-000000000072",
+        "name": "Topping",
+        "lines": [
+          {
+            "ref": { "kind": "ingredient", "id": "u-00000000-0000-4000-8000-000000000002" },
+            "amount": { "value": 25, "unit": "g" },
+            "note": "20 g"
+          }
+        ],
+        "method": ["Warm butter."],
+        "version": {
+          "family": "u-00000000-0000-4000-8000-000000000072",
+          "date": "2026-11-23",
+          "change": "Imported from pancakes.cook"
+        }
+      }
+    ],
+    "unmeasured": []
+  },
+  "tolerance": 0,
+  "source": "Synthetic example in the specification's syntax (README, Sections); the names and roles are the user's."
+}

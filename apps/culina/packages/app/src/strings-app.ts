@@ -731,10 +731,43 @@ export const appStrings = {
     cookImportAnother: 'Import another file',
     cookNotFacts: 'That ingredient has no density or unit weight yet.',
     cookNotReadable: 'That quantity is not a number and unit this app knows.',
+    // A file with sections becomes a dish of components.
+    cookDishRead: (components: number): string =>
+      components === 1
+        ? 'The file has sections: it becomes a dish of 1 component.'
+        : `The file has sections: it becomes a dish of ${components} components.`,
+    cookDishNameField: 'Name of the dish',
+    cookPortionsField: 'Portions (optional)',
+    cookPortionsNotAllowed: 'Enter a whole number above 0.',
+    cookNewDish: 'A new dish',
+    cookPartsHeading: 'Components of the dish',
+    cookPartsHint: 'Each section with ingredients becomes a component, version 1 of its own.',
+    cookFromSection: (name: string): string => `From the section ${name}`,
+    cookBeforeSections: 'Before the first section',
+    cookUnnamedSection: 'From a section without a name',
+    cookSlotRole: 'Role in the dish',
+    cookPartNote: 'No ingredients: becomes the note of the dish.',
+    /** The dish's note as the file gives it, shortened. */
+    cookPartNoteText: (text: string): string => `“${text}”`,
+    /** A part without lines: its steps, and its notes counted apart, become assembly steps. */
+    cookPartAssembly: (steps: number, notes: number): string => {
+      const what = [
+        steps === 0 ? '' : steps === 1 ? '1 step' : `${steps} steps`,
+        notes === 0 ? '' : notes === 1 ? '1 note' : `${notes} notes`,
+      ]
+        .filter((w) => w !== '')
+        .join(' and ');
+      const verb = steps + notes === 1 ? 'becomes' : 'become';
+      return `No ingredients: its ${what} ${verb} part of the assembly of the dish.`;
+    },
+    cookNeedsComponentName: 'Every component needs a name.',
+    cookOpenDish: 'Open the dish',
   },
-  // Cooklang export from a component.
+  // Cooklang export from a component or a dish.
   cooklang: {
     export: 'Export as Cooklang',
+    /** The section a dish's assembly steps are written under. */
+    assembly: 'Assembly',
     saved: (file: string): string => `Saved ${file}.`,
     savedLosing: (file: string, lost: string): string => `Saved ${file}. Not in the file: ${lost}.`,
     lost: {
@@ -744,6 +777,9 @@ export const appStrings = {
       versions: 'version history',
       tastings: 'other tasting notes',
       characters: 'some characters in steps',
+      slots: 'how much of each component the dish takes, and optional roles',
+      yields: 'the output weights of the components',
+      details: 'course, cuisine and your correction of the characters',
     },
   },
   // The Stock screens and the finder, each in their own file.

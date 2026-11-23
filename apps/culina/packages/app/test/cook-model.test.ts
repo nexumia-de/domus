@@ -4,9 +4,15 @@ import { describe, expect, test } from 'vitest';
 import {
   buildCookModel,
   choose,
+  componentParts,
   createForUnset,
   decisionsOf,
+  lineRoles,
+  partLines,
+  partPreview,
+  portionsAllowed,
   unresolvedNames,
+  type PartRow,
 } from '../src/exchange/cook-model';
 import type { Candidate } from '@culina/engine';
 
@@ -122,5 +128,66 @@ describe('front matter', () => {
       components: [],
     });
     expect([b.title, b.yieldGrams]).toEqual(['my bread', '']);
+  });
+});
+
+describe('a file with sections', () => {
+  const SECTIONS =
+    '---\ntitle: Pancakes\nservings: 4 people\n---\n\nWhisk @flour{100%g}.\n\n= Topping\n\nWarm @butter{20%g}.\n\n= Serve\n\nStack them.\n';
+  const dish = () =>
+    buildCookModel(SECTIONS, 'pancakes.cook', { ingredients: INGREDIENTS, components: [] });
+
+  test('becomes a dish; a part with lines becomes a component, named after its section or the file', () => {
+    const m = dish();
+    expect(m.dish).toBe(true);
+    expect(componentParts(m).map((p) => [p.name, p.role])).toEqual([
+      ['Pancakes', 'main'],
+      ['Topping', 'main'],
+    ]);
+    expect(m.parts.map((p) => p.part.uses)).toEqual([[0], [1], []]);
+    expect(partLines(m, m.parts[1] as PartRow).map((l) => l.use.name)).toEqual(['butter']);
+  });
+
+  test('the portions come from the leading number of servings; a file without sections is no dish', () => {
+    expect(dish().portions).toBe('4');
+    expect(model().dish).toBe(false);
+    expect(model().parts).toHaveLength(1);
+    expect([
+      portionsAllowed(''),
+      portionsAllowed('3'),
+      portionsAllowed('0'),
+      portionsAllowed('2.5'),
+    ]).toEqual([true, true, false, false]);
+  });
+
+  test('parts that would share a name are named apart: "Teig (2)", also against the file title', () => {
+    const m = buildCookModel(
+      '---\ntitle: Teig\n---\n\nMix @flour{1%g}.\n\n= Teig\n\nAdd @salt{1%g}.\n\n= Serve\n\nServe.\n\n= TEIG\n\nAdd @butter{1%g}.\n',
+      'x.cook',
+      { ingredients: INGREDIENTS, components: [] },
+    );
+    expect(componentParts(m).map((p) => p.name)).toEqual(['Teig', 'Teig (2)', 'TEIG (3)']);
+    // Controls: distinct names and a part without lines keep their names.
+    expect(componentParts(dish()).map((p) => p.name)).toEqual(['Pancakes', 'Topping']);
+    expect(m.parts.find((p) => p.part.uses.length === 0)?.name).toBe('Serve');
+  });
+
+  test('the text that becomes the note is shown on one line, cut at a word when long', () => {
+    const m = buildCookModel(
+      '> A family recipe.\n\nHeat the oven.\n\n= Dough\n\nMix @flour{1%g}.\n',
+      'x.cook',
+      { ingredients: INGREDIENTS, components: [] },
+    );
+    const lead = m.parts[0] as PartRow;
+    expect(partPreview(lead)).toBe('A family recipe. Heat the oven.');
+    expect(partPreview(lead, 20)).toBe('A family recipe.…');
+  });
+
+  test('a percent base is offered among the roles of the lines', () => {
+    const m = dish();
+    (m.lines[0] as { role: string }).role = 'flour';
+    (m.lines[1] as { role: string }).role = 'Bad';
+    expect(lineRoles(partLines(m, m.parts[0] as PartRow))).toEqual(['flour']);
+    expect(lineRoles(partLines(m, m.parts[1] as PartRow))).toEqual([]);
   });
 });
