@@ -10,6 +10,13 @@ sources:
 
 # Culina is a recipe app with history, ideas and bases to build on
 
+**Note of 2026-11-23:** the purpose of point 1 is sharpened by the
+[building kit decision](building-kit.md): the user opens the app and
+finds quickly what to cook, a dish is put together from a building kit,
+and a recipe is a notebook entry of what was built. Points 2 to 5 (bases,
+the classics, import, teaching as help) stand; what they leave open is
+listed there.
+
 ## Context
 
 The [helper decision](mentor.md) of 2026-11-18 made Culina a helper that

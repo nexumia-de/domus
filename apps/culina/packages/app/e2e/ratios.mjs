@@ -90,7 +90,7 @@ const phone = async (browser, origin, label) => {
     `${label}: after navigation the card heading has focus`,
   );
   check(
-    (await page.title()) === "Pie dough - Cook's Notebook",
+    (await page.title()) === "Pie dough - Cook's Workbench",
     `${label}: document title names the card`,
   );
   check(

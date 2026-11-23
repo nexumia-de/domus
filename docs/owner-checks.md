@@ -53,14 +53,14 @@ date) into the document named at its end.
       [balance](../apps/mixtura/docs/balance.md).
 - [ ] Culina, the correction checklist: the rules "tastes like X, try
       Y" read in Nosrat's _Salt Fat Acid Heat_, each with its page
-      ([roadmap](../apps/culina/docs/roadmap.md), goal 5).
+      ([roadmap](../apps/culina/docs/roadmap.md), goal 8).
 
 Page photos or the text of the pages are enough; an agent then turns
 them into data with the citation.
 
 ## Names
 
-- [ ] Culina and Cook's Notebook in Google Play, F-Droid, the App
+- [ ] Culina and Cook's Workbench (until 2026-11-23 Cook's Notebook) in Google Play, F-Droid, the App
       Store and the trademark registers (TMview, DPMA, USPTO; classes 9
       and 42). Into Culina's [name check](../apps/culina/docs/name-check.md).
 - [ ] The open findings of [Mixtura's](../apps/mixtura/docs/name-check.md)

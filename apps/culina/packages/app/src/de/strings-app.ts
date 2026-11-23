@@ -8,8 +8,8 @@ import { nutritionStringsDe } from './strings-nutrition';
 import { stockStringsDe } from './strings-stock';
 
 export const appStringsDe: typeof appStrings = {
-  appName: "Cook's Notebook",
-  noScript: "Cook's Notebook braucht JavaScript.",
+  appName: "Cook's Workbench",
+  noScript: "Cook's Workbench braucht JavaScript.",
   skipToContent: 'Zum Inhalt springen',
   nav: {
     label: 'Hauptmenü',
@@ -618,7 +618,7 @@ export const appStringsDe: typeof appStrings = {
     title: 'Import',
     back: 'Zurück zu den Einstellungen',
     intro:
-      "Wähle eine aus Cook's Notebook exportierte Datei, ein Cooklang-Rezept (.cook) oder eine gespeicherte KI-Antwort (.json).",
+      "Wähle eine aus Cook's Workbench exportierte Datei, ein Cooklang-Rezept (.cook) oder eine gespeicherte KI-Antwort (.json).",
     chooseFile: 'Datei wählen',
     aiTitle: 'Rezept aus einer KI',
     aiIntro:
@@ -742,7 +742,7 @@ export const appStringsDe: typeof appStrings = {
     cookAsWrittenSized: (text: string, size: string): string => `Wie notiert: ${text} (${size})`,
     nothingChanged: 'Nichts wurde geändert.',
     notReadable: 'Diese Datei lässt sich nicht als Export lesen.',
-    notAnExport: "Diese Datei ist kein Export aus Cook's Notebook.",
+    notAnExport: "Diese Datei ist kein Export aus Cook's Workbench.",
     unknownVersion: 'Die Version dieser Datei kennt die App nicht.',
     olderNotConverted:
       'Diese Datei stammt aus einer älteren Version und lässt sich nicht umwandeln.',

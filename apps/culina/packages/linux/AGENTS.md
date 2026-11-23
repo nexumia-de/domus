@@ -2,7 +2,7 @@
 
 # Culina, native Linux app
 
-Cook's Notebook as a GTK 4 and libadwaita app on GJS
+Cook's Workbench as a GTK 4 and libadwaita app on GJS
 ([docs](../../docs/native-linux.md),
 [decision](../../../../docs/decisions/native-linux-gjs.md)). The rules of
 [Culina](../../AGENTS.md) and of the [root](../../../../AGENTS.md) apply

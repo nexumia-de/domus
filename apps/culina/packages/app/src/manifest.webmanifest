@@ -1,6 +1,6 @@
 {
-  "name": "Cook's Notebook",
-  "short_name": "Notebook",
+  "name": "Cook's Workbench",
+  "short_name": "Workbench",
   "description": "A cook's notebook: ratios, components and dishes, kept on this device.",
   "id": "./",
   "start_url": "./",

@@ -24,7 +24,7 @@ body:
       label: App
       options:
         - Drink Builder
-        - Cook's Notebook
+        - Cook's Workbench
         - Shopping List
         - Household
     validations:

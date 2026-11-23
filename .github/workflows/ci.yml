@@ -323,7 +323,7 @@ jobs:
   # A tag emptio-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
   # of the tagged commit go to the GitHub Release of the tag. phosh-apps
-  # publishes the newest such release (apps.txt: suitably/domus emptio-v*).
+  # publishes the newest such release (apps.txt: nexumia-de/domus emptio-v*).
   emptio-release:
     name: emptio-release
     needs: emptio-flatpak
@@ -395,7 +395,7 @@ jobs:
   # A tag mixtura-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
   # of the tagged commit go to the GitHub Release of the tag. phosh-apps
-  # publishes the newest such release (apps.txt: suitably/domus mixtura-v*).
+  # publishes the newest such release (apps.txt: nexumia-de/domus mixtura-v*).
   mixtura-release:
     name: mixtura-release
     needs: mixtura-flatpak
@@ -467,7 +467,7 @@ jobs:
   # A tag culina-v<version> releases the native app: the version must be the
   # newest stable <release> in the metainfo (release.toml), and both bundles
   # of the tagged commit go to the GitHub Release of the tag. phosh-apps
-  # publishes the newest such release (apps.txt: suitably/domus culina-v*).
+  # publishes the newest such release (apps.txt: nexumia-de/domus culina-v*).
   culina-release:
     name: culina-release
     needs: culina-flatpak

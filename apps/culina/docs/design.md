@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Design
-description: Light and dark themes with a user override, the Beet accent, colour, type, spacing and radius tokens with computed contrast, the ratio screens, icon rules, breakpoints and the screenshots of Cook's Notebook.
+description: Light and dark themes with a user override, the Beet accent, colour, type, spacing and radius tokens with computed contrast, the ratio screens, icon rules, breakpoints and the screenshots of Cook's Workbench.
 tags: [design, ui, accessibility, tokens, pwa]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -310,7 +310,7 @@ collapsible `<details>`. All visible texts are in `src/strings-*.ts` (English, c
 Plain, friendly kitchen German, "du" where a sentence needs an address (the German content texts
 are impersonal and use no "Sie"); labels are nouns or infinitives. Short labels that fit 360 px;
 never judging: no falsch, Fehler, fehlt, zu viel, zu wenig, schlecht, ungültig; say what is needed
-or what happens instead. The terms, for Cook's Notebook and the sister apps (Mixtura, emptio), so
+or what happens instead. The terms, for Cook's Workbench and the sister apps (Mixtura, emptio), so
 the same word means the same thing in each:
 
 | English       | German               |

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <title>Cook's Notebook</title>
+  <title>Cook's Workbench</title>
   <rect width="512" height="512" fill="#a02b45"/>
   <rect x="136" y="104" width="240" height="304" rx="24" fill="#faf9f6"/>
   <path d="M176 192h112M176 244h160M176 296h104" fill="none" stroke="#a02b45" stroke-width="16" stroke-linecap="round"/>

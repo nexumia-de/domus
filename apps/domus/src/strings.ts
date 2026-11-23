@@ -52,7 +52,7 @@ export const stringsEn = {
     appsLabel: 'Apps',
     apps: [
       { href: 'mixtura/', name: 'Drink Builder', what: 'A workbench for mixed drinks' },
-      { href: 'culina/', name: 'Cook’s Notebook', what: 'A helper in the kitchen' },
+      { href: 'culina/', name: 'Cook’s Workbench', what: 'A helper in the kitchen' },
       { href: 'emptio/', name: 'Shopping List', what: 'The household’s shopping list' },
     ],
     syncTitle: 'Sync',

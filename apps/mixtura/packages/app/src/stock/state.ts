@@ -14,6 +14,7 @@ import { say } from '../shell/frame';
 import { nowInstant } from '../today';
 import { combineSpaces, type RecordsBySpace } from './combine';
 import { resolveSelection, sameSetting, type Selection } from './spaces-rules';
+import { browserPending, type PendingStore } from './pending';
 import { loadStock, writeStock } from './source';
 import { presentIds, withPresent, type StockRecords } from './marks';
 import { presentAt } from './spaces-view';
@@ -40,6 +41,11 @@ export interface StockContext {
   data: AppData;
   /** The instant for `updatedAt` of a change; the app's clock unless a test passes one. */
   now?: () => string;
+  /**
+   * The notes of changes not yet written (pending.ts); the browser's storage when absent, null
+   * for none.
+   */
+  pending?: PendingStore | null;
 }
 
 /** One change: what to put, or null to remove the record (back to "not tracked"). */
@@ -86,6 +92,31 @@ export function enqueueWrite(task: () => Promise<void>): void {
   queue = Promise.all([queue, run]).then(() => undefined);
 }
 
+/**
+ * Writes the changes a page noted and did not live to write, oldest first, before the stock is
+ * read. A note for a space that is gone is dropped; a note whose write fails stays for the next
+ * read.
+ */
+async function writePending(
+  shared: AppData['shared'],
+  pending: PendingStore | null,
+  now: () => string,
+): Promise<void> {
+  const due = pending?.due() ?? [];
+  if (!pending || due.length === 0) return;
+  const spaces = new Set((await shared.listSpaces()).map((s) => s.id));
+  for (const { id, records } of due) {
+    const live = records.filter((r) => spaces.has(r.spaceId));
+    try {
+      if (live.length > 0) await writeStock(shared, live, now);
+    } catch {
+      continue;
+    }
+    pending.remove(id);
+    for (const spaceId of new Set(live.map((r) => r.spaceId))) spaceWritten(spaceId);
+  }
+}
+
 /** The state derived from the spaces and records of the cache. */
 function derive(entry: Cache): StockState {
   const { bySpace, selection } = entry;
@@ -116,7 +147,7 @@ export function readyCache(context: StockContext): Cache | undefined {
 }
 
 /** The records, `loading` until the first read finished; the finished read redraws. */
-export function stockState({ state, store, data }: StockContext): StockState {
+export function stockState({ state, store, data, now, pending }: StockContext): StockState {
   if (state.seed.kind === 'loading' || state.storage.kind === 'opening') return { kind: 'loading' };
   const local = data.local();
   if (!local) {
@@ -141,8 +172,15 @@ export function stockState({ state, store, data }: StockContext): StockState {
   cache = entry;
   const names = { home: strings.spaces.home, unnamed: strings.spaces.unnamed };
   // After the writes that are under way: a read that overtook a mark would show the stock
-  // without it, and nothing would read again.
+  // without it, and nothing would read again. Then what an earlier page left unwritten.
   queue
+    .then(() =>
+      writePending(
+        data.shared,
+        pending === undefined ? browserPending() : pending,
+        now ?? nowInstant,
+      ).catch(() => undefined),
+    )
     .then(() => Promise.all([loadStock(data.shared, names), local.settings.load()]))
     .then(
       ([{ spaces, rows }, settings]) => {
@@ -219,6 +257,9 @@ export function changeStock(context: StockContext, changes: readonly StockChange
   );
   bump(context.store);
   const shared = context.data.shared;
+  // Noted in this task: the write below needs a callback the page may not live to run.
+  const pending = context.pending === undefined ? browserPending() : context.pending;
+  const noted = pending?.add(records) ?? '';
   enqueueWrite(async () => {
     try {
       await writeStock(shared, records, context.now ?? nowInstant);
@@ -236,6 +277,9 @@ export function changeStock(context: StockContext, changes: readonly StockChange
         bump(context.store);
       }
       say(`${strings.data.notSaved}. ${toStoreError(error).message}`);
+    } finally {
+      // Written, or put back on the screen and said so: either way nothing is left to write.
+      pending?.remove(noted);
     }
   });
   return undo;

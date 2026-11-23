@@ -21,6 +21,46 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: Culina's purpose and name, the new addresses, Mixtura's lost mark (pull request 3 of nexumia-de/domus)
+
+Two sessions, one after the other; no agent read the other's part
+against a source, so "checked by" names only the runs.
+
+| Part                                                                                                                     | Done by        | Checked by                                                              |
+| ------------------------------------------------------------------------------------------------------------------------ | -------------- | ----------------------------------------------------------------------- |
+| The building kit decision, Culina's README, `AGENTS.md`, roadmap and index; the record of the begun move                 | first session  | nobody but its own `check:culina`; the second session did not review it |
+| The addresses of this repository, the changelog fragments                                                                | second session | nobody but `npm run check` and CI                                       |
+| The owner's answers in the decision, the name Cook's Workbench                                                           | second session | nobody but `npm run check`, Culina's e2e and CI                         |
+| Mixtura's notes of stock changes (`src/stock/pending.ts`), their tests, the ordering row, three helper agents (CI reads) | second session | nobody but the runs below; the helpers only read CI and wrote nothing   |
+
+**What the checks found, and where it was fixed.**
+
+- _CI, Changelog:_ the address commit changed the three native packages
+  without a fragment. Fragments added.
+- _CI, `mixtura-e2e`, twice:_ `spec-stock.mjs` lost a mark on a reload.
+  A defect of the app, not of the check: fixed in Mixtura with a note
+  written with the change; the check was left as it was where it failed
+  and got one more step.
+- _A wrong first reading by the second session:_ it took the failure
+  for the known ordering without reproducing it, and first wrote a
+  browser step that passed on the old code too. Under CPU load the old
+  code then failed in 2 of 12 runs and the fixed code in 0 of 16; the
+  step's comment says what it does not prove.
+- _The second session's own slip:_ it pushed the ordering table
+  formatted from the root, which `host-check` refused; fixed in the
+  next commit.
+
+**Test counts** (second session's runs): `npm run check` from the root
+passes; Mixtura's app has 499 tests (7 new). Culina's e2e passed once
+in the session; of Mixtura's e2e only `spec-stock`, `subpath`,
+`two-tabs`, `stock` and `csp` were run there.
+
+**What nobody verified.** The first session's documents against the
+owner's words. The native apps under the new name (not built in the
+session). The name in app stores and trademark registers. The notes
+with a real unload on a phone, and with two real tabs. Whether reports
+from an app arrive in nexumia-de/domus.
+
 ## 2026-11-23: the classics that are bases become bases (issue 39, part 1)
 
 A workflow ran one writer per file (17, high model) and, as each

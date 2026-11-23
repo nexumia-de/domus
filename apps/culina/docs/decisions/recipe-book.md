@@ -43,7 +43,8 @@ recipe book after all, the owner decided the points below.
    prepared and use by stay in the data model as optional fields and are
    not removed.
 5. **Stock is built to be shared**: on materia's stock model, so that it
-   can sync later (goal 5) and so that another app can add to it. The
+   can sync later (then goal 5 of the roadmap; built on 2026-11-20 as
+   [stock in spaces](stock-in-spaces.md)) and so that another app can add to it. The
    planned shopping list app emptio will offer to add bought items to
    the same stock, which may fill the optional fields without manual
    upkeep. **Nothing is built for emptio now.**

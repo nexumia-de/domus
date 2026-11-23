@@ -4,7 +4,7 @@
 // nor which fields GitHub really fills in from the address.
 import { ok, tapAudit } from './driver.mjs';
 
-const API = 'https://api.github.com/repos/suitably/domus/issues';
+const API = 'https://api.github.com/repos/nexumia-de/domus/issues';
 const KEY = 'domus.feedback.github-token';
 
 export async function reportStage(run, { page }) {
@@ -52,7 +52,7 @@ export async function reportStage(run, { page }) {
     const [url] = await page.evaluate(() => window.__opened);
     const q = Object.fromEntries(new URL(url).searchParams);
     return (
-      url.startsWith('https://github.com/suitably/domus/issues/new?') &&
+      url.startsWith('https://github.com/nexumia-de/domus/issues/new?') &&
       q.template === 'bug.yml' &&
       q.title === 'List stays empty' &&
       q.what === 'It shows no items.' &&
@@ -72,7 +72,7 @@ export async function reportStage(run, { page }) {
       answer === 201
         ? {
             status: 201,
-            json: { number: 1, html_url: 'https://github.com/suitably/domus/issues/1' },
+            json: { number: 1, html_url: 'https://github.com/nexumia-de/domus/issues/1' },
           }
         : { status: answer, json: { message: 'Bad credentials' } },
     );
@@ -99,7 +99,7 @@ export async function reportStage(run, { page }) {
       JSON.stringify(last.body.labels) === '["bug"]' &&
       !JSON.stringify(last.body).includes('github_pat') &&
       (await dialog.getByRole('link', { name: f.viewIssue }).getAttribute('href')) ===
-        'https://github.com/suitably/domus/issues/1' &&
+        'https://github.com/nexumia-de/domus/issues/1' &&
       (await page.evaluate((key) => localStorage.getItem(key), KEY)) === 'github_pat_good'
     );
   });

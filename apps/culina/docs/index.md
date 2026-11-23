@@ -10,10 +10,10 @@ links. Change history is in [log.md](log.md).
 
 # Plan
 
-- [Roadmap](roadmap.md) - Goals and their order; the helper (skills, checklist, known dishes) comes before sync.
-- [Helper build plan](helper-plan.md) - The owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
+- [Roadmap](roadmap.md) - What is built and what is next under the purpose of 2026-11-23: the building kit (frames and fillings), taste profiles, finding faster, sync of the notebook, the hand-over to Emptio; what waits for the owner.
+- [Helper build plan](helper-plan.md) - Carried out on 2026-11-19, kept as the record of that work: the owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
 - [What "what do I feel like" still needs](feel-like-plan.md) - After one dish list: course and cuisine coverage, the filter with the stock, something like this dish, time and effort, taste effects, seasonal produce, favourites and history, each with its data, cost and the rule it touches; the recommendation.
-- [Deployment](deployment.md) - Deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter, and how to serve the same folder elsewhere.
+- [Deployment](deployment.md) - Replaced on 2026-11-19: Culina is served from domus.nexumia.de/culina/ with the other apps and culina.nexumia.de redirects there; the page keeps the earlier deploy of its own on Cloudflare Workers static assets and how to serve the same folder elsewhere.
 
 # Research
 
@@ -25,7 +25,7 @@ links. Change history is in [log.md](log.md).
 - [The German classics in Davidis 1849](davidis-1849.md) - Where the 12 German classics stand in the German edition of 1849 that replaces the Milwaukee editions, its units, the licence of the Deutsches Textarchiv text and the dish it lacks.
 - [Four books read against the notes](book-findings.md) - Research of 2026-11-20: McGee, Der junge Koch and The Food Lab read by three agents against the 64 notes, how the texts were handled, what the books confirm, refine and contradict, the 24 changed and 14 new notes, where the books disagree, what was not shipped and what nobody verified.
 - [Books as cited authorities](source-books.md) - Research of 2026-11-19 on books that can be cited for the skills (McGee, Der junge Koch, The Food Lab, Pauli, Hamelman and others) with evidence level, languages, editions, what was verified and what not, food-safety authorities and their differing numbers, and the owner's decisions of the same day: buying order, a citation needs a page looked up in the book, two new evidence levels, food-safety figures by the authority of the user's language.
-- [Name check](name-check.md) - Research of 2026-11-22: Culina and Cook's Notebook in npm and Flathub (nothing of either name); the app stores and trademark registers were not reachable and are the owner's to check.
+- [Name check](name-check.md) - Research of 2026-11-22: Culina and Cook's Notebook in npm and Flathub (nothing of either name), and Cook's Workbench on 2026-11-23 (nothing of that name; a GNOME app Workbench exists); the app stores and trademark registers were not reachable and are the owner's to check.
 - [Dish characters computed from the recipe](dish-characters.md) - Analysis of 2026-11-21: whether tomatoey, creamy or fried can be computed from ingredients, amounts and techniques for a finder "what do I feel like"; measured on the 48 classics (presence works, share by mass rests on 44 percent of the lines, no meat or fish in the catalogue), three kinds of character and the recommendation, and what was built of it.
 - [The German of the app](german-review.md) - Review of 2026-11-21 after a tester read the app in German: every changed text (app strings, shipped dishes, technique notes, handling rules, substitutes) with old and new wording, the date form, cuisine adjectives and citation words, what is left to the owner (the visible name, everyday ingredient names), done by a language model and not yet by a native speaker with kitchen training.
 - [Ratios and salt percentages checked against sources](ratios.md) - Every ratio, baker's percentage and salt percentage with basis, status (confirmed, corrected, unverified) and source; NCHFP fermentation data.
@@ -51,20 +51,21 @@ links. Change history is in [log.md](log.md).
 
 # Decisions
 
-- [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Notebook.
+- [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Workbench since 2026-11-23 (Cook's Notebook before).
 - [After Mixtura](decisions/after-mixtura.md) - Culina is the second app on the engine Mixtura builds first, as a PWA with own local data.
 - [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
 - [Prompt import](decisions/ai-prompt-import.md) - Decided 2026-11-22: a prompt for the user's own language model writes recipes in a small JSON import format the user pastes; Culina checks and matches with confirmation, runs no model itself; Cooklang sections become components of a dish.
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
-- [Recipe app](decisions/scope-recipe-app.md) - Decided 2026-11-22: Culina is a recipe app with history, ideas and shipped bases (sauces, doughs, frames) to build one's own dishes on; replaces the purpose of the helper decision.
+- [Building kit](decisions/building-kit.md) - Decided 2026-11-23, the purpose that holds: open the app and find quickly what to cook; a dish is put together from a building kit, a recipe is a notebook entry; ingredients are to get taste profiles that say what a dish needs and what fits; skills are for learning; with the points left open for the owner.
+- [Recipe app](decisions/scope-recipe-app.md) - Decided 2026-11-22: shipped bases (sauces, doughs, frames) to build one's own dishes on, own recipes by import, teaching as help; its purpose is sharpened by the building kit decision.
 - [Bases and the pack](decisions/bases-and-pack.md) - Decided 2026-11-22 by the lead under the recipe app decision: a shipped file is a base by `kind: base`; a component of a slot's role that no slot reaches is an alternative, no list stored; the other classics become an import pack in `data/pack/`, taken as shipped dishes, never copied into the store; whether it is taken at first start is the owner's.
-- [Helper](decisions/mentor.md) - Decided: a scripted helper without a language model that teaches from research and textbooks until it is no longer needed; a learned skill is not taught again; known dishes ship by country as full recipes with their techniques, first Germany, Italy, France and Spain.
+- [Helper](decisions/mentor.md) - Decided 2026-11-18: scripted teaching without a language model, from research and textbooks, attached to skills; a learned skill is not taught again; substitutes and handling rules; its purpose (teach until no longer needed) and its four stages are replaced, the skills stay for learning.
 - [Licence of the sources](decisions/sources-licence.md) - Decided 2026-11-19: non-commercial sources (CC BY-NC-SA 4.0, CC BY-NC 4.0) fit; every source of a shipped note carries its licence as an SPDX identifier.
 - [One Cook screen](decisions/cook-screen.md) - Decided 2026-11-22 (issue 44): Cook is one screen, the one dish list with the one filter, "Only with what I have" judged by the finder and "Use up first" as its order, the stock one tap away; Start and the finder screen went; three destinations (Cook, Notebook, Ratios); the Notebook's Dishes are own and shipped dishes in a plain list; the old addresses redirect.
 - [One dish list](decisions/one-dish-list.md) - Decided 2026-11-21: own and shipped dishes in one list with one entry, one filter and one dish and cook screen; the origin follows from where a dish lives and is not stored; shipped dishes stay read-only in their file; rejected: a stored flag in the user's store, two tabs with the same filters.
 - [Hosting](decisions/hosting.md) - Decided: the app is a static folder any host or own server can serve; Cloudflare is the first host and only an adapter in this repository, no shared deploy code.
-- [Sync](decisions/sync.md) - Decided: three units as Mixtura (place, library, profile), a library shareable by invite, places shared with Mixtura, tasting notes as own records, built after stock; for stock replaced by stock in spaces.
+- [Sync](decisions/sync.md) - Decided 2026-11-18: three units as Mixtura (place, library, profile); replaced by spaces, for stock built (stock in spaces), for the notebook and settings a goal of the roadmap; tasting notes as own records stands.
 - [Stock in spaces](decisions/stock-in-spaces.md) - Decided 2026-11-20: stock is the shared collection `stock` of a space, the same collection as Mixtura's with Culina's optional fields; the record, batches, unticking, the space used, sync, the one move of old items, the export without stock, how the catalogues will meet, what is lost.
 
 # Development

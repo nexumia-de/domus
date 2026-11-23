@@ -165,7 +165,7 @@ checks green. The apps' own goals are in their roadmaps
     releases with a tag `<app>-v<version>`, and no tag is pushed yet.
     **Not done**: the Flatpak bundles of Mixtura and Culina were never
     built and none of the bundles was installed; nothing ran on a phone;
-    the owner adds `suitably/domus mixtura-v*` and `culina-v*` to
+    the owner adds `nexumia-de/domus mixtura-v*` and `culina-v*` to
     phosh-apps' `apps.txt`; Culina's notebook, nutrition, handling and
     substitute notes and a skills store are not in the native app; Mixtura
     and Emptio still hold copies of the texts that now live in

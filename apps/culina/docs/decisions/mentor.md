@@ -8,6 +8,13 @@ generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 
 # Culina is a scripted kitchen helper that teaches until it is no longer needed
 
+**Note of 2026-11-23:** the purpose that holds is in the
+[building kit decision](building-kit.md). Of this record the skills
+stand, so that the user can learn abilities (points 2 to 4), with
+substitutes (point 7) and handling rules (point 8). The three levels of
+point 3 are five since 2026-11-19 (`studied`, `textbook`, `tested`,
+`authority`, `tradition`; [data model](../data-model.md#evidence-levels)).
+
 **Note of 2026-11-22:** the purpose of point 1, the end point of
 point 6 and the four stages of point 9 are replaced by the
 [recipe app decision](scope-recipe-app.md): Culina is a recipe app with

@@ -2,7 +2,7 @@
   "name": "@culina/app",
   "version": "0.0.0",
   "private": true,
-  "description": "Culina's web app (PWA): Cook's Notebook, the shell",
+  "description": "Culina's web app (PWA): Cook's Workbench, the shell",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "dependencies": {

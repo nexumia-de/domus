@@ -115,7 +115,7 @@ runs CI on that commit. The
 job `emptio-release` checks the tag against the metainfo and attaches
 both bundles to the GitHub Release of the tag. phosh-apps publishes the
 newest such release to the shared Flatpak repository
-(`flatpak.nexumia.de`, `apps.txt` line `suitably/domus emptio-v*`), where
+(`flatpak.nexumia.de`, `apps.txt` line `nexumia-de/domus emptio-v*`), where
 the phone installs and updates it. The tag needs the secret
 `RELEASE_TOKEN` (Contents and Pull requests read/write on this
 repository); without it a tag can still be pushed by hand. There is no nightly app (`de.nexumia.Emptio.Devel`) yet: it needs a

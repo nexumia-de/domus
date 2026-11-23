@@ -1,4 +1,4 @@
-# Flatpak manifest of the native Cook's Notebook app. The JavaScript bundle is
+# Flatpak manifest of the native Cook's Workbench app. The JavaScript bundle is
 # built by npm before flatpak-builder runs (Flatpak builds are offline):
 #   npm ci && npm run build -w @culina/linux
 # from the repository root writes dist/de.nexumia.Culina.js next to this file.

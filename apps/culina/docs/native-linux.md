@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Native Linux app
-description: Cook's Notebook as a GTK 4 and libadwaita app on GJS for Phosh and the desktop (packages/linux, app id de.nexumia.Culina) - what it shares with the web app, which screens it has (Cook, the one list with the switch and the order, since 2026-11-23) and what version 0.1 leaves out, the ingredient list's alignment, the stock of the shown space, joining a space by invitation link, how it is built, run, released and packaged, what the checks prove and what nobody verified.
+description: Cook's Workbench as a GTK 4 and libadwaita app on GJS for Phosh and the desktop (packages/linux, app id de.nexumia.Culina) - what it shares with the web app, which screens it has (Cook, the one list with the switch and the order, since 2026-11-23) and what version 0.1 leaves out, the ingredient list's alignment, the stock of the shown space, joining a space by invitation link, how it is built, run, released and packaged, what the checks prove and what nobody verified.
 tags: [linux, gtk, libadwaita, gjs, phosh, flatpak, native]
 generated: { by: claude-code, at: 2026-11-23 }
 sources:
@@ -249,7 +249,7 @@ runs on that commit, and the job `culina-release` checks the tag against
 the metainfo and attaches both Flatpak bundles to the GitHub Release of
 the tag. phosh-apps publishes the newest such release to the shared
 Flatpak repository (`flatpak.nexumia.de`; the owner adds the line
-`suitably/domus culina-v*` to its `apps.txt`, as for the other two). There
+`nexumia-de/domus culina-v*` to its `apps.txt`, as for the other two). There
 is no nightly app yet.
 
 Screenshots for the store: one shot of the main page with the recorded

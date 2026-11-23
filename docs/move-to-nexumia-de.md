@@ -1,7 +1,7 @@
 ---
 type: Plan
 title: Move of the repository to nexumia-de/domus
-description: Asked by the owner on 2026-11-22 - the repository moves from suitably/domus to the existing, empty nexumia-de/domus; credentials follow. What exists on both sides, the two ways to move (transfer or copy) with what each keeps, the mapping of every address in this and the other nexumia-de repositories that names the old place, the owner's steps, and what the agent does once it may push. Nothing is moved yet.
+description: Asked by the owner on 2026-11-22 - the repository moves from suitably/domus to the existing, empty nexumia-de/domus; credentials follow. What exists on both sides, the two ways to move (transfer or copy) with what each keeps, the mapping of every address in this and the other nexumia-de repositories that names the old place, the owner's steps, and what the agent does once it may push. Begun on 2026-11-23 by copying: branches and the addresses in this repository are done; tags, releases, issues, secrets and the other repositories are not.
 tags: [plan, repository, migration, github, owner]
 generated: { by: claude-code/2.1.326, at: 2026-11-22 }
 sources:
@@ -17,6 +17,31 @@ deliver the credentials tomorrow. Prepare everything. The repository
 exists already."[^owner] And: "search all repositories, so that we can
 correct the mapping."[^owner] **Nothing is moved yet**; this page is the
 preparation.
+
+**State on 2026-11-23: begun, by way B.** The owner in the session:
+"move everything to nexumia-de, so that you can work in the repository
+properly." A session pushed `main` and the 24 other branches to
+nexumia-de/domus (25 in all, `main` at 393ac27). Still to do, in the
+words of the sections below: the 5 tags (the session's git proxy refused
+a push of tags with 403, so the owner pushes them, or gives a session
+that may) and the 5 releases with their files; the open issues and pull
+request 52; the four secrets; the pull requests to phosh-apps and
+phosh-toolkit; archiving the old repositories. Way A is no longer open
+without deleting what was pushed.
+
+**Done on 2026-11-23, in a second session: the mapping of this
+repository** (the table below), in one commit. Every row is changed
+except the two screenshots of Emptio's metainfo, which stay on
+suitably/domus until the release `emptio-v0.2.1` exists in the new
+place. From the first build after this commit, Report a Problem opens
+its issues in nexumia-de/domus; builds made before keep reporting to
+the old place. The documents now say that phosh-apps' `apps.txt` names
+`nexumia-de/domus <app>-v*`, which is **not yet true**: phosh-apps
+still reads suitably/domus until its lines are changed. That session
+could do no more: a push of the tags was refused again, and its GitHub
+access covers nexumia-de/domus only, so it could not read the open
+issues of suitably/domus to open them again (it reads that repository
+through git alone).
 
 # What there is
 

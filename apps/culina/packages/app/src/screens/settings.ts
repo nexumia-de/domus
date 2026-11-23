@@ -77,7 +77,7 @@ export const settingsScreen = (): HTMLElement => {
     openReportDialog({
       texts: feedback,
       appName: strings.appName,
-      app: "Cook's Notebook",
+      app: "Cook's Workbench",
       version: 'web',
     }),
   );

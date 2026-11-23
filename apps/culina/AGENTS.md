@@ -1,19 +1,24 @@
 # Culina
 
-A recipe app: the user's recipes with versions, tasting notes and
-history, ideas what to cook, and shipped bases (sauces, doughs, frames
-such as tacos or pizza) to build one's own dishes on
-([decision](docs/decisions/scope-recipe-app.md)); scripted, without a
-language model; sourced technique notes, substitutes and ratios as
-help ([helper](docs/decisions/mentor.md)). Visible name:
-**Cook's Notebook** ([decision](docs/decisions/app-name.md)). Knowledge
+The user opens the app and finds quickly what they want to cook or can
+cook ([decision](docs/decisions/building-kit.md)). It answers two
+problems: no idea what to cook, and not knowing what goes together. A
+dish is put together from a building kit (shipped bases such as sauces,
+doughs and frames like tacos or pizza, components that fill slots,
+ingredients; [recipe app](docs/decisions/scope-recipe-app.md)); a recipe
+is a notebook entry of what was built, with versions and tasting notes;
+taste profiles of ingredients are to say what a dish still needs and
+what fits (not built); skills with sourced notes are there to learn
+abilities ([helper](docs/decisions/mentor.md)). Scripted, without a
+language model. Visible name:
+**Cook's Workbench** ([decision](docs/decisions/app-name.md)). Knowledge
 of this repository: [docs/index.md](docs/index.md).
 
 Culina is a web app (PWA) that is also installed on Android and Linux,
 not a GTK app; the GTK rules do not apply. The exception is its native
 Linux app (`packages/linux`, [docs](docs/native-linux.md)), a GTK app with
 its own `AGENTS.md`. Its sister app for drinks,
-[Mixtura](../mixtura), is built first
+[Mixtura](../mixtura), was built first
 ([decision](docs/decisions/after-mixtura.md)). The rules of the
 [root](../../AGENTS.md) apply too.
 
@@ -30,7 +35,10 @@ its own `AGENTS.md`. Its sister app for drinks,
   following one named source (amounts as facts, method in our own words,
   no copied text, no bulk import of a site), and the user's own
   components and dishes with versions; both in one list with one filter
-  ([one dish list](docs/decisions/one-dish-list.md)). No meal plans and no food diary. No shopping list inside
+  ([one dish list](docs/decisions/one-dish-list.md)). A frame (tacos, bowl) is the project's own
+  composition and says so; each component in it keeps its source
+  ([building kit](docs/decisions/building-kit.md)). No meal plans and no food diary; the notebook
+  may keep the date a dish was cooked, no more. No shopping list inside
   Culina: that is the sister app emptio; Culina only offers to hand
   missing ingredients to it
   ([helper](docs/decisions/mentor.md),

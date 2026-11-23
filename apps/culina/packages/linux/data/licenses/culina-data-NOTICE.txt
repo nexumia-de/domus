@@ -1,9 +1,9 @@
-Data built into Cook's Notebook (de.nexumia.Culina)
+Data built into Cook's Workbench (de.nexumia.Culina)
 
 The app itself is AGPL-3.0-or-later (see the licence file of the module "culina").
 The data below is compiled into the app; its sources and licences are named in
 Culina's docs (apps/culina/docs/dependencies.md, source-books.md,
-decisions/sources-licence.md in https://github.com/suitably/domus).
+decisions/sources-licence.md in https://github.com/nexumia-de/domus).
 
 Ingredient catalogue
   USDA FoodData Central, SR Legacy (April 2018), https://fdc.nal.usda.gov/

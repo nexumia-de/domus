@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Cook's Notebook
-Name[de]=Cook's Notebook
+Name=Cook's Workbench
+Name[de]=Cook's Workbench
 Comment=Classic dishes, step by step, and what you can cook from what is there
 Comment[de]=Klassiker Schritt für Schritt und was du aus dem Vorhandenen kochen kannst
 Exec=de.nexumia.Culina
