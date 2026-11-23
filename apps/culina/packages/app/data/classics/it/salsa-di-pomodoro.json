@@ -1,5 +1,6 @@
 {
   "id": "salsa-di-pomodoro",
+  "kind": "base",
   "name": {
     "en": "Tomato sauce",
     "de": "Tomatensauce"
@@ -194,7 +195,7 @@
   ],
   "slots": [
     {
-      "role": "main",
+      "role": "sauce",
       "ref": {
         "kind": "component",
         "id": "tomato-sauce"

@@ -1,5 +1,6 @@
 {
   "id": "egg-noodles",
+  "kind": "base",
   "name": {
     "en": "Egg noodles",
     "de": "Eiernudeln"

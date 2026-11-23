@@ -1,5 +1,6 @@
 {
   "id": "flan-clasico",
+  "kind": "base",
   "name": {
     "en": "Flan (baked custard in a pastry case)",
     "de": "Flan (gebackene Eiercreme im Teigmantel)"
@@ -23,12 +24,12 @@
     "onza": {
       "kind": "mass",
       "factor": 30,
-      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g. See /home/user/briefs/muro-units.md."
+      "read": "Muro, p. 77, line 4040 (clean print): 'se disuelve media onza ó 15 gramos', so one onza is 30 g."
     },
     "cuartillo": {
       "kind": "volume",
       "factor": 500,
-      "read": "Muro, p. 356, lines 16332-16340: 'vasos de á cuartillo ... que miden medio litro'. A cuartillo is half a litre. See /home/user/briefs/muro-units.md."
+      "read": "Muro, p. 356, lines 16332-16340: 'vasos de á cuartillo ... que miden medio litro'. A cuartillo is half a litre."
     }
   },
   "components": [
@@ -226,7 +227,7 @@
             "id": "fdc-group-milk"
           },
           "amount": {
-            "value": 0.5,
+            "value": 1,
             "unit": "cuartillo",
             "original": "un cuartillo de leche"
           },

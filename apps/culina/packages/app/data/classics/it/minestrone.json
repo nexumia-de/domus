@@ -5,6 +5,7 @@
     "de": "Minestrone (Gemüsesuppe)"
   },
   "originalName": "Minestrone",
+  "kind": "base",
   "country": "it",
   "vegetarian": false,
   "course": "soup",
@@ -239,7 +240,7 @@
           },
           "note": {
             "en": "'Enough' rice to make the soup nearly dry.",
-            "de": "‚Reichlich‘ Reis, bis die Suppe fast trocken ist."
+            "de": "‚Ausreichend‘ Reis, bis die Suppe fast trocken ist."
           },
           "sourceNote": {
             "en": "No amount.",

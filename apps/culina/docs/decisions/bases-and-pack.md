@@ -116,6 +116,16 @@ with Swap and the random pick reading them and storing no list.
 - Issue 39, part 1: the classics that are bases get `kind: "base"` and,
   where their source gives variants, components as alternatives. Part 2:
   the others move to `data/pack/`, with the switch of point 6.
+- **Part 1, done on 2026-11-23**: the 17 classics of the issue's list
+  are bases (`test/classics.test.ts` names them). None has an
+  alternative: at each recipe the source gives no other filling with its
+  own ingredients and amounts. One candidate was dropped: the coffee
+  custard Gouffé names at "Pots de crème au caramel" ("à la place du
+  café"), because the catalogue has no coffee and an ingredient the
+  catalogue lacks needs an entry with a source first. Lines the
+  catalogue still lacks in these bases (each older than this step):
+  water (not asked for by rule), orange-flower water, cacio cheese,
+  boiled meat, meat broth, shelled fresh beans, fatty ham.
 - The dish screen still shows every component of a file; showing the
   alternatives of a base apart (as Swap does for an own dish) comes with
   the first base that has one.

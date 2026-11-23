@@ -67,6 +67,38 @@ describe('every shipped classic', () => {
   });
 });
 
+describe('the classics that are bases (issue 39, part 1)', () => {
+  const BASES = [
+    'alioli',
+    'cavolfiore-balsamella',
+    'creme-caramel',
+    'egg-noodles',
+    'eierkuchen',
+    'flan-clasico',
+    'gnocchi-di-patate',
+    'holl-sauce',
+    'mayonnaise',
+    'minestrone',
+    'napfkuchen',
+    'omelette-fines-herbes',
+    'pure-de-patatas',
+    'risotto-alla-milanese',
+    'salsa-di-pomodoro',
+    'sauce-hollandaise',
+    'tagliatelle-verdi',
+  ];
+  test('are marked as bases, and every component of a base names its role', () => {
+    expect(
+      CLASSICS.filter((c) => c.kind === 'base')
+        .map((c) => c.id)
+        .sort(),
+    ).toEqual(BASES);
+    for (const c of CLASSICS.filter((x) => x.kind === 'base')) {
+      for (const comp of c.components ?? []) expect(comp.role, `${c.id}/${comp.id}`).toBeTruthy();
+    }
+  });
+});
+
 describe('the import pack (docs/decisions/bases-and-pack.md)', () => {
   test('holds one entry per file, in path order, country folder and id agree', () => {
     expect(PACK.map((c) => `${c.country}/${c.id}.json`)).toEqual(

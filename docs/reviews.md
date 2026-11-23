@@ -21,6 +21,48 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: the classics that are bases become bases (issue 39, part 1)
+
+A workflow ran one writer per file (17, high model) and, as each
+finished, a different checker per file (17, mid model) that read the
+change against the source text. The lead saved the five source texts
+from archive.org once for all agents, read every checker's report,
+fixed the data, merged and committed.
+
+| Part                                                                    | Done by             | Checked by                                   |
+| ----------------------------------------------------------------------- | ------------------- | -------------------------------------------- |
+| `kind: "base"` and roles in 17 files; the milk of flan clásico (writer) | one writer per file | one different checker per file               |
+| The fixes from the checks below; the dropped coffee alternative         | lead                | nobody but the validator and the lead's runs |
+| The test naming the bases, the documents, this entry                    | lead                | nobody                                       |
+
+**What the checks found, and where it was fixed.**
+
+- _Defects in older data:_ the persons reason of `holl-sauce` named half
+  a pound of butter, which the file rejects as unreadable; its
+  teaspoon's `read` pointed at a removed unit; three Spanish files
+  pointed at a file outside the repository. Fixed by the lead.
+- _A transcription error, found by the writer:_ flan clásico had 0.5
+  cuartillo of milk for the source's "un cuartillo"; now 1. The checker
+  confirmed the source line.
+- _Copied wording:_ one English step of the mayonnaise was the source's
+  sentence; rewritten. Several English steps of the German classics
+  follow the 1904 wording closely (doubts, not fixed: issue 33 writes
+  them anew from Davidis 1849).
+- _An alternative the rule does not allow yet:_ the coffee custard for
+  crème caramel names coffee, which the catalogue lacks; dropped.
+- _Open:_ the risotto keeps its judgements (water for broth) in the note,
+  not in `settled`; the napfkuchen reads the source's "spices" as lemon
+  and salt without saying so; the minestrone's check names an edition
+  nobody could open here. All older than this step.
+
+**Test counts** (lead's runs): `npm run check:culina` (engine 1239, app
+864, native 19); browser checks 1910 ok. The new test "are marked as
+bases" fails on the data before this step.
+
+**What nobody verified.** The page images of the scans (the text is
+machine-read; garbled fractions stay as the files record them). The
+German texts by a native speaker.
+
 ## 2026-11-23: recipes from the user's own language model (issue 40)
 
 One agent built it in its own worktree; a different agent (mid model)

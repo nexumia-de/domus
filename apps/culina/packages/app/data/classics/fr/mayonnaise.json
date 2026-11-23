@@ -1,5 +1,6 @@
 {
   "id": "mayonnaise",
+  "kind": "base",
   "name": {
     "en": "Mayonnaise",
     "de": "Mayonnaise"
@@ -181,8 +182,8 @@
         },
         {
           "text": {
-            "en": "Cover it to keep the dust away.",
-            "de": "Abdecken, damit kein Staub hineinkommt."
+            "en": "Cover the bowl so that nothing falls in.",
+            "de": "Die Schüssel abdecken, damit nichts hineinfällt."
           },
           "action": "cover"
         }
