@@ -177,7 +177,7 @@ owner's question does not start from the origin.
   characters (`characters: { add, remove }` on a dish). A shipped dish
   cannot be corrected without a copy, because it is read-only.
 - **The library sync.** Own dishes do not sync yet
-  ([roadmap](../roadmap.md), goal 6). The one list does not change that:
+  ([roadmap](../roadmap.md), goal 10). The one list does not change that:
   shipped dishes need no sync, since every device has the same file.
 - **The decisions before.** The [helper decision](mentor.md) said known
   dishes ship "by country", and its stage "Follow" starts from a classic;

@@ -18,6 +18,17 @@ exists already."[^owner] And: "search all repositories, so that we can
 correct the mapping."[^owner] **Nothing is moved yet**; this page is the
 preparation.
 
+**State on 2026-11-23: begun, by way B.** The owner in the session:
+"move everything to nexumia-de, so that you can work in the repository
+properly." A session pushed `main` and the 24 other branches to
+nexumia-de/domus (25 in all, `main` at 393ac27). Still to do, in the
+words of the sections below: the 5 tags (the session's git proxy refused
+a push of tags with 403, so the owner pushes them, or gives a session
+that may) and the 5 releases with their files; the open issues and pull
+request 52; the four secrets; the one commit with the mapping; the pull
+requests to phosh-apps and phosh-toolkit; archiving the old
+repositories. Way A is no longer open without deleting what was pushed.
+
 # What there is
 
 | Side             | State on 2026-11-22                                                                                                                                                                                                                                                         |

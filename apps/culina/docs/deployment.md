@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Deployment
-description: Culina is deployed from main to culina.nexumia.de on Cloudflare Workers static assets by the CI job deploy; the host is an adapter of two small files, and the same static folder runs on any other static host or an own web server.
+description: Replaced on 2026-11-19 - Culina is served from domus.nexumia.de/culina/ with the other apps and culina.nexumia.de redirects there. The page keeps how Culina was deployed on its own before (Cloudflare Workers static assets, the CI job deploy, the host as an adapter of two small files) and that the same static folder runs on any other static host or an own web server.
 tags: [deployment, cloudflare, hosting, owner]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:

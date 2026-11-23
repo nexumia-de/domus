@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23
+
+- **Update**: the [move to nexumia-de/domus](move-to-nexumia-de.md) has begun, by way B (copy), on the owner's word in the session ("move everything to nexumia-de, so that you can work in the repository properly"). Pushed from a session: `main` and the 24 other branches of suitably/domus, 25 in all, at the commits they had on 2026-11-23 (`main` at 393ac27). **Not moved**: the 5 tags (the session's git proxy refused the push of tags with 403), and with them the 5 releases and their files; the open issues and pull request 52; the four secrets; the mapping of the addresses that name suitably/domus (among them `ISSUE_REPOSITORY`, so reports from the apps still go to the old place). suitably/domus is unchanged and must stay readable until those are done.
+- **Decision**: Culina's purpose, by the owner: [open the app and find what to cook, from a building kit](../apps/culina/docs/decisions/building-kit.md); the Culina line of the README and of `AGENTS.md` follows ([Culina's log](../apps/culina/docs/log.md)).
+
 ## 2026-11-22
 
 - **Creation**: [move to nexumia-de/domus](move-to-nexumia-de.md), prepared on the owner's request (credentials tomorrow): nexumia-de/domus exists and is empty; two ways (A transfer, recommended as a judgement; B copy); every address of `suitably/domus` here and in the 22 readable repositories of nexumia-de, searched in clones since GitHub's code search returned nothing; "suitably" as developer, copyright holder and Liberapay account stays. Found again: nexumia-de/culina, mixtura and emptio are not archived. Blocked: `docs.github.com` (403 from the proxy). Nothing moved.

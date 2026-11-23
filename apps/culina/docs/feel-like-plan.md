@@ -17,6 +17,14 @@ sources:
 
 # What "what do I feel like" still needs
 
+**Note of 2026-11-23:** the [building kit decision](decisions/building-kit.md)
+makes item 5 (taste effects) a goal of its own, as taste profiles of
+ingredients that say what a dish still needs and what fits
+([roadmap](roadmap.md), goal 8). Its cost and the missing source, as
+written below, are unchanged and are the owner's open point 1 there. The
+"start screen" below is the Cook screen since 2026-11-22
+([decision](decisions/cook-screen.md)).
+
 The owner's question is "what do I cook, what do I feel like?"
 ([decision](decisions/one-dish-list.md)). After the unification, one
 filter narrows every dish by origin, character, course, cuisine, "Without

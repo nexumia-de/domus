@@ -53,7 +53,7 @@ date) into the document named at its end.
       [balance](../apps/mixtura/docs/balance.md).
 - [ ] Culina, the correction checklist: the rules "tastes like X, try
       Y" read in Nosrat's _Salt Fat Acid Heat_, each with its page
-      ([roadmap](../apps/culina/docs/roadmap.md), goal 5).
+      ([roadmap](../apps/culina/docs/roadmap.md), goal 8).
 
 Page photos or the text of the pages are enough; an agent then turns
 them into data with the citation.

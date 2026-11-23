@@ -66,7 +66,8 @@ everything, and no sync (file export only).
    component or dish is not changed after it is saved; a change is a
    new version. Rows carry `updatedAt` and removals stay as markers
    from the first version of the store[^store].
-6. **When.** Sync is its own goal after stock (roadmap goal 5). The
+6. **When.** Sync is its own goal after stock (roadmap goal 5 when this was
+   written; today the [roadmap](../roadmap.md) names what is left of it). The
    WebDAV adapter, the Web Crypto cipher and the sync screens live in
    Mixtura today; what Culina needs of them moves to shared code by a
    pull request there before Culina uses it. Nothing is copied.
