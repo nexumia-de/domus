@@ -4,6 +4,7 @@ import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import { PRIORITIES } from '@emptio/engine';
 import { categoriesOf, editEntry, removeEntries, restoreEntries } from '@emptio/app/core';
+import { editOnTap } from '@nexumia-de/gjs';
 import type { Page, Ui } from './context';
 
 export function entryPage(ui: Ui, id: string): Page {
@@ -17,9 +18,10 @@ export function entryPage(ui: Ui, id: string): Page {
     return { page, update: () => undefined };
   }
 
-  const name = new Adw.EntryRow({ title: t.entry.name, text: entry.name });
-  const amount = new Adw.EntryRow({ title: t.entry.amount, text: entry.amount ?? '' });
-  const note = new Adw.EntryRow({ title: t.entry.note, text: entry.note ?? '' });
+  // A drag that starts on a field scrolls the page; only a tap edits it.
+  const name = editOnTap(new Adw.EntryRow({ title: t.entry.name, text: entry.name }));
+  const amount = editOnTap(new Adw.EntryRow({ title: t.entry.amount, text: entry.amount ?? '' }));
+  const note = editOnTap(new Adw.EntryRow({ title: t.entry.note, text: entry.note ?? '' }));
   const pressing = new Adw.ComboRow({
     title: t.priorityLabel,
     model: Gtk.StringList.new(PRIORITIES.map((step) => t.priority[step])),

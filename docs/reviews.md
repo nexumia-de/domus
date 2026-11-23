@@ -21,6 +21,59 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: native apps: scrolling over text fields, creating and leaving a space
+
+The owner reported three defects of the native Linux apps: lists with
+editable rows (Emptio for example) do not scroll on Phosh; a space can
+be neither left nor created. One agent built the fixes in its own
+worktree; a different agent (mid model) reviewed them; the writer fixed
+the findings; the lead merged main (pull request 52, Report a Problem,
+had changed the same files), ran the checks and committed.
+
+| Part                                                                                                 | Done by | Checked by                                                                                                     |
+| ---------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `editOnTap` (packages/gjs/src/rows.ts): a field takes the focus on the release of a tap, touch only  | writer  | reviewer (one defect in the check, see below); the touch-only change after the review by nobody but the writer |
+| Create a space (host `createSpace` moved from the Household app to packages/host/src/space-setup.ts) | writer  | reviewer (behaviour of the Household app unchanged, its 72 tests pass)                                         |
+| Leave a space; the file store drops writes for a space it removed                                    | writer  | reviewer read leaving; the store guard after the review by nobody but the writer                               |
+| Merging main, the three native `main.ts` imports, this entry                                         | lead    | nobody                                                                                                         |
+
+**What the checks found, and where it was fixed.**
+
+- _Reviewer: a check that did not discriminate._ The interaction step
+  "a touch drag scrolls the list" asked for 250 px and failed 2 of 3
+  runs on the fix and passed on the old code too: Broadway scrolls over
+  a field either way and has no Phosh keyboard. It is now a control
+  (at least 100 px, more than one row); the proof of the fix is "the
+  drag focused no field", which failed 3 of 3 runs on the old
+  `categories-page.ts` and passed 3 of 3 with the fix (reviewer's runs).
+- _Reviewer: mouse on the desktop._ The first version deferred the focus
+  for every click, so a mouse click no longer placed the cursor and a
+  press-drag no longer selected. Focus is now deferred for touch only;
+  step 13b (a mouse click two letters into a name, then a key) fails
+  when the deferral applies to every input.
+- _Reviewer: leaving during a cycle._ A cycle in flight could write the
+  left space's file again (sync orderings, not handled). The native file
+  store now drops writes for a removed space; two tests fail without the
+  guard. The web apps' IndexedDB store still has it (row now "partly").
+- _Reviewer: not exercised._ Leaving the last space: now checked in all
+  three apps (a new space on this device follows). A check that failed
+  once ("Remove marks the record deleted") was not reproduced in 14
+  runs; the cause was not found, and the check now says which step
+  failed.
+- _Found by the writer, not fixed:_ `apps/mixtura/packages/app/test/stock-state.test.ts`,
+  first test, waits a fixed 20 ms and failed once in a full run, the
+  same kind of wait as the host test fixed on 2026-11-22.
+
+**Test counts** (lead's runs after merging main): `npm run check`
+passed (host 257, gjs 17, domus 72, the rest as before); native smoke
+and interaction: Emptio 49 ok, Mixtura 47, Culina 47, none failed.
+
+**What nobody verified.** A phone with Phosh and its keyboard: the
+defect as the owner saw it was not reproduced, only its cause. A real
+GitHub or WebDAV storage for creating. The mouse in the narrow
+preferences sheet on a real compositor. The writer's fixes after the
+review, beyond its own runs and the lead's.
+
 ## 2026-11-22: one Cook screen and shipped components in Culina (issue 44, web app)
 
 The owner decided issue 44; the lead split the web part in two and gave

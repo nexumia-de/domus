@@ -189,6 +189,58 @@ export class Session {
     await this.page.waitForTimeout(900);
   }
 
+  /**
+   * One touch of one finger, as Broadway's page reads it: a touchstart, `steps` touchmoves to
+   * (toX, toY), a touchend. The events are made in the page and sent to the element of the
+   * window's surface, not through Chromium's input (CDP): Chromium sends the moves of a touch to
+   * the element it started on, and Broadway replaces that element when GTK redraws the spot
+   * under the finger (a row that shows it is pressed), so the moves never reached GTK and a drag
+   * stopped after a few pixels. The first finger is the one GTK treats as the pointer, as on a
+   * phone.
+   */
+  async touch(x, y, toX = x, toY = y, { steps = 20, stepMs = 16 } = {}) {
+    const send = (type, px, py) =>
+      this.page.evaluate(
+        ([type, px, py]) => {
+          if (type === 'touchstart') {
+            let el = document.elementFromPoint(px, py);
+            while (el && el.surface === undefined) el = el.parentNode;
+            window.__touchTarget = el;
+          }
+          const target = window.__touchTarget;
+          if (!target) throw new Error('no Broadway surface under the touch');
+          const t = new Touch({
+            identifier: 1,
+            target,
+            clientX: px,
+            clientY: py,
+            pageX: px,
+            pageY: py,
+          });
+          const down = type === 'touchend' ? [] : [t];
+          target.dispatchEvent(
+            new TouchEvent(type, {
+              bubbles: true,
+              cancelable: true,
+              touches: down,
+              targetTouches: down,
+              changedTouches: [t],
+            }),
+          );
+        },
+        [type, px, py],
+      );
+    await send('touchstart', x, y);
+    const moving = toX !== x || toY !== y;
+    for (let i = 1; moving && i <= steps; i++) {
+      await this.page.waitForTimeout(stepMs);
+      await send('touchmove', x + ((toX - x) * i) / steps, y + ((toY - y) * i) / steps);
+    }
+    await this.page.waitForTimeout(moving ? stepMs : 60);
+    await send('touchend', toX, toY);
+    await this.page.waitForTimeout(900);
+  }
+
   async type(text) {
     await this.page.keyboard.type(text, { delay: 30 });
   }

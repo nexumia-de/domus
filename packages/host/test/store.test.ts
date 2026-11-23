@@ -5,6 +5,8 @@ import { StoreBlocked, StoreOpenError, createIdbStore } from '../src/idb-store';
 import { StoreFileError, createFileStore, createMemoryFiles } from '../src/file-store';
 import { createMemoryStore } from '../src/memory-store';
 import type { Store, StoredSpace } from '../src/store';
+import { localChange, syncCollection } from '../src/cycle';
+import { deriveSpace, newSecret } from '../src/space';
 
 const sp = (id: string, extra: Partial<StoredSpace> = {}): StoredSpace => ({
   id,
@@ -205,6 +207,50 @@ describe('file store', () => {
     await s.writeCollection('ab', 'list', { records: [rec('k', 2)] });
     await s.removeSpace('a');
     expect([...files.all.keys()].sort()).toEqual(['ab.list.json', 'spaces.json']);
+  });
+
+  test('a write for a space this store removed is dropped, until the space is put again', async () => {
+    const files = createMemoryFiles();
+    const s = createFileStore(files);
+    await s.putSpace(sp('a'));
+    await s.writeCollection('a', 'list', { records: [rec('k', 1)] });
+    await s.removeSpace('a');
+    // What a cycle or an action that was running at the leave does afterwards.
+    await s.writeCollection('a', 'list', { records: [rec('k', 2)] });
+    const returned = await s.changeRecords('a', 'stock', () => ({ records: [rec('m', 3)] }));
+    expect(returned.records).toEqual([rec('m', 3)]);
+    expect([...files.all.keys()]).toEqual(['spaces.json']);
+    // Joined again (the same secret gives the same id): it is written again.
+    await s.putSpace(sp('a'));
+    await s.writeCollection('a', 'list', { records: [rec('k', 4)] });
+    expect([...files.all.keys()].sort()).toEqual(['a.list.json', 'spaces.json']);
+  });
+
+  test('a space left while its cycle writes to the storage leaves no file behind', async () => {
+    const files = createMemoryFiles();
+    const s = createFileStore(files);
+    const secret = newSecret();
+    const space = await deriveSpace(secret);
+    await s.putSpace({ id: space.id, secret, storage: sp('x').storage });
+    const now = (): string => '2026-11-22T10:00:00.000Z';
+    await localChange(s, space.id, 'list', now, () => ({ put: [{ key: 'k', value: 1 }] }));
+    const result = await syncCollection({
+      space,
+      collection: 'list',
+      store: s,
+      now,
+      adapter: {
+        read: () => Promise.resolve({ ok: true, missing: true }),
+        async write() {
+          // The person leaves the space while the cycle waits for the storage.
+          await s.removeSpace(space.id);
+          return { ok: true, etag: '"1"' };
+        },
+      },
+    });
+    expect(result.ok).toBe(true);
+    expect([...files.all.keys()]).toEqual(['spaces.json']);
+    expect(await s.listSpaces()).toEqual([]);
   });
 
   test('a file that cannot be read is an error and is never written over', async () => {

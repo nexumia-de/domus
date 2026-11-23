@@ -9,11 +9,13 @@
 // A space on this device only (`isDeviceOnly`, made by an app before sync was set up) has no
 // storage: no cycle is run for it, here or anywhere, until `connectStorage` gave it one.
 import {
+  SPACE_COLLECTION,
+  SPACE_NAME_KEY,
+  createSpace as createHostSpace,
   deriveSpace,
   deviceOnlyStorage,
   isDeviceOnly,
   localChange,
-  newSecret,
   syncCollection,
   testConnection,
   type FindRepositoriesResult,
@@ -28,8 +30,9 @@ import { problemOf, type Problem } from './failures';
 import { verdictOf } from './github-setup';
 import { cleanName } from './names';
 
-export const COLLECTION = 'space';
-export const NAME_KEY = 'name';
+export { SPACE_COLLECTION as COLLECTION, SPACE_NAME_KEY as NAME_KEY } from '@nexumia-de/hospes';
+const COLLECTION = SPACE_COLLECTION;
+const NAME_KEY = SPACE_NAME_KEY;
 
 export interface Deps {
   store: Store;
@@ -116,9 +119,10 @@ export async function checkStorage(
 export type CreateResult = { ok: true; id: string } | ({ ok: false } & Problem);
 
 /**
- * A new space: secret, id, the space on this device, its name written, one cycle. When the
- * cycle fails the space is taken off the device again, so the person can fix the cause and
- * start over; nothing was written to the storage that is not also in the cycle's failure.
+ * A new space: secret, id, the space on this device, its name written, one cycle (the host
+ * package's `createSpace`, which the native apps use too). When the cycle fails the space is
+ * taken off the device again, so the person can fix the cause and start over; nothing was
+ * written to the storage that is not also in the cycle's failure.
  */
 export async function createSpace(
   input: { name: string; storage: StoredStorage },
@@ -126,23 +130,16 @@ export async function createSpace(
 ): Promise<CreateResult> {
   const name = cleanName(input.name);
   if (name === undefined) return fail({ failure: 'unexpected' });
-  let id: string | undefined;
   try {
-    const secret = newSecret(deps.random);
-    id = (await deriveSpace(secret)).id;
-    const space: StoredSpace = { id, secret, name, storage: input.storage };
-    await deps.store.putSpace(space);
-    await localChange(deps.store, id, COLLECTION, deps.now, () => ({
-      put: [{ key: NAME_KEY, value: name }],
-    }));
-    const outcome = await syncSpace(space, deps);
-    if (!outcome.ok) {
-      await deps.store.removeSpace(id);
-      return outcome;
-    }
-    return { ok: true, id };
+    const created = await createHostSpace({ name, storage: input.storage }, deps);
+    if (created.ok) return { ok: true, id: created.id };
+    if (created.failure === 'bad-name') return fail({ failure: 'unexpected' });
+    return fail(
+      created.detail === undefined
+        ? { failure: created.failure }
+        : { failure: created.failure, detail: created.detail },
+    );
   } catch (error) {
-    if (id !== undefined) await deps.store.removeSpace(id).catch(() => undefined);
     return fail(problemOf(error));
   }
 }

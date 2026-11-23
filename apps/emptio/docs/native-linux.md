@@ -59,9 +59,15 @@ is pushed, so swiping back works.
   bar; Remove at the end of the page, acting at once with a toast
   offering Undo.
 - **Categories**: the name edited in place, a switch for a starting
-  category, a remove button for an own one, a row to add one.
-- **Preferences**: style (Follow System, Light, Dark), the spaces with
-  their status and which one is shown, and **Join a Space** by an
+  category, a remove button for an own one, a row to add one. Every row
+  is a text field, and a field takes the focus on a tap only, so a drag
+  that starts on one scrolls the list
+  ([why](../../../packages/gjs/docs/platform.md#text-fields-in-a-scrolling-list));
+  the same holds for every text field of the app.
+- **Preferences**: style (Follow System, Light, Dark), the spaces with their status, which one is shown, **Leave** per space
+  (asks first; [what it does](../../../packages/gjs/docs/platform.md#spaces-in-the-preferences))
+  and **Create a Space** (a GitHub repository with a token, or a WebDAV
+  folder; the host package's `createSpace`, as in the Household app), and **Join a Space** by an
   invitation link (`joinByLink` of `@nexumia-de/gjs`). The link is made in the Household app
   in a browser; a token is asked for only when the invitation carries
   none. The space is stored and the first cycle says whether the storage
@@ -69,18 +75,18 @@ is pushed, so swiping back works.
 - **About** with the support link.
 
 Not in the native app: suggestions while typing, the amount in the add
-bar, making or sharing a space, removing a space, the language choice
-(it follows the device).
+bar, inviting someone to a space (the invitation link is made in the
+Household app), the language choice (it follows the device).
 
 # Build, run, checks
 
-| Command                             | What it does                                                                                                                                          |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @emptio/linux`    | esbuild (the shared build of `packages/gjs`) makes one module, `dist/de.nexumia.Emptio.js`; `gi://` stays imported. The GitHub address is compiled in |
-| `gjs -m dist/de.nexumia.Emptio.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `EMPTIO_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`) |
-| `npm test -w @emptio/linux`         | The native texts (German has what English has). The Web Crypto subset and joining by link are tested in `packages/gjs`                                |
-| `npm run smoke -w @emptio/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles against the fake GitHub on localhost  |
-| `npm run interact -w @emptio/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step                                               |
+| Command                             | What it does                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @emptio/linux`    | esbuild (the shared build of `packages/gjs`) makes one module, `dist/de.nexumia.Emptio.js`; `gi://` stays imported. The GitHub address is compiled in                                                                                                                                                                                                                                                                 |
+| `gjs -m dist/de.nexumia.Emptio.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `EMPTIO_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                                                                                                                                                                 |
+| `npm test -w @emptio/linux`         | The native texts (German has what English has). The Web Crypto subset and joining by link are tested in `packages/gjs`                                                                                                                                                                                                                                                                                                |
+| `npm run smoke -w @emptio/linux`    | In real GJS: the fixed vector, random bytes, the file store, and two folders as two devices through sync cycles against the fake GitHub on localhost                                                                                                                                                                                                                                                                  |
+| `npm run interact -w @emptio/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step; step 13 drags the categories by touch at 360 × 720 (the proof of the scroll fix is that the drag focused no field; the scroll distance is a control), step 13b clicks a field with the mouse at 1000 × 700, then the shared steps create a space against the fake GitHub, leave it, and leave the last space |
 
 The smoke check and the Broadway session are the shared ones
 (`packages/gjs/tooling`), given Emptio's collection `list` and app id.
@@ -136,7 +142,17 @@ python3 ../../../../phosh-toolkit/scripts/release.py --root . screenshots --out 
   started a bundle, so the launcher and the sandbox's permissions are
   untried.
 - **No phone**: Broadway is not Phosh. Swipe back, the on-screen
-  keyboard, touch and the real compositor were not tried.
+  keyboard and the real compositor were not tried. Touch is driven in
+  Broadway (step 13, creating and leaving a space), with events made in
+  the page, not by a finger on a phone. The scroll defect the owner saw
+  on Phosh was not seen there: in Broadway the categories scrolled
+  before the fix too, and Broadway has no on-screen keyboard. The proof
+  of the fix is the check "the drag focused no field", which fails on
+  the code before: the field under the finger took the focus, which on
+  Phosh brings up the keyboard; the scroll distance is only a control
+  ([why](../../../packages/gjs/docs/platform.md#text-fields-in-a-scrolling-list)).
+- Creating a space was driven against the fake GitHub only; a WebDAV
+  space is created in Node tests only.
 - The `gi://` calls have no types (`packages/gjs/src/gi.d.ts`); the smoke run,
   the interaction check and the screenshots are what checks them.
 - The real GitHub and a WebDAV server; a second instance of the app on

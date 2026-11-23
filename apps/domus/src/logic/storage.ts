@@ -1,16 +1,13 @@
 // A storage in words, and what is checked about its address before anything is stored.
-import { DEVICE_ONLY, type StoredStorage } from '@nexumia-de/hospes';
+import { DEVICE_ONLY, isRepository, type StoredStorage } from '@nexumia-de/hospes';
 import type { Strings } from '../strings';
 
 /** The storages a space can be connected to; a space on this device only has none of them. */
 export type StorageKind = 'github' | 'webdav';
 export const isKind = (type: string): type is StorageKind => type === 'github' || type === 'webdav';
 
-const REPOSITORY = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
-
-/** `owner/name` of a GitHub repository, as the adapter wants it. */
-export const isRepository = (text: string): boolean =>
-  REPOSITORY.test(text) && !text.split('/').some((part) => part === '.' || part === '..');
+/** `owner/name` of a GitHub repository, as the adapter wants it (the host package's rule). */
+export { isRepository };
 
 /** A WebDAV address: https, a host, no user name or password in it. */
 export function parseWebdavAddress(text: string): URL | undefined {

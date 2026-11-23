@@ -1,15 +1,16 @@
 // Preferences: the style, which space's list is shown and how each is kept in
-// step, joining a space by its invitation link, and the KitchenOwl list of the
-// shown space.
+// step, leaving and creating a space (the shared group of `@nexumia-de/gjs`),
+// joining a space by its invitation link, and the KitchenOwl list of the shown
+// space.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import type { Store } from '@nexumia-de/hospes';
 import { KEYS, THEMES, statusText, themeOf } from '@emptio/app/core';
-import { applyStyle, joinByLink } from '@nexumia-de/gjs';
+import { applyStyle, editOnTap, joinByLink, spacesGroup, type CreateDeps } from '@nexumia-de/gjs';
 import type { Ui } from './context';
 import { kitchenowlGroup } from './kitchenowl-group';
 
-export function showPreferences(ui: Ui, store: Store): void {
+export function showPreferences(ui: Ui, store: Store, setup: CreateDeps): void {
   const { app, n, prefs } = ui;
   const dialog = new Adw.PreferencesDialog({ title: n.menu.preferences });
   const page = new Adw.PreferencesPage();
@@ -28,30 +29,19 @@ export function showPreferences(ui: Ui, store: Store): void {
   look.add(style);
   page.add(look);
 
-  const spaces = new Adw.PreferencesGroup({
-    title: n.preferences.spaces,
-    description: n.spacesIntro,
-  });
-  const state = app.state();
-  let first: unknown = null;
-  for (const space of state.spaces) {
-    const line = new Adw.ActionRow({ use_markup: false });
-    line.set_title(space.name);
-    line.set_subtitle(statusText(n.status, app.status(space.id), ui.now(), true));
-    const choose = new Gtk.CheckButton({
-      active: space.id === state.space?.id,
-      valign: Gtk.Align.CENTER,
-    });
-    if (first === null) first = choose;
-    else choose.set_group(first);
-    choose.connect('toggled', () => {
-      if (choose.get_active() && space.id !== app.state().space?.id) void app.choose(space.id);
-    });
-    line.add_prefix(choose);
-    line.set_activatable_widget(choose);
-    spaces.add(line);
-  }
-  page.add(spaces);
+  page.add(
+    spacesGroup({
+      host: app,
+      store,
+      setup,
+      texts: n,
+      intro: n.spacesIntro,
+      subtitle: (space) => statusText(n.status, app.status(space.id), ui.now(), true),
+      dialog,
+      toast: (text) => ui.toast(text),
+      targetClass: 'emptio-target',
+    }),
+  );
 
   // Whether the app syncs by itself (docs/behaviour.md#sync); the choice of this device.
   const syncing = new Adw.PreferencesGroup({ title: ui.t.settings.sync });
@@ -70,8 +60,8 @@ export function showPreferences(ui: Ui, store: Store): void {
   page.add(syncing);
 
   const join = new Adw.PreferencesGroup({ title: n.join.title, description: n.join.description });
-  const link = new Adw.EntryRow({ title: n.join.link, show_apply_button: true });
-  const token = new Adw.PasswordEntryRow({ title: n.join.token });
+  const link = editOnTap(new Adw.EntryRow({ title: n.join.link, show_apply_button: true }));
+  const token = editOnTap(new Adw.PasswordEntryRow({ title: n.join.token }));
   link.connect('apply', () => {
     void joinByLink(store, link.get_text(), token.get_text()).then(
       (done) => {

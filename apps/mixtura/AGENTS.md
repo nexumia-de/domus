@@ -30,8 +30,10 @@ rules do not apply. Its native Linux app (`packages/linux`,
   the loop are in [packages/host](../../packages/host)
   (`@nexumia-de/hospes`). Mixtura has no sync code, storage, secret or
   invite of its own: it reads and writes the collection `stock` of a
-  space and starts the host's loop for it. Spaces are made, shared and
-  removed in the Household app.
+  space and starts the host's loop for it. Spaces are made and left in
+  the Household app and also in the native apps (owner, 2026-11-22, with
+  the host's `createSpace` and the shared preferences group of
+  `packages/gjs`); they are shared by invitation in the Household app.
 - **Stock is taps, not bookkeeping.** At hand or not; no amounts, no
   booking, nothing the app asks for. The collection is shared with the
   other apps: keep the fields you do not know.

@@ -10,6 +10,7 @@ import {
   setCategoryHidden,
   type Category,
 } from '@emptio/app/core';
+import { editOnTap } from '@nexumia-de/gjs';
 import type { Page, Ui } from './context';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -37,11 +38,14 @@ export function categoriesPage(ui: Ui): Page {
   };
 
   function row(category: Category): any {
-    const line = new Adw.EntryRow({
-      title: category.hidden ? `${t.entry.name} (${t.categories.hidden})` : t.entry.name,
-      text: category.name,
-      show_apply_button: true,
-    });
+    // A drag that starts on a name scrolls the list; only a tap edits it.
+    const line = editOnTap(
+      new Adw.EntryRow({
+        title: category.hidden ? `${t.entry.name} (${t.categories.hidden})` : t.entry.name,
+        text: category.name,
+        show_apply_button: true,
+      }),
+    );
     line.connect('apply', () => {
       const text: string = line.get_text();
       void app
@@ -107,7 +111,9 @@ export function categoriesPage(ui: Ui): Page {
     for (const category of categories) group.add(row(category));
     body.append(group);
 
-    const fresh = new Adw.EntryRow({ title: t.categories.addLabel, show_apply_button: true });
+    const fresh = editOnTap(
+      new Adw.EntryRow({ title: t.categories.addLabel, show_apply_button: true }),
+    );
     fresh.connect('apply', () => {
       const text: string = fresh.get_text();
       void app.act((deps, spaceId) => addCategory(deps, spaceId, text)).then(failed);

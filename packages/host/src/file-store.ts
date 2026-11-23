@@ -62,8 +62,17 @@ export function createFileStore(files: Files): Store {
     if (typeof state !== 'object' || !Array.isArray(state.records)) throw new StoreFileError(file);
     return state;
   };
-  const write = (space: string, name: string, state: CollectionState): void =>
+  /**
+   * Spaces removed by this store object and not put again. A write for one of them is dropped:
+   * a sync cycle or an action that was running when the person left the space would otherwise
+   * write its collection file again after `removeSpace` (docs/sync-orderings.md, spaces coming
+   * and going). One process owns the folder, so the leave and the late write meet here.
+   */
+  const gone = new Set<string>();
+  const write = (space: string, name: string, state: CollectionState): void => {
+    if (gone.has(space)) return;
     files.write(collectionFile(space, name), JSON.stringify(state));
+  };
   // Every method does its work in one synchronous step and reports a failure as a rejection.
   const attempt = <T>(work: () => T): Promise<T> => {
     try {
@@ -80,10 +89,12 @@ export function createFileStore(files: Files): Store {
       attempt(() => {
         const others = spaces().filter((other) => other.id !== space.id);
         files.write(SPACES, JSON.stringify([...others, clone(space)]));
+        gone.delete(space.id);
       }),
     removeSpace: (id) =>
       attempt(() => {
         files.write(SPACES, JSON.stringify(spaces().filter((space) => space.id !== id)));
+        gone.add(id);
         const prefix = `${safe(id)}.`;
         for (const name of files.list()) {
           if (name !== SPACES && name.startsWith(prefix)) files.remove(name);

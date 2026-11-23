@@ -4,6 +4,10 @@
 
 - **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) at the end of the home page (the app has no settings or About); the dialog is the shared one.
 
+## 2026-11-22
+
+- **Creating a space is shared**: `createSpace`'s core (secret, space stored, name in `space`, one cycle, taken off again on a failure), `cleanName`, `isRepository` and the GitHub verdict moved to the host package (`space-setup.ts`), because the native apps create spaces too. `logic/actions.ts`, `names.ts`, `storage.ts` and `github-setup.ts` keep their names and wrap them; the screens are unchanged. The unit tests and flows pass unchanged (72). [Host: making a space](../../../packages/host/docs/spaces.md#making-a-space).
+
 ## 2026-11-20
 
 - **Emptio on the home page**: the list of apps has a third card, Shopping List (`emptio/`). The browser harness and the fake of GitHub's API moved to the host package (`@nexumia-de/hospes/testing/*`), because Emptio's browser checks use them too; `e2e/run.mjs` and `scenario.mjs` import them from there.

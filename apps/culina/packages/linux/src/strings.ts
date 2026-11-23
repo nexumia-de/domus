@@ -82,7 +82,7 @@ export const textsEn: Texts = {
   },
   preferencesText: {
     spacesIntro:
-      'A space is a household, or this device alone. Each space has its own stock. A space is made and shared in the Household app in a browser; this app joins it by its invitation link.',
+      'A space is a household, or this device alone. Each space has its own stock. A space can be created here; it is shared from the Household app in a browser, and this app joins one by its invitation link.',
   },
   failure: {
     ...sharedEn.failure,
@@ -139,7 +139,7 @@ export const textsDe: Texts = {
   },
   preferencesText: {
     spacesIntro:
-      'Ein Space ist ein Haushalt oder dieses Gerät allein. Jeder Space hat seinen eigenen Vorrat. Ein Space wird in der App Haushalt im Browser angelegt und geteilt; diese App tritt ihm über seinen Einladungslink bei.',
+      'Ein Space ist ein Haushalt oder dieses Gerät allein. Jeder Space hat seinen eigenen Vorrat. Ein Space kann hier angelegt werden; geteilt wird er in der App Haushalt im Browser, und diese App tritt einem über seinen Einladungslink bei.',
   },
   failure: {
     ...sharedDe.failure,

@@ -13,6 +13,7 @@ import {
   type KitchenowlFailure,
   type Named,
 } from '@emptio/app/core';
+import { editOnTap } from '@nexumia-de/gjs';
 import type { Ui } from './context';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -76,8 +77,10 @@ export function kitchenowlGroup(ui: Ui, dialog: any): any {
     return group;
   }
 
-  const address = new Adw.EntryRow({ title: k.address, input_purpose: Gtk.InputPurpose.URL });
-  const token = new Adw.PasswordEntryRow({ title: k.token });
+  const address = editOnTap(
+    new Adw.EntryRow({ title: k.address, input_purpose: Gtk.InputPurpose.URL }),
+  );
+  const token = editOnTap(new Adw.PasswordEntryRow({ title: k.token }));
   const check = actionRow(k.check);
   const households = new Adw.ComboRow({ title: k.household, visible: false });
   const lists = new Adw.ComboRow({ title: k.list, visible: false });

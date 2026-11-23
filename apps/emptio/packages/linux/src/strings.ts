@@ -13,7 +13,7 @@ export const nativeEn: NativeStrings = {
   ...sharedEn,
   menu: { categories: 'Categories', preferences: 'Preferences', about: 'About Shopping List' },
   spacesIntro:
-    'A space is a household, or this device alone. Each space has its own list. A space is made and shared in the Household app in a browser; this app joins it by its invitation link.',
+    'A space is a household, or this device alone. Each space has its own list. A space can be created here; it is shared from the Household app in a browser, and this app joins one by its invitation link.',
   comments: 'The household’s shopping list with priorities, kept on this device.',
 };
 
@@ -21,6 +21,6 @@ export const nativeDe: NativeStrings = {
   ...sharedDe,
   menu: { categories: 'Kategorien', preferences: 'Einstellungen', about: 'Info zu Einkaufsliste' },
   spacesIntro:
-    'Ein Space ist ein Haushalt oder dieses Gerät allein. Jeder Space hat seine eigene Liste. Ein Space wird in der App Haushalt im Browser angelegt und geteilt; diese App tritt ihm über seinen Einladungslink bei.',
+    'Ein Space ist ein Haushalt oder dieses Gerät allein. Jeder Space hat seine eigene Liste. Ein Space kann hier angelegt werden; geteilt wird er in der App Haushalt im Browser, und diese App tritt einem über seinen Einladungslink bei.',
   comments: 'Die Einkaufsliste des Haushalts mit Dringlichkeit, auf diesem Gerät gespeichert.',
 };

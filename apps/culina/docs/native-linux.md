@@ -99,9 +99,11 @@ dishes, ingredients and notes come in both languages from the data.
   the shared collection `stock` at once with the web app's own edits
   (`tickEdit`, `untickEdit`: fields other apps wrote survive); an untick
   offers Undo.
-- **Preferences**: style (Follow System, Light, Dark), the spaces with
-  their status and which one is shown, and **Join a Space** by an
-  invitation link (made in the Household app in a browser; a token is
+- **Preferences**: style (Follow System, Light, Dark), the spaces with their status, which one is shown, **Leave** per space
+  (asks first; [what it does](../../../packages/gjs/docs/platform.md#spaces-in-the-preferences))
+  and **Create a Space** (a GitHub repository with a token, or a WebDAV
+  folder; the host package's `createSpace`, as in the Household app),
+  and **Join a Space** by an invitation link (made in the Household app in a browser; a token is
   asked for only when the invitation carries none).
 - **About** with the support link and a legal section for the data.
 
@@ -185,13 +187,13 @@ On purpose, for the first release:
 
 # Build, run, checks
 
-| Command                             | What it does                                                                                                                                                                                                                    |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                    |
-| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                           |
-| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter over the dishes and the finder narrowed by it included), the filter's choices and words, and the texts (17 tests); part of `npm run check:culina` |
-| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (13 checks)                                       |
-| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (21 checks; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step           |
+| Command                             | What it does                                                                                                                                                                                                                                                                    |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                                                                    |
+| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                           |
+| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter over the dishes and the finder narrowed by it included), the filter's choices and words, and the texts (17 tests); part of `npm run check:culina`                                                 |
+| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (13 checks)                                                                                       |
+| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (21 checks and the shared create-and-leave steps of the Spaces group; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step |
 
 # Releases
 
