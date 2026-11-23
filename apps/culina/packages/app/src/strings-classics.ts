@@ -155,4 +155,9 @@ export const pairingStrings = {
   limits: 'The data has no amounts and says nothing about sweet, sour, salty or bitter.',
   source: 'Data: FlavorDB (Garg et al., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
   links: 'Which ingredient here stands for which one there is this app’s judgement.',
+  editorEmpty:
+    'Choose a first ingredient or component above; what goes with it is then shown here.',
+  editorIntro:
+    'Ingredients that share more flavour molecules with what is in this dish than they usually do. Tap one to add it.',
+  add: (name: string): string => `Add ${name} to the dish`,
 };

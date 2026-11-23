@@ -13,6 +13,7 @@ import { dishCook } from './dish-cook.mjs';
 import { dishCharacters } from './dish-characters.mjs';
 import { dishPairing } from './dish-pairing.mjs';
 import { dishSwap } from './dish-swap.mjs';
+import { editorPairing } from './editor-pairing.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
 import { everydayStock } from './everyday-stock.mjs';
@@ -52,6 +53,7 @@ try {
   await dishSwap(browser, server);
   await dishCharacters(browser, server);
   await dishPairing(browser, server);
+  await editorPairing(browser, server);
   await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);

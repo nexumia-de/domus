@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-23 (Goes with in the editor)
+
+- **Creation**: "Goes with" in the dish editor, after the owner found the pairings of no use where they stood and named the aim: to put dishes together oneself by what goes with what. Under the slots, the up to eight ingredients of the catalogue that stand out with what the draft holds (the fillings, and the ingredients of the components that fill a slot, `src/pairing/draft.ts`), drawn again with every change; a tap copies the ingredient from the catalogue and adds it as a slot of the next open role (`src/screens/editor/pairing-suggest.ts`; [behaviour](behaviour.md#editor), [decision](decisions/flavordb.md#built)). The data is fetched when the draft first has an ingredient. Tests: `test/pairing-draft.test.ts`, `e2e/editor-pairing.mjs` (Chromium, 360 px, English in full, German the empty state). Not verified: whether the offers help a cook; the agent saw thin ones (tomatoes: pork, guavas, strawberries) and wrote them into the decision. Found in the same look and **not changed**: the role roll of the random pick draws from own components only and so offers nothing in a new notebook; the 5 shipped sauces that are bases stand in the dish list.
+
 ## 2026-11-23 (FlavorDB)
 
 - **Decision**: by the owner: [pairings come from FlavorDB](decisions/flavordb.md), Culina stays non-commercial; the rule "no data from FlavorDB" of `AGENTS.md` is lifted for Culina. The data is to be one file of its own under CC BY-NC-SA 3.0.

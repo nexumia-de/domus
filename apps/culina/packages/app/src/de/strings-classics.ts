@@ -151,4 +151,8 @@ export const pairingStringsDe: typeof pairingStrings = {
   limits: 'Die Daten kennen keine Mengen und sagen nichts über süß, sauer, salzig oder bitter.',
   source: 'Daten: FlavorDB (Garg u. a., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
   links: 'Welche Zutat hier für welche dort steht, ist eine Einschätzung dieser App.',
+  editorEmpty: 'Wähle oben eine erste Zutat oder Komponente; dann steht hier, was dazu passt.',
+  editorIntro:
+    'Zutaten, die mit dem, was im Gericht ist, mehr Aromastoffe teilen, als sie es sonst tun. Tippe eine an, um sie hinzuzufügen.',
+  add: (name: string): string => `${name} zum Gericht hinzufügen`,
 };

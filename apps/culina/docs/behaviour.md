@@ -856,6 +856,28 @@ always has a filling; a slot without one lives only in the draft. Open
 roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
 `e2e/editor-more.mjs`.
 
+- **Goes with (since 2026-11-23)**, a section under the slots and "Add a
+  slot" (`src/screens/editor/pairing-suggest.ts`, the draft's ingredients
+  in `src/pairing/draft.ts`; the rule and the data are those of
+  [Goes with on the dish](#classics), [decision](decisions/flavordb.md)).
+  While no slot has a filling it says to choose a first ingredient or
+  component, and the pairing data is not fetched. From the first filling
+  on it offers up to eight ingredients of the catalogue that stand out
+  with what the draft holds: the ingredients that fill a slot and the
+  ingredients of the components that fill one, through the components
+  they name. Each offer is a button of at least 44 px with the name and
+  the fillings it goes with; its accessible name is "Add <name> to the
+  dish". A tap copies the ingredient from the catalogue into the notebook
+  (as the picker does), adds it as a slot of the next open role (garnish
+  when none is open) without an amount, and moves the focus to that slot;
+  the role is a guess, the data knows none, and the cook changes it on the
+  row. The offers are drawn again with every change of the fillings, never
+  with one already in the dish. Below them the hint that this is computed
+  and the source with its licence. Only ingredients are offered, no
+  components. Not in the native app. **Test:** `test/pairing-draft.test.ts`,
+  `e2e/editor-pairing.mjs` (Chromium at 360 px; English in full, in German
+  the heading and the empty state only; whether the offers help a cook is
+  tested nowhere).
 - **Course and cuisine (since 2026-11-21)** are two labelled selects of
   44 px, "Course" and "Cuisine", each starting with "Not stated", which
   stores no field. The courses are a classic's (starter to snack); the

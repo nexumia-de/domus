@@ -254,3 +254,12 @@
   gap: 0 var(--sp-2);
   padding: var(--sp-1) 0;
 }
+
+/* "Goes with" in the dish editor: each ingredient is a button that adds it. */
+.pairing-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-2);
+  width: 100%;
+  text-align: start;
+}

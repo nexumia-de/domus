@@ -72,8 +72,9 @@ app and finds quickly what they want to cook or can cook.
    check, and curated affinities. **What fits** comes from FlavorDB
    (owner, 2026-11-23, [decision](decisions/flavordb.md)), built the
    same day: the data (936 ingredients), its links to the catalogue
-   (630 of 720) and "Goes with" on the dish screen. Not built: pairings
-   while a dish is put together in the editor, and in the native app. **What a dish still
+   (630 of 720), "Goes with" on the dish screen and, in the dish editor,
+   while a dish is put together (a tap adds an offer as a slot). Not
+   built: in the native app; offers by role; components as offers. **What a dish still
    needs waits for the owner**: where that data comes from
    ([building kit](decisions/building-kit.md), the open point);
    no data set with a usable licence was found
