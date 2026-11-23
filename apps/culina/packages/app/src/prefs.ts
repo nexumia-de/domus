@@ -68,7 +68,21 @@ export interface CookFilters {
 }
 
 /** The countries of the shipped dishes, in the order the filters offer them. */
-export const CLASSIC_COUNTRIES = ['de', 'it', 'fr', 'es'] as const;
+export const CLASSIC_COUNTRIES = [
+  'de',
+  'it',
+  'fr',
+  'es',
+  'gb',
+  'gr',
+  'tr',
+  'us',
+  'mx',
+  'in',
+  'th',
+  'cn',
+  'jp',
+] as const;
 
 export const DEFAULT_COOK_FILTERS: CookFilters = { lacking: 1 };
 

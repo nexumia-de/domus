@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23 (own recipes, more cuisines)
+
+- **Decision** by the owner: [a shipped recipe may be the project's own](decisions/own-recipes.md), written by an AI model from general cooking knowledge without a source; the app says so on the recipe. Cited recipes keep their rule. `AGENTS.md` states both kinds.
+- **Creation**: the format's `source` is a cited source or `{ own, year }` (schema, engine types, `copyClassic`'s `x-origin`, [format](classic-format.md#an-own-recipe)); both apps show the own-recipe lines in place of a source. Nine more cuisines have a name (British, Greek, Turkish, American, Mexican, Indian, Thai, Chinese, Japanese: `COUNTRY_CODES`, the schema, the lists and texts of both languages). Tests that pinned the four countries or the code `jp` as unknown were brought to the new list.
+
 ## 2026-11-23 (20 recipes, pairing sources)
 
 - **Creation**: 20 shipped recipes for the kit, asked for by the owner and researched and written by agents ([selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit), [review](../../../docs/reviews.md)): 7 sauces, 6 starch sides, 2 pasta dishes of a sauce and a starch, 3 soups and 2 egg dishes, from Davidis 1904, Artusi 1891, Gouffé 1877 and Muro 1894; 16 are bases. Each was written by one agent from the scan's text and read again by another in the printed page; all carry `check.method` `page-image`. Four of the 24 written were dropped for want of amounts or for amounts that were ours. The shipped files are 68, the bases 33, the sauce bases that are no dishes 12, Cook lists 56; components with the role starch went from 2 to 9. Tests that pin the content were brought to the new values (bases, steps 578, wanted lines, the nutrition table, complete dishes, the native list). Not verified: any recipe cooked; the German texts by a native reader; the weaknesses are listed in the selection.

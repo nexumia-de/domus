@@ -3,7 +3,21 @@ import { pickText } from '@culina/engine';
 import type { Classic, Country, Course, Lang } from '@culina/engine';
 
 /** The countries in the order they are offered. */
-export const COUNTRIES: readonly Country[] = ['de', 'it', 'fr', 'es'];
+export const COUNTRIES: readonly Country[] = [
+  'de',
+  'it',
+  'fr',
+  'es',
+  'gb',
+  'gr',
+  'tr',
+  'us',
+  'mx',
+  'in',
+  'th',
+  'cn',
+  'jp',
+];
 
 export const isCountry = (value: string | undefined): value is Country =>
   COUNTRIES.some((c) => c === value);

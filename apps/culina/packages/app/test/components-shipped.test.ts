@@ -127,7 +127,7 @@ describe('the read-only view', () => {
     expect(shown.lines).toEqual(dish.view.components[0]?.lines);
     expect(shown.portions).toBe(4);
     expect(shown.dishName).toBe('Example pan dish (fictional)');
-    expect(shown.source.source.author).toBe('Example Author');
+    expect(shown.source.source).toMatchObject({ author: 'Example Author' });
     // The source's 4 persons: as written at 4 portions, twice at 8; a line without an amount stays so.
     expect(shown.lines.map((l) => l.amount ?? l.amountWord)).toEqual([
       '200 g',

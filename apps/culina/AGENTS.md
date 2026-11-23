@@ -31,9 +31,12 @@ its own `AGENTS.md`. Its sister app for drinks,
   what Mixtura needs too moves to materia.
 - **Own local data, offline first.** No server, no account, no
   telemetry.
-- **Recipes**: shipped bases and dishes, read-only, each with its cuisine and
-  following one named source (amounts as facts, method in our own words,
-  no copied text, no bulk import of a site), and the user's own
+- **Recipes**: shipped bases and dishes, read-only, each with its cuisine.
+  A shipped recipe either follows one named source (amounts as facts,
+  method in our own words, no copied text, no bulk import of a site) or
+  is the project's own, written by an AI model without a source, which
+  the app says on the recipe
+  ([own recipes](docs/decisions/own-recipes.md)); and the user's own
   components and dishes with versions; both in one list with one filter
   ([one dish list](docs/decisions/one-dish-list.md)). A frame (tacos, bowl) is the project's own
   composition and says so; each component in it keeps its source
@@ -48,7 +51,8 @@ its own `AGENTS.md`. Its sister app for drinks,
   marked as a judgement. Teaching notes belong to skills; a skill the user
   marked as learned is not taught again.
 - **Sources and licences.** Every ratio, pairing and data set names its
-  source and licence. Pairings come from FlavorDB (CC BY-NC-SA 3.0), kept
+  source and licence. A pairing or recipe of the project's own
+  is marked as such. Pairings come from FlavorDB (CC BY-NC-SA 3.0), kept
   as one data file of its own that names source, licence and changes
   ([decision](docs/decisions/flavordb.md)); Culina is non-commercial. No
   data from RecipeNLG.

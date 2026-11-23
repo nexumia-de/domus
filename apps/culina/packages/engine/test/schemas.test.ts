@@ -171,9 +171,10 @@ describe('invalid cases named by the issue', () => {
   test('a dish states a course and a cuisine of the lists a classic uses, or none', () => {
     expect(fails('dish', (d: Doc) => delete d.course)).toBe(false);
     expect(fails('dish', (d: Doc) => (d.cuisine = 'it'))).toBe(false);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'jp'))).toBe(false);
     expect(fails('dish', (d: Doc) => (d.course = 'brunch'))).toBe(true);
     expect(fails('dish', (d: Doc) => (d.course = ''))).toBe(true);
-    expect(fails('dish', (d: Doc) => (d.cuisine = 'jp'))).toBe(true);
+    expect(fails('dish', (d: Doc) => (d.cuisine = 'xx'))).toBe(true);
     expect(fails('dish', (d: Doc) => (d.cuisine = 'IT'))).toBe(true);
   });
   test("a dish may store the cook's correction of its characters, never an empty one", () => {

@@ -91,21 +91,28 @@ export function dishPage(ui: Ui, id: string): Page {
       if (subtitle !== undefined) row.set_subtitle(subtitle);
       group.add_row(row);
     };
-    line(s.classics.sourceLine(source.author, source.title, source.year));
-    line(s.classics.sourcePlace(source.place));
-    if (source.licence !== undefined) line(s.classics.sourceLicence(source.licence));
-    line(
-      persons.basis === 'stated'
-        ? s.classics.personsStated(persons.value)
-        : s.classics.personsSettled(persons.value),
-    );
-    line(s.classics.checkMethod[shown.check.method]);
-    const link = new Adw.ActionRow({ use_markup: false, activatable: true });
-    link.set_title(s.classics.sourceLink);
-    link.set_subtitle(source.url);
-    link.add_suffix(new Gtk.Image({ icon_name: 'adw-external-link-symbolic' }));
-    link.connect('activated', () => Gtk.show_uri(ui.window, source.url, 0));
-    group.add_row(link);
+    if (source.own === true) {
+      line(s.classics.ownSource);
+      line(s.classics.ownPersons(persons.value));
+      line(s.classics.ownChecked);
+    } else {
+      line(s.classics.sourceLine(source.author, source.title, source.year));
+      line(s.classics.sourcePlace(source.place));
+      if (source.licence !== undefined) line(s.classics.sourceLicence(source.licence));
+      line(
+        persons.basis === 'stated'
+          ? s.classics.personsStated(persons.value)
+          : s.classics.personsSettled(persons.value),
+      );
+      line(s.classics.checkMethod[shown.check.method]);
+      const url = source.url;
+      const link = new Adw.ActionRow({ use_markup: false, activatable: true });
+      link.set_title(s.classics.sourceLink);
+      link.set_subtitle(url);
+      link.add_suffix(new Gtk.Image({ icon_name: 'adw-external-link-symbolic' }));
+      link.connect('activated', () => Gtk.show_uri(ui.window, url, 0));
+      group.add_row(link);
+    }
     if (shown.note !== undefined) line(s.classics.remarkDish(shown.note));
     for (const remark of shown.sourceRemarks.lines) {
       line(s.classics.remarkLine(remark.name, remark.original, remark.remark));

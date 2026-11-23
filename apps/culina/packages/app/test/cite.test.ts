@@ -60,12 +60,16 @@ test('a date is shown in the form of the language', () => {
 });
 
 test('a cuisine is named by its adjective, never by the country', () => {
-  expect(stringsDe.browse.cuisines).toEqual({
+  expect(stringsDe.browse.cuisines).toMatchObject({
     de: 'Deutsche Küche',
     it: 'Italienische Küche',
     fr: 'Französische Küche',
     es: 'Spanische Küche',
+    mx: 'Mexikanische Küche',
+    jp: 'Japanische Küche',
   });
+  // Every one ends in "Küche": the adjective of the country, never its name.
+  for (const name of Object.values(stringsDe.browse.cuisines)) expect(name).toMatch(/e Küche$/);
   expect(Object.keys(stringsEn.browse.cuisines).sort()).toEqual(
     Object.keys(stringsEn.classics.countries).sort(),
   );

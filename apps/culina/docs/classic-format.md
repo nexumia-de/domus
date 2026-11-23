@@ -275,7 +275,7 @@ The fictional example, in full (`packages/engine/schemas/examples/classic.valid.
 | `kind`         | `base` for a base to build on ([below](#a-base)), `dish` or nothing for a dish as the source gives it.                                                                            |
 | `name`         | `{ en, de }`: how the dish is called in each language.                                                                                                                            |
 | `originalName` | The name in the source's own language and spelling.                                                                                                                               |
-| `country`      | `de`, `it`, `fr` or `es`; the folder the file is in.                                                                                                                              |
+| `country`      | A country code of `COUNTRY_CODES` (`de`, `it`, `fr`, `es`, `gb`, `gr`, `tr`, `us`, `mx`, `in`, `th`, `cn`, `jp`); the folder the file is in.                                      |
 | `vegetarian`   | `true` without meat and fish (also without lard and meat stock).                                                                                                                  |
 | `course`       | `starter`, `soup`, `main`, `side`, `dessert`, `baking`, `sauce`, `breakfast` or `snack`.                                                                                          |
 | `source`       | `author`, `title`, `year` (of this edition), `place` (page or recipe number), `url` (where the page can be opened), `licence` where stated.                                       |
@@ -449,6 +449,29 @@ image), `second-edition` (with a second scan or edition) or `second-reader`
 (a second person read the same text). `check.note` says by whom and what was
 compared. It must be someone who did not transcribe the dish. The app shows
 one sentence for the method inside Source; the note stays in the file.
+
+# An own recipe
+
+A recipe of the project's own follows no source
+([decision](decisions/own-recipes.md)): an AI model wrote it from general
+cooking knowledge. It is a dish file with these differences.
+
+- `source` is `{ "own": true, "year": 2026 }` and nothing else. The app
+  shows, in place of a source, that it is the app's own recipe, written
+  by an AI model, read a second time, cooked by nobody.
+- `originalName` is the dish's usual name in the language of its cuisine,
+  in Latin letters.
+- `persons.basis` is `stated`; `settled` is empty: there is no source that
+  was vague.
+- Every ingredient line has an `amount` in a unit of the engine's table
+  (grams, millilitres, a count; spoons where a cook measures so), without
+  `original`. No `sourceNote`, no source unit words in `units`.
+- `check.method` is `second-reader`; the note says that a second agent
+  session read the recipe for proportions, times and order, and what it
+  changed.
+
+Everything else holds as for a cited dish: both languages, the kit's
+steps, a role on every component of a base, the wording.
 
 # A base
 
