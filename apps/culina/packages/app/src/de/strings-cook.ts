@@ -19,16 +19,16 @@ const MONTHS = [
 
 export const cookStringsDe: typeof cookStrings = {
   title: 'Kochen',
-  viewsLabel: 'Ansichten von Kochen',
-  tabCook: 'Was kann ich kochen',
+  haveLabel: 'Nur mit dem, was da ist',
+  orderLabel: 'Reihenfolge',
+  orderName: 'Nach Name',
   tabUseUp: 'Zuerst verbrauchen',
   tabStock: 'Vorrat',
+  backToCook: 'Zurück zu Kochen',
   asOf: (date: string): string => {
     const [y, m, d] = date.split('-').map(Number);
     return `Stand ${d}. ${MONTHS[(m ?? 1) - 1]} ${y}`;
   },
-  intro:
-    'Deine und mitgelieferte Gerichte in einer Liste: zuerst, was bald verbraucht werden sollte, dann nach abgedeckten Rollen.',
   // Filters
   filtersLabel: 'Filter',
   roleLabel: 'Deckt die Rolle ab',
@@ -45,8 +45,6 @@ export const cookStringsDe: typeof cookStrings = {
   dishesHeading: 'Gerichte',
   partsHeading: 'Komponenten und Verhältnisse',
   partsListLabel: 'Komponenten und Verhältnisse, die der Vorrat hergibt',
-  partsHidden:
-    'Komponenten und Verhältniskarten bleiben weg, solange ein Filter für Gerichte gewählt ist.',
   originWord: { own: 'eigenes', shipped: 'mitgeliefert' },
   complete: 'vollständig',
   lacks: (n: number): string => `noch ${n} nötig`,
@@ -102,24 +100,12 @@ export const cookStringsDe: typeof cookStrings = {
   addComponent: 'Komponente anlegen',
   importLink: 'Rezept importieren',
   emptyNoMatch: 'Nichts passt zu dieser Auswahl.',
-  filterChosen: (choices: string): string => `Gewählt: ${choices}`,
   emptyNothingRelated: 'Nichts in deinem Notizbuch verwendet bisher, was angehakt ist.',
   nearestHeading: 'Die nächsten',
   nearest: (name: string, lacks: string): string => `${name} braucht noch ${lacks}`,
-  // Use up first
-  useUpIntro: 'Was ein Verbrauchsdatum hat, das nächste zuerst, und was es verwendet.',
-  useUpLabel: 'Vorrat nach Verbrauchsdatum',
-  useUpThreshold: (lacking: number): string =>
-    lacking === 0
-      ? 'Gezählt wird nur, was vollständig ist.'
-      : `Gezählt wird, was bis zu ${lacking} weitere Zutaten braucht.`,
+  // Zuerst verbrauchen, als Reihenfolge der einen Liste
   useUpNoDates:
     'Noch kein Eintrag hat ein Verbrauchsdatum. Das Datum lässt sich am Eintrag ergänzen.',
-  useUpNothing: 'Nichts in der Liste verwendet es bisher.',
-  useUpFiltered:
-    'Gezählt innerhalb des Filters für Gerichte, der bei „Was kann ich kochen“ gewählt ist.',
-  useUpUsedBy: 'Verwendet von',
-  useUpOpenItem: (name: string): string => `${name} im Vorrat`,
   problem:
     'Die Suche konnte das Notizbuch nicht lesen: Eine Zutat hat eine übergeordnete Zutat, die nicht da ist oder eine Schleife bildet.',
   storeProblem: 'Das Notizbuch ließ sich nicht öffnen, deshalb kann nichts gefunden werden.',

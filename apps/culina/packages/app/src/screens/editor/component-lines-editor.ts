@@ -21,7 +21,11 @@ import {
   bareSelect,
   button,
   clearRowProblems,
+  focusStillIn,
+  keepFocusAs,
+  keptFocus,
   mark,
+  restoreFocus,
   showRowProblems,
   textField,
   type RowProblem,
@@ -110,6 +114,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
 
     const amount = textField(t.amountLabel, line.amount, true);
     amount.label.classList.add('sr-only');
+    keepFocusAs(amount.control, `amount-${index}`);
     amount.control.setAttribute(
       'aria-label',
       `${t.amountLabel}, ${t.lineName(index + 1, name ?? '')}`,
@@ -131,6 +136,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
             line.unit,
           );
     if (unit instanceof HTMLSelectElement) {
+      keepFocusAs(unit, `unit-${index}`);
       unit.addEventListener('change', () => {
         line.unit = unit.value as EntryUnit;
         changed();
@@ -207,10 +213,12 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
               line.unit = 'g';
             }
             // A catalogue pick is stored first and lands later; by then another line may have
-            // its picker open, which this pick must not close.
+            // its picker open, which this pick must not close, and the cook may be typing
+            // elsewhere: the focus only moves to the pick button while it is still in the picker.
             if (open?.index === index) {
               open = undefined;
-              focusAfter = [`[data-pick="${index}"]`];
+              if (focusStillIn(li.querySelector('.picker')))
+                focusAfter = [`[data-pick="${index}"]`];
             }
             changed();
             draw();
@@ -250,6 +258,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
   };
 
   const draw = (): void => {
+    const kept = focusAfter === undefined ? keptFocus(list) : undefined;
     list.replaceChildren(...form.lines.map(row));
     showFigures();
     for (const selector of focusAfter ?? []) {
@@ -260,6 +269,7 @@ export const linesEditor = (form: ComponentForm, changed: () => void): LinesEdit
       }
     }
     focusAfter = undefined;
+    restoreFocus(list, kept);
   };
   draw();
 

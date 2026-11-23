@@ -1,21 +1,6 @@
-// The list pane of the Components screen (Dishes has its own, dish-list.ts): the action to add
-// one, search by name, one link per entry, a quiet empty state that invites, and the collapsible
-// guidance.
-import { filterByName } from '../shared/search';
-import { hashFor, type Route } from '../router';
+// What the list panes of the Notebook share (Components: component-list.ts, Dishes: dish-list.ts):
+// the options a pane is given, its texts, its head and the collapsible guidance.
 import { el } from '../shell/el';
-import { nextId } from './fields';
-
-export interface Entry {
-  id: string;
-  name: string;
-  /** A short muted line under the name. */
-  meta: string;
-}
-
-export interface ListState {
-  query: string;
-}
 
 /** What a list pane is given by the screen around it (notebook-screen.ts). */
 export interface PaneOptions {
@@ -43,17 +28,6 @@ export interface ListText {
   guidance: string;
 }
 
-const row = (route: Route, entry: Entry, current?: string): HTMLElement => {
-  const item = el('li');
-  const a = el('a', 'entry-row row-link');
-  a.href = hashFor(route, entry.id);
-  if (entry.id === current) a.setAttribute('aria-current', 'page');
-  a.append(el('span', 'entry-name', entry.name));
-  if (entry.meta !== '') a.append(el('span', 'entry-meta', entry.meta));
-  item.append(a);
-  return item;
-};
-
 /** The head of a list pane: the h1 or the region's label, the parts, a note and the actions. */
 export const paneHead = (pane: HTMLElement, text: ListText, options: PaneOptions): void => {
   if (options.asHeading) pane.append(el('h1', undefined, text.title));
@@ -71,51 +45,4 @@ export const paneGuidance = (text: ListText): HTMLElement => {
     el('p', undefined, text.guidance),
   );
   return guidance;
-};
-
-export const entryList = (
-  route: Route,
-  entries: readonly Entry[],
-  state: ListState,
-  text: ListText,
-  options: PaneOptions,
-): HTMLElement => {
-  const pane = el('section', 'entry-list split-list');
-  paneHead(pane, text, options);
-
-  const search = el('input', 'field');
-  search.type = 'search';
-  search.autocomplete = 'off';
-  search.spellcheck = false;
-  search.id = nextId('search');
-  search.value = state.query;
-  const label = el('label', 'field-label', text.searchLabel);
-  label.htmlFor = search.id;
-  const wrap = el('div', 'field-wrap');
-  wrap.append(label, search);
-
-  const rows = el('div', 'groups');
-  const draw = (): void => {
-    rows.replaceChildren();
-    const shown = filterByName(entries, state.query);
-    if (entries.length === 0) {
-      rows.append(el('p', 'empty', text.emptyNotebook), ...(options.emptyActions ?? []));
-      return;
-    }
-    if (shown.length === 0) {
-      rows.append(el('p', 'empty', text.empty));
-      return;
-    }
-    const list = el('ul', 'rows');
-    list.append(...shown.map((entry) => row(route, entry, options.current)));
-    rows.append(list);
-  };
-  search.addEventListener('input', () => {
-    state.query = search.value;
-    draw();
-  });
-  draw();
-
-  pane.append(wrap, rows, paneGuidance(text));
-  return pane;
 };

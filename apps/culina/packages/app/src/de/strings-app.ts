@@ -13,7 +13,6 @@ export const appStringsDe: typeof appStrings = {
   skipToContent: 'Zum Inhalt springen',
   nav: {
     label: 'Hauptmenü',
-    start: 'Start',
     cook: 'Kochen',
     notebook: 'Notizbuch',
     ratios: 'Verhältnisse',
@@ -74,6 +73,9 @@ export const appStringsDe: typeof appStrings = {
   notebook: {
     sectionsLabel: 'Teile des Notizbuchs',
     searchLabel: 'Nach Namen suchen',
+    /** The two groups of a Notebook list (Components, Dishes): the user's own, then the shipped ones. */
+    groupOwn: 'In meinem Notizbuch',
+    groupShipped: 'Mit der App geliefert',
     toTaste: 'nach Geschmack',
     invalidNumber: 'Gib eine Zahl über 0 ein.',
     colIngredient: 'Zutat',
@@ -154,6 +156,17 @@ export const appStringsDe: typeof appStrings = {
     portionsResult: (portions: string, whole: string, rest: string): string =>
       `Etwa ${portions} Portionen: ${whole} ganze, ${rest} übrig.`,
     portionsNeedsOutput: 'Portionen brauchen ein Ergebnisgewicht.',
+    // The components of the shipped dishes in the same list, read-only (components/shipped.ts).
+    originAny: 'Alle Komponenten',
+    /** Under a shipped component's name: the dish or base it belongs to. */
+    partOf: (dish: string): string => `Teil von ${dish}`,
+    shippedPortions: 'Die Mengen gelten für diese Portionen des ganzen Gerichts.',
+    keepWorking: 'Komponente wird übernommen…',
+    keepNote: 'Sie wird Version 1 deiner eigenen Komponente, mit genannter Quelle.',
+    keepCannot: (names: string): string =>
+      `Diese Komponente lässt sich noch nicht übernehmen: Das Notizbuch kennt ${names} nicht. Das Rezept bleibt hier zum Kochen.`,
+    keepProblem: 'Die Komponente ließ sich diesmal nicht übernehmen. Das Rezept ist unverändert.',
+    kept: (name: string): string => `${name} steht jetzt in deinem Notizbuch`,
   },
   characters: {
     label: 'Art',
@@ -793,7 +806,6 @@ export const appStringsDe: typeof appStrings = {
     /** Where a row's dish comes from, said when the list holds both. */
     rowOrigin: { own: 'Mein Gericht', shipped: 'Mitgeliefert' },
     /** The start screen: every dish under the one filter, then the tools. */
-    startTitle: 'Worauf hast du Lust?',
     startListLabel: 'Passende Gerichte',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Meine', shipped: 'Mitgelieferte' },

@@ -136,19 +136,20 @@ destination. Spacing `--sp-1` 4, `--sp-2` 8, `--sp-3` 12, `--sp-4` 16,
 - **One breakpoint at 720 px** (`@media (min-width: 720px)` in
   `shell.css`; media queries cannot read custom properties). Below it:
   sticky header, one pane, **bottom navigation** (icon above label, sticky, 64 px
-  high). **Four destinations**, the usual three to five for a bottom bar:
-  Start, Cook, Notebook, Ratios (German Start, Kochen, Notizbuch,
+  high). **Three destinations** (four with Start until 2026-11-22,
+  [decision](decisions/cook-screen.md)), the usual three to five for a
+  bottom bar: Cook, Notebook, Ratios (German Kochen, Notizbuch,
   Verhältnisse), each as wide as its one-word label needs, the rest shared.
   Every label is on one line at 320 and 360 px, in the default font and in a
   wide system font (DejaVu Sans on many Linux devices and on the CI runner), and is never cut
   off, hidden, set smaller or wrapped; there are no soft hyphens (they were needed with six entries
-  and are gone with four). **Settings is a gear** at the right end of the
+  and are gone since there were four). **Settings is a gear** at the right end of the
   **header** (`--header-h` 56 px, the gear a `--target` square, named
   "Settings" for assistive technology, marked `aria-current` on its screen), on
   every screen. **Test:** `e2e/navigation.mjs` (also with the wide font,
   [development](development.md#browser-checks-with-a-wide-font)), `e2e/german.mjs`.
   From 720 px: **side navigation** (`--side-w` wide, icon beside
-  label) below the app name, with the same four destinations and Settings as its last
+  label) below the app name, with the same three destinations and Settings as its last
   entry at the bottom of the rail (the header and the rail stay in view; the gear is
   hidden there), content on the right at most `--content-w` wide. **Test:**
   `e2e/smoke.mjs` (bottom bar at 360 px, side column at 1000 px), `e2e/navigation.mjs`.
@@ -194,22 +195,48 @@ dashed `--border` outline with `--text-muted` text. There is no error or
 warning token, and none was added. Rules of use:
 [behaviour](behaviour.md#components).
 
+The Components list holds the shipped components too (since 2026-11-22): the
+search and the select **From** stand in one grid (`.notebook-filters`, two
+columns from 24 rem, so stacked at 360 px), then two groups under an h2 each
+(`.notebook-group-heading`, the size of the Cook screen's group headings).
+A shipped row is a row like an own one; only its muted line says "Shipped" and
+names the dish, so the list reads as one. Grouping by dish (48 headings for 59
+rows) was not chosen: the rows of a dish stand together by the sort, and the
+search finds them by the dish's name. A shipped component's screen is the card
+of an own component with the recipe blocks of the dish screen (lines, method,
+source at the foot) and the quiet Keep button of the dish screen.
+
+The Notebook's Dishes use the same pane (`src/screens/notebook-list.ts`): own
+dishes, then the shipped ones by name, the search and **From**; under the title
+"Add a dish" and "Put a dish together at random". It has none of Cook's
+controls (the folded filter, the switch, the order), so the two screens do not
+look alike: Cook is for choosing what to cook, the Notebook for keeping and
+changing.
+
 # Cook screens
 
-`#/cook`, `#/cook/use-up`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook)).
-Three view links at the top (14 px, 44 px high, the current one with a 4 px
-bar of `--accent` and bold text; no row of parts above them), the one dish
-filter and the two selects of the finder (44 px, one grid), then two groups
-under an h2 each, "Dishes" (own and shipped) and "Components and ratios", in
-the `.rows` style: name, a quiet origin or kind word and status as text, then
-the reason and the notes in muted text. No alarm colour; `styles/cook.css`.
-Screenshots: `docs/screenshots/cook-*`.
+`#/cook`, `#/cook/<id>/with` ([behaviour](behaviour.md#cook),
+[decision](decisions/cook-screen.md)). **Cook** is one screen with no parts
+and no views at the top: the h1 and a quiet 44 px button "What is there" (the
+stock) on one line, wrapping under it when the line is too narrow; the search;
+the tick "Only with what I have" (the 44 px tick of the filter); the select
+"Order" (by name, Use up first; 44 px, in the `.cook-filters` grid); the
+folded dish filter; the count and the rows of the one list, whose quiet line
+adds "uses the Leek with 1 day left" in the order Use up first; then "Start
+from one ingredient", closed. At 360 x 720 the first row is above the bar
+with the filter folded. **What uses <ingredient>** keeps the finder's look:
+the date, the two selects of the finder (44 px, one grid), then two groups
+under an h2 each, "Dishes" and "Components and ratios", in the `.rows`
+style: name, a quiet origin or kind word and status as text, then the reason
+and the notes in muted text. No alarm colour; `styles/cook.css`. The three
+view links at the top (until 2026-11-22) are gone. Screenshots:
+`docs/screenshots/cook-*` (`cook-use-up-*` is Cook in the order Use up
+first, `cook-have-*` with the tick set).
 
 # Classics screens
 
-`#/start`, `#/classics/<country>`, `#/classic/<id>`, `#/classic/<id>/cook`
-([behaviour](behaviour.md#classics)). The navigation icon for Start is a bowl
-with a line of steam. Lists use the `.rows` style with 44 px rows. The recipe is
+`#/classic/<id>`, `#/classic/<id>/cook` ([behaviour](behaviour.md#classics));
+the shipped dishes are listed on Cook. Lists use the `.rows` style with 44 px rows. The recipe is
 a two-column grid per line: the amount (bold, left, as wide as its longest word, at most 8 rem) and the name, with the
 cooking note and "settled by us" in muted text below; a line without an amount is its
 name alone from the left edge (`.recipe-line-bare`); the source's wording and the remarks about the
@@ -313,31 +340,37 @@ of the one setting, a test for equal keys and arguments.
 
 Made by `npm run screenshots -w @culina/app` (Chromium, scale 2).
 
-| Screen                       | Image                                                                         |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| Ratios, 360 x 720 light      | ![Ratios, light](screenshots/ratios-360x720-light.png)                        |
-| Ratios, 360 x 720 dark       | ![Ratios, dark](screenshots/ratios-360x720-dark.png)                          |
-| Settings, 360 x 720          | ![Settings](screenshots/settings-360x720-light.png)                           |
-| Ratios, 1000 x 700           | ![Ratios, desktop](screenshots/ratios-1000x700-light.png)                     |
-| Ratio list, 360 x 720        | ![Ratio list](screenshots/ratio-list-360x720-light.png)                       |
-| Ratio card, 360 light        | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)                |
-| Ratio card, 360 dark         | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)                  |
-| Ratio card, 1000 x 700       | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png)             |
-| Component, 360 x 720         | ![Component](screenshots/component-360x720-light.png)                         |
-| Dish, 360 x 720 light        | ![Dish, light](screenshots/dish-360x720-light.png)                            |
-| Dish, 360 x 720 dark         | ![Dish, dark](screenshots/dish-360x720-dark.png)                              |
-| Dish, 1000 x 700             | ![Dish, desktop](screenshots/dish-1000x700-light.png)                         |
-| Component editor, 360 light  | ![Component editor, light](screenshots/editor-component-360x720-light.png)    |
-| Component editor, 360 dark   | ![Component editor, dark](screenshots/editor-component-360x720-dark.png)      |
-| Component editor, 1000 x 700 | ![Component editor, desktop](screenshots/editor-component-1000x700-light.png) |
-| Ingredient picker, 360 x 720 | ![Picker](screenshots/editor-picker-360x720-light.png)                        |
-| Dish editor, 360 x 720       | ![Dish editor](screenshots/editor-dish-360x720-light.png)                     |
-| Dish editor, 1000 x 700      | ![Dish editor, desktop](screenshots/editor-dish-1000x700-light.png)           |
-| History, 360 x 720 light     | ![History, light](screenshots/history-360x720-light.png)                      |
-| History, 360 x 720 dark      | ![History, dark](screenshots/history-360x720-dark.png)                        |
-| History, 1000 x 700          | ![History, desktop](screenshots/history-1000x700-light.png)                   |
-| Older version, 360 x 720     | ![Older version](screenshots/version-old-360x720-light.png)                   |
-| Older version, 1000 x 700    | ![Older version, desktop](screenshots/version-old-1000x700-light.png)         |
+| Screen                       | Image                                                                           |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| Ratios, 360 x 720 light      | ![Ratios, light](screenshots/ratios-360x720-light.png)                          |
+| Ratios, 360 x 720 dark       | ![Ratios, dark](screenshots/ratios-360x720-dark.png)                            |
+| Settings, 360 x 720          | ![Settings](screenshots/settings-360x720-light.png)                             |
+| Ratios, 1000 x 700           | ![Ratios, desktop](screenshots/ratios-1000x700-light.png)                       |
+| Ratio list, 360 x 720        | ![Ratio list](screenshots/ratio-list-360x720-light.png)                         |
+| Ratio card, 360 light        | ![Ratio card, light](screenshots/ratio-card-360x720-light.png)                  |
+| Ratio card, 360 dark         | ![Ratio card, dark](screenshots/ratio-card-360x720-dark.png)                    |
+| Ratio card, 1000 x 700       | ![Ratio card, desktop](screenshots/ratio-card-1000x700-light.png)               |
+| Component, 360 x 720         | ![Component](screenshots/component-360x720-light.png)                           |
+| Components list, 360 x 720   | ![Components list](screenshots/components-list-360x720-light.png)               |
+| Components list, 1000 x 700  | ![Components list, desktop](screenshots/components-list-1000x700-light.png)     |
+| Notebook dishes, 360 x 720   | ![Notebook dishes](screenshots/dishes-list-360x720-light.png)                   |
+| Notebook dishes, 1000 x 700  | ![Notebook dishes, desktop](screenshots/dishes-list-1000x700-light.png)         |
+| Shipped component, 360       | ![Shipped component](screenshots/component-shipped-360x720-light.png)           |
+| Shipped component, 1000      | ![Shipped component, desktop](screenshots/component-shipped-1000x700-light.png) |
+| Dish, 360 x 720 light        | ![Dish, light](screenshots/dish-360x720-light.png)                              |
+| Dish, 360 x 720 dark         | ![Dish, dark](screenshots/dish-360x720-dark.png)                                |
+| Dish, 1000 x 700             | ![Dish, desktop](screenshots/dish-1000x700-light.png)                           |
+| Component editor, 360 light  | ![Component editor, light](screenshots/editor-component-360x720-light.png)      |
+| Component editor, 360 dark   | ![Component editor, dark](screenshots/editor-component-360x720-dark.png)        |
+| Component editor, 1000 x 700 | ![Component editor, desktop](screenshots/editor-component-1000x700-light.png)   |
+| Ingredient picker, 360 x 720 | ![Picker](screenshots/editor-picker-360x720-light.png)                          |
+| Dish editor, 360 x 720       | ![Dish editor](screenshots/editor-dish-360x720-light.png)                       |
+| Dish editor, 1000 x 700      | ![Dish editor, desktop](screenshots/editor-dish-1000x700-light.png)             |
+| History, 360 x 720 light     | ![History, light](screenshots/history-360x720-light.png)                        |
+| History, 360 x 720 dark      | ![History, dark](screenshots/history-360x720-dark.png)                          |
+| History, 1000 x 700          | ![History, desktop](screenshots/history-1000x700-light.png)                     |
+| Older version, 360 x 720     | ![Older version](screenshots/version-old-360x720-light.png)                     |
+| Older version, 1000 x 700    | ![Older version, desktop](screenshots/version-old-1000x700-light.png)           |
 
 [^wcag]: W3C, WCAG 2.2, <https://www.w3.org/TR/WCAG22/>, read 2026-11-18.
 

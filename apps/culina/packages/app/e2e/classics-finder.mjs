@@ -1,11 +1,13 @@
-// The shipped dishes in "What can I cook", in a browser, on the fictional example dishes and one
-// own dish written here: own and shipped dishes are ONE list in the engine's one ranking
-// (`rankCandidates` over `makeable` and `classicsMakeable`), each with a quiet origin word; the one
-// dish filter (course, character, cuisine, origin, without meat and fish) narrows it and is the
-// stored filter the Dishes list reads (`culina.dishes`), in both directions; a line the catalogue
-// lacks is named apart; what lacks is "Lacks"; an entry opens its dish view, and the dish view shows
-// the ingredients before the source. At 360 x 720 and at desktop size: no horizontal scroll,
-// targets of at least 44 x 44, no console error. Not proved here: German, a real phone.
+// "Only with what I have" on Cook (docs/decisions/cook-screen.md), in a browser, on the fictional
+// example dishes and one own dish written here: the switch keeps exactly the dishes, own and
+// shipped, whose every required line the stock covers as the engine judges (`makeable` and
+// `classicsMakeable` at threshold 0, as src/dishes/ready-now.ts asks), in the list's order by name;
+// a line the catalogue lacks is not counted against a shipped dish; the one dish filter (course,
+// character, cuisine, origin, without meat and fish) narrows within it and stays `culina.dishes`;
+// the switch is kept (`culina.cookList`) and survives a reload; a dish that lacks something is
+// there only with the switch off; an entry opens its dish view, and the dish view shows the
+// ingredients before the source. At 360 x 720 and at desktop size: no horizontal scroll, targets of
+// at least 44 x 44, no console error. Not proved here: German, a real phone, the 48 real dishes.
 import { check, watch } from './harness.mjs';
 import { overflow, smallTargets } from './measure.mjs';
 import { content, PAN, SECOND } from './classics-fixture.mjs';
@@ -38,7 +40,10 @@ const open = async (page, origin, hash) => {
   await page.goto(`${origin}/${QUERY}#/${hash}`);
   await page.getByRole('heading', { level: 1 }).first().waitFor();
 };
-const stockOf = (ids) => ids.map((id) => ({ id, ref: { kind: 'ingredient', id } }));
+/** Details of a stock item by ingredient id (a use-by date); none for the others. */
+let DETAIL = {};
+const stockOf = (ids) =>
+  ids.map((id) => ({ id, ref: { kind: 'ingredient', id }, ...(DETAIL[id] ?? {}) }));
 const store = async (page, ids, dishes) => {
   const failed = await page.evaluate(
     async ({ ingredients, dishes }) => {
@@ -60,7 +65,7 @@ const store = async (page, ids, dishes) => {
   // Stock is the shared collection of a space: one tick per ingredient.
   await addStock(
     page,
-    ids.map((id) => ({ ref: { kind: 'ingredient', id } })),
+    ids.map((id) => ({ ref: { kind: 'ingredient', id }, ...(DETAIL[id] ?? {}) })),
   );
 };
 const ingredientsOf = (ids) => ids.map((id) => ({ id }));
@@ -93,17 +98,23 @@ const expectedOwn = (ids, maxMissing, dishes) => {
   if (!r.ok) throw new Error(`makeable: ${r.error.code}`);
   return r.candidates.filter((c) => c.kind === 'dish');
 };
-/** The one list as specified: both ranked again as one by the engine. */
-const expectedKeys = (ids, maxMissing, dishes = []) =>
-  engine
-    .rankCandidates([...expectedOwn(ids, maxMissing, dishes), ...expectedClassics(ids, maxMissing)])
-    .map((c) => `${c.kind === 'classic' ? 'classic' : 'dish'}:${c.id}`);
+/** "Only with what I have" as specified: the dishes the engine finds complete at threshold 0. */
+const readyKeys = (ids, dishes = []) =>
+  [...expectedOwn(ids, 0, dishes), ...expectedClassics(ids, 0)]
+    .filter((c) => c.complete)
+    .map((c) => `${c.kind === 'classic' ? 'shipped' : 'own'}:${c.id}`)
+    .sort();
+const ROWS = '.dish-rows-list > li';
 const keysOnScreen = (page) =>
-  page
-    .locator('.cook-dishes .cook-entry')
-    .evaluateAll((items) => items.map((li) => li.dataset.key));
-const idsOnScreen = (page) =>
-  page.locator('.cook-dishes .cook-entry').evaluateAll((items) => items.map((li) => li.dataset.id));
+  page.locator(ROWS).evaluateAll((items) => items.map((li) => li.dataset.key));
+const idsOnScreen = async (page) => (await keysOnScreen(page)).map((k) => k.split(':')[1]);
+const namesOnScreen = (page) => page.locator(`${ROWS} .entry-name`).allInnerTexts();
+const have = (page) => page.getByLabel('Only with what I have');
+/** Opens the folded filter (a `<details>`) when it is closed. */
+const openFilter = async (page) => {
+  const fold = page.locator('details.dish-filter-fold');
+  if (!(await fold.evaluate((d) => d.open))) await fold.locator('summary').click();
+};
 const fresh = async (browser, origin, width, ids, dishes = []) => {
   const context = await browser.newContext({
     viewport: { width, height: width < 720 ? 720 : 700 },
@@ -113,7 +124,7 @@ const fresh = async (browser, origin, width, ids, dishes = []) => {
   await open(page, origin, 'cook');
   await store(page, ids, dishes);
   await open(page, origin, 'cook');
-  await page.locator('.cook-dishes').waitFor();
+  await page.locator('.dish-row').first().waitFor();
   return { context, page, problems };
 };
 const layout = async (page, label) => {
@@ -127,63 +138,49 @@ const character = (page) => page.getByLabel('What it is like', { exact: true });
 const cuisine = (page) => page.getByLabel('Cuisine', { exact: true });
 const originSelect = (page) => page.getByLabel('From', { exact: true });
 const meatFree = (page) => page.locator('.dish-filter-meat-free input');
-const lacking = (page) => page.getByLabel('Show', { exact: true });
 const kept = (page) =>
   page.evaluate(() => JSON.parse(localStorage.getItem('culina.dishes') ?? '{}'));
 const settle = (page) => page.waitForTimeout(150);
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 const flow = async (browser, origin, width) => {
-  const label = `${width}px one list in the finder`;
+  const label = `${width}px only with what I have`;
   const all = [BUTTER, OIL, SALT];
   const { context, page, problems } = await fresh(browser, origin, width, all, [OWN]);
+  const every = (await keysOnScreen(page)).length;
 
-  // One list, in the engine's one ranking, with the origin said quietly.
-  const want = expectedKeys(all, 1, [OWN]);
+  // Off by default: every dish. On: exactly the dishes the engine finds complete, own and shipped.
+  check(!(await have(page).isChecked()), `${label}: the switch is off at first (${every} dishes)`);
+  await have(page).check();
+  await settle(page);
+  const want = readyKeys(all, [OWN]);
   const shown = await keysOnScreen(page);
   check(
-    want.length === 3 && want.includes(`dish:${OWN.id}`) && same(shown, want),
-    `${label}: own and shipped dishes in one list, in the engine's one ranking (${shown.join(', ')} / ${want.join(', ')})`,
+    want.length >= 2 && want.includes(`own:${OWN.id}`) && same([...shown].sort(), want),
+    `${label}: own and shipped dishes the stock covers, as the engine judges (${shown.join(', ')} / ${want.join(', ')})`,
   );
-  check(
-    (await page.getByRole('heading', { name: 'Classic dishes' }).count()) === 0 &&
-      (await page.getByRole('heading', { level: 2, name: 'Dishes', exact: true }).count()) === 1,
-    `${label}: no separate section for the classics, one "Dishes" group`,
-  );
-  const kinds = await page.locator('.cook-dishes .cook-kind').allInnerTexts();
-  check(
-    kinds.some((k) => k.startsWith('mine')) && kinds.some((k) => k.startsWith('shipped')),
-    `${label}: each entry says its origin quietly where both are in the list (${kinds.join(' | ')})`,
-  );
-  const classicsAll = expectedClassics(all, 1);
-  const statuses = await page
-    .locator('.cook-dishes .cook-entry[data-origin="shipped"] .cook-status')
-    .allInnerTexts();
+  const names = await namesOnScreen(page);
   check(
     same(
-      statuses,
-      engine
-        .rankCandidates(classicsAll)
-        .map((c) => (c.complete ? 'complete' : `lacks ${c.lacking}`)),
+      names,
+      [...names].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' })),
     ),
-    `${label}: "complete" or "lacks N" as the engine counts (${statuses.join(', ')})`,
+    `${label}: in the list's order, by name (${names.join(' | ')})`,
   );
-  const secondRow = (await page.locator(`.cook-entry[data-id="${SECOND.id}"]`).innerText()).replace(
-    /\s+/g,
-    ' ',
+  // The soup names a broth the catalogue does not have: not counted, so it is still there.
+  check(
+    shown.includes(`shipped:${SECOND.id}`),
+    `${label}: a line the catalogue lacks is not counted against a shipped dish`,
   );
   check(
-    secondRow.includes('Not in the catalogue yet, so not counted: Example broth stock') &&
-      secondRow.includes('complete'),
-    `${label}: a line the catalogue lacks is named apart and not counted (${secondRow})`,
-  );
-  check(
-    (await page.locator('.cook-dishes .cook-lacks').count()) === 0,
-    `${label}: a complete dish names nothing it lacks`,
+    (await page.evaluate(() => localStorage.getItem('culina.cookList'))) ===
+      JSON.stringify({ have: true, order: 'name' }),
+    `${label}: the switch is kept in culina.cookList`,
   );
   await layout(page, `${label} list`);
 
-  // A course narrows the list; the choice is the stored dish filter.
+  // The one dish filter narrows within it and is still culina.dishes.
+  await openFilter(page);
   await course(page).selectOption('soup');
   await settle(page);
   check(
@@ -192,16 +189,10 @@ const flow = async (browser, origin, width) => {
   );
   check(
     same(await kept(page), { course: 'soup' }),
-    `${label}: the course is kept in culina.dishes, the filter the Dishes list reads`,
-  );
-  check(
-    (await page.locator('.cook-parts').count()) === 0,
-    `${label}: with a dish filter chosen, components and ratio cards are left out`,
+    `${label}: the course is kept in culina.dishes`,
   );
   await course(page).selectOption('');
   await settle(page);
-
-  // A character narrows the list: the own dish is fried, the classics are not.
   const characters = await character(page).locator('option').allInnerTexts();
   check(
     characters.includes('Fried') && characters.includes('Uncooked'),
@@ -213,22 +204,16 @@ const flow = async (browser, origin, width) => {
   await character(page).selectOption({ label: 'Uncooked' });
   await settle(page);
   check(
-    same(
-      await idsOnScreen(page),
-      want.filter((k) => k.startsWith('classic:')).map((k) => k.slice('classic:'.length)),
-    ),
-    `${label}: Uncooked keeps the two classics, in the same order`,
+    same(await idsOnScreen(page), [PAN.id, SECOND.id]),
+    `${label}: Uncooked keeps the two classics, by name (${await idsOnScreen(page)})`,
   );
+  const uncookedMeta = await page.locator(`${ROWS} .entry-meta`).allInnerTexts();
   check(
-    (await page.locator('.cook-dishes .cook-kind').allInnerTexts()).every(
-      (k) => !k.startsWith('shipped') && !k.startsWith('mine'),
-    ),
-    `${label}: with one origin left the origin word is not repeated`,
+    uncookedMeta.length === 2 &&
+      uncookedMeta.every((m) => !m.includes('Shipped') && !m.includes('My dish')),
+    `${label}: with one origin left the origin word is not repeated (${uncookedMeta.join(' | ')})`,
   );
   await character(page).selectOption('');
-  await settle(page);
-
-  // Cuisine, origin and "without meat and fish" only drop entries.
   await cuisine(page).selectOption('it');
   await settle(page);
   check(same(await idsOnScreen(page), [SECOND.id]), `${label}: Italy keeps the Italian dish only`);
@@ -244,41 +229,19 @@ const flow = async (browser, origin, width) => {
     free.includes(PAN.id) && !free.includes(SECOND.id),
     `${label}: "Without meat and fish" drops the classic with meat (${free.join(', ')})`,
   );
-  // Nothing fits: said quietly, under the same choices.
-  await course(page).selectOption('soup');
+  await meatFree(page).uncheck();
   await settle(page);
-  check(
-    (await keysOnScreen(page)).length === 0 &&
-      (await page.locator('.cook-empty .empty').first().innerText()) ===
-        'Nothing matches these choices.',
-    `${label}: a filter nothing fits says so quietly`,
-  );
-  check(
-    same(await kept(page), { meatFree: true, course: 'soup' }),
-    `${label}: both choices are kept in culina.dishes (${JSON.stringify(await kept(page))})`,
-  );
-  await open(page, origin, 'cook');
-  await page.locator('.cook-empty').waitFor();
-  check(
-    (await course(page).inputValue()) === 'soup' && (await meatFree(page).isChecked()),
-    `${label}: both choices come back after a reload`,
-  );
 
-  // The other direction: a filter stored by the Dishes list narrows the finder.
-  await page.evaluate(() =>
-    localStorage.setItem('culina.dishes', JSON.stringify({ origin: 'shipped', course: 'main' })),
-  );
+  // Kept across a reload.
   await open(page, origin, 'cook');
-  await page.locator('.cook-dishes').waitFor();
+  await page.locator('.dish-row').first().waitFor();
   check(
-    same(await idsOnScreen(page), [PAN.id]) &&
-      (await course(page).inputValue()) === 'main' &&
-      (await originSelect(page).inputValue()) === 'shipped',
-    `${label}: the filter stored under culina.dishes is the finder's own`,
+    (await have(page).isChecked()) && same([...(await keysOnScreen(page))].sort(), want),
+    `${label}: the switch and its list come back after a reload`,
   );
-  await layout(page, `${label} filtered`);
-  await page.evaluate(() => localStorage.removeItem('culina.dishes'));
-
+  await have(page).uncheck();
+  await settle(page);
+  check((await keysOnScreen(page)).length === every, `${label}: off again, every dish is there`);
   check(
     problems.length === 0,
     `${label}: no console errors or foreign requests ${problems.join('; ')}`,
@@ -287,37 +250,26 @@ const flow = async (browser, origin, width) => {
 };
 
 const lackingFlow = async (browser, origin, width) => {
-  const label = `${width}px classics that lack something`;
+  const label = `${width}px a dish that lacks something`;
   const { context, page, problems } = await fresh(browser, origin, width, [BUTTER]);
 
-  // What lacks is said as "Lacks", neutrally; a classic beyond the threshold waits for a wider choice.
-  const narrow = expectedKeys([BUTTER], 1);
-  check(
-    same(await keysOnScreen(page), narrow) && !narrow.includes(`classic:${PAN.id}`),
-    `${label}: at most 1 lacking leaves out a classic that lacks 2 (${narrow.join(', ')})`,
-  );
-  await lacking(page).selectOption('2');
+  // The pan dish lacks two lines on butter alone: with the switch on it is not there, off it is.
+  await have(page).check();
   await settle(page);
-  const wide = expectedKeys([BUTTER], 2);
   check(
-    same(await keysOnScreen(page), wide) && wide.includes(`classic:${PAN.id}`),
-    `${label}: lacking at most 2 lists it`,
+    !(await idsOnScreen(page)).includes(PAN.id) &&
+      same([...(await keysOnScreen(page))].sort(), readyKeys([BUTTER])),
+    `${label}: with the switch on, a dish that lacks something is left out (${await keysOnScreen(page)})`,
   );
-  const panRow = (await page.locator(`.cook-entry[data-id="${PAN.id}"]`).innerText()).replace(
-    /\s+/g,
-    ' ',
-  );
+  await have(page).uncheck();
+  await settle(page);
   check(
-    /Lacks: [^;]+/.test(panRow) && panRow.includes('lacks 2'),
-    `${label}: what it lacks is under "Lacks" (${panRow})`,
-  );
-  check(
-    !/wrong|too much|falsch|zu viel|error/i.test(panRow),
-    `${label}: the wording does not judge`,
+    (await idsOnScreen(page)).includes(PAN.id),
+    `${label}: with the switch off it is in the list`,
   );
 
   // An entry opens the dish view.
-  await page.locator(`.cook-entry[data-id="${PAN.id}"] a`).click();
+  await page.locator(`${ROWS}[data-key="shipped:${PAN.id}"] a`).click();
   await page.getByRole('heading', { level: 1, name: PAN.name.en, exact: true }).waitFor();
   check(
     new URL(page.url()).hash === `#/classic/${PAN.id}`,
@@ -381,7 +333,69 @@ const lackingFlow = async (browser, origin, width) => {
   await context.close();
 };
 
+/**
+ * "Use up first" on Cook: the dishes, own and shipped, that use a dated stock item come first in
+ * the engine's one ranking (`rankCandidates`, the nearest use-by first; at the finder's wide
+ * threshold, so whether every line is there does not matter), the rest follow by name, and the row
+ * says which item sets its place. The old address #/cook/use-up sets this order.
+ */
+const useUpFlow = async (browser, origin, width) => {
+  const label = `${width}px use up first`;
+  const all = [BUTTER, OIL, SALT];
+  DETAIL = { [OIL]: { useBy: '2026-11-19' } };
+  const { context, page, problems } = await fresh(browser, origin, width, all, [OWN]);
+  const order = page.getByLabel('Order', { exact: true });
+  check((await order.inputValue()) === 'name', `${label}: the list is by name at first`);
+  await order.selectOption({ label: 'Use up first' });
+  await settle(page);
+  const urgent = engine
+    .rankCandidates([...expectedOwn(all, 1000, [OWN]), ...expectedClassics(all, 1000)])
+    .filter((c) => c.urgency !== undefined)
+    .map((c) => `${c.kind === 'classic' ? 'shipped' : 'own'}:${c.id}`);
+  const shown = await keysOnScreen(page);
+  const rest = shown.slice(urgent.length);
+  const restNames = (await namesOnScreen(page)).slice(urgent.length);
+  check(
+    urgent.length >= 1 &&
+      urgent.length < shown.length &&
+      same(shown.slice(0, urgent.length), urgent) &&
+      same(
+        restNames,
+        [...restNames].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' })),
+      ),
+    `${label}: what uses the oil first, in the engine's ranking, then the rest by name (${shown.join(', ')}; urgent ${urgent.join(', ')}; rest ${rest.join(', ')})`,
+  );
+  const meta = await page.locator(`${ROWS}[data-key="${urgent[0]}"] .entry-meta`).innerText();
+  check(
+    meta.includes('uses the Oil, olive with 1 day left'),
+    `${label}: the row says which item sets its place (${meta})`,
+  );
+  check(
+    (await page.evaluate(() => localStorage.getItem('culina.cookList'))) ===
+      JSON.stringify({ have: false, order: 'use-up' }),
+    `${label}: the order is kept in culina.cookList`,
+  );
+  await layout(page, `${label} list`);
+  // The old address sets the order and is replaced by #/cook.
+  await order.selectOption({ label: 'By name' });
+  await open(page, origin, 'cook/use-up');
+  await page.locator('.dish-row').first().waitFor();
+  check(
+    new URL(page.url()).hash === '#/cook' &&
+      (await order.inputValue()) === 'use-up' &&
+      same((await keysOnScreen(page)).slice(0, urgent.length), urgent),
+    `${label}: #/cook/use-up is Cook in the order "Use up first" (${new URL(page.url()).hash})`,
+  );
+  DETAIL = {};
+  check(
+    problems.length === 0,
+    `${label}: no console errors or foreign requests ${problems.join('; ')}`,
+  );
+  await context.close();
+};
+
 export const classicsFinder = async (browser, server) => {
+  await useUpFlow(browser, server.origin, 360);
   await flow(browser, server.origin, 360);
   await flow(browser, server.origin, 1000);
   await lackingFlow(browser, server.origin, 360);

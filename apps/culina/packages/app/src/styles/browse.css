@@ -75,15 +75,3 @@
 .dish-show-all {
   margin-top: var(--sp-2);
 }
-
-.dishes-pane .dish-list {
-  margin-top: var(--sp-3);
-}
-
-.dishes-own-empty {
-  margin-top: var(--sp-4);
-}
-
-.start-dishes {
-  margin-bottom: var(--sp-4);
-}

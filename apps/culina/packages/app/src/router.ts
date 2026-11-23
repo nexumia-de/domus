@@ -1,15 +1,14 @@
 /**
- * Hash router: the start screen #/start, the old addresses #/classics[/<country>] (redirected to
- * #/dishes by main.ts), the classic #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
+ * Hash router: Cook #/cook, the one list of every dish (docs/decisions/cook-screen.md), which is
+ * also the default route; the old addresses #/start, #/cook/use-up and #/classics[/<country>]
+ * (redirected by main.ts, without a new history entry), the classic #/classic/<id>[/cook], #/ratios[/<templateId>], #/components[/<id>], #/dishes[/<id>], #/settings, and the
  * editors #/components/new, #/components/<id>/edit, #/dishes/new, #/dishes/<id>/edit, the random pick
  * #/dishes/random, and the
  * history screens #/components/<id>/history, #/dishes/<id>/history, the import screen
  * #/settings/import, the stock screens #/stock, #/stock/add and #/stock/<id>/edit, and the
- * finder #/cook, #/cook/use-up and #/cook/<ingredientId>/with. The back stack is the browser
- * history.
+ * finder from one ingredient #/cook/<ingredientId>/with. The back stack is the browser history.
  */
 export const ROUTES = [
-  'start',
   'classics',
   'classic',
   'ratios',
@@ -20,19 +19,20 @@ export const ROUTES = [
   'settings',
 ] as const;
 export type Route = (typeof ROUTES)[number];
-export const DEFAULT_ROUTE: Route = 'start';
+/** An empty or unknown hash, and the old start screen #/start (no route any more), open Cook. */
+export const DEFAULT_ROUTE: Route = 'cook';
 
 /**
- * The four destinations of the navigation. Settings is not one of them: it is the gear in the header
- * (and the last entry of the side rail). The finder and the stock screens belong to Cook, the
- * components and every dish (own or shipped, with its cooking mode) to the Notebook.
+ * The three destinations of the navigation (docs/decisions/cook-screen.md). Settings is not one of
+ * them: it is the gear in the header (and the last entry of the side rail). The one list of dishes,
+ * the stock screens and the finder from one ingredient belong to Cook, the components and every
+ * dish screen (own or shipped, with its cooking mode) to the Notebook.
  */
-export const NAV_ENTRIES = ['start', 'cook', 'notebook', 'ratios'] as const;
+export const NAV_ENTRIES = ['cook', 'notebook', 'ratios'] as const;
 export type NavEntry = (typeof NAV_ENTRIES)[number];
 
 /** The route a navigation entry opens; the Notebook opens on its Components section. */
 export const NAV_ROUTE: Record<NavEntry, Route> = {
-  start: 'start',
   cook: 'cook',
   notebook: 'components',
   ratios: 'ratios',
@@ -41,8 +41,6 @@ export const NAV_ROUTE: Record<NavEntry, Route> = {
 /** The destination a route is shown under; Settings (the gear) is none of them. */
 export const navEntryFor = (route: Route): NavEntry | undefined => {
   switch (route) {
-    case 'start':
-      return 'start';
     case 'cook':
     case 'stock':
       return 'cook';
@@ -59,7 +57,7 @@ export const navEntryFor = (route: Route): NavEntry | undefined => {
   }
 };
 
-/** The second segment of the cook route that is a view, not an ingredient. */
+/** The second segment of the old address #/cook/use-up: Cook in the order "Use up first". */
 export const USE_UP = 'use-up';
 
 /** Routes whose hash may carry one more segment (a template, component or dish id). */
@@ -110,7 +108,7 @@ export const actionFromHash = (hash: string): Action | undefined => {
     return second && third === 'cook' ? 'cook' : undefined;
   }
   if (routeFromHash(hash) === 'cook') {
-    // #/cook/<ingredientId>/with; #/cook/use-up is a view of its own.
+    // #/cook/<ingredientId>/with; #/cook/use-up is an old address (redirected), not an ingredient.
     const [, second, third] = segments(hash);
     return second && second !== USE_UP && third === 'with' ? 'with' : undefined;
   }

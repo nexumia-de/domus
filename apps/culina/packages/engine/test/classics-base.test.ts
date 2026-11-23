@@ -7,6 +7,7 @@ import {
   componentsInDish,
   componentsUsed,
   copyClassic,
+  copyClassicComponent,
   isBase,
   slotAlternatives,
   validateClassic,
@@ -172,5 +173,57 @@ describe('a base', () => {
       ]);
       expect(copied.dish.slots).toHaveLength(2);
     }
+  });
+});
+
+describe('one component copied (copyClassicComponent)', () => {
+  const options = () => {
+    let n = 0;
+    return { portions: 2, lang: 'en' as const, date: '2026-11-22', newId: () => `u-${++n}` };
+  };
+
+  test('an alternative of a base comes with the component its lines name, ids new, role kept', () => {
+    const copied = copyClassicComponent(frame(), 'mushrooms', options());
+    expect(copied.ok).toBe(true);
+    if (!copied.ok) return;
+    expect(copied.components.map((c) => [c.name, c.role])).toEqual([
+      ['mushrooms', 'main'],
+      ['dressing', 'sauce'],
+    ]);
+    const [mushrooms, dressing] = copied.components;
+    expect(mushrooms?.lines[0]?.ref).toEqual({ kind: 'component', id: dressing?.id });
+    expect(copied.components.every((c) => c.id.startsWith('u-') && c.version.family === c.id)).toBe(
+      true,
+    );
+    // Amounts for 2 of the source's 4 persons, as copyClassic gives them.
+    expect(dressing?.lines[0]?.amount).toEqual({ value: 50, unit: 'g' });
+    expect(mushrooms?.['x-origin'].classic).toBe('example-frame');
+  });
+
+  test('a component without sub-components is copied alone', () => {
+    const copied = copyClassicComponent(frame(), 'shell', options());
+    expect(copied.ok && copied.components.map((c) => c.name)).toEqual(['shell']);
+  });
+
+  test('a wanted line in the component refuses it; one elsewhere in the file does not', () => {
+    const wanted: ClassicComponent = {
+      id: 'odd',
+      name: t('odd'),
+      role: 'main',
+      lines: [{ wanted: t('Example unknown'), amount: { value: 1, unit: 'g' } }],
+    };
+    const f = frame({ components: [...(frame().components ?? []), wanted] });
+    expect(copyClassicComponent(f, 'odd', options())).toEqual({
+      ok: false,
+      error: { code: 'wanted-ingredient', wanted: ['Example unknown'] },
+    });
+    expect(copyClassicComponent(f, 'shell', options()).ok).toBe(true);
+  });
+
+  test('an id the file does not have is refused', () => {
+    expect(copyClassicComponent(frame(), 'nothing', options())).toEqual({
+      ok: false,
+      error: { code: 'unknown-component', id: 'nothing' },
+    });
   });
 });

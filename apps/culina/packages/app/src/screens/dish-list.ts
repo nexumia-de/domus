@@ -1,8 +1,10 @@
-// The one list of every dish, the notebook's and the shipped ones, as the Dishes list and the start
-// screen show it: the search, the shared filter controls (dish-filter.ts) folded behind a summary
-// line of the active choices, a count line and one row per dish. The filter is the one kept choice
-// (`currentDishFilter`/`keepDishFilter` in browse/filter.ts), so both screens show the same; the
-// search text lives as long as the page. The order and the meta are in browse/list-view.ts.
+// The one list of every dish, the notebook's and the shipped ones, as Cook shows it
+// (docs/decisions/cook-screen.md): the search, "Only with what I have" and the order (by name or
+// "Use up first", kept under `culina.cookList`), the shared filter controls (dish-filter.ts) folded
+// behind a summary line of the active choices, a count line and one row per dish. The filter is the
+// one kept choice (`currentDishFilter`/`keepDishFilter` in browse/filter.ts), shared with the random
+// pick; the search text lives as long as the page. Which dishes the stock covers and the order of
+// "Use up first" are the finder's (src/dishes/); the order and the meta are in browse/list-view.ts.
 import { dishEntries } from '../browse/entries';
 import type { DishEntry } from '../browse/entry';
 import {
@@ -13,12 +15,23 @@ import {
   offeredBy,
   type DishFilter,
 } from '../browse/filter';
-import { activeChoices, dishListView, type ActiveChoice, type ListRow } from '../browse/list-view';
+import {
+  activeChoices,
+  dishListView,
+  type ActiveChoice,
+  type CookNarrowing,
+  type ListRow,
+} from '../browse/list-view';
 import { CHARACTER_TABLE } from '../characters/table';
 import { characterLabel } from '../characters/view';
 import { currentLang } from '../classics/lang';
 import { COUNTRIES } from '../classics/list-view';
 import { loadNames } from '../classics/names';
+import { useUpWords } from '../cook/rows';
+import { notebookSource } from '../cook/source';
+import { readyNowKeys } from '../dishes/ready-now';
+import { useUpNote, useUpNow, type UseUpNow } from '../dishes/use-up-order';
+import { browserStore, readCookList, writeCookList, type CookList } from '../prefs';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import {
@@ -26,14 +39,16 @@ import {
   cuisineLabel,
   dishFilterControls,
   replaceFilterControls,
+  tick,
 } from './dish-filter';
+import { nothingTicked } from './cook/empty';
 import { nextId } from './fields';
 import { noteOpenedFromList, type ListScreen } from './list-return';
 
-/** The search text, shared by the Dishes list and Start, until the page is closed. */
+/** The search text, until the page is closed. */
 const search = { query: '' };
 
-/** Whether the filter is unfolded; it stays so between the two screens until the page closes. */
+/** Whether the filter is unfolded; it stays so until the page closes. */
 let unfolded = false;
 
 /**
@@ -51,11 +66,14 @@ const ORDER = {
   cuisines: COUNTRIES,
 };
 
-const metaText = ({ meta }: ListRow): string =>
+const metaText = ({ meta }: ListRow, useUp: UseUpNow | undefined): string =>
   [
     meta.course === undefined ? undefined : courseLabel(meta.course),
     meta.cuisine === undefined ? undefined : cuisineLabel(meta.cuisine),
     meta.origin === undefined ? undefined : strings.browse.rowOrigin[meta.origin],
+    ...(meta.useUp === undefined || useUp === undefined
+      ? []
+      : useUpWords(meta.useUp, (id) => useUp.itemName(id))),
   ]
     .filter((part) => part !== undefined)
     .join(' · ');
@@ -84,7 +102,12 @@ const summaryText = (filter: DishFilter): string => {
   return chosen.length === 0 ? strings.browse.anything : chosen.join(' · ');
 };
 
-const rowOf = (row: ListRow, list: ListScreen, current: string | undefined): HTMLElement => {
+const rowOf = (
+  row: ListRow,
+  list: ListScreen,
+  current: string | undefined,
+  useUp: UseUpNow | undefined,
+): HTMLElement => {
   const { entry } = row;
   const item = el('li');
   item.dataset.key = entry.key;
@@ -93,7 +116,7 @@ const rowOf = (row: ListRow, list: ListScreen, current: string | undefined): HTM
   if (entry.origin === 'own' && entry.id === current) a.setAttribute('aria-current', 'page');
   a.addEventListener('click', () => noteOpenedFromList(list, entry.href));
   a.append(el('span', 'entry-name', entry.name));
-  const meta = metaText(row);
+  const meta = metaText(row, useUp);
   if (meta !== '') a.append(el('span', 'entry-meta', meta));
   item.append(a);
   return item;
@@ -110,14 +133,51 @@ export interface DishListOptions {
   empty?: Node[];
 }
 
+/** The order select of Cook's list: by name, or "Use up first". */
+const orderSelect = (list: CookList, onChange: (next: CookList) => void): HTMLElement => {
+  const tc = strings.cook;
+  const control = el('select', 'field cook-order');
+  control.id = nextId('cook-order');
+  for (const [value, text] of [
+    ['name', tc.orderName],
+    ['use-up', tc.tabUseUp],
+  ] as const) {
+    const option = el('option', undefined, text);
+    option.value = value;
+    control.append(option);
+  }
+  control.value = list.order;
+  control.addEventListener('change', () =>
+    onChange({ ...list, order: control.value === 'use-up' ? 'use-up' : 'name' }),
+  );
+  const text = el('label', 'field-label', tc.orderLabel);
+  text.htmlFor = control.id;
+  const wrap = el('div', 'field-wrap');
+  wrap.append(text, control);
+  return wrap;
+};
+
 /**
- * The search, the filter, the count and the rows. The entries are read again once the catalogue
- * is there (it gives the characters of the ingredients it places), and the list is drawn again.
+ * The search, the switch and the order, the filter, the count and the rows. The entries are read
+ * again once the catalogue is there (it gives the characters of the ingredients it places, and the
+ * tree the finder needs for the shipped dishes), and the list is drawn again.
  */
 export const dishList = (options: DishListOptions): HTMLElement => {
   const t = strings.browse;
   const block = el('div', 'dish-list');
   let entries = everyEntry();
+  const store = browserStore();
+  let list: CookList = readCookList(store);
+  // The finder's answers for the current stock, asked again on every draw, not on every keystroke.
+  let cook: CookNarrowing = {};
+  let useUp: UseUpNow | undefined;
+  const ask = (): void => {
+    useUp = list.order === 'use-up' ? useUpNow() : undefined;
+    cook = {
+      ...(list.have ? { ready: readyNowKeys() } : {}),
+      ...(useUp === undefined ? {} : { useUp: useUp.marks }),
+    };
+  };
 
   const input = el('input', 'field dish-search');
   input.type = 'search';
@@ -144,13 +204,44 @@ export const dishList = (options: DishListOptions): HTMLElement => {
   const controls = el('div', 'dish-list-controls');
   fold.append(summary, controls);
 
+  // "Only with what I have" and the order: drawn once; a change asks the finder again.
+  const choices = el('div', 'cook-list-choices');
+  const setList = (next: CookList): void => {
+    list = next;
+    writeCookList(store, list);
+    ask();
+    drawRows(currentDishFilter());
+  };
+  const haveTick = tick('cook-have', strings.cook.haveLabel, list.have, (on) =>
+    setList({ ...list, have: on }),
+  );
+  const haveRow = el('div', 'tick-choices cook-have-row');
+  haveRow.append(haveTick);
+  const orderRow = el('div', 'cook-filters cook-order-row');
+  orderRow.append(orderSelect(list, (next) => setList(next)));
+  choices.append(haveRow, orderRow);
+  const note = el('div', 'cook-list-note');
+
   const count = el('p', 'dish-count muted');
   count.setAttribute('aria-live', 'polite');
   const rows = el('div', 'dish-rows');
 
   const drawRows = (filter: DishFilter): void => {
-    const view = dishListView(entries, filter, search.query, currentLang());
+    const view = dishListView(entries, filter, search.query, currentLang(), cook);
     count.textContent = t.count(view.rows.length);
+    // Nothing in stock: "Only with what I have" keeps nothing, and the way to tick is offered.
+    const noStock = list.have && notebookSource().stock.length === 0;
+    note.replaceChildren(
+      ...(noStock ? [nothingTicked()] : []),
+      ...(useUpNote(useUp) === 'no-dates'
+        ? [el('p', 'muted cook-no-dates', strings.cook.useUpNoDates)]
+        : []),
+    );
+    if (noStock && view.total > 0) {
+      count.hidden = true;
+      rows.replaceChildren();
+      return;
+    }
     if (view.total === 0 || (view.rows.length === 0 && !namesRead)) {
       count.hidden = true;
       // Before the catalogue is there an empty result may not be the last word: say so quietly.
@@ -166,6 +257,13 @@ export const dishList = (options: DishListOptions): HTMLElement => {
       all.addEventListener('click', () => {
         search.query = '';
         input.value = '';
+        // "Show all" also lets go of "Only with what I have"; the order stays.
+        if (list.have) {
+          list = { ...list, have: false };
+          writeCookList(store, list);
+          (haveTick.querySelector('input') as HTMLInputElement).checked = false;
+          ask();
+        }
         change(EMPTY_FILTER);
         // The button is gone with the empty state; the search field takes the focus.
         input.focus();
@@ -173,10 +271,10 @@ export const dishList = (options: DishListOptions): HTMLElement => {
       rows.replaceChildren(el('p', 'empty', t.none), all);
       return;
     }
-    const list = el('ul', 'rows dish-rows-list');
-    list.setAttribute('aria-label', options.listLabel);
-    list.append(...view.rows.map((row) => rowOf(row, options.screen, options.current)));
-    rows.replaceChildren(list);
+    const ul = el('ul', 'rows dish-rows-list');
+    ul.setAttribute('aria-label', options.listLabel);
+    ul.append(...view.rows.map((row) => rowOf(row, options.screen, options.current, useUp)));
+    rows.replaceChildren(ul);
   };
 
   // The controls are drawn anew on every change; the control that had focus keeps it.
@@ -192,6 +290,7 @@ export const dishList = (options: DishListOptions): HTMLElement => {
   }
 
   const draw = (): void => {
+    ask();
     const filter = currentDishFilter();
     drawControls(filter);
     drawRows(filter);
@@ -209,6 +308,6 @@ export const dishList = (options: DishListOptions): HTMLElement => {
     draw();
   });
 
-  block.append(searchWrap, fold, count, rows);
+  block.append(searchWrap, choices, fold, note, count, rows);
   return block;
 };

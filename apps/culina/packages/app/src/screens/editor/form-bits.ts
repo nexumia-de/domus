@@ -135,3 +135,43 @@ export const clearRowProblems = (
 export const focusFirstError = (root: HTMLElement): void => {
   root.querySelector<HTMLElement>('[data-has-error]')?.focus();
 };
+
+/**
+ * Marks a control of a row (an amount, a unit) as one that keeps the focus when the rows are drawn
+ * again. A catalogue pick is stored first and lands later; by then the cook may be typing the
+ * amount, and drawing the rows must not take the field away (and the keys typed into it).
+ */
+export const keepFocusAs = (control: HTMLElement, key: string): void => {
+  control.dataset.keep = key;
+};
+
+/** What is focused in `root` and kept across a redraw, with the caret of a text field. */
+export interface KeptFocus {
+  key: string;
+  caret?: number;
+}
+
+export const keptFocus = (root: HTMLElement): KeptFocus | undefined => {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement) || !root.contains(active)) return undefined;
+  const key = active.dataset.keep;
+  if (key === undefined) return undefined;
+  const caret = active instanceof HTMLInputElement ? active.selectionStart : null;
+  return caret === null ? { key } : { key, caret };
+};
+
+/** Focuses the control that stands for the kept one after a redraw. */
+export const restoreFocus = (root: HTMLElement, kept: KeptFocus | undefined): void => {
+  if (kept === undefined) return;
+  const target = root.querySelector<HTMLElement>(`[data-keep="${kept.key}"]`);
+  if (target === null) return;
+  target.focus();
+  if (target instanceof HTMLInputElement && kept.caret !== undefined)
+    target.setSelectionRange(kept.caret, kept.caret);
+};
+
+/** True while the focus is in `node` or nowhere: only then may a late pick move it. */
+export const focusStillIn = (node: Element | null): boolean => {
+  const active = document.activeElement;
+  return active === null || active === document.body || (node?.contains(active) ?? false);
+};

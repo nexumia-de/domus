@@ -124,3 +124,36 @@ export const useUpWithin = (
 /** The roles the candidates cover, each once, sorted. */
 export const rolesOf = (candidates: readonly AnyCandidate[]): string[] =>
   [...new Set(candidates.flatMap((c) => c.roles))].sort();
+
+/** Why a dish stands where it does in Cook's order "Use up first": the item that sets it. */
+export interface UseUpMark {
+  /** Its place among the dishes that use a dated item, 0 first. */
+  rank: number;
+  /** The stock item with the nearest use-by among those the dish uses (the engine's urgency). */
+  itemId: string;
+  daysLeft: number;
+  /**
+   * Required lines the dish lacks (0: complete). The order is asked at the finder's wide
+   * threshold, so a dish that lacks lines can stand above complete ones; the row says so.
+   */
+  lacking: number;
+}
+
+/**
+ * Cook's order "Use up first" (docs/decisions/cook-screen.md): the dishes that use a stock item
+ * with a use-by date, in the engine's one ranking (`rankCandidates`: the nearest use-by first),
+ * keyed by entry. A dish that uses no dated item has no mark; the list puts it after, by name.
+ */
+export const useUpMarks = (candidates: readonly AnyCandidate[]): Map<string, UseUpMark> => {
+  const marks = new Map<string, UseUpMark>();
+  for (const c of rankCandidates(candidates.filter(isDish))) {
+    if (c.urgency === undefined) continue;
+    marks.set(entryKeyOf(c), {
+      rank: marks.size,
+      itemId: c.urgency.itemId,
+      daysLeft: c.urgency.daysLeft,
+      lacking: c.lacking,
+    });
+  }
+  return marks;
+};

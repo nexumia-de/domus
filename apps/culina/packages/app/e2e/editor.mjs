@@ -16,7 +16,8 @@ import {
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const NAME = 'My bread dough';
-const names = (page) => page.locator('.entry-row .entry-name').allTextContents();
+// The list holds the shipped components too (e2e/components-shipped.mjs); here only the notebook's rows.
+const names = (page) => page.locator('.notebook-row-own .entry-name').allTextContents();
 
 const create = async (page, origin) => {
   const label = '360px editor';

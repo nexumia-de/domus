@@ -4,13 +4,7 @@ import { hashFor, type Route } from '../router';
 import { strings } from '../strings';
 import { el } from '../shell/el';
 import { sectionTabs } from './section-tabs';
-import {
-  entryList,
-  type Entry,
-  type ListState,
-  type ListText,
-  type PaneOptions,
-} from './entry-list';
+import type { PaneOptions } from './entry-list';
 
 interface Shape {
   route: Route;
@@ -22,19 +16,12 @@ interface Shape {
   extras: { actions: Node[]; emptyActions: Node[]; note?: string };
 }
 
-/** Either the plain list of entries (Components) or a list pane of its own (Dishes). */
-export type NotebookScreen = Shape &
-  (
-    | { entries: readonly Entry[]; state: ListState; text: ListText }
-    | { pane(options: PaneOptions): HTMLElement }
-  );
+/** Each part draws its own list pane (component-list.ts, dishes.ts). */
+export type NotebookScreen = Shape & { pane(options: PaneOptions): HTMLElement };
 
 export const notebookScreen = (config: NotebookScreen, param?: string): HTMLElement => {
   const { route } = config;
-  const pane = (options: PaneOptions): HTMLElement =>
-    'pane' in config
-      ? config.pane(options)
-      : entryList(route, config.entries, config.state, config.text, options);
+  const pane = (options: PaneOptions): HTMLElement => config.pane(options);
   const tabs = sectionTabs(strings.notebook.sectionsLabel, [
     {
       label: strings.screens.components.title,

@@ -11,7 +11,7 @@ import {
   USE_UP,
 } from '../src/router';
 
-test('the cook routes: the finder, use up first and one ingredient', () => {
+test('the cook routes: Cook, the old use-up address and one ingredient', () => {
   expect(hashFor('cook')).toBe('#/cook');
   expect(hashFor('cook', USE_UP)).toBe('#/cook/use-up');
   expect(hashFor('cook', 'leek', 'with')).toBe('#/cook/leek/with');
@@ -30,25 +30,26 @@ test('an ingredient id with a space or slash survives the round trip', () => {
   expect(actionFromHash(hash)).toBe('with');
 });
 
-test('the navigation has four destinations; every route is shown under one, Settings under none', () => {
-  expect(NAV_ENTRIES).toEqual(['start', 'cook', 'notebook', 'ratios']);
+test('the navigation has three destinations; every route is shown under one, Settings under none', () => {
+  expect(NAV_ENTRIES).toEqual(['cook', 'notebook', 'ratios']);
   for (const route of ROUTES) {
     const entry = navEntryFor(route);
     if (route === 'settings') expect(entry).toBeUndefined();
     else expect(NAV_ENTRIES).toContain(entry);
   }
-  // Cook holds the finder and the stock; the Notebook the components and every dish, own or
-  // shipped (with its cooking mode), and the old address of the classics.
+  // Cook holds the one list, the finder from one ingredient and the stock; the Notebook the
+  // components and every dish screen, own or shipped (with its cooking mode), and the old address
+  // of the classics.
   for (const route of ['cook', 'stock'] as const) expect(navEntryFor(route)).toBe('cook');
   for (const route of ['components', 'dishes', 'classics', 'classic'] as const)
     expect(navEntryFor(route)).toBe('notebook');
-  expect(navEntryFor('start')).toBe('start');
   expect(navEntryFor('ratios')).toBe('ratios');
 });
 
 test('every entry opens a route, and the old routes still parse', () => {
   expect(Object.keys(NAV_ROUTE).sort()).toEqual([...NAV_ENTRIES].sort());
   expect(hashFor(NAV_ROUTE.notebook)).toBe('#/components');
+  expect(hashFor(NAV_ROUTE.cook)).toBe('#/cook');
   for (const hash of ['#/components', '#/dishes', '#/classics', '#/cook', '#/stock', '#/settings'])
     expect(hashFor(routeFromHash(hash))).toBe(hash);
 });

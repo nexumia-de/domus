@@ -29,7 +29,8 @@ const cells = (page, selector) =>
     selector,
   );
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const names = (page) => page.locator('.entry-row .entry-name').allTextContents();
+// The list holds the shipped components too (e2e/components-shipped.mjs); here only the notebook's rows.
+const names = (page) => page.locator('.notebook-row-own .entry-name').allTextContents();
 
 /** Table rows as [name, ...numbers]: the tag, role label and notes in the name cell are cut. */
 const nameOf = (page, selector) =>
@@ -107,14 +108,24 @@ const phone = async (browser, origin) => {
     await page.evaluate(() => document.activeElement === document.body),
     `${label}: dishes open with nothing focused (no text field)`,
   );
-  // The list holds the shipped dishes too (e2e/dish-browse.mjs); here only the notebook's rows.
-  const own = () => page.locator('.dish-row-own .entry-name').allTextContents();
+  // The Notebook's Dishes are own and shipped dishes in one plain list (the owner's issue 44 point
+  // 3; docs/decisions/cook-screen.md): no dish filter, nothing of Cook. Here the own rows; the
+  // shipped ones are checked in e2e/dish-browse.mjs.
+  const own = () => names(page);
   check(
     same(
       await own(),
       fx.byName(fx.dishes).map((d) => d.name),
     ),
     `${label}: the dish list shows the ${fx.dishes.length} example dishes`,
+  );
+  check(
+    (await page.locator('.dish-row, .dish-filter-fold').count()) === 0 &&
+      (await page.locator('.notebook-row-shipped').count()) > 0 &&
+      (await page.locator('.notebook-row-shipped').first().getAttribute('href')).startsWith(
+        '#/classic/',
+      ),
+    `${label}: the Notebook's Dishes are a plain list: shipped dishes in it, no dish filter`,
   );
   check(
     (await own()).every((n) => n.startsWith('Example')),

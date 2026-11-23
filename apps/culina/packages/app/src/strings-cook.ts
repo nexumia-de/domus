@@ -1,4 +1,4 @@
-// Texts of the finder: what can I cook, use up first, start from one ingredient. Wording never
+// Texts of Cook and the finder: the one list's switch and order, start from one ingredient. Wording never
 // judges: a recipe lacks a line, it is not wrong; an item with days left is information.
 const MONTHS = [
   'Jan',
@@ -16,19 +16,23 @@ const MONTHS = [
 ] as const;
 
 export const cookStrings = {
-  /** The navigation entry; also the name of the group of three views. */
+  /** The navigation entry and the h1 of the one list (docs/decisions/cook-screen.md). */
   title: 'Cook',
-  viewsLabel: 'Views of Cook',
-  tabCook: 'What can I cook',
+  /** The switch of the one list: only the dishes the stock covers. */
+  haveLabel: 'Only with what I have',
+  /** The order of the one list. */
+  orderLabel: 'Order',
+  orderName: 'By name',
+  /** The order of the one list that puts the dishes using the nearest use-by first. */
   tabUseUp: 'Use up first',
+  /** The way from Cook to the stock screen, and that screen's title. */
   tabStock: 'What is there',
+  backToCook: 'Back to Cook',
   /** "As of 18 Nov 2026": the day the ranking was made for, `YYYY-MM-DD` in. */
   asOf: (date: string): string => {
     const [y, m, d] = date.split('-').map(Number);
     return `As of ${d} ${MONTHS[(m ?? 1) - 1]} ${y}`;
   },
-  intro:
-    'Your dishes and the shipped ones in one list, ranked by what has to be used soonest, then by how many roles each covers.',
   // Filters
   filtersLabel: 'Filters',
   roleLabel: 'Covers the role',
@@ -46,7 +50,6 @@ export const cookStrings = {
   dishesHeading: 'Dishes',
   partsHeading: 'Components and ratios',
   partsListLabel: 'Components and ratios the stock allows',
-  partsHidden: 'Components and ratio cards are left out while a dish filter is chosen.',
   /** The quiet origin word of an entry, shown where both origins are in the list. */
   originWord: { own: 'mine', shipped: 'shipped' },
   complete: 'complete',
@@ -106,21 +109,11 @@ export const cookStrings = {
   addComponent: 'Add a component',
   importLink: 'Import a recipe',
   emptyNoMatch: 'Nothing matches these choices.',
-  /** The active choices of the dish filter, beside an empty list. */
-  filterChosen: (choices: string): string => `Chosen: ${choices}`,
   emptyNothingRelated: 'Nothing in your notebook uses what is ticked yet.',
   nearestHeading: 'The nearest ones',
   nearest: (name: string, lacks: string): string => `${name} lacks ${lacks}`,
-  // Use up first
-  useUpIntro: 'What has a use-by date, the nearest first, and what uses it.',
-  useUpLabel: 'Stock by use-by date',
-  useUpThreshold: (lacking: number): string =>
-    lacking === 0 ? 'Counting only what is complete.' : `Counting what lacks at most ${lacking}.`,
+  // Use up first, as the order of the one list
   useUpNoDates: 'No item has a use-by date yet. A date can be added on the item.',
-  useUpNothing: 'Nothing in the list uses it yet.',
-  useUpFiltered: 'Counted within the dish filter chosen on What can I cook.',
-  useUpUsedBy: 'Used by',
-  useUpOpenItem: (name: string): string => `${name} in stock`,
   problem:
     'The finder could not read the notebook as it is: an ingredient has a parent that is not there or makes a loop.',
   storeProblem: 'The notebook could not be opened, so nothing can be found.',

@@ -7,13 +7,13 @@ import { brokenWords, overflow, smallTargets } from './measure.mjs';
 import { openWith, PAN, TECHNIQUE } from './classics-fixture.mjs';
 
 const ROUTES = {
-  start: ['Start', 'Worauf hast du Lust?'],
-  // The old address of the classics lands on the one list of dishes.
-  classics: ['Notizbuch', 'Gerichte'],
+  // The old addresses of Start and the classics land on Cook, the one list of dishes.
+  start: ['Kochen', 'Kochen'],
+  classics: ['Kochen', 'Kochen'],
   ratios: ['Verhältnisse', 'Verhältnisse'],
   components: ['Notizbuch', 'Komponenten'],
   dishes: ['Notizbuch', 'Gerichte'],
-  cook: ['Kochen', 'Was kann ich kochen'],
+  cook: ['Kochen', 'Kochen'],
   stock: ['Kochen', 'Vorrat'],
   // Settings is the gear in the header on a phone: no entry of the bar is marked.
   settings: [undefined, 'Einstellungen'],
@@ -133,14 +133,41 @@ const narrow = async (browser, origin) => {
 };
 
 const classicsFlow = async (page, origin, label) => {
-  await openWith(page, origin, 'start');
-  await heading(page, 'Worauf hast du Lust?').waitFor();
+  await openWith(page, origin, 'cook');
+  await heading(page, 'Kochen').waitFor();
+  await page.locator('.dish-row-shipped').first().waitFor();
   check(
     (await page.locator('.dish-row-shipped').count()) === 2,
-    `${label}: Start lists the shipped dishes`,
+    `${label}: Cook lists the shipped dishes`,
   );
+  check(
+    (await page.getByLabel('Nur mit dem, was da ist').count()) === 1 &&
+      (
+        await page.getByLabel('Reihenfolge', { exact: true }).locator('option').allInnerTexts()
+      ).join('|') === 'Nach Name|Zuerst verbrauchen' &&
+      (await page.getByRole('link', { name: 'Vorrat', exact: true }).count()) === 1,
+    `${label}: the switch, the order and the way to the stock are in German`,
+  );
+  await page.getByLabel('Reihenfolge', { exact: true }).selectOption('use-up');
+  await page.getByLabel('Nur mit dem, was da ist').check();
+  const judged = [
+    (await page.locator('.dish-list').innerText()) +
+      (await page.locator('.cook-list-note').innerText()),
+  ];
+  await page.getByLabel('Nur mit dem, was da ist').uncheck();
+  judged.push(
+    (await page.locator('.dish-list').innerText()) +
+      (await page.locator('.cook-list-note').innerText()),
+  );
+  check(
+    judged.every((text) => !/wrong|too much|falsch|zu viel|error/i.test(text)),
+    `${label}: Cook's rows and notes do not judge (falsch, zu viel)`,
+  );
+  await page.getByLabel('Reihenfolge', { exact: true }).selectOption('name');
+  await layout(page, `${label} cook`);
   await openWith(page, origin, 'classics/de');
-  await heading(page, 'Gerichte').waitFor();
+  await heading(page, 'Kochen').waitFor();
+  await page.locator('.dish-row').first().waitFor();
   const row = await page.locator('.dish-row').innerText();
   check(
     row.includes('Hauptgericht') && row.includes('Deutsche Küche') && !row.includes('Deutschland'),
@@ -255,19 +282,19 @@ const readerFixes = async (browser, origin) => {
   await layout(page, `${label} technique note`);
 
   // A heading focused after a tap has no ring; after a key it has one.
-  await page.goto(`${origin}/?no-sw#/start`);
-  await heading(page, 'Worauf hast du Lust?').waitFor();
+  await page.goto(`${origin}/?no-sw#/ratios`);
+  await heading(page, 'Verhältnisse').waitFor();
   await page.locator('nav .nav-link:visible', { hasText: 'Kochen' }).click();
-  await heading(page, 'Was kann ich kochen').waitFor();
+  await heading(page, 'Kochen').waitFor();
   const ring = () =>
     page.evaluate(() => {
       const h = document.querySelector('main h1');
       return document.activeElement === h ? getComputedStyle(h).outlineStyle : 'not focused';
     });
   check((await ring()) === 'none', `${label}: after a tap the focused heading shows no ring`);
-  await page.locator('nav .nav-link:visible', { hasText: 'Start' }).focus();
+  await page.locator('nav .nav-link:visible', { hasText: 'Verhältnisse' }).focus();
   await page.keyboard.press('Enter');
-  await heading(page, 'Worauf hast du Lust?').waitFor();
+  await heading(page, 'Verhältnisse').waitFor();
   const keyRing = await ring();
   check(
     keyRing !== 'none' && keyRing !== 'not focused',
@@ -327,8 +354,8 @@ export const german = async (browser, server) => {
 
   // Follow device with the browser locale de.
   const b = await fresh(browser, origin, { locale: 'de' });
-  await openWith(b.page, origin, 'start');
-  await heading(b.page, 'Worauf hast du Lust?').waitFor();
+  await openWith(b.page, origin, 'cook');
+  await heading(b.page, 'Kochen').waitFor();
   check(
     (await b.page.locator('html').getAttribute('lang')) === 'de',
     'German device: lang follows the browser locale',

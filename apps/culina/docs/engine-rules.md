@@ -1089,6 +1089,18 @@ source in `x-origin`. The ids come from `newId` and the day from
 copied (`wanted-ingredient`, listing the names): the notebook has no
 ingredient for it. `wantedLines(classic)` lists them.
 
+**Copying one component** (since 2026-11-22, issue 44 point 4).
+`copyClassicComponent(classic, componentId, options)` is `copyClassic` on the
+file narrowed to that component and the components its lines name, all the way
+down (`componentsReached(classic, [id])`), without slots: the same amounts,
+notes, origin and version 1 per record. It returns the components, the one
+asked for first; the dish `copyClassic` builds alongside is dropped (it takes
+one id from `newId`). A `wanted` line in the component or in one it names
+refuses the copy (`wanted-ingredient`); one elsewhere in the file does not. An
+id the file lacks is `unknown-component`. A base's alternative is copied like
+any other component, with its role. **Test:** `test/classics-base.test.ts`
+(invented base; no shipped file is read).
+
 **Skill state.** `skillRecord(technique, learned)` is the record
 (`skill-<technique>`), `learnedTechniques(records)` the set of learned ids; a
 record whose id is not the id of its technique is ignored.

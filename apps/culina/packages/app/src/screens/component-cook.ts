@@ -200,7 +200,7 @@ const ownFinish =
 export const cookClassicScreen = (id: string | undefined): HTMLElement => {
   const classic: Classic | undefined = id === undefined ? undefined : classicOf(id);
   if (classic === undefined) {
-    return unknown(hashFor('start'), t.backToStart, t.classicsTitle, t.unknownDish);
+    return unknown(hashFor('cook'), strings.cook.backToCook, t.classicsTitle, t.unknownDish);
   }
   const portions = portionsOf(classic.id);
   return cookScreen({

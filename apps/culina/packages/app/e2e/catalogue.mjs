@@ -260,6 +260,32 @@ const latePick = async (browser, origin) => {
       names[0]?.trim() === 'Garlic',
     `${label}: the late pick fills its own line and the new line's picker stays open (${names.join(' | ')})`,
   );
+  // Typing an amount while the pick is still being stored: the pick lands and draws the lines
+  // again, and the amount field keeps the focus and what is typed (until 2026-11-22 the focus went
+  // to the pick button, so the rest of what was typed was lost and the line saved without it; seen
+  // as "to taste" in the check of the grams above, about 1 run in 6).
+  await open(page, origin, 'components/new');
+  await formReady(page);
+  await addLine(page);
+  await searchBox(page).fill('all-purpose, enriched, bleached');
+  await entryButton(page, FLOUR.name).waitFor();
+  // In one task: the pick starts storing, and the amount field takes the focus before it lands.
+  await entryButton(page, FLOUR.name)
+    .first()
+    .evaluate((pick) => {
+      pick.click();
+      document.querySelector('.line-edit input.field').focus();
+    });
+  await page.locator('.line-edit .picker').waitFor({ state: 'detached' });
+  await page.keyboard.type('12');
+  const typed = await page.evaluate(() => ({
+    value: document.querySelector('.line-edit input.field')?.value,
+    focused: document.activeElement === document.querySelector('.line-edit input.field'),
+  }));
+  check(
+    typed.value === '12' && typed.focused,
+    `${label}: an amount typed while the pick lands keeps the focus and every key (${JSON.stringify(typed)})`,
+  );
   // The same on a dish: a late pick on the first slot leaves the second slot's picker open.
   await open(page, origin, 'dishes/new');
   await formReady(page);

@@ -47,7 +47,11 @@ import {
   clearRowProblems,
   fieldError,
   focusFirstError,
+  focusStillIn,
+  keepFocusAs,
+  keptFocus,
   mark,
+  restoreFocus,
   showRowProblems,
   textField,
   type RowProblem,
@@ -246,6 +250,7 @@ const build = (
       draw();
     });
     const amount = textField(t.slotAmount, slot.amount, true);
+    keepFocusAs(amount.control, `amount-${index}`);
     amount.label.classList.add('sr-only');
     amount.control.setAttribute('aria-label', `${t.slotAmount}, ${label}`);
     amount.control.addEventListener('input', () => {
@@ -257,6 +262,7 @@ const build = (
     mark(amount.control, parseEntry(slot.amount).kind === 'invalid');
     const units: readonly string[] = slot.ref?.kind === 'component' ? MASS_ONLY : AMOUNT_UNITS;
     const unit = bareSelect(`${t.unitLabel}, ${label}`, unitOptions(units), slot.unit);
+    keepFocusAs(unit, `unit-${index}`);
     unit.addEventListener('change', () => {
       slot.unit = unit.value as AmountUnit;
       changed();
@@ -336,7 +342,9 @@ const build = (
             // its picker open, which this pick must not close.
             if (open === index) {
               open = undefined;
-              focusAfter = [`[data-pick="${index}"]`];
+              // The cook may be typing elsewhere by then: only move a focus still in the picker.
+              if (focusStillIn(li.querySelector('.picker')))
+                focusAfter = [`[data-pick="${index}"]`];
             }
             changed();
             draw();
@@ -354,6 +362,7 @@ const build = (
   };
 
   const draw = (): void => {
+    const kept = focusAfter === undefined ? keptFocus(list) : undefined;
     list.replaceChildren(...form.slots.map(row));
     for (const selector of focusAfter ?? []) {
       const target = list.querySelector<HTMLButtonElement>(selector);
@@ -363,6 +372,7 @@ const build = (
       }
     }
     focusAfter = undefined;
+    restoreFocus(list, kept);
     // The assembly steps list the fillings: keep them in step with the slots.
     assembly.syncLines();
     characters.refresh();

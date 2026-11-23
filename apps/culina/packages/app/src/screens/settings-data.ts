@@ -115,7 +115,7 @@ const eraseBlock = (canWrite: boolean, exportNow: () => void, status: HTMLElemen
             return;
           }
           // A new start reads the empty database and the default settings, as on a first start.
-          window.location.hash = hashFor('start');
+          window.location.hash = hashFor('cook');
           window.location.reload();
         });
       });

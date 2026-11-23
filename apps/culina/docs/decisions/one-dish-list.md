@@ -26,6 +26,15 @@ parallel; this record says what was decided, not what is finished. The
 state of each part is in [behaviour](../behaviour.md#one-filter-over-every-dish)
 and the [log](../log.md).
 
+**Note of 2026-11-22.** The owner decided in issue 44 that Cook is one
+screen: the one list with the one filter, "Only with what I have" and the
+order "Use up first"; Start, the finder's screen "What can I cook" and the
+one list on the Notebook's Dishes went (the Notebook's Dishes are now a
+plain list of own and shipped dishes, without the filter)
+([one Cook screen](cook-screen.md)). What this record says of "the lists,
+the start screen, the finder" now holds for Cook's one list; the old
+addresses lead there.
+
 ## Context
 
 Until 2026-11-21 the app had two worlds of dishes.

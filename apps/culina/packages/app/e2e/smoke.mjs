@@ -2,11 +2,13 @@
 import { check, watch } from './harness.mjs';
 
 // The stock screens are shown under the Cook entry, the components and dishes under the Notebook;
-// the old address of the classics lands on the one list of dishes, so under the Notebook too; Settings is the gear in the header on a phone and the last entry of the rail from 720 px.
+// the old addresses of the start screen and the classics land on Cook, the one list of dishes
+// (docs/decisions/cook-screen.md); Settings is the gear in the header on a phone and the last entry
+// of the rail from 720 px.
 const ROUTES = ['start', 'classics', 'ratios', 'components', 'dishes', 'cook', 'stock', 'settings'];
 const NAMES = {
-  start: 'Start',
-  classics: 'Notebook',
+  start: 'Cook',
+  classics: 'Cook',
   ratios: 'Ratios',
   components: 'Notebook',
   dishes: 'Notebook',
@@ -15,13 +17,13 @@ const NAMES = {
   settings: 'Settings',
 };
 const HEADINGS = {
-  start: 'What do you feel like?',
+  start: 'Cook',
   ratios: 'Ratios',
   components: 'Components',
   dishes: 'Dishes',
-  cook: 'What can I cook',
+  cook: 'Cook',
   settings: 'Settings',
-  classics: 'Dishes',
+  classics: 'Cook',
   stock: 'What is there',
 };
 
@@ -63,7 +65,7 @@ const shellAt = async (browser, origin, width, height) => {
 
   for (const route of ROUTES) {
     await page.goto(`${origin}/?no-sw#/${route}`);
-    await page.getByRole('heading', { level: 1, name: HEADINGS[route] }).waitFor();
+    await page.getByRole('heading', { level: 1, name: HEADINGS[route], exact: true }).waitFor();
     const m = await measure(page);
     check(
       m.scrollW <= m.clientW,
@@ -134,8 +136,7 @@ const shellAt = async (browser, origin, width, height) => {
     ring.style !== 'none' && ring.width >= 3,
     `${width}px: visible focus ring on "${ring.text}"`,
   );
-  // Phone: skip link, the gear, then Start, Cook and the Notebook; from 720 px the gear is not there.
-  await page.keyboard.press('Tab');
+  // Phone: skip link, the gear, then Cook and the Notebook; from 720 px the gear is not there.
   await page.keyboard.press('Tab');
   if (phone) await page.keyboard.press('Tab');
   await page.keyboard.press('Enter');
@@ -149,8 +150,8 @@ const shellAt = async (browser, origin, width, height) => {
   check(true, `${width}px: browser back returns to Ratios (one back stack)`);
 
   await page.goto(`${origin}/?no-sw#/nope`);
-  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
-  check(page.url().endsWith('#/start'), `${width}px: unknown route becomes #/start`);
+  await page.getByRole('heading', { level: 1, name: 'Cook', exact: true }).waitFor();
+  check(page.url().endsWith('#/cook'), `${width}px: unknown route becomes #/cook`);
 
   check(
     problems.length === 0,
@@ -216,7 +217,7 @@ const offline = async (browser, origin, label) => {
   const problems = watch(context, new URL(origin).origin);
   const page = await context.newPage();
   await page.goto(origin);
-  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'Cook', exact: true }).waitFor();
   await controlled(page);
   check(true, `${label}: the service worker controls the page`);
   const names = await page.evaluate(() => caches.keys());
@@ -226,7 +227,7 @@ const offline = async (browser, origin, label) => {
   );
   await context.setOffline(true);
   await page.reload();
-  await page.getByRole('heading', { level: 1, name: 'What do you feel like?' }).waitFor();
+  await page.getByRole('heading', { level: 1, name: 'Cook', exact: true }).waitFor();
   await page.getByRole('navigation').getByRole('link', { name: 'Notebook' }).click();
   await page.getByRole('heading', { level: 1, name: 'Components' }).waitFor();
   await page.getByRole('link', { name: 'Dishes', exact: true }).click();

@@ -24,12 +24,13 @@ export const cuisineLabel = (cuisine: string): string =>
 const cuisineChoice = (cuisine: string): string =>
   (strings.browse.cuisineChoice as Record<string, string>)[cuisine] ?? cuisine;
 
-interface Choice {
+export interface Choice {
   value: string;
   label: string;
 }
 
-const select = (
+/** One labelled select of 44 px with an "any" choice first; the Components list uses it for its origin. */
+export const select = (
   className: string,
   label: string,
   any: string,
@@ -66,7 +67,8 @@ const select = (
   return wrap;
 };
 
-const tick = (
+/** A tick of 44 px with its label; also Cook's "Only with what I have" (dish-list.ts). */
+export const tick = (
   className: string,
   label: string,
   checked: boolean,
@@ -195,17 +197,4 @@ export const replaceFilterControls = (slot: HTMLElement, controls: HTMLElement):
   if (keep === undefined) return;
   const again = slot.querySelector(`.${keep}`);
   (again instanceof HTMLSelectElement ? again : again?.querySelector('input'))?.focus();
-};
-
-/** The active choices of a filter, in the order of the controls, as the controls name them. */
-export const chosenLabels = (filter: DishFilter): string[] => {
-  const t = strings.browse;
-  return [
-    ...(filter.origin === undefined ? [] : [t.origin[filter.origin]]),
-    ...(filter.character === undefined ? [] : [characterLabel(filter.character, currentLang())]),
-    ...(filter.course === undefined ? [] : [courseLabel(filter.course)]),
-    ...(filter.cuisine === undefined ? [] : [cuisineLabel(filter.cuisine)]),
-    ...(filter.meatFree === true ? [t.meatFree] : []),
-    ...(filter.completeOnly === true ? [t.completeOnly] : []),
-  ];
 };
