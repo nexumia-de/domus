@@ -6,23 +6,12 @@ import { sharedDe, sharedEn, type SharedTexts } from '@nexumia-de/gjs/texts';
 export interface Texts extends SharedTexts {
   appName: string;
   menu: { preferences: string; about: string };
-  start: { cookable: string; loading: string };
   dishes: (n: number) => string;
   dish: { portions: string; ingredients: string; method: string; source: string; cook: string };
   cook: {
     done: string;
     stepOf: (n: number, total: number) => string;
     open: string;
-  };
-  cookable: {
-    title: string;
-    filters: string;
-    lacking: string;
-    stock: string;
-    nothingAtHand: string;
-    nothingAtHandHint: string;
-    nothingFits: string;
-    sectionNearest: string;
   };
   stock: {
     title: string;
@@ -44,7 +33,6 @@ export const textsEn: Texts = {
   ...sharedEn,
   appName: "Cook's Notebook",
   menu: { preferences: 'Preferences', about: "About Cook's Notebook" },
-  start: { cookable: 'What can I cook', loading: 'Loading dishes …' },
   dishes: (n) => (n === 1 ? '1 dish' : `${n} dishes`),
   dish: {
     portions: 'Portions',
@@ -57,17 +45,6 @@ export const textsEn: Texts = {
     done: 'Done cooking',
     stepOf: (n, total) => `Step ${n} of ${total}`,
     open: 'Cooking',
-  },
-  cookable: {
-    title: 'What can I cook',
-    filters: 'Filters',
-    lacking: 'Show',
-    stock: 'What is there',
-    nothingAtHand: 'Nothing is there yet',
-    nothingAtHandHint:
-      'Mark what is in the kitchen, and the dishes it allows show up here. The stock is the one of the shown space, shared with Drink Builder and Shopping List.',
-    nothingFits: 'No dish fits these choices.',
-    sectionNearest: 'The nearest dishes',
   },
   stock: {
     title: 'What is there',
@@ -101,7 +78,6 @@ export const textsDe: Texts = {
   ...sharedDe,
   appName: "Cook's Notebook",
   menu: { preferences: 'Einstellungen', about: "Info zu Cook's Notebook" },
-  start: { cookable: 'Was kann ich kochen', loading: 'Gerichte werden geladen …' },
   dishes: (n) => (n === 1 ? '1 Gericht' : `${n} Gerichte`),
   dish: {
     portions: 'Portionen',
@@ -114,17 +90,6 @@ export const textsDe: Texts = {
     done: 'Fertig gekocht',
     stepOf: (n, total) => `Schritt ${n} von ${total}`,
     open: 'Kochen',
-  },
-  cookable: {
-    title: 'Was kann ich kochen',
-    filters: 'Filter',
-    lacking: 'Zeigen',
-    stock: 'Vorrat',
-    nothingAtHand: 'Noch nichts da',
-    nothingAtHandHint:
-      'Markiere, was in der Küche ist, und die Gerichte, die das erlaubt, erscheinen hier. Der Vorrat ist der des gezeigten Space, geteilt mit Drink Builder und Einkaufsliste.',
-    nothingFits: 'Kein Gericht passt zu diesen Einstellungen.',
-    sectionNearest: 'Die nächsten Gerichte',
   },
   stock: {
     title: 'Vorrat',

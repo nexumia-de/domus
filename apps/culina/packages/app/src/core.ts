@@ -15,19 +15,33 @@ export type { StepView } from './classics/cook-view';
 export { portionsOf, setPortions, setStep, stepOf } from './classics/session';
 export { currentLang } from './classics/lang';
 export { findClassics } from './cook/classic-finder';
+export type { Shipped } from './cook/finder';
+export { useUpWords } from './cook/rows';
+export { readyKeysOf } from './dishes/ready-now';
+export { useUpFrom, useUpNote } from './dishes/use-up-order';
+export type { UseUpNow } from './dishes/use-up-order';
+export type { UseUpMark } from './cook/one-list';
 export type { FoundClassics } from './cook/classic-finder';
 export { classicLookup, classicRow } from './cook/classic-rows';
 export type { ClassicRow } from './cook/classic-rows';
 export { lookupOf } from './cook/lookup';
 export type { CookSource } from './cook/input';
 export { cookInput } from './cook/input';
-export { COOK_KEY, DEFAULT_COOK_FILTERS, MAX_LACKING, SPACE_KEY, parseCookFilters } from './prefs';
-export type { CookFilters, KeyValueStore } from './prefs';
+export {
+  COOK_KEY,
+  COOK_LIST_KEY,
+  DEFAULT_COOK_FILTERS,
+  MAX_LACKING,
+  SPACE_KEY,
+  parseCookFilters,
+  parseCookList,
+} from './prefs';
+export type { CookFilters, CookList, CookOrder, KeyValueStore } from './prefs';
 export { createStockSpace } from './shared-stock/space';
 export type { StockSpace, StockSpaceOptions, StockSpaceState } from './shared-stock/space';
 export { itemsFromRecords } from './shared-stock/items';
 export type { ResolveKey } from './shared-stock/items';
-export { restoreEdit, tickEdit, untickEdit } from './shared-stock/edits';
+export { restoreEdit, saveEdit, tickEdit, untickEdit } from './shared-stock/edits';
 export type { Decision, StockUndo, SyncRecord } from './shared-stock/edits';
 export { STOCK } from './shared-stock/value';
 export { displayName, matchesAnyName } from './shared/names';
@@ -45,5 +59,7 @@ export {
   parseDishFilter,
 } from './browse/filter';
 export type { DishFilter, Offered } from './browse/filter';
+export { dishListView } from './browse/list-view';
+export type { CookNarrowing, DishListView, ListRow } from './browse/list-view';
 export { CHARACTER_TABLE } from './characters/table';
 export { characterLabel } from './characters/view';

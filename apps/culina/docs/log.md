@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-23 (Cook in the native app)
+
+- **Update**: the native Linux app follows the [one Cook screen](decisions/cook-screen.md) (issue 44 of suitably/domus; [native app](native-linux.md#cooks-list)): its first page is Cook, the one list by name under the one filter, a switch row "Only with what I have" (the web app's `readyKeysOf`) and a combo row "Order" with "Use up first" (the web app's `useUpFrom` and `useUpWords`, on a `bestBefore` the web app wrote; the native app writes no dates), kept under `culina.cookList`; the stock is in the bottom bar; Start and "What can I cook" with "lacking at most" are gone. The web code gained `useUpFrom` (the pure half of `useUpNow`) and exports in `core.ts`; the recorded kitchen (`scripts/seed-entry.ts`, run by `scripts/seed.mjs`) has the milk dated tomorrow; Cook does not redraw by itself at midnight, only on its next event. Not verified: dates from a real web app through a synced space, a phone, a screen reader.
+
 ## 2026-11-22 (report a problem)
 
 - **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and at the end of the web app's Settings; the dialog is the shared one.

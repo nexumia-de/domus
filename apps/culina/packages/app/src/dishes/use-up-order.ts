@@ -6,7 +6,9 @@
 import { dishEntriesByKey } from '../browse/entries';
 import { WIDE } from '../cook/classic-finder';
 import { shippedNow } from '../cook/entries';
-import { find, type Found } from '../cook/finder';
+import type { DishEntry } from '../browse/entry';
+import { find, type Found, type Shipped } from '../cook/finder';
+import type { CookSource } from '../cook/input';
 import { useUpMarks, type UseUpMark } from '../cook/one-list';
 import { cookToday, notebookSource } from '../cook/source';
 
@@ -45,12 +47,16 @@ export const useUpOf = (found: Found): UseUpNow => {
 export const useUpNote = (useUp: UseUpNow | undefined): 'no-dates' | undefined =>
   useUp !== undefined && useUp.ok && !useUp.anyDated ? 'no-dates' : undefined;
 
+/**
+ * The order for a source, a day, the dish entries by key and the shipped side; pure. The web app
+ * asks it of the notebook (`useUpNow`), the native Linux app of its stock with no notebook.
+ */
+export const useUpFrom = (
+  source: CookSource,
+  today: string,
+  entries: ReadonlyMap<string, DishEntry>,
+  shipped: Shipped,
+): UseUpNow => useUpOf(find(source, today, { lacking: WIDE }, { entries, shipped }));
+
 export const useUpNow = (): UseUpNow =>
-  useUpOf(
-    find(
-      notebookSource(),
-      cookToday(),
-      { lacking: WIDE },
-      { entries: dishEntriesByKey(), shipped: shippedNow() },
-    ),
-  );
+  useUpFrom(notebookSource(), cookToday(), dishEntriesByKey(), shippedNow());

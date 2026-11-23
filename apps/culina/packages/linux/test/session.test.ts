@@ -1,13 +1,22 @@
 // The session on the real shipped content (the web app's classics.json assembled from the data
 // folders) and the ingredient catalogue, with the shared database in memory: what the stock
-// allows among the classics, ticking and unticking, the shown space, and that a tick reaches the
-// collection `stock` the way the web app writes it. Proves the logic; does not prove GJS or the
-// screens.
+// allows among the classics (Cook's switch and order), ticking and unticking, the shown space,
+// and that a tick reaches the collection `stock` the way the web app writes it. Proves the logic;
+// does not prove GJS or the screens.
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
 import { createMemoryStore, ensureSpace } from '@nexumia-de/hospes';
-import { classics, dishView, portionsOf, setPortions, STOCK } from '@culina/app/core';
+import {
+  classics,
+  dishView,
+  portionsOf,
+  readyKeysOf,
+  setPortions,
+  STOCK,
+  useUpFrom,
+  useUpNote,
+} from '@culina/app/core';
 import { shippedContent } from '@culina/app/make-classics.mjs';
 import { PREFS, createSession, type SessionOptions } from '../src/session';
 
@@ -76,13 +85,15 @@ test('a new device gets one space on this device only and no stock; nothing is j
   expect(state.space?.name).toBe('Home');
   expect(state.space?.deviceOnly).toBe(true);
   expect(state.stock).toHaveLength(0);
-  const found = session.cookable(session.filters());
-  expect(found.ok && found.hasStock).toBe(false);
-  expect(found.ok && found.shown.length).toBe(0);
+  // "Only with what I have" with nothing ticked keeps nothing and says so.
+  const cook = session.cookView({}, { have: true, order: 'name' });
+  expect(cook.noStock).toBe(true);
+  expect(cook.rows).toHaveLength(0);
+  expect(session.cookView({}, { have: false, order: 'name' }).noStock).toBe(false);
   session.stop();
 });
 
-test('ticking ingredients makes classics cookable, and the engine names what is lacking', async () => {
+test('Only with what I have keeps the dishes the finder finds complete, as readyKeysOf asks it', async () => {
   const { session } = await make();
   await session.load();
   for (const id of [EGG, MILK, FLOUR, SALT, BUTTER]) expect(await session.tick(id)).toBe(true);
@@ -92,18 +103,130 @@ test('ticking ingredients makes classics cookable, and the engine names what is 
       .stock.map((item) => item.ref.id)
       .sort(),
   ).toEqual([BUTTER, EGG, FLOUR, MILK, SALT].sort());
-  const found = session.cookable({ lacking: 2 });
-  expect(found.ok).toBe(true);
-  if (!found.ok) return;
-  expect(found.hasStock).toBe(true);
-  const noodles = found.shown.find((row) => row.id === 'egg-noodles');
-  expect(noodles?.lacking).toBe(0);
-  expect(noodles?.complete).toBe(true);
-  // Every shown row lacks at most what the filter says; nothing is re-judged here.
-  expect(found.shown.every((row) => row.lacking <= 2)).toBe(true);
-  const strict = session.cookable({ lacking: 0 });
-  expect(strict.ok && strict.shown.every((row) => row.complete)).toBe(true);
-  expect(strict.ok && strict.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
+  const all = session.cookView({}, { have: false, order: 'name' });
+  const ready = session.cookView({}, { have: true, order: 'name' });
+  expect(all.rows).toHaveLength(classics().length);
+  expect(ready.noStock).toBe(false);
+  expect(ready.rows.length).toBeGreaterThan(0);
+  expect(ready.rows.length).toBeLessThan(all.rows.length);
+  // The same answer as the web app's function on the same stock; nothing is judged here.
+  const keys = readyKeysOf(
+    { ingredients: [], components: [], dishes: [], stock: session.state().stock },
+    '2026-11-21',
+    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+  );
+  expect(ready.rows.map((row) => row.entry.key).sort()).toEqual([...keys].sort());
+  expect(ready.rows.some((row) => row.entry.id === 'egg-noodles')).toBe(true);
+  // By name, in the content language, as the web app's list.
+  const names = all.rows.map((row) => row.entry.name);
+  expect(names).toEqual(
+    [...names].sort(new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare),
+  );
+  // The dish filter narrows as well.
+  const noodles = must(session.entries().find((e) => e.id === 'egg-noodles'));
+  const elsewhere = must(session.offered().cuisines.find((c) => c !== noodles.cuisine));
+  const narrowed = session.cookView({ cuisine: elsewhere }, { have: true, order: 'name' });
+  expect(narrowed.rows.every((row) => row.entry.cuisine === elsewhere)).toBe(true);
+  expect(narrowed.rows.every((row) => keys.has(row.entry.key))).toBe(true);
+  session.stop();
+});
+
+test('Use up first puts the dishes that use a dated item first, from a use-by the web app wrote', async () => {
+  const { session, store } = await make();
+  await session.load();
+  // Without a date the order places nothing, and the note says no item is dated.
+  for (const id of [EGG, MILK, FLOUR, SALT, BUTTER]) await session.tick(id);
+  const undated = session.cookView({}, { have: false, order: 'use-up' });
+  expect(undated.useUp?.ok).toBe(true);
+  expect(undated.useUp?.anyDated).toBe(false);
+  expect(undated.useUp?.marks.size).toBe(0);
+  expect(useUpNote(undated.useUp)).toBe('no-dates');
+  // The web app writes a date as `bestBefore` on the record (the native app writes none).
+  const [space] = await ensureSpace(store, 'Home');
+  const { localChange } = await import('@nexumia-de/hospes');
+  await localChange(
+    store,
+    must(space).id,
+    STOCK,
+    () => '2026-11-21T08:00:00.000Z',
+    () => ({ put: [{ key: MILK, value: { present: true, bestBefore: '2026-11-22' } }] }),
+  );
+  await session.load();
+  const dated = session.cookView({}, { have: false, order: 'use-up' });
+  const marks = must(dated.useUp).marks;
+  expect(dated.useUp?.anyDated).toBe(true);
+  expect(marks.size).toBeGreaterThan(0);
+  expect(useUpNote(dated.useUp)).toBeUndefined();
+  // The marked dishes come first, in the engine's rank, every one with the milk and one day left.
+  const first = dated.rows.slice(0, marks.size);
+  expect(first.map((row) => marks.get(row.entry.key)?.rank)).toEqual(
+    [...marks.keys()].map((_, n) => n),
+  );
+  expect(
+    first.every((row) => row.meta.useUp?.itemId === MILK && row.meta.useUp.daysLeft === 1),
+  ).toBe(true);
+  expect(dated.rows.slice(marks.size).every((row) => row.meta.useUp === undefined)).toBe(true);
+  expect(must(dated.useUp).itemName(MILK)).not.toBe(MILK);
+  // The same marks as the web app's function on the same stock.
+  const web = useUpFrom(
+    { ingredients: [], components: [], dishes: [], stock: session.state().stock },
+    '2026-11-21',
+    new Map(session.entries().map((e) => [e.key, e])),
+    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+  );
+  expect([...marks.entries()]).toEqual([...web.marks.entries()]);
+  // Both choices together: only complete dishes, the dated ones first.
+  const both = session.cookView({}, { have: true, order: 'use-up' });
+  const ready = new Set(
+    session.cookView({}, { have: true, order: 'name' }).rows.map((r) => r.entry.key),
+  );
+  expect(both.rows.map((r) => r.entry.key).sort()).toEqual([...ready].sort());
+  session.stop();
+});
+
+test("the same stock on the next day gives the next day's order: the answers are kept per day", async () => {
+  let day = '2026-11-21';
+  const { session, store } = await make({ today: () => day });
+  await session.load();
+  const [space] = await ensureSpace(store, 'Home');
+  const { localChange } = await import('@nexumia-de/hospes');
+  await localChange(
+    store,
+    must(space).id,
+    STOCK,
+    () => '2026-11-21T08:00:00.000Z',
+    () => ({ put: [{ key: MILK, value: { present: true, bestBefore: '2026-11-22' } }] }),
+  );
+  await session.load();
+  const list = { have: false, order: 'use-up' } as const;
+  const stock = session.state().stock;
+  const days = (): number[] =>
+    session
+      .cookView({}, list)
+      .rows.flatMap((row) => (row.meta.useUp === undefined ? [] : [row.meta.useUp.daysLeft]));
+  expect(days().length).toBeGreaterThan(0);
+  expect(days().every((d) => d === 1)).toBe(true);
+  // No record changed, only the day: the stock list is the same one, the answer is the next day's.
+  day = '2026-11-22';
+  expect(session.state().stock).toBe(stock);
+  expect(days().length).toBeGreaterThan(0);
+  expect(days().every((d) => d === 0)).toBe(true);
+  session.stop();
+});
+
+test('the choices of Cook are kept under the web app key, and a change tells the pages', async () => {
+  const { session, kept } = await make();
+  let told = 0;
+  session.subscribe(() => told++);
+  expect(session.cookList()).toEqual({ have: false, order: 'name' });
+  session.setCookList({ have: true, order: 'use-up' });
+  expect(PREFS.cookList).toBe('culina.cookList');
+  expect(kept.get('culina.cookList')).toBe('{"have":true,"order":"use-up"}');
+  expect(session.cookList()).toEqual({ have: true, order: 'use-up' });
+  expect(told).toBe(1);
+  // Anything unreadable falls back field by field.
+  kept.set(PREFS.cookList, '{"have":true,"order":"sideways"}');
+  expect(session.cookList()).toEqual({ have: true, order: 'name' });
   session.stop();
 });
 
@@ -155,17 +278,12 @@ test('an untick keeps other apps fields, Undo brings the tick back, and a thing 
   session.stop();
 });
 
-test('the choice of space and the filters are kept in the preferences', async () => {
+test('the choice of space is kept in the preferences', async () => {
   const { session, kept } = await make();
   await session.load();
   const only = must(session.state().space).id;
   await session.choose(only);
   expect(kept.get(PREFS.space)).toBe(only);
-  // An older country and meat choice in the same entry are not read back (no filter any more).
-  session.setFilters({ lacking: 3, country: 'it', meatFree: true } as never);
-  expect(session.filters()).toEqual({ lacking: 3 });
-  session.setFilters({ lacking: 0 });
-  expect(session.filters()).toEqual({ lacking: 0 });
   session.stop();
 });
 
@@ -231,29 +349,5 @@ test('the dish filter is kept under the web app key, and a change tells the page
   // What cannot be read is the empty filter.
   kept.set(PREFS.dishes, 'not json');
   expect(session.dishFilter()).toEqual({});
-  session.stop();
-});
-
-test('the same filter narrows what the stock allows, the nearest dishes too', async () => {
-  const { session } = await make();
-  await session.load();
-  for (const id of [EGG, MILK, FLOUR, SALT, BUTTER]) await session.tick(id);
-  const wide = session.cookable({ lacking: 3 });
-  expect(wide.ok && wide.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
-  const noodles = must(session.entries().find((e) => e.id === 'egg-noodles'));
-  const elsewhere = must(session.offered().cuisines.find((c) => c !== noodles.cuisine));
-  const narrowed = session.cookable({ lacking: 3 }, { cuisine: elsewhere });
-  expect(narrowed.ok).toBe(true);
-  if (!narrowed.ok) return;
-  const ofCuisine = new Set(session.dishes({ cuisine: elsewhere }).map((e) => e.id));
-  expect(narrowed.shown.length + narrowed.nearest.length).toBeGreaterThan(0);
-  expect([...narrowed.shown, ...narrowed.nearest].every((row) => ofCuisine.has(row.id))).toBe(true);
-  expect(narrowed.shown.some((row) => row.id === 'egg-noodles')).toBe(false);
-  // An older kept country choice of the finder does not narrow: only how much may lack is used.
-  const old = session.cookable({ lacking: 3, country: elsewhere } as never);
-  expect(old.ok && old.shown.some((row) => row.id === 'egg-noodles')).toBe(true);
-  // A filter nothing passes gives an empty list, not a failure.
-  const nothing = session.cookable({ lacking: 3 }, { cuisine: 'xx' });
-  expect(nothing.ok && nothing.shown.length + nothing.nearest.length).toBe(0);
   session.stop();
 });

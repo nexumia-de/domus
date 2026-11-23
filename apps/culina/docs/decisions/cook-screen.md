@@ -133,7 +133,10 @@ Each is the agent's choice, for the owner's review.
 - The [one dish list](one-dish-list.md) stands; its "lists and start
   screen" are now Cook's one list. A dated note there points here.
 - "Lacking at most" no longer narrows a list of dishes in the web app; the
-  native Linux app keeps its own finder page (not part of this decision).
+  native Linux app kept its own finder page at first (not part of this
+  decision). **Update 2026-11-23:** the native app follows: Cook is its
+  first page with the same switch and order from the same functions, and
+  its finder page is gone ([native app](../native-linux.md#cooks-list)).
 - **Not verified:** the switch and the order on a real device, with the 48
   real shipped dishes compared against the engine (the browser check uses
   fictional dishes; the real ones were only looked at in a screenshot), and
