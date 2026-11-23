@@ -2,7 +2,7 @@
   "name": "@culina/linux",
   "version": "0.0.0",
   "private": true,
-  "description": "Culina's native Linux app (GTK4, libadwaita, GJS): Cook's Notebook for Phosh and the desktop",
+  "description": "Culina's native Linux app (GTK4, libadwaita, GJS): Cook's Workbench for Phosh and the desktop",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "dependencies": {

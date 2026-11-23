@@ -46,6 +46,22 @@ search and not legal advice: no trademark register could be read.
   clears them. The check of the app stores and the trademark registers
   is on the [owner's list](../../../docs/owner-checks.md).
 
+# Cook's Workbench, looked up on 2026-11-23
+
+The visible name changed to Cook's Workbench on 2026-11-23
+([app name](decisions/app-name.md)). The same two places were read:
+
+- npm registry: `cooks-workbench` and `cooksworkbench`, no package
+  (HTTP 404 each).
+- Flathub, query `cook's workbench`: 2 hits by description only
+  (Cookbook, Recipe Scribe); no app of that name. Query `workbench`: an
+  app named **Workbench** exists (a GNOME development tool, first hit),
+  which is the manifest's `short_name` of the web app; the native app
+  shows the full name.
+- F-Droid, Google Play, the App Store and the trademark registers:
+  **not checked**, as before; on the
+  [owner's list](../../../docs/owner-checks.md).
+
 [^npm]: `https://registry.npmjs.org/<name>`, read on 2026-11-22.
 
 [^flathub]: `POST https://flathub.org/api/v2/search` with the query, read on 2026-11-22.

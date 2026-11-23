@@ -89,6 +89,31 @@ Each is the agent's reading, for the owner's review.
   first (Cook), the record second (Notebook). Nothing is rebuilt by this
   record; it names the direction for the next changes.
 
+## Answered by the owner on 2026-11-23
+
+Asked the open points one by one in a later session of the same day,
+the owner chose[^answers]:
+
+1. **A frame is the project's own composition.** A frame such as tacos
+   or a bowl says that the project put it together; each component in it
+   keeps its own named source. The rule "one source" stands for a base
+   and its alternatives ([bases and the pack](bases-and-pack.md),
+   point 4), not for a frame.
+2. **The classics that are no base are taken apart into components**
+   for the kit. What cannot be taken apart goes to the optional pack
+   (agent: the owner chose the option worded so; which of the 31 dishes
+   falls on which side is not yet worked out).
+3. **The notebook keeps when a dish was cooked, and no more.** The date
+   only; no food diary, which stays not planned. The owner asked whether
+   a diary could be had by taking in
+   github.com/TheMorpheus407/morphhealth-benchmark; read on the same
+   day, that repository holds twelve Flutter apps for Android built by
+   language models to one specification (a food diary on Open Food
+   Facts, a cycle tracker, weight, symptoms), no module a TypeScript app
+   could use. Told so, the owner chose the date only.
+4. **The visible name is Cook's Workbench.** See the
+   [app name](app-name.md) record.
+
 ## Open, for the owner
 
 1. **Where taste profiles come from.** The rules say every pairing and
@@ -102,24 +127,19 @@ Each is the agent's reading, for the owner's review.
    the character table is), a table read from books the owner supplies,
    or waiting for a source. Until this is chosen, point 5 cannot be
    built under the rules.
-2. **One source per base.** A base follows one named source, and an
-   alternative must come from the same source
-   ([bases and the pack](bases-and-pack.md), point 4). A frame such as
-   tacos or a bowl is a slot with many fillings that no single source
-   lists. A building kit needs either parts from several sources under
-   one frame, or frames that are the project's own composition and say
-   so.
-3. **The classics that are no base.** 31 of the 48 shipped dishes are
-   full recipes. Under this record they are examples and notebook
-   entries rather than parts of a kit; whether they stay shipped, become
-   the optional pack as decided on 2026-11-22, or are taken apart into
-   components for the kit is not decided. The re-transcription of the
-   German classics from Davidis 1849 serves only the first two.
-4. **History.** Whether the notebook also keeps when a dish was cooked;
-   this touches the rule "no food diary" and is open since the recipe
-   app decision. Favourites and "not cooked for long" wait for it.
-5. **The visible name.** "Cook's Notebook" names the record, not the
-   finding. Whether the name follows the purpose is the owner's.
+
+   The owner asked on 2026-11-23 why not FlavorDB, and whether the
+   licence could be changed or split, since the apps are not meant to be
+   commercialised, "except perhaps a Play Store app that costs
+   once"[^answers]. The agent's answer, a judgement and no legal advice:
+   FlavorDB is CC BY-NC-SA 3.0 ([existing tools](../existing-tools.md)).
+   Changing Culina's licence does not help, since the data would have to
+   stay NC-SA; a split (code AGPL, the data as a separate file under
+   NC-SA) is possible, but a paid store app is the commercial use that
+   licence forbids, FlavorDB offers a download per molecule only, and
+   its data says which ingredients share aroma molecules, not what a
+   dish lacks. The agent recommends the project's own table of basic
+   tastes. **Not decided.**
 
 ## Consequences
 
@@ -132,3 +152,5 @@ Each is the agent's reading, for the owner's review.
   release notes of the Linux metainfo). They are product texts with
   tests and translations and change with the first build under this
   record.
+
+[^answers]: the owner in a session of 2026-11-23, answering questions put in German; translated here.

@@ -47,7 +47,7 @@ own Back button for each step.
 
 ## Home
 
-The apps first (`.apps`: Drink Builder at `mixtura/`, Cook's Notebook at
+The apps first (`.apps`: Drink Builder at `mixtura/`, Cook's Workbench at
 `culina/`, as before), then **Sync**: one sentence on what it is for, then the
 spaces on this device. Each is a card that links to the space: its name, its
 storage in words (`GitHub: owner/name`, `WebDAV: host/path`, never a user name

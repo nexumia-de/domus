@@ -5,8 +5,8 @@ import { nutritionStrings } from './strings-nutrition';
 import { stockStrings } from './strings-stock';
 
 export const appStrings = {
-  appName: "Cook's Notebook",
-  noScript: "Cook's Notebook needs JavaScript.",
+  appName: "Cook's Workbench",
+  noScript: "Cook's Workbench needs JavaScript.",
   skipToContent: 'Skip to content',
   nav: {
     label: 'Main',
@@ -597,7 +597,7 @@ export const appStrings = {
     title: 'Import',
     back: 'Back to Settings',
     intro:
-      "Choose a file exported from Cook's Notebook, a Cooklang recipe (.cook) or a saved AI answer (.json).",
+      "Choose a file exported from Cook's Workbench, a Cooklang recipe (.cook) or a saved AI answer (.json).",
     chooseFile: 'Choose a file',
     aiTitle: 'Recipe from an AI',
     aiIntro:
@@ -721,7 +721,7 @@ export const appStrings = {
     cookAsWrittenSized: (text: string, size: string): string => `As written: ${text} (${size})`,
     nothingChanged: 'Nothing was changed.',
     notReadable: 'This file cannot be read as an export.',
-    notAnExport: "This file is not a Cook's Notebook export.",
+    notAnExport: "This file is not a Cook's Workbench export.",
     unknownVersion: 'The version of this file is not one this app knows.',
     olderNotConverted: 'This file is from an older version that cannot be converted.',
     newerVersion: (found: number, supported: number): string =>

@@ -52,7 +52,7 @@ const files = gioFiles(folder);
 const store = createFileStore(files);
 
 /** This app in the issue forms' `app` field (docs/feedback.md). */
-const REPORT_APP = "Cook's Notebook";
+const REPORT_APP = "Cook's Workbench";
 
 const application = new Adw.Application({
   application_id: __APP_ID__,

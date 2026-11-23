@@ -348,7 +348,7 @@ const refusals = async (page, origin) => {
     origin,
     'a file that is JSON but not an export',
     file('x.json', '{"hello":1}'),
-    /not a Cook's Notebook export/,
+    /not a Cook's Workbench export/,
     before,
   );
   await refused(

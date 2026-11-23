@@ -68,7 +68,7 @@ interface Words {
 
 const EN: Words = {
   intro:
-    "Turn the recipe or recipes below into JSON for Cook's Notebook, in the format described here. Answer with the JSON only, without any text before or after it.",
+    "Turn the recipe or recipes below into JSON for Cook's Workbench, in the format described here. Answer with the JSON only, without any text before or after it.",
   rules: [
     'Copy no text beyond what the recipe states: names, amounts and steps as the recipe gives them, shortened where needed, nothing added, no tips, no comments.',
     'Do not invent amounts. Mark every amount you guessed with "guessed": true; leave "amount" out when the recipe gives none and you do not guess.',
@@ -141,7 +141,7 @@ const EN: Words = {
 
 const DE: Words = {
   intro:
-    "Wandle das Rezept oder die Rezepte unten in JSON für Cook's Notebook um, im hier beschriebenen Format. Antworte nur mit dem JSON, ohne Text davor oder danach.",
+    "Wandle das Rezept oder die Rezepte unten in JSON für Cook's Workbench um, im hier beschriebenen Format. Antworte nur mit dem JSON, ohne Text davor oder danach.",
   rules: [
     'Übernimm keinen Text über das hinaus, was das Rezept sagt: Namen, Mengen und Schritte so, wie das Rezept sie gibt, wo nötig gekürzt, nichts hinzugefügt, keine Tipps, keine Kommentare.',
     'Erfinde keine Mengen. Markiere jede Menge, die du geschätzt hast, mit "guessed": true; lass "amount" weg, wenn das Rezept keine nennt und du nicht schätzt.',

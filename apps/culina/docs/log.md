@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23 (answers, name)
+
+- **Decision**: by the owner, on the open points of the [building kit](decisions/building-kit.md): a frame is the project's own composition, its components keep their sources; the classics that are no base are taken apart into components, the rest goes to the optional pack; the notebook keeps the date a dish was cooked and no more (no food diary; the repository the owner named for one holds Flutter apps of a benchmark, nothing to take in). Where taste profiles come from stays open: the owner asked about FlavorDB and a split licence, the agent's answer is recorded there. `AGENTS.md` and the [roadmap](roadmap.md) follow. Nothing built.
+- **Update**: the visible name is **Cook's Workbench** ([app name](decisions/app-name.md)), by the owner. Changed in the web app (title, manifest name and `short_name` "Workbench", texts), the native app (strings, desktop file, metainfo), the issue forms, Household and Emptio; the export file name, the user agent and the 0.1.0 release note keep the old name. [Name check](name-check.md): no npm package and no Flathub app of the name; stores and trademark registers not checked.
+
 ## 2026-11-23 (purpose)
 
 - **Decision**: by the owner: [open the app and find what to cook, from a building kit](decisions/building-kit.md). The user opens the app and finds quickly what they want to cook or can cook; the two problems are no idea and not knowing what goes together; a dish is put together from a building kit and a recipe is a notebook entry; ingredients are to get taste profiles that say what a dish still needs and what fits (the owner: "probably"); skills are there to learn abilities. It sharpens the purpose of the [recipe app decision](decisions/scope-recipe-app.md), whose bases, import and teaching as help stand. **Open, for the owner** (listed in the record): where taste profiles come from under the rule that every data set names its source; whether a frame may join parts of several sources; what becomes of the 31 shipped dishes that are no base; history against "no food diary"; the visible name.

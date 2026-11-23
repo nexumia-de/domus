@@ -23,7 +23,7 @@ test('the manifest has the installability fields', () => {
   ]) {
     expect(manifest[key], key).toBeTruthy();
   }
-  expect(manifest.name).toBe("Cook's Notebook");
+  expect(manifest.name).toBe("Cook's Workbench");
   expect(manifest.display).toBe('standalone');
 });
 

@@ -1,4 +1,4 @@
-# Culina (Cook's Notebook)
+# Culina (Cook's Workbench)
 
 Open it and find what to cook. Culina answers two problems: having no
 idea what to cook, and not knowing what goes together. A dish is put

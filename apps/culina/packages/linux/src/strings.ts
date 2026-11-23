@@ -31,8 +31,8 @@ export interface Texts extends SharedTexts {
 
 export const textsEn: Texts = {
   ...sharedEn,
-  appName: "Cook's Notebook",
-  menu: { preferences: 'Preferences', about: "About Cook's Notebook" },
+  appName: "Cook's Workbench",
+  menu: { preferences: 'Preferences', about: "About Cook's Workbench" },
   dishes: (n) => (n === 1 ? '1 dish' : `${n} dishes`),
   dish: {
     portions: 'Portions',
@@ -76,8 +76,8 @@ export const textsEn: Texts = {
 
 export const textsDe: Texts = {
   ...sharedDe,
-  appName: "Cook's Notebook",
-  menu: { preferences: 'Einstellungen', about: "Info zu Cook's Notebook" },
+  appName: "Cook's Workbench",
+  menu: { preferences: 'Einstellungen', about: "Info zu Cook's Workbench" },
   dishes: (n) => (n === 1 ? '1 Gericht' : `${n} Gerichte`),
   dish: {
     portions: 'Portionen',

@@ -82,7 +82,7 @@ four apps:
 | Idea    | `feature.yml` | `enhancement` | `problem`, `app`                   |
 
 `app` is a dropdown with the English visible names (Drink Builder,
-Cook's Notebook, Shopping List, Household), `device` one with
+Cook's Workbench, Shopping List, Household), `device` one with
 `Phone (Phosh)`, `Desktop`, `Phone (browser)`, `Desktop (browser)` and
 `Other`. The apps send exactly these options; a renamed option or id
 has to change `report.ts` and the apps' `REPORT_APP` / `app:` values in

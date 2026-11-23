@@ -11,7 +11,7 @@ taste profiles of ingredients are to say what a dish still needs and
 what fits (not built); skills with sourced notes are there to learn
 abilities ([helper](docs/decisions/mentor.md)). Scripted, without a
 language model. Visible name:
-**Cook's Notebook** ([decision](docs/decisions/app-name.md)). Knowledge
+**Cook's Workbench** ([decision](docs/decisions/app-name.md)). Knowledge
 of this repository: [docs/index.md](docs/index.md).
 
 Culina is a web app (PWA) that is also installed on Android and Linux,
@@ -35,7 +35,10 @@ its own `AGENTS.md`. Its sister app for drinks,
   following one named source (amounts as facts, method in our own words,
   no copied text, no bulk import of a site), and the user's own
   components and dishes with versions; both in one list with one filter
-  ([one dish list](docs/decisions/one-dish-list.md)). No meal plans and no food diary. No shopping list inside
+  ([one dish list](docs/decisions/one-dish-list.md)). A frame (tacos, bowl) is the project's own
+  composition and says so; each component in it keeps its source
+  ([building kit](docs/decisions/building-kit.md)). No meal plans and no food diary; the notebook
+  may keep the date a dish was cooked, no more. No shopping list inside
   Culina: that is the sister app emptio; Culina only offers to hand
   missing ingredients to it
   ([helper](docs/decisions/mentor.md),

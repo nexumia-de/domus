@@ -60,7 +60,7 @@ them into data with the citation.
 
 ## Names
 
-- [ ] Culina and Cook's Notebook in Google Play, F-Droid, the App
+- [ ] Culina and Cook's Workbench (until 2026-11-23 Cook's Notebook) in Google Play, F-Droid, the App
       Store and the trademark registers (TMview, DPMA, USPTO; classes 9
       and 42). Into Culina's [name check](../apps/culina/docs/name-check.md).
 - [ ] The open findings of [Mixtura's](../apps/mixtura/docs/name-check.md)

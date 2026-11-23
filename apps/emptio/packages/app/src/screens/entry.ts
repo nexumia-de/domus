@@ -6,7 +6,7 @@ import { categoriesOf } from '../list/categories';
 import { hashFor } from '../router';
 import type { Ctx, Screen } from './context';
 
-const APPS: Record<string, string> = { culina: "Cook's Notebook", mixtura: 'Drink Builder' };
+const APPS: Record<string, string> = { culina: "Cook's Workbench", mixtura: 'Drink Builder' };
 
 export function entryScreen(ctx: Ctx, id: string): Screen {
   const { app, t } = ctx;

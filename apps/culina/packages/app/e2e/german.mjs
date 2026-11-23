@@ -336,7 +336,7 @@ export const german = async (browser, server) => {
     'German: the choice is kept like the theme',
   );
   check(
-    (await a.page.title()).includes("Cook's Notebook") &&
+    (await a.page.title()).includes("Cook's Workbench") &&
       (await a.page.getByRole('radio', { name: 'Deutsch' }).isChecked()),
     'German: the radio shows the kept choice',
   );

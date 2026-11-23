@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Behaviour
-description: Screens, navigation, the ratio list and cards with the calculator and the neutral range display, the component and dish screens with role slots, interaction rules, states, offline behaviour and the installability check of Cook's Notebook, each rule with the test that checks it.
+description: Screens, navigation, the ratio list and cards with the calculator and the neutral range display, the component and dish screens with role slots, interaction rules, states, offline behaviour and the installability check of Cook's Workbench, each rule with the test that checks it.
 tags: [behaviour, ui, navigation, pwa, accessibility]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -15,7 +15,7 @@ sources:
 
 # Behaviour
 
-What Cook's Notebook does today. It has four screens; Ratios, Components
+What Cook's Workbench does today. It has four screens; Ratios, Components
 and Dishes have their content, and Components and Dishes can be written and
 edited by the user ([editor](#editor)); what is entered is kept in the local
 store. Colours, type and layout are in
@@ -1708,7 +1708,7 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
 - **Landmarks:** one `<header>`, one `<nav>` with a label, one `<main>`;
   the current destination has `aria-current="page"`. A skip link ("Skip
   to content") is the first focusable element. The document title is
-  "<screen> - Cook's Notebook". **Test:** `e2e/smoke.mjs`.
+  "<screen> - Cook's Workbench". **Test:** `e2e/smoke.mjs`.
 - **Focus on navigation.** When the user navigates, focus moves to the
   screen heading (`<h1>`, `tabindex="-1"`), so a screen reader announces
   the new screen. When the page first loads or reloads, nothing is

@@ -58,26 +58,30 @@ app and finds quickly what they want to cook or can cook.
    ([recipe app](decisions/scope-recipe-app.md),
    [bases and the pack](decisions/bases-and-pack.md)). Done so far: 17
    of the shipped dishes are marked as bases; none has an alternative
-   and no frame exists. **Waits for the owner**: whether a frame may
-   join parts from several sources or be the project's own composition
-   ([building kit](decisions/building-kit.md), open point 2), and what
-   becomes of the 31 shipped dishes that are no base (open point 3; the
+   and no frame exists. Decided by the owner on 2026-11-23
+   ([building kit](decisions/building-kit.md), answers 1 and 2): a
+   frame is the project's own composition, each component in it keeping
+   its source; the 31 shipped dishes that are no base are taken apart
+   into components, and what cannot be goes to the optional pack (the
    import pack of 2026-11-22 has its folder and no dish, and its switch
-   is not built).
+   is not built). Nothing of this is built yet.
 8. **Taste profiles.** A taste profile per ingredient or group, and
    from the profiles of what is in a dish: what it still needs and what
    fits. This goal takes in what was planned apart: the correction
    checklist ("tastes flat, try acid"), suggestions from a tasting
    check, and curated affinities. **Waits for the owner**: where the
-   data comes from ([building kit](decisions/building-kit.md), open
-   point 1); no data set with a usable licence was found
+   data comes from ([building kit](decisions/building-kit.md), the
+   open point; FlavorDB was asked about on 2026-11-23 and is not
+   decided); no data set with a usable licence was found
    ([plan](feel-like-plan.md), item 5), and the correction rules wait
    for a book on the [owner's list](../../../docs/owner-checks.md).
 9. **Finding faster.** What the question "what do I feel like" still
    needs without new data ([plan](feel-like-plan.md)): something like
-   this dish, time and effort in its small form. Favourites and "not
-   cooked for long" wait for the owner's word on the rule "no food
-   diary"; seasonal produce waits for a source.
+   this dish, time and effort in its small form. The notebook keeps
+   the date a dish was cooked (owner, 2026-11-23:
+   [building kit](decisions/building-kit.md), answer 3), which
+   favourites and "not cooked for long" build on; not built yet.
+   Seasonal produce waits for a source.
 10. **Sync of the notebook.** Components, dishes, own ingredients and
     tasting notes, and the user's settings, as collections of a space
     like the stock ([stock in spaces](decisions/stock-in-spaces.md)).
