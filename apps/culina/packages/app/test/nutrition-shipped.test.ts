@@ -1,4 +1,4 @@
-// The nutrition section of all 48 shipped dishes, as the screen gets it: per dish whether figures
+// The nutrition section of all 68 shipped dishes, as the screen gets it: per dish whether figures
 // are shown, the energy per portion when they are, and how many lines are counted. Pins the rule of
 // docs/engine-rules.md (Nutrition, When figures are shown; The figures of a line) on the real
 // content and the shipped catalogue. A change to a dish, the catalogue or the rule shows up here
@@ -83,12 +83,33 @@ const EXPECTED: Record<string, [number | null, number, number]> = {
   'stracotto-di-vitella': [null, 5, 15],
   'tagliatelle-verdi': [null, 1, 6],
   'torta-mantovana': [null, 6, 10],
+  // The recipes of 2026-11-23.
+  kartoffelnudeln: [null, 1, 6],
+  ruehrei: [null, 2, 4],
+  'saure-eiersauce': [null, 2, 7],
+  spargelsauce: [null, 3, 9],
+  'weisse-mehlsuppe': [null, 1, 6],
+  'arroz-blanco': [null, 1, 4],
+  'salsa-de-tomate': [340, 3, 5],
+  'salsa-vinagreta': [null, 1, 7],
+  'sopa-de-cebolla': [null, 1, 8],
+  'macaroni-a-l-italienne-maigre': [380, 7, 8],
+  'oeufs-brouilles-au-fromage': [null, 6, 9],
+  'pommes-de-terre-au-lait': [320, 5, 6],
+  'sauce-blanche': [190, 5, 6],
+  'sauce-maitre-d-hotel': [360, 4, 5],
+  'soupe-aux-poireaux': [180, 8, 9],
+  balsamella: [null, 1, 3],
+  'gnocchi-di-semolino': [330, 5, 6],
+  'maccheroni-alla-bolognese': [null, 5, 13],
+  'passato-di-patate': [200, 3, 4],
+  'spaghetti-alla-rustica': [null, 2, 8],
 };
 
 describe('the nutrition of the shipped dishes', () => {
   test('every shipped dish is in the table and no other', () => {
     expect(dishes.map((c) => c.id).sort()).toEqual(Object.keys(EXPECTED).sort());
-    expect(dishes).toHaveLength(48);
+    expect(dishes).toHaveLength(68);
   });
 
   for (const [id, [kcal, counted, total]] of Object.entries(EXPECTED)) {
@@ -111,8 +132,8 @@ describe('the nutrition of the shipped dishes', () => {
     });
   }
 
-  test('9 of 48 dishes show figures (15 did before 2026-11-21)', () => {
-    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(9);
+  test('17 of 68 dishes show figures (9 of 48 before the recipes of 2026-11-23)', () => {
+    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(17);
   });
 });
 

@@ -116,7 +116,7 @@ test('Only with what I have keeps the dishes the finder finds complete, as ready
   const keys = readyKeysOf(
     { ingredients: [], components: [], dishes: [], stock: session.state().stock },
     '2026-11-21',
-    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+    { classics: dishClassics(), catalogue: session.catalogue(), lang: 'en' },
   );
   expect(ready.rows.map((row) => row.entry.key).sort()).toEqual([...keys].sort());
   expect(ready.rows.some((row) => row.entry.id === 'egg-noodles')).toBe(true);
@@ -175,7 +175,7 @@ test('Use up first puts the dishes that use a dated item first, from a use-by th
     { ingredients: [], components: [], dishes: [], stock: session.state().stock },
     '2026-11-21',
     new Map(session.entries().map((e) => [e.key, e])),
-    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+    { classics: dishClassics(), catalogue: session.catalogue(), lang: 'en' },
   );
   expect([...marks.entries()]).toEqual([...web.marks.entries()]);
   // Both choices together: only complete dishes, the dated ones first.
@@ -315,7 +315,7 @@ test('every dish is an entry of the web app, and the one filter narrows the list
   await session.load();
   const all = session.entries();
   expect(all).toHaveLength(dishClassics().length);
-  expect(dishClassics().length).toBe(classics().length - 5);
+  expect(dishClassics().length).toBe(classics().length - 12);
   expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
   // What is offered comes from the dishes: the four countries in their order, courses, characters.
   const offered = session.offered();

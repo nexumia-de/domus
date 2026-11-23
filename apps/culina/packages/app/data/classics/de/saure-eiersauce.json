@@ -1,0 +1,212 @@
+{
+  "id": "saure-eiersauce",
+  "kind": "base",
+  "name": {
+    "en": "Sour egg sauce for beans and potatoes",
+    "de": "Saure Eiersauce zu Bohnen und Kartoffeln"
+  },
+  "originalName": "Sour Egg Sauce for Salad Beans, also for Potatoes",
+  "country": "de",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division R, No. 47, printed page 360; lines 26864-26872 of the text file",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    },
+    "teaspoonful": {
+      "kind": "volume",
+      "factor": 4.92892159375,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary teaspoon of units.json (4.92892159375 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "sour-egg-sauce",
+      "name": {
+        "en": "Sour egg sauce",
+        "de": "Saure Eiersauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 cupful of cold water"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "note": {
+            "en": "As much as gives the sauce the sourness wanted.",
+            "de": "So viel, dass die Sauce die gewünschte Säure bekommt."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount: \"enough vinegar to give the sauce the required acidity\".",
+            "de": "Die Quelle nennt keine Menge: \"enough vinegar to give the sauce the required acidity\"."
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count",
+            "original": "the yolks of 3 eggs"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "teaspoonful",
+            "original": "1 teaspoonful of flour"
+          },
+          "sourceNote": {
+            "en": "The text file prints \"teaspoonfur\"; the printed page reads \"1 teaspoonful of flour\".",
+            "de": "Die Textdatei druckt \"teaspoonfur\"; auf der gedruckten Seite steht \"1 teaspoonful of flour\" (1 Teelöffel Mehl)."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "Two pieces: one cooked in the sauce, one stirred in at the end.",
+            "de": "Zwei Stücke: eines wird mitgekocht, eines am Ende eingerührt."
+          },
+          "sourceNote": {
+            "en": "The source says \"a piece of butter\" and \"another piece of butter\" and gives no amount. The German Milwaukee edition (36th German edition, Division R, No. 50) gives a size: as its machine-read text has it, a good half egg of butter, and as much again at the end.",
+            "de": "Die Quelle sagt \"a piece of butter\" und \"another piece of butter\" und nennt keine Menge. Die deutsche Milwaukee-Ausgabe (36. deutsche Auflage, Abschnitt R, Nr. 50) nennt eine Größe: nach ihrem maschinell gelesenen Text reichlich ein halbes Ei dick Butter und am Ende noch einmal so viel."
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "Very little, and only if the butter is hardly salted.",
+            "de": "Sehr wenig, und nur wenn die Butter kaum gesalzen ist."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the cold water with vinegar until it is as sour as the sauce is wanted.",
+            "de": "Das kalte Wasser mit Essig mischen, bis es so sauer ist, wie die Sauce werden soll."
+          },
+          "action": "mix",
+          "uses": ["water", "vinegar"]
+        },
+        {
+          "text": {
+            "en": "Stir in the yolks, the flour, a piece of the butter and the nutmeg; add a very little salt if the butter is hardly salted.",
+            "de": "Eigelb, Mehl, ein Stück der Butter und Muskat einrühren; ist die Butter kaum gesalzen, ganz wenig Salz zugeben."
+          },
+          "action": "stir",
+          "uses": ["yolk", "flour", "butter", "nutmeg", "salt"]
+        },
+        {
+          "text": {
+            "en": "Beat the sauce with a whisk without stopping until it is just short of boiling.",
+            "de": "Die Sauce ohne Unterbrechung mit dem Schneebesen schlagen, bis sie kurz vor dem Kochen steht."
+          },
+          "action": "whisk"
+        },
+        {
+          "text": {
+            "en": "Off the heat, go on stirring for a few minutes; this keeps the sauce from curdling.",
+            "de": "Vom Feuer nehmen und noch einige Minuten weiterrühren; so gerinnt die Sauce nicht."
+          },
+          "action": "remove-from-heat"
+        },
+        {
+          "text": {
+            "en": "Stir in the second piece of butter.",
+            "de": "Das zweite Stück Butter einrühren."
+          },
+          "action": "stir",
+          "uses": ["butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "sour-egg-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons. The neighbouring Asparagus Sauce No. 1 (Division R, No. 44) gives 1 cupful of liquid and 2 yolks for 4 persons; this sauce has 1 cupful of water and 3 yolks.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Numbers read on the page image (archive.org scan PDF, p. 360). Print agrees: 1 cupful cold water, yolks of 3 eggs, 1 teaspoonful flour (clear in print; \"teaspoonfur\" is the text file); vinegar, butter, nutmeg, salt without amount; no persons. German Milwaukee ed. (henriettedavidis01davi, OCR): 3 yolks, 1 Theeloeffel agree; butter a good half egg, twice (sourceNote, not entered). Changed: step off the heat reworded."
+  },
+  "note": {
+    "en": "The source serves the sauce with salad beans and with potatoes. Vinegar and butter have no amount in the source.",
+    "de": "Die Quelle gibt die Sauce zu Salatbohnen und zu Kartoffeln. Essig und Butter haben in der Quelle keine Menge."
+  }
+}

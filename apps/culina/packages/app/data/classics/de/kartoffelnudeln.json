@@ -1,0 +1,216 @@
+{
+  "id": "kartoffelnudeln",
+  "kind": "base",
+  "name": {
+    "en": "Potato noodles",
+    "de": "Kartoffelnudeln"
+  },
+  "originalName": "Potato Noodles",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division C, II. Potatoes, No. 17, printed page 91; lines 13481-13494 of the text file",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "potato-noodles",
+      "name": {
+        "en": "Potato noodles",
+        "de": "Kartoffelnudeln"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "note": {
+            "en": "A deep plate full, boiled in their skins in salted water the day before, then peeled and grated.",
+            "de": "Ein tiefer Teller voll, am Vortag in der Schale in Salzwasser gekocht, dann geschält und gerieben."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"a deep plate full\"; no weight is given.",
+            "de": "Wortlaut der Quelle: \"a deep plate full\"; ein Gewicht steht nicht da."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count",
+            "original": "4 eggs"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "settled": true,
+          "note": {
+            "en": "4 spoonfuls; cream can take its place.",
+            "de": "4 Löffel; stattdessen kann Sahne genommen werden."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"4 spoonfuls of cream or milk\"; the size of the spoon is not stated, so no amount is entered. Milk is entered.",
+            "de": "Wortlaut der Quelle: \"4 spoonfuls of cream or milk\"; die Größe des Löffels steht nicht da, deshalb steht keine Menge hier. Eingetragen ist Milch."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "4 spoonfuls melted for the dough, and more for frying.",
+            "de": "4 Löffel geschmolzen für den Teig, dazu mehr zum Braten."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"the same quantity of melted butter\" (as the 4 spoonfuls of cream or milk); the size of the spoon is not stated. For the frying butter the source gives no amount.",
+            "de": "Wortlaut der Quelle: \"the same quantity of melted butter\" (wie die 4 Löffel Sahne oder Milch); die Größe des Löffels steht nicht da. Für die Bratbutter nennt die Quelle keine Menge."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "Some to begin with, then a little at a time until the dough holds together.",
+            "de": "Zu Beginn etwas, dann nach und nach wenig, bis der Teig zusammenhält."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "For the dough and for the cooking water.",
+            "de": "Für den Teig und für das Kochwasser."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the grated potatoes on a board and make a hollow in the middle.",
+            "de": "Die geriebenen Kartoffeln auf ein Brett geben und in die Mitte eine Mulde drücken."
+          },
+          "action": "prepare",
+          "uses": ["potato"]
+        },
+        {
+          "text": {
+            "en": "Put some flour, the eggs, the milk, the melted butter and salt into the hollow.",
+            "de": "Etwas Mehl, die Eier, die Milch, die geschmolzene Butter und Salz in die Mulde geben."
+          },
+          "action": "add",
+          "uses": ["flour", "egg", "milk", "butter", "salt"]
+        },
+        {
+          "text": {
+            "en": "Work everything into a dough, adding a little flour from time to time, until it can be stretched, is firm and shows no holes when cut.",
+            "de": "Alles zu einem Teig verarbeiten und dabei ab und zu etwas Mehl zugeben, bis er sich ziehen lässt, fest ist und beim Durchschneiden keine Löcher zeigt."
+          },
+          "action": "mix",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Shape the dough into longish rolls, each about as big as a potato.",
+            "de": "Aus dem Teig längliche Rollen formen, jede etwa so groß wie eine Kartoffel."
+          },
+          "technique": "shape-dumplings"
+        },
+        {
+          "text": {
+            "en": "Cook the pieces in boiling salted water.",
+            "de": "Die Stücke in kochendem Salzwasser garen."
+          },
+          "action": "cook",
+          "uses": ["salt"],
+          "time": {
+            "value": 8,
+            "to": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Lift them into a colander and let them drain.",
+            "de": "In ein Sieb heben und abtropfen lassen."
+          },
+          "action": "drain"
+        },
+        {
+          "text": {
+            "en": "Brown them lightly in butter, turning them so that every side takes colour.",
+            "de": "In Butter leicht bräunen und dabei wenden, bis alle Seiten Farbe haben."
+          },
+          "technique": "pan-fry",
+          "uses": ["butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "potato-noodles"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; the recipe takes a deep plate full of grated potatoes and 4 eggs.",
+      "target": "persons"
+    },
+    {
+      "what": "Milk or cream",
+      "value": "milk, not cream: the source says either",
+      "reason": "Our choice between the source's two alternatives ('4 spoonfuls of cream or milk'). No amount is entered because the spoon has no stated size.",
+      "target": "potato-noodles/milk"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Numbers read on the page image (archive.org scan PDF, p. 91). Print agrees: a deep plate full of potatoes, 4 eggs, 4 spoonfuls of cream or milk, the same quantity of melted butter, 8-10 minutes; flour and salt without amount. German Milwaukee ed. (henriettedavidis01davi, OCR): 4, 4 agree. Changed: shaping step was the source sentence word for word, rewritten; frying step reworded. Weak: only the eggs have an amount."
+  },
+  "note": {
+    "en": "The source closes its potato section by naming this dish among those suited to invalids. Of the amounts it gives, only the 4 eggs and the cooking time can be entered as numbers; the potatoes are a plateful and the liquids are spoonfuls of no stated size.",
+    "de": "Die Quelle nennt dieses Gericht am Ende ihres Kartoffelabschnitts unter denen, die sich für Kranke eignen. Von ihren Mengen lassen sich nur die 4 Eier und die Kochzeit als Zahlen eintragen; die Kartoffeln sind ein Teller voll und die Flüssigkeiten Löffel ohne genannte Größe."
+  }
+}

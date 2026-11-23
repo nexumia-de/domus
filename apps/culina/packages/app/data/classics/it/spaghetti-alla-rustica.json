@@ -1,0 +1,255 @@
+{
+  "id": "spaghetti-alla-rustica",
+  "kind": "base",
+  "name": {
+    "en": "Country-style spaghetti with garlic and tomato",
+    "de": "Spaghetti nach ländlicher Art mit Knoblauch und Tomate"
+  },
+  "originalName": "Spaghetti alla rustica",
+  "country": "it",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 65, Spaghetti alla rustica, printed pages 56-57; lines 6691-6773 of the text file (the machine-read heading has lost its number; the print reads 65)",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "garlic-tomato-sauce",
+      "name": {
+        "en": "Garlic and tomato sauce",
+        "de": "Knoblauch-Tomaten-Sauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "due spicchi d'aglio"
+          },
+          "note": {
+            "en": "Two cloves. Take it only as far as the first colour.",
+            "de": "Zwei Zehen. Nur bis zur ersten Farbe gehen lassen."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "A good pinch.",
+            "de": "Eine gute Prise."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'un buon pizzico di prezzemolo'. The book gives no size for a pinch, so no amount.",
+            "de": "Wortlaut der Quelle: ‚un buon pizzico di prezzemolo‘. Das Buch nennt keine Größe für eine Prise, daher keine Menge."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "note": {
+            "en": "A good measure.",
+            "de": "Ein gutes Maß."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'olio a buona misura'; no amount.",
+            "de": "Wortlaut der Quelle: ‚olio a buona misura‘; keine Menge."
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 6,
+            "max": 7,
+            "unit": "count",
+            "original": "sei o sette pomodori a pezzi"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the garlic and the parsley together into a fine mixture.",
+            "de": "Knoblauch und Petersilie zusammen fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["garlic", "parsley"],
+          "sourceNote": {
+            "en": "Source wording, read in the page image: 'Fate un battutino con due spicchi d'aglio e un buon pizzico di prezzemolo' (the machine-read text has 'BizSo' for the first words).",
+            "de": "Wortlaut der Quelle, im Seitenbild gelesen: ‚Fate un battutino con due spicchi d'aglio e un buon pizzico di prezzemolo‘ (der maschinengelesene Text hat ‚BizSo‘ für die ersten Wörter)."
+          }
+        },
+        {
+          "text": {
+            "en": "Put the chopped mixture on the heat with the oil.",
+            "de": "Die gehackte Mischung mit dem Öl auf den Herd stellen."
+          },
+          "action": "heat",
+          "uses": ["garlic", "parsley", "oil"]
+        },
+        {
+          "text": {
+            "en": "As soon as the garlic begins to colour, add the tomatoes in pieces and season them with salt and pepper.",
+            "de": "Sobald der Knoblauch Farbe anzunehmen beginnt, die Tomaten in Stücken dazugeben und mit Salz und Pfeffer würzen."
+          },
+          "action": "add",
+          "uses": ["tomato", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Cook until the tomatoes are well done.",
+            "de": "Garen, bis die Tomaten gut durch sind."
+          },
+          "action": "cook",
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "Pass the sauce through a sieve.",
+            "de": "Die Sauce durch ein Sieb streichen."
+          },
+          "action": "strain"
+        }
+      ]
+    },
+    {
+      "id": "rustica-spaghetti",
+      "name": {
+        "en": "Spaghetti",
+        "de": "Spaghetti"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "pasta",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168927"
+          },
+          "note": {
+            "en": "Spaghetti, that is vermicelli.",
+            "de": "Spaghetti, das heißt Vermicelli."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount of pasta in this recipe; it says the sauce serves four or five persons.",
+            "de": "Die Quelle nennt in diesem Rezept keine Menge Nudeln; sie sagt, die Sauce reiche für vier oder fünf Personen."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "note": {
+            "en": "Grated.",
+            "de": "Gerieben."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the spaghetti for a short time in plenty of water.",
+            "de": "Die Spaghetti kurz in reichlich Wasser kochen."
+          },
+          "technique": "cook-pasta",
+          "uses": ["pasta"]
+        },
+        {
+          "text": {
+            "en": "Drain them.",
+            "de": "Abgießen."
+          },
+          "action": "drain",
+          "uses": ["pasta"],
+          "sourceNote": {
+            "en": "The source says only that the spaghetti are dressed 'asciutti', as a dry pasta dish; the draining is implied.",
+            "de": "Die Quelle sagt nur, dass die Spaghetti ‚asciutti‘, als trockenes Nudelgericht, angemacht werden; das Abgießen ist mitgemeint."
+          }
+        },
+        {
+          "text": {
+            "en": "Dress them with the sauce and the parmesan and send them to the table at once, so that they stay juicy.",
+            "de": "Mit der Sauce und dem Parmesan anmachen und sofort auftragen, damit sie saftig bleiben."
+          },
+          "action": "mix",
+          "uses": ["parmesan"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "garlic-tomato-sauce"
+      }
+    },
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "rustica-spaghetti"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source says the sauce can serve four or five persons ('potrà servire per quattro o cinque persone'); we take the lower number, as the other Italian files do.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Page images of the 1891 scan (archive.org artusi-1891, text PDF) pp. 56-57 compared: heading '65'; 'Fate un battutino con due spicchi d'aglio e un buon pizzico di prezzemolo'; 'sei o sette pomodori'; 'quattro o cinque persone'; 'cuocerli poco in molta acqua'; nothing lost at the page turn. Corrected: first step and its sourceNote (verb read in print, OCR 'BizSo'), source.place. Index entry read in OCR only."
+  },
+  "note": {
+    "en": "The book introduces this dish with a passage about garlic and calls it a tasty dish. It says to keep the garlic from cooking long in the fat, as its taste then turns unpleasant. No time is given.",
+    "de": "Das Buch leitet dieses Gericht mit einem Abschnitt über Knoblauch ein und nennt es ein schmackhaftes Gericht. Es sagt, der Knoblauch solle nicht lange im Fett garen, da sein Geschmack dann unangenehm werde. Eine Zeit ist nicht angegeben."
+  }
+}

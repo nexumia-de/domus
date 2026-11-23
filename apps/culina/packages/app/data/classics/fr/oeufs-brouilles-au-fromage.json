@@ -1,0 +1,294 @@
+{
+  "id": "oeufs-brouilles-au-fromage",
+  "name": {
+    "en": "Scrambled eggs with cheese",
+    "de": "Rührei mit Käse"
+  },
+  "originalName": "Œufs brouillés au fromage",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Œufs brouillés au fromage\", pp. 270-271; gouffe.txt lines 14572-14576. Method from \"Œufs brouillés aux fines herbes\", lines 14541-14556; croûtons from lines 14012-14024",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "oeufs-brouilles-fromage",
+      "name": {
+        "en": "Scrambled eggs with cheese",
+        "de": "Rührei mit Käse"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g",
+            "original": "1 hecto de beurre"
+          },
+          "sourceNote": {
+            "en": "The machine-read text has \"I heeto\"; the page image (p. 270) prints \"1 hecto de beurre\", 100 grammes.",
+            "de": "Der maschinengelesene Text hat «I heeto»; das Seitenbild (S. 270) druckt «1 hecto de beurre», 100 Gramm."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g",
+            "original": "60 grammes de fromage de Parmesan râpé"
+          },
+          "note": {
+            "en": "Grated.",
+            "de": "Gerieben."
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count",
+            "original": "6 œufs frais"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "ml",
+            "original": "1 demi-décilitre de lait"
+          },
+          "sourceNote": {
+            "en": "The machine-read text has \"J demi-décilitre\"; the page image (p. 270) prints \"1 demi-décilitre de lait\".",
+            "de": "Der maschinengelesene Text hat «J demi-décilitre»; das Seitenbild (S. 270) druckt «1 demi-décilitre de lait»."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "sourceNote": {
+            "en": "Original: 1 petite pincée de sel (a small pinch). The book sizes a pinch, not a small one, so the line has no amount.",
+            "de": "Original: 1 petite pincée de sel (eine kleine Prise). Das Buch gibt die Größe einer Prise an, nicht die einer kleinen; daher keine Menge."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "prise",
+            "original": "1 prise de poivre"
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          },
+          "sourceNote": {
+            "en": "Original: 1 demi-cuillerée à bouche de persil haché, in the preceding recipe, Œufs brouillés aux fines herbes. The cheese recipe itself names no parsley; it says \"finissez comme il est dit à l'article précédent\", and the end of that recipe is the parsley and the croûtons, so we kept both. The book sizes a spoon for flour only, so the line has no amount.",
+            "de": "Original: 1 demi-cuillerée à bouche de persil haché, im vorangehenden Rezept, Œufs brouillés aux fines herbes. Das Käserezept selbst nennt keine Petersilie; es sagt «finissez comme il est dit à l'article précédent», und der Schluss jenes Rezepts sind die Petersilie und die Croûtons, daher haben wir beides behalten. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the butter and the grated Parmesan into a pan of 2 litres.",
+            "de": "Die Butter und den geriebenen Parmesan in eine Kasserolle mit 2 Litern Inhalt geben."
+          },
+          "action": "add",
+          "uses": ["butter", "parmesan"]
+        },
+        {
+          "text": {
+            "en": "Add the eggs, the milk, the salt and the pepper.",
+            "de": "Eier, Milch, Salz und Pfeffer zugeben."
+          },
+          "action": "add",
+          "uses": ["eggs", "milk", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Set the pan on the heat and beat briskly with a whisk, reaching every part of the pan.",
+            "de": "Die Kasserolle aufs Feuer setzen und kräftig mit dem Schneebesen schlagen, dabei alle Stellen der Kasserolle erreichen."
+          },
+          "action": "whisk",
+          "uses": ["eggs"]
+        },
+        {
+          "text": {
+            "en": "When the eggs begin to set, take the pan off the heat and go on stirring for 2 minutes.",
+            "de": "Wenn die Eier zu stocken beginnen, die Kasserolle vom Feuer nehmen und noch 2 Minuten weiterrühren."
+          },
+          "action": "remove-from-heat",
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the chopped parsley.",
+            "de": "Die gehackte Petersilie zugeben."
+          },
+          "action": "add",
+          "uses": ["parsley"]
+        },
+        {
+          "text": {
+            "en": "Serve on a dish with the fried croûtons.",
+            "de": "Auf einer Platte mit den gebratenen Croûtons servieren."
+          },
+          "action": "serve"
+        }
+      ]
+    },
+    {
+      "id": "oeufs-brouilles-croutons",
+      "name": {
+        "en": "Croûtons fried in butter",
+        "de": "In Butter gebratene Croûtons"
+      },
+      "role": "crunch",
+      "lines": [
+        {
+          "key": "bread",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
+          },
+          "note": {
+            "en": "The crumb only, without crust.",
+            "de": "Nur die Krume, ohne Rinde."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 20,
+            "unit": "g",
+            "original": "20 grammes de beurre"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the crumb of the bread into triangles 1 centimetre thick and 3 centimetres wide.",
+            "de": "Die Brotkrume in Dreiecke von 1 Zentimeter Dicke und 3 Zentimetern Breite schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter in a small pan and skim it as soon as it has melted.",
+            "de": "Die Butter in einer kleinen Kasserolle schmelzen und abschäumen, sobald sie geschmolzen ist."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Put in the triangles and let them take a pale gold colour on each side.",
+            "de": "Die Dreiecke hineingeben und auf jeder Seite hellgelb werden lassen."
+          },
+          "action": "cook",
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "Drain the croûtons.",
+            "de": "Die Croûtons abtropfen lassen."
+          },
+          "action": "drain",
+          "uses": ["bread"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "oeufs-brouilles-fromage"
+      }
+    },
+    {
+      "role": "crunch",
+      "ref": {
+        "kind": "component",
+        "id": "oeufs-brouilles-croutons"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; six eggs with butter, cheese and croûtons are taken as a light main dish for four, as in omelette-fines-herbes.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. 'I heeto' is printed 1 hecto, 'J' 1 demi-décilitre. 'Finissez comme ... précédent': croûtons sure, parsley the literal reading but not named in the cheese recipe; its source note says so. Corrected: German 'zu stocken'; source notes give the print. Not checked: a second edition."
+  },
+  "note": {
+    "en": "The recipe is two lines in the book: the eggs are made as the preceding Œufs brouillés aux fines herbes, with 60 grammes of grated Parmesan added together with the butter, and finished as there; so the parsley and the croûtons of that recipe are kept. The croûtons are described in the book's spinach recipe, to which the source points. The book adds that scrambled eggs are also made with asparagus tips or green peas.",
+    "de": "Das Rezept umfasst im Buch zwei Zeilen: Die Eier werden wie die vorangehenden Œufs brouillés aux fines herbes zubereitet, zusammen mit der Butter kommen 60 Gramm geriebener Parmesan dazu, und vollendet wird wie dort; daher bleiben Petersilie und Croûtons jenes Rezepts. Die Croûtons beschreibt das Spinatrezept des Buches, auf das die Quelle verweist. Das Buch ergänzt, dass Rührei auch mit Spargelspitzen oder grünen Erbsen gemacht wird."
+  }
+}

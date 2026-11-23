@@ -1,0 +1,181 @@
+{
+  "id": "arroz-blanco",
+  "kind": "base",
+  "name": {
+    "en": "Plain white rice, Cuban style",
+    "de": "Weißer Reis nach kubanischer Art"
+  },
+  "originalName": "Arroz blanco",
+  "country": "es",
+  "vegetarian": false,
+  "course": "side",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "p. 728, chapter Legumbres, section Arroz, recipe 'Arroz blanco'; lines 32741–32764",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "arroz-blanco-rice",
+      "name": {
+        "en": "White rice",
+        "de": "Weißer Reis"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l"
+          },
+          "settled": true,
+          "sourceNote": {
+            "en": "The source gives no amount of water, only that the rice goes up to about half of it.",
+            "de": "Die Quelle nennt keine Wassermenge, nur dass der Reis bis etwa zur Hälfte davon reicht."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "A little, in the water.",
+            "de": "Ein wenig, ins Wasser."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"un poquito de sal\"; no amount.",
+            "de": "Quellenwortlaut: „un poquito de sal“; keine Menge."
+          }
+        },
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-rice-white"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "ml",
+            "original": "como hasta la mitad de arroz"
+          },
+          "settled": true,
+          "note": {
+            "en": "About half the volume of the water; picked over and washed well.",
+            "de": "Etwa das halbe Volumen des Wassers; verlesen und gut gewaschen."
+          },
+          "sourceNote": {
+            "en": "The source gives the rice as a share of the water (\"como hasta la mitad\"), not as a measure.",
+            "de": "Die Quelle gibt den Reis als Anteil des Wassers an („como hasta la mitad“), nicht als Maß."
+          }
+        },
+        {
+          "key": "lard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171401"
+          },
+          "note": {
+            "en": "Very little: only enough to moisten the top layer.",
+            "de": "Sehr wenig: nur so viel, dass die oberste Schicht feucht wird."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"un poco de manteca de puerco en escasa cantidad\"; no amount.",
+            "de": "Quellenwortlaut: „un poco de manteca de puerco en escasa cantidad“; keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the water to the boil with a little salt, in an earthenware pot if there is one.",
+            "de": "Das Wasser mit ein wenig Salz zum Kochen bringen, wenn möglich in einem Tontopf."
+          },
+          "action": "heat",
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "When the water bubbles, put in the washed rice.",
+            "de": "Sobald das Wasser sprudelt, den gewaschenen Reis hineingeben."
+          },
+          "action": "add",
+          "uses": ["rice"]
+        },
+        {
+          "text": {
+            "en": "Leave the pot on the heat until the liquid begins to run short.",
+            "de": "Den Topf auf dem Feuer lassen, bis die Flüssigkeit knapp wird."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice"]
+        },
+        {
+          "text": {
+            "en": "Before the rice is quite dry, take it off and keep it in a warm place away from the fire.",
+            "de": "Bevor der Reis ganz trocken ist, vom Feuer nehmen und an einem warmen Platz abseits des Feuers halten."
+          },
+          "action": "remove-from-heat"
+        },
+        {
+          "text": {
+            "en": "Coat the top layer with a little lard; the warmth spreads it through the rice, so that the grains stay loose and do not toast or clump.",
+            "de": "Die oberste Schicht mit ein wenig Schmalz überziehen; die Wärme verteilt es im Reis, sodass die Körner locker bleiben und weder rösten noch klumpen."
+          },
+          "action": "add",
+          "uses": ["lard"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "arroz-blanco-rice"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; half a litre of raw rice is a side for about four.",
+      "target": "persons"
+    },
+    {
+      "what": "Amount of water",
+      "value": "1 l",
+      "reason": "Our judgement: the source gives no absolute amount, only the share of rice to water; one litre is taken as the size to which the share is applied.",
+      "target": "arroz-blanco-rice/water"
+    },
+    {
+      "what": "Amount of rice",
+      "value": "500 ml",
+      "reason": "From the source's share 'se le echa como hasta la mitad de arroz' (rice up to about half as much as the water, read as a share by volume; the source does not say volume or weight, and 'hasta' makes half the upper end) applied to the settled litre of water. Two parts of water to one of rice is a proportion the rice can absorb, which fits the source's method (cooked until the liquid runs short, nothing poured off).",
+      "target": "arroz-blanco-rice/rice"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber: own copy of the text compared line by line; numbers read in the page images (item PDF, page + 24). Seen in print: p. 728 and the whole recipe; it has no number, only 'como hasta la mitad de arroz'. 1 l water, 500 ml rice and 4 persons are ours and settled; the share read by volume holds (reason made fuller). Changed: water's source note says 'up to about half'. Lard: vegetarian false holds."
+  },
+  "note": {
+    "en": "Muro calls this the white rice of Cuba, served loose-grained and ready to go with eggs, fried plantain, minced meat or the sauce of any stew. The source gives a share, rice about half of the water, and no measure; the little fat at the end is lard, so the dish is not marked vegetarian.",
+    "de": "Muro nennt dies den weißen Reis Kubas, körnig serviert und bereit für Eier, gebratene Kochbanane, Hackfleisch oder die Sauce eines Schmorgerichts. Die Quelle gibt einen Anteil an, Reis etwa die Hälfte des Wassers, und kein Maß; das wenige Fett am Schluss ist Schweineschmalz, daher ist das Gericht nicht als vegetarisch markiert."
+  }
+}

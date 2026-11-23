@@ -1,0 +1,213 @@
+{
+  "id": "sauce-blanche",
+  "kind": "base",
+  "name": {
+    "en": "White butter sauce",
+    "de": "Weiße Buttersauce"
+  },
+  "originalName": "Sauce blanche",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Sauces de ménage\", \"Sauce blanche\", pp. 89-90; gouffe.txt lines 4758-4833. Four persons: footnote, line 4767, and in print above the list on p. 90",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    },
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "sauce-blanche-sauce",
+      "name": {
+        "en": "White butter sauce",
+        "de": "Weiße Buttersauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "butter-paste",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de beurre"
+          },
+          "note": {
+            "en": "Worked into a paste with the flour.",
+            "de": "Wird mit dem Mehl zu einer Paste verknetet."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de farine"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "pincée",
+            "original": "1 pincée de sel"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "prise",
+            "original": "1 prise de poivre"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "ml",
+            "original": "3 décilitres d'eau chaude"
+          },
+          "note": {
+            "en": "Hot. 250 ml go in first; the remaining 50 ml are kept back to thin the sauce if needed.",
+            "de": "Heiß. Zuerst kommen 250 ml hinein; die übrigen 50 ml bleiben zurück, um die Sauce bei Bedarf zu verdünnen."
+          }
+        },
+        {
+          "key": "butter-finish",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g",
+            "original": "60 grammes de beurre"
+          },
+          "note": {
+            "en": "Cut into pieces, added at the end.",
+            "de": "In Stücke geschnitten, kommt zum Schluss dazu."
+          },
+          "sourceNote": {
+            "en": "The list of the source gives 90 grammes of butter in all; the method divides them into 30 and 60 grammes.",
+            "de": "Die Zutatenliste der Quelle nennt insgesamt 90 Gramm Butter; die Zubereitung teilt sie in 30 und 60 Gramm."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "In a saucepan of 1 litre, work the 30 g of butter and the flour into a paste.",
+            "de": "In einer Kasserolle mit 1 Liter Inhalt die 30 g Butter und das Mehl zu einer Paste verarbeiten."
+          },
+          "action": "mix",
+          "uses": ["butter-paste", "flour"],
+          "sourceNote": {
+            "en": "The size of the saucepan (\"une casserole d'une contenance d'un litre\") is printed on p. 90; the machine-read text does not have this line.",
+            "de": "Die Größe der Kasserolle («une casserole d'une contenance d'un litre») steht gedruckt auf S. 90; der maschinengelesene Text hat diese Zeile nicht."
+          }
+        },
+        {
+          "text": {
+            "en": "Add the salt and the pepper.",
+            "de": "Salz und Pfeffer zugeben."
+          },
+          "action": "season",
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Pour in 250 ml of the hot water.",
+            "de": "250 ml des heißen Wassers zugießen."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Stir with a spoon over the heat until it first boils; the sauce should coat the back of the spoon about 2 millimetres thick.",
+            "de": "Auf dem Feuer mit einem Löffel rühren, bis es zum ersten Mal aufkocht; die Sauce soll den Löffelrücken etwa 2 Millimeter dick überziehen."
+          },
+          "action": "stir"
+        },
+        {
+          "text": {
+            "en": "If the sauce is thicker than that, add the water kept back, or half of it, and bring it to the boil again.",
+            "de": "Ist die Sauce dicker, das zurückbehaltene Wasser oder die Hälfte davon zugeben und wieder aufkochen lassen."
+          },
+          "action": "add",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Add the 60 g of butter in pieces, take the pan off the heat and stir until the butter has melted completely.",
+            "de": "Die 60 g Butter in Stücken zugeben, die Kasserolle vom Feuer nehmen und rühren, bis die Butter ganz geschmolzen ist."
+          },
+          "action": "stir",
+          "uses": ["butter-finish"]
+        },
+        {
+          "text": {
+            "en": "Serve; with the butter the sauce comes to 400 ml.",
+            "de": "Servieren; mit der Butter ergibt die Sauce 400 ml."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "sauce-blanche-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. Corrected: 1-litre saucepan added (printed on p. 90, not in the machine text); 'about 400 ml' made '400 ml'; dish note now cites pp. 91-92; place completed. No amount changed. Not checked: a second edition; 'poivre' is mapped to black pepper."
+  },
+  "note": {
+    "en": "The book's household white sauce: flour and butter bound with hot water, not with milk, and finished with fresh butter off the heat. The book adds how to bind a thin sauce further (p. 91) and that a few drops of reduced vinegar or of lemon juice may go in at the moment of serving for those who like it sharp (p. 92); neither is part of the amounts here.",
+    "de": "Die weiße Haushaltssauce des Buches: Mehl und Butter mit heißem Wasser gebunden, nicht mit Milch, und abseits vom Feuer mit frischer Butter vollendet. Das Buch ergänzt, wie eine dünne Sauce nachgebunden wird (S. 91), und dass für Liebhaber einer säuerlichen Sauce beim Anrichten einige Tropfen eingekochter Essig oder Zitronensaft dazukommen können (S. 92); beides gehört nicht zu den Mengen hier."
+  }
+}

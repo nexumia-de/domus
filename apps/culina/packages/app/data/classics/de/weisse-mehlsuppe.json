@@ -1,0 +1,194 @@
+{
+  "id": "weisse-mehlsuppe",
+  "name": {
+    "en": "White flour soup with sour cream and parsley",
+    "de": "Weiße Mehlsuppe mit saurer Sahne und Petersilie"
+  },
+  "originalName": "White Flour Soup",
+  "country": "de",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division B, No. 81, printed page 47; lines 11251-11259 of the text file",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "flour-soup",
+      "name": {
+        "en": "White flour soup",
+        "de": "Weiße Mehlsuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "A piece the size of half an egg.",
+            "de": "Ein Stück von der Größe eines halben Eis."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"a piece of butter the size of half an egg\"; no weight is given.",
+            "de": "Wortlaut der Quelle: \"a piece of butter the size of half an egg\"; ein Gewicht steht nicht da."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tablespoonful",
+            "original": "3 tablespoonfuls of flour"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amountWord": "as-needed",
+          "note": {
+            "en": "Boiling.",
+            "de": "Kochend."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"the required quantity of boiling water\".",
+            "de": "Wortlaut der Quelle: \"the required quantity of boiling water\"."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cream"
+          },
+          "settled": true,
+          "note": {
+            "en": "Sour cream.",
+            "de": "Saure Sahne."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount. It finishes the soup in one of two ways: with salt, mace or lemon peel, a trifle of sugar and an egg yolk, or without spice and sugar with salt, sour cream and parsley; the second is entered.",
+            "de": "Die Quelle nennt keine Menge. Sie vollendet die Suppe auf eine von zwei Arten: mit Salz, Muskatblüte oder Zitronenschale, einer Spur Zucker und einem Eigelb, oder ohne Gewürz und Zucker mit Salz, saurer Sahne und Petersilie; hier steht die zweite."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "Chopped fine.",
+            "de": "Fein gehackt."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Heat the butter, add the flour and stir until it froths up and bubbles.",
+            "de": "Die Butter erhitzen, das Mehl zugeben und rühren, bis es aufschäumt und Blasen wirft."
+          },
+          "technique": "roux",
+          "uses": ["butter", "flour"]
+        },
+        {
+          "text": {
+            "en": "Add the boiling water, stirring with care to keep the soup free of lumps.",
+            "de": "Das kochende Wasser zugeben und dabei sorgsam rühren, damit die Suppe ohne Klumpen bleibt."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Cook the soup until it is done.",
+            "de": "Die Suppe garkochen."
+          },
+          "action": "cook",
+          "sourceNote": {
+            "en": "The source gives no time (\"When done\").",
+            "de": "Die Quelle nennt keine Zeit (\"When done\")."
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in salt, the sour cream and the chopped parsley.",
+            "de": "Salz, die saure Sahne und die gehackte Petersilie einrühren."
+          },
+          "action": "stir",
+          "uses": ["salt", "cream", "parsley"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "flour-soup"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons and no amount of water; 3 tablespoonfuls of flour are taken to bind a soup for about 4.",
+      "target": "persons"
+    },
+    {
+      "what": "Way of finishing the soup",
+      "value": "salt, sour cream and parsley, not mace or lemon peel, sugar and an egg yolk: the source says either",
+      "reason": "Our choice between the source's two alternatives; the savoury one is entered as an everyday soup. No amount is given for either.",
+      "target": "flour-soup/cream"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Numbers read on the page image (archive.org scan PDF, p. 47). Print agrees: butter the size of half an egg, 3 tablespoonfuls of flour, the required quantity of boiling water; salt, sour cream, parsley without amount; no time, no persons. German Milwaukee ed. (henriettedavidis01davi, OCR): half an egg, 3 Essloeffel agree. Changed: first two steps kept the source clauses, reworded. Weak: 4 persons is a guess."
+  },
+  "note": {
+    "en": "Of the two ways the source finishes this soup, the one with sour cream and parsley is transcribed; the other, with mace or lemon peel, a trifle of sugar and an egg yolk, is not. The source gives no amount of water.",
+    "de": "Von den zwei Arten, auf die die Quelle diese Suppe vollendet, ist die mit saurer Sahne und Petersilie übertragen; die andere, mit Muskatblüte oder Zitronenschale, einer Spur Zucker und einem Eigelb, nicht. Die Quelle nennt keine Wassermenge."
+  }
+}

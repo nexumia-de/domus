@@ -1,0 +1,200 @@
+{
+  "id": "salsa-vinagreta",
+  "kind": "base",
+  "name": {
+    "en": "Vinaigrette with hard-boiled egg, onion and parsley",
+    "de": "Vinaigrette mit hartem Ei, Zwiebel und Petersilie"
+  },
+  "originalName": "Salsa vinagreta",
+  "country": "es",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "pp. 160–161, section Salsas, recipe 'Salsa vinagreta'; lines 7656–7680",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "salsa-vinagreta-sauce",
+      "name": {
+        "en": "Vinaigrette with egg",
+        "de": "Vinaigrette mit Ei"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "dos yemas cocidas … las dos claras duras"
+          },
+          "note": {
+            "en": "Hard-boiled; the yolks go into the sauce first, the whites at the end.",
+            "de": "Hart gekocht; die Eigelbe kommen zuerst in die Sauce, die Eiweiße am Schluss."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-vinegar"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "settled": true,
+          "note": {
+            "en": "Raw, chopped.",
+            "de": "Roh, gehackt."
+          },
+          "sourceNote": {
+            "en": "The source makes the sauce cold with raw onion and raw oil, or hot with onion fried in very hot oil; the cold one is chosen. It gives no amount. It adds that some put in a trace of garlic, that very finely chopped shallot is preferable, and early spring onions better still.",
+            "de": "Die Quelle macht die Sauce kalt mit roher Zwiebel und rohem Öl oder heiß mit in sehr heißem Öl gebratener Zwiebel; gewählt ist die kalte. Sie nennt keine Menge. Sie fügt an, dass manche eine Spur Knoblauch zugeben, dass sehr fein gehackte Schalotte vorzuziehen ist und junge Frühlingszwiebeln noch besser sind."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Take the yolks out of the two hard-boiled eggs and keep the whites.",
+            "de": "Aus den zwei hart gekochten Eiern die Eigelbe lösen und die Eiweiße aufheben."
+          },
+          "action": "prepare",
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Mash the yolks in a bowl and dissolve them in vinegar. Season with salt and pepper.",
+            "de": "Die Eigelbe in einer Schüssel zerdrücken und in Essig auflösen. Mit Salz und Pfeffer würzen."
+          },
+          "action": "mash",
+          "uses": ["egg", "vinegar", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Add the chopped parsley and work everything together well.",
+            "de": "Die gehackte Petersilie zugeben und alles gut durcharbeiten."
+          },
+          "action": "mix",
+          "uses": ["parsley"]
+        },
+        {
+          "text": {
+            "en": "Add the chopped raw onion and the oil.",
+            "de": "Die gehackte rohe Zwiebel und das Öl zugeben."
+          },
+          "action": "add",
+          "uses": ["onion", "oil"]
+        },
+        {
+          "text": {
+            "en": "When serving, cut the two hard whites into small squares and mix them into the sauce.",
+            "de": "Beim Anrichten die zwei harten Eiweiße in kleine Würfel schneiden und unter die Sauce mischen."
+          },
+          "action": "mix",
+          "uses": ["egg"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "salsa-vinagreta-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; a sauce built on two eggs serves about four.",
+      "target": "persons"
+    },
+    {
+      "what": "Cold or hot",
+      "value": "cold: raw onion and raw oil",
+      "reason": "The source gives both ways in one sentence (hot: the oil fried and very hot with the onion well fried; cold: both raw). The cold one is chosen as the plain vinaigrette; the hot one is named in the line's sourceNote.",
+      "target": "salsa-vinagreta-sauce/onion"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber: own copy of the text compared line by line; numbers read in the page images (item PDF, page + 24). Seen in print: pp. 160–161, 'dos yemas cocidas', 'las dos claras duras', the only numbers. Changed: the onion's source note gives the source's order (shallot preferable, early spring onions better still). Weakness: no amount for vinegar, oil, onion, parsley; 4 persons are ours."
+  },
+  "note": {
+    "en": "The only number in the source is the two eggs; vinegar, oil, onion, parsley and seasoning have no amount. Muro makes the sauce cold or hot; this file follows the cold way.",
+    "de": "Die einzige Zahl der Quelle sind die zwei Eier; Essig, Öl, Zwiebel, Petersilie und Würze haben keine Menge. Muro macht die Sauce kalt oder heiß; diese Datei folgt der kalten Art."
+  }
+}

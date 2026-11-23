@@ -44,9 +44,10 @@ review.
    random pick, not in the native app's list (`dishClassics`,
    `packages/app/src/classics/content.ts`). It stays where the kit is:
    in the Components list with its role, with its own screen, its
-   source and "Keep in my notebook". Today these are five: alioli,
-   mayonnaise, sauce hollandaise, holländische Sauce, salsa di pomodoro.
-   Cook lists 43 dishes.
+   source and "Keep in my notebook". When this was decided these were five: alioli,
+   mayonnaise, sauce hollandaise, holländische Sauce, salsa di pomodoro,
+   and Cook listed 43 dishes. With the recipes added later the same day
+   they are 12, and Cook lists 56 of 68.
 2. **The kind decides, not the course alone.** A sauce a source gives as
    a dish (no `kind`) stays a dish; there is none today. A base of
    another course (noodles, gnocchi, purée, custard) stays a dish: it is

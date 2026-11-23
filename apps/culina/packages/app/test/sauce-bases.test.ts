@@ -1,4 +1,4 @@
-// The shipped sauces that are bases (alioli, mayonnaise, two hollandaises, tomato sauce) are parts
+// The shipped sauces that are bases (alioli, mayonnaise, béchamel, tomato sauces and others) are parts
 // of dishes: they are on no dish list, in the finder's question or the random pick's pool, and
 // they stay among the components and keep their own screen. On the real shipped files; no
 // browser.
@@ -16,7 +16,20 @@ import { shippedEntries } from '../src/components/shipped';
 import { shippedNow } from '../src/cook/entries';
 import { reset } from '../src/notebook/state';
 
-const SAUCES = ['alioli', 'holl-sauce', 'mayonnaise', 'salsa-di-pomodoro', 'sauce-hollandaise'];
+const SAUCES = [
+  'alioli',
+  'balsamella',
+  'holl-sauce',
+  'mayonnaise',
+  'salsa-de-tomate',
+  'salsa-di-pomodoro',
+  'salsa-vinagreta',
+  'sauce-blanche',
+  'sauce-hollandaise',
+  'sauce-maitre-d-hotel',
+  'saure-eiersauce',
+  'spargelsauce',
+];
 
 beforeEach(async () => {
   reset();
@@ -39,7 +52,7 @@ afterEach(() => {
   resetContent();
 });
 
-test('the five sauce bases are no dishes; every other shipped file is', () => {
+test('the twelve sauce bases are no dishes; every other shipped file is', () => {
   const left = classics()
     .filter((c) => !dishClassics().includes(c))
     .map((c) => c.id)

@@ -67,24 +67,40 @@ describe('every shipped classic', () => {
   });
 });
 
-describe('the classics that are bases (issue 39, part 1)', () => {
+describe('the classics that are bases (issue 39, part 1; 16 more with the recipes of 2026-11-23)', () => {
   const BASES = [
     'alioli',
+    'arroz-blanco',
+    'balsamella',
     'cavolfiore-balsamella',
     'creme-caramel',
     'egg-noodles',
     'eierkuchen',
     'flan-clasico',
     'gnocchi-di-patate',
+    'gnocchi-di-semolino',
     'holl-sauce',
+    'kartoffelnudeln',
+    'macaroni-a-l-italienne-maigre',
+    'maccheroni-alla-bolognese',
     'mayonnaise',
     'minestrone',
     'napfkuchen',
     'omelette-fines-herbes',
+    'passato-di-patate',
+    'pommes-de-terre-au-lait',
     'pure-de-patatas',
     'risotto-alla-milanese',
+    'ruehrei',
+    'salsa-de-tomate',
     'salsa-di-pomodoro',
+    'salsa-vinagreta',
+    'sauce-blanche',
     'sauce-hollandaise',
+    'sauce-maitre-d-hotel',
+    'saure-eiersauce',
+    'spaghetti-alla-rustica',
+    'spargelsauce',
     'tagliatelle-verdi',
   ];
   test('are marked as bases, and every component of a base names its role', () => {

@@ -1,5 +1,5 @@
 // A sauce is a part, and the Notebook holds what is the user's: in a browser, in German, on the
-// real shipped files and an empty notebook. Cook lists 43 dishes and no alioli; the Components
+// real shipped files and an empty notebook. Cook lists 56 dishes and no alioli; the Components
 // list has it; the Notebook's Dishes list no shipped dish and say where the shipped ones are.
 // Chromium at 360 px; no real phone.
 import { check, watch } from './harness.mjs';
@@ -17,8 +17,11 @@ export const kitParts = async (browser, server) => {
   await page.locator('.dish-row').first().waitFor();
   const cook = await page.locator('.dish-row').allInnerTexts();
   check(
-    cook.length === 43 && !cook.some((row) => /Alioli|Mayonnaise|Holländische Sauce/.test(row)),
-    `${label}: Cook lists 43 dishes and none of the sauces that are bases (${cook.length})`,
+    cook.length === 56 &&
+      !cook.some((row) =>
+        /Alioli|Mayonnaise|Holländische Sauce|Béchamelsauce \(Balsamella\)|Spargelsauce/.test(row),
+      ),
+    `${label}: Cook lists 56 dishes and none of the sauces that are bases (${cook.length})`,
   );
   check(
     cook.some((row) => row.includes('Risotto')) && cook.some((row) => row.includes('Tortilla')),

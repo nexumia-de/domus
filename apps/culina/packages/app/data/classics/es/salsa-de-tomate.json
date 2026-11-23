@@ -1,0 +1,195 @@
+{
+  "id": "salsa-de-tomate",
+  "kind": "base",
+  "name": {
+    "en": "Spanish tomato sauce with onion",
+    "de": "Spanische Tomatensauce mit Zwiebel"
+  },
+  "originalName": "Salsa de tomate",
+  "country": "es",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "pp. 176–177, section Salsas, recipe 'Salsa de tomate' (the third of that name, the 'fórmula clásica'); lines 8319–8363 of the plain text",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {},
+  "components": [
+    {
+      "id": "salsa-de-tomate-sauce",
+      "name": {
+        "en": "Tomato sauce",
+        "de": "Tomatensauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 8,
+            "unit": "count",
+            "original": "ocho tomates grandes como huevos"
+          },
+          "note": {
+            "en": "Tomatoes as large as eggs.",
+            "de": "Tomaten so groß wie Eier."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "dos cebollas de igual tamaño"
+          },
+          "note": {
+            "en": "Onions of the same size as the tomatoes.",
+            "de": "Zwiebeln von der Größe der Tomaten."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil"
+          },
+          "amount": {
+            "value": 125,
+            "unit": "g",
+            "original": "125 gramos de grasa — la que sea"
+          },
+          "sourceNote": {
+            "en": "The book gives the weight for any fat (\"la que sea\"). It names butter for the northern countries, lard for many kitchens and oil for Spain, and advises lard where the food eaten with the sauce does not bear oil. Oil is chosen. The machine-read text has the number as \"1'25\"; the page image prints 125.",
+            "de": "Das Buch nennt das Gewicht für jedes Fett („la que sea“). Es nennt Butter für die Länder des Nordens, Schweineschmalz für viele Küchen und Öl für Spanien und rät zu Schweineschmalz, wo die Speise, zu der die Sauce gegessen wird, kein Öl verträgt. Gewählt ist Öl. Der maschinengelesene Text hat die Zahl als „1'25“; im Seitenbild steht 125."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "settled": true,
+          "note": {
+            "en": "A little, to moisten the fried tomatoes and onions.",
+            "de": "Ein wenig, um die gebratenen Tomaten und Zwiebeln anzugießen."
+          },
+          "sourceNote": {
+            "en": "The source says a little broth or water (\"un poco de caldo ó de agua\") and gives no amount; water is chosen. For thinning a thick sauce the source names broth only; water is kept here as well.",
+            "de": "Die Quelle sagt ein wenig Brühe oder Wasser („un poco de caldo ó de agua“) und nennt keine Menge; gewählt ist Wasser. Zum Verdünnen einer dicken Sauce nennt die Quelle nur Brühe; auch dort bleibt es hier bei Wasser."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "sourceNote": {
+            "en": "The source says to season during the frying and names no seasoning and no amount.",
+            "de": "Die Quelle sagt, während des Bratens zu würzen, und nennt weder ein Gewürz noch eine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tomatoes and the onions into rough pieces.",
+            "de": "Tomaten und Zwiebeln in grobe Stücke schneiden."
+          },
+          "action": "prepare",
+          "uses": ["tomato", "onion"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a frying pan until very hot and fry the tomatoes and onions in it for a long time, seasoning them while they fry.",
+            "de": "Das Öl in einer Pfanne stark erhitzen und Tomaten und Zwiebeln darin lange braten; dabei würzen."
+          },
+          "action": "cook",
+          "uses": ["oil", "tomato", "onion", "salt"]
+        },
+        {
+          "text": {
+            "en": "Moisten with a little water and finish the cooking over low heat.",
+            "de": "Mit ein wenig Wasser angießen und bei schwacher Hitze fertig garen."
+          },
+          "action": "add",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Pass the sauce through a sieve, pressing it through with a wooden spoon.",
+            "de": "Die Sauce durch ein Sieb streichen und mit einem Holzlöffel durchdrücken."
+          },
+          "action": "strain"
+        },
+        {
+          "text": {
+            "en": "If the sauce is thin, stir it over the heat and let it boil a little until it has cooked down. It is to be as thick as a purée.",
+            "de": "Ist die Sauce dünn, auf dem Feuer rühren und etwas kochen lassen, bis sie eingekocht ist. Sie soll so dick wie ein Püree sein."
+          },
+          "technique": "reduce"
+        },
+        {
+          "text": {
+            "en": "If the sauce is thick, thin it with a little water.",
+            "de": "Ist die Sauce dick, mit etwas Wasser verdünnen."
+          },
+          "action": "add",
+          "uses": ["water"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "salsa-de-tomate-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; eight egg-sized tomatoes and two onions give a sauce for about four.",
+      "target": "persons"
+    },
+    {
+      "what": "Fat",
+      "value": "oil, 125 g (the source's weight for any fat)",
+      "reason": "The source gives 125 g of fat, 'la que sea' (125 read in the page image of p. 176; the plain text has 1'25), and names butter (northern countries), lard and oil (Spain); oil is chosen, which keeps the sauce without meat. The amount is the source's, the choice of fat is ours, so the line carries no settled mark."
+    },
+    {
+      "what": "Liquid",
+      "value": "water, not broth: the source says either for moistening; for thinning it names broth only",
+      "reason": "The source says 'un poco de caldo ó de agua' for moistening and 'se alarga con caldo' for thinning a thick sauce; water is chosen for both so that the sauce stays without meat stock. No amount is given.",
+      "target": "salsa-de-tomate-sauce/water"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber: own copy of the text compared line by line; numbers read in the page images (item PDF, page + 24). Seen in print: pp. 176–177, '125 gramos de grasa', 'ocho tomates', 'dos cebollas'. Changed: fat wording and notes give the printed 125 (text: 1'25) and name butter beside lard and oil; line range to 8363. Salt stands for the unnamed seasoning. Tomatoes and onions are egg-sized."
+  },
+  "note": {
+    "en": "The formula Muro calls the classic one: a weight of fat for eight tomatoes and two onions, fried, sieved and as thick as a purée. Left out: the Andalusian version that follows in the same recipe (unpeeled tomatoes fried in oil with two cloves of garlic, not sieved) and the remark on Italian tomato sauce.",
+    "de": "Die Formel, die Muro die klassische nennt: ein Gewicht Fett auf acht Tomaten und zwei Zwiebeln, gebraten, durchgestrichen und so dick wie ein Püree. Weggelassen: die andalusische Art, die im selben Rezept folgt (ungeschälte Tomaten in Öl mit zwei Knoblauchzehen gebraten, nicht durchgestrichen), und die Bemerkung zur italienischen Tomatensauce."
+  }
+}

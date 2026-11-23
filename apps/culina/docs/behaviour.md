@@ -221,8 +221,8 @@ with `aria-current`. **Test:** `e2e/components.mjs` at 360 and 1000 px.
 decided by the owner). The list (`src/screens/notebook-list.ts`, the same
 pane as the Notebook's Dishes; rows in `src/components/list.ts`) holds the notebook's components and every component
 of every shipped dish and base, a base's alternatives included
-(`shippedEntries` in `src/components/shipped.ts`): 59 from the 48 dishes on
-this day. Two groups, each under a heading: "In my notebook" first (in its
+(`shippedEntries` in `src/components/shipped.ts`): 82 from the 68 dishes on
+2026-11-23. Two groups, each under a heading: "In my notebook" first (in its
 order; while it has none, it says so and offers the example data), then
 "Shipped with the app", sorted by the dish's name and then in file order, so
 the parts of one dish stand together. A shipped row says "Shipped"
@@ -1157,10 +1157,10 @@ own; the origin is only a choice of the filter.
   "Shipped with the app", with a select "From". **Test:**
   `test/dishes-notebook-list.test.ts`, `e2e/dish-browse.mjs`,
   `e2e/kit-parts.mjs`.
-- **A sauce that is a base is no dish (since 2026-11-23).** The five
-  shipped bases of the course sauce are on no dish list, in the finder or
-  the random pick; they are in the Components list. Cook lists 43 of the 48
-  shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+- **A sauce that is a base is no dish (since 2026-11-23).** The
+  shipped bases of the course sauce (12 of them) are on no dish list, in
+  the finder or the random pick; they are in the Components list. Cook
+  lists 56 of the 68 shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1583,7 +1583,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   nothing is counted), the coverage, and everything else behind the second
   tap. Before, figures were shown from two counted ingredients and a quarter of
   all (`MIN_COUNTED`, `MIN_SHARE`, removed), which let the herb omelette show 5
-  kcal from its salt and pepper. On the 48 shipped dishes 9 show figures
+  kcal from its salt and pepper. On the 68 shipped dishes 17 show figures (9 of 48 before the recipes of 2026-11-23)
   ([evaluation](nutrition-evaluation.md#figures-only-where-they-mean-something-2026-11-21)). **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be

@@ -1,0 +1,175 @@
+{
+  "id": "ruehrei",
+  "kind": "base",
+  "name": {
+    "en": "Scrambled eggs",
+    "de": "Rührei"
+  },
+  "originalName": "Scrambled Eggs",
+  "country": "de",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division L, No. 2, printed page 273; lines 22540-22548 of the text file (the recipe runs on to line 22589 with ways of serving)",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 1,
+    "basis": "settled"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "scrambled-eggs",
+      "name": {
+        "en": "Scrambled eggs",
+        "de": "Rührei"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "settled": true,
+          "sourceNote": {
+            "en": "The source gives its amounts for each egg and names no number of eggs.",
+            "de": "Die Quelle gibt ihre Mengen je Ei an und nennt keine Zahl von Eiern."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tablespoonful",
+            "original": "1 tablespoonful of milk ... for each egg"
+          },
+          "settled": true,
+          "sourceNote": {
+            "en": "The source gives 1 tablespoonful of milk for each egg; 2 are entered for the 2 eggs.",
+            "de": "Die Quelle gibt 1 Esslöffel Milch je Ei an; für die 2 Eier stehen hier 2."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "For each egg a piece the size of half a walnut.",
+            "de": "Je Ei ein Stück von der Größe einer halben Walnuss."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"a piece of butter the size of half a walnut for each egg\"; no weight is given.",
+            "de": "Wortlaut der Quelle: \"a piece of butter the size of half a walnut for each egg\"; ein Gewicht steht nicht da."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "A little.",
+            "de": "Ein wenig."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the eggs with the milk and the salt.",
+            "de": "Die Eier mit der Milch und dem Salz verquirlen."
+          },
+          "action": "whisk",
+          "uses": ["egg", "milk", "salt"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter; a small earthenware pot suits best.",
+            "de": "Die Butter schmelzen; am besten eignet sich ein kleines irdenes Gefäß."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Pour in the eggs.",
+            "de": "Die Eier hineingießen."
+          },
+          "action": "pour",
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Stir over a very low heat until the eggs are thick and set, no longer, and serve.",
+            "de": "Bei sehr schwacher Hitze rühren, bis die Eier dick und gestockt sind, nicht länger, und auftragen."
+          },
+          "action": "stir"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "scrambled-eggs"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "1",
+      "reason": "Our judgement: the source names no number of persons and gives its amounts per egg; 2 eggs are taken as one person's portion.",
+      "target": "persons"
+    },
+    {
+      "what": "Number of eggs",
+      "value": "2",
+      "reason": "Our choice: the source gives amounts 'for each egg' and no number of eggs; 2 eggs are entered so that the file has amounts to scale.",
+      "target": "scrambled-eggs/egg"
+    },
+    {
+      "what": "Amount of milk",
+      "value": "2 tablespoonfuls",
+      "reason": "Follows from the settled 2 eggs and the source's ratio of 1 tablespoonful of milk for each egg; not a number the source prints.",
+      "target": "scrambled-eggs/milk"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Numbers read on the page image (archive.org scan PDF, p. 273). Print agrees: for each egg 1 tablespoonful of milk, a little salt, butter the size of half a walnut; no number of eggs, no persons (2 eggs, 2 tablespoonfuls, 1 person settled, reasons true). German Milwaukee ed. (henriettedavidis01davi, OCR): 1 Essloeffel per egg agrees. Changed: nothing but this block. Page 274 (ways of serving, in the dish note) not opened."
+  },
+  "note": {
+    "en": "The plain scrambled eggs with milk and butter only. The source also gives a variant with water and bacon, mixtures with chives, mushrooms, asparagus tips, anchovy, salmon or cheese, and several ways of serving; they are not transcribed. It serves the eggs with asparagus, lettuce, smoked herring, sausage, cold tongue and smoked meats.",
+    "de": "Nur das einfache Rührei mit Milch und Butter. Die Quelle nennt außerdem eine Variante mit Wasser und Speck, Beigaben wie Schnittlauch, Champignons, Spargelspitzen, Sardellen, Lachs oder Käse und mehrere Arten des Anrichtens; sie sind nicht übertragen. Sie reicht das Rührei zu Spargel, Kopfsalat, Räucherhering, Wurst, kalter Zunge und Rauchfleisch."
+  }
+}

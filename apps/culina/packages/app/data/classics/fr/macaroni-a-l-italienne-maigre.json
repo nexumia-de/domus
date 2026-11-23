@@ -1,0 +1,276 @@
+{
+  "id": "macaroni-a-l-italienne-maigre",
+  "kind": "base",
+  "name": {
+    "en": "Macaroni with cheese, meatless",
+    "de": "Makkaroni mit Käse, fleischlos"
+  },
+  "originalName": "Macaroni à l'italienne, au maigre",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, chapitre XVI \"Pâtes\", \"Macaroni à l'italienne, au gras et au maigre\", pp. 277-278; gouffe.txt lines 14885-14934",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    },
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "macaroni-italienne-maigre",
+      "name": {
+        "en": "Macaroni with cheese",
+        "de": "Makkaroni mit Käse"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "l",
+            "original": "1 litre et demi d'eau"
+          }
+        },
+        {
+          "key": "macaroni",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168927"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g",
+            "original": "200 grammes de macaroni"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "pincée",
+            "original": "1 pincée de sel"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "prise",
+            "original": "2 prises de poivre"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml",
+            "original": "2 décilitres de bouillon"
+          },
+          "settled": true,
+          "sourceNote": {
+            "en": "The source gives the dish with broth and says that for the meatless one the broth is replaced by milk, in the same amount; we took the milk. If the cheese turns oily, the source adds 1 décilitre more of the liquid.",
+            "de": "Die Quelle gibt das Gericht mit Brühe an und sagt, dass für das fleischlose die Brühe durch Milch in gleicher Menge ersetzt wird; wir haben die Milch genommen. Wird der Käse ölig, gibt die Quelle 1 Deziliter mehr von der Flüssigkeit zu."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "50 grammes de parmesan"
+          },
+          "note": {
+            "en": "Grated.",
+            "de": "Gerieben."
+          }
+        },
+        {
+          "key": "gruyere",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171242"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "50 grammes de gruyère"
+          },
+          "note": {
+            "en": "Grated.",
+            "de": "Gerieben."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de beurre"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the water to the boil in a pan of 2 litres and put in the macaroni.",
+            "de": "Das Wasser in einem Topf mit 2 Litern Inhalt zum Kochen bringen und die Makkaroni hineingeben."
+          },
+          "action": "add",
+          "uses": ["water", "macaroni"]
+        },
+        {
+          "text": {
+            "en": "Season with the salt and the pepper.",
+            "de": "Mit Salz und Pfeffer würzen."
+          },
+          "action": "season",
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Cook for 20 minutes at a gentle boil.",
+            "de": "20 Minuten bei leisem Kochen garen."
+          },
+          "action": "cook",
+          "uses": ["macaroni"],
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Drain the macaroni in a colander until no water is left on it.",
+            "de": "Die Makkaroni im Durchschlag abgießen, bis kein Wasser mehr daran ist."
+          },
+          "action": "drain",
+          "uses": ["macaroni"]
+        },
+        {
+          "text": {
+            "en": "Wipe the pan, put the macaroni back with the milk and let it simmer over low heat until the milk is soaked up completely.",
+            "de": "Den Topf auswischen, die Makkaroni mit der Milch wieder hineingeben und bei schwacher Hitze köcheln lassen, bis die Milch ganz aufgesogen ist."
+          },
+          "technique": "simmer",
+          "uses": ["macaroni", "milk"]
+        },
+        {
+          "text": {
+            "en": "Grate the two cheeses.",
+            "de": "Die beiden Käse reiben."
+          },
+          "action": "grate",
+          "uses": ["parmesan", "gruyere"]
+        },
+        {
+          "text": {
+            "en": "Add half of the cheese and mix it in by turning and tossing the pan.",
+            "de": "Die Hälfte des Käses zugeben und durch Drehen und Schwenken des Topfes untermischen."
+          },
+          "action": "mix",
+          "uses": ["parmesan", "gruyere"]
+        },
+        {
+          "text": {
+            "en": "When it is mixed in, add the rest of the cheese with the butter and mix until the cheese has melted completely.",
+            "de": "Wenn sie untergemischt ist, den übrigen Käse mit der Butter zugeben und mischen, bis der Käse ganz geschmolzen ist."
+          },
+          "action": "mix",
+          "uses": ["parmesan", "gruyere", "butter"]
+        },
+        {
+          "text": {
+            "en": "If the cheese turns oily, put the pan back on the heat with 100 ml more milk and stir for 1 minute.",
+            "de": "Wird der Käse ölig, den Topf mit 100 ml mehr Milch wieder aufs Feuer setzen und 1 Minute rühren."
+          },
+          "action": "stir",
+          "uses": ["milk"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Taste for seasoning; the macaroni should be well seasoned.",
+            "de": "Abschmecken; die Makkaroni sollen kräftig gewürzt sein."
+          },
+          "action": "taste"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "macaroni-italienne-maigre"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 200 g of macaroni is taken as a side dish for four.",
+      "target": "persons"
+    },
+    {
+      "what": "Liquid the drained macaroni soaks up",
+      "value": "milk, not broth: the source gives both, the milk for the meatless dish (\"vous remplacerez le bouillon par le lait; même quantité\")",
+      "reason": "The owner asked for dishes without meat where the source gives them so; the amount (2 décilitres) is the source's, printed for the broth.",
+      "target": "macaroni-italienne-maigre/milk"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. Both settled entries are true (no persons named; milk is the source's own meatless alternative, same amount). Corrected: nothing but this block. Not checked: a second edition; 'poivre' is mapped to black pepper; originalName is half of the printed heading."
+  },
+  "note": {
+    "en": "The meatless variant of the book's Macaroni à l'italienne: the source's broth is replaced by the same amount of milk, as the source says. The book's Macaroni au gratin, which follows, starts from this dish.",
+    "de": "Die fleischlose Variante der Macaroni à l'italienne des Buches: Die Brühe der Quelle ist durch die gleiche Menge Milch ersetzt, wie die Quelle es angibt. Die im Buch folgenden Macaroni au gratin gehen von diesem Gericht aus."
+  }
+}

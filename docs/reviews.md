@@ -21,6 +21,72 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: 20 shipped recipes for Culina's kit, and the research on pairing sources
+
+Ten agents under one lead, all on the lead's model. Four writers, one
+per country, each read the plain text of one scan and wrote six recipe
+files. Four second readers, one per country and none of them a writer,
+read each recipe again and corrected the file. One agent researched
+sources of pairings and wrote nothing into the repository. The lead
+chose what to drop, brought the pinned tests to the new content, wrote
+the documents and committed.
+
+| Part                                                                 | Done by            | Checked by                                                        |
+| -------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------- |
+| 24 recipe files (6 each: Davidis, Artusi, Gouffé, Muro)              | one writer each    | one second reader per country, in the printed page (the scan PDF) |
+| The corrections in the 20 files that stayed                          | the second readers | nobody but the per-file validator and the lead's runs             |
+| Dropping 4 files; the pinned tests, the documents                    | lead               | nobody but `check:culina` and Culina's e2e                        |
+| [Sources of proven pairings](../apps/culina/docs/pairing-sources.md) | one research agent | nobody; the lead wrote the document from its report               |
+
+**What the checks found, and where it was fixed** (all in the recipe
+files).
+
+- _Dropped on the second readers' verdict:_ koerniger-reis and
+  sopas-de-ajo (no usable amounts in the source). _Dropped by the lead
+  on the readers' stated weakness:_ patatas-guisadas (two readings put
+  together, amounts ours) and zuppa-di-fagiuoli (no amount for the
+  beans).
+- _Steps too close to the source's sentences:_ four German (Davidis)
+  steps, reworded.
+- _A step the source does not have:_ the maître d'hôtel butter was put
+  "on the hot food"; the source garnishes with it. Pasta "in salted
+  water" in the Bolognese, where this recipe names no salt.
+- _A technique whose note did not fit:_ `sweat` on leeks and on a
+  soffritto that the sources let take colour; now the plain action.
+- _Wrong words:_ "palmo" as a hand's breadth (a span); carnesecca as
+  air-dried in German (the book's word list: salted pork belly); the
+  10 g pincée called "Prise" in German, the book's word for 1 g;
+  "Castilian" in a name where the verses mean something else.
+- _Damaged print read right:_ every doubtful number (10 minutes, 15 g,
+  125 g, 1 hecto, the recipe numbers 89 and 65, "Burro") was confirmed
+  in the printed page; no amount was changed. The 30 g of salt in
+  Gouffé's leek soup is what the book prints.
+- _Found in print and entered:_ Artusi's glass ("un bicchiere ossia 3
+  decilitri"), so the milk of the potato purée has an amount; a pan "of
+  1 litre" in the sauce blanche that the machine text had lost.
+- _A gap the second German reader closed after the lead's hint:_ its
+  first pass saw no print (the image hosts were refused) and compared
+  with a second machine-read edition; the French reader found the scan
+  PDF reachable, and the German reader then read all five in print.
+- _The lead's own slip:_ a test of the native app compared its list
+  with a finder asked for every shipped file, sauces included; it had
+  passed only because no sauce was makeable from that stock. Now both
+  ask for dishes.
+
+**Test counts** (the lead's runs): `npm run check:culina` passes with
+1253 engine, 926 app and 19 native tests. Culina's e2e passed on the final
+content (1963 checks); a first run stopped in the navigation check with
+a timeout while the lead ran `check:culina` beside it, and that check
+passed alone.
+
+**What nobody verified.** Any recipe cooked. The German and English
+texts by a native reader other than the agents. Whether the chosen
+catalogue ingredients give sensible nutrition figures (the table was
+pinned to what the app computes, not checked by hand). The four dropped
+files against a second opinion. The research: no source was read by a
+second agent, several hosts were refused, and the pairing lists were
+judged by no cook.
+
 ## 2026-11-23: Culina's purpose and name, the new addresses, Mixtura's lost mark (pull request 3 of nexumia-de/domus)
 
 Two sessions, one after the other; no agent read the other's part

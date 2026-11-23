@@ -12,7 +12,7 @@ skills along the way
 
 Status: in use, as a web app and a native Linux app. Built: one Cook
 screen over own and shipped dishes with a filter and the stock, the
-notebook with versions, ratio cards, 48 shipped dishes of which 17 are
+notebook with versions, ratio cards, 68 shipped dishes of which 33 are
 bases, technique notes, import and export. Not built yet: frames such
 as tacos or pizza with their fillings, and taste profiles of ingredients
 that say what a dish still needs. The plan is in

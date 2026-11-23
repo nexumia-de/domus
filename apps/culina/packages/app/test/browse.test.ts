@@ -96,7 +96,15 @@ describe('entries', () => {
     const complete = CLASSICS.filter((c) => entryOfClassic(c, lookup, 'en').complete).map(
       (c) => c.id,
     );
-    expect(complete.sort()).toEqual(['cocido-ordinario', 'pot-au-feu', 'rote-gruetze']);
+    expect(complete.sort()).toEqual([
+      'cocido-ordinario',
+      'macaroni-a-l-italienne-maigre',
+      'pommes-de-terre-au-lait',
+      'pot-au-feu',
+      'rote-gruetze',
+      'sauce-blanche',
+      'soupe-aux-poireaux',
+    ]);
   });
 
   test('all entries: the notebook first, then every classic', () => {

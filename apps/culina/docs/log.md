@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23 (20 recipes, pairing sources)
+
+- **Creation**: 20 shipped recipes for the kit, asked for by the owner and researched and written by agents ([selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit), [review](../../../docs/reviews.md)): 7 sauces, 6 starch sides, 2 pasta dishes of a sauce and a starch, 3 soups and 2 egg dishes, from Davidis 1904, Artusi 1891, Gouffé 1877 and Muro 1894; 16 are bases. Each was written by one agent from the scan's text and read again by another in the printed page; all carry `check.method` `page-image`. Four of the 24 written were dropped for want of amounts or for amounts that were ours. The shipped files are 68, the bases 33, the sauce bases that are no dishes 12, Cook lists 56; components with the role starch went from 2 to 9. Tests that pin the content were brought to the new values (bases, steps 578, wanted lines, the nutrition table, complete dishes, the native list). Not verified: any recipe cooked; the German texts by a native reader; the weaknesses are listed in the selection.
+- **Reference**: [sources of proven pairings](pairing-sources.md), research by one agent: CulinaryDB recommended, nothing decided, nothing built.
+
 ## 2026-11-23 (a sauce is a part)
 
 - **Decision** by the agent, on the owner's word that a decision that was not good may be made anew and that it be done the way that is best: [a sauce is a part, and the Notebook holds what is the user's](decisions/sauces-are-parts.md). It changes point 3 of the [Cook screen decision](decisions/cook-screen.md) as it was read there.
