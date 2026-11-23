@@ -617,7 +617,8 @@ export const appStringsDe: typeof appStrings = {
   importing: {
     title: 'Import',
     back: 'Zurück zu den Einstellungen',
-    intro: "Wähle eine aus Cook's Notebook exportierte Datei oder ein Cooklang-Rezept (.cook).",
+    intro:
+      "Wähle eine aus Cook's Notebook exportierte Datei, ein Cooklang-Rezept (.cook) oder eine gespeicherte KI-Antwort (.json).",
     chooseFile: 'Datei wählen',
     aiTitle: 'Rezept aus einer KI',
     aiIntro:
@@ -625,10 +626,120 @@ export const appStringsDe: typeof appStrings = {
     copyPrompt: 'KI-Prompt kopieren',
     promptCopied: 'Prompt kopiert.',
     promptNotCopied: 'Der Prompt ließ sich nicht kopieren; markiere ihn unten und kopiere ihn.',
-    pasteLabel: 'Antwort der KI (Cooklang)',
-    readPasted: 'Text lesen',
+    pasteLabel: 'Antwort der KI',
+    pasteCooklang:
+      'Auch ein Cooklang-Text kann hier eingefügt werden, und eine .cook-Datei mit dem Dateiknopf oben gewählt.',
+    readPasted: 'Antwort lesen',
     pasteEmpty: 'Füge zuerst die Antwort ein.',
     pastedName: 'Eingefügtes Rezept',
+    aiNotJson:
+      'Die Antwort lässt sich nicht als JSON lesen. Kopiere die ganze Antwort der KI, von der ersten { bis zur letzten }.',
+    aiTooLong: (limit: number): string =>
+      `Die Antwort ist länger als ${limit.toLocaleString('de')} Zeichen, mehr als Culina auf einmal liest; teile sie in kleinere Antworten.`,
+    aiNotFormat:
+      'Die Antwort ist nicht im Rezeptformat des Prompts: "format" muss "culina-recipes" sein.',
+    aiErrorsHeading: 'Was die Antwort so nicht sagen kann',
+    aiErrorsHint:
+      'Nichts wurde importiert. Bitte die KI, diese Punkte zu korrigieren, oder korrigiere sie in der Antwort, und lies sie noch einmal.',
+    aiPlace: {
+      answer: 'Die Antwort',
+      recipe: (n: number, title: string): string =>
+        `Rezept ${n}${title === '' ? '' : ` (${title})`}`,
+      component: (n: number, name: string): string =>
+        `Bestandteil ${n}${name === '' ? '' : ` (${name})`}`,
+      line: (n: number, name: string): string => `Zeile ${n}${name === '' ? '' : ` (${name})`}`,
+      slot: (n: number): string => `Platz ${n}`,
+      step: (n: number): string => `Schritt ${n}`,
+      alternative: (n: number): string => `Alternative ${n}`,
+      source: 'Quelle',
+    },
+    aiError: {
+      required: (place: string, field: string): string => `${place}: "${field}" wird gebraucht.`,
+      unknownField: (place: string, field: string): string =>
+        `${place}: "${field}" ist kein Feld des Rezeptformats.`,
+      type: (place: string, field: string, kind: string): string =>
+        `${place}: "${field}" muss ${kind} sein.`,
+      kinds: {
+        string: 'ein Text',
+        integer: 'eine ganze Zahl',
+        number: 'eine Zahl',
+        boolean: 'true oder false',
+        array: 'eine Liste in [ ]',
+        object: 'ein Objekt in { }',
+      } as Record<string, string>,
+      version: 'Culina liest Version 1 des Rezeptformats ("formatVersion": 1).',
+      role: (place: string, field: string, value: string, allowed: string): string =>
+        `${place}: "${value}" ist keine Rolle, die Culina für "${field}" kennt (${allowed}).`,
+      empty: (place: string, field: string): string => `${place}: "${field}" ist leer.`,
+      tooLong: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" ist länger als ${limit} Zeichen.`,
+      tooFew: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" braucht mindestens ${limit} ${limit === 1 ? 'Eintrag' : 'Einträge'}.`,
+      tooMany: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" hat mehr als ${limit} Einträge.`,
+      range: (place: string, field: string, min: number, max: number): string =>
+        `${place}: "${field}" muss eine ganze Zahl von ${min} bis ${max} sein.`,
+      url: (place: string): string =>
+        `${place}: "url" muss eine Webadresse sein, die mit http:// oder https:// beginnt.`,
+      slotFill: (place: string): string =>
+        `${place}: Ein Platz wird entweder von einem "component" oder von einer "ingredient" gefüllt, von genau einem der beiden.`,
+      guessedNeedsAmount: (place: string): string =>
+        `${place}: "guessed" gilt nur für eine Menge, und es gibt kein "amount".`,
+      sourceEmpty: (place: string): string => `${place}: "source" hat kein Feld.`,
+      twice: (place: string, field: string): string =>
+        `${place}: "${field}" nennt einen Eintrag zweimal.`,
+      other: (place: string, field: string): string =>
+        `${place}: "${field}" passt nicht zum Rezeptformat.`,
+    },
+    aiProblem: {
+      'duplicate-component': (place: string, name: string): string =>
+        `${place}: Zwei Bestandteile heißen "${name}".`,
+      'unknown-component': (place: string, name: string): string =>
+        `${place}: Das Rezept hat keinen Bestandteil "${name}".`,
+      'unknown-alternative': (place: string, name: string): string =>
+        `${place}: Die Alternative "${name}" ist kein Bestandteil des Rezepts.`,
+      'alternative-in-slot': (place: string, name: string): string =>
+        `${place}: "${name}" füllt selbst einen Platz und ist darum keine Alternative.`,
+      'alternative-twice': (place: string, name: string): string =>
+        `${place}: "${name}" ist schon die Alternative eines anderen Platzes.`,
+      'alternatives-on-ingredient': (place: string): string =>
+        `${place}: Ein Platz, den eine Zutat füllt, hat keine Alternativen.`,
+      'amount-on-component': (place: string): string =>
+        `${place}: Ein Platz, den ein Bestandteil füllt, nimmt dessen ganzes Rezept und hat darum kein "amount".`,
+      'component-unused': (place: string, name: string): string =>
+        `${place}: Der Bestandteil "${name}" steht in keinem Platz und ist keine Alternative.`,
+    },
+    aiHeading: 'Rezepte in der Antwort',
+    aiRead: (recipes: number, lines: number): string =>
+      `${recipes} ${recipes === 1 ? 'Rezept' : 'Rezepte'} mit ${lines} ${lines === 1 ? 'Zutatenzeile' : 'Zutatenzeilen'} gelesen. Gespeichert wird erst, wenn du speicherst.`,
+    aiGuessedCount: (n: number): string =>
+      `Die KI hat ${n} ${n === 1 ? 'Menge' : 'Mengen'} als geschätzt markiert. ${n === 1 ? 'Sie steht' : 'Sie stehen'} unten als geschätzt und ${n === 1 ? 'behält' : 'behalten'} „geschätzt“ in der Notiz der Zeile.`,
+    aiGuessed: 'geschätzt',
+    aiBecomesDish: (components: number): string =>
+      `Wird ein Gericht mit ${components} ${components === 1 ? 'Bestandteil' : 'Bestandteilen'}.`,
+    aiBecomesComponent: 'Wird ein Bestandteil.',
+    aiSource: (text: string): string => `Quelle: ${text}`,
+    aiNoSource: 'Die Antwort nennt keine Quelle.',
+    aiDishYield: (text: string): string =>
+      `Laut Rezept ergibt es ${text}; ein Gericht hat Portionen, darum kommt das in die Notiz des Gerichts.`,
+    aiYieldNotWeight: (text: string): string =>
+      `Laut Rezept ergibt es ${text}; ein Ertrag wird in Gramm angegeben, darum bleibt das Feld leer.`,
+    aiYieldNote: (text: string): string => `Ergibt ${text}`,
+    aiAlternativeFor: (name: string): string =>
+      `Alternative zu ${name}: nicht im Gericht; „Tauschen“ bietet sie an.`,
+    aiSlotIngredient: (role: string): string => `Platz ${role}, von einer Zutat gefüllt`,
+    aiAssembly: (n: number): string => `${n} ${n === 1 ? 'Schritt' : 'Schritte'} zum Anrichten.`,
+    aiSave: 'Alle Rezepte speichern',
+    aiChange: (source: string): string =>
+      source === ''
+        ? 'Importiert aus einer KI-Antwort'
+        : `Importiert aus einer KI-Antwort; Quelle: ${source}`,
+    aiImported: (n: number): string => `${n} ${n === 1 ? 'Rezept' : 'Rezepte'} importiert.`,
+    aiSaved: (n: number): string => `${n} ${n === 1 ? 'Rezept' : 'Rezepte'} gespeichert.`,
+    aiGuessedHeading: 'Mengen, die die KI geschätzt hat',
+    aiNoneGuessed: 'Die KI hat keine Menge als geschätzt markiert.',
+    aiNeedsNames: 'Jedes Rezept braucht einen Namen, und jeder Bestandteil eines Gerichts auch.',
+    cookAsWrittenSized: (text: string, size: string): string => `Wie notiert: ${text} (${size})`,
     nothingChanged: 'Nichts wurde geändert.',
     notReadable: 'Diese Datei lässt sich nicht als Export lesen.',
     notAnExport: "Diese Datei ist kein Export aus Cook's Notebook.",

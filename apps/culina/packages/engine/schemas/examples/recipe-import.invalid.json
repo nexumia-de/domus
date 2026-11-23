@@ -1,0 +1,17 @@
+{
+  "format": "culina-recipes",
+  "formatVersion": 1,
+  "recipes": [
+    {
+      "title": "Pancakes",
+      "persons": 0,
+      "components": [
+        {
+          "name": "Batter",
+          "lines": [{ "ingredient": "flour", "guessed": true, "id": "fdc-flour" }]
+        }
+      ],
+      "slots": [{ "role": "main", "component": "Batter", "ingredient": "flour" }]
+    }
+  ]
+}

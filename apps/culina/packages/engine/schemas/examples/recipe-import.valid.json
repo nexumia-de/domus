@@ -1,0 +1,57 @@
+{
+  "format": "culina-recipes",
+  "formatVersion": 1,
+  "recipes": [
+    {
+      "title": "Pancakes",
+      "persons": 4,
+      "source": { "title": "Family card", "where": "back side" },
+      "components": [
+        {
+          "name": "Batter",
+          "lines": [
+            { "ingredient": "flour", "amount": "250 g", "role": "flour" },
+            { "ingredient": "milk", "amount": "500 ml", "role": "liquid" },
+            { "ingredient": "eggs", "amount": "3", "role": "egg" },
+            { "ingredient": "salt", "amount": "1 Prise" },
+            { "ingredient": "butter", "amount": "2 EL", "guessed": true, "note": "for the pan" }
+          ],
+          "steps": ["Whisk flour, milk, eggs and salt.", "Bake thin pancakes in butter."]
+        },
+        {
+          "name": "Apple sauce",
+          "lines": [{ "ingredient": "apples", "amount": "4" }]
+        },
+        {
+          "name": "Cinnamon sugar",
+          "lines": [
+            { "ingredient": "sugar", "amount": "2 EL" },
+            { "ingredient": "cinnamon", "amount": "1 TL" }
+          ]
+        }
+      ],
+      "slots": [
+        { "role": "main", "component": "Batter" },
+        { "role": "sauce", "component": "Apple sauce", "alternatives": ["Cinnamon sugar"] },
+        { "role": "garnish", "ingredient": "icing sugar", "optional": true }
+      ],
+      "steps": ["Serve the pancakes with the sauce."]
+    },
+    {
+      "title": "Vinaigrette",
+      "yield": "150 ml",
+      "source": { "url": "https://example.org/vinaigrette" },
+      "components": [
+        {
+          "name": "Vinaigrette",
+          "role": "sauce",
+          "lines": [
+            { "ingredient": "oil", "amount": "100 ml", "role": "oil" },
+            { "ingredient": "vinegar", "amount": "3 tbsp", "role": "acid" },
+            { "ingredient": "pepper" }
+          ]
+        }
+      ]
+    }
+  ]
+}

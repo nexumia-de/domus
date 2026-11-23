@@ -54,6 +54,19 @@ alternatives ([exchange](../exchange.md#cooklang)).
 ## Consequences
 
 - Issues #40 (prompt import) and #41 (Cooklang sections).
+- **Built 2026-11-23 (issue 40):** the format is
+  `schemas/recipe-import.schema.json` (`culina-recipes`, version 1;
+  [exchange](../exchange.md#the-recipe-import-format)); the prompt is generated
+  from it in English and German and a test proves they agree; the paste field
+  and a `.json` file lead to one step that asks each name once for the whole
+  answer, marks guessed amounts, saves every recipe in one transaction and
+  offers Undo ([behaviour](../behaviour.md#the-import-screen)). An alternative
+  is a component with the slot's role, as in [bases](bases-and-pack.md); the
+  source goes into each version's `change`; a guessed amount keeps the word
+  "guessed" in its line's note. No source with a size could be read for `EL`,
+  `TL`, `Prise`, `Msp.`, `Becher` or `Päckchen`: they stay open, and
+  `data/unit-words.json` is the one place to add a size with its source. Not
+  proved by tests: what a real model writes for the prompt.
 - [Exchange](../exchange.md) and [behaviour](../behaviour.md#export-and-import)
   get the import format, the prompt and the section rule when built.
 - What a model gets wrong is the user's to confirm; the app makes

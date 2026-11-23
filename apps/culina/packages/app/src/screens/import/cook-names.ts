@@ -1,14 +1,14 @@
 // Cooklang completion, part one: which ingredient each name of the file means. Each name is
 // asked once. Only an exact match is preselected; everything else waits for the user's choice.
 import { choose, createForUnset, unresolvedNames } from '../../exchange/cook-model';
-import type { CookModel, NameRow, Target } from '../../exchange/cook-model';
+import type { NamesModel, NameRow, Target } from '../../exchange/cook-model';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 const text = strings.importing;
 const NEW = 'new';
 
-const factsOf = (model: CookModel) => (target: Target) =>
+const factsOf = (model: NamesModel) => (target: Target) =>
   target.kind === 'ingredient' ? (model.facts[target.id] ?? {}) : {};
 
 const keyOfTarget = (t: Target): string => `${t.kind}:${t.id}`;
@@ -16,7 +16,7 @@ const optionLabel = (name: string, tag: string, origin: string): string =>
   origin === 'catalogue' ? `${name} (${tag}, ${text.cookFromCatalogue})` : `${name} (${tag})`;
 
 /** The select of one name: the proposals, "create a new ingredient", and for that the class to file it under. */
-function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => void): HTMLElement {
+function nameRow(model: NamesModel, row: NameRow, changed: (names: boolean) => void): HTMLElement {
   const wrap = el('div', 'field-wrap name-row');
   const select = el('select', 'field');
   select.setAttribute('aria-label', text.cookNameLabel(row.label));
@@ -88,7 +88,7 @@ function nameRow(model: CookModel, row: NameRow, changed: (names: boolean) => vo
   return wrap;
 }
 
-export function namesSection(model: CookModel, changed: (names: boolean) => void): HTMLElement {
+export function namesSection(model: NamesModel, changed: (names: boolean) => void): HTMLElement {
   const box = el('section', 'cook-names');
   box.append(el('h2', undefined, text.cookNamesHeading), el('p', 'muted', text.cookNamesHint));
   for (const row of model.rows) box.append(nameRow(model, row, changed));

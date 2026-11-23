@@ -21,6 +21,48 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-23: recipes from the user's own language model (issue 40)
+
+One agent built it in its own worktree; a different agent (mid model)
+reviewed it; the writer fixed the findings; the lead tried to confirm
+the source of the German spoon sizes itself, merged, ran the checks and
+committed.
+
+| Part                                                                                                          | Done by | Checked by                                                                                 |
+| ------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------ |
+| The import format (`recipe-import.schema.json`, `checkRecipes`), the prompt generated from it, paste and file | writer  | reviewer (strict; sloppy answers refused one sentence each; the prompt follows the schema) |
+| Import into components and dishes, one transaction with Undo; reuse of the Cooklang step                      | writer  | reviewer (Cooklang import unchanged: its vectors, tests and browser checks pass)           |
+| German unit words                                                                                             | writer  | reviewer and lead (the source could not be read: sizes dropped)                            |
+| This entry                                                                                                    | lead    | nobody                                                                                     |
+
+**What the checks found, and where it was fixed.**
+
+- _A source nobody could read._ EL = 15 ml and TL = 5 ml rested on a
+  sentence of a 1979 nursing textbook seen only as a search highlight of
+  a lending item on archive.org. The reviewer could not open the text;
+  the lead's search of archive.org found neither sentence. By the rule
+  "nothing unread", the sizes were dropped: all six words (EL, TL, Prise,
+  Msp., Becher, Päckchen) are kept as written and left open; the reasons
+  and the blocked hosts are in `unit-words.json`. A size can be added
+  later in that one file.
+- _Unbounded input._ An error sentence carried a recipe title of any
+  length, and a pasted answer had no size limit: names are cut at 40
+  characters, an answer over 1,000,000 characters is refused before
+  parsing; tests for both.
+- _A fixture artefact._ "quince milk" in the screenshot came from the
+  writer's own browser check, not the app's matching; the fixture now
+  uses plain names.
+- _Said nowhere._ The import screen says again that Cooklang can be
+  pasted; behaviour.md says the recipe's source is kept only as text in
+  version 1.
+
+**Test counts** (lead's runs): `npm run check:culina` (engine 1239, app
+863, native 19); browser checks under `LANG=C.UTF-8`: 1910 ok, none failed.
+
+**What nobody verified.** What a real language model writes for the
+prompt (no model was run). A readable source for the size of EL and TL.
+The German by a native speaker. A phone.
+
 ## 2026-11-23: Cooklang sections become components of a dish (issue 41)
 
 One agent built it in its own worktree; a different agent (mid model)

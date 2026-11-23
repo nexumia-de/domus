@@ -1032,6 +1032,32 @@ One JSON file with everything the user entered, validated by
   engine's job (`validateModel`) and its findings are named, not silent.
   The anchor is optional, so "one anchor" is not required.
 
+## Recipe import file
+
+The answer a language model of the user's choice writes from a recipe
+([decision](decisions/ai-prompt-import.md), [exchange](exchange.md#the-recipe-import-format)),
+validated by `recipe-import.schema.json`. It is read, never stored as it
+stands: names and amounts as written, no ids; Culina matches the names
+with the user's confirmation and writes ordinary components and dishes.
+
+| Field           | Type     | Required | Meaning                                    |
+| --------------- | -------- | -------- | ------------------------------------------ |
+| `format`        | constant | yes      | `culina-recipes`                           |
+| `formatVersion` | constant | yes      | `1`                                        |
+| `recipes`       | array    | yes      | 1 to 20 recipes (title, components, slots) |
+
+A recipe has `title`, `persons` or `yield` (written, "1 kg"), `source`
+(`title`, `author`, `url`, `where`; at least one), `components` (each
+`name`, `role`, `lines`, `steps`), `slots` (each `role` and a `component`
+or an `ingredient` by name, `amount` for an ingredient, `guessed`,
+`optional`, `alternatives`: names of other components of the recipe) and
+`steps` (the assembly). A line is `ingredient`, `amount` ("200 g",
+"1/2 TL"), `guessed` (only with an amount), `role` and `note` (the
+preparation). Slot roles are the dish roles (`main`, `sauce`, `starch`,
+`crunch`, `acid`, `garnish`), line roles those of the ratio cards and
+dishes; both are closed lists in this format so that every role the
+prompt names is one the app offers.
+
 # Cooklang
 
 [Cooklang](decisions/cooklang.md)[^cooklang] is decided (issue 6) and built

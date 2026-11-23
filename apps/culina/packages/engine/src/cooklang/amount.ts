@@ -4,7 +4,7 @@
 import { toGrams } from '../amounts/convert';
 import { unitKind } from '../amounts/units';
 import type { Amount, IngredientFacts } from '../amounts/types';
-import { unitFromWord } from './units';
+import { sizedWord, unitFromWord } from './units';
 import type { CookQuantity } from './types';
 
 /**
@@ -29,12 +29,24 @@ export interface AmountResult {
 export const quantityText = (q: CookQuantity | undefined): string =>
   q === undefined ? '' : [q.text, q.unit].filter((p) => p !== undefined && p !== '').join(' ');
 
-/** The amount the file states, when it is a number and a unit Culina knows. */
+/**
+ * The amount the file states, when it is a number and a unit Culina knows. A word with a size in
+ * data/unit-words.json becomes that size in the table's unit, by the source named there (none
+ * has one yet: EL and TL stay open until a source can be read).
+ */
 export function givenAmount(q: CookQuantity | undefined): Amount | undefined {
   if (q?.value === undefined || !(q.value > 0)) return undefined;
   const unit = unitFromWord(q.unit);
-  return unit === undefined ? undefined : { value: q.value, unit };
+  if (unit !== undefined) return { value: q.value, unit };
+  const sized = sizedWord(q.unit);
+  return sized === undefined
+    ? undefined
+    : { value: Number((q.value * sized.factor).toPrecision(10)), unit: sized.unit };
 }
+
+/** True when the amount as written is a sized word, so the stored amount is its size. */
+export const writtenInSizedWord = (q: CookQuantity | undefined): boolean =>
+  q?.value !== undefined && unitFromWord(q.unit) === undefined && sizedWord(q.unit) !== undefined;
 
 /** The modes that make sense for a quantity, in the order the import step offers them. */
 export function availableModes(
@@ -72,7 +84,15 @@ export function resolveAmount(
   }
   const given = givenAmount(q);
   if (given === undefined) return { ok: false, error: { code: 'unreadable' } };
-  if (choice.mode === 'given') return { ok: true, amount: given, unmeasured: false };
+  // A sized word is stored as its size; the words as written stay in the note.
+  if (choice.mode === 'given') {
+    return {
+      ok: true,
+      amount: given,
+      unmeasured: false,
+      ...(writtenInSizedWord(q) ? original : {}),
+    };
+  }
   const grams = toGrams(given, facts);
   if (!grams.ok) return { ok: false, error: { code: 'needs-facts' } };
   return {

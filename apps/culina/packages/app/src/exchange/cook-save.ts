@@ -9,7 +9,13 @@ import type { IngredientRecord } from '../records';
 import { state } from '../notebook/state';
 import { fail } from '../store/types';
 import { strings } from '../strings';
-import { componentParts, decisionsOf, type CookModel, type Target } from './cook-model';
+import {
+  componentParts,
+  decisionsOf,
+  type CookModel,
+  type NamesModel,
+  type Target,
+} from './cook-model';
 import { rememberChanges } from './json-apply';
 
 export interface CookSaveInput {
@@ -42,7 +48,7 @@ export type CookSaveResult =
     }
   | { ok: false; error: { code: string } };
 
-interface Prepared {
+export interface Prepared {
   /** Catalogue entries (with their parent chains) to copy into the notebook, root first. */
   adopted: IngredientRecord[];
   ingredients: { id: string; name: string; parentId?: string }[];
@@ -51,7 +57,10 @@ interface Prepared {
 }
 
 /** Adopts the catalogue entries the user confirmed and gives new ingredients their ids. */
-function prepare(model: CookModel, catalogue: ReadonlyMap<string, IngredientRecord>): Prepared {
+export function prepare(
+  model: NamesModel,
+  catalogue: ReadonlyMap<string, IngredientRecord>,
+): Prepared {
   // What the user confirmed from the catalogue: the entries chosen for a name and the classes new
   // ingredients are filed under, each with its parent chain (as the picker's `adoptEntry` copies them).
   const chosen = new Set<string>();
@@ -99,7 +108,7 @@ function prepare(model: CookModel, catalogue: ReadonlyMap<string, IngredientReco
 }
 
 /** Writes the records in one transaction and remembers them for Undo. */
-async function write(
+export async function write(
   prepared: Prepared,
   records: { kind: 'components' | 'dishes'; record: Record<string, unknown> }[],
 ): Promise<{ ok: true } | { ok: false; error: { code: string } }> {

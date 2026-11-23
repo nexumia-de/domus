@@ -596,7 +596,8 @@ export const appStrings = {
   importing: {
     title: 'Import',
     back: 'Back to Settings',
-    intro: "Choose a file exported from Cook's Notebook, or a Cooklang recipe (.cook).",
+    intro:
+      "Choose a file exported from Cook's Notebook, a Cooklang recipe (.cook) or a saved AI answer (.json).",
     chooseFile: 'Choose a file',
     aiTitle: 'Recipe from an AI',
     aiIntro:
@@ -604,10 +605,120 @@ export const appStrings = {
     copyPrompt: 'Copy AI prompt',
     promptCopied: 'Prompt copied.',
     promptNotCopied: 'The prompt could not be copied; select it below and copy it.',
-    pasteLabel: 'Answer of the AI (Cooklang)',
-    readPasted: 'Read the text',
+    pasteLabel: 'Answer of the AI',
+    pasteCooklang:
+      'A Cooklang text can be pasted here too, and a .cook file chosen with the file button above.',
+    readPasted: 'Read the answer',
     pasteEmpty: 'Paste the answer first.',
     pastedName: 'Pasted recipe',
+    aiNotJson:
+      'The answer is not readable as JSON. Copy the whole answer of the AI, from the first { to the last }.',
+    aiTooLong: (limit: number): string =>
+      `The answer is longer than ${limit.toLocaleString('en')} characters, more than Culina reads at once; split it into smaller answers.`,
+    aiNotFormat:
+      'The answer is not in the recipe format of the prompt: "format" must be "culina-recipes".',
+    aiErrorsHeading: 'What the answer cannot say this way',
+    aiErrorsHint:
+      'Nothing was imported. Ask the AI to correct these points, or correct them in the answer, and read it again.',
+    aiPlace: {
+      answer: 'The answer',
+      recipe: (n: number, title: string): string =>
+        `Recipe ${n}${title === '' ? '' : ` (${title})`}`,
+      component: (n: number, name: string): string =>
+        `component ${n}${name === '' ? '' : ` (${name})`}`,
+      line: (n: number, name: string): string => `line ${n}${name === '' ? '' : ` (${name})`}`,
+      slot: (n: number): string => `slot ${n}`,
+      step: (n: number): string => `step ${n}`,
+      alternative: (n: number): string => `alternative ${n}`,
+      source: 'source',
+    },
+    aiError: {
+      required: (place: string, field: string): string => `${place}: "${field}" is needed.`,
+      unknownField: (place: string, field: string): string =>
+        `${place}: "${field}" is not a field of the recipe format.`,
+      type: (place: string, field: string, kind: string): string =>
+        `${place}: "${field}" must be ${kind}.`,
+      kinds: {
+        string: 'a text',
+        integer: 'a whole number',
+        number: 'a number',
+        boolean: 'true or false',
+        array: 'a list in [ ]',
+        object: 'an object in { }',
+      } as Record<string, string>,
+      version: 'Culina reads version 1 of the recipe format ("formatVersion": 1).',
+      role: (place: string, field: string, value: string, allowed: string): string =>
+        `${place}: "${value}" is not a role Culina knows for "${field}" (${allowed}).`,
+      empty: (place: string, field: string): string => `${place}: "${field}" is empty.`,
+      tooLong: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" is longer than ${limit} characters.`,
+      tooFew: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" needs at least ${limit} ${limit === 1 ? 'entry' : 'entries'}.`,
+      tooMany: (place: string, field: string, limit: number): string =>
+        `${place}: "${field}" has more than ${limit} entries.`,
+      range: (place: string, field: string, min: number, max: number): string =>
+        `${place}: "${field}" must be a whole number from ${min} to ${max}.`,
+      url: (place: string): string =>
+        `${place}: "url" must be a web address starting with http:// or https://.`,
+      slotFill: (place: string): string =>
+        `${place}: a slot is filled either by a "component" or by an "ingredient", one of the two.`,
+      guessedNeedsAmount: (place: string): string =>
+        `${place}: "guessed" is only for an amount, and there is no "amount".`,
+      sourceEmpty: (place: string): string => `${place}: "source" has no field.`,
+      twice: (place: string, field: string): string =>
+        `${place}: "${field}" names one entry twice.`,
+      other: (place: string, field: string): string =>
+        `${place}: "${field}" does not fit the recipe format.`,
+    },
+    aiProblem: {
+      'duplicate-component': (place: string, name: string): string =>
+        `${place}: two components are called "${name}".`,
+      'unknown-component': (place: string, name: string): string =>
+        `${place}: the recipe has no component "${name}".`,
+      'unknown-alternative': (place: string, name: string): string =>
+        `${place}: the alternative "${name}" is not a component of the recipe.`,
+      'alternative-in-slot': (place: string, name: string): string =>
+        `${place}: "${name}" fills a slot itself, so it is not an alternative.`,
+      'alternative-twice': (place: string, name: string): string =>
+        `${place}: "${name}" is already the alternative of another slot.`,
+      'alternatives-on-ingredient': (place: string): string =>
+        `${place}: a slot filled by an ingredient has no alternatives.`,
+      'amount-on-component': (place: string): string =>
+        `${place}: a slot filled by a component takes its whole recipe, so it has no "amount".`,
+      'component-unused': (place: string, name: string): string =>
+        `${place}: the component "${name}" is in no slot and is no slot's alternative.`,
+    },
+    aiHeading: 'Recipes in the answer',
+    aiRead: (recipes: number, lines: number): string =>
+      `${recipes} ${recipes === 1 ? 'recipe' : 'recipes'} with ${lines} ingredient ${lines === 1 ? 'line' : 'lines'} read. Nothing is saved until you save.`,
+    aiGuessedCount: (n: number): string =>
+      `The AI marked ${n} ${n === 1 ? 'amount' : 'amounts'} as guessed. ${n === 1 ? 'It is' : 'They are'} shown as guessed below and keep "guessed" in the line's note.`,
+    aiGuessed: 'guessed',
+    aiBecomesDish: (components: number): string =>
+      `Becomes a dish with ${components} ${components === 1 ? 'component' : 'components'}.`,
+    aiBecomesComponent: 'Becomes a component.',
+    aiSource: (text: string): string => `Source: ${text}`,
+    aiNoSource: 'The answer names no source.',
+    aiDishYield: (text: string): string =>
+      `The recipe states it makes ${text}; a dish has portions, so this goes into the dish's note.`,
+    aiYieldNotWeight: (text: string): string =>
+      `The recipe states it makes ${text}; an output weight is in grams, so the field stays empty.`,
+    aiYieldNote: (text: string): string => `Makes ${text}`,
+    aiAlternativeFor: (name: string): string =>
+      `Alternative for ${name}: not in the dish; Swap offers it.`,
+    aiSlotIngredient: (role: string): string => `Slot ${role}, filled by an ingredient`,
+    aiAssembly: (n: number): string => `${n} ${n === 1 ? 'step' : 'steps'} of assembly.`,
+    aiSave: 'Save all recipes',
+    aiChange: (source: string): string =>
+      source === ''
+        ? 'Imported from an AI answer'
+        : `Imported from an AI answer; source: ${source}`,
+    aiImported: (n: number): string => `Imported ${n} ${n === 1 ? 'recipe' : 'recipes'}.`,
+    aiSaved: (n: number): string => `Saved ${n} ${n === 1 ? 'recipe' : 'recipes'}.`,
+    aiGuessedHeading: 'Amounts the AI guessed',
+    aiNoneGuessed: 'The AI marked no amount as guessed.',
+    aiNeedsNames: 'Every recipe needs a name, and every component of a dish too.',
+    cookAsWrittenSized: (text: string, size: string): string => `As written: ${text} (${size})`,
     nothingChanged: 'Nothing was changed.',
     notReadable: 'This file cannot be read as an export.',
     notAnExport: "This file is not a Cook's Notebook export.",

@@ -231,7 +231,13 @@ export type {
   SerializeContext,
   SerializeResult,
 } from './cooklang/serialize';
-export { availableModes, givenAmount, quantityText, resolveAmount } from './cooklang/amount';
+export {
+  availableModes,
+  givenAmount,
+  quantityText,
+  resolveAmount,
+  writtenInSizedWord,
+} from './cooklang/amount';
 export type { AmountErrorCode, AmountMode, AmountResult } from './cooklang/amount';
 export { importComponent, importDish } from './cooklang/import';
 export { cooklangParts, hasSections } from './cooklang/sections';
@@ -246,7 +252,42 @@ export type {
   ImportResult,
   LineDecision,
 } from './cooklang/import';
-export { unitFromWord } from './cooklang/units';
+export {
+  NO_FIXED_SIZE_WORDS,
+  UNIT_WORDS,
+  noFixedSizeWord,
+  sizedIn,
+  sizedWord,
+  unitFromWord,
+} from './cooklang/units';
+export type { SizedEntry, SizedWord } from './cooklang/units';
+export { readWrittenAmount } from './recipes/amount';
+export { checkRecipes } from './recipes/check';
+export type { RecipeProblem, RecipeProblemCode } from './recipes/check';
+export {
+  DEFAULT_RECIPE_ROLE,
+  alternativeOf,
+  componentRoles,
+  importRecipe,
+  isDishRecipe,
+  recipeLines,
+} from './recipes/import';
+export type {
+  RecipeComponentOptions,
+  RecipeImportErrorCode,
+  RecipeImportOptions,
+  RecipeImportResult,
+  RecipeLineUse,
+} from './recipes/import';
+export { RECIPE_FORMAT, RECIPE_FORMAT_VERSION, recipeImportSchema } from './recipes/types';
+export type {
+  RecipeAnswer,
+  RecipeComponent,
+  RecipeEntry,
+  RecipeLine,
+  RecipeSlot,
+  RecipeSource,
+} from './recipes/types';
 export type {
   Block,
   CookIngredient,

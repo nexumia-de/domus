@@ -1,0 +1,30 @@
+{
+  "about": "Words a cook writes that are no unit of data/units.json. `sized`: a word with a size read in a named source (words, unit, factor, source with the quoted sentence); none so far. `noFixedSize`: a word with no size read in any source, kept as written without a number, like \"to taste\", with the reason. To give a word a size, move it to `sized` with its source; nothing else changes.",
+  "sized": {},
+  "noFixedSize": {
+    "EL": {
+      "words": ["EL", "Esslöffel", "Eßlöffel"],
+      "reason": "No source with a size could be read from this environment (2026-11-23). Candidates not read: Michael Hertl, Kinderheilkunde und Kinderkrankenpflege für Schwestern, Thieme 1979 (archive.org item kinderheilkundeu0000hert, a lending item: only a search snippet of its OCR text was seen, the text and page images were not), and Judith Simons, Lust auf… Landküche, 2000 (only a search snippet seen). Refused by the network: de.wikipedia.org, de.wiktionary.org, dwds.de, duden.de, ptb.de, bzfe.de, gesetze-im-internet.de, the archive.org scan hosts (dn*.ca.archive.org)."
+    },
+    "TL": {
+      "words": ["TL", "Teelöffel"],
+      "reason": "No source with a size could be read from this environment (2026-11-23); the same candidates and refused hosts as EL."
+    },
+    "Prise": {
+      "words": ["Prise", "Prisen"],
+      "reason": "Wikipedia (English), Pinch (unit), read on 2026-11-23 at https://en.wikipedia.org/wiki/Pinch_(unit): \"There is no generally accepted standard.\""
+    },
+    "Msp.": {
+      "words": ["Msp.", "Msp", "Messerspitze", "Messerspitzen"],
+      "reason": "No source with a size could be read from this environment (2026-11-23); a knife tip is taken to have none, a judgement."
+    },
+    "Becher": {
+      "words": ["Becher"],
+      "reason": "The size of a cup (of sour cream, cream, yoghurt) is the product's; no source read gives a general size."
+    },
+    "Päckchen": {
+      "words": ["Päckchen", "Pck.", "Pck", "Packung"],
+      "reason": "The size of a packet (baking powder, vanilla sugar, yeast) is the product's; no source read gives a general size."
+    }
+  }
+}
