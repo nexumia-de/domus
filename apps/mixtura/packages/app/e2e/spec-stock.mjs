@@ -4,7 +4,7 @@
 // --docs also to docs/screenshots/ at scale 2 as spec-stock-*.png.
 //
 //   node e2e/spec-stock.mjs [width height] [--docs] [--throttle=N] [--slow-frames=MS]
-/* global document, innerWidth -- in functions the page runs */
+/* global document, innerWidth, location -- in functions the page runs */
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { launch, throttle } from './browser.mjs';
@@ -105,6 +105,29 @@ await tag().filter({ hasText: 'Makeable' }).waitFor();
 await page.reload();
 await page.locator('[data-stock-tag="makeable"]').waitFor();
 expect((await stockIds()).includes('simple-syrup'), 'the mark is kept after a reload');
+
+// The page goes away in the task of the mark itself, so the mark depends on the note written
+// with the change (src/stock/pending.ts) whenever the store's callback does not get to run.
+// On a fast machine the callback often still runs: this step passed without the notes too, and
+// failed without them in 2 of 12 runs under load. test/stock-pending.test.ts pins the ordering.
+await setStock(['light-rum', 'lime-juice']);
+await open('#/drinks/daiquiri');
+await page.locator('[data-action="mark-stock"]').waitFor();
+await page
+  .evaluate(() => {
+    document.querySelector('[data-action="mark-stock"]').click();
+    location.reload();
+  })
+  .catch(() => undefined); // the reload may end the evaluation
+await page.locator('[data-stock-tag="makeable"]').waitFor();
+expect(
+  (await stockIds()).includes('simple-syrup'),
+  'a mark made in the task of a reload is kept and written by the next page',
+);
+const notes = await page.evaluate(
+  () => Object.keys(localStorage).filter((k) => k.startsWith('mixtura.stock.pending.')).length,
+);
+expect(notes === 0, `no note is left once the mark is written (${notes})`);
 
 // A listed substitute (sugar for simple syrup).
 await setStock(['light-rum', 'lime-juice', 'sugar']);

@@ -171,6 +171,30 @@ Spaces sheet changes `ticked` and `entry`
 removing a space is the Household app's; Mixtura does not write a space
 except the first one on a device without any.
 
+### A change the page did not live to write
+
+The shared store keeps a collection as one row: a change reads the row
+and writes it in the callback of that read. A page that goes away in
+between (a reload, a closed tab) runs no callback, and the change is
+lost although the screen had shown it. So every stock change is noted
+first (`src/stock/pending.ts`): in the task of the change, the records
+go into `localStorage` under `mixtura.stock.pending.<id>`, with the tab
+that made them (an id in `sessionStorage`, `mixtura.tab`). When the
+write has settled, written or failed and put back on the screen, the
+note is taken away. A page that reads the stock first writes the notes
+that are left, oldest first, through the same path as a change: all
+notes of its own tab, and a note of another tab once it is 10 seconds
+old (that tab is still writing, or gone). A note for a space that is no
+longer on the device is dropped; a note that cannot be read is removed;
+where the browser refuses the storage, nothing is noted and a change is
+as safe as it was before.
+
+Not covered: the native app has no `localStorage` and notes nothing. A
+note that waits for days is written with a new stamp when Mixtura is
+opened again, and then wins over a change another device made in
+between. The orderings and their tests are in the
+[ordering table](../../../packages/host/docs/sync-orderings.md).
+
 ## Sync
 
 Mixtura has no sync code of its own. `createCollectionSync` of the host package (until 2026-11-20 Mixtura's own `stock/sync.ts`)
