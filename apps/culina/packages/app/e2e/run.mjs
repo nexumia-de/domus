@@ -11,6 +11,7 @@ import { cook } from './cook.mjs';
 import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
 import { dishCharacters } from './dish-characters.mjs';
+import { dishPairing } from './dish-pairing.mjs';
 import { dishSwap } from './dish-swap.mjs';
 import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
@@ -50,6 +51,7 @@ try {
   await amountsWritten(browser, server);
   await dishSwap(browser, server);
   await dishCharacters(browser, server);
+  await dishPairing(browser, server);
   await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);

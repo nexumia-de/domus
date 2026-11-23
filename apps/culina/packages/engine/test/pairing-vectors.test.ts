@@ -2,7 +2,7 @@
 // shared flavour molecules, their order and their limits. The vectors are constructed; what the
 // real data gives is not asserted here.
 import { describe, expect, test } from 'vitest';
-import { entityByName, pairingsFor, sharedMolecules } from '../src/index';
+import { entityByName, pairingsFor, pairingsForDish, sharedMolecules } from '../src/index';
 import type { PairingData, PairingOptions } from '../src/index';
 import { loadVectors } from './vector-files';
 
@@ -17,6 +17,15 @@ describe('pairing vectors', () => {
               i.entity_id as number,
               i.data as PairingData,
               (i.options ?? {}) as PairingOptions,
+            ),
+          ).toEqual(vector.expected?.pairings);
+        case 'dish_pairings':
+          return expect(
+            pairingsForDish(
+              i.entity_ids as number[],
+              i.data as PairingData,
+              (i.options ?? {}) as PairingOptions,
+              i.candidates === undefined ? undefined : new Set(i.candidates as number[]),
             ),
           ).toEqual(vector.expected?.pairings);
         case 'shared_molecules':

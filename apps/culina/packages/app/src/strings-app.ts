@@ -1,5 +1,5 @@
 /** Every visible text of the app, English: the canonical set. `strings.ts` chooses the language. */
-import { classicsStrings } from './strings-classics';
+import { classicsStrings, pairingStrings } from './strings-classics';
 import { cookStrings } from './strings-cook';
 import { nutritionStrings } from './strings-nutrition';
 import { stockStrings } from './strings-stock';
@@ -932,6 +932,7 @@ export const appStrings = {
     backToList: 'Back to the list',
   },
   nutrition: nutritionStrings,
+  pairing: pairingStrings,
   // Texts for the store's error codes; the editing screens show them.
   store: {
     unavailable: 'This browser cannot keep data here. Private browsing can cause this.',

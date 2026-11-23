@@ -4,8 +4,8 @@
 // version, Edit and the rest; a shipped dish: Keep in my notebook); the characters; the portions
 // (kept in memory per dish, so the cook screen cooks them); the ingredient lines per component
 // and for the dish; for an own dish the role slots with Swap; "Cook step by step"; the method;
-// for an own dish what goes in, all the way down; then, closed behind a tap, the nutrition per
-// portion and, for a shipped dish, the source.
+// for an own dish what goes in, all the way down; then, closed behind a tap, what goes with the
+// dish, the nutrition per portion and, for a shipped dish, the source.
 //
 // On the current version of an own dish a slot can be swapped for another component of its
 // role: that changes what is shown and cooked now (`src/dishes/session.ts`), and only "Keep as my
@@ -38,6 +38,7 @@ import { characterRow } from './character-chips';
 import { dishCooklangAction } from './cooklang-action';
 import { keepButton } from './classics/finish';
 import { nutritionDetails } from './classics/nutrition-block';
+import { pairingDetails } from './classics/pairing-block';
 import { ingredientsBlock, methodBlock } from './classics/recipe';
 import { sourceDetails } from './classics/source-block';
 import { insteadFor } from './classics/substitute-block';
@@ -99,6 +100,7 @@ const dishPage = (page: DishPage): HTMLElement => {
   const characterHost = el('div', 'character-host');
   const results = el('div', 'dish-results classic-results');
   const nutrition = nutritionDetails();
+  const pairing = pairingDetails();
   // The source section is drawn again with the names (the catalogue loads after the first draw);
   // it keeps being open if the user opened it.
   const sourceHost = el('div', 'source-host');
@@ -131,6 +133,11 @@ const dishPage = (page: DishPage): HTMLElement => {
       ...(page.afterMethod?.(dish) ?? []),
     );
     nutrition.draw(dish.nutrition);
+    pairing.draw(
+      [...dish.components.flatMap((c) => c.lines), ...dish.slots].flatMap((line) =>
+        line.ingredient === undefined ? [] : [{ ingredient: line.ingredient, name: line.name }],
+      ),
+    );
     if (dish.source !== undefined) {
       const wasOpen = sourceHost.querySelector('details')?.open === true;
       const source = sourceDetails(dish.source);
@@ -150,7 +157,7 @@ const dishPage = (page: DishPage): HTMLElement => {
       draw();
     },
   );
-  card.append(characterHost, control.wrap, results, nutrition.element, sourceHost);
+  card.append(characterHost, control.wrap, results, pairing.element, nutrition.element, sourceHost);
   draw();
   // The catalogue gives the ingredient names, groups and figures: drawn again once it is there.
   void loadNames().then(() => {

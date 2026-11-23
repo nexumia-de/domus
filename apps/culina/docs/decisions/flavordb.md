@@ -1,7 +1,7 @@
 ---
 type: Decision Record
 title: Pairings from FlavorDB
-description: Decided by the owner on 2026-11-23. Culina takes pairings ("goes with") from FlavorDB, a database of flavour molecules per ingredient under CC BY-NC-SA 3.0, which fits because Culina is non-commercial; the data is one file of its own that names source, licence and changes, so that a commercial variant could leave it out. Built - the fetch, the derivation and the engine's pairing lookup with tests. Not built - the data itself (the session could not reach the site), the link to the catalogue, anything on a screen. What the data cannot say - what a dish lacks.
+description: Decided by the owner on 2026-11-23. Culina takes pairings ("goes with") from FlavorDB, a database of flavour molecules per ingredient under CC BY-NC-SA 3.0, which fits because Culina is non-commercial; the data is one file of its own that names source, licence and changes, so that a commercial variant could leave it out. Built the same day - the data (936 ingredients, 1788 molecules), the links to the catalogue (630 of 720) and Goes with on the dish screen. What the data cannot say - what a dish lacks. Nobody but the agent judged the pairings.
 tags: [decision, pairing, flavordb, licences, data, taste]
 generated: { by: claude-code, at: 2026-11-23 }
 sources:
@@ -70,12 +70,39 @@ about automated access (looked for on 2026-11-23, none found).
 
 ## What follows (agent)
 
-- **How a pairing is computed** (`packages/engine/src/pairing/`): two
-  ingredients pair when they share at least 5 molecules; the order is by
-  the share of common molecules among those of either (Jaccard index),
-  then by the number shared. An ingredient with fewer than 10 molecules
-  is not offered to others. Both numbers are judgements, set before any
-  real data was seen, and to be looked at again with the data.
+- **How a pairing is computed** (`packages/engine/src/pairing/`), as
+  changed after the real data was seen:
+  - A molecule counts by how rare it is: the natural logarithm of the
+    number of ingredients over the number that have it. Counted
+    plainly, the lists were decided by one block of some 93 molecules
+    that about 170 of the 936 ingredients carry alike (garlic then
+    "paired" with dandelion and rose hip).
+  - Two ingredients pair when they share at least 5 molecules; their
+    overlap is the weight of the shared molecules over the weight of
+    the molecules of either. An ingredient with fewer than 10 molecules
+    (369 of the 936, most fish among them) is not offered to others.
+  - An ingredient of the same family (the first part of FlavorDB's
+    category: fruit with fruit, cheese with cheese) is left out. That
+    is likeness, which the data shows well and a cook knows.
+  - For a dish, a candidate is measured against itself: how many
+    spreads its overlap with a dish's ingredient lies above its mean
+    overlap with all ingredients of other families. Without this, the
+    ingredients with the most molecules (beans, rice, soybean) led
+    every list. The score is the mean over the dish's ingredients; a
+    candidate at or below its usual is not offered.
+  - All of these are judgements of this project. They were tried on a
+    dozen dishes by the agent and by nobody else.
+- **What the app shows**: on the dish screen, closed behind a tap,
+  "Goes with": up to eight ingredients of the catalogue with the dish's
+  lines they go with ([behaviour](../behaviour.md)). Only ingredients
+  the catalogue has are offered, so that each has a name in both
+  languages. The flavour words of the shared molecules are computed and
+  not shown: they are English only.
+- **The link to the catalogue** is this project's, not FlavorDB's:
+  `packages/app/data/flavour-links.json`, from a rule on names and 86
+  corrections with their reasons (`tools/flavordb/links-own.json`). 630
+  of the 720 ingredients are linked; fats, most oils and mixtures are
+  not.
 - **What it does not answer**: what a dish still needs ("flat, try
   acid"). The molecules describe aroma; sweet, sour, salty, bitter,
   umami and fat are not in the data in a usable form. That half of the
@@ -85,33 +112,35 @@ about automated access (looked for on 2026-11-23, none found).
   commercial is not settled by the licence text. Not decided; the link
   is in the About dialog today.
 
-## Built, and not built
+## Built
 
-Built on 2026-11-23, without the data:
+On 2026-11-23:
 
-- `tools/flavordb/fetch.mjs` asks for one entity at a time, one request
-  a second, and keeps what it got (`tools/flavordb/raw/`, not
-  committed).
-- `tools/flavordb/derive.mjs` and `build.mjs` turn the raw files into
-  the one file; the same files give the same bytes.
-- The engine's `pairingsFor`, `sharedMolecules`, `flavoursOf` and
-  `entityByName`, with vectors in `packages/engine/vectors/pairing/`.
+- `tools/flavordb/fetch.mjs` asked for the entities 0 to 978 one at a
+  time; 936 exist, none failed. Earlier that day the site did not
+  answer from the session's container (HTTP 502), which is why the first
+  commit of this work says the data was not fetched.
+- `tools/flavordb/derive.mjs` and `build.mjs` wrote
+  `flavour-pairings.json`: 936 entities, 1788 molecules, 606 kB. (The
+  site speaks of 2254 molecules with ingredients; the difference was
+  not looked into.)
+- `tools/flavordb/link.mjs` and `link-build.mjs` wrote the links.
+- The engine's `pairingsFor`, `pairingsForDish`, `pairingBaselines`,
+  with vectors in `packages/engine/vectors/pairing/`.
+- The section on the dish screen, in English and German.
 
-**Not built:** the data file. The session's network reaches the site
-only through a tool that passes on short excerpts; from the container
-the connection failed (HTTP 502 from the proxy), so nothing was fetched
-but two small entities for the tests
-(`tools/flavordb/fixtures/`). The owner runs the fetch on a machine of
-their own ([development](../development.md#pairing-data)). After that:
-the link from FlavorDB's entities to the catalogue's ingredients (by
-name, then by hand, as a judgement file), the notice in the app's
-licences, and where a pairing shows on a screen.
+**Not built:** pairings while a dish is put together in the editor,
+which is where the building kit needs them most; anything in the native
+app; a way to say "not this one".
 
 ## What nobody verified
 
-The full entity documents (the fixtures have six of 41 fields per
-molecule). How many entities there are and how large the file gets.
-Whether the thresholds give pairings a cook would call sensible.
-Whether F-Droid or Flathub take an app with this file (their rules were
-not read). The licence questions are the agent's reading and no legal
-advice.
+Whether the pairings are ones a cook would call sensible: the agent
+looked at a dozen dishes and found them plausible as hints, with odd
+ones among them ("fish oil" with baked potatoes). Each of the 630 links
+one by one (the rule's links were read as a list of 150 pairs of names,
+the corrections written from that). Why 369 entities have fewer than
+ten molecules. Whether F-Droid or Flathub take an app with this file
+(their rules were not read). How long the first opening takes on a
+phone (the baselines are computed then; about 130,000 comparisons). The
+licence questions are the agent's reading and no legal advice.

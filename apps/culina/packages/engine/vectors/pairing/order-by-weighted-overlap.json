@@ -1,6 +1,6 @@
 {
-  "id": "order-by-overlap",
-  "description": "Pairings come by overlap (shared over the molecules of either), not by the bare number shared: C (12 of 20) before F (12 of 28) before B (10 of 30). D shares 4, fewer than the 5 needed; E has 8 molecules, fewer than the 10 needed to be offered",
+  "id": "order-by-weighted-overlap",
+  "description": "A (herb) pairs with C, B and G, ordered by the weight of the shared molecules over the weight of either; F is of A's family (Herb) and left out, D shares 4 molecules (fewer than 5), E has 8 molecules (fewer than 10)",
   "inputs": {
     "kind": "pairings",
     "entity_id": 1,
@@ -26,7 +26,7 @@
           "id": 3,
           "alias": "c",
           "name": "C",
-          "category": "fruit",
+          "category": "fruit-berry",
           "molecules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         },
         {
@@ -53,10 +53,17 @@
           "id": 6,
           "alias": "f",
           "name": "F",
-          "category": "fruit",
+          "category": "Herb",
           "molecules": [
             9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 200, 201, 202, 203, 204, 205, 206, 207
           ]
+        },
+        {
+          "id": 7,
+          "alias": "g",
+          "name": "G",
+          "category": "vegetable",
+          "molecules": [15, 16, 17, 18, 19, 20, 300, 301, 302, 303, 304, 305]
         }
       ],
       "molecules": {
@@ -555,6 +562,30 @@
         "207": {
           "name": "m207",
           "flavours": ["nutty"]
+        },
+        "300": {
+          "name": "m300",
+          "flavours": ["green", "nutty"]
+        },
+        "301": {
+          "name": "m301",
+          "flavours": ["nutty"]
+        },
+        "302": {
+          "name": "m302",
+          "flavours": ["green", "nutty"]
+        },
+        "303": {
+          "name": "m303",
+          "flavours": ["nutty"]
+        },
+        "304": {
+          "name": "m304",
+          "flavours": ["green", "nutty"]
+        },
+        "305": {
+          "name": "m305",
+          "flavours": ["nutty"]
         }
       }
     }
@@ -564,29 +595,29 @@
       {
         "id": 3,
         "name": "C",
-        "category": "fruit",
+        "category": "fruit-berry",
         "shared": 12,
-        "overlap": 0.6,
+        "overlap": 0.698,
         "flavours": ["citrus", "green"]
-      },
-      {
-        "id": 6,
-        "name": "F",
-        "category": "fruit",
-        "shared": 12,
-        "overlap": 0.429,
-        "flavours": ["nutty", "green"]
       },
       {
         "id": 2,
         "name": "B",
         "category": "fruit",
         "shared": 10,
-        "overlap": 0.333,
+        "overlap": 0.201,
+        "flavours": ["nutty", "green"]
+      },
+      {
+        "id": 7,
+        "name": "G",
+        "category": "vegetable",
+        "shared": 6,
+        "overlap": 0.097,
         "flavours": ["nutty", "green"]
       }
     ]
   },
   "tolerance": 0,
-  "source": "Constructed for this test; the numbers follow from the lists by counting."
+  "source": "Constructed for this test. The expected values were computed with a second implementation of the rule (a Python script, not kept) and looked over by hand: the order, the families left out and the thresholds."
 }

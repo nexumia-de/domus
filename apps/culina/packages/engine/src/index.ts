@@ -439,12 +439,18 @@ export {
   MIN_MOLECULES,
   MIN_SHARED,
   entityByName,
+  familyOf,
   flavoursOf,
+  moleculeWeights,
+  pairingBaselines,
   pairingsFor,
+  pairingsForDish,
   sharedMolecules,
 } from './pairing/pair';
 export type {
+  DishPairing,
   Pairing,
+  PairingBaseline,
   PairingData,
   PairingEntity,
   PairingMolecule,

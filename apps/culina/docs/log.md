@@ -3,7 +3,7 @@
 ## 2026-11-23 (FlavorDB)
 
 - **Decision**: by the owner: [pairings come from FlavorDB](decisions/flavordb.md), Culina stays non-commercial; the rule "no data from FlavorDB" of `AGENTS.md` is lifted for Culina. The data is to be one file of its own under CC BY-NC-SA 3.0.
-- **Creation**: `tools/flavordb/` (fetch one entity a second, derive, build) and the engine's pairing lookup (`src/pairing/`, vectors in `vectors/pairing/`): pairs by shared flavour molecules, ordered by their share among the molecules of either. **Not done**: the data was not fetched (the session could not reach the site from its container; two small entities came through a fetch tool and are the fixtures), so there is no data file, no link to the catalogue and nothing on a screen. [Development](development.md#pairing-data) says how the owner fetches.
+- **Creation**: pairings from FlavorDB, from the data to the screen. `tools/flavordb/` fetches one entity at a time, derives `packages/app/data/flavour-pairings.json` (936 entities, 1788 molecules, fetched 2026-11-23) and links the catalogue to it (`flavour-links.json`, 630 of 720 ingredients; 90 corrections with reasons in `links-own.json`). The engine's `src/pairing/` weighs a molecule by how rare it is, leaves out the same family and, for a dish, measures a candidate against its own usual overlap; the first rule (plain counts) was changed after the real data showed about 170 ingredients sharing one block of some 93 molecules. The dish screen has **Goes with**, closed behind a tap, loaded on first opening ([behaviour](behaviour.md)). **Not done**: nothing in the editor or the native app; nobody judged the pairings but the agent, on a dozen dishes; what a dish lacks is not in this data.
 
 ## 2026-11-23 (answers, name)
 

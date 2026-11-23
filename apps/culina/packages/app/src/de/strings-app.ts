@@ -2,7 +2,7 @@
 // Gericht, Schritt, Portionen, Vorrat, Notizbuch, Technik and Quelle (docs/design.md). The form of
 // address is "du"; where it can be avoided the text is a plain label. Wording never judges.
 import type { appStrings } from '../strings-app';
-import { classicsStringsDe } from './strings-classics';
+import { classicsStringsDe, pairingStringsDe } from './strings-classics';
 import { cookStringsDe } from './strings-cook';
 import { nutritionStringsDe } from './strings-nutrition';
 import { stockStringsDe } from './strings-stock';
@@ -961,6 +961,7 @@ export const appStringsDe: typeof appStrings = {
     backToList: 'Zurück zur Liste',
   },
   nutrition: nutritionStringsDe,
+  pairing: pairingStringsDe,
   // Texts for the store's error codes; the editing screens show them.
   store: {
     unavailable:

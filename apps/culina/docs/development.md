@@ -257,34 +257,56 @@ Wikidata changed. The snapshot is the generator's only input from Wikidata.
 
 ## Pairing data
 
-Pairings come from FlavorDB ([decision](decisions/flavordb.md)). The
-data file `packages/app/data/flavour-pairings.json` does not exist yet:
-the session that built the tools could not reach the site from its
-container. To make it, on a machine that reaches
-`cosylab.iiitd.edu.in`, from `apps/culina`:
+Pairings come from FlavorDB ([decision](decisions/flavordb.md)). Two
+files in `packages/app/data/` are committed and rebuilt, never edited:
+
+- `flavour-pairings.json`, derived from FlavorDB's entity documents
+  (fetched on 2026-11-23: 936 entities, 1788 molecules, 606 kB);
+- `flavour-links.json`, which entity stands for an ingredient of the
+  catalogue (630 of 720), from the rule of `tools/flavordb/link.mjs` and
+  the corrections of `tools/flavordb/links-own.json`.
+
+To fetch again and rebuild, from `apps/culina`:
 
 ```bash
 node tools/flavordb/fetch.mjs
 ```
 
 ```bash
-node tools/flavordb/build.mjs --fetched 2026-11-24
+node tools/flavordb/build.mjs --fetched 2026-11-23
 ```
 
-`fetch.mjs` asks for the entities `0` to `1100` one after the other, one
-request a second (about twenty minutes), and saves each as
-`tools/flavordb/raw/<id>.json`; that folder is not committed. It stops
-early after 40 missing ids in a row, lists what failed and ends with
-exit code 1 then; a second run fetches only what is missing. `--from`,
-`--to`, `--pause <ms>` and `--out <folder>` change the range, the pause
-and the folder. `build.mjs` writes the one file from the raw files and
-the date they were fetched; the same files and date give the same
-bytes. A raw file that is no entity is named and left out.
+```bash
+node tools/flavordb/link-build.mjs
+```
 
-Tests: `packages/app/test/flavordb-derive.test.ts` (the derivation, on
-two real entities kept in `tools/flavordb/fixtures/`) and
-`packages/engine/test/pairing-vectors.test.ts` (the lookup). Neither
-`fetch.mjs` nor `build.mjs` was run against the site.
+`fetch.mjs` asks for the entities `0` to `1100` one after the other with
+a second's pause between requests, and saves each as
+`tools/flavordb/raw/<id>.json`; that folder (79 MB) is not committed. It
+stops early after 40 missing ids in a row, lists what failed and ends
+with exit code 1 then; a second run fetches only what is missing.
+`--from`, `--to`, `--pause <ms>` and `--out <folder>` change the range,
+the pause and the folder. On 2026-11-23 the run took a few minutes and
+nothing failed; earlier the same day the site did not answer from the
+session's container (HTTP 502 from the proxy). `build.mjs` writes the
+pairing file from the raw files and the date they were fetched; the
+same files and date give the same bytes; a raw file that is no entity
+is named and left out. `link-build.mjs` writes the links from the
+catalogue, the pairing file and the corrections; a correction that names
+no entity or reaches no ingredient is a problem and ends the run with
+exit code 1.
+
+A correction is a row of `links-own.json`: the beginning of a catalogue
+name up to a comma, the entity's name or `null` for no link, and the
+reason. It goes before the rule; with `"fallback": true` it applies only
+where the rule finds nothing.
+
+Tests: `packages/engine/test/pairing-vectors.test.ts` (the rule),
+`packages/app/test/flavordb-derive.test.ts` (the derivation, on two real
+entities kept in `tools/flavordb/fixtures/`),
+`packages/app/test/flavordb-data.test.ts` (the committed files are what
+the tools write) and `packages/app/test/pairing-view.test.ts`. The fetch
+itself has no test.
 
 ## CI
 
