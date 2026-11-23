@@ -39,6 +39,7 @@ const entities = [
   'substitute',
   'classic',
   'skill',
+  'recipe-import',
 ];
 
 describe('every schema has one valid and one invalid example', () => {
@@ -212,6 +213,7 @@ describe('data-model.md and the schemas agree', () => {
     substitute: 'Substitute effect',
     classic: 'Classic',
     skill: 'Skill state',
+    'recipe-import': 'Recipe import file',
   };
   const table = (title: string): Map<string, boolean> => {
     const start = doc.indexOf(`\n## ${title}\n`);

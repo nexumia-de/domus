@@ -235,9 +235,10 @@ the file; the user may give each a percent base, no output weight). Two parts th
 would get the same name are named apart in the step ("Teig", "Teig (2)"), since one
 dish's components and their export file stems must be told apart.
 
-**Amount modes** of both imports (`availableModes`, `resolveAmount`): `given` (a number and a unit
+**Amount modes** of all three imports (`availableModes`, `resolveAmount`): `given` (a number and a unit
 Culina knows: g, kg, oz, lb, ml, l, tsp, tbsp, cup, and no unit as a count; unit
-words in `units.ts`), `facts` (volume through the ingredient's density, count
+words in `units.ts`; a word with a size in `data/unit-words.json` would be read as that
+size, none has one yet, see [unit words](#unit-words-without-a-table-unit)), `facts` (volume through the ingredient's density, count
 through its unit weight; offered only when the ingredient has it), `grams` (the
 user weighed it), `open` (no amount: the line is kept, the written quantity is
 its note, and it is reported as unmeasured). A quantity that is not a number or
@@ -245,6 +246,109 @@ has an unknown unit (`{2%cloves}`, `{1-2}`) offers only `grams` and `open`.
 Nothing is converted without the facts and nothing is guessed. The short
 preparation and the written quantity (when it is not the amount) go into the
 line's `note`, joined by a comma.
+
+### Unit words without a table unit
+
+`data/unit-words.json` (read by `sizedWord`, `sizedIn` and `noFixedSizeWord` in
+`src/cooklang/units.ts`) is the one place for words a cook writes that are no unit
+of the table: `sized` holds a word with a size read in a named source (unit, factor
+and the quoted sentence), `noFixedSize` a word without one, with the reason. It is
+read by the Cooklang reader and the recipe import alike. A word in `sized` would be
+given as its size in the table's unit with its words in the note ("As written: …
+(size)" in the step); moving a word there is the whole change. Checked 2026-11-23
+(issue 40); the reader knew none of the six words before, and none has a size now:
+
+| Word (also)                | Now             | Why                                                                                                                                            |
+| -------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EL` (Esslöffel, Eßlöffel) | open, no number | no source with a size could be read from this environment (below)                                                                              |
+| `TL` (Teelöffel)           | open, no number | the same                                                                                                                                       |
+| `Prise` (Prisen)           | open, no number | Wikipedia (English), [Pinch (unit)](<https://en.wikipedia.org/wiki/Pinch_(unit)>), read 2026-11-23: "There is no generally accepted standard." |
+| `Msp.` (Msp, Messerspitze) | open, no number | no source read; taken to have no size, a judgement                                                                                             |
+| `Becher`                   | open, no number | the product's size; no source read gives a general one                                                                                         |
+| `Päckchen` (Pck., Packung) | open, no number | the product's size; no source read gives a general one                                                                                         |
+
+**Why EL and TL have no size:** the candidates were not read. Michael Hertl,
+_Kinderheilkunde und Kinderkrankenpflege für Schwestern_ (Thieme 1979; archive.org
+item `kinderheilkundeu0000hert`) is a lending item: only a snippet of its OCR text
+came back from archive.org's full-text search
+(`https://archive.org/services/search/beta/page_production/?service_backend=fts&hits_per_page=5&page=1&user_query=identifier%3Akinderheilkundeu0000hert%20%221%20Messerspitze%22`),
+the text file and the page images were not reachable, and a reviewer could not
+reproduce the snippet. A cookbook (Judith Simons, _Lust auf… Landküche_, 2000) was
+seen the same way, as a snippet only. Refused by the network: `de.wikipedia.org`,
+`de.wiktionary.org`, `dwds.de`, `duden.de`, `ptb.de`, `bzfe.de` (403),
+`gesetze-im-internet.de` (connection reset) and the archive.org scan hosts
+`dn*.ca.archive.org` (403). The app's German name of the US `tbsp` is "EL"; the
+reader does not take the reverse ("EL" is a `tbsp`) for a fact either.
+A word without a size is handled like any unknown word and like "to taste": the
+line stays open (or weighed), its words in the note.
+**Test:** `test/recipes.test.ts` in the engine (no word has a size, they stay open,
+the machinery with a table of its own, a Cooklang file reads `{2%EL}` the same way).
+
+## The recipe import format
+
+The answer a language model of the user's choice writes from a recipe
+([decision](decisions/ai-prompt-import.md), issue 40). The schema is
+`schemas/recipe-import.schema.json` (fields in the [data model](data-model.md#recipe-import-file));
+`format` `culina-recipes`, `formatVersion` 1, `recipes` (1 to 20). Names and
+amounts are as written, there are no ids:
+
+- a **recipe**: `title`, `persons` or `yield` (written), `source` (`title`,
+  `author`, `url`, `where`), `components`, `slots`, `steps` (the assembly);
+- a **component**: `name` (unique in its recipe), `role`, `lines`, `steps`;
+- a **line**: `ingredient`, `amount` ("200 g", "1/2 TL", "3"), `guessed`
+  (only with an amount), `role` (closed list of the ratio and dish roles), `note`
+  (the preparation);
+- a **slot**: `role` (a dish role), a `component` or an `ingredient` by name
+  (exactly one), `amount` and `guessed` for an ingredient, `optional`,
+  `alternatives` (names of other components of the recipe that may fill it).
+
+**Beyond the schema** (`checkRecipes`): component names unique; a slot's
+component and every alternative exist; an alternative fills no slot and is listed
+once; an ingredient slot has no alternatives and a component slot no amount; with
+slots given, every component is in a slot or an alternative. Each problem names its
+recipe and slot.
+
+**What a recipe becomes** (`importRecipe`, pure; ids, date and texts come in):
+
+| The recipe                                   | Becomes                                                                                                                 |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| one component, no slots, no `persons`        | a component (its `role` when given, `yield` in grams when the written yield is a mass, steps then assembly as `method`) |
+| `persons`, slots, or more than one component | a dish: `portions`, one slot per component in order when there are no slots, else the slots as written                  |
+| a slot with an `ingredient`                  | a dish slot that refers to the ingredient, with its amount when it can be used                                          |
+| an alternative                               | a component in no slot with the role of the slot it may replace (the notebook's rule; Swap offers it)                   |
+| a yield of a dish                            | the dish's `note` ("Makes 1 kg"), shown in the step                                                                     |
+| `source`                                     | the `change` of every new version: "Imported from an AI answer; source: …"                                              |
+| `guessed`                                    | the word "guessed" (in the app's language) at the end of the line's note                                                |
+
+Every component of a dish gets a `role` (its slot's, an alternative's slot's, or
+its own, else `main`), so that the notebook's alternatives work. Amounts are read
+by `readWrittenAmount` into the same quantity a Cooklang file gives: numbers with a
+point or a comma, fractions `1/2`, mixed `1 1/2`, `½` and `1½`; a range ("2-3 EL"),
+a text first ("etwas") or a number that could be a thousand or a decimal ("1.000 g",
+"1,250 kg"; a leading 0 is plain: "0,125 l") keeps its words and no value, so the
+line is open unless the user weighs it. A pasted answer or a file in the format longer
+than 1,000,000 characters (`MAX_ANSWER_CHARS`; twenty full recipes are under 200,000)
+is refused with one sentence before it is parsed; a file is recognised as an answer by
+its `"format": "culina-recipes"` before that. In error sentences a name or value from
+the answer is cut to 40 characters with "…" (`short`). The amount modes and the per-line decisions
+are those of the Cooklang import.
+
+**The prompt** (`src/screens/import/ai-prompt.ts`, `promptFor`) is generated from
+the schema: every object and field in schema order, with "required" or "optional",
+its kind (text, whole number from 1 to 100, true or false, list of …, one of the
+closed list of roles, exactly the constant) read from the schema; only one
+explanation per field and the rules are written in the module, in English and
+German. The rules: copy no text beyond what the recipe states; invent no amount
+and mark every guessed one with `"guessed": true`; several recipes go in one
+answer; separately made parts are components; the units Culina reads (`UNIT_WORDS`:
+the table's words and the sized words, none yet) and the words without a fixed size
+(`NO_FIXED_SIZE_WORDS`: EL, TL, Prise, Msp., Becher, Päckchen). An example answer per language follows, then "Recipe:".
+**Proved by** `test/ai-prompt.test.ts`: every field of the schema stands in each
+prompt with its flag and an explanation, and no other; every role and unit word is
+listed; the rules are there; the example passes the schema (Ajv over the schema
+files), `checkRecipes` and the app's compiled validator; a field without an
+explanation stops the generator. **Not proved by tests:** what a real model writes
+for the prompt; no model is run, in the tests or in the app.
 
 **Writer** (`componentToCooklang`): one component per file. Front matter
 `title` (quoted when it holds a colon) and `yield: 70%g`; the latest tasting

@@ -8,13 +8,31 @@ import { hashFor } from '../../router';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 import { storeText } from '../editor/store-text';
+import {
+  checkAnswer,
+  isRecipeAnswer,
+  MAX_ANSWER_CHARS,
+  mayBeRecipeAnswer,
+} from '../../exchange/ai-answer';
 import { aiPasteBlock } from './ai-paste';
+import { renderAiImport, renderAnswerErrors } from './ai-import';
 import { renderCookImport } from './import-cook';
 import { renderJsonImport } from './json-import';
 
 const text = strings.importing;
 
 const isCooklang = (fileName: string): boolean => /\.cook$/i.test(fileName);
+
+/** The parsed JSON of a file when it is in the recipe import format, else undefined. */
+const recipeAnswerOf = (content: string): unknown => {
+  if (!mayBeRecipeAnswer(content)) return undefined;
+  try {
+    const data: unknown = JSON.parse(content);
+    return isRecipeAnswer(data) ? data : undefined;
+  } catch {
+    return undefined;
+  }
+};
 
 export const importScreen = (): HTMLElement => {
   const section = el('section', 'screen import');
@@ -51,6 +69,25 @@ export const importScreen = (): HTMLElement => {
         return;
       }
       if (mine !== latest) return;
+      // A saved AI answer (format culina-recipes) goes to the AI step; any other JSON is an export.
+      // One too long to read is refused before it is parsed.
+      if (mayBeRecipeAnswer(content) && content.length > MAX_ANSWER_CHARS) {
+        renderAnswerErrors(host, [text.aiTooLong(MAX_ANSWER_CHARS)]);
+        status.textContent = text.nothingChanged;
+        return;
+      }
+      const answer = recipeAnswerOf(content);
+      if (answer !== undefined) {
+        const checked = checkAnswer(answer);
+        if (!checked.ok) {
+          renderAnswerErrors(host, checked.sentences);
+          status.textContent = text.nothingChanged;
+          return;
+        }
+        const entries = await loadCatalogue();
+        if (mine === latest) renderAiImport(host, checked.answer, status, entries);
+        return;
+      }
       const read = readExportText(content);
       if (!read.ok) status.textContent = read.message;
       else void renderJsonImport(host, read.content, status);

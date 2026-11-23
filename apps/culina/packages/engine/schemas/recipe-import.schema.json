@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/recipe-import.schema.json",
+  "title": "Recipe import",
+  "description": "The small import format a language model of the user's choice writes from a recipe (decision ai-prompt-import): names and amounts as written, no ids. A recipe is components with lines, optionally slots of a dish with alternatives. Culina matches the names with the user's confirmation; nothing here is stored as it stands.",
+  "type": "object",
+  "required": ["format", "formatVersion", "recipes"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "description": "Names the format.",
+      "const": "culina-recipes"
+    },
+    "formatVersion": {
+      "description": "The version of the format.",
+      "const": 1
+    },
+    "recipes": {
+      "description": "One entry per recipe of the answer.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/$defs/recipe"
+      }
+    }
+  },
+  "$defs": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "amount": {
+      "description": "An amount as the recipe writes it, number first, then the unit word: 200 g, 1/2 TL, 3.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "slotRole": {
+      "description": "The role of a component or a slot in a dish: the dish roles Culina offers.",
+      "enum": ["main", "sauce", "starch", "crunch", "acid", "garnish"]
+    },
+    "lineRole": {
+      "description": "The role of an ingredient in its component: the roles of Culina's ratio cards and dishes.",
+      "enum": [
+        "flour",
+        "water",
+        "liquid",
+        "egg",
+        "sugar",
+        "fat",
+        "oil",
+        "salt",
+        "acid",
+        "aromatic",
+        "starch",
+        "umami",
+        "crunch"
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "maxItems": 60,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "required": ["title", "components"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "description": "The recipe's name as the recipe gives it.",
+          "$ref": "#/$defs/name"
+        },
+        "persons": {
+          "description": "How many persons or portions the recipe states.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "yield": {
+          "description": "What the recipe states it makes, when it gives no persons: 1 kg, 12 pieces.",
+          "$ref": "#/$defs/amount"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "components": {
+          "description": "The parts made separately (dough, sauce); a simple recipe has one.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        },
+        "slots": {
+          "description": "The dish: what fills each role, by name. Left out, every component is one slot.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/slot"
+          }
+        },
+        "steps": {
+          "description": "The assembly: what is done once the components are made.",
+          "$ref": "#/$defs/steps"
+        }
+      }
+    },
+    "source": {
+      "description": "Where the recipe is from; at least one field.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "title": {
+          "description": "Title of the book, site or card.",
+          "$ref": "#/$defs/name"
+        },
+        "author": {
+          "description": "Author as named in the source.",
+          "$ref": "#/$defs/name"
+        },
+        "url": {
+          "description": "Address of the page, when the recipe is from the web.",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^https?://\\S+$"
+        },
+        "where": {
+          "description": "Where in the source: page, chapter, section.",
+          "$ref": "#/$defs/name"
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["name", "lines"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The component's name, unique in its recipe.",
+          "$ref": "#/$defs/name"
+        },
+        "role": {
+          "description": "Its role in the dish, when no slot names it.",
+          "$ref": "#/$defs/slotRole"
+        },
+        "lines": {
+          "description": "The ingredients, in the recipe's order.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 60,
+          "items": {
+            "$ref": "#/$defs/line"
+          }
+        },
+        "steps": {
+          "description": "The steps of this component, in order, each in its own entry.",
+          "$ref": "#/$defs/steps"
+        }
+      }
+    },
+    "line": {
+      "type": "object",
+      "required": ["ingredient"],
+      "additionalProperties": false,
+      "dependentRequired": {
+        "guessed": ["amount"]
+      },
+      "properties": {
+        "ingredient": {
+          "description": "The ingredient's name as written, without amount and preparation.",
+          "$ref": "#/$defs/name"
+        },
+        "amount": {
+          "description": "The amount as written; left out when the recipe gives none.",
+          "$ref": "#/$defs/amount"
+        },
+        "guessed": {
+          "description": "True when the recipe states no such amount and it was guessed.",
+          "type": "boolean"
+        },
+        "role": {
+          "description": "The ingredient's role, where one fits.",
+          "$ref": "#/$defs/lineRole"
+        },
+        "note": {
+          "description": "The preparation as written: finely chopped, melted.",
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": ["role"],
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": ["component"]
+        },
+        {
+          "required": ["ingredient"]
+        }
+      ],
+      "dependentRequired": {
+        "guessed": ["amount"]
+      },
+      "properties": {
+        "role": {
+          "description": "The role this slot fills.",
+          "$ref": "#/$defs/slotRole"
+        },
+        "component": {
+          "description": "The name of the component that fills it.",
+          "$ref": "#/$defs/name"
+        },
+        "ingredient": {
+          "description": "Or the name of an ingredient that fills it as it is (bread, rice).",
+          "$ref": "#/$defs/name"
+        },
+        "amount": {
+          "description": "The amount of an ingredient filling as written, per dish; a component fills its slot with its whole run.",
+          "$ref": "#/$defs/amount"
+        },
+        "guessed": {
+          "description": "True when that amount was guessed.",
+          "type": "boolean"
+        },
+        "optional": {
+          "description": "True when the recipe says the filling may be left out.",
+          "type": "boolean"
+        },
+        "alternatives": {
+          "description": "Names of other components of this recipe that may fill the slot instead.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/name"
+          }
+        }
+      }
+    }
+  }
+}

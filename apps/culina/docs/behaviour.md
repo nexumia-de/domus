@@ -1890,15 +1890,62 @@ with the technique's name.
   keeps what it needs in memory; after the toast or a reload it is gone (hence the question before
   "replace").
 
-**Recipe from an AI** ([decision](decisions/ai-prompt-import.md), first step of issue 40). Below
-the file button: **Copy AI prompt** copies a prompt in the app's language
-(`src/screens/import/ai-prompt.ts`) that asks a language model of the user's choice for Cooklang,
-naming only the units the reader knows and asking not to invent amounts; the prompt is also shown
-read-only, so it can be selected when the clipboard is refused ("The prompt could not be copied;
-select it below and copy it."). The user pastes the answer into **Answer of the AI (Cooklang)** and
-presses **Read the text**: an empty field says "Paste the answer first."; otherwise the text goes
-through the Cooklang step below exactly like a `.cook` file named "Pasted recipe". No model runs in
-the app and nothing is sent anywhere. The own JSON import format of the decision is not built yet.
+**Recipe from an AI** ([decision](decisions/ai-prompt-import.md), issue 40, built 2026-11-22
+and 2026-11-23). Below the file button: **Copy AI prompt** copies a prompt in the app's language,
+generated from the import format's schema ([exchange](exchange.md#the-recipe-import-format)): the
+fields, the roles, the units Culina reads, "mark every amount you guessed" and "copy no text
+beyond what the recipe states", and an example. It is also shown read-only, so it can be selected
+when the clipboard is refused ("The prompt could not be copied; select it below and copy it.").
+The user pastes the answer into **Answer of the AI** and presses **Read the answer**; a saved
+answer can also be chosen as a `.json` file with the file button (a JSON file in the format
+`culina-recipes` goes to this step, any other JSON file is read as an export). An empty field says
+"Paste the answer first."; a text that does not start with `{` (after a Markdown code fence,
+which is taken off) goes through the Cooklang step below like a `.cook` file named "Pasted recipe",
+as the first prompt asked; a line under the field says so ("A Cooklang text can be pasted here
+too, and a .cook file chosen with the file button above."). No model runs in the app and nothing
+is sent anywhere. An answer longer than 1,000,000 characters is refused with one sentence before
+it is read.
+
+- **Refused answers.** JSON that cannot be read, another format, an answer the schema refuses, or
+  names that point nowhere: under "What the answer cannot say this way" one sentence per error,
+  naming its place ("Recipe 1 (Pancakes), component 1 (Batter), line 1: "ingredient" is needed.",
+  "Recipe 1 (Pancakes), slot 2: the alternative "Jam" is not a component of the recipe."), the hint
+  to ask the AI for a correction, and "Nothing was changed." Nothing is stored. A title or name
+  from the answer is cut to 40 characters with "…" in these sentences.
+- **The step** (`src/screens/import/ai-import.ts`, model `src/exchange/ai-model.ts`) reports what
+  was read ("2 recipes with 7 ingredient lines read. Nothing is saved until you save.") and how
+  many amounts the AI marked as guessed. Then **which ingredient each name means**, once for the
+  whole answer (a name in two recipes is asked once and created once), exactly as for a Cooklang
+  file (exact match preselected, close matches from the notebook and the catalogue, create new,
+  file under a class, "Create a new ingredient for every name left open"). Then per recipe: what it
+  becomes ("Becomes a dish with 3 components." or "Becomes a component."), its source or "The
+  answer names no source.", its name, portions (a dish, prefilled from `persons`) or output weight
+  in grams (a component, prefilled from a mass `yield`; another yield is named and left out of the
+  field, a dish's yield goes into its note, both said in the step), and per component its name (a
+  dish), its role in the dish and its lines with the per-line decisions of the Cooklang step
+  (amount as written, by the ingredient's facts, weighed, or open; role). An alternative says "Alternative
+  for Apple sauce: not in the dish; Swap offers it." A slot filled by an ingredient has its line
+  under "Slot Garnish, filled by an ingredient".
+- **Guessed amounts** carry a tag "guessed" beside the amount on their line, are counted at the
+  top, keep "guessed" at the end of the stored line's note and are listed again after the save
+  under "Amounts the AI guessed". A word without a readable size ("2 EL", "1 Prise") offers
+  only "I weighed it" and "Leave open, keep as text" and starts open.
+- **Save all recipes** is possible once every name is decided, every recipe and every component
+  of a dish has a name, and the numbers are usable; it writes every recipe, the new ingredients and
+  the catalogue entries chosen in **one transaction**, then an **Undo** toast ("Imported 2
+  recipes.") that takes all of it back. The result lists links to the saved recipes, the guessed
+  amounts and the lines left open.
+- **Known loss: the source.** No component or dish record has a source field, so the recipe's
+  source (`title`, `author`, `url`, `where`) is kept only as free text in the `change` of
+  version 1, of the dish and of each of its components ("Imported from an AI answer; source:
+  Family card, Anna, back side"); a later version has the change its author gives it. It is not
+  a link and not searchable.
+
+**Test:** `test/ai-import.test.ts` (fence, refusals one sentence each, names once over the answer,
+guessed, roles, yields, one transaction, Undo), `test/ai-prompt.test.ts` (the prompt and the schema
+agree), in the engine `test/recipes.test.ts`; browser check `e2e/ai-import-flow.mjs` (a broken
+answer, two recipes with a guessed amount and an alternative, Save, Undo, layout at 360 px). Not
+proved: what a real model writes for the prompt; the screen reader's reading of the step.
 
 **Cooklang files.** Nothing is saved until the step is complete and the user presses Save.
 The step shows what was read (ingredient lines, steps; cookware, timers and notes stay as words in the

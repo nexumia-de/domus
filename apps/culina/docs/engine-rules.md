@@ -100,6 +100,14 @@ two cups, 473.176473 ml); a dish that follows an English source uses these
 ids. The table has no densities and no unit weights:
 those belong to an ingredient and carry their own source.
 
+**Words that are no unit of the table** (since 2026-11-23, issue 40): the reader of
+written amounts (Cooklang quantities and the recipe import's `amount`) gives a word
+a size only from a named source in `data/unit-words.json`, the one place for it; none
+has one yet. `EL`, `TL`, `Prise`, `Msp.`, `Becher` and `Päckchen` stay open, like "to
+taste", their words in the line's note. They are not unit ids: the schemas, the
+stored records and the conversions are unchanged
+([exchange](exchange.md#unit-words-without-a-table-unit)).
+
 # Conversion and its errors
 
 `toGrams(amount, facts?)` and `convert(amount, toUnit, facts?)`. `facts`

@@ -7,6 +7,7 @@ import { content as classicsContent, PAN } from './classics-fixture.mjs';
 import { buildApp, distDir, launch } from './harness.mjs';
 import { seed } from './seed.mjs';
 import { serve } from './serve.mjs';
+import { ANSWER as AI_ANSWER, paste } from './ai-import-flow.mjs';
 
 const out = fileURLToPath(new URL('../../../docs/screenshots/', import.meta.url));
 // A card with a calculation entered and the comparison open (the longest card: four roles and a range).
@@ -83,6 +84,11 @@ Soften @onion{1} in @butter{20%g}, add @tomatoes{400%g} and simmer.
 Toss the pasta in the sauce.
 `;
 const IMPORT_SECTIONS = importing('pasta.cook', SECTIONS_FILE, 'Complete the recipe');
+// A pasted AI answer of two recipes with a guessed amount (issue 40).
+const IMPORT_AI = async (page) => {
+  await paste(page, JSON.stringify(AI_ANSWER, null, 2));
+  await page.getByText('Recipes in the answer', { exact: true }).waitFor();
+};
 // Stock: items written through the store's test hook, then the page is read again.
 const STOCK_NOW = '&e2e-store&e2e-now=2026-11-18T08:00:00Z';
 const stockItems = [
@@ -199,6 +205,8 @@ const shots = [
     true,
     true,
   ],
+  ['import-ai-360x720-light.png', 360, 720, 'light', 'settings/import', IMPORT_AI, true, true],
+  ['import-ai-1000x700-light.png', 1000, 700, 'light', 'settings/import', IMPORT_AI, true, true],
   ['backup-banner-360x720-light.png', 360, 720, 'light', 'ratios', undefined, false, true, LATER],
   ['ratios-1000x700-light.png', 1000, 700, 'light', 'ratios'],
   ['ratio-list-360x720-light.png', 360, 720, 'light', 'ratios'],

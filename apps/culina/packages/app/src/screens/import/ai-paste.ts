@@ -1,10 +1,13 @@
 // The AI part of the import screen: copy a prompt that asks a language model of the user's
-// choice for Cooklang, and read the pasted answer through the Cooklang step. No model runs here
-// (decision ai-prompt-import); the answer is handled like a .cook file.
+// choice for the recipe import format, and read the pasted answer: JSON goes to the AI step,
+// any other text (Cooklang, as the earlier prompt asked) to the Cooklang step. No model runs
+// here (decision ai-prompt-import).
 import { loadCatalogue } from '../../catalogue/load';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import { readAnswer, looksLikeJson } from '../../exchange/ai-answer';
 import { aiPrompt } from './ai-prompt';
+import { renderAiImport, renderAnswerErrors } from './ai-import';
 import { renderCookImport } from './import-cook';
 
 const text = strings.importing;
@@ -49,6 +52,16 @@ export const aiPasteBlock = (host: HTMLElement, status: HTMLElement): HTMLElemen
       status.textContent = text.pasteEmpty;
       return;
     }
+    if (looksLikeJson(source)) {
+      const read = readAnswer(source);
+      if (!read.ok) {
+        renderAnswerErrors(host, read.sentences);
+        status.textContent = text.nothingChanged;
+        return;
+      }
+      void loadCatalogue().then((entries) => renderAiImport(host, read.answer, status, entries));
+      return;
+    }
     void loadCatalogue().then((entries) => {
       renderCookImport(host, source, `${text.pastedName}.cook`, status, entries);
     });
@@ -59,6 +72,7 @@ export const aiPasteBlock = (host: HTMLElement, status: HTMLElement): HTMLElemen
     copy,
     prompt,
     label,
+    el('p', 'muted import-ai-cooklang', text.pasteCooklang),
     answer,
     read,
   );

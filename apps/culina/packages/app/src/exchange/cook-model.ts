@@ -54,6 +54,16 @@ export interface LineRow {
   /** Text of the grams field (mode `grams`). */
   grams: string;
   role: string;
+  /** True when the AI's answer marked the amount as guessed (never for a Cooklang file). */
+  guessed?: boolean;
+}
+
+/** What the name and line steps read and change: shared by the Cooklang and AI imports. */
+export interface NamesModel {
+  rows: NameRow[];
+  lines: LineRow[];
+  /** What the ingredients that may be chosen are known to weigh, by id. */
+  facts: FactsByIngredient;
 }
 
 /** One part of a file with sections, as the step shows it (docs/behaviour.md, Cooklang files). */
@@ -93,7 +103,7 @@ export interface CookContext {
   facts?: FactsByIngredient;
 }
 
-const keyOf = (use: IngredientUse): string =>
+export const keyOf = (use: { name: string; reference: boolean }): string =>
   `${use.reference ? 'ref:' : ''}${normaliseName(use.name)}`;
 
 /** `500%g` or `0.5%kg` is a mass; anything else leaves the field empty. */
@@ -137,10 +147,15 @@ const fileStem = (fileName: string): string =>
 export const defaultMode = (modes: readonly AmountMode['mode'][]): AmountMode['mode'] =>
   modes.includes('given') ? 'given' : 'open';
 
-export function buildCookModel(text: string, fileName: string, context: CookContext): CookModel {
-  const doc = parseCooklang(text);
-  const uses = ingredientUses(doc);
-  const first = new Map<string, IngredientUse>();
+/**
+ * The name rows of some ingredient occurrences: one per name, with the proposals of the notebook
+ * and the catalogue. Only an exact match is preselected. Shared by the Cooklang and AI imports.
+ */
+export function nameRowsFor(
+  uses: readonly { name: string; reference: boolean }[],
+  context: CookContext,
+): NameRow[] {
+  const first = new Map<string, { name: string; reference: boolean }>();
   for (const use of uses) if (!first.has(keyOf(use))) first.set(keyOf(use), use);
 
   const entries = [...first.entries()];
@@ -148,7 +163,7 @@ export function buildCookModel(text: string, fileName: string, context: CookCont
   const byIngredient = matchIngredients(names, context.ingredients);
   const byComponent = matchIngredients(names, context.components);
 
-  const rows = entries.map(([key, use], i): NameRow => {
+  return entries.map(([key, use], i): NameRow => {
     const ing = byIngredient[i];
     const comp = byComponent[i];
     const options: NameOption[] = [];
@@ -174,6 +189,12 @@ export function buildCookModel(text: string, fileName: string, context: CookCont
       choice,
     };
   });
+}
+
+export function buildCookModel(text: string, fileName: string, context: CookContext): CookModel {
+  const doc = parseCooklang(text);
+  const uses = ingredientUses(doc);
+  const rows = nameRowsFor(uses, context);
 
   const lines = uses.map((use, index): LineRow => ({
     index,
@@ -211,18 +232,18 @@ export function buildCookModel(text: string, fileName: string, context: CookCont
   return model;
 }
 
-export const rowOf = (model: CookModel, key: string): NameRow | undefined =>
+export const rowOf = (model: NamesModel, key: string): NameRow | undefined =>
   model.rows.find((r) => r.key === key);
 
 /** The target a line's name currently means, if it was decided as an existing record. */
-export const existingTarget = (model: CookModel, line: LineRow): Target | undefined => {
+export const existingTarget = (model: NamesModel, line: LineRow): Target | undefined => {
   const choice = rowOf(model, line.key)?.choice;
   return choice?.type === 'existing' ? choice.target : undefined;
 };
 
 /** The amount modes for a line, given what the chosen ingredient is known to weigh. */
 export const modesFor = (
-  model: CookModel,
+  model: NamesModel,
   line: LineRow,
   factsOf: (target: Target) => IngredientFacts,
 ): AmountMode['mode'][] => {
@@ -232,7 +253,7 @@ export const modesFor = (
 
 /** Sets what a name means; every line with that name follows, and a mode that no longer fits resets. */
 export function choose(
-  model: CookModel,
+  model: NamesModel,
   key: string,
   choice: NameChoice,
   factsOf: (target: Target) => IngredientFacts,
@@ -246,16 +267,16 @@ export function choose(
   }
 }
 
-export const unresolvedNames = (model: CookModel): number =>
+export const unresolvedNames = (model: NamesModel): number =>
   model.rows.filter((r) => r.choice.type === 'unset').length;
 
 /** Every name left open becomes "create a new ingredient". */
-export const createForUnset = (model: CookModel): void => {
+export const createForUnset = (model: NamesModel): void => {
   for (const row of model.rows) if (row.choice.type === 'unset') row.choice = { type: 'new' };
 };
 
 /** The decisions for the engine, once every name has a target (`targetOf` gives new ids). */
-export function decisionsOf(model: CookModel, targetOf: (key: string) => Target): LineDecision[] {
+export function decisionsOf(model: NamesModel, targetOf: (key: string) => Target): LineDecision[] {
   return model.lines.map((line) => {
     const amount: AmountMode =
       line.mode === 'grams'

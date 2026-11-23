@@ -1,13 +1,13 @@
 // Cooklang completion, part two: the amount and role of every line. The amount modes offered
 // depend on what the chosen ingredient is known to weigh; nothing is converted without it.
-import { quantityText, resolveAmount } from '@culina/engine';
+import { quantityText, resolveAmount, writtenInSizedWord } from '@culina/engine';
 import type { AmountMode } from '@culina/engine';
 import {
   existingTarget,
   gramsAllowed,
   modesFor,
   roleAllowed,
-  type CookModel,
+  type NamesModel,
   type LineRow,
   type Target,
 } from '../../exchange/cook-model';
@@ -17,12 +17,18 @@ import { nextId } from '../fields';
 
 const text = strings.importing;
 
-const factsOf = (model: CookModel) => (target: Target) =>
+const factsOf = (model: NamesModel) => (target: Target) =>
   target.kind === 'ingredient' ? (model.facts[target.id] ?? {}) : {};
 
-const modeLabel = (model: CookModel, line: LineRow, mode: AmountMode['mode']): string => {
+const modeLabel = (model: NamesModel, line: LineRow, mode: AmountMode['mode']): string => {
   const written = quantityText(line.use.quantity);
-  if (mode === 'given') return text.cookAsWritten(written);
+  if (mode === 'given') {
+    // "2 EL" is stored as its size, 30 ml: the label says both.
+    const done = resolveAmount(line.use.quantity, { mode: 'given' }, {});
+    return writtenInSizedWord(line.use.quantity) && done.ok && done.amount
+      ? text.cookAsWrittenSized(written, `${done.amount.value} ${done.amount.unit}`)
+      : text.cookAsWritten(written);
+  }
   if (mode === 'grams') return text.cookWeighed;
   if (mode === 'open') return text.cookLeaveOpen;
   const target = existingTarget(model, line);
@@ -35,19 +41,25 @@ const modeLabel = (model: CookModel, line: LineRow, mode: AmountMode['mode']): s
 };
 
 /** True when every line's grams and role can be used. */
-export const linesUsable = (model: CookModel): boolean =>
+export const linesUsable = (model: NamesModel): boolean =>
   model.lines.every((l) => roleAllowed(l.role) && (l.mode !== 'grams' || gramsAllowed(l.grams)));
 
-function lineRow(model: CookModel, line: LineRow, roles: string, changed: () => void): HTMLElement {
+function lineRow(
+  model: NamesModel,
+  line: LineRow,
+  roles: string,
+  changed: () => void,
+): HTMLElement {
   const item = el('li', 'cook-line');
   const written = quantityText(line.use.quantity);
-  item.append(
-    el(
-      'p',
-      'cook-line-title',
-      written === '' ? `${line.use.name}: ${text.cookNoQuantity}` : `${line.use.name}: ${written}`,
-    ),
+  const title = el(
+    'p',
+    'cook-line-title',
+    written === '' ? `${line.use.name}: ${text.cookNoQuantity}` : `${line.use.name}: ${written}`,
   );
+  // An amount the AI marked as guessed says so, beside the amount, until the user decides.
+  if (line.guessed === true) title.append(' ', el('span', 'tag guessed', text.aiGuessed));
+  item.append(title);
   const modes = modesFor(model, line, factsOf(model));
   const select = el('select', 'field');
   select.setAttribute('aria-label', text.cookAmountFor(line.use.name));
@@ -106,7 +118,7 @@ function lineRow(model: CookModel, line: LineRow, roles: string, changed: () => 
 }
 
 /** The datalist of the roles the lines have so far, and its id. */
-export function rolesList(model: CookModel): { list: HTMLDataListElement; id: string } {
+export function rolesList(model: NamesModel): { list: HTMLDataListElement; id: string } {
   const id = nextId('roles');
   const list = el('datalist');
   list.id = id;
@@ -118,7 +130,7 @@ export function rolesList(model: CookModel): { list: HTMLDataListElement; id: st
 
 /** The decisions of some lines: amount and role per line, in file order. */
 export function lineList(
-  model: CookModel,
+  model: NamesModel,
   lines: readonly LineRow[],
   roles: string,
   changed: () => void,
@@ -128,7 +140,7 @@ export function lineList(
   return ul;
 }
 
-export function linesSection(model: CookModel, changed: () => void): HTMLElement {
+export function linesSection(model: NamesModel, changed: () => void): HTMLElement {
   const box = el('section', 'cook-lines');
   box.append(el('h2', undefined, text.cookLinesHeading));
   const roles = rolesList(model);

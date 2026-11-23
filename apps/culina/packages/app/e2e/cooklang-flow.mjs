@@ -6,6 +6,7 @@ import { check } from './harness.mjs';
 import { engine } from './notebook-fixture.mjs';
 import { layout } from './editor-helpers.mjs';
 import { FLOUR, readDownload, same } from './exchange-fixture.mjs';
+import { aiImport } from './ai-import-flow.mjs';
 
 const label = '360px Cooklang';
 const NOW = '2026-11-18T10:00:00.000Z';
@@ -244,19 +245,25 @@ export const cooklang = async (page, origin, { openAt, file, listAll }) => {
     `${label}: exporting to Cooklang and importing it again gives the same lines, minus the roles Cooklang cannot carry`,
   );
 
-  // ---- the AI prompt and a pasted answer go through the same Cooklang step
+  // ---- a pasted text that is not JSON still goes through the Cooklang step (the AI step is
+  // e2e/ai-import-flow.mjs)
   await openAt(page, origin, 'settings/import', nowQuery);
   check(
-    (await page.locator('.import-ai-prompt').inputValue()).includes('@name{amount%unit}'),
+    (await page.locator('.import-ai-prompt').inputValue()).includes('"culina-recipes"'),
     `${label}: the AI prompt is shown on the import screen`,
   );
-  await page.getByRole('button', { name: 'Read the text' }).click();
+  check(
+    (await page.locator('.import-ai-cooklang').innerText()) ===
+      'A Cooklang text can be pasted here too, and a .cook file chosen with the file button above.',
+    `${label}: the screen says a Cooklang text can be pasted or chosen as a file`,
+  );
+  await page.getByRole('button', { name: 'Read the answer' }).click();
   check(
     (await page.locator('.import > p[role=status]').innerText()) === 'Paste the answer first.',
     `${label}: reading an empty paste field asks for the answer`,
   );
-  await page.getByLabel('Answer of the AI (Cooklang)').fill(COOK);
-  await page.getByRole('button', { name: 'Read the text' }).click();
+  await page.getByLabel('Answer of the AI').fill(COOK);
+  await page.getByRole('button', { name: 'Read the answer' }).click();
   await page.getByText('Complete the recipe').waitFor();
   check(
     (await page.getByLabel('Ingredient for flour').inputValue()) === 'ingredient:flour',
@@ -264,6 +271,7 @@ export const cooklang = async (page, origin, { openAt, file, listAll }) => {
   );
 
   await sections(page, origin, { pick, file, listAll, nowQuery, openAt });
+  await aiImport(page, origin, { openAt, listAll, nowQuery });
 };
 
 // A file with sections (issue 41): one component per section, the dish of them, Undo, export.
