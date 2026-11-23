@@ -1,0 +1,584 @@
+{
+  "id": "few-molecules-still-asks",
+  "description": "An ingredient with few molecules can be asked about although it is not offered to others: E (8) pairs with A (8 of 20) and C (8 of 12), C first",
+  "inputs": {
+    "kind": "pairings",
+    "entity_id": 5,
+    "data": {
+      "entities": [
+        {
+          "id": 1,
+          "alias": "a",
+          "name": "A",
+          "category": "herb",
+          "molecules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        },
+        {
+          "id": 2,
+          "alias": "b",
+          "name": "B",
+          "category": "fruit",
+          "molecules": [
+            11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+          ]
+        },
+        {
+          "id": 3,
+          "alias": "c",
+          "name": "C",
+          "category": "fruit",
+          "molecules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        },
+        {
+          "id": 4,
+          "alias": "d",
+          "name": "D",
+          "category": "dairy",
+          "molecules": [
+            17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+            39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+            61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,
+            83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103,
+            104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116
+          ]
+        },
+        {
+          "id": 5,
+          "alias": "e",
+          "name": "E",
+          "category": "spice",
+          "molecules": [1, 2, 3, 4, 5, 6, 7, 8]
+        },
+        {
+          "id": 6,
+          "alias": "f",
+          "name": "F",
+          "category": "fruit",
+          "molecules": [
+            9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 200, 201, 202, 203, 204, 205, 206, 207
+          ]
+        }
+      ],
+      "molecules": {
+        "1": {
+          "name": "m1",
+          "flavours": ["citrus"]
+        },
+        "2": {
+          "name": "m2",
+          "flavours": ["green", "citrus"]
+        },
+        "3": {
+          "name": "m3",
+          "flavours": ["citrus"]
+        },
+        "4": {
+          "name": "m4",
+          "flavours": ["green", "citrus"]
+        },
+        "5": {
+          "name": "m5",
+          "flavours": ["citrus"]
+        },
+        "6": {
+          "name": "m6",
+          "flavours": ["green", "citrus"]
+        },
+        "7": {
+          "name": "m7",
+          "flavours": []
+        },
+        "8": {
+          "name": "m8",
+          "flavours": ["green"]
+        },
+        "9": {
+          "name": "m9",
+          "flavours": []
+        },
+        "10": {
+          "name": "m10",
+          "flavours": ["green"]
+        },
+        "11": {
+          "name": "m11",
+          "flavours": []
+        },
+        "12": {
+          "name": "m12",
+          "flavours": ["green"]
+        },
+        "13": {
+          "name": "m13",
+          "flavours": ["nutty"]
+        },
+        "14": {
+          "name": "m14",
+          "flavours": ["green", "nutty"]
+        },
+        "15": {
+          "name": "m15",
+          "flavours": ["nutty"]
+        },
+        "16": {
+          "name": "m16",
+          "flavours": ["green", "nutty"]
+        },
+        "17": {
+          "name": "m17",
+          "flavours": ["nutty"]
+        },
+        "18": {
+          "name": "m18",
+          "flavours": ["green", "nutty"]
+        },
+        "19": {
+          "name": "m19",
+          "flavours": ["nutty"]
+        },
+        "20": {
+          "name": "m20",
+          "flavours": ["green", "nutty"]
+        },
+        "21": {
+          "name": "m21",
+          "flavours": ["nutty"]
+        },
+        "22": {
+          "name": "m22",
+          "flavours": ["green", "nutty"]
+        },
+        "23": {
+          "name": "m23",
+          "flavours": ["nutty"]
+        },
+        "24": {
+          "name": "m24",
+          "flavours": ["green", "nutty"]
+        },
+        "25": {
+          "name": "m25",
+          "flavours": ["nutty"]
+        },
+        "26": {
+          "name": "m26",
+          "flavours": ["green", "nutty"]
+        },
+        "27": {
+          "name": "m27",
+          "flavours": ["nutty"]
+        },
+        "28": {
+          "name": "m28",
+          "flavours": ["green", "nutty"]
+        },
+        "29": {
+          "name": "m29",
+          "flavours": ["nutty"]
+        },
+        "30": {
+          "name": "m30",
+          "flavours": ["green", "nutty"]
+        },
+        "31": {
+          "name": "m31",
+          "flavours": ["nutty"]
+        },
+        "32": {
+          "name": "m32",
+          "flavours": ["green", "nutty"]
+        },
+        "33": {
+          "name": "m33",
+          "flavours": ["nutty"]
+        },
+        "34": {
+          "name": "m34",
+          "flavours": ["green", "nutty"]
+        },
+        "35": {
+          "name": "m35",
+          "flavours": ["nutty"]
+        },
+        "36": {
+          "name": "m36",
+          "flavours": ["green", "nutty"]
+        },
+        "37": {
+          "name": "m37",
+          "flavours": ["nutty"]
+        },
+        "38": {
+          "name": "m38",
+          "flavours": ["green", "nutty"]
+        },
+        "39": {
+          "name": "m39",
+          "flavours": ["nutty"]
+        },
+        "40": {
+          "name": "m40",
+          "flavours": ["green", "nutty"]
+        },
+        "41": {
+          "name": "m41",
+          "flavours": ["nutty"]
+        },
+        "42": {
+          "name": "m42",
+          "flavours": ["green", "nutty"]
+        },
+        "43": {
+          "name": "m43",
+          "flavours": ["nutty"]
+        },
+        "44": {
+          "name": "m44",
+          "flavours": ["green", "nutty"]
+        },
+        "45": {
+          "name": "m45",
+          "flavours": ["nutty"]
+        },
+        "46": {
+          "name": "m46",
+          "flavours": ["green", "nutty"]
+        },
+        "47": {
+          "name": "m47",
+          "flavours": ["nutty"]
+        },
+        "48": {
+          "name": "m48",
+          "flavours": ["green", "nutty"]
+        },
+        "49": {
+          "name": "m49",
+          "flavours": ["nutty"]
+        },
+        "50": {
+          "name": "m50",
+          "flavours": ["green", "nutty"]
+        },
+        "51": {
+          "name": "m51",
+          "flavours": ["nutty"]
+        },
+        "52": {
+          "name": "m52",
+          "flavours": ["green", "nutty"]
+        },
+        "53": {
+          "name": "m53",
+          "flavours": ["nutty"]
+        },
+        "54": {
+          "name": "m54",
+          "flavours": ["green", "nutty"]
+        },
+        "55": {
+          "name": "m55",
+          "flavours": ["nutty"]
+        },
+        "56": {
+          "name": "m56",
+          "flavours": ["green", "nutty"]
+        },
+        "57": {
+          "name": "m57",
+          "flavours": ["nutty"]
+        },
+        "58": {
+          "name": "m58",
+          "flavours": ["green", "nutty"]
+        },
+        "59": {
+          "name": "m59",
+          "flavours": ["nutty"]
+        },
+        "60": {
+          "name": "m60",
+          "flavours": ["green", "nutty"]
+        },
+        "61": {
+          "name": "m61",
+          "flavours": ["nutty"]
+        },
+        "62": {
+          "name": "m62",
+          "flavours": ["green", "nutty"]
+        },
+        "63": {
+          "name": "m63",
+          "flavours": ["nutty"]
+        },
+        "64": {
+          "name": "m64",
+          "flavours": ["green", "nutty"]
+        },
+        "65": {
+          "name": "m65",
+          "flavours": ["nutty"]
+        },
+        "66": {
+          "name": "m66",
+          "flavours": ["green", "nutty"]
+        },
+        "67": {
+          "name": "m67",
+          "flavours": ["nutty"]
+        },
+        "68": {
+          "name": "m68",
+          "flavours": ["green", "nutty"]
+        },
+        "69": {
+          "name": "m69",
+          "flavours": ["nutty"]
+        },
+        "70": {
+          "name": "m70",
+          "flavours": ["green", "nutty"]
+        },
+        "71": {
+          "name": "m71",
+          "flavours": ["nutty"]
+        },
+        "72": {
+          "name": "m72",
+          "flavours": ["green", "nutty"]
+        },
+        "73": {
+          "name": "m73",
+          "flavours": ["nutty"]
+        },
+        "74": {
+          "name": "m74",
+          "flavours": ["green", "nutty"]
+        },
+        "75": {
+          "name": "m75",
+          "flavours": ["nutty"]
+        },
+        "76": {
+          "name": "m76",
+          "flavours": ["green", "nutty"]
+        },
+        "77": {
+          "name": "m77",
+          "flavours": ["nutty"]
+        },
+        "78": {
+          "name": "m78",
+          "flavours": ["green", "nutty"]
+        },
+        "79": {
+          "name": "m79",
+          "flavours": ["nutty"]
+        },
+        "80": {
+          "name": "m80",
+          "flavours": ["green", "nutty"]
+        },
+        "81": {
+          "name": "m81",
+          "flavours": ["nutty"]
+        },
+        "82": {
+          "name": "m82",
+          "flavours": ["green", "nutty"]
+        },
+        "83": {
+          "name": "m83",
+          "flavours": ["nutty"]
+        },
+        "84": {
+          "name": "m84",
+          "flavours": ["green", "nutty"]
+        },
+        "85": {
+          "name": "m85",
+          "flavours": ["nutty"]
+        },
+        "86": {
+          "name": "m86",
+          "flavours": ["green", "nutty"]
+        },
+        "87": {
+          "name": "m87",
+          "flavours": ["nutty"]
+        },
+        "88": {
+          "name": "m88",
+          "flavours": ["green", "nutty"]
+        },
+        "89": {
+          "name": "m89",
+          "flavours": ["nutty"]
+        },
+        "90": {
+          "name": "m90",
+          "flavours": ["green", "nutty"]
+        },
+        "91": {
+          "name": "m91",
+          "flavours": ["nutty"]
+        },
+        "92": {
+          "name": "m92",
+          "flavours": ["green", "nutty"]
+        },
+        "93": {
+          "name": "m93",
+          "flavours": ["nutty"]
+        },
+        "94": {
+          "name": "m94",
+          "flavours": ["green", "nutty"]
+        },
+        "95": {
+          "name": "m95",
+          "flavours": ["nutty"]
+        },
+        "96": {
+          "name": "m96",
+          "flavours": ["green", "nutty"]
+        },
+        "97": {
+          "name": "m97",
+          "flavours": ["nutty"]
+        },
+        "98": {
+          "name": "m98",
+          "flavours": ["green", "nutty"]
+        },
+        "99": {
+          "name": "m99",
+          "flavours": ["nutty"]
+        },
+        "100": {
+          "name": "m100",
+          "flavours": ["green", "nutty"]
+        },
+        "101": {
+          "name": "m101",
+          "flavours": ["nutty"]
+        },
+        "102": {
+          "name": "m102",
+          "flavours": ["green", "nutty"]
+        },
+        "103": {
+          "name": "m103",
+          "flavours": ["nutty"]
+        },
+        "104": {
+          "name": "m104",
+          "flavours": ["green", "nutty"]
+        },
+        "105": {
+          "name": "m105",
+          "flavours": ["nutty"]
+        },
+        "106": {
+          "name": "m106",
+          "flavours": ["green", "nutty"]
+        },
+        "107": {
+          "name": "m107",
+          "flavours": ["nutty"]
+        },
+        "108": {
+          "name": "m108",
+          "flavours": ["green", "nutty"]
+        },
+        "109": {
+          "name": "m109",
+          "flavours": ["nutty"]
+        },
+        "110": {
+          "name": "m110",
+          "flavours": ["green", "nutty"]
+        },
+        "111": {
+          "name": "m111",
+          "flavours": ["nutty"]
+        },
+        "112": {
+          "name": "m112",
+          "flavours": ["green", "nutty"]
+        },
+        "113": {
+          "name": "m113",
+          "flavours": ["nutty"]
+        },
+        "114": {
+          "name": "m114",
+          "flavours": ["green", "nutty"]
+        },
+        "115": {
+          "name": "m115",
+          "flavours": ["nutty"]
+        },
+        "116": {
+          "name": "m116",
+          "flavours": ["green", "nutty"]
+        },
+        "200": {
+          "name": "m200",
+          "flavours": ["green", "nutty"]
+        },
+        "201": {
+          "name": "m201",
+          "flavours": ["nutty"]
+        },
+        "202": {
+          "name": "m202",
+          "flavours": ["green", "nutty"]
+        },
+        "203": {
+          "name": "m203",
+          "flavours": ["nutty"]
+        },
+        "204": {
+          "name": "m204",
+          "flavours": ["green", "nutty"]
+        },
+        "205": {
+          "name": "m205",
+          "flavours": ["nutty"]
+        },
+        "206": {
+          "name": "m206",
+          "flavours": ["green", "nutty"]
+        },
+        "207": {
+          "name": "m207",
+          "flavours": ["nutty"]
+        }
+      }
+    }
+  },
+  "expected": {
+    "pairings": [
+      {
+        "id": 3,
+        "name": "C",
+        "category": "fruit",
+        "shared": 8,
+        "overlap": 0.667,
+        "flavours": ["citrus", "green"]
+      },
+      {
+        "id": 1,
+        "name": "A",
+        "category": "herb",
+        "shared": 8,
+        "overlap": 0.4,
+        "flavours": ["citrus", "green"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Constructed for this test; the numbers follow from the lists by counting."
+}

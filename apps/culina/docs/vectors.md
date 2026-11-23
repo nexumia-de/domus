@@ -477,6 +477,16 @@ Template 3 flour : 2 egg; 165 g of egg weighed.
 }
 ```
 
+# Pairings
+
+Kinds `pairings` (inputs `entity_id`, `data`, optional `options`;
+expected `pairings`) and `shared_molecules` (inputs `a`, `b`; expected
+`shared`). The data in the vectors is constructed, with molecule lists
+short enough to count by hand; no vector uses FlavorDB's data.
+
+Folder: `packages/engine/vectors/pairing/`. Rules:
+[pairings from FlavorDB](decisions/flavordb.md).
+
 # Open
 
 None. Error vectors exist for every kind, with `error_code` instead of

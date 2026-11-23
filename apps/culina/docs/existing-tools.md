@@ -68,12 +68,12 @@ stock and expiry; KitchenOwl for shared lists on the phone.
 
 # Data
 
-| Source          | Licence                                                | Use for Culina                                                                   |
-| --------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------- |
-| Open Food Facts | ODbL for the database, CC BY-SA for images[^off]       | Products and nutrition, with attribution and share-alike; not culinary knowledge |
-| FlavorDB        | CC BY-NC-SA 3.0, download per molecule only[^flavordb] | None                                                                             |
-| RecipeNLG       | Non-commercial research and education only[^recipenlg] | None                                                                             |
-| FooDB           | _unverified_, the site refuses automated requests      | None until read                                                                  |
+| Source          | Licence                                                                                | Use for Culina                                                                   |
+| --------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Open Food Facts | ODbL for the database, CC BY-SA for images[^off]                                       | Products and nutrition, with attribution and share-alike; not culinary knowledge |
+| FlavorDB        | CC BY-NC-SA 3.0, JSON per entity and per molecule, no download of the whole[^flavordb] | Pairings, since 2026-11-23 ([decision](decisions/flavordb.md)); "None" before    |
+| RecipeNLG       | Non-commercial research and education only[^recipenlg]                                 | None                                                                             |
+| FooDB           | _unverified_, the site refuses automated requests                                      | None until read                                                                  |
 
 No openly licensed data for flavour pairing or for substitution was
 found. Both have to be curated, each entry with its source.

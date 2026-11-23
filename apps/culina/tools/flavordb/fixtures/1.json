@@ -1,0 +1,59 @@
+{
+  "entity_id": 1,
+  "category": "bakery",
+  "category_readable": "Bakery",
+  "entity_alias": "bakery",
+  "entity_alias_readable": "Bakery Products",
+  "entity_alias_synonyms": "Bakery Products",
+  "natural_source_name": "Poacceae",
+  "molecules": [
+    {
+      "pubchem_id": 22201,
+      "common_name": "2,3-Dimethylpyrazine",
+      "flavor_profile": "butter@caramel@nut@peanut butter@meat@leather@coffee@cocoa@peanut@nutty@almond@walnut",
+      "fema_flavor_profile": "Caramel, Cocoa, Hazelnut, Peanut Butter, Roasted",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 31252,
+      "common_name": "2,5-Dimethylpyrazine",
+      "flavor_profile": "roast beef@roasted nuts@grass@medical@cocoa@woody@medicine@roasted nut@medicinal",
+      "fema_flavor_profile": "Cocoa, Roast Beef, Roasted Nut",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 26331,
+      "common_name": "2-Ethylpyrazine",
+      "flavor_profile": "butter@peanut@musty@cocoa@nutty@wood@roasted@woody@bitter@peanut butter",
+      "fema_flavor_profile": "Burnt, Green, Iron Scorch, Must, Peanut Butter, Roasted, Rum, Wood",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 27457,
+      "common_name": "2-Ethyl-3-Methylpyrazine",
+      "flavor_profile": "raw@hazelnut@roast@sweat@potato@bread@musty@earthy@peanut@nutty@corn",
+      "fema_flavor_profile": "Green, Must, Nut, Potato, Roasted",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 7976,
+      "common_name": "2-Methylpyrazine",
+      "flavor_profile": "chocolate@roasted@cocoa@peanut@nutty@popcorn@green",
+      "fema_flavor_profile": "Cocoa, Green, Hazelnut, Popcorn, Roasted",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 26808,
+      "common_name": "2,3,5-Trimethylpyrazine",
+      "flavor_profile": "hazelnut@roast@roasted@powdery@potato@must@musty@earthy@cocoa@peanut@nutty",
+      "fema_flavor_profile": "Cocoa, Earth, Must, Potato, Roast",
+      "odor": null,
+      "taste": null
+    }
+  ]
+}

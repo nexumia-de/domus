@@ -255,6 +255,37 @@ steps stay outside the repository. The last step writes the snapshot, then
 rebuild the catalogue as above; the diff of the two files shows what
 Wikidata changed. The snapshot is the generator's only input from Wikidata.
 
+## Pairing data
+
+Pairings come from FlavorDB ([decision](decisions/flavordb.md)). The
+data file `packages/app/data/flavour-pairings.json` does not exist yet:
+the session that built the tools could not reach the site from its
+container. To make it, on a machine that reaches
+`cosylab.iiitd.edu.in`, from `apps/culina`:
+
+```bash
+node tools/flavordb/fetch.mjs
+```
+
+```bash
+node tools/flavordb/build.mjs --fetched 2026-11-24
+```
+
+`fetch.mjs` asks for the entities `0` to `1100` one after the other, one
+request a second (about twenty minutes), and saves each as
+`tools/flavordb/raw/<id>.json`; that folder is not committed. It stops
+early after 40 missing ids in a row, lists what failed and ends with
+exit code 1 then; a second run fetches only what is missing. `--from`,
+`--to`, `--pause <ms>` and `--out <folder>` change the range, the pause
+and the folder. `build.mjs` writes the one file from the raw files and
+the date they were fetched; the same files and date give the same
+bytes. A raw file that is no entity is named and left out.
+
+Tests: `packages/app/test/flavordb-derive.test.ts` (the derivation, on
+two real entities kept in `tools/flavordb/fixtures/`) and
+`packages/engine/test/pairing-vectors.test.ts` (the lookup). Neither
+`fetch.mjs` nor `build.mjs` was run against the site.
+
 ## CI
 
 **Since 2026-11-18 the account has no GitHub Actions minutes left**: jobs

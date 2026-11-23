@@ -435,6 +435,22 @@ export type {
   RoundNutritionResult,
 } from './nutrition/types';
 
+export {
+  MIN_MOLECULES,
+  MIN_SHARED,
+  entityByName,
+  flavoursOf,
+  pairingsFor,
+  sharedMolecules,
+} from './pairing/pair';
+export type {
+  Pairing,
+  PairingData,
+  PairingEntity,
+  PairingMolecule,
+  PairingOptions,
+} from './pairing/types';
+
 export { MIN_MEASURED, MIN_MEASURED_FIGURES, dishCharacters, shareOf } from './characters/evaluate';
 export { correctCharacters, correctionOf, correctionText } from './characters/correct';
 export type { CharacterCorrection } from './characters/correct';

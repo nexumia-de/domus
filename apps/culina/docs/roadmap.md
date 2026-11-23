@@ -69,10 +69,14 @@ app and finds quickly what they want to cook or can cook.
    from the profiles of what is in a dish: what it still needs and what
    fits. This goal takes in what was planned apart: the correction
    checklist ("tastes flat, try acid"), suggestions from a tasting
-   check, and curated affinities. **Waits for the owner**: where the
-   data comes from ([building kit](decisions/building-kit.md), the
-   open point; FlavorDB was asked about on 2026-11-23 and is not
-   decided); no data set with a usable licence was found
+   check, and curated affinities. **What fits** comes from FlavorDB
+   (owner, 2026-11-23, [decision](decisions/flavordb.md)): the fetch,
+   the derivation and the engine's lookup are built and tested; the
+   data is not fetched yet (the owner runs the fetch), and the link to
+   the catalogue and a screen are not built. **What a dish still
+   needs waits for the owner**: where that data comes from
+   ([building kit](decisions/building-kit.md), the open point);
+   no data set with a usable licence was found
    ([plan](feel-like-plan.md), item 5), and the correction rules wait
    for a book on the [owner's list](../../../docs/owner-checks.md).
 9. **Finding faster.** What the question "what do I feel like" still

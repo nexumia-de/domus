@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23 (FlavorDB)
+
+- **Decision**: by the owner: [pairings come from FlavorDB](decisions/flavordb.md), Culina stays non-commercial; the rule "no data from FlavorDB" of `AGENTS.md` is lifted for Culina. The data is to be one file of its own under CC BY-NC-SA 3.0.
+- **Creation**: `tools/flavordb/` (fetch one entity a second, derive, build) and the engine's pairing lookup (`src/pairing/`, vectors in `vectors/pairing/`): pairs by shared flavour molecules, ordered by their share among the molecules of either. **Not done**: the data was not fetched (the session could not reach the site from its container; two small entities came through a fetch tool and are the fixtures), so there is no data file, no link to the catalogue and nothing on a screen. [Development](development.md#pairing-data) says how the owner fetches.
+
 ## 2026-11-23 (answers, name)
 
 - **Decision**: by the owner, on the open points of the [building kit](decisions/building-kit.md): a frame is the project's own composition, its components keep their sources; the classics that are no base are taken apart into components, the rest goes to the optional pack; the notebook keeps the date a dish was cooked and no more (no food diary; the repository the owner named for one holds Flutter apps of a benchmark, nothing to take in). Where taste profiles come from stays open: the owner asked about FlavorDB and a split licence, the agent's answer is recorded there. `AGENTS.md` and the [roadmap](roadmap.md) follow. Nothing built.

@@ -1,0 +1,14 @@
+{
+  "id": "shared",
+  "description": "The molecules two ascending lists have in common, ascending",
+  "inputs": {
+    "kind": "shared_molecules",
+    "a": [1, 3, 5, 7, 9],
+    "b": [2, 3, 4, 7, 8, 9, 10]
+  },
+  "expected": {
+    "shared": [3, 7, 9]
+  },
+  "tolerance": 0,
+  "source": "Constructed for this test; the numbers follow from the lists by counting."
+}
