@@ -48,7 +48,10 @@ its own `AGENTS.md`. Its sister app for drinks,
   marked as a judgement. Teaching notes belong to skills; a skill the user
   marked as learned is not taught again.
 - **Sources and licences.** Every ratio, pairing and data set names its
-  source and licence. No data from FlavorDB or RecipeNLG.
+  source and licence. Pairings come from FlavorDB (CC BY-NC-SA 3.0), kept
+  as one data file of its own that names source, licence and changes
+  ([decision](docs/decisions/flavordb.md)); Culina is non-commercial. No
+  data from RecipeNLG.
 - No code copied from Mixtura or materia.
 
 ## Before committing

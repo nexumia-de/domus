@@ -1469,7 +1469,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   name, the quiet line (course, cuisine, meat flag, "Shipped with the
   app"); Keep in my notebook; the characters; a portions stepper, default 2; the ingredient lines per component and
   for the dish; "Cook step by step"; the whole method; then, each closed behind
-  a tap (`<details>`), **Nutrition per portion** (below) and **Source**. **The
+  a tap (`<details>`), **Goes with** (below), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
   rounded for display with the shared helpers (`formatMass` for grams,
   `formatNumber` otherwise), and by the engine's display rules for pieces (to a
@@ -1498,7 +1498,27 @@ view logic is in `src/classics/` (no DOM), the screens in
   data and in the [classic format](classic-format.md) but **are not shown in
   the app**, and no disclosure holds only them. The source section is drawn
   again when the catalogue's names arrive and keeps being open.
-- **Nutrition per portion** (closed `<details>` on the dish, first of the closed
+- **Goes with** (closed `<details>` on the dish of either origin, first of the
+  closed sections; `src/screens/classics/pairing-block.ts`, view logic
+  `src/pairing/view.ts`, the files `src/pairing/load.ts`, texts
+  `src/strings-classics.ts`; [decision](decisions/flavordb.md)). Up to eight
+  ingredients of the catalogue that the dish does not have and that share more
+  flavour molecules with the dish's ingredients than they usually do, each with
+  up to three of the dish's lines it goes with ("with Butter, Parmesan,
+  Potato"); then the hint that this is computed and says nothing of amounts or
+  of sweet, sour, salty and bitter, and the source with its licence (FlavorDB,
+  CC BY-NC-SA 3.0). The two data files (`pairings.json`, `pairing-links.json`)
+  are fetched when the section is first opened, not before, and once per
+  session; they are precached, so it works offline. While they load the section
+  says so; if they cannot be read it says that. A line stands for the entity
+  its catalogue ingredient is linked to, else for that of its nearest ancestor,
+  so the user's own ingredient under "Tomatoes" counts as tomato; a dish none
+  of whose lines is known says so, and one for which nothing stands out says
+  that. The section never judges: no pairing is called right or missing. Not
+  in the native app. **Test:** `test/pairing-view.test.ts`,
+  `test/flavordb-data.test.ts`, `e2e/dish-pairing.mjs` (English and German, at
+  360 px; what a cook thinks of the pairings is tested nowhere).
+- **Nutrition per portion** (closed `<details>` on the dish, second of the closed
   sections; `src/screens/classics/nutrition-block.ts`, view logic
   `src/classics/nutrition-view.ts`, texts `src/strings-nutrition.ts`). Shows the
   figures of one portion for the chosen portions, drawn again when they change:
@@ -2084,7 +2104,7 @@ another origin, on every run of the shell and the offline checks).
 
 Built by `packages/app/build.mjs`: it hashes all built files into a cache
 name `culina-<16 hex>` and gives `sw.js` the exact file list (every built
-file except `sw.js`, `catalogue.json` and `classics.json` among them). On `install` it precaches the list and takes over
+file except `sw.js`; `catalogue.json`, `classics.json`, `pairings.json` and `pairing-links.json` among them). On `install` it precaches the list and takes over
 at once (`skipWaiting`); on `activate` it deletes every cache that starts
 with `culina-` and has another version, then claims the open pages. A
 `GET` request of its own origin is answered from the cache, a navigation

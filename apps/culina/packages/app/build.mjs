@@ -64,6 +64,18 @@ writeFileSync(
   join(dist, 'catalogue.json'),
   JSON.stringify(JSON.parse(readFileSync(join(root, 'data', 'ingredient-catalogue.json'), 'utf8'))),
 );
+// The pairing data (derived from FlavorDB, CC BY-NC-SA 3.0, docs/decisions/flavordb.md) and the
+// links from the catalogue to it: files of their own, fetched when a dish's "Goes with" is first
+// opened and precached; main.js carries neither.
+for (const [from, to] of [
+  ['flavour-pairings.json', 'pairings.json'],
+  ['flavour-links.json', 'pairing-links.json'],
+]) {
+  writeFileSync(
+    join(dist, to),
+    JSON.stringify(JSON.parse(readFileSync(join(root, 'data', from), 'utf8'))),
+  );
+}
 // The shipped classics, technique notes and handling rules, read from the data folders: its own file too, loaded
 // at start and precached; main.js carries none of them.
 writeFileSync(join(dist, 'classics.json'), JSON.stringify(shippedContent()));

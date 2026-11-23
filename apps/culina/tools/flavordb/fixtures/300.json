@@ -1,0 +1,75 @@
+{
+  "entity_id": 300,
+  "category": "plant",
+  "category_readable": "Plant",
+  "entity_alias": "allium",
+  "entity_alias_readable": "Allium",
+  "entity_alias_synonyms": "Allium, Allium Caucas",
+  "natural_source_name": "Allium",
+  "molecules": [
+    {
+      "pubchem_id": 8163,
+      "common_name": "2-Undecanone",
+      "flavor_profile": "orange@waxy@fresh@fatty@floral@iris@creamy@fruity@orris@green",
+      "fema_flavor_profile": "Fresh, Green, Orange, Rose",
+      "odor": "strong odor",
+      "taste": null
+    },
+    {
+      "pubchem_id": 12377,
+      "common_name": "Dipropyl disulfide",
+      "flavor_profile": "burnt@onion@sulfury@earthy@green",
+      "fema_flavor_profile": "Cooked Meat, Garlic, Onion, Pungent, Sulfur",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 13367,
+      "common_name": "Allyl Mercaptan",
+      "flavor_profile": "sulfurous@roasted@garlic@onion@alliaceous",
+      "fema_flavor_profile": "Savory",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 16590,
+      "common_name": "Diallyl Disulfide",
+      "flavor_profile": "garlic@onion@metallic@alliaceous",
+      "fema_flavor_profile": "Garlic",
+      "odor": "garlic odor",
+      "taste": "sharp, garlic flavor"
+    },
+    {
+      "pubchem_id": 62434,
+      "common_name": "Allyl Methyl Disulfide",
+      "flavor_profile": "garlic@onion@alliaceous@green",
+      "fema_flavor_profile": "Green",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 75552,
+      "common_name": "Diallyl tetrasulfide",
+      "flavor_profile": "strong@garlic@onion",
+      "fema_flavor_profile": null,
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 61926,
+      "common_name": "Allyl Methyl Trisulfide",
+      "flavor_profile": "garlic@onion@creamy@alliaceous",
+      "fema_flavor_profile": "Savory",
+      "odor": null,
+      "taste": null
+    },
+    {
+      "pubchem_id": 11617,
+      "common_name": "Diallyl Sulfide",
+      "flavor_profile": "sulfurous@garlic@onion@horseradish@metallic",
+      "fema_flavor_profile": "Savory",
+      "odor": "garlic odor",
+      "taste": "garlic"
+    }
+  ]
+}

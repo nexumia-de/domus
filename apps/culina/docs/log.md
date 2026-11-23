@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-23 (FlavorDB)
+
+- **Decision**: by the owner: [pairings come from FlavorDB](decisions/flavordb.md), Culina stays non-commercial; the rule "no data from FlavorDB" of `AGENTS.md` is lifted for Culina. The data is to be one file of its own under CC BY-NC-SA 3.0.
+- **Creation**: pairings from FlavorDB, from the data to the screen. `tools/flavordb/` fetches one entity at a time, derives `packages/app/data/flavour-pairings.json` (936 entities, 1788 molecules, fetched 2026-11-23) and links the catalogue to it (`flavour-links.json`, 630 of 720 ingredients; 90 corrections with reasons in `links-own.json`). The engine's `src/pairing/` weighs a molecule by how rare it is, leaves out the same family and, for a dish, measures a candidate against its own usual overlap; the first rule (plain counts) was changed after the real data showed about 170 ingredients sharing one block of some 93 molecules. The dish screen has **Goes with**, closed behind a tap, loaded on first opening ([behaviour](behaviour.md)). **Not done**: nothing in the editor or the native app; nobody judged the pairings but the agent, on a dozen dishes; what a dish lacks is not in this data.
+
 ## 2026-11-23 (answers, name)
 
 - **Decision**: by the owner, on the open points of the [building kit](decisions/building-kit.md): a frame is the project's own composition, its components keep their sources; the classics that are no base are taken apart into components, the rest goes to the optional pack; the notebook keeps the date a dish was cooked and no more (no food diary; the repository the owner named for one holds Flutter apps of a benchmark, nothing to take in). Where taste profiles come from stays open: the owner asked about FlavorDB and a split licence, the agent's answer is recorded there. `AGENTS.md` and the [roadmap](roadmap.md) follow. Nothing built.

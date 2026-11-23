@@ -1,6 +1,6 @@
 // German texts of the classics; the keys and signatures of ../strings-classics.ts. The content of a
 // dish or a technique is in the file of that dish, in two languages.
-import type { classicsStrings } from '../strings-classics';
+import type { classicsStrings, pairingStrings } from '../strings-classics';
 
 export const classicsStringsDe: typeof classicsStrings = {
   // The title of the native Linux app's start page
@@ -135,4 +135,20 @@ export const classicsStringsDe: typeof classicsStrings = {
   teachAgain: 'Wieder zeigen',
   teachAgainLabel: (name: string): string => `Wieder zeigen: ${name}`,
   taughtAgain: (name: string): string => `Der Hinweis zu ${name} wird wieder gezeigt.`,
+};
+
+// German texts of the "Goes with" section; the keys and signatures of pairingStrings.
+export const pairingStringsDe: typeof pairingStrings = {
+  heading: 'Passt dazu',
+  intro: 'Zutaten, die mit diesem Gericht mehr Aromastoffe teilen, als sie es sonst tun:',
+  rowWith: (names: string): string => `mit ${names}`,
+  listLabel: 'Zutaten, die zu diesem Gericht passen',
+  none: 'Für die Zutaten dieses Gerichts sticht nichts heraus.',
+  unknown: 'Die Aromadaten kennen die Zutaten dieses Gerichts nicht.',
+  notLoaded: 'Die Aromadaten konnten nicht geladen werden.',
+  loading: 'Aromadaten werden geladen…',
+  hint: 'Ein Hinweis, keine Regel: berechnet aus den Aromastoffen, die in jeder Zutat gefunden wurden.',
+  limits: 'Die Daten kennen keine Mengen und sagen nichts über süß, sauer, salzig oder bitter.',
+  source: 'Daten: FlavorDB (Garg u. a., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
+  links: 'Welche Zutat hier für welche dort steht, ist eine Einschätzung dieser App.',
 };

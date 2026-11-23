@@ -138,3 +138,21 @@ export const classicsStrings = {
   teachAgainLabel: (name: string): string => `Teach again: ${name}`,
   taughtAgain: (name: string): string => `The note for ${name} is shown again.`,
 };
+
+// Texts of the "Goes with" section of a dish: ingredients that share flavour molecules with
+// those of the dish. The wording says what was computed and never that a pairing is right.
+
+export const pairingStrings = {
+  heading: 'Goes with',
+  intro: 'Ingredients that share more flavour molecules with this dish than they usually do:',
+  rowWith: (names: string): string => `with ${names}`,
+  listLabel: 'Ingredients that go with this dish',
+  none: 'Nothing stands out for the ingredients of this dish.',
+  unknown: 'The flavour data does not know the ingredients of this dish.',
+  notLoaded: 'The flavour data could not be loaded.',
+  loading: 'Loading the flavour data…',
+  hint: 'A hint, not a rule: it is computed from the flavour molecules found in each ingredient.',
+  limits: 'The data has no amounts and says nothing about sweet, sour, salty or bitter.',
+  source: 'Data: FlavorDB (Garg et al., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
+  links: 'Which ingredient here stands for which one there is this app’s judgement.',
+};

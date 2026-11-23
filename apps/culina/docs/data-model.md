@@ -623,7 +623,9 @@ dates as suggestions and the user chooses.
 
 Later extension, schema only: two ingredients that go together. Schema:
 `affinity.schema.json`. No code and no data before the pairing work;
-data would need a source and licence of its own (no FlavorDB).
+data would need a source and licence of its own. Since 2026-11-23
+pairings computed from FlavorDB are a separate thing, a data file of
+their own and not records of the user ([decision](decisions/flavordb.md)).
 
 | Field        | Type    | Required | Meaning                                                   |
 | ------------ | ------- | -------- | --------------------------------------------------------- |

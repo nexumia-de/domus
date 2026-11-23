@@ -139,7 +139,15 @@ the owner chose[^answers]:
    licence forbids, FlavorDB offers a download per molecule only, and
    its data says which ingredients share aroma molecules, not what a
    dish lacks. The agent recommends the project's own table of basic
-   tastes. **Not decided.**
+   tastes.
+
+   **Decided in part on 2026-11-23**: pairings ("what fits") come from
+   FlavorDB, Culina staying non-commercial
+   ([decision](flavordb.md)). The agent's sentence above about the paid
+   app missed that Culina had been decided non-commercial on 2026-11-19
+   ([licence of the sources](sources-licence.md)), as the owner said.
+   **Still open**: where "what a dish still needs" comes from, which
+   FlavorDB does not give.
 
 ## Consequences
 

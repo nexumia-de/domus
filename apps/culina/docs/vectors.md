@@ -477,6 +477,20 @@ Template 3 flour : 2 egg; 165 g of egg weighed.
 }
 ```
 
+# Pairings
+
+Kinds `pairings` (inputs `entity_id`, `data`, optional `options`;
+expected `pairings`), `dish_pairings` (inputs `entity_ids`, `data`,
+optional `options` and `candidates`; expected `pairings`) and
+`shared_molecules` (inputs `a`, `b`; expected `shared`). The data in the
+vectors is constructed; no vector uses FlavorDB's data. One vector
+(`rare-counts-common-does-not`) is small enough to count by hand; the
+expected values of the others were computed with a second
+implementation of the rule and say so in `source`.
+
+Folder: `packages/engine/vectors/pairing/`. Rules:
+[pairings from FlavorDB](decisions/flavordb.md).
+
 # Open
 
 None. Error vectors exist for every kind, with `error_code` instead of

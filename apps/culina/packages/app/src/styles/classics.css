@@ -240,3 +240,17 @@
   margin: 0 0 var(--sp-1);
   font-weight: 600;
 }
+
+/* "Goes with": one ingredient per row, the dish's ingredients it goes with beside it. */
+.pairing-list {
+  list-style: none;
+  margin: var(--sp-2) 0;
+  padding: 0;
+}
+
+.pairing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-2);
+  padding: var(--sp-1) 0;
+}

@@ -4,3 +4,5 @@ packages/app/src/store/validators.generated.*
 packages/app/data/ingredient-catalogue.json
 packages/engine/src/techniques/techniques.generated.ts
 packages/app/src/classics/classics.generated.ts
+packages/app/data/flavour-pairings.json
+packages/app/data/flavour-links.json

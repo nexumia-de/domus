@@ -1,0 +1,84 @@
+{
+  "id": "rare-counts-common-does-not",
+  "description": "Four ingredients. Molecule 1 is in all four and weighs ln(4/4) = 0; molecule 2 is in two and weighs ln(4/2); 3 and 4 are in one each and weigh ln(4). X and Y share 1 and 2: overlap ln2 / (ln2 + ln4 + ln4) = 1/5 = 0.2. X and Z, X and Q share only molecule 1: overlap 0, listed after Y by id. The flavour word of the weightless molecule comes last",
+  "inputs": {
+    "kind": "pairings",
+    "entity_id": 1,
+    "data": {
+      "entities": [
+        {
+          "id": 1,
+          "alias": "x",
+          "name": "X",
+          "category": "a",
+          "molecules": [1, 2, 3]
+        },
+        {
+          "id": 2,
+          "alias": "y",
+          "name": "Y",
+          "category": "b",
+          "molecules": [1, 2, 4]
+        },
+        {
+          "id": 3,
+          "alias": "z",
+          "name": "Z",
+          "category": "c",
+          "molecules": [1, 5]
+        },
+        {
+          "id": 4,
+          "alias": "q",
+          "name": "Q",
+          "category": "d",
+          "molecules": [1, 6]
+        }
+      ],
+      "molecules": {
+        "1": {
+          "name": "everywhere",
+          "flavours": ["plain"]
+        },
+        "2": {
+          "name": "rare",
+          "flavours": ["smoky"]
+        }
+      }
+    },
+    "options": {
+      "minShared": 1,
+      "minMolecules": 1
+    }
+  },
+  "expected": {
+    "pairings": [
+      {
+        "id": 2,
+        "name": "Y",
+        "category": "b",
+        "shared": 2,
+        "overlap": 0.2,
+        "flavours": ["smoky", "plain"]
+      },
+      {
+        "id": 3,
+        "name": "Z",
+        "category": "c",
+        "shared": 1,
+        "overlap": 0.0,
+        "flavours": ["plain"]
+      },
+      {
+        "id": 4,
+        "name": "Q",
+        "category": "d",
+        "shared": 1,
+        "overlap": 0.0,
+        "flavours": ["plain"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Constructed; ln 2 / (ln 2 + 2 ln 4) = ln 2 / (5 ln 2) = 0.2, counted by hand."
+}

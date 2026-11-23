@@ -1,0 +1,460 @@
+{
+  "about": "Corrections to the rule of link.mjs, each a judgement of this project with its reason. Not part of FlavorDB.",
+  "set": [
+    {
+      "name": "Beans, black turtle",
+      "entity": "Beans",
+      "why": "The rule joins the two parts and finds another food. A black turtle bean is a common bean, not a turtle."
+    },
+    {
+      "name": "Beans, cranberry",
+      "entity": "Beans",
+      "why": "The rule joins the two parts and finds another food. A cranberry bean is a common bean, not a cranberry."
+    },
+    {
+      "name": "Pepper, banana",
+      "entity": "Capsicum",
+      "why": "The rule joins the two parts and finds another food. A banana pepper is a capsicum."
+    },
+    {
+      "name": "Peppers, jalapeno",
+      "entity": "Capsicum",
+      "why": "The data has an entity Jalapeno with one molecule; the capsicum it is has 218."
+    },
+    {
+      "name": "Java-plum",
+      "entity": null,
+      "why": "FlavorDB lists Java plum as another name of hogplum; they are different plants (Syzygium, Spondias)."
+    },
+    {
+      "name": "Bread, wheat",
+      "entity": "Bread",
+      "why": "The rule finds the grain; the bread is meant."
+    },
+    {
+      "name": "Beans",
+      "entity": "Beans",
+      "why": "Kinds of common bean the data does not tell apart.",
+      "fallback": true
+    },
+    {
+      "name": "Peppers",
+      "entity": "Capsicum",
+      "why": "Hot and sweet peppers are capsicums; the spice pepper is another plant.",
+      "fallback": true
+    },
+    {
+      "name": "Oranges",
+      "entity": "Orange",
+      "why": "Several entities carry the word; the fruit is meant.",
+      "fallback": true
+    },
+    {
+      "name": "Orange peel",
+      "entity": "Orange",
+      "why": "The peel of the same fruit; the data has the fruit and an oil."
+    },
+    {
+      "name": "Limes",
+      "entity": "Lime",
+      "why": "Several entities carry the word; the fruit is meant."
+    },
+    {
+      "name": "Lemon juice",
+      "entity": "Lemon",
+      "why": "Part of the same fruit."
+    },
+    {
+      "name": "Lemon peel",
+      "entity": "Lemon",
+      "why": "Part of the same fruit."
+    },
+    {
+      "name": "Tangerines",
+      "entity": "Mandarin Orange",
+      "why": "A tangerine is a mandarin; that entity has 183 molecules, Tangerine 21."
+    },
+    {
+      "name": "Clementines",
+      "entity": "Mandarin Orange",
+      "why": "A clementine is a mandarin hybrid; the nearest entity."
+    },
+    {
+      "name": "Peanuts",
+      "entity": "Peanut",
+      "why": "Several entities carry the word; the nut is meant.",
+      "fallback": true
+    },
+    {
+      "name": "Currants, european black",
+      "entity": "Black Currant",
+      "why": "Named in the second part."
+    },
+    {
+      "name": "Currants, red and white",
+      "entity": "Red Currant",
+      "why": "Named in the second part; red has the fuller data."
+    },
+    {
+      "name": "Wild rice",
+      "entity": "Wild rice",
+      "why": "Two entities carry the name as a synonym; this one is named so."
+    },
+    {
+      "name": "Corn flour",
+      "entity": "Corn",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Cornmeal",
+      "entity": "Corn",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Corn grain",
+      "entity": "Corn",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Corn bran",
+      "entity": "Corn",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Rice flour",
+      "entity": "Rice",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Rice bran",
+      "entity": "Rice",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Rye flour",
+      "entity": "Rye",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Rye grain",
+      "entity": "Rye",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Wheat flour",
+      "entity": "Wheat",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Wheat bran",
+      "entity": "Wheat",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Wheat germ",
+      "entity": "Wheat",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Oat bran",
+      "entity": "Oats",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Oat flour",
+      "entity": "Oats",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Sorghum flour",
+      "entity": "Sorghum",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Sorghum grain",
+      "entity": "Sorghum",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Barley flour or meal",
+      "entity": "Barley",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Buckwheat flour",
+      "entity": "Buckwheat",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Millet flour",
+      "entity": "Millet",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Triticale flour",
+      "entity": "Triticale",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Potato flour",
+      "entity": "Potato",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Soy flour",
+      "entity": "Soybean",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Soy meal",
+      "entity": "Soybean",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Arrowroot flour",
+      "entity": "Arrowroot",
+      "why": "A milled or separated part of that plant; the data has the plant only."
+    },
+    {
+      "name": "Spices, bay leaf",
+      "entity": "Laurel",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, caraway seed",
+      "entity": "Caraway",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, celery seed",
+      "entity": "Celery",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, coriander leaf",
+      "entity": "Coriander",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, coriander seed",
+      "entity": "Coriander",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Coriander leaves",
+      "entity": "Coriander",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, dill seed",
+      "entity": "Dill",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, dill weed",
+      "entity": "Dill",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, fenugreek seed",
+      "entity": "Fenugreek",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, garlic powder",
+      "entity": "Garlic",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, mustard seed",
+      "entity": "Mustard",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, onion powder",
+      "entity": "Onion",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, paprika",
+      "entity": "Capsicum",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Ginger root",
+      "entity": "Ginger",
+      "why": "The same plant under the name the data uses; leaf, seed and powder are not told apart there."
+    },
+    {
+      "name": "Spices, savory",
+      "entity": "Summer savory",
+      "why": "Ground savory is usually summer savory; a judgement."
+    },
+    {
+      "name": "Squash, zucchini",
+      "entity": "Green zucchini",
+      "why": "The data has green and yellow zucchini; green is the usual one."
+    },
+    {
+      "name": "Squash, summer",
+      "entity": "Green zucchini",
+      "why": "Zucchini is the common summer squash; a judgement."
+    },
+    {
+      "name": "Fish, cod",
+      "entity": "Codfish",
+      "why": "Named differently."
+    },
+    {
+      "name": "Fish, tuna",
+      "entity": "Common Tuna",
+      "why": "Several tunas in the data; this is the general one."
+    },
+    {
+      "name": "Nuts, pistachio nuts",
+      "entity": "Pistachio",
+      "why": "Named differently."
+    },
+    {
+      "name": "Nuts, pilinuts",
+      "entity": "Pili nut",
+      "why": "Named differently."
+    },
+    {
+      "name": "Nuts, almond butter",
+      "entity": "Almond",
+      "why": "Ground almonds."
+    },
+    {
+      "name": "Nuts, cashew butter",
+      "entity": "Cashew nut",
+      "why": "Ground cashew nuts."
+    },
+    {
+      "name": "Nuts, coconut meat",
+      "entity": "Coconut",
+      "why": "A part or product of the coconut; the data has the nut only."
+    },
+    {
+      "name": "Nuts, coconut milk",
+      "entity": "Coconut",
+      "why": "A part or product of the coconut; the data has the nut only."
+    },
+    {
+      "name": "Nuts, coconut cream",
+      "entity": "Coconut",
+      "why": "A part or product of the coconut; the data has the nut only."
+    },
+    {
+      "name": "Nuts, coconut water",
+      "entity": "Coconut",
+      "why": "A part or product of the coconut; the data has the nut only."
+    },
+    {
+      "name": "Seeds, sesame seeds",
+      "entity": "Sesame",
+      "why": "Named differently."
+    },
+    {
+      "name": "Seeds, sesame butter",
+      "entity": "Sesame",
+      "why": "Ground sesame."
+    },
+    {
+      "name": "Seeds, sunflower seed kernels",
+      "entity": "Sunflower",
+      "why": "The seed of that plant, whole or ground."
+    },
+    {
+      "name": "Seeds, sunflower seed butter",
+      "entity": "Sunflower",
+      "why": "The seed of that plant, whole or ground."
+    },
+    {
+      "name": "Seeds, sunflower seed flour",
+      "entity": "Sunflower",
+      "why": "The seed of that plant, whole or ground."
+    },
+    {
+      "name": "Seeds, lotus seeds",
+      "entity": "Lotus",
+      "why": "A part of that plant."
+    },
+    {
+      "name": "Lotus root",
+      "entity": "Lotus",
+      "why": "A part of that plant."
+    },
+    {
+      "name": "Vanilla extract",
+      "entity": "Vanilla",
+      "why": "An extract of it."
+    },
+    {
+      "name": "Passion-fruit",
+      "entity": "Passionfruit",
+      "why": "Spelled differently."
+    },
+    {
+      "name": "Cowpeas",
+      "entity": "Black-eyed pea",
+      "why": "The black-eyed pea is a cowpea.",
+      "fallback": true
+    },
+    {
+      "name": "Amaranth leaves",
+      "entity": "Amaranth",
+      "why": "A part of that plant."
+    },
+    {
+      "name": "Burdock root",
+      "entity": "Burdock",
+      "why": "A part of that plant."
+    },
+    {
+      "name": "Chicory roots",
+      "entity": "Chicory",
+      "why": "A part of that plant."
+    },
+    {
+      "name": "Cornsalad",
+      "entity": "Corn salad",
+      "why": "Spelled differently."
+    },
+    {
+      "name": "Chrysanthemum leaves",
+      "entity": "Garland chrysanthemum",
+      "why": "The leaves eaten are those of the garland chrysanthemum."
+    },
+    {
+      "name": "Pokeberry shoots",
+      "entity": "American pokeweed",
+      "why": "The same plant."
+    },
+    {
+      "name": "Yambean",
+      "entity": "Jicama",
+      "why": "Jicama is the yam bean."
+    },
+    {
+      "name": "Tomato products",
+      "entity": "Tomato",
+      "why": "Made of tomato alone."
+    },
+    {
+      "name": "Radicchio",
+      "entity": "Chicory",
+      "why": "Radicchio is a chicory (Cichorium intybus); a judgement."
+    },
+    {
+      "name": "Celeriac",
+      "entity": "Celery",
+      "why": "Celeriac is a variety of celery; a judgement, root and stalk taste differently."
+    },
+    {
+      "name": "Celtuce",
+      "entity": "Lettuce",
+      "why": "Celtuce is a variety of lettuce."
+    }
+  ]
+}
