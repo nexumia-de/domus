@@ -1,0 +1,211 @@
+{
+  "id": "bulgur-pilavi",
+  "kind": "base",
+  "name": {
+    "en": "Bulgur pilaf",
+    "de": "Bulgurpilaw"
+  },
+  "originalName": "Bulgur pilavı",
+  "country": "tr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "bulgur-pilaf",
+      "name": {
+        "en": "Bulgur pilaf",
+        "de": "Bulgurpilaw"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "paste",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170459"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "bulgur",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170688"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Coarse bulgur.",
+            "de": "Grober Bulgur."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Hot.",
+            "de": "Heiß."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the onion finely. Melt the butter with the olive oil in a pot and cook the onion in it over medium heat for about 5 minutes, until soft and without colour.",
+            "de": "Die Zwiebel fein würfeln. Die Butter mit dem Olivenöl in einem Topf schmelzen und die Zwiebel darin bei mittlerer Hitze etwa 5 Minuten weich dünsten, ohne dass sie Farbe nimmt."
+          },
+          "technique": "sweat",
+          "uses": ["onion", "butter", "oil"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the tomato paste and cook it for 1 minute.",
+            "de": "Das Tomatenmark einrühren und 1 Minute mitdünsten."
+          },
+          "action": "stir",
+          "uses": ["paste"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the bulgur and stir for 1 minute, until every grain is coated.",
+            "de": "Den Bulgur dazugeben und 1 Minute rühren, bis alle Körner überzogen sind."
+          },
+          "action": "add",
+          "uses": ["bulgur"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the hot water, add the salt and the pepper and bring to the boil.",
+            "de": "Das heiße Wasser angießen, Salz und Pfeffer dazugeben und aufkochen."
+          },
+          "action": "pour",
+          "uses": ["water", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Cover and cook over the lowest heat for 12 to 15 minutes, without stirring, until the bulgur has taken up the water.",
+            "de": "Zugedeckt bei schwächster Hitze 12 bis 15 Minuten garen, ohne zu rühren, bis der Bulgur das Wasser aufgenommen hat."
+          },
+          "action": "cook",
+          "time": {
+            "value": 12,
+            "to": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat, lay a clean kitchen towel under the lid and let the bulgur stand for 10 minutes. Loosen it with a fork.",
+            "de": "Den Topf vom Herd nehmen, ein sauberes Küchentuch unter den Deckel legen und den Bulgur 10 Minuten stehen lassen. Mit einer Gabel auflockern."
+          },
+          "action": "stand",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "bulgur-pilaf"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

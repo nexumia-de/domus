@@ -1,0 +1,199 @@
+{
+  "id": "arroz-rojo",
+  "kind": "base",
+  "name": {
+    "en": "Mexican red rice",
+    "de": "Mexikanischer roter Reis"
+  },
+  "originalName": "Arroz rojo",
+  "country": "mx",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "arroz-rojo-starch",
+      "name": {
+        "en": "Mexican red rice",
+        "de": "Mexikanischer roter Reis"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168877"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "One clove.",
+            "de": "Eine Zehe."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Blend the tomatoes, the onion and the garlic to a smooth purée.",
+            "de": "Tomaten, Zwiebel und Knoblauch im Mixer glatt pürieren."
+          },
+          "action": "puree",
+          "uses": ["tomato", "onion", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a pot with a lid and fry the dry rice over medium heat, stirring, until it is pale gold.",
+            "de": "Das Öl in einem Topf mit Deckel erhitzen und den trockenen Reis bei mittlerer Hitze unter Rühren hellgolden anbraten."
+          },
+          "action": "toast",
+          "uses": ["oil", "rice"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the tomato purée and cook, stirring, until most of it has been taken up.",
+            "de": "Das Tomatenpüree zugießen und unter Rühren garen, bis es größtenteils aufgenommen ist."
+          },
+          "action": "pour",
+          "uses": ["tomato"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the water and the salt and bring to the boil.",
+            "de": "Wasser und Salz zugeben und aufkochen."
+          },
+          "action": "add",
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Put the lid on and cook over the lowest heat without stirring.",
+            "de": "Den Deckel auflegen und bei kleinster Hitze garen, ohne zu rühren."
+          },
+          "technique": "cook-rice",
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat and let the rice stand with the lid on.",
+            "de": "Den Topf vom Herd nehmen und den Reis zugedeckt stehen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Loosen the rice with a fork.",
+            "de": "Den Reis mit einer Gabel auflockern."
+          },
+          "action": "stir",
+          "uses": ["rice"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "arroz-rojo-starch"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

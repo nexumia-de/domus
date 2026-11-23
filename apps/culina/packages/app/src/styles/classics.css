@@ -263,3 +263,10 @@
   width: 100%;
   text-align: start;
 }
+
+/* The two parts of "Goes with": proven together, then from the flavour data. */
+.pairing-sub {
+  margin: var(--sp-3) 0 var(--sp-1);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}

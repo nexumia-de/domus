@@ -1,0 +1,154 @@
+{
+  "id": "tamagoyaki",
+  "kind": "base",
+  "name": {
+    "en": "Rolled omelette",
+    "de": "Gerolltes Omelett"
+  },
+  "originalName": "Tamagoyaki",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "tamagoyaki-omelette",
+      "name": {
+        "en": "Rolled omelette",
+        "de": "Gerolltes Omelett"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "For oiling the pan between the layers.",
+            "de": "Zum Ölen der Pfanne zwischen den Schichten."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Beat the eggs with the sugar, the salt and the water until the sugar has dissolved, without beating in much air.",
+            "de": "Die Eier mit Zucker, Salz und Wasser verquirlen, bis sich der Zucker gelöst hat, dabei wenig Luft einschlagen."
+          },
+          "action": "whisk",
+          "uses": ["egg", "sugar", "salt", "water"]
+        },
+        {
+          "text": {
+            "en": "Heat a small pan, rectangular if you have one, over medium heat and wipe it thinly with some of the oil on kitchen paper.",
+            "de": "Eine kleine, wenn vorhanden rechteckige Pfanne bei mittlerer Hitze erhitzen und mit etwas Öl auf Küchenpapier dünn ausreiben."
+          },
+          "action": "grease",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Pour in a quarter of the egg and tilt the pan so that it covers the base. When it is almost set but still moist on top, roll it up from the far side towards you.",
+            "de": "Ein Viertel der Eimasse hineingießen und die Pfanne schwenken, bis der Boden bedeckt ist. Wenn die Masse fast gestockt, oben aber noch feucht ist, von der hinteren Seite zu sich hin aufrollen."
+          },
+          "action": "pour",
+          "uses": ["egg"]
+        },
+        {
+          "text": {
+            "en": "Push the roll to the far side, oil the free part of the pan and pour in the next quarter; lift the roll so that the egg runs under it. Roll up again when it is almost set. Do the same with the remaining two quarters.",
+            "de": "Die Rolle an den hinteren Rand schieben, den freien Teil der Pfanne ölen und das nächste Viertel hineingießen; die Rolle anheben, damit die Eimasse darunterläuft. Wieder aufrollen, sobald sie fast gestockt ist. Mit den übrigen zwei Vierteln ebenso verfahren."
+          },
+          "action": "cook",
+          "uses": ["oil", "egg"]
+        },
+        {
+          "text": {
+            "en": "Take the roll out, let it rest for 3 minutes and cut it into slices 2 cm thick.",
+            "de": "Die Rolle herausnehmen, 3 Minuten ruhen lassen und in 2 cm dicke Scheiben schneiden."
+          },
+          "action": "take-out",
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "tamagoyaki-omelette"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "The sweet home version, seasoned with sugar and salt only.",
+    "de": "Die süße Hausversion, nur mit Zucker und Salz gewürzt."
+  }
+}

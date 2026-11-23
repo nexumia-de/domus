@@ -32,11 +32,15 @@ its own `AGENTS.md`. Its sister app for drinks,
 - **Own local data, offline first.** No server, no account, no
   telemetry.
 - **Recipes**: shipped bases and dishes, read-only, each with its cuisine.
-  A shipped recipe either follows one named source (amounts as facts,
-  method in our own words, no copied text, no bulk import of a site) or
-  is the project's own, written by an AI model without a source, which
-  the app says on the recipe
-  ([own recipes](docs/decisions/own-recipes.md)); and the user's own
+  New shipped recipes are the project's own: written by an AI model
+  from general cooking knowledge, the usual modern way, with every
+  amount, for a stated number of persons, read once more by another
+  agent, and marked in the app as the app's own recipe that nobody
+  cooked ([own recipes](docs/decisions/own-recipes.md)). A recipe that
+  follows a named source stays possible (amounts as facts, method in
+  our own words, no copied text, no bulk import of a site). An
+  ingredient the catalogue lacks is added to the catalogue from the
+  USDA data, not worked around; and the user's own
   components and dishes with versions; both in one list with one filter
   ([one dish list](docs/decisions/one-dish-list.md)). A frame (tacos, bowl) is the project's own
   composition and says so; each component in it keeps its source
@@ -46,7 +50,8 @@ its own `AGENTS.md`. Its sister app for drinks,
   missing ingredients to it
   ([helper](docs/decisions/mentor.md),
   [recipe book](docs/decisions/recipe-book.md)).
-- **Help is scripted and sourced.** No language model. Every
+- **Help is scripted and sourced.** No language model in the running
+  app; a model writes content (recipes, pairings), which is marked. Every
   caution, question and explanation names a paper or textbook, or is
   marked as a judgement. Teaching notes belong to skills; a skill the user
   marked as learned is not taught again.

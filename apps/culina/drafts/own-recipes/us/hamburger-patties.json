@@ -1,0 +1,168 @@
+{
+  "id": "hamburger-patties",
+  "kind": "base",
+  "name": {
+    "en": "Beef burger patties",
+    "de": "Burger-Patties aus Rindfleisch"
+  },
+  "originalName": "Hamburger patties",
+  "country": "us",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "hamburger-patties-main",
+      "name": {
+        "en": "Beef burger patties",
+        "de": "Burger-Patties aus Rindfleisch"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beef",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174036"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cold from the fridge.",
+            "de": "Kalt aus dem Kühlschrank."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Divide the beef into 4 portions of 150 g and shape each, without kneading, into a patty about 2 cm thick; press a shallow dent into the middle.",
+            "de": "Das Hackfleisch in 4 Portionen von 150 g teilen und jede, ohne zu kneten, zu einem etwa 2 cm dicken Patty formen; in die Mitte eine flache Mulde drücken."
+          },
+          "action": "shape",
+          "uses": ["beef"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle both sides with the salt and the pepper just before frying.",
+            "de": "Kurz vor dem Braten beide Seiten mit Salz und Pfeffer bestreuen."
+          },
+          "action": "season",
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a heavy pan over high heat.",
+            "de": "Das Öl in einer schweren Pfanne bei starker Hitze erhitzen."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Fry the patties without moving them until a brown crust has formed underneath.",
+            "de": "Die Patties braten, ohne sie zu bewegen, bis sich unten eine braune Kruste gebildet hat."
+          },
+          "technique": "sear",
+          "uses": ["beef"],
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn them and fry the other side; a patty is cooked through at 71 °C in the middle.",
+            "de": "Wenden und die andere Seite braten; durchgegart ist ein Patty bei 71 °C im Kern."
+          },
+          "action": "turn",
+          "uses": ["beef"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          },
+          "temperature": {
+            "value": 71,
+            "unit": "C"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the patties stand on a plate before serving.",
+            "de": "Die Patties vor dem Servieren auf einem Teller stehen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "hamburger-patties-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Makes 4 patties of 150 g.",
+    "de": "Ergibt 4 Patties von 150 g."
+  }
+}

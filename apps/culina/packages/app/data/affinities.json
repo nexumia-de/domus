@@ -1,0 +1,338 @@
+{
+  "format": "culina-affinities",
+  "formatVersion": 1,
+  "written": "2026-11-23",
+  "basis": "The project's own judgement of which ingredients cooks commonly put together: written by an AI model from general cooking knowledge, from no source, checked by no cook (docs/decisions/own-recipes.md). A pair holds in both directions.",
+  "licence": "AGPL-3.0-or-later, as the project",
+  "pairs": {
+    "fdc-group-tomatoes": [
+      "fdc-172232",
+      "fdc-169230",
+      "fdc-171413",
+      "fdc-170000",
+      "fdc-170900",
+      "fdc-group-cheese-parmesan",
+      "fdc-172241",
+      "fdc-group-peppers-sweet",
+      "fdc-169291",
+      "fdc-group-peppers-hot-chili",
+      "fdc-group-pasta",
+      "fdc-173470",
+      "fdc-174182"
+    ],
+    "fdc-169230": [
+      "fdc-171413",
+      "fdc-170416",
+      "fdc-group-peppers-hot-chili",
+      "fdc-167747",
+      "fdc-173473",
+      "fdc-173470",
+      "fdc-169231",
+      "fdc-group-mushrooms",
+      "fdc-174210",
+      "fdc-168462",
+      "fdc-group-chicken-broilers-or-fryers",
+      "fdc-group-lamb",
+      "fdc-170028"
+    ],
+    "fdc-170000": [
+      "fdc-group-butter",
+      "fdc-173470",
+      "fdc-170917",
+      "fdc-170393",
+      "fdc-169988",
+      "fdc-group-beef",
+      "fdc-168277",
+      "fdc-171329",
+      "fdc-170918",
+      "fdc-group-vinegar",
+      "fdc-170028"
+    ],
+    "fdc-172232": [
+      "fdc-170900",
+      "fdc-170591",
+      "fdc-group-cheese-parmesan",
+      "fdc-171413",
+      "fdc-167747",
+      "fdc-169291",
+      "fdc-167762"
+    ],
+    "fdc-170028": [
+      "fdc-group-butter",
+      "fdc-173473",
+      "fdc-170416",
+      "fdc-group-cream",
+      "fdc-169246",
+      "fdc-168277",
+      "fdc-171326",
+      "fdc-171322",
+      "fdc-170918",
+      "fdc-171256",
+      "fdc-group-milk"
+    ],
+    "fdc-group-pasta": [
+      "fdc-group-cheese-parmesan",
+      "fdc-171413",
+      "fdc-group-butter",
+      "fdc-169230",
+      "fdc-group-cream",
+      "fdc-168277",
+      "fdc-group-egg",
+      "fdc-group-mushrooms",
+      "fdc-168462"
+    ],
+    "fdc-group-rice": [
+      "fdc-group-butter",
+      "fdc-170000",
+      "fdc-170419",
+      "fdc-170172",
+      "fdc-172231",
+      "fdc-170924",
+      "fdc-170005",
+      "fdc-group-egg",
+      "fdc-168155"
+    ],
+    "fdc-group-chicken-broilers-or-fryers": [
+      "fdc-167747",
+      "fdc-173470",
+      "fdc-173473",
+      "fdc-169230",
+      "fdc-171329",
+      "fdc-group-cream",
+      "fdc-group-mushrooms",
+      "fdc-170924",
+      "fdc-169231",
+      "fdc-174837",
+      "fdc-169640"
+    ],
+    "fdc-group-beef": [
+      "fdc-173190",
+      "fdc-173470",
+      "fdc-170917",
+      "fdc-170393",
+      "fdc-group-mushrooms",
+      "fdc-170929",
+      "fdc-173473",
+      "fdc-169988",
+      "fdc-171329"
+    ],
+    "fdc-group-pork": [
+      "fdc-group-apples",
+      "fdc-170935",
+      "fdc-170929",
+      "fdc-170918",
+      "fdc-group-cabbage-common",
+      "fdc-170928",
+      "fdc-169640",
+      "fdc-169385"
+    ],
+    "fdc-group-lamb": [
+      "fdc-173473",
+      "fdc-169230",
+      "fdc-173475",
+      "fdc-173470",
+      "fdc-167747",
+      "fdc-173756"
+    ],
+    "fdc-group-fish": [
+      "fdc-167747",
+      "fdc-171322",
+      "fdc-group-butter",
+      "fdc-170416",
+      "fdc-174837",
+      "fdc-169385",
+      "fdc-170028"
+    ],
+    "fdc-173686": [
+      "fdc-171322",
+      "fdc-167747",
+      "fdc-group-cream",
+      "fdc-169225",
+      "fdc-170929",
+      "fdc-169640",
+      "fdc-169231",
+      "fdc-168389"
+    ],
+    "fdc-174210": [
+      "fdc-169230",
+      "fdc-group-peppers-hot-chili",
+      "fdc-167747",
+      "fdc-170416",
+      "fdc-168155",
+      "fdc-170172",
+      "fdc-169231"
+    ],
+    "fdc-group-egg": [
+      "fdc-group-butter",
+      "fdc-168277",
+      "fdc-170416",
+      "fdc-171242",
+      "fdc-group-cream",
+      "fdc-168462",
+      "fdc-group-mushrooms",
+      "fdc-170005"
+    ],
+    "fdc-group-mushrooms": [
+      "fdc-group-butter",
+      "fdc-169230",
+      "fdc-170416",
+      "fdc-173470",
+      "fdc-group-cream",
+      "fdc-174837",
+      "fdc-170499"
+    ],
+    "fdc-168462": [
+      "fdc-169230",
+      "fdc-171326",
+      "fdc-group-cream",
+      "fdc-group-cheese-ricotta",
+      "fdc-group-cheese-parmesan",
+      "fdc-167747",
+      "fdc-173756"
+    ],
+    "fdc-170393": [
+      "fdc-group-butter",
+      "fdc-169231",
+      "fdc-170416",
+      "fdc-169640",
+      "fdc-group-oranges",
+      "fdc-169988",
+      "fdc-170419"
+    ],
+    "fdc-169291": [
+      "fdc-169230",
+      "fdc-171413",
+      "fdc-173475",
+      "fdc-167747",
+      "fdc-group-cheese-parmesan",
+      "fdc-173470"
+    ],
+    "fdc-group-peppers-sweet": [
+      "fdc-170000",
+      "fdc-169230",
+      "fdc-171413",
+      "fdc-171329",
+      "fdc-group-peppers-hot-chili"
+    ],
+    "fdc-169225": [
+      "fdc-171322",
+      "fdc-group-vinegar",
+      "fdc-171256",
+      "fdc-173475",
+      "fdc-170150",
+      "fdc-169230"
+    ],
+    "fdc-group-cabbage-common": [
+      "fdc-170918",
+      "fdc-168277",
+      "fdc-group-apples",
+      "fdc-group-vinegar",
+      "fdc-170000",
+      "fdc-170393"
+    ],
+    "fdc-169977": [
+      "fdc-group-apples",
+      "fdc-group-vinegar",
+      "fdc-170917",
+      "fdc-171320",
+      "fdc-group-sugars",
+      "fdc-170000"
+    ],
+    "fdc-169986": ["fdc-group-butter", "fdc-174928", "fdc-170924", "fdc-171326", "fdc-171242"],
+    "fdc-170419": ["fdc-173475", "fdc-group-butter", "fdc-168277", "fdc-170499"],
+    "fdc-169961": ["fdc-group-butter", "fdc-169230", "fdc-168277", "fdc-170499", "fdc-170568"],
+    "fdc-168389": ["fdc-group-butter", "fdc-167747", "fdc-group-egg", "fdc-group-cheese-parmesan"],
+    "fdc-169145": [
+      "fdc-group-vinegar",
+      "fdc-171322",
+      "fdc-group-apples",
+      "fdc-170918",
+      "fdc-171256"
+    ],
+    "fdc-169385": ["fdc-group-oranges", "fdc-167747", "fdc-171413", "fdc-group-cheese-parmesan"],
+    "fdc-169387": [
+      "fdc-group-cheese-parmesan",
+      "fdc-172241",
+      "fdc-171413",
+      "fdc-167777",
+      "fdc-170591"
+    ],
+    "fdc-169998": ["fdc-group-butter", "fdc-group-peppers-hot-chili", "fdc-168155", "fdc-169997"],
+    "fdc-172420": [
+      "fdc-170393",
+      "fdc-169988",
+      "fdc-170000",
+      "fdc-170917",
+      "fdc-group-vinegar",
+      "fdc-172231",
+      "fdc-170924",
+      "fdc-168277"
+    ],
+    "fdc-173756": [
+      "fdc-group-seeds-sesame-butter-tahini",
+      "fdc-167747",
+      "fdc-169230",
+      "fdc-171413",
+      "fdc-171329",
+      "fdc-169997",
+      "fdc-170924"
+    ],
+    "fdc-group-beans": [
+      "fdc-169230",
+      "fdc-170000",
+      "fdc-group-peppers-hot-chili",
+      "fdc-169997",
+      "fdc-168155",
+      "fdc-168277",
+      "fdc-170917",
+      "fdc-group-tomatoes"
+    ],
+    "fdc-169231": [
+      "fdc-170005",
+      "fdc-171016",
+      "fdc-group-peppers-hot-chili",
+      "fdc-168155",
+      "fdc-170172",
+      "fdc-169640",
+      "fdc-169997"
+    ],
+    "fdc-170172": [
+      "fdc-170924",
+      "fdc-168155",
+      "fdc-group-peppers-hot-chili",
+      "fdc-169997",
+      "fdc-172231"
+    ],
+    "fdc-170150": ["fdc-171016", "fdc-169640", "fdc-170005"],
+    "fdc-group-peanuts": ["fdc-168155", "fdc-group-peppers-hot-chili", "fdc-170172", "fdc-169231"],
+    "fdc-group-cream": ["fdc-173471", "fdc-174837", "fdc-170929", "fdc-171326"],
+    "fdc-group-butter": ["fdc-167747", "fdc-170416", "fdc-170935", "fdc-171326"],
+    "fdc-group-apples": [
+      "fdc-171320",
+      "fdc-group-butter",
+      "fdc-group-sugars",
+      "fdc-173471",
+      "fdc-167747",
+      "fdc-170568"
+    ],
+    "fdc-167777": ["fdc-171320", "fdc-173190", "fdc-173471"],
+    "fdc-167762": ["fdc-group-cream", "fdc-group-sugars", "fdc-173471", "fdc-172241", "fdc-173475"],
+    "fdc-167755": ["fdc-group-cream", "fdc-173471", "fdc-169593", "fdc-group-sugars"],
+    "fdc-169593": [
+      "fdc-173471",
+      "fdc-group-cream",
+      "fdc-group-sugars",
+      "fdc-group-oranges",
+      "fdc-170568",
+      "fdc-171320"
+    ],
+    "fdc-167747": ["fdc-171413", "fdc-170416", "fdc-169640", "fdc-170929"],
+    "fdc-group-vinegar": ["fdc-170929", "fdc-171413", "fdc-169640", "fdc-170499"],
+    "fdc-group-bread": ["fdc-group-butter", "fdc-169230", "fdc-171413", "fdc-group-tomatoes"],
+    "fdc-group-cheese-ricotta": ["fdc-167749", "fdc-169640", "fdc-171326"],
+    "fdc-168277": ["fdc-group-egg", "fdc-169246"],
+    "fdc-169246": ["fdc-group-cream", "fdc-group-butter", "fdc-173470"],
+    "fdc-group-oranges": ["fdc-171320", "fdc-169640", "fdc-170568"],
+    "fdc-group-milk": ["fdc-173471", "fdc-171320", "fdc-group-sugars", "fdc-171326"]
+  }
+}

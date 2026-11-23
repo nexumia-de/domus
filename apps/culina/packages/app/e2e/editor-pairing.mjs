@@ -87,7 +87,22 @@ export const editorPairing = async (browser, server) => {
     await page.getByRole('button', { name: addSlot }).click();
     await searchBox(page).fill('tomatoes');
     await page.locator('.picker-catalogue .picker-choice').first().click();
-    const adds = section.locator('button.pairing-add');
+    // Proven together: the project's own table, there at once and before anything is fetched.
+    const proven = section.locator('.pairing-proven button.pairing-add');
+    await proven.first().waitFor();
+    const provenNames = (await proven.locator('.pairing-name').allInnerTexts()).map((n) =>
+      n.trim(),
+    );
+    check(
+      ['Basil', 'Garlic', 'Oil, olive'].every((n) => provenNames.some((p) => p.startsWith(n))) &&
+        provenNames.length <= 8,
+      `${label}: proven together offers basil, garlic and olive oil with tomatoes (${provenNames.join(', ')})`,
+    );
+    check(
+      (await section.innerText()).includes('a judgement of this app, written by an AI model'),
+      `${label}: the proven pairs say that they are the app's judgement, written by an AI model`,
+    );
+    const adds = section.locator('.pairing-computed button.pairing-add');
     await adds.first().waitFor();
     check(
       fetched.sort().join() === '/pairing-links.json,/pairings.json',
@@ -96,8 +111,11 @@ export const editorPairing = async (browser, server) => {
     const names = await adds.locator('.pairing-name').allInnerTexts();
     const withs = await adds.locator('.pairing-with').allInnerTexts();
     check(
-      names.length >= 3 && names.length <= 8 && new Set(names).size === names.length,
-      `${label}: three to eight ingredients, each once (${names.join(', ')})`,
+      names.length >= 3 &&
+        names.length <= 8 &&
+        new Set(names).size === names.length &&
+        !names.some((n) => provenNames.includes(n.trim())),
+      `${label}: three to eight computed ingredients, each once and none that stands above (${names.join(', ')})`,
     );
     check(
       withs.length === names.length && withs.every((w) => w.length > 5),

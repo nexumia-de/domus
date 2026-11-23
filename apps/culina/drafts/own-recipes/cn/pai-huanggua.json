@@ -1,0 +1,162 @@
+{
+  "id": "pai-huanggua",
+  "kind": "base",
+  "name": {
+    "en": "Smashed cucumber salad",
+    "de": "Geschlagener Gurkensalat"
+  },
+  "originalName": "Pai huanggua",
+  "country": "cn",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "pai-huanggua-salad",
+      "name": {
+        "en": "Smashed cucumber salad",
+        "de": "Geschlagener Gurkensalat"
+      },
+      "role": "crunch",
+      "lines": [
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "About 400 g; the peel may stay on.",
+            "de": "Etwa 400 g; die Schale kann dranbleiben."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Three cloves.",
+            "de": "Drei Zehen."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172237"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "sesame-oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171016"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "From toasted sesame.",
+            "de": "Aus geröstetem Sesam."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Lay the cucumbers on a board and hit them with the flat of a wide knife or a rolling pin until they split open.",
+            "de": "Die Gurken auf ein Brett legen und mit der flachen Seite eines breiten Messers oder einem Nudelholz schlagen, bis sie aufplatzen."
+          },
+          "action": "crush",
+          "uses": ["cucumber"]
+        },
+        {
+          "text": {
+            "en": "Cut or tear them into pieces of about 3 cm, mix them with the salt in a sieve and leave them to drain for 10 minutes.",
+            "de": "In etwa 3 cm große Stücke schneiden oder brechen, in einem Sieb mit dem Salz mischen und 10 Minuten abtropfen lassen."
+          },
+          "action": "drain",
+          "uses": ["cucumber", "salt"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Chop the garlic finely and stir it with the vinegar, the sugar and the sesame oil until the sugar has dissolved.",
+            "de": "Den Knoblauch fein hacken und mit Essig, Zucker und Sesamöl verrühren, bis sich der Zucker gelöst hat."
+          },
+          "action": "mix",
+          "uses": ["garlic", "vinegar", "sugar", "sesame-oil"]
+        },
+        {
+          "text": {
+            "en": "Shake the liquid off the cucumbers, toss them with the dressing and serve at once.",
+            "de": "Die Flüssigkeit von den Gurken abschütteln, die Gurken mit der Sauce mischen und sofort servieren."
+          },
+          "action": "mix",
+          "uses": ["cucumber"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "crunch",
+      "ref": {
+        "kind": "component",
+        "id": "pai-huanggua-salad"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

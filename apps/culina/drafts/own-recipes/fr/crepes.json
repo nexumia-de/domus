@@ -1,0 +1,190 @@
+{
+  "id": "crepes",
+  "kind": "base",
+  "name": {
+    "en": "Crêpes",
+    "de": "Crêpes"
+  },
+  "originalName": "Crêpes",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "crepes-pancakes",
+      "name": {
+        "en": "Crêpes",
+        "de": "Crêpes"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Melted, for the batter.",
+            "de": "Geschmolzen, für den Teig."
+          }
+        },
+        {
+          "key": "butter-pan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "For the pan.",
+            "de": "Für die Pfanne."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour and the salt in a bowl and make a well in the middle.",
+            "de": "Mehl und Salz in einer Schüssel mischen und in die Mitte eine Mulde drücken."
+          },
+          "action": "mix",
+          "uses": ["flour", "salt"]
+        },
+        {
+          "text": {
+            "en": "Break the eggs into the well and whisk, drawing in the flour and adding the milk little by little, until the batter is smooth and thin.",
+            "de": "Die Eier in die Mulde schlagen und verquirlen; dabei das Mehl vom Rand einarbeiten und die Milch nach und nach zugießen, bis der Teig glatt und dünnflüssig ist."
+          },
+          "action": "whisk",
+          "uses": ["eggs", "flour", "milk"]
+        },
+        {
+          "text": {
+            "en": "Stir in the melted butter.",
+            "de": "Die geschmolzene Butter unterrühren."
+          },
+          "action": "stir",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Cover the batter and let it stand.",
+            "de": "Den Teig abdecken und ruhen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat a flat pan of 24 cm over medium-high heat and brush it thinly with butter; repeat this when the crêpes begin to stick.",
+            "de": "Eine flache Pfanne von 24 cm bei mittlerer bis starker Hitze erhitzen und dünn mit Butter auspinseln; wiederholen, sobald die Crêpes anhaften."
+          },
+          "action": "grease",
+          "uses": ["butter-pan"]
+        },
+        {
+          "text": {
+            "en": "Pour in a small ladle of batter and tilt the pan at once so that the batter covers the base thinly.",
+            "de": "Eine kleine Kelle Teig hineingießen und die Pfanne sofort schwenken, sodass der Teig den Boden dünn bedeckt."
+          },
+          "action": "pour"
+        },
+        {
+          "text": {
+            "en": "Cook until the edge browns and lifts, about 1 minute, then turn the crêpe and cook the other side for 30 seconds.",
+            "de": "Backen, bis der Rand bräunt und sich löst, etwa 1 Minute; dann die Crêpe wenden und die zweite Seite 30 Sekunden backen."
+          },
+          "action": "cook"
+        },
+        {
+          "text": {
+            "en": "Cook the remaining batter in the same way and stack the crêpes on a plate.",
+            "de": "Den übrigen Teig ebenso backen und die Crêpes auf einem Teller stapeln."
+          },
+          "action": "cook"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "crepes-pancakes"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Makes about 12 crêpes of 24 cm. The batter has no sugar, so the crêpes take a sweet or a savoury filling.",
+    "de": "Ergibt etwa 12 Crêpes von 24 cm. Der Teig enthält keinen Zucker, die Crêpes passen daher zu süßer wie zu herzhafter Füllung."
+  }
+}

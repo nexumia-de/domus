@@ -1,0 +1,286 @@
+{
+  "id": "mercimek-corbasi",
+  "kind": "base",
+  "name": {
+    "en": "Red lentil soup",
+    "de": "Rote Linsensuppe"
+  },
+  "originalName": "Mercimek çorbası",
+  "country": "tr",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "lentil-soup",
+      "name": {
+        "en": "Red lentil soup",
+        "de": "Rote Linsensuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 20,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "paste",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170459"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "lentils",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174284"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "At the table, each to their own liking.",
+            "de": "Bei Tisch, jeder nach Belieben."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the onion and the carrot. Rinse the lentils in a sieve under cold water.",
+            "de": "Zwiebel und Möhre klein würfeln. Die Linsen in einem Sieb kalt abspülen."
+          },
+          "action": "prepare",
+          "uses": ["onion", "carrot", "lentils"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter in a large pot and cook the onion and the carrot in it over medium heat for about 5 minutes, without colour.",
+            "de": "Die Butter in einem großen Topf schmelzen und Zwiebel und Möhre darin bei mittlerer Hitze etwa 5 Minuten dünsten, ohne dass sie Farbe nehmen."
+          },
+          "technique": "sweat",
+          "uses": ["butter", "onion", "carrot"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the tomato paste, then add the lentils and the water.",
+            "de": "Das Tomatenmark einrühren, dann die Linsen und das Wasser dazugeben."
+          },
+          "action": "add",
+          "uses": ["paste", "lentils", "water"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil, then cook at a gentle simmer, half covered, for 25 to 30 minutes, until the lentils fall apart. Stir now and then.",
+            "de": "Aufkochen, dann halb zugedeckt 25 bis 30 Minuten leise köcheln lassen, bis die Linsen zerfallen. Ab und zu umrühren."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 25,
+            "to": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Purée the soup with a hand blender until smooth and season it with the salt and the pepper. If it is thicker than you like, stir in a little hot water.",
+            "de": "Die Suppe mit dem Stabmixer glatt pürieren und mit Salz und Pfeffer würzen. Ist sie dicker als gewünscht, etwas heißes Wasser einrühren."
+          },
+          "action": "puree",
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Serve the soup with the lemon juice beside it.",
+            "de": "Die Suppe anrichten und den Zitronensaft dazu reichen."
+          },
+          "action": "serve",
+          "uses": ["lemon"]
+        }
+      ]
+    },
+    {
+      "id": "paprika-butter",
+      "name": {
+        "en": "Paprika and mint butter",
+        "de": "Paprika-Minz-Butter"
+      },
+      "role": "garnish",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 25,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "paprika",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171329"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "mint",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172239"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Dried mint.",
+            "de": "Getrocknete Minze."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Melt the butter in a small pan over low heat until it foams.",
+            "de": "Die Butter in einem kleinen Topf bei schwacher Hitze schmelzen, bis sie schäumt."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Take it off the heat and stir in the paprika and the mint; the spices darken quickly in hot butter.",
+            "de": "Vom Herd nehmen und Paprikapulver und Minze einrühren; die Gewürze werden in heißer Butter schnell dunkel."
+          },
+          "action": "stir",
+          "uses": ["paprika", "mint"]
+        },
+        {
+          "text": {
+            "en": "Drizzle the butter over the soup in the plates.",
+            "de": "Die Butter in den Tellern über die Suppe träufeln."
+          },
+          "action": "garnish"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "lentil-soup"
+      }
+    },
+    {
+      "role": "garnish",
+      "ref": {
+        "kind": "component",
+        "id": "paprika-butter"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

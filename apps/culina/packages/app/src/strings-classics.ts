@@ -176,4 +176,10 @@ export const pairingStrings = {
   editorIntro:
     'Ingredients that share more flavour molecules with what is in this dish than they usually do. Tap one to add it.',
   add: (name: string): string => `Add ${name} to the dish`,
+  // The project's own table of pairs (data/affinities.json), shown before the computed ones.
+  provenHeading: 'Proven together',
+  provenBasis: 'What cooks commonly combine: a judgement of this app, written by an AI model.',
+  provenListLabel: 'Ingredients commonly combined with what is in this dish',
+  tapToAdd: 'Tap one to add it.',
+  computedHeading: 'From the flavour data',
 };

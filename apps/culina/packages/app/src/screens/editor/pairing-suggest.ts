@@ -7,6 +7,7 @@ import { adoptEntry } from '../../catalogue/adopt';
 import { currentLang } from '../../classics/lang';
 import { catalogueEntries, ingredientLabel, loadNames } from '../../classics/names';
 import { getIngredient } from '../../notebook';
+import { AFFINITIES, affinityRows } from '../../pairing/affinity';
 import { loadPairings, type LoadedPairings } from '../../pairing/load';
 import { pairingView, type PairingLine, type PairingRow } from '../../pairing/view';
 import { el } from '../../shell/el';
@@ -54,27 +55,10 @@ export const pairingSuggest = (options: {
     }
   };
 
-  const draw = (lines: readonly PairingLine[]): void => {
-    if (lines.length === 0) {
-      body.replaceChildren(el('p', 'muted pairing-empty', t.editorEmpty));
-      return;
-    }
-    if (loaded === undefined) {
-      body.replaceChildren(el('p', 'muted', state === 'failed' ? t.notLoaded : t.loading));
-      return;
-    }
-    const lang = currentLang();
-    const view = pairingView(lines, loaded, {
-      parentOf: (id) => (getIngredient(id) ?? catalogueEntries().get(id))?.parentId,
-      nameOf: (id) => ingredientLabel(id, lang),
-    });
-    if (view.kind !== 'rows') {
-      body.replaceChildren(el('p', 'muted', view.kind === 'unknown' ? t.unknown : t.none));
-      return;
-    }
-    const list = el('ul', 'pairing-list pairing-adds');
-    list.setAttribute('aria-label', t.listLabel);
-    for (const row of view.rows) {
+  const addList = (rows: readonly PairingRow[], label: string, className: string): HTMLElement => {
+    const list = el('ul', `pairing-list pairing-adds ${className}`);
+    list.setAttribute('aria-label', label);
+    for (const row of rows) {
       const item = el('li', 'pairing-row');
       item.dataset['ingredient'] = row.ingredient;
       const button = el('button', 'btn quiet pairing-add');
@@ -87,13 +71,50 @@ export const pairingSuggest = (options: {
       item.append(button);
       list.append(item);
     }
-    body.replaceChildren(
-      ...(problem === '' ? [] : [el('p', 'hint', problem)]),
-      el('p', 'muted', t.editorIntro),
-      list,
-      el('p', 'muted', t.hint),
-      el('p', 'muted', `${t.source} ${t.links}`),
-    );
+    return list;
+  };
+
+  const draw = (lines: readonly PairingLine[]): void => {
+    if (lines.length === 0) {
+      body.replaceChildren(el('p', 'muted pairing-empty', t.editorEmpty));
+      return;
+    }
+    const lang = currentLang();
+    const names = {
+      parentOf: (id: string) => (getIngredient(id) ?? catalogueEntries().get(id))?.parentId,
+      nameOf: (id: string) => ingredientLabel(id, lang),
+    };
+    const parts: HTMLElement[] = problem === '' ? [] : [el('p', 'hint', problem)];
+    // Proven together: the project's own table, there at once.
+    const proven = affinityRows(lines, AFFINITIES, names);
+    if (proven.length > 0) {
+      parts.push(
+        el('h3', 'pairing-sub', t.provenHeading),
+        el('p', 'muted', `${t.provenBasis} ${t.tapToAdd}`),
+        addList(proven, t.provenListLabel, 'pairing-proven'),
+      );
+    }
+    // From the flavour data: computed, loaded on demand, without what stands above.
+    parts.push(el('h3', 'pairing-sub', t.computedHeading));
+    if (loaded === undefined) {
+      parts.push(el('p', 'muted', state === 'failed' ? t.notLoaded : t.loading));
+    } else {
+      const view = pairingView(lines, loaded, names);
+      const above = new Set(proven.map((row) => row.ingredient));
+      const rows =
+        view.kind === 'rows' ? view.rows.filter((row) => !above.has(row.ingredient)) : [];
+      if (rows.length === 0) {
+        parts.push(el('p', 'muted', view.kind === 'unknown' ? t.unknown : t.none));
+      } else {
+        parts.push(
+          el('p', 'muted', t.editorIntro),
+          addList(rows, t.listLabel, 'pairing-computed'),
+          el('p', 'muted', t.hint),
+          el('p', 'muted', `${t.source} ${t.links}`),
+        );
+      }
+    }
+    body.replaceChildren(...parts);
   };
 
   const refresh = (): void => {

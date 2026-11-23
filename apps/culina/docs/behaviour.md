@@ -872,7 +872,12 @@ roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
   in `src/pairing/draft.ts`; the rule and the data are those of
   [Goes with on the dish](#classics), [decision](decisions/flavordb.md)).
   While no slot has a filling it says to choose a first ingredient or
-  component, and the pairing data is not fetched. From the first filling
+  component, and the pairing data is not fetched. From 2026-11-23 the
+  offers come in two parts: **Proven together** first, from the project's
+  own table (`data/affinities.json`, `src/pairing/affinity.ts`; written by
+  an AI model, which the section says), there at once without a fetch; then
+  **From the flavour data**, the computed offers described next, without
+  what stands above. From the first filling
   on it offers up to eight ingredients of the catalogue that stand out
   with what the draft holds: the ingredients that fill a slot and the
   ingredients of the components that fill one, through the components

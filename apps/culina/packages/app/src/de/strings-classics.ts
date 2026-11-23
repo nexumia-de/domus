@@ -174,4 +174,10 @@ export const pairingStringsDe: typeof pairingStrings = {
   editorIntro:
     'Zutaten, die mit dem, was im Gericht ist, mehr Aromastoffe teilen, als sie es sonst tun. Tippe eine an, um sie hinzuzufügen.',
   add: (name: string): string => `${name} zum Gericht hinzufügen`,
+  provenHeading: 'Bewährt',
+  provenBasis:
+    'Was oft zusammen gekocht wird: eine Einschätzung dieser App, von einem KI-Modell geschrieben.',
+  provenListLabel: 'Zutaten, die oft mit dem kombiniert werden, was im Gericht ist',
+  tapToAdd: 'Tippe eine an, um sie hinzuzufügen.',
+  computedHeading: 'Aus den Aromadaten',
 };

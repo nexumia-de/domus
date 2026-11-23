@@ -53,6 +53,13 @@ nutrition figures and four name the persons.
 7. **Nine more cuisines** have a name in the app: British, Greek,
    Turkish, American, Mexican, Indian, Thai, Chinese, Japanese.
 
+**Note of the same day.** Shown the comparison (own recipes: every line
+with an amount, persons stated in all, a time or temperature on 37 % of
+the steps; cited ones: 53 %, 8 of 68, 5 %), the owner said: "Then it
+fits, if they are more usable anyway", asked for `AGENTS.md` to say so,
+and for smaller models where they are capable. `AGENTS.md` now names
+own recipes as the way new recipes are written.
+
 ## What is lost
 
 - **Nobody can look it up.** A wrong time or amount has no page to be

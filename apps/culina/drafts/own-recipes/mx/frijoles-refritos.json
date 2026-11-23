@@ -1,0 +1,217 @@
+{
+  "id": "frijoles-refritos",
+  "kind": "base",
+  "name": {
+    "en": "Refried beans",
+    "de": "Bohnenmus aus der Pfanne"
+  },
+  "originalName": "Frijoles refritos",
+  "country": "mx",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "frijoles-refritos-main",
+      "name": {
+        "en": "Refried beans",
+        "de": "Bohnenmus aus der Pfanne"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beans",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173734"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Dried.",
+            "de": "Getrocknet."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "onion-pot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "In one piece, for the pot.",
+            "de": "Am Stück, für den Topf."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cloves, peeled.",
+            "de": "Zehen, geschält."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion-pan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Finely chopped, for the pan.",
+            "de": "Fein gehackt, für die Pfanne."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Pick over the beans and wash them.",
+            "de": "Die Bohnen verlesen und waschen."
+          },
+          "action": "wash",
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Put the beans into a pot with the water, the half onion in one piece and the garlic.",
+            "de": "Die Bohnen mit dem Wasser, der halben Zwiebel am Stück und dem Knoblauch in einen Topf geben."
+          },
+          "action": "add",
+          "uses": ["beans", "water", "onion-pot", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil, then simmer with the lid half on until the beans are quite soft; add hot water if they are no longer covered.",
+            "de": "Aufkochen, dann bei halb aufgelegtem Deckel köcheln lassen, bis die Bohnen ganz weich sind; heißes Wasser nachgießen, wenn sie nicht mehr bedeckt sind."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 90,
+            "to": 120,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the salt and take out the piece of onion.",
+            "de": "Das Salz einrühren und das Zwiebelstück herausnehmen."
+          },
+          "action": "season",
+          "uses": ["salt", "onion-pot"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a wide pan and cook the chopped onion over medium heat until soft.",
+            "de": "Das Öl in einer weiten Pfanne erhitzen und die gehackte Zwiebel bei mittlerer Hitze weich garen."
+          },
+          "action": "cook",
+          "uses": ["oil", "onion-pan"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the beans and the garlic with about 200 ml of their cooking liquid.",
+            "de": "Die Bohnen und den Knoblauch mit etwa 200 ml ihrer Kochflüssigkeit dazugeben."
+          },
+          "action": "add",
+          "uses": ["beans", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Mash the beans in the pan with a potato masher.",
+            "de": "Die Bohnen in der Pfanne mit einem Kartoffelstampfer zerdrücken."
+          },
+          "action": "mash",
+          "uses": ["beans"]
+        },
+        {
+          "text": {
+            "en": "Cook, stirring, until the beans are a thick paste; loosen with more cooking liquid if they turn dry.",
+            "de": "Unter Rühren garen, bis ein dickes Mus entsteht; mit mehr Kochflüssigkeit lockern, wenn es trocken wird."
+          },
+          "action": "stir",
+          "time": {
+            "value": 5,
+            "to": 10,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "frijoles-refritos-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "id": "mashed-potatoes",
+  "kind": "base",
+  "name": {
+    "en": "Mashed potatoes",
+    "de": "Kartoffelstampf"
+  },
+  "originalName": "Mashed potatoes",
+  "country": "gb",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "mash",
+      "name": {
+        "en": "Mashed potatoes",
+        "de": "Kartoffelstampf"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 1000,
+            "unit": "g"
+          },
+          "note": {
+            "en": "A floury kind.",
+            "de": "Eine mehligkochende Sorte."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt-water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the mash.",
+            "de": "Für den Stampf."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the potatoes and cut them into pieces of one size, about 4 cm.",
+            "de": "Die Kartoffeln schälen und in gleich große Stücke von etwa 4 cm schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Put them into a pot with the cold water and the salt for the water, bring to the boil and simmer for about 20 minutes, until a knife goes in easily.",
+            "de": "Mit dem kalten Wasser und dem Salz für das Kochwasser in einen Topf geben, aufkochen und etwa 20 Minuten köcheln lassen, bis ein Messer leicht hineingleitet."
+          },
+          "technique": "boil",
+          "uses": ["potatoes", "water", "salt-water"],
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Drain the potatoes, put them back into the hot pot and let them steam dry for 2 minutes.",
+            "de": "Die Kartoffeln abgießen, zurück in den heißen Topf geben und 2 Minuten ausdampfen lassen."
+          },
+          "action": "drain",
+          "uses": ["potatoes"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Warm the milk with the butter until the butter has melted.",
+            "de": "Die Milch mit der Butter erwärmen, bis die Butter geschmolzen ist."
+          },
+          "action": "heat",
+          "uses": ["milk", "butter"]
+        },
+        {
+          "text": {
+            "en": "Mash the potatoes with a potato masher until no lumps are left.",
+            "de": "Die Kartoffeln mit dem Kartoffelstampfer zerdrücken, bis keine Klümpchen mehr da sind."
+          },
+          "action": "mash",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Stir in the warm milk and butter with a wooden spoon and season with the salt for the mash and the pepper.",
+            "de": "Die warme Milch mit der Butter mit einem Kochlöffel unterrühren und mit dem Salz für den Stampf und dem Pfeffer würzen."
+          },
+          "action": "stir",
+          "uses": ["milk", "butter", "salt", "pepper"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "mash"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

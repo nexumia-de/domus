@@ -1,0 +1,160 @@
+{
+  "id": "nam-chim-kai",
+  "kind": "base",
+  "name": {
+    "en": "Sweet chilli sauce",
+    "de": "Süße Chilisauce"
+  },
+  "originalName": "Nam chim kai",
+  "country": "th",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 8,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "sweet-chilli-sauce",
+      "name": {
+        "en": "Sweet chilli sauce",
+        "de": "Süße Chilisauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "chili",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170106"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Stalks removed; with the seeds for more heat, without for less.",
+            "de": "Stiele entfernt; mit den Kernen schärfer, ohne milder."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Three cloves.",
+            "de": "Drei Zehen."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172237"
+          },
+          "amount": {
+            "value": 120,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the chillies and the garlic very finely, or crush them coarsely in a mortar.",
+            "de": "Chilis und Knoblauch sehr fein hacken oder im Mörser grob zerstoßen."
+          },
+          "action": "crush",
+          "uses": ["chili", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Put them into a small pot with the vinegar, the water, the sugar and the salt and bring to the boil, stirring, until the sugar has dissolved.",
+            "de": "Mit Essig, Wasser, Zucker und Salz in einen kleinen Topf geben und unter Rühren aufkochen, bis sich der Zucker gelöst hat."
+          },
+          "action": "heat",
+          "uses": ["vinegar", "water", "sugar", "salt"]
+        },
+        {
+          "text": {
+            "en": "Simmer without a lid for 10 minutes until the sauce is lightly syrupy; it thickens further as it cools.",
+            "de": "Ohne Deckel 10 Minuten köcheln lassen, bis die Sauce leicht sirupartig ist; beim Abkühlen dickt sie weiter ein."
+          },
+          "technique": "reduce",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the sauce cool and fill it into a clean jar. It keeps in the refrigerator for 2 weeks.",
+            "de": "Die Sauce abkühlen lassen und in ein sauberes Glas füllen. Im Kühlschrank hält sie sich 2 Wochen."
+          },
+          "action": "cool"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "sweet-chilli-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Makes about 200 ml, a dipping sauce for about 8 persons.",
+    "de": "Ergibt etwa 200 ml, eine Dip-Sauce für etwa 8 Personen."
+  }
+}

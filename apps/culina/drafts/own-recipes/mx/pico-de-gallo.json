@@ -1,0 +1,169 @@
+{
+  "id": "pico-de-gallo",
+  "kind": "base",
+  "name": {
+    "en": "Fresh tomato salsa",
+    "de": "Frische Tomatensalsa"
+  },
+  "originalName": "Pico de gallo",
+  "country": "mx",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "pico-de-gallo-acid",
+      "name": {
+        "en": "Fresh tomato salsa",
+        "de": "Frische Tomatensalsa"
+      },
+      "role": "acid",
+      "lines": [
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Ripe and firm.",
+            "de": "Reif und fest."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "chilli",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168576"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "With the seeds for more heat, without for less.",
+            "de": "Mit den Kernen schärfer, ohne Kerne milder."
+          }
+        },
+        {
+          "key": "coriander",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169997"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "lime",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168155"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Only the juice is used.",
+            "de": "Nur der Saft wird verwendet."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tomatoes into small dice of about 5 mm.",
+            "de": "Die Tomaten in kleine Würfel von etwa 5 mm schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["tomato"]
+        },
+        {
+          "text": {
+            "en": "Peel the onion and chop it finely; chop the jalapeño and the coriander leaves finely.",
+            "de": "Die Zwiebel schälen und fein hacken; Jalapeño und Koriandergrün fein hacken."
+          },
+          "action": "prepare",
+          "uses": ["onion", "chilli", "coriander"]
+        },
+        {
+          "text": {
+            "en": "Mix everything in a bowl.",
+            "de": "Alles in einer Schüssel mischen."
+          },
+          "action": "mix",
+          "uses": ["tomato", "onion", "chilli", "coriander"]
+        },
+        {
+          "text": {
+            "en": "Squeeze the lime over it, add the salt and stir.",
+            "de": "Die Limette darüber auspressen, das Salz zugeben und umrühren."
+          },
+          "action": "season",
+          "uses": ["lime", "salt"]
+        },
+        {
+          "text": {
+            "en": "Let it stand so that the flavours come together, then serve.",
+            "de": "Stehen lassen, damit sich die Aromen verbinden, dann servieren."
+          },
+          "action": "stand",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "acid",
+      "ref": {
+        "kind": "component",
+        "id": "pico-de-gallo-acid"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

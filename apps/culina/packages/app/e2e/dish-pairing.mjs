@@ -37,7 +37,13 @@ export const dishPairing = async (browser, server) => {
     );
     const lines = await page.locator('.dish-results li').allInnerTexts();
     await block.locator('summary').click();
-    const rows = block.locator('.pairing-row');
+    const provenRows = block.locator('.pairing-proven .pairing-row');
+    await provenRows.first().waitFor();
+    check(
+      (await provenRows.count()) >= 3 && (await provenRows.count()) <= 8,
+      `${label}: proven together stands first, three to eight rows`,
+    );
+    const rows = block.locator('.pairing-computed .pairing-row');
     await rows.first().waitFor();
     check(
       fetched.sort().join() === '/pairing-links.json,/pairings.json',

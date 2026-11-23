@@ -1,0 +1,175 @@
+{
+  "id": "gambas-al-ajillo",
+  "kind": "base",
+  "name": {
+    "en": "Garlic prawns",
+    "de": "Knoblauchgarnelen"
+  },
+  "originalName": "Gambas al ajillo",
+  "country": "es",
+  "vegetarian": false,
+  "course": "starter",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "gambas-ajillo",
+      "name": {
+        "en": "Garlic prawns",
+        "de": "Knoblauchgarnelen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "prawns",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174210"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Raw, peeled.",
+            "de": "Roh, geschält."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Six cloves.",
+            "de": "Sechs Zehen."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "cayenne",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170932"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Pat the prawns dry and sprinkle them with the salt. Cut the garlic into thin slices.",
+            "de": "Die Garnelen trocken tupfen und mit dem Salz bestreuen. Den Knoblauch in dünne Scheiben schneiden."
+          },
+          "action": "dry",
+          "uses": ["prawns", "salt", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Put the oil, the garlic and the cayenne into a wide pan and heat them over medium heat until the garlic just begins to colour.",
+            "de": "Öl, Knoblauch und Cayennepfeffer in eine weite Pfanne geben und bei mittlerer Hitze erhitzen, bis der Knoblauch gerade Farbe annimmt."
+          },
+          "action": "heat",
+          "uses": ["oil", "garlic", "cayenne"],
+          "time": {
+            "value": 2,
+            "to": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the prawns in one layer and cook them, turning once, until they are pink all through.",
+            "de": "Die Garnelen in einer Lage dazugeben und unter einmaligem Wenden garen, bis sie durchgehend rosa sind."
+          },
+          "action": "cook",
+          "uses": ["prawns"],
+          "time": {
+            "value": 2,
+            "to": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Sprinkle with the parsley.",
+            "de": "Mit der Petersilie bestreuen."
+          },
+          "action": "sprinkle",
+          "uses": ["parsley"]
+        },
+        {
+          "text": {
+            "en": "Serve at once in the hot oil, with bread to dip into it.",
+            "de": "Sofort im heißen Öl servieren, dazu Brot zum Tunken."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "gambas-ajillo"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}
