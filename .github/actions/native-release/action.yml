@@ -3,7 +3,7 @@
 # and both bundles and the screenshots of the tagged commit go to the GitHub
 # Release of the tag.
 # phosh-apps publishes the newest such release of each app (apps.txt:
-# suitably/domus <app>-v*). Used by emptio-release, mixtura-release and culina-release.
+# nexumia-de/domus <app>-v*). Used by emptio-release, mixtura-release and culina-release.
 name: Native app release
 description: Checks the tag against the metainfo, attaches the Flatpak bundles to the GitHub Release and notifies the publish repository.
 inputs:

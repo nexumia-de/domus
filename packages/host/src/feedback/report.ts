@@ -3,7 +3,7 @@
 // `feature.yml`), so a report reads the same whichever way it was sent. Pure: no DOM, no `gi://`.
 
 /** The repository every household app's issues go to. */
-export const ISSUE_REPOSITORY = 'suitably/domus';
+export const ISSUE_REPOSITORY = 'nexumia-de/domus';
 
 export type ReportKind = 'problem' | 'idea';
 export const REPORT_KINDS: readonly ReportKind[] = ['problem', 'idea'];

@@ -30,8 +30,8 @@
   <developer id="de.nexumia">
     <name>suitably</name>
   </developer>
-  <url type="homepage">https://github.com/suitably/domus</url>
-  <url type="bugtracker">https://github.com/suitably/domus/issues</url>
+  <url type="homepage">https://github.com/nexumia-de/domus</url>
+  <url type="bugtracker">https://github.com/nexumia-de/domus/issues</url>
   <url type="donation">https://liberapay.com/suitably</url>
   <launchable type="desktop-id">de.nexumia.Culina.desktop</launchable>
   <content_rating type="oars-1.1"/>

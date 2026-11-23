@@ -162,7 +162,7 @@ application.connect('activate', () => {
       developer_name: 'nexumia',
       comments: n.comments,
       license_type: Gtk.License.AGPL_3_0,
-      website: 'https://github.com/suitably/domus',
+      website: 'https://github.com/nexumia-de/domus',
       issue_url: reportIssueUrl(REPORT_APP, __VERSION__),
     });
     about.add_link(n.support, 'https://liberapay.com/suitably');

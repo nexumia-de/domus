@@ -249,7 +249,7 @@ runs on that commit, and the job `culina-release` checks the tag against
 the metainfo and attaches both Flatpak bundles to the GitHub Release of
 the tag. phosh-apps publishes the newest such release to the shared
 Flatpak repository (`flatpak.nexumia.de`; the owner adds the line
-`suitably/domus culina-v*` to its `apps.txt`, as for the other two). There
+`nexumia-de/domus culina-v*` to its `apps.txt`, as for the other two). There
 is no nightly app yet.
 
 Screenshots for the store: one shot of the main page with the recorded

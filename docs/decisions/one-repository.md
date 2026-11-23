@@ -33,7 +33,9 @@ sync[^emptio-plan].
 ## Decision
 
 1. **One repository, `domus`**, private for now, on the owner's account
-   `suitably`. The four repositories were imported with their full
+   `suitably` (since 2026-11-23 in the organisation, as
+   `nexumia-de/domus`: [the move](../move-to-nexumia-de.md)). The four
+   repositories were imported with their full
    histories into `packages/model` (materia), `apps/mixtura`,
    `apps/culina` and `apps/emptio`.
 2. **One npm workspace** at the root with one lockfile. The development

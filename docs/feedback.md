@@ -1,7 +1,7 @@
 ---
 type: Reference
 title: Report a problem from the apps
-description: How the household apps let users report a problem or an idea as a GitHub issue in suitably/domus - the shared code in hospes and gjs, where each app has the entry, the issue forms and their field ids, where the token is kept (keyring on Linux, localStorage in the browser), what is sent, and what is and is not checked.
+description: How the household apps let users report a problem or an idea as a GitHub issue in nexumia-de/domus - the shared code in hospes and gjs, where each app has the entry, the issue forms and their field ids, where the token is kept (keyring on Linux, localStorage in the browser), what is sent, and what is and is not checked.
 tags: [feedback, issues, github, keyring, about-dialog, ui]
 generated: { by: claude-code/opus-5.5, at: 2026-11-22T23:30:00Z }
 sources:
@@ -29,7 +29,7 @@ spec[^toolkit-feedback] (owner's decision of 2026-11-22[^toolkit-decision]):
    through the REST API[^gh-issues-api]; the dialog then says "Thank You"
    and offers **View Issue**.
 2. **Open on GitHub**: without a token (and as the way out when sending
-   fails) the browser opens the issue form of `suitably/domus`, filled
+   fails) the browser opens the issue form of `nexumia-de/domus`, filled
    in by its address[^gh-issue-url]; the user signs in there and submits.
 
 The wording, the fields and the privacy rules are the toolkit's; the
@@ -94,7 +94,7 @@ the same pull request. Through the API the body has the same
 A classic personal access token with the `public_repo` scope ("Create
 a Token" opens GitHub's form with it ticked). A fine-grained token only
 writes to repositories of its resource owner, so it works only for
-members of `suitably`. The token is kept only after GitHub accepted it;
+members of `nexumia-de`. The token is kept only after GitHub accepted it;
 **Forget** removes it.
 
 - **Linux**: in the keyring through libsecret (`gi://Secret`, part of
