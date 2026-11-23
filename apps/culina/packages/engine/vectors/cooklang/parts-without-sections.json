@@ -1,0 +1,20 @@
+{
+  "id": "parts-without-sections",
+  "description": "A file without a section line is one leading part holding every step, note and ingredient occurrence: it stays one component",
+  "inputs": {
+    "kind": "cooklang_parts",
+    "text": "Mix @flour{200%g} and @water{100%ml} together until smooth.\n\n> Rest.\n\nAdd @salt.\n"
+  },
+  "expected": {
+    "has_sections": false,
+    "parts": [
+      {
+        "leading": true,
+        "texts": ["Mix flour and water together until smooth.", "Rest.", "Add salt."],
+        "uses": [0, 1, 2]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example in the specification's syntax (README); docs/decisions/ai-prompt-import.md, point 6."
+}

@@ -262,4 +262,175 @@ export const cooklang = async (page, origin, { openAt, file, listAll }) => {
     (await page.getByLabel('Ingredient for flour').inputValue()) === 'ingredient:flour',
     `${label}: a pasted answer is read like a .cook file`,
   );
+
+  await sections(page, origin, { pick, file, listAll, nowQuery, openAt });
+};
+
+// A file with sections (issue 41): one component per section, the dish of them, Undo, export.
+const DISH_FILE = 'spaetzle.cook';
+const DISH_COOK = `---
+title: Spätzle mit Soße
+servings: 4
+---
+
+> Ein Familienrezept.
+
+= Teig
+
+Verrühre @flour{250%g} mit @butter{30%g}.
+
+== Soße ==
+
+Schmelze @butter{20%g} und rühre @saffron{1%pinch} ein.
+
+= Anrichten
+
+Alles zusammen servieren.
+`;
+
+const imported = async (listAll, page) => {
+  const all = await listAll(page);
+  const dishes = all.dishes.filter((d) => d.name === 'Spätzle mit Soße');
+  const parts = all.components.filter((c) => ['Teig', 'Soße'].includes(c.name));
+  return { dishes, parts };
+};
+
+const sections = async (page, origin, { pick, file, listAll, nowQuery, openAt }) => {
+  await pick('settings/import', file(DISH_FILE, DISH_COOK));
+  await page.getByText('Complete the recipe').waitFor();
+  check(
+    (await page.locator('.cook-head .note').allInnerTexts()).includes(
+      'The file has sections: it becomes a dish of 2 components.',
+    ),
+    `${label}: a file with sections says it becomes a dish of two components`,
+  );
+  check(
+    same(await page.locator('.cook-part-origin').allInnerTexts(), [
+      'Before the first section',
+      'From the section Teig',
+      'From the section Soße',
+      'From the section Anrichten',
+    ]) &&
+      same(
+        await page.getByLabel('Name of the component').evaluateAll((n) => n.map((x) => x.value)),
+        ['Teig', 'Soße'],
+      ) &&
+      (await page.getByText('No ingredients: becomes the note of the dish.').count()) === 1 &&
+      (await page.locator('.cook-part-text').innerText()) === '“Ein Familienrezept.”' &&
+      (await page
+        .getByText('No ingredients: its 1 step becomes part of the assembly of the dish.')
+        .count()) === 1,
+    `${label}: the step shows the components it will create and what the other parts become`,
+  );
+  check(
+    (await page.getByLabel('Name of the dish').inputValue()) === 'Spätzle mit Soße' &&
+      (await page.getByLabel('Portions (optional)').inputValue()) === '4' &&
+      (await page.getByLabel('Output weight in grams (optional)').isHidden()),
+    `${label}: the dish's name and portions come from the file; no output weight for a dish`,
+  );
+  // The lines are grouped per component; the per-line decisions are the same as for one component.
+  check(
+    (await page
+      .locator('.cook-part')
+      .nth(1)
+      .getByLabel(/^Amount of /)
+      .count()) === 2 &&
+      (await page.locator('.cook-part').nth(2).getByLabel('Amount of saffron').inputValue()) ===
+        'open',
+    `${label}: the lines and their decisions are grouped per component`,
+  );
+  await page.locator('.cook-part').nth(2).getByLabel('Role in the dish').selectOption('sauce');
+  await page.getByLabel('Name of the component').nth(1).fill('');
+  check(
+    (await page.getByRole('button', { name: 'Save as version 1' }).isDisabled()) &&
+      (await page.getByText('Every component needs a name.').count()) === 1,
+    `${label}: a component without a name blocks Save`,
+  );
+  await page.getByLabel('Name of the component').nth(1).fill('Soße');
+  await layout(page, `${label} (import step with sections)`);
+  check(
+    (await imported(listAll, page)).dishes.length === 0,
+    `${label}: nothing of the dish is stored before Save`,
+  );
+  await save(page);
+  const { dishes, parts } = await imported(listAll, page);
+  const dish = dishes[0];
+  const teig = parts.find((c) => c.name === 'Teig');
+  const sosse = parts.find((c) => c.name === 'Soße');
+  check(
+    dishes.length === 1 &&
+      parts.length === 2 &&
+      same(
+        dish.slots.map((s) => [s.role, s.ref.id]),
+        [
+          ['main', teig.id],
+          ['sauce', sosse.id],
+        ],
+      ) &&
+      dish.portions === 4 &&
+      dish.note === 'Ein Familienrezept.' &&
+      same(dish.steps, [{ note: 'Alles zusammen servieren.' }]) &&
+      dish.version.change === `Imported from ${DISH_FILE}`,
+    `${label}: two sections became a dish of two components, with portions, note and assembly`,
+  );
+  check(
+    same(
+      teig.lines.map((l) => l.ref.id),
+      ['flour', 'butter'],
+    ) &&
+      same(teig.method, ['Verrühre flour mit butter.']) &&
+      sosse.lines.length === 2 &&
+      sosse.version.family === sosse.id,
+    `${label}: each component holds its section's lines and steps, version 1 of its own family`,
+  );
+  check(
+    same(await page.locator('.cook-result li').allTextContents(), ['saffron (1 pinch)']),
+    `${label}: the line left open is reported`,
+  );
+  await page.locator('.toast-action').click();
+  await page.locator('.toast-text', { hasText: 'The import was undone.' }).waitFor();
+  const undone = await imported(listAll, page);
+  check(
+    undone.dishes.length === 0 && undone.parts.length === 0,
+    `${label}: Undo removes the dish and its components`,
+  );
+
+  // ---- import it again, open the dish, export it as one file with a section per component
+  await pick('settings/import', file(DISH_FILE, DISH_COOK));
+  await page.getByText('Complete the recipe').waitFor();
+  await save(page);
+  await page.getByRole('link', { name: 'Open the dish' }).click();
+  await page.locator('.version-line').first().waitFor();
+  const again = (await imported(listAll, page)).dishes[0];
+  check(again !== undefined, `${label}: the dish is there again after a second import`);
+  await openAt(page, origin, `dishes/${again.id}`, nowQuery);
+  const exportButton = page.getByRole('button', { name: 'Export as Cooklang' });
+  await exportButton.waitFor();
+  const [download] = await Promise.all([page.waitForEvent('download'), exportButton.click()]);
+  const text = await readDownload(download);
+  const sentence = await page.locator('.cooklang-export [role=status]').innerText();
+  // Chromium does not keep a download name it cannot write in the process locale (LANG unset, as
+  // in some containers) and saves "download" instead; the name is checked under UTF-8 only.
+  const utf8 = /utf-?8/i.test(process.env.LC_ALL || process.env.LANG || '');
+  if (utf8) {
+    check(
+      download.suggestedFilename() === 'Spätzle-mit-Soße.cook',
+      `${label}: the dish's file is named after the dish (${download.suggestedFilename()})`,
+    );
+  } else {
+    console.log(
+      `note ${label}: the dish's file name is not checked: without a UTF-8 locale Chromium does not keep a non-ASCII download name (run with LANG=C.UTF-8)`,
+    );
+  }
+  check(
+    text.startsWith('---\ntitle: Spätzle mit Soße\nservings: 4\n---\n') &&
+      text.includes('\n= Teig\n') &&
+      text.includes('\n= Soße\n') &&
+      text.includes('\n= Assembly\n\nAlles zusammen servieren.\n'),
+    `${label}: a dish is written as one file with one section per component (${download.suggestedFilename()}: ${JSON.stringify(text)})`,
+  );
+  check(
+    sentence.includes('roles') && sentence.includes('version history'),
+    `${label}: the dish's export says what the file cannot carry (${sentence})`,
+  );
 };

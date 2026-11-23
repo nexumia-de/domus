@@ -222,17 +222,30 @@ export type {
 
 export { parseCooklang, ingredientUses } from './cooklang/parse';
 export { parseInline, parseQuantity, plainText } from './cooklang/inline';
-export { componentToCooklang, fileStem } from './cooklang/serialize';
+export { componentToCooklang, dishToCooklang, fileStem } from './cooklang/serialize';
 export type {
   CooklangComponent,
+  CooklangDish,
+  DishSerializeContext,
   Loss,
   SerializeContext,
   SerializeResult,
 } from './cooklang/serialize';
 export { availableModes, givenAmount, quantityText, resolveAmount } from './cooklang/amount';
 export type { AmountErrorCode, AmountMode, AmountResult } from './cooklang/amount';
-export { importComponent } from './cooklang/import';
-export type { ImportErrorCode, ImportOptions, ImportResult, LineDecision } from './cooklang/import';
+export { importComponent, importDish } from './cooklang/import';
+export { cooklangParts, hasSections } from './cooklang/sections';
+export type { CookPart } from './cooklang/sections';
+export type {
+  DishComponentOptions,
+  DishImportErrorCode,
+  DishImportOptions,
+  DishImportResult,
+  ImportErrorCode,
+  ImportOptions,
+  ImportResult,
+  LineDecision,
+} from './cooklang/import';
 export { unitFromWord } from './cooklang/units';
 export type {
   Block,

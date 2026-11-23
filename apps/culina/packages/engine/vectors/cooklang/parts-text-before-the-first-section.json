@@ -1,0 +1,31 @@
+{
+  "id": "parts-text-before-the-first-section",
+  "description": "Text before the first section is a part without a name (as cooklang-rs keeps it: an unnamed section); a = line without a name starts another unnamed part; a section with nothing in it is left out",
+  "inputs": {
+    "kind": "cooklang_parts",
+    "text": "> A family recipe.\n\nHeat the oven.\n\n= Empty\n\n= Dough\n\nMix @flour{200%g} and @water{100%ml}.\n\n=\n\nServe warm.\n"
+  },
+  "expected": {
+    "has_sections": true,
+    "parts": [
+      {
+        "leading": true,
+        "texts": ["A family recipe.", "Heat the oven."],
+        "uses": []
+      },
+      {
+        "name": "Dough",
+        "leading": false,
+        "texts": ["Mix flour and water."],
+        "uses": [0, 1]
+      },
+      {
+        "leading": false,
+        "texts": ["Serve warm."],
+        "uses": []
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example in the specification's syntax (README, Sections: the section name is optional). The spec says nothing of text before the first section; cooklang-rs (src/model.rs, Recipe.sections, read 2026-11-23) keeps it as a section without a name."
+}

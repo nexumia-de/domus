@@ -758,10 +758,40 @@ export const appStringsDe: typeof appStrings = {
     cookImportAnother: 'Weitere Datei importieren',
     cookNotFacts: 'Diese Zutat hat noch keine Dichte oder kein Stückgewicht.',
     cookNotReadable: 'Diese Menge ist keine Zahl mit einer Einheit, die diese App kennt.',
+    cookDishRead: (components: number): string =>
+      components === 1
+        ? 'Die Datei hat Abschnitte: Sie wird ein Gericht aus 1 Komponente.'
+        : `Die Datei hat Abschnitte: Sie wird ein Gericht aus ${components} Komponenten.`,
+    cookDishNameField: 'Name des Gerichts',
+    cookPortionsField: 'Portionen (optional)',
+    cookPortionsNotAllowed: 'Gib eine ganze Zahl über 0 ein.',
+    cookNewDish: 'Ein neues Gericht',
+    cookPartsHeading: 'Komponenten des Gerichts',
+    cookPartsHint: 'Jeder Abschnitt mit Zutaten wird eine Komponente, jede in Version 1.',
+    cookFromSection: (name: string): string => `Aus dem Abschnitt ${name}`,
+    cookBeforeSections: 'Vor dem ersten Abschnitt',
+    cookUnnamedSection: 'Aus einem Abschnitt ohne Namen',
+    cookSlotRole: 'Rolle im Gericht',
+    cookPartNote: 'Keine Zutaten: wird die Notiz des Gerichts.',
+    cookPartAssembly: (steps: number, notes: number): string => {
+      const what = [
+        steps === 0 ? '' : steps === 1 ? '1 Schritt' : `${steps} Schritte`,
+        notes === 0 ? '' : notes === 1 ? '1 Notiz' : `${notes} Notizen`,
+      ]
+        .filter((w) => w !== '')
+        .join(' und ');
+      const verb = steps + notes === 1 ? 'kommt' : 'kommen';
+      return `Keine Zutaten: ${what} ${verb} in den Zusammenbau des Gerichts.`;
+    },
+    /** The dish's note as the file gives it, shortened. */
+    cookPartNoteText: (text: string): string => `„${text}“`,
+    cookNeedsComponentName: 'Jede Komponente braucht einen Namen.',
+    cookOpenDish: 'Gericht öffnen',
   },
-  // Cooklang export from a component.
+  // Cooklang export from a component or a dish.
   cooklang: {
     export: 'Als Cooklang exportieren',
+    assembly: 'Zusammenbau',
     saved: (file: string): string => `${file} gespeichert.`,
     savedLosing: (file: string, lost: string): string =>
       `${file} gespeichert. Nicht in der Datei: ${lost}.`,
@@ -772,6 +802,9 @@ export const appStringsDe: typeof appStrings = {
       versions: 'Versionsverlauf',
       tastings: 'weitere Verkostungsnotizen',
       characters: 'einige Zeichen in Schritten',
+      slots: 'wie viel das Gericht von jeder Komponente nimmt, und optionale Rollen',
+      yields: 'die Ausbeute der Komponenten',
+      details: 'Gang, Küche und deine Korrektur der Art',
     },
   },
   stock: stockStringsDe,

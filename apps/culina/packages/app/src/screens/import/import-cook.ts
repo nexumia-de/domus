@@ -2,8 +2,10 @@
 // filled in by the user, and only then one Save. Nothing is stored before that.
 import { normaliseName } from '@culina/engine';
 import {
+  componentParts,
   gramsAllowed,
-  roleAllowed,
+  lineRoles,
+  portionsAllowed,
   unresolvedNames,
   buildCookModel,
   type CookModel,
@@ -11,7 +13,7 @@ import {
 import { candidateComponents, candidateIngredients, importFacts } from '../../exchange/candidates';
 import { undoImport } from '../../exchange/json-apply';
 import { saveCookImport } from '../../exchange/cook-save';
-import { listComponents } from '../../notebook';
+import { listComponents, listDishes } from '../../notebook';
 import type { IngredientRecord } from '../../records';
 import { hashFor } from '../../router';
 import { showToast } from '../../shell/toast';
@@ -23,6 +25,7 @@ import { textField } from '../editor/form-bits';
 import { cookText } from './cook-text';
 import { linesSection, linesUsable } from './cook-lines';
 import { namesSection } from './cook-names';
+import { partsSection } from './cook-parts';
 import { radioRow } from './radio';
 
 const text = strings.importing;
@@ -61,16 +64,25 @@ export function renderCookImport(
     el('h2', undefined, text.cookHeading),
     el('p', 'note', text.cookRead(model.lines.length, count.steps)),
   );
+  if (model.dish) head.append(el('p', 'note', text.cookDishRead(componentParts(model).length)));
   if (count.cookware + count.timers + count.notes > 0) {
     head.append(el('p', 'muted', text.cookExtras(count.cookware, count.timers, count.notes)));
   }
   if (count.locked > 0) head.append(el('p', 'muted', text.cookLocked(count.locked)));
   if (catalogue === undefined) head.append(el('p', 'note-quiet', text.cookCatalogueUnavailable));
 
-  const name = textField(text.cookNameField, model.title);
+  const name = textField(model.dish ? text.cookDishNameField : text.cookNameField, model.title);
+  // A component has an output weight and a percent base; a dish has portions instead, and each
+  // of its components its own percent base (cook-parts.ts).
   const yieldField = textField(text.cookYieldField, model.yieldGrams, true);
   const yieldHint = el('p', 'hint');
   const base = selectField(text.cookBaseField, [{ value: '', label: text.cookBaseNone }], '');
+  const portions = textField(text.cookPortionsField, model.portions, true);
+  portions.control.inputMode = 'numeric';
+  const portionsHint = el('p', 'hint');
+  yieldField.wrap.hidden = model.dish;
+  base.wrap.hidden = model.dish;
+  portions.wrap.hidden = !model.dish;
   const family = el('fieldset', 'choices');
   const namesHost = el('div');
   const linesHost = el('div');
@@ -80,21 +92,26 @@ export function renderCookImport(
   need.setAttribute('role', 'status');
 
   const sameName = (): { id: string; name: string } | undefined =>
-    listComponents().find((c) => normaliseName(c.name) === normaliseName(name.control.value));
+    (model.dish ? listDishes() : listComponents()).find(
+      (c) => normaliseName(c.name) === normaliseName(name.control.value),
+    );
 
   const drawFamily = (): void => {
     const existing = sameName();
     family.hidden = existing === undefined;
     if (existing === undefined) return;
-    const fresh = radioRow('family', 'new', text.cookNewFamily, true);
+    const fresh = radioRow(
+      'family',
+      'new',
+      model.dish ? text.cookNewDish : text.cookNewFamily,
+      true,
+    );
     const variation = radioRow('family', existing.id, text.cookVariation(existing.name), false);
     family.replaceChildren(el('legend', undefined, text.cookSaveAs), fresh.wrap, variation.wrap);
   };
 
   const drawBase = (): void => {
-    const roles = [
-      ...new Set(model.lines.map((l) => l.role.trim()).filter((r) => r !== '' && roleAllowed(r))),
-    ];
+    const roles = lineRoles(model.lines);
     const was = base.control.value;
     base.control.replaceChildren(
       ...[
@@ -118,14 +135,31 @@ export function renderCookImport(
   const refresh = (): void => {
     const open = unresolvedNames(model);
     const usable = linesUsable(model);
-    const yielded = yieldValue();
+    const yielded = model.dish ? undefined : yieldValue();
+    const portioned = !model.dish || portionsAllowed(portions.control.value);
+    const named = componentParts(model).every((p) => !model.dish || p.name.trim() !== '');
     yieldHint.textContent = yielded === null ? text.cookGramsNotAllowed : '';
-    need.textContent = open > 0 ? text.cookNeedsNames(open) : '';
-    save.disabled = open > 0 || !usable || yielded === null || name.control.value.trim() === '';
+    portionsHint.textContent = portioned ? '' : text.cookPortionsNotAllowed;
+    portions.control.setAttribute('aria-invalid', String(!portioned));
+    need.textContent = [
+      open > 0 ? text.cookNeedsNames(open) : '',
+      named ? '' : text.cookNeedsComponentName,
+    ]
+      .filter((t) => t !== '')
+      .join(' ');
+    save.disabled =
+      open > 0 ||
+      !usable ||
+      yielded === null ||
+      !portioned ||
+      !named ||
+      name.control.value.trim() === '';
   };
 
   const drawLines = (): void => {
-    linesHost.replaceChildren(linesSection(model, onChange));
+    linesHost.replaceChildren(
+      model.dish ? partsSection(model, onChange) : linesSection(model, onChange),
+    );
   };
   const drawNames = (): void => {
     namesHost.replaceChildren(namesSection(model, onNames));
@@ -145,10 +179,12 @@ export function renderCookImport(
     refresh();
   });
   yieldField.control.addEventListener('input', refresh);
+  portions.control.addEventListener('input', refresh);
 
   save.addEventListener('click', () => {
     save.disabled = true;
-    const yielded = yieldValue();
+    const yielded = model.dish ? undefined : yieldValue();
+    const portioned = portions.control.value.trim();
     const picked = family.hidden
       ? undefined
       : (family.querySelector<HTMLInputElement>('input:checked')?.value ?? 'new');
@@ -156,7 +192,8 @@ export function renderCookImport(
       model,
       name: name.control.value.trim(),
       ...(typeof yielded === 'number' ? { yieldGrams: yielded } : {}),
-      ...(base.control.value === '' ? {} : { percentBase: base.control.value }),
+      ...(model.dish || base.control.value === '' ? {} : { percentBase: base.control.value }),
+      ...(model.dish && portioned !== '' ? { portions: Number(portioned) } : {}),
       ...(picked === undefined || picked === 'new' ? {} : { parent: picked }),
       ...(catalogue === undefined ? {} : { catalogue: new Map(catalogue.map((e) => [e.id, e])) }),
     }).then((done) => {
@@ -173,8 +210,12 @@ export function renderCookImport(
         },
       });
       const result = el('div', 'cook-result');
-      const link = el('a', 'btn primary', text.cookOpenIt);
-      link.href = hashFor('components', done.id);
+      const link = el(
+        'a',
+        'btn primary',
+        done.kind === 'dishes' ? text.cookOpenDish : text.cookOpenIt,
+      );
+      link.href = hashFor(done.kind, done.id);
       result.append(
         el('h2', undefined, text.cookSaved(done.name)),
         el('h3', undefined, text.cookUnmeasuredHeading),
@@ -198,6 +239,8 @@ export function renderCookImport(
     yieldField.wrap,
     yieldHint,
     base.wrap,
+    portions.wrap,
+    portionsHint,
     family,
     namesHost,
     linesHost,

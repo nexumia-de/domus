@@ -197,17 +197,20 @@ stored shape; `tolerance` is 0. Error vectors carry `error_code` (and
 `error_detail`, a subset the error must carry). The parser vectors are the
 specification's own examples, each naming its section in `source`.
 
-| `kind`               | Inputs                                                                                | Expected                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `export_round_trip`  | `records` (per kind), `exportedAt`                                                    | `kinds`, `counts`, `fileName`; build, text and parse return the same records         |
-| `export_parse`       | `file` (object) or `text`, optional `current` and `migrations` (a test chain by name) | `counts`, optional `formatVersion`; or `error_code` and `error_detail`               |
-| `match_names`        | `names`, `candidates` (`id`, `name`, `origin`, `parentId`)                            | `matches`: per name `exact` (id or null), `close` and `classes` (ids)                |
-| `merge_plan`         | `mine`, `file` (records per kind), `choices` (`kind/id` to `mine` or `theirs`)        | `add`, `same`, `conflicts`, `immutable`, `skippedNotes`, `writes`                    |
-| `remap_ingredients`  | `records`, `map` (file id to notebook id)                                             | `ingredients`, `parents`, `lineRefs`, `slotRefs`, `stockRefs`, `affinities`          |
-| `cooklang_parse`     | `text`                                                                                | any of `metadata`, `ingredients`, `cookware`, `timers`, `steps`, `notes`, `sections` |
-| `cooklang_serialize` | `component`, `names`, `facts`, optional `tasting`, `otherNotes`                       | `text`, `fileName`, `lost`                                                           |
-| `cooklang_import`    | `text`, `decisions` (target, amount mode, role), `options`, `facts`                   | `component`, `unmeasured` (line indexes); or `error_code` with the line `index`      |
-| `cooklang_modes`     | `text`, `facts` by ingredient name                                                    | `modes`: the amount modes offered per ingredient occurrence                          |
+| `kind`                    | Inputs                                                                                                   | Expected                                                                             |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `export_round_trip`       | `records` (per kind), `exportedAt`                                                                       | `kinds`, `counts`, `fileName`; build, text and parse return the same records         |
+| `export_parse`            | `file` (object) or `text`, optional `current` and `migrations` (a test chain by name)                    | `counts`, optional `formatVersion`; or `error_code` and `error_detail`               |
+| `match_names`             | `names`, `candidates` (`id`, `name`, `origin`, `parentId`)                                               | `matches`: per name `exact` (id or null), `close` and `classes` (ids)                |
+| `merge_plan`              | `mine`, `file` (records per kind), `choices` (`kind/id` to `mine` or `theirs`)                           | `add`, `same`, `conflicts`, `immutable`, `skippedNotes`, `writes`                    |
+| `remap_ingredients`       | `records`, `map` (file id to notebook id)                                                                | `ingredients`, `parents`, `lineRefs`, `slotRefs`, `stockRefs`, `affinities`          |
+| `cooklang_parse`          | `text`                                                                                                   | any of `metadata`, `ingredients`, `cookware`, `timers`, `steps`, `notes`, `sections` |
+| `cooklang_serialize`      | `component`, `names`, `facts`, optional `tasting`, `otherNotes`                                          | `text`, `fileName`, `lost`                                                           |
+| `cooklang_import`         | `text`, `decisions` (target, amount mode, role), `options`, `facts`                                      | `component`, `unmeasured` (line indexes); or `error_code` with the line `index`      |
+| `cooklang_modes`          | `text`, `facts` by ingredient name                                                                       | `modes`: the amount modes offered per ingredient occurrence                          |
+| `cooklang_parts`          | `text`                                                                                                   | `has_sections`, `parts` (`name`, `leading`, `texts`, `uses`)                         |
+| `cooklang_import_dish`    | `text`, `decisions`, `options` (dish fields, one `components` entry per part with lines), `facts`        | `dish`, `components`, `unmeasured`; or `error_code` (`component-count`)              |
+| `cooklang_serialize_dish` | `dish`, `components`, `componentSteps`, `names`, `facts`, `assembly`, `assemblyName`, optional `tasting` | `text`, `fileName`, `lost`, `parts` (the written file read back)                     |
 
 ## Kinds of the finder (issue 21)
 

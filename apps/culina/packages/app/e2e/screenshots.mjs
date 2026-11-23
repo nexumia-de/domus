@@ -62,6 +62,27 @@ const importing = (name, content, ready) => async (page) => {
 };
 const IMPORT_JSON = importing('export.json', EXPORT_FILE, 'Records that differ');
 const IMPORT_COOK = importing('sauce.cook', COOK_FILE, 'Complete the recipe');
+// A file with sections: it becomes a dish of one component per section (issue 41).
+const SECTIONS_FILE = `---
+title: Pasta with tomato sauce
+servings: 2
+---
+
+Bring salted water to the boil.
+
+= Pasta
+
+Cook @pasta{200%g} in @water{2%l} with @salt{10%g}.
+
+= Sauce
+
+Soften @onion{1} in @butter{20%g}, add @tomatoes{400%g} and simmer.
+
+= Serving
+
+Toss the pasta in the sauce.
+`;
+const IMPORT_SECTIONS = importing('pasta.cook', SECTIONS_FILE, 'Complete the recipe');
 // Stock: items written through the store's test hook, then the page is read again.
 const STOCK_NOW = '&e2e-store&e2e-now=2026-11-18T08:00:00Z';
 const stockItems = [
@@ -155,6 +176,26 @@ const shots = [
     'light',
     'settings/import',
     IMPORT_COOK,
+    true,
+    true,
+  ],
+  [
+    'import-cooklang-sections-360x720-light.png',
+    360,
+    720,
+    'light',
+    'settings/import',
+    IMPORT_SECTIONS,
+    true,
+    true,
+  ],
+  [
+    'import-cooklang-sections-1000x700-light.png',
+    1000,
+    700,
+    'light',
+    'settings/import',
+    IMPORT_SECTIONS,
     true,
     true,
   ],

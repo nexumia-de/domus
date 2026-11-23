@@ -1,7 +1,17 @@
 // Properties of the Cooklang reader beyond the vectors: it never throws, and what the writer
 // writes the reader reads back line for line.
 import { expect, test } from 'vitest';
-import { componentToCooklang, ingredientUses, parseCooklang } from '../src/index';
+import {
+  componentToCooklang,
+  cooklangParts,
+  dishToCooklang,
+  hasSections,
+  importDish,
+  ingredientUses,
+  parseCooklang,
+} from '../src/index';
+import { validators } from './validators';
+import { loadVectors } from './vector-files';
 
 const PIECES = [
   '@',
@@ -66,4 +76,68 @@ test('a written file reads back with the same ingredient names and amounts', () 
     [2, 'tbsp', 'cold'],
     [3, undefined, undefined],
   ]);
+});
+
+test('what the dish import makes is valid against the stored schemas', () => {
+  const vectors = loadVectors('cooklang').filter(
+    (v) => v.inputs.kind === 'cooklang_import_dish' && v.error_code === undefined,
+  );
+  expect(vectors.length).toBeGreaterThanOrEqual(3);
+  for (const v of vectors) {
+    const e = v.expected as { dish: unknown; components: unknown[] };
+    expect(validators.dishes(e.dish), `${v.id} dish`).toBe(true);
+    for (const c of e.components) expect(validators.components(c), `${v.id} component`).toBe(true);
+  }
+});
+
+test('a dish written to Cooklang and read back gives the same components, note and assembly', () => {
+  const component = (id: string, name: string, ingredient: string) => ({
+    id,
+    name,
+    lines: [
+      {
+        ref: { kind: 'ingredient' as const, id: ingredient },
+        amount: { value: 10, unit: 'g' as const },
+      },
+    ],
+    version: { family: id },
+  });
+  const parts = [component('c1', 'Dough = base -- thin', 'a'), component('c2', 'Sauce', 'b')];
+  const written = dishToCooklang(
+    {
+      name: 'Pizza',
+      note: 'For two.',
+      slots: parts.map((c) => ({ role: 'main', ref: { kind: 'component' as const, id: c.id } })),
+      version: { family: 'd' },
+    },
+    {
+      ingredientName: (id) => id,
+      componentName: (id) => id,
+      component: (id) => parts.find((c) => c.id === id),
+      facts: {},
+      assembly: ['Top and bake.'],
+      assemblyName: 'Assembly',
+    },
+  );
+  expect(written.lost).toContain('characters');
+  const doc = parseCooklang(written.text);
+  expect(hasSections(doc)).toBe(true);
+  const withLines = cooklangParts(doc).filter((p) => p.uses.length > 0);
+  expect(withLines.map((p) => p.name)).toEqual(['Dough = base - thin', 'Sauce']);
+  const decisions = ingredientUses(doc).map((u) => ({
+    target: { kind: 'ingredient' as const, id: u.name },
+    amount: { mode: 'given' as const },
+  }));
+  const back = importDish(doc, decisions, {
+    id: 'd2',
+    name: 'Pizza',
+    date: '2026-11-23',
+    change: 'Imported from Pizza.cook',
+    components: withLines.map((p, i) => ({ id: `n${i}`, name: p.name ?? 'Pizza', role: 'main' })),
+    facts: () => ({}),
+  });
+  if (!back.ok) throw new Error(back.error.code);
+  expect(back.dish.note).toBe('For two.');
+  expect(back.dish.steps).toEqual([{ note: 'Top and bake.' }]);
+  expect(back.components.map((c) => c.lines)).toEqual(parts.map((c) => c.lines));
 });

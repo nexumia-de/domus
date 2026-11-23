@@ -105,17 +105,37 @@ function lineRow(model: CookModel, line: LineRow, roles: string, changed: () => 
   return item;
 }
 
-export function linesSection(model: CookModel, changed: () => void): HTMLElement {
-  const box = el('section', 'cook-lines');
-  box.append(el('h2', undefined, text.cookLinesHeading));
-  const roles = nextId('roles');
+/** The datalist of the roles the lines have so far, and its id. */
+export function rolesList(model: CookModel): { list: HTMLDataListElement; id: string } {
+  const id = nextId('roles');
   const list = el('datalist');
-  list.id = roles;
+  list.id = id;
   const known = new Set<string>();
   for (const line of model.lines) if (line.role !== '') known.add(line.role);
   for (const role of known) list.append(el('option', undefined, role));
+  return { list, id };
+}
+
+/** The decisions of some lines: amount and role per line, in file order. */
+export function lineList(
+  model: CookModel,
+  lines: readonly LineRow[],
+  roles: string,
+  changed: () => void,
+): HTMLElement {
   const ul = el('ul', 'cook-line-list');
-  for (const line of model.lines) ul.append(lineRow(model, line, roles, changed));
-  box.append(list, el('p', 'muted', text.cookRoleHint), ul);
+  for (const line of lines) ul.append(lineRow(model, line, roles, changed));
+  return ul;
+}
+
+export function linesSection(model: CookModel, changed: () => void): HTMLElement {
+  const box = el('section', 'cook-lines');
+  box.append(el('h2', undefined, text.cookLinesHeading));
+  const roles = rolesList(model);
+  box.append(
+    roles.list,
+    el('p', 'muted', text.cookRoleHint),
+    lineList(model, model.lines, roles.id, changed),
+  );
   return box;
 }

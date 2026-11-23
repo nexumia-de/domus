@@ -35,6 +35,7 @@ import { el } from '../shell/el';
 import { showToast } from '../shell/toast';
 import { strings } from '../strings';
 import { characterRow } from './character-chips';
+import { dishCooklangAction } from './cooklang-action';
 import { keepButton } from './classics/finish';
 import { nutritionDetails } from './classics/nutrition-block';
 import { ingredientsBlock, methodBlock } from './classics/recipe';
@@ -271,6 +272,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
       ...(dish.note === undefined ? [] : [el('p', 'muted', dish.note)]),
       versionLines('dishes', dish),
       ...(isHead ? [detailActions('dishes', dish.id, dish.name)] : []),
+      dishCooklangAction(dish),
       versionSection('dishes', dish),
     ],
     afterIngredients: (view, draw) => {

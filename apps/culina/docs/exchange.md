@@ -198,14 +198,44 @@ reader follows the README and the conventions as read that day.
 | Front matter: `key: value`, `key: [a, b]`, `- item` lists; nested maps are ignored                     | Nested front matter (`source.name`) is not read                                                                                                                                   |
 | `=` lock in front of a quantity: read, flagged `locked`                                                | The lock has no equivalent in Culina and is dropped                                                                                                                               |
 
-**What the import makes of a file** (`importComponent`): one component, version 1
+**What the import makes of a file without sections** (`importComponent`): one component, version 1
 of a new family (`parent` only when the user makes it a variation). Every
 ingredient occurrence is a line, in file order; the user decides per line the
 target (an ingredient or component of the notebook, or a new ingredient), the
-amount mode and a role. Steps become `method` entries in order, notes and
-section names too (as entries of their own, unmarked); cookware and timers
+amount mode and a role. Steps become `method` entries in order, notes too
+(as entries of their own, unmarked); cookware and timers
 stay as words in the step text; inline positions of ingredients are lost.
-Amount modes (`availableModes`, `resolveAmount`): `given` (a number and a unit
+
+**A file with sections becomes a dish** (`cooklangParts`, `importDish`; issue 41,
+[decision](decisions/ai-prompt-import.md), point 6). The spec says sections are for
+"components that need to be prepared separately"; it says nothing of text before
+the first section, and the official parser cooklang-rs keeps that text as a
+section without a name (`Recipe.sections`, read 2026-11-23). The file is read in
+parts: the text before the first section line, then one part per section (a `=`
+without a name is a part without a name; a section with nothing in it is left out).
+
+| Part                                              | Becomes                                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| A section with ingredient lines                   | a component, version 1 of its own family, named after the section; its steps and notes are its `method` |
+| Text before the first section, with lines         | a component of its own, first in the dish, named after the file (its `title`, else the file name)       |
+| Text before the first section, without lines      | the dish's `note`, one paragraph per step or note                                                       |
+| A later section (or `=` without a name), no lines | assembly steps of the dish (`steps`, each a `note`); the section's name is not kept                     |
+
+**Why text before the first section is the note when it has no lines:** a
+component needs lines, and as assembly it would be cooked after the components it
+stands before; such text is mostly an introduction or a preparation for the whole.
+With lines it is a part like any section (as in cooklang-rs). The dish has one slot
+per component, in file order, with the role the user confirmed (prefilled `main`);
+`portions` from the leading whole number of `servings` (or `serves`), as the user
+confirmed. Each component gets the same `change` ("Imported from <file>"); only the
+dish can be a variation of an existing dish. The per-line decisions are the same as
+for one component, made per line wherever it stands; a name is asked once for the
+whole file. Not read: `yield` for the dish (a component's output weight is not in
+the file; the user may give each a percent base, no output weight). Two parts that
+would get the same name are named apart in the step ("Teig", "Teig (2)"), since one
+dish's components and their export file stems must be told apart.
+
+**Amount modes** of both imports (`availableModes`, `resolveAmount`): `given` (a number and a unit
 Culina knows: g, kg, oz, lb, ml, l, tsp, tbsp, cup, and no unit as a count; unit
 words in `units.ts`), `facts` (volume through the ingredient's density, count
 through its unit weight; offered only when the ingredient has it), `grams` (the
@@ -220,7 +250,9 @@ line's `note`, joined by a comma.
 `title` (quoted when it holds a colon) and `yield: 70%g`; the latest tasting
 note of this version as a `>` note; one step `Combine @A{qty%unit}, @B{…} and
 @C{}.` with the line's note as a short preparation; then the method as
-paragraphs. Percent lines are written in grams (percent of the base mass, via
+paragraphs, then the structured steps one line each as the app shows them (word,
+time, temperature, note; passed in by the app, since 2026-11-23: before they were
+left out without a word). Percent lines are written in grams (percent of the base mass, via
 `componentLineGrams`); when that is not possible the line has no quantity. A
 count is a bare number. A component line is `@./File-name{qty%g}`, the file
 name being the component's name with spaces as hyphens. Core syntax only; no
@@ -230,3 +262,22 @@ extension and no `servings`. The result lists what was lost (`lost`):
 `characters` (`@ # ~`, `--`, `[-` and a leading `>` or `=` removed from method
 steps, since Cooklang has no escape) — see
 [the decision](decisions/cooklang.md#what-is-lost).
+
+**Dish writer** (`dishToCooklang`, issue 41): one file per dish. Front matter
+`title` and `servings` (the portions); the latest tasting note of the dish as a `>`
+note and the dish's note as paragraphs, both before the first section; then one
+section per slot in slot order: `= <component name>` with the component's body as
+above (its current version, as the dish shows it), an ingredient slot as
+`= <name>` and `Add @Name{qty}.`, a component the notebook lacks as
+`Add @./Name{}.`; then the assembly steps (one line each as the app shows them)
+under `= Assembly` (`= Zusammenbau` in German). Read back, the file gives the same
+parts (pinned by the vector `serialize-dish-one-section-per-slot` and a round trip
+in `test/cooklang.test.ts`). **Still lost** besides the component losses: `roles`
+(every slot's role, so always), `slots` (how much of a component the dish takes,
+optional slots), `yields` (the components' output weights: the front matter is the
+dish's), `details` (course, cuisine, the correction of the characters), `versions`
+of the dish, `tastings` of the dish beyond the latest, which slots an assembly step
+uses (only its words remain), and the difference between a component and an
+ingredient slot on re-import (an ingredient slot comes back as a component of one
+line). The tasting note comes back as part of the dish's note. Section names lose
+`--`, `[-` and `=` at either end (`characters`).

@@ -1,0 +1,27 @@
+{
+  "id": "parts-two-sections",
+  "description": "A file with two sections (= Teig, == Soße ==) has two parts named after them, each with its own steps and ingredient occurrences; no text before the first section, so no leading part",
+  "inputs": {
+    "kind": "cooklang_parts",
+    "text": "---\ntitle: Spätzle mit Soße\n---\n\n= Teig\n\nVerrühre @Mehl{250%g} mit @Eier{3}.\n\nSchabe den Teig ins Wasser.\n\n== Soße ==\n\nSchmelze @Butter{30%g} und rühre @Sahne{200%ml} ein.\n"
+  },
+  "expected": {
+    "has_sections": true,
+    "parts": [
+      {
+        "name": "Teig",
+        "leading": false,
+        "texts": ["Verrühre Mehl mit Eier.", "Schabe den Teig ins Wasser."],
+        "uses": [0, 1]
+      },
+      {
+        "name": "Soße",
+        "leading": false,
+        "texts": ["Schmelze Butter und rühre Sahne ein."],
+        "uses": [2, 3]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example in the specification's syntax (README, Sections: \"components that need to be prepared separately\"); docs/decisions/ai-prompt-import.md, point 6."
+}
