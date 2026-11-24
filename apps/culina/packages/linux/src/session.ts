@@ -132,7 +132,10 @@ export interface Session {
   dishFilter(): DishFilter;
   /** Keeps the filter and tells the listeners, so that every page shows it. */
   setDishFilter(filter: DishFilter): void;
-  /** Cook's kept choices, "Only with what I have" and the order (the web app's key). */
+  /**
+   * Cook's kept choices, "Only with what I have" and the order (the web app's key); the order "Not
+   * cooked for long" of the web app is read as by name (no own dishes here).
+   */
   cookList(): CookList;
   /** Keeps them and tells the listeners. */
   setCookList(list: CookList): void;
@@ -293,7 +296,12 @@ export function createSession(options: SessionOptions): Session {
       // Every page that shows the filter or what it narrows draws again.
       tell();
     },
-    cookList: () => parseCookList(prefs.get(PREFS.cookList)),
+    cookList: () => {
+      // "Not cooked for long" orders own dishes by the day they were cooked; the native app has no
+      // notebook, so it has no such dish and does not offer the order: a kept one is by name.
+      const list = parseCookList(prefs.get(PREFS.cookList));
+      return list.order === 'not-cooked' ? { ...list, order: 'name' } : list;
+    },
     setCookList(list) {
       prefs.set(PREFS.cookList, JSON.stringify(list));
       tell();

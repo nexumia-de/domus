@@ -1,8 +1,9 @@
 // The one list of dishes as Cook shows it (docs/decisions/cook-screen.md): which entries pass the
-// filter, the search and "Only with what I have", in which order (by name, or "Use up first"), and
+// filter, the search and "Only with what I have", in which order (by name, "Use up first" or "Not
+// cooked for long"), and
 // what the quiet line under each name says. Pure: no DOM and no texts; the screen turns the meta
 // into words (screens/dish-list.ts), the finder's answers come in as keys and marks.
-import type { Lang } from '@culina/engine';
+import { byNotCookedForLong, type Lang } from '@culina/engine';
 import { isCountry } from '../classics/list-view';
 import type { UseUpMark } from '../cook/one-list';
 import type { DishEntry, Origin } from './entry';
@@ -16,6 +17,8 @@ export interface RowMeta {
   origin?: Origin;
   /** In the order "Use up first": the dated item the dish uses that sets its place. */
   useUp?: { itemId: string; daysLeft: number; lacking: number };
+  /** For an own dish with a kept day: the day it was last cooked, `YYYY-MM-DD`. */
+  cooked?: string;
 }
 
 export interface ListRow {
@@ -36,13 +39,19 @@ export interface DishListView {
 export const bothOrigins = (entries: readonly DishEntry[]): boolean =>
   entries.some((e) => e.origin === 'own') && entries.some((e) => e.origin === 'shipped');
 
-const metaOf = (entry: DishEntry, withOrigin: boolean, mark?: UseUpMark): RowMeta => ({
+const metaOf = (
+  entry: DishEntry,
+  withOrigin: boolean,
+  mark?: UseUpMark,
+  cooked?: string,
+): RowMeta => ({
   ...(entry.course === undefined ? {} : { course: entry.course }),
   ...(entry.cuisine === undefined ? {} : { cuisine: entry.cuisine }),
   ...(withOrigin ? { origin: entry.origin } : {}),
   ...(mark === undefined
     ? {}
     : { useUp: { itemId: mark.itemId, daysLeft: mark.daysLeft, lacking: mark.lacking } }),
+  ...(cooked === undefined ? {} : { cooked }),
 });
 
 /** What Cook adds to the filter and the search, each from the finder (src/dishes/). */
@@ -51,13 +60,25 @@ export interface CookNarrowing {
   ready?: ReadonlySet<string>;
   /** The order "Use up first": the marks of the dishes that use a dated item (`useUpMarks`). */
   useUp?: ReadonlyMap<string, UseUpMark>;
+  /**
+   * The day each own dish was last cooked, by entry key (`own:<id>`): said on its row. Only own
+   * dishes have one; a shipped dish is not in the notebook.
+   */
+  cooked?: ReadonlyMap<string, string>;
+  /**
+   * The order "Not cooked for long": the dishes with a kept day first, the earliest day first
+   * (`byNotCookedForLong`); the rest, never cooked as far as the notebook knows and every shipped
+   * dish, follow by name.
+   */
+  notCookedFirst?: boolean;
 }
 
 /**
  * The rows for a filter and a search text: every entry that passes both (and, when given, is
  * ready), sorted by name in the content language (own and shipped dishes mixed), the key breaking a
  * tie so the order is stable. With `useUp` the dishes that use a dated item come first, in the
- * engine's order, and the rest follow by name.
+ * engine's order, and the rest follow by name. With `notCookedFirst` the own dishes with a kept day
+ * come first, the earliest day first, and the rest follow by name.
  */
 export const dishListView = (
   entries: readonly DishEntry[],
@@ -67,7 +88,8 @@ export const dishListView = (
   cook: CookNarrowing = {},
 ): DishListView => {
   const collator = new Intl.Collator(lang, { sensitivity: 'base', numeric: true });
-  const { ready, useUp } = cook;
+  const { ready, useUp, cooked, notCookedFirst } = cook;
+  const dayOf = (e: DishEntry): string | undefined => cooked?.get(e.key);
   const rankOf = (e: DishEntry): number => useUp?.get(e.key)?.rank ?? Infinity;
   const kept = entries.filter(
     (e) =>
@@ -82,10 +104,14 @@ export const dishListView = (
     .sort(
       (a, b) =>
         (useUp === undefined || rankOf(a) === rankOf(b) ? 0 : rankOf(a) < rankOf(b) ? -1 : 1) ||
+        (notCookedFirst === true ? byNotCookedForLong(dayOf(a), dayOf(b)) : 0) ||
         collator.compare(a.name, b.name) ||
         (a.key < b.key ? -1 : 1),
     )
-    .map((entry) => ({ entry, meta: metaOf(entry, withOrigin, useUp?.get(entry.key)) }));
+    .map((entry) => ({
+      entry,
+      meta: metaOf(entry, withOrigin, useUp?.get(entry.key), dayOf(entry)),
+    }));
   const narrowed = !isEmptyFilter(filter) || query.trim() !== '' || ready !== undefined;
   return { rows, total: entries.length, narrowed };
 };

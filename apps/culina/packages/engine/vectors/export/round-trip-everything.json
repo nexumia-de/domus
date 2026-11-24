@@ -1,6 +1,6 @@
 {
   "id": "round-trip-everything",
-  "description": "Three versions of a component, a variation, a dish, ingredients and two tasting notes survive build, text and parse unchanged",
+  "description": "Three versions of a component, a variation, a dish, ingredients and two tasting notes survive build, text and parse unchanged, and the date a dish was cooked",
   "inputs": {
     "kind": "export_round_trip",
     "records": {
@@ -201,18 +201,26 @@
           "technique": "pan-fry",
           "learned": true
         }
+      ],
+      "cooked": [
+        {
+          "id": "cooked-u-00000000-0000-4000-8000-000000000014",
+          "dish": "u-00000000-0000-4000-8000-000000000014",
+          "date": "2026-11-17"
+        }
       ]
     },
     "exportedAt": "2026-11-18T08:00:00Z"
   },
   "expected": {
-    "kinds": ["ingredients", "components", "dishes", "tastings", "skills"],
+    "kinds": ["ingredients", "components", "dishes", "tastings", "skills", "cooked"],
     "counts": {
       "ingredients": 2,
       "components": 4,
       "dishes": 1,
       "tastings": 2,
-      "skills": 2
+      "skills": 2,
+      "cooked": 1
     },
     "fileName": "cooks-notebook-2026-11-18.json"
   },

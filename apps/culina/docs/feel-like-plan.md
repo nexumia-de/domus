@@ -203,6 +203,11 @@ for the owner as written in the recommendation.
   [AGENTS.md](../AGENTS.md). A favourite mark is not a diary. A date per
   cooking is a record of what was eaten when, which is close to one. Both
   are **the owner's to decide** before anything is built.
+- **Decided and built** (owner 2026-11-23, [building kit](decisions/building-kit.md),
+  answer 3; built 2026-11-24): the date only, one day per own dish, no
+  history; "not cooked for long" as an order of Cook
+  ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Favourites are
+  not built.
 
 ## Recommendation
 

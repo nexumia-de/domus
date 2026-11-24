@@ -265,6 +265,18 @@ derive and copy vectors compare `expected` deeply with the vector's
 | `classic_copy`            | `classic`, `lang`, `date`, `ids` (the ids `newId` gives in turn), optional `portions`, `ingredient_ids` | `dish`, `components`; or `error_code` (`wanted-ingredient` with `wanted`, or a derive code) |
 | `classic_wanted`          | `classic`                                                                                               | `wanted`: `path`, `en`, `de`                                                                |
 
+## Kinds of the date a dish was cooked (2026-11-24)
+
+Folder: `packages/engine/vectors/cooked/`, run by `test/cooked-vectors.test.ts`.
+Rules: [data model](data-model.md#date-a-dish-was-cooked). Invented ids,
+dates and names.
+
+| `kind`          | Inputs                            | Expected                                                        |
+| --------------- | --------------------------------- | --------------------------------------------------------------- |
+| `cooked_record` | `family`, `date`                  | the record: `id`, `dish`, `date`                                |
+| `cooked_dates`  | `records`                         | `dates`: family id to day; a record with a stray id is left out |
+| `cooked_order`  | `dishes`: `name`, optional `date` | `names` sorted by `byNotCookedForLong`, then by name            |
+
 ## Kinds of nutrition (issue 94)
 
 Folder: `packages/engine/vectors/nutrition/`, run by

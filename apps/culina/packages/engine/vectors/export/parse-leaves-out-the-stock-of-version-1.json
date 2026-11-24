@@ -62,7 +62,7 @@
     "counts": {
       "ingredients": 1
     },
-    "formatVersion": 3,
+    "formatVersion": 4,
     "stockLeftOut": 4
   },
   "tolerance": 0,

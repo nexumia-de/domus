@@ -111,8 +111,8 @@ const roundTrip = async (context, page, origin) => {
     `${label}: Settings says the stock is not in the file and where it lives`,
   );
   check(
-    JSON.parse(file1.text).formatVersion === 3 && JSON.parse(file1.text).skills.length === 2,
-    `${label}: the file is format 3 and holds the skill state`,
+    JSON.parse(file1.text).formatVersion === 4 && JSON.parse(file1.text).skills.length === 2,
+    `${label}: the file is format 4 and holds the skill state`,
   );
 
   // The tester's steps: delete the browser's data, then import with "Merge now".
@@ -368,9 +368,9 @@ const refusals = async (page, origin) => {
     'a file from a newer version',
     file(
       'x.json',
-      JSON.stringify({ format: 'culina-export', formatVersion: 4, components: [{ any: 'shape' }] }),
+      JSON.stringify({ format: 'culina-export', formatVersion: 5, components: [{ any: 'shape' }] }),
     ),
-    /newer version of the app \(format 4; this app reads up to 3\)/,
+    /newer version of the app \(format 5; this app reads up to 4\)/,
     before,
   );
   await layout(page, `${label} (refused file)`);

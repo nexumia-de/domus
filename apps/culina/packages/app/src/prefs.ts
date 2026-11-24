@@ -143,12 +143,13 @@ export const writeCookFilters = (store: KeyValueStore | null, filters: CookFilte
 
 /**
  * The two choices of Cook's one list (docs/decisions/cook-screen.md), kept like the theme: "Only
- * with what I have" and the order, by name or "Use up first". What the user feels like is the one
+ * with what I have" and the order, by name, "Use up first" or "Not cooked for long" (`not-cooked`,
+ * since 2026-11-24; an older build reads it as by name). What the user feels like is the one
  * dish filter (`culina.dishes`); the finder's own two choices are `culina.cook`.
  */
 export const COOK_LIST_KEY = 'culina.cookList';
 
-export const COOK_ORDERS = ['name', 'use-up'] as const;
+export const COOK_ORDERS = ['name', 'use-up', 'not-cooked'] as const;
 export type CookOrder = (typeof COOK_ORDERS)[number];
 
 export interface CookList {

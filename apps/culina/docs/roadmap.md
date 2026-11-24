@@ -104,8 +104,13 @@ app and finds quickly what they want to cook or can cook.
    tell a quick step from a long one; the plan's item 4 stays open for
    the owner). The notebook keeps
    the date a dish was cooked (owner, 2026-11-23:
-   [building kit](decisions/building-kit.md), answer 3), which
-   favourites and "not cooked for long" build on; not built yet.
+   [building kit](decisions/building-kit.md), answer 3), built on
+   2026-11-24: one day per own dish, set at the end of cooking step by
+   step and by "Cooked today", in the export since format 4, and Cook's
+   order "Not cooked for long"
+   ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Open for the
+   owner: whether cooking a shipped dish keeps a day (now it keeps none).
+   Favourites are not built.
    Seasonal produce waits for a source.
 10. **Sync of the notebook.** Components, dishes, own ingredients and
     tasting notes, and the user's settings, as collections of a space

@@ -4,7 +4,8 @@
 /**
  * The kinds of user records, named like the collections of the export file. Stock is not among
  * them since version 2: it is the shared collection `stock` of a space, not Culina's data
- * (docs/decisions/stock-in-spaces.md). `skills` (the techniques marked as learned) since version 3.
+ * (docs/decisions/stock-in-spaces.md). `skills` (the techniques marked as learned) since version 3,
+ * `cooked` (the date a dish was last cooked) since version 4.
  */
 export const EXPORT_KINDS = [
   'ingredients',
@@ -14,11 +15,12 @@ export const EXPORT_KINDS = [
   'affinities',
   'tastings',
   'skills',
+  'cooked',
 ] as const;
 export type ExportKind = (typeof EXPORT_KINDS)[number];
 
 /** The format version from which a kind is a collection of the file; absent means version 1. */
-export const KIND_SINCE: Partial<Record<ExportKind, number>> = { skills: 3 };
+export const KIND_SINCE: Partial<Record<ExportKind, number>> = { skills: 3, cooked: 4 };
 
 /** A record as the schemas describe it; every kind has a string `id`. */
 export type ExportRecord = { id: string } & Record<string, unknown>;

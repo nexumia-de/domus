@@ -25,6 +25,12 @@ export const cookStrings = {
   orderName: 'By name',
   /** The order of the one list that puts the dishes using the nearest use-by first. */
   tabUseUp: 'Use up first',
+  /** The order of the one list that puts the own dishes cooked longest ago first. */
+  orderNotCooked: 'Not cooked for long',
+  /** On the row of an own dish with a kept day: "cooked 3 Nov 2026" (the date in the app's form). */
+  rowCooked: (date: string): string => `cooked ${date}`,
+  /** Above the list in the order "Not cooked for long" while no dish has a day. */
+  notCookedNone: 'None of your dishes is marked as cooked yet, so the list is by name.',
   /** The way from Cook to the stock screen, and that screen's title. */
   tabStock: 'What is there',
   backToCook: 'Back to Cook',

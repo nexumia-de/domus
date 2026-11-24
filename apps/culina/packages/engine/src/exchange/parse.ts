@@ -1,6 +1,7 @@
 // Reads an export file: version first, older versions migrated step by step, then every record
 // validated against its schema. Nothing is returned for a file that does not pass, so the host
 // can refuse it before touching stored data.
+import { isCalendarDay } from '../cooked/cooked';
 import { EXPORT_FORMAT, EXPORT_VERSION } from './build';
 import {
   EXPORT_KINDS,
@@ -33,6 +34,8 @@ export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [
   },
   // 2 -> 3 adds the collection `skills`; a file of version 2 has none, so nothing changes.
   { from: 2, to: 3, migrate: (file) => file },
+  // 3 -> 4 adds the collection `cooked`; a file of version 3 has none, so nothing changes.
+  { from: 3, to: 4, migrate: (file) => file },
 ];
 
 export interface ParseOptions {
@@ -116,7 +119,7 @@ export function parseExport(
   if ('error' in done) return done;
   const { file } = done;
 
-  // A kind the file's own version did not have is a field it cannot hold (skills in version 2).
+  // A kind the file's own version did not have is a field it cannot hold (skills in version 2, cooked in version 3).
   const heldBy = (field: string): boolean =>
     EXPORT_KINDS.some((k) => k === field && (KIND_SINCE[k] ?? 1) <= version);
   for (const field of Object.keys(file)) {
@@ -145,6 +148,15 @@ export function parseExport(
           keyword: e.keyword,
         }));
         return fail({ code: 'invalid-record', kind, index, issues });
+      }
+      // A day of cooking must be a day the calendar has (the schema's pattern allows 2026-02-30).
+      if (kind === 'cooked' && !isCalendarDay(String(record.date))) {
+        return fail({
+          code: 'invalid-record',
+          kind,
+          index,
+          issues: [{ path: '/date', keyword: 'calendar' }],
+        });
       }
       if (seen.has(record.id)) return fail({ code: 'duplicate-id', kind, index, id: record.id });
       seen.add(record.id);

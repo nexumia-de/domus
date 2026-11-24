@@ -4,7 +4,8 @@
 // behind a summary line of the active choices, a count line and one row per dish. The filter is the
 // one kept choice (`currentDishFilter`/`keepDishFilter` in browse/filter.ts), shared with the random
 // pick; the search text lives as long as the page. In the order by name the rows stand in groups
-// with a heading each (frames, then the courses: browse/groups.ts); "Use up first" is one list.
+// with a heading each (frames, then the courses: browse/groups.ts); "Use up first" and "Not cooked
+// for long" are one list each. An own dish with a kept day of cooking says it on its row.
 // Which dishes the stock covers and the order of "Use up first" are the finder's (src/dishes/); the
 // order and the meta are in browse/list-view.ts.
 import { dishEntries } from '../browse/entries';
@@ -27,7 +28,10 @@ import { useUpWords } from '../cook/rows';
 import { notebookSource } from '../cook/source';
 import { readyNowKeys } from '../dishes/ready-now';
 import { useUpNote, useUpNow, type UseUpNow } from '../dishes/use-up-order';
-import { browserStore, readCookList, writeCookList, type CookList } from '../prefs';
+import { cookedDaysByKey } from '../dishes/cooked-days';
+import { cookedByFamily, listDishes } from '../notebook';
+import { browserStore, parseCookList, readCookList, writeCookList, type CookList } from '../prefs';
+import { formatDate } from '../shared/locale';
 import { el } from '../shell/el';
 import { strings } from '../strings';
 import {
@@ -71,6 +75,7 @@ const metaText = ({ meta }: ListRow, useUp: UseUpNow | undefined): string =>
     ...(meta.useUp === undefined || useUp === undefined
       ? []
       : useUpWords(meta.useUp, (id) => useUp.itemName(id))),
+    meta.cooked === undefined ? undefined : strings.cook.rowCooked(formatDate(meta.cooked)),
   ]
     .filter((part) => part !== undefined)
     .join(' · ');
@@ -119,7 +124,7 @@ export interface DishListOptions {
   empty?: Node[];
 }
 
-/** The order select of Cook's list: by name, or "Use up first". */
+/** The order select of Cook's list: by name, "Use up first" or "Not cooked for long". */
 const orderSelect = (list: CookList, onChange: (next: CookList) => void): HTMLElement => {
   const tc = strings.cook;
   const control = el('select', 'field cook-order');
@@ -127,6 +132,7 @@ const orderSelect = (list: CookList, onChange: (next: CookList) => void): HTMLEl
   for (const [value, text] of [
     ['name', tc.orderName],
     ['use-up', tc.tabUseUp],
+    ['not-cooked', tc.orderNotCooked],
   ] as const) {
     const option = el('option', undefined, text);
     option.value = value;
@@ -134,7 +140,7 @@ const orderSelect = (list: CookList, onChange: (next: CookList) => void): HTMLEl
   }
   control.value = list.order;
   control.addEventListener('change', () =>
-    onChange({ ...list, order: control.value === 'use-up' ? 'use-up' : 'name' }),
+    onChange({ ...list, order: parseCookList({ order: control.value }).order }),
   );
   const text = el('label', 'field-label', tc.orderLabel);
   text.htmlFor = control.id;
@@ -162,6 +168,9 @@ export const dishList = (options: DishListOptions): HTMLElement => {
     cook = {
       ...(list.have ? { ready: readyNowKeys() } : {}),
       ...(useUp === undefined ? {} : { useUp: useUp.marks }),
+      // The day each own dish was last cooked: said on its row in every order.
+      cooked: cookedDaysByKey(listDishes(), cookedByFamily()),
+      ...(list.order === 'not-cooked' ? { notCookedFirst: true } : {}),
     };
   };
 
@@ -221,6 +230,10 @@ export const dishList = (options: DishListOptions): HTMLElement => {
       ...(noStock ? [nothingTicked()] : []),
       ...(useUpNote(useUp) === 'no-dates'
         ? [el('p', 'muted cook-no-dates', strings.cook.useUpNoDates)]
+        : []),
+      // "Not cooked for long" with no dish marked as cooked: the list is by name, and says so.
+      ...(list.order === 'not-cooked' && cook.cooked?.size === 0
+        ? [el('p', 'muted cook-no-days', strings.cook.notCookedNone)]
         : []),
     );
     if (noStock && view.total > 0) {

@@ -1,0 +1,16 @@
+{
+  "id": "record",
+  "description": "The record of a dish cooked on a day has the id cooked- plus the family id, the family and the date",
+  "inputs": {
+    "kind": "cooked_record",
+    "family": "u-00000000-0000-4000-8000-000000000014",
+    "date": "2026-11-24"
+  },
+  "expected": {
+    "id": "cooked-u-00000000-0000-4000-8000-000000000014",
+    "dish": "u-00000000-0000-4000-8000-000000000014",
+    "date": "2026-11-24"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids and dates, no real recipe; the rule is written in the description."
+}

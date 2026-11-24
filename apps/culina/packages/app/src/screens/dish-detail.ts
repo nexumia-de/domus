@@ -1,7 +1,7 @@
 // #/dishes/<id> and #/classic/<id>: one dish, whatever its origin, drawn from one view model
 // (`src/dishes/shown.ts`). Top to bottom: the name, the original name where there is one, the
 // quiet line (course, cuisine, meat, origin), the note; what the dish can do (an own dish: its
-// version, Edit and the rest; a shipped dish: Keep in my notebook); the characters; the portions
+// version, the day it was last cooked, Edit and the rest; a shipped dish: Keep in my notebook); the characters; the portions
 // (kept in memory per dish, so the cook screen cooks them); the ingredient lines per component
 // and for the dish; for an own dish the role slots with Swap; "Cook step by step"; the method;
 // for an own dish what goes in, all the way down; up to five dishes like this one; then, closed
@@ -42,6 +42,7 @@ import { showToast } from '../shell/toast';
 import { strings } from '../strings';
 import { characterRow } from './character-chips';
 import { dishCooklangAction } from './cooklang-action';
+import { cookedSection } from './dish-cooked';
 import { keepButton } from './classics/finish';
 import { nutritionDetails } from './classics/nutrition-block';
 import { pairingDetails } from './classics/pairing-block';
@@ -341,6 +342,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
     head: () => [
       ...(dish.note === undefined ? [] : [el('p', 'muted', dish.note)]),
       versionLines('dishes', dish),
+      cookedSection(dish.id),
       ...(isHead ? [detailActions('dishes', dish.id, dish.name)] : []),
       dishCooklangAction(dish),
       versionSection('dishes', dish),

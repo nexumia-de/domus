@@ -21,6 +21,71 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: the day a dish was cooked, and "Not cooked for long" in Culina
+
+Two agents under one lead, both on the second-largest model. One built
+the day an own dish was last cooked (a new store kind, the export
+format 4, the order in Cook, the tests and documents). The other,
+which wrote none of it and was given the task and the staged diff but
+not the builder's reasoning, traced the store upgrade and the import,
+drove the app in a browser with a set time zone, and ran the suites.
+The builder fixed what was found, and the same reviewer read and drove
+the fixes a second time.
+
+| Part                                                     | Done by | Checked by                                                             |
+| -------------------------------------------------------- | ------- | ---------------------------------------------------------------------- |
+| The record, the store layout 5, export format 4          | agent 1 | agent 2 (traced; the tests on a fake IndexedDB)                        |
+| Setting and clearing the day, the places that show it    | agent 1 | agent 2, in a browser at 360 and 1000 px, English and German           |
+| The order "Not cooked for long"                          | agent 1 | agent 2, also with no dated dish                                       |
+| The fixes (local day, the list beside the page, orphans) | agent 1 | agent 2, second pass: the import code traced, the browser driven again |
+| The native app reading the kept order                    | agent 1 | agent 2, by the code and its test; nobody on a screen                  |
+
+**What the checks found, and where it was fixed.**
+
+- _The wrong calendar day:_ the day was the UTC day. In Berlin at 00:30
+  on 25 November "Cooked today" kept and showed the 24th. The first
+  version documented this as not changed; for a feature whose whole
+  content is the day it is a defect. The cooked day is now the device's
+  local day, pinned for Berlin after midnight and New York before it.
+  The other dates of the notebook are still UTC days, listed as open.
+- _The list beside the page went stale_ from 720 px: no day after
+  "Cooked today", the old day after "Clear the date". The row now
+  changes at once, the list does not move, the focus stays on the
+  status line.
+- _A day could outlive its dish:_ "replace everything" with an older
+  file removed dishes and left their days, which the next export
+  carried; a merge took a day for a dish nobody has; cooking a dish
+  that another tab deleted wrote one. A day without a living dish is
+  now left out of the export, not kept by a replace, not taken by a
+  merge and not written; Undo brings days back. The second pass traced
+  that the rule cannot drop the day of a living dish nor touch another
+  kind.
+- _Smaller:_ Back and Finish again wrote the same day anew; an import
+  accepted 30 February; with no dated dish the order gave a flat list
+  without a word (it now has one plain sentence); some new texts were
+  stiff.
+- _Not fixed, documented:_ the store row keeps the instant of the last
+  write (`updatedAt`), which the store's rule on newer writes needs; it
+  is neither exported nor shown, and the owner is asked. That the cook
+  screen tells the cook when the store refuses the day is not pinned.
+  An older leak of a blocked database connection is listed as open.
+
+**Test counts** (each agent's own run, after the fixes): `npm run
+check:culina` passes with 1266 engine, 1195 app and 25 native tests;
+Culina's e2e passes with 2119 checks, run alone. The builder ran the
+new tests on the version before the fixes: 8 unit tests and 4 browser
+checks fail there; the reviewer confirmed three of them by reading the
+old code, not by running.
+
+**What nobody verified.** A real device's clock and time zone (both
+injected), a real change of summer time, a real IndexedDB for the
+upgrade (the tests use a fake), two real tabs, import and replace
+driven in a browser, a screen reader, a real phone, the native app on a
+screen. Whether the import summary counts a day that the merge then
+drops. A merge file that brings a dish and its day together is not
+tested, only traced. A dish whose first version is missing (only
+possible in a hand-made file) cannot be given a day.
+
 ## 2026-11-24: three more cited recipes of Culina can be kept
 
 Three agents under two leads, all on the second-largest model. A first

@@ -1,0 +1,26 @@
+{
+  "id": "dates-ignore-a-stray-record",
+  "description": "Each family gets its date; a record whose id is not cooked- plus its family dates nothing",
+  "inputs": {
+    "kind": "cooked_dates",
+    "records": [
+      {
+        "id": "cooked-u-00000000-0000-4000-8000-000000000014",
+        "dish": "u-00000000-0000-4000-8000-000000000014",
+        "date": "2026-11-02"
+      },
+      {
+        "id": "cooked-u-00000000-0000-4000-8000-000000000015",
+        "dish": "u-00000000-0000-4000-8000-000000000016",
+        "date": "2026-11-03"
+      }
+    ]
+  },
+  "expected": {
+    "dates": {
+      "u-00000000-0000-4000-8000-000000000014": "2026-11-02"
+    }
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids and dates, no real recipe; the rule is written in the description."
+}

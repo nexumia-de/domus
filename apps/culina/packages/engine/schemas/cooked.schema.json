@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/cooked.schema.json",
+  "title": "Date a dish was cooked",
+  "description": "The calendar day an own dish was last cooked. A stored personal record, one per dish family; its id is cooked- plus the family id. No time, no history, no count: the notebook keeps the date a dish was cooked and no more.",
+  "type": "object",
+  "required": ["id", "dish", "date"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "pattern": "^cooked-"
+    },
+    "dish": {
+      "description": "The family of the dish: the id of its first version.",
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "maxLength": 73
+    },
+    "date": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/date"
+    }
+  }
+}

@@ -4,6 +4,7 @@ export * from './read';
 export { removeRecord, saveRecord } from './actions';
 export type { WritableKind } from './actions';
 export { learnedSkills, setLearned } from './skills';
+export { clearCooked, cookedByFamily, cookedOn, markCooked, onCookedChange } from './cooked';
 export { addExamples } from './examples';
 export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';
@@ -22,7 +23,7 @@ export {
   untick,
 } from './stock';
 export type { StockUndo } from './stock';
-export { subscribe, today } from './state';
+export { localToday, subscribe, today } from './state';
 export * from './versions';
 export {
   makeVariation,

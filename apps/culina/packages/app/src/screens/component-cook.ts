@@ -6,7 +6,8 @@
 // (ingredients and method) in a tap, and the screen kept awake. A dish runs through its components
 // in the order of its slots and then through its assembly; a component that is ready in stock is
 // one step; a filling swapped on the dish screen (`src/dishes/session.ts`) is the one cooked. At the
-// end a shipped dish can be kept in the notebook; an own one leads back.
+// end a shipped dish can be kept in the notebook (and records no day of cooking); an own one keeps
+// today as the day it was cooked (docs/behaviour.md#the-date-a-dish-was-cooked) and leads back.
 import type { Classic } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
 import { asChosen, withChoices } from '../classics/choices';
@@ -22,7 +23,15 @@ import { componentLines, ownCookView } from '../components/steps-view';
 import { withSwaps } from '../dishes/alternatives';
 import { swapsOf } from '../dishes/session';
 import { shownOfClassic, shownOfDish } from '../dishes/shown';
-import { getComponent, getDish, learnedSkills, notebook, setLearned } from '../notebook';
+import {
+  getComponent,
+  getDish,
+  learnedSkills,
+  markCooked,
+  notebook,
+  setLearned,
+} from '../notebook';
+import { formatDate } from '../shared/locale';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
 import { keepAwake } from '../shell/wake-lock';
@@ -54,6 +63,11 @@ interface Cookable {
   view: (learned: ReadonlySet<string>) => Cooked;
   /** The end of cooking under the status line; `total` is the number of steps. */
   finish: (total: number, status: HTMLElement) => HTMLElement[];
+  /**
+   * Called once when Finish moves past the last step (not when the screen opens at the end): an
+   * own dish keeps today as the day it was cooked. Gives the sentence for the status line.
+   */
+  onFinish?: () => Promise<string>;
 }
 
 const unknown = (backHash: string, backLabel: string, title: string, text: string): HTMLElement => {
@@ -99,8 +113,16 @@ const cookScreen = (cooked: Cookable): HTMLElement => {
   section.append(progress, body, buttons, whole);
 
   const go = (step: number, total: number): void => {
-    setStep(cooked.id, Math.max(0, Math.min(total, step)));
+    const from = Math.min(stepOf(cooked.id), total);
+    const to = Math.max(0, Math.min(total, step));
+    setStep(cooked.id, to);
     draw(true);
+    if (to !== total || from >= total || cooked.onFinish === undefined) return;
+    // The end's heading keeps the focus; the status line says what was kept, or why not.
+    void cooked.onFinish().then((text) => {
+      const status = body.querySelector('[role="status"]');
+      if (status !== null && stepOf(cooked.id) >= total) status.textContent = text;
+    });
   };
 
   let message: string | undefined;
@@ -269,5 +291,10 @@ export const cookDishScreen = (id: string | undefined): HTMLElement => {
         stockOptions,
       ),
     finish: ownFinish(own.noSteps, own.cookDone, backHash, own.backToDish),
+    // The day the dish was cooked: kept for its family, whichever version was cooked.
+    onFinish: async () => {
+      const done = await markCooked(dish.id);
+      return done.ok ? own.cookedKept(formatDate(done.date)) : storeText(done.error.code);
+    },
   });
 };

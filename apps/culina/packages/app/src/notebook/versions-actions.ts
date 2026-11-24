@@ -2,9 +2,11 @@
 // Restore and Make a variation each add a new record, and the whole family goes away or comes
 // back together (a user's delete of the whole thing, not an edit of history). Tasting notes are
 // records of their own and may be added and changed.
+import type { CookedRecord } from '@culina/engine';
 import { fail, type Result } from '../store/types';
 import type { ComponentRecord, DishRecord, TastingRecord } from '../records';
 import { removeRecord, saveRecord } from './actions';
+import { removeCookedOf, restoreCooked } from './cooked';
 import { newId } from './ids';
 import { state, today } from './state';
 import { headOfFamily, versionChain, versionRecord, type VersionKind } from './versions';
@@ -16,6 +18,8 @@ export interface RemovedFamily {
   kind: VersionKind;
   versions: Versioned[];
   tastings: TastingRecord[];
+  /** The day a dish was last cooked, when one was kept. */
+  cooked?: CookedRecord;
 }
 
 /** Adds a tasting note, or changes one that is stored (same id). */
@@ -26,7 +30,10 @@ export const saveTasting = (record: TastingRecord): Promise<Result> =>
 export const removeTasting = async (id: string): Promise<Result<{ removed: TastingRecord }>> =>
   removeRecord('tastings', id);
 
-/** Deletes a whole component or dish: every version record and every note on one. */
+/**
+ * Deletes a whole component or dish: every version record, every note on one and, for a dish, the
+ * day it was last cooked.
+ */
 export const removeFamily = async (
   kind: VersionKind,
   id: string,
@@ -52,6 +59,16 @@ export const removeFamily = async (
     }
     removed.versions.push(version);
   }
+  // The day the dish was cooked goes with the dish, and comes back with it on Undo.
+  const family = versions[0]?.version.family;
+  if (kind === 'dishes' && family !== undefined) {
+    const done = await removeCookedOf(family);
+    if (!done.ok) {
+      await restoreFamily(removed);
+      return done;
+    }
+    if (done.removed !== undefined) removed.cooked = done.removed;
+  }
   return { ok: true, removed };
 };
 
@@ -65,6 +82,7 @@ export const restoreFamily = async (removed: RemovedFamily): Promise<Result> => 
     const done = await saveRecord('tastings', note);
     if (!done.ok) return done;
   }
+  if (removed.cooked !== undefined) return restoreCooked(removed.cooked);
   return { ok: true };
 };
 

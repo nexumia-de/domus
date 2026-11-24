@@ -1,6 +1,6 @@
 {
   "format": "culina-export",
-  "formatVersion": 3,
+  "formatVersion": 4,
   "exportedAt": "2026-11-17T12:00:00Z",
   "seedVersion": "0",
   "ingredients": [
@@ -201,6 +201,13 @@
       "id": "skill-pan-fry",
       "technique": "pan-fry",
       "learned": true
+    }
+  ],
+  "cooked": [
+    {
+      "id": "cooked-u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+      "dish": "u-3f1c2a52-8d1e-4b7a-9c01-5a1e0c0ffee4",
+      "date": "2026-11-18"
     }
   ]
 }

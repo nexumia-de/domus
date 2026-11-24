@@ -144,7 +144,7 @@ const classicsFlow = async (page, origin, label) => {
     (await page.getByLabel('Nur mit dem, was da ist').count()) === 1 &&
       (
         await page.getByLabel('Reihenfolge', { exact: true }).locator('option').allInnerTexts()
-      ).join('|') === 'Nach Name|Zuerst verbrauchen' &&
+      ).join('|') === 'Nach Name|Zuerst verbrauchen|Lange nicht gekocht' &&
       (await page.getByRole('link', { name: 'Vorrat', exact: true }).count()) === 1,
     `${label}: the switch, the order and the way to the stock are in German`,
   );

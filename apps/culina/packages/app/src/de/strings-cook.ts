@@ -23,6 +23,9 @@ export const cookStringsDe: typeof cookStrings = {
   orderLabel: 'Reihenfolge',
   orderName: 'Nach Name',
   tabUseUp: 'Zuerst verbrauchen',
+  orderNotCooked: 'Lange nicht gekocht',
+  rowCooked: (date: string): string => `gekocht am ${date}`,
+  notCookedNone: 'Noch keines deiner Gerichte ist als gekocht vermerkt, die Liste steht nach Name.',
   tabStock: 'Vorrat',
   backToCook: 'Zurück zu Kochen',
   asOf: (date: string): string => {
