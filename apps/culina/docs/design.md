@@ -297,7 +297,7 @@ was tested with a cook.
 | Names of the source data                                  | "Chicken, broilers or fryers", "Pute, ganz, mit Haut" in offers and lines                                                | kitchen names for the 169 ingredients of the shipped recipes since 2026-11-24; other entries open |
 | Every choice at once                                      | The random pick: 30 choices above one button; the new dish: 18 ticks of "What it is like"                                | open                                                                                              |
 | A sentence of caution on every section                    | "It does not know what goes together", "jede Regel eine Einschätzung", three lines under "Goes with"                     | open; the sourcing rule asks for some                                                             |
-| One long list without groups                              | Cook: 48 dishes by name, a sauce first                                                                                   | open                                                                                              |
+| One long list without groups                              | Cook: 48 dishes by name, a sauce first                                                                                   | in groups since 2026-11-24: frames, then the courses, main first; the native app's list stays one |
 | Checks that prove a thing is there, not that it is of use | 1951 browser checks passed while the roll gave nothing and the offers named guavas with tomatoes                         | open; needs a person                                                                              |
 
 # Icons

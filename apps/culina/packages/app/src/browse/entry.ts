@@ -45,6 +45,12 @@ export interface DishEntry {
   characters: readonly string[];
   /** True when every line that names an ingredient has an amount; for a dish of the notebook, every slot. */
   complete: boolean;
+  /**
+   * True for a shipped frame (tacos, ramen, pizza): the app's own composition of its recipes
+   * (docs/classic-format.md, A frame). Absent otherwise; a frame kept in the notebook is a dish of
+   * its own and has none.
+   */
+  frame?: true;
 }
 
 export const entryKey = (origin: Origin, id: string): string => `${origin}:${id}`;
@@ -103,6 +109,7 @@ export const entryOfClassic = (classic: Classic, lookup: Lookup, lang: Lang): Di
   meatFree: classic.vegetarian,
   characters: characterIds(factsOfClassic(classic, lookup)),
   complete: classicComplete(classic),
+  ...(classic.frame === true ? { frame: true as const } : {}),
 });
 
 /** Every dish: the notebook's first (in its order), then the shipped ones (in theirs). */

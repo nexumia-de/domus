@@ -8,6 +8,7 @@ import { classicsFinder } from './classics-finder.mjs';
 import { components } from './components.mjs';
 import { componentsShipped } from './components-shipped.mjs';
 import { cook } from './cook.mjs';
+import { cookGroups } from './cook-groups.mjs';
 import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
 import { dishCharacters } from './dish-characters.mjs';
@@ -56,6 +57,7 @@ try {
   await dishPairing(browser, server);
   await editorPairing(browser, server);
   await kitParts(browser, server);
+  await cookGroups(browser, server);
   await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);

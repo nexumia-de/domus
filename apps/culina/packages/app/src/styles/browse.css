@@ -68,6 +68,22 @@
   font-size: var(--fs-sm);
 }
 
+/* Cook's list by name in groups: frames, then the courses (src/browse/groups.ts). */
+.dish-group + .dish-group {
+  margin-top: var(--sp-3);
+}
+
+.dish-group-heading {
+  margin: 0 0 var(--sp-1);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.dish-group-count {
+  font-weight: 400;
+}
+
 .dish-row .entry-name {
   overflow-wrap: anywhere;
 }

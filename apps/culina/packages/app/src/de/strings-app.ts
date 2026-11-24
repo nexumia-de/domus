@@ -980,6 +980,10 @@ export const appStringsDe: typeof appStrings = {
     rowOrigin: { own: 'Mein Gericht', shipped: 'Mitgeliefert' },
     /** The start screen: every dish under the one filter, then the tools. */
     startListLabel: 'Passende Gerichte',
+    /** The heading of Cook's group of frames, the app's own compositions (tacos, ramen, pizza). */
+    groupFrames: 'Zusammengestellt',
+    /** The heading of Cook's group of dishes that state no course. */
+    groupNoCourse: 'Ohne Gang',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Meine', shipped: 'Mitgelieferte' },
     /** The folded filter's summary when nothing is chosen. */

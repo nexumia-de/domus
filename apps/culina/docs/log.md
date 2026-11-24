@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (Cook in groups)
+
+- **Update**: Cook's list is no longer one wall of 113 names by alphabet: in the order by name it stands in [groups](behaviour.md#cook), each under a heading of level 2 with its count: the frames first ("Put together"), then the courses with the main course first (main, soup, starter, side, sauce, breakfast, snack, dessert, baking: a judgement), then own dishes without a course. An empty group is not shown, one group left is one list without a heading, and "Use up first" stays one flat list in its order. Pure part `src/browse/groups.ts`; tests `test/browse-groups.test.ts`, `e2e/cook-groups.mjs`; `e2e/dish-browse.mjs` brought to the groups (the order of its four rows and the pan dish's quiet line, which no longer repeats the course of its heading). The native Linux app's list is unchanged. One row of the [pitfalls table](design.md#pitfalls-of-an-interface-built-by-agents) is answered for the web app. Not verified: a screen reader, a cook.
+
 ## 2026-11-24 (a choice of filling, three more frames)
 
 - **Update**: a slot of a [frame](classic-format.md#a-frame) may offer a choice (the beans in place of the chicken): a shipped base is shown as it is cooked, without its alternatives, and the dish screen has "Choose what goes in" under the ingredients; the cook screen and Keep follow the choice. Three more frames (miso ramen, burrito, risotto) and five recipes written for them and read a second time (a quick miso ramen broth, soft-boiled eggs, a chicken and vegetable stir-fry, a white risotto, a lime sour cream). 129 shipped files, 11 frames, Cook lists 113.

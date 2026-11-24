@@ -1132,8 +1132,9 @@ own; the origin is only a choice of the filter.
   closed), and opened the selects (origin, character, course, cuisine in two
   columns from 360 px) and the two ticks; a count line ("4 dishes"), the
   rows. Every dish whose entry passes the filter and the search, sorted by
-  name in the content language, own and shipped mixed. A row is the name and
-  a quiet line: course, cuisine, and the origin ("My dish", "Shipped") while
+  name in the content language, own and shipped mixed; by name in groups
+  under a heading each ([below](#cook), since 2026-11-24). A row is the name and
+  a quiet line: course (not in a course's group, whose heading says it), cuisine, and the origin ("My dish", "Shipped") while
   the rows shown hold both (with one origin left, by "From", a character
   or a search, no row repeats it). A row of a shipped
   dish opens `#/classic/<id>`, a row of an own dish `#/dishes/<id>`. Nothing
@@ -1325,6 +1326,57 @@ shipped, under the one filter, with:
   item a quiet line says so; when the finder cannot read the notebook (a
   broken ingredient tree) the order places nothing and no such line is
   shown, because nothing is known about the dates.
+- **Groups** (since 2026-11-24; the pitfall "one long list without
+  groups" in [design](design.md#pitfalls-of-an-interface-built-by-agents)).
+  In the order by name the list stands in groups, each under a heading of
+  level 2 (below the screen's h1) that names the group and how many dishes
+  it holds, "Main course · 37 dishes" (German "Hauptgericht · 37
+  Gerichte"): first **Put together** (German "Zusammengestellt"), the
+  frames, the app's own compositions (tacos, ramen, pizza), whatever their
+  course; then the other dishes by course in this order: main course, soup,
+  starter, side dish, sauce, breakfast, snack, dessert, baking; then **No
+  course given** (German "Ohne Gang") for own dishes that state none. The
+  order of the courses is a judgement of the agent (what a cook looks for
+  first is a main course, then what goes with it or before it, then the
+  rest of the day and the sweet things), not tested with a cook. Own and
+  shipped dishes share a group, by name within it; the origin stays on the
+  row as before. A frame kept in the notebook is an own dish and stands in
+  its course. An empty group is not shown. In a course's group the row's
+  quiet line drops the course, which the heading says; in the frames group
+  it keeps it. On the shipped content: 11 frames, 37 main courses, 12
+  soups, 2 starters, 38 side dishes, 1 breakfast, 9 desserts, 3 baking, 113
+  rows. **What was decided and why:** the filter, the search and "Only with
+  what I have" only drop rows, and the groups are drawn from what is left;
+  when one group is left (a course chosen that no frame has, such as soup)
+  the list is one list without a heading, since the heading would only
+  repeat the filter and the count line; choosing "Main course" leaves two
+  groups, the frames and the main courses, both with their heading. The
+  order **Use up first** is one flat list in its own order: there the
+  order is the answer (the nearest use-by first), and groups by course
+  would break it apart. Each group is its own list, labelled by its
+  heading; the flat list keeps the label "Dishes that fit". The way back
+  from a dish leads to Cook in the same groups under the same filter; the
+  screen opens at its top, as before the groups (the place in the list
+  was not kept before and is not now). Pure part: `groupRows` in
+  `src/browse/groups.ts`; the headings in `src/screens/dish-list.ts`.
+  **Test:** `test/browse-groups.test.ts` (entries written by hand: the
+  order of the groups, a frame in the frames group, own and shipped in one
+  group, the order by name within a group, one group left gives no groups,
+  the course filter leaving two groups (and, the control, one), the quiet
+  line in a group, every course of the engine placed once; and the shipped
+  content: 113 entries, 11 frames first, the main courses next, the
+  courses in order), `e2e/cook-groups.mjs` (the real content and an empty
+  notebook at 360 x 720, English and German: the headings in order with
+  their counts and as headings of level 2, each list labelled by its
+  heading, 113 rows; "Main course" leaves two headings with 11 and 37 and
+  the count line 48; "Soup" leaves 12 rows and no heading (the control);
+  "Use up first" is one flat list of 113; the way back; no horizontal
+  scroll, 44 px targets), `e2e/dish-browse.mjs` (the fixture: two groups,
+  the pan dish's quiet line without its course). Not proved: a screen
+  reader reading the headings, a real phone, an own dish without a course
+  in a browser (only in the unit test), that the order of the courses is
+  the one a cook wants. The native Linux app's Cook list is still one list
+  by name; `groupRows` is pure and could serve it.
 - Both are kept on the device under `culina.cookList` (`{ have, order }`,
   `src/prefs.ts`; anything unreadable falls back field by field).
 - **The stock** is one tap away: "What is there" (German "Vorrat") beside

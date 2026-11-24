@@ -955,6 +955,10 @@ export const appStrings = {
     rowOrigin: { own: 'My dish', shipped: 'Shipped' },
     /** Cook's one list of every dish under the one filter (docs/decisions/cook-screen.md). */
     startListLabel: 'Dishes that fit',
+    /** The heading of Cook's group of frames, the app's own compositions (tacos, ramen, pizza). */
+    groupFrames: 'Put together',
+    /** The heading of Cook's group of dishes that state no course. */
+    groupNoCourse: 'No course given',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Mine', shipped: 'Shipped' },
     /** The folded filter's summary when nothing is chosen. */
