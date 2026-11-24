@@ -74,10 +74,9 @@
 }
 
 .dish-group-heading {
-  margin: 0 0 var(--sp-1);
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-  font-weight: 700;
+  margin: 0 0 var(--sp-2);
+  /* The size of the app's other group headings (Cook's "From what is there", the Notebook's). */
+  font-size: var(--fs-md);
 }
 
 .dish-group-count {
