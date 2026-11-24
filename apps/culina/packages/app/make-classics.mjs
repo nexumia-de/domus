@@ -4,11 +4,15 @@
 // committed. Runs before tests, typecheck and build.
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { composeFrames } from './compose-frames.mjs';
 
 const dataDir = fileURLToPath(new URL('./data/classics/', import.meta.url));
 // The import pack (docs/decisions/bases-and-pack.md): dish files in the same format, offered to
 // the user and not shown until the user takes them; the app reads them from dist/classics-pack.json.
 const packDir = fileURLToPath(new URL('./data/pack/', import.meta.url));
+// The frames (docs/classic-format.md, A frame): the project's own compositions of shipped recipes,
+// composed into bases here; the app gets them in dist/classics.json after the recipes.
+const frameDir = fileURLToPath(new URL('./data/frames/', import.meta.url));
 const out = fileURLToPath(new URL('./src/classics/classics.generated.ts', import.meta.url));
 
 const techniqueDir = fileURLToPath(new URL('../engine/data/techniques/', import.meta.url));
@@ -30,11 +34,31 @@ const dishFiles = (dir) =>
 const classicFiles = () => dishFiles(dataDir);
 const packFiles = () => dishFiles(packDir);
 
-/** The content of dist/classics.json: every dish (path order), technique and substitute (file name order). */
-export const shippedContent = () => ({
+const readClassics = () => classicFiles().map((f) => JSON.parse(readFileSync(dataDir + f, 'utf8')));
+const frameFiles = () =>
+  existsSync(frameDir)
+    ? readdirSync(frameDir)
+        .filter((f) => f.endsWith('.json'))
+        .sort()
+    : [];
+
+/** Every frame of data/frames/, composed into a base, in file name order. */
+export const frameContent = (classics = readClassics()) =>
+  composeFrames(
+    frameFiles().map((f) => JSON.parse(readFileSync(frameDir + f, 'utf8'))),
+    classics,
+  );
+
+/** The content of dist/classics.json: every dish (path order), then the frames, the techniques and substitutes (file name order). */
+export const shippedContent = () => {
+  const classics = readClassics();
+  return shippedWith([...classics, ...frameContent(classics)]);
+};
+
+const shippedWith = (classics) => ({
   format: 'culina-classics',
   formatVersion: 1,
-  classics: classicFiles().map((f) => JSON.parse(readFileSync(dataDir + f, 'utf8'))),
+  classics,
   techniques: readdirSync(techniqueDir)
     .filter((f) => f.endsWith('.json'))
     .sort()
@@ -71,7 +95,9 @@ export const makeClassics = () => {
       `/** Every file of data/classics/<country>/, in path order; shape checked by the tests. */\n` +
       `export const RAW_CLASSICS: readonly unknown[] = ${array(files.map((_, i) => `c${i}`))};\n\n` +
       `/** Every file of data/pack/<country>/, the import pack, in path order. */\n` +
-      `export const RAW_PACK: readonly unknown[] = ${array(pack.map((_, i) => `p${i}`))};\n`,
+      `export const RAW_PACK: readonly unknown[] = ${array(pack.map((_, i) => `p${i}`))};\n\n` +
+      `/** Every frame of data/frames/, composed into a base by compose-frames.mjs. */\n` +
+      `export const RAW_FRAMES: readonly unknown[] = ${JSON.stringify(frameContent(), null, 2)};\n`,
   );
   return files.length;
 };

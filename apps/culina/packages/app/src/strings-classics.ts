@@ -55,6 +55,13 @@ export const classicsStrings = {
     'A recipe of this app, not from a source: written by an AI model from general cooking knowledge.',
   ownChecked: 'Read a second time by another AI session. Nobody of the project has cooked it.',
   ownPersons: (n: number): string => `Written for ${n} persons.`,
+  /** A frame: the app's own composition of shipped recipes. */
+  frameSource: 'Put together by this app from its own recipes. Each part is a recipe of its own:',
+  framePartOwn: (name: string): string => `${name}: a recipe of this app, written by an AI model.`,
+  framePartCited: (name: string, author: string, title: string, year: number): string =>
+    `${name}: after ${author}, ${title} (${year}).`,
+  frameChecked:
+    'Each part was read a second time. Nobody read the combination as a whole, and nobody has cooked it.',
   personsStated: (n: number): string => `The source gives its amounts for ${n} persons.`,
   personsSettled: (n: number): string => `The source names no number; we took ${n} persons.`,
   portionsLabel: 'Portions',

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (frames)
+
+- **Creation**: eight [frames](classic-format.md#a-frame) (tacos, chickpea curry plate, souvlaki plate, Japanese set meal, burger plate, Chinese rice plate, köfte plate, pizza), the project's own compositions of its own recipes: a short file per frame in `data/frames/`, composed by the build into a base whose components say which recipe they are and keep its source, also through Keep. Roadmap goal 7 has its first frames. One recipe per slot: an alternative would be listed as a part of the dish by the screens of a shipped dish, found in a browser and left as the next step.
+
 ## 2026-11-24 (kitchen names)
 
 - **Creation**: [kitchen names](ingredient-catalogue.md#kitchen-names): the 169 catalogue entries the shipped recipes name show the name a cook writes ("Olive oil", "Wasser") in place of the database's ("Oil, olive, salad or cooking", "Beverages, water, tap, drinking"), in English and German; written by an AI model, read by another agent. One row of the [pitfalls table](design.md#pitfalls-of-an-interface-built-by-agents) is answered for the recipes.

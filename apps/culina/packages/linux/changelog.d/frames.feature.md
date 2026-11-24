@@ -1,0 +1,1 @@
+Eight dishes are frames the app put together from its own recipes (tacos, pizza, plates of several cuisines); the source of such a dish names each part and says that nobody cooked the combination. Ingredients are named as a cook writes them ("Olive oil", "Wasser"), and a recipe with water can be listed with its water as an ingredient.

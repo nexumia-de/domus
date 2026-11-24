@@ -408,6 +408,8 @@ export type {
   Classic,
   ClassicComponent,
   ClassicKind,
+  ClassicSource,
+  ComponentFrom,
   ClassicLine,
   ClassicSlot,
   ClassicUnit,

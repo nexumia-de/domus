@@ -1,5 +1,5 @@
 // A sauce is a part, and the Notebook holds what is the user's: in a browser, in German, on the
-// real shipped files and an empty notebook. Cook lists 98 dishes and no alioli; the Components
+// real shipped files and an empty notebook. Cook lists 106 dishes (98 recipes and 8 frames) and no alioli; the Components
 // list has it; the Notebook's Dishes list no shipped dish and say where the shipped ones are.
 // Chromium at 360 px; no real phone.
 import { check, watch } from './harness.mjs';
@@ -17,7 +17,7 @@ export const kitParts = async (browser, server) => {
   await page.locator('.dish-row').first().waitFor();
   const cook = await page.locator('.dish-row').allInnerTexts();
   check(
-    cook.length === 98 &&
+    cook.length === 106 &&
       !cook.some((row) =>
         // The name is the row's first line. A dish may name a sauce it is made with (the
         // coleslaw is "Krautsalat mit Mayonnaise"); only a row that is the sauce itself counts.
@@ -25,7 +25,7 @@ export const kitParts = async (browser, server) => {
           row,
         ),
       ),
-    `${label}: Cook lists 98 dishes and none of the sauces that are bases (${cook.length})`,
+    `${label}: Cook lists 106 dishes (98 recipes and 8 frames) and none of the sauces that are bases (${cook.length})`,
   );
   check(
     cook.some((row) => row.includes('Risotto')) && cook.some((row) => row.includes('Tortilla')),
@@ -49,5 +49,33 @@ export const kitParts = async (browser, server) => {
   );
   await layout(page, label);
   check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
+  // A frame: the app's own composition. Its source section names every part with where it comes
+  // from, and it can be kept, since no part has a line the catalogue lacks.
+  await open(page, server.origin, 'classic/tacos');
+  await page.getByRole('heading', { level: 1, name: 'Tacos' }).waitFor();
+  check(
+    (await page.getByRole('button', { name: 'In mein Notizbuch übernehmen' }).count()) === 1,
+    `${label} frame: the tacos can be kept in the notebook`,
+  );
+  const sourceBlock = page.locator('.source-block');
+  await sourceBlock.locator('summary').click();
+  const sourceText = await sourceBlock.innerText();
+  check(
+    sourceText.includes('Von dieser App aus ihren eigenen Rezepten zusammengestellt') &&
+      [
+        'Weizentortillas',
+        'Gezupftes Hähnchen in Tomate und Chili',
+        'Guacamole',
+        'Frische Tomatensalsa',
+      ].every((part) => sourceText.includes(`${part}: ein Rezept dieser App`)) &&
+      sourceText.includes(
+        'Die Zusammenstellung als Ganzes hat niemand gelesen und niemand gekocht',
+      ),
+    `${label} frame: the source section says the app put it together, names each part and what nobody did`,
+  );
+  check(
+    !sourceText.includes('Kichererbsen-Curry'),
+    `${label} frame: control, a recipe that is no part of the tacos is not named`,
+  );
   await context.close();
 };

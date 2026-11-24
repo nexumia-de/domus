@@ -1,0 +1,34 @@
+{
+  "id": "chana-masala-plate",
+  "name": {
+    "en": "Chickpea curry with rice, raita and salad",
+    "de": "Kichererbsen-Curry mit Reis, Raita und Salat"
+  },
+  "originalName": "Chana masala thali",
+  "country": "in",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "main",
+      "parts": ["chana-masala"]
+    },
+    {
+      "role": "starch",
+      "parts": ["basmati-chawal"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["raita"]
+    },
+    {
+      "role": "acid",
+      "parts": ["kachumber"]
+    }
+  ],
+  "note": {
+    "en": "Start the chickpeas the day before: they soak overnight. Cook the rice while the curry simmers; the raita and the salad are made last and served cold beside it. The chapati of this app go with it as well as rice.",
+    "de": "Die Kichererbsen am Vortag ansetzen: Sie weichen über Nacht. Den Reis kochen, während das Curry köchelt; Raita und Salat zuletzt zubereiten und kalt dazu reichen. Statt Reis passen auch die Chapati dieser App."
+  }
+}

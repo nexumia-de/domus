@@ -1,0 +1,34 @@
+{
+  "id": "souvlaki-plate",
+  "name": {
+    "en": "Chicken skewers with lemon potatoes, tzatziki and salad",
+    "de": "Hähnchenspieße mit Zitronenkartoffeln, Tzatziki und Salat"
+  },
+  "originalName": "Souvlaki merida",
+  "country": "gr",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "main",
+      "parts": ["souvlaki-kotopoulo"]
+    },
+    {
+      "role": "starch",
+      "parts": ["patates-lemonates"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["tzatziki"]
+    },
+    {
+      "role": "side",
+      "parts": ["horiatiki"]
+    }
+  ],
+  "note": {
+    "en": "The potatoes take the longest: put them into the oven first and marinate the chicken meanwhile. Make the tzatziki and the salad while the potatoes roast, and grill the skewers last.",
+    "de": "Die Kartoffeln brauchen am längsten: Sie kommen zuerst in den Ofen, währenddessen mariniert das Hähnchen. Tzatziki und Salat zubereiten, solange die Kartoffeln garen, die Spieße zuletzt grillen."
+  }
+}

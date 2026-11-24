@@ -32,6 +32,10 @@
       "description": "A base to build on (components with slots; a component of a slot's role that fills no slot is an alternative for it) or a dish as the source gives it. Without kind a file is a dish.",
       "enum": ["base", "dish"]
     },
+    "frame": {
+      "description": "True for a frame: a base the project put together from shipped recipes, composed by the build from data/frames/<id>.json. Its components carry `from`.",
+      "const": true
+    },
     "originalName": {
       "type": "string",
       "minLength": 1,
@@ -47,63 +51,7 @@
       "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/course"
     },
     "source": {
-      "description": "Where the recipe is from: a cited source, or the project's own recipe (written from general cooking knowledge, without a source).",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": ["author", "title", "year", "place", "url"],
-          "additionalProperties": false,
-          "properties": {
-            "author": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 200
-            },
-            "title": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 300
-            },
-            "year": {
-              "type": "integer",
-              "minimum": 1400,
-              "maximum": 2100
-            },
-            "place": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 200
-            },
-            "url": {
-              "type": "string",
-              "pattern": "^https?://\\S+$",
-              "maxLength": 500
-            },
-            "licence": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 200
-            }
-          },
-          "description": "A source the recipe follows: read by the transcriber, with the place in it."
-        },
-        {
-          "description": "The project's own recipe: no source to cite; the year it was written.",
-          "type": "object",
-          "required": ["own", "year"],
-          "additionalProperties": false,
-          "properties": {
-            "own": {
-              "const": true
-            },
-            "year": {
-              "type": "integer",
-              "minimum": 2026,
-              "maximum": 2100
-            }
-          }
-        }
-      ]
+      "$ref": "#/$defs/source"
     },
     "persons": {
       "description": "The number of persons the source's amounts are for; basis settled needs an entry in settled with target persons.",
@@ -185,6 +133,23 @@
                   "required": ["text"]
                 }
               ]
+            }
+          },
+          "from": {
+            "description": "Only in a frame: the shipped recipe this component was taken from, with that recipe's name and source.",
+            "type": "object",
+            "required": ["recipe", "name", "source"],
+            "additionalProperties": false,
+            "properties": {
+              "recipe": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id"
+              },
+              "name": {
+                "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/i18nText"
+              },
+              "source": {
+                "$ref": "#/$defs/source"
+              }
             }
           }
         }
@@ -359,6 +324,65 @@
           "const": true
         }
       }
+    },
+    "source": {
+      "description": "Where the recipe is from: a cited source, or the project's own recipe (written from general cooking knowledge, without a source).",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["author", "title", "year", "place", "url"],
+          "additionalProperties": false,
+          "properties": {
+            "author": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "year": {
+              "type": "integer",
+              "minimum": 1400,
+              "maximum": 2100
+            },
+            "place": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "url": {
+              "type": "string",
+              "pattern": "^https?://\\S+$",
+              "maxLength": 500
+            },
+            "licence": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "description": "A source the recipe follows: read by the transcriber, with the place in it."
+        },
+        {
+          "description": "The project's own recipe: no source to cite; the year it was written.",
+          "type": "object",
+          "required": ["own", "year"],
+          "additionalProperties": false,
+          "properties": {
+            "own": {
+              "const": true
+            },
+            "year": {
+              "type": "integer",
+              "minimum": 2026,
+              "maximum": 2100
+            }
+          }
+        }
+      ]
     }
   }
 }

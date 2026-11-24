@@ -1,0 +1,30 @@
+{
+  "id": "burger-plate",
+  "name": {
+    "en": "Burgers with coleslaw and barbecue sauce",
+    "de": "Burger mit Krautsalat und Barbecuesauce"
+  },
+  "originalName": "Burger plate",
+  "country": "us",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "main",
+      "parts": ["hamburger-patties"]
+    },
+    {
+      "role": "crunch",
+      "parts": ["coleslaw"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["barbecue-sauce"]
+    }
+  ],
+  "note": {
+    "en": "Make the sauce and the coleslaw first; both get better while they stand. Fry the patties last. Buns are not part of this app's recipes: buy them or serve the patties without.",
+    "de": "Zuerst Sauce und Krautsalat zubereiten; beide werden beim Stehen besser. Die Patties zuletzt braten. Brötchen gehören nicht zu den Rezepten dieser App: kaufen oder die Patties ohne servieren."
+  }
+}

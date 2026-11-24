@@ -52,6 +52,8 @@ export interface DishView {
   check: Classic['check'];
   sourceRemarks: SourceRemarks;
   note?: string;
+  /** Only for a frame: its parts, each with the recipe it is and that recipe's source. */
+  frameParts?: { name: string; recipe: string; source: Classic['source'] }[];
 }
 
 export type DishViewResult = { ok: true; view: DishView } | { ok: false; code: string };
@@ -152,6 +154,21 @@ export function dishView(
       check: classic.check,
       sourceRemarks: remarks,
       ...(classic.note === undefined ? {} : { note: pickText(classic.note, lang) }),
+      ...(classic.frame === true
+        ? {
+            frameParts: (classic.components ?? []).flatMap((c) =>
+              c.from === undefined
+                ? []
+                : [
+                    {
+                      name: pickText(c.from.name, lang),
+                      recipe: c.from.recipe,
+                      source: c.from.source,
+                    },
+                  ],
+            ),
+          }
+        : {}),
     },
   };
 }

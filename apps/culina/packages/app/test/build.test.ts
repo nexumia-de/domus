@@ -122,7 +122,10 @@ test('the classics, technique notes, handling rules and substitutes are their ow
   const techniqueFiles = dataDir('../engine/data/techniques/').filter((f) =>
     String(f).endsWith('.json'),
   );
-  expect(content.classics).toHaveLength(dishFiles.length);
+  // The frames are composed into dish files by the build and follow the recipes.
+  const frameFiles = dataDir('data/frames/').filter((f) => String(f).endsWith('.json'));
+  expect(frameFiles.length).toBeGreaterThan(0);
+  expect(content.classics).toHaveLength(dishFiles.length + frameFiles.length);
   expect(content.techniques).toHaveLength(techniqueFiles.length);
   const handlingFiles = dataDir('../engine/data/handling/').filter((f) =>
     String(f).endsWith('.json'),

@@ -59,8 +59,14 @@ app and finds quickly what they want to cook or can cook.
    [bases and the pack](decisions/bases-and-pack.md)). Done so far: 83
    of the 124 shipped files are bases (16 came with the 20 recipes of
    2026-11-23, [selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit); 50 with the 56 own recipes of 13 cuisines of
-   2026-11-24, [own recipes](decisions/own-recipes.md)); none has an alternative
-   and no frame exists. Decided by the owner on 2026-11-23
+   2026-11-24, [own recipes](decisions/own-recipes.md)); none has an alternative.
+   Eight frames exist since 2026-11-24 (tacos, a chickpea curry plate, a
+   souvlaki plate, a Japanese set meal, a burger plate, a Chinese rice
+   plate, a köfte plate, pizza), composed by the build from the own
+   recipes ([format](classic-format.md#a-frame)), each with one recipe
+   per slot: the screens of a shipped dish cannot yet mark an
+   alternative, which is the next step here, with burrito, bowl, risotto,
+   stir-fry and soup. Decided by the owner on 2026-11-23
    ([building kit](decisions/building-kit.md), answers 1 and 2): a
    frame is the project's own composition, each component in it keeping
    its source; the 31 shipped dishes that are no base are taken apart
