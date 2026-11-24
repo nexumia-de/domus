@@ -1,0 +1,307 @@
+{
+  "id": "quiche-lorraine",
+  "kind": "base",
+  "name": {
+    "en": "Quiche Lorraine",
+    "de": "Quiche Lorraine"
+  },
+  "originalName": "Quiche lorraine",
+  "country": "fr",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "quiche-shortcrust",
+      "name": {
+        "en": "Shortcrust pastry",
+        "de": "Mürbeteig"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cold, in small cubes.",
+            "de": "Kalt, in kleinen Würfeln."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour and the salt, add the butter and rub it in with the fingertips until the mixture looks like coarse crumbs.",
+            "de": "Mehl und Salz mischen, die Butter dazugeben und mit den Fingerspitzen verreiben, bis die Masse groben Krümeln gleicht."
+          },
+          "action": "mix",
+          "uses": ["flour", "salt", "butter"]
+        },
+        {
+          "text": {
+            "en": "Add the cold water and press everything quickly into a dough; knead no longer than it takes to hold together.",
+            "de": "Das kalte Wasser dazugeben und alles rasch zu einem Teig zusammendrücken; nur so lange kneten, bis er zusammenhält."
+          },
+          "action": "add",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Flatten the dough into a disc, wrap it and chill it.",
+            "de": "Den Teig zu einer flachen Scheibe drücken, einwickeln und kalt stellen."
+          },
+          "action": "chill",
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Roll the dough out on a floured surface to a round 3 mm thick.",
+            "de": "Den Teig auf bemehlter Fläche zu einem 3 mm dicken Kreis ausrollen."
+          },
+          "technique": "roll-dough"
+        },
+        {
+          "text": {
+            "en": "Line a buttered tart tin of 26 cm with the dough, press it into the edge, trim what hangs over and prick the base all over with a fork.",
+            "de": "Eine gebutterte Tarteform von 26 cm mit dem Teig auslegen, in die Kante drücken, den Überstand abschneiden und den Boden mit einer Gabel rundum einstechen."
+          },
+          "action": "fill"
+        }
+      ]
+    },
+    {
+      "id": "quiche-filling",
+      "name": {
+        "en": "Bacon and egg cream filling",
+        "de": "Füllung aus Speck und Eiersahne"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "bacon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168277"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Smoked streaky bacon, cut into small strips.",
+            "de": "Geräucherter durchwachsener Speck, in kleine Streifen geschnitten."
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170859"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "amount": {
+            "value": 0.125,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Heat the oven to 180 °C.",
+            "de": "Den Ofen auf 180 °C vorheizen."
+          },
+          "action": "preheat",
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          }
+        },
+        {
+          "text": {
+            "en": "Fry the bacon in a pan without fat over medium heat until lightly browned, then drain it on kitchen paper.",
+            "de": "Den Speck in einer Pfanne ohne Fett bei mittlerer Hitze leicht bräunen, dann auf Küchenpapier abtropfen lassen."
+          },
+          "action": "cook",
+          "uses": ["bacon"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Whisk the eggs with the cream and the milk and season with the salt, the pepper and the nutmeg.",
+            "de": "Die Eier mit Sahne und Milch verquirlen und mit Salz, Pfeffer und Muskat würzen."
+          },
+          "action": "whisk",
+          "uses": ["eggs", "cream", "milk", "salt", "pepper", "nutmeg"]
+        },
+        {
+          "text": {
+            "en": "Scatter the bacon over the pastry base and pour the egg cream over it.",
+            "de": "Den Speck auf dem Teigboden verteilen und die Eiersahne darübergießen."
+          },
+          "action": "fill",
+          "uses": ["bacon"]
+        },
+        {
+          "text": {
+            "en": "Bake on the lowest shelf until the filling has set and the top is golden brown.",
+            "de": "Auf der untersten Schiene backen, bis die Füllung gestockt und die Oberfläche goldbraun ist."
+          },
+          "technique": "bake",
+          "time": {
+            "value": 40,
+            "to": 45,
+            "unit": "min"
+          },
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the quiche stand before cutting; serve it warm or lukewarm.",
+            "de": "Die Quiche vor dem Anschneiden stehen lassen; warm oder lauwarm servieren."
+          },
+          "action": "stand",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "quiche-shortcrust"
+      }
+    },
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "quiche-filling"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it raised the eggs in the filling from 3 to 4 so that 400 ml of cream and milk set firmly."
+  }
+}

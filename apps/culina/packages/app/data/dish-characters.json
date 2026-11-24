@@ -3,7 +3,7 @@
   "formatVersion": 1,
   "note": "The characters of a dish that Culina derives from its ingredients, their amounts and the techniques of its steps (docs/dish-characters.md). A character is computed when a dish is shown and never stored. A class is a catalogue id (the ingredient or a group above it) or `category:` and a USDA food category. Any clause of `when` gives the character; every condition of a clause must hold. `minShare` is a share of the dish's mass; where it cannot be known, presence decides unless `presence` is false. Every row states in `basis` what it rests on: all thresholds are judgements of the project, none comes from a source.",
   "meatAndFish": {
-    "basis": "Which ingredient lines make a dish of the notebook not \"without meat and fish\": the USDA food categories of meat, poultry and fish (as the rules \"with meat\" and \"with fish\"), and the foods of an animal's body that USDA files elsewhere, under Fats and Oils: the fat group (beef tallow, chicken, turkey and goose fat), lard, bacon grease, the fish oils, and the two shortenings made with lard or beef tallow. Found by reading every catalogue entry outside those categories on 2026-11-21; the catalogue has no gelatine, broth, meat extract, anchovy or fish sauce. A line naming a group of which any food below is one of these (\"shortening\") is not known either way. Eggs, milk, butter, cheese and honey are not meat or fish. A judgement of the project.",
+    "basis": "Which ingredient lines make a dish of the notebook not \"without meat and fish\": the USDA food categories of meat, poultry and fish (as the rules \"with meat\" and \"with fish\"), and the foods of an animal's body that USDA files elsewhere, under Fats and Oils: the fat group (beef tallow, chicken, turkey and goose fat), lard, bacon grease, the fish oils, and the two shortenings made with lard or beef tallow; and under Soups, Sauces, and Gravies: the chicken and the beef stock, the fish sauce, the oyster sauce and the Worcestershire sauce (made with anchovies in the usual recipe; USDA's row does not list its ingredients, so this is the project's judgement). Found by reading every catalogue entry outside those categories on 2026-11-21 and the named foods added on 2026-11-23; the catalogue has no gelatine, meat extract or anchovy paste, and its vegetable broth is not in the list. A line naming a group of which any food below is one of these (\"shortening\") is not known either way. Eggs, milk, butter, cheese and honey are not meat or fish. A judgement of the project.",
     "classes": [
       "category:Beef Products",
       "category:Pork Products",
@@ -16,7 +16,13 @@
       "fdc-172345",
       "fdc-group-fish-oil",
       "fdc-172327",
-      "fdc-173567"
+      "fdc-173567",
+      "fdc-group-soup-stock",
+      "fdc-172884",
+      "fdc-172883",
+      "fdc-174531",
+      "fdc-174529",
+      "fdc-171610"
     ]
   },
   "characters": [

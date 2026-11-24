@@ -12,7 +12,7 @@ const offered: Offered = {
 };
 
 test('each list starts with "any", and a kept choice no longer offered stays to be dropped', () => {
-  expect(choicesOf(offered, { cuisine: 'jp' }).cuisine).toEqual([undefined, 'de', 'it', 'jp']);
+  expect(choicesOf(offered, { cuisine: 'xx' }).cuisine).toEqual([undefined, 'de', 'it', 'xx']);
   expect(choicesOf(offered, {}).course).toEqual([undefined, 'soup', 'main']);
   expect(choicesOf(offered, { cuisine: 'de' }).cuisine).toEqual([undefined, 'de', 'it']);
 });
@@ -33,7 +33,7 @@ test('the summary names the choices, or says anything', () => {
     `${s.classics.course.soup} · ${s.classics.countries.it} · ${s.browse.meatFree}`,
   );
   // A word the app does not know is shown as it is.
-  expect(summaryOf(s, 'en', { cuisine: 'jp' })).toBe('jp');
+  expect(summaryOf(s, 'en', { cuisine: 'xx' })).toBe('xx');
 });
 
 test('the line under a dish: course, cuisine, meat; what is not stated is left out', () => {

@@ -1,0 +1,232 @@
+{
+  "id": "buttermilk-pancakes",
+  "kind": "base",
+  "name": {
+    "en": "Buttermilk pancakes",
+    "de": "Buttermilch-Pancakes"
+  },
+  "originalName": "Buttermilk pancakes",
+  "country": "us",
+  "vegetarian": true,
+  "course": "breakfast",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "buttermilk-pancakes-starch",
+      "name": {
+        "en": "Buttermilk pancakes",
+        "de": "Buttermilch-Pancakes"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "baking-powder",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-leavening-agents-baking-powder"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "baking-soda",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-175040"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "buttermilk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-buttermilk-fluid"
+          },
+          "amount": {
+            "value": 480,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 45,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Melted and cooled a little.",
+            "de": "Geschmolzen und etwas abgekühlt."
+          }
+        },
+        {
+          "key": "butter-pan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "For the pan.",
+            "de": "Für die Pfanne."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour, the sugar, the baking powder, the baking soda and the salt in a large bowl.",
+            "de": "Mehl, Zucker, Backpulver, Natron und Salz in einer großen Schüssel mischen."
+          },
+          "action": "mix",
+          "uses": ["flour", "sugar", "baking-powder", "baking-soda", "salt"]
+        },
+        {
+          "text": {
+            "en": "Whisk the buttermilk, the eggs and the melted butter in a second bowl.",
+            "de": "Buttermilch, Eier und die geschmolzene Butter in einer zweiten Schüssel verquirlen."
+          },
+          "action": "whisk",
+          "uses": ["buttermilk", "egg", "butter"]
+        },
+        {
+          "text": {
+            "en": "Pour the liquid onto the flour mixture and stir only until no dry flour is left; small lumps stay.",
+            "de": "Die Flüssigkeit zur Mehlmischung gießen und nur so lange rühren, bis kein trockenes Mehl mehr zu sehen ist; kleine Klümpchen bleiben."
+          },
+          "action": "stir"
+        },
+        {
+          "text": {
+            "en": "Let the batter stand.",
+            "de": "Den Teig stehen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat a pan over medium heat and grease it thinly with a little of the butter for the pan.",
+            "de": "Eine Pfanne bei mittlerer Hitze erhitzen und mit etwas Butter für die Pfanne dünn einfetten."
+          },
+          "action": "grease",
+          "uses": ["butter-pan"]
+        },
+        {
+          "text": {
+            "en": "Pour in about 60 ml of batter for each pancake and cook until bubbles break on top and the edges look set.",
+            "de": "Für jeden Pancake etwa 60 ml Teig hineingießen und backen, bis oben Blasen aufplatzen und die Ränder fest aussehen."
+          },
+          "action": "cook",
+          "time": {
+            "value": 2,
+            "to": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn the pancakes and cook the second side until golden.",
+            "de": "Die Pancakes wenden und die zweite Seite goldbraun backen."
+          },
+          "action": "turn",
+          "time": {
+            "value": 1,
+            "to": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cook the rest of the batter in the same way and serve the pancakes warm.",
+            "de": "Den übrigen Teig ebenso backen und die Pancakes warm servieren."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "buttermilk-pancakes-starch"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  },
+  "note": {
+    "en": "Makes about 12 pancakes of 10 cm.",
+    "de": "Ergibt etwa 12 Pancakes von 10 cm."
+  }
+}

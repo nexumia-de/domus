@@ -6,9 +6,11 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
+import { COUNTRY_CODES } from '@culina/engine';
 import { createMemoryStore, ensureSpace } from '@nexumia-de/hospes';
 import {
   classics,
+  dishClassics,
   dishView,
   portionsOf,
   readyKeysOf,
@@ -105,7 +107,9 @@ test('Only with what I have keeps the dishes the finder finds complete, as ready
   ).toEqual([BUTTER, EGG, FLOUR, MILK, SALT].sort());
   const all = session.cookView({}, { have: false, order: 'name' });
   const ready = session.cookView({}, { have: true, order: 'name' });
-  expect(all.rows).toHaveLength(classics().length);
+  // A base that is a sauce is a part, not a dish: it is on no dish list.
+  expect(all.rows).toHaveLength(dishClassics().length);
+  expect(all.rows.some((row) => row.entry.key === 'shipped:alioli')).toBe(false);
   expect(ready.noStock).toBe(false);
   expect(ready.rows.length).toBeGreaterThan(0);
   expect(ready.rows.length).toBeLessThan(all.rows.length);
@@ -113,7 +117,7 @@ test('Only with what I have keeps the dishes the finder finds complete, as ready
   const keys = readyKeysOf(
     { ingredients: [], components: [], dishes: [], stock: session.state().stock },
     '2026-11-21',
-    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+    { classics: dishClassics(), catalogue: session.catalogue(), lang: 'en' },
   );
   expect(ready.rows.map((row) => row.entry.key).sort()).toEqual([...keys].sort());
   expect(ready.rows.some((row) => row.entry.id === 'egg-noodles')).toBe(true);
@@ -172,7 +176,7 @@ test('Use up first puts the dishes that use a dated item first, from a use-by th
     { ingredients: [], components: [], dishes: [], stock: session.state().stock },
     '2026-11-21',
     new Map(session.entries().map((e) => [e.key, e])),
-    { classics: classics(), catalogue: session.catalogue(), lang: 'en' },
+    { classics: dishClassics(), catalogue: session.catalogue(), lang: 'en' },
   );
   expect([...marks.entries()]).toEqual([...web.marks.entries()]);
   // Both choices together: only complete dishes, the dated ones first.
@@ -311,12 +315,14 @@ test('every dish is an entry of the web app, and the one filter narrows the list
   const { session } = await make();
   await session.load();
   const all = session.entries();
-  expect(all).toHaveLength(classics().length);
+  expect(all).toHaveLength(dishClassics().length);
+  // 26 shipped files are sauce bases, which are parts and no dishes.
+  expect(dishClassics().length).toBe(classics().length - 26);
   expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
-  // What is offered comes from the dishes: the four countries in their order, courses, characters.
+  // What is offered comes from the dishes: the countries in the app's order, courses, characters.
   const offered = session.offered();
   expect(offered.origins).toEqual(['shipped']);
-  expect(offered.cuisines).toEqual(['de', 'it', 'fr', 'es']);
+  expect(offered.cuisines).toEqual([...COUNTRY_CODES]);
   expect(offered.courses.length).toBeGreaterThan(1);
   expect(offered.characters.length).toBeGreaterThan(0);
   // Each choice keeps only what passes it, and the choices combine.

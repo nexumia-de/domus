@@ -56,7 +56,7 @@ describe('the dish form', () => {
   });
 
   test('a value the lists do not have is not stored (a hand-edited draft)', () => {
-    const r = record(form({ course: 'brunch', cuisine: 'jp' }));
+    const r = record(form({ course: 'brunch', cuisine: 'xx' }));
     expect('course' in r || 'cuisine' in r).toBe(false);
   });
 });
@@ -66,7 +66,7 @@ describe('the stored record', () => {
   test('the schema takes the courses and countries of a classic, and nothing else', () => {
     expect(schemaIssues('dishes', { ...base, course: 'dessert', cuisine: 'es' })).toEqual([]);
     expect(schemaIssues('dishes', { ...base, course: 'brunch' })).not.toEqual([]);
-    expect(schemaIssues('dishes', { ...base, cuisine: 'jp' })).not.toEqual([]);
+    expect(schemaIssues('dishes', { ...base, cuisine: 'xx' })).not.toEqual([]);
   });
 
   test('export and import carry both fields; a file with another code is refused', () => {
@@ -75,7 +75,7 @@ describe('the stored record', () => {
     const read = parseExport(text, recordValidators);
     if (!read.ok) throw new Error(read.error.code);
     expect(read.content.records.dishes).toEqual([dish]);
-    const other = text.replace('"cuisine": "de"', '"cuisine": "jp"');
+    const other = text.replace('"cuisine": "de"', '"cuisine": "xx"');
     expect(parseExport(other, recordValidators).ok).toBe(false);
   });
 

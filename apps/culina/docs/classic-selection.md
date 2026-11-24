@@ -309,3 +309,79 @@ None. No host refused a request.
 
 - The OCR is machine-read old print with broken hyphenation, so every quote is a clean reading of the printed line.
 - Several page heads are garbled; the page numbers above are bracketed where needed.
+
+# Added on 2026-11-23: 20 recipes for the kit
+
+The owner asked for more shipped recipes and had agents research and
+write them. The aim was what the kit lacked: sauces, starch sides and
+plain dishes, from the books already in use. One writer per country
+read the plain text of the scan and wrote six files; a different agent
+per country then read each recipe again, in the printed page (the scan
+PDF of the same archive.org item), and corrected the file. 24 were
+written, 20 are shipped. **Decided by the agent, for the owner's
+review**: the choice of recipes and the four that were dropped.
+
+| country | id                            | English name                                        | kind | course | without meat and fish | persons | components (role)                                                 | place                                                                                                                                                                                      |
+| ------- | ----------------------------- | --------------------------------------------------- | ---- | ------ | --------------------- | ------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| de      | kartoffelnudeln               | Potato noodles                                      | base | side   | yes                   | settled | potato-noodles (starch)                                           | Division C, II. Potatoes, No. 17, printed page 91; lines 13481-13494 of the text file                                                                                                      |
+| de      | ruehrei                       | Scrambled eggs                                      | base | main   | yes                   | settled | scrambled-eggs (main)                                             | Division L, No. 2, printed page 273; lines 22540-22548 of the text file (the recipe runs on to line 22589 with ways of serving)                                                            |
+| de      | saure-eiersauce               | Sour egg sauce for beans and potatoes               | base | sauce  | yes                   | settled | sour-egg-sauce (sauce)                                            | Division R, No. 47, printed page 360; lines 26864-26872 of the text file                                                                                                                   |
+| de      | spargelsauce                  | Asparagus sauce with egg yolks                      | base | sauce  | yes                   | stated  | asparagus-sauce (sauce)                                           | Division R, No. 44, printed pages 359-360; lines 26836-26849 of the text file                                                                                                              |
+| de      | weisse-mehlsuppe              | White flour soup with sour cream and parsley        | dish | soup   | yes                   | settled | flour-soup (main)                                                 | Division B, No. 81, printed page 47; lines 11251-11259 of the text file                                                                                                                    |
+| es      | arroz-blanco                  | Plain white rice, Cuban style                       | base | side   | no                    | settled | arroz-blanco-rice (starch)                                        | p. 728, chapter Legumbres, section Arroz, recipe 'Arroz blanco'; lines 32741–32764                                                                                                         |
+| es      | salsa-de-tomate               | Spanish tomato sauce with onion                     | base | sauce  | yes                   | settled | salsa-de-tomate-sauce (sauce)                                     | pp. 176–177, section Salsas, recipe 'Salsa de tomate' (the third of that name, the 'fórmula clásica'); lines 8319–8363 of the plain text                                                   |
+| es      | salsa-vinagreta               | Vinaigrette with hard-boiled egg, onion and parsley | base | sauce  | yes                   | settled | salsa-vinagreta-sauce (sauce)                                     | pp. 160–161, section Salsas, recipe 'Salsa vinagreta'; lines 7656–7680                                                                                                                     |
+| es      | sopa-de-cebolla               | Onion soup with bread and Gruyère                   | dish | soup   | yes                   | stated  | sopa-de-cebolla-soup (main)                                       | p. 120, section Sopas, recipe 'Sopa de cebolla'; lines 5880–5922 of the plain text                                                                                                         |
+| fr      | macaroni-a-l-italienne-maigre | Macaroni with cheese, meatless                      | base | side   | yes                   | settled | macaroni-italienne-maigre (starch)                                | Première partie, chapitre XVI "Pâtes", "Macaroni à l'italienne, au gras et au maigre", pp. 277-278; gouffe.txt lines 14885-14934                                                           |
+| fr      | oeufs-brouilles-au-fromage    | Scrambled eggs with cheese                          | dish | main   | yes                   | settled | oeufs-brouilles-fromage (main), oeufs-brouilles-croutons (crunch) | Première partie, "Œufs brouillés au fromage", pp. 270-271; gouffe.txt lines 14572-14576. Method from "Œufs brouillés aux fines herbes", lines 14541-14556; croûtons from lines 14012-14024 |
+| fr      | pommes-de-terre-au-lait       | Potatoes in milk                                    | base | side   | yes                   | settled | pommes-de-terre-au-lait-potatoes (starch)                         | Première partie, "Légumes", "Pommes de terre au lait", p. 256; gouffe.txt lines 13716-13734                                                                                                |
+| fr      | sauce-blanche                 | White butter sauce                                  | base | sauce  | yes                   | stated  | sauce-blanche-sauce (sauce)                                       | Première partie, "Sauces de ménage", "Sauce blanche", pp. 89-90; gouffe.txt lines 4758-4833. Four persons: footnote, line 4767, and in print above the list on p. 90                       |
+| fr      | sauce-maitre-d-hotel          | Maître d'hôtel butter                               | base | sauce  | yes                   | settled | maitre-d-hotel-butter (sauce)                                     | Première partie, "Sauces de ménage", "Sauce maître-d'hôtel", p. 93; gouffe.txt lines 4972-4997                                                                                             |
+| fr      | soupe-aux-poireaux            | Leek soup                                           | dish | soup   | yes                   | stated  | soupe-aux-poireaux-soup (main)                                    | Première partie, "Potages maigres", "Soupe aux poireaux", pp. 59-60; gouffe.txt lines 3212-3260. The persons are stated for all soups in the footnote on p. 50, line 2691                  |
+| it      | balsamella                    | Béchamel (balsamella)                               | base | sauce  | yes                   | settled | balsamella-sauce (sauce)                                          | No. 89, Balsamella, printed page 70 (the machine-read text gives the heading as '80'; the print reads 89); lines 7810-7832 of the text file                                                |
+| it      | gnocchi-di-semolino           | Semolina gnocchi                                    | base | side   | yes                   | settled | semolina-gnocchi (starch)                                         | No. 142, Gnocchi di semolino, printed pages 105-106; lines 10574-10609 of the text file                                                                                                    |
+| it      | maccheroni-alla-bolognese     | Macaroni with Bolognese meat sauce                  | base | main   | no                    | settled | bolognese-sauce (sauce), bolognese-maccheroni (starch)            | No. 58, Maccheroni alla bolognese, printed pages 50-51; lines 6248-6350 of the text file                                                                                                   |
+| it      | passato-di-patate             | Potato purée                                        | base | side   | yes                   | settled | potato-passato (starch)                                           | No. 280, Passato di patate, printed page 198; lines 18200-18224 of the text file                                                                                                           |
+| it      | spaghetti-alla-rustica        | Country-style spaghetti with garlic and tomato      | base | main   | yes                   | settled | garlic-tomato-sauce (sauce), rustica-spaghetti (starch)           | No. 65, Spaghetti alla rustica, printed pages 56-57; lines 6691-6773 of the text file (the machine-read heading has lost its number; the print reads 65)                                   |
+
+All 20 carry `check.method` `page-image`: every number of the file was
+compared with the print by an agent that did not write the file.
+
+## Weaknesses the second readers stated
+
+- **Few amounts.** Davidis and Muro give sizes ("a piece of butter the
+  size of an egg", "media libra") the books do not turn into weights;
+  such lines have no amount and say so. salsa-vinagreta has one amount
+  (two eggs), arroz-blanco only a share (rice up to half the water; the
+  litre and the rice are ours), sopa-de-cebolla no amount for onions and
+  cheese, weisse-mehlsuppe none for the water. Nutrition figures show
+  for 8 of the 20.
+- **Salt as printed.** Gouffé's leek soup has 3 pincées (30 g by his own
+  measure) in a litre, his maître d'hôtel butter 20 g in 200 g; both
+  were read in print and kept.
+- **A reading.** oeufs-brouilles-au-fromage keeps the parsley of the
+  recipe before it ("finissez comme il est dit à l'article précédent");
+  the line says that it can be read otherwise.
+- **Persons.** Stated by the source in 4 of the 20; settled in the rest.
+- **The German edition** of Davidis reads a heaping teaspoon of flour in
+  the asparagus sauce where the English print, which the file follows,
+  reads a heaping tablespoonful; the German was read as machine text
+  only.
+
+## Written and dropped
+
+- **koerniger-reis** (Davidis, "Arabian Rice"): no amount and no persons
+  in the source.
+- **sopas-de-ajo** (Muro, verses by Ventura de la Vega): the only number
+  is two cloves of garlic.
+- **patatas-guisadas** (Muro): put together from two readings of the
+  recipe, with amounts that were ours.
+- **zuppa-di-fagiuoli** (Artusi No. 39): no amount for the beans.
+
+## Read and good for a next round
+
+Gouffé: soupe à l'oignon, purée de lentilles, choux-fleurs au gratin,
+sauce tomate (with meat broth). Artusi: salsa bianca (No. 79),
+maccheroni alla francese (No. 56), tortino di patate (No. 281). Muro:
+salsa de ajo blanco. Davidis: the divisions of dumplings, pancakes and
+salads were not read.

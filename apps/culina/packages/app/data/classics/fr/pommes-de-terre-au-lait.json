@@ -1,0 +1,236 @@
+{
+  "id": "pommes-de-terre-au-lait",
+  "kind": "base",
+  "name": {
+    "en": "Potatoes in milk",
+    "de": "Milchkartoffeln"
+  },
+  "originalName": "Pommes de terre au lait",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Légumes\", \"Pommes de terre au lait\", p. 256; gouffe.txt lines 13716-13734",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "pommes-de-terre-au-lait-potatoes",
+      "name": {
+        "en": "Potatoes in milk",
+        "de": "Milchkartoffeln"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "kg",
+            "original": "1 kilo de pommes de terre de Hollande"
+          },
+          "sourceNote": {
+            "en": "The source asks for the variety \"pommes de terre de Hollande\".",
+            "de": "Die Quelle verlangt die Sorte «pommes de terre de Hollande»."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "l",
+            "original": "2 litres d'eau"
+          }
+        },
+        {
+          "key": "salt-water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "pincée",
+            "original": "1 pincée de sel"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "ml",
+            "original": "5 décilitres de lait"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "40 grammes de beurre"
+          },
+          "note": {
+            "en": "Cut into 6 pieces.",
+            "de": "In 6 Stücke geschnitten."
+          }
+        },
+        {
+          "key": "salt-finish",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "pincée",
+            "original": "1 pincée de sel"
+          },
+          "note": {
+            "en": "Added with the butter.",
+            "de": "Kommt mit der Butter dazu."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wash the potatoes.",
+            "de": "Die Kartoffeln waschen."
+          },
+          "action": "wash",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Cook them in their skins in the water with the first measure of salt, over very low heat so that they do not break up.",
+            "de": "In der Schale im Wasser mit der ersten Salzmenge garen, bei sehr schwacher Hitze, damit sie nicht zerfallen."
+          },
+          "technique": "boil",
+          "uses": ["potatoes", "water", "salt-water"]
+        },
+        {
+          "text": {
+            "en": "When they are done, drain them.",
+            "de": "Wenn sie gar sind, abgießen."
+          },
+          "action": "drain",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Peel the potatoes.",
+            "de": "Die Kartoffeln schälen."
+          },
+          "action": "peel",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Cut them into rounds 8 millimetres thick.",
+            "de": "In 8 Millimeter dicke Scheiben schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Put the slices into a pan of 2 litres and add the milk.",
+            "de": "Die Scheiben in einen Topf mit 2 Litern Inhalt geben und die Milch zugeben."
+          },
+          "action": "add",
+          "uses": ["potatoes", "milk"]
+        },
+        {
+          "text": {
+            "en": "Let them simmer for 10 minutes.",
+            "de": "10 Minuten leise köcheln lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          },
+          "sourceNote": {
+            "en": "The machine-read text has \"I 0 minutes\"; the page image (p. 256) prints \"10 minutes\".",
+            "de": "Der maschinengelesene Text hat «I 0 minutes»; das Seitenbild (S. 256) druckt «10 minutes»."
+          }
+        },
+        {
+          "text": {
+            "en": "Add the butter in pieces and the second measure of salt.",
+            "de": "Die Butter in Stücken und die zweite Salzmenge zugeben."
+          },
+          "action": "add",
+          "uses": ["butter", "salt-finish"]
+        },
+        {
+          "text": {
+            "en": "Stir the potatoes gently until the butter has melted, then serve.",
+            "de": "Die Kartoffeln behutsam rühren, bis die Butter geschmolzen ist, dann servieren."
+          },
+          "action": "stir",
+          "uses": ["butter"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "pommes-de-terre-au-lait-potatoes"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 1 kg of potatoes is taken as a side dish for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. 'I 0 minutes' is printed 10 minutes. Corrected: German steps called the 10 g pincée 'Prise' (the book's word for 1 g), now 'Salzmenge'; source note on the time gives the print. No amount changed. Not checked: a second edition; cooking in the skins is inferred from the order."
+  },
+  "note": {
+    "en": "The potatoes are boiled whole and unpeeled and only then peeled and sliced; that they are cooked in their skins follows from the order of the source (wash, cook, drain, peel). The following recipe of the book, Pommes de terre à la maître-d'hôtel, uses the same boiled slices.",
+    "de": "Die Kartoffeln werden ganz und ungeschält gekocht und erst danach geschält und geschnitten; dass sie in der Schale garen, ergibt sich aus der Reihenfolge der Quelle (waschen, garen, abgießen, schälen). Das folgende Rezept des Buches, Pommes de terre à la maître-d'hôtel, verwendet dieselben gekochten Scheiben."
+  }
+}

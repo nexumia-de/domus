@@ -1,0 +1,284 @@
+{
+  "id": "ratatouille",
+  "name": {
+    "en": "Ratatouille",
+    "de": "Ratatouille"
+  },
+  "originalName": "Ratatouille",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "ratatouille",
+      "name": {
+        "en": "Ratatouille",
+        "de": "Ratatouille"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Peeled and cut into pieces of 2 cm.",
+            "de": "Geschält und in Stücke von 2 cm geschnitten."
+          }
+        },
+        {
+          "key": "pepper-red",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170108"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cut into pieces of 2 cm.",
+            "de": "In Stücke von 2 cm geschnitten."
+          }
+        },
+        {
+          "key": "pepper-green",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170427"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cut into pieces of 2 cm.",
+            "de": "In Stücke von 2 cm geschnitten."
+          }
+        },
+        {
+          "key": "aubergine",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169228"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cut into pieces of 2 cm.",
+            "de": "In Stücke von 2 cm geschnitten."
+          }
+        },
+        {
+          "key": "courgette",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169291"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cut into pieces of 2 cm.",
+            "de": "In Stücke von 2 cm geschnitten."
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cut into pieces; the skin may stay.",
+            "de": "In Stücke geschnitten; die Haut darf bleiben."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Three cloves, sliced.",
+            "de": "Drei Zehen, in Scheiben."
+          }
+        },
+        {
+          "key": "thyme",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173470"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Leaves only.",
+            "de": "Nur die Blättchen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the onions, the peppers, the aubergine, the courgettes and the tomatoes into pieces of about 2 cm and slice the garlic.",
+            "de": "Zwiebeln, Paprika, Aubergine, Zucchini und Tomaten in Stücke von etwa 2 cm schneiden und den Knoblauch in Scheiben schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": [
+            "onion",
+            "pepper-red",
+            "pepper-green",
+            "aubergine",
+            "courgette",
+            "tomato",
+            "garlic"
+          ]
+        },
+        {
+          "text": {
+            "en": "Heat 2 tablespoons of the oil in a large wide pot and fry the aubergine over medium heat for 8 minutes, stirring now and then, until it is golden. Take it out.",
+            "de": "2 Esslöffel des Öls in einem großen, weiten Topf erhitzen und die Aubergine bei mittlerer Hitze 8 Minuten braten, dabei gelegentlich rühren, bis sie goldgelb ist. Herausnehmen."
+          },
+          "technique": "pan-fry",
+          "uses": ["oil", "aubergine"],
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add 2 more tablespoons of oil and fry the courgettes for 5 minutes until they are lightly coloured. Take them out as well.",
+            "de": "Weitere 2 Esslöffel Öl zugeben und die Zucchini 5 Minuten braten, bis sie leicht Farbe haben. Ebenfalls herausnehmen."
+          },
+          "technique": "pan-fry",
+          "uses": ["oil", "courgette"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat the last tablespoon of oil and cook the onions and the peppers over medium heat for 8 minutes until soft.",
+            "de": "Den letzten Esslöffel Öl erhitzen und Zwiebeln und Paprika bei mittlerer Hitze 8 Minuten weich garen."
+          },
+          "technique": "sweat",
+          "uses": ["oil", "onion", "pepper-red", "pepper-green"],
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the garlic, the tomatoes, the thyme, the salt and the pepper and cook for 5 minutes until the tomatoes release their juice.",
+            "de": "Knoblauch, Tomaten, Thymian, Salz und Pfeffer zugeben und 5 Minuten garen, bis die Tomaten Saft lassen."
+          },
+          "action": "add",
+          "uses": ["garlic", "tomato", "thyme", "salt", "pepper"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Return the aubergine and the courgettes to the pot, cover and simmer over low heat for 30 minutes, stirring now and then. Take off the lid for the last 10 minutes if the vegetables are too wet.",
+            "de": "Aubergine und Zucchini in den Topf zurückgeben, zugedeckt bei schwacher Hitze 30 Minuten schmoren, dabei gelegentlich rühren. Sind die Gemüse zu nass, in den letzten 10 Minuten ohne Deckel garen."
+          },
+          "technique": "simmer",
+          "uses": ["aubergine", "courgette"],
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Taste, adjust the salt and serve warm or at room temperature.",
+            "de": "Abschmecken, nach Bedarf nachsalzen und warm oder zimmerwarm servieren."
+          },
+          "action": "taste",
+          "uses": ["salt"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "ratatouille"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it raised the salt from 1 to 1.5 teaspoons for about 1.7 kg of vegetables."
+  }
+}

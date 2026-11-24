@@ -5,7 +5,21 @@ import type { TextStep } from '../steps/types';
 import type { I18nText } from '../text/i18n';
 
 /** The countries the app has a name for: a classic's country and a dish's cuisine (`country` in common.schema.json). */
-export const COUNTRY_CODES = ['de', 'it', 'fr', 'es'] as const;
+export const COUNTRY_CODES = [
+  'de',
+  'it',
+  'fr',
+  'es',
+  'gb',
+  'gr',
+  'tr',
+  'us',
+  'mx',
+  'in',
+  'th',
+  'cn',
+  'jp',
+] as const;
 
 export type Country = (typeof COUNTRY_CODES)[number];
 
@@ -86,6 +100,28 @@ export interface Settled {
   target?: string;
 }
 
+/** A source the recipe follows, read by the transcriber. */
+export interface CitedSource {
+  author: string;
+  title: string;
+  year: number;
+  place: string;
+  url: string;
+  licence?: string;
+  own?: undefined;
+}
+
+/**
+ * The project's own recipe: written from general cooking knowledge, not from a source
+ * (docs/decisions/own-recipes.md). There is nothing to cite; the app says so.
+ */
+export interface OwnSource {
+  own: true;
+  year: number;
+}
+
+export type ClassicSource = CitedSource | OwnSource;
+
 /**
  * What a shipped file is: a `base` to build one's own dishes on (components with slots, and
  * alternatives held for a slot), or a `dish` as one source gives it. A file without `kind` is a dish.
@@ -100,14 +136,7 @@ export interface Classic {
   country: Country;
   vegetarian: boolean;
   course: Course;
-  source: {
-    author: string;
-    title: string;
-    year: number;
-    place: string;
-    url: string;
-    licence?: string;
-  };
+  source: ClassicSource;
   persons: { value: number; basis: 'stated' | 'settled' };
   units?: Readonly<Record<string, ClassicUnit>>;
   components?: readonly ClassicComponent[];

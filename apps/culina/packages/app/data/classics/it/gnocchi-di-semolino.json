@@ -1,0 +1,221 @@
+{
+  "id": "gnocchi-di-semolino",
+  "kind": "base",
+  "name": {
+    "en": "Semolina gnocchi",
+    "de": "Grießgnocchi"
+  },
+  "originalName": "Gnocchi di semolino",
+  "country": "it",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 142, Gnocchi di semolino, printed pages 105-106; lines 10574-10609 of the text file",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "semolina-gnocchi",
+      "name": {
+        "en": "Semolina gnocchi",
+        "de": "Grießgnocchi"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "ml",
+            "original": "Latte, decilitri 4"
+          },
+          "sourceNote": {
+            "en": "The source gives 4 decilitres; written here as 400 ml (1 dl = 100 ml, SI).",
+            "de": "Die Quelle nennt 4 Deziliter; hier als 400 ml geschrieben (1 dl = 100 ml, SI)."
+          }
+        },
+        {
+          "key": "semolina",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-semolina"
+          },
+          "amount": {
+            "value": 120,
+            "unit": "g",
+            "original": "Semolino, grammi 120"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "Burro, grammi 50"
+          },
+          "note": {
+            "en": "Half goes into the hot semolina, the rest in small pieces between the layers.",
+            "de": "Die Hälfte kommt in den heißen Grieß, der Rest in Stückchen zwischen die Lagen."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "Parmigiano grattato, grammi 40"
+          },
+          "note": {
+            "en": "Grated. Half goes into the hot semolina, the rest over the layers.",
+            "de": "Gerieben. Die Hälfte kommt in den heißen Grieß, der Rest über die Lagen."
+          }
+        },
+        {
+          "key": "eggs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-whole"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "Uova, N. 2"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: 'Sale quanto basta'.",
+            "de": "Wortlaut der Quelle: ‚Sale quanto basta‘."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cook the semolina in the milk.",
+            "de": "Den Grieß in der Milch kochen."
+          },
+          "action": "cook",
+          "uses": ["semolina", "milk"]
+        },
+        {
+          "text": {
+            "en": "Just before taking it off the heat, salt it and stir in half of the butter and half of the parmesan.",
+            "de": "Kurz bevor er vom Herd kommt, salzen und die Hälfte der Butter und die Hälfte des Parmesans einrühren."
+          },
+          "action": "stir",
+          "uses": ["salt", "butter", "parmesan"]
+        },
+        {
+          "text": {
+            "en": "While it is still very hot, add the eggs and mix.",
+            "de": "Solange er noch sehr heiß ist, die Eier dazugeben und mischen."
+          },
+          "action": "mix",
+          "uses": ["eggs"]
+        },
+        {
+          "text": {
+            "en": "Pour it onto a pastry board or a platter and spread it out one and a half fingers thick.",
+            "de": "Auf ein Backbrett oder eine Platte gießen und anderthalb Finger dick ausstreichen."
+          },
+          "action": "spread"
+        },
+        {
+          "text": {
+            "en": "Leave it until it is cold.",
+            "de": "Stehen lassen, bis es kalt ist."
+          },
+          "action": "cool"
+        },
+        {
+          "text": {
+            "en": "Cut it into lozenges.",
+            "de": "In Rauten schneiden."
+          },
+          "technique": "knife-cuts"
+        },
+        {
+          "text": {
+            "en": "Lay the gnocchi one upon another in a platter of fitting size that withstands heat, with the rest of the butter in small pieces between them and the rest of the parmesan sprinkled over each layer.",
+            "de": "Die Gnocchi in einer passend großen, feuerfesten Platte übereinanderlegen, dazwischen den Rest der Butter in Stückchen, und jede Lage mit dem Rest des Parmesans bestreuen."
+          },
+          "action": "fill",
+          "uses": ["butter", "parmesan"],
+          "sourceNote": {
+            "en": "The source says only 'un vassoio proporzionato', a platter of fitting size; that it must stand the heat follows from the browning.",
+            "de": "Die Quelle sagt nur ‚un vassoio proporzionato‘, eine Platte passender Größe; dass sie die Hitze aushalten muss, folgt aus dem Bräunen."
+          }
+        },
+        {
+          "text": {
+            "en": "Brown them under a lid with embers on it (forno di campagna) or in the oven.",
+            "de": "Unter einem Deckel mit Glut darauf (forno di campagna) oder im Ofen bräunen."
+          },
+          "technique": "gratinate",
+          "sourceNote": {
+            "en": "The source names only the 'forno di campagna', a lid that carries embers; the oven is our reading for a kitchen without one.",
+            "de": "Die Quelle nennt nur den ‚forno di campagna‘, einen Deckel, der Glut trägt; der Ofen ist unsere Lesart für eine Küche ohne einen solchen."
+          }
+        },
+        {
+          "text": {
+            "en": "Serve them hot, alone or beside a dish of braised meat.",
+            "de": "Heiß servieren, allein oder zu einem Gericht aus geschmortem Fleisch."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "semolina-gnocchi"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 4 dl of milk, 120 g of semolina and two eggs are taken as a side dish for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Page images of the 1891 scan (archive.org artusi-1891, text PDF) pp. 105-106 compared: milk 4 dl, semolina 120 g, butter 50 g, parmesan 40 g, 2 eggs, 'Sale quanto basta', 'un dito e mezzo', halves of butter and parmesan, 'forno di campagna'; no persons, no time. All amounts agree. Corrected: source.place; platter 'of fitting size', with a sourceNote that heat-proof is ours. The oven beside the forno di campagna is ours and is said so."
+  },
+  "note": {
+    "en": "The book serves these alone or as a side dish to braised meat or meat done another way. No time and no oven heat are given.",
+    "de": "Das Buch serviert sie allein oder als Beilage zu geschmortem oder anders zubereitetem Fleisch. Eine Zeit und eine Ofenhitze sind nicht angegeben."
+  }
+}

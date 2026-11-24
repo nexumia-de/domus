@@ -1,0 +1,168 @@
+{
+  "id": "passato-di-patate",
+  "kind": "base",
+  "name": {
+    "en": "Potato purée",
+    "de": "Kartoffelpüree"
+  },
+  "originalName": "Passato di patate",
+  "country": "it",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 280, Passato di patate, printed page 198; lines 18200-18224 of the text file",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "bicchiere": {
+      "kind": "volume",
+      "factor": 300,
+      "read": "Same book, No. 443 (printed page 330): 'un bicchiere ossia 3 decilitri d'acqua'; and No. 451 (printed page 335): 'un bicchiere da tavola che corrisponde a decilitri 3 circa'. Both read in the page images; 1 dl = 100 ml (SI)."
+    }
+  },
+  "components": [
+    {
+      "id": "potato-passato",
+      "name": {
+        "en": "Potato purée",
+        "de": "Kartoffelpüree"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "Patate belle, grosse, farinacee, grammi 500"
+          },
+          "note": {
+            "en": "Large, floury potatoes.",
+            "de": "Große, mehlige Kartoffeln."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "Burro, grammi 50"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "bicchiere",
+            "original": "Latte buono, o panna, mezzo bicchiere"
+          },
+          "settled": true,
+          "note": {
+            "en": "Good milk; cream serves as well.",
+            "de": "Gute Milch; Sahne eignet sich ebenso."
+          },
+          "sourceNote": {
+            "en": "The book gives the size of its glass in two other recipes: 'un bicchiere ossia 3 decilitri' (No. 443) and 'un bicchiere da tavola che corrisponde a decilitri 3 circa' (No. 451); half a glass is therefore about 150 ml.",
+            "de": "Das Buch nennt die Größe seines Glases in zwei anderen Rezepten: ‚un bicchiere ossia 3 decilitri‘ (Nr. 443) und ‚un bicchiere da tavola che corrisponde a decilitri 3 circa‘ (Nr. 451); ein halbes Glas sind demnach etwa 150 ml."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amountWord": "as-needed",
+          "sourceNote": {
+            "en": "Source wording: 'Sale quanto basta'.",
+            "de": "Wortlaut der Quelle: ‚Sale quanto basta‘."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the potatoes until a pointed stick passes freely from one side to the other.",
+            "de": "Die Kartoffeln kochen, bis ein spitzes Hölzchen frei von einer Seite zur anderen durchgeht."
+          },
+          "technique": "boil",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Peel them.",
+            "de": "Schälen."
+          },
+          "action": "peel",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Pass them through a sieve while they are boiling hot.",
+            "de": "Kochend heiß durch ein Sieb streichen."
+          },
+          "action": "strain",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Put them on the heat in a saucepan with the butter, the milk and the salt and work them well with a wooden spoon until they are fine.",
+            "de": "Mit Butter, Milch und Salz in einem Topf auf den Herd stellen und mit dem Kochlöffel kräftig durcharbeiten, bis sie fein sind."
+          },
+          "action": "stir",
+          "uses": ["potatoes", "butter", "milk", "salt"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "potato-passato"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons; 500 g of potatoes are taken as a side dish for four.",
+      "target": "persons"
+    },
+    {
+      "what": "Milk or cream",
+      "value": "milk, not cream: the source says either ('Latte buono, o panna')",
+      "reason": "The line needs one catalogue ingredient; milk stands first in the source. The amount itself is not settled: half a glass, with the glass of 3 decilitres as the book states it in No. 443 and No. 451 (see units).",
+      "target": "potato-passato/milk"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Page images of the 1891 scan (archive.org artusi-1891, text PDF) p. 198 compared: potatoes 500 g, 'Burro, grammi 50' (OCR 'Purro'), 'mezzo bicchiere', 'Sale quanto basta'. Glass read in print: No. 443 p. 330 'un bicchiere ossia 3 decilitri', No. 451 p. 335 'bicchiere da tavola ... decilitri 3 circa'. Corrected: unit bicchiere = 300 ml defined, milk 0.5 bicchiere; 'Purro' note removed. Not seen in print: No. 281."
+  },
+  "note": {
+    "en": "The book gives this as a side dish, among others to cotechino and zampone. No time is given. The potato cake of No. 281 starts from the same preparation.",
+    "de": "Das Buch gibt dies als Beilage an, unter anderem zu Cotechino und Zampone. Eine Zeit ist nicht angegeben. Der Kartoffelkuchen von Nr. 281 geht von derselben Zubereitung aus."
+  }
+}

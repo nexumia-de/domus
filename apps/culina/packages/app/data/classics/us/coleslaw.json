@@ -1,0 +1,183 @@
+{
+  "id": "coleslaw",
+  "kind": "base",
+  "name": {
+    "en": "Coleslaw",
+    "de": "Krautsalat mit Mayonnaise"
+  },
+  "originalName": "Coleslaw",
+  "country": "us",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "coleslaw-crunch",
+      "name": {
+        "en": "Coleslaw",
+        "de": "Krautsalat mit Mayonnaise"
+      },
+      "role": "crunch",
+      "lines": [
+        {
+          "key": "cabbage",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169975"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Weighed without the core and outer leaves.",
+            "de": "Ohne Strunk und äußere Blätter gewogen."
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "mayonnaise",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-mayonnaise"
+          },
+          "amount": {
+            "value": 120,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173469"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the cabbage into fine strips.",
+            "de": "Den Weißkohl in feine Streifen schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["cabbage"]
+        },
+        {
+          "text": {
+            "en": "Peel the carrots and grate them coarsely.",
+            "de": "Die Karotten schälen und grob raspeln."
+          },
+          "action": "grate",
+          "uses": ["carrot"]
+        },
+        {
+          "text": {
+            "en": "Whisk the mayonnaise, the vinegar, the sugar, the salt and the pepper in a large bowl.",
+            "de": "Mayonnaise, Essig, Zucker, Salz und Pfeffer in einer großen Schüssel verrühren."
+          },
+          "action": "whisk",
+          "uses": ["mayonnaise", "vinegar", "sugar", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Add the cabbage and the carrots and mix until everything is coated.",
+            "de": "Weißkohl und Karotten dazugeben und mischen, bis alles überzogen ist."
+          },
+          "action": "mix",
+          "uses": ["cabbage", "carrot"]
+        },
+        {
+          "text": {
+            "en": "Chill the salad with a cover on.",
+            "de": "Den Salat zugedeckt kalt stellen."
+          },
+          "action": "chill",
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir once more and serve.",
+            "de": "Noch einmal umrühren und servieren."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "crunch",
+      "ref": {
+        "kind": "component",
+        "id": "coleslaw-crunch"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

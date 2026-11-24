@@ -14,24 +14,36 @@ export const sourceDetails = (view: DishView): HTMLDetailsElement => {
   const { source, persons, sourceRemarks, note } = view;
   const block = el('details', 'source-block foot-block');
   block.append(el('summary', undefined, t.sourceHeading));
-  block.append(
-    el('p', undefined, t.sourceLine(source.author, citeText(source.title, appLang), source.year)),
-    el('p', 'muted', t.sourcePlace(citeText(source.place, appLang))),
-  );
-  if (source.licence !== undefined) block.append(el('p', 'muted', t.sourceLicence(source.licence)));
-  const link = el('a', 'source-link', t.sourceLink);
-  link.href = source.url;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  block.append(
-    link,
-    el(
-      'p',
-      'muted',
-      persons.basis === 'stated' ? t.personsStated(persons.value) : t.personsSettled(persons.value),
-    ),
-    el('p', 'muted', t.checkMethod[view.check.method]),
-  );
+  if (source.own === true) {
+    // The project's own recipe: nothing to cite, and the block says what it is instead.
+    block.append(
+      el('p', 'own-source', t.ownSource),
+      el('p', 'muted', t.ownPersons(persons.value)),
+      el('p', 'muted', t.ownChecked),
+    );
+  } else {
+    block.append(
+      el('p', undefined, t.sourceLine(source.author, citeText(source.title, appLang), source.year)),
+      el('p', 'muted', t.sourcePlace(citeText(source.place, appLang))),
+    );
+    if (source.licence !== undefined)
+      block.append(el('p', 'muted', t.sourceLicence(source.licence)));
+    const link = el('a', 'source-link', t.sourceLink);
+    link.href = source.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    block.append(
+      link,
+      el(
+        'p',
+        'muted',
+        persons.basis === 'stated'
+          ? t.personsStated(persons.value)
+          : t.personsSettled(persons.value),
+      ),
+      el('p', 'muted', t.checkMethod[view.check.method]),
+    );
+  }
   if (note !== undefined || sourceRemarks.lines.length > 0 || sourceRemarks.steps.length > 0) {
     block.append(el('h3', undefined, t.remarksHeading));
     // The transcriber's note on the dish (what was left out of the source, what it gives no size for).

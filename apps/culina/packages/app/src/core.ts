@@ -2,7 +2,14 @@
 // shows the same classics, amounts, steps and finder with the same engine, content and sync.
 // Nothing here touches the DOM. Texts are the web app's own (`strings`), chosen once by the
 // device's language when the modules load (`classics/lang.ts`).
-export { classics, loadContent, readContent, substitutes, techniques } from './classics/content';
+export {
+  classics,
+  dishClassics,
+  loadContent,
+  readContent,
+  substitutes,
+  techniques,
+} from './classics/content';
 export type { Fetcher as ContentFetcher } from './classics/content';
 export { loadCatalogue, readCatalogue } from './catalogue/load';
 export type { Fetcher as CatalogueFetcher } from './catalogue/load';

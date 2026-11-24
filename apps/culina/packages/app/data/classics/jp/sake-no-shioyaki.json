@@ -1,0 +1,149 @@
+{
+  "id": "sake-no-shioyaki",
+  "kind": "base",
+  "name": {
+    "en": "Salt-grilled salmon",
+    "de": "Mit Salz gebratener Lachs"
+  },
+  "originalName": "Sake no shioyaki",
+  "country": "jp",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "sake-no-shioyaki-salmon",
+      "name": {
+        "en": "Salt-grilled salmon",
+        "de": "Mit Salz gebratener Lachs"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "salmon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173686"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Four fillets with skin, about 150 g each.",
+            "de": "Vier Filets mit Haut, je etwa 150 g."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Sprinkle the salmon on all sides with the salt and leave it in the fridge for 30 minutes.",
+            "de": "Den Lachs rundum mit dem Salz bestreuen und 30 Minuten im Kühlschrank ruhen lassen."
+          },
+          "action": "season",
+          "uses": ["salmon", "salt"],
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pat the fillets dry with kitchen paper.",
+            "de": "Die Filets mit Küchenpapier trocken tupfen."
+          },
+          "action": "dry",
+          "uses": ["salmon"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a pan over medium heat.",
+            "de": "Das Öl in einer Pfanne bei mittlerer Hitze erhitzen."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Lay the fillets in the pan skin side down and cook for 5 minutes, until the skin is brown and crisp.",
+            "de": "Die Filets mit der Hautseite nach unten in die Pfanne legen und 5 Minuten braten, bis die Haut braun und knusprig ist."
+          },
+          "action": "cook",
+          "uses": ["salmon"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn them and cook for 2 to 3 minutes more, until the thickest part is just opaque.",
+            "de": "Wenden und weitere 2 bis 3 Minuten braten, bis die dickste Stelle gerade nicht mehr glasig ist."
+          },
+          "action": "turn",
+          "uses": ["salmon"],
+          "time": {
+            "value": 2,
+            "to": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Serve with rice.",
+            "de": "Zu Reis servieren."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "sake-no-shioyaki-salmon"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  },
+  "note": {
+    "en": "Cooked in a pan here; under a hot oven grill the fillets take about the same time.",
+    "de": "Hier in der Pfanne gebraten; unter dem heißen Backofengrill brauchen die Filets etwa gleich lang."
+  }
+}

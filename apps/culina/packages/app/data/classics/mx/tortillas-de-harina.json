@@ -1,0 +1,200 @@
+{
+  "id": "tortillas-de-harina",
+  "kind": "base",
+  "name": {
+    "en": "Flour tortillas",
+    "de": "Weizentortillas"
+  },
+  "originalName": "Tortillas de harina",
+  "country": "mx",
+  "vegetarian": false,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "tortillas-de-harina-starch",
+      "name": {
+        "en": "Flour tortillas",
+        "de": "Weizentortillas"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "baking-powder",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-leavening-agents-baking-powder"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "lard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171401"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g"
+          },
+          "note": {
+            "en": "At room temperature.",
+            "de": "Zimmerwarm."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 180,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Hot, not boiling.",
+            "de": "Heiß, nicht kochend."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour, the baking powder and the salt in a bowl.",
+            "de": "Mehl, Backpulver und Salz in einer Schüssel mischen."
+          },
+          "action": "mix",
+          "uses": ["flour", "baking-powder", "salt"]
+        },
+        {
+          "text": {
+            "en": "Rub the lard into the flour with the fingertips until it looks like coarse crumbs.",
+            "de": "Das Schmalz mit den Fingerspitzen ins Mehl reiben, bis grobe Krümel entstehen."
+          },
+          "action": "mix",
+          "uses": ["lard", "flour"]
+        },
+        {
+          "text": {
+            "en": "Pour in the hot water and stir until a dough forms.",
+            "de": "Das heiße Wasser zugießen und rühren, bis ein Teig entsteht."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Knead the dough on the work surface until it is smooth and soft.",
+            "de": "Den Teig auf der Arbeitsfläche kneten, bis er glatt und weich ist."
+          },
+          "technique": "knead",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Divide the dough into 8 pieces and shape them into balls.",
+            "de": "Den Teig in 8 Stücke teilen und zu Kugeln formen."
+          },
+          "action": "shape"
+        },
+        {
+          "text": {
+            "en": "Cover the balls with a cloth and let them rest.",
+            "de": "Die Kugeln mit einem Tuch abdecken und ruhen lassen."
+          },
+          "technique": "rest-dough",
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Roll each ball into a thin round of about 20 cm.",
+            "de": "Jede Kugel zu einem dünnen Fladen von etwa 20 cm ausrollen."
+          },
+          "technique": "roll-dough"
+        },
+        {
+          "text": {
+            "en": "Heat a heavy pan without fat over medium-high heat.",
+            "de": "Eine schwere Pfanne ohne Fett bei mittlerer bis starker Hitze erhitzen."
+          },
+          "action": "heat"
+        },
+        {
+          "text": {
+            "en": "Cook the tortillas one at a time, about 45 seconds on each side, until they puff and show brown spots.",
+            "de": "Die Tortillas einzeln backen, etwa 45 Sekunden pro Seite, bis sie Blasen werfen und braune Flecken zeigen."
+          },
+          "action": "cook",
+          "time": {
+            "value": 45,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Stack the finished tortillas in a cloth so that they stay warm and soft.",
+            "de": "Die fertigen Tortillas in einem Tuch stapeln, damit sie warm und weich bleiben."
+          },
+          "action": "cover"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "tortillas-de-harina-starch"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  },
+  "note": {
+    "en": "Makes 8 tortillas of about 20 cm, two for each person.",
+    "de": "Ergibt 8 Tortillas von etwa 20 cm, zwei pro Person."
+  }
+}

@@ -44,13 +44,13 @@ const build = async (page, origin) => {
     (await card(page, 1).locator('.step-uses').innerText()).includes('Add slots above first.'),
     `${label}: without slots a step says to add them first`,
   );
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await page.getByLabel('Search your notebook').fill('Kit patties');
   await page.getByRole('button', { name: 'Kit patties component', exact: true }).click();
   await slot(page, 1)
     .getByLabel(/^Amount per portion/)
     .fill('150');
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await page.getByLabel('Search your notebook').fill('Kit mash');
   await page.getByRole('button', { name: 'Kit mash component', exact: true }).click();
   await slot(page, 2)

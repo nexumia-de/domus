@@ -1,0 +1,285 @@
+{
+  "id": "soupe-aux-poireaux",
+  "name": {
+    "en": "Leek soup",
+    "de": "Lauchsuppe"
+  },
+  "originalName": "Soupe aux poireaux",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Potages maigres\", \"Soupe aux poireaux\", pp. 59-60; gouffe.txt lines 3212-3260. The persons are stated for all soups in the footnote on p. 50, line 2691",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    },
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "soupe-aux-poireaux-soup",
+      "name": {
+        "en": "Leek soup",
+        "de": "Lauchsuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "leeks",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169246"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g",
+            "original": "200 grammes de poireaux"
+          },
+          "sourceNote": {
+            "en": "The source cuts the leeks into strips \"de 4 centimètres de long sur 2 de large\"; the width is printed without its unit and is read as 2 centimetres, the unit of the length.",
+            "de": "Die Quelle schneidet den Lauch in Streifen «de 4 centimètres de long sur 2 de large»; die Breite ist ohne Einheit gedruckt und als 2 Zentimeter gelesen, die Einheit der Länge."
+          }
+        },
+        {
+          "key": "butter-fry",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g",
+            "original": "15 grammes de beurre"
+          },
+          "note": {
+            "en": "For colouring the leeks.",
+            "de": "Zum Anschwitzen des Lauchs."
+          },
+          "sourceNote": {
+            "en": "The machine-read text has \"1 5 grammes\"; the page image (p. 59) prints \"15 grammes\".",
+            "de": "Der maschinengelesene Text hat «1 5 grammes»; das Seitenbild (S. 59) druckt «15 grammes»."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "1 litre d'eau"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "pincée",
+            "original": "3 pincées de sel"
+          },
+          "sourceNote": {
+            "en": "The page image (p. 59) prints \"3 pincées de sel\"; by the book's own measure of 10 grammes for a pincée (p. 36) that is 30 g of salt for 1 litre of water.",
+            "de": "Das Seitenbild (S. 59) druckt «3 pincées de sel»; nach dem eigenen Maß des Buches von 10 Gramm je pincée (S. 36) sind das 30 g Salz auf 1 Liter Wasser."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "prise",
+            "original": "2 prises de poivre"
+          }
+        },
+        {
+          "key": "bread",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "40 grammes de pain"
+          },
+          "note": {
+            "en": "In slices of 2 to 3 centimetres.",
+            "de": "In Scheiben von 2 bis 3 Zentimetern."
+          }
+        },
+        {
+          "key": "egg-yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "deux jaunes d'œufs"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml",
+            "original": "1 décilitre de lait froid"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
+          }
+        },
+        {
+          "key": "butter-liaison",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de beurre"
+          },
+          "note": {
+            "en": "For the liaison.",
+            "de": "Für die Liaison."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Trim and wash the leeks and cut them into strips 4 centimetres long and 2 centimetres wide.",
+            "de": "Den Lauch putzen, waschen und in Streifen von 4 Zentimetern Länge und 2 Zentimetern Breite schneiden."
+          },
+          "action": "trim",
+          "uses": ["leeks"]
+        },
+        {
+          "text": {
+            "en": "Cook the leeks in the 15 g of butter until they take a pale gold colour.",
+            "de": "Den Lauch in den 15 g Butter anschwitzen, bis er eine hellgelbe Farbe annimmt."
+          },
+          "action": "cook",
+          "uses": ["leeks", "butter-fry"]
+        },
+        {
+          "text": {
+            "en": "Pour in the water.",
+            "de": "Das Wasser zugießen."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Add the salt and the pepper.",
+            "de": "Salz und Pfeffer zugeben."
+          },
+          "action": "season",
+          "uses": ["salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil and, at the first boil, let it simmer for 20 minutes at the side of the stove.",
+            "de": "Aufkochen und beim ersten Aufwallen 20 Minuten am Herdrand leise köcheln lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cut the bread into slices and put them into the tureen.",
+            "de": "Das Brot in Scheiben schneiden und in die Suppenschüssel geben."
+          },
+          "action": "fill",
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "For the liaison, put the yolks into a bowl, add the cold milk and the 30 g of butter and stir it all together.",
+            "de": "Für die Liaison die Dotter in eine Schüssel geben, die kalte Milch und die 30 g Butter zugeben und alles verrühren."
+          },
+          "action": "mix",
+          "uses": ["egg-yolk", "milk", "butter-liaison"]
+        },
+        {
+          "text": {
+            "en": "Pour the soup over the bread.",
+            "de": "Die Suppe über das Brot gießen."
+          },
+          "action": "pour",
+          "uses": ["bread"]
+        },
+        {
+          "text": {
+            "en": "Pour in the liaison with one hand while the other stirs the soup in the tureen.",
+            "de": "Mit einer Hand die Liaison zugießen und mit der anderen die Suppe in der Schüssel rühren."
+          },
+          "action": "stir",
+          "uses": ["egg-yolk"]
+        },
+        {
+          "text": {
+            "en": "When the butter has melted completely, serve.",
+            "de": "Wenn die Butter ganz geschmolzen ist, servieren."
+          },
+          "action": "serve",
+          "uses": ["butter-liaison"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "soupe-aux-poireaux-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. '1 5 grammes' is printed 15; the 3 pincées of salt (30 g in 1 litre) are printed so and stay. Corrected: strips now 2 cm wide ('sur 2 de large'); leek step is the action cook, not sweat (source colours them); p. 50 in place. No amount changed. Not checked: a second edition."
+  },
+  "note": {
+    "en": "The book says the soup is good only in the season of tender leeks and advises against it in March and April unless new leeks are to be had. The recipe that follows in the book, with potatoes and leeks, is not included.",
+    "de": "Das Buch sagt, die Suppe sei nur in der Zeit des zarten Lauchs gut, und rät im März und April davon ab, wenn es keinen neuen Lauch gibt. Das im Buch folgende Rezept mit Kartoffeln und Lauch ist nicht aufgenommen."
+  }
+}

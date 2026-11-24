@@ -15,7 +15,7 @@ import {
   COURSE_ORDER,
   DISH_FILTER_KEY,
   SPACE_KEY,
-  classics,
+  dishClassics,
   createStockSpace,
   dishListView,
   entryOfClassic,
@@ -156,7 +156,7 @@ export function createSession(options: SessionOptions): Session {
   const allEntries = (): DishEntry[] => {
     if (made === undefined) {
       const lookup = (id: string): IngredientRecord | undefined => names.get(id);
-      made = classics().map((classic) => entryOfClassic(classic, lookup, lang));
+      made = dishClassics().map((classic) => entryOfClassic(classic, lookup, lang));
     }
     return made;
   };
@@ -261,7 +261,7 @@ export function createSession(options: SessionOptions): Session {
         dishes: [],
         stock: current.stock,
       };
-      const shipped = { classics: classics(), catalogue: names, lang };
+      const shipped = { classics: dishClassics(), catalogue: names, lang };
       if (list.have && asked.ready === undefined) asked.ready = readyKeysOf(source, today, shipped);
       if (list.order === 'use-up' && asked.useUp === undefined) {
         byKey ??= new Map(entries.map((entry) => [entry.key, entry]));

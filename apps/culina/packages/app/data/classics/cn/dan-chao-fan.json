@@ -1,0 +1,217 @@
+{
+  "id": "dan-chao-fan",
+  "kind": "base",
+  "name": {
+    "en": "Egg fried rice",
+    "de": "Gebratener Reis mit Ei"
+  },
+  "originalName": "Dan chao fan",
+  "country": "cn",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "dan-chao-fan-rice",
+      "name": {
+        "en": "Egg fried rice",
+        "de": "Gebratener Reis mit Ei"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-rice-white-long-grain-regular"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cooked ahead and cold; best from the day before.",
+            "de": "Vorgekocht und kalt; am besten vom Vortag."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 450,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For cooking the rice.",
+            "de": "Zum Garen des Reises."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "scallion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170005"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "soy-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170933"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Rinse the rice, bring it to the boil with the water, cover and cook on the lowest heat for 15 minutes; leave it covered off the heat for 10 minutes.",
+            "de": "Den Reis waschen, mit dem Wasser aufkochen, zudecken und auf kleinster Stufe 15 Minuten garen; vom Herd nehmen und zugedeckt 10 Minuten stehen lassen."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice", "water"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Spread the rice on a tray, let it cool completely and chill it uncovered for at least 2 hours or overnight.",
+            "de": "Den Reis auf einem Blech ausbreiten, ganz auskühlen lassen und offen mindestens 2 Stunden oder über Nacht kalt stellen."
+          },
+          "action": "chill",
+          "uses": ["rice"],
+          "time": {
+            "value": 2,
+            "unit": "h"
+          }
+        },
+        {
+          "text": {
+            "en": "Break up the cold rice with your fingers so that no lumps remain. Cut the scallions into thin rings and keep the white and the green parts apart. Beat the eggs.",
+            "de": "Den kalten Reis mit den Fingern zerteilen, bis keine Klumpen mehr da sind. Die Lauchzwiebeln in feine Ringe schneiden, weiße und grüne Teile getrennt halten. Die Eier verquirlen."
+          },
+          "action": "prepare",
+          "uses": ["rice", "scallion", "egg"]
+        },
+        {
+          "text": {
+            "en": "Heat a wok or a large pan over high heat and add the oil.",
+            "de": "Einen Wok oder eine große Pfanne stark erhitzen und das Öl hineingeben."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Pour in the eggs and stir for about 30 seconds until they are just set in soft pieces.",
+            "de": "Die Eier hineingießen und etwa 30 Sekunden rühren, bis sie in weichen Stücken gerade gestockt sind."
+          },
+          "action": "stir",
+          "uses": ["egg"],
+          "time": {
+            "value": 30,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the white scallion parts and the rice and fry for 3 to 4 minutes, stirring and pressing the rice apart, until the grains are hot and loose.",
+            "de": "Die weißen Lauchzwiebelteile und den Reis dazugeben und 3 bis 4 Minuten braten, dabei rühren und den Reis auseinanderdrücken, bis die Körner heiß und locker sind."
+          },
+          "action": "add",
+          "uses": ["scallion", "rice"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Season with the soy sauce, the salt and the white pepper, stir in the green scallion parts and serve.",
+            "de": "Mit Sojasauce, Salz und weißem Pfeffer würzen, die grünen Lauchzwiebelteile unterrühren und servieren."
+          },
+          "action": "season",
+          "uses": ["soy-sauce", "salt", "pepper", "scallion"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "dan-chao-fan-rice"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

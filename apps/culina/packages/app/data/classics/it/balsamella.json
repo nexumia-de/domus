@@ -1,0 +1,132 @@
+{
+  "id": "balsamella",
+  "kind": "base",
+  "name": {
+    "en": "Béchamel (balsamella)",
+    "de": "Béchamelsauce (Balsamella)"
+  },
+  "originalName": "Balsamella",
+  "country": "it",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 89, Balsamella, printed page 70 (the machine-read text gives the heading as '80'; the print reads 89); lines 7810-7832 of the text file",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "balsamella-sauce",
+      "name": {
+        "en": "Béchamel (balsamella)",
+        "de": "Béchamelsauce (Balsamella)"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "A piece the size of an egg; a little more, kneaded with flour, if the sauce turns out thin.",
+            "de": "Ein Stück von der Größe eines Eis; etwas mehr, mit Mehl verknetet, falls die Sauce dünn gerät."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'un pezzo di burro del volume di un uovo'. The book gives no weight, so no amount.",
+            "de": "Wortlaut der Quelle: ‚un pezzo di burro del volume di un uovo‘. Das Buch nennt kein Gewicht, daher keine Menge."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "One spoonful.",
+            "de": "Ein Löffel."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'una cucchiaiata di farina'. The book gives no weight for a spoonful of flour, so no amount.",
+            "de": "Wortlaut der Quelle: ‚una cucchiaiata di farina‘. Das Buch nennt kein Gewicht für einen Löffel Mehl, daher keine Menge."
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "l",
+            "original": "mezzo litro di latte del migliore"
+          },
+          "note": {
+            "en": "A little more if the sauce turns out stiff.",
+            "de": "Etwas mehr, falls die Sauce fest gerät."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the butter and the flour in a saucepan on the heat and stir them together with a wooden spoon until the flour begins to turn hazelnut-coloured.",
+            "de": "Butter und Mehl in einem Topf auf den Herd stellen und mit dem Kochlöffel verrühren, bis das Mehl haselnussbraun zu werden beginnt."
+          },
+          "technique": "roux",
+          "uses": ["butter", "flour"]
+        },
+        {
+          "text": {
+            "en": "Pour in the milk a little at a time, stirring all the while, until the liquid has thickened to a milk-coloured cream.",
+            "de": "Die Milch nach und nach zugießen und dabei ständig rühren, bis die Flüssigkeit zu einer milchfarbenen Creme eingedickt ist."
+          },
+          "action": "pour",
+          "uses": ["milk"]
+        },
+        {
+          "text": {
+            "en": "If the sauce is stiff, add milk. If it is thin, put it back on the heat with another small piece of butter kneaded with flour.",
+            "de": "Ist die Sauce fest, Milch zugeben. Ist sie dünn, mit einem weiteren Stückchen Butter, das mit Mehl verknetet ist, wieder auf den Herd stellen."
+          },
+          "action": "add",
+          "uses": ["milk", "butter", "flour"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "balsamella-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no number of persons and only calls the amount generous ('La dose è abbondante'); half a litre of milk is taken as the sauce for a dish for four, as in cavolfiore-balsamella.json, which uses the same recipe.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Page images of the 1891 scan (archive.org artusi-1891, text PDF) p. 70 and index compared with the file: heading '89' (OCR '80'), 'cucchiaiata di farina' (OCR 'tanna'), butter 'del volume di un uovo', 'mezzo litro di latte'; no persons, no time. Corrected: source.place, flour sourceNote. The book gives no weight for the spoonful or the butter. Not seen in print: No. 270."
+  },
+  "note": {
+    "en": "The book calls this sauce and a well-made meat gravy the base of fine cooking. It says the amount is generous and may be reduced in proportion. The same recipe is the sauce of the cauliflower with béchamel (No. 270). No time is given.",
+    "de": "Das Buch nennt diese Sauce und einen gut gemachten Fleischsaft die Grundlage der feinen Küche. Es sagt, die Menge sei reichlich und lasse sich im Verhältnis verringern. Dasselbe Rezept ist die Sauce des Blumenkohls mit Béchamelsauce (Nr. 270). Eine Zeit ist nicht angegeben."
+  }
+}

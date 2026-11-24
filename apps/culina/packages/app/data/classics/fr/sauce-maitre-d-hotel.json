@@ -1,0 +1,180 @@
+{
+  "id": "sauce-maitre-d-hotel",
+  "kind": "base",
+  "name": {
+    "en": "Maître d'hôtel butter",
+    "de": "Kräuterbutter nach Maître-d'hôtel-Art"
+  },
+  "originalName": "Sauce maître-d'hôtel",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Jules Gouffé",
+    "title": "Le Livre de cuisine (fourth edition, Paris: Librairie Hachette et Cie, 1877)",
+    "year": 1877,
+    "place": "Première partie, \"Sauces de ménage\", \"Sauce maître-d'hôtel\", p. 93; gouffe.txt lines 4972-4997",
+    "url": "https://archive.org/stream/b21525778/b21525778_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "settled"
+  },
+  "units": {
+    "pincée": {
+      "kind": "mass",
+      "factor": 10,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"J'ai adopté, comme mesure de la pincée, 10 grammes\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    },
+    "prise": {
+      "kind": "mass",
+      "factor": 1,
+      "read": "Gouffé, first part, on the pinch and the prise of salt and pepper: \"comme mesure de la prise, 1 gramme\" (gouffe.txt lines 2054-2057, printed p. 36)."
+    }
+  },
+  "components": [
+    {
+      "id": "maitre-d-hotel-butter",
+      "name": {
+        "en": "Maître d'hôtel butter",
+        "de": "Kräuterbutter nach Maître-d'hôtel-Art"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g",
+            "original": "2 hectos de beurre"
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g",
+            "original": "30 grammes de persil épluché, lavé et haché"
+          },
+          "note": {
+            "en": "Weighed picked, washed and chopped.",
+            "de": "Gezupft, gewaschen und gehackt gewogen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "pincée",
+            "original": "2 pincées de sel"
+          },
+          "sourceNote": {
+            "en": "The page image (p. 93) prints \"2 pincées de sel\"; by the book's own measure of 10 grammes for a pincée (p. 36) that is 20 g of salt for 200 g of butter.",
+            "de": "Das Seitenbild (S. 93) druckt «2 pincées de sel»; nach dem eigenen Maß des Buches von 10 Gramm je pincée (S. 36) sind das 20 g Salz auf 200 g Butter."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "prise",
+            "original": "2 prises de poivre"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "sourceNote": {
+            "en": "Original: une cuillerée à bouche de jus de citron. The book sizes a spoon for flour only, so the line has no amount.",
+            "de": "Original: une cuillerée à bouche de jus de citron. Das Buch gibt die Größe eines Löffels nur für Mehl an; daher keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wash the parsley on the stalk in plenty of water, pick it and chop it.",
+            "de": "Die Petersilie am Stiel in reichlich Wasser waschen, zupfen und hacken."
+          },
+          "action": "wash",
+          "uses": ["parsley"]
+        },
+        {
+          "text": {
+            "en": "Gather the chopped parsley in the corner of a cloth, dip it into cold water and press it out firmly.",
+            "de": "Die gehackte Petersilie in den Zipfel eines Tuchs geben, in kaltes Wasser tauchen und kräftig ausdrücken."
+          },
+          "action": "prepare",
+          "uses": ["parsley"]
+        },
+        {
+          "text": {
+            "en": "Put the butter, the parsley, the salt, the pepper and the lemon juice into a bowl.",
+            "de": "Butter, Petersilie, Salz, Pfeffer und Zitronensaft in eine Schüssel geben."
+          },
+          "action": "add",
+          "uses": ["butter", "parsley", "salt", "pepper", "lemon"]
+        },
+        {
+          "text": {
+            "en": "Set the bowl near the stove until the butter is as soft as thick cream; do not let it melt, or it turns oily.",
+            "de": "Die Schüssel in die Nähe des Herds stellen, bis die Butter so weich ist wie dicke Sahne; sie soll nicht schmelzen, sonst wird sie ölig."
+          },
+          "action": "heat",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Mix with a spoon, take the bowl away from the stove and use the butter to garnish.",
+            "de": "Mit einem Löffel vermischen, die Schüssel vom Herd wegnehmen und die Butter zum Garnieren verwenden."
+          },
+          "action": "mix"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "maitre-d-hotel-butter"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "4",
+      "reason": "Our judgement: the source names no persons, only \"2 biftecks ou 2 maquereaux\". The book counts one beefsteak for two persons (\"On compte habituellement un bifteck pour deux personnes\", p. 137, gouffe.txt line 7227), which gives four; it puts 50 grammes of maître-d'hôtel on one beefsteak there (line 7224), so 200 grammes are generous for four.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Every number read in the page images (scan PDF of the same item, rendered) and the text compared line by line with a fresh copy; p. 36: pincée 10 g, prise 1 g. The 2 pincées of salt (20 g in 200 g butter) are printed so and stay. Corrected: last step no longer says 'on the hot food' (source: 'retirez pour garnir'); persons reason now rests on line 7227; salt source note added. No amount changed. Not checked: a second edition."
+  },
+  "note": {
+    "en": "The source gives the amount for two beefsteaks or two mackerel, not for persons. The second washing of the chopped parsley is the book's advice against its sharp taste in autumn and winter. The bound variant that follows in the book (Sauce maître-d'hôtel liée, with sauce blanche) is not included.",
+    "de": "Die Quelle gibt die Menge für zwei Beefsteaks oder zwei Makrelen an, nicht für Personen. Das zweite Waschen der gehackten Petersilie ist der Rat des Buches gegen ihren scharfen Geschmack im Herbst und Winter. Die im Buch folgende gebundene Variante (Sauce maître-d'hôtel liée, mit Sauce blanche) ist nicht aufgenommen."
+  }
+}

@@ -58,11 +58,11 @@ describe('the steps of the shipped dishes', () => {
       if (step.uses !== undefined) expect(uses.length, at).toBeGreaterThan(0);
     }
   });
-  test('the counts of 2026-11-20: 447 steps, 145 with a technique, 300 with a plain action', () => {
-    expect(steps.length).toBe(447);
-    expect(steps.filter(({ step }) => step.technique !== undefined).length).toBe(145);
-    expect(steps.filter(({ step }) => step.action !== undefined).length).toBe(300);
-    expect(steps.filter(({ step }) => step.uses !== undefined).length).toBe(359);
+  test('the counts of 2026-11-24: 933 steps, 235 with a technique, 696 with a plain action', () => {
+    expect(steps.length).toBe(933);
+    expect(steps.filter(({ step }) => step.technique !== undefined).length).toBe(235);
+    expect(steps.filter(({ step }) => step.action !== undefined).length).toBe(696);
+    expect(steps.filter(({ step }) => step.uses !== undefined).length).toBe(730);
   });
   test('every plain action the list gained on 2026-11-20 is used by a step', () => {
     const used = new Set(

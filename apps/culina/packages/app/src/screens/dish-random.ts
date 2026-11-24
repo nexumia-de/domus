@@ -401,16 +401,28 @@ export const randomDishScreen = (): HTMLElement => {
     dishResult,
   );
   const roleSection = el('section', 'pick-section pick-role-section');
-  roleSection.append(
-    el('h2', undefined, t.pickRolesHeading),
-    el('p', 'note-quiet', t.pickNote),
-    fitsNote,
-    roles,
-    stock,
-    rollButton,
-    status,
-    result,
-  );
+  if (roleCandidates(notebook()).length === 0) {
+    // Nothing to roll among: say what is needed and where it is made, instead of six ticks and
+    // a roll that can only answer "none".
+    const toComponents = el('a', 'btn quiet pick-to-components', t.pickToComponents);
+    toComponents.href = hashFor('components');
+    roleSection.append(
+      el('h2', undefined, t.pickRolesHeading),
+      el('p', 'note-quiet pick-no-components', t.pickNoComponents),
+      toComponents,
+    );
+  } else {
+    roleSection.append(
+      el('h2', undefined, t.pickRolesHeading),
+      el('p', 'note-quiet', t.pickNote),
+      fitsNote,
+      roles,
+      stock,
+      rollButton,
+      status,
+      result,
+    );
+  }
   screen.append(back, el('h1', undefined, t.pickTitle), filterBox, dishSection, roleSection);
   return screen;
 };

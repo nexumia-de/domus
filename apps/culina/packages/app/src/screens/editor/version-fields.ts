@@ -1,5 +1,5 @@
 // The optional fields next to Save: what changed, why, and a tasting note for the version Save
-// adds. They are part of the form, so they are kept in the draft with everything else.
+// adds; a new record is asked for the tasting note only. They are part of the form, so they are kept in the draft with everything else.
 import type { VersionNote } from '../../editor/version-save';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
@@ -10,6 +10,7 @@ const t = strings.versions;
 export const versionFields = (
   form: { versionNote?: VersionNote },
   changed: () => void,
+  isNew = false,
 ): HTMLElement => {
   const note = (form.versionNote ??= {});
   const section = el('section', 'version-fields');
@@ -28,11 +29,10 @@ export const versionFields = (
     note.tasting = tasting.control.value;
     changed();
   });
+  // A first version has nothing it changed and no reason for a change: only the tasting note.
   section.append(
     el('h2', undefined, t.sectionHeading),
-    el('p', 'muted', t.optionalHint),
-    change.wrap,
-    reason.wrap,
+    ...(isNew ? [] : [el('p', 'muted', t.optionalHint), change.wrap, reason.wrap]),
     tasting.wrap,
   );
   return section;

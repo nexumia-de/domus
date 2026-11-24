@@ -1,0 +1,120 @@
+{
+  "id": "khao-suai",
+  "kind": "base",
+  "name": {
+    "en": "Plain jasmine rice",
+    "de": "Jasminreis"
+  },
+  "originalName": "Khao suai",
+  "country": "th",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "jasmine-rice",
+      "name": {
+        "en": "Jasmine rice",
+        "de": "Jasminreis"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-rice-white-long-grain-regular"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Jasmine rice.",
+            "de": "Jasminreis."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 450,
+            "unit": "ml"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wash the rice in a bowl of cold water, pour the water off and repeat twice. Drain the rice in a sieve.",
+            "de": "Den Reis in einer Schüssel mit kaltem Wasser waschen, das Wasser abgießen und zweimal wiederholen. Den Reis in einem Sieb abtropfen lassen."
+          },
+          "action": "wash",
+          "uses": ["rice"]
+        },
+        {
+          "text": {
+            "en": "Put the rice and the 450 ml of water into a pot with a lid that fits well and bring to the boil without the lid.",
+            "de": "Reis und die 450 ml Wasser in einen Topf mit gut schließendem Deckel geben und ohne Deckel aufkochen."
+          },
+          "action": "heat",
+          "uses": ["rice", "water"]
+        },
+        {
+          "text": {
+            "en": "Stir once, put the lid on and cook over the lowest heat for 12 minutes. Leave the lid on the whole time.",
+            "de": "Einmal umrühren, den Deckel auflegen und bei kleinster Hitze 12 Minuten garen. Den Deckel dabei nicht abheben."
+          },
+          "technique": "cook-rice",
+          "uses": ["rice"],
+          "time": {
+            "value": 12,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat and let the rice stand, covered, for 10 minutes.",
+            "de": "Den Topf vom Herd nehmen und den Reis zugedeckt 10 Minuten stehen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Loosen the rice with a fork and serve. It is cooked without salt.",
+            "de": "Den Reis mit einer Gabel auflockern und anrichten. Er wird ohne Salz gekocht."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "jasmine-rice"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

@@ -8,6 +8,14 @@ import type { Classic, ClassicComponent, ClassicSlot } from './types';
 /** True when the file is a base; a file without `kind` is a dish. */
 export const isBase = (classic: Classic): boolean => classic.kind === 'base';
 
+/**
+ * True when the file is a dish of its own: something cooked and served as it is. A base that is
+ * a sauce (alioli, mayonnaise) is a part of dishes; it is listed with the components, not with
+ * the dishes (docs/decisions/sauces-are-parts.md).
+ */
+export const isDishOfItsOwn = (classic: Classic): boolean =>
+  !(isBase(classic) && classic.course === 'sauce');
+
 const subComponents = (c: ClassicComponent | undefined): string[] =>
   (c?.lines ?? []).flatMap((l) => (l.ref?.kind === 'component' ? [l.ref.id] : []));
 

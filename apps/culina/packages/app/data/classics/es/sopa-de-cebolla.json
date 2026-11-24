@@ -1,0 +1,218 @@
+{
+  "id": "sopa-de-cebolla",
+  "name": {
+    "en": "Onion soup with bread and Gruyère",
+    "de": "Zwiebelsuppe mit Brot und Gruyère"
+  },
+  "originalName": "Sopa de cebolla",
+  "country": "es",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "author": "Ángel Muro",
+    "title": "El Practicón. Tratado completo de cocina (Madrid: Librería de Miguel Guijarro, 1894; third edition)",
+    "year": 1894,
+    "place": "p. 120, section Sopas, recipe 'Sopa de cebolla'; lines 5880–5922 of the plain text",
+    "url": "https://archive.org/stream/elpracticntrat00muro/elpracticntrat00muro_djvu.txt"
+  },
+  "persons": {
+    "value": 6,
+    "basis": "stated"
+  },
+  "units": {
+    "onza": {
+      "kind": "mass",
+      "factor": 30,
+      "read": "Muro p. 77, line 4040: 'se disuelve media onza ó 15 gramos', so one onza is 30 g; p. 682, line 30706 agrees ('dos onzas ó 60 gramos'; the plain text garbles the last letter). Both sentences were read in the page images on 2026-11-23."
+    }
+  },
+  "components": [
+    {
+      "id": "sopa-de-cebolla-soup",
+      "name": {
+        "en": "Onion soup",
+        "de": "Zwiebelsuppe"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "note": {
+            "en": "Half a libra (\"media libra\"), chopped very fine.",
+            "de": "Eine halbe Libra („media libra“), sehr fein gehackt."
+          },
+          "sourceNote": {
+            "en": "The book gives half a libra of onions. The libra is not sized in the book, so the line has no amount.",
+            "de": "Das Buch nennt eine halbe Libra Zwiebeln. Die Libra ist im Buch nicht bemessen, daher hat die Zeile keine Menge."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "onza",
+            "original": "dos onzas de manteca de vacas"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amountWord": "to-taste",
+          "sourceNote": {
+            "en": "Source wording: \"Se sazona y especia á gusto del que opera ó del que ha de comer el manjar\". The spices are not named.",
+            "de": "Quellenwortlaut: „Se sazona y especia á gusto del que opera ó del que ha de comer el manjar“. Die Gewürze sind nicht genannt."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "One spoonful (\"una cucharada de harina\").",
+            "de": "Ein Löffel („una cucharada de harina“)."
+          },
+          "sourceNote": {
+            "en": "The spoon is not sized in the book, so the line has no amount.",
+            "de": "Der Löffel ist im Buch nicht bemessen, daher hat die Zeile keine Menge."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
+          },
+          "amount": {
+            "value": 1,
+            "unit": "l",
+            "original": "un litro de agua fría"
+          }
+        },
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "sourceNote": {
+            "en": "The source says the soup is bound with egg yolk as explained for other soups (\"se liga con la yema de huevo\") and gives no number here.",
+            "de": "Die Quelle sagt, die Suppe werde mit Eigelb gebunden, wie bei anderen Suppen erklärt („se liga con la yema de huevo“), und nennt hier keine Zahl."
+          }
+        },
+        {
+          "key": "bread",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172686"
+          },
+          "note": {
+            "en": "Some slices, fried or toasted.",
+            "de": "Einige Scheiben, gebraten oder geröstet."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"unas rebanadas de pan frito ó tostado\"; no number.",
+            "de": "Quellenwortlaut: „unas rebanadas de pan frito ó tostado“; keine Zahl."
+          }
+        },
+        {
+          "key": "cheese",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171242"
+          },
+          "note": {
+            "en": "A cuarterón (\"un cuarterón de queso de Gruyère rallado\"), grated.",
+            "de": "Ein Cuarterón („un cuarterón de queso de Gruyère rallado“), gerieben."
+          },
+          "sourceNote": {
+            "en": "The book sizes neither the cuarterón nor the libra, so the line has no amount.",
+            "de": "Das Buch bemisst weder den Cuarterón noch die Libra, daher hat die Zeile keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Fry the very finely chopped onions in the butter, in a frying pan or a saucepan. Season and spice to taste.",
+            "de": "Die sehr fein gehackten Zwiebeln in der Butter braten, in einer Pfanne oder einer Kasserolle. Nach Geschmack salzen und würzen."
+          },
+          "action": "cook",
+          "uses": ["onion", "butter", "salt"]
+        },
+        {
+          "text": {
+            "en": "When the onion has taken a deep colour, and before its edges toast, stir in the flour. When that is very hot, pour in the cold water little by little, letting it come to the boil each time.",
+            "de": "Hat die Zwiebel kräftig Farbe genommen und bevor ihre Ränder rösten, das Mehl einrühren. Ist es sehr heiß, das kalte Wasser nach und nach zugießen und jedes Mal aufkochen lassen."
+          },
+          "technique": "roux",
+          "uses": ["flour", "water"]
+        },
+        {
+          "text": {
+            "en": "Let the soup cook slowly for a few minutes.",
+            "de": "Die Suppe einige Minuten langsam kochen lassen."
+          },
+          "technique": "simmer"
+        },
+        {
+          "text": {
+            "en": "Off the heat, bind the soup with the egg yolk.",
+            "de": "Vom Feuer genommen die Suppe mit dem Eigelb binden."
+          },
+          "technique": "thicken-with-egg",
+          "uses": ["yolk"]
+        },
+        {
+          "text": {
+            "en": "Beforehand, lay the slices of fried or toasted bread in the tureen and sprinkle them with the grated cheese.",
+            "de": "Vorher die gebratenen oder gerösteten Brotscheiben in die Suppenschüssel legen und mit dem geriebenen Käse bestreuen."
+          },
+          "action": "sprinkle",
+          "uses": ["bread", "cheese"]
+        },
+        {
+          "text": {
+            "en": "Pour the soup into the tureen and stir everything with a spatula while pouring, so that the cheese neither turns pasty nor forms lumps.",
+            "de": "Die Suppe in die Suppenschüssel gießen und dabei alles mit einem Spatel umrühren, damit der Käse weder pappig wird noch Klumpen bildet."
+          },
+          "action": "pour"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "sopa-de-cebolla-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber: own copy of the text compared line by line; numbers read in the page images (item PDF, page + 24). Seen in print: p. 120, 'seis personas', 'media libra', 'dos onzas', 'un litro', 'un cuarterón'; pp. 77, 682 for the onza. The book states no size of libra or cuarterón (lines 9456–9460 only imply 2 kg = 4 libras), so both stay without amount. Changed: cuarterón no longer called a quarter libra; last step; line range."
+  },
+  "note": {
+    "en": "Muro gives this as the French counterpart of the Spanish garlic soups, for six persons. Left out: the variant with milk (half the water, and a cuartillo of boiling milk added in the tureen) and the remark that other fresh vegetables are made into soup the same way without the cheese. Onions and cheese are given in libra and cuarterón, which the book does not size.",
+    "de": "Muro gibt sie als französisches Gegenstück zu den spanischen Knoblauchsuppen, für sechs Personen. Weggelassen: die Variante mit Milch (die halbe Wassermenge und ein Cuartillo kochende Milch in der Suppenschüssel) und die Bemerkung, dass andere frische Gemüse ohne den Käse ebenso zur Suppe werden. Zwiebeln und Käse sind in Libra und Cuarterón angegeben, die das Buch nicht bemisst."
+  }
+}

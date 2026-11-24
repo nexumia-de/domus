@@ -1,0 +1,183 @@
+{
+  "id": "fanqie-chao-dan",
+  "kind": "base",
+  "name": {
+    "en": "Stir-fried tomato and egg",
+    "de": "Rührei mit Tomaten aus dem Wok"
+  },
+  "originalName": "Fanqie chao dan",
+  "country": "cn",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "fanqie-chao-dan-main",
+      "name": {
+        "en": "Stir-fried tomato and egg",
+        "de": "Rührei mit Tomaten aus dem Wok"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Ripe; about 600 g.",
+            "de": "Reif; etwa 600 g."
+          }
+        },
+        {
+          "key": "scallion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170005"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "A quarter in the eggs, the rest on the tomatoes.",
+            "de": "Ein Viertel in die Eier, der Rest an die Tomaten."
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tomatoes into wedges and the scallions into thin rings. Beat the eggs with a quarter teaspoon of the salt.",
+            "de": "Die Tomaten in Spalten und die Lauchzwiebeln in feine Ringe schneiden. Die Eier mit einem Viertel Teelöffel des Salzes verquirlen."
+          },
+          "action": "prepare",
+          "uses": ["tomato", "scallion", "egg", "salt"]
+        },
+        {
+          "text": {
+            "en": "Heat a wok or a large pan over high heat with 2 tablespoons of the oil.",
+            "de": "Einen Wok oder eine große Pfanne mit 2 Esslöffeln des Öls stark erhitzen."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Pour in the eggs and stir for about 30 seconds until they are set in large soft pieces but still moist. Take them out.",
+            "de": "Die Eier hineingießen und etwa 30 Sekunden rühren, bis sie in großen, weichen Stücken gestockt, aber noch feucht sind. Herausnehmen."
+          },
+          "action": "stir",
+          "uses": ["egg"],
+          "time": {
+            "value": 30,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat the remaining oil in the pan, add the tomatoes with the rest of the salt and the sugar and cook over medium heat for 3 to 4 minutes, until they soften and give off their juice.",
+            "de": "Das übrige Öl in der Pfanne erhitzen, die Tomaten mit dem restlichen Salz und dem Zucker dazugeben und bei mittlerer Hitze 3 bis 4 Minuten garen, bis sie weich werden und Saft abgeben."
+          },
+          "action": "cook",
+          "uses": ["oil", "tomato", "salt", "sugar"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Return the eggs to the pan and stir for 30 seconds, until they have taken up some of the juice.",
+            "de": "Die Eier zurück in die Pfanne geben und 30 Sekunden rühren, bis sie etwas vom Saft aufgenommen haben."
+          },
+          "action": "add",
+          "uses": ["egg"],
+          "time": {
+            "value": 30,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Sprinkle with the scallions and serve with rice.",
+            "de": "Mit den Lauchzwiebeln bestreuen und zu Reis servieren."
+          },
+          "action": "sprinkle",
+          "uses": ["scallion"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "fanqie-chao-dan-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "id": "patatas-bravas",
+  "kind": "base",
+  "name": {
+    "en": "Fried potatoes with spicy paprika sauce",
+    "de": "Gebratene Kartoffeln mit scharfer Paprikasauce"
+  },
+  "originalName": "Patatas bravas",
+  "country": "es",
+  "vegetarian": true,
+  "course": "starter",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "bravas-potatoes",
+      "name": {
+        "en": "Fried potato chunks",
+        "de": "Gebratene Kartoffelstücke"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 800,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For frying; most of it stays in the pan.",
+            "de": "Zum Braten; der größte Teil bleibt in der Pfanne."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.75,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the potatoes, cut them into uneven chunks of about 3 cm and pat them dry.",
+            "de": "Die Kartoffeln schälen, in unregelmäßige Stücke von etwa 3 cm schneiden und trocken tupfen."
+          },
+          "action": "peel",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a wide pan over medium heat.",
+            "de": "Das Öl in einer weiten Pfanne bei mittlerer Hitze erhitzen."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Fry the potatoes in one layer, turning them now and then, until they are soft inside.",
+            "de": "Die Kartoffeln in einer Lage braten und ab und zu wenden, bis sie innen weich sind."
+          },
+          "action": "cook",
+          "uses": ["potatoes"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn the heat up and fry them until golden and crisp outside.",
+            "de": "Die Hitze erhöhen und die Kartoffeln braten, bis sie außen goldbraun und knusprig sind."
+          },
+          "action": "cook",
+          "uses": ["potatoes"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Lift the potatoes out, drain them on kitchen paper and sprinkle them with the salt.",
+            "de": "Die Kartoffeln herausheben, auf Küchenpapier abtropfen lassen und mit dem Salz bestreuen."
+          },
+          "action": "take-out",
+          "uses": ["potatoes", "salt"]
+        },
+        {
+          "text": {
+            "en": "Serve the potatoes hot with the sauce spooned over them.",
+            "de": "Die Kartoffeln heiß servieren und die Sauce darübergeben."
+          },
+          "action": "serve"
+        }
+      ]
+    },
+    {
+      "id": "salsa-brava",
+      "name": {
+        "en": "Spicy paprika sauce",
+        "de": "Scharfe Paprikasauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Two cloves.",
+            "de": "Zwei Zehen."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "paprika",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171329"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Sweet paprika, smoked if at hand.",
+            "de": "Edelsüßes Paprikapulver, wenn vorhanden geräuchert."
+          }
+        },
+        {
+          "key": "cayenne",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170932"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172240"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the onion and the garlic finely.",
+            "de": "Zwiebel und Knoblauch fein hacken."
+          },
+          "action": "prepare",
+          "uses": ["onion", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Cook the onion and the garlic in the oil in a small saucepan over low heat until soft, without colour.",
+            "de": "Zwiebel und Knoblauch im Öl in einem kleinen Topf bei schwacher Hitze weich dünsten, ohne dass sie Farbe nehmen."
+          },
+          "technique": "sweat",
+          "uses": ["oil", "onion", "garlic"],
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the flour and cook it for 1 minute.",
+            "de": "Das Mehl einrühren und 1 Minute mitgaren."
+          },
+          "action": "stir",
+          "uses": ["flour"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat and stir in the paprika and the cayenne; off the heat the paprika does not scorch.",
+            "de": "Den Topf vom Herd nehmen und Paprikapulver und Cayennepfeffer einrühren; abseits der Hitze verbrennt das Paprikapulver nicht."
+          },
+          "action": "remove-from-heat",
+          "uses": ["paprika", "cayenne"]
+        },
+        {
+          "text": {
+            "en": "Pour in the water little by little, stirring until smooth.",
+            "de": "Das Wasser nach und nach zugießen und glatt rühren."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil and let the sauce bubble gently, stirring now and then, until it is thick enough to coat a spoon.",
+            "de": "Aufkochen und die Sauce unter gelegentlichem Rühren leise kochen lassen, bis sie einen Löffel überzieht."
+          },
+          "action": "cook",
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the vinegar and the salt.",
+            "de": "Essig und Salz einrühren."
+          },
+          "action": "season",
+          "uses": ["vinegar", "salt"]
+        },
+        {
+          "text": {
+            "en": "Blend the sauce until smooth.",
+            "de": "Die Sauce glatt pürieren."
+          },
+          "action": "puree"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "bravas-potatoes"
+      }
+    },
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "salsa-brava"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

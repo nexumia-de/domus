@@ -26,6 +26,11 @@ owner's; the points under "Agent's choices" were left open by the owner's
 text and are the agent's, for the owner's review. What is built is in
 [behaviour](../behaviour.md#cook) and the [log](../log.md).
 
+**Note of 2026-11-23.** The Notebook's Dishes list the user's own dishes
+only, and the shipped sauces that are bases are on no dish list
+([a sauce is a part](sauces-are-parts.md)); what this record says of
+shipped dishes in the Notebook no longer holds.
+
 ## Context
 
 After the [one dish list](one-dish-list.md) the app asked "what do I cook"

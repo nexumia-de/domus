@@ -9,10 +9,21 @@ export const classicsStrings = {
   // Lists
   classicsTitle: 'Classics',
   backToCountry: (country: string): string => `Back to ${country}`,
-  countries: { de: 'Germany', it: 'Italy', fr: 'France', es: 'Spain' } satisfies Record<
-    Country,
-    string
-  >,
+  countries: {
+    de: 'Germany',
+    it: 'Italy',
+    fr: 'France',
+    es: 'Spain',
+    gb: 'Britain',
+    gr: 'Greece',
+    tr: 'Turkey',
+    us: 'the United States',
+    mx: 'Mexico',
+    in: 'India',
+    th: 'Thailand',
+    cn: 'China',
+    jp: 'Japan',
+  } satisfies Record<Country, string>,
   listLabel: (country: string): string => `Classics from ${country}`,
   emptyCountry: 'No dishes from here yet. More are added over time.',
   unknownCountry: 'This country is not in the list.',
@@ -39,6 +50,11 @@ export const classicsStrings = {
   sourcePlace: (place: string): string => `Place: ${place}`,
   sourceLink: 'Open the source',
   sourceLicence: (licence: string): string => `Licence: ${licence}`,
+  // A recipe of the project's own (docs/decisions/own-recipes.md): what stands in place of a source.
+  ownSource:
+    'A recipe of this app, not from a source: written by an AI model from general cooking knowledge.',
+  ownChecked: 'Read a second time by another AI session. Nobody of the project has cooked it.',
+  ownPersons: (n: number): string => `Written for ${n} persons.`,
   personsStated: (n: number): string => `The source gives its amounts for ${n} persons.`,
   personsSettled: (n: number): string => `The source names no number; we took ${n} persons.`,
   portionsLabel: 'Portions',
@@ -155,4 +171,15 @@ export const pairingStrings = {
   limits: 'The data has no amounts and says nothing about sweet, sour, salty or bitter.',
   source: 'Data: FlavorDB (Garg et al., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
   links: 'Which ingredient here stands for which one there is this app’s judgement.',
+  editorEmpty:
+    'Choose a first ingredient or component above; what goes with it is then shown here.',
+  editorIntro:
+    'Ingredients that share more flavour molecules with what is in this dish than they usually do. Tap one to add it.',
+  add: (name: string): string => `Add ${name} to the dish`,
+  // The project's own table of pairs (data/affinities.json), shown before the computed ones.
+  provenHeading: 'Proven together',
+  provenBasis: 'What cooks commonly combine: a judgement of this app, written by an AI model.',
+  provenListLabel: 'Ingredients commonly combined with what is in this dish',
+  tapToAdd: 'Tap one to add it.',
+  computedHeading: 'From the flavour data',
 };

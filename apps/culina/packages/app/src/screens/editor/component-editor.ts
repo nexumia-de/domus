@@ -381,6 +381,6 @@ const build = (
     notes.wrap,
   );
   if (info) screen.append(info.element);
-  screen.append(versionFields(form, changed), actions);
+  screen.append(versionFields(form, changed, form.isNew), actions);
   syncAll();
 };

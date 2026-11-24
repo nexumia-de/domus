@@ -2,7 +2,7 @@
   "format": "culina-wikidata-de-snapshot",
   "formatVersion": 1,
   "source": "Wikidata, https://query.wikidata.org/sparql (CC0 1.0 Universal)",
-  "retrieved": "2026-11-19",
+  "retrieved": "2026-11-23",
   "property": "P1978 (USDA NDB number)",
   "query": "SELECT ?item ?ndb\n  (SAMPLE(?deL) AS ?de) (SAMPLE(?enL) AS ?en)\n  (GROUP_CONCAT(DISTINCT ?deA; separator=\"¦\") AS ?deAliases)\n  (GROUP_CONCAT(DISTINCT ?cls; separator=\"¦\") AS ?classes)\nWHERE {\n  ?item wdt:P1978 ?ndb .\n  OPTIONAL { ?item rdfs:label ?deL . FILTER(LANG(?deL) = \"de\") }\n  OPTIONAL { ?item rdfs:label ?enL . FILTER(LANG(?enL) = \"en\") }\n  OPTIONAL { ?item skos:altLabel ?deA . FILTER(LANG(?deA) = \"de\") }\n  OPTIONAL {\n    { ?item wdt:P31 ?c . BIND(CONCAT(\"i:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n    UNION\n    { ?item wdt:P279 ?c . BIND(CONCAT(\"s:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n  }\n}\nGROUP BY ?item ?ndb\nORDER BY ?item ?ndb",
   "classesQuery": "SELECT ?c ?l WHERE { VALUES ?c { <the class ids of the P31 values of the first response> } ?c rdfs:label ?l . FILTER(LANG(?l) = \"en\") }",
@@ -11,7 +11,7 @@
     "Q16521": "taxon"
   },
   "responseRows": 1470,
-  "keptRows": 303,
+  "keptRows": 335,
   "items": [
     {
       "item": "Q16701410",
@@ -31,12 +31,30 @@
       "instanceOf": []
     },
     {
+      "item": "Q217525",
+      "ndb": "01009",
+      "ndbCount": 1,
+      "de": "Cheddar",
+      "deAliases": ["Cheddarkäse"],
+      "en": "Cheddar cheese",
+      "instanceOf": []
+    },
+    {
       "item": "Q426337",
       "ndb": "01017",
       "ndbCount": 1,
       "de": "Doppelrahmkäse",
       "deAliases": ["Doppelrahmstufe"],
       "en": "cream cheese",
+      "instanceOf": []
+    },
+    {
+      "item": "Q182760",
+      "ndb": "01019",
+      "ndbCount": 1,
+      "de": "Feta",
+      "deAliases": ["Balkankäse", "Feta Käse", "Fetakäse", "Salzlakenkäse"],
+      "en": "feta",
       "instanceOf": []
     },
     {
@@ -58,6 +76,15 @@
       "instanceOf": ["Q10943"]
     },
     {
+      "item": "Q14088",
+      "ndb": "01026",
+      "ndbCount": 5,
+      "de": "Mozzarella",
+      "deAliases": ["Fior di latte"],
+      "en": "mozzarella",
+      "instanceOf": ["Q10943"]
+    },
+    {
       "item": "Q216781",
       "ndb": "01036",
       "ndbCount": 2,
@@ -73,6 +100,14 @@
       "de": "Ricotta",
       "deAliases": [],
       "en": "ricotta",
+      "instanceOf": []
+    },
+    {
+      "item": "Q7362740",
+      "ndb": "01038",
+      "ndbCount": 1,
+      "deAliases": [],
+      "en": "Romano cheese",
       "instanceOf": []
     },
     {
@@ -114,6 +149,15 @@
     {
       "item": "Q840171",
       "ndb": "01055",
+      "ndbCount": 7,
+      "de": "saure Sahne",
+      "deAliases": ["Sauerrahm"],
+      "en": "sour cream",
+      "instanceOf": []
+    },
+    {
+      "item": "Q840171",
+      "ndb": "01056",
       "ndbCount": 7,
       "de": "saure Sahne",
       "deAliases": ["Sauerrahm"],
@@ -311,6 +355,15 @@
       "deAliases": ["Schafsmilch"],
       "en": "sheep milk",
       "instanceOf": []
+    },
+    {
+      "item": "Q13317",
+      "ndb": "01116",
+      "ndbCount": 18,
+      "de": "Joghurt",
+      "deAliases": ["Jogurt"],
+      "en": "yogurt",
+      "instanceOf": ["Q951964"]
     },
     {
       "item": "Q93189",
@@ -592,6 +645,15 @@
       "instanceOf": ["Q1364", "Q25403900", "Q42527", "Q735160", "Q95997873"]
     },
     {
+      "item": "Q14625808",
+      "ndb": "02006",
+      "ndbCount": 1,
+      "de": "Kardamom",
+      "deAliases": [],
+      "en": "cardamom",
+      "instanceOf": ["Q55983715"]
+    },
+    {
       "item": "Q102256772",
       "ndb": "02007",
       "ndbCount": 1,
@@ -662,6 +724,15 @@
       "deAliases": ["Coriander", "Coriandrum sativum", "Gartenkoriander", "Koriander"],
       "en": "Coriandrum sativum",
       "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q57328174",
+      "ndb": "02014",
+      "ndbCount": 1,
+      "de": "Kreuzkümmel",
+      "deAliases": ["Cumin"],
+      "en": "cumin seed",
+      "instanceOf": ["Q1364", "Q42527"]
     },
     {
       "item": "Q1144935",
@@ -779,6 +850,34 @@
       "deAliases": [],
       "en": "onion powder",
       "instanceOf": ["Q25403900"]
+    },
+    {
+      "item": "Q134283",
+      "ndb": "02027",
+      "ndbCount": 1,
+      "de": "Oregano",
+      "deAliases": [
+        "Dost",
+        "Dostenkraut",
+        "Echter Dost",
+        "Gemeiner Dost",
+        "Gewöhnlicher Dost",
+        "Origano",
+        "Origanum vulgare",
+        "Wilder Majoran",
+        "origan"
+      ],
+      "en": "Origanum vulgare",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q92581152",
+      "ndb": "02027",
+      "ndbCount": 1,
+      "de": "Oregano",
+      "deAliases": [],
+      "en": "oregano",
+      "instanceOf": ["Q95997873"]
     },
     {
       "item": "Q3127593",
@@ -943,6 +1042,24 @@
       "instanceOf": ["Q16521"]
     },
     {
+      "item": "Q26686",
+      "ndb": "02045",
+      "ndbCount": 3,
+      "de": "Dill",
+      "deAliases": ["Anethum graveolens", "Dille", "Dillkraut", "Dillöl", "Gurkenkraut"],
+      "en": "Anethum graveolens",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q131748",
+      "ndb": "02046",
+      "ndbCount": 1,
+      "de": "Senf",
+      "deAliases": ["Mostrich", "Senfkörner"],
+      "en": "mustard",
+      "instanceOf": []
+    },
+    {
       "item": "Q11254",
       "ndb": "02047",
       "ndbCount": 1,
@@ -1004,6 +1121,22 @@
       ],
       "en": "vinegar",
       "instanceOf": ["Q906356"]
+    },
+    {
+      "item": "Q156251",
+      "ndb": "02054",
+      "ndbCount": 1,
+      "de": "Echter Kapernstrauch",
+      "deAliases": [
+        "Capparis spinosa",
+        "Kapernapfel",
+        "Kapernbeere",
+        "Kapernfrucht",
+        "Kapernfrüchte",
+        "Kapernstrauch"
+      ],
+      "en": "Capparis spinosa",
+      "instanceOf": ["Q16521"]
     },
     {
       "item": "Q122679",
@@ -1806,6 +1939,49 @@
       "instanceOf": ["Q2596997"]
     },
     {
+      "item": "Q864693",
+      "ndb": "05006",
+      "ndbCount": 6,
+      "de": "Hühnerfleisch",
+      "deAliases": ["Hähnchen", "Hühnchen"],
+      "en": "chicken as food",
+      "instanceOf": []
+    },
+    {
+      "item": "Q404114",
+      "ndb": "06175",
+      "ndbCount": 1,
+      "de": "Hoisin-Sauce",
+      "deAliases": ["Hoisin", "Hoisin-Soße", "Hoisinsauce", "Hoisinsoße"],
+      "en": "hoisin sauce",
+      "instanceOf": []
+    },
+    {
+      "item": "Q780827",
+      "ndb": "06176",
+      "ndbCount": 1,
+      "de": "Austernsauce",
+      "deAliases": ["Austernsoße"],
+      "en": "oyster sauce",
+      "instanceOf": []
+    },
+    {
+      "item": "Q842618",
+      "ndb": "06971",
+      "ndbCount": 1,
+      "de": "Worcestershiresauce",
+      "deAliases": [
+        "Förstersauce",
+        "Lea & Perrins",
+        "Worcester Sauce",
+        "Worcester-Sauce",
+        "Worcestersauce",
+        "Worcestersoße"
+      ],
+      "en": "Worcestershire sauce",
+      "instanceOf": []
+    },
+    {
       "item": "Q15362022",
       "ndb": "09001",
       "ndbCount": 2,
@@ -1831,6 +2007,15 @@
       "deAliases": [],
       "en": "apple",
       "instanceOf": ["Q140646522"]
+    },
+    {
+      "item": "Q961769",
+      "ndb": "09037",
+      "ndbCount": 3,
+      "de": "Avocado",
+      "deAliases": [],
+      "en": "avocado",
+      "instanceOf": []
     },
     {
       "item": "Q503",
@@ -2033,6 +2218,15 @@
       "instanceOf": []
     },
     {
+      "item": "Q1093742",
+      "ndb": "09150",
+      "ndbCount": 2,
+      "de": "Zitrone",
+      "deAliases": ["Limone"],
+      "en": "lemon",
+      "instanceOf": ["Q3314483"]
+    },
+    {
       "item": "Q1375049",
       "ndb": "09152",
       "ndbCount": 3,
@@ -2053,6 +2247,15 @@
     {
       "item": "Q13195",
       "ndb": "09159",
+      "ndbCount": 3,
+      "de": "Limette",
+      "deAliases": ["Süße Zitrone"],
+      "en": "lime",
+      "instanceOf": ["Q502895"]
+    },
+    {
+      "item": "Q13195",
+      "ndb": "09160",
       "ndbCount": 3,
       "de": "Limette",
       "deAliases": ["Süße Zitrone"],
@@ -2103,6 +2306,15 @@
       "deAliases": [],
       "en": "Vaccinium reticulatum",
       "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q1621080",
+      "ndb": "09193",
+      "ndbCount": 3,
+      "de": "Olive",
+      "deAliases": [],
+      "en": "olive",
+      "instanceOf": []
     },
     {
       "item": "Q13191",
@@ -2237,6 +2449,15 @@
       "deAliases": ["Cactus ficus-indica"],
       "en": "Opuntia ficus-indica",
       "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q13186",
+      "ndb": "09298",
+      "ndbCount": 3,
+      "de": "Rosine",
+      "deAliases": ["Korinthe"],
+      "en": "raisin",
+      "instanceOf": ["Q25403900"]
     },
     {
       "item": "Q13179",
@@ -2466,6 +2687,15 @@
       "instanceOf": ["Q16521"]
     },
     {
+      "item": "Q57544960",
+      "ndb": "11090",
+      "ndbCount": 1,
+      "de": "Brokkoli",
+      "deAliases": [],
+      "en": "broccoli",
+      "instanceOf": []
+    },
+    {
       "item": "Q150463",
       "ndb": "11098",
       "ndbCount": 1,
@@ -2505,6 +2735,21 @@
       "de": "Rotkohl",
       "deAliases": ["Brassica oleracea convar. capitata var. rubra", "Rotkraut"],
       "en": "red cabbage",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q154013",
+      "ndb": "11114",
+      "ndbCount": 1,
+      "de": "Wirsing",
+      "deAliases": [
+        "Brassica oleracea convar. capitata var. sabauda",
+        "Brassica oleracea var. sabauda",
+        "Welschkohl",
+        "Welschkraut",
+        "Wirsingkohl"
+      ],
+      "en": "Savoy cabbage",
       "instanceOf": ["Q16521"]
     },
     {
@@ -2611,6 +2856,23 @@
       "instanceOf": ["Q140358161"]
     },
     {
+      "item": "Q12533094",
+      "ndb": "11209",
+      "ndbCount": 1,
+      "de": "Aubergine",
+      "deAliases": [],
+      "en": "eggplant",
+      "instanceOf": ["Q140358161", "Q140646522"]
+    },
+    {
+      "item": "Q7540",
+      "ndb": "11209",
+      "ndbCount": 1,
+      "de": "Aubergine",
+      "deAliases": ["Eierfrucht", "Eierpflanze", "Melanzani"],
+      "instanceOf": ["Q16521"]
+    },
+    {
       "item": "Q178547",
       "ndb": "11213",
       "ndbCount": 1,
@@ -2705,6 +2967,15 @@
       "instanceOf": ["Q16521"]
     },
     {
+      "item": "Q178143",
+      "ndb": "11935",
+      "ndbCount": 1,
+      "de": "Ketchup",
+      "deAliases": ["Ketschup", "Tomatenketchup"],
+      "en": "ketchup",
+      "instanceOf": []
+    },
+    {
       "item": "Q156884",
       "ndb": "11959",
       "ndbCount": 1,
@@ -2721,6 +2992,22 @@
       "deAliases": ["Lilienknospe"],
       "en": "lotus seed",
       "instanceOf": []
+    },
+    {
+      "item": "Q7885904",
+      "ndb": "12087",
+      "ndbCount": 1,
+      "de": "Cashewnuss",
+      "deAliases": [
+        "Acajounuss",
+        "Cashewkern",
+        "Cashewnüsse",
+        "Indische Mandel",
+        "Kaschufrucht",
+        "Kaschunuss"
+      ],
+      "en": "cashew nut",
+      "instanceOf": ["Q3314483"]
     },
     {
       "item": "Q13187",
@@ -2759,6 +3046,46 @@
       "instanceOf": []
     },
     {
+      "item": "Q199788",
+      "ndb": "15015",
+      "ndbCount": 1,
+      "de": "Atlantischer Kabeljau",
+      "deAliases": [
+        "Atlantic Cod",
+        "Cabillaud",
+        "Dorsch",
+        "Gadus morhua",
+        "Kabeljau",
+        "Morue Commune",
+        "Morue Franche",
+        "Pomuchel",
+        "Pomuchelskopf",
+        "Skrei",
+        "Tancaud",
+        "Torsk"
+      ],
+      "en": "Gadus morhua",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q2396858",
+      "ndb": "15039",
+      "ndbCount": 1,
+      "de": "Atlantischer Hering",
+      "deAliases": ["Clupea harengus", "Hering"],
+      "en": "Clupea harengus",
+      "instanceOf": ["Q16521"]
+    },
+    {
+      "item": "Q235169",
+      "ndb": "16112",
+      "ndbCount": 1,
+      "de": "Miso",
+      "deAliases": [],
+      "en": "miso",
+      "instanceOf": []
+    },
+    {
       "item": "Q10987",
       "ndb": "19296",
       "ndbCount": 1,
@@ -2781,6 +3108,15 @@
       ],
       "en": "molasses",
       "instanceOf": ["Q12812139", "Q169336"]
+    },
+    {
+      "item": "Q11190742",
+      "ndb": "19334",
+      "ndbCount": 1,
+      "de": "Brauner Zucker",
+      "deAliases": [],
+      "en": "brown sugar",
+      "instanceOf": ["Q2095"]
     },
     {
       "item": "Q123425472",

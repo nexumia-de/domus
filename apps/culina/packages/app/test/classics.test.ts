@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
-import { TECHNIQUES, validateClassic } from '@culina/engine';
+import { COUNTRY_CODES, TECHNIQUES, validateClassic } from '@culina/engine';
 import type { Classic, Technique } from '@culina/engine';
 import { CLASSICS, PACK, classicById, classicsOf } from '../src/classics';
 import { listWanted, describeWanted } from './classics-wanted';
@@ -36,11 +36,11 @@ describe('the index of shipped classics', () => {
       files.map((f) => f.split('/').slice(-2).join('/')),
     );
   });
-  test('only the four country folders exist', () => {
+  test('only folders of the countries the app names exist', () => {
     const dirs = readdirSync(CLASSIC_DIR, { withFileTypes: true })
       .filter((e) => e.isDirectory())
       .map((e) => e.name);
-    expect(dirs.sort()).toEqual(['de', 'es', 'fr', 'it']);
+    expect(dirs.sort()).toEqual([...COUNTRY_CODES].sort());
   });
   test('ids are unique and found by id and by country', () => {
     expect(new Set(CLASSICS.map((c) => c.id)).size).toBe(CLASSICS.length);
@@ -67,25 +67,91 @@ describe('every shipped classic', () => {
   });
 });
 
-describe('the classics that are bases (issue 39, part 1)', () => {
+describe('the classics that are bases (issue 39, part 1; 16 more with the recipes of 2026-11-23, 50 more with the own recipes)', () => {
   const BASES = [
+    'achat',
     'alioli',
+    'arroz-blanco',
+    'arroz-rojo',
+    'bai-mi-fan',
+    'balsamella',
+    'barbecue-sauce',
+    'basmati-chawal',
+    'bratkartoffeln',
+    'bulgur-pilavi',
+    'buttermilk-pancakes',
     'cavolfiore-balsamella',
+    'chao-cai-jiang',
+    'chapati',
+    'coban-salatasi',
+    'coleslaw',
     'creme-caramel',
+    'crepes',
+    'dan-chao-fan',
     'egg-noodles',
     'eierkuchen',
+    'fanqie-chao-dan',
     'flan-clasico',
+    'frijoles-refritos',
+    'gambas-al-ajillo',
     'gnocchi-di-patate',
+    'gnocchi-di-semolino',
+    'gohan',
+    'guacamole',
+    'hamburger-patties',
     'holl-sauce',
+    'impasto-per-pizza',
+    'kachumber',
+    'kartoffelnudeln',
+    'khao-suai',
+    'kyuri-no-sunomono',
+    'ladolemono',
+    'macaroni-a-l-italienne-maigre',
+    'maccheroni-alla-bolognese',
+    'mashed-potatoes',
+    'masoor-dal-tadka',
     'mayonnaise',
+    'mercimek-corbasi',
     'minestrone',
+    'miso-shiru',
+    'murgh-masala',
+    'nam-chim-kai',
+    'nam-chim-satay',
     'napfkuchen',
     'omelette-fines-herbes',
+    'onion-gravy',
+    'pai-huanggua',
+    'passato-di-patate',
+    'patatas-bravas',
+    'patates-lemonates',
+    'pesto-genovese',
+    'pico-de-gallo',
+    'pollo-deshebrado-en-jitomate',
+    'pommes-de-terre-au-lait',
     'pure-de-patatas',
+    'quiche-lorraine',
+    'rahmchampignons',
+    'raita',
     'risotto-alla-milanese',
+    'roast-potatoes',
+    'ruehrei',
+    'sake-no-shioyaki',
+    'salsa-de-tomate',
     'salsa-di-pomodoro',
+    'salsa-vinagreta',
+    'sauce-blanche',
     'sauce-hollandaise',
+    'sauce-maitre-d-hotel',
+    'saure-eiersauce',
+    'souvlaki-kotopoulo',
+    'spaghetti-alla-rustica',
+    'spargelsauce',
     'tagliatelle-verdi',
+    'tamagoyaki',
+    'teriyaki-no-tare',
+    'tortillas-de-harina',
+    'tzatziki',
+    'vinaigrette-moutarde',
   ];
   test('are marked as bases, and every component of a base names its role', () => {
     expect(

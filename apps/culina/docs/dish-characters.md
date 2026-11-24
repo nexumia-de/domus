@@ -287,7 +287,12 @@ from the characters (lard does not make a sauce "with meat"), with its own
 list `meatAndFish` in the table: the six meat, poultry and fish categories
 and the animal foods outside them, found by reading every catalogue entry on
 2026-11-21 (fat group, lard, bacon grease, fish oils, two shortenings with
-lard or tallow; no gelatine, broth, extract, anchovy or fish sauce exists).
+lard or tallow; no gelatine, broth, extract, anchovy or fish sauce existed
+then). On 2026-11-23 the catalogue got stocks and sauces: the chicken and
+beef stock with their group, the fish sauce, the oyster sauce and the
+Worcestershire sauce (anchovies in the usual recipe, a judgement) joined the
+list; the vegetable broth did not. The test's name scan now also asks for
+"stock", "oyster" and "worcestershire".
 A test scans the catalogue by name so a new animal food outside the list
 fails. When in doubt it says "not known", which the filter leaves out: a
 line naming a group with an animal food below it ("shortening"), an

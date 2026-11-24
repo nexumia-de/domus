@@ -9,6 +9,7 @@ import {
   copyClassic,
   copyClassicComponent,
   isBase,
+  isDishOfItsOwn,
   slotAlternatives,
   validateClassic,
 } from '../src/index';
@@ -74,6 +75,13 @@ describe('a base', () => {
     const plain: Classic = { ...frame() };
     delete plain.kind;
     expect(isBase(plain)).toBe(false);
+  });
+
+  test('that is a sauce is a part of dishes; any other base and every dish is a dish of its own', () => {
+    expect(isDishOfItsOwn(frame({ course: 'sauce' }))).toBe(false);
+    expect(isDishOfItsOwn(frame({ course: 'main' }))).toBe(true);
+    // A sauce the source gives as a dish (no kind) stays a dish: the kind decides, not the course.
+    expect(isDishOfItsOwn(frame({ kind: 'dish', course: 'sauce' }))).toBe(true);
   });
 
   test('uses the components a slot reaches; the others of a slot role are its alternatives', () => {

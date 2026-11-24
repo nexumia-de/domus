@@ -221,8 +221,8 @@ with `aria-current`. **Test:** `e2e/components.mjs` at 360 and 1000 px.
 decided by the owner). The list (`src/screens/notebook-list.ts`, the same
 pane as the Notebook's Dishes; rows in `src/components/list.ts`) holds the notebook's components and every component
 of every shipped dish and base, a base's alternatives included
-(`shippedEntries` in `src/components/shipped.ts`): 59 from the 48 dishes on
-this day. Two groups, each under a heading: "In my notebook" first (in its
+(`shippedEntries` in `src/components/shipped.ts`): 82 from the 68 dishes on
+2026-11-23. Two groups, each under a heading: "In my notebook" first (in its
 order; while it has none, it says so and offers the example data), then
 "Shipped with the app", sorted by the dish's name and then in file order, so
 the parts of one dish stand together. A shipped row says "Shipped"
@@ -551,6 +551,12 @@ together from components, and a component names the role it usually fills
   rolls again. A dish rolled earlier that no longer fits a changed choice
   is no longer shown. The entries are read once when the screen opens (and
   again when the catalogue has loaded), not on every choice or roll.
+- **Without own components (since 2026-11-23)** the section "Put one
+  together from your components" shows no ticks and no roll: one sentence
+  says that the notebook has no components to put together yet, and a
+  link leads to the Components list, where a shipped one is kept or a new
+  one written. Before, the roll answered "No component of yours has this
+  role yet" for every role. **Test:** `e2e/editor-pairing.mjs` (German).
 - **The roll per role** ("Put one together from your components"). The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
@@ -611,7 +617,7 @@ together from components, and a component names the role it usually fills
   candidates, the stock question, the judge and the random numbers as
   arguments; the screen passes `Math.random`. The engine stays without
   randomness.
-- **In the dish editor**, a slot added with "Add a slot" takes the usual
+- **In the dish editor**, a slot added with "Add an ingredient or component" takes the usual
   role of the component picked for it, as long as nobody chose the slot's
   role by hand; before, it kept the first open role, so a mash picked into
   a new slot stood there as a sauce and had the sauces as alternatives.
@@ -849,13 +855,45 @@ note of an existing line are kept as they are.
   shown under the lines as information, in the neutral words of the ratio
   card, and never blocks saving. **Test:** `e2e/editor-more.mjs`.
 
-**Dish editor.** Name, portions (a whole number or empty), course and
-cuisine, a note, and role slots: a role, a filling (a component or an
-ingredient, from the same picker) and an amount per portion. A stored slot
+**Dish editor.** Name, portions (a whole number or empty), then what goes
+into the dish (the role slots: a role, a filling, a component or an
+ingredient from the same picker, and an amount per portion; heading "What
+goes into the dish", button "Add an ingredient or component"), then
+course, cuisine and a note. Until 2026-11-23 the slots stood below course,
+cuisine and note. A new dish or component is asked for a tasting note
+only under "This version"; "What changed" and "Why" are shown when a
+stored one is edited (`version-fields.ts`; `e2e/editor-pairing.mjs`). A stored slot
 always has a filling; a slot without one lives only in the draft. Open
 roles remain derived on the dish screen. **Test:** `test/notebook.test.ts`,
 `e2e/editor-more.mjs`.
 
+- **Goes with (since 2026-11-23)**, a section under the slots and "Add a
+  slot" (`src/screens/editor/pairing-suggest.ts`, the draft's ingredients
+  in `src/pairing/draft.ts`; the rule and the data are those of
+  [Goes with on the dish](#classics), [decision](decisions/flavordb.md)).
+  While no slot has a filling it says to choose a first ingredient or
+  component, and the pairing data is not fetched. From 2026-11-23 the
+  offers come in two parts: **Proven together** first, from the project's
+  own table (`data/affinities.json`, `src/pairing/affinity.ts`; written by
+  an AI model, which the section says), there at once without a fetch; then
+  **From the flavour data**, the computed offers described next, without
+  what stands above. From the first filling
+  on it offers up to eight ingredients of the catalogue that stand out
+  with what the draft holds: the ingredients that fill a slot and the
+  ingredients of the components that fill one, through the components
+  they name. Each offer is a button of at least 44 px with the name and
+  the fillings it goes with; its accessible name is "Add <name> to the
+  dish". A tap copies the ingredient from the catalogue into the notebook
+  (as the picker does), adds it as a slot of the next open role (garnish
+  when none is open) without an amount, and moves the focus to that slot;
+  the role is a guess, the data knows none, and the cook changes it on the
+  row. The offers are drawn again with every change of the fillings, never
+  with one already in the dish. Below them the hint that this is computed
+  and the source with its licence. Only ingredients are offered, no
+  components. Not in the native app. **Test:** `test/pairing-draft.test.ts`,
+  `e2e/editor-pairing.mjs` (Chromium at 360 px; English in full, in German
+  the heading and the empty state only; whether the offers help a cook is
+  tested nowhere).
 - **Course and cuisine (since 2026-11-21)** are two labelled selects of
   44 px, "Course" and "Cuisine", each starting with "Not stated", which
   stores no field. The courses are a classic's (starter to snack); the
@@ -1110,21 +1148,24 @@ own; the origin is only a choice of the filter.
   page is closed; the filter is the stored one, shared with the random pick,
   and survives a reload. Where the browser cannot store it, it holds until
   the page is closed.
-- **The Notebook's Dishes are no second list to browse.** `#/dishes` is
-  the plain list of the Components part (`src/screens/notebook-list.ts`,
-  rows in `src/dishes/list.ts`, groups and search in
-  `src/shared/notebook-rows.ts`), after the owner's point 3 of issue 44
-  ("Notebook = own and shipped components and dishes, for editing and
-  building on. Its Dishes part is no second browse list."): the user's own
-  dishes in their order under "In my notebook", then the shipped dishes by
-  name under "Shipped with the app"; a row has the name and a quiet line
-  (course, cuisine, and "Shipped" on a shipped one); the search by name, the
-  select **From** (All dishes, Mine, Shipped, kept while the page is open),
-  "Add a dish" and "Put a dish together at random". A shipped row opens the
-  shipped dish's screen (`#/classic/<id>`), read-only with Keep in my
-  notebook. No dish filter, no "Only with what I have", no "Use up first":
-  those are Cook's. A notebook without a dish of its own says so in its
-  group and offers its example data there.
+- **The Notebook's Dishes are the user's own (since 2026-11-23,
+  [decision](decisions/sauces-are-parts.md)).** `#/dishes` is a plain list
+  (`src/screens/notebook-list.ts`, rows in `src/dishes/list.ts`, search in
+  `src/shared/notebook-rows.ts`): the user's own dishes in their order; a
+  row has the name and a quiet line (course, cuisine); the search by name,
+  "Add a dish" and "Put a dish together at random". No shipped dish and no
+  choice of origin: the shipped dishes are on Cook, and "Keep in my
+  notebook" on one brings a copy here. No dish filter, no "Only with what I
+  have", no "Use up first": those are Cook's. A notebook without a dish of
+  its own says so, names Cook as the place to keep one from, and offers its
+  example data. Until 2026-11-23 the shipped dishes stood here too, under
+  "Shipped with the app", with a select "From". **Test:**
+  `test/dishes-notebook-list.test.ts`, `e2e/dish-browse.mjs`,
+  `e2e/kit-parts.mjs`.
+- **A sauce that is a base is no dish (since 2026-11-23).** The
+  shipped bases of the course sauce (26 of them) are on no dish list, in
+  the finder or the random pick; they are in the Components list. Cook
+  lists 98 of the 124 shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1161,9 +1202,8 @@ filter with a store that throws; entries written by hand),
 example data: both origins in one list on Cook, each choice narrows, choices
 combine, Show all, the choice across a reload and on the old address
 `#/start`, the first result on the first screen of Cook with the filter
-folded, the Notebook's Dishes as own and shipped dishes in a plain list
-without the filter, "Mine" there, a shipped row of it opening its dish with
-Keep and leading back to it, a shipped row of Cook opens its
+folded, the Notebook's Dishes as the own dishes in a plain list without the
+filter and without a choice of origin, a shipped row of Cook opens its
 dish, the old addresses, the way back to Cook with the filter untouched, no option of a select cut off in English and German, no "nothing
 fits" while the catalogue is held back, the focus after Show all, no
 horizontal scroll, 44 px targets). The private-mode fallback is proved only
@@ -1548,7 +1588,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   nothing is counted), the coverage, and everything else behind the second
   tap. Before, figures were shown from two counted ingredients and a quarter of
   all (`MIN_COUNTED`, `MIN_SHARE`, removed), which let the herb omelette show 5
-  kcal from its salt and pepper. On the 48 shipped dishes 9 show figures
+  kcal from its salt and pepper. On the 124 shipped dishes 68 show figures (17 of 68 before the own recipes of 2026-11-24, 9 of 48 before the recipes of 2026-11-23)
   ([evaluation](nutrition-evaluation.md#figures-only-where-they-mean-something-2026-11-21)). **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be

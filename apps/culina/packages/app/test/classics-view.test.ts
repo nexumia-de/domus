@@ -46,12 +46,18 @@ describe('the fictional example content', () => {
 
 describe('the lists', () => {
   test('offer every country, an empty one with a count of 0', () => {
-    expect(countryChoices(EXAMPLE_CLASSICS)).toEqual([
+    expect(countryChoices(EXAMPLE_CLASSICS).slice(0, 4)).toEqual([
       { country: 'de', count: 1 },
       { country: 'it', count: 1 },
       { country: 'fr', count: 0 },
       { country: 'es', count: 0 },
     ]);
+    // The cuisines added on 2026-11-23 follow, each offered though the fixture has no dish of it.
+    expect(
+      countryChoices(EXAMPLE_CLASSICS)
+        .slice(4)
+        .map((c) => [c.country, c.count]),
+    ).toEqual(['gb', 'gr', 'tr', 'us', 'mx', 'in', 'th', 'cn', 'jp'].map((c) => [c, 0]));
     expect(countryChoices([]).every((c) => c.count === 0)).toBe(true);
     expect(isCountry('fr')).toBe(true);
     expect(isCountry('xx')).toBe(false);
@@ -125,7 +131,7 @@ describe('the dish view', () => {
     expect(view.name).toBe('Beispiel-Pfannengericht (erfunden)');
     expect(view.originalName).toBe('Example pan dish');
     expect(view.persons).toEqual({ value: 4, basis: 'stated' });
-    expect(view.source.author).toBe('Example Author');
+    expect(view.source).toMatchObject({ author: 'Example Author' });
     expect(view.check.method).toBe('second-reader');
     expect(must(view.components[0]).lines[2]?.amountWord).toBe('to taste');
   });

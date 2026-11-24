@@ -1,0 +1,260 @@
+{
+  "id": "spargelsauce",
+  "kind": "base",
+  "name": {
+    "en": "Asparagus sauce with egg yolks",
+    "de": "Spargelsauce mit Eigelb"
+  },
+  "originalName": "Asparagus Sauce. No. 1",
+  "country": "de",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "author": "Henriette Davidis",
+    "title": "A Practical Book of the Art of Cooking as Performed in Germany (Milwaukee, Wis.: C. N. Caspar Co., Book Emporium)",
+    "year": 1904,
+    "place": "Division R, No. 44, printed pages 359-360; lines 26836-26849 of the text file",
+    "url": "https://archive.org/stream/cu31924000722862/cu31924000722862_djvu.txt"
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "units": {
+    "tablespoonful": {
+      "kind": "volume",
+      "factor": 14.78676478125,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary tablespoon of units.json (14.78676478125 ml). A judgement."
+    },
+    "cupful": {
+      "kind": "volume",
+      "factor": 236.5882365,
+      "read": "The source is an American edition (title page: \"Compiled and adapted for the United States, according to the Thirty-fifth German Original, with Weights and Measures in American equivalents\"); taken as the US customary cup of units.json (236.5882365 ml). A judgement."
+    }
+  },
+  "components": [
+    {
+      "id": "asparagus-sauce",
+      "name": {
+        "en": "Asparagus sauce",
+        "de": "Spargelsauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "yolk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-egg-yolk"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "the yolks of 2 eggs"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tablespoonful",
+            "original": "a heaping tablespoonful of flour"
+          },
+          "note": {
+            "en": "A heaping tablespoonful.",
+            "de": "Ein gehäufter Esslöffel."
+          },
+          "sourceNote": {
+            "en": "The printed page reads \"a heaping tablespoonful of flour\". The German Milwaukee edition of the book (36th German edition, Division R, No. 47) reads a heaping teaspoonful (\"einen gehäuften Theelöffel Mehl\") in its machine-read text. The reading of the English print is entered.",
+            "de": "Die gedruckte Seite hat \"a heaping tablespoonful of flour\" (ein gehäufter Esslöffel). Die deutsche Milwaukee-Ausgabe des Buches (36. deutsche Auflage, Abschnitt R, Nr. 47) hat in ihrem maschinell gelesenen Text einen gehäuften Teelöffel (\"einen gehäuften Theelöffel Mehl\"). Eingetragen ist die Lesart des englischen Drucks."
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cream"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tablespoonful",
+            "original": "2 tablespoonfuls of sweet or sour cream"
+          },
+          "note": {
+            "en": "Sweet or sour cream.",
+            "de": "Süße oder saure Sahne."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "cupful",
+            "original": "1 cupful of asparagus broth or water"
+          },
+          "settled": true,
+          "note": {
+            "en": "The cooking water of the asparagus can take its place.",
+            "de": "Stattdessen kann das Kochwasser des Spargels genommen werden."
+          },
+          "sourceNote": {
+            "en": "The source says asparagus broth or water; water is entered.",
+            "de": "Die Quelle sagt Spargelbrühe oder Wasser; eingetragen ist Wasser."
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "settled": true,
+          "note": {
+            "en": "A little.",
+            "de": "Ein wenig."
+          },
+          "sourceNote": {
+            "en": "The source says a little lemon juice or vinegar and gives no amount; lemon juice is entered.",
+            "de": "Die Quelle sagt ein wenig Zitronensaft oder Essig und nennt keine Menge; eingetragen ist Zitronensaft."
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-sugars"
+          },
+          "note": {
+            "en": "A piece the size of a hazelnut.",
+            "de": "Ein haselnussgroßes Stück."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"a piece of sugar the size of a hazelnut\"; no weight is given.",
+            "de": "Wortlaut der Quelle: \"a piece of sugar the size of a hazelnut\"; ein Gewicht steht nicht da."
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "note": {
+            "en": "A piece the size of an egg.",
+            "de": "Ein eigroßes Stück."
+          },
+          "sourceNote": {
+            "en": "Source wording: \"a piece of butter the size of an egg\"; no weight is given.",
+            "de": "Wortlaut der Quelle: \"a piece of butter the size of an egg\"; ein Gewicht steht nicht da."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "A trifle, only if the sauce needs it.",
+            "de": "Eine Spur, nur wenn die Sauce es braucht."
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stir the yolks and the flour smooth with the cream and the water.",
+            "de": "Eigelb und Mehl mit der Sahne und dem Wasser glatt rühren."
+          },
+          "action": "mix",
+          "uses": ["yolk", "flour", "cream", "water"]
+        },
+        {
+          "text": {
+            "en": "Add the nutmeg, the lemon juice and the sugar.",
+            "de": "Muskat, Zitronensaft und Zucker zugeben."
+          },
+          "action": "add",
+          "uses": ["nutmeg", "lemon", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Beat the sauce with a whisk over a brisk heat until it is just short of boiling and has bound.",
+            "de": "Die Sauce bei starker Hitze mit dem Schneebesen schlagen, bis sie kurz vor dem Kochen steht und gebunden ist."
+          },
+          "action": "whisk"
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat and stir in the butter.",
+            "de": "Den Topf vom Feuer nehmen und die Butter einrühren."
+          },
+          "action": "stir",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Taste, add a trifle of salt if the sauce needs it, and pour it into the sauce boat.",
+            "de": "Abschmecken, bei Bedarf eine Spur Salz zugeben und die Sauce in die Sauciere gießen."
+          },
+          "action": "taste",
+          "uses": ["salt"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "asparagus-sauce"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Liquid of the sauce",
+      "value": "water, not asparagus broth: the source says either",
+      "reason": "Our choice: the source gives 'asparagus broth or water'; water is entered so that the sauce does not depend on a dish of asparagus. The amount (1 cupful) is the source's.",
+      "target": "asparagus-sauce/water"
+    },
+    {
+      "what": "Acid",
+      "value": "lemon juice, not vinegar: the source says either, without an amount",
+      "reason": "Our choice between the source's two alternatives ('a little lemon juice or vinegar').",
+      "target": "asparagus-sauce/lemon"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Numbers read on the page image (archive.org scan PDF, pp. 359-360). Print agrees: 4 persons, yolks of 2 eggs, a heaping tablespoonful of flour, 2 tablespoonfuls cream, 1 cupful broth or water, hazelnut of sugar, egg of butter; nutmeg, acid, salt without amount. German Milwaukee ed. (henriettedavidis01davi, OCR): agrees but for a heaping teaspoon of flour (sourceNote); print kept. Changed: dish note, German wording."
+  },
+  "note": {
+    "en": "The source calls this an asparagus sauce and gives it for 4 persons. Butter and sugar are given by size (an egg, a hazelnut), not by weight.",
+    "de": "Die Quelle nennt die Sauce Spargelsauce und gibt sie für 4 Personen an. Butter und Zucker sind nach Größe angegeben (ein Ei, eine Haselnuss), nicht nach Gewicht."
+  }
+}

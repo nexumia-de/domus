@@ -56,6 +56,8 @@ import {
   textField,
   type RowProblem,
 } from './form-bits';
+import { draftLines } from '../../pairing/draft';
+import { pairingSuggest } from './pairing-suggest';
 import { picker } from './picker';
 import { storeText } from './store-text';
 import { versionFields } from './version-fields';
@@ -139,6 +141,7 @@ const build = (
   const changed = (): void => {
     session.change();
     characters.refresh();
+    suggest.refresh();
   };
   // The catalogue gives the groups above an ingredient: worked out again once it is there.
   void loadNames().then(() => characters.refresh());
@@ -376,7 +379,25 @@ const build = (
     // The assembly steps list the fillings: keep them in step with the slots.
     assembly.syncLines();
     characters.refresh();
+    suggest.refresh();
   };
+
+  // "Goes with": what stands out with the ingredients the draft holds; a tap adds it as a slot
+  // of the next open role, which the cook can change on the row.
+  const suggest = pairingSuggest({
+    lines: () => {
+      const nb = notebook();
+      return draftLines(form.slots, nb.components, (id) => nb.ingredientName(id));
+    },
+    onAdd(ref) {
+      const role = openRoles(form.slots.map((s) => s.role))[0] ?? 'garnish';
+      form.slots.push({ role, ref, amount: '', unit: 'g' });
+      open = undefined;
+      focusAfter = [`[data-pick="${form.slots.length - 1}"]`];
+      changed();
+      draw();
+    },
+  });
   draw();
 
   const addSlot = button(t.addSlot, 'quiet', () => {
@@ -455,17 +476,19 @@ const build = (
     nameError.node,
     portions.wrap,
     portionsError.node,
-    course.wrap,
-    cuisine.wrap,
-    note.wrap,
+    // What goes into the dish comes first: it is what the cook came to do.
     el('h2', undefined, t.slotsHeading),
     list,
     addSlot,
     slotsError.node,
+    suggest.element,
+    course.wrap,
+    cuisine.wrap,
+    note.wrap,
     el('h2', undefined, t.assemblyHeading),
     assembly.element,
     characters.element,
-    versionFields(form, changed),
+    versionFields(form, changed, form.isNew),
     editorActions({
       isNew: form.isNew,
       onSave: () => void save(),

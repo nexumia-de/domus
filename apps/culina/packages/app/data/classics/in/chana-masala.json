@@ -1,0 +1,409 @@
+{
+  "id": "chana-masala",
+  "name": {
+    "en": "Chickpea curry",
+    "de": "Kichererbsen-Curry"
+  },
+  "originalName": "Chana masala",
+  "country": "in",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "chana-masala-curry",
+      "name": {
+        "en": "Chickpea curry",
+        "de": "Kichererbsen-Curry"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chickpeas",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173756"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Dried chickpeas, soaked overnight, then cooked (about 600 g cooked).",
+            "de": "Getrocknete Kichererbsen, über Nacht eingeweicht, dann gekocht (gekocht etwa 600 g)."
+          }
+        },
+        {
+          "key": "soak-water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 1500,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For soaking and cooking the chickpeas, with the salt for the cooking water.",
+            "de": "Zum Einweichen und Kochen der Kichererbsen, mit dem Salz für das Kochwasser."
+          }
+        },
+        {
+          "key": "salt-water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "cumin",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170923"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Whole seeds.",
+            "de": "Ganze Samen."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Finely chopped.",
+            "de": "Fein gehackt."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Four cloves, finely chopped.",
+            "de": "Vier Zehen, fein gehackt."
+          }
+        },
+        {
+          "key": "ginger",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169231"
+          },
+          "amount": {
+            "value": 20,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Peeled and finely grated.",
+            "de": "Geschält und fein gerieben."
+          }
+        },
+        {
+          "key": "chilli",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170497"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Finely chopped; leave out the seeds for less heat.",
+            "de": "Fein gehackt; ohne Kerne milder."
+          }
+        },
+        {
+          "key": "coriander-seed",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170922"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        },
+        {
+          "key": "turmeric",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172231"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "cinnamon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171320"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground; with the cardamom it stands in for garam masala.",
+            "de": "Gemahlen; steht mit dem Kardamom für Garam Masala."
+          }
+        },
+        {
+          "key": "cardamom",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170919"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        },
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Finely diced.",
+            "de": "Fein gewürfelt."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the curry.",
+            "de": "Für das Curry."
+          }
+        },
+        {
+          "key": "curry-water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For the curry.",
+            "de": "Für das Curry."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "fresh-coriander",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169997"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Soak the chickpeas in plenty of cold water overnight, at least 8 hours, then drain them.",
+            "de": "Die Kichererbsen über Nacht, mindestens 8 Stunden, in reichlich kaltem Wasser einweichen, dann abgießen."
+          },
+          "action": "soak",
+          "uses": ["chickpeas"],
+          "time": {
+            "value": 8,
+            "unit": "h"
+          }
+        },
+        {
+          "text": {
+            "en": "Cook the chickpeas in fresh water with the salt for the cooking water for about 60 minutes until soft, then drain them and keep them.",
+            "de": "Die Kichererbsen in frischem Wasser mit dem Salz für das Kochwasser etwa 60 Minuten weich kochen, dann abgießen und beiseitestellen."
+          },
+          "technique": "simmer",
+          "uses": ["soak-water", "salt-water"],
+          "time": {
+            "value": 60,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a wide pot over medium heat and let the cumin seeds sizzle in it for 30 seconds.",
+            "de": "Das Öl in einem breiten Topf bei mittlerer Hitze erhitzen und den Kreuzkümmel darin 30 Sekunden brutzeln lassen."
+          },
+          "action": "heat",
+          "uses": ["oil", "cumin"],
+          "time": {
+            "value": 30,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Cook the onions for 10 minutes, stirring often, until golden brown.",
+            "de": "Die Zwiebeln unter häufigem Rühren 10 Minuten goldbraun braten."
+          },
+          "action": "cook",
+          "uses": ["onion"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the garlic, the ginger and the chilli and stir for 1 minute.",
+            "de": "Knoblauch, Ingwer und Chili dazugeben und 1 Minute rühren."
+          },
+          "action": "add",
+          "uses": ["garlic", "ginger", "chilli"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the ground coriander and the turmeric for 30 seconds.",
+            "de": "Gemahlenen Koriander und Kurkuma 30 Sekunden einrühren."
+          },
+          "action": "season",
+          "uses": ["coriander-seed", "turmeric"],
+          "time": {
+            "value": 30,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the tomatoes and the salt for the curry and cook for 10 minutes until they have broken down into a thick paste.",
+            "de": "Tomaten und das Salz für das Curry dazugeben und 10 Minuten garen, bis sie zu einer dicken Paste zerfallen sind."
+          },
+          "action": "cook",
+          "uses": ["tomato", "salt"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the chickpeas and the water for the curry, bring to the boil and simmer for 15 minutes; press a few chickpeas against the pot with the spoon to thicken the sauce.",
+            "de": "Kichererbsen und das Wasser für das Curry dazugeben, aufkochen und 15 Minuten köcheln lassen; einige Kichererbsen mit dem Löffel am Topf zerdrücken, damit die Sauce bindet."
+          },
+          "technique": "simmer",
+          "uses": ["chickpeas", "curry-water"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in the cinnamon, the cardamom and the lemon juice, scatter the coriander leaves on top and serve with rice or flatbread.",
+            "de": "Zimt, Kardamom und Zitronensaft einrühren, das Koriandergrün darüberstreuen und mit Reis oder Fladenbrot anrichten."
+          },
+          "action": "serve",
+          "uses": ["cinnamon", "cardamom", "lemon", "fresh-coriander"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "chana-masala-curry"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it raised the water for soaking and cooking the dried chickpeas from 750 to 1500 ml, as the cooking uses fresh water."
+  }
+}

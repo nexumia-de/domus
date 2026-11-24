@@ -280,6 +280,26 @@ the user goes to another screen, and the page keeps room under its last row whil
 ([behaviour](behaviour.md#toast-and-undo)). No new token.
 Rules of use: [behaviour](behaviour.md#editor).
 
+# Pitfalls of an interface built by agents
+
+Looked for on 2026-11-23 after the owner asked, on the German app at
+400 px with an empty notebook. Each is a judgement of the agent; none
+was tested with a cook.
+
+| Pitfall                                                   | Where it was found                                                                                                       | State                                  |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| The form follows the stored record, not the task          | New dish: course, cuisine and note above what goes into it; "What changed" and "Why" on a record that has no version yet | fixed 2026-11-23                       |
+| Words of the model on the screen                          | "Role slots", "Add a slot", "Belegungen"; a role shown as its id ("Side")                                                | fixed 2026-11-23; "Hauptelement" stays |
+| A control that can only answer "nothing"                  | The roll per role in a notebook without components                                                                       | fixed 2026-11-23                       |
+| A feature built where it was easy, not where it is needed | "Goes with" closed on a finished dish                                                                                    | in the editor since 2026-11-23         |
+| The same content on two screens                           | The shipped dishes on Cook and in the Notebook                                                                           | fixed 2026-11-23                       |
+| A category of the data shown as a thing of the user       | The five shipped sauces that are bases, in the dish list                                                                 | fixed 2026-11-23                       |
+| Names of the source data                                  | "Chicken, broilers or fryers", "Pute, ganz, mit Haut" in offers and lines                                                | open                                   |
+| Every choice at once                                      | The random pick: 30 choices above one button; the new dish: 18 ticks of "What it is like"                                | open                                   |
+| A sentence of caution on every section                    | "It does not know what goes together", "jede Regel eine Einschätzung", three lines under "Goes with"                     | open; the sourcing rule asks for some  |
+| One long list without groups                              | Cook: 48 dishes by name, a sauce first                                                                                   | open                                   |
+| Checks that prove a thing is there, not that it is of use | 1951 browser checks passed while the roll gave nothing and the offers named guavas with tomatoes                         | open; needs a person                   |
+
 # Icons
 
 Own simple line icons drawn for this app, AGPL-3.0-or-later like the

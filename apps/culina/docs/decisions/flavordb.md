@@ -99,9 +99,9 @@ about automated access (looked for on 2026-11-23, none found).
   languages. The flavour words of the shared molecules are computed and
   not shown: they are English only.
 - **The link to the catalogue** is this project's, not FlavorDB's:
-  `packages/app/data/flavour-links.json`, from a rule on names and 86
-  corrections with their reasons (`tools/flavordb/links-own.json`). 630
-  of the 720 ingredients are linked; fats, most oils and mixtures are
+  `packages/app/data/flavour-links.json`, from a rule on names and 103
+  corrections with their reasons (`tools/flavordb/links-own.json`). 681
+  of the 777 ingredients are linked; fats, most oils and mixtures are
   not.
 - **What it does not answer**: what a dish still needs ("flat, try
   acid"). The molecules describe aroma; sweet, sour, salty, bitter,
@@ -129,9 +129,23 @@ On 2026-11-23:
   with vectors in `packages/engine/vectors/pairing/`.
 - The section on the dish screen, in English and German.
 
-**Not built:** pairings while a dish is put together in the editor,
-which is where the building kit needs them most; anything in the native
-app; a way to say "not this one".
+**Added the same day, after the owner asked what the data had brought:**
+"Goes with" in the dish editor, under the slots, drawn again with every
+change of the fillings; a tap adds the ingredient as a slot
+([behaviour](../behaviour.md#editor)). The owner's words: the aim is to
+put dishes together oneself by "goes with".
+
+**Not built:** offers by role (the data knows no roles, and the role
+table names 23 ingredients); components of the kit as offers, only
+ingredients; anything in the native app; a way to say "not this one".
+
+**Seen in the editor by the agent:** for tomatoes alone the offers were
+pork, chicken, butter, beef, guavas, strawberries, apples and wine; for
+tomatoes and basil, ginger, orange, guavas, peppers, bay leaf, celery,
+marjoram and black currant. Garlic, olive oil (oils are not linked) and
+mozzarella were not among them. As a way to build a dish this is thin;
+it is recorded here so that the question of curated affinities beside
+the computed ones is asked with that in view.
 
 ## What nobody verified
 

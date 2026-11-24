@@ -1,0 +1,224 @@
+{
+  "id": "barbecue-sauce",
+  "kind": "base",
+  "name": {
+    "en": "Barbecue sauce",
+    "de": "Barbecuesauce"
+  },
+  "originalName": "Barbecue sauce",
+  "country": "us",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "barbecue-sauce-sauce",
+      "name": {
+        "en": "Barbecue sauce",
+        "de": "Barbecuesauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "ketchup",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168556"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "brown-sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168833"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173469"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "worcestershire",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171610"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "mustard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172234"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion-powder",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171327"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "garlic-powder",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171325"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "paprika",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171329"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the ketchup, the sugar, the vinegar, the Worcestershire sauce, the mustard, the water and all the spices into a small pot.",
+            "de": "Ketchup, Zucker, Essig, Worcestershiresauce, Senf, Wasser und alle Gewürze in einen kleinen Topf geben."
+          },
+          "action": "add",
+          "uses": [
+            "ketchup",
+            "brown-sugar",
+            "vinegar",
+            "worcestershire",
+            "mustard",
+            "water",
+            "onion-powder",
+            "garlic-powder",
+            "paprika",
+            "pepper",
+            "salt"
+          ]
+        },
+        {
+          "text": {
+            "en": "Stir until the sugar has dissolved.",
+            "de": "Rühren, bis sich der Zucker aufgelöst hat."
+          },
+          "action": "stir",
+          "uses": ["brown-sugar"]
+        },
+        {
+          "text": {
+            "en": "Bring to the boil, then simmer over low heat, stirring now and then, until the sauce is thick enough to coat a spoon.",
+            "de": "Aufkochen, dann bei schwacher Hitze unter gelegentlichem Rühren köcheln lassen, bis die Sauce einen Löffel überzieht."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 15,
+            "to": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the sauce cool; it thickens a little more as it cools.",
+            "de": "Die Sauce abkühlen lassen; beim Abkühlen wird sie noch etwas dicker."
+          },
+          "action": "cool"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "barbecue-sauce-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  },
+  "note": {
+    "en": "Makes about 350 ml, enough for 4 persons as a glaze or at the table; it keeps in the fridge for about 2 weeks.",
+    "de": "Ergibt etwa 350 ml, genug für 4 Personen als Glasur oder zum Dippen; hält sich im Kühlschrank etwa 2 Wochen."
+  }
+}

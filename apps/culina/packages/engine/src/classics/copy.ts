@@ -23,14 +23,10 @@ export interface CopyOptions {
 }
 
 /** Where a copy came from; stored as the vendor field `x-origin`. */
-export interface Origin {
-  classic: string;
-  author: string;
-  title: string;
-  year: number;
-  place: string;
-  url: string;
-}
+export type Origin =
+  | { classic: string; author: string; title: string; year: number; place: string; url: string }
+  /** A copy of the project's own recipe: there is no source to name. */
+  | { classic: string; own: true; year: number };
 
 interface Version {
   family: string;
@@ -121,9 +117,23 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
   });
   if (!derived.ok) return derived;
 
-  const { author, title, year, place, url } = classic.source;
-  const origin: Origin = { classic: classic.id, author, title, year, place, url };
-  const change = `Copied from the classic "${pickText(classic.name, options.lang)}" (${classic.source.author}, ${classic.source.title}, ${classic.source.year}).`;
+  const source = classic.source;
+  const name = pickText(classic.name, options.lang);
+  const origin: Origin =
+    source.own === true
+      ? { classic: classic.id, own: true, year: source.year }
+      : {
+          classic: classic.id,
+          author: source.author,
+          title: source.title,
+          year: source.year,
+          place: source.place,
+          url: source.url,
+        };
+  const change =
+    source.own === true
+      ? `Copied from the app's own recipe "${name}" (${source.year}).`
+      : `Copied from the classic "${name}" (${source.author}, ${source.title}, ${source.year}).`;
   const idOf = new Map(derived.components.map((c) => [c.id, options.newId()]));
   const ref = (r: ComponentRef | undefined): ComponentRef => {
     // Exactly one of `ref` and `wanted` (schema), and wanted lines were refused above.

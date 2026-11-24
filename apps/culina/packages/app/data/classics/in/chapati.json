@@ -1,0 +1,192 @@
+{
+  "id": "chapati",
+  "kind": "base",
+  "name": {
+    "en": "Chapati (wholemeal flatbread)",
+    "de": "Chapati (Vollkorn-Fladenbrot)"
+  },
+  "originalName": "Chapati",
+  "country": "in",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "chapati-bread",
+      "name": {
+        "en": "Chapati",
+        "de": "Chapati"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168893"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Finely ground wholemeal wheat flour (atta).",
+            "de": "Fein gemahlenes Weizenvollkornmehl (Atta)."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 160,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Lukewarm. Hold a little back; flours take up different amounts.",
+            "de": "Lauwarm. Etwas zurückbehalten; Mehle nehmen unterschiedlich viel auf."
+          }
+        },
+        {
+          "key": "flour-rolling",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168893"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "For the work surface.",
+            "de": "Für die Arbeitsfläche."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Mix the flour and the salt in a bowl. Add the oil and most of the water and bring together into a soft dough that does not stick; add the rest of the water as needed.",
+            "de": "Mehl und Salz in einer Schüssel mischen. Öl und den größten Teil des Wassers dazugeben und zu einem weichen Teig zusammenfügen, der nicht klebt; das restliche Wasser nach Bedarf zugeben."
+          },
+          "action": "mix",
+          "uses": ["flour", "salt", "oil", "water"]
+        },
+        {
+          "text": {
+            "en": "Knead the dough for 8 minutes until smooth and supple.",
+            "de": "Den Teig 8 Minuten kneten, bis er glatt und geschmeidig ist."
+          },
+          "technique": "knead",
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cover the dough and let it stand for 20 minutes.",
+            "de": "Den Teig zudecken und 20 Minuten ruhen lassen."
+          },
+          "action": "stand",
+          "time": {
+            "value": 20,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Divide the dough into 8 pieces and shape them into balls.",
+            "de": "Den Teig in 8 Stücke teilen und zu Kugeln formen."
+          },
+          "action": "shape"
+        },
+        {
+          "text": {
+            "en": "Roll each ball on the floured surface into a thin round of about 16 cm.",
+            "de": "Jede Kugel auf der bemehlten Fläche zu einem dünnen Fladen von etwa 16 cm ausrollen."
+          },
+          "technique": "roll-dough",
+          "uses": ["flour-rolling"]
+        },
+        {
+          "text": {
+            "en": "Heat a heavy pan without fat over medium-high heat.",
+            "de": "Eine schwere Pfanne ohne Fett bei mittlerer bis starker Hitze erhitzen."
+          },
+          "action": "heat"
+        },
+        {
+          "text": {
+            "en": "Cook one round for about 30 seconds until small bubbles show, turn it and cook the second side for about 1 minute until it has brown spots.",
+            "de": "Einen Fladen etwa 30 Sekunden backen, bis sich kleine Blasen zeigen, wenden und die zweite Seite etwa 1 Minute backen, bis sie braune Flecken hat."
+          },
+          "action": "cook"
+        },
+        {
+          "text": {
+            "en": "Turn once more and press the bread lightly with a folded cloth for about 30 seconds so that it puffs up. Cook the other rounds the same way.",
+            "de": "Noch einmal wenden und den Fladen etwa 30 Sekunden mit einem gefalteten Tuch leicht andrücken, damit er sich aufbläht. Die übrigen Fladen ebenso backen."
+          },
+          "action": "turn"
+        },
+        {
+          "text": {
+            "en": "Stack the breads in a cloth to keep them warm and soft, and serve.",
+            "de": "Die Fladen in einem Tuch stapeln, damit sie warm und weich bleiben, und anrichten."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "chapati-bread"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  },
+  "note": {
+    "en": "Makes 8 breads.",
+    "de": "Ergibt 8 Fladen."
+  }
+}

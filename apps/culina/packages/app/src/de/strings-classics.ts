@@ -8,7 +8,21 @@ export const classicsStringsDe: typeof classicsStrings = {
   // Lists
   classicsTitle: 'Klassiker',
   backToCountry: (country: string): string => `Zurück zu ${country}`,
-  countries: { de: 'Deutschland', it: 'Italien', fr: 'Frankreich', es: 'Spanien' },
+  countries: {
+    de: 'Deutschland',
+    it: 'Italien',
+    fr: 'Frankreich',
+    es: 'Spanien',
+    gb: 'Großbritannien',
+    gr: 'Griechenland',
+    tr: 'der Türkei',
+    us: 'den Vereinigten Staaten',
+    mx: 'Mexiko',
+    in: 'Indien',
+    th: 'Thailand',
+    cn: 'China',
+    jp: 'Japan',
+  },
   listLabel: (country: string): string => `Klassiker aus ${country}`,
   emptyCountry: 'Von hier gibt es noch keine Gerichte. Es kommen nach und nach mehr dazu.',
   unknownCountry: 'Dieses Land steht nicht in der Liste.',
@@ -35,6 +49,11 @@ export const classicsStringsDe: typeof classicsStrings = {
   sourcePlace: (place: string): string => `Fundstelle: ${place}`,
   sourceLink: 'Quelle öffnen',
   sourceLicence: (licence: string): string => `Lizenz: ${licence}`,
+  ownSource:
+    'Ein Rezept dieser App, ohne Quelle: von einem KI-Modell aus allgemeinem Kochwissen geschrieben.',
+  ownChecked:
+    'Von einer zweiten KI-Sitzung gegengelesen. Niemand aus dem Projekt hat es nachgekocht.',
+  ownPersons: (n: number): string => `Geschrieben für ${n} Personen.`,
   personsStated: (n: number): string => `Die Quelle gibt ihre Mengen für ${n} Personen an.`,
   personsSettled: (n: number): string => `Die Quelle nennt keine Zahl; angenommen: ${n} Personen.`,
   portionsLabel: 'Portionen',
@@ -151,4 +170,14 @@ export const pairingStringsDe: typeof pairingStrings = {
   limits: 'Die Daten kennen keine Mengen und sagen nichts über süß, sauer, salzig oder bitter.',
   source: 'Daten: FlavorDB (Garg u. a., Nucleic Acids Research 2017), CC BY-NC-SA 3.0.',
   links: 'Welche Zutat hier für welche dort steht, ist eine Einschätzung dieser App.',
+  editorEmpty: 'Wähle oben eine erste Zutat oder Komponente; dann steht hier, was dazu passt.',
+  editorIntro:
+    'Zutaten, die mit dem, was im Gericht ist, mehr Aromastoffe teilen, als sie es sonst tun. Tippe eine an, um sie hinzuzufügen.',
+  add: (name: string): string => `${name} zum Gericht hinzufügen`,
+  provenHeading: 'Bewährt',
+  provenBasis:
+    'Was oft zusammen gekocht wird: eine Einschätzung dieser App, von einem KI-Modell geschrieben.',
+  provenListLabel: 'Zutaten, die oft mit dem kombiniert werden, was im Gericht ist',
+  tapToAdd: 'Tippe eine an, um sie hinzuzufügen.',
+  computedHeading: 'Aus den Aromadaten',
 };

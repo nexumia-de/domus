@@ -1,0 +1,196 @@
+{
+  "id": "rahmchampignons",
+  "kind": "base",
+  "name": {
+    "en": "Mushrooms in cream sauce",
+    "de": "Rahmchampignons"
+  },
+  "originalName": "Rahmchampignons",
+  "country": "de",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "rahmchampignons-sauce",
+      "name": {
+        "en": "Mushrooms in cream sauce",
+        "de": "Rahmchampignons"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "mushrooms",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169251"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170859"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.75,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wipe the mushrooms clean and cut them into slices. Dice the onion finely.",
+            "de": "Die Champignons trocken putzen und in Scheiben schneiden. Die Zwiebel fein würfeln."
+          },
+          "action": "prepare",
+          "uses": ["mushrooms", "onion"]
+        },
+        {
+          "text": {
+            "en": "Melt the butter in a wide pan over high heat.",
+            "de": "Die Butter in einer weiten Pfanne bei starker Hitze schmelzen."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Fry the mushrooms in two batches, stirring now and then, until their liquid has cooked away and they begin to brown. Return all of them to the pan.",
+            "de": "Die Champignons in zwei Portionen unter gelegentlichem Rühren braten, bis ihre Flüssigkeit verkocht ist und sie zu bräunen beginnen. Alle wieder in die Pfanne geben."
+          },
+          "technique": "saute",
+          "uses": ["mushrooms"],
+          "time": {
+            "value": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn the heat down to medium, add the onion and cook it until translucent.",
+            "de": "Die Hitze auf mittlere Stufe stellen, die Zwiebel dazugeben und glasig dünsten."
+          },
+          "action": "add",
+          "uses": ["onion"],
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the cream.",
+            "de": "Die Sahne angießen."
+          },
+          "action": "pour",
+          "uses": ["cream"]
+        },
+        {
+          "text": {
+            "en": "Let the sauce bubble gently until it coats the mushrooms lightly.",
+            "de": "Die Sauce leise einkochen lassen, bis sie die Champignons leicht überzieht."
+          },
+          "technique": "reduce",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Season with the salt and the pepper and stir in the parsley.",
+            "de": "Mit Salz und Pfeffer würzen und die Petersilie unterrühren."
+          },
+          "action": "season",
+          "uses": ["salt", "pepper", "parsley"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "rahmchampignons-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

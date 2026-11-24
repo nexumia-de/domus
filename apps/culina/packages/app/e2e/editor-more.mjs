@@ -84,12 +84,12 @@ const dish = async (page, origin) => {
   );
   await course.selectOption({ label: 'Main course' });
   await cuisine.selectOption({ label: 'Italian' });
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await page.getByLabel('Search your notebook').fill('herb oil');
   await page.getByRole('button', { name: /Example: Herb oil/ }).click();
   await page.getByLabel(/^Amount per portion/).fill('15');
   await page.getByLabel(/^Role, /).selectOption('garnish');
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await page.getByLabel('Search your notebook').fill('parsley');
   await page.getByRole('button', { name: 'Parsley', exact: true }).click();
   // The cook's correction of the characters: a tick per character; one no rule gives is added.

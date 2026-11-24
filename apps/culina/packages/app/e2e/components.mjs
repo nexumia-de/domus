@@ -121,11 +121,8 @@ const phone = async (browser, origin) => {
   );
   check(
     (await page.locator('.dish-row, .dish-filter-fold').count()) === 0 &&
-      (await page.locator('.notebook-row-shipped').count()) > 0 &&
-      (await page.locator('.notebook-row-shipped').first().getAttribute('href')).startsWith(
-        '#/classic/',
-      ),
-    `${label}: the Notebook's Dishes are a plain list: shipped dishes in it, no dish filter`,
+      (await page.locator('.notebook-row-shipped').count()) === 0,
+    `${label}: the Notebook's Dishes are a plain list: no shipped dish in it, no dish filter`,
   );
   check(
     (await own()).every((n) => n.startsWith('Example')),

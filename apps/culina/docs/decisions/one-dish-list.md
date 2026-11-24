@@ -35,6 +35,10 @@ plain list of own and shipped dishes, without the filter)
 the start screen, the finder" now holds for Cook's one list; the old
 addresses lead there.
 
+**Note of 2026-11-23.** A shipped base that is a sauce is no dish and is
+not in the one list ([a sauce is a part](sauces-are-parts.md)); the
+Notebook's Dishes list own dishes only.
+
 ## Context
 
 Until 2026-11-21 the app had two worlds of dishes.

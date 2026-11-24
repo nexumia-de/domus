@@ -1,0 +1,288 @@
+{
+  "id": "kaeng-phet-kai",
+  "name": {
+    "en": "Thai red curry with chicken",
+    "de": "Rotes Thai-Curry mit Hähnchen"
+  },
+  "originalName": "Kaeng phet kai",
+  "country": "th",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "red-curry-chicken",
+      "name": {
+        "en": "Thai red curry with chicken",
+        "de": "Rotes Thai-Curry mit Hähnchen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-oil-vegetable"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "paste",
+          "wanted": {
+            "en": "Red curry paste",
+            "de": "Rote Currypaste"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Ready-made, or pounded fresh; the amount suits a mild to medium paste.",
+            "de": "Fertig gekauft oder frisch gestoßen; die Menge passt zu einer mild bis mittelscharfen Paste."
+          }
+        },
+        {
+          "key": "coconut",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170172"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Full-fat; shake the can well before opening.",
+            "de": "Vollfett; die Dose vor dem Öffnen gut schütteln."
+          }
+        },
+        {
+          "key": "chicken",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173627"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Boneless, cut into pieces of about 3 cm.",
+            "de": "Ohne Knochen, in Stücke von etwa 3 cm geschnitten."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "aubergine",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169228"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cut into pieces of about 3 cm.",
+            "de": "In Stücke von etwa 3 cm geschnitten."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170108"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "In strips.",
+            "de": "In Streifen."
+          }
+        },
+        {
+          "key": "beans",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169961"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Cut into pieces of 4 cm.",
+            "de": "In Stücke von 4 cm geschnitten."
+          }
+        },
+        {
+          "key": "fish-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174531"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168833"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Palm sugar is the usual choice; brown sugar does the same.",
+            "de": "Üblich ist Palmzucker; brauner Zucker leistet dasselbe."
+          }
+        },
+        {
+          "key": "basil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172232"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Leaves only; Thai basil if you have it.",
+            "de": "Nur die Blätter; Thai-Basilikum, wenn vorhanden."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the chicken, the aubergine and the beans, and cut the pepper into strips.",
+            "de": "Hähnchen, Aubergine und Bohnen schneiden, die Paprika in Streifen schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["chicken", "aubergine", "beans", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a wide pot over medium heat. Fry the curry paste in it for 1 to 2 minutes, stirring, until it smells strongly.",
+            "de": "Das Öl in einem weiten Topf bei mittlerer Hitze erhitzen. Die Currypaste darin 1 bis 2 Minuten unter Rühren braten, bis sie kräftig duftet."
+          },
+          "technique": "saute",
+          "uses": ["oil", "paste"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir in about a quarter of the coconut milk and cook for 2 minutes until the oil separates at the edge.",
+            "de": "Etwa ein Viertel der Kokosmilch einrühren und 2 Minuten kochen, bis sich am Rand das Öl absetzt."
+          },
+          "action": "stir",
+          "uses": ["coconut"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the chicken and stir until the pieces are no longer pink on the outside.",
+            "de": "Das Hähnchen dazugeben und rühren, bis die Stücke außen nicht mehr rosa sind."
+          },
+          "action": "add",
+          "uses": ["chicken"],
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the rest of the coconut milk and the water, add the aubergine and bring to a gentle simmer. Cook for 10 minutes.",
+            "de": "Die restliche Kokosmilch und das Wasser angießen, die Aubergine dazugeben und zum leichten Köcheln bringen. 10 Minuten garen."
+          },
+          "technique": "simmer",
+          "uses": ["coconut", "water", "aubergine"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the pepper and the beans and cook for 5 more minutes until they are tender but still firm to the bite.",
+            "de": "Paprika und Bohnen dazugeben und weitere 5 Minuten garen, bis sie gar, aber noch bissfest sind."
+          },
+          "action": "add",
+          "uses": ["pepper", "beans"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Season with the fish sauce and the sugar and taste; the curry should be salty, sweet and hot at once.",
+            "de": "Mit Fischsauce und Zucker würzen und abschmecken; das Curry soll zugleich salzig, süß und scharf sein."
+          },
+          "action": "season",
+          "uses": ["fish-sauce", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat, stir in the basil leaves and serve with rice.",
+            "de": "Den Topf vom Herd nehmen, die Basilikumblätter einrühren und mit Reis servieren."
+          },
+          "action": "remove-from-heat",
+          "uses": ["basil"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "red-curry-chicken"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  },
+  "note": {
+    "en": "Serves 4 with rice. Kaffir lime leaves, which the usual curry has, are not in the ingredient catalogue and are left out.",
+    "de": "Für 4 Personen mit Reis. Kaffirlimettenblätter, die das übliche Curry hat, sind nicht im Zutatenkatalog und hier weggelassen."
+  }
+}

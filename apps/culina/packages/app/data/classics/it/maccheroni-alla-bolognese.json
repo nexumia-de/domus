@@ -1,0 +1,343 @@
+{
+  "id": "maccheroni-alla-bolognese",
+  "kind": "base",
+  "name": {
+    "en": "Macaroni with Bolognese meat sauce",
+    "de": "Makkaroni mit Bologneser Fleischsauce"
+  },
+  "originalName": "Maccheroni alla bolognese",
+  "country": "it",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "author": "Pellegrino Artusi",
+    "title": "La scienza in cucina e l'arte di mangiar bene (Firenze: Tipi di Salvadore Landi)",
+    "year": 1891,
+    "place": "No. 58, Maccheroni alla bolognese, printed pages 50-51; lines 6248-6350 of the text file",
+    "url": "https://archive.org/stream/artusi-1891/Artusi%201891_djvu.txt"
+  },
+  "persons": {
+    "value": 5,
+    "basis": "settled"
+  },
+  "components": [
+    {
+      "id": "bolognese-sauce",
+      "name": {
+        "en": "Bolognese meat sauce",
+        "de": "Bologneser Fleischsauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "veal",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173817"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g",
+            "original": "Carne magra di vitella, grammi 150"
+          },
+          "note": {
+            "en": "Lean veal.",
+            "de": "Mageres Kalbfleisch."
+          }
+        },
+        {
+          "key": "carnesecca",
+          "wanted": {
+            "en": "Carnesecca (dry-cured pork)",
+            "de": "Carnesecca (gesalzener Schweinebauch)"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g",
+            "original": "Carnesecca, grammi 50"
+          },
+          "sourceNote": {
+            "en": "The book's own word list explains the word: 'Carnesecca. Pancetta del maiale salata.'",
+            "de": "Die Worterklärungen des Buches erläutern das Wort: ‚Carnesecca. Pancetta del maiale salata.‘"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g",
+            "original": "Burro, grammi 40"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "count",
+            "original": "Un quarto di una cipolla comune"
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count",
+            "original": "Una mezza carota"
+          }
+        },
+        {
+          "key": "celery",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169988"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count",
+            "original": "Due costole di sedano bianco lunghe un palmo"
+          },
+          "note": {
+            "en": "Two ribs of white celery, each a span long.",
+            "de": "Zwei Rippen weißer Sellerie, jede eine Spanne lang."
+          },
+          "sourceNote": {
+            "en": "The source offers green celery for its scent in their place ('oppure l'odore del sedano verde').",
+            "de": "Die Quelle bietet an ihrer Stelle grünen Sellerie für den Duft an (‚oppure l'odore del sedano verde‘)."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour"
+          },
+          "note": {
+            "en": "A very scant pinch.",
+            "de": "Eine sehr knappe Prise."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'Un pizzico di farina, ma scarso assai'. The book gives no size for a pinch, so no amount.",
+            "de": "Wortlaut der Quelle: ‚Un pizzico di farina, ma scarso assai‘. Das Buch nennt keine Größe für eine Prise, daher keine Menge."
+          }
+        },
+        {
+          "key": "broth",
+          "wanted": {
+            "en": "Meat broth",
+            "de": "Fleischbrühe"
+          },
+          "note": {
+            "en": "A small pot of broth.",
+            "de": "Ein Töpfchen Brühe."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'Un pentolino di brodo'. The book gives no size for the small pot, so no amount.",
+            "de": "Wortlaut der Quelle: ‚Un pentolino di brodo‘. Das Buch nennt keine Größe für das Töpfchen, daher keine Menge."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "note": {
+            "en": "Very little or none: the carnesecca and the broth are savoury.",
+            "de": "Sehr wenig oder keines: Carnesecca und Brühe sind würzig."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "note": {
+            "en": "A scent of nutmeg, for those who like it.",
+            "de": "Ein Hauch Muskatnuss, wer ihn mag."
+          },
+          "sourceNote": {
+            "en": "Source wording: 'a chi piace, l'odore della noce moscata'.",
+            "de": "Wortlaut der Quelle: ‚a chi piace, l'odore della noce moscata‘."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the veal into small dice.",
+            "de": "Das Kalbfleisch in kleine Würfel schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["veal"]
+        },
+        {
+          "text": {
+            "en": "Mince the carnesecca with a rocking knife and chop the onion, the carrot and the celery finely.",
+            "de": "Die Carnesecca mit dem Wiegemesser fein wiegen und Zwiebel, Karotte und Sellerie fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["carnesecca", "onion", "carrot", "celery"]
+        },
+        {
+          "text": {
+            "en": "Put everything on the heat together, the butter included, and cook until the meat has taken colour.",
+            "de": "Alles zusammen samt der Butter auf den Herd stellen und garen, bis das Fleisch Farbe angenommen hat."
+          },
+          "action": "cook",
+          "uses": ["veal", "carnesecca", "onion", "carrot", "celery", "butter"]
+        },
+        {
+          "text": {
+            "en": "Add the pinch of flour.",
+            "de": "Die Prise Mehl dazugeben."
+          },
+          "action": "sprinkle",
+          "uses": ["flour"]
+        },
+        {
+          "text": {
+            "en": "Moisten with the broth until the meat is cooked through.",
+            "de": "Mit der Brühe angießen, bis das Fleisch ganz gar ist."
+          },
+          "action": "pour",
+          "uses": ["broth"]
+        },
+        {
+          "text": {
+            "en": "Season with pepper, with nutmeg if you like, and with very little salt or none.",
+            "de": "Mit Pfeffer, nach Belieben mit Muskatnuss und mit sehr wenig oder gar keinem Salz würzen."
+          },
+          "action": "season",
+          "uses": ["pepper", "nutmeg", "salt"],
+          "sourceNote": {
+            "en": "The source names salt, pepper and nutmeg in the list of ingredients and does not say at which point they go in.",
+            "de": "Die Quelle nennt Salz, Pfeffer und Muskatnuss in der Zutatenliste und sagt nicht, an welcher Stelle sie hineinkommen."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolognese-maccheroni",
+      "name": {
+        "en": "Macaroni",
+        "de": "Makkaroni"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "pasta",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168927"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g",
+            "original": "grammi 500 e più di minestra"
+          },
+          "note": {
+            "en": "Short tubes of medium size (denti di cavallo) of durum wheat, with a rather thick wall so that they keep their shape in boiling.",
+            "de": "Kurze Röhren mittlerer Größe (denti di cavallo) aus Hartweizen, mit eher dicker Wand, damit sie beim Kochen die Form behalten."
+          },
+          "sourceNote": {
+            "en": "The source calls its proportions approximate and gives the sauce for 500 g of pasta 'and more'.",
+            "de": "Die Quelle nennt ihre Mengen ungefähr und gibt die Sauce für 500 g Nudeln ‚und mehr‘ an."
+          }
+        },
+        {
+          "key": "parmesan",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "sourceNote": {
+            "en": "The source gives no amount.",
+            "de": "Die Quelle nennt keine Menge."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Boil the macaroni and keep them a little firm.",
+            "de": "Die Makkaroni kochen und etwas bissfest lassen."
+          },
+          "technique": "cook-pasta",
+          "uses": ["pasta"],
+          "sourceNote": {
+            "en": "The source does not describe the boiling in this recipe; it says only to drain the macaroni well from the water, and adds that such pasta is better cooked little.",
+            "de": "Die Quelle beschreibt das Kochen in diesem Rezept nicht; sie sagt nur, die Makkaroni gut vom Wasser abzugießen, und fügt hinzu, dass solche Nudeln besser wenig gekocht werden."
+          }
+        },
+        {
+          "text": {
+            "en": "Drain the macaroni well.",
+            "de": "Die Makkaroni gut abgießen."
+          },
+          "action": "drain",
+          "uses": ["pasta"]
+        },
+        {
+          "text": {
+            "en": "Dress them with the parmesan and the meat sauce, so that they come to the table moist with a little sauce.",
+            "de": "Mit dem Parmesan und der Fleischsauce anmachen, sodass sie saftig mit etwas Sauce auf den Tisch kommen."
+          },
+          "action": "mix",
+          "uses": ["parmesan"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "bolognese-sauce"
+      }
+    },
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "bolognese-maccheroni"
+      }
+    }
+  ],
+  "settled": [
+    {
+      "what": "Number of persons",
+      "value": "5",
+      "reason": "Our judgement: the source names no number of persons; it gives the sauce for 500 g of pasta and more. The same book says of the risotto No. 50, made with 500 g of rice, that the amount is enough for five persons (lines 5886-5888) and of 500 g of spaghetti with 500 g of peas that they serve six or seven (No. 66, printed page 57); we take five.",
+      "target": "persons"
+    }
+  ],
+  "check": {
+    "method": "page-image",
+    "note": "Second agent session, 2026-11-23, not the transcriber. Page images of the 1891 scan (archive.org artusi-1891, text PDF) pp. 50-51 compared: veal 150 g, carnesecca 50 g, butter 40 g, quarter onion, half carrot, two celery ribs, 500 g pasta 'e più'; nothing lost at the page turn. Corrected: 'palmo' is a span, not a hand's breadth; salted water removed (not in the recipe); German carnesecca 'gesalzen' (word list, line 468). No size for 'pentolino' in the book. Not seen in print: No. 50, word list."
+  },
+  "note": {
+    "en": "The additions the source offers are not transcribed: pieces of dried mushrooms, a few slices of truffle, a chicken liver cooked with the meat and cut up, and half a glass of cream stirred in when the sauce is done. No time is given.",
+    "de": "Die Zugaben, die die Quelle anbietet, sind nicht übertragen: Stückchen getrockneter Pilze, einige Trüffelscheiben, eine mit dem Fleisch gegarte und zerschnittene Hühnerleber und ein halbes Glas Sahne, das in die fertige Sauce gerührt wird. Eine Zeit ist nicht angegeben."
+  }
+}

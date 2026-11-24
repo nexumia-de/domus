@@ -289,7 +289,7 @@ const latePick = async (browser, origin) => {
   // The same on a dish: a late pick on the first slot leaves the second slot's picker open.
   await open(page, origin, 'dishes/new');
   await formReady(page);
-  await page.getByRole('button', { name: 'Add a slot' }).click();
+  await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await searchBox(page).fill('egg, whole, fresh');
   await entryButton(page, 'Egg, whole, fresh').first().waitFor();
   await page.evaluate(() => {
@@ -297,7 +297,7 @@ const latePick = async (browser, origin) => {
       (b.getAttribute('aria-label') ?? b.textContent).startsWith('Egg, whole, fresh'),
     );
     const add = [...document.querySelectorAll('button')].find(
-      (b) => b.textContent.trim() === 'Add a slot',
+      (b) => b.textContent.trim() === 'Add an ingredient or component',
     );
     pick.click();
     add.click();
