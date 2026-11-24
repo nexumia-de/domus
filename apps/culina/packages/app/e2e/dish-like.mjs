@@ -12,9 +12,9 @@ const hrefs = (page) =>
   page.locator('.like-section a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
 
 export const dishLike = async (browser, server) => {
-  for (const [lang, heading, shares] of [
-    ['en', 'Dishes like this', 'Shares: '],
-    ['de', 'Ähnliche Gerichte', 'Gemeinsam: '],
+  for (const [lang, heading, shares, potatoes] of [
+    ['en', 'Dishes like this', 'Shares: ', 'Baked potatoes with cheese'],
+    ['de', 'Ähnliche Gerichte', 'Gemeinsam: ', 'Überbackene Kartoffeln mit Käse'],
   ]) {
     const label = `360px dishes like this (${lang})`;
     const context = await browser.newContext({
@@ -56,6 +56,9 @@ export const dishLike = async (browser, server) => {
     await layout(page, label);
     await section.locator('a').first().click();
     await page.waitForURL(/#\/classic\/baked-potatoes-cheese$/);
+    // The address changes before the app hears of it (hashchange is a task of its own): until
+    // then the gratin's page, with its own section, is still shown. Read once the dish is there.
+    await page.getByRole('heading', { level: 1, name: potatoes }).waitFor();
     await page.locator('.like-section').waitFor();
     check(
       (await hrefs(page))[0] === '#/classic/gratin-dauphinois',
@@ -94,6 +97,9 @@ export const dishLike = async (browser, server) => {
   await page.locator('.like-section').waitFor();
   await page.locator('.classic-copy').getByRole('button', { name: 'Keep in my notebook' }).click();
   await page.waitForURL(/#\/dishes\//);
+  // As above: the shipped gratin's page, whose rows are the same, stands until the copy's is
+  // drawn; the version line is on the copy's page only.
+  await page.locator('.dish-card .version-lines').waitFor();
   await page.locator('.like-section').waitFor();
   check(
     (await hrefs(page)).join() ===

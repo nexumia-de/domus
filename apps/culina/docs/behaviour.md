@@ -1231,7 +1231,10 @@ characters each, its place between the recipe and the closed sections,
 a row opening the potato gratin whose page names the gratin back, the
 layout; the controls pot-au-feu and the tacos with no section; the copy
 kept in the notebook like the other gratins and the shipped gratin not
-naming its copy, which failed with the copy rule taken out). Not
+naming its copy, which failed with the copy rule taken out; after a
+click the check reads a page only once its heading is there, since the
+address changes before `hashchange` reaches the app and the page left
+stands until then). Not
 proved: what a cook thinks of the matches; a real notebook (own dishes
 are compared by the same entries, tested only with written ones, one
 kept copy and one own dish with an unknown course); desktop width; a

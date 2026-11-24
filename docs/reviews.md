@@ -21,6 +21,53 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: the browser check of "Dishes like this" read the page it left
+
+Two agents under one lead, both on the second-largest model. Pull
+request 11's `culina-e2e` failed in CI with one check in English and
+German ("a row opens that dish, whose page names the gratin back") that
+had passed where it was written. One agent reproduced it, found the
+cause and changed the check. The other, which wrote none of it and was
+given the task and the diff but not the first agent's reasoning,
+reproduced the failure from the commit before, recorded what the page
+shows after the tap, and judged whether an app defect was being covered.
+
+| Part                                     | Done by | Checked by                                                |
+| ---------------------------------------- | ------- | --------------------------------------------------------- |
+| The cause, reproduced                    | agent 1 | agent 2, with its own recording of the page after the tap |
+| The check waits for the new page's title | agent 1 | agent 2 (cannot pass on the page left, in both languages) |
+| That the app needs no change             | agent 1 | agent 2, from its own measurement                         |
+
+**What the checks found, and where it was fixed.**
+
+- _The check, not the app:_ Chromium changes the address before it
+  fires `hashchange`, on which the app routes; for one painted frame the
+  page being left is still shown under the new address. The check
+  waited for the address and for a "Dishes like this" section, which the
+  page left has too, and read that one. Both agents found the new page
+  drawn in one task with nothing stale after it, no jump and no swapped
+  tap target. The check now waits for the heading of the dish it opened
+  (and, for the kept copy, for its version line), as a reader would.
+  This is the one case the rule "the app is fixed, never the check bent"
+  allows: the check read a page nobody is shown as the new one.
+- _The numbers differ:_ agent 1 saw the old check fail in 7 of 14 runs,
+  agent 2 in 18 of 24 language runs; with the change 18 of 18 and 12 of
+  12 passed. The guess of the handover (a slower machine) was wrong:
+  under 4x CPU throttling agent 1 saw no failure in 12 runs.
+- _The same wait elsewhere, not failing and not changed:_ agent 2 named
+  `e2e/dish-swap.mjs` (a heading both pages have), `e2e/versions.mjs`
+  (a link both pages have) and three checks that prove only the
+  address. They are listed in Culina's log.
+
+**Test counts** (each agent's own run): `npm run check:culina` passes
+with 1254 engine, 1152 app and 24 native tests; Culina's e2e passes with
+2064 checks, run alone.
+
+**What nobody verified.** The CI runner itself, before the push. The
+4x-throttling numbers by the second agent. That the kept-copy step ever
+read the wrong page (there both pages show the same rows, so the old
+check could not have told).
+
 ## 2026-11-24: "Dishes like this" in Culina, and the character "uncooked"
 
 Two agents under one lead, both on the second-largest model. One built
