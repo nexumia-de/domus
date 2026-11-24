@@ -1,9 +1,9 @@
-// What a dish lacks, as things to put on the household's shopping list (roadmap goal 11): read
-// from the finder's report of the dish (`dishReport`, `classicReport`), never judged again. A
-// line lacks when it is `missing` or `short`; a line that is there by substitution, through a
-// group or a whole, an optional line and the kitchen's water do not (water always reports
-// `have`). Pure: names and the words of an amount come in as functions, so the cook's language
-// and the display rounding are the caller's.
+// What a dish lacks, as things to put on the household's shopping list (roadmap goal 11): which
+// lines lack is read by `lackingItems` (./reading.ts) from the finder's report of the dish; here
+// they become input of the list package. Pure: names and the words of an amount come in as
+// functions, so the cook's language and the display rounding are the caller's. This module
+// carries the list package's usual items (rule 4); a screen that only counts what lacks reads
+// ./reading.ts.
 import {
   DEFAULT_PRIORITY,
   OTHER_CATEGORY,
@@ -12,19 +12,11 @@ import {
   type Origin,
 } from '@nexumia-de/list';
 import type { HouseholdMeasure } from '../amounts/round';
-import type { Amount, UnitId } from '../amounts/types';
+import type { Amount } from '../amounts/types';
 import type { ComponentRef } from '../components/types';
-import type { MakeableLineReport } from '../makeable/types';
+import { lackingItems, type LackingReport } from './reading';
 
-/** The finder's report of one dish: its name and a report per line. */
-export interface LackingReport {
-  name: string;
-  lines: readonly MakeableLineReport[];
-  /** The names of lines without a catalogue ingredient (a classic's `wanted` lines). */
-  notInCatalogue?: readonly string[];
-  /** Per top-level line (by `index`), the spoon or cup the source wrote (`classicReport`). */
-  measures?: readonly (HouseholdMeasure | undefined)[];
-}
+export type { LackingReport } from './reading';
 
 export interface LackingOptions {
   /** The name of an ingredient or a component in the cook's language (the kitchen name first). */
@@ -51,18 +43,6 @@ export interface LackingLines {
   free: string[];
 }
 
-/** The amount to buy: for `missing` the need, for `short` the need less what is there. */
-function lackingAmount(line: MakeableLineReport): Amount | undefined {
-  const need = line.need;
-  if (need === undefined) return undefined;
-  if (line.status === 'missing') return need;
-  if (line.have === undefined || line.have.unit !== need.unit) return undefined;
-  return { value: need.value - line.have.value, unit: need.unit };
-}
-
-const lacks = (line: MakeableLineReport): boolean =>
-  !line.optional && (line.status === 'missing' || line.status === 'short');
-
 const originOf = (title: string, dish: string | undefined): Origin => ({
   kind: 'recipe',
   app: 'culina',
@@ -79,43 +59,10 @@ const originOf = (title: string, dish: string | undefined): Origin => ({
  */
 export function lackingLines(report: LackingReport, options: LackingOptions): LackingLines {
   const title = options.title ?? report.name;
-  const byId = new Map<
-    string,
-    { ref: ComponentRef; amounts: Map<UnitId, { value: number; measure?: HouseholdMeasure }> }
-  >();
-  const free: string[] = [...(report.notInCatalogue ?? [])];
-  const walk = (lines: readonly MakeableLineReport[], top: boolean): void => {
-    for (const line of lines) {
-      if (!lacks(line)) continue;
-      if (line.parts !== undefined && line.parts.length > 0) {
-        walk(line.parts, false);
-        continue;
-      }
-      const ref = line.ref;
-      if (ref === undefined) continue;
-      if (ref.kind !== 'ingredient') {
-        free.push(options.nameOf(ref));
-        continue;
-      }
-      const known = byId.get(ref.id) ?? { ref, amounts: new Map() };
-      const amount = lackingAmount(line);
-      if (amount !== undefined) {
-        const was = known.amounts.get(amount.unit);
-        const measure = was?.measure ?? (top ? report.measures?.[line.index] : undefined);
-        known.amounts.set(amount.unit, {
-          value: (was?.value ?? 0) + amount.value,
-          ...(measure === undefined ? {} : { measure }),
-        });
-      }
-      byId.set(ref.id, known);
-    }
-  };
-  walk(report.lines, true);
-  const lines = [...byId.values()].map(({ ref, amounts }): AddInput => {
+  const { items, free } = lackingItems(report, options.nameOf);
+  const lines = items.map(({ ref, amounts }): AddInput => {
     const name = options.nameOf(ref);
-    const texts = [...amounts].map(([unit, { value, measure }]) =>
-      options.amountText({ value, unit }, measure),
-    );
+    const texts = amounts.map(({ amount, measure }) => options.amountText(amount, measure));
     return {
       name,
       ingredientId: ref.id,
@@ -125,7 +72,7 @@ export function lackingLines(report: LackingReport, options: LackingOptions): La
       catalogue: { ingredientId: ref.id, categoryId: usualCategory(name) ?? OTHER_CATEGORY },
     };
   });
-  return { lines, free: [...new Set(free)] };
+  return { lines, free };
 }
 
 /**

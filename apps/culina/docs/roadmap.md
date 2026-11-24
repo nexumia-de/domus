@@ -127,7 +127,18 @@ app and finds quickly what they want to cook or can cook.
     collection `list` of the used space with Undo (`handOver`), and the
     loops sync `list` with `stock`
     ([behaviour](behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)).
-    Next: the offer on a dish's page. Open for the owner: the name of
+    Second step built on 2026-11-24, the screen in the web app: on the
+    page of a shipped dish or frame, under the ingredients, one quiet
+    line with how many ingredients the stock lacks and a confirmation in
+    place (lines with amounts, free names unticked, the space when there
+    are several, a word when the list could not be synced), then a
+    message with Undo and a link to Emptio
+    ([behaviour](behaviour.md#the-offer-on-a-dishs-page)); no offer with
+    an empty stock; the code and the usual items load with the
+    confirmation (`hand-over.js`). Left: the offer for own dishes (the
+    finder reports them only at their stored portions, without swaps);
+    the screen in the native Linux app; the page closing right after a
+    hand-over can still lose it (list orderings). Open for the owner: the name of
     the package; the two weaknesses of rule 5 a hand-over meets
     ([rules](../../../packages/list/docs/rules.md#open-weaknesses)); what a dish handed again
     at other portions should do (now: `already`, the first amount
@@ -136,9 +147,14 @@ app and finds quickly what they want to cook or can cook.
     Culina's, and the result names it); the same frame handed again
     with another filling (now another dish: its lines join the open
     entries, where "instead" is probably meant); pieces without a word
-    for the thing's form (garlic "6 pcs": cloves or heads). Also open:
-    no screen reads the list's sync status (`listStatus()`) yet, so a
-    broken list file is shown only by Emptio.
+    for the thing's form (garlic "6 pcs": cloves or heads); whether an
+    empty stock should offer the whole dish after all (now: no offer);
+    whether the link to Emptio should open in the same tab, as the
+    links to the Household app do (now: a new tab, so Undo stays);
+    whether own dishes get the offer once the finder can report them
+    at the portions and swaps of their page (now: shipped dishes and
+    frames only); whether the offer should read the list on every draw
+    (now: it counts only what the page itself put on it).
 
 # Later
 

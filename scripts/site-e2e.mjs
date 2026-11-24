@@ -238,6 +238,111 @@ try {
     `household: lists the space Mixtura made (${card.replace(/\s+/g, ' ')})`,
   );
 
+  // Culina hands what a dish lacks to the shopping list, and Emptio shows it (Culina's roadmap
+  // goal 11). Four eggs in Culina's stock (its test hook `?e2e-store`, as Culina's own browser
+  // checks stock it); Frikandelle for 4 then lacks six ingredients. Not proved here: two spaces,
+  // a storage, another device; Emptio's native app.
+  const cook = await context.newPage();
+  await cook.goto(`${origin}/culina/?e2e-store#/classic/frikandelle`);
+  await cook.locator('.recipe-block').first().waitFor();
+  const stocked = await cook.evaluate(async () => {
+    const id = 'fdc-group-egg-whole';
+    const catalogue = await (await fetch('catalogue.json')).json();
+    const byId = new Map(catalogue.ingredients.map((e) => [e.id, e]));
+    const chain = [];
+    for (let at = byId.get(id); at !== undefined; at = byId.get(at.parentId)) chain.unshift(at);
+    const opened = await globalThis.__culinaStore;
+    for (const record of chain)
+      if (!(await opened.store.put('ingredients', record)).ok) return false;
+    await globalThis.__culinaStock.add([
+      { ref: { kind: 'ingredient', id }, amount: { value: 4, unit: 'count' } },
+    ]);
+    return true;
+  });
+  check(stocked, 'culina: four eggs are in its stock');
+  await cook.reload();
+  await cook.locator('.handover-offer').waitFor();
+  await cook.getByRole('button', { name: 'Put on the shopping list' }).click();
+  const confirm = cook.locator('.handover-confirm');
+  await confirm.waitFor();
+  const asked = await confirm
+    .locator('.handover-lines:not(.handover-free) .handover-line')
+    .evaluateAll((rows) =>
+      rows.map((row) => ({
+        name: row.querySelector('.handover-name')?.textContent ?? '',
+        amount: row.querySelector('.handover-amount')?.textContent ?? undefined,
+      })),
+    );
+  await confirm.locator('.handover-put').click();
+  await cook.locator('.handover-said').waitFor();
+  check(
+    (await cook.locator('.handover-said').innerText()).trim() ===
+      `Put ${asked.length} on the shopping list.`,
+    `culina: the hand-over puts ${asked.length} on the list (${asked.map((a) => a.name).join(', ')})`,
+  );
+  // The way to the list opens Emptio in a new tab; the recipe and its Undo stay.
+  const [list] = await Promise.all([
+    context.waitForEvent('page'),
+    cook.getByRole('link', { name: 'Open the shopping list' }).click(),
+  ]);
+  await list.waitForURL(`${origin}/emptio/**`);
+  await list.locator('.entry').first().waitFor();
+  const shown = await list.locator('.entry:not(.entry-bought)').evaluateAll((rows) =>
+    rows.map((row) => ({
+      name: row.querySelector('.entry-name')?.firstChild?.textContent ?? '',
+      amount: row.querySelector('.entry-amount')?.textContent ?? undefined,
+    })),
+  );
+  const same = (a, b) => a.name === b.name && (a.amount ?? null) === (b.amount ?? null);
+  check(
+    asked.length > 0 &&
+      shown.length === asked.length &&
+      asked.every((a) => shown.some((s) => same(a, s))),
+    `emptio: shows every entry Culina wrote, with its amount (${shown.map((s) => `${s.name} ${s.amount ?? ''}`.trim()).join('; ')})`,
+  );
+  const first = asked[0];
+  await list.getByRole('link', { name: `Edit ${first.name}` }).click();
+  await list.locator('.origins').waitFor();
+  const why = await list.locator('.origins').innerText();
+  check(
+    why.includes("From Cook's Workbench: Pan-fried meat loaf (Frikandelle)."),
+    `emptio: the entry says it came from the dish in Culina (${why})`,
+  );
+  await list.goBack();
+  await list.locator('.entry').first().waitFor();
+  const ticked = asked[1];
+  await list.getByRole('checkbox', { name: `${ticked.name}: bought` }).check();
+  await list.locator('.entry-bought').first().waitFor();
+  // Back in Culina: Undo takes back what it wrote and leaves what was ticked in Emptio.
+  await cook.bringToFront();
+  await cook.getByRole('button', { name: 'Undo' }).click();
+  await cook.waitForFunction(() =>
+    document.querySelector('.handover-said')?.textContent?.startsWith('Taken off the list'),
+  );
+  const undone = (await cook.locator('.handover-said').innerText()).trim();
+  check(
+    undone.endsWith(`Left on the list, ticked or changed since: ${ticked.name}.`),
+    `culina: Undo says what it took back and what it left (${undone})`,
+  );
+  // The salt is bought in Emptio: no longer something to buy, so the offer counts none of them.
+  const offerAfter = await cook.locator('.handover-count').innerText();
+  check(
+    offerAfter === `The stock lacks ${asked.length} ingredients for this.`,
+    `culina: after Undo the offer counts nothing as on the list, the bought salt included (${offerAfter})`,
+  );
+  await list.reload();
+  await list.locator('.entry, .empty').first().waitFor();
+  const after = await list.locator('.entry').evaluateAll((rows) =>
+    rows.map((row) => ({
+      name: row.querySelector('.entry-name')?.firstChild?.textContent ?? '',
+      bought: row.classList.contains('entry-bought'),
+    })),
+  );
+  check(
+    after.length === 1 && after[0].name === ticked.name && after[0].bought,
+    `emptio: after Undo only the entry ticked in Emptio is left, still ticked (${JSON.stringify(after)})`,
+  );
+
   check(problems.length === 0, `no console errors, no foreign requests ${problems.join('; ')}`);
 } finally {
   await browser.close();

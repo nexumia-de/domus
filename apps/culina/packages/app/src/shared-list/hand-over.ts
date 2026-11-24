@@ -155,6 +155,47 @@ export const handOverEdit = (
   return { edit, outcome: { lines, writes } };
 };
 
+/** What Undo did, by the keys of the entries the hand-over wrote. */
+export interface UndoOutcome {
+  /** Taken back: removed from the list, or put back as it was (`restored`). */
+  undone: string[];
+  /** Left: ticked, edited or removed since (`gone`: no longer on the list at all). */
+  kept: string[];
+  /** Of `undone`: entries that were there before the hand-over and are again as they were. */
+  restored: string[];
+  /** Of `kept`: entries no longer on the list (removed in the shopping list since). */
+  gone: string[];
+  /** Of `kept`: entries ticked as bought since. */
+  bought: string[];
+}
+
+/**
+ * What several Undos of one page did, per entry: the outcome of the oldest hand-over that wrote
+ * it, which is the last to be taken back and leaves the entry as it ends. An entry the newer one
+ * put back as it was and the older one then removed is removed.
+ * @param outcomes - Newest first, in the order the Undos ran.
+ */
+export const finalOutcome = (outcomes: readonly UndoOutcome[]): UndoOutcome => {
+  const last = new Map<string, 'removed' | 'restored' | 'changed' | 'gone' | 'bought'>();
+  for (const o of outcomes) {
+    const restored = new Set(o.restored);
+    const gone = new Set(o.gone);
+    const bought = new Set(o.bought);
+    for (const key of o.undone) last.set(key, restored.has(key) ? 'restored' : 'removed');
+    for (const key of o.kept)
+      last.set(key, gone.has(key) ? 'gone' : bought.has(key) ? 'bought' : 'changed');
+  }
+  const out: UndoOutcome = { undone: [], kept: [], restored: [], gone: [], bought: [] };
+  for (const [key, state] of last) {
+    if (state === 'removed' || state === 'restored') out.undone.push(key);
+    else out.kept.push(key);
+    if (state === 'restored') out.restored.push(key);
+    if (state === 'gone') out.gone.push(key);
+    if (state === 'bought') out.bought.push(key);
+  }
+  return out;
+};
+
 /**
  * Undo of a hand-over, from the stored values: a record that is still exactly what the
  * hand-over wrote goes back (a new entry is removed, a joined one gets its value before); one
@@ -163,22 +204,26 @@ export const handOverEdit = (
 export const undoHandOverEdit = (
   records: readonly SyncRecord[],
   writes: readonly ListWrite[],
-): Decision<{ undone: string[]; kept: string[] }> => {
+): Decision<UndoOutcome> => {
   const put: { key: string; value: unknown }[] = [];
   const remove: string[] = [];
-  const undone: string[] = [];
-  const kept: string[] = [];
+  const outcome: UndoOutcome = { undone: [], kept: [], restored: [], gone: [], bought: [] };
   for (const write of writes) {
     const now = liveValue(records, write.key);
     if (now === undefined || !sameValue(now, write.after)) {
-      kept.push(write.key);
+      outcome.kept.push(write.key);
+      if (now === undefined) outcome.gone.push(write.key);
+      else if ((now as { bought?: unknown }).bought !== undefined) outcome.bought.push(write.key);
       continue;
     }
-    undone.push(write.key);
+    outcome.undone.push(write.key);
     if (write.before === undefined) remove.push(write.key);
-    else put.push({ key: write.key, value: write.before });
+    else {
+      put.push({ key: write.key, value: write.before });
+      outcome.restored.push(write.key);
+    }
   }
-  return { edit: { put, remove }, outcome: { undone, kept } };
+  return { edit: { put, remove }, outcome };
 };
 
 /**
@@ -213,7 +258,7 @@ export const handOver = (
 export const undoHandOver = (
   space: StockSpace,
   undo: ListUndo,
-): Promise<ChangeResult<{ undone: string[]; kept: string[] }>> =>
+): Promise<ChangeResult<UndoOutcome>> =>
   space.change((records) => undoHandOverEdit(records, undo.writes), {
     collection: LIST,
     spaceId: undo.spaceId,

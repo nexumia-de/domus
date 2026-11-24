@@ -30,6 +30,83 @@
   margin: var(--sp-3) 0 var(--sp-1);
 }
 
+/* The hand-over under the ingredients: the quiet offer, the confirmation opened in place, the
+   message after it (src/screens/hand-over). */
+.handover {
+  margin: var(--sp-3) 0;
+}
+
+.handover-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin: 0;
+}
+
+.handover-confirm {
+  margin-top: var(--sp-2);
+  max-width: 36rem;
+  padding: var(--sp-2) var(--sp-3) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.handover-confirm h3 {
+  margin: var(--sp-1) 0;
+}
+
+.handover-lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.handover-tick {
+  width: 100%;
+}
+
+.handover-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.handover-amount {
+  margin-inline-start: auto;
+  padding-inline-start: var(--sp-2);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.handover-free-heading {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-sm);
+}
+
+.handover-confirm .note-quiet {
+  margin: var(--sp-2) 0 0;
+}
+
+.handover-actions,
+.handover-after {
+  margin-top: var(--sp-2);
+}
+
+.handover-said p {
+  margin: var(--sp-2) 0 0;
+}
+
+/* The message takes the focus after a hand-over, for a screen reader; after a tap it shows no
+   ring, as the screen heading (shell.ts, `focus-quiet`). */
+.handover-said.focus-quiet:focus {
+  outline: none;
+}
+
+.handover-differences {
+  margin: var(--sp-1) 0 0;
+  padding-inline-start: var(--sp-4);
+}
+
 .source-link {
   display: inline-flex;
   align-items: center;

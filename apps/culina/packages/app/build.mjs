@@ -39,16 +39,41 @@ rmSync(dist, { recursive: true, force: true });
 mkdirSync(join(dist, 'icons'), { recursive: true });
 
 const common = { bundle: true, minify: true, target: 'es2022', logLevel: 'warning', outdir: dist };
-await build({
-  ...common,
-  format: 'esm',
-  entryPoints: { main: join(src, 'main.ts'), app: join(src, 'styles/index.css') },
-  // CULINA_GITHUB_API is for the browser checks only: a test build that talks to a fake of
-  // GitHub's API. Every other build has https://api.github.com compiled in (src/env.ts).
-  ...(process.env.CULINA_GITHUB_API
-    ? { define: { __GITHUB_API__: JSON.stringify(process.env.CULINA_GITHUB_API) } }
-    : {}),
-});
+const mainEntry = { main: join(src, 'main.ts'), app: join(src, 'styles/index.css') };
+const handOverEntry = { 'hand-over': join(src, 'screens/hand-over/confirm.ts') };
+// CULINA_GITHUB_API is for the browser checks only: a test build that talks to a fake of
+// GitHub's API. Every other build has https://api.github.com compiled in (src/env.ts).
+const githubApi = process.env.CULINA_GITHUB_API
+  ? { __GITHUB_API__: JSON.stringify(process.env.CULINA_GITHUB_API) }
+  : {};
+// The build both main.js and hand-over.js carry: a hash of every source file either is made of,
+// so the same sources give the same id. main.js refuses a hand-over.js of another build (the
+// service worker can hand an updated file to a page that is still open).
+const buildId = async () => {
+  const hash = createHash('sha256');
+  const inputs = new Set();
+  for (const entryPoints of [mainEntry, handOverEntry]) {
+    const probe = await build({
+      ...common,
+      format: 'esm',
+      entryPoints,
+      write: false,
+      metafile: true,
+    });
+    for (const input of Object.keys(probe.metafile.inputs)) inputs.add(input);
+  }
+  for (const input of [...inputs].sort())
+    hash.update(input).update('\0').update(readFileSync(input));
+  hash.update(JSON.stringify(githubApi));
+  return hash.digest('hex').slice(0, 16);
+};
+const define = { ...githubApi, __BUILD_ID__: JSON.stringify(await buildId()) };
+await build({ ...common, format: 'esm', entryPoints: mainEntry, define });
+// The hand-over to the shopping list (src/screens/hand-over/confirm.ts): a module of its own,
+// loaded by main.js when the cook first opens the confirmation and precached like the rest. It
+// carries the list package's rules and usual items, which main.js does not (test/build.test.ts).
+// It shares no module state with main.js: what it needs of the running app comes in as arguments.
+await build({ ...common, format: 'esm', entryPoints: handOverEntry, define });
 // Classic script: it runs before the stylesheet to set the theme without a flash.
 await build({
   ...common,
