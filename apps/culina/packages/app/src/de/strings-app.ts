@@ -181,6 +181,8 @@ export const appStringsDe: typeof appStrings = {
     added: 'von dir ergänzt',
     removed: 'von dir entfernt',
     reset: 'Wie ermittelt',
+    summaryNone: 'Nichts angehakt',
+    summaryCorrected: (n: number): string => `${n} von dir geändert`,
     diffAdded: (name: string): string => `ergänzt: ${name}`,
     diffRemoved: (name: string): string => `entfernt: ${name}`,
   },
@@ -237,7 +239,7 @@ export const appStringsDe: typeof appStrings = {
     pickMake: 'Ein Gericht daraus machen',
     pickDishHeading: 'Überrasch mich mit einem Gericht',
     pickDishNote:
-      'Ein zufälliges Gericht, eigenes oder mitgeliefertes, aus denen, die zu deiner Wahl oben passen.',
+      'Ein zufälliges Gericht, eigenes oder mitgeliefertes, aus denen, die zu dieser Wahl passen.',
     pickDishReady: 'Nur was der Vorrat jetzt erlaubt',
     pickDishRoll: 'Überrasch mich',
     pickDishResult: 'Vorschlag',

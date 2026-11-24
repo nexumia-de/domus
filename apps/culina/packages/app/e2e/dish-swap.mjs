@@ -18,6 +18,23 @@ const slot = (page, n) => page.locator('.slot-edit').nth(n - 1);
 const fillings = (page) => page.locator('.slots-table .line-link').allInnerTexts();
 const totals = (page) => page.locator('.slots-table td.num:last-child').allInnerTexts();
 const pickRows = (page) => page.locator('.pick-row .pick-text').allInnerTexts();
+// The random pick folds the choices of each roll behind one line (since 2026-11-24): the summary's
+// quiet text, and a step that opens a fold when it is closed, before a choice inside is changed.
+const foldText = (page, fold) => page.locator(`details.${fold} .fold-choices`).innerText();
+const foldOpen = (page, fold) => page.locator(`details.${fold}`).evaluate((d) => d.open);
+const unfold = async (page, fold) => {
+  if (!(await foldOpen(page, fold))) await page.locator(`details.${fold} summary`).click();
+};
+/** Whether `first` comes before `second` in the page. */
+const before = (page, first, second) =>
+  page.evaluate(
+    ([a, b]) => {
+      const x = document.querySelector(a);
+      const y = document.querySelector(b);
+      return x !== null && y !== null && (x.compareDocumentPosition(y) & 4) !== 0;
+    },
+    [first, second],
+  );
 
 export const component = async (page, origin, name, role, ingredient, grams, word) => {
   await open(page, origin, 'components/new');
@@ -238,6 +255,32 @@ const random = async (page, origin) => {
   await page.getByRole('link', { name: 'Put a dish together at random' }).click();
   await page.getByRole('heading', { level: 1, name: 'Random pick' }).waitFor();
   check(page.url().endsWith('#/dishes/random'), `${label}: the screen has its own route`);
+  // Every choice at once (docs/design.md, pitfalls): the Roll button comes before its choices,
+  // which are folded and named in the summary; the control is the same for "Surprise me".
+  check(
+    !(await foldOpen(page, 'pick-roles-fold')) &&
+      (await page.locator('.pick-roles').isHidden()) &&
+      (await foldText(page, 'pick-roles-fold')) === 'Main element · Sauce · Starch' &&
+      (await before(page, '.pick-roll', 'details.pick-roles-fold')),
+    `${label}: Roll stands before the roles, which are folded; the summary names the ticked ones`,
+  );
+  check(
+    !(await foldOpen(page, 'pick-dish-fold')) &&
+      (await page.locator('.pick-filter').isHidden()) &&
+      (await foldText(page, 'pick-dish-fold')) === 'Everything' &&
+      (await before(page, '.pick-dish-roll', 'details.pick-dish-fold')) &&
+      (await before(page, '.pick-dish-result', 'details.pick-dish-fold')),
+    `${label}: Surprise me and its result stand before the folded filter, which says "Everything"`,
+  );
+  await layout(page, `${label} (folded)`);
+  // Keyboard: Enter on the summary opens the fold and the focus stays on the summary.
+  await page.locator('details.pick-roles-fold summary').focus();
+  await page.keyboard.press('Enter');
+  check(
+    (await foldOpen(page, 'pick-roles-fold')) &&
+      (await page.evaluate(() => document.activeElement?.closest('.pick-roles-fold') !== null)),
+    `${label}: Enter on the summary opens the roles, the focus stays there`,
+  );
   const ticked = await page
     .locator('.pick-roles .choice')
     .evaluateAll((labels) =>
@@ -285,6 +328,11 @@ const random = async (page, origin) => {
   );
 
   await page.getByLabel('Only what is ready in stock').check();
+  check(
+    (await foldText(page, 'pick-roles-fold')) ===
+      'Main element · Sauce · Starch · Only what is ready in stock',
+    `${label}: the summary names the stock tick when it is ticked`,
+  );
   await page.getByRole('button', { name: 'Roll', exact: true }).click();
   rows = await pickRows(page);
   check(
@@ -299,6 +347,10 @@ const random = async (page, origin) => {
 
   await page.getByLabel('Only what is ready in stock').uncheck();
   await page.getByLabel('Sauce', { exact: true }).uncheck();
+  check(
+    (await foldText(page, 'pick-roles-fold')) === 'Main element · Starch',
+    `${label}: the summary follows a role unticked`,
+  );
   await page.getByRole('button', { name: 'Roll', exact: true }).click();
   rows = await pickRows(page);
   const picked = starch(rows[1]);
@@ -345,7 +397,7 @@ const surprise = async (page, origin) => {
   const label = '360px surprise me';
   await open(page, origin, 'dishes/random');
   check(
-    (await page.locator('.pick-filter .dish-filter').count()) === 1 &&
+    (await page.locator('.pick-dish-fold .pick-filter .dish-filter').count()) === 1 &&
       (await page.getByRole('heading', { level: 2, name: 'Surprise me with a dish' }).count()) ===
         1 &&
       (await dishLink(page).count()) === 0,
@@ -366,6 +418,14 @@ const surprise = async (page, origin) => {
     second !== first && /^#\/(dishes|classic)\//.test(second ?? ''),
     `${label}: "Roll again" gives another dish (${first} then ${second})`,
   );
+  // Opening the filter leaves the result and "Roll again" where they were, above it.
+  const resultAt = await page.locator('.pick-dish-result').boundingBox();
+  await unfold(page, 'pick-dish-fold');
+  const resultThen = await page.locator('.pick-dish-result').boundingBox();
+  check(
+    resultAt !== null && resultThen !== null && resultAt.y === resultThen.y,
+    `${label}: opening the filter does not move the result (${resultAt?.y}, ${resultThen?.y})`,
+  );
 
   await page.getByLabel('From', { exact: true }).selectOption('own');
   await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
@@ -376,8 +436,15 @@ const surprise = async (page, origin) => {
       (await page.locator('.pick-dish-meta').innerText()).startsWith('My dishes'),
     `${label}: "My dishes" rolls among the two dishes of the notebook (${own})`,
   );
-  // The choice is the one stored filter: it is there after a reload, as for the list.
+  // The choice is the one stored filter: it is there after a reload, as for the list. Folded
+  // again after the reload, the summary names it.
   await open(page, origin, 'dishes/random');
+  check(
+    !(await foldOpen(page, 'pick-dish-fold')) &&
+      (await foldText(page, 'pick-dish-fold')) === 'My dishes',
+    `${label}: the closed filter names the choice that narrows the pick`,
+  );
+  await unfold(page, 'pick-dish-fold');
   check(
     (await page.getByLabel('From', { exact: true }).inputValue()) === 'own' &&
       (await page.evaluate(() => localStorage.getItem('culina.dishes'))) === '{"origin":"own"}',
@@ -402,6 +469,10 @@ const surprise = async (page, origin) => {
 
   // Only the rice is in stock: the stock allows no dish now.
   await page.getByLabel('Only what the stock allows now').check();
+  check(
+    (await foldText(page, 'pick-dish-fold')) === 'Only what the stock allows now',
+    `${label}: the summary names the stock tick of "Surprise me"`,
+  );
   await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
   check(
     (await dishLink(page).count()) === 0 &&
@@ -439,6 +510,7 @@ const surprise = async (page, origin) => {
   );
 
   // The stock tick changes what a role may hold: the picks rolled under the other choice go.
+  await unfold(page, 'pick-roles-fold');
   await page.getByLabel('Only what is ready in stock').check();
   check(
     (await page.locator('.pick-row').count()) === 0,
@@ -477,7 +549,8 @@ const surprise = async (page, origin) => {
   await page.getByLabel('What it is like', { exact: true }).selectOption('tomatoey');
   await page.getByRole('button', { name: 'Roll', exact: true }).click();
   await page.locator('.pick-no-fit').waitFor();
-  // In-app navigation, not a reload: the picks live in memory while the app is open.
+  // In-app navigation, not a reload: the picks live in memory while the app is open, and so
+  // do the folds as they were left.
   const toList = async () => {
     await page.getByRole('link', { name: 'All dishes' }).click();
     await page.getByRole('link', { name: 'Put a dish together at random' }).waitFor();

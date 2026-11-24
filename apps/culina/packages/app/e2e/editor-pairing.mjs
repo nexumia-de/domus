@@ -4,8 +4,9 @@
 // with the ingredient copied from the catalogue into the notebook, and the offers are drawn again
 // without it; the same wording in German. Also here, because they were found in the same look at
 // the editor: the fillings stand above course and cuisine, a new dish is not asked what changed,
-// and the random pick without own components shows a way on. What a cook thinks of the pairings
-// is not judged here.
+// and the random pick without own components shows a way on; since 2026-11-24 the ticks of "What
+// it is like" are folded under what goes into the dish, and "Surprise me" stands on the first
+// screen above its folded filter. What a cook thinks of the pairings is not judged here.
 import { check, watch } from './harness.mjs';
 import { rowNamed, searchBox, shownName } from './catalogue-helpers.mjs';
 import { formReady, layout, listStore, open } from './editor-helpers.mjs';
@@ -58,6 +59,22 @@ export const editorPairing = async (browser, server) => {
       order.slots < order.course,
       `${label}: what goes into the dish stands above course and cuisine (${JSON.stringify(order)})`,
     );
+    // The 18 ticks of "What it is like" are folded behind one line under the slots, closed.
+    const characterFold = page.locator('details.character-fold');
+    const [foldName, foldNone] =
+      lang === 'de' ? ['Art', 'Nichts angehakt'] : ['What it is like', 'Nothing ticked'];
+    check(
+      !(await characterFold.evaluate((d) => d.open)) &&
+        (await page.locator('.dish-characters-edit input').first().isHidden()) &&
+        (await characterFold.locator('.fold-name').innerText()) === foldName &&
+        (await characterFold.locator('.fold-choices').innerText()) === foldNone &&
+        (await page.evaluate(
+          () =>
+            document.querySelector('.dish-editor .line-edits').getBoundingClientRect().top <
+            document.querySelector('.character-fold').getBoundingClientRect().top,
+        )),
+      `${label}: "${foldName}" is one closed line under the slots that says "${foldNone}"`,
+    );
     check(
       order.changed === 0 && order.tasting === 1,
       `${label}: a new dish is asked for a tasting note only, not for what changed`,
@@ -76,6 +93,20 @@ export const editorPairing = async (browser, server) => {
       check(
         (await page.locator('.pick-dish-roll').count()) === 1,
         `${label}: "Surprise me with a dish" stays`,
+      );
+      // The button first, on the first screen above the bottom navigation; its filter folded.
+      const rollBox = await page.locator('.pick-dish-roll').boundingBox();
+      const navTop = await page.evaluate(
+        () => document.querySelector('.app-nav')?.getBoundingClientRect().top ?? 0,
+      );
+      const dishFold = page.locator('details.pick-dish-fold');
+      check(
+        rollBox !== null &&
+          rollBox.y + rollBox.height <= Math.min(720, navTop) &&
+          !(await dishFold.evaluate((d) => d.open)) &&
+          (await dishFold.locator('.fold-name').innerText()) === 'Worauf du Lust hast' &&
+          (await dishFold.locator('.fold-choices').innerText()) === 'Alles',
+        `${label}: "Überrasch mich" stands on the first screen, the filter folded as "Alles" (${rollBox?.y}, ${navTop})`,
       );
       await layout(page, `${label} random pick`);
 

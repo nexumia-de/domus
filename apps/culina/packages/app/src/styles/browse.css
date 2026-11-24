@@ -9,12 +9,15 @@
   margin: 0 0 var(--sp-2);
 }
 
-/* The folded filter: one line, a 44 px target, naming the active choices. */
-.dish-filter-fold {
+/* The folded filter: one line, a 44 px target, naming the active choices. The same look for the
+   folds of the random pick and of the dish editor's "What it is like" (screens/fold.ts). */
+.dish-filter-fold,
+.fold {
   margin: 0 0 var(--sp-2);
 }
 
-.dish-filter-summary {
+.dish-filter-summary,
+.fold-summary {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -28,12 +31,14 @@
   list-style: none;
 }
 
-.dish-filter-summary::-webkit-details-marker {
+.dish-filter-summary::-webkit-details-marker,
+.fold-summary::-webkit-details-marker {
   display: none;
 }
 
 /* The chevron that says the line opens: right when folded, down when open. */
-.dish-filter-summary::before {
+.dish-filter-summary::before,
+.fold-summary::before {
   content: '';
   flex: none;
   width: 0.5rem;
@@ -44,22 +49,26 @@
   transform: rotate(-45deg);
 }
 
-.dish-filter-fold[open] .dish-filter-summary::before {
+.dish-filter-fold[open] .dish-filter-summary::before,
+.fold[open] > .fold-summary::before {
   transform: rotate(45deg);
 }
 
-.dish-filter-summary-name {
+.dish-filter-summary-name,
+.fold-name {
   font-weight: 600;
 }
 
-.dish-filter-summary-choices {
+.dish-filter-summary-choices,
+.fold-choices {
   min-width: 0;
   color: var(--text-muted);
   font-size: var(--fs-sm);
   overflow-wrap: anywhere;
 }
 
-.dish-filter-fold[open] .dish-filter-summary {
+.dish-filter-fold[open] .dish-filter-summary,
+.fold[open] > .fold-summary {
   margin-bottom: var(--sp-2);
 }
 

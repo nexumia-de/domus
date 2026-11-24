@@ -528,12 +528,23 @@ together from components, and a component names the role it usually fills
   step of the cook screen back to the first.
 - **Random pick**, `#/dishes/random`, reached by "Put a dish together at
   random" beside "Add a dish" (`src/screens/dish-random.ts`): what do I
-  feel like? The screen shows the controls of the
-  [one filter over every dish](#one-filter-over-every-dish) at its top; a
-  choice made here is stored there (`culina.dishes`) and holds for the list
-  and the finder too. A change by keyboard keeps the focus on the control
-  that was changed (`replaceDishFilterControls` in
-  `src/screens/dish-filter.ts`). Under it, two rolls.
+  feel like? Two rolls, each with its button first, working at once with
+  what is set; the choices that narrow a roll are folded under its result
+  behind one line (since 2026-11-24, a `<details>`, `src/screens/fold.ts`,
+  the look of Cook's folded filter): its name and, in the quiet colour,
+  what is chosen, so a closed fold says what narrows the roll. Folded at
+  first; open or closed as left while the app is open, closed again after
+  a reload. Under **Surprise me**, its result, then the fold "What you
+  feel like" with one line on what the roll does, the controls of the
+  [one filter over every dish](#one-filter-over-every-dish) and the tick
+  "Only what the stock allows now"; the summary names the active choices
+  and the tick, or "Everything". Before, the filter's four selects (about
+  30 options) and three ticks stood above the button, which at 360 px was
+  below the first screen. A choice made here is stored in the one filter
+  (`culina.dishes`) and holds for the list and the finder too. A change by
+  keyboard keeps the focus on the control that was changed
+  (`replaceDishFilterControls` in `src/screens/dish-filter.ts`).
+  Opening a fold does not move the result above it.
 - **Surprise me with a dish** (since 2026-11-21, `src/dishes/pick-dish.ts`).
   **Surprise me** takes one whole dish by chance, each with the same share,
   among the entries of both origins (`allEntries`) that pass the filter.
@@ -557,7 +568,11 @@ together from components, and a component names the role it usually fills
   link leads to the Components list, where a shipped one is kept or a new
   one written. Before, the roll answered "No component of yours has this
   role yet" for every role. **Test:** `e2e/editor-pairing.mjs` (German).
-- **The roll per role** ("Put one together from your components"). The cook
+- **The roll per role** ("Put one together from your components"). **Roll**
+  comes first, then the picks, then the fold "Which roles" with the six
+  role ticks and "Only what is ready in stock"; its summary names the
+  ticked roles and the stock tick ("Main element · Sauce · Starch"), or
+  "Tick at least one role." when none is. The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
   one component per ticked role, by chance. Without a character or
@@ -633,8 +648,17 @@ character, each that fits reachable, rolling a role again within what fits,
 none found when all are judged, the bounded tries above 200 combinations;
 every pick stays in its own role when the stock option changes between
 Roll and Roll again, and when nothing is in stock; the draw is even over the
-combinations that fit),
-`test/router.test.ts`, `e2e/dish-swap.mjs`. Not proved: the unit tests build
+combinations that fit;
+what the closed folds name: the filter's choices and the stock tick in the
+order of the controls, the ticked roles in the order of the ticks),
+`test/router.test.ts`, `e2e/dish-swap.mjs` (since 2026-11-24 also: each
+button stands before its fold, both folds closed at first and named
+"Everything" and "Main element · Sauce · Starch", Enter on a summary opens
+it with the focus kept, the summaries follow a tick and the stored choice
+after a reload, opening the filter does not move the result; the checks
+open a fold before they change a choice in it), `e2e/editor-pairing.mjs`
+(German: "Überrasch mich" ends above the bottom navigation at 360 x 720,
+its filter folded as "Alles"). Not proved: the unit tests build
 the notebook in memory, give the stock as a list of ids and never call
 `Math.random`; what the stock allows now is the finder's answer and is
 checked in the browser only for "none allowed"; the browser check runs in
@@ -1063,11 +1087,24 @@ never stored ([analysis](dish-characters.md),
   says "What it is like: empty → added: Creamy". A shipped dish is
   read-only and is corrected on its copy. Code: `src/editor/dish-characters.ts`,
   `src/characters/correction.ts`, `src/screens/editor/dish-characters-editor.ts`.
+  **Folded (since 2026-11-24).** The 18 ticks stand behind one line under
+  the assembly (a `<details>`, `src/screens/fold.ts`), closed on every dish
+  when the editor opens, so that the editor asks first for what goes into
+  the dish. The summary names "What it is like" and the characters the dish
+  shows, in the table's order ("Tomatoey · Creamy"), or "Nothing ticked",
+  and "n changed by you" when ticks differ from the rules; it follows every
+  change of the draft. A dish with a correction says so without opening
+  it. The fold stays as the cook left it while the editor is open. Nothing
+  stored changed.
   **Test:** `test/dish-character-correction.test.ts` (entry and filter,
-  the ticks, the form, schema, export and import, the history),
-  `e2e/editor-more.mjs` (tick, the mark, focus, save, chip, read back, at
-  360 px). Not verified: a screen reader on the ticks, the German texts in
-  a browser, the native Linux app (it shows no dish of the notebook).
+  the ticks, the form, schema, export and import, the history, what the
+  closed fold names), `e2e/editor-more.mjs` (closed at first and naming no
+  change, opened before the tick, tick, the mark, focus, the summary after
+  the tick, save, chip, read back in the closed summary, at 360 px),
+  `e2e/editor-pairing.mjs` (one closed line under the slots in English and
+  German, "Nothing ticked", "Nichts angehakt"). Not verified: a screen
+  reader on the ticks or the fold, the native Linux app (it shows no dish
+  of the notebook).
 
 **Test:** `test/characters.test.ts` (the table against the catalogue, the
 facts of a dish and of a classic, shipped dishes by name),

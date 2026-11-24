@@ -17,16 +17,9 @@ import {
   offeredBy,
   type DishFilter,
 } from '../browse/filter';
-import {
-  activeChoices,
-  dishListView,
-  type ActiveChoice,
-  type CookNarrowing,
-  type ListRow,
-} from '../browse/list-view';
+import { activeChoices, dishListView, type CookNarrowing, type ListRow } from '../browse/list-view';
 import { groupRows, type GroupId } from '../browse/groups';
 import { CHARACTER_TABLE } from '../characters/table';
-import { characterLabel } from '../characters/view';
 import { currentLang } from '../classics/lang';
 import { COUNTRIES } from '../classics/list-view';
 import { loadNames } from '../classics/names';
@@ -41,6 +34,7 @@ import {
   courseLabel,
   cuisineLabel,
   dishFilterControls,
+  filterChoiceLabel,
   replaceFilterControls,
   tick,
 } from './dish-filter';
@@ -88,27 +82,9 @@ const groupName = (id: GroupId): string => {
   return courseLabel(id);
 };
 
-const choiceLabel = (choice: ActiveChoice): string => {
-  const t = strings.browse;
-  switch (choice.kind) {
-    case 'origin':
-      return t.origin[choice.value];
-    case 'character':
-      return characterLabel(choice.value, currentLang());
-    case 'course':
-      return courseLabel(choice.value);
-    case 'cuisine':
-      return cuisineLabel(choice.value);
-    case 'meatFree':
-      return t.meatFree;
-    case 'completeOnly':
-      return t.completeOnly;
-  }
-};
-
 /** The summary of the folded filter: what it is, then the active choices or "Everything". */
 const summaryText = (filter: DishFilter): string => {
-  const chosen = activeChoices(filter).map(choiceLabel);
+  const chosen = activeChoices(filter).map(filterChoiceLabel);
   return chosen.length === 0 ? strings.browse.anything : chosen.join(' · ');
 };
 

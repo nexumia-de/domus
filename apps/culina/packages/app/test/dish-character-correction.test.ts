@@ -10,7 +10,12 @@ import { describe, expect, test } from 'vitest';
 import { entryOfDish } from '../src/browse/entry';
 import { matchesFilter } from '../src/browse/filter';
 import { CHARACTER_ORDER, normalCorrection } from '../src/characters/correction';
-import { characterTicks, computedOfDraft, setCharacter } from '../src/editor/dish-characters';
+import {
+  characterSummary,
+  characterTicks,
+  computedOfDraft,
+  setCharacter,
+} from '../src/editor/dish-characters';
 import { dishFormFromRecord, dishFormToRecord, newDishForm } from '../src/editor/dish-form';
 import type { DishForm } from '../src/editor/dish-form';
 import { recordValidators } from '../src/exchange/validators';
@@ -94,6 +99,21 @@ describe('the editor', () => {
     expect(ticks.map((t) => t.id)).toEqual([...CHARACTER_ORDER]);
     expect(ticks.filter((t) => t.shown).map((t) => t.id)).toEqual(['tomatoey', 'creamy']);
     expect(ticks.filter((t) => t.shown !== t.computed).map((t) => t.id)).toEqual(['creamy']);
+  });
+
+  test('the closed fold names the characters ticked and how many the cook changed', () => {
+    // A computed one taken away and one added: two changed, the shown ones in the table's order.
+    const changed = characterTicks(['tomatoey', 'fried'], {
+      add: ['creamy'],
+      remove: ['tomatoey'],
+    });
+    expect(characterSummary(changed)).toEqual({ shown: ['fried', 'creamy'], corrected: 2 });
+    // Control: the rules alone, nothing changed; and a dish that shows none.
+    expect(characterSummary(characterTicks(['tomatoey'], undefined))).toEqual({
+      shown: ['tomatoey'],
+      corrected: 0,
+    });
+    expect(characterSummary(characterTicks([], undefined))).toEqual({ shown: [], corrected: 0 });
   });
 
   test('the draft is judged as it stands, before it can be saved', () => {

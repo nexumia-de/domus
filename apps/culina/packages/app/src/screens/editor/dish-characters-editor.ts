@@ -1,15 +1,23 @@
 // The cook's correction of a dish's characters in the dish editor: one tick box per character of
 // the table. A box is ticked where the dish shows the character; where that differs from what the
-// rules work out, the row says so, and "As worked out" drops every correction.
+// rules work out, the row says so, and "As worked out" drops every correction. The ticks are
+// folded behind one line that names the characters ticked and how many the cook changed, so the
+// editor asks first for what goes into the dish (fold.ts).
 import { characterLookup } from '../../characters/lookup';
 import { characterEntry } from '../../characters/table';
 import { characterLabel } from '../../characters/view';
-import { characterTicks, computedOfDraft, setCharacter } from '../../editor/dish-characters';
+import {
+  characterSummary,
+  characterTicks,
+  computedOfDraft,
+  setCharacter,
+} from '../../editor/dish-characters';
 import type { DishForm } from '../../editor/dish-form';
 import { notebook } from '../../notebook';
 import { currentLang } from '../../classics/lang';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
+import { fold } from '../fold';
 import { button } from './form-bits';
 
 export interface CharactersEditor {
@@ -20,7 +28,10 @@ export interface CharactersEditor {
 
 export const charactersEditor = (form: DishForm, changed: () => void): CharactersEditor => {
   const t = strings.characters;
-  const element = el('fieldset', 'dish-characters-edit');
+  // Folded at first on every dish; it stays as the cook left it while the editor is open.
+  const folded = fold('character-fold', t.editHeading, false);
+  const element = folded.element;
+  const group = el('fieldset', 'dish-characters-edit');
   const list = el('ul', 'character-ticks tick-choices');
   const reset = button(t.reset, 'quiet', () => {
     delete form.characters;
@@ -29,8 +40,9 @@ export const charactersEditor = (form: DishForm, changed: () => void): Character
     reset.blur();
   });
   reset.classList.add('character-reset');
-  element.append(
-    el('legend', undefined, t.editHeading),
+  folded.body.append(group);
+  group.append(
+    el('legend', 'sr-only', t.editHeading),
     el('p', 'note-quiet', t.editHint),
     list,
     reset,
@@ -42,8 +54,18 @@ export const charactersEditor = (form: DishForm, changed: () => void): Character
     // The box that had the focus keeps it: a tick draws the list again.
     const active = document.activeElement;
     const focused = active instanceof HTMLInputElement ? active.dataset.character : undefined;
+    const ticks = characterTicks(computed, form.characters);
+    const summary = characterSummary(ticks);
+    folded.setChoices(
+      [
+        summary.shown.length === 0
+          ? t.summaryNone
+          : summary.shown.map((id) => characterLabel(id, lang)).join(' · '),
+        ...(summary.corrected === 0 ? [] : [t.summaryCorrected(summary.corrected)]),
+      ].join(' · '),
+    );
     list.replaceChildren(
-      ...characterTicks(computed, form.characters).map((tick) => {
+      ...ticks.map((tick) => {
         const item = el('li', 'character-tick');
         const label = el('label', 'choice');
         const box = document.createElement('input');

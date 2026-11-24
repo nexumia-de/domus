@@ -4,7 +4,8 @@
 // pass the filter (and, when ticked, that the stock allows now). Below, the roll per role puts one
 // component per ticked role together; with a character or "without meat and fish" chosen, it rolls
 // among the combinations that have it. "Make it a dish" opens the dish editor with the picks as
-// slots; nothing is stored here.
+// slots; nothing is stored here. Each roll's button comes first and works with what is set; the
+// choices that narrow it are folded behind one line that names what is chosen (fold.ts).
 import type { DishEntry } from '../browse/entry';
 import { offeredBy, type DishFilter } from '../browse/filter';
 import { characterLookup } from '../characters/lookup';
@@ -22,6 +23,7 @@ import {
   type RolePick,
 } from '../dishes/pick';
 import { dishPool, surpriseDish } from '../dishes/pick-dish';
+import { pickDishChoices, pickRoleChoices } from '../dishes/pick-summary';
 import { combinationJudge, judgesCombination } from '../dishes/pick-judge';
 import { readyNowKeys } from '../dishes/ready-now';
 import { setDishPrefill } from '../editor/prefill';
@@ -36,8 +38,10 @@ import {
   courseLabel,
   cuisineLabel,
   dishFilterControls,
+  filterChoiceLabel,
   replaceFilterControls,
 } from './dish-filter';
+import { fold } from './fold';
 import { currentDishFilter, keepDishFilter } from '../browse/filter';
 import { everyEntry } from './dish-list';
 
@@ -63,6 +67,9 @@ const state: {
   judgedUnder: string | undefined;
   /** The whole filter and the stock tick that the last "Surprise me" found no dish under. */
   dishNoneUnder: string | undefined;
+  /** Whether the choices of "Surprise me" and of the roll per role are unfolded. */
+  dishOpen: boolean;
+  rolesOpen: boolean;
 } = {
   roles: new Set(DEFAULT_PICK_ROLES),
   onlyStock: false,
@@ -73,6 +80,8 @@ const state: {
   dishNone: false,
   judgedUnder: undefined,
   dishNoneUnder: undefined,
+  dishOpen: false,
+  rolesOpen: false,
 };
 
 /** The part of the filter a combination is judged by: the character and "without meat and fish". */
@@ -137,9 +146,22 @@ export const randomDishScreen = (): HTMLElement => {
   const options = (): PickOptions => ({ onlyStock: state.onlyStock, inStock });
   const judge = () => combinationJudge(notebook(), characterLookup, filter);
 
+  // The choices that narrow "Surprise me": the one filter and the stock tick, folded behind one
+  // line that names what is chosen.
+  const dishFold = fold('pick-dish-fold', tb.filtersLabel, state.dishOpen, (open) => {
+    state.dishOpen = open;
+  });
+  const drawDishSummary = (): void => {
+    const chosen = pickDishChoices(filter, state.dishReady).map((choice) =>
+      choice.kind === 'ready' ? t.pickDishReady : filterChoiceLabel(choice),
+    );
+    dishFold.setChoices(chosen.length === 0 ? tb.anything : chosen.join(' · '));
+  };
+
   // The one filter: its controls are replaced on every change.
   const filterBox = el('div', 'pick-filter');
   const drawFilter = (): void => {
+    drawDishSummary();
     replaceFilterControls(
       filterBox,
       dishFilterControls(
@@ -232,6 +254,7 @@ export const randomDishScreen = (): HTMLElement => {
       tick('pick-dish-ready-tick', t.pickDishReady, state.dishReady, (on) => {
         state.dishReady = on;
         state.dishNone = false;
+        drawDishSummary();
         drawDish();
       }),
     );
@@ -328,13 +351,28 @@ export const randomDishScreen = (): HTMLElement => {
     result.replaceChildren(...nodes);
   };
 
+  // The roles and the stock tick of the roll per role, folded behind one line that names them.
+  const rolesFold = fold('pick-roles-fold', t.pickRoles, state.rolesOpen, (open) => {
+    state.rolesOpen = open;
+  });
+  const drawRolesSummary = (): void => {
+    const chosen = pickRoleChoices(state.roles, state.onlyStock);
+    rolesFold.setChoices(
+      chosen.roles.length === 0
+        ? t.pickNoRoles
+        : [...chosen.roles.map(roleLabel), ...(chosen.onlyStock ? [t.pickOnlyStock] : [])].join(
+            ' · ',
+          ),
+    );
+  };
   const roles = el('fieldset', 'choices tick-choices pick-roles');
   roles.append(
-    el('legend', undefined, t.pickRoles),
+    el('legend', 'sr-only', t.pickRoles),
     ...ROLE_IDS.map((role) =>
       tick('', roleLabel(role), state.roles.has(role), (on) => {
         if (on) state.roles.add(role);
         else state.roles.delete(role);
+        drawRolesSummary();
       }),
     ),
   );
@@ -343,12 +381,15 @@ export const randomDishScreen = (): HTMLElement => {
     tick('', t.pickOnlyStock, state.onlyStock, (on) => {
       // The picks were rolled under the other choice: they are dropped, not kept half valid.
       state.onlyStock = on;
+      drawRolesSummary();
       if (state.picks !== undefined || state.noFit !== undefined) {
         dropPicks();
         drawRoles();
       }
     }),
   );
+  rolesFold.body.append(roles, stock);
+  drawRolesSummary();
   const rollButton = el('button', 'btn primary pick-roll', t.pickRoll);
   rollButton.type = 'button';
   rollButton.addEventListener('click', () => {
@@ -392,13 +433,18 @@ export const randomDishScreen = (): HTMLElement => {
     drawDish();
   });
 
+  // The button first, its result under it, then what narrows it.
+  dishFold.body.append(
+    el('p', 'note-quiet pick-dish-note', t.pickDishNote),
+    filterBox,
+    dishControls,
+  );
   const dishSection = el('section', 'pick-section pick-dish-section');
   dishSection.append(
     el('h2', undefined, t.pickDishHeading),
-    el('p', 'note-quiet', t.pickDishNote),
-    dishControls,
     dishRoll,
     dishResult,
+    dishFold.element,
   );
   const roleSection = el('section', 'pick-section pick-role-section');
   if (roleCandidates(notebook()).length === 0) {
@@ -416,13 +462,12 @@ export const randomDishScreen = (): HTMLElement => {
       el('h2', undefined, t.pickRolesHeading),
       el('p', 'note-quiet', t.pickNote),
       fitsNote,
-      roles,
-      stock,
       rollButton,
       status,
       result,
+      rolesFold.element,
     );
   }
-  screen.append(back, el('h1', undefined, t.pickTitle), filterBox, dishSection, roleSection);
+  screen.append(back, el('h1', undefined, t.pickTitle), dishSection, roleSection);
   return screen;
 };
