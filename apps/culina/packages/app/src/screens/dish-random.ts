@@ -271,7 +271,7 @@ export const randomDishScreen = (): HTMLElement => {
   const result = el('div', 'pick-result');
   const status = el('p', 'hint');
   status.setAttribute('role', 'status');
-  const fitsNote = el('p', 'note-quiet pick-fits-note', t.pickFitsNote);
+  const fitsNote = el('p', 'note-quiet pick-fits-note');
 
   const row = (pick: RolePick): HTMLElement => {
     const li = el('li', 'pick-row');
@@ -314,7 +314,12 @@ export const randomDishScreen = (): HTMLElement => {
   };
 
   const drawRoles = (): void => {
+    // The filter's character and "without meat and fish" narrow this roll: said here and named in
+    // the summary of the roles, since their controls stand in the fold of "Surprise me".
+    const judged = pickRoleChoices(state.roles, state.onlyStock, filter).judged;
     fitsNote.hidden = !judgesCombination(filter);
+    fitsNote.textContent = t.pickFitsNote(judged.map(filterChoiceLabel).join(' · '));
+    drawRolesSummary();
     if (state.noFit !== undefined) {
       const none = state.noFit;
       const sentence = el(
@@ -351,18 +356,19 @@ export const randomDishScreen = (): HTMLElement => {
     result.replaceChildren(...nodes);
   };
 
-  // The roles and the stock tick of the roll per role, folded behind one line that names them.
+  // The roles and the stock tick of the roll per role, folded behind one line that names them and
+  // the choices of the filter this roll is judged by.
   const rolesFold = fold('pick-roles-fold', t.pickRoles, state.rolesOpen, (open) => {
     state.rolesOpen = open;
   });
   const drawRolesSummary = (): void => {
-    const chosen = pickRoleChoices(state.roles, state.onlyStock);
+    const chosen = pickRoleChoices(state.roles, state.onlyStock, filter);
     rolesFold.setChoices(
-      chosen.roles.length === 0
-        ? t.pickNoRoles
-        : [...chosen.roles.map(roleLabel), ...(chosen.onlyStock ? [t.pickOnlyStock] : [])].join(
-            ' · ',
-          ),
+      [
+        ...(chosen.roles.length === 0 ? [t.pickNoRoles] : chosen.roles.map(roleLabel)),
+        ...(chosen.onlyStock ? [t.pickOnlyStock] : []),
+        ...chosen.judged.map(filterChoiceLabel),
+      ].join(' · '),
     );
   };
   const roles = el('fieldset', 'choices tick-choices pick-roles');

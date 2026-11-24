@@ -543,7 +543,7 @@ together from components, and a component names the role it usually fills
   below the first screen. A choice made here is stored in the one filter
   (`culina.dishes`) and holds for the list and the finder too. A change by
   keyboard keeps the focus on the control that was changed
-  (`replaceDishFilterControls` in `src/screens/dish-filter.ts`).
+  (`replaceFilterControls` in `src/screens/dish-filter.ts`).
   Opening a fold does not move the result above it.
 - **Surprise me with a dish** (since 2026-11-21, `src/dishes/pick-dish.ts`).
   **Surprise me** takes one whole dish by chance, each with the same share,
@@ -571,8 +571,13 @@ together from components, and a component names the role it usually fills
 - **The roll per role** ("Put one together from your components"). **Roll**
   comes first, then the picks, then the fold "Which roles" with the six
   role ticks and "Only what is ready in stock"; its summary names the
-  ticked roles and the stock tick ("Main element · Sauce · Starch"), or
-  "Tick at least one role." when none is. The cook
+  ticked roles ("Main element · Sauce · Starch", or "Tick at least one
+  role." when none is), the stock tick when it is ticked, and the choices
+  of the filter this roll is judged by, the character and "Without meat
+  and fish" ("Main element · Sauce · Starch · Tomatoey"): their controls
+  stand in the fold of **Surprise me**, so a closed fold of the roles
+  still says what narrows the roll (since the review of 96735d9; before,
+  a stored character narrowed the roll unnamed). The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
   one component per ticked role, by chance. Without a character or
@@ -604,8 +609,10 @@ together from components, and a component names the role it usually fills
   is never meat-free. Without amounts a character that needs a share is
   judged on what is there, as for a dish of the notebook without amounts.
   With a character or "Without meat and fish" chosen, the roll is among the
-  combinations that have it, and a quiet line says "Rolled among the
-  combinations that are like your choice above." Every combination that
+  combinations that have it, and a quiet line above **Roll** names the
+  choice: "Only combinations like your choice under "What you feel
+  like": Tomatoey." (before 2026-11-24 "… like your choice above", which
+  named nothing). Every combination that
   fits has the same share, so a component that fits with more of the others
   comes up more often: with main A or B and sauce x or y, where A+x, A+y
   and B+x fit, A comes up in two rolls of three. The search is bounded:
@@ -655,8 +662,10 @@ order of the controls, the ticked roles in the order of the ticks),
 button stands before its fold, both folds closed at first and named
 "Everything" and "Main element · Sauce · Starch", Enter on a summary opens
 it with the focus kept, the summaries follow a tick and the stored choice
-after a reload, opening the filter does not move the result; the checks
-open a fold before they change a choice in it), `e2e/editor-pairing.mjs`
+after a reload; with "Tomatoey" stored, after a reload both folds are
+closed, the roles' summary names "Tomatoey" and the line above Roll names
+it, and without it the summary names only the roles; the checks open a
+fold before they change a choice in it), `e2e/editor-pairing.mjs`
 (German: "Überrasch mich" ends above the bottom navigation at 360 x 720,
 its filter folded as "Alles"). Not proved: the unit tests build
 the notebook in memory, give the stock as a list of ids and never call

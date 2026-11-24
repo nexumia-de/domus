@@ -1,6 +1,7 @@
 // What the closed folds of the random pick name: the choices that narrow "Surprise me" (the one
-// filter and the stock tick) and the roles and the stock tick of the roll per role. Pure: the
-// screen turns them into words (dish-random.ts).
+// filter and the stock tick) and what the roll per role is rolled under (the roles, the stock
+// tick, and the choices of the filter a combination is judged by). Pure: the screen turns them
+// into words (dish-random.ts).
 import { activeChoices, type ActiveChoice } from '../browse/list-view';
 import type { DishFilter } from '../browse/filter';
 import { ROLE_IDS } from '../editor/units';
@@ -18,13 +19,26 @@ export interface PickRoleChoices {
   /** The ticked roles, in the order of the ticks. */
   roles: string[];
   onlyStock: boolean;
+  /**
+   * The choices of the one filter a combination is judged by (the character and "without meat
+   * and fish", as `judgesCombination` in pick-judge.ts): they narrow this roll too, though their
+   * controls stand in the fold of "Surprise me". The other choices of the filter do not apply.
+   */
+  judged: ActiveChoice[];
 }
 
-/** The roles ticked for the roll per role, in the order of the ticks, and the stock tick. */
+/**
+ * What the roll per role is rolled under: the ticked roles in the order of the ticks, the stock
+ * tick, and the judged choices of the filter.
+ */
 export const pickRoleChoices = (
   roles: ReadonlySet<string>,
   onlyStock: boolean,
+  filter: DishFilter,
 ): PickRoleChoices => ({
   roles: ROLE_IDS.filter((role) => roles.has(role)),
   onlyStock,
+  judged: activeChoices(filter).filter(
+    (choice) => choice.kind === 'character' || choice.kind === 'meatFree',
+  ),
 });

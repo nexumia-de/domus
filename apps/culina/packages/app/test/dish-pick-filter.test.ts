@@ -318,11 +318,33 @@ describe('what the closed folds name', () => {
   });
 
   test('the roll per role: the ticked roles in the order of the ticks, and the stock tick', () => {
-    expect(pickRoleChoices(new Set(['starch', 'main', 'sauce']), true)).toEqual({
+    expect(pickRoleChoices(new Set(['starch', 'main', 'sauce']), true, {})).toEqual({
       roles: ['main', 'sauce', 'starch'],
       onlyStock: true,
+      judged: [],
     });
-    // An id that is no role is not named; no role ticked names none.
-    expect(pickRoleChoices(new Set(['dessert']), false)).toEqual({ roles: [], onlyStock: false });
+    // An id that is no role is not named; no role ticked names none, the stock tick still shows.
+    expect(pickRoleChoices(new Set(['dessert']), true, {})).toEqual({
+      roles: [],
+      onlyStock: true,
+      judged: [],
+    });
+  });
+
+  test('the roll per role names the choices of the filter it is judged by, and only those', () => {
+    // The character and "without meat and fish" narrow the combinations (judgesCombination);
+    // origin, course and cuisine do not apply to this roll and are not named.
+    const filter = {
+      origin: 'own',
+      character: 'tomatoey',
+      course: 'main',
+      meatFree: true,
+    } as const;
+    expect(pickRoleChoices(new Set(['main']), false, filter).judged).toEqual([
+      { kind: 'character', value: 'tomatoey' },
+      { kind: 'meatFree' },
+    ]);
+    // Control: a filter that judges nothing names only the roles.
+    expect(pickRoleChoices(new Set(['main']), false, { cuisine: 'it' }).judged).toEqual([]);
   });
 });

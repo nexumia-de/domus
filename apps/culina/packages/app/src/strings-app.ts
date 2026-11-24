@@ -239,7 +239,8 @@ export const appStrings = {
       n === 1 ? 'The only dish that fits.' : `By chance among ${n} dishes.`,
     pickDishNoneReady: 'The stock allows none of these dishes now.',
     pickRolesHeading: 'Put one together from your components',
-    pickFitsNote: 'Rolled among the combinations that are like your choice above.',
+    pickFitsNote: (choices: string): string =>
+      `Only combinations like your choice under "What you feel like": ${choices}.`,
     pickNoFit: 'No combination of your components is like that.',
     pickNoFitTried: (tries: number, total: number): string =>
       `No combination of your components was like that in ${tries} tries by chance (of ${total}).`,

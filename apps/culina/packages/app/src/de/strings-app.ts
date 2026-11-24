@@ -248,7 +248,8 @@ export const appStringsDe: typeof appStrings = {
       n === 1 ? 'Das einzige Gericht, das passt.' : `Zufällig aus ${n} Gerichten gewählt.`,
     pickDishNoneReady: 'Der Vorrat erlaubt jetzt keines dieser Gerichte.',
     pickRolesHeading: 'Aus deinen Komponenten zusammenstellen',
-    pickFitsNote: 'Gewürfelt aus den Zusammenstellungen, die zu deiner Wahl oben passen.',
+    pickFitsNote: (choices: string): string =>
+      `Nur Zusammenstellungen nach deiner Wahl unter „Worauf du Lust hast“: ${choices}.`,
     pickNoFit: 'Keine Zusammenstellung deiner Komponenten ist so.',
     pickNoFitTried: (tries: number, total: number): string =>
       `In ${tries} Würfen war keine Zusammenstellung deiner Komponenten so (von ${total}).`,

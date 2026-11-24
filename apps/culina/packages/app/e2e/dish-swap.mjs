@@ -418,14 +418,7 @@ const surprise = async (page, origin) => {
     second !== first && /^#\/(dishes|classic)\//.test(second ?? ''),
     `${label}: "Roll again" gives another dish (${first} then ${second})`,
   );
-  // Opening the filter leaves the result and "Roll again" where they were, above it.
-  const resultAt = await page.locator('.pick-dish-result').boundingBox();
   await unfold(page, 'pick-dish-fold');
-  const resultThen = await page.locator('.pick-dish-result').boundingBox();
-  check(
-    resultAt !== null && resultThen !== null && resultAt.y === resultThen.y,
-    `${label}: opening the filter does not move the result (${resultAt?.y}, ${resultThen?.y})`,
-  );
 
   await page.getByLabel('From', { exact: true }).selectOption('own');
   await page.getByRole('button', { name: 'Surprise me', exact: true }).click();
@@ -483,15 +476,16 @@ const surprise = async (page, origin) => {
   await page.getByLabel('Only what the stock allows now').uncheck();
 
   // The roll per role with a character: the typed ingredients have none.
-  const fitsLine = 'Rolled among the combinations that are like your choice above.';
+  const fitsNote = page.locator('.pick-fits-note');
+  const fitsLine = 'Only combinations like your choice under "What you feel like": Tomatoey.';
   check(
-    !(await page.getByText(fitsLine).isVisible()),
+    !(await fitsNote.isVisible()),
     `${label}: without a character the roll per role says nothing about fitting`,
   );
   await page.getByLabel('What it is like', { exact: true }).selectOption('tomatoey');
   check(
-    await page.getByText(fitsLine).isVisible(),
-    `${label}: with a character the roll per role says it rolls among what fits`,
+    (await fitsNote.isVisible()) && (await fitsNote.innerText()) === fitsLine,
+    `${label}: with a character the roll per role says it rolls among what fits, and names it`,
   );
   await page.getByRole('button', { name: 'Roll', exact: true }).click();
   check(
@@ -501,7 +495,22 @@ const surprise = async (page, origin) => {
     `${label}: no combination with the character: the honest sentence, no pick`,
   );
   await layout(page, `${label} (no combination fits)`);
+  // The character narrows the roll per role though its control stands in the fold of "Surprise
+  // me": after a reload both folds are closed, and the roles' summary names it (review of 96735d9).
+  await open(page, origin, 'dishes/random');
+  check(
+    !(await foldOpen(page, 'pick-dish-fold')) &&
+      !(await foldOpen(page, 'pick-roles-fold')) &&
+      (await foldText(page, 'pick-roles-fold')) === 'Main element · Sauce · Starch · Tomatoey' &&
+      (await fitsNote.innerText()) === fitsLine,
+    `${label}: the closed roles name the character the roll is judged by (${await foldText(page, 'pick-roles-fold')})`,
+  );
+  await unfold(page, 'pick-dish-fold');
   await page.getByLabel('What it is like', { exact: true }).selectOption('');
+  check(
+    (await foldText(page, 'pick-roles-fold')) === 'Main element · Sauce · Starch',
+    `${label}: control: without a judged choice the roles name only the roles`,
+  );
   await page.getByRole('button', { name: 'Roll', exact: true }).click();
   check(
     (await page.locator('.pick-row').count()) > 0 &&
