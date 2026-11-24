@@ -1222,7 +1222,32 @@ own; the origin is only a choice of the filter.
   Notebook's Dishes (own or shipped), it is the browser's back to that list. A history
   entry marked by an older version (from Start or the old Dishes list) is
   still a way back. It never changes the filter. The own dish's link hides
-  from 720 px, where the list stands beside it.
+  from 720 px, where the list stands beside it. Since 2026-11-24 the way
+  back (the browser's back and "Back to the list", also after cooking step
+  by step and coming back) shows the list **where it was**: the same
+  scroll, the row that was opened between the header and the bottom bar,
+  and the keyboard focus on that row's link, so that a keyboard or
+  screen-reader user is at the dish they came from. Before, the shell
+  scrolled every screen to the top and focused its heading, and the user
+  scrolled 121 rows again. The rule is the shell's for every screen
+  ([Navigation](#navigation), "The place on the way back"); Cook's list
+  keeps the focused row when it draws its rows again (the catalogue read
+  just after the screen is drawn), `drawRows` in
+  `src/screens/dish-list.ts`. When the list changed meanwhile (the filter
+  changed in another tab, the dish kept) and the row is gone, the link that
+  now stands nearest to its place takes the focus. **Test:**
+  `test/shell-place.test.ts`, `e2e/list-place.mjs` (360 x 720, English, the
+  real content: the first dessert, about 9800 px down, opened and left by
+  the browser's back, by "Back to the list", and by "Back to the list"
+  after the cook screen and back; each time the scroll within 4 px, the
+  row in view, its link focused; the control, the dish reached forward at
+  the top with its heading focused; another tab choosing "Main course"
+  while the dessert is open: no error, a row in view focused). The three
+  checks of the way back failed on the code before the change (scroll 0,
+  the heading focused), the controls passed there and after. Not proved:
+  a screen reader announcing the row, a real phone, scrolling by touch
+  (the check scrolls by script), the German texts (the mechanism has
+  none).
 - **The first screen at 360 x 720.** On Cook the title with the way to the
   stock on one line, the search, the switch, the order, the folded filter
   and the first row above the bar ("Start from one ingredient" follows the
@@ -1401,9 +1426,9 @@ shipped, under the one filter, with:
   order is the answer (the nearest use-by first), and groups by course
   would break it apart. Each group is its own list, labelled by its
   heading; the flat list keeps the label "Dishes that fit". The way back
-  from a dish leads to Cook in the same groups under the same filter; the
-  screen opens at its top, as before the groups (the place in the list
-  was not kept before and is not now). Pure part: `groupRows` in
+  from a dish leads to Cook in the same groups under the same filter, at
+  the place in the list where the dish was opened (since 2026-11-24; see
+  "The way back from a dish" and [Navigation](#navigation)). Pure part: `groupRows` in
   `src/browse/groups.ts`; the headings in `src/screens/dish-list.ts`.
   **Test:** `test/browse-groups.test.ts` (entries written by hand: the
   order of the groups, a frame in the frames group, own and shipped in one
@@ -1870,11 +1895,41 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   the current destination has `aria-current="page"`. A skip link ("Skip
   to content") is the first focusable element. The document title is
   "<screen> - Cook's Workbench". **Test:** `e2e/smoke.mjs`.
-- **Focus on navigation.** When the user navigates, focus moves to the
+- **Focus on navigation.** When the user navigates forward, focus moves to the
   screen heading (`<h1>`, `tabindex="-1"`), so a screen reader announces
-  the new screen. When the page first loads or reloads, nothing is
+  the new screen; on the way back see the next point. When the page first loads or reloads, nothing is
   focused: no text field is focused when a screen opens. **Test:**
   `e2e/smoke.mjs`.
+- **The place on the way back** (since 2026-11-24). A screen reached
+  forward (a link, the navigation, an address) starts at its top with its
+  heading focused, as above. A screen reached again through the history
+  (the browser's back or forward, "Back to the list", which is the
+  browser's back) stands where it was left: the same scroll, and the focus
+  on the link it was left by (a row of a list, "Cook step by step"); the
+  link is scrolled into the middle when the old scroll would leave it
+  under the header or the bottom bar. Left without a link of the screen
+  (the navigation, a button), only the scroll comes back and the heading
+  takes the focus without moving the page. When the link is gone, the
+  link that now stands nearest to where it stood takes the focus.
+  The place lives in memory for the page, keyed by an id the shell
+  writes into the history entry's state (`culinaScreen`, beside the
+  mark of `list-return.ts`); nothing is written to the notebook or to
+  localStorage, and after a reload the way back starts at the top again.
+  This covers Cook's list, the Notebook's Components and Dishes and every
+  other screen alike (`src/shell/place.ts`, the pure part; `show` in
+  `src/shell/shell.ts`). The shell is Culina's own; the sister apps are
+  not touched. **Test:** `test/shell-place.test.ts` (the link followed
+  is focused again, also when it moved; the nearest link when it is gone;
+  none when nothing was followed (the control); the scroll kept while the
+  link is in view (the control), else the link in the middle; the id kept
+  beside the state), `e2e/list-place.mjs` (Cook, see
+  [Cook](#cook); a component far down the Notebook's Components and the
+  browser's back; the controls: the Notebook and Cook from the
+  navigation start at the top with the heading focused). Not proved: the
+  Notebook's Dishes in a browser (an empty notebook has no rows there; it
+  is the same list code as Components), the side layout from 720 px, a
+  screen reader, Safari and Firefox (which do not focus a link on a click;
+  the shell notes the click itself).
 - **Sub-paths.** All URLs are relative, so the app works under a
   sub-path; `e2e/smoke.mjs` runs the offline check under `/apps/cook/`.
 

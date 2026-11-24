@@ -37,7 +37,10 @@ const listOf = (state: unknown): ListScreen | undefined => {
 const openedFrom = (): ListScreen | undefined => {
   try {
     if (tapped !== undefined && window.location.hash === tapped.hash) {
-      window.history.replaceState({ fromList: tapped.list } satisfies FromList, '');
+      // Kept beside what the entry holds already (the shell's id for the place: shell/place.ts).
+      const state: unknown = window.history.state;
+      const kept = state !== null && typeof state === 'object' ? state : {};
+      window.history.replaceState({ ...kept, fromList: tapped.list } satisfies FromList, '');
       tapped = undefined;
     }
     return listOf(window.history.state);

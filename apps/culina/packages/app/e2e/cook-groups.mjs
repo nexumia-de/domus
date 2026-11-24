@@ -144,8 +144,7 @@ const oneLanguage = async (browser, server, lang) => {
   );
 
   // The way back from a dish of a later group: Cook again, in groups, with the filter untouched.
-  // The screen opens at its top, as it did before the groups (the shell scrolls every screen to
-  // the top); the place in the list is not kept, and this check does not claim it.
+  // The place in the list on the way back is e2e/list-place.mjs's.
   await openFilter(page);
   await page.getByLabel(t.course, { exact: true }).selectOption({ label: t.mainOption });
   const row = page.locator('.dish-group').nth(1).locator('.dish-row').first();
