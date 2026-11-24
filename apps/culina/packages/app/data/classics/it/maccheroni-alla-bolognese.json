@@ -47,14 +47,18 @@
         },
         {
           "key": "carnesecca",
-          "wanted": {
-            "en": "Carnesecca (dry-cured pork)",
-            "de": "Carnesecca (gesalzener Schweinebauch)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168287"
           },
           "amount": {
             "value": 50,
             "unit": "g",
             "original": "Carnesecca, grammi 50"
+          },
+          "note": {
+            "en": "Carnesecca is salted pork belly; the catalogue's is US salt pork of no named cut.",
+            "de": "Carnesecca ist gesalzener Schweinebauch; der Katalog hat US-Salzspeck ohne genannten Teil."
           },
           "sourceNote": {
             "en": "The book's own word list explains the word: 'Carnesecca. Pancetta del maiale salata.'",
@@ -134,17 +138,17 @@
         },
         {
           "key": "broth",
-          "wanted": {
-            "en": "Meat broth",
-            "de": "Fleischbrühe"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-soup-stock"
           },
           "note": {
-            "en": "A small pot of broth.",
-            "de": "Ein Töpfchen Brühe."
+            "en": "A small pot of broth. Beef or chicken stock.",
+            "de": "Ein Töpfchen Brühe. Rinder- oder Hühnerbrühe."
           },
           "sourceNote": {
-            "en": "Source wording: 'Un pentolino di brodo'. The book gives no size for the small pot, so no amount.",
-            "de": "Wortlaut der Quelle: ‚Un pentolino di brodo‘. Das Buch nennt keine Größe für das Töpfchen, daher keine Menge."
+            "en": "Source wording: 'Un pentolino di brodo'. The book gives no size for the small pot, so no amount. The book names no meat for the broth.",
+            "de": "Wortlaut der Quelle: ‚Un pentolino di brodo‘. Das Buch nennt keine Größe für das Töpfchen, daher keine Menge. Das Buch nennt kein Fleisch für die Brühe."
           }
         },
         {

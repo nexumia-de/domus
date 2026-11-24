@@ -21,6 +21,68 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: three more cited recipes of Culina can be kept
+
+Three agents under two leads, all on the second-largest model. A first
+agent began naming catalogue foods for the `wanted` lines of the cited
+recipes and was stopped with its lead's session, tests red (branch
+`ccr-f78f311f-wn58vn-wip-catalogue`). A second continued from that
+work, checked each of its mappings against the USDA description, took
+two back, and wrote the tests and the documents. A third, which wrote
+none of it and was given the task and the staged diff, checked it; the
+second then fixed what was found. Those fixes, all in documents and the
+order of keys in one file, were not read by another agent.
+
+| Part                                                | Done by        | Checked by                                                              |
+| --------------------------------------------------- | -------------- | ----------------------------------------------------------------------- |
+| The mappings (salt pork, a spirit, the stock group) | agents 1 and 2 | agent 3, against the USDA descriptions and the recipes' source notes    |
+| Recipe files: only `wanted` became a reference      | agents 1 and 2 | agent 3, with a script comparing every field before and after           |
+| The catalogue and the FlavorDB links rebuilt        | agent 2        | agent 3, rebuilt byte for byte; entry by entry only what follows        |
+| The names left `wanted`                             | agent 2        | agent 3, its own search of the USDA data for 14 of them                 |
+| The tests and the pinned counts                     | agent 2        | agent 3 (the new test run on the content before; every count recounted) |
+| The fixes to the documents                          | agent 2        | nobody but the checks and the lead's reading of the report              |
+
+**What the checks found, and where it was fixed.**
+
+- _Agent 2 on agent 1's work:_ cacio pointed at the cheese group, which
+  holds cottage and cream cheese, and the chocolate of 1894 at a modern
+  dark chocolate. Both were taken back and stay `wanted`, as earlier
+  judgements said.
+- _A section made false by the change:_ "What the catalogue does not
+  have" still said no cured pork and no beverages. Recounted and
+  rewritten.
+- _A reversal argued with a wrong reason:_ the documents said the
+  earlier judgement on meat broth was made when the catalogue had no
+  stock; the record shows it knew both stock rows. The reversal stands
+  on its real argument (a group of exactly the two meat stocks names no
+  animal either, as the beef group names no cut) and is now said to be
+  a reversal.
+- _Smaller:_ the reason for leaving shelled fresh beans `wanted` named
+  too few of the dataset's beans; why fresh pork belly was not taken
+  for carnesecca (it is unsalted) was not said; keys of the own German
+  names were out of order; the handover still listed the work as left.
+- _Against its brief,_ agent 2 was told by the lead to commit in its
+  worktree; the permission check refused that, and the lead committed
+  after the review, as the way of working says.
+
+**Test counts** (agents 2 and 3, each its own run): `npm run
+check:culina` passes with 1254 engine, 1154 app and 24 native tests.
+Culina's e2e passed with 2064 checks for agent 2, before the fixes to
+the documents; agent 3 ran none, the change touches no code. The new
+test that names the 18 recipes fails on the content before (114, not
+117, can be kept); the test that keeping refuses exactly those passes
+before and after and proves only that list and keeping agree. The
+characters of all 135 dishes are unchanged (agents 2 and 3, each its
+own comparison).
+
+**What nobody verified.** The original texts of Artusi and Gouffé
+(archive.org could not be reached; the source notes in the files were
+relied on). That US salt pork, 80 % fat, is close enough to Artusi's
+salted belly for the nutrition of the two dishes that count it. That a
+cook agrees with a generic 40 % spirit for acquavite. Whether kidney
+suet should join the catalogue is left to the owner. Nothing was
+cooked.
+
 ## 2026-11-24: the browser check of "Dishes like this" read the page it left
 
 Two agents under one lead, both on the second-largest model. Pull

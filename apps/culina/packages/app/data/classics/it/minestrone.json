@@ -46,17 +46,17 @@
         },
         {
           "key": "broth",
-          "wanted": {
-            "en": "Meat broth",
-            "de": "Fleischbrühe"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-soup-stock"
           },
           "note": {
-            "en": "The beans and the soup are cooked in broth.",
-            "de": "Bohnen und Suppe werden in Brühe gegart."
+            "en": "The beans and the soup are cooked in broth. Beef or chicken stock.",
+            "de": "Bohnen und Suppe werden in Brühe gegart. Rinder- oder Hühnerbrühe."
           },
           "sourceNote": {
-            "en": "No amount is given.",
-            "de": "Keine Menge angegeben."
+            "en": "No amount is given. The source names no meat for the broth.",
+            "de": "Keine Menge angegeben. Die Quelle nennt kein Fleisch für die Brühe."
           }
         },
         {
