@@ -198,6 +198,12 @@ export const appStringsDe: typeof appStrings = {
     backToDish: 'Zurück zum Gericht',
     noSteps: 'Dieses Gericht hat noch keine Schritte.',
     cookDone: 'Das war der letzte Schritt.',
+    cookedLine: (date: string): string => `Zuletzt gekocht: ${date}`,
+    cookedNone: 'Noch nicht als gekocht vermerkt.',
+    cookedToday: 'Heute gekocht',
+    cookedClear: 'Datum entfernen',
+    cookedKept: (date: string): string => `Als gekocht am ${date} vermerkt.`,
+    cookedCleared: 'Datum entfernt.',
     originOwn: 'In meinem Notizbuch',
     originShipped: 'Mit der App geliefert',
     fromStock: (name: string): string => `Aus dem Vorrat: ${name}`,
@@ -345,7 +351,7 @@ export const appStringsDe: typeof appStrings = {
     examplesAdded: 'Beispieleinträge wurden deinem Notizbuch hinzugefügt.',
     dataHeading: 'Deine Daten',
     dataHint:
-      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast, und deine als gelernt markierten Fertigkeiten.',
+      'Eine Datei enthält jeden Eintrag und jede Version, die du angelegt hast, deine markierten Fertigkeiten und deine Kochdaten.',
     notInFileStock: (space: string | undefined): string =>
       space === undefined
         ? 'Nicht in der Datei: der Vorrat, gehalten in einem Space mit den anderen Apps des Haushalts.'
@@ -778,9 +784,12 @@ export const appStringsDe: typeof appStrings = {
       affinities: 'Kombinationen',
       tastings: 'Verkostungsnotizen',
       skills: 'Lernmarkierungen',
+      cooked: 'Kochdaten',
     },
     skillsNotInFile:
       'Die Datei ist älter und enthält keine Lernmarkierungen; die hier als gelernt markierten Fertigkeiten bleiben.',
+    cookedNotInFile:
+      'Die Datei ist älter und enthält keine Kochdaten; die hier vermerkten bleiben.',
     modeLegend: 'Wie übernehmen',
     modeMerge: 'Mit dem Vorhandenen zusammenführen',
     modeMergeHint:

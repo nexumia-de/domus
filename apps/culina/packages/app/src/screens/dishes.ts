@@ -3,7 +3,9 @@
 // screen. The shipped dishes are on Cook and only there; "Keep in my notebook" on a shipped dish
 // brings it here (docs/decisions/sauces-are-parts.md, which changes the cook-screen decision).
 import { dishRows } from '../dishes/list';
-import { getDish, listDishes, notebook } from '../notebook';
+import { cookedByFamily, getDish, listDishes, notebook, onCookedChange } from '../notebook';
+import type { NotebookRow } from '../shared/notebook-rows';
+import { formatDate } from '../shared/locale';
 import { hashFor } from '../router';
 import { el } from '../shell/el';
 import { strings } from '../strings';
@@ -26,6 +28,44 @@ const extras = (): ReturnType<typeof notebookExtras> => {
   return { ...base, actions: [...base.actions, random] };
 };
 
+const LABELS = {
+  course: courseLabel,
+  cuisine: cuisineLabel,
+  cooked: (date: string) => strings.cook.rowCooked(formatDate(date)),
+};
+
+/**
+ * The day a dish was cooked changes on the dish page beside the list (from 720 px): the row's quiet
+ * line follows at once, without drawing the pane anew, so the list neither jumps nor takes the
+ * focus from the dish page's status line.
+ */
+const followCookedDays = (pane: HTMLElement, rows: NotebookRow[]): void => {
+  const stop = onCookedChange(() => {
+    if (!pane.isConnected) {
+      stop();
+      return;
+    }
+    const fresh = new Map(
+      dishRows(listDishes(), LABELS, cookedByFamily()).map((row) => [row.id, row.meta]),
+    );
+    for (const row of rows) row.meta = fresh.get(row.id) ?? row.meta;
+    for (const link of pane.querySelectorAll<HTMLAnchorElement>('a.notebook-row')) {
+      const row = rows.find((r) => r.href === link.getAttribute('href'));
+      if (row === undefined) continue;
+      let meta = link.querySelector('.entry-meta');
+      if (row.meta === '') {
+        meta?.remove();
+        continue;
+      }
+      if (meta === null) {
+        meta = el('span', 'entry-meta');
+        link.append(meta);
+      }
+      meta.textContent = row.meta;
+    }
+  });
+};
+
 const text = (): NotebookListText => ({
   title: strings.screens.dishes.title,
   searchLabel: strings.notebook.searchLabel,
@@ -41,16 +81,20 @@ export const dishesScreen = (param?: string): HTMLElement =>
   notebookScreen(
     {
       route: 'dishes',
-      pane: (options) =>
-        notebookList(
+      pane: (options) => {
+        const rows = dishRows(listDishes(), LABELS, cookedByFamily());
+        const pane = notebookList(
           'dishes-pane',
-          dishRows(listDishes(), { course: courseLabel, cuisine: cuisineLabel }),
+          rows,
           state,
           text(),
           options,
           // "Back to the list" on the dish then returns here, also from a shipped dish.
           (row) => noteOpenedFromList('dishes', row.href),
-        ),
+        );
+        followCookedDays(pane, rows);
+        return pane;
+      },
       detail: (id) => {
         const dish = getDish(id);
         return dish === undefined ? undefined : dishDetail(notebook(), dish);

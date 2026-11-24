@@ -6,6 +6,7 @@ import { state } from '../notebook/state';
 import { fail, type Result } from '../store/types';
 import { writeLastExport } from './backup-prefs';
 import { downloadText } from './download';
+import { daysOfLiveDishes, dishFamilies } from './orphan-days';
 
 /** The live records of every kind. */
 export const liveRecords = async (): Promise<Result<{ records: RecordSets }>> => {
@@ -16,6 +17,9 @@ export const liveRecords = async (): Promise<Result<{ records: RecordSets }>> =>
     if (!listed.ok) return listed;
     records[kind] = listed.records;
   }
+  // A day of cooking whose dish is gone (deleted in another tab while it was cooked here) is a
+  // remnant: it is not exported and does not count as a record of this notebook.
+  records.cooked = daysOfLiveDishes(records.cooked ?? [], dishFamilies(records.dishes ?? []));
   return { ok: true, records };
 };
 

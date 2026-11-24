@@ -11,6 +11,7 @@ import { cook } from './cook.mjs';
 import { cookGroups } from './cook-groups.mjs';
 import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
+import { dishCooked } from './dish-cooked.mjs';
 import { dishCharacters } from './dish-characters.mjs';
 import { dishLike } from './dish-like.mjs';
 import { dishPairing } from './dish-pairing.mjs';
@@ -54,6 +55,7 @@ try {
   await stepsKit(browser, server);
   await mealPrep(browser, server);
   await dishCook(browser, server);
+  await dishCooked(browser, server);
   await amountsWritten(browser, server);
   await dishSwap(browser, server);
   await dishCharacters(browser, server);

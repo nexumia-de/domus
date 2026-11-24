@@ -5,7 +5,13 @@
 // What it does not prove: fake-indexeddb, not a browser's IndexedDB; an injected clock; one device.
 // The browser half is e2e/export-import.mjs.
 import { describe, expect, test } from 'vitest';
-import { buildExport, parseExport, serializeExport, skillRecord } from '@culina/engine';
+import {
+  EXPORT_VERSION,
+  buildExport,
+  parseExport,
+  serializeExport,
+  skillRecord,
+} from '@culina/engine';
 import { liveRecords } from '../src/exchange/export-file';
 import { applyMerge, applyReplace } from '../src/exchange/json-apply';
 import { setupMerge } from '../src/exchange/merge-model';
@@ -68,7 +74,7 @@ describe('export, erase the device, import with Merge now', () => {
     expect(after.records.ingredients).toEqual(before.records.ingredients);
   });
 
-  test("replace with a format 3 file makes the skill state the file's", async () => {
+  test("replace with a current file (format 3 or later) makes the skill state the file's", async () => {
     await startWithStock();
     await setLearned('pan-fry', true);
     const live = await liveRecords();
@@ -78,7 +84,7 @@ describe('export, erase the device, import with Merge now', () => {
     await setLearned('fold-in', true);
     const read = parseExport(text, recordValidators);
     if (!read.ok) throw new Error(read.error.code);
-    expect(read.content.fileVersion).toBe(3);
+    expect(read.content.fileVersion).toBe(EXPORT_VERSION);
     const mine = fullSets(must(await liveRecords().then((r) => (r.ok ? r.records : undefined))));
     expect((await applyReplace(read.content.records, mine, read.content.fileVersion)).ok).toBe(
       true,

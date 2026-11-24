@@ -60,6 +60,7 @@ How the app uses them: [behaviour](behaviour.md#export-and-import).
 | 1       | issue 18   | The first file                                                                                                                                                                   |
 | 2       | 2026-11-20 | No `stock`: it is the shared collection of a space ([stock in spaces](decisions/stock-in-spaces.md)). The migration 1 to 2 leaves it out; `stockLeftOut` counts what it left out |
 | 3       | 2026-11-21 | `skills`: the [skill state](data-model.md#skill-state) (techniques marked as learned, marks taken back). The migration 2 to 3 changes nothing                                    |
+| 4       | 2026-11-24 | `cooked`: the [day a dish was last cooked](data-model.md#date-a-dish-was-cooked), one record per dish family. The migration 3 to 4 changes nothing                               |
 
 A file of version 1 is read through the chain. `parseExport` counts the
 items of its `stock` before the chain runs and returns the number as
@@ -85,6 +86,25 @@ wins". Vectors: `parse-reads-version-2-without-skills`,
 `parse-reads-skills-of-version-3`, `parse-refuses-skills-in-version-2`,
 `parse-an-older-reader-refuses-version-3` (the old reader simulated with the
 `current: 2` test hook), and `round-trip-everything` with two skill records.
+
+Version 4 adds the collection `cooked` (2026-11-24) by the same rules: a
+version 3 file that holds `cooked` is refused (`unknown-field`); a version 3
+file without it reads through the identity migration 3 to 4 and reports
+`fileVersion` 3, so the import says it holds no days and "replace
+everything" leaves the days kept on the device as they are; an app that
+reads up to version 3 refuses a version 4 file as `newer-version` (the vector
+`parse-refuses-newer-version` is now a version 5 file read by a version 4
+reader). A day that differs from the notebook's is a conflict the user
+decides, like a skill mark. Vectors: `parse-reads-cooked-of-version-4`,
+`parse-reads-version-3-without-cooked`, `parse-refuses-cooked-in-version-3`,
+`parse-an-older-reader-refuses-version-4`, and `round-trip-everything` with
+one day, and `parse-refuses-a-cooked-day-the-calendar-lacks` (a day such as
+30 February, which the date pattern lets through, refuses the file). The
+app drops a day whose dish is not there: from the export, on "replace
+everything" and on a merge (`src/exchange/orphan-days.ts`,
+`test/cooked-orphans.test.ts`). App tests: `test/backup-cooked.test.ts` (export, a new device and
+"Merge now" bring the day back; replace with a version 4 file makes the days
+the file's; replace with a version 3 file leaves them).
 
 **What the file does not hold, and why.** The stock of a space (the shared
 collection of the household's apps; a replace import would delete what

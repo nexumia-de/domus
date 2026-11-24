@@ -165,7 +165,7 @@ Rules:
   needs "today" takes it as an input `YYYY-MM-DD`; days left are whole
   calendar days between two such dates. The store or the app supplies
   today. Stored dates are those the user entered (`preparedOn`, `useBy`,
-  version `date`, tasting `date`).
+  version `date`, tasting `date`, the [day a dish was cooked](#date-a-dish-was-cooked)).
 - **Rounding** happens only at the explicit output step; stored numbers
   keep what was entered.
 
@@ -869,6 +869,75 @@ the store kind `skills`. Schema: `skill.schema.json`.
   with a version 3 file, left as it is by an older file, and counted by the
   backup reminder.
 
+## Date a dish was cooked
+
+The calendar day an own dish was last cooked (owner, 2026-11-23:
+[building kit](decisions/building-kit.md), answer 3): a stored personal
+record in the store kind `cooked`. Schema: `cooked.schema.json`. Built on
+2026-11-24.
+
+| Field  | Type | Required | Meaning                                                  |
+| ------ | ---- | -------- | -------------------------------------------------------- |
+| `id`   | id   | yes      | `cooked-` plus the family id of the dish                 |
+| `dish` | id   | yes      | The family of the dish: the id of its first version      |
+| `date` | date | yes      | The day it was last cooked, `YYYY-MM-DD`; no time of day |
+
+- **Per dish, not per version.** A version record is append-only and never
+  written again ([version](#version)), so a date on it would mean either
+  writing a stored version or a new version per cooking, which is a record
+  of every cooking. "Not cooked for long" asks about the dish, and a new
+  version (an edit, a filling kept by Swap, a restore) does not make it
+  cooked. Which version was cooked is not kept: that would be the start of a
+  diary. A variation is a family of its own and has its own date.
+- **One date, no history, no count.** Cooking again writes the same record
+  with the new day; the earlier day is gone. Clearing the date removes the
+  record (a tombstone, like every removal). Nothing else is stored: no food
+  diary ([AGENTS.md](../AGENTS.md)).
+- **Own dishes only.** A shipped dish is not in the notebook and has no
+  record; cooking it records nothing (the choice that stores less; the
+  owner's question, [behaviour](behaviour.md#the-date-a-dish-was-cooked)).
+  Own components, cooked step by step as well, have no date either.
+- **Who writes it**: the end of cooking an own dish step by step, and
+  "Cooked today" and "Clear" on the dish screen
+  ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). The day is the
+  device's calendar day at the app clock's instant, in the device's time
+  zone (`localToday`): the cook's day, not the UTC day. **Open point:** the
+  other dates of the notebook (a version's `date`, a tasting note's, the
+  stock's "today") are still the UTC day (`today()`, the first ten
+  characters of the instant); they are not changed by this record. A day
+  already kept is not written again; a dish whose first version is no
+  longer live in the store (deleted in another tab) gets none.
+- **The store row keeps the instant of the last write.** Like every row,
+  the row of a day carries `updatedAt`, the app clock's instant to the
+  millisecond when the day was last written, and "Clear" leaves a tombstone
+  with the instant of clearing. It is kept because the store's rules need
+  it: every write must be strictly newer than the row it replaces (the
+  clock rule below), the planned sync of the notebook merges rows by it, the
+  backup reminder counts changes by it, and the Undo of an import restores
+  by it. It is not in the export file and not shown anywhere; a coarser
+  stamp would break the clock rule. For the owner to decide whether the
+  instant of cooking may stay on the device this way.
+- **No day without its dish.** A day whose family has no live dish is
+  dropped: not exported, not kept by "replace everything" (a file of any
+  format keeps only the days of the dishes the notebook then has), not taken
+  by a merge, shown nowhere. It is not swept at start, because a start
+  writes nothing to the notebook and such a day is already invisible.
+- **A calendar day.** The schema's date pattern lets `2026-02-30` through;
+  an import with such a day refuses the file (`invalid-record`, path
+  `/date`, keyword `calendar`, `isCalendarDay`). A future day is accepted
+  as it is and stands last among the dated dishes.
+- **Delete and Undo.** Deleting a dish tombstones its date with its
+  versions and notes; Undo brings it back with them.
+- **One record per family**, id derived from the family, so two devices
+  that cook the same dish write the same row and sync merges by
+  `updatedAt` (the later write wins). A record whose id is not `cooked-`
+  plus its `dish` is ignored (`cookedDates`), and one whose family has no
+  live dish is shown nowhere.
+- **In the export file since format version 4** ([export file](#export-file)):
+  merged by id like every kind (a date that differs is a conflict the user
+  decides), replaced by "replace everything" with a version 4 file, left as
+  it is by an older file, and counted by the backup reminder.
+
 ## Text in two languages
 
 Shipped helper content is written in English (canonical) and German as
@@ -967,7 +1036,7 @@ One JSON file with everything the user entered, validated by
 | Field           | Type     | Required | Meaning                    |
 | --------------- | -------- | -------- | -------------------------- |
 | `format`        | constant | yes      | `culina-export`            |
-| `formatVersion` | integer  | yes      | `3`                        |
+| `formatVersion` | integer  | yes      | `4`                        |
 | `seedVersion`   | string   | no       | Seed data the ids refer to |
 | `exportedAt`    | instant  | no       | Supplied by the host       |
 | `ingredients`   | array    | no       | Ingredient records         |
@@ -977,11 +1046,12 @@ One JSON file with everything the user entered, validated by
 | `affinities`    | array    | no       | Affinity records           |
 | `tastings`      | array    | no       | Tasting note records       |
 | `skills`        | array    | no       | Skill state records        |
+| `cooked`        | array    | no       | Dates a dish was cooked    |
 
 ```json
 {
   "format": "culina-export",
-  "formatVersion": 3,
+  "formatVersion": 4,
   "seedVersion": "0",
   "exportedAt": "2026-11-17T12:00:00Z",
   "components": [],
@@ -993,7 +1063,7 @@ One JSON file with everything the user entered, validated by
   integer (the same name Mixtura uses; the issue called it
   `schemaVersion`). `seedVersion` names the seed data that ids refer to.
 - Arrays `ingredients`, `templates`, `components`, `dishes`,
-  `affinities`, `tastings`, `skills` are optional; the export holds user entities, seed entities
+  `affinities`, `tastings`, `skills`, `cooked` are optional; the export holds user entities, seed entities
   stay in the seed.
 - **Forward compatibility.** A reader checks `format` and
   `formatVersion` **first** and refuses a higher version with a message
@@ -1023,6 +1093,17 @@ One JSON file with everything the user entered, validated by
   version 2 refuses a version 3 file as newer (`newer-version`). The
   reader returns the file's own version (`fileVersion`) so that "replace
   everything" with an older file leaves the skill state as it is.
+- **Version 4 (2026-11-24): with `cooked`.** The
+  [date a dish was cooked](#date-a-dish-was-cooked) is the user's own and is
+  in the file. The migration 3 to 4 changes nothing (a version 3 file has
+  no dates); a version 3 file that holds `cooked` is refused
+  (`unknown-field`), and an app that reads up to version 3 refuses a
+  version 4 file as newer (`newer-version`), the rule it already had.
+  "Replace everything" with a file older than 4 leaves the dates as they
+  are, as an older file leaves the skill state, and the import says so.
+  Vectors: `parse-reads-cooked-of-version-4`,
+  `parse-reads-version-3-without-cooked`, `parse-refuses-cooked-in-version-3`,
+  `parse-an-older-reader-refuses-version-4`, `round-trip-everything`.
 - Identity: importing never overwrites a seed entity, and a user id that
   exists is merged or replaced by the user's choice. Built in issue 18 in
   the engine (`buildExport`, `parseExport`, `planMerge`; [exchange](exchange.md)),
@@ -1147,7 +1228,7 @@ in [Stored versus derived](#stored-versus-derived) is computed.
 **Database.** One IndexedDB database `culina`. One object store per entity
 kind, named like the collections of the [export file](#export-file):
 `ingredients`, `templates`, `components`, `dishes`, `stock`, `affinities`,
-`tastings`, and `skills` (technique state, see [Skill state](#skill-state)), each with the key path `key`. The
+`tastings`, `skills` (technique state, see [Skill state](#skill-state)) and `cooked` (see [Date a dish was cooked](#date-a-dish-was-cooked)), each with the key path `key`. The
 object store `stock` holds nothing since 2026-11-20: stock is the shared
 collection of a space in the database `domus`, and `stock` only held the
 items of the version before until their one move
@@ -1218,18 +1299,33 @@ rolled back when a data migration fails, so it only serves to create the
 object stores (`onupgradeneeded`), which creates every store that is
 missing and touches no row. IndexedDB's version is 1 for the first six
 kinds plus `meta` and `backup` and **2** since `tastings` was added
-(issue 50), **3** since `drafts` was added (issue 16, see [drafts](#drafts)) and **4** since `skills` was added (issue 87): a browser that already holds version 1 of the database gets the
+(issue 50), **3** since `drafts` was added (issue 16, see [drafts](#drafts)) **4** since `skills` was added (issue 87) and **5** since `cooked` was added (2026-11-24, [date a dish was cooked](#date-a-dish-was-cooked)): a browser that already holds version 1 of the database gets the
 new store on the next open and keeps its rows (`test/store-tastings.test.ts`
 builds the old layout and opens it). Migrations are an ordered list
 `{ from: n, to: n + 1, migrate(rows) }` of pure functions over plain data
 (`src/store/migrations/`); the schema version is 1 plus the number of
-migrations. There is none yet, and none was written for tasting notes or for skills (a new store changes no row):
+migrations. There is none yet, and none was written for tasting notes, for skills or for the dates a dish was cooked (a new store changes no row):
 the data schema version stays 1 because nothing is released. A record stored by the commit before issue 50 could still hold
 a `tastings` list inside a component or dish, since the old schema allowed
 it; such a record is neither migrated nor validated on read (only `put`
 validates), it is rejected when it is written again, and the list is
 ignored by everything. This is accepted for development data only; once
 a version is released, a change like this needs a migration step.
+**What a new store promises the other way** (checked for `cooked` on
+2026-11-24 in `test/store-cooked.test.ts`): an older build opens the
+database with its lower layout number, which IndexedDB refuses with a
+`VersionError`; that build says the store is unavailable and reads and
+writes nothing, so no row is lost, and the new build opens the same data
+again. While a tab of the older build holds the database open, the new
+build's first open is blocked and says unavailable, writing nothing; it
+works once that tab is closed. The data schema version guards a change of
+rows (`newer-schema`); the layout number guards a new store. Not proved: a
+real browser's IndexedDB (fake-indexeddb in the tests), the old build's
+code itself (simulated by its layout number). **Open point** (older code,
+not changed here): when `onblocked` fires, `openDb` rejects, but the open
+request stays pending and, once the old tab closes, succeeds into a
+connection that nobody closes (`src/store/idb.ts`).
+
 Opening a database:
 
 1. No `schemaVersion` (new database): write the current one.

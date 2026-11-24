@@ -55,6 +55,9 @@ export async function renderJsonImport(
   const held = heldKinds(content.fileVersion);
   if (!held.includes('skills'))
     sections.append(el('p', 'note skills-not-in-file', text.skillsNotInFile));
+  // Nor, before format 4, the days a dish was cooked: the days kept here stay.
+  if (!held.includes('cooked'))
+    sections.append(el('p', 'note cooked-not-in-file', text.cookedNotInFile));
   if (total(file) === 0) {
     sections.append(el('p', 'note', text.nothingInFile));
     return;

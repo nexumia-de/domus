@@ -6,6 +6,7 @@ import { reloadNotebook } from '../notebook';
 import { state } from '../notebook/state';
 import type { Change } from '../store';
 import { fail, type Result } from '../store/types';
+import { daysOfLiveDishes, dishFamilies } from './orphan-days';
 
 /** The kinds a file of `fileVersion` can hold; "replace everything" touches these only. */
 export const heldKinds = (fileVersion: number): ExportKind[] =>
@@ -26,7 +27,15 @@ export async function applyMerge(
   prior: FullRecordSets,
 ): Promise<Result<{ added: number; taken: number }>> {
   if (state.store === undefined) return fail({ code: 'unavailable' });
-  const writes = mergeWrites(plan, choices);
+  // A day of cooking is taken only for a dish that is here or comes with the file.
+  const merged = mergeWrites(plan, choices);
+  const families = dishFamilies([
+    ...prior.dishes,
+    ...merged.filter((w) => w.kind === 'dishes').map((w) => w.record),
+  ]);
+  const writes = merged.filter(
+    (w) => w.kind !== 'cooked' || daysOfLiveDishes([w.record], families).length === 1,
+  );
   const entries = writes.map((w) => ({ kind: w.kind, record: w.record }));
   const done = await state.store.bulk.putMany(entries);
   if (!done.ok) return done;
@@ -39,6 +48,9 @@ export async function applyMerge(
 /**
  * Makes the notebook exactly the file's records; the old ones stay reachable through Undo. Kinds
  * the file's version could not hold (`heldKinds`) are left as they are: an older file has no skills.
+ * The days of cooking are the exception: whatever the file's version, only the days of the dishes
+ * the notebook then has stay (the file's own from format 4, the notebook's before), so that a
+ * replace leaves no day of a dish it removed.
  */
 export async function applyReplace(
   file: FullRecordSets,
@@ -46,13 +58,18 @@ export async function applyReplace(
   fileVersion: number,
 ): Promise<Result> {
   if (state.store === undefined) return fail({ code: 'unavailable' });
-  const kinds = heldKinds(fileVersion);
-  const given = Object.fromEntries(kinds.map((kind) => [kind, file[kind]]));
+  const held = heldKinds(fileVersion);
+  const kinds: ExportKind[] = held.includes('cooked') ? held : [...held, 'cooked'];
+  const given = Object.fromEntries(kinds.map((kind) => [kind, file[kind]])) as FullRecordSets;
+  given.cooked = daysOfLiveDishes(
+    held.includes('cooked') ? file.cooked : prior.cooked,
+    dishFamilies(file.dishes),
+  );
   const done = await state.store.bulk.replaceAll(given);
   if (!done.ok) return done;
   lastChanges = kinds.flatMap((kind) => [
     ...prior[kind].map((r) => priorOf(prior, kind, r.id)),
-    ...file[kind]
+    ...given[kind]
       .filter((r) => !prior[kind].some((p) => p.id === r.id))
       .map((r) => priorOf(prior, kind, r.id)),
   ]);

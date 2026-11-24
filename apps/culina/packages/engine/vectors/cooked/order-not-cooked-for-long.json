@@ -1,0 +1,32 @@
+{
+  "id": "order-not-cooked-for-long",
+  "description": "Sorted by byNotCookedForLong and then by name: the earliest date first, the same date by name, the dishes without a date last, by name among themselves",
+  "inputs": {
+    "kind": "cooked_order",
+    "dishes": [
+      {
+        "name": "Bean stew"
+      },
+      {
+        "name": "Leek tart",
+        "date": "2026-11-20"
+      },
+      {
+        "name": "Apple cake",
+        "date": "2026-10-01"
+      },
+      {
+        "name": "Dal"
+      },
+      {
+        "name": "Fish pie",
+        "date": "2026-11-20"
+      }
+    ]
+  },
+  "expected": {
+    "names": ["Apple cake", "Fish pie", "Leek tart", "Bean stew", "Dal"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids and dates, no real recipe; the rule is written in the description."
+}

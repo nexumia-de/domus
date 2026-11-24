@@ -260,6 +260,16 @@ test('the choices of Cook are kept under the web app key, and a change tells the
   session.stop();
 });
 
+test('the web app\'s order "Not cooked for long" is read as by name: no own dishes here', async () => {
+  const { session, kept } = await make();
+  kept.set(PREFS.cookList, '{"have":false,"order":"not-cooked"}');
+  expect(session.cookList()).toEqual({ have: false, order: 'name' });
+  // Control: "Use up first" is kept as it is.
+  kept.set(PREFS.cookList, '{"have":false,"order":"use-up"}');
+  expect(session.cookList()).toEqual({ have: false, order: 'use-up' });
+  session.stop();
+});
+
 test('a tick is a record of the collection stock as the web app writes it', async () => {
   const { session, store } = await make();
   await session.load();

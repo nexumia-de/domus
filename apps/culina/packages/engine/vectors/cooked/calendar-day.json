@@ -1,0 +1,11 @@
+{
+  "id": "calendar-day",
+  "description": "Days the calendar has pass, days the date pattern allows but the calendar lacks do not (30 February, 29 February outside a leap year, 31 April)",
+  "inputs": {
+    "kind": "cooked_calendar",
+    "days": ["2026-02-28", "2028-02-29", "2026-02-29", "2026-02-30", "2026-04-31", "2026-12-31"]
+  },
+  "expected": { "valid": [true, true, false, false, false, true] },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids and dates, no real recipe; the rule is written in the description."
+}

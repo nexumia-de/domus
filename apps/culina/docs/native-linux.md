@@ -140,7 +140,14 @@ nothing of it is judged here:
   filter's choices and "Only with what I have"; the order stays.
 - Both choices are kept in the preferences file under the web app's key
   `culina.cookList` (`{ have, order }`, `parseCookList`: anything
-  unreadable falls back field by field). The finder's old key
+  unreadable falls back field by field). The web app's third order "Not
+  cooked for long" (2026-11-24) sorts the dishes of the notebook by the
+  [day they were cooked](behaviour.md#the-date-a-dish-was-cooked); the
+  native app has no notebook and no own dish, cooking a shipped dish keeps
+  no day in either app, so the order has nothing to place here: it is not
+  offered, and a kept `not-cooked` is read as by name (`session.cookList`,
+  `test/session.test.ts`). The dish page and the end of cooking have no day
+  to show for the same reason. Nothing of this was looked at on a screen. The finder's old key
   `culina.cook` is no longer read or written.
 - The finder's answers are asked once per stock and day (the stock list is
   replaced when the records change), not on every redraw for a status.

@@ -191,6 +191,13 @@ export const appStrings = {
     backToDish: 'Back to the dish',
     noSteps: 'This dish has no steps yet.',
     cookDone: 'That was the last step.',
+    // The date a dish was cooked (docs/behaviour.md#the-date-a-dish-was-cooked): the day only.
+    cookedLine: (date: string): string => `Last cooked: ${date}`,
+    cookedNone: 'Not marked as cooked yet.',
+    cookedToday: 'Cooked today',
+    cookedClear: 'Clear the date',
+    cookedKept: (date: string): string => `Marked as cooked on ${date}.`,
+    cookedCleared: 'Date removed.',
     originOwn: 'In my notebook',
     originShipped: 'Shipped with the app',
     fromStock: (name: string): string => `From stock: ${name}`,
@@ -336,7 +343,7 @@ export const appStrings = {
     examplesAdded: 'Example records were added to your notebook.',
     dataHeading: 'Your data',
     dataHint:
-      'One file holds every record and version you entered and the skills you marked as learned.',
+      'One file holds every record and version you entered, the skills you marked and your cooking dates.',
     notInFileStock: (space: string | undefined): string =>
       space === undefined
         ? "Not in the file: the stock, kept in a space with the household's other apps."
@@ -756,9 +763,12 @@ export const appStrings = {
       affinities: 'pairings',
       tastings: 'tasting notes',
       skills: 'skill marks',
+      cooked: 'cooking dates',
     },
     skillsNotInFile:
       'The file is from an older version and holds no skill marks; the skills marked as learned here stay.',
+    cookedNotInFile:
+      'The file is from an older version and holds no cooking dates; the dates kept here stay.',
     modeLegend: 'How to bring it in',
     modeMerge: 'Merge with what is here',
     modeMergeHint: 'Records that are not here are added; records that differ are listed for you.',

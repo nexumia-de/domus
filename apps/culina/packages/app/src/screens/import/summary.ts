@@ -4,12 +4,19 @@ import { techniques } from '../../classics/content';
 import { currentLang } from '../../classics/lang';
 import type { ExportKind, ExportRecord, FullRecordSets } from '@culina/engine';
 import { formatDate } from '../../shared/locale';
+import { getDish } from '../../notebook';
 import { el } from '../../shell/el';
 import { strings } from '../../strings';
 
 export const recordLabel = (kind: ExportKind, record: ExportRecord): string => {
   if (kind === 'tastings')
     return `${formatDate(String(record.date))} ${String(record.text).slice(0, 40)}`;
+  if (kind === 'cooked') {
+    // The day and the dish, by the name of its first version where this notebook has it.
+    const dish = getDish(String(record.dish));
+    const day = formatDate(String(record.date));
+    return dish === undefined ? `${day} ${String(record.dish)}` : `${day} ${dish.name}`;
+  }
   if (kind === 'skills') {
     const technique = techniques().find((t) => t.id === record.technique);
     return technique === undefined

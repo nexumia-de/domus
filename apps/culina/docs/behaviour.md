@@ -724,6 +724,109 @@ numbers wrap inside their cell and nothing scrolls sideways (tested at 360 px
 with the longest ingredient name, three levels of nesting and 9-digit
 entries). Every link, button and field is at least 44 x 44 px.
 
+## The date a dish was cooked
+
+Built on 2026-11-24 under the owner's answer of 2026-11-23 ("the notebook
+keeps when a dish was cooked, and no more",
+[building kit](decisions/building-kit.md), answer 3). The notebook keeps
+**one day per own dish**: the day it was last cooked, a calendar date with
+no time, no list of earlier days and no count, so it is no food diary
+([data model](data-model.md#date-a-dish-was-cooked)).
+
+- **Per dish, not per version.** The day belongs to the family: any version
+  of the dish shows it, and a new version (an edit, a filling kept by Swap,
+  a restore) keeps it. A variation is a dish of its own. Why: a version is
+  append-only, and the question "not cooked for long" is about the dish.
+- **Set at the end of cooking.** On an own dish cooked step by step
+  (`#/dishes/<id>/cook`), Finish on the last step keeps today as the day and
+  the status line under "That was the last step." says "Marked as cooked on
+  24 Nov 2026." (German "Als gekocht am 24.11.2026 vermerkt.");
+  the focus stays on that heading. Only the move past the last step writes:
+  a screen opened at its end (the step is kept while the page lives) writes
+  nothing, nor does a dish with no steps (it has no Finish), nor Finish
+  again on a day already kept (Back, then Finish: the stored row is not
+  touched). A dish that another tab deleted meanwhile gets no day; the
+  status line then says the store's sentence for "not found". When the store
+  refuses the write the status line says the store's sentence instead (not
+  pinned on the screen: the unit tests pin that the day is not kept, no test
+  drives a refusing store under the cook screen). Before
+  2026-11-24 the end of an own dish only said "That was the last step." and
+  led back; it still does. A filling swapped on the dish screen and cooked
+  dates the same dish.
+- **Set and cleared by hand** on the dish page, under the version line:
+  "Last cooked: 18 Nov 2026" (German "Zuletzt gekocht: 18.11.2026") or "Not
+  marked as cooked yet." ("Noch nicht als gekocht vermerkt."), then **Cooked
+  today** ("Heute gekocht") and, while a day is kept, **Clear the date**
+  ("Datum entfernen"). After either the box is drawn again and the status
+  line, which says what was done ("Date removed.", "Datum entfernt."), takes
+  the focus. A
+  store that refuses the write says why there (the store's sentence) and the
+  day stays as it was.
+- **Shown where own dishes are listed**: the Notebook's Dishes and Cook's
+  list end the quiet line of an own dish with a kept day with "cooked 3 Nov
+  2026" (German "gekocht am 03.11.2026"), in every order; a dish with no day
+  says nothing about it. The date is the app's date form (`formatDate`:
+  "3 Nov 2026", "03.11.2026"). The Notebook's list beside a dish page (from
+  720 px) follows "Cooked today" and "Clear the date" at once: the row's
+  quiet line is changed in place (`onCookedChange` in
+  `src/notebook/cooked.ts`, heard by `src/screens/dishes.ts`), so the list
+  neither jumps nor takes the focus from the status line. (The first version
+  of 2026-11-24 drew the row anew only on the next draw; found by the
+  review.) The cook screen has no list beside it.
+- **Shipped dishes keep nothing.** A shipped dish is not in the notebook;
+  cooking it to its end, also when "Keep in my notebook" follows, records no
+  day. That is the choice that stores less, since the decision does not say
+  whether cooking a shipped dish is to be kept; it is a question for the
+  owner. The kept copy has no day until it is cooked or "Cooked today" is
+  tapped. Own components, also cooked step by step, have no day.
+- **Delete and Undo**: deleting a dish removes its day with it; Undo brings
+  both back.
+- **The day** is the device's calendar day at the app clock's instant, in
+  the device's time zone (`localToday`, `src/shared/day.ts`): a dish cooked
+  at 00:30 in Berlin is kept on that day, one cooked at 23:30 in New York on
+  that day, whatever the UTC day. (The first version of 2026-11-24 kept the
+  UTC day; found by the review in a browser at 00:30 Berlin.) **Open
+  point:** the other dates of the notebook (a version's date, a tasting
+  note's, the stock's "today") are still the UTC day (`today()`); they are
+  not changed here.
+- **A day without its dish is dropped** ("the date, no more"): it is not
+  exported, "replace everything" keeps only the days of the dishes the
+  notebook then has (with a file of any format; Undo of the replace brings
+  them back), and a merge takes a day only for a dish that is here or comes
+  with the file. Such a day is not swept at start: a start writes nothing to
+  the notebook, and a day without its dish is shown nowhere
+  (`cookedByFamily` keeps live families only) and not exported.
+- **An impossible day** (`2026-02-30`, which the schema's pattern lets
+  through) in an import refuses the file like any record that breaks its
+  format. A day in the future is accepted as it is; it stands last among the
+  dated dishes in "Not cooked for long", and "Cooked today" replaces it.
+- **"Not cooked for long"** is an order of [Cook](#cook)'s list (below).
+
+**Test:** `test/notebook-cooked.test.ts` (the injected day for the family;
+the device's day in Berlin at 00:30 and New York at 23:30, with noon UTC as
+the control; Finish again on the same day writes nothing; a dish deleted by
+another tab gets no day;
+cooking again replaces it; a new version keeps it and the old version's id
+sets it; clear; delete and Undo, with the control of a dish never cooked;
+read again at the next start; a refused write and no store leave it as it
+was; a record of a family with no dish or with a stray id dates nothing),
+`test/store-cooked.test.ts`, `test/backup-cooked.test.ts`,
+`test/cooked-orphans.test.ts` (export, replace with format 3 and 4, merge,
+Undo), `test/day.test.ts`, the export vector
+`parse-refuses-a-cooked-day-the-calendar-lacks`,
+`test/cook-not-cooked.test.ts` (the Notebook's row), `e2e/dish-cooked.mjs`
+(English and German at 360 x 720 on an injected clock: a shipped dish cooked
+to its end keeps nothing; a kept dish cooked to its end keeps the day, the
+status says so, opening the end again writes nothing; the dish page's line,
+Clear and Cooked today with the focus on the status; the Notebook's row;
+Cook's order and its sentence with no dish marked; no horizontal scroll, 44
+px targets; at 1000 px the list beside following set and clear with the
+focus kept and nothing scrolled; Berlin at 00:30 and New York at 23:30 by
+the browser's time zone). What they do not prove: a real device's clock (it
+is injected) and the zone it reports, a screen reader reading the status, two
+tabs in a browser (`test/store-cooked.test.ts` has two stores in one
+process), a real phone.
+
 # Editor
 
 Issue #16. The user writes components and dishes the way a cook thinks:
@@ -1576,8 +1679,40 @@ shipped, under the one filter, with:
   the one a cook wants. The native Linux app's Cook list has the same
   groups since 2026-11-24, from the same `groupRows`, one preferences
   group each ([native app](native-linux.md#cooks-list)).
+- **Order: Not cooked for long** (German "Lange nicht gekocht", since
+  2026-11-24), the third choice of the select: the own dishes with a kept
+  [day of cooking](#the-date-a-dish-was-cooked) come first, the earliest day
+  first, the same day by name; the rest follow by name. One flat list like
+  "Use up first", since the order is the answer; the filter, the search and
+  "Only with what I have" only drop rows, so "From: mine" leaves the own
+  dishes alone in that order. **Where never-cooked dishes stand: after the
+  dated ones, by name, with the shipped dishes.** Why: no day says nothing
+  about how long ago a dish was cooked (every dish has none on the day this
+  ships, and a shipped dish has none at all); placing them first would bury
+  the dishes the cook did cook under every dish never cooked. Why an order
+  and no filter chip: Cook already has the order select and a flat order
+  for "Use up first"; an order hides nothing and needs no new control. No
+  count, no mark and no nudge: the row says "cooked 3 Nov 2026" in every
+  order, and nothing says how long ago. **With no dish marked as cooked**
+  (the state on the day this ships) the order is the list by name, flat,
+  and one quiet line above it says so: "None of your dishes is marked as
+  cooked yet, so the list is by name." (German "Noch keines deiner Gerichte
+  ist als gekocht vermerkt, die Liste steht nach Name."); it goes with the
+  first day kept. Pure part: `byNotCookedForLong`
+  (engine, `src/cooked/cooked.ts`), `dishListView` with `cooked` and
+  `notCookedFirst` (`src/browse/list-view.ts`), the keys from
+  `cookedDaysByKey` (`src/dishes/cooked-days.ts`). **Test:**
+  `packages/engine/vectors/cooked/order-not-cooked-for-long.json`,
+  `test/cook-not-cooked.test.ts` (the order, by name as the control,
+  "From: mine", no day at all, the row's day, the kept choice),
+  `e2e/dish-cooked.mjs` (two kept dishes, the earlier first, one flat list,
+  the shipped dishes after, kept after a reload, by name in groups as the
+  control). Not proved: a notebook with many dated dishes in a browser. The
+  native Linux app has no own dishes and does not offer the order; a kept
+  `not-cooked` is read there as by name ([native app](native-linux.md)).
 - Both are kept on the device under `culina.cookList` (`{ have, order }`,
-  `src/prefs.ts`; anything unreadable falls back field by field).
+  `src/prefs.ts`; anything unreadable falls back field by field; an older
+  build reads the order `not-cooked` as by name).
 - **The stock** is one tap away: "What is there" (German "Vorrat") beside
   the title opens `#/stock`, its own screen under Cook, with "Back to Cook".
 - **Start from one ingredient**, a closed section under the list, opens
@@ -2146,9 +2281,10 @@ Issue #18. Engine rules: [exchange](exchange.md). Code: `src/exchange/` (logic, 
 
 Export everything, Import from a file (`#/settings/import`), what the file does not hold, the date
 of the last export, the reminder period, and "Erase everything on this device". **Export** hands
-the browser one file, `cooks-notebook-YYYY-MM-DD.json` (no name, no time of day), format 3, built
-by the engine from the store's live records: every version, tasting note and ingredient, and the
-skill state (techniques marked as learned, and marks taken back); not drafts, not tombstones. It
+the browser one file, `cooks-notebook-YYYY-MM-DD.json` (no name, no time of day), format 4, built
+by the engine from the store's live records: every version, tasting note and ingredient, the
+skill state (techniques marked as learned, and marks taken back) and the day each own dish was
+last cooked (since format 4, [the date a dish was cooked](#the-date-a-dish-was-cooked)); not drafts, not tombstones. It
 makes no request. Nothing to export gives a quiet sentence. Two quiet lines under the hint say what
 is not in the file: "Not in the file: the stock of “Home”, kept with the household's other apps."
 (the used space's name; without a space "kept in a space") and "Nor are unsaved drafts and the
@@ -2160,6 +2296,7 @@ settings of this device." Why the stock is not in it: [exchange](exchange.md#ver
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- | ------------------------------------------------------ | ------------------------------------------ |
 | IndexedDB `culina`: `ingredients`, `templates`, `components`, `dishes`, `affinities`, `tastings`                                                       | yes                 | merge or replace                                       | yes                                        |
 | IndexedDB `culina`: `skills`                                                                                                                           | yes, since format 3 | merge or replace; a format 1 or 2 file leaves it as is | yes                                        |
+| IndexedDB `culina`: `cooked`                                                                                                                           | yes, since format 4 | merge or replace; a format 1 to 3 file leaves it as is | yes                                        |
 | IndexedDB `culina`: `drafts`                                                                                                                           | no                  | no                                                     | yes                                        |
 | IndexedDB `culina`: `stock` (old items waiting for their move into a space), `backup` (migration data)                                                 | no                  | no                                                     | yes                                        |
 | IndexedDB `domus`: collection `stock` of each space, the spaces themselves (shared with Mixtura, Emptio and the Household app)                         | no                  | no (a format 1 file's stock is left out and counted)   | no: removed in the Household app           |
@@ -2216,7 +2353,7 @@ user chose (`culina.reminderDays`: Never, 7, 14, **30 (default)**, 90 days). A q
 screen (never a dialog) shows only when the notebook has changes that no export holds (some
 row's `updatedAt`, tombstones included, is later than the last export) **and** the period has
 passed since the last export, or, with no export yet, since the oldest change (the skill state
-counts since format 3). Text: "Your notebook
+counts since format 3, the cooking dates since format 4). Text: "Your notebook
 has changes that are in no export yet." / "... The last export was N days ago." with "Export now"
 (links to Settings) and "Not now" (hides it until the app is reopened). Exporting hides it.
 **Test:** `test/reminder.test.ts`; `e2e/export-import.mjs` injects the clock with
@@ -2232,7 +2369,11 @@ the user confirms). Older versions are migrated by the export migration chain
 ([versions](exchange.md#versions)): a format 1 file's stock is left out and counted; a format 1 or 2
 file holds no skill state, and the summary says "The file is from an older version and holds no
 skill marks; the skills marked as learned here stay." ("replace everything" then leaves the skill
-state as it is). The summary counts skill records as "skill marks"; a skill conflict is labelled
+state as it is). In the same way a file older than format 4 holds no cooking dates:
+"The file is from an older version and holds no cooking dates; the dates kept here stay."
+(German "Die Datei ist älter und enthält keine Kochdaten; die hier vermerkten bleiben."), and
+"replace everything" leaves the days of the dishes it keeps; the summary counts them as "cooking dates" and
+labels one with its day and the dish's name where the notebook has the dish (`test/backup-cooked.test.ts`). The summary counts skill records as "skill marks"; a skill conflict is labelled
 with the technique's name.
 
 **JSON files.** The summary lists counts per entity. Then:

@@ -364,6 +364,14 @@ export type { Substitute, SubstituteLevel, SubstituteSource } from './substitute
 
 export { learnedTechniques, skillId, skillRecord } from './skills/skill';
 export type { SkillRecord } from './skills/skill';
+export {
+  byNotCookedForLong,
+  cookedDates,
+  cookedId,
+  cookedRecord,
+  isCalendarDay,
+} from './cooked/cooked';
+export type { CookedRecord } from './cooked/cooked';
 
 export { validateClassic } from './classics/validate';
 export type { ClassicContext } from './classics/validate';
