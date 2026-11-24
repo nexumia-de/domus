@@ -34,7 +34,7 @@ describe('the engine is pure', () => {
   it('lets the app use the clock but not the inside of the engine', async () => {
     const appFile = 'packages/app/src/probe.ts';
     expect(await rulesBroken('export const t = Date.now();\n', appFile)).toEqual([]);
-    expect(await rulesBroken("import '@emptio/engine/src/priority';\n", appFile)).toContain(
+    expect(await rulesBroken("import '@emptio/engine/src/home-order';\n", appFile)).toContain(
       'no-restricted-imports',
     );
   });

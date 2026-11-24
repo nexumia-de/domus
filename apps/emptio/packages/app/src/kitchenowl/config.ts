@@ -5,7 +5,8 @@
 // keeps the list in step once one person connected it.
 import { localChange } from '@nexumia-de/hospes';
 import type { ListDeps } from '../list/actions';
-import { KITCHENOWL, type StoredRecord } from '../list/model';
+import type { StoredRecord } from '@nexumia-de/list';
+import { KITCHENOWL } from '../list/model';
 
 export { KITCHENOWL };
 /** The key of the connection record. */

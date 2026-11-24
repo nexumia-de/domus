@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import data from '../data/categories.json';
-import items from '../data/usual-items.json';
-import { sortKey, usualCategory } from '../src/index';
+import { USUAL_ITEMS, USUAL_ITEMS_SOURCE, sortKey, usualCategory } from '@nexumia-de/list';
 
 describe('starting categories', () => {
   const ids = data.categories.map((category) => category.id);
@@ -27,7 +26,7 @@ describe('usual items', () => {
   const ids = new Set(data.categories.map((category) => category.id));
 
   it('belong to starting categories, never to other', () => {
-    for (const id of Object.keys(items.items)) {
+    for (const id of Object.keys(USUAL_ITEMS)) {
       expect(ids.has(id), id).toBe(true);
       expect(id).not.toBe('other');
     }
@@ -35,7 +34,7 @@ describe('usual items', () => {
 
   it('are each found under the category that lists them, unless an earlier category lists the same name', () => {
     const seen = new Map<string, string>();
-    for (const [id, names] of Object.entries(items.items)) {
+    for (const [id, names] of Object.entries(USUAL_ITEMS)) {
       for (const name of [...names.de, ...names.en]) {
         const key = sortKey(name);
         if (!seen.has(key)) seen.set(key, id);
@@ -46,7 +45,7 @@ describe('usual items', () => {
 
   it('name no thing under two categories', () => {
     const seen = new Map<string, string>();
-    for (const [id, names] of Object.entries(items.items)) {
+    for (const [id, names] of Object.entries(USUAL_ITEMS)) {
       for (const name of [...names.de, ...names.en]) {
         const key = sortKey(name);
         expect(seen.get(key) ?? id, name).toBe(id);
@@ -56,6 +55,6 @@ describe('usual items', () => {
   });
 
   it('name their source', () => {
-    expect(items.source).toContain('AGPL-3.0-or-later');
+    expect(USUAL_ITEMS_SOURCE).toContain('AGPL-3.0-or-later');
   });
 });

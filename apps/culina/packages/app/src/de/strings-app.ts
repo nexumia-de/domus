@@ -1037,6 +1037,7 @@ export const appStringsDe: typeof appStrings = {
     'imp-pint': 'Pint (brit.)',
     'imp-quart': 'Quart (brit.)',
     count: 'Stück',
+    'count-one': 'Stück',
     percent: '%',
   },
   exactBeside: (shown: string, exact: string): string => `${shown} (${exact})`,

@@ -1012,6 +1012,8 @@ export const appStrings = {
     'imp-pint': 'pint (UK)',
     'imp-quart': 'quart (UK)',
     count: 'pcs',
+    /** One piece, where a text says how many to buy (the shopping list): "1 pc". */
+    'count-one': 'pc',
     percent: '%',
   },
   /** An amount rounded for display with the exact figure quietly beside: "5½ (5.33)". */

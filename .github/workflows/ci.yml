@@ -2,13 +2,15 @@
 # parts a pull request touches, so a change to one app does not run the
 # others. Pushes to main run everything.
 #
-# Parts: model (packages/model), host (packages/host), mixtura, culina, emptio,
-# domus (apps/<name>). Mixtura and Culina install the model from this repository, so
-# a model change runs them too; the host package uses the model and Mixtura
-# uses the host package, so a host change runs Mixtura and a model change runs
+# Parts: model (packages/model), host (packages/host), list (packages/list),
+# gjs (packages/gjs), mixtura, culina, emptio, domus (apps/<name>). Mixtura and
+# Culina install the model from this repository, so a model change runs them too;
+# the host package uses the model and Mixtura uses the host package, so a host change runs Mixtura and a model change runs
 # the host package. The shared package of the native Linux apps (packages/gjs)
 # uses the host package; a change to it runs Mixtura, Culina and Emptio (their native
-# packages), a change to the host package runs it. Emptio does not use the model yet. Domus (the Household
+# packages), a change to the host package runs it. Emptio does not use the model yet. The list
+# package (packages/list, pure: the entry of the shopping list and the rules for putting something
+# on it) is used by Emptio and Culina, so a change to it runs both. Domus (the Household
 # app at the root of the address) uses the model and the host package, so a
 # change to either runs it too, and a change to it runs the site check.
 #
@@ -37,6 +39,7 @@ jobs:
     outputs:
       model: ${{ steps.paths.outputs.model }}
       host: ${{ steps.paths.outputs.host }}
+      list: ${{ steps.paths.outputs.list }}
       gjs: ${{ steps.paths.outputs.gjs }}
       mixtura: ${{ steps.paths.outputs.mixtura }}
       culina: ${{ steps.paths.outputs.culina }}
@@ -54,9 +57,9 @@ jobs:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          model=false; host=false; gjs=false; mixtura=false; culina=false; emptio=false; domus=false
+          model=false; host=false; list=false; gjs=false; mixtura=false; culina=false; emptio=false; domus=false
           if [ "$EVENT" != "pull_request" ]; then
-            model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true
+            model=true; host=true; list=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true
           else
             # HEAD is the merge of the pull request into its base, so this
             # lists what the pull request changes.
@@ -68,17 +71,19 @@ jobs:
                 apps/culina/*) culina=true ;;
                 apps/emptio/*) emptio=true ;;
                 apps/domus/*) domus=true ;;
+                packages/list/*) list=true; culina=true; emptio=true ;;
                 packages/gjs/*) gjs=true; mixtura=true; culina=true; emptio=true ;;
                 packages/host/*) host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
                 packages/model/*) model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
                 LICENSE | *.md) ;;
-                *) model=true; host=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
+                *) model=true; host=true; list=true; gjs=true; mixtura=true; culina=true; emptio=true; domus=true ;;
               esac
             done < changed.txt
           fi
           {
             echo "model=$model"
             echo "host=$host"
+            echo "list=$list"
             echo "gjs=$gjs"
             echo "mixtura=$mixtura"
             echo "culina=$culina"
@@ -128,6 +133,22 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:host
+
+  # The list package (packages/list): the entry of the shopping list, its record and rules 4 and 5,
+  # with its vectors and the check that it stays pure.
+  list-check:
+    name: list-check
+    needs: changes
+    if: needs.changes.outputs.list == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check:list
 
   # What the native Linux apps share (packages/gjs): the Web Crypto subset against
   # Node's, joining by link, and the lint and types of the tooling. The apps' own

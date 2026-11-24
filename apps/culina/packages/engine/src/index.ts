@@ -300,6 +300,7 @@ export type {
 export {
   DEFAULT_DISH_ROLES,
   KITCHEN_ROLE,
+  dishReport,
   makeable,
   openDishRoles,
   rankCandidates,
@@ -307,6 +308,7 @@ export {
   usesIngredient,
 } from './makeable';
 export type {
+  DishReportResult,
   MakeableCandidate,
   MakeableComponent,
   MakeableDish,
@@ -403,14 +405,18 @@ export type { CopyComponentResult } from './classics/copy-component';
 export type { CopiedComponent, CopiedDish, CopyOptions, CopyResult, Origin } from './classics/copy';
 export { resolveSourceUnit } from './classics/units';
 export type { UnitSize } from './classics/units';
-export { classicsMakeable, isWater } from './classics/makeable';
+export { classicReport, classicsMakeable, isWater } from './classics/makeable';
 export type {
   ClassicCandidate,
+  ClassicReportInput,
+  ClassicReportResult,
   ClassicsMakeableError,
   ClassicsMakeableInput,
   ClassicsMakeableResult,
 } from './classics/makeable';
 export { wantedLines } from './classics/wanted';
+export { freeLines, lackingLines } from './handover/lacking';
+export type { LackingLines, LackingOptions, LackingReport } from './handover/lacking';
 export type { WantedLine } from './classics/wanted';
 export { COUNTRY_CODES, COURSE_IDS } from './classics/types';
 export type {

@@ -21,6 +21,83 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: the shopping list's format becomes a shared package, and Culina can write the list
+
+Three agents under one lead, all on the second-largest model. One only
+read and wrote the plan (roadmap goal 11 of Culina: hand the
+ingredients a dish lacks to Emptio). One built its first step: the
+list's record format and the rules two apps need moved from Emptio into
+a new pure package (`packages/list`, the name provisional), and Culina
+learned to work out what a dish lacks and to write it on the list, with
+Undo, without a screen yet. The third, which wrote none of it and was
+given the task and the staged diff but not the builder's reasoning,
+checked it; the builder fixed what was found; the same reviewer read
+the fixes a second time; three last small fixes after that were read by
+nobody else.
+
+| Part                                              | Done by | Checked by                                                                     |
+| ------------------------------------------------- | ------- | ------------------------------------------------------------------------------ |
+| The plan                                          | agent 1 | agent 2 against the code while building; the lead                              |
+| The move into `packages/list`, Emptio unchanged   | agent 2 | agent 3 (moved files compared byte by byte, Emptio's e2e against the old code) |
+| The package's purity, the boundaries check, CI    | agent 2 | agent 3 (forbidden imports tried in a copy)                                    |
+| What a dish lacks, the amounts written            | agent 2 | agent 3, its own script over every shipped dish, English and German            |
+| The hand-over and its Undo, Culina syncing `list` | agent 2 | agent 3 (traced; eight breaks of the code in a copy, seven caught by a test)   |
+| The change to hospes (status per collection)      | agent 2 | agent 3, second pass (every caller traced)                                     |
+| The optional `dish` key on a recipe origin        | agent 2 | agent 3, second pass (the old Emptio run on such an entry)                     |
+| The last three small fixes                        | agent 2 | nobody but the checks                                                          |
+
+**What the checks found, and where it was fixed.**
+
+- _A false claim:_ code and documents said Culina writes the list
+  "Emptio shows". Each app keeps its own choice of space; with two
+  spaces they can differ. The claim is gone, the result names the
+  space, the gap is a row in the orderings and a question to the owner.
+- _The stock's status would have gone wrong on every device:_ once
+  Culina synced `list` beside `stock`, a stock in step read "never
+  synced" until the list had been synced once, and an unreadable list
+  file made the stock read "failed". Traced by the reviewer, then
+  reproduced by the builder in two tests. hospes now answers per
+  collection when asked for one (without the argument as before, so
+  Mixtura, Emptio and Household see what they saw); Culina's stock
+  asks for the stock alone.
+- _Amounts no shopper can use:_ "Salz 29.573529563 ml", "Zwiebeln
+  0.6666666667 count". The amount is now written as the dish page
+  shows it ("Salz: 3 TL", "Eier: 2 Stück"), pieces rounded up.
+- _"Already on the list" hung on the dish's name_ in the cook's
+  language: the same dish in English then German was handed twice, and
+  two dishes of one name were taken for one, the second's lines
+  skipped without a word. A recipe origin now carries an optional
+  `dish` key; old readers keep it and ignore it.
+- _Orderings missing or wrong:_ an Undo wins over a tick from another
+  device that had not yet arrived (the tick is lost; pinned as it is);
+  the row on a page closing right after a hand-over said the write is
+  kept, the host's table says it can be lost (now: not handled).
+- _Smaller:_ a guard no test pinned and that could never matter was
+  removed; an empty name was reported as "already"; two wrong
+  sentences in the rules; "1 pcs".
+
+**Test counts** (builder and reviewer, each their own run, after the
+fixes of the first pass): `npm run check` passes for every part: list
+45, host 259, model 638, gjs 17, Culina 1278 / 1236 / 25 (app 1239
+after the last fixes), Emptio 23 / 64 / 2 (15 engine tests moved to the
+list package), Mixtura 1677 / 499 / 13, Household 72. E2e, one after
+the other: Emptio 318 (the same 318 lines as on the code before),
+Culina 2119, the site 39, Household 756, Mixtura 1988. Mixtura's slow
+suite had one timeout in the reviewer's run (waiting for
+`import-preview` in `editor.mjs`) that passed on two reruns; its cause
+was not looked for.
+
+**What nobody verified.** Anything in a browser by eye: there is no
+screen yet, and Emptio was never seen showing an entry Culina wrote.
+Real IndexedDB, two real tabs, a page closing mid-write. The native
+apps (no gjs here): Culina's native app now syncs `list` too, by the
+shared code alone. Not handled and said so in the package's
+orderings: two spaces; Culina's and Emptio's cycles on `list` at once
+in two tabs; a hand-over lost when the page closes; the same frame
+handed again with another filling adds to the list rather than
+replacing; the two weaknesses of rule 5 (equal amounts dropped on
+join, a typed name never joins a catalogue entry), pinned as they are.
+
 ## 2026-11-24: the day a dish was cooked, and "Not cooked for long" in Culina
 
 Two agents under one lead, both on the second-largest model. One built

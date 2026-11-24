@@ -1,5 +1,5 @@
 // One entry: name, amount, note, priority and category, and why it is on the list.
-import { PRIORITIES, type Entry, type Origin, type Priority } from '@emptio/engine';
+import { PRIORITIES, type Entry, type Origin, type Priority } from '@nexumia-de/list';
 import { button, h } from '../dom';
 import { editEntry, removeEntries, restoreEntries } from '../list/actions';
 import { categoriesOf } from '../list/categories';

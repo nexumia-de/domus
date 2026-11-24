@@ -1,4 +1,4 @@
-// Rule 5, twice the same (docs/engine-rules.md#5-twice-the-same).
+// Rule 5, twice the same (docs/rules.md#5-twice-the-same).
 import { sameThing } from './category';
 import { PRIORITIES } from './priority';
 import type { Entry, Origin } from './types';
@@ -10,8 +10,13 @@ function joinText(old: string | undefined, added: string | undefined): string | 
   return `${old} + ${added}`;
 }
 
-const originKey = (origin: Origin): string =>
-  origin.kind === 'recipe' ? `recipe\0${origin.app}\0${origin.title}` : origin.kind;
+/** A recipe origin is one dish: by its `dish` where it names one, else by its title. */
+const originKey = (origin: Origin): string => {
+  if (origin.kind !== 'recipe') return origin.kind;
+  return typeof origin.dish === 'string'
+    ? `recipe\0${origin.app}\0dish\0${origin.dish}`
+    : `recipe\0${origin.app}\0${origin.title}`;
+};
 
 function joinOrigins(old: readonly Origin[], added: readonly Origin[]): Origin[] {
   const seen = new Set<string>();

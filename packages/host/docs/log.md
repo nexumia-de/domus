@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (status per collection)
+
+- **Update**: `CollectionSync.status(spaceId, collection?)`: with a collection, the status of that one collection (its own last good cycle and failure); without, as before. Asked for by a review of Culina's hand-over: Culina syncs `list` beside `stock`, and its stock screen said "never synced" after the update until `list` had a good cycle, and "failed" for a broken list file. Mixtura, Emptio and Household call it without a collection and see no change. Tests: `collection-sync.test.ts` › 'the status of one collection is its own: another collection that fails does not fail it', › 'a collection added to an app keeps the last good cycle of the others it had'.
+
 ## 2026-11-22 (report a problem)
 
 - **Creation**: issue reports ([feedback](../../../docs/feedback.md)): `src/feedback/` (`formUrl`, `issueBody`, `issueUrl`, `createIssue`, `feedbackEn`/`feedbackDe`, exported from the main entry) and in the frame the web dialog `openReportDialog` with `report-dialog.css` (new export `./report-dialog.css`) and `browserTokenStore` (localStorage). New exports only. 17 tests in `test/feedback.test.ts`.

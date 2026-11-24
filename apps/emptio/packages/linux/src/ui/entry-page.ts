@@ -2,7 +2,7 @@
 // and the category; Save in the bottom bar, Remove at the end of the page.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import { PRIORITIES } from '@emptio/engine';
+import { PRIORITIES } from '@nexumia-de/list';
 import { categoriesOf, editEntry, removeEntries, restoreEntries } from '@emptio/app/core';
 import { editOnTap } from '@nexumia-de/gjs';
 import type { Page, Ui } from './context';

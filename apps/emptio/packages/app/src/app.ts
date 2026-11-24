@@ -11,15 +11,9 @@ import {
   type SpaceView,
   type SyncStatus,
 } from '@nexumia-de/hospes';
-import type { CategoryChange, Entry } from '@emptio/engine';
-import {
-  CATEGORIES,
-  COLLECTIONS,
-  KITCHENOWL,
-  LIST,
-  categoryChangesOf,
-  entriesOf,
-} from './list/model';
+import type { CategoryChange } from '@emptio/engine';
+import { LIST, entriesOf, type Entry } from '@nexumia-de/list';
+import { CATEGORIES, COLLECTIONS, KITCHENOWL, categoryChangesOf } from './list/model';
 import type { ListDeps } from './list/actions';
 import { bridgeCycle } from './kitchenowl/bridge';
 import {

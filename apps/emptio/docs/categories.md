@@ -108,11 +108,14 @@ with the group as the default and exceptions by hand.
 
 # Usual items
 
-`packages/engine/data/usual-items.json`: per category the names of what
+`packages/list/data/usual-items.json` of the shared
+[list package](../../../packages/list/docs/rules.md#usual-items) (until
+2026-11-24 in Emptio's engine; Culina's hand-over uses it too): per
+category the names of what
 a household usually buys, in German and English (about 750 names), foods
 and household goods alike. A typed name that the household never had
 gets its category from this list
-([rule 4](engine-rules.md#4-category-of-a-new-entry)); it is not offered
+([rule 4](../../../packages/list/docs/rules.md#4-category-of-a-new-entry)); it is not offered
 as a suggestion. It stands in for the shared food catalogue
 ([architecture](architecture.md#catalogue)) until that exists, and stays
 for household goods, which are in no food catalogue.
@@ -123,7 +126,8 @@ under the repository's licence, stated in the file. Nothing was taken
 from another list. The German names are not yet reviewed by a native
 speaker.
 
-A name stands under one category only; the engine's tests check that,
+A name stands under one category only; the engine's tests
+(`categories-data.test.ts`, which reads this list and the starting categories) check that,
 and that every name of the list is found under its own category by the
 rule. What the list does not know stays in Other until the household
 gives it a category once.

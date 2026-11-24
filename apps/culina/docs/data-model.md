@@ -619,6 +619,20 @@ derivable for a component that keeps 3 days in the fridge and 90 in the
 freezer. Without it, and with several places, the screen offers the
 dates as suggestions and the user chooses.
 
+## Entry handed to the shopping list
+
+Culina stores no list of its own. What a dish lacks is written as
+entries of the shared collection `list` of the used space, in the shape
+of the list package's [entry](../../../packages/list/docs/entry.md), with the origin
+`{ kind: 'recipe', app: 'culina', title, dish }` (`title` in the cook's
+language; `dish` the key of the dish, `shipped:<id>` with `#<filling>`
+where one was chosen, the same in every language) and Culina's catalogue
+id as `ingredientId`
+([behaviour](behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)).
+The amount is text as the dish's page writes it. The portions a dish was
+handed over at are not kept. The space is the one Culina uses, which
+may not be the one Emptio shows.
+
 ## Affinity
 
 Later extension, schema only: two ingredients that go together. Schema:

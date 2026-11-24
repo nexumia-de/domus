@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Test vector format
-description: JSON shape of the engine's worked examples, the three kinds that exist (home-order, new-entry-category, add-entry) with their input and expected fields, and how the files are checked before the functions exist.
+description: JSON shape of the engine's worked examples, its three kinds (home-order, category-order, suggest) with their input and expected fields, and how the files are checked; the kinds of rules 4 and 5 are in the shared list package since 2026-11-24.
 tags: [vectors, tests, engine]
 generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 ---
@@ -21,19 +21,20 @@ Examples may name foods and shops; rules may not.
 }
 ```
 
-| Kind                 | Rule | `input`                                         | `expected`                               |
-| -------------------- | ---- | ----------------------------------------------- | ---------------------------------------- |
-| `home-order`         | 1    | `entries` (id and entry), `categoryOrder`       | `order`: the entry ids                   |
-| `new-entry-category` | 4    | `name`, optional `catalogue`, `earlier` entries | `categoryId`                             |
-| `add-entry`          | 5    | `entries`, `add` (id and entry)                 | `entries` after adding, and `joinedWith` |
-| `category-order`     |      | `starting` ids, `changes` (id, name, hidden)    | `order`: the category ids                |
-| `suggest`            |      | `query`, `earlier` entries, optional `limit`    | `suggestions`                            |
+| Kind             | Rule | `input`                                      | `expected`                |
+| ---------------- | ---- | -------------------------------------------- | ------------------------- |
+| `home-order`     | 1    | `entries` (id and entry), `categoryOrder`    | `order`: the entry ids    |
+| `category-order` |      | `starting` ids, `changes` (id, name, hidden) | `order`: the category ids |
+| `suggest`        |      | `query`, `earlier` entries, optional `limit` | `suggestions`             |
 
 Entries in vectors carry only the fields the rule reads; an entry is
-written as `{ "id": "...", ...fields of the [data model](data-model.md#entry) }`.
+written as `{ "id": "...", ...fields of the [entry](../../../packages/list/docs/entry.md) }`.
 
 `test/vectors.test.ts` runs the function of each kind on `input` and
 compares with `expected`, and checks that no function changes its
 input.
 
-The vectors today: two per kind, ten files.
+The vectors today: two per kind, six files. The kinds
+`new-entry-category` (rule 4, ten files) and `add-entry` (rule 5, two
+files) moved with their rules to the shared list package on 2026-11-24,
+in the same format ([its vectors](../../../packages/list/docs/vectors.md)).

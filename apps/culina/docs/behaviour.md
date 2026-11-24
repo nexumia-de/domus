@@ -1594,6 +1594,93 @@ Texts: `src/strings-stock.ts`. Since 2026-11-20 the stock is the collection
   work offline. **Test:** `e2e/stock.mjs` (also 320 and 1000 px, remaining
   days at fixed dates, a field of another app surviving an edit).
 
+# Handing what a dish lacks to the shopping list
+
+Built on 2026-11-24 below the screens: **no screen offers it yet**
+([roadmap](roadmap.md), goal 11, the screen is the next step). What
+exists is the engine's reading of a dish, the lines as the list will
+hold them, and the write into the list; Culina keeps no shopping list
+of its own (`AGENTS.md`).
+
+- **What lacks** (engine, `lackingLines`, from the finder's report of one
+  dish: `classicReport` for a shipped dish, `dishReport` for an own one).
+  A line lacks when it is `missing` or `short`. A line that is there by
+  a substitute or a sibling, through a group or a whole, and an optional
+  line do not; water is the kitchen's and always reports `have`. A frame
+  is read with the filling the cook chose (the caller passes the dish as
+  chosen, `asChosen`); the portions are a parameter. A component of an
+  own dish that cannot be made gives the lines it lacks.
+- **Each line** (`classicListLines`, `src/shared-list/lines.ts`, for a
+  shipped dish) becomes an input of the shared list package: the name in
+  the cook's language (the catalogue's kitchen name first, as on the
+  dish's page), Culina's catalogue id, the amount as the dish's page
+  writes it (`listAmountText`): grams as on the page ("150 g", "7,5 g"),
+  a spoon or cup where the source wrote one, to the quarter ("2¾ tsp",
+  "1¼ EL"), other millilitres as on the page ("20 ml"), and pieces
+  rounded **up** to whole ones ("2.5" onions become "3 pcs"), never a
+  base-unit figure. For `missing` the need, for `short` the need less
+  what is there; none when the source gives none (frikandelle's beef).
+  One ingredient in two lines in one unit is added up first ("Salt: 3
+  tsp" for the burrito with guacamole). A spoon-sized amount of a staple
+  (salt, flour for dusting) is handed like any other line when it lacks,
+  in the recipe's spoon; the screen will let the cook untick it. The
+  priority is `soon` (Emptio's default), the origin
+  `{ kind: 'recipe', app: 'culina', title: <dish in the cook's language>, dish: <key> }`
+  with the key `shipped:<id>` (and `#<filling>` where one was chosen),
+  and the category is rule 4 of the list package with the usual item of
+  the name as the catalogue's category.
+- **Free names**: lines the catalogue lacks (a classic's `wanted` names,
+  frikandelle's "Nierenfett" and "Wacholderbeeren") come back apart and
+  are not put on the list by themselves; `freeListLines` makes list input
+  of those the cook ticks (no id, no amount, the dish's origin), which
+  `handOver` takes like any other line.
+- **The write** (`handOver`, `src/shared-list/hand-over.ts`): one atomic
+  change of the collection `list` of the space Culina uses: all lines or
+  none. **That is not always the space Emptio shows**: each app keeps its
+  own choice of space (`culina.space`, `emptio.space`), and without a
+  choice each picks by its own records; with two spaces the entries can
+  land in a list Emptio is not showing. The result names the space
+  written to (`space: { id, name }`) for the screen to say; Culina does
+  not read Emptio's choice. Each line goes through the list package's
+  `planAdds` (rule 5: an open entry of the same thing is raised, not
+  doubled). Per line the result says `added`, `joined` (an entry that was
+  there), `already` (an open entry of the same thing already names this
+  dish, by its key, or by its title for an entry without a key; with the
+  amount on the list and the amount asked now, so the screen can say when
+  they differ) or `empty` (no name; nothing written). A failed write
+  writes nothing and says `unavailable`.
+- **Undo** (`undoHandOver`) works from the stored values: a record that
+  is still what the hand-over wrote goes back (a new entry is removed
+  with a removal marker, a joined one gets its value before); one that
+  was ticked, edited or removed in Emptio since is left. It goes to the
+  space of the hand-over. A tick on another device that has not arrived
+  yet is not seen: the later stamp wins.
+- **Sync**: Culina's loops keep `list` in step with `stock`, so the
+  entries leave the device without Emptio open. The stock's status
+  speaks of the collection `stock` alone (`status()`): a list never
+  synced yet, or a list file that cannot be read, does not show on the
+  stock screen; the list's own status is `listStatus()`, for the
+  hand-over's screen.
+
+The orderings (a sync cycle, Emptio in another tab, Undo after a tick,
+a failing store, twice, two tabs, two spaces) are in the list package's
+[list orderings across apps](../../../packages/list/docs/orderings.md); the two open
+weaknesses of rule 5 that a hand-over meets (an equal amount dropped on
+join, a typed name without an id) in its [rules](../../../packages/list/docs/rules.md#open-weaknesses).
+Tests: `packages/engine/test/handover-lacking.test.ts`,
+`packages/app/test/hand-over.test.ts`,
+`packages/app/test/hand-over-lines.test.ts` (the burrito with the
+shipped and the chosen filling, frikandelle for 2, minestrone for 3,
+the fine potato soup in German, exact strings in English and German).
+
+**Routes that do not exist.** The native Linux apps keep their spaces
+in a file store of their own, not in the browser's database `domus`.
+Native Culina and web Emptio on one machine, or web Culina and native
+Emptio, do not meet without a storage: the entries reach the other only
+through a shared space's storage. Native Culina writes the list of its
+own store the same way (it uses the same space code) but has no screen
+for it either.
+
 # Cook
 
 "I stand in the kitchen and do not know what to cook"
@@ -2299,7 +2386,7 @@ settings of this device." Why the stock is not in it: [exchange](exchange.md#ver
 | IndexedDB `culina`: `cooked`                                                                                                                           | yes, since format 4 | merge or replace; a format 1 to 3 file leaves it as is | yes                                        |
 | IndexedDB `culina`: `drafts`                                                                                                                           | no                  | no                                                     | yes                                        |
 | IndexedDB `culina`: `stock` (old items waiting for their move into a space), `backup` (migration data)                                                 | no                  | no                                                     | yes                                        |
-| IndexedDB `domus`: collection `stock` of each space, the spaces themselves (shared with Mixtura, Emptio and the Household app)                         | no                  | no (a format 1 file's stock is left out and counted)   | no: removed in the Household app           |
+| IndexedDB `domus`: collections `stock` and `list` of each space, the spaces themselves (shared with Mixtura, Emptio and the Household app)             | no                  | no (a format 1 file's stock is left out and counted)   | no: removed in the Household app           |
 | localStorage `culina.theme`, `culina.lang`, `culina.dishes`, `culina.cook`, `culina.space`, `culina.lastExport`, `culina.reminderDays`, `culina.debug` | no                  | no                                                     | yes (every key that starts with `culina.`) |
 
 **Test:** `test/backup-round-trip.test.ts` (export, a fresh database, "Merge now", every record

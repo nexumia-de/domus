@@ -15,7 +15,8 @@ import {
   setCategoryHidden,
   setPriority,
 } from '../src/list/actions';
-import { CATEGORIES, LIST, categoryChangesOf, entriesOf } from '../src/list/model';
+import { LIST, entriesOf } from '@nexumia-de/list';
+import { CATEGORIES, categoryChangesOf } from '../src/list/model';
 import { deps, now, putSpace } from './helpers';
 
 async function fresh() {

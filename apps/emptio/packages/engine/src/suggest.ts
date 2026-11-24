@@ -1,6 +1,6 @@
 // What the add field offers while a name is typed: the household's earlier
 // entries (docs/engine-rules.md#what-the-add-field-offers).
-import { compareText, sortKey } from './sort-key';
+import { compareText, sortKey } from '@nexumia-de/list';
 
 export interface SuggestEntry {
   id: string;

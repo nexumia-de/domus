@@ -33,6 +33,7 @@ its own bundle. Change history is in [log.md](log.md).
 
 - [materia](../packages/model/docs/index.md) - The general model.
 - [hospes](../packages/host/docs/index.md) - The host code the apps share: sync cipher, WebDAV adapter.
+- [The list package](../packages/list/docs/index.md) - The household's shopping list as Emptio and Culina write it: the entry, rules 4 and 5, the orderings when two apps write it; pure, name provisional.
 - [gjs](../packages/gjs/docs/index.md) - What the native Linux apps share: the pieces GJS lacks, joining by link, the build and check tooling.
 - [Mixtura](../apps/mixtura/docs/index.md) - Drinks.
 - [Culina](../apps/culina/docs/index.md) - Cooking.

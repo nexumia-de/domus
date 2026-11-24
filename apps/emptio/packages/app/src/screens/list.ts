@@ -1,14 +1,7 @@
 // The list at home: the add field (docked at the bottom), open entries by priority and category,
 // bought ones below (docs/behaviour.md#the-list).
-import {
-  DEFAULT_PRIORITY,
-  PRIORITIES,
-  categoryPosition,
-  homeOrder,
-  suggest,
-  type Entry,
-  type Priority,
-} from '@emptio/engine';
+import { categoryPosition, homeOrder, suggest } from '@emptio/engine';
+import { DEFAULT_PRIORITY, PRIORITIES, type Entry, type Priority } from '@nexumia-de/list';
 import { button, h } from '../dom';
 import { addToList, clearBought, removeEntries, restoreEntries, setBought } from '../list/actions';
 import { categoriesOf, orderOf } from '../list/categories';

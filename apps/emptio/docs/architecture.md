@@ -167,6 +167,14 @@ the code, not tested):
 
 # Hand-over with the sister apps
 
+**Superseded on 2026-11-19** by the owner's decision
+[one address, spaces, storages](../../../docs/decisions/one-origin-spaces-storages.md):
+all apps are on one origin and write the shared collections directly.
+Culina writes the entries of a dish into the collection `list` of the
+space it uses since 2026-11-24, by the rules of the shared
+[list package](../../../packages/list/docs/rules.md); no link and no
+file per app. The plan as it was:
+
 Each app has its own origin, so they cannot read each other's data on
 the device. Two ways, both needed:
 
@@ -216,6 +224,10 @@ By the owner on 2026-11-18:
    Culina and Emptio install; materia holds no food. It is named **cibus**.
 3. **The list belongs to the place**, as Emptio's own file in the
    place's folder: one invite, and no app writes another app's file.
+   _Superseded on 2026-11-19_ by
+   [one address, spaces, storages](../../../docs/decisions/one-origin-spaces-storages.md):
+   a collection belongs to the shared packages, not to one app; Culina
+   writes the list since 2026-11-24.
 4. **Priority has three steps**: _now_, _soon_ (the default),
    _sometime_.
 5. **Amounts are free text**; number and unit only where an entry comes

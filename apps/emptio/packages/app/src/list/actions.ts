@@ -3,17 +3,20 @@
 // the records as they are stored at that moment, never from what a screen read
 // earlier, so a sync cycle or another tab in between is not overwritten. A
 // value is changed on a copy of the stored one: fields this app does not know
-// are kept.
+// are kept. Putting something on the list is planned by the shared list
+// package (`planAdd`, packages/list), which Culina's hand-over uses too.
 import { localChange, type Store } from '@nexumia-de/hospes';
 import {
-  DEFAULT_PRIORITY,
+  LIST,
   OTHER_CATEGORY,
-  addEntry,
-  newEntryCategory,
+  entriesOf,
+  isEntryValue,
+  planAdd,
+  valueFor,
   type Entry,
   type Priority,
-} from '@emptio/engine';
-import { CATEGORIES, LIST, entriesOf, isCategoryValue, isEntryValue } from './model';
+} from '@nexumia-de/list';
+import { CATEGORIES, isCategoryValue } from './model';
 
 export interface ListDeps {
   store: Store;
@@ -39,18 +42,6 @@ const text = (value: string | undefined): string | undefined => {
   return trimmed === undefined || trimmed === '' ? undefined : trimmed;
 };
 
-/** The fields of the data model on top of the stored value; an absent optional field is removed. */
-export function valueFor(entry: Entry, stored: unknown): Record<string, unknown> {
-  const optional = new Set(['ingredientId', 'amount', 'note', 'bought', 'notAt']);
-  const foreign =
-    stored !== null && typeof stored === 'object'
-      ? Object.entries(stored).filter(([field]) => !optional.has(field))
-      : [];
-  const { id: _id, ...fields } = entry;
-  void _id;
-  return { ...Object.fromEntries(foreign), ...fields };
-}
-
 /**
  * Puts something on the list. What is already open is raised instead (rule 5); the category
  * is the one the household last gave the same thing (rule 4) unless one is given.
@@ -61,41 +52,14 @@ export async function addToList(
   spaceId: string,
   input: NewEntry,
 ): Promise<{ id: string; joined: boolean } | null> {
-  const name = input.name.trim().replace(/\s+/g, ' ');
-  if (name === '') return null;
+  if (input.name.trim() === '') return null;
   let result: { id: string; joined: boolean } | null = null;
   await localChange(deps.store, spaceId, LIST, deps.now, (records) => {
-    const entries = entriesOf(records);
-    const amount = text(input.amount);
-    const note = text(input.note);
-    const add: Entry = {
-      id: deps.newId(),
-      name,
-      ...(input.ingredientId === undefined ? {} : { ingredientId: input.ingredientId }),
-      categoryId:
-        input.categoryId ??
-        newEntryCategory({
-          name,
-          ...(input.ingredientId === undefined
-            ? {}
-            : {
-                catalogue: { ingredientId: input.ingredientId, categoryId: OTHER_CATEGORY },
-              }),
-          earlier: entries,
-        }),
-      priority: input.priority ?? DEFAULT_PRIORITY,
-      ...(amount === undefined ? {} : { amount }),
-      ...(note === undefined ? {} : { note }),
-      addedAt: deps.now(),
-      origins: [{ kind: 'typed' }],
-    };
-    const { entries: after, joinedWith } = addEntry(entries, add);
-    const id = joinedWith ?? add.id;
-    const entry = after.find((e) => e.id === id);
-    if (entry === undefined) return {};
-    result = { id, joined: joinedWith !== null };
-    const stored = records.find((r) => r.key === id && r.deleted !== true)?.value;
-    return { put: [{ key: id, value: valueFor(entry, stored) }] };
+    // Rules 4 and 5 on the records as stored now; the shared list package plans the write.
+    const plan = planAdd(records, input, deps);
+    if (plan === null) return {};
+    result = { id: plan.id, joined: plan.joined };
+    return { put: [plan.put] };
   });
   return result;
 }

@@ -1,11 +1,7 @@
 // The categories of a list: the starting ones (data of the app) with what the
 // household changed on top (docs/data-model.md#category).
-import {
-  OTHER_CATEGORY,
-  STARTING_CATEGORIES,
-  categoryOrder,
-  type CategoryChange,
-} from '@emptio/engine';
+import { STARTING_CATEGORIES, categoryOrder, type CategoryChange } from '@emptio/engine';
+import { OTHER_CATEGORY } from '@nexumia-de/list';
 
 export interface Category {
   id: string;

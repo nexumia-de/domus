@@ -1,0 +1,49 @@
+{
+  "kind": "add-entry",
+  "title": "A recipe origin that names its dish is one dish whatever its title: the same dish in German is not added again, another dish of the same title is",
+  "input": {
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Eggs",
+        "ingredientId": "fdc-171287",
+        "categoryId": "dairy",
+        "priority": "soon",
+        "amount": "3",
+        "addedAt": "2026-11-24T08:00:00Z",
+        "origins": [{ "kind": "recipe", "app": "culina", "title": "Pancakes", "dish": "shipped:a" }]
+      }
+    ],
+    "add": {
+      "id": "e2",
+      "name": "Eier",
+      "ingredientId": "fdc-171287",
+      "categoryId": "dairy",
+      "priority": "soon",
+      "amount": "3",
+      "addedAt": "2026-11-24T09:00:00Z",
+      "origins": [
+        { "kind": "recipe", "app": "culina", "title": "Pfannkuchen", "dish": "shipped:a" },
+        { "kind": "recipe", "app": "culina", "title": "Pancakes", "dish": "shipped:b" }
+      ]
+    }
+  },
+  "expected": {
+    "joinedWith": "e1",
+    "entries": [
+      {
+        "id": "e1",
+        "name": "Eggs",
+        "ingredientId": "fdc-171287",
+        "categoryId": "dairy",
+        "priority": "soon",
+        "amount": "3",
+        "addedAt": "2026-11-24T08:00:00Z",
+        "origins": [
+          { "kind": "recipe", "app": "culina", "title": "Pancakes", "dish": "shipped:a" },
+          { "kind": "recipe", "app": "culina", "title": "Pancakes", "dish": "shipped:b" }
+        ]
+      }
+    ]
+  }
+}

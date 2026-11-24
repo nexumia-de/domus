@@ -2,14 +2,8 @@
 // choice kept in the prefs of the device; it never changes an entry or the shared order rules
 // (docs/behaviour.md#filter-and-sort). `store` is rule 1 of the engine, the others are plain
 // orders of the same entries.
-import {
-  PRIORITIES,
-  compareText,
-  homeOrder,
-  sortKey,
-  type Entry,
-  type Priority,
-} from '@emptio/engine';
+import { homeOrder } from '@emptio/engine';
+import { PRIORITIES, compareText, sortKey, type Entry, type Priority } from '@nexumia-de/list';
 
 export const SORTS = ['store', 'urgency', 'name', 'added'] as const;
 export type Sort = (typeof SORTS)[number];

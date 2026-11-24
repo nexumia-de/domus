@@ -2,8 +2,9 @@
 // written as a cook writes it. The rounding is the engine's (`roundPieces`, `roundMeasure`); this
 // only picks the words and the fraction signs, and writes the exact figure quietly beside.
 import { roundMeasure, roundPieces } from '@culina/engine';
-import type { HouseholdMeasure } from '@culina/engine';
+import type { HouseholdMeasure, Lang } from '@culina/engine';
 import { strings } from '../strings';
+import { appLang } from './locale';
 import { formatNumber } from './mass';
 
 /** The name of a unit in the app's language: "EL", "Stück", "pint (UK)"; an unknown id as it is. */
@@ -21,10 +22,10 @@ export const writtenAmount = (amount: { value: number; unit: string }): string =
 const FRACTIONS: Record<number, string> = { 0.25: '¼', 0.5: '½', 0.75: '¾' };
 
 /** A number of quarters or halves as a cook writes it: "½", "1¼", "5". */
-const fraction = (n: number): string => {
+export const fraction = (n: number, lang: Lang = appLang): string => {
   const whole = Math.floor(n);
   const part = FRACTIONS[Number((n - whole).toFixed(2))];
-  if (part === undefined) return formatNumber(n, 2);
+  if (part === undefined) return formatNumber(n, 2, lang);
   return whole === 0 ? part : `${whole}${part}`;
 };
 

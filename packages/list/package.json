@@ -1,0 +1,23 @@
+{
+  "name": "@nexumia-de/list",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The household's shopping list as every app writes it: the entry, its record in the collection list, the rules for putting something on it; pure",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test"
+  }
+}

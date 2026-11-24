@@ -31,12 +31,12 @@ share, each collection one sealed file in the space's storage
 [behaviour](behaviour.md#spaces)). Since 2026-11-20; the plan of
 2026-11-18 had a file per app in a place.
 
-| Collection        | Key                   | Holds                                                  | Built in   |
-| ----------------- | --------------------- | ------------------------------------------------------ | ---------- |
-| `list`            | the entry id          | [Entry](#entry)                                        | Goal 1     |
-| `list-categories` | the category id       | [Category](#category)                                  | Goal 1     |
-| `stores`          | the store id          | [Store](#store)                                        | Goal 3     |
-| `kitchenowl`      | `config`, `item:<id>` | [KitchenOwl connection and links](kitchenowl.md#links) | 2026-11-22 |
+| Collection        | Key                   | Holds                                                             | Built in   |
+| ----------------- | --------------------- | ----------------------------------------------------------------- | ---------- |
+| `list`            | the entry id          | [Entry](../../../packages/list/docs/entry.md), shared with Culina | Goal 1     |
+| `list-categories` | the category id       | [Category](#category)                                             | Goal 1     |
+| `stores`          | the store id          | [Store](#store)                                                   | Goal 3     |
+| `kitchenowl`      | `config`, `item:<id>` | [KitchenOwl connection and links](kitchenowl.md#links)            | 2026-11-22 |
 
 A space on this device only holds the same records before sync is set
 up, so sharing later needs no conversion. A collection is shared: a
@@ -45,28 +45,10 @@ untouched, and a value keeps fields this app does not know.
 
 # Entry
 
-| Field          | Type                        | Meaning                                                                       |
-| -------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| `name`         | text, not empty             | What to buy, as typed or as the catalogue names it                            |
-| `ingredientId` | text, optional              | The id of the ingredient in the shared food catalogue; absent for a free name |
-| `categoryId`   | text                        | A [category](#category); `other` when none fits                               |
-| `priority`     | `now`, `soon`, `sometime`   | How pressing; a new entry gets `soon`                                         |
-| `amount`       | text, optional              | Free text ("2 packs")                                                         |
-| `note`         | text, optional              | Free text                                                                     |
-| `addedAt`      | timestamp                   | When it was put on the list                                                   |
-| `origins`      | list, at least one          | Why it is on the list, see below                                              |
-| `bought`       | optional                    | `{ at, storeId? }`: ticked at that time, in that store; absent while open     |
-| `notAt`        | list of store ids, optional | Stores where it was looked for and not found ("not here")                     |
-
-An origin is one of:
-
-- `{ kind: 'typed' }`: a person added it;
-- `{ kind: 'recipe', app, title }`: handed over by a sister app (`app`
-  is `culina` or `mixtura`) for the recipe or drink of that title;
-- `{ kind: 'staple' }`: a staple that returned (later).
-
-Ticking writes `bought`; ticking again removes it. Clearing the bought
-entries removes their records.
+Moved on 2026-11-24 to the shared list package, because Culina writes
+entries too: [the entry](../../../packages/list/docs/entry.md) (fields, origins, what counts as
+an entry). The fields are unchanged. Emptio's code reads it from
+`@nexumia-de/list` (`Entry`, `LIST`, `entriesOf`, `isEntryValue`).
 
 # Category
 
@@ -106,7 +88,7 @@ Records merge by materia's rules: per key the later `updatedAt` wins.
 
 - Two people adding entries offline keep both; the same thing added
   twice gives two entries until one device sees both. The app may then
-  offer to join them ([rule 5](engine-rules.md#5-twice-the-same)).
+  offer to join them ([rule 5](../../../packages/list/docs/rules.md#5-twice-the-same)).
 - Two people changing the same entry offline: the later write wins as a
   whole. One ticking while the other edits the note loses one of the
   two. Accepted, because an entry is small and short-lived.

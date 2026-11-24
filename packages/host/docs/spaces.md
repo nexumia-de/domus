@@ -270,7 +270,11 @@ the app's `collections` (Mixtura and Culina `stock`, Emptio `list` and
   back, `stop()` at the end.
 - `status(spaceId)`: `device-only`, `never`, `syncing`, `in-step` (with
   the time) or `failed` (with the failure; `storage` when this build
-  does not know the storage type).
+  does not know the storage type), for the app's collections together.
+  `status(spaceId, collection)` (since 2026-11-24): the same for one
+  collection alone, with its own last good cycle and its own failure,
+  so that an app with two collections (Culina: `stock` and `list`)
+  shows on a screen the state of the collection that screen is about.
 - `onChange('records')` when a cycle changed local records or the set of
   spaces changed: the screens read again. `onChange('status')` otherwise.
 - A collection whose cycle fails does not hold back the others; the run

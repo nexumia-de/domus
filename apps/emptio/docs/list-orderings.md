@@ -15,7 +15,10 @@ sources:
 One document for one class of defect ([rule](../../../AGENTS.md)): the
 order of events around the list. The orderings of the cycle and the
 loops themselves are in the host package's table[^host]; this page is
-what Emptio adds. Tests are named as `file` › 'name'; they are in
+what Emptio adds. What happens when another app (Culina's hand-over)
+writes the list at the same time is in the list package's table
+[list orderings across apps](../../../packages/list/docs/orderings.md).
+Tests are named as `file` › 'name'; they are in
 `packages/app/test/` unless said otherwise. All of them use the memory
 store, an injected clock and a storage in memory.
 

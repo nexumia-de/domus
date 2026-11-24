@@ -54,7 +54,21 @@ export {
 } from './prefs';
 export type { CookFilters, CookList, CookOrder, KeyValueStore } from './prefs';
 export { createStockSpace } from './shared-stock/space';
-export type { StockSpace, StockSpaceOptions, StockSpaceState } from './shared-stock/space';
+export type {
+  ChangeTarget,
+  StockSpace,
+  StockSpaceOptions,
+  StockSpaceState,
+} from './shared-stock/space';
+export { handOver, undoHandOver } from './shared-list/hand-over';
+export type { HandOver, HandOverLine, HandOverOutcome, ListUndo } from './shared-list/hand-over';
+export {
+  classicListLines,
+  freeListLines,
+  listAmountText,
+  shippedDishKey,
+} from './shared-list/lines';
+export type { ClassicLinesInput } from './shared-list/lines';
 export { itemsFromRecords } from './shared-stock/items';
 export type { ResolveKey } from './shared-stock/items';
 export { restoreEdit, saveEdit, tickEdit, untickEdit } from './shared-stock/edits';

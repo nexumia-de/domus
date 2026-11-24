@@ -19,7 +19,8 @@ export {
 export type { EntryEdit, ListDeps, NewEntry } from './list/actions';
 export { categoriesOf, orderOf } from './list/categories';
 export type { Category } from './list/categories';
-export { CATEGORIES, COLLECTIONS, LIST } from './list/model';
+export { CATEGORIES, COLLECTIONS } from './list/model';
+export { LIST } from '@nexumia-de/list';
 export { ago, statusText } from './list/status';
 export { KEYS, THEMES, autoSyncOf, themeOf } from './prefs';
 export type { Lang, Prefs, Theme } from './prefs';

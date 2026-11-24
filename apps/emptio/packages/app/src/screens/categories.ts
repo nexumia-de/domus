@@ -1,5 +1,5 @@
 // The categories of the shown space: hide, rename, add and remove.
-import { OTHER_CATEGORY } from '@emptio/engine';
+import { OTHER_CATEGORY } from '@nexumia-de/list';
 import { button, h } from '../dom';
 import { addCategory, removeCategory, renameCategory, setCategoryHidden } from '../list/actions';
 import { categoriesOf, type Category } from '../list/categories';

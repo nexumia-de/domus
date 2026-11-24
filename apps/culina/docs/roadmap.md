@@ -120,8 +120,25 @@ app and finds quickly what they want to cook or can cook.
     ([one address, spaces, storages](../../../docs/decisions/one-origin-spaces-storages.md)).
 11. **Handing missing ingredients to Emptio.** Decided in the
     [recipe book](decisions/recipe-book.md) record as an offer once
-    Emptio exists. Emptio exists since 2026-11-20; nothing is built in
-    Culina for it.
+    Emptio exists. First step built on 2026-11-24, below the screens: the
+    list's entry and rules moved out of Emptio into the shared
+    [list package](../../../packages/list/docs/index.md) (name provisional); the engine reads
+    what a dish lacks (`lackingLines`), the app writes it into the
+    collection `list` of the used space with Undo (`handOver`), and the
+    loops sync `list` with `stock`
+    ([behaviour](behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)).
+    Next: the offer on a dish's page. Open for the owner: the name of
+    the package; the two weaknesses of rule 5 a hand-over meets
+    ([rules](../../../packages/list/docs/rules.md#open-weaknesses)); what a dish handed again
+    at other portions should do (now: `already`, the first amount
+    stays, the result gives both amounts); which space's list a
+    hand-over goes to when Culina and Emptio use different spaces (now:
+    Culina's, and the result names it); the same frame handed again
+    with another filling (now another dish: its lines join the open
+    entries, where "instead" is probably meant); pieces without a word
+    for the thing's form (garlic "6 pcs": cloves or heads). Also open:
+    no screen reads the list's sync status (`listStatus()`) yet, so a
+    broken list file is shown only by Emptio.
 
 # Later
 

@@ -1,7 +1,7 @@
 // What the list shows on this device: the urgencies that are shown, the four orders, the prefs
 // text. Pure; the screen is checked in the browser.
 import { describe, expect, test } from 'vitest';
-import type { Entry } from '@emptio/engine';
+import type { Entry } from '@nexumia-de/list';
 import { arrange, countsOf, shownOf, shownText, sortOf, DEFAULT_VIEW } from '../src/list/view';
 
 const entry = (id: string, name: string, priority: Entry['priority'], extra: Partial<Entry> = {}) =>

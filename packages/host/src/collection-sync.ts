@@ -55,7 +55,12 @@ export interface CollectionSync {
    * sync), or `unknown` before `refresh` saw the space. Never rejects.
    */
   syncSpace(spaceId: string): Promise<'synced' | 'failed' | 'device-only' | 'unknown'>;
-  status(spaceId: string): SyncStatus | undefined;
+  /**
+   * The status of the space's collections together: failed when one failed, in step since the
+   * oldest last good cycle. With `collection`, that one collection's alone: its own last good
+   * cycle and its own failure (a run is `syncing` for all of them).
+   */
+  status(spaceId: string, collection?: string): SyncStatus | undefined;
   stop(): void;
 }
 
@@ -67,6 +72,8 @@ interface Running {
   failure?: string;
   syncedAt?: string;
   deviceOnly: boolean;
+  /** The same, per collection. */
+  each: Map<string, { failure?: string; syncedAt?: string }>;
 }
 
 const signatureOf = (space: StoredSpace): string => JSON.stringify([space.secret, space.storage]);
@@ -117,6 +124,12 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
         } catch {
           one = { ok: false, failure: 'server', detail: 'unexpected' };
         }
+        const own = entry.each.get(collection) ?? {};
+        if (one.ok) {
+          delete own.failure;
+          own.syncedAt = now();
+        } else own.failure = one.failure;
+        entry.each.set(collection, own);
         if (!one.ok) failed ??= one;
         else if (result.ok) {
           result = {
@@ -153,18 +166,26 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
     entry.loop.start();
   }
 
-  /** The oldest `syncedAt` of the collections; undefined while one was never in step. */
-  async function lastSynced(spaceId: string): Promise<string | undefined> {
+  /**
+   * The `syncedAt` of each collection, and the oldest of them; the oldest is undefined while one
+   * was never in step.
+   */
+  async function lastSynced(
+    spaceId: string,
+  ): Promise<{ oldest: string | undefined; each: Map<string, string | undefined> }> {
     let oldest: string | undefined;
+    let never = false;
+    const each = new Map<string, string | undefined>();
     for (const collection of collections) {
       const at = await store
         .readCollection(spaceId, collection)
         .then((state) => state.syncedAt)
         .catch(() => undefined);
-      if (at === undefined) return undefined;
-      if (oldest === undefined || at < oldest) oldest = at;
+      each.set(collection, at);
+      if (at === undefined) never = true;
+      else if (oldest === undefined || at < oldest) oldest = at;
     }
-    return oldest;
+    return { oldest: never ? undefined : oldest, each };
   }
 
   /** Reads the spaces once and makes the loops match them. Never rejects. */
@@ -198,12 +219,15 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
       const signature = signatureOf(space);
       const old = running.get(space.id);
       if (old?.signature === signature) continue;
-      const syncedAt = await lastSynced(space.id);
+      const synced = await lastSynced(space.id);
       // Stopped while the collection was read: start nothing more.
       if (stopped) return;
       old?.loop?.stop();
-      const entry: Running = { signature, busy: false, deviceOnly: isDeviceOnly(space) };
-      if (syncedAt !== undefined) entry.syncedAt = syncedAt;
+      const each = new Map(
+        [...synced.each].map(([c, at]) => [c, at === undefined ? {} : { syncedAt: at }] as const),
+      );
+      const entry: Running = { signature, busy: false, deviceOnly: isDeviceOnly(space), each };
+      if (synced.oldest !== undefined) entry.syncedAt = synced.oldest;
       running.set(space.id, entry);
       if (!entry.deviceOnly) start(space, entry);
     }
@@ -241,16 +265,20 @@ export function createCollectionSync(options: CollectionSyncOptions): Collection
       if (entry.loop === undefined) return 'failed';
       return (await entry.loop.runNow().catch(() => false)) ? 'synced' : 'failed';
     },
-    status(spaceId) {
+    status(spaceId, collection) {
       const entry = running.get(spaceId);
       if (!entry) return undefined;
       if (entry.deviceOnly) return { kind: 'device-only' };
-      const at = entry.syncedAt === undefined ? {} : { at: entry.syncedAt };
+      // A storage that cannot be used has no loop: every collection fails with it.
+      const own =
+        collection === undefined || entry.loop === undefined
+          ? entry
+          : (entry.each.get(collection) ?? {});
+      const syncedAt = collection === undefined ? entry.syncedAt : own.syncedAt;
+      const at = syncedAt === undefined ? {} : { at: syncedAt };
       if (entry.busy) return { kind: 'syncing', ...at };
-      if (entry.failure !== undefined) return { kind: 'failed', failure: entry.failure, ...at };
-      return entry.syncedAt === undefined
-        ? { kind: 'never' }
-        : { kind: 'in-step', at: entry.syncedAt };
+      if (own.failure !== undefined) return { kind: 'failed', failure: own.failure, ...at };
+      return syncedAt === undefined ? { kind: 'never' } : { kind: 'in-step', at: syncedAt };
     },
     stop() {
       stopped = true;

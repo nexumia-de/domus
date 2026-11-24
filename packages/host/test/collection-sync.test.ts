@@ -335,6 +335,47 @@ test('a collection whose file cannot be read does not hold back the others', asy
   a.sync.stop();
 });
 
+test('the status of one collection is its own: another collection that fails does not fail it', async () => {
+  const space = await sharedSpace();
+  const storage = fakeStorage();
+  const a = await device(space, storage.adapter, ['entries', 'categories']);
+  storage.files.set(`${space.id}/entries.json`, { body: 'not a sealed file', etag: 'x' });
+  await a.sync.refresh();
+  await settle();
+  expect(a.sync.status(space.id)).toEqual({ kind: 'failed', failure: 'not-sealed' });
+  expect(a.sync.status(space.id, 'entries')).toEqual({ kind: 'failed', failure: 'not-sealed' });
+  expect(a.sync.status(space.id, 'categories')).toMatchObject({ kind: 'in-step' });
+  a.sync.stop();
+});
+
+test('a collection added to an app keeps the last good cycle of the others it had', async () => {
+  // A device synced `stock` before; an update of the app adds `list`, never synced yet.
+  const space = await sharedSpace();
+  const shared = sharedStore();
+  await shared.putSpace(space);
+  await shared.writeCollection(space.id, 'stock', {
+    records: [],
+    syncedAt: '2026-11-19T08:00:00.000Z',
+  });
+  const sync = createCollectionSync({
+    store: shared,
+    collections: ['stock', 'list'],
+    adapter: () => fakeStorage().adapter,
+    now,
+    onChange: () => undefined,
+    ...noTimers,
+    manual: true,
+  });
+  await sync.refresh();
+  expect(sync.status(space.id)).toEqual({ kind: 'never' });
+  expect(sync.status(space.id, 'stock')).toEqual({
+    kind: 'in-step',
+    at: '2026-11-19T08:00:00.000Z',
+  });
+  expect(sync.status(space.id, 'list')).toEqual({ kind: 'never' });
+  sync.stop();
+});
+
 test("the interval of the loop is the app's to choose", async () => {
   const space = await sharedSpace();
   const storage = fakeStorage();
