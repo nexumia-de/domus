@@ -303,7 +303,9 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
   `wanted` line can be read but not yet copied into the notebook. The finder
   never counts such a line as lacking and names it apart; a line whose English
   or German text is water ("Water", "Cold water", "Wasser") is not asked for at
-  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)). The
+  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)).
+  Plain water is no `wanted` line: it points at the catalogue's tap water
+  (`fdc-173647`), cold water with a note that says so. The
   names that remain are an explicit, reviewed list in
   `test/classics-wanted-list.test.ts`: a new unmatched line fails it until a
   reviewer adds the name there.
@@ -498,6 +500,53 @@ addition:
 The import pack (`packages/app/data/pack/<country>/`) holds dish files
 in the same format and under the same tests; a base never lies there,
 and an id lies in one folder only.
+
+# A frame
+
+A frame (tacos, a plate of curry with rice, a pizza) is the project's own
+composition and brings no recipe of its own
+([building kit](decisions/building-kit.md), answer 1). It is not a dish
+file but a short file in `packages/app/data/frames/<id>.json` that names,
+per slot, which shipped recipes can fill it:
+
+- `id`, `name` (both languages), `originalName`, `country`, `course`,
+  `persons`, `year`, and a `note` in both languages that says in which
+  order the parts are made and what the frame leaves out.
+- `slots`: each has a `role` and either `parts`, the ids of shipped
+  recipes (the first fills the slot, the others are its alternatives), or
+  `ingredient` with an `amount`, a plain catalogue ingredient (the
+  mozzarella of the pizza). `optional` as on a dish's slot.
+
+**The build composes it into a base** (`packages/app/compose-frames.mjs`):
+each part's one component is copied into the frame under the recipe's
+name, with the slot's role, its amounts scaled from the recipe's persons
+to the frame's, and `from` (the recipe's id, name and source). The result
+is a dish file with `kind` `base` and `frame: true` in `classics.json`,
+so Keep, Swap, the finder, the characters and the views need nothing of
+their own: a part that fills no slot is an alternative by the rule of a
+base (the same role).
+
+**What can be a part**: a recipe of the project's own (no source units,
+nothing settled) that is one component in one slot, whose lines name
+ingredients only. A frame that names another recipe, an unknown id, the
+same recipe twice, or whose id a shipped recipe has, fails the build with
+every reason. A part with a `wanted` line would keep the whole frame out
+of the notebook, so none is used (the miso soup is left out of the
+Japanese set meal and its note says so).
+
+**One recipe per slot for now.** The composer makes alternatives (a
+second recipe in `parts`), and the engine's rules accept them, but the
+screens of a shipped dish list every component as a part of the dish:
+the ingredients, the steps, the nutrition and the characters would count
+the beans beside the chicken. No shipped base had an alternative before,
+so this was never seen. Until the views tell an alternative from a part,
+a shipped frame names one recipe per slot (`test/frames.test.ts` pins
+it), and its note says which other recipe of the app fits the slot; in
+the notebook, Swap offers every own component of the role.
+
+**What a frame claims.** Its source section says that the app put it
+together and lists each part with where it comes from. Nobody read the
+combination as a whole and nobody cooked it; `check.note` says so.
 
 # Validating one file
 

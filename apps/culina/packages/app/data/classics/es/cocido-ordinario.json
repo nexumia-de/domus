@@ -62,9 +62,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "amount": {
             "value": 4,
@@ -79,9 +79,9 @@
         },
         {
           "key": "cold-water",
-          "wanted": {
-            "en": "Cold water",
-            "de": "Kaltes Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "amount": {
             "value": 0.15,
@@ -89,8 +89,8 @@
             "original": "un decilitro y medio de agua fría"
           },
           "note": {
-            "en": "Added when the foam rises, for the small pot: one decilitre and a half (a decilitre is 0.1 litre). The large pot gets three decilitres.",
-            "de": "Zugegeben, sobald der Schaum steigt, für den kleinen Topf: eineinhalb Deziliter (ein Deziliter ist 0,1 Liter). Der große Topf bekommt drei Deziliter."
+            "en": "Cold. Added when the foam rises, for the small pot: one decilitre and a half (a decilitre is 0.1 litre). The large pot gets three decilitres.",
+            "de": "Kalt. Zugegeben, sobald der Schaum steigt, für den kleinen Topf: eineinhalb Deziliter (ein Deziliter ist 0,1 Liter). Der große Topf bekommt drei Deziliter."
           }
         },
         {

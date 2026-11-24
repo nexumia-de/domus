@@ -10,11 +10,18 @@ export type NamesByLanguage = Record<string, { name: string; aliases?: string[];
 export interface Named {
   name: string;
   names?: NamesByLanguage;
+  /** The name a cook writes for a catalogue entry, where the catalogue's own reads like its database. */
+  'x-kitchen'?: { en: string; de: string };
 }
 
-/** The name to show: the German one when the language is German and the record has one, else the canonical name. */
+/**
+ * The name to show: the kitchen name in the language when the record has one ("Olive oil" for
+ * "Oil, olive, salad or cooking"); else the German name when the language is German and the
+ * record has one; else the canonical name.
+ */
 export const displayName = (record: Named, lang: Lang): string =>
-  lang === 'de' ? (record.names?.['de']?.name ?? record.name) : record.name;
+  record['x-kitchen']?.[lang] ??
+  (lang === 'de' ? (record.names?.['de']?.name ?? record.name) : record.name);
 
 /** One name of a record: the language tag (`en` for the canonical name) and the text. */
 export interface NameOf {
@@ -32,6 +39,9 @@ export const fold = (text: string): string =>
 /** Every name of the record, the canonical English one first, then each language's name and aliases. */
 export const searchableNames = (record: Named): NameOf[] => {
   const all: NameOf[] = [{ lang: 'en', name: record.name }];
+  const kitchen = record['x-kitchen'];
+  if (kitchen !== undefined)
+    all.push({ lang: 'en', name: kitchen.en }, { lang: 'de', name: kitchen.de });
   for (const lang of Object.keys(record.names ?? {}).sort()) {
     const entry = record.names?.[lang];
     if (entry === undefined) continue;

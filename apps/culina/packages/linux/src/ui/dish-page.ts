@@ -91,7 +91,22 @@ export function dishPage(ui: Ui, id: string): Page {
       if (subtitle !== undefined) row.set_subtitle(subtitle);
       group.add_row(row);
     };
-    if (source.own === true) {
+    if (shown.frameParts !== undefined) {
+      line(s.classics.frameSource);
+      for (const part of shown.frameParts)
+        line(
+          part.source.own === true
+            ? s.classics.framePartOwn(part.name)
+            : s.classics.framePartCited(
+                part.name,
+                part.source.author,
+                part.source.title,
+                part.source.year,
+              ),
+        );
+      line(s.classics.ownPersons(persons.value));
+      line(s.classics.frameChecked);
+    } else if (source.own === true) {
       line(s.classics.ownSource);
       line(s.classics.ownPersons(persons.value));
       line(s.classics.ownChecked);

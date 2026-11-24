@@ -142,9 +142,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "amount": {
             "value": 100,

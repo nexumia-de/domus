@@ -1,0 +1,35 @@
+{
+  "id": "teishoku",
+  "name": {
+    "en": "Japanese set meal with rice, salmon and cucumber salad",
+    "de": "Japanisches Menü mit Reis, Lachs und Gurkensalat"
+  },
+  "originalName": "Teishoku",
+  "country": "jp",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["gohan"]
+    },
+    {
+      "role": "main",
+      "parts": ["sake-no-shioyaki"]
+    },
+    {
+      "role": "acid",
+      "parts": ["kyuri-no-sunomono"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["teriyaki-no-tare"],
+      "optional": true
+    }
+  ],
+  "note": {
+    "en": "Salt the salmon and soak the rice first; both wait half an hour. Make the cucumber salad while the rice cooks and grill the salmon last. A set meal usually has a miso soup too; the one of this app is left out here because its dashi is not in the ingredient catalogue.",
+    "de": "Zuerst den Lachs salzen und den Reis einweichen; beides ruht eine halbe Stunde. Den Gurkensalat zubereiten, während der Reis gart, den Lachs zuletzt braten. Zu einem solchen Menü gehört meist auch eine Misosuppe; die dieser App ist hier weggelassen, weil ihr Dashi nicht im Zutatenkatalog steht."
+  }
+}

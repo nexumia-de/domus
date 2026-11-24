@@ -1,5 +1,17 @@
 # Log
 
+## 2026-11-24 (frames)
+
+- **Creation**: eight [frames](classic-format.md#a-frame) (tacos, chickpea curry plate, souvlaki plate, Japanese set meal, burger plate, Chinese rice plate, köfte plate, pizza), the project's own compositions of its own recipes: a short file per frame in `data/frames/`, composed by the build into a base whose components say which recipe they are and keep its source, also through Keep. Roadmap goal 7 has its first frames. One recipe per slot: an alternative would be listed as a part of the dish by the screens of a shipped dish, found in a browser and left as the next step.
+
+## 2026-11-24 (kitchen names)
+
+- **Creation**: [kitchen names](ingredient-catalogue.md#kitchen-names): the 169 catalogue entries the shipped recipes name show the name a cook writes ("Olive oil", "Wasser") in place of the database's ("Oil, olive, salad or cooking", "Beverages, water, tap, drinking"), in English and German; written by an AI model, read by another agent. One row of the [pitfalls table](design.md#pitfalls-of-an-interface-built-by-agents) is answered for the recipes.
+
+## 2026-11-24 (water is an ingredient)
+
+- **Update**: tap water is a catalogue ingredient (USDA FDC 173647) and 74 water lines of the shipped recipes point at it, so that a recipe with water can be kept in the notebook: 75 of 124 could not, 21 still cannot (a line the catalogue lacks). The finder does not ask for it (role water), the characters do not count it, the nutrition counts 0 kcal ([ingredient catalogue](ingredient-catalogue.md#named-foods), [dish characters](dish-characters.md)).
+
 ## 2026-11-24 (56 own recipes in the app)
 
 - **Creation**: the 40 own recipes of the drafts are shipped files again, the ones bent by gaps of the catalogue repaired with the foods it has now (soy sauce, cumin, oregano, pecorino, the chicken cuts without skin, pinto beans), and 16 more are written: guacamole, macaroni and cheese, barbecue sauce, tzatziki, horiatiki, köfte, raita, chana masala, onion gravy, teriyaki sauce, miso soup, a stir-fry sauce, a red curry, a peanut sauce, a mustard vinaigrette, ratatouille. 124 shipped files, Cook lists 98, 26 are sauce bases. Two lines stay `wanted` for want of a USDA food: dashi and red curry paste. **Second reading: all 56 are read** by agents that did not write them ([review](../../../docs/reviews.md)); 13 files changed (water of the bulgur, of the basmati rice and of the chickpeas, eggs of the quiche, salt in four dishes, the sweet chilli sauce's proportions, the pizza dough's water and the oven heated before the rest, the pinto beans boiled hard for ten minutes, the stir-fry sauce less salty, the miso soup no longer vegetarian because dashi is made with fish). The recipe files left `drafts/`.

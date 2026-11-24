@@ -793,23 +793,24 @@ A shipped dish of one named source, one JSON file per dish in
 never written to the store. Schema: `classic.schema.json`; the field-by-field
 guide is [classic format](classic-format.md).
 
-| Field          | Type            | Required | Meaning                                                                                  |
-| -------------- | --------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `id`           | id              | yes      | See [ids](#ids); equal to the file name                                                  |
-| `kind`         | string          | no       | `base` (a base to build on) or `dish`; without it a dish                                 |
-| `name`         | text in 2 langs | yes      | Visible name                                                                             |
-| `originalName` | string          | yes      | The name in the source's language                                                        |
-| `country`      | string          | yes      | `de`, `it`, `fr` or `es`; the folder                                                     |
-| `vegetarian`   | boolean         | yes      | Without meat and fish                                                                    |
-| `course`       | string          | yes      | `starter`, `soup`, `main`, `side`, `dessert`, `baking`, `sauce`, `breakfast` or `snack`  |
-| `source`       | object          | yes      | `author`, `title`, `year`, `place`, `url`, optional `licence`: the one source it follows |
-| `persons`      | object          | yes      | `value` (the persons the amounts are for) and `basis` (`stated` or `settled`)            |
-| `units`        | object          | no       | Source unit words that are not in the unit table: `kind`, `factor`, `read`               |
-| `components`   | array of object | no       | `id`, `name`, optional `role`, `lines`, optional `steps`                                 |
-| `slots`        | array of object | yes      | The dish's role slots, as in [Dish](#dish) but with the source's amounts                 |
-| `settled`      | array of object | yes      | What we settled: `what`, `value`, `reason`, optional `target`; may be empty              |
-| `check`        | object          | yes      | The second check: `method` (`page-image`, `second-edition`, `second-reader`) and `note`  |
-| `note`         | text in 2 langs | no       | A short note on the dish                                                                 |
+| Field          | Type            | Required | Meaning                                                                                                             |
+| -------------- | --------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `id`           | id              | yes      | See [ids](#ids); equal to the file name                                                                             |
+| `kind`         | string          | no       | `base` (a base to build on) or `dish`; without it a dish                                                            |
+| `frame`        | true            | no       | a frame: a base the build composes from `data/frames/<id>.json`; its components carry `from` (recipe, name, source) |
+| `name`         | text in 2 langs | yes      | Visible name                                                                                                        |
+| `originalName` | string          | yes      | The name in the source's language                                                                                   |
+| `country`      | string          | yes      | `de`, `it`, `fr` or `es`; the folder                                                                                |
+| `vegetarian`   | boolean         | yes      | Without meat and fish                                                                                               |
+| `course`       | string          | yes      | `starter`, `soup`, `main`, `side`, `dessert`, `baking`, `sauce`, `breakfast` or `snack`                             |
+| `source`       | object          | yes      | `author`, `title`, `year`, `place`, `url`, optional `licence`: the one source it follows                            |
+| `persons`      | object          | yes      | `value` (the persons the amounts are for) and `basis` (`stated` or `settled`)                                       |
+| `units`        | object          | no       | Source unit words that are not in the unit table: `kind`, `factor`, `read`                                          |
+| `components`   | array of object | no       | `id`, `name`, optional `role`, `lines`, optional `steps`                                                            |
+| `slots`        | array of object | yes      | The dish's role slots, as in [Dish](#dish) but with the source's amounts                                            |
+| `settled`      | array of object | yes      | What we settled: `what`, `value`, `reason`, optional `target`; may be empty                                         |
+| `check`        | object          | yes      | The second check: `method` (`page-image`, `second-edition`, `second-reader`) and `note`                             |
+| `note`         | text in 2 langs | no       | A short note on the dish                                                                                            |
 
 - **Amounts as the source gives them.** A line's `amount` is
   `{ value, max?, unit, original? }`: a number, or a range from `value` to
@@ -907,16 +908,17 @@ export. One JSON file, generated by `tools/catalogue/build.mjs`
 ([ingredient catalogue](ingredient-catalogue.md)) and validated by
 `catalogue.schema.json`; the app serves it as `catalogue.json`.
 
-| Field             | Type     | Required | Meaning                                                                                              |
-| ----------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `format`          | constant | yes      | `culina-ingredient-catalogue`                                                                        |
-| `formatVersion`   | constant | yes      | `1`                                                                                                  |
-| `dataset`         | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                              |
-| `refuseDataset`   | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from             |
-| `namesDataset`    | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from |
-| `ownNamesDataset` | object   | no       | the same five fields for the project's own German names (`tools/catalogue/names-de-own.json`)        |
-| `generatedBy`     | string   | yes      | `tools/catalogue/build.mjs`                                                                          |
-| `ingredients`     | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                      |
+| Field                 | Type     | Required | Meaning                                                                                                           |
+| --------------------- | -------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `format`              | constant | yes      | `culina-ingredient-catalogue`                                                                                     |
+| `formatVersion`       | constant | yes      | `1`                                                                                                               |
+| `dataset`             | object   | yes      | `name`, `release`, `file`, `sha256` of the dataset file read, `licence`                                           |
+| `refuseDataset`       | object   | no       | `name`, `file`, `sha256`, `licence` of the file the yields' refuse percentages come from                          |
+| `namesDataset`        | object   | no       | `name`, `file`, `sha256`, `retrieved`, `licence` of the Wikidata snapshot the German names come from              |
+| `ownNamesDataset`     | object   | no       | the same five fields for the project's own German names (`tools/catalogue/names-de-own.json`)                     |
+| `kitchenNamesDataset` | object   | no       | name, file, sha256 and licence of the kitchen names (`tools/catalogue/kitchen-names.json`), merged as `x-kitchen` |
+| `generatedBy`         | string   | yes      | `tools/catalogue/build.mjs`                                                                                       |
+| `ingredients`         | array    | yes      | Ingredient records, sorted by `id`, each valid against `ingredient.schema.json`                                   |
 
 - **An entry is an ordinary ingredient record**: `id` (`fdc-<FDC id>`, a
   seed-style slug), `name`, optionally `densityGPerMl` and `unitWeightG`

@@ -84,12 +84,21 @@ export interface ClassicSlot extends Ingredient {
   optional?: boolean;
 }
 
+/** Where a component of a frame comes from: the shipped recipe it was taken from, with that recipe's source. */
+export interface ComponentFrom {
+  recipe: string;
+  name: I18nText;
+  source: ClassicSource;
+}
+
 export interface ClassicComponent {
   id: string;
   name: I18nText;
   role?: string;
   lines: readonly ClassicLine[];
   steps?: readonly TextStep[];
+  /** Only in a frame: the recipe this component is, which keeps its own source. */
+  from?: ComponentFrom;
 }
 
 /** Something we settled where the source is vague; `target` is `persons` or `<component id>/<line key>` (`slots/<key>` for a slot). */
@@ -131,6 +140,11 @@ export type ClassicKind = 'base' | 'dish';
 export interface Classic {
   id: string;
   kind?: ClassicKind;
+  /**
+   * True for a frame (tacos, a plate): a base the project put together from shipped recipes
+   * (docs/classic-format.md, A frame). Its components say where they come from (`from`).
+   */
+  frame?: true;
   name: I18nText;
   originalName: string;
   country: Country;

@@ -14,7 +14,31 @@ export const sourceDetails = (view: DishView): HTMLDetailsElement => {
   const { source, persons, sourceRemarks, note } = view;
   const block = el('details', 'source-block foot-block');
   block.append(el('summary', undefined, t.sourceHeading));
-  if (source.own === true) {
+  if (view.frameParts !== undefined) {
+    // A frame: the app's own composition; each part keeps its source and is named with it.
+    const parts = el('ul', 'source-remarks');
+    for (const part of view.frameParts)
+      parts.append(
+        el(
+          'li',
+          undefined,
+          part.source.own === true
+            ? t.framePartOwn(part.name)
+            : t.framePartCited(
+                part.name,
+                part.source.author,
+                citeText(part.source.title, appLang),
+                part.source.year,
+              ),
+        ),
+      );
+    block.append(
+      el('p', 'own-source', t.frameSource),
+      parts,
+      el('p', 'muted', t.ownPersons(persons.value)),
+      el('p', 'muted', t.frameChecked),
+    );
+  } else if (source.own === true) {
     // The project's own recipe: nothing to cite, and the block says what it is instead.
     block.append(
       el('p', 'own-source', t.ownSource),

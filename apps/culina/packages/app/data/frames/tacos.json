@@ -1,0 +1,34 @@
+{
+  "id": "tacos",
+  "name": {
+    "en": "Tacos",
+    "de": "Tacos"
+  },
+  "originalName": "Tacos",
+  "country": "mx",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["tortillas-de-harina"]
+    },
+    {
+      "role": "main",
+      "parts": ["pollo-deshebrado-en-jitomate"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["guacamole"]
+    },
+    {
+      "role": "acid",
+      "parts": ["pico-de-gallo"]
+    }
+  ],
+  "note": {
+    "en": "Warm the tortillas, fill each with a spoonful of the chicken and top with guacamole and salsa at the table. For tacos without meat, the refried beans of this app can take the chicken's place once the dish is kept in the notebook; the tortillas of this app are made with lard.",
+    "de": "Die Tortillas erwärmen, jede mit einem Löffel Hähnchen belegen und am Tisch Guacamole und Salsa daraufgeben. Für Tacos ohne Fleisch kann das Bohnenmus dieser App an die Stelle des Hähnchens treten, sobald das Gericht im Notizbuch liegt; die Tortillas dieser App sind mit Schmalz gemacht."
+  }
+}

@@ -21,6 +21,51 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: water, kitchen names and frames in Culina
+
+Three agents under one lead. The lead (the largest model) made water a
+catalogue ingredient, built the kitchen names' mechanism and the frames.
+One agent on a smaller model wrote the 169 kitchen names; a second
+brought the browser checks to the names the app now shows.
+
+| Part                                              | Done by        | Checked by                                                         |
+| ------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
+| Water in the catalogue, 74 recipe lines, the role | lead           | nobody but the tests (`test/water-line.test.ts` with its controls) |
+| 169 kitchen names, English and German             | one agent      | the lead, every name against the catalogue's name; five changed    |
+| The browser checks brought to the shown names     | a second agent | the lead read the diff; the full e2e run                           |
+| Frames: composer, eight frame files, the views    | lead           | nobody but the tests, the e2e and one look at a frame in a browser |
+
+**What the checks found, and where it was fixed.**
+
+- _Counting water changed what the app says of 13 dishes_ (the cocido
+  "light" for the water it boils in), found by an existing test of the
+  characters; water is left out of the facts (the character table's
+  `notCounted`), not the test changed.
+- _Two browser checks waited for a sentence that no longer comes_ ("the
+  notebook does not know Water"): they now open a component that lacks
+  orange-flower water. The app's change was the intended one.
+- _Kitchen names:_ "Blattspinat" for spinach, "Speck" for US bacon,
+  "spearmint" where a cook says mint, "Fresh eggs" changed by the lead.
+- _A check became stricter:_ "Instead of Salt" matched "Instead of
+  Salted butter" by its beginning; it is exact now.
+- _An alternative shown as a part of the dish:_ the lead's first tacos
+  had the refried beans as an alternative of the chicken, and the dish
+  screen in a browser listed the beans among the ingredients. The views
+  of a shipped dish were not changed in this work; the frames name one
+  recipe per slot, a test pins that, and the format says why.
+- _The lead's own slip:_ a control in the new browser check asked that
+  the tacos' source section not name the beans; the frame's note names
+  them on purpose. The control asks for another recipe now.
+
+**Test counts** (the lead's runs): `npm run check:culina` passes with
+1253 engine, 1069 app and 19 native tests; Culina's e2e passes with 1970
+checks, run alone.
+
+**What nobody verified.** That a cook would write each kitchen name so.
+That the parts of a frame go together on a plate, or its note's order of
+work: nobody cooked one. A frame in the native app on a desktop. A real
+phone.
+
 ## 2026-11-24: 56 own recipes for Culina, and 48 foods for its catalogue (pull request 5 of nexumia-de/domus)
 
 Seventeen agents over two sessions, under two leads. The first session

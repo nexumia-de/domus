@@ -86,9 +86,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "For soaking the bread and for thinning the sauce.",

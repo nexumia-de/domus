@@ -117,6 +117,11 @@
       "why": "The rule finds the grain; USDA's rice beverage is sake, which the data has."
     },
     {
+      "name": "Beverages, water",
+      "entity": null,
+      "why": "The data has an entity for water with a few molecules of trace substances; water takes the taste of what is cooked in it, so no pairing is claimed."
+    },
+    {
       "name": "Beans",
       "entity": "Beans",
       "why": "Kinds of common bean the data does not tell apart.",

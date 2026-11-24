@@ -1,0 +1,46 @@
+{
+  "id": "pizza-margherita",
+  "name": {
+    "en": "Pizza with tomato, mozzarella and basil",
+    "de": "Pizza mit Tomate, Mozzarella und Basilikum"
+  },
+  "originalName": "Pizza Margherita",
+  "country": "it",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["impasto-per-pizza"]
+    },
+    {
+      "role": "sauce",
+      "ingredient": "fdc-170054",
+      "amount": {
+        "value": 250,
+        "unit": "g"
+      }
+    },
+    {
+      "role": "main",
+      "ingredient": "fdc-170845",
+      "amount": {
+        "value": 250,
+        "unit": "g"
+      }
+    },
+    {
+      "role": "garnish",
+      "ingredient": "fdc-172232",
+      "amount": {
+        "value": 10,
+        "unit": "g"
+      }
+    }
+  ],
+  "note": {
+    "en": "Shape the dough as its recipe says, spread the tomato sauce thinly, tear the mozzarella over it and bake. The basil goes on after baking. The amounts of sauce, cheese and basil are the project's own, for the dough of this app.",
+    "de": "Den Teig formen, wie sein Rezept es sagt, die Tomatensauce dünn verstreichen, den Mozzarella darüberzupfen und backen. Das Basilikum kommt nach dem Backen darauf. Die Mengen für Sauce, Käse und Basilikum sind die des Projekts, passend zum Teig dieser App."
+  }
+}

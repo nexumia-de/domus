@@ -8,6 +8,7 @@ import {
   idsWithChains,
   rowNamed,
   searchBox,
+  shownName,
   setAmount,
 } from './catalogue-helpers.mjs';
 import { check } from './harness.mjs';
@@ -34,7 +35,7 @@ const factsOf = (row) => ({
 
 const browse = async (page, label) => {
   await searchBox(page).fill('wheat flour');
-  const root = toggle(page, 'Show', ROOT.name);
+  const root = toggle(page, 'Show', shownName(ROOT));
   await root.waitFor();
   const count = below(ROOT).length;
   check(
@@ -57,12 +58,12 @@ const browse = async (page, label) => {
   // Keyboard: the toggle is a button in the tab order; Enter opens, Space closes.
   await root.focus();
   await page.keyboard.press('Enter');
-  const opened = toggle(page, 'Hide', ROOT.name);
+  const opened = toggle(page, 'Hide', shownName(ROOT));
   await opened.waitFor();
   check(
     (await opened.getAttribute('aria-expanded')) === 'true' &&
       (await page.evaluate(() => document.activeElement?.getAttribute('aria-label'))) ===
-        `Hide the variants of ${ROOT.name}`,
+        `Hide the variants of ${shownName(ROOT)}`,
     `${label}: Enter on the toggle opens the variants and the focus stays on it`,
   );
   const kids = await catalogue(page)
@@ -76,7 +77,7 @@ const browse = async (page, label) => {
   );
   await layout(page, `${label} (opened parent)`);
   await page.keyboard.press('Space');
-  await toggle(page, 'Show', ROOT.name).waitFor();
+  await toggle(page, 'Show', shownName(ROOT)).waitFor();
   check(true, `${label}: Space on the toggle closes it again`);
 };
 

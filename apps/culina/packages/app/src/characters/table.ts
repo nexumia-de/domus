@@ -14,6 +14,14 @@ export const CHARACTER_TABLE: readonly CharacterEntry[] = table.characters;
 export const MEAT_AND_FISH: { readonly classes: readonly string[]; readonly basis: string } =
   table.meatAndFish;
 
+/** The ingredients a dish is not judged by (tap water), and why. */
+export const NOT_COUNTED: { readonly classes: readonly string[]; readonly basis: string } =
+  table.notCounted;
+
+/** Whether an ingredient line is left out of the facts: kitchen water. */
+export const isNotCounted = (ingredientId: string): boolean =>
+  NOT_COUNTED.classes.includes(ingredientId);
+
 const byId = new Map(CHARACTER_TABLE.map((e) => [e.id, e]));
 
 export const characterEntry = (id: string): CharacterEntry | undefined => byId.get(id);

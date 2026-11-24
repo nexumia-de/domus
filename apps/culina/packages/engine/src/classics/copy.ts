@@ -7,7 +7,7 @@ import type { Lang } from '../text/i18n';
 import { pickText } from '../text/i18n';
 import { deriveClassic } from './derive';
 import type { DerivedLine, DerivedSlot, DeriveErrorCode } from './derive';
-import type { Classic, Country, Course } from './types';
+import type { Classic, ClassicSource, Country, Course } from './types';
 import { wantedLines } from './wanted';
 
 export interface CopyOptions {
@@ -119,17 +119,26 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
 
   const source = classic.source;
   const name = pickText(classic.name, options.lang);
-  const origin: Origin =
-    source.own === true
-      ? { classic: classic.id, own: true, year: source.year }
+  const originOf = (id: string, from: ClassicSource): Origin =>
+    from.own === true
+      ? { classic: id, own: true, year: from.year }
       : {
-          classic: classic.id,
-          author: source.author,
-          title: source.title,
-          year: source.year,
-          place: source.place,
-          url: source.url,
+          classic: id,
+          author: from.author,
+          title: from.title,
+          year: from.year,
+          place: from.place,
+          url: from.url,
         };
+  const origin = originOf(classic.id, source);
+  // A component of a frame keeps the source of the recipe it was taken from.
+  const fromOf = new Map(
+    (classic.components ?? []).flatMap((c) => (c.from === undefined ? [] : [[c.id, c.from]])),
+  );
+  const componentOrigin = (id: string): Origin => {
+    const from = fromOf.get(id);
+    return from === undefined ? origin : originOf(from.recipe, from.source);
+  };
   const change =
     source.own === true
       ? `Copied from the app's own recipe "${name}" (${source.year}).`
@@ -167,7 +176,7 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
       }),
       ...(c.steps.length === 0 ? {} : { steps: c.steps.map(withoutSourceNote) }),
       version: version(id),
-      'x-origin': origin,
+      'x-origin': componentOrigin(c.id),
     };
   });
   const dishId = options.newId();

@@ -54,6 +54,14 @@ export const classicsStringsDe: typeof classicsStrings = {
   ownChecked:
     'Von einer zweiten KI-Sitzung gegengelesen. Niemand aus dem Projekt hat es nachgekocht.',
   ownPersons: (n: number): string => `Geschrieben für ${n} Personen.`,
+  frameSource:
+    'Von dieser App aus ihren eigenen Rezepten zusammengestellt. Jeder Teil ist ein eigenes Rezept:',
+  framePartOwn: (name: string): string =>
+    `${name}: ein Rezept dieser App, von einem KI-Modell geschrieben.`,
+  framePartCited: (name: string, author: string, title: string, year: number): string =>
+    `${name}: nach ${author}, ${title} (${year}).`,
+  frameChecked:
+    'Jeder Teil wurde gegengelesen. Die Zusammenstellung als Ganzes hat niemand gelesen und niemand gekocht.',
   personsStated: (n: number): string => `Die Quelle gibt ihre Mengen für ${n} Personen an.`,
   personsSettled: (n: number): string => `Die Quelle nennt keine Zahl; angenommen: ${n} Personen.`,
   portionsLabel: 'Portionen',

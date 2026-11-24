@@ -7,6 +7,7 @@ import {
   file,
   idsWithChains,
   rowNamed,
+  shownName,
   searchBox,
   setAmount,
 } from './catalogue-helpers.mjs';
@@ -102,7 +103,7 @@ const pickAndCompute = async (page, origin) => {
   await setAmount(page, 2, '2', 'cup');
   await addLine(page);
   await searchBox(page).fill('egg, whole, fresh');
-  await entryButton(page, 'Egg, whole, fresh').first().click();
+  await entryButton(page, EGG.name).first().click();
   await setAmount(page, 3, '3', 'count');
 
   await page.getByLabel('Name', { exact: true }).fill('From the catalogue');
@@ -190,7 +191,7 @@ const offline = async (browser, origin) => {
   await formReady(page);
   await addLine(page);
   await searchBox(page).fill('egg, whole, fresh');
-  await entryButton(page, 'Egg, whole, fresh').first().click();
+  await entryButton(page, EGG.name).first().click();
   await page.locator('.picker').waitFor({ state: 'detached' });
   check(
     same((await listStore(page, 'ingredients')).map((r) => r.id).sort(), idsWithChains(EGG)),
@@ -291,22 +292,22 @@ const latePick = async (browser, origin) => {
   await formReady(page);
   await page.getByRole('button', { name: 'Add an ingredient or component' }).click();
   await searchBox(page).fill('egg, whole, fresh');
-  await entryButton(page, 'Egg, whole, fresh').first().waitFor();
-  await page.evaluate(() => {
+  await entryButton(page, EGG.name).first().waitFor();
+  await page.evaluate((eggName) => {
     const pick = [...document.querySelectorAll('.picker-catalogue .picker-choice')].find((b) =>
-      (b.getAttribute('aria-label') ?? b.textContent).startsWith('Egg, whole, fresh'),
+      (b.getAttribute('aria-label') ?? b.textContent).startsWith(eggName),
     );
     const add = [...document.querySelectorAll('button')].find(
       (b) => b.textContent.trim() === 'Add an ingredient or component',
     );
     pick.click();
     add.click();
-  });
+  }, EGG.name);
   await page.waitForFunction(() => document.querySelectorAll('.slot-edit').length === 2);
   await page.waitForTimeout(300);
   const slots = await page.locator('.slot-edit .pick-name').allInnerTexts();
   check(
-    (await page.locator('.picker').count()) === 1 && slots[0]?.trim() === 'Egg, whole, fresh',
+    (await page.locator('.picker').count()) === 1 && slots[0]?.trim() === shownName(EGG),
     `${label}: on a dish too, the late pick fills its slot and the new slot's picker stays open (${slots.join(' | ')})`,
   );
   check(problems.length === 0, `${label}: no console error ${problems.join('; ')}`);

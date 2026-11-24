@@ -114,14 +114,18 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water, cold",
-            "de": "Wasser, kalt"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "amount": {
             "value": 1,
             "unit": "cupful",
             "original": "1 cupful of cold water"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
           }
         },
         {

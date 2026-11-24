@@ -163,9 +163,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "Boiling water, enough to cover the meat; more if needed while braising.",

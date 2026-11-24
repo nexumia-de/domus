@@ -10,6 +10,7 @@
 // here: a real phone, amounts in stock, desktop width.
 import { check, watch } from './harness.mjs';
 import { FORBIDDEN, overflow, smallTargets } from './measure.mjs';
+import { rowNamed, shownName } from './catalogue-helpers.mjs';
 import { stockItems } from './stock-helpers.mjs';
 
 const label = 'everyday stock (German, 360px)';
@@ -56,7 +57,10 @@ export const everydayStock = async (browser, server) => {
     () => !document.querySelector('.stock-staples-tick')?.hasAttribute('disabled'),
   );
   const hint = await staples.locator('p').innerText();
-  check(hint.includes('Speisesalz'), `${label}: the staples offer names the salt (${hint})`);
+  check(
+    hint.includes(shownName(rowNamed('Salt, table'), 'de')),
+    `${label}: the staples offer names the salt (${hint})`,
+  );
   await measure(page, 'empty stock with the staples offer');
 
   await page.getByRole('link', { name: 'Vorrat anhaken' }).first().click();

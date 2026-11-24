@@ -21,6 +21,8 @@ export interface IngredientRecord {
   parentId?: string;
   /** Names in other languages by language tag; `name` stays the canonical English name. */
   names?: NamesByLanguage;
+  /** The name a cook writes for a catalogue entry (tools/catalogue/kitchen-names.json). */
+  'x-kitchen'?: { en: string; de: string };
   roles?: string[];
   yields?: IngredientYield[];
   shelfLife?: {

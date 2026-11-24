@@ -277,6 +277,17 @@ pois, tagliatelle verdi (9; before: 13).
   far better founded (amounts by weight). `factsOfDish` reads a course as
   soon as the record has one.
 
+**Kitchen water is not counted** (2026-11-24). Water became a catalogue
+ingredient so that a recipe with water can be kept. Counted as a line it
+changed 13 shipped dishes: the cocido, the pot-au-feu, the refried beans,
+the roast potatoes and the chana masala became "light" for the water they
+boil in, the dal lost "tomatoey", the barbecue sauce "sweet". The table's
+`notCounted` (tap water) is left out of the facts of a shipped and of an own
+dish, which gives every dish the characters it had; the alioli gains "eggy",
+which the unmeasured water line had held back. **Test:**
+`test/characters.test.ts` ("a boiled dinner whose meat has no amount is not
+called light" fails with the water counted), `test/water-line.test.ts`.
+
 **Without meat and fish on a dish of the notebook** (from a review the
 same day). It was derived from the characters "with meat" and "with fish"
 and said "meat-free" whenever every line had some food category, without

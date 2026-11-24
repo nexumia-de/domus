@@ -260,7 +260,7 @@ screen shows the store's message under the button. No test makes the store fail 
 way. A component whose lines, or those of a component it
 names, still have an ingredient the catalogue lacks shows "This component
 cannot be kept yet: the notebook does not know Water. The recipe stays here to
-cook." instead of the button (40 of the 59 on this day, mostly for water).
+cook." instead of the button (40 of the 59 on that day, mostly for water; since 2026-11-24 water is a catalogue ingredient and no recipe is held back for it).
 **Test:** `test/components-shipped.test.ts` (fictional example dishes,
 in-memory store), `e2e/components-shipped.mjs` (the real shipped content, 360
 and 1000 px, English and German). Not proved: a screen reader; a real phone.
@@ -1165,7 +1165,7 @@ own; the origin is only a choice of the filter.
 - **A sauce that is a base is no dish (since 2026-11-23).** The
   shipped bases of the course sauce (26 of them) are on no dish list, in
   the finder or the random pick; they are in the Components list. Cook
-  lists 98 of the 124 shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+  lists 98 of the 124 shipped files and the 8 frames, 106 rows. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it

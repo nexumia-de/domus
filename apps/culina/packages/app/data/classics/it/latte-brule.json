@@ -94,9 +94,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "A ladle of water (un ramaiuolino d'acqua) to stop the caramel.",

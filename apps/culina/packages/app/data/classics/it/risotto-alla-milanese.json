@@ -114,9 +114,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "Hot water, added a ladle at a time. A hard boil leaves the centre of the rice hard and breaks up its surface.",

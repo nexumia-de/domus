@@ -650,6 +650,7 @@
       "name": "Butter, fettreduziert, Stangenform, mit Salz",
       "aliases": ["Leichte Butter, gesalzen"]
     },
+    "fdc-173647": { "name": "Wasser", "aliases": ["Leitungswasser", "Trinkwasser"] },
     "fdc-173627": {
       "name": "Hähnchenschenkel (Oberschenkel), nur Fleisch",
       "aliases": ["Hähnchenoberkeule ohne Haut"]

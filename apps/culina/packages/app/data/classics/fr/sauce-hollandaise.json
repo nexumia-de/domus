@@ -71,9 +71,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "sourceNote": {
             "en": "\"2 cuillerées à bouche d'eau froide\": the book gives no size for a tablespoon, so no amount is given.",
@@ -110,9 +110,9 @@
         },
         {
           "key": "water-finish",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "\"une cuillerée à bouche d'eau froide\", added after the third part of the butter, so that the sauce does not turn.",
@@ -125,9 +125,9 @@
         },
         {
           "key": "water-thin",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "Added when all the butter is in. A third spoon of cold water is added only if the sauce is still thick.",

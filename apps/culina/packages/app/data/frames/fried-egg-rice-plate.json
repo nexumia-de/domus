@@ -1,0 +1,30 @@
+{
+  "id": "fried-egg-rice-plate",
+  "name": {
+    "en": "Rice with tomato and egg and smashed cucumber",
+    "de": "Reis mit Tomaten-Rührei und Gurkensalat"
+  },
+  "originalName": "Jiachang cai",
+  "country": "cn",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["bai-mi-fan"]
+    },
+    {
+      "role": "main",
+      "parts": ["fanqie-chao-dan"]
+    },
+    {
+      "role": "crunch",
+      "parts": ["pai-huanggua"]
+    }
+  ],
+  "note": {
+    "en": "Start the rice, then make the cucumber salad so that it can stand. The eggs with tomato take a few minutes and are cooked last, when the rice rests.",
+    "de": "Den Reis aufsetzen, dann den Gurkensalat zubereiten, damit er ziehen kann. Das Rührei mit Tomaten braucht wenige Minuten und kommt zuletzt, wenn der Reis ruht."
+  }
+}

@@ -233,6 +233,20 @@ needs one keeps a `wanted` line. Not verified: nobody compared the
 portions' weights with a kitchen scale; the stocks are USDA's
 "home-prepared" rows, the vegetable broth a ready-to-serve one.
 
+**Tap water (1 named food, 2026-11-24).** 75 of the 124 shipped recipes
+named water as a `wanted` line, and a recipe with such a line cannot be
+kept in the notebook, which is where a dish is built on. "Beverages, water,
+tap, drinking" (FDC 173647; 1 fl oz = 29.6 g read as 2 tbsp, density 1.001)
+is now a row; 74 lines point at it ("Water", "Cold water", "Ice-cold water",
+"Water, cold"; the cold ones say so in the line's note). "Water (the cooking
+water of the peas)" stays `wanted`: it is not tap water. The role table gives
+it the role water, which the finder takes as the kitchen's own, so no stock
+is asked for it (`test/water-line.test.ts`, with the control that without the
+role it is asked for). The characters leave it out
+([dish characters](dish-characters.md)); the nutrition counts it with its
+0 kcal. FlavorDB's link for it is taken out. 21 shipped recipes still have a
+`wanted` line and cannot be kept.
+
 **Savoy cabbage, tomato sauce and tomato paste (3 named foods,
 2026-11-21, second pass).** The dish lines still `wanted` were looked up
 again in SR Legacy 2018-04 (the downloaded JSON, SHA-256 as in the envelope;
@@ -340,7 +354,7 @@ fewer than the name has).
    `x-group: { rows }`, the number of food rows below it, and, for a parent
    named in `tools/catalogue/usual.json`, `usual` ([usual member](#usual-member)).
 
-Result for SR Legacy 2018-04, counted on the file on 2026-11-23: 637 food rows (539 by the rule, 98 [named foods](#named-foods)) and 140 parents, 777 entries (a file of 518 kB, 68 kB gzipped; 720 entries before the foods for the own recipes, 716 before savoy and the tomato products, 681 before the meat and fish).
+Result for SR Legacy 2018-04, counted on the file on 2026-11-24: 638 food rows (539 by the rule, 99 [named foods](#named-foods)) and 140 parents, 778 entries (a file of 519 kB, 68 kB gzipped; 777 before tap water, 720 entries before the foods for the own recipes, 716 before savoy and the tomato products, 681 before the meat and fish).
 449 food rows have a parent. The figures of the tree that follow were counted on 2026-11-21 at 720 entries and not again: 420 food rows had a parent, 162 stood alone and 7 food rows were
 roots of a group. The tree has 6 levels (233 entries at the top, 316, 122,
 37, 10 and 2 below). 64 parents are at the top, 47, 16 and 4 at the next
@@ -567,6 +581,35 @@ Wikidata's own label):
 Many aliases are regional or historical ("Rüeblí", "Schmer", "Fettbemme");
 they are kept because a search by them is right.
 
+### Kitchen names
+
+The catalogue's names are the database's: "Oil, olive, salad or cooking",
+"Chicken, broilers or fryers, dark meat, thigh, meat only", "Beverages,
+water, tap, drinking", and German names translated word for word. In a
+recipe line they read like a database
+([pitfalls](design.md#pitfalls-of-an-interface-built-by-agents)). Since
+2026-11-24 an entry may carry `x-kitchen`, the name a cook writes, in
+English and German ("Olive oil" / "Olivenöl", "Water" / "Wasser"). It is
+the project's own, written by an AI model and read by another agent (five
+were changed), a judgement: `tools/catalogue/kitchen-names.json`, merged by
+the generator, with its SHA-256 in the envelope (`kitchenNamesDataset`).
+
+- **Shown, not renamed.** `displayName` (`src/shared/names.ts`) shows the
+  kitchen name wherever an ingredient is named, in both languages; the
+  entry's `name` and `names` stay what they are, and a search finds the
+  entry by all of them.
+- **Which entries.** Every ingredient a shipped recipe names (169 on
+  2026-11-24); a new recipe line without one fails
+  `test/kitchen-names.test.ts`. The other 609 entries show the catalogue's
+  name as before.
+- **Honest about the row.** A kitchen name does not claim another food:
+  distilled vinegar is not called rice vinegar, the yellow mustard not
+  Dijon; "Weizenmehl 405" for US all-purpose flour is the nearest German
+  flour, an assumption.
+
+Not verified: no cook read the names; the picker still lists entries by
+their catalogue name, where the long name tells rows apart.
+
 ### Own translation
 
 The 595 entries without a Wikidata name (foods 467, groups 128) have a
@@ -682,7 +725,7 @@ likewise, each on its own, and only when every row has them. The value is the
 median, and the parent's `source` names the rule. Many parents do not agree
 (milk holds skimmed, dry and human milk; eggs hold fresh and dried), so a dish
 line that names such a parent has no nutrition and is reported as not counted.
-36 of 140 parents and all 637 foods carry nutrition.
+36 of 140 parents and all 638 foods carry nutrition.
 
 ## What the catalogue does not have
 

@@ -8,6 +8,7 @@ import type { CharacterFacts, CharacterLine, Step } from '@culina/engine';
 import type { ComponentRecord, DishRecord, Notebook, SlotRecord } from '../records';
 import { catalogueBelow } from './below';
 import { lineOf } from './classes';
+import { isNotCounted } from './table';
 import type { Below, Lookup } from './classes';
 
 /** A line of which nothing is known: no class, no mass. */
@@ -114,7 +115,10 @@ export const factsOfDish = (
     ),
   ];
   return {
-    lines: dish.slots.flatMap((slot) => slotLines(nb, slot, lookup, below)),
+    // Kitchen water is no part of what a dish is like (the table's `notCounted`).
+    lines: dish.slots
+      .flatMap((slot) => slotLines(nb, slot, lookup, below))
+      .filter((l) => l.classes[0] === undefined || !isNotCounted(l.classes[0])),
     techniques: [
       ...new Set(steps.flatMap((s) => (s.technique === undefined ? [] : [s.technique]))),
     ],

@@ -1,0 +1,30 @@
+{
+  "id": "kofte-plate",
+  "name": {
+    "en": "Köfte with bulgur pilaf and shepherd's salad",
+    "de": "Köfte mit Bulgurpilaw und Hirtensalat"
+  },
+  "originalName": "Köfte tabağı",
+  "country": "tr",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "main",
+      "parts": ["kofte"]
+    },
+    {
+      "role": "starch",
+      "parts": ["bulgur-pilavi"]
+    },
+    {
+      "role": "side",
+      "parts": ["coban-salatasi"]
+    }
+  ],
+  "note": {
+    "en": "Mix the meat first so that it can rest. Cook the bulgur, make the salad while it steams, and grill the köfte last.",
+    "de": "Zuerst die Fleischmasse mischen, damit sie ruhen kann. Den Bulgur garen, währenddessen den Salat zubereiten, die Köfte zuletzt grillen."
+  }
+}
