@@ -25,6 +25,7 @@ import { hostRedirect } from './host-redirect.mjs';
 import { importCatalogue } from './import-catalogue.mjs';
 import { install } from './install.mjs';
 import { kitParts } from './kit-parts.mjs';
+import { listPlace } from './list-place.mjs';
 import { mealPrep } from './meal-prep.mjs';
 import { navigation } from './navigation.mjs';
 import { ratios } from './ratios.mjs';
@@ -58,6 +59,7 @@ try {
   await editorPairing(browser, server);
   await kitParts(browser, server);
   await cookGroups(browser, server);
+  await listPlace(browser, server);
   await dishBrowse(browser, server);
   await catalogue(browser, server);
   await install(browser, server);

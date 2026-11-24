@@ -21,6 +21,52 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: the place on the way back in Culina
+
+Two agents under one lead, both on the second-largest model. One built
+the shell's rule (a screen reached again through the history stands
+where it was left, with the focus on the link it was left by), having
+written the browser check first and run it on the unchanged code. The
+other, which wrote none of it, read the code and drove the built app at
+360 and 1000 px. The builder then fixed what the review found. The
+fixes were not read by a second agent.
+
+| Part                                        | Done by | Checked by                                                         |
+| ------------------------------------------- | ------- | ------------------------------------------------------------------ |
+| The rule in the shell, the checks, the docs | agent 1 | agent 2 (read the code, probed back, forward, reload, two widths)  |
+| The fixes after the review                  | agent 1 | nobody but the tests, the e2e and the lead's reading of the report |
+
+**What the checks found, and where it was fixed.**
+
+- _Forward after back restored the wrong places:_ the browser applied
+  its own saved scroll before the app's route change, so the shell
+  recorded a wrong place for the screen being left (the dish at the
+  list's scroll, then the list at the dish's). No check covered forward.
+  The shell now restores scroll itself (`history.scrollRestoration` is
+  manual) and three new browser checks cover back, forward and back
+  again; they failed on the first version.
+- _A link that does not navigate counted as "the link it was left by"_
+  (a source link opened in a new tab). Only a plain click on a route of
+  the app counts now.
+- _After leaving by the navigation, back focused a heading far above
+  the screen._ The focus goes to what is in view.
+- _A check that could not tell a restore from a centring:_ the row had
+  been scrolled to the middle and the tolerance was 4 px, the distance
+  between the two. The row is placed off the middle and the tolerance
+  is 1 px.
+- _The builder's own find:_ the dish screen and Cook's list draw again
+  once the catalogue is read, which dropped the restored focus; the
+  shell keeps it for a second or until the next key or tap.
+
+**Test counts** (the agent's runs): `npm run check:culina` passes with
+1253 engine, 1120 app and 23 native tests; Culina's e2e passes with 2032
+checks, run alone.
+
+**What nobody verified.** Safari and Firefox, touch scrolling, a screen
+reader, a real phone. The fixes by a second reader, among them the
+second for which the shell holds the focus against a redraw. The
+layout from 720 px has no browser check; the reviewer looked at it.
+
 ## 2026-11-24: a rice bowl and a soup frame for Culina, six recipes for them
 
 Two agents under one lead, both on the second-largest model. One built

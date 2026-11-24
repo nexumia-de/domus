@@ -212,7 +212,7 @@ export const dishList = (options: DishListOptions): HTMLElement => {
   count.setAttribute('aria-live', 'polite');
   const rows = el('div', 'dish-rows');
 
-  const drawRows = (filter: DishFilter): void => {
+  const paintRows = (filter: DishFilter): void => {
     const view = dishListView(entries, filter, search.query, currentLang(), cook);
     count.textContent = t.count(view.rows.length);
     // Nothing in stock: "Only with what I have" keeps nothing, and the way to tick is offered.
@@ -284,6 +284,22 @@ export const dishList = (options: DishListOptions): HTMLElement => {
         return section;
       }),
     );
+  };
+
+  // The rows are drawn anew (the catalogue read, a change of the filter); the row that had focus
+  // keeps it, so that the focus the shell gives the row on the way back is not lost to the page.
+  const drawRows = (filter: DishFilter): void => {
+    const active = document.activeElement;
+    const href =
+      active instanceof HTMLAnchorElement && rows.contains(active)
+        ? active.getAttribute('href')
+        : null;
+    paintRows(filter);
+    if (href === null) return;
+    const again = [...rows.querySelectorAll('a[href]')].find(
+      (a) => a.getAttribute('href') === href,
+    );
+    if (again instanceof HTMLElement) again.focus({ preventScroll: true });
   };
 
   // The controls are drawn anew on every change; the control that had focus keeps it.
